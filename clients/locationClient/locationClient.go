@@ -35,10 +35,13 @@ func ResolveLocation(specifiedLocation string) (error) {
 func GetLocationList() (LocationList, error) {
 	locationList := LocationList{}
 
-	requestURL :=  fmt.Sprintf("https://management.core.windows.net/%s/locations", azure.GetPublishSettings().SubscriptionID)
-	output := azure.SendAzureGetRequest(requestURL)
+	requestURL :=  "locations"
+	response, azureErr := azure.SendAzureGetRequest(requestURL)
+	if azureErr != nil {
+		azure.PrintErrorAndExit(azureErr)
+	}
 
-	err := xml.Unmarshal(output, &locationList)
+	err := xml.Unmarshal(response, &locationList)
 	if err != nil {
 		return locationList, err
 	}

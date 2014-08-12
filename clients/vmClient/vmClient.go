@@ -27,7 +27,10 @@ func CreateAzureVM(role Role, dnsName, location string) {
 		azure.PrintErrorAndExit(err)
 	}
 
-	CreateHostedService(dnsName, location)
+	fmt.Println("Creating hosted service ... ")
+	requestId := CreateHostedService(dnsName, location)
+	azure.WaitAsyncOperation(requestId)
+	fmt.Println("done.")
 
 	fmt.Println("Deploying azure VM configuration ... ")
 
@@ -37,31 +40,39 @@ func CreateAzureVM(role Role, dnsName, location string) {
 		azure.PrintErrorAndExit(err)
 	}
 
-	time.Sleep(10)
+	requestURL :=  fmt.Sprintf("services/hostedservices/%s/deployments", role.RoleName)
+	requestId, azureErr := azure.SendAzurePostRequest(requestURL, vMDeploymentBytes)
+	if azureErr != nil {
+		azure.PrintErrorAndExit(azureErr)
+	}
 
-	requestURL :=  fmt.Sprintf("https://management.core.windows.net/%s/services/hostedservices/%s/deployments", azure.GetPublishSettings().SubscriptionID, role.RoleName)
-	azure.SendAzurePostRequest(requestURL, vMDeploymentBytes)
-	fmt.Println("done. ")
+	azure.WaitAsyncOperation(requestId)
+
+	fmt.Println("done.")
 }
 
-func CreateHostedService(dnsName, location string) {
-	fmt.Println("Creating hosted service ... ")
+func CreateHostedService(dnsName, location string) string {
+
 	hostedServiceDeployment := createHostedServiceDeploymentConfig(dnsName, location)
 	hostedServiceBytes, err := xml.Marshal(hostedServiceDeployment)
 	if err != nil {
 		azure.PrintErrorAndExit(err)
 	}
 
-	requestURL :=  fmt.Sprintf("https://management.core.windows.net/%s/services/hostedservices", azure.GetPublishSettings().SubscriptionID)
-	azure.SendAzurePostRequest(requestURL, hostedServiceBytes)
-	fmt.Println("done. ")
+	requestURL :=  "services/hostedservices"
+	requestId, azureErr := azure.SendAzurePostRequest(requestURL, hostedServiceBytes)
+	if azureErr != nil {
+		azure.PrintErrorAndExit(azureErr)
+	}
+
+	return requestId
 }
 
 func CreateAzureVMConfiguration(name, instanceSize, imageName, location string) (Role) {
 	fmt.Println("Creating azure VM configuration ... ")
 
 	role := createAzureVMRole(name, instanceSize, imageName, location)
-	fmt.Println("done. ")
+	fmt.Println("done.")
 	return role
 }
 
@@ -70,6 +81,7 @@ func AddAzureProvisioningConfig(azureVMConfig Role, userName, password, os strin
 
 	azureVMConfig.ConfigurationSets = createConfigurationSets(azureVMConfig.RoleName, userName, password, os)
 
+	fmt.Println("done.")
 	return azureVMConfig
 }
 
@@ -86,7 +98,7 @@ func SetAzureVMExtension(azureVMConfiguration Role, name string, publisher strin
 	if len(privateConfigurationValue) > 0 {
 		privateConfig := ResourceExtensionParameter{}
 		privateConfig.Key = "ignored"
-		privateConfig.Value = privateConfigurationValue
+		privateConfig.Value = base64.StdEncoding.EncodeToString([]byte(privateConfigurationValue))
 		privateConfig.Type = "Private"
 
 		extension.ResourceExtensionParameterValues.ResourceExtensionParameterValue = append(extension.ResourceExtensionParameterValues.ResourceExtensionParameterValue, privateConfig)
@@ -95,7 +107,7 @@ func SetAzureVMExtension(azureVMConfiguration Role, name string, publisher strin
 	if len(publicConfigurationValue) > 0 {
 		publicConfig := ResourceExtensionParameter{}
 		publicConfig.Key = "ignored"
-		publicConfig.Value = publicConfigurationValue
+		publicConfig.Value = base64.StdEncoding.EncodeToString([]byte(publicConfigurationValue))
 		publicConfig.Type = "Public"
 
 		extension.ResourceExtensionParameterValues.ResourceExtensionParameterValue = append(extension.ResourceExtensionParameterValues.ResourceExtensionParameterValue, publicConfig)
@@ -113,12 +125,12 @@ func SetAzureDockerVMExtension(azureVMConfiguration Role, dockerCertDir string, 
 
 	addDockerPort(azureVMConfiguration.ConfigurationSets.ConfigurationSet, dockerPort)
 	publicConfiguration := createDockerPublicConfig(dockerPort)
-	//privateConfiguration, err := createDockerPrivateConfig(dockerCertDir)
-	//if err != nil {
-	//	azure.PrintErrorAndExit(err)
-	//}
+	privateConfiguration, err := createDockerPrivateConfig(dockerCertDir)
+	if err != nil {
+		azure.PrintErrorAndExit(err)
+	}
 
-	azureVMConfiguration = SetAzureVMExtension(azureVMConfiguration, "DockerExtension", "MSOpenTech.Extensions", version, "DockerExtension", "enable", publicConfiguration, "")
+	azureVMConfiguration = SetAzureVMExtension(azureVMConfiguration, "DockerExtension", "MSOpenTech.Extensions", version, "DockerExtension", "enable", publicConfiguration, privateConfiguration)
 	return azureVMConfiguration
 }
 
@@ -130,7 +142,7 @@ func SetAzureDockerVMExtension(azureVMConfiguration Role, dockerCertDir string, 
 
 func createDockerPublicConfig(dockerPort int) string{
 	config := fmt.Sprintf("{ \"dockerport\": \"%v\" }", dockerPort)
-	return base64.StdEncoding.EncodeToString([]byte(config))
+	return config
 }
 
 func generateDockerCertificates(dockerCertDir string) {
@@ -187,7 +199,7 @@ func createDockerPrivateConfig(dockerCertDir string) (string, error) {
 		}
 	}
 
-	generateDockerCertificates(certDir)
+	//generateDockerCertificates(certDir)
 	caCert, caErr := parseFileToBase64String(path.Join(certDir, "ca.pem"))
 	if caErr != nil {
 		azure.PrintErrorAndExit(caErr)
@@ -204,7 +216,7 @@ func createDockerPrivateConfig(dockerCertDir string) (string, error) {
 	}
 
 	config := fmt.Sprintf("{ \"ca\": \"%s\", \"server-cert\": \"%s\", \"server-key\": \"%s\" }", caCert, serverCert, serverKey)
-	return base64.StdEncoding.EncodeToString([]byte(config)), nil
+	return config, nil
 }
 
 func parseFileToBase64String(path string) (string, error) {

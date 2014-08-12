@@ -12,10 +12,13 @@ import (
 func GetStorageServiceList() (*StorageServiceList, error){
 	storageServiceList := new(StorageServiceList)
 
-	requestURL :=  fmt.Sprintf("https://management.core.windows.net/%s/services/storageservices", azure.GetPublishSettings().SubscriptionID)
-	output := azure.SendAzureGetRequest(requestURL)
+	requestURL := "services/storageservices"
+	response, azureErr := azure.SendAzureGetRequest(requestURL)
+	if azureErr != nil {
+		azure.PrintErrorAndExit(azureErr)
+	}
 
-	err := xml.Unmarshal(output, storageServiceList)
+	err := xml.Unmarshal(response, storageServiceList)
 	if err != nil {
 		return storageServiceList, err
 	}
@@ -25,10 +28,13 @@ func GetStorageServiceList() (*StorageServiceList, error){
 
 func GetStorageServiceByName(serviceName string) (*StorageService){
 	storageService := new(StorageService)
-	requestURL :=  fmt.Sprintf("https://management.core.windows.net/%s/services/storageservices/%s", azure.GetPublishSettings().SubscriptionID, serviceName)
-	output := azure.SendAzureGetRequest(requestURL)
+	requestURL := fmt.Sprintf("services/storageservices/%s", serviceName)
+	response, azureErr := azure.SendAzureGetRequest(requestURL)
+	if azureErr != nil {
+		azure.PrintErrorAndExit(azureErr)
+	}
 
-	err := xml.Unmarshal(output, storageService)
+	err := xml.Unmarshal(response, storageService)
 	if err != nil {
 		azure.PrintErrorAndExit(err)
 	}
@@ -61,9 +67,13 @@ func CreateStorageService(name, location string) (*StorageService){
 		azure.PrintErrorAndExit(err)
 	}
 
-	requestURL :=  fmt.Sprintf("https://management.core.windows.net/%s/services/storageservices", azure.GetPublishSettings().SubscriptionID)
-	azure.SendAzurePostRequest(requestURL, deploymentBytes)
+	requestURL := "services/storageservices"
+	requestId, azureErr := azure.SendAzurePostRequest(requestURL, deploymentBytes)
+	if azureErr != nil {
+		azure.PrintErrorAndExit(azureErr)
+	}
 
+	azure.WaitAsyncOperation(requestId)
 	storageService := GetStorageServiceByName(storageDeploymentConfig.ServiceName)
 
 	return storageService

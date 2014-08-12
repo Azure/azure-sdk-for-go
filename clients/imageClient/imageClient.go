@@ -10,10 +10,13 @@ import (
 func GetImageList() (ImageList, error){
 	imageList := ImageList{}
 
-	requestURL :=  fmt.Sprintf("https://management.core.windows.net/%s/services/images", azure.GetPublishSettings().SubscriptionID)
-	output := azure.SendAzureGetRequest(requestURL)
+	requestURL :=  "services/images"
+	response, azureErr := azure.SendAzureGetRequest(requestURL)
+	if azureErr != nil {
+		azure.PrintErrorAndExit(azureErr)
+	}
 
-	err := xml.Unmarshal(output, &imageList)
+	err := xml.Unmarshal(response, &imageList)
 	return imageList, err
 }
 

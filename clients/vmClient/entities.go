@@ -34,6 +34,8 @@ type Role struct {
 	OSVirtualHardDisk OSVirtualHardDisk
 	RoleSize	  string
 	ProvisionGuestAgent bool
+	UseCertAuth bool `xml:"-"`
+	CertPath string `xml:"-"`
 }
 
 type ConfigurationSets struct {
@@ -84,6 +86,20 @@ type ConfigurationSet struct {
 	DisableSshPasswordAuthentication bool
 	InputEndpoints			InputEndpoints	`xml:",omitempty"`
 	SubnetNames				SubnetNames		`xml:",omitempty"`
+	SSH						SSH		`xml:",omitempty"`
+}
+
+type SSH struct {
+	PublicKeys PublicKeyList
+}
+
+type PublicKeyList struct {
+	PublicKey []PublicKey
+}
+
+type PublicKey struct {
+	Fingerprint			string
+	Path				string
 }
 
 type InputEndpoint struct {
@@ -95,4 +111,12 @@ type InputEndpoint struct {
 
 //!TODO
 type SubnetName struct {
+}
+
+type ServiceCertificate struct {
+	XMLName   xml.Name `xml:"CertificateFile"`
+	Xmlns	  	string `xml:"xmlns,attr"`
+	Data	string
+	CertificateFormat	string
+	Password	string	`xml:",omitempty"`
 }

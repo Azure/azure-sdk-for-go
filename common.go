@@ -43,6 +43,15 @@ func SendAzurePostRequest(url string, data []byte) (string, error){
 func SendAzureRequest(url string, requestType string,  data []byte) (*http.Response, error){
 	client := createHttpClient()
 
+	response, err := sendRequest(client, url, requestType, data, 5)
+	if err != nil {
+		return nil, err
+	}
+
+	return response, nil
+}
+
+func sendRequest(client *http.Client, url string, requestType string, data []byte, numberOfRetries int) (*http.Response, error){
 	request, reqErr := createAzureRequest(url, requestType, data)
 	if reqErr != nil {
 		return nil, reqErr
@@ -50,13 +59,23 @@ func SendAzureRequest(url string, requestType string,  data []byte) (*http.Respo
 
 	response, err := client.Do(request)
 	if err != nil {
-		return nil, err
+		if numberOfRetries == 0 {
+			return nil, err
+		}
+
+		return sendRequest(client, url, requestType, data, numberOfRetries-1)
 	}
 
 	if response.StatusCode > 299 {
 		responseContent := getResponseBody(response)
-		error := getAzureError(responseContent)
-		return nil, error
+		azureErr := getAzureError(responseContent)
+		if azureErr != nil {
+			if numberOfRetries == 0 {
+				return nil, azureErr
+			}
+
+			return sendRequest(client, url, requestType, data, numberOfRetries-1)
+		}
 	}
 
 	return response, nil
@@ -148,7 +167,7 @@ func createAzureRequest(url string, requestType string,  data []byte) (*http.Req
 }
 
 func createHttpClient() (*http.Client){
-	cert, _ := tls.LoadX509KeyPair(GetPublishSettings().SubscriptionCert, GetPublishSettings().SubscriptionCert)
+	cert, _ := tls.X509KeyPair(GetPublishSettings().SubscriptionCert, GetPublishSettings().SubscriptionKey)
 
 	ssl := &tls.Config{}
 	ssl.Certificates = []tls.Certificate{cert}

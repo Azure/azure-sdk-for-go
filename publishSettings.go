@@ -5,56 +5,104 @@ import (
 	"errors"
 	"io/ioutil"
 	"encoding/xml"
+	"os"
+	"os/user"
+	"path"
+	"encoding/base64"
 )
 
-var publishSettings PublishSettings = PublishSettings{}
+var settings publishSettings = publishSettings{}
 
-func GetPublishSettings() PublishSettings {
-	return publishSettings;
+func GetPublishSettings() publishSettings {
+	return settings;
 }
 
-func SetPublishSettings(id, cert string) {
-	publishSettings.SubscriptionID = id
-	publishSettings.SubscriptionCert = cert
+func setPublishSettings(id string, cert []byte, key []byte) {
+	settings.SubscriptionID = id
+	settings.SubscriptionCert = cert
+	settings.SubscriptionKey = key
 }
 
-func ImportPublishSettings(id, cert string) {
-	SetPublishSettings(id, cert)
+func ImportPublishSettings(id string, certPath string) {
+	cert, err := ioutil.ReadFile(certPath)
+	if err != nil {
+		PrintErrorAndExit(err)
+	}
+
+	setPublishSettings(id, cert, cert)
 }
 
 func ImportPublishSettingsFile(filePath string) {
 
-	content, err := ioutil.ReadFile(filePath)
+	publishSettingsContent, err := ioutil.ReadFile(filePath)
 	if err != nil {
 		PrintErrorAndExit(err)
 	}
 
-	activeSubscription, subErr := GetActiveSubscription(content)
+	activeSubscription, subErr := getActiveSubscription(publishSettingsContent)
 	if subErr != nil {
 		PrintErrorAndExit(subErr)
 	}
 
-	fmt.Println(activeSubscription.Id)
-	fmt.Println(activeSubscription.Name)
-	fmt.Println(activeSubscription.ManagementCertificate)
-	fmt.Println(activeSubscription.ServiceManagementUrl)
+	cert, certErr := getSubscriptionCert(activeSubscription)
+	if certErr != nil {
+		PrintErrorAndExit(certErr)
+	}
 
-	certPath := GetSubscriptionCert(activeSubscription)
-	ImportPublishSettings(activeSubscription.Id, certPath)
+	setPublishSettings(activeSubscription.Id, cert, cert)
 }
 
-func GetSubscriptionCert(subscription Subscription) string {
-	//!TODO
-	return ""
-}
+func getSubscriptionCert(subscription subscription) ([]byte, error) {
+	certPassword := ""
 
-func GetActiveSubscription(content []byte) (Subscription, error) {
-	publishData := PublishData{}
-	activeSubscription := Subscription{}
-
-	err := xml.Unmarshal(content, &publishData)
+	azureDir, err := getAzureDir()
 	if err != nil {
-		PrintErrorAndExit(err)
+		return nil, err
+	}
+
+	pfxCertPath := path.Join(azureDir, "cert.pfx")
+	pemCertPath := path.Join(azureDir, "cert.pem")
+
+	err = createPfxCert(subscription.ManagementCertificate, pfxCertPath)
+	if err != nil {
+		return nil, err
+	}
+
+	ExecuteCommand(fmt.Sprintf("openssl pkcs12 -in %s -out %s -nodes -passin pass:%s", pfxCertPath, pemCertPath, certPassword))
+
+	pemCert, readErr := ioutil.ReadFile(pemCertPath)
+	if readErr != nil {
+		return nil, readErr
+	}
+
+	os.Remove(pfxCertPath)
+	os.Remove(pemCertPath)
+
+	return pemCert, nil
+}
+
+func createPfxCert(managementCert string, pfxCertPath string) (error) {
+
+	pfxCert, err := base64.StdEncoding.DecodeString(managementCert)
+	if err != nil {
+		return err
+	}
+
+	err = ioutil.WriteFile(pfxCertPath, pfxCert, 0644)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func getActiveSubscription(publishSettingsContent []byte) (subscription, error) {
+	publishData := publishData{}
+	activeSubscription := subscription{}
+
+	err := xml.Unmarshal(publishSettingsContent, &publishData)
+	if err != nil {
+		return activeSubscription, err
 	}
 
 	if len(publishData.PublishProfiles) == 0 {
@@ -71,7 +119,7 @@ func GetActiveSubscription(content []byte) (Subscription, error) {
 
 	activeSubscription = subscriptions[0]
 
-	if len(subscriptions) == 1 {
+	if len(activeSubscription.ManagementCertificate) == 0 {
 		activeSubscription.ManagementCertificate = publishProfile.ManagementCertificate
 		activeSubscription.ServiceManagementUrl = publishProfile.Url
 	}
@@ -79,24 +127,47 @@ func GetActiveSubscription(content []byte) (Subscription, error) {
 	return activeSubscription, nil
 }
 
-type PublishSettings struct {
+func getAzureDir() (string, error) {
+	usr, err := user.Current()
+	if err != nil {
+		return "", err
+	}
+
+	azureDir := path.Join(usr.HomeDir, ".azure")
+	//Create azure dir if does not exists
+	if _, err := os.Stat(azureDir); os.IsNotExist(err) {
+		mkdirErr := os.Mkdir(azureDir, 0644)
+		if mkdirErr != nil {
+			return "", mkdirErr
+		}
+	}
+
+	return azureDir, nil
+}
+
+type publishSettings struct {
+	XMLName   			xml.Name `xml:"PublishSettings"`
 	SubscriptionID				string
-	SubscriptionCert			string
+	SubscriptionCert			[]byte
+	SubscriptionKey				[]byte
 }
 
-type PublishData struct {
-	PublishProfiles []PublishProfile `xml:"PublishProfile"`
+type publishData struct {
+	XMLName   			xml.Name `xml:"PublishData"`
+	PublishProfiles []publishProfile `xml:"PublishProfile"`
 }
 
-type PublishProfile struct {
+type publishProfile struct {
+	XMLName   			xml.Name `xml:"PublishProfile"`
 	SchemaVersion string `xml:",attr"`
 	PublishMethod string `xml:",attr"`
 	Url string `xml:",attr"`
 	ManagementCertificate string `xml:",attr"`
-	Subscriptions []Subscription `xml:"Subscription"`
+	Subscriptions []subscription `xml:"Subscription"`
 }
 
-type Subscription struct {
+type subscription struct {
+	XMLName   			xml.Name `xml:"Subscription"`
 	ServiceManagementUrl string `xml:",attr"`
 	Id string `xml:",attr"`
 	Name string `xml:",attr"`

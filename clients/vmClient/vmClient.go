@@ -5,11 +5,14 @@ import (
 	"time"
 	"encoding/xml"
 	"encoding/base64"
+	"encoding/pem"
 	"os"
 	"io/ioutil"
 	"crypto/rand"
+	"crypto/sha1"
 	"io"
 	"errors"
+	"strings"
 	"os/user"
 	"path"
 	"github.com/MSOpenTech/azure-sdk-for-go/clients/locationClient"
@@ -31,6 +34,17 @@ func CreateAzureVM(role Role, dnsName, location string) {
 	requestId := CreateHostedService(dnsName, location)
 	azure.WaitAsyncOperation(requestId)
 	fmt.Println("done.")
+
+	if role.UseCertAuth {
+		fmt.Println("Uploading cert ...")
+
+		err = uploadServiceCert(dnsName, role.CertPath)
+		if err != nil {
+			azure.PrintErrorAndExit(err)
+		}
+
+		fmt.Println("done.")
+	}
 
 	fmt.Println("Deploying azure VM configuration ... ")
 
@@ -76,10 +90,31 @@ func CreateAzureVMConfiguration(name, instanceSize, imageName, location string) 
 	return role
 }
 
-func AddAzureProvisioningConfig(azureVMConfig Role, userName, password, os string) (Role) {
+func AddAzureLinuxProvisioningConfig(azureVMConfig Role, userName, password, certPath string) (Role) {
 	fmt.Println("Adding azure provisioning configuration ... ")
 
-	azureVMConfig.ConfigurationSets = createConfigurationSets(azureVMConfig.RoleName, userName, password, os)
+	configurationSets := ConfigurationSets{}
+
+	provisioningConfig, err := createLinuxProvisioningConfig(azureVMConfig.RoleName, userName, password, certPath)
+	if err != nil {
+		azure.PrintErrorAndExit(err)
+	}
+
+	configurationSets.ConfigurationSet = append(configurationSets.ConfigurationSet, provisioningConfig)
+
+	networkConfig, networkErr := createNetworkConfig("Linux")
+	if networkErr != nil {
+		azure.PrintErrorAndExit(networkErr)
+	}
+
+	configurationSets.ConfigurationSet = append(configurationSets.ConfigurationSet, networkConfig)
+
+	azureVMConfig.ConfigurationSets = configurationSets
+
+	if len(certPath) > 0 {
+		azureVMConfig.UseCertAuth = true
+		azureVMConfig.CertPath = certPath
+	}
 
 	fmt.Println("done.")
 	return azureVMConfig
@@ -138,7 +173,6 @@ func SetAzureDockerVMExtension(azureVMConfiguration Role, dockerCertDir string, 
 
 
 // REGION PRIVATE METHODS STARTS
-
 
 func createDockerPublicConfig(dockerPort int) string{
 	config := fmt.Sprintf("{ \"dockerport\": \"%v\" }", dockerPort)
@@ -334,49 +368,116 @@ func newUUID() (string, error) {
 	return fmt.Sprintf("%x", uuid[10:]), nil
 }
 
-func createConfigurationSets(dnsName, userName, password, os string) (ConfigurationSets){
-	configurationSets := ConfigurationSets{}
-
-	provisioningConfig, err := createProvisioningConfig(dnsName, userName, password, os)
-	if err != nil {
-		azure.PrintErrorAndExit(err)
-	}
-
-	configurationSets.ConfigurationSet = append(configurationSets.ConfigurationSet, provisioningConfig)
-
-	networkConfig, networkErr := createNetworkConfig(os)
-	if networkErr != nil {
-		azure.PrintErrorAndExit(networkErr)
-	}
-
-	configurationSets.ConfigurationSet = append(configurationSets.ConfigurationSet, networkConfig)
-
-	return configurationSets
-}
-
-func createProvisioningConfig(dnsName string, userName string, userPassword, os string) (ConfigurationSet, error) {
+func createLinuxProvisioningConfig(dnsName, userName, userPassword, certPath string) (ConfigurationSet, error) {
 	provisioningConfig := ConfigurationSet{}
-	var configurationSetType string
 
-	if os == "Linux" {
-		configurationSetType = "LinuxProvisioningConfiguration"
-
-		//!TODO If user specified cert base auth we should not set this value
-		//if something {
-		provisioningConfig.DisableSshPasswordAuthentication = false
-		//}
-	} else if os == "Windows" {
-		configurationSetType = "WindowsProvisioningConfiguration"
-	} else {
-		return provisioningConfig, errors.New(fmt.Sprintf("You must specify correct OS param. Valid values are 'Linux' and 'Windows'"))
+	disableSshPasswordAuthentication := false
+	if len(userPassword) == 0 {
+		disableSshPasswordAuthentication = true
+		// We need to set dummy password otherwise azure API will throw an error
+		userPassword = "P@ssword1"
 	}
 
-	provisioningConfig.ConfigurationSetType = configurationSetType
+	provisioningConfig.DisableSshPasswordAuthentication = disableSshPasswordAuthentication
+	provisioningConfig.ConfigurationSetType = "LinuxProvisioningConfiguration"
 	provisioningConfig.HostName = dnsName
 	provisioningConfig.UserName = userName
 	provisioningConfig.UserPassword = userPassword
 
+	if len(certPath) > 0 {
+		var err error
+		provisioningConfig.SSH, err = createSshConfig(certPath, userName)
+		if err != nil {
+			return provisioningConfig, err
+		}
+	}
+
 	return provisioningConfig, nil
+}
+
+func uploadServiceCert(dnsName, certPath string) (error) {
+	certificateConfig, err := createServiceCertDeploymentConf(certPath)
+	if err != nil {
+		return err
+	}
+
+	certificateConfigBytes, err := xml.Marshal(certificateConfig)
+	if err != nil {
+		return err
+	}
+
+	requestURL :=  fmt.Sprintf("services/hostedservices/%s/certificates", dnsName)
+	requestId, azureErr := azure.SendAzurePostRequest(requestURL, certificateConfigBytes)
+	if azureErr != nil {
+		return azureErr
+	}
+
+	err = azure.WaitAsyncOperation(requestId)
+	return err
+}
+
+func createServiceCertDeploymentConf(certPath string) (ServiceCertificate, error) {
+	certConfig := ServiceCertificate{}
+	certConfig.Xmlns = "http://schemas.microsoft.com/windowsazure"
+	data , err := ioutil.ReadFile(certPath)
+	if err != nil {
+		return certConfig, err
+	}
+
+	certData := base64.StdEncoding.EncodeToString(data)
+	certConfig.Data = certData
+	certConfig.CertificateFormat = "pfx"
+
+	return certConfig, nil
+}
+
+func createSshConfig(certPath, userName string) (SSH, error) {
+	sshConfig := SSH{}
+	publicKey := PublicKey{}
+
+	err := checkServiceCertExtension(certPath)
+	if err != nil {
+		return sshConfig, err
+	}
+
+	fingerprint, err := getServiceCertFingerprint(certPath)
+	if err != nil {
+		return sshConfig, err
+	}
+
+	publicKey.Fingerprint = fingerprint
+	publicKey.Path = "/home/" + userName + "/.ssh/authorized_keys"
+
+	sshConfig.PublicKeys.PublicKey = append(sshConfig.PublicKeys.PublicKey, publicKey)
+	return sshConfig, nil
+}
+
+func getServiceCertFingerprint(certPath string) (string, error) {
+	certData, readErr := ioutil.ReadFile(certPath)
+	if readErr != nil {
+		return "", readErr
+	}
+
+	block, rest := pem.Decode(certData)
+	if block == nil {
+		return "", errors.New(string(rest))
+	}
+
+	sha1sum := sha1.Sum(block.Bytes)
+	fingerprint := fmt.Sprintf("%X", sha1sum)
+	return fingerprint, nil
+}
+
+func checkServiceCertExtension(certPath string) (error) {
+	certParts := strings.Split(certPath, ".")
+	certExt := certParts[len(certParts) - 1]
+
+	acceptedExtension := "pem"
+	if certExt != acceptedExtension {
+		return errors.New(fmt.Sprintf("Certificate %s is invalid. Please specify %s certificate.", certPath, acceptedExtension))
+	}
+
+	return nil
 }
 
 func createNetworkConfig(os string) (ConfigurationSet, error) {

@@ -23,33 +23,35 @@ func setPublishSettings(id string, cert []byte, key []byte) {
 	settings.SubscriptionKey = key
 }
 
-func ImportPublishSettings(id string, certPath string) {
+func ImportPublishSettings(id string, certPath string) error {
 	cert, err := ioutil.ReadFile(certPath)
 	if err != nil {
-		PrintErrorAndExit(err)
+		return err
 	}
 
 	setPublishSettings(id, cert, cert)
+	return nil
 }
 
-func ImportPublishSettingsFile(filePath string) {
+func ImportPublishSettingsFile(filePath string) error {
 
 	publishSettingsContent, err := ioutil.ReadFile(filePath)
 	if err != nil {
-		PrintErrorAndExit(err)
+		return err
 	}
 
-	activeSubscription, subErr := getActiveSubscription(publishSettingsContent)
-	if subErr != nil {
-		PrintErrorAndExit(subErr)
+	activeSubscription, err := getActiveSubscription(publishSettingsContent)
+	if err != nil {
+		return err
 	}
 
-	cert, certErr := getSubscriptionCert(activeSubscription)
-	if certErr != nil {
-		PrintErrorAndExit(certErr)
+	cert, err := getSubscriptionCert(activeSubscription)
+	if err != nil {
+		return err
 	}
 
 	setPublishSettings(activeSubscription.Id, cert, cert)
+	return nil
 }
 
 func getSubscriptionCert(subscription subscription) ([]byte, error) {

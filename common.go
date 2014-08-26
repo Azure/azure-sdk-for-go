@@ -2,7 +2,6 @@ package azureSdkForGo
 
 import (
 	"fmt"
-	"os"
 	"io"
 	"bytes"
 	"time"

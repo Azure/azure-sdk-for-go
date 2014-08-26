@@ -14,12 +14,6 @@ import (
 	"github.com/MSOpenTech/azure-sdk-for-go/core/http"
 )
 
-func PrintErrorAndExit(err error) {
-	fmt.Println("Error: ")
-	fmt.Println(err)
-	os.Exit(2)
-}
-
 func SendAzureGetRequest(url string) ([]byte, error){
 	response, err := SendAzureRequest(url, "GET", nil)
 	if err != nil {

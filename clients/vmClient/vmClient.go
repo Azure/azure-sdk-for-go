@@ -23,15 +23,19 @@ import (
 
 // REGION PUBLIC METHODS STARTS
 
-func CreateAzureVM(role Role, dnsName, location string) {
+func CreateAzureVM(role *Role, dnsName, location string) error {
 
 	err := locationClient.ResolveLocation(location)
 	if err != nil {
-		azure.PrintErrorAndExit(err)
+		return err
 	}
 
 	fmt.Println("Creating hosted service ... ")
-	requestId := CreateHostedService(dnsName, location)
+	requestId, err := CreateHostedService(dnsName, location)
+	if err != nil {
+		return err
+	}
+
 	azure.WaitAsyncOperation(requestId)
 	fmt.Println("done.")
 
@@ -40,7 +44,7 @@ func CreateAzureVM(role Role, dnsName, location string) {
 
 		err = uploadServiceCert(dnsName, role.CertPath)
 		if err != nil {
-			azure.PrintErrorAndExit(err)
+			return err
 		}
 
 		fmt.Println("done.")
@@ -51,60 +55,75 @@ func CreateAzureVM(role Role, dnsName, location string) {
 	vMDeployment := createVMDeploymentConfig(role)
 	vMDeploymentBytes, err := xml.Marshal(vMDeployment)
 	if err != nil {
-		azure.PrintErrorAndExit(err)
+		return err
 	}
 
 	requestURL :=  fmt.Sprintf("services/hostedservices/%s/deployments", role.RoleName)
-	requestId, azureErr := azure.SendAzurePostRequest(requestURL, vMDeploymentBytes)
-	if azureErr != nil {
-		azure.PrintErrorAndExit(azureErr)
+	requestId, err = azure.SendAzurePostRequest(requestURL, vMDeploymentBytes)
+	if err != nil {
+		return err
 	}
 
 	azure.WaitAsyncOperation(requestId)
 
 	fmt.Println("done.")
+	return nil
 }
 
-func CreateHostedService(dnsName, location string) string {
+func CreateHostedService(dnsName, location string) (string, error) {
+
+	err := locationClient.ResolveLocation(location)
+	if err != nil {
+		return "", err
+	}
 
 	hostedServiceDeployment := createHostedServiceDeploymentConfig(dnsName, location)
 	hostedServiceBytes, err := xml.Marshal(hostedServiceDeployment)
 	if err != nil {
-		azure.PrintErrorAndExit(err)
+		return "", err
 	}
 
 	requestURL :=  "services/hostedservices"
 	requestId, azureErr := azure.SendAzurePostRequest(requestURL, hostedServiceBytes)
 	if azureErr != nil {
-		azure.PrintErrorAndExit(azureErr)
+		return "", err
 	}
 
-	return requestId
+	return requestId, nil
 }
 
-func CreateAzureVMConfiguration(name, instanceSize, imageName, location string) (Role) {
+func CreateAzureVMConfiguration(name, instanceSize, imageName, location string) (*Role, error) {
 	fmt.Println("Creating azure VM configuration ... ")
 
-	role := createAzureVMRole(name, instanceSize, imageName, location)
+	err := locationClient.ResolveLocation(location)
+	if err != nil {
+		return nil, err
+	}
+
+	role, err := createAzureVMRole(name, instanceSize, imageName, location)
+	if err != nil {
+		return nil, err
+	}
+
 	fmt.Println("done.")
-	return role
+	return role, nil
 }
 
-func AddAzureLinuxProvisioningConfig(azureVMConfig Role, userName, password, certPath string) (Role) {
+func AddAzureLinuxProvisioningConfig(azureVMConfig *Role, userName, password, certPath string) (*Role, error) {
 	fmt.Println("Adding azure provisioning configuration ... ")
 
 	configurationSets := ConfigurationSets{}
 
 	provisioningConfig, err := createLinuxProvisioningConfig(azureVMConfig.RoleName, userName, password, certPath)
 	if err != nil {
-		azure.PrintErrorAndExit(err)
+		return nil, err
 	}
 
 	configurationSets.ConfigurationSet = append(configurationSets.ConfigurationSet, provisioningConfig)
 
 	networkConfig, networkErr := createNetworkConfig("Linux")
 	if networkErr != nil {
-		azure.PrintErrorAndExit(networkErr)
+		return nil, err
 	}
 
 	configurationSets.ConfigurationSet = append(configurationSets.ConfigurationSet, networkConfig)
@@ -117,10 +136,10 @@ func AddAzureLinuxProvisioningConfig(azureVMConfig Role, userName, password, cer
 	}
 
 	fmt.Println("done.")
-	return azureVMConfig
+	return azureVMConfig, nil
 }
 
-func SetAzureVMExtension(azureVMConfiguration Role, name string, publisher string, version string, referenceName string, state string, publicConfigurationValue string, privateConfigurationValue string) (Role) {
+func SetAzureVMExtension(azureVMConfiguration *Role, name string, publisher string, version string, referenceName string, state string, publicConfigurationValue string, privateConfigurationValue string) (*Role) {
 	fmt.Printf("Setting azure VM extension: %s  ... \n", name)
 
 	extension := ResourceExtensionReference{}
@@ -153,26 +172,98 @@ func SetAzureVMExtension(azureVMConfiguration Role, name string, publisher strin
 	return azureVMConfiguration
 }
 
-func SetAzureDockerVMExtension(azureVMConfiguration Role, dockerCertDir string, dockerPort int, version string) (Role) {
+func SetAzureDockerVMExtension(azureVMConfiguration *Role, dockerCertDir string, dockerPort int, version string) (*Role, error) {
 	if len(version) == 0 {
 		version = "0.3"
 	}
 
-	addDockerPort(azureVMConfiguration.ConfigurationSets.ConfigurationSet, dockerPort)
+	err := addDockerPort(azureVMConfiguration.ConfigurationSets.ConfigurationSet, dockerPort)
+	if err != nil {
+		return nil, err
+	}
+
 	publicConfiguration := createDockerPublicConfig(dockerPort)
 	privateConfiguration, err := createDockerPrivateConfig(dockerCertDir)
 	if err != nil {
-		azure.PrintErrorAndExit(err)
+		return nil, err
 	}
 
 	azureVMConfiguration = SetAzureVMExtension(azureVMConfiguration, "DockerExtension", "MSOpenTech.Extensions", version, "DockerExtension", "enable", publicConfiguration, privateConfiguration)
-	return azureVMConfiguration
+	return azureVMConfiguration, nil
+}
+
+func GetVMDeployment(cloudserviceName, deploymentName string) (*VMDeployment, error) {
+	deployment := new(VMDeployment)
+
+	requestURL :=  fmt.Sprintf("services/hostedservices/%s/deployments/%s", cloudserviceName, deploymentName)
+	response, azureErr := azure.SendAzureGetRequest(requestURL)
+	if azureErr != nil {
+		if strings.Contains(azureErr.Error(), "Code: ResourceNotFound") {
+			return nil, nil
+		}
+
+		return nil, azureErr
+	}
+
+	err := xml.Unmarshal(response, deployment)
+	if err != nil {
+		return nil, err
+	}
+
+	return deployment, nil
+}
+
+func GetRole(cloudserviceName, deploymentName, roleName string) (*Role, error) {
+	role := new(Role)
+
+	requestURL :=  fmt.Sprintf("services/hostedservices/%s/deployments/%s/roles/%s", cloudserviceName, deploymentName, roleName)
+	response, azureErr := azure.SendAzureGetRequest(requestURL)
+	if azureErr != nil {
+		if strings.Contains(azureErr.Error(), "Code: ResourceNotFound") {
+			return nil, nil
+		}
+
+		return nil, azureErr
+	}
+
+	err := xml.Unmarshal(response, role)
+	if err != nil {
+		return nil, err
+	}
+
+	return role, nil
+}
+
+func StartRole(cloudserviceName, deploymentName, roleName string) (error) {
+	startRoleOperation := createStartRoleOperation()
+
+	startRoleOperationBytes, err := xml.Marshal(startRoleOperation)
+	if err != nil {
+		return err
+	}
+
+	requestURL :=  fmt.Sprintf("services/hostedservices/%s/deployments/%s/roleinstances/%s/Operations", cloudserviceName, deploymentName, roleName)
+	requestId, azureErr := azure.SendAzurePostRequest(requestURL, startRoleOperationBytes)
+	if azureErr != nil {
+		return azureErr
+	}
+
+	azure.WaitAsyncOperation(requestId)
+	return nil
 }
 
 // REGION PUBLIC METHODS ENDS
 
 
 // REGION PRIVATE METHODS STARTS
+
+func createStartRoleOperation() StartRoleOperation {
+	startRoleOperation := StartRoleOperation{}
+	startRoleOperation.OperationType = "StartRoleOperation"
+	startRoleOperation.Xmlns = "http://schemas.microsoft.com/windowsazure"
+
+	return startRoleOperation
+}
 
 func createDockerPublicConfig(dockerPort int) string{
 	config := fmt.Sprintf("{ \"dockerport\": \"%v\" }", dockerPort)
@@ -218,7 +309,7 @@ func generateDockerCertificates(dockerCertDir string) {
 func createDockerPrivateConfig(dockerCertDir string) (string, error) {
 	usr, err := user.Current()
 	if err != nil {
-		azure.PrintErrorAndExit(err)
+		return "", err
 	}
 
 	certDir := path.Join(usr.HomeDir, dockerCertDir)
@@ -229,24 +320,24 @@ func createDockerPrivateConfig(dockerCertDir string) (string, error) {
 		fmt.Println("Docker directory does NOT exists")
 		mkdirErr := os.Mkdir(certDir, 0644)
 		if mkdirErr != nil {
-			azure.PrintErrorAndExit(mkdirErr)
+			return "", err
 		}
 	}
 
 	//generateDockerCertificates(certDir)
-	caCert, caErr := parseFileToBase64String(path.Join(certDir, "ca.pem"))
-	if caErr != nil {
-		azure.PrintErrorAndExit(caErr)
+	caCert, err := parseFileToBase64String(path.Join(certDir, "ca.pem"))
+	if err != nil {
+		return "", err
 	}
 
-	serverCert, serverCertErr := parseFileToBase64String(path.Join(certDir, "server-cert.pem"))
-	if serverCertErr != nil {
-		azure.PrintErrorAndExit(serverCertErr)
+	serverCert, err := parseFileToBase64String(path.Join(certDir, "server-cert.pem"))
+	if err != nil {
+		return "", err
 	}
 
-	serverKey, serverKeyErr := parseFileToBase64String(path.Join(certDir, "server-key.pem"))
-	if serverKeyErr != nil {
-		azure.PrintErrorAndExit(serverKeyErr)
+	serverKey, err := parseFileToBase64String(path.Join(certDir, "server-key.pem"))
+	if err != nil {
+		return "", err
 	}
 
 	config := fmt.Sprintf("{ \"ca\": \"%s\", \"server-cert\": \"%s\", \"server-key\": \"%s\" }", caCert, serverCert, serverKey)
@@ -263,9 +354,9 @@ func parseFileToBase64String(path string) (string, error) {
 	return base64Content, nil
 }
 
-func addDockerPort(configurationSets []ConfigurationSet,  dockerPort int) {
+func addDockerPort(configurationSets []ConfigurationSet,  dockerPort int) error {
 	if len(configurationSets) == 0 {
-		azure.PrintErrorAndExit(errors.New("You should set azure VM provisioning config first"))
+		return errors.New("You should set azure VM provisioning config first")
 	}
 
 	for i := 0; i < len(configurationSets); i++ {
@@ -276,6 +367,8 @@ func addDockerPort(configurationSets []ConfigurationSet,  dockerPort int) {
 		dockerEndpoint := createEndpoint("docker", "tcp", dockerPort, dockerPort)
 		configurationSets[i].InputEndpoints.InputEndpoint = append(configurationSets[i].InputEndpoints.InputEndpoint, dockerEndpoint)
 	}
+
+	return nil
 }
 
 func createHostedServiceDeploymentConfig(dnsName, location string) (HostedServiceDeployment) {
@@ -289,7 +382,7 @@ func createHostedServiceDeploymentConfig(dnsName, location string) (HostedServic
 	return deployment
 }
 
-func createVMDeploymentConfig(role Role) (VMDeployment) {
+func createVMDeploymentConfig(role *Role) (VMDeployment) {
 	deployment := VMDeployment{}
 	deployment.Name = role.RoleName
 	deployment.Xmlns = "http://schemas.microsoft.com/windowsazure"
@@ -300,56 +393,63 @@ func createVMDeploymentConfig(role Role) (VMDeployment) {
 	return deployment
 }
 
-func createAzureVMRole(name, instanceSize, imageName, location string) (Role){
-	config := Role{}
+func createAzureVMRole(name, instanceSize, imageName, location string) (*Role, error){
+	config := new(Role)
 	config.RoleName = name
 	config.RoleSize = instanceSize
 	config.RoleType = "PersistentVMRole"
 	config.ProvisionGuestAgent = true
-	config.OSVirtualHardDisk = createOSVirtualHardDisk(name, imageName, location)
+	var err error
+	config.OSVirtualHardDisk, err = createOSVirtualHardDisk(name, imageName, location)
+	if err != nil {
+		return nil, err
+	}
 
-	return config
+	return config, nil
 }
 
-func createOSVirtualHardDisk(dnsName, imageName, location string) (OSVirtualHardDisk){
+func createOSVirtualHardDisk(dnsName, imageName, location string) (OSVirtualHardDisk, error){
 	oSVirtualHardDisk := OSVirtualHardDisk{}
 
 	err := imageClient.ResolveImageName(imageName)
 	if err != nil {
-		azure.PrintErrorAndExit(err)
+		return oSVirtualHardDisk, err
 	}
 
 	oSVirtualHardDisk.SourceImageName = imageName
-	oSVirtualHardDisk.MediaLink = getVHDMediaLink(dnsName, location)
+	oSVirtualHardDisk.MediaLink, err = getVHDMediaLink(dnsName, location)
+	if err != nil {
+		return oSVirtualHardDisk, err
+	}
 
-	return oSVirtualHardDisk
+	return oSVirtualHardDisk, nil
 }
 
-func getVHDMediaLink(dnsName, location string) (string){
+func getVHDMediaLink(dnsName, location string) (string, error){
 
 	storageService, err := storageServiceClient.GetStorageServiceByLocation(location)
 	if err != nil {
-		azure.PrintErrorAndExit(err)
+		return "", err
 	}
 
 	if storageService == nil {
 
 		uuid, err := newUUID()
 		if err != nil {
-			azure.PrintErrorAndExit(err)
+			return "", err
 		}
 
 		serviceName := "portalvhds" + uuid
 		storageService = storageServiceClient.CreateStorageService(serviceName, location)
 	}
 
-	blobEndpoint, blobErr := storageServiceClient.GetBlobEndpoint(storageService)
-	if blobErr != nil {
-		azure.PrintErrorAndExit(blobErr)
+	blobEndpoint, err := storageServiceClient.GetBlobEndpoint(storageService)
+	if err != nil {
+		return "", err
 	}
 
 	vhdMediaLink := blobEndpoint + "vhds/" + dnsName + "-" + time.Now().Local().Format("20060102150405") + ".vhd"
-	return vhdMediaLink
+	return vhdMediaLink, nil
 }
 
 // newUUID generates a random UUID according to RFC 4122

@@ -9,6 +9,7 @@ type VMDeployment struct {
 	Xmlns	  	string `xml:"xmlns,attr"`
 	Name	  	string
 	DeploymentSlot string
+	Status 		string	`xml:",omitempty"`
 	Label 		string
 	RoleList RoleList
 }
@@ -23,7 +24,7 @@ type HostedServiceDeployment struct {
 }
 
 type RoleList struct {
-	Role	[]Role
+	Role	[]*Role
 }
 
 type Role struct {
@@ -76,6 +77,9 @@ type ResourceExtensionParameter struct {
 type OSVirtualHardDisk struct {
 	MediaLink			string
 	SourceImageName		string
+	HostCaching			string	`xml:",omitempty"`
+	DiskName			string	`xml:",omitempty"`
+	OS					string	`xml:",omitempty"`
 }
 
 type ConfigurationSet struct {
@@ -119,4 +123,9 @@ type ServiceCertificate struct {
 	Data	string
 	CertificateFormat	string
 	Password	string	`xml:",omitempty"`
+}
+
+type StartRoleOperation struct {
+	Xmlns	  		string `xml:"xmlns,attr"`
+	OperationType 	string
 }

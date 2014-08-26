@@ -11,19 +11,19 @@ func GetImageList() (ImageList, error){
 	imageList := ImageList{}
 
 	requestURL :=  "services/images"
-	response, azureErr := azure.SendAzureGetRequest(requestURL)
-	if azureErr != nil {
-		azure.PrintErrorAndExit(azureErr)
+	response, err := azure.SendAzureGetRequest(requestURL)
+	if err != nil {
+		return imageList, err
 	}
 
-	err := xml.Unmarshal(response, &imageList)
+	err = xml.Unmarshal(response, &imageList)
 	return imageList, err
 }
 
 func ResolveImageName(imageName string) (error) {
 	imageList, err := GetImageList()
 	if err != nil {
-		azure.PrintErrorAndExit(err)
+		return err
 	}
 
 	for _, image := range imageList.OSImages {

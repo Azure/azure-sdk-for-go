@@ -13,7 +13,7 @@ import (
 func ResolveLocation(specifiedLocation string) (error) {
 	locations, err := GetLocationList()
 	if err != nil {
-		azure.PrintErrorAndExit(err)
+		return err
 	}
 
 	for _, location := range locations.Locations {
@@ -36,12 +36,12 @@ func GetLocationList() (LocationList, error) {
 	locationList := LocationList{}
 
 	requestURL :=  "locations"
-	response, azureErr := azure.SendAzureGetRequest(requestURL)
-	if azureErr != nil {
-		azure.PrintErrorAndExit(azureErr)
+	response, err := azure.SendAzureGetRequest(requestURL)
+	if err != nil {
+		return locationList, err
 	}
 
-	err := xml.Unmarshal(response, &locationList)
+	err = xml.Unmarshal(response, &locationList)
 	if err != nil {
 		return locationList, err
 	}

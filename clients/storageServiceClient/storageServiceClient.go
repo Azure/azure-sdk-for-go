@@ -13,12 +13,12 @@ func GetStorageServiceList() (*StorageServiceList, error){
 	storageServiceList := new(StorageServiceList)
 
 	requestURL := "services/storageservices"
-	response, azureErr := azure.SendAzureGetRequest(requestURL)
-	if azureErr != nil {
-		azure.PrintErrorAndExit(azureErr)
+	response, err := azure.SendAzureGetRequest(requestURL)
+	if err != nil {
+		return nil, err
 	}
 
-	err := xml.Unmarshal(response, storageServiceList)
+	err = xml.Unmarshal(response, storageServiceList)
 	if err != nil {
 		return storageServiceList, err
 	}
@@ -26,20 +26,20 @@ func GetStorageServiceList() (*StorageServiceList, error){
 	return storageServiceList, nil
 }
 
-func GetStorageServiceByName(serviceName string) (*StorageService){
+func GetStorageServiceByName(serviceName string) (*StorageService, error){
 	storageService := new(StorageService)
 	requestURL := fmt.Sprintf("services/storageservices/%s", serviceName)
-	response, azureErr := azure.SendAzureGetRequest(requestURL)
-	if azureErr != nil {
-		azure.PrintErrorAndExit(azureErr)
-	}
-
-	err := xml.Unmarshal(response, storageService)
+	response, err := azure.SendAzureGetRequest(requestURL)
 	if err != nil {
-		azure.PrintErrorAndExit(err)
+		return nil, err
 	}
 
-	return storageService
+	err = xml.Unmarshal(response, storageService)
+	if err != nil {
+		return nil, err
+	}
+
+	return storageService, nil
 }
 
 func GetStorageServiceByLocation(location string) (*StorageService, error) {
@@ -60,23 +60,26 @@ func GetStorageServiceByLocation(location string) (*StorageService, error) {
 	return nil, nil
 }
 
-func CreateStorageService(name, location string) (*StorageService){
+func CreateStorageService(name, location string) (*StorageService, error){
 	storageDeploymentConfig := createStorageServiceDeploymentConf(name, location)
 	deploymentBytes, err := xml.Marshal(storageDeploymentConfig)
 	if err != nil {
-		azure.PrintErrorAndExit(err)
+		return nil, err
 	}
 
 	requestURL := "services/storageservices"
-	requestId, azureErr := azure.SendAzurePostRequest(requestURL, deploymentBytes)
-	if azureErr != nil {
-		azure.PrintErrorAndExit(azureErr)
+	requestId, err := azure.SendAzurePostRequest(requestURL, deploymentBytes)
+	if err != nil {
+		return nil, err
 	}
 
 	azure.WaitAsyncOperation(requestId)
-	storageService := GetStorageServiceByName(storageDeploymentConfig.ServiceName)
+	storageService, err := GetStorageServiceByName(storageDeploymentConfig.ServiceName)
+	if err != nil {
+		return nil, err
+	}
 
-	return storageService
+	return storageService, nil
 }
 
 func GetBlobEndpoint(storageService *StorageService) (string, error) {

@@ -440,7 +440,10 @@ func getVHDMediaLink(dnsName, location string) (string, error){
 		}
 
 		serviceName := "portalvhds" + uuid
-		storageService = storageServiceClient.CreateStorageService(serviceName, location)
+		storageService, err = storageServiceClient.CreateStorageService(serviceName, location)
+		if err != nil {
+			return "", err
+		}
 	}
 
 	blobEndpoint, err := storageServiceClient.GetBlobEndpoint(storageService)

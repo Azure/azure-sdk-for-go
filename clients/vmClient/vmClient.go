@@ -312,7 +312,7 @@ func createDockerPrivateConfig(dockerCertDir string) (string, error) {
 		fmt.Println("Docker directory exists")
 	} else {
 		fmt.Println("Docker directory does NOT exists")
-		return errors.New("You should generate docker certificates first. Info can be found here: https://docs.docker.com/articles/https/")
+		return "", errors.New("You should generate docker certificates first. Info can be found here: https://docs.docker.com/articles/https/")
 	}
 
 	//generateDockerCertificates(certDir)

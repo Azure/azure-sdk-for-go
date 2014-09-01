@@ -37,7 +37,6 @@ func CreateAzureVM(role *Role, dnsName, location string) error {
 	}
 
 	azure.WaitAsyncOperation(requestId)
-	fmt.Println("done.")
 
 	if role.UseCertAuth {
 		fmt.Println("Uploading cert...")
@@ -46,8 +45,6 @@ func CreateAzureVM(role *Role, dnsName, location string) error {
 		if err != nil {
 			return err
 		}
-
-		fmt.Println("done.")
 	}
 
 	fmt.Println("Deploying azure VM configuration... ")
@@ -66,7 +63,6 @@ func CreateAzureVM(role *Role, dnsName, location string) error {
 
 	azure.WaitAsyncOperation(requestId)
 
-	fmt.Println("done.")
 	return nil
 }
 
@@ -105,7 +101,6 @@ func CreateAzureVMConfiguration(name, instanceSize, imageName, location string) 
 		return nil, err
 	}
 
-	fmt.Println("done.")
 	return role, nil
 }
 
@@ -135,7 +130,6 @@ func AddAzureLinuxProvisioningConfig(azureVMConfig *Role, userName, password, ce
 		azureVMConfig.CertPath = certPath
 	}
 
-	fmt.Println("done.")
 	return azureVMConfig, nil
 }
 
@@ -318,10 +312,7 @@ func createDockerPrivateConfig(dockerCertDir string) (string, error) {
 		fmt.Println("Docker directory exists")
 	} else {
 		fmt.Println("Docker directory does NOT exists")
-		mkdirErr := os.Mkdir(certDir, 0644)
-		if mkdirErr != nil {
-			return "", err
-		}
+		return errors.New("You should generate docker certificates first. Info can be found here: https://docs.docker.com/articles/https/")
 	}
 
 	//generateDockerCertificates(certDir)

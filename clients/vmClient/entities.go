@@ -11,6 +11,7 @@ type VMDeployment struct {
 	DeploymentSlot string
 	Status 		string	`xml:",omitempty"`
 	Label 		string
+	Url 		string	`xml:",omitempty"`
 	RoleList RoleList
 }
 

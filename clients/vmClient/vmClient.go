@@ -30,7 +30,7 @@ func CreateAzureVM(role *Role, dnsName, location string) error {
 		return err
 	}
 
-	fmt.Println("Creating hosted service ... ")
+	fmt.Println("Creating hosted service... ")
 	requestId, err := CreateHostedService(dnsName, location)
 	if err != nil {
 		return err
@@ -40,7 +40,7 @@ func CreateAzureVM(role *Role, dnsName, location string) error {
 	fmt.Println("done.")
 
 	if role.UseCertAuth {
-		fmt.Println("Uploading cert ...")
+		fmt.Println("Uploading cert...")
 
 		err = uploadServiceCert(dnsName, role.CertPath)
 		if err != nil {
@@ -50,7 +50,7 @@ func CreateAzureVM(role *Role, dnsName, location string) error {
 		fmt.Println("done.")
 	}
 
-	fmt.Println("Deploying azure VM configuration ... ")
+	fmt.Println("Deploying azure VM configuration... ")
 
 	vMDeployment := createVMDeploymentConfig(role)
 	vMDeploymentBytes, err := xml.Marshal(vMDeployment)
@@ -93,7 +93,7 @@ func CreateHostedService(dnsName, location string) (string, error) {
 }
 
 func CreateAzureVMConfiguration(name, instanceSize, imageName, location string) (*Role, error) {
-	fmt.Println("Creating azure VM configuration ... ")
+	fmt.Println("Creating azure VM configuration... ")
 
 	err := locationClient.ResolveLocation(location)
 	if err != nil {
@@ -110,7 +110,7 @@ func CreateAzureVMConfiguration(name, instanceSize, imageName, location string) 
 }
 
 func AddAzureLinuxProvisioningConfig(azureVMConfig *Role, userName, password, certPath string) (*Role, error) {
-	fmt.Println("Adding azure provisioning configuration ... ")
+	fmt.Println("Adding azure provisioning configuration... ")
 
 	configurationSets := ConfigurationSets{}
 
@@ -140,7 +140,7 @@ func AddAzureLinuxProvisioningConfig(azureVMConfig *Role, userName, password, ce
 }
 
 func SetAzureVMExtension(azureVMConfiguration *Role, name string, publisher string, version string, referenceName string, state string, publicConfigurationValue string, privateConfigurationValue string) (*Role) {
-	fmt.Printf("Setting azure VM extension: %s  ... \n", name)
+	fmt.Printf("Setting azure VM extension: %s... \n", name)
 
 	extension := ResourceExtensionReference{}
 	extension.Name = name

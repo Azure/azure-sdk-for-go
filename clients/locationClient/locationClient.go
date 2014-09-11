@@ -9,6 +9,10 @@ import (
 	azure "github.com/MSOpenTech/azure-sdk-for-go"
 )
 
+const (
+	azureLocationListURL = "locations"
+	invalidLocationError = "Invalid location. Available locations: %s"
+)
 
 func ResolveLocation(specifiedLocation string) (error) {
 	locations, err := GetLocationList()
@@ -29,14 +33,13 @@ func ResolveLocation(specifiedLocation string) (error) {
 		availableLocations.WriteString(location.Name + ", ")
 	}
 
-	return errors.New(fmt.Sprintf("Invalid location. Available locations: %s", strings.Trim(availableLocations.String(), ", ")))
+	return errors.New(fmt.Sprintf(invalidLocationError, strings.Trim(availableLocations.String(), ", ")))
 }
 
 func GetLocationList() (LocationList, error) {
 	locationList := LocationList{}
 
-	requestURL :=  "locations"
-	response, err := azure.SendAzureGetRequest(requestURL)
+	response, err := azure.SendAzureGetRequest(azureLocationListURL)
 	if err != nil {
 		return locationList, err
 	}

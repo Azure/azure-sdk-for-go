@@ -13,6 +13,15 @@ import (
 	"github.com/MSOpenTech/azure-sdk-for-go/core/http"
 )
 
+const (
+	azureManagementDnsName = "https://management.core.windows.net"
+	msVersionHeader = "x-ms-version"
+	msVersionHeaderValue = "2014-05-01"
+	contentHeader = "Content-Type"
+	contentHeaderValue = "application/xml"
+	requestIdHeader = "X-Ms-Request-Id"
+)
+
 func SendAzureGetRequest(url string) ([]byte, error){
 	response, err := SendAzureRequest(url, "GET", nil)
 	if err != nil {
@@ -29,7 +38,7 @@ func SendAzurePostRequest(url string, data []byte) (string, error){
 		return "", err
 	}
 
-	requestId := response.Header["X-Ms-Request-Id"]
+	requestId := response.Header[requestIdHeader]
 	return requestId[0], nil
 }
 
@@ -141,7 +150,7 @@ func createAzureRequest(url string, requestType string,  data []byte) (*http.Req
 	var request *http.Request
 	var err error
 
-	url = fmt.Sprintf("https://management.core.windows.net/%s/" + url, GetPublishSettings().SubscriptionID)
+	url = fmt.Sprintf("%s/%s/%s", azureManagementDnsName, GetPublishSettings().SubscriptionID, url)
 	if data != nil {
 		body := bytes.NewBuffer(data)
 		request, err = http.NewRequest(requestType, url, body)
@@ -153,8 +162,8 @@ func createAzureRequest(url string, requestType string,  data []byte) (*http.Req
 		return nil, err
 	}
 
-	request.Header.Add("x-ms-version", "2014-05-01")
-	request.Header.Add("Content-Type", "application/xml")
+	request.Header.Add(msVersionHeader, msVersionHeaderValue)
+	request.Header.Add(contentHeader, contentHeaderValue)
 
 	return request, nil
 }

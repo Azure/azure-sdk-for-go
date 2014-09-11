@@ -21,6 +21,28 @@ import (
 	azure "github.com/MSOpenTech/azure-sdk-for-go"
 )
 
+const (
+	azureXmlns = "http://schemas.microsoft.com/windowsazure"
+	azureDeploymentListURL = "services/hostedservices/%s/deployments"
+	azureHostedServicesURL = "services/hostedservices"
+	azureDeploymentURL = "services/hostedservices/%s/deployments/%s"
+	azureRoleURL = "services/hostedservices/%s/deployments/%s/roles/%s"
+	azureOperationsURL = "services/hostedservices/%s/deployments/%s/roleinstances/%s/Operations"
+	azureCertificatListURL = "services/hostedservices/%s/certificates"
+
+	osLinux = "Linux"
+	osWindows = "Windows"
+
+	dockerPublicConfig = "{ \"dockerport\": \"%v\" }"
+	dockerPrivateConfig = "{ \"ca\": \"%s\", \"server-cert\": \"%s\", \"server-key\": \"%s\" }"
+	dockerDirExistsMessage = "Docker directory exists"
+
+	missingDockerCertsError = "You should generate docker certificates first. Info can be found here: https://docs.docker.com/articles/https/"
+	provisioningConfDoesNotExistsError = "You should set azure VM provisioning config first"
+	invalidCertExtensionError = "Certificate %s is invalid. Please specify %s certificate."
+	invalidOSError = "You must specify correct OS param. Valid values are 'Linux' and 'Windows'"
+)
+
 // REGION PUBLIC METHODS STARTS
 
 func CreateAzureVM(role *Role, dnsName, location string) error {
@@ -55,7 +77,7 @@ func CreateAzureVM(role *Role, dnsName, location string) error {
 		return err
 	}
 
-	requestURL :=  fmt.Sprintf("services/hostedservices/%s/deployments", role.RoleName)
+	requestURL :=  fmt.Sprintf(azureDeploymentListURL, role.RoleName)
 	requestId, err = azure.SendAzurePostRequest(requestURL, vMDeploymentBytes)
 	if err != nil {
 		return err
@@ -79,7 +101,7 @@ func CreateHostedService(dnsName, location string) (string, error) {
 		return "", err
 	}
 
-	requestURL :=  "services/hostedservices"
+	requestURL :=  azureHostedServicesURL
 	requestId, azureErr := azure.SendAzurePostRequest(requestURL, hostedServiceBytes)
 	if azureErr != nil {
 		return "", err
@@ -116,7 +138,7 @@ func AddAzureLinuxProvisioningConfig(azureVMConfig *Role, userName, password, ce
 
 	configurationSets.ConfigurationSet = append(configurationSets.ConfigurationSet, provisioningConfig)
 
-	networkConfig, networkErr := createNetworkConfig("Linux")
+	networkConfig, networkErr := createNetworkConfig(osLinux)
 	if networkErr != nil {
 		return nil, err
 	}
@@ -189,7 +211,7 @@ func SetAzureDockerVMExtension(azureVMConfiguration *Role, dockerCertDir string,
 func GetVMDeployment(cloudserviceName, deploymentName string) (*VMDeployment, error) {
 	deployment := new(VMDeployment)
 
-	requestURL :=  fmt.Sprintf("services/hostedservices/%s/deployments/%s", cloudserviceName, deploymentName)
+	requestURL :=  fmt.Sprintf(azureDeploymentURL, cloudserviceName, deploymentName)
 	response, azureErr := azure.SendAzureGetRequest(requestURL)
 	if azureErr != nil {
 		if strings.Contains(azureErr.Error(), "Code: ResourceNotFound") {
@@ -210,7 +232,7 @@ func GetVMDeployment(cloudserviceName, deploymentName string) (*VMDeployment, er
 func GetRole(cloudserviceName, deploymentName, roleName string) (*Role, error) {
 	role := new(Role)
 
-	requestURL :=  fmt.Sprintf("services/hostedservices/%s/deployments/%s/roles/%s", cloudserviceName, deploymentName, roleName)
+	requestURL :=  fmt.Sprintf(azureRoleURL, cloudserviceName, deploymentName, roleName)
 	response, azureErr := azure.SendAzureGetRequest(requestURL)
 	if azureErr != nil {
 		if strings.Contains(azureErr.Error(), "Code: ResourceNotFound") {
@@ -236,8 +258,26 @@ func StartRole(cloudserviceName, deploymentName, roleName string) (error) {
 		return err
 	}
 
-	requestURL :=  fmt.Sprintf("services/hostedservices/%s/deployments/%s/roleinstances/%s/Operations", cloudserviceName, deploymentName, roleName)
+	requestURL :=  fmt.Sprintf(azureOperationsURL, cloudserviceName, deploymentName, roleName)
 	requestId, azureErr := azure.SendAzurePostRequest(requestURL, startRoleOperationBytes)
+	if azureErr != nil {
+		return azureErr
+	}
+
+	azure.WaitAsyncOperation(requestId)
+	return nil
+}
+
+func RestartRole(cloudserviceName, deploymentName, roleName string) (error) {
+	restartRoleOperation := createRestartRoleOperation()
+
+	restartRoleOperationBytes, err := xml.Marshal(restartRoleOperation)
+	if err != nil {
+		return err
+	}
+
+	requestURL :=  fmt.Sprintf(azureOperationsURL, cloudserviceName, deploymentName, roleName)
+	requestId, azureErr := azure.SendAzurePostRequest(requestURL, restartRoleOperationBytes)
 	if azureErr != nil {
 		return azureErr
 	}
@@ -254,50 +294,22 @@ func StartRole(cloudserviceName, deploymentName, roleName string) (error) {
 func createStartRoleOperation() StartRoleOperation {
 	startRoleOperation := StartRoleOperation{}
 	startRoleOperation.OperationType = "StartRoleOperation"
-	startRoleOperation.Xmlns = "http://schemas.microsoft.com/windowsazure"
+	startRoleOperation.Xmlns = azureXmlns
+
+	return startRoleOperation
+}
+
+func createRestartRoleOperation() RestartRoleOperation {
+	startRoleOperation := RestartRoleOperation{}
+	startRoleOperation.OperationType = "RestartRoleOperation"
+	startRoleOperation.Xmlns = azureXmlns
 
 	return startRoleOperation
 }
 
 func createDockerPublicConfig(dockerPort int) string{
-	config := fmt.Sprintf("{ \"dockerport\": \"%v\" }", dockerPort)
+	config := fmt.Sprintf(dockerPublicConfig, dockerPort)
 	return config
-}
-
-func generateDockerCertificates(dockerCertDir string) {
-	password := "Docker123"
-	ca := path.Join(dockerCertDir, "ca.pem")
-	caKey := path.Join(dockerCertDir, "ca-key.pem")
-	serverKey := path.Join(dockerCertDir, "server-key.pem")
-	server := path.Join(dockerCertDir, "server.csr")
-	serverCert := path.Join(dockerCertDir, "server-cert.pem")
-	clientKey := path.Join(dockerCertDir, "client-key.pem")
-	client := path.Join(dockerCertDir, "client.csr")
-	clientCert := path.Join(dockerCertDir, "client-cert.pem")
-
-	azure.ExecuteCommand(fmt.Sprintf("openssl genrsa -des3 -passout pass:%s -out %s 2048", password, caKey))
-	time.Sleep(1000 * time.Millisecond)
-	azure.ExecuteCommand(fmt.Sprintf("openssl req -new -x509 -days 365 -passin pass:%s -subj '/C=AU/ST=Some-State/O=Test/CN=\\*' -key %s -out %s", password, caKey, ca))
-	time.Sleep(1000 * time.Millisecond)
-	azure.ExecuteCommand(fmt.Sprintf("openssl genrsa -des3 -passout pass:%s -out %s 2048", password, serverKey))
-	time.Sleep(1000 * time.Millisecond)
-	azure.ExecuteCommand(fmt.Sprintf("openssl req -new -passin pass:%s -subj '/C=AU/ST=Some-State/O=Test/CN=\\*' -key %s -out %s", password, serverKey, server))
-	time.Sleep(1000 * time.Millisecond)
-	azure.ExecuteCommand(fmt.Sprintf("openssl x509 -req -days 365 -passin pass:%s -set_serial 01 -in %s -CA %s -CAkey %s -out %s", password, server, ca, caKey, serverCert))
-	time.Sleep(1000 * time.Millisecond)
-	azure.ExecuteCommand(fmt.Sprintf("openssl genrsa -des3 -passout pass:%s -out %s 2048", password, clientKey))
-	time.Sleep(1000 * time.Millisecond)
-	azure.ExecuteCommand(fmt.Sprintf("openssl req -passin pass:%s -subj '/C=AU/ST=Some-State/O=Test/CN=\\*' -new -key %s -out %s", password, clientKey, client))
-	time.Sleep(1000 * time.Millisecond)
-	exFile := path.Join(dockerCertDir, "extfile.cnf")
-	ioutil.WriteFile(exFile, []byte("extendedKeyUsage = clientAuth"), 0644)
-
-	azure.ExecuteCommand(fmt.Sprintf("openssl x509 -req -days 365 -passin pass:%s -set_serial 01 -in %s -CA %s -CAkey %s -out %s -extfile %s", password, client, ca, caKey, clientCert, exFile))
-	time.Sleep(1000 * time.Millisecond)
-	azure.ExecuteCommand(fmt.Sprintf("openssl rsa -passin pass:%s -passout pass:%s -in %s -out server-key.pem", password, password, serverKey, serverKey))
-	time.Sleep(1000 * time.Millisecond)
-	azure.ExecuteCommand(fmt.Sprintf("openssl rsa -passin pass:%s -passout pass:%s -in %s -out %s", password, password, clientKey, clientKey))
-	time.Sleep(1000 * time.Millisecond)
 }
 
 func createDockerPrivateConfig(dockerCertDir string) (string, error) {
@@ -309,13 +321,11 @@ func createDockerPrivateConfig(dockerCertDir string) (string, error) {
 	certDir := path.Join(usr.HomeDir, dockerCertDir)
 
 	if _, err := os.Stat(certDir); err == nil {
-		fmt.Println("Docker directory exists")
+		fmt.Println(dockerDirExistsMessage)
 	} else {
-		fmt.Println("Docker directory does NOT exists")
-		return "", errors.New("You should generate docker certificates first. Info can be found here: https://docs.docker.com/articles/https/")
+		return "", errors.New(missingDockerCertsError)
 	}
 
-	//generateDockerCertificates(certDir)
 	caCert, err := parseFileToBase64String(path.Join(certDir, "ca.pem"))
 	if err != nil {
 		return "", err
@@ -331,7 +341,7 @@ func createDockerPrivateConfig(dockerCertDir string) (string, error) {
 		return "", err
 	}
 
-	config := fmt.Sprintf("{ \"ca\": \"%s\", \"server-cert\": \"%s\", \"server-key\": \"%s\" }", caCert, serverCert, serverKey)
+	config := fmt.Sprintf(dockerPrivateConfig, caCert, serverCert, serverKey)
 	return config, nil
 }
 
@@ -347,7 +357,7 @@ func parseFileToBase64String(path string) (string, error) {
 
 func addDockerPort(configurationSets []ConfigurationSet,  dockerPort int) error {
 	if len(configurationSets) == 0 {
-		return errors.New("You should set azure VM provisioning config first")
+		return errors.New(provisioningConfDoesNotExistsError)
 	}
 
 	for i := 0; i < len(configurationSets); i++ {
@@ -368,7 +378,7 @@ func createHostedServiceDeploymentConfig(dnsName, location string) (HostedServic
 	label := base64.StdEncoding.EncodeToString([]byte(dnsName))
 	deployment.Label = label
 	deployment.Location = location
-	deployment.Xmlns = "http://schemas.microsoft.com/windowsazure"
+	deployment.Xmlns = azureXmlns
 
 	return deployment
 }
@@ -376,7 +386,7 @@ func createHostedServiceDeploymentConfig(dnsName, location string) (HostedServic
 func createVMDeploymentConfig(role *Role) (VMDeployment) {
 	deployment := VMDeployment{}
 	deployment.Name = role.RoleName
-	deployment.Xmlns = "http://schemas.microsoft.com/windowsazure"
+	deployment.Xmlns = azureXmlns
 	deployment.DeploymentSlot = "Production"
 	deployment.Label = role.RoleName
 	deployment.RoleList.Role = append(deployment.RoleList.Role, role)
@@ -500,7 +510,7 @@ func uploadServiceCert(dnsName, certPath string) (error) {
 		return err
 	}
 
-	requestURL :=  fmt.Sprintf("services/hostedservices/%s/certificates", dnsName)
+	requestURL :=  fmt.Sprintf(azureCertificatListURL, dnsName)
 	requestId, azureErr := azure.SendAzurePostRequest(requestURL, certificateConfigBytes)
 	if azureErr != nil {
 		return azureErr
@@ -512,7 +522,7 @@ func uploadServiceCert(dnsName, certPath string) (error) {
 
 func createServiceCertDeploymentConf(certPath string) (ServiceCertificate, error) {
 	certConfig := ServiceCertificate{}
-	certConfig.Xmlns = "http://schemas.microsoft.com/windowsazure"
+	certConfig.Xmlns = azureXmlns
 	data , err := ioutil.ReadFile(certPath)
 	if err != nil {
 		return certConfig, err
@@ -568,7 +578,7 @@ func checkServiceCertExtension(certPath string) (error) {
 
 	acceptedExtension := "pem"
 	if certExt != acceptedExtension {
-		return errors.New(fmt.Sprintf("Certificate %s is invalid. Please specify %s certificate.", certPath, acceptedExtension))
+		return errors.New(fmt.Sprintf(invalidCertExtensionError, certPath, acceptedExtension))
 	}
 
 	return nil
@@ -579,18 +589,15 @@ func createNetworkConfig(os string) (ConfigurationSet, error) {
 	networkConfig.ConfigurationSetType = "NetworkConfiguration"
 
 	var endpoint InputEndpoint
-	if os == "Linux" {
+	if os == osLinux {
 		endpoint = createEndpoint("ssh", "tcp", 22, 22)
-	} else if os == "Windows" {
-		//!TODO should add rdp endpoint
+	} else if os == osWindows {
+		//!TODO add rdp endpoint
 	} else {
-		return networkConfig, errors.New(fmt.Sprintf("You must specify correct OS param. Valid values are 'Linux' and 'Windows'"))
+		return networkConfig, errors.New(fmt.Sprintf(invalidOSError))
 	}
 
 	networkConfig.InputEndpoints.InputEndpoint = append(networkConfig.InputEndpoints.InputEndpoint, endpoint)
-
-	//!TODO
-	//networkConfig.SubnetNames
 
 	return networkConfig, nil
 }
@@ -606,3 +613,5 @@ func createEndpoint(name string, protocol string, extertalPort int, internalPort
 }
 
 // REGION PRIVATE METHODS ENDS
+
+

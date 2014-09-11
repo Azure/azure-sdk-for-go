@@ -7,11 +7,15 @@ import (
 	azure "github.com/MSOpenTech/azure-sdk-for-go"
 )
 
+const (
+	azureImageListURL = "services/images"
+	invalidLocationError = "Error: Can not find image %s in specified subscription, please specify another image name \n"
+)
+
 func GetImageList() (ImageList, error){
 	imageList := ImageList{}
 
-	requestURL :=  "services/images"
-	response, err := azure.SendAzureGetRequest(requestURL)
+	response, err := azure.SendAzureGetRequest(azureImageListURL)
 	if err != nil {
 		return imageList, err
 	}
@@ -34,5 +38,5 @@ func ResolveImageName(imageName string) (error) {
 		return nil
 	}
 
-	return errors.New(fmt.Sprintf("Error: Can not find image %s in specified subscription, please specify another image name \n", imageName))
+	return errors.New(fmt.Sprintf(invalidLocationError, imageName))
 }

@@ -9,11 +9,18 @@ import (
 	azure "github.com/MSOpenTech/azure-sdk-for-go"
 )
 
+const (
+	azureXmlns = "http://schemas.microsoft.com/windowsazure"
+	azureStorageServiceListURL = "services/storageservices"
+	azureStorageServiceURL = "services/storageservices/%s"
+
+	blobEndpointNotFoundError = "Blob endpoint was not found in storage serice %s"
+)
+
 func GetStorageServiceList() (*StorageServiceList, error){
 	storageServiceList := new(StorageServiceList)
 
-	requestURL := "services/storageservices"
-	response, err := azure.SendAzureGetRequest(requestURL)
+	response, err := azure.SendAzureGetRequest(azureStorageServiceListURL)
 	if err != nil {
 		return nil, err
 	}
@@ -28,7 +35,7 @@ func GetStorageServiceList() (*StorageServiceList, error){
 
 func GetStorageServiceByName(serviceName string) (*StorageService, error){
 	storageService := new(StorageService)
-	requestURL := fmt.Sprintf("services/storageservices/%s", serviceName)
+	requestURL := fmt.Sprintf(azureStorageServiceURL, serviceName)
 	response, err := azure.SendAzureGetRequest(requestURL)
 	if err != nil {
 		return nil, err
@@ -67,8 +74,7 @@ func CreateStorageService(name, location string) (*StorageService, error){
 		return nil, err
 	}
 
-	requestURL := "services/storageservices"
-	requestId, err := azure.SendAzurePostRequest(requestURL, deploymentBytes)
+	requestId, err := azure.SendAzurePostRequest(azureStorageServiceListURL, deploymentBytes)
 	if err != nil {
 		return nil, err
 	}
@@ -91,7 +97,7 @@ func GetBlobEndpoint(storageService *StorageService) (string, error) {
 		return endpoint, nil
 	}
 
-	return "", errors.New(fmt.Sprintf("Blob endpoint was not found in storage serice %s", storageService.ServiceName))
+	return "", errors.New(fmt.Sprintf(blobEndpointNotFoundError, storageService.ServiceName))
 }
 
 func createStorageServiceDeploymentConf(name, location string) (StorageServiceDeployment){
@@ -101,7 +107,7 @@ func createStorageServiceDeploymentConf(name, location string) (StorageServiceDe
 	label := base64.StdEncoding.EncodeToString([]byte(name))
 	storageServiceDeployment.Label = label
 	storageServiceDeployment.Location = location
-	storageServiceDeployment.Xmlns = "http://schemas.microsoft.com/windowsazure"
+	storageServiceDeployment.Xmlns = azureXmlns
 
 	return storageServiceDeployment
 }

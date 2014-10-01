@@ -42,6 +42,16 @@ func SendAzurePostRequest(url string, data []byte) (string, error){
 	return requestId[0], nil
 }
 
+func SendAzureDeleteRequest(url string) ([]byte, error){
+	response, err := SendAzureRequest(url, "DELETE", nil)
+	if err != nil {
+		return "", err
+	}
+
+	requestId := response.Header[requestIdHeader]
+	return requestId[0], nil
+}
+
 func SendAzureRequest(url string, requestType string,  data []byte) (*http.Response, error){
 	client := createHttpClient()
 

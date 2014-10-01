@@ -24,7 +24,8 @@ import (
 const (
 	azureXmlns = "http://schemas.microsoft.com/windowsazure"
 	azureDeploymentListURL = "services/hostedservices/%s/deployments"
-	azureHostedServicesURL = "services/hostedservices"
+	azureHostedServiceListURL = "services/hostedservices"
+	azureHostedServiceURL = "services/hostedservices/%s"
 	azureDeploymentURL = "services/hostedservices/%s/deployments/%s"
 	azureRoleURL = "services/hostedservices/%s/deployments/%s/roles/%s"
 	azureOperationsURL = "services/hostedservices/%s/deployments/%s/roleinstances/%s/Operations"
@@ -101,13 +102,25 @@ func CreateHostedService(dnsName, location string) (string, error) {
 		return "", err
 	}
 
-	requestURL :=  azureHostedServicesURL
+	requestURL := azureHostedServiceListURL
 	requestId, azureErr := azure.SendAzurePostRequest(requestURL, hostedServiceBytes)
 	if azureErr != nil {
 		return "", err
 	}
 
 	return requestId, nil
+}
+
+func DeleteHostedService(dnsName string) error {
+
+	requestURL := fmt.Sprintf(azureHostedServiceURL, dnsName)
+	requestId, err := azure.SendAzureDeleteRequest(requestURL)
+	if err != nil {
+		return err
+	}
+
+	azure.WaitAsyncOperation(requestId)
+	return nil
 }
 
 func CreateAzureVMConfiguration(name, instanceSize, imageName, location string) (*Role, error) {
@@ -211,7 +224,7 @@ func SetAzureDockerVMExtension(azureVMConfiguration *Role, dockerCertDir string,
 func GetVMDeployment(cloudserviceName, deploymentName string) (*VMDeployment, error) {
 	deployment := new(VMDeployment)
 
-	requestURL :=  fmt.Sprintf(azureDeploymentURL, cloudserviceName, deploymentName)
+	requestURL := fmt.Sprintf(azureDeploymentURL, cloudserviceName, deploymentName)
 	response, azureErr := azure.SendAzureGetRequest(requestURL)
 	if azureErr != nil {
 		if strings.Contains(azureErr.Error(), "Code: ResourceNotFound") {
@@ -227,6 +240,18 @@ func GetVMDeployment(cloudserviceName, deploymentName string) (*VMDeployment, er
 	}
 
 	return deployment, nil
+}
+
+func DeleteVMDeployment(cloudserviceName, deploymentName string) error {
+
+	requestURL :=  fmt.Sprintf(azureDeploymentURL, cloudserviceName, deploymentName)
+	requestId, err := azure.SendAzureDeleteRequest(requestURL)
+	if err != nil {
+		return err
+	}
+
+	azure.WaitAsyncOperation(requestId)
+	return nil
 }
 
 func GetRole(cloudserviceName, deploymentName, roleName string) (*Role, error) {
@@ -258,8 +283,26 @@ func StartRole(cloudserviceName, deploymentName, roleName string) (error) {
 		return err
 	}
 
-	requestURL :=  fmt.Sprintf(azureOperationsURL, cloudserviceName, deploymentName, roleName)
+	requestURL := fmt.Sprintf(azureOperationsURL, cloudserviceName, deploymentName, roleName)
 	requestId, azureErr := azure.SendAzurePostRequest(requestURL, startRoleOperationBytes)
+	if azureErr != nil {
+		return azureErr
+	}
+
+	azure.WaitAsyncOperation(requestId)
+	return nil
+}
+
+func ShutdownRole(cloudserviceName, deploymentName, roleName string) (error) {
+	shutdownRoleOperation := createShutdowRoleOperation()
+
+	shutdownRoleOperationBytes, err := xml.Marshal(shutdownRoleOperation)
+	if err != nil {
+		return err
+	}
+
+	requestURL := fmt.Sprintf(azureOperationsURL, cloudserviceName, deploymentName, roleName)
+	requestId, azureErr := azure.SendAzurePostRequest(requestURL, shutdownRoleOperationBytes)
 	if azureErr != nil {
 		return azureErr
 	}
@@ -286,6 +329,17 @@ func RestartRole(cloudserviceName, deploymentName, roleName string) (error) {
 	return nil
 }
 
+func DeleteRole(cloudserviceName, deploymentName, roleName string) (error) {
+	requestURL :=  fmt.Sprintf(azureRoleURL, cloudserviceName, deploymentName, roleName)
+	requestId, azureErr := azure.SendAzureDeleteRequest(requestURL)
+	if azureErr != nil {
+		return azureErr
+	}
+
+	azure.WaitAsyncOperation(requestId)
+	return nil
+}
+
 // REGION PUBLIC METHODS ENDS
 
 
@@ -297,6 +351,14 @@ func createStartRoleOperation() StartRoleOperation {
 	startRoleOperation.Xmlns = azureXmlns
 
 	return startRoleOperation
+}
+
+func createShutdowRoleOperation() ShutdownRoleOperation {
+	shutdownRoleOperation := ShutdownRoleOperation{}
+	shutdownRoleOperation.OperationType = "ShutdownRoleOperation"
+	shutdownRoleOperation.Xmlns = azureXmlns
+
+	return shutdownRoleOperation
 }
 
 func createRestartRoleOperation() RestartRoleOperation {
@@ -561,7 +623,7 @@ func getServiceCertFingerprint(certPath string) (string, error) {
 	if readErr != nil {
 		return "", readErr
 	}
-
+	
 	block, rest := pem.Decode(certData)
 	if block == nil {
 		return "", errors.New(string(rest))
@@ -569,6 +631,7 @@ func getServiceCertFingerprint(certPath string) (string, error) {
 
 	sha1sum := sha1.Sum(block.Bytes)
 	fingerprint := fmt.Sprintf("%X", sha1sum)
+	fmt.Println(fingerprint)
 	return fingerprint, nil
 }
 

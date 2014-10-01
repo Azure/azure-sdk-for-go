@@ -131,6 +131,11 @@ type StartRoleOperation struct {
 	OperationType 	string
 }
 
+type ShutdownRoleOperation struct {
+	Xmlns	  		string `xml:"xmlns,attr"`
+	OperationType 	string
+}
+
 type RestartRoleOperation struct {
 	Xmlns	  		string `xml:"xmlns,attr"`
 	OperationType 	string

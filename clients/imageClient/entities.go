@@ -5,9 +5,9 @@ import (
 )
 
 type ImageList struct {
-	XMLName   xml.Name `xml:"Images"`
+	XMLName   	xml.Name `xml:"Images"`
 	Xmlns	  	string `xml:"xmlns,attr"`
-	OSImages []OSImage `xml:"OSImage"`
+	OSImages 	[]OSImage `xml:"OSImage"`
 }
 
 type OSImage struct {

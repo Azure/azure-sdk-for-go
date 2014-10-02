@@ -5,9 +5,9 @@ import (
 )
 
 type LocationList struct {
-	XMLName   xml.Name `xml:"Locations"`
+	XMLName   	xml.Name `xml:"Locations"`
 	Xmlns	  	string `xml:"xmlns,attr"`
-	Locations []Location `xml:"Location"`
+	Locations 	[]Location `xml:"Location"`
 }
 
 type Location struct {

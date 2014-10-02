@@ -5,14 +5,14 @@ import (
 )
 
 type StorageServiceList struct {
-	XMLName   xml.Name `xml:"StorageServices"`
-	Xmlns	  	string `xml:"xmlns,attr"`
+	XMLName   		xml.Name `xml:"StorageServices"`
+	Xmlns	  		string `xml:"xmlns,attr"`
 	StorageServices []StorageService `xml:"StorageService"`
 }
 
 type StorageService struct {
-	Url				string
-	ServiceName		string
+	Url							string
+	ServiceName					string
 	StorageServiceProperties	StorageServiceProperties
 }
 
@@ -27,16 +27,16 @@ type StorageServiceProperties struct {
 }
 
 type StorageServiceDeployment struct {
-	XMLName   xml.Name `xml:"CreateStorageServiceInput"`
-	Xmlns	  	string `xml:"xmlns,attr"`
-	ServiceName		string
-	Description		string
-	Label			string
-	AffinityGroup	string	`xml:",omitempty"`
-	Location		string	`xml:",omitempty"`
-	GeoReplicationEnabled		bool
-	ExtendedProperties 			ExtendedPropertyList
-	SecondaryReadEnabled 		bool
+	XMLName   				xml.Name `xml:"CreateStorageServiceInput"`
+	Xmlns	  				string `xml:"xmlns,attr"`
+	ServiceName				string
+	Description				string
+	Label					string
+	AffinityGroup			string	`xml:",omitempty"`
+	Location				string	`xml:",omitempty"`
+	GeoReplicationEnabled	bool
+	ExtendedProperties 		ExtendedPropertyList
+	SecondaryReadEnabled 	bool
 }
 
 type ExtendedPropertyList struct {

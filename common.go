@@ -42,7 +42,7 @@ func SendAzurePostRequest(url string, data []byte) (string, error){
 	return requestId[0], nil
 }
 
-func SendAzureDeleteRequest(url string) ([]byte, error){
+func SendAzureDeleteRequest(url string) (string, error){
 	response, err := SendAzureRequest(url, "DELETE", nil)
 	if err != nil {
 		return "", err

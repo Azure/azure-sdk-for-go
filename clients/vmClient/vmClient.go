@@ -631,7 +631,6 @@ func getServiceCertFingerprint(certPath string) (string, error) {
 
 	sha1sum := sha1.Sum(block.Bytes)
 	fingerprint := fmt.Sprintf("%X", sha1sum)
-	fmt.Println(fingerprint)
 	return fingerprint, nil
 }
 

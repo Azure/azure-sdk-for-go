@@ -227,10 +227,6 @@ func GetVMDeployment(cloudserviceName, deploymentName string) (*VMDeployment, er
 	requestURL := fmt.Sprintf(azureDeploymentURL, cloudserviceName, deploymentName)
 	response, azureErr := azure.SendAzureGetRequest(requestURL)
 	if azureErr != nil {
-		if strings.Contains(azureErr.Error(), "Code: ResourceNotFound") {
-			return nil, nil
-		}
-
 		return nil, azureErr
 	}
 
@@ -260,10 +256,6 @@ func GetRole(cloudserviceName, deploymentName, roleName string) (*Role, error) {
 	requestURL :=  fmt.Sprintf(azureRoleURL, cloudserviceName, deploymentName, roleName)
 	response, azureErr := azure.SendAzureGetRequest(requestURL)
 	if azureErr != nil {
-		if strings.Contains(azureErr.Error(), "Code: ResourceNotFound") {
-			return nil, nil
-		}
-
 		return nil, azureErr
 	}
 

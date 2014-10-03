@@ -5,14 +5,15 @@ import (
 )
 
 type VMDeployment struct {
-	XMLName   		xml.Name `xml:"Deployment"`
-	Xmlns	  		string `xml:"xmlns,attr"`
-	Name	  		string
-	DeploymentSlot 	string
-	Status 			string	`xml:",omitempty"`
-	Label 			string
-	Url 			string	`xml:",omitempty"`
-	RoleList 		RoleList
+	XMLName   			xml.Name `xml:"Deployment"`
+	Xmlns	  			string `xml:"xmlns,attr"`
+	Name	  			string
+	DeploymentSlot 		string
+	Status 				string	`xml:",omitempty"`
+	Label 				string
+	Url 				string	`xml:",omitempty"`
+	RoleList 			RoleList
+	RoleInstanceList	RoleInstanceList `xml:",omitempty"`
 }
 
 type HostedServiceDeployment struct {
@@ -26,6 +27,18 @@ type HostedServiceDeployment struct {
 
 type RoleList struct {
 	Role	[]*Role
+}
+
+type RoleInstanceList struct {
+	RoleInstance	[]*RoleInstance
+}
+
+type RoleInstance struct {
+	RoleName		string
+	InstanceName	string 
+	InstanceStatus  string	
+	InstanceSize	string
+	PowerState		string
 }
 
 type Role struct {

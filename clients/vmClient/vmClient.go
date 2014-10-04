@@ -38,16 +38,22 @@ const (
 	dockerPrivateConfig = "{ \"ca\": \"%s\", \"server-cert\": \"%s\", \"server-key\": \"%s\" }"
 	dockerDirExistsMessage = "Docker directory exists"
 
-	missingDockerCertsError = "You should generate docker certificates first. Info can be found here: https://docs.docker.com/articles/https/"
+	missingDockerCertsError = "Can not find docker certificates folder %s. You should generate docker certificates first. Info can be found here: https://docs.docker.com/articles/https/"
 	provisioningConfDoesNotExistsError = "You should set azure VM provisioning config first"
 	invalidCertExtensionError = "Certificate %s is invalid. Please specify %s certificate."
 	invalidOSError = "You must specify correct OS param. Valid values are 'Linux' and 'Windows'"
 )
 
-// REGION PUBLIC METHODS STARTS
+//Region public methods starts
 
 func CreateAzureVM(role *Role, dnsName, location string) error {
-
+	if len(dnsName) == 0 {
+		return fmt.Errorf(azure.ParamNotSpecifiedError, "dnsName")
+	}
+	if len(location) == 0 {
+		return fmt.Errorf(azure.ParamNotSpecifiedError, "location")
+	}
+	
 	err := locationClient.ResolveLocation(location)
 	if err != nil {
 		return err
@@ -90,7 +96,13 @@ func CreateAzureVM(role *Role, dnsName, location string) error {
 }
 
 func CreateHostedService(dnsName, location string) (string, error) {
-
+	if len(dnsName) == 0 {
+		return "", fmt.Errorf(azure.ParamNotSpecifiedError, "dnsName")
+	}
+	if len(location) == 0 {
+		return "", fmt.Errorf(azure.ParamNotSpecifiedError, "location")
+	}
+	
 	err := locationClient.ResolveLocation(location)
 	if err != nil {
 		return "", err
@@ -112,7 +124,10 @@ func CreateHostedService(dnsName, location string) (string, error) {
 }
 
 func DeleteHostedService(dnsName string) error {
-
+	if len(dnsName) == 0 {
+		return fmt.Errorf(azure.ParamNotSpecifiedError, "dnsName")
+	}
+	
 	requestURL := fmt.Sprintf(azureHostedServiceURL, dnsName)
 	requestId, err := azure.SendAzureDeleteRequest(requestURL)
 	if err != nil {
@@ -124,6 +139,19 @@ func DeleteHostedService(dnsName string) error {
 }
 
 func CreateAzureVMConfiguration(name, instanceSize, imageName, location string) (*Role, error) {
+	if len(name) == 0 {
+		return nil, fmt.Errorf(azure.ParamNotSpecifiedError, "name")
+	}
+	if len(instanceSize) == 0 {
+		return nil, fmt.Errorf(azure.ParamNotSpecifiedError, "instanceSize")
+	}
+	if len(imageName) == 0 {
+		return nil, fmt.Errorf(azure.ParamNotSpecifiedError, "imageName")
+	}
+	if len(location) == 0 {
+		return nil, fmt.Errorf(azure.ParamNotSpecifiedError, "location")
+	}
+	
 	fmt.Println("Creating azure VM configuration... ")
 
 	err := locationClient.ResolveLocation(location)
@@ -140,6 +168,16 @@ func CreateAzureVMConfiguration(name, instanceSize, imageName, location string) 
 }
 
 func AddAzureLinuxProvisioningConfig(azureVMConfig *Role, userName, password, certPath string) (*Role, error) {
+	if len(userName) == 0 {
+		return nil, fmt.Errorf(azure.ParamNotSpecifiedError, "userName")
+	}
+	if len(password) == 0 {
+		return nil, fmt.Errorf(azure.ParamNotSpecifiedError, "password")
+	}
+	if len(certPath) == 0 {
+		return nil, fmt.Errorf(azure.ParamNotSpecifiedError, "certPath")
+	}
+	
 	fmt.Println("Adding azure provisioning configuration... ")
 
 	configurationSets := ConfigurationSets{}
@@ -168,7 +206,20 @@ func AddAzureLinuxProvisioningConfig(azureVMConfig *Role, userName, password, ce
 	return azureVMConfig, nil
 }
 
-func SetAzureVMExtension(azureVMConfiguration *Role, name string, publisher string, version string, referenceName string, state string, publicConfigurationValue string, privateConfigurationValue string) (*Role) {
+func SetAzureVMExtension(azureVMConfiguration *Role, name string, publisher string, version string, referenceName string, state string, publicConfigurationValue string, privateConfigurationValue string) (*Role, error) {
+	if len(name) == 0 {
+		return nil, fmt.Errorf(azure.ParamNotSpecifiedError, "name")
+	}
+	if len(publisher) == 0 {
+		return nil, fmt.Errorf(azure.ParamNotSpecifiedError, "publisher")
+	}
+	if len(version) == 0 {
+		return nil, fmt.Errorf(azure.ParamNotSpecifiedError, "version")
+	}
+	if len(referenceName) == 0 {
+		return nil, fmt.Errorf(azure.ParamNotSpecifiedError, "referenceName")
+	}
+	
 	fmt.Printf("Setting azure VM extension: %s... \n", name)
 
 	extension := ResourceExtensionReference{}
@@ -198,10 +249,14 @@ func SetAzureVMExtension(azureVMConfiguration *Role, name string, publisher stri
 
 	azureVMConfiguration.ResourceExtensionReferences.ResourceExtensionReference = append(azureVMConfiguration.ResourceExtensionReferences.ResourceExtensionReference, extension)
 
-	return azureVMConfiguration
+	return azureVMConfiguration, nil
 }
 
 func SetAzureDockerVMExtension(azureVMConfiguration *Role, dockerCertDir string, dockerPort int, version string) (*Role, error) {
+	if len(dockerCertDir) == 0 {
+		return nil, fmt.Errorf(azure.ParamNotSpecifiedError, "dockerCertDir")
+	}
+	
 	if len(version) == 0 {
 		version = "0.3"
 	}
@@ -217,11 +272,18 @@ func SetAzureDockerVMExtension(azureVMConfiguration *Role, dockerCertDir string,
 		return nil, err
 	}
 
-	azureVMConfiguration = SetAzureVMExtension(azureVMConfiguration, "DockerExtension", "MSOpenTech.Extensions", version, "DockerExtension", "enable", publicConfiguration, privateConfiguration)
+	azureVMConfiguration, err = SetAzureVMExtension(azureVMConfiguration, "DockerExtension", "MSOpenTech.Extensions", version, "DockerExtension", "enable", publicConfiguration, privateConfiguration)
 	return azureVMConfiguration, nil
 }
 
 func GetVMDeployment(cloudserviceName, deploymentName string) (*VMDeployment, error) {
+	if len(cloudserviceName) == 0 {
+		return nil, fmt.Errorf(azure.ParamNotSpecifiedError, "cloudserviceName")
+	}
+	if len(deploymentName) == 0 {
+		return nil, fmt.Errorf(azure.ParamNotSpecifiedError, "deploymentName")
+	}
+	
 	deployment := new(VMDeployment)
 
 	requestURL := fmt.Sprintf(azureDeploymentURL, cloudserviceName, deploymentName)
@@ -239,7 +301,13 @@ func GetVMDeployment(cloudserviceName, deploymentName string) (*VMDeployment, er
 }
 
 func DeleteVMDeployment(cloudserviceName, deploymentName string) error {
-
+	if len(cloudserviceName) == 0 {
+		return fmt.Errorf(azure.ParamNotSpecifiedError, "cloudserviceName")
+	}
+	if len(deploymentName) == 0 {
+		return fmt.Errorf(azure.ParamNotSpecifiedError, "deploymentName")
+	}
+	
 	requestURL :=  fmt.Sprintf(azureDeploymentURL, cloudserviceName, deploymentName)
 	requestId, err := azure.SendAzureDeleteRequest(requestURL)
 	if err != nil {
@@ -251,6 +319,16 @@ func DeleteVMDeployment(cloudserviceName, deploymentName string) error {
 }
 
 func GetRole(cloudserviceName, deploymentName, roleName string) (*Role, error) {
+	if len(cloudserviceName) == 0 {
+		return nil, fmt.Errorf(azure.ParamNotSpecifiedError, "cloudserviceName")
+	}
+	if len(deploymentName) == 0 {
+		return nil, fmt.Errorf(azure.ParamNotSpecifiedError, "deploymentName")
+	}
+	if len(roleName) == 0 {
+		return nil, fmt.Errorf(azure.ParamNotSpecifiedError, "roleName")
+	}
+	
 	role := new(Role)
 
 	requestURL :=  fmt.Sprintf(azureRoleURL, cloudserviceName, deploymentName, roleName)
@@ -267,7 +345,17 @@ func GetRole(cloudserviceName, deploymentName, roleName string) (*Role, error) {
 	return role, nil
 }
 
-func StartRole(cloudserviceName, deploymentName, roleName string) (error) {
+func StartRole(cloudserviceName, deploymentName, roleName string) error {
+	if len(cloudserviceName) == 0 {
+		return fmt.Errorf(azure.ParamNotSpecifiedError, "cloudserviceName")
+	}
+	if len(deploymentName) == 0 {
+		return fmt.Errorf(azure.ParamNotSpecifiedError, "deploymentName")
+	}
+	if len(roleName) == 0 {
+		return fmt.Errorf(azure.ParamNotSpecifiedError, "roleName")
+	}
+	
 	startRoleOperation := createStartRoleOperation()
 
 	startRoleOperationBytes, err := xml.Marshal(startRoleOperation)
@@ -285,7 +373,17 @@ func StartRole(cloudserviceName, deploymentName, roleName string) (error) {
 	return nil
 }
 
-func ShutdownRole(cloudserviceName, deploymentName, roleName string) (error) {
+func ShutdownRole(cloudserviceName, deploymentName, roleName string) error {
+	if len(cloudserviceName) == 0 {
+		return fmt.Errorf(azure.ParamNotSpecifiedError, "cloudserviceName")
+	}
+	if len(deploymentName) == 0 {
+		return fmt.Errorf(azure.ParamNotSpecifiedError, "deploymentName")
+	}
+	if len(roleName) == 0 {
+		return fmt.Errorf(azure.ParamNotSpecifiedError, "roleName")
+	}
+	
 	shutdownRoleOperation := createShutdowRoleOperation()
 
 	shutdownRoleOperationBytes, err := xml.Marshal(shutdownRoleOperation)
@@ -303,7 +401,17 @@ func ShutdownRole(cloudserviceName, deploymentName, roleName string) (error) {
 	return nil
 }
 
-func RestartRole(cloudserviceName, deploymentName, roleName string) (error) {
+func RestartRole(cloudserviceName, deploymentName, roleName string) error {
+	if len(cloudserviceName) == 0 {
+		return fmt.Errorf(azure.ParamNotSpecifiedError, "cloudserviceName")
+	}
+	if len(deploymentName) == 0 {
+		return fmt.Errorf(azure.ParamNotSpecifiedError, "deploymentName")
+	}
+	if len(roleName) == 0 {
+		return fmt.Errorf(azure.ParamNotSpecifiedError, "roleName")
+	}
+	
 	restartRoleOperation := createRestartRoleOperation()
 
 	restartRoleOperationBytes, err := xml.Marshal(restartRoleOperation)
@@ -321,7 +429,17 @@ func RestartRole(cloudserviceName, deploymentName, roleName string) (error) {
 	return nil
 }
 
-func DeleteRole(cloudserviceName, deploymentName, roleName string) (error) {
+func DeleteRole(cloudserviceName, deploymentName, roleName string) error {
+	if len(cloudserviceName) == 0 {
+		return fmt.Errorf(azure.ParamNotSpecifiedError, "cloudserviceName")
+	}
+	if len(deploymentName) == 0 {
+		return fmt.Errorf(azure.ParamNotSpecifiedError, "deploymentName")
+	}
+	if len(roleName) == 0 {
+		return fmt.Errorf(azure.ParamNotSpecifiedError, "roleName")
+	}
+	
 	requestURL :=  fmt.Sprintf(azureRoleURL, cloudserviceName, deploymentName, roleName)
 	requestId, azureErr := azure.SendAzureDeleteRequest(requestURL)
 	if azureErr != nil {
@@ -332,10 +450,10 @@ func DeleteRole(cloudserviceName, deploymentName, roleName string) (error) {
 	return nil
 }
 
-// REGION PUBLIC METHODS ENDS
+//Region public methods ends
 
 
-// REGION PRIVATE METHODS STARTS
+//Region private methods starts
 
 func createStartRoleOperation() StartRoleOperation {
 	startRoleOperation := StartRoleOperation{}
@@ -377,7 +495,8 @@ func createDockerPrivateConfig(dockerCertDir string) (string, error) {
 	if _, err := os.Stat(certDir); err == nil {
 		fmt.Println(dockerDirExistsMessage)
 	} else {
-		return "", errors.New(missingDockerCertsError)
+		errorMessage := fmt.Sprintf(missingDockerCertsError, certDir)
+		return "", errors.New(errorMessage)
 	}
 
 	caCert, err := parseFileToBase64String(path.Join(certDir, "ca.pem"))
@@ -666,6 +785,4 @@ func createEndpoint(name string, protocol string, extertalPort int, internalPort
 	return endpoint
 }
 
-// REGION PRIVATE METHODS ENDS
-
-
+//Region private methods ends

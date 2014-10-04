@@ -34,6 +34,10 @@ func GetStorageServiceList() (*StorageServiceList, error){
 }
 
 func GetStorageServiceByName(serviceName string) (*StorageService, error){
+	if len(serviceName) == 0 {
+		return nil, fmt.Errorf(azure.ParamNotSpecifiedError, "serviceName")
+	}
+	
 	storageService := new(StorageService)
 	requestURL := fmt.Sprintf(azureStorageServiceURL, serviceName)
 	response, err := azure.SendAzureGetRequest(requestURL)
@@ -50,6 +54,10 @@ func GetStorageServiceByName(serviceName string) (*StorageService, error){
 }
 
 func GetStorageServiceByLocation(location string) (*StorageService, error) {
+	if len(location) == 0 {
+		return nil, fmt.Errorf(azure.ParamNotSpecifiedError, "location")
+	}
+	
 	storageService := new(StorageService)
 	storageServiceList, err := GetStorageServiceList()
 	if err != nil {
@@ -68,6 +76,13 @@ func GetStorageServiceByLocation(location string) (*StorageService, error) {
 }
 
 func CreateStorageService(name, location string) (*StorageService, error){
+	if len(name) == 0 {
+		return nil, fmt.Errorf(azure.ParamNotSpecifiedError, "name")
+	}
+	if len(location) == 0 {
+		return nil, fmt.Errorf(azure.ParamNotSpecifiedError, "location")
+	}
+	
 	storageDeploymentConfig := createStorageServiceDeploymentConf(name, location)
 	deploymentBytes, err := xml.Marshal(storageDeploymentConfig)
 	if err != nil {

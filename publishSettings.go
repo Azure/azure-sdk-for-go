@@ -24,6 +24,13 @@ func setPublishSettings(id string, cert []byte, key []byte) {
 }
 
 func ImportPublishSettings(id string, certPath string) error {
+	if len(id) == 0 {
+		return fmt.Errorf(ParamNotSpecifiedError, "id")
+	}
+	if len(certPath) == 0 {
+		return fmt.Errorf(ParamNotSpecifiedError, "certPath")
+	}
+	
 	cert, err := ioutil.ReadFile(certPath)
 	if err != nil {
 		return err
@@ -34,6 +41,9 @@ func ImportPublishSettings(id string, certPath string) error {
 }
 
 func ImportPublishSettingsFile(filePath string) error {
+	if len(filePath) == 0 {
+		return fmt.Errorf(ParamNotSpecifiedError, "filePath")
+	}
 
 	publishSettingsContent, err := ioutil.ReadFile(filePath)
 	if err != nil {

@@ -14,14 +14,18 @@ const (
 	invalidLocationError = "Invalid location. Available locations: %s"
 )
 
-func ResolveLocation(specifiedLocation string) (error) {
+func ResolveLocation(location string) (error) {
+	if len(location) == 0 {
+		return fmt.Errorf(azure.ParamNotSpecifiedError, "location")
+	}
+	
 	locations, err := GetLocationList()
 	if err != nil {
 		return err
 	}
 
-	for _, location := range locations.Locations {
-		if location.Name != specifiedLocation {
+	for _, existingLocation := range locations.Locations {
+		if existingLocation.Name != location {
 			continue
 		}
 
@@ -29,8 +33,8 @@ func ResolveLocation(specifiedLocation string) (error) {
 	}
 
 	var availableLocations bytes.Buffer
-	for _, location := range locations.Locations {
-		availableLocations.WriteString(location.Name + ", ")
+	for _, existingLocation := range locations.Locations {
+		availableLocations.WriteString(existingLocation.Name + ", ")
 	}
 
 	return errors.New(fmt.Sprintf(invalidLocationError, strings.Trim(availableLocations.String(), ", ")))

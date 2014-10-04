@@ -14,6 +14,8 @@ import (
 )
 
 const (
+	ParamNotSpecifiedError = "Parameter %s is not specified."
+
 	azureManagementDnsName = "https://management.core.windows.net"
 	msVersionHeader = "x-ms-version"
 	msVersionHeaderValue = "2014-05-01"
@@ -22,7 +24,13 @@ const (
 	requestIdHeader = "X-Ms-Request-Id"
 )
 
+//Region public methods starts
+
 func SendAzureGetRequest(url string) ([]byte, error){
+	if len(url) == 0 {
+		return nil, fmt.Errorf(ParamNotSpecifiedError, "url")
+	}
+
 	response, err := SendAzureRequest(url, "GET", nil)
 	if err != nil {
 		return nil, err
@@ -33,6 +41,10 @@ func SendAzureGetRequest(url string) ([]byte, error){
 }
 
 func SendAzurePostRequest(url string, data []byte) (string, error){
+	if len(url) == 0 {
+		return "", fmt.Errorf(ParamNotSpecifiedError, "url")
+	}
+	
 	response, err := SendAzureRequest(url, "POST", data)
 	if err != nil {
 		return "", err
@@ -43,6 +55,10 @@ func SendAzurePostRequest(url string, data []byte) (string, error){
 }
 
 func SendAzureDeleteRequest(url string) (string, error){
+	if len(url) == 0 {
+		return "", fmt.Errorf(ParamNotSpecifiedError, "url")
+	}
+	
 	response, err := SendAzureRequest(url, "DELETE", nil)
 	if err != nil {
 		return "", err
@@ -53,6 +69,13 @@ func SendAzureDeleteRequest(url string) (string, error){
 }
 
 func SendAzureRequest(url string, requestType string,  data []byte) (*http.Response, error){
+	if len(url) == 0 {
+		return nil, fmt.Errorf(ParamNotSpecifiedError, "url")
+	}
+	if len(requestType) == 0 {
+		return nil, fmt.Errorf(ParamNotSpecifiedError, "requestType")
+	}
+	
 	client := createHttpClient()
 
 	response, err := sendRequest(client, url, requestType, data, 5)
@@ -62,6 +85,89 @@ func SendAzureRequest(url string, requestType string,  data []byte) (*http.Respo
 
 	return response, nil
 }
+
+func ExecuteCommand(command string) ([]byte, error) {
+	if len(command) == 0 {
+		return nil, fmt.Errorf(ParamNotSpecifiedError, "command")
+	}
+	
+	parts := strings.Fields(command)
+	head := parts[0]
+	parts = parts[1:len(parts)]
+
+	cmd := exec.Command(head, parts...)
+
+	out, err := cmd.Output()
+
+	if err != nil {
+		return nil, err
+	}
+
+	return out, nil
+}
+
+func GetOperationStatus(operationId string) (*Operation, error){
+	if len(operationId) == 0 {
+		return nil, fmt.Errorf(ParamNotSpecifiedError, "operationId")
+	}
+	
+	operation := new(Operation)
+	url := "operations/" + operationId
+	response, azureErr := SendAzureGetRequest(url)
+	if azureErr != nil {
+		return nil, azureErr
+	}
+
+	err := xml.Unmarshal(response, operation)
+	if err != nil {
+		return nil, err
+	}
+
+	return operation, nil
+}
+
+func WaitAsyncOperation(operationId string) (error) {
+	if len(operationId) == 0 {
+		return fmt.Errorf(ParamNotSpecifiedError, "operationId")
+	}
+	
+	status := "InProgress"
+	operation := new(Operation)
+	err := errors.New("")
+	for status == "InProgress" {
+		time.Sleep(2000 * time.Millisecond)
+		operation, err = GetOperationStatus(operationId)
+		if err != nil {
+			return err
+		}
+
+		status = operation.Status
+	}
+
+	if status == "Failed" {
+		return errors.New(operation.Error.Message)
+	}
+
+	return nil
+}
+
+func CheckStringParams(url string) ([]byte, error){
+	if len(url) == 0 {
+		return nil, fmt.Errorf(ParamNotSpecifiedError, "url")
+	}
+
+	response, err := SendAzureRequest(url, "GET", nil)
+	if err != nil {
+		return nil, err
+	}
+
+	responseContent := getResponseBody(response)
+	return responseContent, nil
+}
+
+//Region public methods ends
+
+//Region private methods starts
 
 func sendRequest(client *http.Client, url string, requestType string, data []byte, numberOfRetries int) (*http.Response, error){
 	request, reqErr := createAzureRequest(url, requestType, data)
@@ -91,59 +197,6 @@ func sendRequest(client *http.Client, url string, requestType string, data []byt
 	}
 
 	return response, nil
-}
-
-func ExecuteCommand(command string) ([]byte, error) {
-	parts := strings.Fields(command)
-	head := parts[0]
-	parts = parts[1:len(parts)]
-
-	cmd := exec.Command(head, parts...)
-
-	out, err := cmd.Output()
-
-	if err != nil {
-		return nil, err
-	}
-
-	return out, nil
-}
-
-func GetOperationStatus(operationId string) (*Operation, error){
-	operation := new(Operation)
-	url := "operations/" + operationId
-	response, azureErr := SendAzureGetRequest(url)
-	if azureErr != nil {
-		return nil, azureErr
-	}
-
-	err := xml.Unmarshal(response, operation)
-	if err != nil {
-		return nil, err
-	}
-
-	return operation, nil
-}
-
-func WaitAsyncOperation(operationId string) (error) {
-	status := "InProgress"
-	operation := new(Operation)
-	err := errors.New("")
-	for status == "InProgress" {
-		time.Sleep(2000 * time.Millisecond)
-		operation, err = GetOperationStatus(operationId)
-		if err != nil {
-			return err
-		}
-
-		status = operation.Status
-	}
-
-	if status == "Failed" {
-		return errors.New(operation.Error.Message)
-	}
-
-	return nil
 }
 
 func getAzureError(responseBody []byte) (error){
@@ -199,6 +252,8 @@ func getResponseBody(response *http.Response) ([]byte){
 	io.ReadFull(response.Body, responseBody)
 	return responseBody
 }
+
+//Region private methods ends
 
 type AzureError struct {
 	XMLName   			xml.Name `xml:"Error"`

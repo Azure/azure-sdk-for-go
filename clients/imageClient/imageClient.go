@@ -25,6 +25,10 @@ func GetImageList() (ImageList, error){
 }
 
 func ResolveImageName(imageName string) (error) {
+	if len(imageName) == 0 {
+		return fmt.Errorf(azure.ParamNotSpecifiedError, "imageName")
+	}
+	
 	imageList, err := GetImageList()
 	if err != nil {
 		return err

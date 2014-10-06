@@ -26,6 +26,7 @@ const (
 	azureDeploymentListURL = "services/hostedservices/%s/deployments"
 	azureHostedServiceListURL = "services/hostedservices"
 	azureHostedServiceURL = "services/hostedservices/%s"
+	azureHostedServiceAvailabilityURL = "services/hostedservices/operations/isavailable/%s"
 	azureDeploymentURL = "services/hostedservices/%s/deployments/%s"
 	azureRoleURL = "services/hostedservices/%s/deployments/%s/roles/%s"
 	azureOperationsURL = "services/hostedservices/%s/deployments/%s/roleinstances/%s/Operations"
@@ -54,11 +55,6 @@ func CreateAzureVM(role *Role, dnsName, location string) error {
 		return fmt.Errorf(azure.ParamNotSpecifiedError, "location")
 	}
 	
-	err := locationClient.ResolveLocation(location)
-	if err != nil {
-		return err
-	}
-
 	fmt.Println("Creating hosted service... ")
 	requestId, err := CreateHostedService(dnsName, location)
 	if err != nil {
@@ -103,7 +99,15 @@ func CreateHostedService(dnsName, location string) (string, error) {
 		return "", fmt.Errorf(azure.ParamNotSpecifiedError, "location")
 	}
 	
-	err := locationClient.ResolveLocation(location)
+	result, reason, err := CheckHostedServiceNameAvailability(dnsName)
+	if err != nil {
+		return "", err
+	}
+	if !result {
+		return "", fmt.Errorf("%s Hosted service name: %s", reason, dnsName)
+	}
+	
+	err = locationClient.ResolveLocation(location)
 	if err != nil {
 		return "", err
 	}
@@ -115,12 +119,32 @@ func CreateHostedService(dnsName, location string) (string, error) {
 	}
 
 	requestURL := azureHostedServiceListURL
-	requestId, azureErr := azure.SendAzurePostRequest(requestURL, hostedServiceBytes)
-	if azureErr != nil {
+	requestId, err := azure.SendAzurePostRequest(requestURL, hostedServiceBytes)
+	if err != nil {
 		return "", err
 	}
 
 	return requestId, nil
+}
+
+func CheckHostedServiceNameAvailability(dnsName string) (bool, string, error) {
+	if len(dnsName) == 0 {
+		return false, "", fmt.Errorf(azure.ParamNotSpecifiedError, "dnsName")
+	}
+	
+	requestURL := fmt.Sprintf(azureHostedServiceAvailabilityURL, dnsName)
+	response, err := azure.SendAzureGetRequest(requestURL)
+	if err != nil {
+		return false, "", err
+	}
+	
+	availabilityResponse := new(AvailabilityResponse)
+	err = xml.Unmarshal(response, availabilityResponse)
+	if err != nil {
+		return false, "", err
+	}
+	
+	return availabilityResponse.Result, availabilityResponse.Reason, nil
 }
 
 func DeleteHostedService(dnsName string) error {
@@ -173,9 +197,6 @@ func AddAzureLinuxProvisioningConfig(azureVMConfig *Role, userName, password, ce
 	}
 	if len(password) == 0 {
 		return nil, fmt.Errorf(azure.ParamNotSpecifiedError, "password")
-	}
-	if len(certPath) == 0 {
-		return nil, fmt.Errorf(azure.ParamNotSpecifiedError, "certPath")
 	}
 	
 	fmt.Println("Adding azure provisioning configuration... ")

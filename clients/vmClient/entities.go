@@ -154,3 +154,9 @@ type RestartRoleOperation struct {
 	Xmlns	  		string `xml:"xmlns,attr"`
 	OperationType 	string
 }
+
+type AvailabilityResponse struct {
+	Xmlns	string `xml:"xmlns,attr"`
+	Result 	bool
+	Reason	string
+}

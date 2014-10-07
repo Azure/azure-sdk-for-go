@@ -18,6 +18,7 @@ import (
 	"github.com/MSOpenTech/azure-sdk-for-go/clients/locationClient"
 	"github.com/MSOpenTech/azure-sdk-for-go/clients/imageClient"
 	"github.com/MSOpenTech/azure-sdk-for-go/clients/storageServiceClient"
+	"github.com/MSOpenTech/azure-sdk-for-go/clients/vmDiskClient"
 	azure "github.com/MSOpenTech/azure-sdk-for-go"
 )
 
@@ -329,6 +330,12 @@ func DeleteVMDeployment(cloudserviceName, deploymentName string) error {
 		return fmt.Errorf(azure.ParamNotSpecifiedError, "deploymentName")
 	}
 	
+	vmDeployment, err := GetVMDeployment(cloudserviceName, deploymentName)
+	if err != nil {
+		return err
+	}
+	vmDiskName := vmDeployment.RoleList.Role[0].OSVirtualHardDisk.DiskName
+	
 	requestURL :=  fmt.Sprintf(azureDeploymentURL, cloudserviceName, deploymentName)
 	requestId, err := azure.SendAzureDeleteRequest(requestURL)
 	if err != nil {
@@ -336,6 +343,12 @@ func DeleteVMDeployment(cloudserviceName, deploymentName string) error {
 	}
 
 	azure.WaitAsyncOperation(requestId)
+	
+	err = vmDiskClient.DeleteDisk(vmDiskName)
+	if err != nil {
+		return err
+	}
+	
 	return nil
 }
 

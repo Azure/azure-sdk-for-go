@@ -1,12 +1,12 @@
 package locationClient
 
 import (
-	"fmt"
-	"strings"
+	"bytes"
 	"encoding/xml"
 	"errors"
-	"bytes"
+	"fmt"
 	azure "github.com/MSOpenTech/azure-sdk-for-go"
+	"strings"
 )
 
 const (
@@ -14,11 +14,11 @@ const (
 	invalidLocationError = "Invalid location. Available locations: %s"
 )
 
-func ResolveLocation(location string) (error) {
+func ResolveLocation(location string) error {
 	if len(location) == 0 {
 		return fmt.Errorf(azure.ParamNotSpecifiedError, "location")
 	}
-	
+
 	locations, err := GetLocationList()
 	if err != nil {
 		return err

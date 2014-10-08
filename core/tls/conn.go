@@ -900,7 +900,6 @@ func (c *Conn) handleRenegotiation() error {
 	return c.Handshake()
 }
 
-
 // Read can be made to time out and return a net.Error with Timeout() == true
 // after a fixed time limit; see SetDeadline and SetReadDeadline.
 func (c *Conn) Read(b []byte) (n int, err error) {

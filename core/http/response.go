@@ -9,8 +9,8 @@ package http
 import (
 	"bufio"
 	"bytes"
-	"github.com/MSOpenTech/azure-sdk-for-go/core/tls"
 	"errors"
+	"github.com/MSOpenTech/azure-sdk-for-go/core/tls"
 	"io"
 	"net/textproto"
 	"net/url"

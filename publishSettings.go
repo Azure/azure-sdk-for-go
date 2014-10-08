@@ -1,20 +1,20 @@
 package azureSdkForGo
 
 import (
-	"fmt"
-	"errors"
-	"io/ioutil"
+	"encoding/base64"
 	"encoding/xml"
+	"errors"
+	"fmt"
+	"io/ioutil"
 	"os"
 	"os/user"
 	"path"
-	"encoding/base64"
 )
 
 var settings publishSettings = publishSettings{}
 
 func GetPublishSettings() publishSettings {
-	return settings;
+	return settings
 }
 
 func setPublishSettings(id string, cert []byte, key []byte) {
@@ -30,7 +30,7 @@ func ImportPublishSettings(id string, certPath string) error {
 	if len(certPath) == 0 {
 		return fmt.Errorf(ParamNotSpecifiedError, "certPath")
 	}
-	
+
 	cert, err := ioutil.ReadFile(certPath)
 	if err != nil {
 		return err
@@ -93,7 +93,7 @@ func getSubscriptionCert(subscription subscription) ([]byte, error) {
 	return pemCert, nil
 }
 
-func createPfxCert(managementCert string, pfxCertPath string) (error) {
+func createPfxCert(managementCert string, pfxCertPath string) error {
 
 	pfxCert, err := base64.StdEncoding.DecodeString(managementCert)
 	if err != nil {
@@ -158,30 +158,30 @@ func getAzureDir() (string, error) {
 }
 
 type publishSettings struct {
-	XMLName   			xml.Name `xml:"PublishSettings"`
-	SubscriptionID				string
-	SubscriptionCert			[]byte
-	SubscriptionKey				[]byte
+	XMLName          xml.Name `xml:"PublishSettings"`
+	SubscriptionID   string
+	SubscriptionCert []byte
+	SubscriptionKey  []byte
 }
 
 type publishData struct {
-	XMLName   			xml.Name `xml:"PublishData"`
+	XMLName         xml.Name         `xml:"PublishData"`
 	PublishProfiles []publishProfile `xml:"PublishProfile"`
 }
 
 type publishProfile struct {
-	XMLName   			xml.Name `xml:"PublishProfile"`
-	SchemaVersion string `xml:",attr"`
-	PublishMethod string `xml:",attr"`
-	Url string `xml:",attr"`
-	ManagementCertificate string `xml:",attr"`
-	Subscriptions []subscription `xml:"Subscription"`
+	XMLName               xml.Name       `xml:"PublishProfile"`
+	SchemaVersion         string         `xml:",attr"`
+	PublishMethod         string         `xml:",attr"`
+	Url                   string         `xml:",attr"`
+	ManagementCertificate string         `xml:",attr"`
+	Subscriptions         []subscription `xml:"Subscription"`
 }
 
 type subscription struct {
-	XMLName   			xml.Name `xml:"Subscription"`
-	ServiceManagementUrl string `xml:",attr"`
-	Id string `xml:",attr"`
-	Name string `xml:",attr"`
-	ManagementCertificate string `xml:",attr"`
+	XMLName               xml.Name `xml:"Subscription"`
+	ServiceManagementUrl  string   `xml:",attr"`
+	Id                    string   `xml:",attr"`
+	Name                  string   `xml:",attr"`
+	ManagementCertificate string   `xml:",attr"`
 }

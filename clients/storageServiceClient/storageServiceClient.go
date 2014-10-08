@@ -1,23 +1,23 @@
 package storageServiceClient
 
 import (
-	"fmt"
-	"strings"
-	"errors"
-	"encoding/xml"
 	"encoding/base64"
+	"encoding/xml"
+	"errors"
+	"fmt"
 	azure "github.com/MSOpenTech/azure-sdk-for-go"
+	"strings"
 )
 
 const (
-	azureXmlns = "http://schemas.microsoft.com/windowsazure"
+	azureXmlns                 = "http://schemas.microsoft.com/windowsazure"
 	azureStorageServiceListURL = "services/storageservices"
-	azureStorageServiceURL = "services/storageservices/%s"
+	azureStorageServiceURL     = "services/storageservices/%s"
 
 	blobEndpointNotFoundError = "Blob endpoint was not found in storage serice %s"
 )
 
-func GetStorageServiceList() (*StorageServiceList, error){
+func GetStorageServiceList() (*StorageServiceList, error) {
 	storageServiceList := new(StorageServiceList)
 
 	response, err := azure.SendAzureGetRequest(azureStorageServiceListURL)
@@ -33,11 +33,11 @@ func GetStorageServiceList() (*StorageServiceList, error){
 	return storageServiceList, nil
 }
 
-func GetStorageServiceByName(serviceName string) (*StorageService, error){
+func GetStorageServiceByName(serviceName string) (*StorageService, error) {
 	if len(serviceName) == 0 {
 		return nil, fmt.Errorf(azure.ParamNotSpecifiedError, "serviceName")
 	}
-	
+
 	storageService := new(StorageService)
 	requestURL := fmt.Sprintf(azureStorageServiceURL, serviceName)
 	response, err := azure.SendAzureGetRequest(requestURL)
@@ -57,7 +57,7 @@ func GetStorageServiceByLocation(location string) (*StorageService, error) {
 	if len(location) == 0 {
 		return nil, fmt.Errorf(azure.ParamNotSpecifiedError, "location")
 	}
-	
+
 	storageService := new(StorageService)
 	storageServiceList, err := GetStorageServiceList()
 	if err != nil {
@@ -75,14 +75,14 @@ func GetStorageServiceByLocation(location string) (*StorageService, error) {
 	return nil, nil
 }
 
-func CreateStorageService(name, location string) (*StorageService, error){
+func CreateStorageService(name, location string) (*StorageService, error) {
 	if len(name) == 0 {
 		return nil, fmt.Errorf(azure.ParamNotSpecifiedError, "name")
 	}
 	if len(location) == 0 {
 		return nil, fmt.Errorf(azure.ParamNotSpecifiedError, "location")
 	}
-	
+
 	storageDeploymentConfig := createStorageServiceDeploymentConf(name, location)
 	deploymentBytes, err := xml.Marshal(storageDeploymentConfig)
 	if err != nil {
@@ -115,7 +115,7 @@ func GetBlobEndpoint(storageService *StorageService) (string, error) {
 	return "", errors.New(fmt.Sprintf(blobEndpointNotFoundError, storageService.ServiceName))
 }
 
-func createStorageServiceDeploymentConf(name, location string) (StorageServiceDeployment){
+func createStorageServiceDeploymentConf(name, location string) StorageServiceDeployment {
 	storageServiceDeployment := StorageServiceDeployment{}
 
 	storageServiceDeployment.ServiceName = name

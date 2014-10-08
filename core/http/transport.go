@@ -12,9 +12,9 @@ package http
 import (
 	"bufio"
 	"compress/gzip"
-	"github.com/MSOpenTech/azure-sdk-for-go/core/tls"
 	"errors"
 	"fmt"
+	"github.com/MSOpenTech/azure-sdk-for-go/core/tls"
 	"io"
 	"log"
 	"net"

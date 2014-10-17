@@ -8,11 +8,6 @@ import (
 	"encoding/xml"
 	"errors"
 	"fmt"
-	azure "github.com/MSOpenTech/azure-sdk-for-go"
-	"github.com/MSOpenTech/azure-sdk-for-go/clients/imageClient"
-	"github.com/MSOpenTech/azure-sdk-for-go/clients/locationClient"
-	"github.com/MSOpenTech/azure-sdk-for-go/clients/storageServiceClient"
-	"github.com/MSOpenTech/azure-sdk-for-go/clients/vmDiskClient"
 	"io"
 	"io/ioutil"
 	"os"
@@ -20,6 +15,13 @@ import (
 	"path"
 	"strings"
 	"time"
+	"unicode"
+
+	azure "github.com/MSOpenTech/azure-sdk-for-go"
+	"github.com/MSOpenTech/azure-sdk-for-go/clients/imageClient"
+	"github.com/MSOpenTech/azure-sdk-for-go/clients/locationClient"
+	"github.com/MSOpenTech/azure-sdk-for-go/clients/storageServiceClient"
+	"github.com/MSOpenTech/azure-sdk-for-go/clients/vmDiskClient"
 )
 
 const (
@@ -44,11 +46,17 @@ const (
 	provisioningConfDoesNotExistsError = "You should set azure VM provisioning config first"
 	invalidCertExtensionError          = "Certificate %s is invalid. Please specify %s certificate."
 	invalidOSError                     = "You must specify correct OS param. Valid values are 'Linux' and 'Windows'"
+	invalidDnsLengthError              = "The DNS name must be between 3 and 25 characters."
+	invalidPasswordLengthError         = "Password must be between 4 and 30 characters."
+	invalidPasswordError               = "Password must have at least one upper case, lower case and numeric character."
 )
 
 //Region public methods starts
 
-func CreateAzureVM(role *Role, dnsName, location string) error {
+func CreateAzureVM(azureVMConfiguration *Role, dnsName, location string) error {
+	if azureVMConfiguration == nil {
+		return fmt.Errorf(azure.ParamNotSpecifiedError, "azureVMConfiguration")
+	}
 	if len(dnsName) == 0 {
 		return fmt.Errorf(azure.ParamNotSpecifiedError, "dnsName")
 	}
@@ -57,6 +65,12 @@ func CreateAzureVM(role *Role, dnsName, location string) error {
 	}
 
 	fmt.Println("Creating hosted service... ")
+
+	err := verifyDNSname(dnsName)
+	if err != nil {
+		return err
+	}
+
 	requestId, err := CreateHostedService(dnsName, location)
 	if err != nil {
 		return err
@@ -64,10 +78,10 @@ func CreateAzureVM(role *Role, dnsName, location string) error {
 
 	azure.WaitAsyncOperation(requestId)
 
-	if role.UseCertAuth {
+	if azureVMConfiguration.UseCertAuth {
 		fmt.Println("Uploading cert...")
 
-		err = uploadServiceCert(dnsName, role.CertPath)
+		err = uploadServiceCert(dnsName, azureVMConfiguration.CertPath)
 		if err != nil {
 			return err
 		}
@@ -75,13 +89,13 @@ func CreateAzureVM(role *Role, dnsName, location string) error {
 
 	fmt.Println("Deploying azure VM configuration... ")
 
-	vMDeployment := createVMDeploymentConfig(role)
+	vMDeployment := createVMDeploymentConfig(azureVMConfiguration)
 	vMDeploymentBytes, err := xml.Marshal(vMDeployment)
 	if err != nil {
 		return err
 	}
 
-	requestURL := fmt.Sprintf(azureDeploymentListURL, role.RoleName)
+	requestURL := fmt.Sprintf(azureDeploymentListURL, azureVMConfiguration.RoleName)
 	requestId, err = azure.SendAzurePostRequest(requestURL, vMDeploymentBytes)
 	if err != nil {
 		return err
@@ -98,6 +112,11 @@ func CreateHostedService(dnsName, location string) (string, error) {
 	}
 	if len(location) == 0 {
 		return "", fmt.Errorf(azure.ParamNotSpecifiedError, "location")
+	}
+
+	err := verifyDNSname(dnsName)
+	if err != nil {
+		return "", err
 	}
 
 	result, reason, err := CheckHostedServiceNameAvailability(dnsName)
@@ -133,6 +152,11 @@ func CheckHostedServiceNameAvailability(dnsName string) (bool, string, error) {
 		return false, "", fmt.Errorf(azure.ParamNotSpecifiedError, "dnsName")
 	}
 
+	err := verifyDNSname(dnsName)
+	if err != nil {
+		return false, "", err
+	}
+
 	requestURL := fmt.Sprintf(azureHostedServiceAvailabilityURL, dnsName)
 	response, err := azure.SendAzureGetRequest(requestURL)
 	if err != nil {
@@ -153,6 +177,11 @@ func DeleteHostedService(dnsName string) error {
 		return fmt.Errorf(azure.ParamNotSpecifiedError, "dnsName")
 	}
 
+	err := verifyDNSname(dnsName)
+	if err != nil {
+		return err
+	}
+
 	requestURL := fmt.Sprintf(azureHostedServiceURL, dnsName)
 	requestId, err := azure.SendAzureDeleteRequest(requestURL)
 	if err != nil {
@@ -163,9 +192,9 @@ func DeleteHostedService(dnsName string) error {
 	return nil
 }
 
-func CreateAzureVMConfiguration(name, instanceSize, imageName, location string) (*Role, error) {
-	if len(name) == 0 {
-		return nil, fmt.Errorf(azure.ParamNotSpecifiedError, "name")
+func CreateAzureVMConfiguration(dnsName, instanceSize, imageName, location string) (*Role, error) {
+	if len(dnsName) == 0 {
+		return nil, fmt.Errorf(azure.ParamNotSpecifiedError, "dnsName")
 	}
 	if len(instanceSize) == 0 {
 		return nil, fmt.Errorf(azure.ParamNotSpecifiedError, "instanceSize")
@@ -179,12 +208,17 @@ func CreateAzureVMConfiguration(name, instanceSize, imageName, location string) 
 
 	fmt.Println("Creating azure VM configuration... ")
 
-	err := locationClient.ResolveLocation(location)
+	err := verifyDNSname(dnsName)
 	if err != nil {
 		return nil, err
 	}
 
-	role, err := createAzureVMRole(name, instanceSize, imageName, location)
+	err = locationClient.ResolveLocation(location)
+	if err != nil {
+		return nil, err
+	}
+
+	role, err := createAzureVMRole(dnsName, instanceSize, imageName, location)
 	if err != nil {
 		return nil, err
 	}
@@ -192,19 +226,18 @@ func CreateAzureVMConfiguration(name, instanceSize, imageName, location string) 
 	return role, nil
 }
 
-func AddAzureLinuxProvisioningConfig(azureVMConfig *Role, userName, password, certPath string) (*Role, error) {
+func AddAzureLinuxProvisioningConfig(azureVMConfiguration *Role, userName, password, certPath string) (*Role, error) {
+	if azureVMConfiguration == nil {
+		return nil, fmt.Errorf(azure.ParamNotSpecifiedError, "azureVMConfiguration")
+	}
 	if len(userName) == 0 {
 		return nil, fmt.Errorf(azure.ParamNotSpecifiedError, "userName")
-	}
-	if len(password) == 0 {
-		return nil, fmt.Errorf(azure.ParamNotSpecifiedError, "password")
 	}
 
 	fmt.Println("Adding azure provisioning configuration... ")
 
 	configurationSets := ConfigurationSets{}
-
-	provisioningConfig, err := createLinuxProvisioningConfig(azureVMConfig.RoleName, userName, password, certPath)
+	provisioningConfig, err := createLinuxProvisioningConfig(azureVMConfiguration.RoleName, userName, password, certPath)
 	if err != nil {
 		return nil, err
 	}
@@ -218,17 +251,20 @@ func AddAzureLinuxProvisioningConfig(azureVMConfig *Role, userName, password, ce
 
 	configurationSets.ConfigurationSet = append(configurationSets.ConfigurationSet, networkConfig)
 
-	azureVMConfig.ConfigurationSets = configurationSets
+	azureVMConfiguration.ConfigurationSets = configurationSets
 
 	if len(certPath) > 0 {
-		azureVMConfig.UseCertAuth = true
-		azureVMConfig.CertPath = certPath
+		azureVMConfiguration.UseCertAuth = true
+		azureVMConfiguration.CertPath = certPath
 	}
 
-	return azureVMConfig, nil
+	return azureVMConfiguration, nil
 }
 
 func SetAzureVMExtension(azureVMConfiguration *Role, name string, publisher string, version string, referenceName string, state string, publicConfigurationValue string, privateConfigurationValue string) (*Role, error) {
+	if azureVMConfiguration == nil {
+		return nil, fmt.Errorf(azure.ParamNotSpecifiedError, "azureVMConfiguration")
+	}
 	if len(name) == 0 {
 		return nil, fmt.Errorf(azure.ParamNotSpecifiedError, "name")
 	}
@@ -275,6 +311,9 @@ func SetAzureVMExtension(azureVMConfiguration *Role, name string, publisher stri
 }
 
 func SetAzureDockerVMExtension(azureVMConfiguration *Role, dockerCertDir string, dockerPort int, version string) (*Role, error) {
+	if azureVMConfiguration == nil {
+		return nil, fmt.Errorf(azure.ParamNotSpecifiedError, "azureVMConfiguration")
+	}
 	if len(dockerCertDir) == 0 {
 		return nil, fmt.Errorf(azure.ParamNotSpecifiedError, "dockerCertDir")
 	}
@@ -686,6 +725,11 @@ func createLinuxProvisioningConfig(dnsName, userName, userPassword, certPath str
 		disableSshPasswordAuthentication = true
 		// We need to set dummy password otherwise azure API will throw an error
 		userPassword = "P@ssword1"
+	} else {
+		err := verifyPassword(userPassword)
+		if err != nil {
+			return provisioningConfig, err
+		}
 	}
 
 	provisioningConfig.DisableSshPasswordAuthentication = disableSshPasswordAuthentication
@@ -816,6 +860,35 @@ func createEndpoint(name string, protocol string, extertalPort int, internalPort
 	endpoint.LocalPort = internalPort
 
 	return endpoint
+}
+
+func verifyDNSname(dns string) error {
+	if len(dns) < 3 || len(dns) > 25 {
+		return fmt.Errorf(invalidDnsLengthError)
+	}
+
+	return nil
+}
+
+func verifyPassword(password string) error {
+	if len(password) < 4 || len(password) > 30 {
+		return fmt.Errorf(invalidPasswordLengthError)
+	}
+
+next:
+	for _, classes := range map[string][]*unicode.RangeTable{
+		"upper case": {unicode.Upper, unicode.Title},
+		"lower case": {unicode.Lower},
+		"numeric":    {unicode.Number, unicode.Digit},
+	} {
+		for _, r := range password {
+			if unicode.IsOneOf(classes, r) {
+				continue next
+			}
+		}
+		return fmt.Errorf(invalidPasswordError)
+	}
+	return nil
 }
 
 //Region private methods ends

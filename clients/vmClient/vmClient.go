@@ -226,7 +226,7 @@ func CreateAzureVMConfiguration(dnsName, instanceSize, imageName, location strin
 	return role, nil
 }
 
-func AddAzureLinuxProvisioningConfig(azureVMConfiguration *Role, userName, password, certPath string) (*Role, error) {
+func AddAzureLinuxProvisioningConfig(azureVMConfiguration *Role, userName, password, certPath string, sshPort int) (*Role, error) {
 	if azureVMConfiguration == nil {
 		return nil, fmt.Errorf(azure.ParamNotSpecifiedError, "azureVMConfiguration")
 	}
@@ -244,7 +244,7 @@ func AddAzureLinuxProvisioningConfig(azureVMConfiguration *Role, userName, passw
 
 	configurationSets.ConfigurationSet = append(configurationSets.ConfigurationSet, provisioningConfig)
 
-	networkConfig, networkErr := createNetworkConfig(osLinux)
+	networkConfig, networkErr := createNetworkConfig(osLinux, sshPort)
 	if networkErr != nil {
 		return nil, err
 	}
@@ -834,13 +834,13 @@ func checkServiceCertExtension(certPath string) error {
 	return nil
 }
 
-func createNetworkConfig(os string) (ConfigurationSet, error) {
+func createNetworkConfig(os string, sshPort int) (ConfigurationSet, error) {
 	networkConfig := ConfigurationSet{}
 	networkConfig.ConfigurationSetType = "NetworkConfiguration"
 
 	var endpoint InputEndpoint
 	if os == osLinux {
-		endpoint = createEndpoint("ssh", "tcp", 22, 22)
+		endpoint = createEndpoint("ssh", "tcp", sshPort, 22)
 	} else if os == osWindows {
 		//!TODO add rdp endpoint
 	} else {

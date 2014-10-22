@@ -9,7 +9,7 @@ import (
 
 const (
 	azureImageListURL    = "services/images"
-	invalidLocationError = "Error: Can not find image %s in specified subscription, please specify another image name \n"
+	invalidImageError = "Error: Can not find image %s in specified subscription, please specify another image name \n"
 )
 
 func GetImageList() (ImageList, error) {
@@ -35,12 +35,12 @@ func ResolveImageName(imageName string) error {
 	}
 
 	for _, image := range imageList.OSImages {
-		if image.Name != imageName {
+		if image.Name != imageName && image.Label != imageName {
 			continue
 		}
 
 		return nil
 	}
 
-	return errors.New(fmt.Sprintf(invalidLocationError, imageName))
+	return errors.New(fmt.Sprintf(invalidImageError, imageName))
 }

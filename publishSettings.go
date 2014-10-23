@@ -7,8 +7,9 @@ import (
 	"fmt"
 	"io/ioutil"
 	"os"
-	"os/user"
 	"path"
+
+	homedir "github.com/mitchellh/go-homedir"
 )
 
 var settings publishSettings = publishSettings{}
@@ -140,12 +141,12 @@ func getActiveSubscription(publishSettingsContent []byte) (subscription, error) 
 }
 
 func getAzureDir() (string, error) {
-	usr, err := user.Current()
+	homeDir, err := homedir.Dir()
 	if err != nil {
 		return "", err
 	}
 
-	azureDir := path.Join(usr.HomeDir, ".azure")
+	azureDir := path.Join(homeDir, ".azure")
 	//Create azure dir if does not exists
 	if _, err := os.Stat(azureDir); os.IsNotExist(err) {
 		mkdirErr := os.Mkdir(azureDir, 0644)

@@ -11,11 +11,12 @@ import (
 	"io"
 	"io/ioutil"
 	"os"
-	"os/user"
 	"path"
 	"strings"
 	"time"
 	"unicode"
+
+	homedir "github.com/mitchellh/go-homedir"
 
 	azure "github.com/MSOpenTech/azure-sdk-for-go"
 	"github.com/MSOpenTech/azure-sdk-for-go/clients/imageClient"
@@ -557,12 +558,12 @@ func createDockerPublicConfig(dockerPort int) string {
 }
 
 func createDockerPrivateConfig(dockerCertDir string) (string, error) {
-	usr, err := user.Current()
+	homeDir, err := homedir.Dir()
 	if err != nil {
 		return "", err
 	}
 
-	certDir := path.Join(usr.HomeDir, dockerCertDir)
+	certDir := path.Join(homeDir, dockerCertDir)
 
 	if _, err := os.Stat(certDir); err == nil {
 		fmt.Println(dockerDirExistsMessage)

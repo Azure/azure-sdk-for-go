@@ -2,6 +2,7 @@ package azureSdkForGo
 
 import (
 	"bytes"
+	"crypto/rand"
 	"encoding/xml"
 	"errors"
 	"fmt"
@@ -86,7 +87,7 @@ func SendAzureRequest(url string, requestType string, data []byte) (*http.Respon
 	return response, nil
 }
 
-func ExecuteCommand(command string) ([]byte, error) {
+func ExecuteCommand(command string, input []byte) ([]byte, error) {
 	if len(command) == 0 {
 		return nil, fmt.Errorf(ParamNotSpecifiedError, "command")
 	}
@@ -96,9 +97,11 @@ func ExecuteCommand(command string) ([]byte, error) {
 	parts = parts[1:len(parts)]
 
 	cmd := exec.Command(head, parts...)
+	if input != nil {
+		cmd.Stdin = bytes.NewReader(input)
+	}
 
 	out, err := cmd.Output()
-
 	if err != nil {
 		return nil, err
 	}

@@ -67,46 +67,18 @@ func ImportPublishSettingsFile(filePath string) error {
 
 func getSubscriptionCert(subscription subscription) ([]byte, error) {
 	certPassword := ""
-
-	azureDir, err := getAzureDir()
+	
+	pfxCert, err := base64.StdEncoding.DecodeString(subscription.ManagementCertificate)
 	if err != nil {
 		return nil, err
 	}
-
-	pfxCertPath := path.Join(azureDir, "cert.pfx")
-	pemCertPath := path.Join(azureDir, "cert.pem")
-
-	err = createPfxCert(subscription.ManagementCertificate, pfxCertPath)
+	
+	subscriptionCert, err := ExecuteCommand(fmt.Sprintf("openssl pkcs12 -nodes -passin pass:%s", certPassword), pfxCert)
 	if err != nil {
 		return nil, err
 	}
-
-	ExecuteCommand(fmt.Sprintf("openssl pkcs12 -in %s -out %s -nodes -passin pass:%s", pfxCertPath, pemCertPath, certPassword))
-
-	pemCert, readErr := ioutil.ReadFile(pemCertPath)
-	if readErr != nil {
-		return nil, readErr
-	}
-
-	os.Remove(pfxCertPath)
-	os.Remove(pemCertPath)
-
-	return pemCert, nil
-}
-
-func createPfxCert(managementCert string, pfxCertPath string) error {
-
-	pfxCert, err := base64.StdEncoding.DecodeString(managementCert)
-	if err != nil {
-		return err
-	}
-
-	err = ioutil.WriteFile(pfxCertPath, pfxCert, 0644)
-	if err != nil {
-		return err
-	}
-
-	return nil
+	
+	return subscriptionCert, nil
 }
 
 func getActiveSubscription(publishSettingsContent []byte) (subscription, error) {
@@ -138,24 +110,6 @@ func getActiveSubscription(publishSettingsContent []byte) (subscription, error) 
 	}
 
 	return activeSubscription, nil
-}
-
-func getAzureDir() (string, error) {
-	homeDir, err := homedir.Dir()
-	if err != nil {
-		return "", err
-	}
-
-	azureDir := path.Join(homeDir, ".azure")
-	//Create azure dir if does not exists
-	if _, err := os.Stat(azureDir); os.IsNotExist(err) {
-		mkdirErr := os.Mkdir(azureDir, 0644)
-		if mkdirErr != nil {
-			return "", mkdirErr
-		}
-	}
-
-	return azureDir, nil
 }
 
 type publishSettings struct {

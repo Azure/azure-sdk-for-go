@@ -85,6 +85,7 @@ func CreateAzureVM(azureVMConfiguration *Role, dnsName, location string) error {
 
 		err = uploadServiceCert(dnsName, azureVMConfiguration.CertPath)
 		if err != nil {
+			DeleteHostedService(dnsName)
 			return err
 		}
 	}
@@ -94,12 +95,14 @@ func CreateAzureVM(azureVMConfiguration *Role, dnsName, location string) error {
 	vMDeployment := createVMDeploymentConfig(azureVMConfiguration)
 	vMDeploymentBytes, err := xml.Marshal(vMDeployment)
 	if err != nil {
+		DeleteHostedService(dnsName)
 		return err
 	}
 
 	requestURL := fmt.Sprintf(azureDeploymentListURL, azureVMConfiguration.RoleName)
 	requestId, err = azure.SendAzurePostRequest(requestURL, vMDeploymentBytes)
 	if err != nil {
+		DeleteHostedService(dnsName)
 		return err
 	}
 

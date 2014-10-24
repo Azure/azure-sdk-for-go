@@ -37,6 +37,7 @@ func main() {
     userName := "testuser"
     userPassword := "Test123"
     sshCert := ""
+    sshPort := 22
     
     err := azure.ImportPublishSettings(SUBSCRIPTION_ID, SUBSCRIPTION_CERTIFICATE)
     if err != nil {
@@ -50,7 +51,7 @@ func main() {
     	os.Exit(1)
     }
     
-    vmConfig, err = vmClient.AddAzureLinuxProvisioningConfig(vmConfig, userName, userPassword, sshCert)
+    vmConfig, err = vmClient.AddAzureLinuxProvisioningConfig(vmConfig, userName, userPassword, sshCert, sshPort)
     if err != nil {
     	fmt.Println(err)
     	os.Exit(1)

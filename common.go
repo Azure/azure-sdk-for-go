@@ -79,7 +79,7 @@ func SendAzureRequest(url string, requestType string, data []byte) (*http.Respon
 
 	client := createHttpClient()
 
-	response, err := sendRequest(client, url, requestType, data, 5)
+	response, err := sendRequest(client, url, requestType, data, 7)
 	if err != nil {
 		return nil, err
 	}

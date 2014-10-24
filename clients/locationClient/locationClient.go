@@ -11,7 +11,7 @@ import (
 
 const (
 	azureLocationListURL = "locations"
-	invalidLocationError = "Invalid location. Available locations: %s"
+	invalidLocationError = "Invalid location: %s. Available locations: %s"
 )
 
 func ResolveLocation(location string) error {
@@ -37,7 +37,7 @@ func ResolveLocation(location string) error {
 		availableLocations.WriteString(existingLocation.Name + ", ")
 	}
 
-	return errors.New(fmt.Sprintf(invalidLocationError, strings.Trim(availableLocations.String(), ", ")))
+	return errors.New(fmt.Sprintf(invalidLocationError, location, strings.Trim(availableLocations.String(), ", ")))
 }
 
 func GetLocationList() (LocationList, error) {

@@ -8,8 +8,8 @@ import (
 )
 
 const (
-	azureImageListURL    = "services/images"
-	invalidImageError = "Error: Can not find image %s in specified subscription, please specify another image name \n"
+	azureImageListURL = "services/images"
+	invalidImageError = "Can not find image %s in specified subscription, please specify another image name."
 )
 
 func GetImageList() (ImageList, error) {
@@ -21,6 +21,10 @@ func GetImageList() (ImageList, error) {
 	}
 
 	err = xml.Unmarshal(response, &imageList)
+	if err != nil {
+		return imageList, err
+	}
+	
 	return imageList, err
 }
 

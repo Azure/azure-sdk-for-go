@@ -1,6 +1,7 @@
 package vmClient
 
 import (
+	"bytes"
 	"crypto/sha1"
 	"encoding/base64"
 	"encoding/pem"
@@ -33,6 +34,7 @@ const (
 	azureRoleURL                      = "services/hostedservices/%s/deployments/%s/roles/%s"
 	azureOperationsURL                = "services/hostedservices/%s/deployments/%s/roleinstances/%s/Operations"
 	azureCertificatListURL            = "services/hostedservices/%s/certificates"
+	azureRoleSizeListURL              = "rolesizes"
 
 	osLinux   = "Linux"
 	osWindows = "Windows"
@@ -48,6 +50,7 @@ const (
 	invalidDnsLengthError              = "The DNS name must be between 3 and 25 characters."
 	invalidPasswordLengthError         = "Password must be between 4 and 30 characters."
 	invalidPasswordError               = "Password must have at least one upper case, lower case and numeric character."
+	invalidRoleSizeError               = "Invalid role size: %s. Available role sizes: %s"
 )
 
 //Region public methods starts
@@ -217,6 +220,11 @@ func CreateAzureVMConfiguration(dnsName, instanceSize, imageName, location strin
 		return nil, err
 	}
 
+	err = ResolveRoleSize(instanceSize)
+	if err != nil {
+		return nil, err
+	}
+	
 	role, err := createAzureVMRole(dnsName, instanceSize, imageName, location)
 	if err != nil {
 		return nil, err
@@ -520,6 +528,48 @@ func DeleteRole(cloudserviceName, deploymentName, roleName string) error {
 
 	azure.WaitAsyncOperation(requestId)
 	return nil
+}
+
+func GetRoleSizeList() (RoleSizeList, error) {
+	roleSizeList := RoleSizeList{}
+
+	response, err := azure.SendAzureGetRequest(azureRoleSizeListURL)
+	if err != nil {
+		return roleSizeList, err
+	}
+	
+	err = xml.Unmarshal(response, &roleSizeList)
+	if err != nil {
+		return roleSizeList, err
+	}
+	
+	return roleSizeList, err
+}
+
+func ResolveRoleSize(roleSizeName string) error {
+	if len(roleSizeName) == 0 {
+		return fmt.Errorf(azure.ParamNotSpecifiedError, "roleSizeName")
+	}
+
+	roleSizeList, err := GetRoleSizeList()
+	if err != nil {
+		return err
+	}
+
+	for _, roleSize := range roleSizeList.RoleSizes {
+		if roleSize.Name != roleSizeName {
+			continue
+		}
+
+		return nil
+	}
+
+	var availableSizes bytes.Buffer
+	for _, existingSize := range roleSizeList.RoleSizes {
+		availableSizes.WriteString(existingSize.Name + ", ")
+	}
+
+	return errors.New(fmt.Sprintf(invalidRoleSizeError, roleSizeName, strings.Trim(availableSizes.String(), ", ")))
 }
 
 //Region public methods ends

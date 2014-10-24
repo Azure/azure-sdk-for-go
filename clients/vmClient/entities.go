@@ -160,3 +160,21 @@ type AvailabilityResponse struct {
 	Result bool
 	Reason string
 }
+
+type RoleSizeList struct {
+	XMLName	  xml.Name `xml:"RoleSizes"`
+	Xmlns	  string   `xml:"xmlns,attr"`
+	RoleSizes []RoleSize `xml:"RoleSize"`
+}
+
+type RoleSize struct {
+	Name								string
+    Label								string
+    Cores								int
+    MemoryInMb							int
+    SupportedByWebWorkerRoles			bool
+    SupportedByVirtualMachines			bool
+    MaxDataDiskCount					int
+    WebWorkerResourceDiskSizeInMb		int
+    VirtualMachineResourceDiskSizeInMb	int
+}

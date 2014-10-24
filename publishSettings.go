@@ -6,10 +6,6 @@ import (
 	"errors"
 	"fmt"
 	"io/ioutil"
-	"os"
-	"path"
-
-	homedir "github.com/mitchellh/go-homedir"
 )
 
 var settings publishSettings = publishSettings{}

@@ -313,12 +313,9 @@ func SetAzureVMExtension(azureVMConfiguration *Role, name string, publisher stri
 	return azureVMConfiguration, nil
 }
 
-func SetAzureDockerVMExtension(azureVMConfiguration *Role, dockerCertDir string, dockerPort int, version string) (*Role, error) {
+func SetAzureDockerVMExtension(azureVMConfiguration *Role, dockerPort int, version string) (*Role, error) {
 	if azureVMConfiguration == nil {
 		return nil, fmt.Errorf(azure.ParamNotSpecifiedError, "azureVMConfiguration")
-	}
-	if len(dockerCertDir) == 0 {
-		return nil, fmt.Errorf(azure.ParamNotSpecifiedError, "dockerCertDir")
 	}
 
 	if len(version) == 0 {

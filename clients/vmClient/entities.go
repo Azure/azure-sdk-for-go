@@ -65,10 +65,6 @@ type InputEndpoints struct {
 	InputEndpoint []InputEndpoint
 }
 
-type SubnetNames struct {
-	SubnetName []SubnetName
-}
-
 type ResourceExtensionReference struct {
 	ReferenceName                    string
 	Publisher                        string
@@ -103,7 +99,6 @@ type ConfigurationSet struct {
 	UserPassword                     string `xml:",omitempty"`
 	DisableSshPasswordAuthentication bool
 	InputEndpoints                   InputEndpoints `xml:",omitempty"`
-	SubnetNames                      SubnetNames    `xml:",omitempty"`
 	SSH                              SSH            `xml:",omitempty"`
 }
 
@@ -126,10 +121,6 @@ type InputEndpoint struct {
 	Port      int
 	Protocol  string
 	Vip       string
-}
-
-//!TODO
-type SubnetName struct {
 }
 
 type ServiceCertificate struct {
@@ -162,19 +153,24 @@ type AvailabilityResponse struct {
 }
 
 type RoleSizeList struct {
-	XMLName	  xml.Name `xml:"RoleSizes"`
-	Xmlns	  string   `xml:"xmlns,attr"`
+	XMLName   xml.Name   `xml:"RoleSizes"`
+	Xmlns     string     `xml:"xmlns,attr"`
 	RoleSizes []RoleSize `xml:"RoleSize"`
 }
 
 type RoleSize struct {
-	Name								string
-    Label								string
-    Cores								int
-    MemoryInMb							int
-    SupportedByWebWorkerRoles			bool
-    SupportedByVirtualMachines			bool
-    MaxDataDiskCount					int
-    WebWorkerResourceDiskSizeInMb		int
-    VirtualMachineResourceDiskSizeInMb	int
+	Name                               string
+	Label                              string
+	Cores                              int
+	MemoryInMb                         int
+	SupportedByWebWorkerRoles          bool
+	SupportedByVirtualMachines         bool
+	MaxDataDiskCount                   int
+	WebWorkerResourceDiskSizeInMb      int
+	VirtualMachineResourceDiskSizeInMb int
+}
+
+type dockerPublicConfig struct {
+	DockerPort int `json:"dockerport"`
+	Version    int `json:"version"`
 }

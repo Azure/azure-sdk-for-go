@@ -4,18 +4,15 @@ import (
 	"bytes"
 	"crypto/sha1"
 	"encoding/base64"
+	"encoding/json"
 	"encoding/pem"
 	"encoding/xml"
 	"errors"
 	"fmt"
 	"io/ioutil"
-	"os"
-	"path"
 	"strings"
 	"time"
 	"unicode"
-
-	homedir "github.com/mitchellh/go-homedir"
 
 	azure "github.com/MSOpenTech/azure-sdk-for-go"
 	"github.com/MSOpenTech/azure-sdk-for-go/clients/imageClient"
@@ -36,14 +33,10 @@ const (
 	azureCertificatListURL            = "services/hostedservices/%s/certificates"
 	azureRoleSizeListURL              = "rolesizes"
 
-	osLinux   = "Linux"
-	osWindows = "Windows"
+	osLinux                   = "Linux"
+	osWindows                 = "Windows"
+	dockerPublicConfigVersion = 22
 
-	dockerPublicConfig     = "{ \"dockerport\": \"%v\" }"
-	dockerPrivateConfig    = "{ \"ca\": \"%s\", \"server-cert\": \"%s\", \"server-key\": \"%s\" }"
-	dockerDirExistsMessage = "Docker directory exists"
-
-	missingDockerCertsError            = "Can not find docker certificates folder %s. You should generate docker certificates first. Info can be found here: https://docs.docker.com/articles/https/"
 	provisioningConfDoesNotExistsError = "You should set azure VM provisioning config first"
 	invalidCertExtensionError          = "Certificate %s is invalid. Please specify %s certificate."
 	invalidOSError                     = "You must specify correct OS param. Valid values are 'Linux' and 'Windows'"
@@ -227,7 +220,7 @@ func CreateAzureVMConfiguration(dnsName, instanceSize, imageName, location strin
 	if err != nil {
 		return nil, err
 	}
-	
+
 	role, err := createAzureVMRole(dnsName, instanceSize, imageName, location)
 	if err != nil {
 		return nil, err
@@ -337,8 +330,12 @@ func SetAzureDockerVMExtension(azureVMConfiguration *Role, dockerCertDir string,
 		return nil, err
 	}
 
-	publicConfiguration := createDockerPublicConfig(dockerPort)
-	privateConfiguration, err := createDockerPrivateConfig(dockerCertDir)
+	publicConfiguration, err := createDockerPublicConfig(dockerPort)
+	if err != nil {
+		return nil, err
+	}
+
+	privateConfiguration := "{}"
 	if err != nil {
 		return nil, err
 	}
@@ -540,12 +537,12 @@ func GetRoleSizeList() (RoleSizeList, error) {
 	if err != nil {
 		return roleSizeList, err
 	}
-	
+
 	err = xml.Unmarshal(response, &roleSizeList)
 	if err != nil {
 		return roleSizeList, err
 	}
-	
+
 	return roleSizeList, err
 }
 
@@ -603,53 +600,14 @@ func createRestartRoleOperation() RestartRoleOperation {
 	return startRoleOperation
 }
 
-func createDockerPublicConfig(dockerPort int) string {
-	config := fmt.Sprintf(dockerPublicConfig, dockerPort)
-	return config
-}
-
-func createDockerPrivateConfig(dockerCertDir string) (string, error) {
-	homeDir, err := homedir.Dir()
+func createDockerPublicConfig(dockerPort int) (string, error) {
+	config := dockerPublicConfig{DockerPort: dockerPort, Version: 2}
+	configJson, err := json.Marshal(config)
 	if err != nil {
 		return "", err
 	}
 
-	certDir := path.Join(homeDir, dockerCertDir)
-
-	if _, err := os.Stat(certDir); err == nil {
-		fmt.Println(dockerDirExistsMessage)
-	} else {
-		errorMessage := fmt.Sprintf(missingDockerCertsError, certDir)
-		return "", errors.New(errorMessage)
-	}
-
-	caCert, err := parseFileToBase64String(path.Join(certDir, "ca.pem"))
-	if err != nil {
-		return "", err
-	}
-
-	serverCert, err := parseFileToBase64String(path.Join(certDir, "server-cert.pem"))
-	if err != nil {
-		return "", err
-	}
-
-	serverKey, err := parseFileToBase64String(path.Join(certDir, "server-key.pem"))
-	if err != nil {
-		return "", err
-	}
-
-	config := fmt.Sprintf(dockerPrivateConfig, caCert, serverCert, serverKey)
-	return config, nil
-}
-
-func parseFileToBase64String(path string) (string, error) {
-	caCertBytes, caErr := ioutil.ReadFile(path)
-	if caErr != nil {
-		return "", caErr
-	}
-
-	base64Content := base64.StdEncoding.EncodeToString(caCertBytes)
-	return base64Content, nil
+	return string(configJson), nil
 }
 
 func addDockerPort(configurationSets []ConfigurationSet, dockerPort int) error {

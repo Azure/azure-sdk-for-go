@@ -35,7 +35,7 @@ const (
 
 	osLinux                   = "Linux"
 	osWindows                 = "Windows"
-	dockerPublicConfigVersion = 22
+	dockerPublicConfigVersion = 2
 
 	provisioningConfDoesNotExistsError = "You should set azure VM provisioning config first"
 	invalidCertExtensionError          = "Certificate %s is invalid. Please specify %s certificate."

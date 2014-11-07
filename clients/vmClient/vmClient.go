@@ -598,7 +598,7 @@ func createRestartRoleOperation() RestartRoleOperation {
 }
 
 func createDockerPublicConfig(dockerPort int) (string, error) {
-	config := dockerPublicConfig{DockerPort: dockerPort, Version: 2}
+	config := dockerPublicConfig{DockerPort: dockerPort, Version: dockerPublicConfigVersion}
 	configJson, err := json.Marshal(config)
 	if err != nil {
 		return "", err

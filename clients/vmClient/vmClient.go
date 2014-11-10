@@ -59,8 +59,6 @@ func CreateAzureVM(azureVMConfiguration *Role, dnsName, location string) error {
 		return fmt.Errorf(azure.ParamNotSpecifiedError, "location")
 	}
 
-	fmt.Println("Creating hosted service... ")
-
 	err := verifyDNSname(dnsName)
 	if err != nil {
 		return err
@@ -74,16 +72,12 @@ func CreateAzureVM(azureVMConfiguration *Role, dnsName, location string) error {
 	azure.WaitAsyncOperation(requestId)
 
 	if azureVMConfiguration.UseCertAuth {
-		fmt.Println("Uploading cert...")
-
 		err = uploadServiceCert(dnsName, azureVMConfiguration.CertPath)
 		if err != nil {
 			DeleteHostedService(dnsName)
 			return err
 		}
 	}
-
-	fmt.Println("Deploying azure VM configuration... ")
 
 	vMDeployment := createVMDeploymentConfig(azureVMConfiguration)
 	vMDeploymentBytes, err := xml.Marshal(vMDeployment)
@@ -204,8 +198,6 @@ func CreateAzureVMConfiguration(dnsName, instanceSize, imageName, location strin
 		return nil, fmt.Errorf(azure.ParamNotSpecifiedError, "location")
 	}
 
-	fmt.Println("Creating azure VM configuration... ")
-
 	err := verifyDNSname(dnsName)
 	if err != nil {
 		return nil, err
@@ -236,8 +228,6 @@ func AddAzureLinuxProvisioningConfig(azureVMConfiguration *Role, userName, passw
 	if len(userName) == 0 {
 		return nil, fmt.Errorf(azure.ParamNotSpecifiedError, "userName")
 	}
-
-	fmt.Println("Adding azure provisioning configuration... ")
 
 	configurationSets := ConfigurationSets{}
 	provisioningConfig, err := createLinuxProvisioningConfig(azureVMConfiguration.RoleName, userName, password, certPath)
@@ -280,8 +270,6 @@ func SetAzureVMExtension(azureVMConfiguration *Role, name string, publisher stri
 	if len(referenceName) == 0 {
 		return nil, fmt.Errorf(azure.ParamNotSpecifiedError, "referenceName")
 	}
-
-	fmt.Printf("Setting azure VM extension: %s... \n", name)
 
 	extension := ResourceExtensionReference{}
 	extension.Name = name

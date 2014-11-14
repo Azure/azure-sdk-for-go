@@ -321,9 +321,6 @@ func SetAzureDockerVMExtension(azureVMConfiguration *Role, dockerPort int, versi
 	}
 
 	privateConfiguration := "{}"
-	if err != nil {
-		return nil, err
-	}
 
 	azureVMConfiguration, err = SetAzureVMExtension(azureVMConfiguration, "DockerExtension", "MSOpenTech.Extensions", version, "DockerExtension", "enable", publicConfiguration, privateConfiguration)
 	return azureVMConfiguration, nil

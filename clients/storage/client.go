@@ -206,6 +206,7 @@ func (c StorageClient) buildCanonicalizedString(verb, contentEncoding, contentLa
 }
 
 func (c StorageClient) exec(verb, url string, headers map[string]string, body io.Reader) (resp *http.Response, err error) {
+	fmt.Println(url) // TODO (ahmetalpbalkan) remove
 	// TODO (ahmetalpbalkan) write test case for imported code
 	req, err := http.NewRequest(verb, url, body)
 

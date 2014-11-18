@@ -2,10 +2,9 @@ package storage
 
 import (
 	"bytes"
+	"encoding/xml"
 	"fmt"
-	"net/http"
 	"net/url"
-	"time"
 )
 
 type BlobStorageClient struct {
@@ -14,27 +13,33 @@ type BlobStorageClient struct {
 
 // TODO (ahmetalpbalkan) use
 type Container struct {
-	Name       string
-	Properties ContainerProperties
-	Metadata   map[string]string
+	Name       string              `xml:"Name"`
+	Properties ContainerProperties `xml:"Properties"`
+	Metadata   map[string]string   `xml:"Metadata"`
 }
 
 // TODO (ahmetalpbalkan) use
 type ContainerProperties struct {
-	LastModified  time.Time
-	Etag          string
-	LeaseStatus   string
-	LeaseState    string
-	LeaseDuration string
+	LastModified  string `xml:"Last-Modified"`
+	Etag          string `xml:"Etag"`
+	LeaseStatus   string `xml:"LeaseStatus"`
+	LeaseState    string `xml:"LeaseState"`
+	LeaseDuration string `xml:"LeaseDuration"`
 }
 
-// TODO (ahmetalpbalkan) use
 type ContainerListResponse struct {
-	Prefix     string
-	Marker     string
-	NextMarker string
-	MaxResults int64
-	Containers []Container
+	XMLName    xml.Name      `xml:"EnumerationResults"`
+	Xmlns      string        `xml:"xmlns,attr"`
+	Prefix     string        `xml:"Prefix"`
+	Marker     string        `xml:"Marker"`
+	NextMarker string        `xml:"NextMarker"`
+	MaxResults int64         `xml:"MaxResults"`
+	Containers ContainerList `xml:"Containers"`
+}
+
+type ContainerList struct {
+	XMLName    xml.Name    `xml:"Containers"`
+	Containers []Container `xml:"Container"`
 }
 
 type BlobType string
@@ -52,17 +57,24 @@ const (
 	ContainerAccessTypeContainer ContainerAccessType = "container"
 )
 
-func (b BlobStorageClient) ListContainers() (*http.Response, error) {
+func (b BlobStorageClient) ListContainers() (ContainerListResponse, error) {
 	// TODO (ahmetb) pagination
-
 	verb := "GET"
 	uri := b.client.getEndpoint(blobServiceName, "", url.Values{"comp": {"list"}})
-
 	headers := b.client.getStandardHeaders()
-	return b.client.exec(verb, uri, headers, nil)
+
+	var out ContainerListResponse
+	resp, err := b.client.exec(verb, uri, headers, nil)
+	if err != nil {
+		return out, err
+	}
+
+	fmt.Println(string(resp))
+	err = xml.Unmarshal(resp, &out)
+	return out, err
 }
 
-func (b BlobStorageClient) GetContainer(name string) (*http.Response, error) {
+func (b BlobStorageClient) ContainerExists(name string) ([]byte, error) {
 	verb := "GET"
 	uri := b.client.getEndpoint(blobServiceName, name, url.Values{"restype": {"container"}})
 
@@ -70,7 +82,7 @@ func (b BlobStorageClient) GetContainer(name string) (*http.Response, error) {
 	return b.client.exec(verb, uri, headers, nil)
 }
 
-func (b BlobStorageClient) CreateContainer(name string, access ContainerAccessType) (*http.Response, error) {
+func (b BlobStorageClient) CreateContainer(name string, access ContainerAccessType) ([]byte, error) {
 	verb := "PUT"
 	uri := b.client.getEndpoint(blobServiceName, name, url.Values{"restype": {"container"}})
 
@@ -82,7 +94,7 @@ func (b BlobStorageClient) CreateContainer(name string, access ContainerAccessTy
 	return b.client.exec(verb, uri, headers, nil)
 }
 
-func (b BlobStorageClient) DeleteContainer(name string) (*http.Response, error) {
+func (b BlobStorageClient) DeleteContainer(name string) ([]byte, error) {
 	verb := "DELETE"
 	uri := b.client.getEndpoint(blobServiceName, name, url.Values{"restype": {"container"}})
 
@@ -90,7 +102,7 @@ func (b BlobStorageClient) DeleteContainer(name string) (*http.Response, error) 
 	return b.client.exec(verb, uri, headers, nil)
 }
 
-func (b BlobStorageClient) PutBlob(name, container string, blobType BlobType, blob []byte) (*http.Response, error) {
+func (b BlobStorageClient) PutBlob(name, container string, blobType BlobType, blob []byte) ([]byte, error) {
 	verb := "PUT"
 	path := fmt.Sprintf("%s/%s", name, container)
 	uri := b.client.getEndpoint(blobServiceName, path, url.Values{})
@@ -101,7 +113,7 @@ func (b BlobStorageClient) PutBlob(name, container string, blobType BlobType, bl
 	return b.client.exec(verb, uri, headers, bytes.NewReader(blob))
 }
 
-func (b BlobStorageClient) DeleteBlob(name, container string) (*http.Response, error) {
+func (b BlobStorageClient) DeleteBlob(name, container string) ([]byte, error) {
 	verb := "DELETE"
 	path := fmt.Sprintf("%s/%s", name, container)
 	uri := b.client.getEndpoint(blobServiceName, path, url.Values{})

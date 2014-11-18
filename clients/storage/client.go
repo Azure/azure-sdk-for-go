@@ -190,8 +190,6 @@ func (c StorageClient) buildCanonicalizedResource(uri string) (string, error) {
 }
 
 func (c StorageClient) buildCanonicalizedString(verb string, headers map[string]string, canonicalizedResource string) string {
-	// TODO (ahmetalpbalkan) write unit tests
-
 	canonicalizedString := fmt.Sprintf("%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s",
 		verb,
 		headers["Content-Encoding"],
@@ -211,10 +209,7 @@ func (c StorageClient) buildCanonicalizedString(verb string, headers map[string]
 	return canonicalizedString
 }
 
-func (c StorageClient) exec(verb, url string, headers map[string]string, body io.Reader) (resp *http.Response, err error) {
-	// TODO (ahmetalpbalkan) write test case for imported code
-	req, err := http.NewRequest(verb, url, body)
-
+func (c StorageClient) exec(verb, url string, headers map[string]string, body io.Reader) ([]byte, error) {
 	authHeader, err := c.getAuthorizationHeader(verb, url, headers)
 	if err != nil {
 		return nil, err
@@ -225,12 +220,12 @@ func (c StorageClient) exec(verb, url string, headers map[string]string, body io
 		return nil, err
 	}
 
+	req, err := http.NewRequest(verb, url, body)
 	for k, v := range headers {
 		req.Header.Add(k, v)
 	}
-
 	httpClient := http.Client{}
-	resp, err = httpClient.Do(req)
+	resp, err := httpClient.Do(req)
 
 	if err != nil {
 		return nil, err
@@ -254,10 +249,15 @@ func (c StorageClient) exec(verb, url string, headers map[string]string, body io
 			return nil, err
 		}
 
-		err = fmt.Errorf("%s %s", "Remote server returned error:", errXml.Message)
-		return nil, err
+		return nil, fmt.Errorf("%s %s", "Remote server returned error:", errXml.Message)
 	}
-	return resp, err
+
+	return readResponseBody(resp)
+}
+
+func readResponseBody(resp *http.Response) ([]byte, error) {
+	defer resp.Body.Close()
+	return ioutil.ReadAll(resp.Body)
 }
 
 // TODO (ahmetalpbalkan) refactor

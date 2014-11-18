@@ -3,7 +3,6 @@ package storage
 import (
 	"crypto/rand"
 	"errors"
-	"io/ioutil"
 	"os"
 	"testing"
 )
@@ -14,17 +13,10 @@ func TestListContainers(t *testing.T) {
 		t.Error(err)
 	}
 
-	resp, err := cli.ListContainers()
+	out, err := cli.ListContainers()
 	if err != nil {
 		t.Error(err)
 	}
-
-	defer resp.Body.Close()
-	bytes, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		t.Error(err)
-	}
-	t.Log(string(bytes))
 }
 
 func TestCreateGetDeleteContainer(t *testing.T) {
@@ -35,23 +27,20 @@ func TestCreateGetDeleteContainer(t *testing.T) {
 		t.Error(err)
 	}
 
-	resp1, err := cli.CreateContainer(cnt, ContainerAccessTypePrivate)
+	_, err = cli.CreateContainer(cnt, ContainerAccessTypePrivate)
 	if err != nil {
 		t.Error(err)
 	}
-	t.Logf("Create: %v", resp1.Status)
 
-	resp2, err := cli.GetContainer(cnt)
+	_, err = cli.GetContainer(cnt)
 	if err != nil {
 		t.Error(err)
 	}
-	t.Logf("Get: %v", resp2.Status)
 
-	resp3, err := cli.DeleteContainer(cnt)
+	_, err = cli.DeleteContainer(cnt)
 	if err != nil {
 		t.Error(err)
 	}
-	t.Logf("Delete: %v", resp3.Status)
 }
 
 func TestPutBlockBlob(t *testing.T) {
@@ -64,29 +53,25 @@ func TestPutBlockBlob(t *testing.T) {
 		t.Error(err)
 	}
 
-	resp, err := cli.CreateContainer(cnt, ContainerAccessTypePrivate)
+	_, err = cli.CreateContainer(cnt, ContainerAccessTypePrivate)
 	if err != nil {
 		t.Error(err)
 	}
-	t.Logf("Create container: %v", resp.Status)
 
-	resp, err = cli.PutBlob(cnt, blob, BlobTypeBlock, []byte(body))
+	_, err = cli.PutBlob(cnt, blob, BlobTypeBlock, []byte(body))
 	if err != nil {
 		t.Error(err)
 	}
-	t.Logf("Put blob: %v", resp.Status)
 
-	resp, err = cli.DeleteBlob(cnt, blob)
+	_, err = cli.DeleteBlob(cnt, blob)
 	if err != nil {
 		t.Error(err)
 	}
-	t.Logf("Delete blob: %v", resp.Status)
 
-	resp, err = cli.DeleteContainer(cnt)
+	_, err = cli.DeleteContainer(cnt)
 	if err != nil {
 		t.Error(err)
 	}
-	t.Logf("Delete container: %v", resp.Status)
 }
 
 func getClient() (*BlobStorageClient, error) {

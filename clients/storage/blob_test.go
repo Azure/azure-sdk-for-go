@@ -35,7 +35,7 @@ func TestCreateGetDeleteContainer(t *testing.T) {
 		t.Error(err)
 	}
 
-	resp1, err := cli.CreateContainer(cnt)
+	resp1, err := cli.CreateContainer(cnt, ContainerAccessTypePrivate)
 	if err != nil {
 		t.Error(err)
 	}
@@ -64,7 +64,7 @@ func TestPutBlockBlob(t *testing.T) {
 		t.Error(err)
 	}
 
-	resp, err := cli.CreateContainer(cnt)
+	resp, err := cli.CreateContainer(cnt, ContainerAccessTypePrivate)
 	if err != nil {
 		t.Error(err)
 	}

@@ -37,9 +37,19 @@ type ContainerListResponse struct {
 	Containers []Container
 }
 
+type BlobType string
+
 const (
-	BlobTypeBlock = "BlockBlob"
-	BlobTypePage  = "PageBlob"
+	BlobTypeBlock BlobType = "BlockBlob"
+	BlobTypePage  BlobType = "PageBlob"
+)
+
+type ContainerAccessType string
+
+const (
+	ContainerAccessTypePrivate   ContainerAccessType = ""
+	ContainerAccessTypeBlob      ContainerAccessType = "blob"
+	ContainerAccessTypeContainer ContainerAccessType = "container"
 )
 
 func (b BlobStorageClient) ListContainers() (*http.Response, error) {
@@ -60,12 +70,15 @@ func (b BlobStorageClient) GetContainer(name string) (*http.Response, error) {
 	return b.client.exec(verb, uri, headers, nil)
 }
 
-func (b BlobStorageClient) CreateContainer(name string) (*http.Response, error) {
+func (b BlobStorageClient) CreateContainer(name string, access ContainerAccessType) (*http.Response, error) {
 	verb := "PUT"
 	uri := b.client.getEndpoint(blobServiceName, name, url.Values{"restype": {"container"}})
 
 	headers := b.client.getStandardHeaders()
 	headers["Content-Length"] = "0"
+	if access != "" {
+		headers["x-ms-blob-public-access"] = string(access)
+	}
 	return b.client.exec(verb, uri, headers, nil)
 }
 
@@ -77,13 +90,13 @@ func (b BlobStorageClient) DeleteContainer(name string) (*http.Response, error) 
 	return b.client.exec(verb, uri, headers, nil)
 }
 
-func (b BlobStorageClient) PutBlob(name, container, blobType string, blob []byte) (*http.Response, error) {
+func (b BlobStorageClient) PutBlob(name, container string, blobType BlobType, blob []byte) (*http.Response, error) {
 	verb := "PUT"
 	path := fmt.Sprintf("%s/%s", name, container)
 	uri := b.client.getEndpoint(blobServiceName, path, url.Values{})
 
 	headers := b.client.getStandardHeaders()
-	headers["x-ms-blob-type"] = blobType
+	headers["x-ms-blob-type"] = string(blobType)
 	headers["Content-Length"] = fmt.Sprintf("%v", len(blob))
 	return b.client.exec(verb, uri, headers, bytes.NewReader(blob))
 }

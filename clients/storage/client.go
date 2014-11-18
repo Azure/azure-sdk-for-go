@@ -184,22 +184,25 @@ func (c StorageClient) buildCanonicalizedResource(uri string) (string, error) {
 			}
 		}
 	}
-	fmt.Printf("--------------\n%s\n----------------", cr)
 	return cr, nil
 }
 
-func (c StorageClient) buildCanonicalizedString(verb, contentEncoding, contentLanguage, contentLength, contentMD5, contentType,
-	date, ifModifiedSince, ifMatch, ifNoneMatch, ifUnmodifiedSince, Range, canonicalizedHeaders, canonicalizedResource string) string {
-	// TODO (ahmetalpbalkan) write test case for imported code
+func (c StorageClient) buildCanonicalizedString(verb string, headers map[string]string, canonicalizedHeaders, canonicalizedResource string) string {
+	// TODO (ahmetalpbalkan) write unit tests
 
 	canonicalizedString := fmt.Sprintf("%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s",
 		verb,
-		contentEncoding,
-		contentLanguage,
-		contentLength,
-		contentMD5,
-		contentType,
-		date, ifModifiedSince, ifMatch, ifNoneMatch, ifUnmodifiedSince, Range,
+		headers["Content-Encoding"],
+		headers["Content-Language"],
+		headers["Content-Length"],
+		headers["Content-MD5"],
+		headers["Content-Type"],
+		headers["Date"],
+		headers["If-Modified-Singe"],
+		headers["If-Match"],
+		headers["If-None-Match"],
+		headers["If-Unmodified-Singe"],
+		headers["Range"],
 		canonicalizedHeaders,
 		canonicalizedResource)
 

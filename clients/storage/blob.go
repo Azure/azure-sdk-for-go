@@ -56,20 +56,7 @@ func (b BlobStorageClient) ListContainers() (*http.Response, error) {
 		return nil, err
 	}
 
-	contentEncoding := ""
-	contentLanguage := ""
-	contentLength := ""
-	contentMD5 := ""
-	contentType := ""
-	date := ""
-	ifModifiedSince := ""
-	ifMatch := ""
-	ifNoneMatch := ""
-	ifUnmodifiedSince := ""
-	Range := ""
-
-	canonicalizedString := b.client.buildCanonicalizedString(verb, contentEncoding, contentLanguage, contentLength, contentMD5, contentType,
-		date, ifModifiedSince, ifMatch, ifNoneMatch, ifUnmodifiedSince, Range, canonicalizedHeaders, canonicalizedResource)
+	canonicalizedString := b.client.buildCanonicalizedString(verb, headers, canonicalizedHeaders, canonicalizedResource)
 	authHeader, err := b.client.createAuthorizationHeader(canonicalizedString)
 	if err != nil {
 		return nil, err
@@ -96,20 +83,7 @@ func (b BlobStorageClient) GetContainer(name string) (*http.Response, error) {
 		return nil, err
 	}
 
-	contentEncoding := ""
-	contentLanguage := ""
-	contentLength := "" // difference here!
-	contentMD5 := ""
-	contentType := ""
-	date := ""
-	ifModifiedSince := ""
-	ifMatch := ""
-	ifNoneMatch := ""
-	ifUnmodifiedSince := ""
-	Range := ""
-
-	canonicalizedString := b.client.buildCanonicalizedString(verb, contentEncoding, contentLanguage, contentLength, contentMD5, contentType,
-		date, ifModifiedSince, ifMatch, ifNoneMatch, ifUnmodifiedSince, Range, canonicalizedHeaders, canonicalizedResource)
+	canonicalizedString := b.client.buildCanonicalizedString(verb, headers, canonicalizedHeaders, canonicalizedResource)
 	authHeader, err := b.client.createAuthorizationHeader(canonicalizedString)
 	if err != nil {
 		return nil, err
@@ -129,6 +103,7 @@ func (b BlobStorageClient) CreateContainer(name string) (*http.Response, error) 
 	uri := b.client.getEndpoint(blobServiceName, name, url.Values{"restype": {"container"}})
 
 	headers := b.client.getStandardHeaders()
+	headers["Content-Length"] = "0"
 	canonicalizedHeaders := b.client.buildCanonicalizedHeader(headers)
 	canonicalizedResource, err := b.client.buildCanonicalizedResource(uri)
 
@@ -136,20 +111,7 @@ func (b BlobStorageClient) CreateContainer(name string) (*http.Response, error) 
 		return nil, err
 	}
 
-	contentEncoding := ""
-	contentLanguage := ""
-	contentLength := "0" // difference here!
-	contentMD5 := ""
-	contentType := ""
-	date := ""
-	ifModifiedSince := ""
-	ifMatch := ""
-	ifNoneMatch := ""
-	ifUnmodifiedSince := ""
-	Range := ""
-
-	canonicalizedString := b.client.buildCanonicalizedString(verb, contentEncoding, contentLanguage, contentLength, contentMD5, contentType,
-		date, ifModifiedSince, ifMatch, ifNoneMatch, ifUnmodifiedSince, Range, canonicalizedHeaders, canonicalizedResource)
+	canonicalizedString := b.client.buildCanonicalizedString(verb, headers, canonicalizedHeaders, canonicalizedResource)
 	authHeader, err := b.client.createAuthorizationHeader(canonicalizedString)
 	if err != nil {
 		return nil, err
@@ -176,20 +138,7 @@ func (b BlobStorageClient) DeleteContainer(name string) (*http.Response, error) 
 		return nil, err
 	}
 
-	contentEncoding := ""
-	contentLanguage := ""
-	contentLength := ""
-	contentMD5 := ""
-	contentType := ""
-	date := ""
-	ifModifiedSince := ""
-	ifMatch := ""
-	ifNoneMatch := ""
-	ifUnmodifiedSince := ""
-	Range := ""
-
-	canonicalizedString := b.client.buildCanonicalizedString(verb, contentEncoding, contentLanguage, contentLength, contentMD5, contentType,
-		date, ifModifiedSince, ifMatch, ifNoneMatch, ifUnmodifiedSince, Range, canonicalizedHeaders, canonicalizedResource)
+	canonicalizedString := b.client.buildCanonicalizedString(verb, headers, canonicalizedHeaders, canonicalizedResource)
 	authHeader, err := b.client.createAuthorizationHeader(canonicalizedString)
 	if err != nil {
 		return nil, err
@@ -208,10 +157,10 @@ func (b BlobStorageClient) PutBlob(name, container, blobType string, blob []byte
 	verb := "PUT"
 	path := fmt.Sprintf("%s/%s", name, container)
 	uri := b.client.getEndpoint(blobServiceName, path, url.Values{})
-	blobSize := len(blob)
 
 	headers := b.client.getStandardHeaders()
 	headers["x-ms-blob-type"] = blobType
+	headers["Content-Length"] = fmt.Sprintf("%v", len(blob))
 	canonicalizedHeaders := b.client.buildCanonicalizedHeader(headers)
 	canonicalizedResource, err := b.client.buildCanonicalizedResource(uri)
 
@@ -219,20 +168,7 @@ func (b BlobStorageClient) PutBlob(name, container, blobType string, blob []byte
 		return nil, err
 	}
 
-	contentEncoding := ""
-	contentLanguage := ""
-	contentLength := fmt.Sprintf("%v", blobSize)
-	contentMD5 := ""
-	contentType := ""
-	date := ""
-	ifModifiedSince := ""
-	ifMatch := ""
-	ifNoneMatch := ""
-	ifUnmodifiedSince := ""
-	Range := ""
-
-	canonicalizedString := b.client.buildCanonicalizedString(verb, contentEncoding, contentLanguage, contentLength, contentMD5, contentType,
-		date, ifModifiedSince, ifMatch, ifNoneMatch, ifUnmodifiedSince, Range, canonicalizedHeaders, canonicalizedResource)
+	canonicalizedString := b.client.buildCanonicalizedString(verb, headers, canonicalizedHeaders, canonicalizedResource)
 	authHeader, err := b.client.createAuthorizationHeader(canonicalizedString)
 	if err != nil {
 		return nil, err

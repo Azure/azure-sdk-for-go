@@ -76,6 +76,12 @@ func TestPutBlockBlob(t *testing.T) {
 	}
 	t.Logf("Put blob: %v", resp.Status)
 
+	resp, err = cli.DeleteBlob(cnt, blob)
+	if err != nil {
+		t.Error(err)
+	}
+	t.Logf("Delete blob: %v", resp.Status)
+
 	resp, err = cli.DeleteContainer(cnt)
 	if err != nil {
 		t.Error(err)

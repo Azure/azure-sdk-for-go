@@ -49,26 +49,7 @@ func (b BlobStorageClient) ListContainers() (*http.Response, error) {
 	uri := b.client.getEndpoint(blobServiceName, "", url.Values{"comp": {"list"}})
 
 	headers := b.client.getStandardHeaders()
-	canonicalizedHeaders := b.client.buildCanonicalizedHeader(headers)
-	canonicalizedResource, err := b.client.buildCanonicalizedResource(uri)
-
-	if err != nil {
-		return nil, err
-	}
-
-	canonicalizedString := b.client.buildCanonicalizedString(verb, headers, canonicalizedHeaders, canonicalizedResource)
-	authHeader, err := b.client.createAuthorizationHeader(canonicalizedString)
-	if err != nil {
-		return nil, err
-	}
-
-	headers["Authorization"] = authHeader
-	resp, err := b.client.exec(verb, uri, headers, nil)
-	if err != nil {
-		return nil, err
-	}
-
-	return resp, nil
+	return b.client.exec(verb, uri, headers, nil)
 }
 
 func (b BlobStorageClient) GetContainer(name string) (*http.Response, error) {
@@ -76,26 +57,7 @@ func (b BlobStorageClient) GetContainer(name string) (*http.Response, error) {
 	uri := b.client.getEndpoint(blobServiceName, name, url.Values{"restype": {"container"}})
 
 	headers := b.client.getStandardHeaders()
-	canonicalizedHeaders := b.client.buildCanonicalizedHeader(headers)
-	canonicalizedResource, err := b.client.buildCanonicalizedResource(uri)
-
-	if err != nil {
-		return nil, err
-	}
-
-	canonicalizedString := b.client.buildCanonicalizedString(verb, headers, canonicalizedHeaders, canonicalizedResource)
-	authHeader, err := b.client.createAuthorizationHeader(canonicalizedString)
-	if err != nil {
-		return nil, err
-	}
-
-	headers["Authorization"] = authHeader
-	resp, err := b.client.exec(verb, uri, headers, nil)
-	if err != nil {
-		return nil, err
-	}
-
-	return resp, nil
+	return b.client.exec(verb, uri, headers, nil)
 }
 
 func (b BlobStorageClient) CreateContainer(name string) (*http.Response, error) {
@@ -104,26 +66,7 @@ func (b BlobStorageClient) CreateContainer(name string) (*http.Response, error) 
 
 	headers := b.client.getStandardHeaders()
 	headers["Content-Length"] = "0"
-	canonicalizedHeaders := b.client.buildCanonicalizedHeader(headers)
-	canonicalizedResource, err := b.client.buildCanonicalizedResource(uri)
-
-	if err != nil {
-		return nil, err
-	}
-
-	canonicalizedString := b.client.buildCanonicalizedString(verb, headers, canonicalizedHeaders, canonicalizedResource)
-	authHeader, err := b.client.createAuthorizationHeader(canonicalizedString)
-	if err != nil {
-		return nil, err
-	}
-
-	headers["Authorization"] = authHeader
-	resp, err := b.client.exec(verb, uri, headers, nil)
-	if err != nil {
-		return nil, err
-	}
-
-	return resp, nil
+	return b.client.exec(verb, uri, headers, nil)
 }
 
 func (b BlobStorageClient) DeleteContainer(name string) (*http.Response, error) {
@@ -131,26 +74,7 @@ func (b BlobStorageClient) DeleteContainer(name string) (*http.Response, error) 
 	uri := b.client.getEndpoint(blobServiceName, name, url.Values{"restype": {"container"}})
 
 	headers := b.client.getStandardHeaders()
-	canonicalizedHeaders := b.client.buildCanonicalizedHeader(headers)
-	canonicalizedResource, err := b.client.buildCanonicalizedResource(uri)
-
-	if err != nil {
-		return nil, err
-	}
-
-	canonicalizedString := b.client.buildCanonicalizedString(verb, headers, canonicalizedHeaders, canonicalizedResource)
-	authHeader, err := b.client.createAuthorizationHeader(canonicalizedString)
-	if err != nil {
-		return nil, err
-	}
-
-	headers["Authorization"] = authHeader
-	resp, err := b.client.exec(verb, uri, headers, nil)
-	if err != nil {
-		return nil, err
-	}
-
-	return resp, nil
+	return b.client.exec(verb, uri, headers, nil)
 }
 
 func (b BlobStorageClient) PutBlob(name, container, blobType string, blob []byte) (*http.Response, error) {
@@ -161,24 +85,14 @@ func (b BlobStorageClient) PutBlob(name, container, blobType string, blob []byte
 	headers := b.client.getStandardHeaders()
 	headers["x-ms-blob-type"] = blobType
 	headers["Content-Length"] = fmt.Sprintf("%v", len(blob))
-	canonicalizedHeaders := b.client.buildCanonicalizedHeader(headers)
-	canonicalizedResource, err := b.client.buildCanonicalizedResource(uri)
+	return b.client.exec(verb, uri, headers, bytes.NewReader(blob))
+}
 
-	if err != nil {
-		return nil, err
-	}
+func (b BlobStorageClient) DeleteBlob(name, container string) (*http.Response, error) {
+	verb := "DELETE"
+	path := fmt.Sprintf("%s/%s", name, container)
+	uri := b.client.getEndpoint(blobServiceName, path, url.Values{})
 
-	canonicalizedString := b.client.buildCanonicalizedString(verb, headers, canonicalizedHeaders, canonicalizedResource)
-	authHeader, err := b.client.createAuthorizationHeader(canonicalizedString)
-	if err != nil {
-		return nil, err
-	}
-
-	headers["Authorization"] = authHeader
-	resp, err := b.client.exec(verb, uri, headers, bytes.NewReader(blob))
-	if err != nil {
-		return nil, err
-	}
-
-	return resp, nil
+	headers := b.client.getStandardHeaders()
+	return b.client.exec(verb, uri, headers, nil)
 }

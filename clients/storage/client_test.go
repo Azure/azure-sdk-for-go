@@ -1,6 +1,7 @@
 package storage
 
 import (
+	"encoding/base64"
 	"net/url"
 	"testing"
 )
@@ -132,5 +133,47 @@ func Test_buildCanonicalizedResource(t *testing.T) {
 			t.Errorf("Wrong canonicalized resource. Expected:\n'%s', Got:\n'%s'", i.expected, out)
 		}
 	}
+}
 
+func Test_buildCanonicalizedHeader(t *testing.T) {
+	cli, err := NewBasicClient("foo", "bar")
+	if err != nil {
+		t.Error(err)
+	}
+
+	type test struct {
+		headers  map[string]string
+		expected string
+	}
+	tests := []test{
+		{map[string]string{}, ""},
+		{map[string]string{"x-ms-foo": "bar"}, "x-ms-foo:bar"},
+		{map[string]string{"foo:": "bar"}, ""},
+		{map[string]string{"foo:": "bar", "x-ms-foo": "bar"}, "x-ms-foo:bar"},
+		{map[string]string{
+			"x-ms-version":   "9999-99-99",
+			"x-ms-blob-type": "BlockBlob"}, "x-ms-blob-type:BlockBlob\nx-ms-version:9999-99-99"}}
+
+	for _, i := range tests {
+		if out := cli.buildCanonicalizedHeader(i.headers); out != i.expected {
+			t.Errorf("Wrong canonicalized resource. Expected:\n'%s', Got:\n'%s'", i.expected, out)
+		}
+	}
+}
+
+func Test_createAuthorizationHeader(t *testing.T) {
+	key := base64.StdEncoding.EncodeToString([]byte("bar"))
+	cli, err := NewBasicClient("foo", key)
+	if err != nil {
+		t.Error(err)
+	}
+
+	canonicalizedString := `foobarzoo`
+	expected := `SharedKey foo:h5U0ATVX6SpbFX1H6GNuxIMeXXCILLoIvhflPtuQZ30=`
+
+	if out, err := cli.createAuthorizationHeader(canonicalizedString); err != nil {
+		t.Error(err)
+	} else if out != expected {
+		t.Errorf("Wrong authoriztion header. Expected: '%s', Got:'%s'", expected, out)
+	}
 }

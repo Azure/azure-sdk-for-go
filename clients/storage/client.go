@@ -86,13 +86,22 @@ func (c StorageClient) GetBlobService() *BlobStorageClient {
 }
 
 func (c StorageClient) createAuthorizationHeader(canonicalizedString string) (string, error) {
-	// TODO (ahmetalpbalkan) write test case for imported code
 	signature, err := c.computeHmac256(canonicalizedString)
 	if err != nil {
 		return "", err
 	}
 	authorizationHeader := fmt.Sprintf("%s %s:%s", "SharedKey", c.accountName, signature)
 	return authorizationHeader, nil
+}
+
+func (c StorageClient) getAuthorizationHeader(verb, url string, headers map[string]string) (string, error) {
+	canonicalizedResource, err := c.buildCanonicalizedResource(url)
+	if err != nil {
+		return "", err
+	}
+
+	canonicalizedString := c.buildCanonicalizedString(verb, headers, canonicalizedResource)
+	return c.createAuthorizationHeader(canonicalizedString)
 }
 
 func (c StorageClient) getStandardHeaders() map[string]string {
@@ -136,29 +145,22 @@ func (c StorageClient) buildCanonicalizedHeader(headers map[string]string) strin
 			ch += fmt.Sprintf("%s:%s\n", key, cm[key])
 		}
 	}
-
 	return ch
 }
 
 func (c StorageClient) buildCanonicalizedResource(uri string) (string, error) {
-	// TODO (ahmetalpbalkan) write test case for imported code
-
 	errMsg := "buildCanonicalizedResource error: %s"
-
 	u, err := url.Parse(uri)
-
 	if err != nil {
 		return "", fmt.Errorf(errMsg, err.Error())
 	}
 
 	cr := "/" + c.accountName
-
 	if len(u.Path) > 0 {
 		cr += u.Path
 	}
 
 	params, err := url.ParseQuery(u.RawQuery)
-
 	if err != nil {
 		return "", fmt.Errorf(errMsg, err.Error())
 	}
@@ -187,7 +189,7 @@ func (c StorageClient) buildCanonicalizedResource(uri string) (string, error) {
 	return cr, nil
 }
 
-func (c StorageClient) buildCanonicalizedString(verb string, headers map[string]string, canonicalizedHeaders, canonicalizedResource string) string {
+func (c StorageClient) buildCanonicalizedString(verb string, headers map[string]string, canonicalizedResource string) string {
 	// TODO (ahmetalpbalkan) write unit tests
 
 	canonicalizedString := fmt.Sprintf("%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s",
@@ -203,7 +205,7 @@ func (c StorageClient) buildCanonicalizedString(verb string, headers map[string]
 		headers["If-None-Match"],
 		headers["If-Unmodified-Singe"],
 		headers["Range"],
-		canonicalizedHeaders,
+		c.buildCanonicalizedHeader(headers),
 		canonicalizedResource)
 
 	return canonicalizedString
@@ -212,6 +214,12 @@ func (c StorageClient) buildCanonicalizedString(verb string, headers map[string]
 func (c StorageClient) exec(verb, url string, headers map[string]string, body io.Reader) (resp *http.Response, err error) {
 	// TODO (ahmetalpbalkan) write test case for imported code
 	req, err := http.NewRequest(verb, url, body)
+
+	authHeader, err := c.getAuthorizationHeader(verb, url, headers)
+	if err != nil {
+		return nil, err
+	}
+	headers["Authorization"] = authHeader
 
 	if err != nil {
 		return nil, err
@@ -247,7 +255,6 @@ func (c StorageClient) exec(verb, url string, headers map[string]string, body io
 		}
 
 		err = fmt.Errorf("%s %s", "Remote server returned error:", errXml.Message)
-
 		return nil, err
 	}
 	return resp, err

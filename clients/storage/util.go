@@ -4,21 +4,15 @@ import (
 	"crypto/hmac"
 	"crypto/sha256"
 	"encoding/base64"
-	"fmt"
 	"net/http"
 	"net/url"
 	"time"
 )
 
-func (c StorageClient) computeHmac256(message string) (string, error) {
-	key, err := base64.StdEncoding.DecodeString(c.accountKey)
-	if err != nil {
-		return "", fmt.Errorf("azure: base64 decode error: ", err)
-	}
-
-	h := hmac.New(sha256.New, key)
+func (c StorageClient) computeHmac256(message string) string {
+	h := hmac.New(sha256.New, c.accountKey)
 	h.Write([]byte(message))
-	return base64.StdEncoding.EncodeToString(h.Sum(nil)), nil
+	return base64.StdEncoding.EncodeToString(h.Sum(nil))
 }
 
 func currentTimeRfc1123Formatted() string {

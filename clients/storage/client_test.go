@@ -7,68 +7,72 @@ import (
 )
 
 func TestGetBaseUrl_Basic_Https(t *testing.T) {
-	cli, err := NewBasicClient("foo", "bar")
+	cli, err := NewBasicClient("foo", "YmFy")
+
+	if err != nil {
+		t.Fatal(err)
+	}
 
 	if cli.apiVersion != DefaultApiVersion {
-		t.Errorf("Wrong api version. Expected: '%s', got: '%s'", DefaultApiVersion, cli.apiVersion)
+		t.Fatalf("Wrong api version. Expected: '%s', got: '%s'", DefaultApiVersion, cli.apiVersion)
 	}
 
 	if err != nil {
-		t.Error(err)
+		t.Fatal(err)
 	}
 	output := cli.getBaseUrl("table")
 
 	if expected := "https://foo.table.core.windows.net"; output != expected {
-		t.Errorf("Wrong base url. Expected: '%s', got: '%s'", expected, output)
+		t.Fatalf("Wrong base url. Expected: '%s', got: '%s'", expected, output)
 	}
 }
 
 func TestGetBaseUrl_Custom_NoHttps(t *testing.T) {
 	apiVersion := DefaultApiVersion
-	cli, err := NewClient("foo", "bar", "core.chinacloudapi.cn", apiVersion, false)
+	cli, err := NewClient("foo", "YmFy", "core.chinacloudapi.cn", apiVersion, false)
 	if err != nil {
-		t.Error(err)
+		t.Fatal(err)
 	}
 
 	if cli.apiVersion != apiVersion {
-		t.Errorf("Wrong api version. Expected: '%s', got: '%s'", apiVersion, cli.apiVersion)
+		t.Fatalf("Wrong api version. Expected: '%s', got: '%s'", apiVersion, cli.apiVersion)
 	}
 
 	output := cli.getBaseUrl("table")
 
 	if expected := "http://foo.table.core.chinacloudapi.cn"; output != expected {
-		t.Errorf("Wrong base url. Expected: '%s', got: '%s'", expected, output)
+		t.Fatalf("Wrong base url. Expected: '%s', got: '%s'", expected, output)
 	}
 }
 
 func TestGetEndpoint_None(t *testing.T) {
-	cli, err := NewBasicClient("foo", "bar")
+	cli, err := NewBasicClient("foo", "YmFy")
 	if err != nil {
-		t.Error(err)
+		t.Fatal(err)
 	}
 	output := cli.getEndpoint(blobServiceName, "", url.Values{})
 
 	if expected := "https://foo.blob.core.windows.net/"; output != expected {
-		t.Errorf("Wrong endpoint url. Expected: '%s', got: '%s'", expected, output)
+		t.Fatalf("Wrong endpoint url. Expected: '%s', got: '%s'", expected, output)
 	}
 }
 
 func TestGetEndpoint_PathOnly(t *testing.T) {
-	cli, err := NewBasicClient("foo", "bar")
+	cli, err := NewBasicClient("foo", "YmFy")
 	if err != nil {
-		t.Error(err)
+		t.Fatal(err)
 	}
 	output := cli.getEndpoint(blobServiceName, "path", url.Values{})
 
 	if expected := "https://foo.blob.core.windows.net/path"; output != expected {
-		t.Errorf("Wrong endpoint url. Expected: '%s', got: '%s'", expected, output)
+		t.Fatalf("Wrong endpoint url. Expected: '%s', got: '%s'", expected, output)
 	}
 }
 
 func TestGetEndpoint_ParamsOnly(t *testing.T) {
-	cli, err := NewBasicClient("foo", "bar")
+	cli, err := NewBasicClient("foo", "YmFy")
 	if err != nil {
-		t.Error(err)
+		t.Fatal(err)
 	}
 	params := url.Values{}
 	params.Set("a", "b")
@@ -76,14 +80,14 @@ func TestGetEndpoint_ParamsOnly(t *testing.T) {
 	output := cli.getEndpoint(blobServiceName, "", params)
 
 	if expected := "https://foo.blob.core.windows.net/?a=b&c=d"; output != expected {
-		t.Errorf("Wrong endpoint url. Expected: '%s', got: '%s'", expected, output)
+		t.Fatalf("Wrong endpoint url. Expected: '%s', got: '%s'", expected, output)
 	}
 }
 
 func TestGetEndpoint_Mixed(t *testing.T) {
-	cli, err := NewBasicClient("foo", "bar")
+	cli, err := NewBasicClient("foo", "YmFy")
 	if err != nil {
-		t.Error(err)
+		t.Fatal(err)
 	}
 	params := url.Values{}
 	params.Set("a", "b")
@@ -91,32 +95,32 @@ func TestGetEndpoint_Mixed(t *testing.T) {
 	output := cli.getEndpoint(blobServiceName, "path", params)
 
 	if expected := "https://foo.blob.core.windows.net/path?a=b&c=d"; output != expected {
-		t.Errorf("Wrong endpoint url. Expected: '%s', got: '%s'", expected, output)
+		t.Fatalf("Wrong endpoint url. Expected: '%s', got: '%s'", expected, output)
 	}
 }
 
 func Test_getStandardHeaders(t *testing.T) {
-	cli, err := NewBasicClient("foo", "bar")
+	cli, err := NewBasicClient("foo", "YmFy")
 	if err != nil {
-		t.Error(err)
+		t.Fatal(err)
 	}
 
 	headers := cli.getStandardHeaders()
 	if len(headers) != 2 {
-		t.Error("Wrong standard header count")
+		t.Fatal("Wrong standard header count")
 	}
 	if v, ok := headers["x-ms-version"]; !ok || v != cli.apiVersion {
-		t.Error("Wrong version header")
+		t.Fatal("Wrong version header")
 	}
 	if _, ok := headers["x-ms-date"]; !ok {
-		t.Error("Missing date header")
+		t.Fatal("Missing date header")
 	}
 }
 
 func Test_buildCanonicalizedResource(t *testing.T) {
-	cli, err := NewBasicClient("foo", "bar")
+	cli, err := NewBasicClient("foo", "YmFy")
 	if err != nil {
-		t.Error(err)
+		t.Fatal(err)
 	}
 
 	type test struct{ url, expected string }
@@ -128,17 +132,17 @@ func Test_buildCanonicalizedResource(t *testing.T) {
 
 	for _, i := range tests {
 		if out, err := cli.buildCanonicalizedResource(i.url); err != nil {
-			t.Error(err)
+			t.Fatal(err)
 		} else if out != i.expected {
-			t.Errorf("Wrong canonicalized resource. Expected:\n'%s', Got:\n'%s'", i.expected, out)
+			t.Fatalf("Wrong canonicalized resource. Expected:\n'%s', Got:\n'%s'", i.expected, out)
 		}
 	}
 }
 
 func Test_buildCanonicalizedHeader(t *testing.T) {
-	cli, err := NewBasicClient("foo", "bar")
+	cli, err := NewBasicClient("foo", "YmFy")
 	if err != nil {
-		t.Error(err)
+		t.Fatal(err)
 	}
 
 	type test struct {
@@ -156,7 +160,7 @@ func Test_buildCanonicalizedHeader(t *testing.T) {
 
 	for _, i := range tests {
 		if out := cli.buildCanonicalizedHeader(i.headers); out != i.expected {
-			t.Errorf("Wrong canonicalized resource. Expected:\n'%s', Got:\n'%s'", i.expected, out)
+			t.Fatalf("Wrong canonicalized resource. Expected:\n'%s', Got:\n'%s'", i.expected, out)
 		}
 	}
 }
@@ -165,15 +169,13 @@ func Test_createAuthorizationHeader(t *testing.T) {
 	key := base64.StdEncoding.EncodeToString([]byte("bar"))
 	cli, err := NewBasicClient("foo", key)
 	if err != nil {
-		t.Error(err)
+		t.Fatal(err)
 	}
 
 	canonicalizedString := `foobarzoo`
 	expected := `SharedKey foo:h5U0ATVX6SpbFX1H6GNuxIMeXXCILLoIvhflPtuQZ30=`
 
-	if out, err := cli.createAuthorizationHeader(canonicalizedString); err != nil {
-		t.Error(err)
-	} else if out != expected {
-		t.Errorf("Wrong authoriztion header. Expected: '%s', Got:'%s'", expected, out)
+	if out := cli.createAuthorizationHeader(canonicalizedString); out != expected {
+		t.Fatalf("Wrong authoriztion header. Expected: '%s', Got:'%s'", expected, out)
 	}
 }

@@ -1,6 +1,7 @@
 package storage
 
 import (
+	"encoding/base64"
 	"encoding/xml"
 	"fmt"
 	"io"
@@ -24,7 +25,7 @@ const (
 
 type StorageClient struct {
 	accountName string
-	accountKey  string
+	accountKey  []byte
 	useHttps    bool
 	baseUrl     string
 	apiVersion  string
@@ -49,9 +50,14 @@ func NewClient(accountName, accountKey, blobServiceBaseUrl, apiVersion string, u
 		return nil, fmt.Errorf("azure: base storage service url required")
 	}
 
+	key, err := base64.StdEncoding.DecodeString(accountKey)
+	if err != nil {
+		return nil, err
+	}
+
 	return &StorageClient{
 		accountName: accountName,
-		accountKey:  accountKey,
+		accountKey:  key,
 		useHttps:    useHttps,
 		baseUrl:     blobServiceBaseUrl,
 		apiVersion:  apiVersion}, nil
@@ -91,13 +97,9 @@ func (c StorageClient) GetBlobService() *BlobStorageClient {
 	return &BlobStorageClient{c}
 }
 
-func (c StorageClient) createAuthorizationHeader(canonicalizedString string) (string, error) {
-	signature, err := c.computeHmac256(canonicalizedString)
-	if err != nil {
-		return "", err
-	}
-	authorizationHeader := fmt.Sprintf("%s %s:%s", "SharedKey", c.accountName, signature)
-	return authorizationHeader, nil
+func (c StorageClient) createAuthorizationHeader(canonicalizedString string) string {
+	signature := c.computeHmac256(canonicalizedString)
+	return fmt.Sprintf("%s %s:%s", "SharedKey", c.accountName, signature)
 }
 
 func (c StorageClient) getAuthorizationHeader(verb, url string, headers map[string]string) (string, error) {
@@ -107,7 +109,7 @@ func (c StorageClient) getAuthorizationHeader(verb, url string, headers map[stri
 	}
 
 	canonicalizedString := c.buildCanonicalizedString(verb, headers, canonicalizedResource)
-	return c.createAuthorizationHeader(canonicalizedString)
+	return c.createAuthorizationHeader(canonicalizedString), nil
 }
 
 func (c StorageClient) getStandardHeaders() map[string]string {

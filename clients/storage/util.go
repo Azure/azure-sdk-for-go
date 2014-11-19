@@ -6,6 +6,7 @@ import (
 	"encoding/base64"
 	"fmt"
 	"net/http"
+	"net/url"
 	"time"
 )
 
@@ -27,4 +28,27 @@ func currentTimeRfc1123Formatted() string {
 
 func timeRfc1123Formatted(t time.Time) string {
 	return t.Format(http.TimeFormat)
+}
+
+type parameters interface {
+	GetParameters() url.Values
+}
+
+func mergeParams(v1, v2 url.Values) url.Values {
+	out := url.Values{}
+	for k, v := range v1 {
+		out[k] = v
+	}
+	for k, v := range v2 {
+		vals, ok := out[k]
+		if ok {
+			vals = append(vals, v...)
+			out[k] = vals
+		} else {
+			out[k] = v
+		}
+
+	}
+
+	return out
 }

@@ -42,6 +42,36 @@ type ContainerList struct {
 	Containers []Container `xml:"Container"`
 }
 
+type ListContainersParameters struct {
+	Prefix     string
+	Marker     string
+	Include    string
+	Timeout    uint
+	MaxResults uint
+}
+
+func (p ListContainersParameters) GetParameters() url.Values {
+	out := url.Values{}
+
+	if p.Prefix != "" {
+		out.Set("prefix", p.Prefix)
+	}
+	if p.Marker != "" {
+		out.Set("marker", p.Marker)
+	}
+	if p.Include != "" {
+		out.Set("include", p.Include)
+	}
+	if p.Timeout != 0 {
+		out.Set("timeout", fmt.Sprintf("%v", p.Timeout))
+	}
+	if p.MaxResults != 0 {
+		out.Set("maxresults", fmt.Sprintf("%v", p.MaxResults))
+	}
+
+	return out
+}
+
 type BlobType string
 
 const (
@@ -57,29 +87,20 @@ const (
 	ContainerAccessTypeContainer ContainerAccessType = "container"
 )
 
-func (b BlobStorageClient) ListContainers() (ContainerListResponse, error) {
+func (b BlobStorageClient) ListContainers(params ListContainersParameters) (ContainerListResponse, error) {
 	// TODO (ahmetb) pagination
-	verb := "GET"
-	uri := b.client.getEndpoint(blobServiceName, "", url.Values{"comp": {"list"}})
+	q := mergeParams(params.GetParameters(), url.Values{"comp": {"list"}})
+	uri := b.client.getEndpoint(blobServiceName, "", q)
 	headers := b.client.getStandardHeaders()
 
 	var out ContainerListResponse
-	resp, err := b.client.exec(verb, uri, headers, nil)
+	resp, err := b.client.exec("GET", uri, headers, nil)
 	if err != nil {
 		return out, err
 	}
 
-	fmt.Println(string(resp))
 	err = xml.Unmarshal(resp, &out)
 	return out, err
-}
-
-func (b BlobStorageClient) ContainerExists(name string) ([]byte, error) {
-	verb := "GET"
-	uri := b.client.getEndpoint(blobServiceName, name, url.Values{"restype": {"container"}})
-
-	headers := b.client.getStandardHeaders()
-	return b.client.exec(verb, uri, headers, nil)
 }
 
 func (b BlobStorageClient) CreateContainer(name string, access ContainerAccessType) ([]byte, error) {

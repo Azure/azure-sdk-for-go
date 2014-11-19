@@ -121,7 +121,77 @@ func TestCreateDeleteContainer(t *testing.T) {
 	}
 }
 
-func TestPutBlockBlobSmall(t *testing.T) {
+func TestListBlobs(t *testing.T) {
+	cli, err := getClient()
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	_, err = cli.ListContainers(ListContainersParameters{})
+	if err != nil {
+		t.Fatal(err)
+	}
+}
+
+func TestListBlobsPagination(t *testing.T) {
+	cli, err := getClient()
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	cnt := randContainer()
+	_, err = cli.CreateContainer(cnt, ContainerAccessTypePrivate)
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer cli.DeleteContainer(cnt)
+
+	blobs := []string{}
+	const n = 5
+	const pageSize = 2
+	for i := 0; i < n; i++ {
+		name := randString(10)
+		_, err := cli.PutBlob(cnt, name, BlobTypeBlock, []byte("Hello, world!"))
+		if err != nil {
+			t.Fatal(err)
+		}
+		blobs = append(blobs, name)
+	}
+	sort.Strings(blobs)
+
+	// Paginate
+	seen := []string{}
+	marker := ""
+	for {
+		resp, err := cli.ListBlobs(cnt, ListBlobsParameters{
+			MaxResults: pageSize,
+			Marker:     marker})
+		if err != nil {
+			t.Fatal(err)
+		}
+
+		for _, v := range resp.Blobs {
+			seen = append(seen, v.Name)
+		}
+
+		marker = resp.NextMarker
+		if marker == "" || len(resp.Blobs) == 0 {
+			break
+		}
+	}
+
+	// Compare
+	if !reflect.DeepEqual(blobs, seen) {
+		t.Fatalf("Got wrong list of blobs. Expected: %s, Got: %s", blobs, seen)
+	}
+
+	_, err = cli.DeleteContainer(cnt)
+	if err != nil {
+		t.Fatal(err)
+	}
+}
+
+func TestPutBlockBlobSmallVerifyDelete(t *testing.T) {
 	cnt := randContainer()
 	blob := randString(10)
 	body := []byte(randString(1024 * 4))

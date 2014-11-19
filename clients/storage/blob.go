@@ -11,20 +11,49 @@ type BlobStorageClient struct {
 	client StorageClient
 }
 
-// TODO (ahmetalpbalkan) use
 type Container struct {
 	Name       string              `xml:"Name"`
 	Properties ContainerProperties `xml:"Properties"`
-	Metadata   map[string]string   `xml:"Metadata"`
+	// TODO (ahmetalpbalkan) Metadata
 }
 
-// TODO (ahmetalpbalkan) use
+type Blob struct {
+	Name       string         `xml:"Name"`
+	Properties BlobProperties `xml:"Properties"`
+	// TODO (ahmetalpbalkan) Metadata
+}
+
 type ContainerProperties struct {
 	LastModified  string `xml:"Last-Modified"`
 	Etag          string `xml:"Etag"`
 	LeaseStatus   string `xml:"LeaseStatus"`
 	LeaseState    string `xml:"LeaseState"`
 	LeaseDuration string `xml:"LeaseDuration"`
+	// TODO (ahmetalpbalkan) remaining fields
+}
+
+type BlobProperties struct {
+	LastModified    string `xml:"Last-Modified"`
+	Etag            string `xml:"Etag"`
+	ContentMD5      string `xml:"Content-MD5"`
+	ContentLength   string `xml:"Content-Length"`
+	ContentType     string `xml:"Content-Type"`
+	ContentEncoding string `xml:"Content-Encoding"`
+	SequenceNumber  string `xml:"x-ms-blob-sequence-number"`
+	LeaseStatus     string `xml:"LeaseStatus"`
+	LeaseState      string `xml:"LeaseState"`
+	LeaseDuration   string `xml:"LeaseDuration"`
+	// TODO (ahmetalpbalkan) remaining fields
+}
+
+type BlobListResponse struct {
+	XMLName    xml.Name `xml:"EnumerationResults"`
+	Xmlns      string   `xml:"xmlns,attr"`
+	Prefix     string   `xml:"Prefix"`
+	Marker     string   `xml:"Marker"`
+	NextMarker string   `xml:"NextMarker"`
+	MaxResults int64    `xml:"MaxResults"`
+	Blobs      []Blob   `xml:"Blobs>Blob"`
 }
 
 type ContainerListResponse struct {
@@ -41,8 +70,8 @@ type ListContainersParameters struct {
 	Prefix     string
 	Marker     string
 	Include    string
-	Timeout    uint
 	MaxResults uint
+	Timeout    uint
 }
 
 func (p ListContainersParameters) GetParameters() url.Values {
@@ -57,11 +86,45 @@ func (p ListContainersParameters) GetParameters() url.Values {
 	if p.Include != "" {
 		out.Set("include", p.Include)
 	}
+	if p.MaxResults != 0 {
+		out.Set("maxresults", fmt.Sprintf("%v", p.MaxResults))
+	}
 	if p.Timeout != 0 {
 		out.Set("timeout", fmt.Sprintf("%v", p.Timeout))
 	}
+
+	return out
+}
+
+type ListBlobsParameters struct {
+	Prefix     string
+	Delimiter  string
+	Marker     string
+	Include    string
+	MaxResults uint
+	Timeout    uint
+}
+
+func (p ListBlobsParameters) GetParameters() url.Values {
+	out := url.Values{}
+
+	if p.Prefix != "" {
+		out.Set("prefix", p.Prefix)
+	}
+	if p.Delimiter != "" {
+		out.Set("delimiter", p.Delimiter)
+	}
+	if p.Marker != "" {
+		out.Set("marker", p.Marker)
+	}
+	if p.Include != "" {
+		out.Set("include", p.Include)
+	}
 	if p.MaxResults != 0 {
 		out.Set("maxresults", fmt.Sprintf("%v", p.MaxResults))
+	}
+	if p.Timeout != 0 {
+		out.Set("timeout", fmt.Sprintf("%v", p.Timeout))
 	}
 
 	return out
@@ -83,7 +146,6 @@ const (
 )
 
 func (b BlobStorageClient) ListContainers(params ListContainersParameters) (ContainerListResponse, error) {
-	// TODO (ahmetb) pagination
 	q := mergeParams(params.GetParameters(), url.Values{"comp": {"list"}})
 	uri := b.client.getEndpoint(blobServiceName, "", q)
 	headers := b.client.getStandardHeaders()
@@ -108,6 +170,23 @@ func (b BlobStorageClient) CreateContainer(name string, access ContainerAccessTy
 		headers["x-ms-blob-public-access"] = string(access)
 	}
 	return b.client.exec(verb, uri, headers, nil)
+}
+
+func (b BlobStorageClient) ListBlobs(container string, params ListBlobsParameters) (BlobListResponse, error) {
+	q := mergeParams(params.GetParameters(), url.Values{
+		"restype": {"container"},
+		"comp":    {"list"}})
+	uri := b.client.getEndpoint(blobServiceName, container, q)
+	headers := b.client.getStandardHeaders()
+
+	var out BlobListResponse
+	resp, err := b.client.exec("GET", uri, headers, nil)
+	if err != nil {
+		return out, err
+	}
+
+	err = xml.Unmarshal(resp.body, &out)
+	return out, err
 }
 
 func (b BlobStorageClient) DeleteContainer(name string) (*storageResponse, error) {

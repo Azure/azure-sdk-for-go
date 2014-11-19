@@ -123,9 +123,18 @@ func (b BlobStorageClient) DeleteContainer(name string) (*storageResponse, error
 	return b.client.exec(verb, uri, headers, nil)
 }
 
-func (b BlobStorageClient) PutBlob(name, container string, blobType BlobType, blob []byte) (*storageResponse, error) {
+func (b BlobStorageClient) GetBlob(container, name string) (*storageResponse, error) {
+	verb := "GET"
+	path := fmt.Sprintf("%s/%s", container, name)
+	uri := b.client.getEndpoint(blobServiceName, path, url.Values{})
+
+	headers := b.client.getStandardHeaders()
+	return b.client.exec(verb, uri, headers, nil)
+}
+
+func (b BlobStorageClient) PutBlob(container, name string, blobType BlobType, blob []byte) (*storageResponse, error) {
 	verb := "PUT"
-	path := fmt.Sprintf("%s/%s", name, container)
+	path := fmt.Sprintf("%s/%s", container, name)
 	uri := b.client.getEndpoint(blobServiceName, path, url.Values{})
 
 	headers := b.client.getStandardHeaders()
@@ -134,9 +143,9 @@ func (b BlobStorageClient) PutBlob(name, container string, blobType BlobType, bl
 	return b.client.exec(verb, uri, headers, bytes.NewReader(blob))
 }
 
-func (b BlobStorageClient) DeleteBlob(name, container string) (*storageResponse, error) {
+func (b BlobStorageClient) DeleteBlob(container, name string) (*storageResponse, error) {
 	verb := "DELETE"
-	path := fmt.Sprintf("%s/%s", name, container)
+	path := fmt.Sprintf("%s/%s", container, name)
 	uri := b.client.getEndpoint(blobServiceName, path, url.Values{})
 
 	headers := b.client.getStandardHeaders()

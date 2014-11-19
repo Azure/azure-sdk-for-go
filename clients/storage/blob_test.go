@@ -16,12 +16,12 @@ const testContainerPrefix = "zzzztest-"
 func TestListContainers(t *testing.T) {
 	cli, err := getClient()
 	if err != nil {
-		t.Error(err)
+		t.Fatal(err)
 	}
 
 	_, err = cli.ListContainers(ListContainersParameters{})
 	if err != nil {
-		t.Error(err)
+		t.Fatal(err)
 	}
 }
 
@@ -42,7 +42,7 @@ func TestListContainersPagination(t *testing.T) {
 	// Create test containers
 	created := []string{}
 	for i := 0; i < n; i++ {
-		name := randContainer(n)
+		name := randContainer()
 		_, err := cli.CreateContainer(name, ContainerAccessTypePrivate)
 		if err != nil {
 			t.Fatalf("Error creating test container: %s", err)
@@ -102,6 +102,68 @@ func TestListContainersPagination(t *testing.T) {
 	}
 }
 
+func TestCreateDeleteContainer(t *testing.T) {
+	cnt := randString(10)
+
+	cli, err := getClient()
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	_, err = cli.CreateContainer(cnt, ContainerAccessTypePrivate)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	_, err = cli.DeleteContainer(cnt)
+	if err != nil {
+		t.Fatal(err)
+	}
+}
+
+func TestPutBlockBlobSmall(t *testing.T) {
+	cnt := randContainer()
+	blob := randString(10)
+	body := []byte(randString(1024 * 4))
+
+	cli, err := getClient()
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	_, err = cli.CreateContainer(cnt, ContainerAccessTypePrivate)
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer cli.DeleteContainer(cnt)
+
+	_, err = cli.PutBlob(cnt, blob, BlobTypeBlock, body)
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer cli.DeleteBlob(cnt, blob)
+
+	resp, err := cli.GetBlob(cnt, blob)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	// Verify contents
+	if !reflect.DeepEqual(body, resp.body) {
+		t.Fatalf("Wrong blob body.\nExpected: %d bytes, Got: %d byes", len(body), len(resp.body))
+	}
+
+	_, err = cli.DeleteBlob(cnt, blob)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	_, err = cli.DeleteContainer(cnt)
+	if err != nil {
+		t.Fatal(err)
+	}
+}
+
 func deleteTestContainers(cli *BlobStorageClient) error {
 	for {
 		resp, err := cli.ListContainers(ListContainersParameters{Prefix: testContainerPrefix})
@@ -122,56 +184,6 @@ func deleteTestContainers(cli *BlobStorageClient) error {
 	return nil
 }
 
-func TestCreateDeleteContainer(t *testing.T) {
-	cnt := randString(10)
-
-	cli, err := getClient()
-	if err != nil {
-		t.Error(err)
-	}
-
-	_, err = cli.CreateContainer(cnt, ContainerAccessTypePrivate)
-	if err != nil {
-		t.Error(err)
-	}
-
-	_, err = cli.DeleteContainer(cnt)
-	if err != nil {
-		t.Error(err)
-	}
-}
-
-func TestPutBlockBlob(t *testing.T) {
-	cnt := randString(5)
-	blob := randString(10)
-	body := randString(1024 * 4)
-
-	cli, err := getClient()
-	if err != nil {
-		t.Error(err)
-	}
-
-	_, err = cli.CreateContainer(cnt, ContainerAccessTypePrivate)
-	if err != nil {
-		t.Error(err)
-	}
-
-	_, err = cli.PutBlob(cnt, blob, BlobTypeBlock, []byte(body))
-	if err != nil {
-		t.Error(err)
-	}
-
-	_, err = cli.DeleteBlob(cnt, blob)
-	if err != nil {
-		t.Error(err)
-	}
-
-	_, err = cli.DeleteContainer(cnt)
-	if err != nil {
-		t.Error(err)
-	}
-}
-
 func getClient() (*BlobStorageClient, error) {
 	name := os.Getenv("ACCOUNT_NAME")
 	if name == "" {
@@ -188,7 +200,7 @@ func getClient() (*BlobStorageClient, error) {
 	return cli.GetBlobService(), nil
 }
 
-func randContainer(n int) string {
+func randContainer() string {
 	return testContainerPrefix + randString(32-len(testContainerPrefix))
 }
 

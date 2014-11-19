@@ -30,6 +30,12 @@ type StorageClient struct {
 	apiVersion  string
 }
 
+type storageResponse struct {
+	statusCode int
+	headers    http.Header
+	body       []byte
+}
+
 func NewBasicClient(accountName, accountKey string) (*StorageClient, error) {
 	return NewClient(accountName, accountKey, DefaultBaseUrl, DefaultApiVersion, defaultUseHttps)
 }
@@ -209,7 +215,7 @@ func (c StorageClient) buildCanonicalizedString(verb string, headers map[string]
 	return canonicalizedString
 }
 
-func (c StorageClient) exec(verb, url string, headers map[string]string, body io.Reader) ([]byte, error) {
+func (c StorageClient) exec(verb, url string, headers map[string]string, body io.Reader) (*storageResponse, error) {
 	authHeader, err := c.getAuthorizationHeader(verb, url, headers)
 	if err != nil {
 		return nil, err
@@ -237,7 +243,7 @@ func (c StorageClient) exec(verb, url string, headers map[string]string, body io
 		errXml := new(ErrorXml)
 
 		var respBody []byte
-		respBody, err = ioutil.ReadAll(resp.Body)
+		respBody, err = readResponseBody(resp)
 		if err != nil {
 			return nil, err
 		}
@@ -249,10 +255,20 @@ func (c StorageClient) exec(verb, url string, headers map[string]string, body io
 			return nil, err
 		}
 
-		return nil, fmt.Errorf("%s %s", "Remote server returned error:", errXml.Message)
+		return &storageResponse{
+			statusCode: resp.StatusCode,
+			headers:    resp.Header,
+			body:       respBody}, fmt.Errorf("%s %s", "Remote server returned error:", errXml.Message)
 	}
 
-	return readResponseBody(resp)
+	respBody, err := readResponseBody(resp)
+	if err != nil {
+		return nil, err
+	}
+	return &storageResponse{
+		statusCode: resp.StatusCode,
+		headers:    resp.Header,
+		body:       respBody}, err
 }
 
 func readResponseBody(resp *http.Response) ([]byte, error) {

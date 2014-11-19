@@ -19,7 +19,7 @@ func TestListContainers(t *testing.T) {
 		t.Error(err)
 	}
 
-	out, err := cli.ListContainers(ListContainersParameters{})
+	_, err = cli.ListContainers(ListContainersParameters{})
 	if err != nil {
 		t.Error(err)
 	}
@@ -36,9 +36,11 @@ func TestListContainersPagination(t *testing.T) {
 		t.Fatal(err)
 	}
 
+	const n = 5
+	const pageSize = 2
+
 	// Create test containers
 	created := []string{}
-	const n = 10
 	for i := 0; i < n; i++ {
 		name := randContainer(n)
 		_, err := cli.CreateContainer(name, ContainerAccessTypePrivate)
@@ -66,7 +68,6 @@ func TestListContainersPagination(t *testing.T) {
 	}()
 
 	// Paginate results
-	const pageSize = 2
 	seen := []string{}
 	marker := ""
 	for {
@@ -121,7 +122,7 @@ func deleteTestContainers(cli *BlobStorageClient) error {
 	return nil
 }
 
-func TestCreateGetDeleteContainer(t *testing.T) {
+func TestCreateDeleteContainer(t *testing.T) {
 	cnt := randString(10)
 
 	cli, err := getClient()
@@ -130,11 +131,6 @@ func TestCreateGetDeleteContainer(t *testing.T) {
 	}
 
 	_, err = cli.CreateContainer(cnt, ContainerAccessTypePrivate)
-	if err != nil {
-		t.Error(err)
-	}
-
-	_, err = cli.GetContainer(cnt)
 	if err != nil {
 		t.Error(err)
 	}

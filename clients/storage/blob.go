@@ -99,11 +99,11 @@ func (b BlobStorageClient) ListContainers(params ListContainersParameters) (Cont
 		return out, err
 	}
 
-	err = xml.Unmarshal(resp, &out)
+	err = xml.Unmarshal(resp.body, &out)
 	return out, err
 }
 
-func (b BlobStorageClient) CreateContainer(name string, access ContainerAccessType) ([]byte, error) {
+func (b BlobStorageClient) CreateContainer(name string, access ContainerAccessType) (*storageResponse, error) {
 	verb := "PUT"
 	uri := b.client.getEndpoint(blobServiceName, name, url.Values{"restype": {"container"}})
 
@@ -115,7 +115,7 @@ func (b BlobStorageClient) CreateContainer(name string, access ContainerAccessTy
 	return b.client.exec(verb, uri, headers, nil)
 }
 
-func (b BlobStorageClient) DeleteContainer(name string) ([]byte, error) {
+func (b BlobStorageClient) DeleteContainer(name string) (*storageResponse, error) {
 	verb := "DELETE"
 	uri := b.client.getEndpoint(blobServiceName, name, url.Values{"restype": {"container"}})
 
@@ -123,7 +123,7 @@ func (b BlobStorageClient) DeleteContainer(name string) ([]byte, error) {
 	return b.client.exec(verb, uri, headers, nil)
 }
 
-func (b BlobStorageClient) PutBlob(name, container string, blobType BlobType, blob []byte) ([]byte, error) {
+func (b BlobStorageClient) PutBlob(name, container string, blobType BlobType, blob []byte) (*storageResponse, error) {
 	verb := "PUT"
 	path := fmt.Sprintf("%s/%s", name, container)
 	uri := b.client.getEndpoint(blobServiceName, path, url.Values{})
@@ -134,7 +134,7 @@ func (b BlobStorageClient) PutBlob(name, container string, blobType BlobType, bl
 	return b.client.exec(verb, uri, headers, bytes.NewReader(blob))
 }
 
-func (b BlobStorageClient) DeleteBlob(name, container string) ([]byte, error) {
+func (b BlobStorageClient) DeleteBlob(name, container string) (*storageResponse, error) {
 	verb := "DELETE"
 	path := fmt.Sprintf("%s/%s", name, container)
 	uri := b.client.getEndpoint(blobServiceName, path, url.Values{})

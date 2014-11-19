@@ -13,18 +13,6 @@ import (
 
 const testContainerPrefix = "zzzztest-"
 
-func TestListContainers(t *testing.T) {
-	cli, err := getClient()
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	_, err = cli.ListContainers(ListContainersParameters{})
-	if err != nil {
-		t.Fatal(err)
-	}
-}
-
 func TestListContainersPagination(t *testing.T) {
 	cli, err := getClient()
 	if err != nil {
@@ -116,18 +104,6 @@ func TestCreateDeleteContainer(t *testing.T) {
 	}
 
 	_, err = cli.DeleteContainer(cnt)
-	if err != nil {
-		t.Fatal(err)
-	}
-}
-
-func TestListBlobs(t *testing.T) {
-	cli, err := getClient()
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	_, err = cli.ListContainers(ListContainersParameters{})
 	if err != nil {
 		t.Fatal(err)
 	}

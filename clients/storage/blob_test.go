@@ -177,7 +177,7 @@ func TestPutBlockBlobSmallVerifyDelete(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	_, err = cli.CreateContainer(cnt, ContainerAccessTypePrivate)
+	_, err = cli.CreateContainer(cnt, ContainerAccessTypeBlob)
 	if err != nil {
 		t.Fatal(err)
 	}

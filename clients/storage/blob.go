@@ -28,18 +28,13 @@ type ContainerProperties struct {
 }
 
 type ContainerListResponse struct {
-	XMLName    xml.Name      `xml:"EnumerationResults"`
-	Xmlns      string        `xml:"xmlns,attr"`
-	Prefix     string        `xml:"Prefix"`
-	Marker     string        `xml:"Marker"`
-	NextMarker string        `xml:"NextMarker"`
-	MaxResults int64         `xml:"MaxResults"`
-	Containers ContainerList `xml:"Containers"`
-}
-
-type ContainerList struct {
-	XMLName    xml.Name    `xml:"Containers"`
-	Containers []Container `xml:"Container"`
+	XMLName    xml.Name    `xml:"EnumerationResults"`
+	Xmlns      string      `xml:"xmlns,attr"`
+	Prefix     string      `xml:"Prefix"`
+	Marker     string      `xml:"Marker"`
+	NextMarker string      `xml:"NextMarker"`
+	MaxResults int64       `xml:"MaxResults"`
+	Containers []Container `xml:"Containers>Container"`
 }
 
 type ListContainersParameters struct {

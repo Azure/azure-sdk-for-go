@@ -80,7 +80,7 @@ func TestListContainersPagination(t *testing.T) {
 			t.Fatal(err)
 		}
 
-		containers := resp.Containers.Containers
+		containers := resp.Containers
 
 		if len(containers) > pageSize {
 			t.Fatalf("Got a bigger page. Expected: %d, got: %d", pageSize, len(containers))
@@ -103,7 +103,7 @@ func TestListContainersPagination(t *testing.T) {
 }
 
 func TestCreateDeleteContainer(t *testing.T) {
-	cnt := randString(10)
+	cnt := randContainer()
 
 	cli, err := getClient()
 	if err != nil {
@@ -170,10 +170,10 @@ func deleteTestContainers(cli *BlobStorageClient) error {
 		if err != nil {
 			return err
 		}
-		if len(resp.Containers.Containers) == 0 {
+		if len(resp.Containers) == 0 {
 			break
 		}
-		for _, c := range resp.Containers.Containers {
+		for _, c := range resp.Containers {
 			_, err := cli.DeleteContainer(c.Name)
 			if err != nil {
 				return err

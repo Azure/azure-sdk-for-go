@@ -378,11 +378,18 @@ func (b BlobStorageClient) putBlockList(container, name string, blocks []block) 
 	return nil
 }
 
-func (b BlobStorageClient) DeleteBlob(container, name string) (*storageResponse, error) {
+func (b BlobStorageClient) DeleteBlob(container, name string) error {
 	verb := "DELETE"
 	path := fmt.Sprintf("%s/%s", container, name)
 	uri := b.client.getEndpoint(blobServiceName, path, url.Values{})
 
 	headers := b.client.getStandardHeaders()
-	return b.client.exec(verb, uri, headers, nil)
+	resp, err := b.client.exec(verb, uri, headers, nil)
+	if err != nil {
+		return err
+	}
+	if resp.statusCode != http.StatusAccepted {
+		return ErrNotAccepted
+	}
+	return nil
 }

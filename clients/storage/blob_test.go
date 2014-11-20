@@ -278,7 +278,7 @@ func TestPutSingleBlockBlob(t *testing.T) {
 		t.Fatalf("Wrong blob contents.\nExpected: %d bytes, Got: %d byes", len(body), len(resp.body))
 	}
 
-	_, err = cli.DeleteBlob(cnt, blob)
+	err = cli.DeleteBlob(cnt, blob)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -328,7 +328,7 @@ func TestPutMultiBlockBlob(t *testing.T) {
 		t.Fatalf("Wrong blob contents.\nExpected: %d bytes, Got: %d byes", len(body), len(resp.body))
 	}
 
-	_, err = cli.DeleteBlob(cnt, blob)
+	err = cli.DeleteBlob(cnt, blob)
 	if err != nil {
 		t.Fatal(err)
 	}

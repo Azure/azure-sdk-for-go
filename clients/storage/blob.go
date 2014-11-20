@@ -165,8 +165,12 @@ type block struct {
 	use blockStatus
 }
 
-var ErrNotCreated error = errors.New("storage: operation has returned a successful error code other than 201 Created.")
-var ErrNotAccepted error = errors.New("storage: operation has returned a successful error code other than 202 Accepted.")
+var (
+	ErrNotCreated  = errors.New("storage: operation has returned a successful error code other than 201 Created.")
+	ErrNotAccepted = errors.New("storage: operation has returned a successful error code other than 202 Accepted.")
+)
+
+const errUnexpectedStatus = "storage: was expecting status code: %s, got: %s"
 
 func (b BlobStorageClient) ListContainers(params ListContainersParameters) (ContainerListResponse, error) {
 	q := mergeParams(params.GetParameters(), url.Values{"comp": {"list"}})
@@ -284,13 +288,21 @@ func (b BlobStorageClient) BlobExists(container, name string) (bool, error) {
 	return false, err
 }
 
-func (b BlobStorageClient) GetBlob(container, name string) (*storageResponse, error) {
+func (b BlobStorageClient) GetBlob(container, name string) (io.ReadCloser, error) {
 	verb := "GET"
 	path := fmt.Sprintf("%s/%s", container, name)
 	uri := b.client.getEndpoint(blobServiceName, path, url.Values{})
 
 	headers := b.client.getStandardHeaders()
-	return b.client.exec(verb, uri, headers, nil)
+	resp, err := b.client.exec(verb, uri, headers, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if resp.statusCode != http.StatusOK {
+		return nil, fmt.Errorf(errUnexpectedStatus, http.StatusOK, resp.statusCode)
+	}
+	return resp.body, nil
 }
 
 func (b BlobStorageClient) PutBlockBlob(container, name string, blob io.Reader) error { // TODO (ahmetalpbalkan) consider ReadCloser and closing

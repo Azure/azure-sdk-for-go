@@ -337,8 +337,8 @@ func TestPutSingleBlockBlob(t *testing.T) {
 	}
 
 	// Verify contents
-	respBody, err := ioutil.ReadAll(resp.body)
-	defer resp.body.Close()
+	respBody, err := ioutil.ReadAll(resp)
+	defer resp.Close()
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -393,8 +393,8 @@ func TestPutMultiBlockBlob(t *testing.T) {
 	}
 
 	// Verify contents
-	respBody, err := ioutil.ReadAll(resp.body)
-	defer resp.body.Close()
+	respBody, err := ioutil.ReadAll(resp)
+	defer resp.Close()
 	if err != nil {
 		t.Fatal(err)
 	}

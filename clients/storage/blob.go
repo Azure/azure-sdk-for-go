@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"encoding/xml"
 	"fmt"
+	"net/http"
 	"net/url"
 )
 
@@ -197,6 +198,19 @@ func (b BlobStorageClient) DeleteContainer(name string) (*storageResponse, error
 	return b.client.exec(verb, uri, headers, nil)
 }
 
+func (b BlobStorageClient) BlobExists(container, name string) (bool, error) {
+	verb := "GET"
+	path := fmt.Sprintf("%s/%s", container, name)
+	uri := b.client.getEndpoint(blobServiceName, path, url.Values{})
+
+	headers := b.client.getStandardHeaders()
+	resp, err := b.client.exec(verb, uri, headers, nil)
+	if resp != nil && resp.statusCode == http.StatusOK || resp.statusCode == http.StatusNotFound {
+		return resp.statusCode == http.StatusOK, nil
+	}
+	return false, err
+}
+
 func (b BlobStorageClient) GetBlob(container, name string) (*storageResponse, error) {
 	verb := "GET"
 	path := fmt.Sprintf("%s/%s", container, name)
@@ -206,13 +220,13 @@ func (b BlobStorageClient) GetBlob(container, name string) (*storageResponse, er
 	return b.client.exec(verb, uri, headers, nil)
 }
 
-func (b BlobStorageClient) PutBlob(container, name string, blobType BlobType, blob []byte) (*storageResponse, error) {
+func (b BlobStorageClient) PutBlockBlob(container, name string, blob []byte) (*storageResponse, error) {
 	verb := "PUT"
 	path := fmt.Sprintf("%s/%s", container, name)
 	uri := b.client.getEndpoint(blobServiceName, path, url.Values{})
 
 	headers := b.client.getStandardHeaders()
-	headers["x-ms-blob-type"] = string(blobType)
+	headers["x-ms-blob-type"] = string(BlobTypeBlock)
 	headers["Content-Length"] = fmt.Sprintf("%v", len(blob))
 	return b.client.exec(verb, uri, headers, bytes.NewReader(blob))
 }

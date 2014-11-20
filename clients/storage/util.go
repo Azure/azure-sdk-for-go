@@ -41,8 +41,6 @@ func mergeParams(v1, v2 url.Values) url.Values {
 		} else {
 			out[k] = v
 		}
-
 	}
-
 	return out
 }

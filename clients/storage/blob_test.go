@@ -3,7 +3,7 @@ package storage
 import (
 	"crypto/rand"
 	"errors"
-	"log"
+	"fmt"
 	"os"
 	"reflect"
 	"sort"
@@ -14,6 +14,10 @@ import (
 const testContainerPrefix = "zzzztest-"
 
 func TestListContainersPagination(t *testing.T) {
+	if testing.Short() {
+		t.Skip("skip in short mode")
+	}
+
 	cli, err := getClient()
 	if err != nil {
 		t.Fatal(err)
@@ -102,6 +106,7 @@ func TestCreateDeleteContainer(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
+	defer cli.DeleteContainer(cnt)
 
 	_, err = cli.DeleteContainer(cnt)
 	if err != nil {
@@ -109,7 +114,48 @@ func TestCreateDeleteContainer(t *testing.T) {
 	}
 }
 
+func TestBlobExists(t *testing.T) {
+	cnt := randContainer()
+	blob := fmt.Sprintf("%s/%s", randString(5), randString(20))
+
+	cli, err := getClient()
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	_, err = cli.CreateContainer(cnt, ContainerAccessTypeBlob)
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer cli.DeleteContainer(cnt)
+	_, err = cli.PutBlockBlob(cnt, blob, []byte{})
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer cli.DeleteBlob(cnt, blob)
+
+	ok, err := cli.BlobExists(cnt, blob+".foo")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if ok {
+		t.Errorf("Nonexisting blob returned as existing: %s/%s", cnt, blob)
+	}
+
+	ok, err = cli.BlobExists(cnt, blob)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !ok {
+		t.Errorf("Existing blob returned as nonexisting: %s/%s", cnt, blob)
+	}
+}
+
 func TestListBlobsPagination(t *testing.T) {
+	if testing.Short() {
+		t.Skip("skip in short mode")
+	}
+
 	cli, err := getClient()
 	if err != nil {
 		t.Fatal(err)
@@ -126,8 +172,8 @@ func TestListBlobsPagination(t *testing.T) {
 	const n = 5
 	const pageSize = 2
 	for i := 0; i < n; i++ {
-		name := randString(10)
-		_, err := cli.PutBlob(cnt, name, BlobTypeBlock, []byte("Hello, world!"))
+		name := randString(20)
+		_, err := cli.PutBlockBlob(cnt, name, []byte("Hello, world!"))
 		if err != nil {
 			t.Fatal(err)
 		}
@@ -169,7 +215,7 @@ func TestListBlobsPagination(t *testing.T) {
 
 func TestPutBlockBlobSmallVerifyDelete(t *testing.T) {
 	cnt := randContainer()
-	blob := randString(10)
+	blob := randString(20)
 	body := []byte(randString(1024 * 4))
 
 	cli, err := getClient()
@@ -183,7 +229,7 @@ func TestPutBlockBlobSmallVerifyDelete(t *testing.T) {
 	}
 	defer cli.DeleteContainer(cnt)
 
-	_, err = cli.PutBlob(cnt, blob, BlobTypeBlock, body)
+	_, err = cli.PutBlockBlob(cnt, blob, body)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -224,7 +270,6 @@ func deleteTestContainers(cli *BlobStorageClient) error {
 			if err != nil {
 				return err
 			}
-			log.Printf("Cleaning up leftover test container %s", c.Name)
 		}
 	}
 	return nil

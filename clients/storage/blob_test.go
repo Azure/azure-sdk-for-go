@@ -15,6 +15,37 @@ import (
 
 const testContainerPrefix = "zzzztest-"
 
+func TestContainerExists(t *testing.T) {
+	cnt := randContainer()
+
+	cli, err := getClient()
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	ok, err := cli.ContainerExists(cnt)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if ok {
+		t.Fatalf("Non-existing container returned as existing: %s", cnt)
+	}
+
+	_, err = cli.CreateContainer(cnt, ContainerAccessTypeBlob)
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer cli.DeleteContainer(cnt)
+
+	ok, err = cli.ContainerExists(cnt)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !ok {
+		t.Fatalf("Existing container returned as non-existing: %s", cnt)
+	}
+}
+
 func TestListContainersPagination(t *testing.T) {
 	if testing.Short() {
 		t.Skip("skip in short mode")
@@ -266,8 +297,8 @@ func TestPutMultiBlockBlob(t *testing.T) {
 	var (
 		cnt       = randContainer()
 		blob      = randString(20)
-		blockSize = 32 * 1024                     // 32 KB
-		body      = []byte(randString(1024 * 98)) // 98 KB
+		blockSize = 32 * 1024                                     // 32 KB
+		body      = []byte(randString(blockSize*2 + blockSize/2)) // 3 blocks
 	)
 
 	cli, err := getClient()

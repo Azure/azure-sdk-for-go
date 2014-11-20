@@ -252,15 +252,22 @@ func (c StorageClient) exec(verb, url string, headers map[string]string, body io
 
 		// TODO (ahmetalpbalkan) write test case for imported deserialization code
 		// TODO (ahmetalpbalkan) extract
-		err = xml.Unmarshal(respBody, errXml)
-		if err != nil {
-			return nil, err
+
+		if len(respBody) == 0 {
+			// no error in response body
+			err = fmt.Errorf("Service returned Status:%s without response body.", resp.Status)
+		} else {
+			// response contains storage service error object, unmarshal
+			if err = xml.Unmarshal(respBody, errXml); err != nil {
+				return nil, err
+			}
+			err = fmt.Errorf("%s %s", "Remote server returned error:", errXml.Message)
 		}
 
 		return &storageResponse{
 			statusCode: resp.StatusCode,
 			headers:    resp.Header,
-			body:       respBody}, fmt.Errorf("%s %s", "Remote server returned error:", errXml.Message)
+			body:       respBody}, err
 	}
 
 	respBody, err := readResponseBody(resp)
@@ -270,12 +277,16 @@ func (c StorageClient) exec(verb, url string, headers map[string]string, body io
 	return &storageResponse{
 		statusCode: resp.StatusCode,
 		headers:    resp.Header,
-		body:       respBody}, err
+		body:       respBody}, nil
 }
 
 func readResponseBody(resp *http.Response) ([]byte, error) {
 	defer resp.Body.Close()
-	return ioutil.ReadAll(resp.Body)
+	out, err := ioutil.ReadAll(resp.Body)
+	if err == io.EOF {
+		err = nil
+	}
+	return out, err
 }
 
 // TODO (ahmetalpbalkan) refactor

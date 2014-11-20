@@ -194,6 +194,27 @@ func (b BlobStorageClient) CreateContainer(name string, access ContainerAccessTy
 	return b.client.exec(verb, uri, headers, nil)
 }
 
+func (b BlobStorageClient) ContainerExists(container string) (bool, error) {
+	verb := "HEAD"
+	path := fmt.Sprintf("%s", container)
+	uri := b.client.getEndpoint(blobServiceName, path, url.Values{"restype": {"container"}})
+	headers := b.client.getStandardHeaders()
+
+	resp, err := b.client.exec(verb, uri, headers, nil)
+	if resp != nil && (resp.statusCode == http.StatusOK || resp.statusCode == http.StatusNotFound) {
+		return resp.statusCode == http.StatusOK, nil
+	}
+	return false, err
+}
+
+func (b BlobStorageClient) DeleteContainer(name string) (*storageResponse, error) {
+	verb := "DELETE"
+	uri := b.client.getEndpoint(blobServiceName, name, url.Values{"restype": {"container"}})
+
+	headers := b.client.getStandardHeaders()
+	return b.client.exec(verb, uri, headers, nil)
+}
+
 func (b BlobStorageClient) ListBlobs(container string, params ListBlobsParameters) (BlobListResponse, error) {
 	q := mergeParams(params.GetParameters(), url.Values{
 		"restype": {"container"},
@@ -211,22 +232,14 @@ func (b BlobStorageClient) ListBlobs(container string, params ListBlobsParameter
 	return out, err
 }
 
-func (b BlobStorageClient) DeleteContainer(name string) (*storageResponse, error) {
-	verb := "DELETE"
-	uri := b.client.getEndpoint(blobServiceName, name, url.Values{"restype": {"container"}})
-
-	headers := b.client.getStandardHeaders()
-	return b.client.exec(verb, uri, headers, nil)
-}
-
 func (b BlobStorageClient) BlobExists(container, name string) (bool, error) {
-	verb := "GET"
+	verb := "HEAD"
 	path := fmt.Sprintf("%s/%s", container, name)
 	uri := b.client.getEndpoint(blobServiceName, path, url.Values{})
 
 	headers := b.client.getStandardHeaders()
 	resp, err := b.client.exec(verb, uri, headers, nil)
-	if resp != nil && resp.statusCode == http.StatusOK || resp.statusCode == http.StatusNotFound {
+	if resp != nil && (resp.statusCode == http.StatusOK || resp.statusCode == http.StatusNotFound) {
 		return resp.statusCode == http.StatusOK, nil
 	}
 	return false, err

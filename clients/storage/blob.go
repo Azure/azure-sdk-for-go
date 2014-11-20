@@ -392,7 +392,7 @@ func (b BlobStorageClient) putBlockBlob(container, name string, blob io.Reader, 
 
 	if err == io.EOF {
 		// Fits into one block
-		return b.putSingleBlockBlob(container, name, chunk)
+		return b.putSingleBlockBlob(container, name, chunk[:n])
 	} else {
 		// Does not fit into one block. Upload block by block then commit the block list
 		blockList := []block{}

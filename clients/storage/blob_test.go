@@ -530,6 +530,33 @@ func TestListBlobsPagination(t *testing.T) {
 	}
 }
 
+func TestPutEmptyBlockBlob(t *testing.T) {
+	cli, err := getClient()
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	cnt := randContainer()
+	if err := cli.CreateContainer(cnt, ContainerAccessTypePrivate); err != nil {
+		t.Fatal(err)
+	}
+	defer cli.deleteContainer(cnt)
+
+	blob := randString(20)
+	err = cli.PutBlockBlob(cnt, blob, bytes.NewReader([]byte{}))
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	props, err := cli.GetBlobProperties(cnt, blob)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if props.ContentLength != 0 {
+		t.Fatal("Wrong content length for empty blob: %s", props.ContentLength)
+	}
+}
+
 func TestPutSingleBlockBlob(t *testing.T) {
 	cnt := randContainer()
 	blob := randString(20)

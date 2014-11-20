@@ -232,7 +232,6 @@ func (c StorageClient) exec(verb, url string, headers map[string]string, body io
 	}
 	httpClient := http.Client{}
 	resp, err := httpClient.Do(req)
-
 	if err != nil {
 		return nil, err
 	}

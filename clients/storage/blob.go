@@ -145,6 +145,13 @@ const (
 	BlobTypePage  BlobType = "PageBlob"
 )
 
+const (
+	blobCopyStatusPending = "pending"
+	blobCopyStatusSuccess = "success"
+	blobCopyStatusAborted = "aborted"
+	blobCopyStatusFailed  = "failed"
+)
+
 type ContainerAccessType string
 
 const (
@@ -171,6 +178,9 @@ type block struct {
 var (
 	ErrNotCreated  = errors.New("storage: operation has returned a successful error code other than 201 Created.")
 	ErrNotAccepted = errors.New("storage: operation has returned a successful error code other than 202 Accepted.")
+
+	errBlobCopyAborted    = errors.New("storage: blob copy is aborted")
+	errBlobCopyIdMismatch = errors.New("storage: blob copy id is a mismatch")
 )
 
 const errUnexpectedStatus = "storage: was expecting status code: %s, got: %s"
@@ -289,6 +299,14 @@ func (b BlobStorageClient) BlobExists(container, name string) (bool, error) {
 		return resp.statusCode == http.StatusOK, nil
 	}
 	return false, err
+}
+
+func (b BlobStorageClient) GetBlobUrl(container, name string) string {
+	if container == "" {
+		container = "$root"
+	}
+	path := fmt.Sprintf("%s/%s", container, name)
+	return b.client.getEndpoint(blobServiceName, path, url.Values{})
 }
 
 func (b BlobStorageClient) GetBlob(container, name string) (io.ReadCloser, error) {
@@ -452,7 +470,6 @@ func (b BlobStorageClient) putBlockList(container, name string, blocks []block) 
 	path := fmt.Sprintf("%s/%s", container, name)
 	uri := b.client.getEndpoint(blobServiceName, path, url.Values{"comp": {"blocklist"}})
 	headers := b.client.getStandardHeaders()
-	headers["Content-Type"] = "text/plain; charset=UTF-8"
 	headers["Content-Length"] = fmt.Sprintf("%v", len(blockListXml))
 
 	resp, err := b.client.exec("PUT", uri, headers, strings.NewReader(blockListXml))
@@ -463,6 +480,64 @@ func (b BlobStorageClient) putBlockList(container, name string, blocks []block) 
 		return ErrNotCreated
 	}
 	return nil
+}
+
+func (b BlobStorageClient) CopyBlob(container, name, sourceBlob string) error {
+	copyId, err := b.startBlobCopy(container, name, sourceBlob)
+	if err != nil {
+		return err
+	}
+
+	return b.waitForBlobCopy(container, name, copyId)
+}
+
+func (b BlobStorageClient) startBlobCopy(container, name, sourceBlob string) (string, error) {
+	path := fmt.Sprintf("%s/%s", container, name)
+	uri := b.client.getEndpoint(blobServiceName, path, url.Values{})
+
+	headers := b.client.getStandardHeaders()
+	headers["Content-Length"] = "0"
+	headers["x-ms-copy-source"] = sourceBlob
+
+	resp, err := b.client.exec("PUT", uri, headers, nil)
+	if err != nil {
+		return "", err
+	}
+	if resp.statusCode != http.StatusAccepted && resp.statusCode != http.StatusCreated {
+		return "", fmt.Errorf(errUnexpectedStatus, []int{http.StatusAccepted, http.StatusCreated}, resp.statusCode)
+	}
+
+	copyId := resp.headers.Get("x-ms-copy-id")
+	if copyId == "" {
+		return "", errors.New("Got empty copy id header")
+	}
+	return copyId, nil
+}
+
+func (b BlobStorageClient) waitForBlobCopy(container, name, copyId string) error {
+	for {
+		props, err := b.GetBlobProperties(container, name)
+		if err != nil {
+			return err
+		}
+
+		if props.CopyId != copyId {
+			return errBlobCopyIdMismatch
+		}
+
+		switch props.CopyStatus {
+		case blobCopyStatusSuccess:
+			return nil
+		case blobCopyStatusPending:
+			continue
+		case blobCopyStatusAborted:
+			return errBlobCopyAborted
+		case blobCopyStatusFailed:
+			return fmt.Errorf("storage: blob copy failed. Id=%s Description=%s", props.CopyId, props.CopyStatusDescription)
+		default:
+			return fmt.Errorf("storage: unhandled blob copy status: '%s'", props.CopyStatus)
+		}
+	}
 }
 
 func (b BlobStorageClient) DeleteBlob(container, name string) error {

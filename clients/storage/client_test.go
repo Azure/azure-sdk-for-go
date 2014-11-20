@@ -8,7 +8,6 @@ import (
 
 func TestGetBaseUrl_Basic_Https(t *testing.T) {
 	cli, err := NewBasicClient("foo", "YmFy")
-
 	if err != nil {
 		t.Fatal(err)
 	}

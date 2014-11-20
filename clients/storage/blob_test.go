@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"crypto/rand"
 	"errors"
-	"fmt"
 	"io/ioutil"
 	"os"
 	"reflect"
@@ -17,10 +16,6 @@ import (
 const testContainerPrefix = "zzzztest-"
 
 func TestListContainersPagination(t *testing.T) {
-	if testing.Short() {
-		t.Skip("skip in short mode")
-	}
-
 	cli, err := getClient()
 	if err != nil {
 		t.Fatal(err)
@@ -227,6 +222,75 @@ func TestBlobExists(t *testing.T) {
 	}
 }
 
+func TestGetBlobUrl(t *testing.T) {
+	api, err := NewBasicClient("foo", "YmFy")
+	if err != nil {
+		t.Fatal(err)
+	}
+	cli := api.GetBlobService()
+
+	out := cli.GetBlobUrl("c", "nested/blob")
+	if expected := "https://foo.blob.core.windows.net/c/nested/blob"; out != expected {
+		t.Fatalf("Wrong blob URL. Expected: '%s', got:'%s'", expected, out)
+	}
+
+	out = cli.GetBlobUrl("", "blob")
+	if expected := "https://foo.blob.core.windows.net/$root/blob"; out != expected {
+		t.Fatalf("Wrong blob URL. Expected: '%s', got:'%s'", expected, out)
+	}
+
+	out = cli.GetBlobUrl("", "nested/blob")
+	if expected := "https://foo.blob.core.windows.net/$root/nested/blob"; out != expected {
+		t.Fatalf("Wrong blob URL. Expected: '%s', got:'%s'", expected, out)
+	}
+}
+
+func TestBlobCopy(t *testing.T) {
+	if testing.Short() {
+		t.Skip("skipping blob copy in short mode, no SLA on async operation")
+	}
+
+	cli, err := getClient()
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	cnt := randContainer()
+	src := randString(20)
+	dst := randString(20)
+	body := []byte(randString(1024))
+
+	err = cli.CreateContainer(cnt, ContainerAccessTypePrivate)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	err = cli.PutBlockBlob(cnt, src, bytes.NewReader(body))
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	err = cli.CopyBlob(cnt, dst, cli.GetBlobUrl(cnt, src))
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	blobBody, err := cli.GetBlob(cnt, dst)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	b, err := ioutil.ReadAll(blobBody)
+	defer blobBody.Close()
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	if !reflect.DeepEqual(body, b) {
+		t.Fatalf("Copied blob is wrong. Expected: %d bytes, got: %d bytes\n%s\n%s", len(body), len(b), body, b)
+	}
+}
+
 func TestDeleteBlobIfExists(t *testing.T) {
 	cnt := randContainer()
 	blob := randString(20)
@@ -286,10 +350,6 @@ func TestGetBlobProperies(t *testing.T) {
 }
 
 func TestListBlobsPagination(t *testing.T) {
-	if testing.Short() {
-		t.Skip("skip in short mode")
-	}
-
 	cli, err := getClient()
 	if err != nil {
 		t.Fatal(err)
@@ -397,10 +457,6 @@ func TestPutSingleBlockBlob(t *testing.T) {
 }
 
 func TestPutMultiBlockBlob(t *testing.T) {
-	if testing.Short() {
-		t.Skip("skip in short mode ")
-	}
-
 	var (
 		cnt       = randContainer()
 		blob      = randString(20)

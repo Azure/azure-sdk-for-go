@@ -184,6 +184,26 @@ func TestBlobExists(t *testing.T) {
 	}
 }
 
+func TestDeleteBlobIfExists(t *testing.T) {
+	cnt := randContainer()
+	blob := fmt.Sprintf("%s/%s", randString(5), randString(20))
+
+	cli, err := getClient()
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	err = cli.DeleteBlob(cnt, blob)
+	if err == nil {
+		t.Fatal("Nonexisting blob did not return error")
+	}
+
+	err = cli.DeleteBlobIfExists(cnt, blob)
+	if err != nil {
+		t.Fatalf("Not supposed to return error: %s", err)
+	}
+}
+
 func TestListBlobsPagination(t *testing.T) {
 	if testing.Short() {
 		t.Skip("skip in short mode")

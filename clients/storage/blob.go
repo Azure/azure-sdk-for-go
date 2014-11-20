@@ -379,12 +379,7 @@ func (b BlobStorageClient) putBlockList(container, name string, blocks []block) 
 }
 
 func (b BlobStorageClient) DeleteBlob(container, name string) error {
-	verb := "DELETE"
-	path := fmt.Sprintf("%s/%s", container, name)
-	uri := b.client.getEndpoint(blobServiceName, path, url.Values{})
-
-	headers := b.client.getStandardHeaders()
-	resp, err := b.client.exec(verb, uri, headers, nil)
+	resp, err := b.deleteBlob(container, name)
 	if err != nil {
 		return err
 	}
@@ -392,4 +387,21 @@ func (b BlobStorageClient) DeleteBlob(container, name string) error {
 		return ErrNotAccepted
 	}
 	return nil
+}
+
+func (b BlobStorageClient) DeleteBlobIfExists(container, name string) error {
+	resp, err := b.deleteBlob(container, name)
+	if resp != nil && resp.statusCode == http.StatusAccepted || resp.statusCode == http.StatusNotFound {
+		return nil
+	}
+	return err
+}
+
+func (b BlobStorageClient) deleteBlob(container, name string) (*storageResponse, error) {
+	verb := "DELETE"
+	path := fmt.Sprintf("%s/%s", container, name)
+	uri := b.client.getEndpoint(blobServiceName, path, url.Values{})
+
+	headers := b.client.getStandardHeaders()
+	return b.client.exec(verb, uri, headers, nil)
 }

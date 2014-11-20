@@ -261,7 +261,7 @@ func (c StorageClient) exec(verb, url string, headers map[string]string, body io
 			if err = xml.Unmarshal(respBody, errXml); err != nil {
 				return nil, err
 			}
-			err = fmt.Errorf("%s %s", "storage: remote server returned error. StatusCode=%s ErrorCode=%s, ErrorMessage=%s", resp.StatusCode, errXml.Code, errXml.Message)
+			err = fmt.Errorf("storage: remote server returned error. StatusCode=%d ErrorCode=%s, ErrorMessage=%s", resp.StatusCode, errXml.Code, errXml.Message)
 		}
 
 		return &storageResponse{

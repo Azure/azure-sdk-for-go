@@ -183,7 +183,7 @@ var (
 	errBlobCopyIdMismatch = errors.New("storage: blob copy id is a mismatch")
 )
 
-const errUnexpectedStatus = "storage: was expecting status code: %s, got: %s"
+const errUnexpectedStatus = "storage: was expecting status code: %d, got: %d"
 
 func (b BlobStorageClient) ListContainers(params ListContainersParameters) (ContainerListResponse, error) {
 	q := mergeParams(params.GetParameters(), url.Values{"comp": {"list"}})

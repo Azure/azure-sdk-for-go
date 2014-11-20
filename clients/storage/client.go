@@ -114,7 +114,6 @@ func (c StorageClient) getAuthorizationHeader(verb, url string, headers map[stri
 }
 
 func (c StorageClient) getStandardHeaders() map[string]string {
-	// TODO (ahmetalpbalkan) test
 	return map[string]string{
 		"x-ms-version": c.apiVersion,
 		"x-ms-date":    currentTimeRfc1123Formatted(),
@@ -122,8 +121,6 @@ func (c StorageClient) getStandardHeaders() map[string]string {
 }
 
 func (c StorageClient) buildCanonicalizedHeader(headers map[string]string) string {
-	// TODO (ahmetalpbalkan) write test case for imported code
-
 	cm := make(map[string]string)
 
 	for k, v := range headers {
@@ -250,17 +247,15 @@ func (c StorageClient) exec(verb, url string, headers map[string]string, body io
 			return nil, err
 		}
 
-		// TODO (ahmetalpbalkan) write test case for imported deserialization code
-		// TODO (ahmetalpbalkan) extract
 		if len(respBody) == 0 {
 			// no error in response body
-			err = fmt.Errorf("storage: service returned Status:%s without response body.", resp.Status)
+			err = fmt.Errorf("storage: service returned without a response body (%s).", resp.Status)
 		} else {
 			// response contains storage service error object, unmarshal
 			if err = xml.Unmarshal(respBody, errXml); err != nil {
 				return nil, err
 			}
-			err = fmt.Errorf("storage: remote server returned error. StatusCode=%d ErrorCode=%s, ErrorMessage=%s", resp.StatusCode, errXml.Code, errXml.Message)
+			err = fmt.Errorf("storage: remote server returned error. Status=%s, ErrorCode=%s, ErrorMessage=%s", resp.Status, errXml.Code, errXml.Message)
 		}
 
 		return &storageResponse{

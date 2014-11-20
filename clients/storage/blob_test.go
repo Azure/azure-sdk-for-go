@@ -1,12 +1,14 @@
 package storage
 
 import (
+	"bytes"
 	"crypto/rand"
 	"errors"
 	"fmt"
 	"os"
 	"reflect"
 	"sort"
+	"strings"
 	"sync"
 	"testing"
 )
@@ -128,7 +130,7 @@ func TestBlobExists(t *testing.T) {
 		t.Fatal(err)
 	}
 	defer cli.DeleteContainer(cnt)
-	_, err = cli.PutBlockBlob(cnt, blob, []byte{})
+	err = cli.PutBlockBlob(cnt, blob, strings.NewReader("Hello!"))
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -139,7 +141,7 @@ func TestBlobExists(t *testing.T) {
 		t.Fatal(err)
 	}
 	if ok {
-		t.Errorf("Nonexisting blob returned as existing: %s/%s", cnt, blob)
+		t.Errorf("Non-existing blob returned as existing: %s/%s", cnt, blob)
 	}
 
 	ok, err = cli.BlobExists(cnt, blob)
@@ -147,7 +149,7 @@ func TestBlobExists(t *testing.T) {
 		t.Fatal(err)
 	}
 	if !ok {
-		t.Errorf("Existing blob returned as nonexisting: %s/%s", cnt, blob)
+		t.Errorf("Existing blob returned as non-existing: %s/%s", cnt, blob)
 	}
 }
 
@@ -173,7 +175,7 @@ func TestListBlobsPagination(t *testing.T) {
 	const pageSize = 2
 	for i := 0; i < n; i++ {
 		name := randString(20)
-		_, err := cli.PutBlockBlob(cnt, name, []byte("Hello, world!"))
+		err := cli.PutBlockBlob(cnt, name, strings.NewReader("Hello, world!"))
 		if err != nil {
 			t.Fatal(err)
 		}
@@ -213,7 +215,7 @@ func TestListBlobsPagination(t *testing.T) {
 	}
 }
 
-func TestPutBlockBlobSmallVerifyDelete(t *testing.T) {
+func TestPutSingleBlockBlob(t *testing.T) {
 	cnt := randContainer()
 	blob := randString(20)
 	body := []byte(randString(1024 * 4))
@@ -229,7 +231,7 @@ func TestPutBlockBlobSmallVerifyDelete(t *testing.T) {
 	}
 	defer cli.DeleteContainer(cnt)
 
-	_, err = cli.PutBlockBlob(cnt, blob, body)
+	err = cli.PutBlockBlob(cnt, blob, bytes.NewReader(body))
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -242,7 +244,57 @@ func TestPutBlockBlobSmallVerifyDelete(t *testing.T) {
 
 	// Verify contents
 	if !reflect.DeepEqual(body, resp.body) {
-		t.Fatalf("Wrong blob body.\nExpected: %d bytes, Got: %d byes", len(body), len(resp.body))
+		t.Fatalf("Wrong blob contents.\nExpected: %d bytes, Got: %d byes", len(body), len(resp.body))
+	}
+
+	_, err = cli.DeleteBlob(cnt, blob)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	_, err = cli.DeleteContainer(cnt)
+	if err != nil {
+		t.Fatal(err)
+	}
+}
+
+func TestPutMultiBlockBlob(t *testing.T) {
+	if testing.Short() {
+		t.Skip("skip in short mode ")
+	}
+
+	var (
+		cnt       = randContainer()
+		blob      = randString(20)
+		blockSize = 32 * 1024                     // 32 KB
+		body      = []byte(randString(1024 * 98)) // 98 KB
+	)
+
+	cli, err := getClient()
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	_, err = cli.CreateContainer(cnt, ContainerAccessTypeBlob)
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer cli.DeleteContainer(cnt)
+
+	err = cli.putBlockBlob(cnt, blob, bytes.NewReader(body), blockSize)
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer cli.DeleteBlob(cnt, blob)
+
+	resp, err := cli.GetBlob(cnt, blob)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	// Verify contents
+	if !reflect.DeepEqual(body, resp.body) {
+		t.Fatalf("Wrong blob contents.\nExpected: %d bytes, Got: %d byes", len(body), len(resp.body))
 	}
 
 	_, err = cli.DeleteBlob(cnt, blob)

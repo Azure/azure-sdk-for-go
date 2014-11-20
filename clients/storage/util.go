@@ -4,6 +4,7 @@ import (
 	"crypto/hmac"
 	"crypto/sha256"
 	"encoding/base64"
+	"fmt"
 	"net/http"
 	"net/url"
 	"time"
@@ -24,10 +25,6 @@ func timeRfc1123Formatted(t time.Time) string {
 	return t.Format(http.TimeFormat)
 }
 
-type parameters interface {
-	GetParameters() url.Values
-}
-
 func mergeParams(v1, v2 url.Values) url.Values {
 	out := url.Values{}
 	for k, v := range v1 {
@@ -43,4 +40,13 @@ func mergeParams(v1, v2 url.Values) url.Values {
 		}
 	}
 	return out
+}
+
+func prepareBlockListRequest(blocks []block) string {
+	s := `<?xml version="1.0" encoding="utf-8"?><BlockList>`
+	for _, v := range blocks {
+		s += fmt.Sprintf("<%s>%s</%s>", v.use, v.id, v.use)
+	}
+	s += `</BlockList>`
+	return s
 }

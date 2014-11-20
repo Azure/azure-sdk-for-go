@@ -5,15 +5,135 @@ import (
 	"crypto/rand"
 	"errors"
 	"io/ioutil"
+	"net/http"
+	"net/url"
 	"os"
 	"reflect"
 	"sort"
 	"strings"
 	"sync"
 	"testing"
+	"time"
 )
 
 const testContainerPrefix = "zzzztest-"
+
+func TestblobSASStringToSign(t *testing.T) {
+	_, err := blobSASStringToSign("2012-02-12", "CS", "SE", "SP")
+	if err == nil {
+		t.Fatal("Expected error, got nil")
+	}
+
+	out, err := blobSASStringToSign("2013-08-15", "CS", "SE", "SP")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if expected := "SP\n\nSE\nCS\n\n\n2013-08-15\n%s\n%s\n%s\n%s\n%s"; out != expected {
+		t.Errorf("Wrong stringToSign. Expected: '%s', got: '%s'", expected, out)
+	}
+}
+
+func TestGetBlobSASURI(t *testing.T) {
+	api, err := NewClient("foo", "YmFy", DefaultBaseUrl, "2013-08-15", true)
+	if err != nil {
+		t.Fatal(err)
+	}
+	cli := api.GetBlobService()
+	expiry := time.Time{}
+
+	expectedParts := url.URL{
+		Scheme: "https",
+		Host:   "foo.blob.core.windows.net",
+		Path:   "container/name",
+		RawQuery: url.Values{
+			"sv":  {"2013-08-15"},
+			"sig": {"/OXG7rWh08jYwtU03GzJM0DHZtidRGpC6g69rSGm3I0="},
+			"sr":  {"b"},
+			"sp":  {"r"},
+			"se":  {"0001-01-01T00:00:00Z"},
+		}.Encode()}
+
+	u, err := cli.GetBlobSASURI("container", "name", expiry, "r")
+	if err != nil {
+		t.Fatal(err)
+	}
+	sasParts, err := url.Parse(u)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	expectedQuery := expectedParts.Query()
+	sasQuery := sasParts.Query()
+
+	expectedParts.RawQuery = "" // reset
+	sasParts.RawQuery = ""
+
+	if expectedParts.String() != sasParts.String() {
+		t.Fatalf("Base URL wrong for SAS. Expected: '%s', got: '%s'", expectedParts, sasParts)
+	}
+
+	if len(expectedQuery) != len(sasQuery) {
+		t.Fatalf("Query string wrong for SAS URL. Expected: '%d keys', got: '%d keys'", len(expectedQuery), len(sasQuery))
+	}
+
+	for k, v := range expectedQuery {
+		out, ok := sasQuery[k]
+		if !ok {
+			t.Fatalf("Query parameter '%s' not found in generated SAS query. Expected: '%s'", k, v)
+		}
+		if !reflect.DeepEqual(v, out) {
+			t.Fatalf("Wrong value for query parameter '%s'. Expected: '%s', got: '%s'", k, v, out)
+		}
+	}
+}
+
+func TestBlobSASURICorrectness(t *testing.T) {
+	cli, err := getClient()
+	if err != nil {
+		t.Fatal(err)
+	}
+	cnt := randContainer()
+	blob := randString(20)
+	body := []byte(randString(100))
+	expiry := time.Now().UTC().Add(time.Hour)
+	permissions := "r"
+
+	err = cli.CreateContainer(cnt, ContainerAccessTypePrivate)
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer cli.DeleteContainer(cnt)
+
+	err = cli.PutBlockBlob(cnt, blob, bytes.NewReader(body))
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	sasUri, err := cli.GetBlobSASURI(cnt, blob, expiry, permissions)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	resp, err := http.Get(sasUri)
+	if err != nil {
+		t.Logf("SAS URI: %s", sasUri)
+		t.Fatal(err)
+	}
+
+	blobResp, err := ioutil.ReadAll(resp.Body)
+	defer resp.Body.Close()
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	if resp.StatusCode != http.StatusOK {
+		t.Fatalf("Non-ok status code: %s", resp.Status)
+	}
+
+	if len(blobResp) != len(body) {
+		t.Fatalf("Wrong blob size on SAS URI. Expected: %d, Got: %d", len(body), len(blobResp))
+	}
+}
 
 func TestListContainersPagination(t *testing.T) {
 	cli, err := getClient()
@@ -88,7 +208,7 @@ func TestListContainersPagination(t *testing.T) {
 
 	// Compare
 	if !reflect.DeepEqual(created, seen) {
-		t.Fatal("Wrong pagination results:\nExpected:\t\t%s\nGot:\t\t%s", created, seen)
+		t.Fatal("Wrong pagination results:\nExpected:\t\t%v\nGot:\t\t%v", created, seen)
 	}
 }
 
@@ -264,16 +384,19 @@ func TestBlobCopy(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
+	defer cli.deleteContainer(cnt)
 
 	err = cli.PutBlockBlob(cnt, src, bytes.NewReader(body))
 	if err != nil {
 		t.Fatal(err)
 	}
+	defer cli.DeleteBlob(cnt, src)
 
 	err = cli.CopyBlob(cnt, dst, cli.GetBlobUrl(cnt, src))
 	if err != nil {
 		t.Fatal(err)
 	}
+	defer cli.DeleteBlob(cnt, dst)
 
 	blobBody, err := cli.GetBlob(cnt, dst)
 	if err != nil {

@@ -11,6 +11,7 @@ import (
 	"net/url"
 	"strconv"
 	"strings"
+	"time"
 )
 
 type BlobStorageClient struct {
@@ -549,6 +550,51 @@ func (b BlobStorageClient) DeleteBlob(container, name string) error {
 		return ErrNotAccepted
 	}
 	return nil
+}
+
+func (b BlobStorageClient) GetBlobSASURI(container, name string, expiry time.Time, permissions string) (string, error) {
+	var (
+		signedPermissions = permissions
+		blobUrl           = b.GetBlobUrl(container, name)
+	)
+	canonicalizedResource, err := b.client.buildCanonicalizedResource(blobUrl)
+	if err != nil {
+		return "", err
+	}
+	signedExpiry := expiry.Format(time.RFC3339)
+	signedResource := "b"
+
+	stringToSign, err := blobSASStringToSign(b.client.apiVersion, canonicalizedResource, signedExpiry, signedPermissions)
+	if err != nil {
+		return "", err
+	}
+
+	sig := b.client.computeHmac256(stringToSign)
+	sasParams := url.Values{
+		"sv":  {b.client.apiVersion},
+		"se":  {signedExpiry},
+		"sr":  {signedResource},
+		"sp":  {signedPermissions},
+		"sig": {sig},
+	}
+
+	sasUrl, err := url.Parse(blobUrl)
+	if err != nil {
+		return "", err
+	}
+	sasUrl.RawQuery = sasParams.Encode()
+	return sasUrl.String(), nil
+}
+
+func blobSASStringToSign(signedVersion, canonicalizedResource, signedExpiry, signedPermissions string) (string, error) {
+	var signedStart, signedIdentifier, rscc, rscd, rsce, rscl, rsct string
+
+	// reference: http://msdn.microsoft.com/en-us/library/azure/dn140255.aspx
+	if signedVersion >= "2013-08-15" {
+		return fmt.Sprintf("%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s", signedPermissions, signedStart, signedExpiry, canonicalizedResource, signedIdentifier, signedVersion, rscc, rscd, rsce, rscl, rsct), nil
+	} else {
+		return "", errors.New("storage: not implemented SAS for versions earlier than 2013-08-15")
+	}
 }
 
 func (b BlobStorageClient) DeleteBlobIfExists(container, name string) error {

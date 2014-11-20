@@ -9,6 +9,7 @@ import (
 	"io"
 	"net/http"
 	"net/url"
+	"strconv"
 	"strings"
 )
 
@@ -38,17 +39,19 @@ type ContainerProperties struct {
 }
 
 type BlobProperties struct {
-	LastModified    string `xml:"Last-Modified"`
-	Etag            string `xml:"Etag"`
-	ContentMD5      string `xml:"Content-MD5"`
-	ContentLength   string `xml:"Content-Length"`
-	ContentType     string `xml:"Content-Type"`
-	ContentEncoding string `xml:"Content-Encoding"`
-	SequenceNumber  string `xml:"x-ms-blob-sequence-number"`
-	LeaseStatus     string `xml:"LeaseStatus"`
-	LeaseState      string `xml:"LeaseState"`
-	LeaseDuration   string `xml:"LeaseDuration"`
-	// TODO (ahmetalpbalkan) remaining fields
+	LastModified          string `xml:"Last-Modified"`
+	Etag                  string `xml:"Etag"`
+	ContentMD5            string `xml:"Content-MD5"`
+	ContentLength         int64  `xml:"Content-Length"`
+	ContentType           string `xml:"Content-Type"`
+	ContentEncoding       string `xml:"Content-Encoding"`
+	SequenceNumber        int64  `xml:"x-ms-blob-sequence-number"`
+	CopyId                string `xml:"CopyId"`
+	CopyStatus            string `xml:"CopyStatus"`
+	CopySource            string `xml:"CopySource"`
+	CopyProgress          string `xml:"CopyProgress"`
+	CopyCompletionTime    string `xml:"CopyCompletionTime"`
+	CopyStatusDescription string `xml:"CopyStatusDescription"`
 }
 
 type BlobListResponse struct {
@@ -303,6 +306,54 @@ func (b BlobStorageClient) GetBlob(container, name string) (io.ReadCloser, error
 		return nil, fmt.Errorf(errUnexpectedStatus, http.StatusOK, resp.statusCode)
 	}
 	return resp.body, nil
+}
+
+func (b BlobStorageClient) GetBlobProperties(container, name string) (*BlobProperties, error) {
+	verb := "HEAD"
+	path := fmt.Sprintf("%s/%s", container, name)
+	uri := b.client.getEndpoint(blobServiceName, path, url.Values{})
+
+	headers := b.client.getStandardHeaders()
+	resp, err := b.client.exec(verb, uri, headers, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if resp.statusCode != http.StatusOK {
+		return nil, fmt.Errorf(errUnexpectedStatus, http.StatusOK, resp.statusCode)
+	}
+
+	var contentLength, sequenceNum int64
+	contentLengthStr := resp.headers.Get("Content-Length")
+	if contentLengthStr != "" {
+		contentLength, err = strconv.ParseInt(contentLengthStr, 0, 64)
+		if err != nil {
+			return nil, err
+		}
+	}
+
+	sequenceNumStr := resp.headers.Get("Content-Length")
+	if sequenceNumStr != "" {
+		sequenceNum, err = strconv.ParseInt(sequenceNumStr, 0, 64)
+		if err != nil {
+			return nil, err
+		}
+	}
+
+	return &BlobProperties{
+		LastModified:          resp.headers.Get("Last-Modified"),
+		Etag:                  resp.headers.Get("Etag"),
+		ContentMD5:            resp.headers.Get("Content-MD5"),
+		ContentLength:         contentLength,
+		ContentEncoding:       resp.headers.Get("Content-Encodng"),
+		SequenceNumber:        sequenceNum,
+		CopyCompletionTime:    resp.headers.Get("x-ms-copy-completion-time"),
+		CopyStatusDescription: resp.headers.Get("x-ms-copy-status-description"),
+		CopyId:                resp.headers.Get("x-ms-copy-id"),
+		CopyProgress:          resp.headers.Get("x-ms-copy-progress"),
+		CopySource:            resp.headers.Get("x-ms-copy-source"),
+		CopyStatus:            resp.headers.Get("x-ms-copy-status"),
+	}, nil
 }
 
 func (b BlobStorageClient) PutBlockBlob(container, name string, blob io.Reader) error { // TODO (ahmetalpbalkan) consider ReadCloser and closing

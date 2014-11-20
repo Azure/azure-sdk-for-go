@@ -247,6 +247,44 @@ func TestDeleteBlobIfExists(t *testing.T) {
 	}
 }
 
+func TestGetBlobProperies(t *testing.T) {
+	cnt := randContainer()
+	blob := fmt.Sprintf("%s", randString(20))
+	contents := randString(64)
+
+	cli, err := getClient()
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	err = cli.CreateContainer(cnt, ContainerAccessTypePrivate)
+	if err != nil {
+		t.Fatal("Nonexisting blob did not return error")
+	}
+
+	// Nonexisting blob
+	_, err = cli.GetBlobProperties(cnt, blob)
+	if err == nil {
+		t.Fatal("Did not return error for non-existing blob")
+	}
+
+	// Put the blob
+	err = cli.PutBlockBlob(cnt, blob, strings.NewReader(contents))
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	// Get blob properties
+	props, err := cli.GetBlobProperties(cnt, blob)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	if props.ContentLength != int64(len(contents)) {
+		t.Fatalf("Got wrong Content-Length: '%d', expected: %d", props.ContentLength, len(contents))
+	}
+}
+
 func TestListBlobsPagination(t *testing.T) {
 	if testing.Short() {
 		t.Skip("skip in short mode")

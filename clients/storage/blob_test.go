@@ -15,37 +15,6 @@ import (
 
 const testContainerPrefix = "zzzztest-"
 
-func TestContainerExists(t *testing.T) {
-	cnt := randContainer()
-
-	cli, err := getClient()
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	ok, err := cli.ContainerExists(cnt)
-	if err != nil {
-		t.Fatal(err)
-	}
-	if ok {
-		t.Fatalf("Non-existing container returned as existing: %s", cnt)
-	}
-
-	err = cli.CreateContainer(cnt, ContainerAccessTypeBlob)
-	if err != nil {
-		t.Fatal(err)
-	}
-	defer cli.DeleteContainer(cnt)
-
-	ok, err = cli.ContainerExists(cnt)
-	if err != nil {
-		t.Fatal(err)
-	}
-	if !ok {
-		t.Fatalf("Existing container returned as non-existing: %s", cnt)
-	}
-}
-
 func TestListContainersPagination(t *testing.T) {
 	if testing.Short() {
 		t.Skip("skip in short mode")
@@ -127,6 +96,37 @@ func TestListContainersPagination(t *testing.T) {
 	}
 }
 
+func TestContainerExists(t *testing.T) {
+	cnt := randContainer()
+
+	cli, err := getClient()
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	ok, err := cli.ContainerExists(cnt)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if ok {
+		t.Fatalf("Non-existing container returned as existing: %s", cnt)
+	}
+
+	err = cli.CreateContainer(cnt, ContainerAccessTypeBlob)
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer cli.DeleteContainer(cnt)
+
+	ok, err = cli.ContainerExists(cnt)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !ok {
+		t.Fatalf("Existing container returned as non-existing: %s", cnt)
+	}
+}
+
 func TestCreateDeleteContainer(t *testing.T) {
 	cnt := randContainer()
 
@@ -145,6 +145,29 @@ func TestCreateDeleteContainer(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
+}
+
+func TestCreateContainerIfNotExists(t *testing.T) {
+	cnt := randContainer()
+
+	cli, err := getClient()
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	// First create
+	err = cli.CreateContainerIfNotExists(cnt, ContainerAccessTypePrivate)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	// Second create, should not give errors
+	err = cli.CreateContainerIfNotExists(cnt, ContainerAccessTypePrivate)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	defer cli.DeleteContainer(cnt)
 }
 
 func TestDeleteContainerIfExists(t *testing.T) {

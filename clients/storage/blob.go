@@ -184,6 +184,25 @@ func (b BlobStorageClient) ListContainers(params ListContainersParameters) (Cont
 }
 
 func (b BlobStorageClient) CreateContainer(name string, access ContainerAccessType) error {
+	resp, err := b.createContainer(name, access)
+	if err != nil {
+		return err
+	}
+	if resp.statusCode != http.StatusCreated {
+		return ErrNotCreated
+	}
+	return nil
+}
+
+func (b BlobStorageClient) CreateContainerIfNotExists(name string, access ContainerAccessType) error {
+	resp, err := b.createContainer(name, access)
+	if resp != nil && (resp.statusCode != http.StatusCreated || resp.statusCode == http.StatusConflict) {
+		return nil
+	}
+	return err
+}
+
+func (b BlobStorageClient) createContainer(name string, access ContainerAccessType) (*storageResponse, error) {
 	verb := "PUT"
 	uri := b.client.getEndpoint(blobServiceName, name, url.Values{"restype": {"container"}})
 
@@ -192,14 +211,7 @@ func (b BlobStorageClient) CreateContainer(name string, access ContainerAccessTy
 	if access != "" {
 		headers["x-ms-blob-public-access"] = string(access)
 	}
-	resp, err := b.client.exec(verb, uri, headers, nil)
-	if err != nil {
-		return err
-	}
-	if resp.statusCode != http.StatusCreated {
-		return ErrNotCreated
-	}
-	return nil
+	return b.client.exec(verb, uri, headers, nil)
 }
 
 func (b BlobStorageClient) ContainerExists(container string) (bool, error) {
@@ -228,7 +240,7 @@ func (b BlobStorageClient) DeleteContainer(name string) error {
 
 func (b BlobStorageClient) DeleteContainerIfExists(container string) error {
 	resp, err := b.deleteContainer(container)
-	if resp != nil && resp.statusCode == http.StatusAccepted || resp.statusCode == http.StatusNotFound {
+	if resp != nil && (resp.statusCode == http.StatusAccepted || resp.statusCode == http.StatusNotFound) {
 		return nil
 	}
 	return err
@@ -403,7 +415,7 @@ func (b BlobStorageClient) DeleteBlob(container, name string) error {
 
 func (b BlobStorageClient) DeleteBlobIfExists(container, name string) error {
 	resp, err := b.deleteBlob(container, name)
-	if resp != nil && resp.statusCode == http.StatusAccepted || resp.statusCode == http.StatusNotFound {
+	if resp != nil && (resp.statusCode == http.StatusAccepted || resp.statusCode == http.StatusNotFound) {
 		return nil
 	}
 	return err

@@ -192,7 +192,7 @@ func TestDeleteContainerIfExists(t *testing.T) {
 
 func TestBlobExists(t *testing.T) {
 	cnt := randContainer()
-	blob := fmt.Sprintf("%s/%s", randString(5), randString(20))
+	blob := randString(20)
 
 	cli, err := getClient()
 	if err != nil {
@@ -229,7 +229,7 @@ func TestBlobExists(t *testing.T) {
 
 func TestDeleteBlobIfExists(t *testing.T) {
 	cnt := randContainer()
-	blob := fmt.Sprintf("%s/%s", randString(5), randString(20))
+	blob := randString(20)
 
 	cli, err := getClient()
 	if err != nil {
@@ -249,7 +249,7 @@ func TestDeleteBlobIfExists(t *testing.T) {
 
 func TestGetBlobProperies(t *testing.T) {
 	cnt := randContainer()
-	blob := fmt.Sprintf("%s", randString(20))
+	blob := randString(20)
 	contents := randString(64)
 
 	cli, err := getClient()

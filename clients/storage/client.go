@@ -1,6 +1,7 @@
 package storage
 
 import (
+	"bytes"
 	"encoding/base64"
 	"encoding/xml"
 	"fmt"
@@ -34,7 +35,7 @@ type StorageClient struct {
 type storageResponse struct {
 	statusCode int
 	headers    http.Header
-	body       []byte
+	body       io.ReadCloser
 }
 
 func NewBasicClient(accountName, accountKey string) (*StorageClient, error) {
@@ -241,7 +242,6 @@ func (c StorageClient) exec(verb, url string, headers map[string]string, body io
 
 	statusCode := resp.StatusCode
 	if statusCode >= 400 && statusCode <= 505 {
-		defer resp.Body.Close()
 		errXml := new(ErrorXml)
 
 		var respBody []byte
@@ -252,7 +252,6 @@ func (c StorageClient) exec(verb, url string, headers map[string]string, body io
 
 		// TODO (ahmetalpbalkan) write test case for imported deserialization code
 		// TODO (ahmetalpbalkan) extract
-
 		if len(respBody) == 0 {
 			// no error in response body
 			err = fmt.Errorf("storage: service returned Status:%s without response body.", resp.Status)
@@ -267,17 +266,13 @@ func (c StorageClient) exec(verb, url string, headers map[string]string, body io
 		return &storageResponse{
 			statusCode: resp.StatusCode,
 			headers:    resp.Header,
-			body:       respBody}, err
+			body:       ioutil.NopCloser(bytes.NewReader(respBody)) /* restore */}, err
 	}
 
-	respBody, err := readResponseBody(resp)
-	if err != nil {
-		return nil, err
-	}
 	return &storageResponse{
 		statusCode: resp.StatusCode,
 		headers:    resp.Header,
-		body:       respBody}, nil
+		body:       resp.Body}, nil
 }
 
 func readResponseBody(resp *http.Response) ([]byte, error) {

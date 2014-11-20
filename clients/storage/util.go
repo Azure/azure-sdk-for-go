@@ -4,7 +4,10 @@ import (
 	"crypto/hmac"
 	"crypto/sha256"
 	"encoding/base64"
+	"encoding/xml"
 	"fmt"
+	"io"
+	"io/ioutil"
 	"net/http"
 	"net/url"
 	"time"
@@ -49,4 +52,13 @@ func prepareBlockListRequest(blocks []block) string {
 	}
 	s += `</BlockList>`
 	return s
+}
+
+func xmlUnmarshal(body io.ReadCloser, v interface{}) error {
+	data, err := ioutil.ReadAll(body)
+	if err != nil {
+		return err
+	}
+	defer body.Close()
+	return xml.Unmarshal(data, v)
 }

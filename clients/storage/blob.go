@@ -179,7 +179,7 @@ func (b BlobStorageClient) ListContainers(params ListContainersParameters) (Cont
 		return out, err
 	}
 
-	err = xml.Unmarshal(resp.body, &out)
+	err = xmlUnmarshal(resp.body, &out)
 	return out, err
 }
 
@@ -267,7 +267,7 @@ func (b BlobStorageClient) ListBlobs(container string, params ListBlobsParameter
 		return out, err
 	}
 
-	err = xml.Unmarshal(resp.body, &out)
+	err = xmlUnmarshal(resp.body, &out)
 	return out, err
 }
 

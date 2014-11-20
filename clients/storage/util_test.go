@@ -1,8 +1,10 @@
 package storage
 
 import (
+	"io/ioutil"
 	"net/url"
 	"reflect"
+	"strings"
 	"testing"
 	"time"
 )
@@ -55,5 +57,24 @@ func Test_prepareBlockListRequest(t *testing.T) {
 	expected = `<?xml version="1.0" encoding="utf-8"?><BlockList><Latest>foo</Latest><Uncommitted>bar</Uncommitted></BlockList>`
 	if out := prepareBlockListRequest(blocks); expected != out {
 		t.Error("Wrong block list. Expected: '%s', got: '%s'", expected, out)
+	}
+}
+
+func Test_xmlUnmarshal(t *testing.T) {
+	xml := `<?xml version="1.0" encoding="utf-8"?>
+	<Blob>
+		<Name>myblob</Name>
+	</Blob>`
+
+	body := ioutil.NopCloser(strings.NewReader(xml))
+
+	var blob Blob
+	err := xmlUnmarshal(body, &blob)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	if blob.Name != "myblob" {
+		t.Fatal("Got wrong value")
 	}
 }

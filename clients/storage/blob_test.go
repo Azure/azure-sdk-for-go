@@ -5,6 +5,7 @@ import (
 	"crypto/rand"
 	"errors"
 	"fmt"
+	"io/ioutil"
 	"os"
 	"reflect"
 	"sort"
@@ -336,8 +337,14 @@ func TestPutSingleBlockBlob(t *testing.T) {
 	}
 
 	// Verify contents
-	if !reflect.DeepEqual(body, resp.body) {
-		t.Fatalf("Wrong blob contents.\nExpected: %d bytes, Got: %d byes", len(body), len(resp.body))
+	respBody, err := ioutil.ReadAll(resp.body)
+	defer resp.body.Close()
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	if !reflect.DeepEqual(body, respBody) {
+		t.Fatalf("Wrong blob contents.\nExpected: %d bytes, Got: %d byes", len(body), len(respBody))
 	}
 
 	err = cli.DeleteBlob(cnt, blob)
@@ -386,8 +393,13 @@ func TestPutMultiBlockBlob(t *testing.T) {
 	}
 
 	// Verify contents
-	if !reflect.DeepEqual(body, resp.body) {
-		t.Fatalf("Wrong blob contents.\nExpected: %d bytes, Got: %d byes", len(body), len(resp.body))
+	respBody, err := ioutil.ReadAll(resp.body)
+	defer resp.body.Close()
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !reflect.DeepEqual(body, respBody) {
+		t.Fatalf("Wrong blob contents.\nExpected: %d bytes, Got: %d byes", len(body), len(respBody))
 	}
 
 	err = cli.DeleteBlob(cnt, blob)

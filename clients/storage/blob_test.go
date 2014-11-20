@@ -361,7 +361,7 @@ func deleteTestContainers(cli *BlobStorageClient) error {
 func getClient() (*BlobStorageClient, error) {
 	name := os.Getenv("ACCOUNT_NAME")
 	if name == "" {
-		return nil, errors.New("ACCOUNT_NAME not set")
+		return nil, errors.New("ACCOUNT_NAME not set, need an empty storage account to test")
 	}
 	key := os.Getenv("ACCOUNT_KEY")
 	if key == "" {

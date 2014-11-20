@@ -165,7 +165,7 @@ type block struct {
 	use blockStatus
 }
 
-var ErrNotCreated error = errors.New("Operation has returned a successful error code other than 201 Created.")
+var ErrNotCreated error = errors.New("storage: operation has returned a successful error code other than 201 Created.")
 
 func (b BlobStorageClient) ListContainers(params ListContainersParameters) (ContainerListResponse, error) {
 	q := mergeParams(params.GetParameters(), url.Values{"comp": {"list"}})
@@ -306,7 +306,7 @@ func (b BlobStorageClient) putBlockBlob(container, name string, blob io.Reader, 
 
 func (b BlobStorageClient) putSingleBlockBlob(container, name string, chunk []byte) error {
 	if len(chunk) > MaxBlobBlockSize {
-		return fmt.Errorf("Provided chunk (%d bytes) cannot fit into single-block blob (max %d bytes)", len(chunk), MaxBlobBlockSize)
+		return fmt.Errorf("storage: provided chunk (%d bytes) cannot fit into single-block blob (max %d bytes)", len(chunk), MaxBlobBlockSize)
 	}
 
 	path := fmt.Sprintf("%s/%s", container, name)

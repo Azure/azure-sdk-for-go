@@ -255,13 +255,13 @@ func (c StorageClient) exec(verb, url string, headers map[string]string, body io
 
 		if len(respBody) == 0 {
 			// no error in response body
-			err = fmt.Errorf("Service returned Status:%s without response body.", resp.Status)
+			err = fmt.Errorf("storage: service returned Status:%s without response body.", resp.Status)
 		} else {
 			// response contains storage service error object, unmarshal
 			if err = xml.Unmarshal(respBody, errXml); err != nil {
 				return nil, err
 			}
-			err = fmt.Errorf("%s %s", "Remote server returned error:", errXml.Message)
+			err = fmt.Errorf("%s %s", "storage: remote server returned error. StatusCode=%s ErrorCode=%s, ErrorMessage=%s", resp.StatusCode, errXml.Code, errXml.Message)
 		}
 
 		return &storageResponse{

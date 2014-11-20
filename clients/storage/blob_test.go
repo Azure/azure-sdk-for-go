@@ -147,6 +147,25 @@ func TestCreateDeleteContainer(t *testing.T) {
 	}
 }
 
+func TestDeleteContainerIfExists(t *testing.T) {
+	cnt := randContainer()
+
+	cli, err := getClient()
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	err = cli.DeleteContainer(cnt)
+	if err == nil {
+		t.Fatal("Expected error, got nil")
+	}
+
+	err = cli.DeleteContainerIfExists(cnt)
+	if err != nil {
+		t.Fatalf("Not supposed to return error, got: %s", err)
+	}
+}
+
 func TestBlobExists(t *testing.T) {
 	cnt := randContainer()
 	blob := fmt.Sprintf("%s/%s", randString(5), randString(20))

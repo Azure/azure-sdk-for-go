@@ -216,11 +216,7 @@ func (b BlobStorageClient) ContainerExists(container string) (bool, error) {
 }
 
 func (b BlobStorageClient) DeleteContainer(name string) error {
-	verb := "DELETE"
-	uri := b.client.getEndpoint(blobServiceName, name, url.Values{"restype": {"container"}})
-
-	headers := b.client.getStandardHeaders()
-	resp, err := b.client.exec(verb, uri, headers, nil)
+	resp, err := b.deleteContainer(name)
 	if err != nil {
 		return err
 	}
@@ -228,6 +224,22 @@ func (b BlobStorageClient) DeleteContainer(name string) error {
 		return ErrNotAccepted
 	}
 	return nil
+}
+
+func (b BlobStorageClient) DeleteContainerIfExists(container string) error {
+	resp, err := b.deleteContainer(container)
+	if resp != nil && resp.statusCode == http.StatusAccepted || resp.statusCode == http.StatusNotFound {
+		return nil
+	}
+	return err
+}
+
+func (b BlobStorageClient) deleteContainer(name string) (*storageResponse, error) {
+	verb := "DELETE"
+	uri := b.client.getEndpoint(blobServiceName, name, url.Values{"restype": {"container"}})
+
+	headers := b.client.getStandardHeaders()
+	return b.client.exec(verb, uri, headers, nil)
 }
 
 func (b BlobStorageClient) ListBlobs(container string, params ListBlobsParameters) (BlobListResponse, error) {

@@ -31,7 +31,7 @@ func TestContainerExists(t *testing.T) {
 		t.Fatalf("Non-existing container returned as existing: %s", cnt)
 	}
 
-	_, err = cli.CreateContainer(cnt, ContainerAccessTypeBlob)
+	err = cli.CreateContainer(cnt, ContainerAccessTypeBlob)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -68,7 +68,7 @@ func TestListContainersPagination(t *testing.T) {
 	created := []string{}
 	for i := 0; i < n; i++ {
 		name := randContainer()
-		_, err := cli.CreateContainer(name, ContainerAccessTypePrivate)
+		err := cli.CreateContainer(name, ContainerAccessTypePrivate)
 		if err != nil {
 			t.Fatalf("Error creating test container: %s", err)
 		}
@@ -82,7 +82,7 @@ func TestListContainersPagination(t *testing.T) {
 		for _, cnt := range created {
 			wg.Add(1)
 			go func(name string) {
-				_, err := cli.DeleteContainer(name)
+				err := cli.DeleteContainer(name)
 				if err != nil {
 					t.Logf("Error while deleting test container: %s", err)
 				}
@@ -135,13 +135,13 @@ func TestCreateDeleteContainer(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	_, err = cli.CreateContainer(cnt, ContainerAccessTypePrivate)
+	err = cli.CreateContainer(cnt, ContainerAccessTypePrivate)
 	if err != nil {
 		t.Fatal(err)
 	}
 	defer cli.DeleteContainer(cnt)
 
-	_, err = cli.DeleteContainer(cnt)
+	err = cli.DeleteContainer(cnt)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -156,7 +156,7 @@ func TestBlobExists(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	_, err = cli.CreateContainer(cnt, ContainerAccessTypeBlob)
+	err = cli.CreateContainer(cnt, ContainerAccessTypeBlob)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -195,7 +195,7 @@ func TestListBlobsPagination(t *testing.T) {
 	}
 
 	cnt := randContainer()
-	_, err = cli.CreateContainer(cnt, ContainerAccessTypePrivate)
+	err = cli.CreateContainer(cnt, ContainerAccessTypePrivate)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -240,7 +240,7 @@ func TestListBlobsPagination(t *testing.T) {
 		t.Fatalf("Got wrong list of blobs. Expected: %s, Got: %s", blobs, seen)
 	}
 
-	_, err = cli.DeleteContainer(cnt)
+	err = cli.DeleteContainer(cnt)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -256,7 +256,7 @@ func TestPutSingleBlockBlob(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	_, err = cli.CreateContainer(cnt, ContainerAccessTypeBlob)
+	err = cli.CreateContainer(cnt, ContainerAccessTypeBlob)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -283,7 +283,7 @@ func TestPutSingleBlockBlob(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	_, err = cli.DeleteContainer(cnt)
+	err = cli.DeleteContainer(cnt)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -306,7 +306,7 @@ func TestPutMultiBlockBlob(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	_, err = cli.CreateContainer(cnt, ContainerAccessTypeBlob)
+	err = cli.CreateContainer(cnt, ContainerAccessTypeBlob)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -333,7 +333,7 @@ func TestPutMultiBlockBlob(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	_, err = cli.DeleteContainer(cnt)
+	err = cli.DeleteContainer(cnt)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -349,7 +349,7 @@ func deleteTestContainers(cli *BlobStorageClient) error {
 			break
 		}
 		for _, c := range resp.Containers {
-			_, err := cli.DeleteContainer(c.Name)
+			err = cli.DeleteContainer(c.Name)
 			if err != nil {
 				return err
 			}

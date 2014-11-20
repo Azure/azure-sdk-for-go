@@ -166,6 +166,7 @@ type block struct {
 }
 
 var ErrNotCreated error = errors.New("storage: operation has returned a successful error code other than 201 Created.")
+var ErrNotAccepted error = errors.New("storage: operation has returned a successful error code other than 202 Accepted.")
 
 func (b BlobStorageClient) ListContainers(params ListContainersParameters) (ContainerListResponse, error) {
 	q := mergeParams(params.GetParameters(), url.Values{"comp": {"list"}})
@@ -182,7 +183,7 @@ func (b BlobStorageClient) ListContainers(params ListContainersParameters) (Cont
 	return out, err
 }
 
-func (b BlobStorageClient) CreateContainer(name string, access ContainerAccessType) (*storageResponse, error) {
+func (b BlobStorageClient) CreateContainer(name string, access ContainerAccessType) error {
 	verb := "PUT"
 	uri := b.client.getEndpoint(blobServiceName, name, url.Values{"restype": {"container"}})
 
@@ -191,7 +192,14 @@ func (b BlobStorageClient) CreateContainer(name string, access ContainerAccessTy
 	if access != "" {
 		headers["x-ms-blob-public-access"] = string(access)
 	}
-	return b.client.exec(verb, uri, headers, nil)
+	resp, err := b.client.exec(verb, uri, headers, nil)
+	if err != nil {
+		return err
+	}
+	if resp.statusCode != http.StatusCreated {
+		return ErrNotCreated
+	}
+	return nil
 }
 
 func (b BlobStorageClient) ContainerExists(container string) (bool, error) {
@@ -207,12 +215,19 @@ func (b BlobStorageClient) ContainerExists(container string) (bool, error) {
 	return false, err
 }
 
-func (b BlobStorageClient) DeleteContainer(name string) (*storageResponse, error) {
+func (b BlobStorageClient) DeleteContainer(name string) error {
 	verb := "DELETE"
 	uri := b.client.getEndpoint(blobServiceName, name, url.Values{"restype": {"container"}})
 
 	headers := b.client.getStandardHeaders()
-	return b.client.exec(verb, uri, headers, nil)
+	resp, err := b.client.exec(verb, uri, headers, nil)
+	if err != nil {
+		return err
+	}
+	if resp.statusCode != http.StatusAccepted {
+		return ErrNotAccepted
+	}
+	return nil
 }
 
 func (b BlobStorageClient) ListBlobs(container string, params ListBlobsParameters) (BlobListResponse, error) {

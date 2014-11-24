@@ -38,6 +38,16 @@ type storageResponse struct {
 	body       io.ReadCloser
 }
 
+type StorageServiceError struct {
+	Code                      string `xml:"Code"`
+	Message                   string `xml:"Message"`
+	AuthenticationErrorDetail string `xml:"AuthenticationErrorDetail"`
+	QueryParameterName        string `xml:"QueryParameterName"`
+	QueryParameterValue       string `xml:"QueryParameterValue"`
+	Reason                    string `xml:"Reason"`
+	StatusCode                int
+}
+
 func NewBasicClient(accountName, accountKey string) (*StorageClient, error) {
 	return NewClient(accountName, accountKey, DefaultBaseUrl, DefaultApiVersion, defaultUseHttps)
 }
@@ -275,16 +285,6 @@ func readResponseBody(resp *http.Response) ([]byte, error) {
 		err = nil
 	}
 	return out, err
-}
-
-type StorageServiceError struct {
-	Code                      string `xml:"Code"`
-	Message                   string `xml:"Message"`
-	AuthenticationErrorDetail string `xml:"AuthenticationErrorDetail"`
-	QueryParameterName        string `xml:"QueryParameterName"`
-	QueryParameterValue       string `xml:"QueryParameterValue"`
-	Reason                    string `xml:"Reason"`
-	StatusCode                int
 }
 
 func serviceErrFromXml(body []byte, statusCode int) (StorageServiceError, error) {

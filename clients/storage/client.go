@@ -238,8 +238,6 @@ func (c StorageClient) exec(verb, url string, headers map[string]string, body io
 
 	statusCode := resp.StatusCode
 	if statusCode >= 400 && statusCode <= 505 {
-		errXml := new(ErrorXml)
-
 		var respBody []byte
 		respBody, err = readResponseBody(resp)
 		if err != nil {
@@ -251,16 +249,17 @@ func (c StorageClient) exec(verb, url string, headers map[string]string, body io
 			err = fmt.Errorf("storage: service returned without a response body (%s).", resp.Status)
 		} else {
 			// response contains storage service error object, unmarshal
-			if err = xml.Unmarshal(respBody, errXml); err != nil {
-				return nil, err
+			storageErr, errIn := serviceErrFromXml(respBody, resp.StatusCode)
+			if err != nil { // error unmarshaling the error response
+				err = errIn
 			}
-			err = fmt.Errorf("storage: remote server returned error. Status=%s, ErrorCode=%s, ErrorMessage=%s", resp.Status, errXml.Code, errXml.Message)
+			err = storageErr
 		}
-
 		return &storageResponse{
 			statusCode: resp.StatusCode,
 			headers:    resp.Header,
-			body:       ioutil.NopCloser(bytes.NewReader(respBody)) /* restore */}, err
+			body:       ioutil.NopCloser(bytes.NewReader(respBody)), /* restore the body */
+		}, err
 	}
 
 	return &storageResponse{
@@ -278,9 +277,25 @@ func readResponseBody(resp *http.Response) ([]byte, error) {
 	return out, err
 }
 
-// TODO (ahmetalpbalkan) refactor
-type ErrorXml struct {
-	Code                      string
-	Message                   string
-	AuthenticationErrorDetail string
+type StorageServiceError struct {
+	Code                      string `xml:"Code"`
+	Message                   string `xml:"Message"`
+	AuthenticationErrorDetail string `xml:"AuthenticationErrorDetail"`
+	QueryParameterName        string `xml:"QueryParameterName"`
+	QueryParameterValue       string `xml:"QueryParameterValue"`
+	Reason                    string `xml:"Reason"`
+	StatusCode                int
+}
+
+func serviceErrFromXml(body []byte, statusCode int) (StorageServiceError, error) {
+	var storageErr StorageServiceError
+	if err := xml.Unmarshal(body, &storageErr); err != nil {
+		return storageErr, err
+	}
+	storageErr.StatusCode = statusCode
+	return storageErr, nil
+}
+
+func (e StorageServiceError) Error() string {
+	return fmt.Sprintf("storage: remote server returned error. StatusCode=%d ErrorCode=%s, ErrorMessage=%s", e.StatusCode, e.Code, e.Message)
 }

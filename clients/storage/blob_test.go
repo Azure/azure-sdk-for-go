@@ -87,6 +87,27 @@ func TestGetBlobSASURI(t *testing.T) {
 	}
 }
 
+func TestReturnedServiceError(t *testing.T) {
+	cli, err := getClient()
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	// attempt to delete a nonexisting container
+	_, err = cli.deleteContainer(randContainer())
+	if err == nil {
+		t.Fatal("Service has not returned an error")
+	}
+
+	if v, ok := err.(StorageServiceError); !ok {
+		t.Fatal("Cannot assert to specific error")
+	} else if v.StatusCode != 404 {
+		t.Fatalf("Expected status:%d, got: %d", 404, v.StatusCode)
+	} else if v.Code != "ContainerNotFound" {
+		t.Fatalf("Expected code: %s, got: %s", "ContainerNotFound", v.Code)
+	}
+}
+
 func TestBlobSASURICorrectness(t *testing.T) {
 	cli, err := getClient()
 	if err != nil {

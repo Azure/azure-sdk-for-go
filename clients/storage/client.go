@@ -91,12 +91,12 @@ func (c StorageClient) getBaseUrl(service string) string {
 func (c StorageClient) getEndpoint(service, path string, params url.Values) string {
 	u, err := url.Parse(c.getBaseUrl(service))
 	if err != nil {
-		// really should not happen
+		// really should not be happening
 		panic(err)
 	}
 
 	if path == "" {
-		path = "/" // API doesn't accept path segments not starting with '/''
+		path = "/" // API doesn't accept path segments not starting with '/'
 	}
 
 	u.Path = path

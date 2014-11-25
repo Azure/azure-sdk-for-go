@@ -561,7 +561,7 @@ func TestPutEmptyBlockBlob(t *testing.T) {
 func TestPutSingleBlockBlob(t *testing.T) {
 	cnt := randContainer()
 	blob := randString(20)
-	body := []byte(randString(1024 * 4))
+	body := []byte(randString(1024))
 
 	cli, err := getBlobClient()
 	if err != nil {
@@ -596,14 +596,20 @@ func TestPutSingleBlockBlob(t *testing.T) {
 		t.Fatalf("Wrong blob contents.\nExpected: %d bytes, Got: %d byes", len(body), len(respBody))
 	}
 
-	err = cli.DeleteBlob(cnt, blob)
+	// Verify block list
+	blocks, err := cli.GetBlockList(cnt, blob, BlockListTypeAll)
 	if err != nil {
 		t.Fatal(err)
 	}
-
-	err = cli.DeleteContainer(cnt)
-	if err != nil {
-		t.Fatal(err)
+	if expected := 1; len(blocks.CommittedBlocks) != expected {
+		t.Fatalf("Wrong committed block count. Expected: %d, Got: %d", expected, len(blocks.CommittedBlocks))
+	}
+	if expected := 0; len(blocks.UncommittedBlocks) != expected {
+		t.Fatalf("Wrong unccommitted block count. Expected: %d, Got: %d", expected, len(blocks.UncommittedBlocks))
+	}
+	thatBlock := blocks.CommittedBlocks[0]
+	if expected := base64.StdEncoding.EncodeToString([]byte("0")); thatBlock.Name != expected {
+		t.Fatalf("Wrong block name. Expected: %s, Got: %s", expected, thatBlock.Name)
 	}
 }
 

@@ -494,7 +494,7 @@ func TestGetBlobProperies(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	if props.ContentLength != int64(len(contents)) {
+	if props.ContentLength != uint64(len(contents)) {
 		t.Fatalf("Got wrong Content-Length: '%d', expected: %d", props.ContentLength, len(contents))
 	}
 }
@@ -682,7 +682,6 @@ func TestGetBlobRange(t *testing.T) {
 		if str != r.expected {
 			t.Fatalf("Got wrong range. Expected: '%s'; Got:'%s'", r.expected, str)
 		}
-		t.Log(r.expected)
 	}
 }
 

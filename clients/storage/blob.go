@@ -43,7 +43,7 @@ type BlobProperties struct {
 	LastModified          string `xml:"Last-Modified"`
 	Etag                  string `xml:"Etag"`
 	ContentMD5            string `xml:"Content-MD5"`
-	ContentLength         int64  `xml:"Content-Length"`
+	ContentLength         uint64 `xml:"Content-Length"`
 	ContentType           string `xml:"Content-Type"`
 	ContentEncoding       string `xml:"Content-Encoding"`
 	SequenceNumber        int64  `xml:"x-ms-blob-sequence-number"`
@@ -384,15 +384,16 @@ func (b BlobStorageClient) GetBlobProperties(container, name string) (*BlobPrope
 		return nil, fmt.Errorf(errUnexpectedStatus, http.StatusOK, resp.statusCode)
 	}
 
-	var contentLength, sequenceNum int64
+	var contentLength uint64
 	contentLengthStr := resp.headers.Get("Content-Length")
 	if contentLengthStr != "" {
-		contentLength, err = strconv.ParseInt(contentLengthStr, 0, 64)
+		contentLength, err = strconv.ParseUint(contentLengthStr, 0, 64)
 		if err != nil {
 			return nil, err
 		}
 	}
 
+	var sequenceNum int64
 	sequenceNumStr := resp.headers.Get("Content-Length")
 	if sequenceNumStr != "" {
 		sequenceNum, err = strconv.ParseInt(sequenceNumStr, 0, 64)

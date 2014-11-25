@@ -273,15 +273,21 @@ func TestCreateContainerIfNotExists(t *testing.T) {
 	}
 
 	// First create
-	err = cli.CreateContainerIfNotExists(cnt, ContainerAccessTypePrivate)
+	ok, err := cli.CreateContainerIfNotExists(cnt, ContainerAccessTypePrivate)
 	if err != nil {
 		t.Fatal(err)
 	}
+	if expected := true; ok != expected {
+		t.Fatalf("Wrong creation status. Expected: %v; Got: %v", expected, ok)
+	}
 
 	// Second create, should not give errors
-	err = cli.CreateContainerIfNotExists(cnt, ContainerAccessTypePrivate)
+	ok, err = cli.CreateContainerIfNotExists(cnt, ContainerAccessTypePrivate)
 	if err != nil {
 		t.Fatal(err)
+	}
+	if expected := false; ok != expected {
+		t.Fatalf("Wrong creation status. Expected: %v; Got: %v", expected, ok)
 	}
 
 	defer cli.DeleteContainer(cnt)
@@ -295,14 +301,31 @@ func TestDeleteContainerIfExists(t *testing.T) {
 		t.Fatal(err)
 	}
 
+	// Nonexisting container
 	err = cli.DeleteContainer(cnt)
 	if err == nil {
 		t.Fatal("Expected error, got nil")
 	}
 
-	err = cli.DeleteContainerIfExists(cnt)
+	ok, err := cli.DeleteContainerIfExists(cnt)
 	if err != nil {
 		t.Fatalf("Not supposed to return error, got: %s", err)
+	}
+	if expected := false; ok != expected {
+		t.Fatal("Wrong deletion status. Expected: %v; Got: %v", expected, ok)
+	}
+
+	// Existing container
+	err = cli.CreateContainer(cnt, ContainerAccessTypePrivate)
+	if err != nil {
+		t.Fatal(err)
+	}
+	ok, err = cli.DeleteContainerIfExists(cnt)
+	if err != nil {
+		t.Fatalf("Not supposed to return error, got: %s", err)
+	}
+	if expected := true; ok != expected {
+		t.Fatal("Wrong deletion status. Expected: %v; Got: %v", expected, ok)
 	}
 }
 
@@ -429,9 +452,12 @@ func TestDeleteBlobIfExists(t *testing.T) {
 		t.Fatal("Nonexisting blob did not return error")
 	}
 
-	err = cli.DeleteBlobIfExists(cnt, blob)
+	ok, err := cli.DeleteBlobIfExists(cnt, blob)
 	if err != nil {
 		t.Fatalf("Not supposed to return error: %s", err)
+	}
+	if expected := false; ok != expected {
+		t.Fatalf("Wrong deletion status. Expected: %v; Got: %v", expected, ok)
 	}
 }
 

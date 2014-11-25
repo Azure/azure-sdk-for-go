@@ -231,12 +231,12 @@ func (b BlobStorageClient) CreateContainer(name string, access ContainerAccessTy
 	return nil
 }
 
-func (b BlobStorageClient) CreateContainerIfNotExists(name string, access ContainerAccessType) error {
+func (b BlobStorageClient) CreateContainerIfNotExists(name string, access ContainerAccessType) (bool, error) {
 	resp, err := b.createContainer(name, access)
-	if resp != nil && (resp.statusCode != http.StatusCreated || resp.statusCode == http.StatusConflict) {
-		return nil
+	if resp != nil && (resp.statusCode == http.StatusCreated || resp.statusCode == http.StatusConflict) {
+		return resp.statusCode == http.StatusCreated, nil
 	}
-	return err
+	return false, err
 }
 
 func (b BlobStorageClient) createContainer(name string, access ContainerAccessType) (*storageResponse, error) {
@@ -275,12 +275,12 @@ func (b BlobStorageClient) DeleteContainer(name string) error {
 	return nil
 }
 
-func (b BlobStorageClient) DeleteContainerIfExists(container string) error {
+func (b BlobStorageClient) DeleteContainerIfExists(container string) (bool, error) {
 	resp, err := b.deleteContainer(container)
 	if resp != nil && (resp.statusCode == http.StatusAccepted || resp.statusCode == http.StatusNotFound) {
-		return nil
+		return resp.statusCode == http.StatusAccepted, nil
 	}
-	return err
+	return false, err
 }
 
 func (b BlobStorageClient) deleteContainer(name string) (*storageResponse, error) {
@@ -631,12 +631,12 @@ func blobSASStringToSign(signedVersion, canonicalizedResource, signedExpiry, sig
 	}
 }
 
-func (b BlobStorageClient) DeleteBlobIfExists(container, name string) error {
+func (b BlobStorageClient) DeleteBlobIfExists(container, name string) (bool, error) {
 	resp, err := b.deleteBlob(container, name)
 	if resp != nil && (resp.statusCode == http.StatusAccepted || resp.statusCode == http.StatusNotFound) {
-		return nil
+		return resp.statusCode == http.StatusAccepted, nil
 	}
-	return err
+	return false, err
 }
 
 func (b BlobStorageClient) deleteBlob(container, name string) (*storageResponse, error) {

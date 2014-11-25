@@ -164,7 +164,7 @@ func Test_buildCanonicalizedHeader(t *testing.T) {
 	}
 }
 
-func TestReturnedServiceError(t *testing.T) {
+func TestReturnsStorageServiceError(t *testing.T) {
 	cli, err := getBlobClient()
 	if err != nil {
 		t.Fatal(err)
@@ -182,6 +182,8 @@ func TestReturnedServiceError(t *testing.T) {
 		t.Fatalf("Expected status:%d, got: %d", 404, v.StatusCode)
 	} else if v.Code != "ContainerNotFound" {
 		t.Fatalf("Expected code: %s, got: %s", "ContainerNotFound", v.Code)
+	} else if v.RequestId == "" {
+		t.Fatalf("RequestId does not exist")
 	}
 }
 

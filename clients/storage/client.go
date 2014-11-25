@@ -46,6 +46,7 @@ type StorageServiceError struct {
 	QueryParameterValue       string `xml:"QueryParameterValue"`
 	Reason                    string `xml:"Reason"`
 	StatusCode                int
+	RequestId                 string
 }
 
 func NewBasicClient(accountName, accountKey string) (*StorageClient, error) {
@@ -259,7 +260,7 @@ func (c StorageClient) exec(verb, url string, headers map[string]string, body io
 			err = fmt.Errorf("storage: service returned without a response body (%s).", resp.Status)
 		} else {
 			// response contains storage service error object, unmarshal
-			storageErr, errIn := serviceErrFromXml(respBody, resp.StatusCode)
+			storageErr, errIn := serviceErrFromXml(respBody, resp.StatusCode, resp.Header.Get("x-ms-request-id"))
 			if err != nil { // error unmarshaling the error response
 				err = errIn
 			}
@@ -287,12 +288,13 @@ func readResponseBody(resp *http.Response) ([]byte, error) {
 	return out, err
 }
 
-func serviceErrFromXml(body []byte, statusCode int) (StorageServiceError, error) {
+func serviceErrFromXml(body []byte, statusCode int, requestId string) (StorageServiceError, error) {
 	var storageErr StorageServiceError
 	if err := xml.Unmarshal(body, &storageErr); err != nil {
 		return storageErr, err
 	}
 	storageErr.StatusCode = statusCode
+	storageErr.RequestId = requestId
 	return storageErr, nil
 }
 

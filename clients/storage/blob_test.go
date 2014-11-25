@@ -639,6 +639,53 @@ func TestPutSingleBlockBlob(t *testing.T) {
 	}
 }
 
+func TestGetBlobRange(t *testing.T) {
+	cnt := randContainer()
+	blob := randString(20)
+	body := "0123456789"
+
+	cli, err := getBlobClient()
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	err = cli.CreateContainer(cnt, ContainerAccessTypeBlob)
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer cli.DeleteContainer(cnt)
+
+	err = cli.PutBlockBlob(cnt, blob, strings.NewReader(body))
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer cli.DeleteBlob(cnt, blob)
+
+	// Read 1-3
+	for _, r := range []struct {
+		rangeStr string
+		expected string
+	}{
+		{"0-", body},
+		{"1-3", body[1 : 3+1]},
+		{"3-", body[3:]},
+	} {
+		resp, err := cli.GetBlobRange(cnt, blob, r.rangeStr)
+		if err != nil {
+			t.Fatal(err)
+		}
+		blobBody, err := ioutil.ReadAll(resp)
+		if err != nil {
+			t.Fatal(err)
+		}
+		str := string(blobBody)
+		if str != r.expected {
+			t.Fatalf("Got wrong range. Expected: '%s'; Got:'%s'", r.expected, str)
+		}
+		t.Log(r.expected)
+	}
+}
+
 func TestPutBlock(t *testing.T) {
 	cli, err := getBlobClient()
 	if err != nil {

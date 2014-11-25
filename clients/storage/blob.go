@@ -330,12 +330,7 @@ func (b BlobStorageClient) GetBlobUrl(container, name string) string {
 }
 
 func (b BlobStorageClient) GetBlob(container, name string) (io.ReadCloser, error) {
-	verb := "GET"
-	path := fmt.Sprintf("%s/%s", container, name)
-	uri := b.client.getEndpoint(blobServiceName, path, url.Values{})
-
-	headers := b.client.getStandardHeaders()
-	resp, err := b.client.exec(verb, uri, headers, nil)
+	resp, err := b.getBlobRange(container, name, "")
 	if err != nil {
 		return nil, err
 	}
@@ -344,6 +339,34 @@ func (b BlobStorageClient) GetBlob(container, name string) (io.ReadCloser, error
 		return nil, fmt.Errorf(errUnexpectedStatus, http.StatusOK, resp.statusCode)
 	}
 	return resp.body, nil
+}
+
+func (b BlobStorageClient) GetBlobRange(container, name, bytesRange string) (io.ReadCloser, error) {
+	resp, err := b.getBlobRange(container, name, bytesRange)
+	if err != nil {
+		return nil, err
+	}
+
+	if resp.statusCode != http.StatusPartialContent {
+		return nil, fmt.Errorf(errUnexpectedStatus, http.StatusPartialContent, resp.statusCode)
+	}
+	return resp.body, nil
+}
+
+func (b BlobStorageClient) getBlobRange(container, name, bytesRange string) (*storageResponse, error) {
+	verb := "GET"
+	path := fmt.Sprintf("%s/%s", container, name)
+	uri := b.client.getEndpoint(blobServiceName, path, url.Values{})
+
+	headers := b.client.getStandardHeaders()
+	if bytesRange != "" {
+		headers["Range"] = fmt.Sprintf("bytes=%s", bytesRange)
+	}
+	resp, err := b.client.exec(verb, uri, headers, nil)
+	if err != nil {
+		return nil, err
+	}
+	return resp, err
 }
 
 func (b BlobStorageClient) GetBlobProperties(container, name string) (*BlobProperties, error) {

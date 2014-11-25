@@ -801,7 +801,7 @@ func TestGetBlockList_PutBlockList(t *testing.T) {
 	}
 
 	// Commit block list
-	err = cli.PutBlockList(cnt, blob, []Block{{blockId, blockStatusUncommitted}})
+	err = cli.PutBlockList(cnt, blob, []Block{{blockId, BlockStatusUncommitted}})
 	if err != nil {
 		t.Fatal(err)
 	}

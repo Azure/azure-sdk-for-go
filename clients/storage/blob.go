@@ -449,7 +449,7 @@ func (b BlobStorageClient) putBlockBlob(container, name string, blob io.Reader, 
 			if err != nil {
 				return err
 			}
-			blockList = append(blockList, Block{id, blockStatusLatest})
+			blockList = append(blockList, Block{id, BlockStatusLatest})
 
 			// Read next block
 			n, err = blob.Read(chunk)

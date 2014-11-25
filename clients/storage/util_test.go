@@ -53,7 +53,7 @@ func Test_prepareBlockListRequest(t *testing.T) {
 		t.Error("Wrong block list. Expected: '%s', got: '%s'", expected, out)
 	}
 
-	blocks := []Block{{"foo", blockStatusLatest}, {"bar", blockStatusUncommitted}}
+	blocks := []Block{{"foo", BlockStatusLatest}, {"bar", BlockStatusUncommitted}}
 	expected = `<?xml version="1.0" encoding="utf-8"?><BlockList><Latest>foo</Latest><Uncommitted>bar</Uncommitted></BlockList>`
 	if out := prepareBlockListRequest(blocks); expected != out {
 		t.Error("Wrong block list. Expected: '%s', got: '%s'", expected, out)

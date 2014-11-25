@@ -299,5 +299,5 @@ func serviceErrFromXml(body []byte, statusCode int, requestId string) (StorageSe
 }
 
 func (e StorageServiceError) Error() string {
-	return fmt.Sprintf("storage: remote server returned error. StatusCode=%d ErrorCode=%s, ErrorMessage=%s", e.StatusCode, e.Code, e.Message)
+	return fmt.Sprintf("storage: remote server returned error. StatusCode=%d, ErrorCode=%s, ErrorMessage=%s, RequestId=%s", e.StatusCode, e.Code, e.Message, e.RequestId)
 }

@@ -18,7 +18,6 @@ import (
 	"github.com/MSOpenTech/azure-sdk-for-go/clients/imageClient"
 	"github.com/MSOpenTech/azure-sdk-for-go/clients/locationClient"
 	"github.com/MSOpenTech/azure-sdk-for-go/clients/storageServiceClient"
-	"github.com/MSOpenTech/azure-sdk-for-go/clients/vmDiskClient"
 )
 
 const (
@@ -28,6 +27,7 @@ const (
 	azureHostedServiceURL             = "services/hostedservices/%s"
 	azureHostedServiceAvailabilityURL = "services/hostedservices/operations/isavailable/%s"
 	azureDeploymentURL                = "services/hostedservices/%s/deployments/%s"
+	deleteAzureDeploymentURL          = "services/hostedservices/%s/deployments/%s?comp=media"
 	azureRoleURL                      = "services/hostedservices/%s/deployments/%s/roles/%s"
 	azureOperationsURL                = "services/hostedservices/%s/deployments/%s/roleinstances/%s/Operations"
 	azureCertificatListURL            = "services/hostedservices/%s/certificates"
@@ -358,24 +358,13 @@ func DeleteVMDeployment(cloudserviceName, deploymentName string) error {
 		return fmt.Errorf(azure.ParamNotSpecifiedError, "deploymentName")
 	}
 
-	vmDeployment, err := GetVMDeployment(cloudserviceName, deploymentName)
-	if err != nil {
-		return err
-	}
-	vmDiskName := vmDeployment.RoleList.Role[0].OSVirtualHardDisk.DiskName
-
-	requestURL := fmt.Sprintf(azureDeploymentURL, cloudserviceName, deploymentName)
+	requestURL := fmt.Sprintf(deleteAzureDeploymentURL, cloudserviceName, deploymentName)
 	requestId, err := azure.SendAzureDeleteRequest(requestURL)
 	if err != nil {
 		return err
 	}
 
 	azure.WaitAsyncOperation(requestId)
-
-	err = vmDiskClient.DeleteDisk(vmDiskName)
-	if err != nil {
-		return err
-	}
 
 	return nil
 }

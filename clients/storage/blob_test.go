@@ -88,29 +88,8 @@ func TestGetBlobSASURI(t *testing.T) {
 	}
 }
 
-func TestReturnedServiceError(t *testing.T) {
-	cli, err := getClient()
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	// attempt to delete a nonexisting container
-	_, err = cli.deleteContainer(randContainer())
-	if err == nil {
-		t.Fatal("Service has not returned an error")
-	}
-
-	if v, ok := err.(StorageServiceError); !ok {
-		t.Fatal("Cannot assert to specific error")
-	} else if v.StatusCode != 404 {
-		t.Fatalf("Expected status:%d, got: %d", 404, v.StatusCode)
-	} else if v.Code != "ContainerNotFound" {
-		t.Fatalf("Expected code: %s, got: %s", "ContainerNotFound", v.Code)
-	}
-}
-
 func TestBlobSASURICorrectness(t *testing.T) {
-	cli, err := getClient()
+	cli, err := getBlobClient()
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -158,7 +137,7 @@ func TestBlobSASURICorrectness(t *testing.T) {
 }
 
 func TestListContainersPagination(t *testing.T) {
-	cli, err := getClient()
+	cli, err := getBlobClient()
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -237,7 +216,7 @@ func TestListContainersPagination(t *testing.T) {
 func TestContainerExists(t *testing.T) {
 	cnt := randContainer()
 
-	cli, err := getClient()
+	cli, err := getBlobClient()
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -268,7 +247,7 @@ func TestContainerExists(t *testing.T) {
 func TestCreateDeleteContainer(t *testing.T) {
 	cnt := randContainer()
 
-	cli, err := getClient()
+	cli, err := getBlobClient()
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -288,7 +267,7 @@ func TestCreateDeleteContainer(t *testing.T) {
 func TestCreateContainerIfNotExists(t *testing.T) {
 	cnt := randContainer()
 
-	cli, err := getClient()
+	cli, err := getBlobClient()
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -311,7 +290,7 @@ func TestCreateContainerIfNotExists(t *testing.T) {
 func TestDeleteContainerIfExists(t *testing.T) {
 	cnt := randContainer()
 
-	cli, err := getClient()
+	cli, err := getBlobClient()
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -331,7 +310,7 @@ func TestBlobExists(t *testing.T) {
 	cnt := randContainer()
 	blob := randString(20)
 
-	cli, err := getClient()
+	cli, err := getBlobClient()
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -392,7 +371,7 @@ func TestBlobCopy(t *testing.T) {
 		t.Skip("skipping blob copy in short mode, no SLA on async operation")
 	}
 
-	cli, err := getClient()
+	cli, err := getBlobClient()
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -440,7 +419,7 @@ func TestDeleteBlobIfExists(t *testing.T) {
 	cnt := randContainer()
 	blob := randString(20)
 
-	cli, err := getClient()
+	cli, err := getBlobClient()
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -461,7 +440,7 @@ func TestGetBlobProperies(t *testing.T) {
 	blob := randString(20)
 	contents := randString(64)
 
-	cli, err := getClient()
+	cli, err := getBlobClient()
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -495,7 +474,7 @@ func TestGetBlobProperies(t *testing.T) {
 }
 
 func TestListBlobsPagination(t *testing.T) {
-	cli, err := getClient()
+	cli, err := getBlobClient()
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -553,7 +532,7 @@ func TestListBlobsPagination(t *testing.T) {
 }
 
 func TestPutEmptyBlockBlob(t *testing.T) {
-	cli, err := getClient()
+	cli, err := getBlobClient()
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -584,7 +563,7 @@ func TestPutSingleBlockBlob(t *testing.T) {
 	blob := randString(20)
 	body := []byte(randString(1024 * 4))
 
-	cli, err := getClient()
+	cli, err := getBlobClient()
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -629,7 +608,7 @@ func TestPutSingleBlockBlob(t *testing.T) {
 }
 
 func TestPutBlock(t *testing.T) {
-	cli, err := getClient()
+	cli, err := getBlobClient()
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -657,7 +636,7 @@ func TestPutMultiBlockBlob(t *testing.T) {
 		body      = []byte(randString(blockSize*2 + blockSize/2)) // 3 blocks
 	)
 
-	cli, err := getClient()
+	cli, err := getBlobClient()
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -701,7 +680,7 @@ func TestPutMultiBlockBlob(t *testing.T) {
 }
 
 func TestGetBlockList_PutBlockList(t *testing.T) {
-	cli, err := getClient()
+	cli, err := getBlobClient()
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -791,7 +770,7 @@ func deleteTestContainers(cli *BlobStorageClient) error {
 	return nil
 }
 
-func getClient() (*BlobStorageClient, error) {
+func getBlobClient() (*BlobStorageClient, error) {
 	name := os.Getenv("ACCOUNT_NAME")
 	if name == "" {
 		return nil, errors.New("ACCOUNT_NAME not set, need an empty storage account to test")

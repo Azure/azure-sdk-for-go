@@ -174,9 +174,9 @@ const MaxBlobBlockSize = 64 * 1024 * 1024
 type BlockStatus string
 
 const (
-	blockStatusUncommitted BlockStatus = "Uncommitted"
-	blockStatusCommitted   BlockStatus = "Committed"
-	blockStatusLatest      BlockStatus = "Latest"
+	BlockStatusUncommitted BlockStatus = "Uncommitted"
+	BlockStatusCommitted   BlockStatus = "Committed"
+	BlockStatusLatest      BlockStatus = "Latest"
 )
 
 type Block struct {

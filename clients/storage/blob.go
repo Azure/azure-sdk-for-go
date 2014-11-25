@@ -153,6 +153,14 @@ const (
 	blobCopyStatusFailed  = "failed"
 )
 
+type BlockListType string
+
+const (
+	BlockListTypeAll         BlockListType = "all"
+	BlockListTypeCommitted   BlockListType = "committed"
+	BlockListTypeUncommitted BlockListType = "uncommitted"
+)
+
 type ContainerAccessType string
 
 const (
@@ -163,17 +171,28 @@ const (
 
 const MaxBlobBlockSize = 64 * 1024 * 1024
 
-type blockStatus string
+type BlockStatus string
 
 const (
-	blockStatusUncommitted blockStatus = "Uncommitted"
-	blockStatusCommitted   blockStatus = "Committed"
-	blockStatusLatest      blockStatus = "Latest"
+	blockStatusUncommitted BlockStatus = "Uncommitted"
+	blockStatusCommitted   BlockStatus = "Committed"
+	blockStatusLatest      BlockStatus = "Latest"
 )
 
-type block struct {
-	id  string
-	use blockStatus
+type Block struct {
+	Id     string
+	Status BlockStatus
+}
+
+type BlockListResponse struct {
+	XMLName           xml.Name        `xml:"BlockList"`
+	CommittedBlocks   []BlockResponse `xml:"CommittedBlocks>Block"`
+	UncommittedBlocks []BlockResponse `xml:"UncommittedBlocks>Block"`
+}
+
+type BlockResponse struct {
+	Name string `xml:"Name"`
+	Size int64  `xml:"Size"`
 }
 
 var (
@@ -395,18 +414,18 @@ func (b BlobStorageClient) putBlockBlob(container, name string, blob io.Reader, 
 		return b.putSingleBlockBlob(container, name, chunk[:n])
 	} else {
 		// Does not fit into one block. Upload block by block then commit the block list
-		blockList := []block{}
+		blockList := []Block{}
 		blockNum := 0
 
 		// Put blocks
 		for {
 			id := base64.StdEncoding.EncodeToString([]byte(fmt.Sprintf("%v", blockNum)))
 			data := chunk[:n]
-			err = b.putBlock(container, name, id, data)
+			err = b.PutBlock(container, name, id, data)
 			if err != nil {
 				return err
 			}
-			blockList = append(blockList, block{id, blockStatusLatest})
+			blockList = append(blockList, Block{id, blockStatusLatest})
 
 			// Read next block
 			n, err = blob.Read(chunk)
@@ -421,7 +440,7 @@ func (b BlobStorageClient) putBlockBlob(container, name string, blob io.Reader, 
 		}
 
 		// Commit block list
-		return b.putBlockList(container, name, blockList)
+		return b.PutBlockList(container, name, blockList)
 	}
 }
 
@@ -447,7 +466,7 @@ func (b BlobStorageClient) putSingleBlockBlob(container, name string, chunk []by
 	return nil
 }
 
-func (b BlobStorageClient) putBlock(container, name, blockId string, chunk []byte) error {
+func (b BlobStorageClient) PutBlock(container, name, blockId string, chunk []byte) error {
 	path := fmt.Sprintf("%s/%s", container, name)
 	uri := b.client.getEndpoint(blobServiceName, path, url.Values{"comp": {"block"}, "blockid": {blockId}})
 	headers := b.client.getStandardHeaders()
@@ -465,7 +484,7 @@ func (b BlobStorageClient) putBlock(container, name, blockId string, chunk []byt
 	return nil
 }
 
-func (b BlobStorageClient) putBlockList(container, name string, blocks []block) error {
+func (b BlobStorageClient) PutBlockList(container, name string, blocks []Block) error {
 	blockListXml := prepareBlockListRequest(blocks)
 
 	path := fmt.Sprintf("%s/%s", container, name)
@@ -481,6 +500,21 @@ func (b BlobStorageClient) putBlockList(container, name string, blocks []block) 
 		return ErrNotCreated
 	}
 	return nil
+}
+
+func (b BlobStorageClient) GetBlockList(container, name string, blockType BlockListType) (BlockListResponse, error) {
+	params := url.Values{"comp": {"blocklist"}, "blocklisttype": {string(blockType)}}
+	uri := b.client.getEndpoint(blobServiceName, fmt.Sprintf("%s/%s", container, name), params)
+	headers := b.client.getStandardHeaders()
+
+	var out BlockListResponse
+	resp, err := b.client.exec("GET", uri, headers, nil)
+	if err != nil {
+		return out, err
+	}
+
+	err = xmlUnmarshal(resp.body, &out)
+	return out, err
 }
 
 func (b BlobStorageClient) CopyBlob(container, name, sourceBlob string) error {

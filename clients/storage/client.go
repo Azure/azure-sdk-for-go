@@ -146,7 +146,7 @@ func (c StorageClient) buildCanonicalizedHeader(headers map[string]string) strin
 	}
 
 	keys := make([]string, 0, len(cm))
-	for key, _ := range cm {
+	for key := range cm {
 		keys = append(keys, key)
 	}
 
@@ -184,7 +184,7 @@ func (c StorageClient) buildCanonicalizedResource(uri string) (string, error) {
 	if len(params) > 0 {
 		cr += "\n"
 		keys := make([]string, 0, len(params))
-		for key, _ := range params {
+		for key := range params {
 			keys = append(keys, key)
 		}
 

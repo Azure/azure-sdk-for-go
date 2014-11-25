@@ -45,10 +45,10 @@ func mergeParams(v1, v2 url.Values) url.Values {
 	return out
 }
 
-func prepareBlockListRequest(blocks []block) string {
+func prepareBlockListRequest(blocks []Block) string {
 	s := `<?xml version="1.0" encoding="utf-8"?><BlockList>`
 	for _, v := range blocks {
-		s += fmt.Sprintf("<%s>%s</%s>", v.use, v.id, v.use)
+		s += fmt.Sprintf("<%s>%s</%s>", v.Status, v.Id, v.Status)
 	}
 	s += `</BlockList>`
 	return s

@@ -3,6 +3,7 @@ package storage
 import (
 	"bytes"
 	"crypto/rand"
+	"encoding/base64"
 	"errors"
 	"io/ioutil"
 	"net/http"
@@ -627,6 +628,27 @@ func TestPutSingleBlockBlob(t *testing.T) {
 	}
 }
 
+func TestPutBlock(t *testing.T) {
+	cli, err := getClient()
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	cnt := randContainer()
+	if err := cli.CreateContainer(cnt, ContainerAccessTypePrivate); err != nil {
+		t.Fatal(err)
+	}
+	defer cli.deleteContainer(cnt)
+
+	blob := randString(20)
+	chunk := []byte(randString(1024))
+	blockId := base64.StdEncoding.EncodeToString([]byte("foo"))
+	err = cli.PutBlock(cnt, blob, blockId, chunk)
+	if err != nil {
+		t.Fatal(err)
+	}
+}
+
 func TestPutMultiBlockBlob(t *testing.T) {
 	var (
 		cnt       = randContainer()
@@ -675,6 +697,78 @@ func TestPutMultiBlockBlob(t *testing.T) {
 	err = cli.DeleteContainer(cnt)
 	if err != nil {
 		t.Fatal(err)
+	}
+}
+
+func TestGetBlockList_PutBlockList(t *testing.T) {
+	cli, err := getClient()
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	cnt := randContainer()
+	if err := cli.CreateContainer(cnt, ContainerAccessTypePrivate); err != nil {
+		t.Fatal(err)
+	}
+	defer cli.deleteContainer(cnt)
+
+	blob := randString(20)
+	chunk := []byte(randString(1024))
+	blockId := base64.StdEncoding.EncodeToString([]byte("foo"))
+
+	// Put one block
+	err = cli.PutBlock(cnt, blob, blockId, chunk)
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer cli.deleteBlob(cnt, blob)
+
+	// Get committed blocks
+	committed, err := cli.GetBlockList(cnt, blob, BlockListTypeCommitted)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	if len(committed.CommittedBlocks) > 0 {
+		t.Fatal("There are committed blocks")
+	}
+
+	// Get uncommitted blocks
+	uncommitted, err := cli.GetBlockList(cnt, blob, BlockListTypeUncommitted)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	if expected := 1; len(uncommitted.UncommittedBlocks) != expected {
+		t.Fatal("Uncommitted blocks wrong. Expected: %d, got: %d", expected, len(uncommitted.UncommittedBlocks))
+	}
+
+	// Commit block list
+	err = cli.PutBlockList(cnt, blob, []Block{{blockId, blockStatusUncommitted}})
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	// Get all blocks
+	all, err := cli.GetBlockList(cnt, blob, BlockListTypeAll)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	if expected := 1; len(all.CommittedBlocks) != expected {
+		t.Fatalf("Uncommitted blocks wrong. Expected: %d, got: %d", expected, len(uncommitted.CommittedBlocks))
+	}
+	if expected := 0; len(all.UncommittedBlocks) != expected {
+		t.Fatalf("Uncommitted blocks wrong. Expected: %d, got: %d", expected, len(uncommitted.UncommittedBlocks))
+	}
+
+	// Verify the block
+	thatBlock := all.CommittedBlocks[0]
+	if expected := blockId; expected != thatBlock.Name {
+		t.Fatalf("Wrong block name. Expected: %s, got: %s", expected, thatBlock.Name)
+	}
+	if expected := int64(len(chunk)); expected != thatBlock.Size {
+		t.Fatalf("Wrong block name. Expected: %d, got: %d", expected, thatBlock.Size)
 	}
 }
 

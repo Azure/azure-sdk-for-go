@@ -47,13 +47,13 @@ func Test_mergeParams(t *testing.T) {
 }
 
 func Test_prepareBlockListRequest(t *testing.T) {
-	empty := []block{}
+	empty := []Block{}
 	expected := `<?xml version="1.0" encoding="utf-8"?><BlockList></BlockList>`
 	if out := prepareBlockListRequest(empty); expected != out {
 		t.Error("Wrong block list. Expected: '%s', got: '%s'", expected, out)
 	}
 
-	blocks := []block{{"foo", blockStatusLatest}, {"bar", blockStatusUncommitted}}
+	blocks := []Block{{"foo", blockStatusLatest}, {"bar", blockStatusUncommitted}}
 	expected = `<?xml version="1.0" encoding="utf-8"?><BlockList><Latest>foo</Latest><Uncommitted>bar</Uncommitted></BlockList>`
 	if out := prepareBlockListRequest(blocks); expected != out {
 		t.Error("Wrong block list. Expected: '%s', got: '%s'", expected, out)

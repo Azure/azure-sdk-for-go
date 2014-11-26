@@ -24,7 +24,7 @@ const (
 	azureXmlns                        = "http://schemas.microsoft.com/windowsazure"
 	azureDeploymentListURL            = "services/hostedservices/%s/deployments"
 	azureHostedServiceListURL         = "services/hostedservices"
-	azureHostedServiceURL             = "services/hostedservices/%s"
+	deleteAzureHostedServiceURL       = "services/hostedservices/%s?comp=media"
 	azureHostedServiceAvailabilityURL = "services/hostedservices/operations/isavailable/%s"
 	azureDeploymentURL                = "services/hostedservices/%s/deployments/%s"
 	deleteAzureDeploymentURL          = "services/hostedservices/%s/deployments/%s?comp=media"
@@ -174,7 +174,7 @@ func DeleteHostedService(dnsName string) error {
 		return err
 	}
 
-	requestURL := fmt.Sprintf(azureHostedServiceURL, dnsName)
+	requestURL := fmt.Sprintf(deleteAzureHostedServiceURL, dnsName)
 	requestId, err := azure.SendAzureDeleteRequest(requestURL)
 	if err != nil {
 		return err

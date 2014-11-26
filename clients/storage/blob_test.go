@@ -824,7 +824,7 @@ func TestGetBlockList_PutBlockList(t *testing.T) {
 	if expected := blockId; expected != thatBlock.Name {
 		t.Fatalf("Wrong block name. Expected: %s, got: %s", expected, thatBlock.Name)
 	}
-	if expected := int64(len(chunk)); expected != thatBlock.Size {
+	if expected := uint64(len(chunk)); expected != thatBlock.Size {
 		t.Fatalf("Wrong block name. Expected: %d, got: %d", expected, thatBlock.Size)
 	}
 }

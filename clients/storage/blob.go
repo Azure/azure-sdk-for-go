@@ -192,7 +192,7 @@ type BlockListResponse struct {
 
 type BlockResponse struct {
 	Name string `xml:"Name"`
-	Size int64  `xml:"Size"`
+	Size uint64 `xml:"Size"`
 }
 
 var (
@@ -491,13 +491,17 @@ func (b BlobStorageClient) putSingleBlockBlob(container, name string, chunk []by
 }
 
 func (b BlobStorageClient) PutBlock(container, name, blockId string, chunk []byte) error {
+	return b.PutBlockWithLength(container, name, blockId, uint64(len(chunk)), bytes.NewReader(chunk))
+}
+
+func (b BlobStorageClient) PutBlockWithLength(container, name, blockId string, size uint64, blob io.Reader) error {
 	path := fmt.Sprintf("%s/%s", container, name)
 	uri := b.client.getEndpoint(blobServiceName, path, url.Values{"comp": {"block"}, "blockid": {blockId}})
 	headers := b.client.getStandardHeaders()
 	headers["x-ms-blob-type"] = string(BlobTypeBlock)
-	headers["Content-Length"] = fmt.Sprintf("%v", len(chunk))
+	headers["Content-Length"] = fmt.Sprintf("%v", size)
 
-	resp, err := b.client.exec("PUT", uri, headers, bytes.NewReader(chunk))
+	resp, err := b.client.exec("PUT", uri, headers, blob)
 	if err != nil {
 		return err
 	}

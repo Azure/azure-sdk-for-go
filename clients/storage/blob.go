@@ -169,7 +169,7 @@ const (
 	ContainerAccessTypeContainer ContainerAccessType = "container"
 )
 
-const MaxBlobBlockSize = 64 * 1024 * 1024
+const MaxBlobBlockSize = 4 * 1024 * 1024
 
 type BlockStatus string
 

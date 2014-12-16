@@ -209,7 +209,7 @@ func TestListContainersPagination(t *testing.T) {
 
 	// Compare
 	if !reflect.DeepEqual(created, seen) {
-		t.Fatal("Wrong pagination results:\nExpected:\t\t%v\nGot:\t\t%v", created, seen)
+		t.Fatalf("Wrong pagination results:\nExpected:\t\t%v\nGot:\t\t%v", created, seen)
 	}
 }
 
@@ -312,7 +312,7 @@ func TestDeleteContainerIfExists(t *testing.T) {
 		t.Fatalf("Not supposed to return error, got: %s", err)
 	}
 	if expected := false; ok != expected {
-		t.Fatal("Wrong deletion status. Expected: %v; Got: %v", expected, ok)
+		t.Fatalf("Wrong deletion status. Expected: %v; Got: %v", expected, ok)
 	}
 
 	// Existing container
@@ -325,7 +325,7 @@ func TestDeleteContainerIfExists(t *testing.T) {
 		t.Fatalf("Not supposed to return error, got: %s", err)
 	}
 	if expected := true; ok != expected {
-		t.Fatal("Wrong deletion status. Expected: %v; Got: %v", expected, ok)
+		t.Fatalf("Wrong deletion status. Expected: %v; Got: %v", expected, ok)
 	}
 }
 
@@ -580,7 +580,7 @@ func TestPutEmptyBlockBlob(t *testing.T) {
 		t.Fatal(err)
 	}
 	if props.ContentLength != 0 {
-		t.Fatal("Wrong content length for empty blob: %s", props.ContentLength)
+		t.Fatalf("Wrong content length for empty blob: %d", props.ContentLength)
 	}
 }
 
@@ -797,7 +797,7 @@ func TestGetBlockList_PutBlockList(t *testing.T) {
 	}
 
 	if expected := 1; len(uncommitted.UncommittedBlocks) != expected {
-		t.Fatal("Uncommitted blocks wrong. Expected: %d, got: %d", expected, len(uncommitted.UncommittedBlocks))
+		t.Fatalf("Uncommitted blocks wrong. Expected: %d, got: %d", expected, len(uncommitted.UncommittedBlocks))
 	}
 
 	// Commit block list

@@ -443,7 +443,7 @@ func (b BlobStorageClient) putBlockBlob(container, name string, blob io.Reader, 
 
 		// Put blocks
 		for {
-			id := base64.StdEncoding.EncodeToString([]byte(fmt.Sprintf("%v", blockNum)))
+			id := base64.StdEncoding.EncodeToString([]byte(fmt.Sprintf("%011d", blockNum)))
 			data := chunk[:n]
 			err = b.PutBlock(container, name, id, data)
 			if err != nil {

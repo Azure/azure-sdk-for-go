@@ -15,6 +15,7 @@ import (
 	"sync"
 	"testing"
 	"time"
+	"fmt"
 )
 
 const testContainerPrefix = "zzzztest-"
@@ -634,7 +635,7 @@ func TestPutSingleBlockBlob(t *testing.T) {
 		t.Fatalf("Wrong unccommitted block count. Expected: %d, Got: %d", expected, len(blocks.UncommittedBlocks))
 	}
 	thatBlock := blocks.CommittedBlocks[0]
-	if expected := base64.StdEncoding.EncodeToString([]byte("0")); thatBlock.Name != expected {
+	if expected := base64.StdEncoding.EncodeToString([]byte(fmt.Sprintf("%011d", 0))); thatBlock.Name != expected {
 		t.Fatalf("Wrong block name. Expected: %s, Got: %s", expected, thatBlock.Name)
 	}
 }

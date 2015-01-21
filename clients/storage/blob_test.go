@@ -462,7 +462,7 @@ func TestDeleteBlobIfExists(t *testing.T) {
 	}
 }
 
-func TestGetBlobProperies(t *testing.T) {
+func TestGetBlobProperties(t *testing.T) {
 	cnt := randContainer()
 	blob := randString(20)
 	contents := randString(64)
@@ -474,8 +474,9 @@ func TestGetBlobProperies(t *testing.T) {
 
 	err = cli.CreateContainer(cnt, ContainerAccessTypePrivate)
 	if err != nil {
-		t.Fatal("Nonexisting blob did not return error")
+		t.Fatal(err)
 	}
+	defer cli.DeleteContainer(cnt)
 
 	// Nonexisting blob
 	_, err = cli.GetBlobProperties(cnt, blob)

@@ -198,6 +198,6 @@ func Test_createAuthorizationHeader(t *testing.T) {
 	expected := `SharedKey foo:h5U0ATVX6SpbFX1H6GNuxIMeXXCILLoIvhflPtuQZ30=`
 
 	if out := cli.createAuthorizationHeader(canonicalizedString); out != expected {
-		t.Fatalf("Wrong authoriztion header. Expected: '%s', Got:'%s'", expected, out)
+		t.Fatalf("Wrong authorization header. Expected: '%s', Got:'%s'", expected, out)
 	}
 }

@@ -46,19 +46,20 @@ type ContainerProperties struct {
 // BlobProperties contains various properties of a blob
 // returned in various endpoints like ListBlobs or GetBlobProperties.
 type BlobProperties struct {
-	LastModified          string `xml:"Last-Modified"`
-	Etag                  string `xml:"Etag"`
-	ContentMD5            string `xml:"Content-MD5"`
-	ContentLength         uint64 `xml:"Content-Length"`
-	ContentType           string `xml:"Content-Type"`
-	ContentEncoding       string `xml:"Content-Encoding"`
-	SequenceNumber        int64  `xml:"x-ms-blob-sequence-number"`
-	CopyId                string `xml:"CopyId"`
-	CopyStatus            string `xml:"CopyStatus"`
-	CopySource            string `xml:"CopySource"`
-	CopyProgress          string `xml:"CopyProgress"`
-	CopyCompletionTime    string `xml:"CopyCompletionTime"`
-	CopyStatusDescription string `xml:"CopyStatusDescription"`
+	LastModified          string   `xml:"Last-Modified"`
+	Etag                  string   `xml:"Etag"`
+	ContentMD5            string   `xml:"Content-MD5"`
+	ContentLength         int64    `xml:"Content-Length"`
+	ContentType           string   `xml:"Content-Type"`
+	ContentEncoding       string   `xml:"Content-Encoding"`
+	BlobType              BlobType `xml:"x-ms-blob-blob-type"`
+	SequenceNumber        int64    `xml:"x-ms-blob-sequence-number"`
+	CopyId                string   `xml:"CopyId"`
+	CopyStatus            string   `xml:"CopyStatus"`
+	CopySource            string   `xml:"CopySource"`
+	CopyProgress          string   `xml:"CopyProgress"`
+	CopyCompletionTime    string   `xml:"CopyCompletionTime"`
+	CopyStatusDescription string   `xml:"CopyStatusDescription"`
 }
 
 // ContainerListResponse contains the response fields from
@@ -446,17 +447,17 @@ func (b BlobStorageClient) GetBlobProperties(container, name string) (*BlobPrope
 		return nil, fmt.Errorf(errUnexpectedStatus, http.StatusOK, resp.statusCode)
 	}
 
-	var contentLength uint64
+	var contentLength int64
 	contentLengthStr := resp.headers.Get("Content-Length")
 	if contentLengthStr != "" {
-		contentLength, err = strconv.ParseUint(contentLengthStr, 0, 64)
+		contentLength, err = strconv.ParseInt(contentLengthStr, 0, 64)
 		if err != nil {
 			return nil, err
 		}
 	}
 
 	var sequenceNum int64
-	sequenceNumStr := resp.headers.Get("Content-Length")
+	sequenceNumStr := resp.headers.Get("x-ms-blob-sequence-number")
 	if sequenceNumStr != "" {
 		sequenceNum, err = strconv.ParseInt(sequenceNumStr, 0, 64)
 		if err != nil {
@@ -469,7 +470,7 @@ func (b BlobStorageClient) GetBlobProperties(container, name string) (*BlobPrope
 		Etag:                  resp.headers.Get("Etag"),
 		ContentMD5:            resp.headers.Get("Content-MD5"),
 		ContentLength:         contentLength,
-		ContentEncoding:       resp.headers.Get("Content-Encodng"),
+		ContentEncoding:       resp.headers.Get("Content-Encoding"),
 		SequenceNumber:        sequenceNum,
 		CopyCompletionTime:    resp.headers.Get("x-ms-copy-completion-time"),
 		CopyStatusDescription: resp.headers.Get("x-ms-copy-status-description"),
@@ -477,6 +478,7 @@ func (b BlobStorageClient) GetBlobProperties(container, name string) (*BlobPrope
 		CopyProgress:          resp.headers.Get("x-ms-copy-progress"),
 		CopySource:            resp.headers.Get("x-ms-copy-source"),
 		CopyStatus:            resp.headers.Get("x-ms-copy-status"),
+		BlobType:              BlobType(resp.headers.Get("x-ms-blob-type")),
 	}, nil
 }
 
@@ -619,6 +621,28 @@ func (b BlobStorageClient) GetBlockList(container, name string, blockType BlockL
 
 	err = xmlUnmarshal(resp.body, &out)
 	return out, err
+}
+
+// PutPageBlob initializes an empty page blob with specified name and maximum
+// size in bytes (size must be aligned to a 512-byte boundary). A page blob must
+// be created using this method before writing pages.
+// See https://msdn.microsoft.com/en-us/library/azure/dd179451.aspx
+func (b BlobStorageClient) PutPageBlob(container, name string, size int64) error {
+	path := fmt.Sprintf("%s/%s", container, name)
+	uri := b.client.getEndpoint(blobServiceName, path, url.Values{})
+	headers := b.client.getStandardHeaders()
+	headers["x-ms-blob-type"] = string(BlobTypePage)
+	headers["x-ms-blob-content-length"] = fmt.Sprintf("%v", size)
+	headers["Content-Length"] = fmt.Sprintf("%v", 0)
+
+	resp, err := b.client.exec("PUT", uri, headers, nil)
+	if err != nil {
+		return err
+	}
+	if resp.statusCode != http.StatusCreated {
+		return ErrNotCreated
+	}
+	return nil
 }
 
 // CopyBlob starts a blob copy operation and waits for the operation to complete.

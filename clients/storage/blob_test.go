@@ -5,6 +5,7 @@ import (
 	"crypto/rand"
 	"encoding/base64"
 	"errors"
+	"fmt"
 	"io/ioutil"
 	"net/http"
 	"net/url"
@@ -15,7 +16,6 @@ import (
 	"sync"
 	"testing"
 	"time"
-	"fmt"
 )
 
 const testContainerPrefix = "zzzztest-"
@@ -496,8 +496,11 @@ func TestGetBlobProperties(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	if props.ContentLength != uint64(len(contents)) {
+	if props.ContentLength != int64(len(contents)) {
 		t.Fatalf("Got wrong Content-Length: '%d', expected: %d", props.ContentLength, len(contents))
+	}
+	if props.BlobType != BlobTypeBlock {
+		t.Fatalf("Got wrong BlobType. Expected:'%s', got:'%s'", BlobTypeBlock, props.BlobType)
 	}
 }
 
@@ -828,6 +831,37 @@ func TestGetBlockList_PutBlockList(t *testing.T) {
 	}
 	if expected := uint64(len(chunk)); expected != thatBlock.Size {
 		t.Fatalf("Wrong block name. Expected: %d, got: %d", expected, thatBlock.Size)
+	}
+}
+
+func TestPutPageBlob(t *testing.T) {
+	cli, err := getBlobClient()
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	cnt := randContainer()
+	if err := cli.CreateContainer(cnt, ContainerAccessTypePrivate); err != nil {
+		t.Fatal(err)
+	}
+	defer cli.deleteContainer(cnt)
+
+	blob := randString(20)
+	size := int64(10 * 1024 * 1024)
+	if err := cli.PutPageBlob(cnt, blob, size); err != nil {
+		t.Fatal(err)
+	}
+
+	// Verify
+	props, err := cli.GetBlobProperties(cnt, blob)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if expected := size; expected != props.ContentLength {
+		t.Fatalf("Got wrong Content-Length. Expected: %v, Got:%v ", expected, props.ContentLength)
+	}
+	if expected := BlobTypePage; expected != props.BlobType {
+		t.Fatalf("Got wrong x-ms-blob-type. Expected: %v, Got:%v ", expected, props.BlobType)
 	}
 }
 

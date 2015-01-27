@@ -24,6 +24,8 @@ const (
 	queueServiceName = "queue"
 )
 
+// StorageClient is the object that needs to be constructed
+// to perform operations on the storage account.
 type StorageClient struct {
 	accountName string
 	accountKey  []byte
@@ -38,6 +40,9 @@ type storageResponse struct {
 	body       io.ReadCloser
 }
 
+// StorageServiceError contains fields of the error response from
+// Azure Storage Service REST API. See https://msdn.microsoft.com/en-us/library/azure/dd179382.aspx
+// Some fields might be specific to certain calls.
 type StorageServiceError struct {
 	Code                      string `xml:"Code"`
 	Message                   string `xml:"Message"`
@@ -49,10 +54,15 @@ type StorageServiceError struct {
 	RequestId                 string
 }
 
+// NewBasicClient constructs a StorageClient with given storage service name
+// and key.
 func NewBasicClient(accountName, accountKey string) (*StorageClient, error) {
 	return NewClient(accountName, accountKey, DefaultBaseUrl, DefaultApiVersion, defaultUseHttps)
 }
 
+// NewClient constructs a StorageClient. This should be used if the caller
+// wants to specify whether to use HTTPS, a specific REST API version or a
+// custom storage endpoint than Azure Public Cloud.
 func NewClient(accountName, accountKey, blobServiceBaseUrl, apiVersion string, useHttps bool) (*StorageClient, error) {
 	if accountName == "" {
 		return nil, fmt.Errorf("azure: account name required")
@@ -105,6 +115,8 @@ func (c StorageClient) getEndpoint(service, path string, params url.Values) stri
 	return u.String()
 }
 
+// GetBlobService returns a BlobStorageClient which can operate on the
+// blob service of the storage account.
 func (c StorageClient) GetBlobService() *BlobStorageClient {
 	return &BlobStorageClient{c}
 }

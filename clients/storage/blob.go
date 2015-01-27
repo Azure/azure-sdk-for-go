@@ -61,7 +61,19 @@ type BlobProperties struct {
 	CopyStatusDescription string `xml:"CopyStatusDescription"`
 }
 
-// ContainerListResponse contains the reponse fields from
+// ContainerListResponse contains the response fields from
+// ListContainers call. https://msdn.microsoft.com/en-us/library/azure/dd179352.aspx
+type ContainerListResponse struct {
+	XMLName    xml.Name    `xml:"EnumerationResults"`
+	Xmlns      string      `xml:"xmlns,attr"`
+	Prefix     string      `xml:"Prefix"`
+	Marker     string      `xml:"Marker"`
+	NextMarker string      `xml:"NextMarker"`
+	MaxResults int64       `xml:"MaxResults"`
+	Containers []Container `xml:"Containers>Container"`
+}
+
+// BlobListResponse contains the response fields from
 // ListBlobs call. https://msdn.microsoft.com/en-us/library/azure/dd135734.aspx
 type BlobListResponse struct {
 	XMLName    xml.Name `xml:"EnumerationResults"`
@@ -73,17 +85,6 @@ type BlobListResponse struct {
 	Blobs      []Blob   `xml:"Blobs>Blob"`
 }
 
-// ContainerListResponse contains the reponse fields from
-// ListContainers call. https://msdn.microsoft.com/en-us/library/azure/dd179352.aspx
-type ContainerListResponse struct {
-	XMLName    xml.Name    `xml:"EnumerationResults"`
-	Xmlns      string      `xml:"xmlns,attr"`
-	Prefix     string      `xml:"Prefix"`
-	Marker     string      `xml:"Marker"`
-	NextMarker string      `xml:"NextMarker"`
-	MaxResults int64       `xml:"MaxResults"`
-	Containers []Container `xml:"Containers>Container"`
-}
 
 // ListContainersParameters defines the set of customizable
 // parameters to make a List Containers call. https://msdn.microsoft.com/en-us/library/azure/dd179352.aspx
@@ -210,7 +211,7 @@ type Block struct {
 	Status BlockStatus
 }
 
-// BlockListResponse contains the reponse fields from
+// BlockListResponse contains the response fields from
 // Get Block List call. https://msdn.microsoft.com/en-us/library/azure/dd179400.aspx
 type BlockListResponse struct {
 	XMLName           xml.Name        `xml:"BlockList"`
@@ -290,9 +291,9 @@ func (b BlobStorageClient) createContainer(name string, access ContainerAccessTy
 
 // ContainerExists returns true if a container with given name exists
 // on the storage account, otherwise returns false.
-func (b BlobStorageClient) ContainerExists(container string) (bool, error) {
+func (b BlobStorageClient) ContainerExists(name string) (bool, error) {
 	verb := "HEAD"
-	path := fmt.Sprintf("%s", container)
+	path := fmt.Sprintf("%s", name)
 	uri := b.client.getEndpoint(blobServiceName, path, url.Values{"restype": {"container"}})
 	headers := b.client.getStandardHeaders()
 
@@ -321,8 +322,8 @@ func (b BlobStorageClient) DeleteContainer(name string) error {
 // account if it exists. See https://msdn.microsoft.com/en-us/library/azure/dd179408.aspx
 // Returns true if container is deleted with this call, or false
 // if the container did not exist at the time of the Delete Container operation.
-func (b BlobStorageClient) DeleteContainerIfExists(container string) (bool, error) {
-	resp, err := b.deleteContainer(container)
+func (b BlobStorageClient) DeleteContainerIfExists(name string) (bool, error) {
+	resp, err := b.deleteContainer(name)
 	if resp != nil && (resp.statusCode == http.StatusAccepted || resp.statusCode == http.StatusNotFound) {
 		return resp.statusCode == http.StatusAccepted, nil
 	}

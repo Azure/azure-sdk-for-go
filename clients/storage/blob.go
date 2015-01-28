@@ -704,7 +704,6 @@ func (b BlobStorageClient) PutPage(container, name string, startByte, endByte in
 // GetPageRanges returns the list of valid page ranges for a page blob.
 // See https://msdn.microsoft.com/en-us/library/azure/ee691973.aspx
 func (b BlobStorageClient) GetPageRanges(container, name string) (GetPageRangesResponse, error) {
-	// TODO(ahmetb) add x-ms-range support
 	path := fmt.Sprintf("%s/%s", container, name)
 	uri := b.client.getEndpoint(blobServiceName, path, url.Values{"comp": {"pagelist"}})
 	headers := b.client.getStandardHeaders()

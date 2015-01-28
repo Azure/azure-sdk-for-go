@@ -929,8 +929,51 @@ func TestPutPagesUpdate(t *testing.T) {
 	}
 }
 
-// TODO(ahmetb) add test case to cover pages with empty range in between, observe.
-// TODO(ahmetb) test putpage with clear, observe how does beginning/end/middle gets cleared.
+func TestPutPagesClear(t *testing.T) {
+	cli, err := getBlobClient()
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	cnt := randContainer()
+	if err := cli.CreateContainer(cnt, ContainerAccessTypePrivate); err != nil {
+		t.Fatal(err)
+	}
+	defer cli.deleteContainer(cnt)
+
+	blob := randString(20)
+	size := int64(10 * 1024 * 1024) // larger than we'll use
+
+	if err := cli.PutPageBlob(cnt, blob, size); err != nil {
+		t.Fatal(err)
+	}
+
+	// Put 0-2047
+	chunk := []byte(randString(2048))
+	if err := cli.PutPage(cnt, blob, 0, 2047, PageWriteTypeUpdate, chunk); err != nil {
+		t.Fatal(err)
+	}
+
+	// Clear 512-1023
+	if err := cli.PutPage(cnt, blob, 512, 1023, PageWriteTypeClear, nil); err != nil {
+		t.Fatal(err)
+	}
+
+	// Get blob contents
+	if out, err := cli.GetBlobRange(cnt, blob, "0-2048"); err != nil {
+		t.Fatal(err)
+	} else {
+		contents, err := ioutil.ReadAll(out)
+		defer out.Close()
+		if err != nil {
+			t.Fatal(err)
+		}
+
+		if expected := append(append(chunk[:512], make([]byte, 512)...), chunk[1024:]...); reflect.DeepEqual(contents, expected) {
+			t.Fatalf("Cleared blob is not the same. Expected: (%d) %v; got: (%d) %v", len(expected), expected, len(contents), contents)
+		}
+	}
+}
 
 func TestGetPageRanges(t *testing.T) {
 	cli, err := getBlobClient()

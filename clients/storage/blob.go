@@ -163,6 +163,15 @@ const (
 	BlobTypePage  BlobType = "PageBlob"
 )
 
+// PageWriteType defines the type updates that are going to be
+// done on the page blob.
+type PageWriteType string
+
+const (
+	PageWriteTypeUpdate PageWriteType = "update"
+	PageWriteTypeClear  PageWriteType = "clear"
+)
+
 const (
 	blobCopyStatusPending = "pending"
 	blobCopyStatusSuccess = "success"
@@ -225,6 +234,20 @@ type BlockListResponse struct {
 type BlockResponse struct {
 	Name string `xml:"Name"`
 	Size uint64 `xml:"Size"`
+}
+
+// GetPageRangesResponse contains the reponse fields from
+// Get Page Ranges call. https://msdn.microsoft.com/en-us/library/azure/ee691973.aspx
+type GetPageRangesResponse struct {
+	XMLName  xml.Name    `xml:"PageList"`
+	PageList []PageRange `xml:"PageRange"`
+}
+
+// PageRange contains information about a page of a page blob from
+// Get Pages Range call. https://msdn.microsoft.com/en-us/library/azure/ee691973.aspx
+type PageRange struct {
+	Start int64 `xml:"Start"`
+	End   int64 `xml:"End"`
 }
 
 var (
@@ -643,6 +666,61 @@ func (b BlobStorageClient) PutPageBlob(container, name string, size int64) error
 		return ErrNotCreated
 	}
 	return nil
+}
+
+// PutPage writes a range of pages to a page blob or clears the given range.
+// In case of 'clear' writes, given chunk is discarded. Ranges must be aligned
+// with 512-byte boundaries and chunk must be of size multiplies by 512.
+// See https://msdn.microsoft.com/en-us/library/ee691975.aspx
+func (b BlobStorageClient) PutPage(container, name string, startByte, endByte int64, writeType PageWriteType, chunk []byte) error {
+	path := fmt.Sprintf("%s/%s", container, name)
+	uri := b.client.getEndpoint(blobServiceName, path, url.Values{"comp": {"page"}})
+	headers := b.client.getStandardHeaders()
+	headers["x-ms-blob-type"] = string(BlobTypePage)
+	headers["x-ms-page-write"] = string(writeType)
+	headers["x-ms-range"] = fmt.Sprintf("bytes=%v-%v", startByte, endByte)
+
+	var contentLength int64
+	var data io.Reader
+	if writeType == PageWriteTypeClear {
+		contentLength = 0
+		data = bytes.NewReader([]byte{})
+	} else {
+		contentLength = int64(len(chunk))
+		data = bytes.NewReader(chunk)
+	}
+	headers["Content-Length"] = fmt.Sprintf("%v", contentLength)
+
+	resp, err := b.client.exec("PUT", uri, headers, data)
+	if err != nil {
+		return err
+	}
+	if resp.statusCode != http.StatusCreated {
+		return ErrNotCreated
+	}
+	return nil
+}
+
+// GetPageRanges returns the list of valid page ranges for a page blob.
+// See https://msdn.microsoft.com/en-us/library/azure/ee691973.aspx
+func (b BlobStorageClient) GetPageRanges(container, name string) (GetPageRangesResponse, error) {
+	// TODO(ahmetb) add x-ms-range support
+	path := fmt.Sprintf("%s/%s", container, name)
+	uri := b.client.getEndpoint(blobServiceName, path, url.Values{"comp": {"pagelist"}})
+	headers := b.client.getStandardHeaders()
+
+	var out GetPageRangesResponse
+	resp, err := b.client.exec("GET", uri, headers, nil)
+	if err != nil {
+		return out, err
+	}
+
+	if resp.statusCode != http.StatusOK {
+		return out, fmt.Errorf(errUnexpectedStatus, http.StatusOK, resp.statusCode)
+	}
+
+	err = xmlUnmarshal(resp.body, &out)
+	return out, err
 }
 
 // CopyBlob starts a blob copy operation and waits for the operation to complete.

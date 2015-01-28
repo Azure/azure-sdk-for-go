@@ -865,6 +865,124 @@ func TestPutPageBlob(t *testing.T) {
 	}
 }
 
+func TestPutPagesUpdate(t *testing.T) {
+	cli, err := getBlobClient()
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	cnt := randContainer()
+	if err := cli.CreateContainer(cnt, ContainerAccessTypePrivate); err != nil {
+		t.Fatal(err)
+	}
+	defer cli.deleteContainer(cnt)
+
+	blob := randString(20)
+	size := int64(10 * 1024 * 1024) // larger than we'll use
+	if err := cli.PutPageBlob(cnt, blob, size); err != nil {
+		t.Fatal(err)
+	}
+
+	chunk1 := []byte(randString(1024))
+	chunk2 := []byte(randString(512))
+	// Append chunks
+	if err := cli.PutPage(cnt, blob, 0, int64(len(chunk1)-1), PageWriteTypeUpdate, chunk1); err != nil {
+		t.Fatal(err)
+	}
+	if err := cli.PutPage(cnt, blob, int64(len(chunk1)), int64(len(chunk1)+len(chunk2)-1), PageWriteTypeUpdate, chunk2); err != nil {
+		t.Fatal(err)
+	}
+
+	// Verify contents
+	out, err := cli.GetBlobRange(cnt, blob, fmt.Sprintf("%v-%v", 0, len(chunk1)+len(chunk2)))
+	if err != nil {
+		t.Fatal(err)
+	}
+	blobContents, err := ioutil.ReadAll(out)
+	defer out.Close()
+	if err != nil {
+		t.Fatal(err)
+	}
+	if expected := append(chunk1, chunk2...); reflect.DeepEqual(blobContents, expected) {
+		t.Fatalf("Got wrong blob.\nGot:%d bytes, Expected:%d bytes", len(blobContents), len(expected))
+	}
+	out.Close()
+
+	// Overwrite first half of chunk1
+	chunk0 := []byte(randString(512))
+	if err := cli.PutPage(cnt, blob, 0, int64(len(chunk0)-1), PageWriteTypeUpdate, chunk0); err != nil {
+		t.Fatal(err)
+	}
+
+	// Verify contents
+	out, err = cli.GetBlobRange(cnt, blob, fmt.Sprintf("%v-%v", 0, len(chunk1)+len(chunk2)))
+	if err != nil {
+		t.Fatal(err)
+	}
+	blobContents, err = ioutil.ReadAll(out)
+	defer out.Close()
+	if err != nil {
+		t.Fatal(err)
+	}
+	if expected := append(append(chunk0, chunk1[512:]...), chunk2...); reflect.DeepEqual(blobContents, expected) {
+		t.Fatalf("Got wrong blob.\nGot:%d bytes, Expected:%d bytes", len(blobContents), len(expected))
+	}
+}
+
+// TODO(ahmetb) add test case to cover pages with empty range in between, observe.
+// TODO(ahmetb) test putpage with clear, observe how does beginning/end/middle gets cleared.
+
+func TestGetPageRanges(t *testing.T) {
+	cli, err := getBlobClient()
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	cnt := randContainer()
+	if err := cli.CreateContainer(cnt, ContainerAccessTypePrivate); err != nil {
+		t.Fatal(err)
+	}
+	defer cli.deleteContainer(cnt)
+
+	blob := randString(20)
+	size := int64(10 * 1024 * 1024) // larger than we'll use
+
+	if err := cli.PutPageBlob(cnt, blob, size); err != nil {
+		t.Fatal(err)
+	}
+
+	// Get page ranges on empty blob
+	if out, err := cli.GetPageRanges(cnt, blob); err != nil {
+		t.Fatal(err)
+	} else if len(out.PageList) != 0 {
+		t.Fatal("Blob has pages")
+	}
+
+	// Add 0-512 page
+	err = cli.PutPage(cnt, blob, 0, 511, PageWriteTypeUpdate, []byte(randString(512)))
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	if out, err := cli.GetPageRanges(cnt, blob); err != nil {
+		t.Fatal(err)
+	} else if expected := 1; len(out.PageList) != expected {
+		t.Fatalf("Expected %d pages, got: %d -- %v", expected, len(out.PageList), out.PageList)
+	}
+
+	// Add 1024-2048
+	err = cli.PutPage(cnt, blob, 1024, 2047, PageWriteTypeUpdate, []byte(randString(1024)))
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	if out, err := cli.GetPageRanges(cnt, blob); err != nil {
+		t.Fatal(err)
+	} else if expected := 2; len(out.PageList) != expected {
+		t.Fatalf("Expected %d pages, got: %d -- %v", expected, len(out.PageList), out.PageList)
+	}
+}
+
 func deleteTestContainers(cli *BlobStorageClient) error {
 	for {
 		resp, err := cli.ListContainers(ListContainersParameters{Prefix: testContainerPrefix})

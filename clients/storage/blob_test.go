@@ -20,7 +20,21 @@ import (
 
 const testContainerPrefix = "zzzztest-"
 
-func TestblobSASStringToSign(t *testing.T) {
+func Test_pathForContainer(t *testing.T) {
+	out := pathForContainer("foo")
+	if expected := "/foo"; out != expected {
+		t.Errorf("Wrong pathForContainer. Expected: '%s', got: '%s'", expected, out)
+	}
+}
+
+func Test_pathForBlob(t *testing.T) {
+	out := pathForBlob("foo", "blob")
+	if expected := "/foo/blob"; out != expected {
+		t.Errorf("Wrong pathForBlob. Expected: '%s', got: '%s'", expected, out)
+	}
+}
+
+func Test_blobSASStringToSign(t *testing.T) {
 	_, err := blobSASStringToSign("2012-02-12", "CS", "SE", "SP")
 	if err == nil {
 		t.Fatal("Expected error, got nil")
@@ -30,7 +44,7 @@ func TestblobSASStringToSign(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if expected := "SP\n\nSE\nCS\n\n\n2013-08-15\n%s\n%s\n%s\n%s\n%s"; out != expected {
+	if expected := "SP\n\nSE\nCS\n\n2013-08-15\n\n\n\n\n"; out != expected {
 		t.Errorf("Wrong stringToSign. Expected: '%s', got: '%s'", expected, out)
 	}
 }

@@ -86,7 +86,6 @@ type BlobListResponse struct {
 	Blobs      []Blob   `xml:"Blobs>Blob"`
 }
 
-
 // ListContainersParameters defines the set of customizable
 // parameters to make a List Containers call. https://msdn.microsoft.com/en-us/library/azure/dd179352.aspx
 type ListContainersParameters struct {
@@ -202,7 +201,10 @@ const (
 	ContainerAccessTypeContainer ContainerAccessType = "container"
 )
 
-const MaxBlobBlockSize = 4 * 1024 * 1024
+const (
+	MaxBlobBlockSize = 4 * 1024 * 1024
+	MaxBlobPageSize  = 4 * 1024 * 1024
+)
 
 // BlockStatus defines states a block for a block blob can
 // be in.

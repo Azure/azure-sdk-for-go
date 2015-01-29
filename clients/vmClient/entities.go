@@ -14,6 +14,7 @@ type VMDeployment struct {
 	Url              string `xml:",omitempty"`
 	RoleList         RoleList
 	RoleInstanceList RoleInstanceList `xml:",omitempty"`
+	VirtualIPs       VirtualIPs `xml:",omitempty"`
 }
 
 type HostedServiceDeployment struct {
@@ -34,11 +35,25 @@ type RoleInstanceList struct {
 }
 
 type RoleInstance struct {
-	RoleName       string
-	InstanceName   string
-	InstanceStatus string
-	InstanceSize   string
-	PowerState     string
+	RoleName          string
+	InstanceName      string
+	InstanceStatus    string
+	InstanceSize      string
+	PowerState        string
+	IpAddress         string
+	InstanceEndpoints InstanceEndpoints `xml:",omitempty"`
+}
+
+type InstanceEndpoints struct {
+	InstanceEndpoint []InstanceEndpoint
+}
+
+type InstanceEndpoint struct {
+	Name       string
+	Vip        string
+	PublicPort int
+	LocalPort  int
+	Protocol   string
 }
 
 type Role struct {
@@ -169,6 +184,14 @@ type RoleSize struct {
 	MaxDataDiskCount                   int
 	WebWorkerResourceDiskSizeInMb      int
 	VirtualMachineResourceDiskSizeInMb int
+}
+
+type VirtualIPs struct {
+	VirtualIP []VirtualIP
+}
+
+type VirtualIP struct {
+	Address string
 }
 
 type dockerPublicConfig struct {

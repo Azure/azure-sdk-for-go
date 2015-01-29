@@ -11,7 +11,9 @@ type LocationList struct {
 }
 
 type Location struct {
-	Name              string
-	DisplayName       string
-	AvailableServices []string `xml:"AvailableServices>AvailableService"`
+	Name                    string
+	DisplayName             string
+	AvailableServices       []string `xml:"AvailableServices>AvailableService"`
+	WebWorkerRoleSizes      []string `xml:"ComputeCapabilities>WebWorkerRoleSizes>RoleSize"`
+	VirtualMachineRoleSizes []string `xml:"ComputeCapabilities>VirtualMachineRoleSizes>RoleSize"`
 }

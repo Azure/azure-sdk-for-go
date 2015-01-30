@@ -55,3 +55,29 @@ func GetLocationList() (LocationList, error) {
 
 	return locationList, nil
 }
+
+func GetLocation(location string) (*Location, error) {
+	if len(location) == 0 {
+		return nil, fmt.Errorf(azure.ParamNotSpecifiedError, "location")
+	}
+
+	locations, err := GetLocationList()
+	if err != nil {
+		return nil, err
+	}
+
+	for _, existingLocation := range locations.Locations {
+		if existingLocation.Name != location {
+			continue
+		}
+
+		return &existingLocation, nil
+	}
+
+	var availableLocations bytes.Buffer
+	for _, existingLocation := range locations.Locations {
+		availableLocations.WriteString(existingLocation.Name + ", ")
+	}
+
+	return nil, errors.New(fmt.Sprintf(invalidLocationError, location, strings.Trim(availableLocations.String(), ", ")))
+}

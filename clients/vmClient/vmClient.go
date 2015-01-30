@@ -44,6 +44,7 @@ const (
 	invalidPasswordLengthError         = "Password must be between 4 and 30 characters."
 	invalidPasswordError               = "Password must have at least one upper case, lower case and numeric character."
 	invalidRoleSizeError               = "Invalid role size: %s. Available role sizes: %s"
+	invalidRoleSizeInLocationError     = "Role size: %s not available in location: %s. Available role sizes: %s"
 )
 
 //Region public methods starts
@@ -203,12 +204,12 @@ func CreateAzureVMConfiguration(dnsName, instanceSize, imageName, location strin
 		return nil, err
 	}
 
-	err = locationClient.ResolveLocation(location)
+	locationInfo, err := locationClient.GetLocation(location)
 	if err != nil {
 		return nil, err
 	}
 
-	err = ResolveRoleSize(instanceSize)
+	err = verifyInstanceSizeAvailableInLocation(locationInfo, instanceSize)
 	if err != nil {
 		return nil, err
 	}
@@ -854,6 +855,25 @@ next:
 		return fmt.Errorf(invalidPasswordError)
 	}
 	return nil
+}
+
+func verifyInstanceSizeAvailableInLocation(location *locationClient.Location, vmSize string) error {
+	if len(vmSize) == 0 {
+		return fmt.Errorf(azure.ParamNotSpecifiedError, "vmSize")
+	}
+
+	for _, availableRoleSize := range location.VirtualMachineRoleSizes {
+		if availableRoleSize == vmSize {
+			return nil
+		}
+	}
+
+	var availableSizes bytes.Buffer
+	for _, existingSize := range location.VirtualMachineRoleSizes {
+		availableSizes.WriteString(existingSize + ", ")
+	}
+
+	return fmt.Errorf(invalidRoleSizeInLocationError, vmSize, location.Name, strings.Trim(availableSizes.String(), ", "))
 }
 
 //Region private methods ends

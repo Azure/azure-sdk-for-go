@@ -15,5 +15,5 @@ type Location struct {
 	DisplayName             string
 	AvailableServices       []string `xml:"AvailableServices>AvailableService"`
 	WebWorkerRoleSizes      []string `xml:"ComputeCapabilities>WebWorkerRoleSizes>RoleSize"`
-	VirtualMachineRoleSizes []string `xml:"ComputeCapabilities>VirtualMachineRoleSizes>RoleSize"`
+	VirtualMachineRoleSizes []string `xml:"ComputeCapabilities>VirtualMachinesRoleSizes>RoleSize"`
 }

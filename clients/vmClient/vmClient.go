@@ -44,7 +44,7 @@ const (
 	invalidPasswordLengthError         = "Password must be between 4 and 30 characters."
 	invalidPasswordError               = "Password must have at least one upper case, lower case and numeric character."
 	invalidRoleSizeError               = "Invalid role size: %s. Available role sizes: %s"
-	invalidRoleSizeInLocationError     = "Role size: %s not available in location: %s. Available role sizes: %s"
+	invalidRoleSizeInLocationError     = "Role size: %s not available in location: %s."
 )
 
 //Region public methods starts
@@ -209,9 +209,13 @@ func CreateAzureVMConfiguration(dnsName, instanceSize, imageName, location strin
 		return nil, err
 	}
 
-	err = verifyInstanceSizeAvailableInLocation(locationInfo, instanceSize)
+	sizeAvailable, err := isInstanceSizeAvailableInLocation(locationInfo, instanceSize)
 	if err != nil {
 		return nil, err
+	}
+
+	if sizeAvailable == false {
+		return nil, fmt.Errorf(invalidRoleSizeInLocationError, instanceSize, location)
 	}
 
 	role, err := createAzureVMRole(dnsName, instanceSize, imageName, location)
@@ -857,23 +861,18 @@ next:
 	return nil
 }
 
-func verifyInstanceSizeAvailableInLocation(location *locationClient.Location, vmSize string) error {
-	if len(vmSize) == 0 {
-		return fmt.Errorf(azure.ParamNotSpecifiedError, "vmSize")
+func isInstanceSizeAvailableInLocation(location *locationClient.Location, instanceSize string) (bool, error) {
+	if len(instanceSize) == 0 {
+		return false, fmt.Errorf(azure.ParamNotSpecifiedError, "vmSize")
 	}
 
 	for _, availableRoleSize := range location.VirtualMachineRoleSizes {
-		if availableRoleSize == vmSize {
-			return nil
+		if availableRoleSize == instanceSize {
+			return true, nil
 		}
 	}
 
-	var availableSizes bytes.Buffer
-	for _, existingSize := range location.VirtualMachineRoleSizes {
-		availableSizes.WriteString(existingSize + ", ")
-	}
-
-	return fmt.Errorf(invalidRoleSizeInLocationError, vmSize, location.Name, strings.Trim(availableSizes.String(), ", "))
+	return false, nil
 }
 
 //Region private methods ends

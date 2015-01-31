@@ -14,16 +14,7 @@ type VMDeployment struct {
 	Url              string `xml:",omitempty"`
 	RoleList         RoleList
 	RoleInstanceList RoleInstanceList `xml:",omitempty"`
-	VirtualIPs       VirtualIPs `xml:",omitempty"`
-}
-
-type HostedServiceDeployment struct {
-	XMLName     xml.Name `xml:"CreateHostedService"`
-	Xmlns       string   `xml:"xmlns,attr"`
-	ServiceName string
-	Label       string
-	Description string
-	Location    string
+	VirtualIPs       VirtualIPs       `xml:",omitempty"`
 }
 
 type RoleList struct {
@@ -160,12 +151,6 @@ type ShutdownRoleOperation struct {
 type RestartRoleOperation struct {
 	Xmlns         string `xml:"xmlns,attr"`
 	OperationType string
-}
-
-type AvailabilityResponse struct {
-	Xmlns  string `xml:"xmlns,attr"`
-	Result bool
-	Reason string
 }
 
 type RoleSizeList struct {

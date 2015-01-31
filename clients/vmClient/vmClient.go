@@ -15,23 +15,21 @@ import (
 	"unicode"
 
 	azure "github.com/MSOpenTech/azure-sdk-for-go"
+	"github.com/MSOpenTech/azure-sdk-for-go/clients/hostedServiceClient"
 	"github.com/MSOpenTech/azure-sdk-for-go/clients/imageClient"
 	"github.com/MSOpenTech/azure-sdk-for-go/clients/locationClient"
 	"github.com/MSOpenTech/azure-sdk-for-go/clients/storageServiceClient"
 )
 
 const (
-	azureXmlns                        = "http://schemas.microsoft.com/windowsazure"
-	azureDeploymentListURL            = "services/hostedservices/%s/deployments"
-	azureHostedServiceListURL         = "services/hostedservices"
-	deleteAzureHostedServiceURL       = "services/hostedservices/%s?comp=media"
-	azureHostedServiceAvailabilityURL = "services/hostedservices/operations/isavailable/%s"
-	azureDeploymentURL                = "services/hostedservices/%s/deployments/%s"
-	deleteAzureDeploymentURL          = "services/hostedservices/%s/deployments/%s?comp=media"
-	azureRoleURL                      = "services/hostedservices/%s/deployments/%s/roles/%s"
-	azureOperationsURL                = "services/hostedservices/%s/deployments/%s/roleinstances/%s/Operations"
-	azureCertificatListURL            = "services/hostedservices/%s/certificates"
-	azureRoleSizeListURL              = "rolesizes"
+	azureXmlns               = "http://schemas.microsoft.com/windowsazure"
+	azureDeploymentListURL   = "services/hostedservices/%s/deployments"
+	azureDeploymentURL       = "services/hostedservices/%s/deployments/%s"
+	deleteAzureDeploymentURL = "services/hostedservices/%s/deployments/%s?comp=media"
+	azureRoleURL             = "services/hostedservices/%s/deployments/%s/roles/%s"
+	azureOperationsURL       = "services/hostedservices/%s/deployments/%s/roleinstances/%s/Operations"
+	azureCertificatListURL   = "services/hostedservices/%s/certificates"
+	azureRoleSizeListURL     = "rolesizes"
 
 	osLinux                   = "Linux"
 	osWindows                 = "Windows"
@@ -65,7 +63,7 @@ func CreateAzureVM(azureVMConfiguration *Role, dnsName, location string) error {
 		return err
 	}
 
-	requestId, err := CreateHostedService(dnsName, location)
+	requestId, err := hostedServiceClient.CreateHostedService(dnsName, location, "")
 	if err != nil {
 		return err
 	}
@@ -75,7 +73,7 @@ func CreateAzureVM(azureVMConfiguration *Role, dnsName, location string) error {
 	if azureVMConfiguration.UseCertAuth {
 		err = uploadServiceCert(dnsName, azureVMConfiguration.CertPath)
 		if err != nil {
-			DeleteHostedService(dnsName)
+			hostedServiceClient.DeleteHostedService(dnsName)
 			return err
 		}
 	}
@@ -83,105 +81,19 @@ func CreateAzureVM(azureVMConfiguration *Role, dnsName, location string) error {
 	vMDeployment := createVMDeploymentConfig(azureVMConfiguration)
 	vMDeploymentBytes, err := xml.Marshal(vMDeployment)
 	if err != nil {
-		DeleteHostedService(dnsName)
+		hostedServiceClient.DeleteHostedService(dnsName)
 		return err
 	}
 
 	requestURL := fmt.Sprintf(azureDeploymentListURL, azureVMConfiguration.RoleName)
 	requestId, err = azure.SendAzurePostRequest(requestURL, vMDeploymentBytes)
 	if err != nil {
-		DeleteHostedService(dnsName)
+		hostedServiceClient.DeleteHostedService(dnsName)
 		return err
 	}
 
 	azure.WaitAsyncOperation(requestId)
 
-	return nil
-}
-
-func CreateHostedService(dnsName, location string) (string, error) {
-	if len(dnsName) == 0 {
-		return "", fmt.Errorf(azure.ParamNotSpecifiedError, "dnsName")
-	}
-	if len(location) == 0 {
-		return "", fmt.Errorf(azure.ParamNotSpecifiedError, "location")
-	}
-
-	err := verifyDNSname(dnsName)
-	if err != nil {
-		return "", err
-	}
-
-	result, reason, err := CheckHostedServiceNameAvailability(dnsName)
-	if err != nil {
-		return "", err
-	}
-	if !result {
-		return "", fmt.Errorf("%s Hosted service name: %s", reason, dnsName)
-	}
-
-	err = locationClient.ResolveLocation(location)
-	if err != nil {
-		return "", err
-	}
-
-	hostedServiceDeployment := createHostedServiceDeploymentConfig(dnsName, location)
-	hostedServiceBytes, err := xml.Marshal(hostedServiceDeployment)
-	if err != nil {
-		return "", err
-	}
-
-	requestURL := azureHostedServiceListURL
-	requestId, err := azure.SendAzurePostRequest(requestURL, hostedServiceBytes)
-	if err != nil {
-		return "", err
-	}
-
-	return requestId, nil
-}
-
-func CheckHostedServiceNameAvailability(dnsName string) (bool, string, error) {
-	if len(dnsName) == 0 {
-		return false, "", fmt.Errorf(azure.ParamNotSpecifiedError, "dnsName")
-	}
-
-	err := verifyDNSname(dnsName)
-	if err != nil {
-		return false, "", err
-	}
-
-	requestURL := fmt.Sprintf(azureHostedServiceAvailabilityURL, dnsName)
-	response, err := azure.SendAzureGetRequest(requestURL)
-	if err != nil {
-		return false, "", err
-	}
-
-	availabilityResponse := new(AvailabilityResponse)
-	err = xml.Unmarshal(response, availabilityResponse)
-	if err != nil {
-		return false, "", err
-	}
-
-	return availabilityResponse.Result, availabilityResponse.Reason, nil
-}
-
-func DeleteHostedService(dnsName string) error {
-	if len(dnsName) == 0 {
-		return fmt.Errorf(azure.ParamNotSpecifiedError, "dnsName")
-	}
-
-	err := verifyDNSname(dnsName)
-	if err != nil {
-		return err
-	}
-
-	requestURL := fmt.Sprintf(deleteAzureHostedServiceURL, dnsName)
-	requestId, err := azure.SendAzureDeleteRequest(requestURL)
-	if err != nil {
-		return err
-	}
-
-	azure.WaitAsyncOperation(requestId)
 	return nil
 }
 
@@ -601,17 +513,6 @@ func addDockerPort(configurationSets []ConfigurationSet, dockerPort int) error {
 	}
 
 	return nil
-}
-
-func createHostedServiceDeploymentConfig(dnsName, location string) HostedServiceDeployment {
-	deployment := HostedServiceDeployment{}
-	deployment.ServiceName = dnsName
-	label := base64.StdEncoding.EncodeToString([]byte(dnsName))
-	deployment.Label = label
-	deployment.Location = location
-	deployment.Xmlns = azureXmlns
-
-	return deployment
 }
 
 func createVMDeploymentConfig(role *Role) VMDeployment {

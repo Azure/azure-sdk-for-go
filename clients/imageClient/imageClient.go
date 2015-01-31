@@ -8,8 +8,9 @@ import (
 )
 
 const (
-	azureImageListURL = "services/images"
-	invalidImageError = "Can not find image %s in specified subscription, please specify another image name."
+	azureImageListURL      = "services/images"
+	invalidImageError      = "Can not find image %s in specified subscription, please specify another image name."
+	paramNotSpecifiedError = "Parameter %s is not specified."
 )
 
 func GetImageList() (ImageList, error) {
@@ -24,13 +25,13 @@ func GetImageList() (ImageList, error) {
 	if err != nil {
 		return imageList, err
 	}
-	
+
 	return imageList, err
 }
 
 func ResolveImageName(imageName string) error {
 	if len(imageName) == 0 {
-		return fmt.Errorf(azure.ParamNotSpecifiedError, "imageName")
+		return fmt.Errorf(paramNotSpecifiedError, "imageName")
 	}
 
 	imageList, err := GetImageList()

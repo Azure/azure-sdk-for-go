@@ -6,14 +6,15 @@ import (
 )
 
 const (
-	azureVMDiskURL = "services/disks/%s"
+	azureVMDiskURL         = "services/disks/%s"
+	paramNotSpecifiedError = "Parameter %s is not specified."
 )
 
 //Region public methods starts
 
 func DeleteDisk(diskName string) error {
 	if len(diskName) == 0 {
-		return fmt.Errorf(azure.ParamNotSpecifiedError, "diskName")
+		return fmt.Errorf(paramNotSpecifiedError, "diskName")
 	}
 
 	requestURL := fmt.Sprintf(azureVMDiskURL, diskName)

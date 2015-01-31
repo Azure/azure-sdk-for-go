@@ -15,7 +15,7 @@ import (
 )
 
 const (
-	ParamNotSpecifiedError = "Parameter %s is not specified."
+	paramNotSpecifiedError = "Parameter %s is not specified."
 
 	azureManagementDnsName = "https://management.core.windows.net"
 	msVersionHeader        = "x-ms-version"
@@ -29,7 +29,7 @@ const (
 
 func SendAzureGetRequest(url string) ([]byte, error) {
 	if len(url) == 0 {
-		return nil, fmt.Errorf(ParamNotSpecifiedError, "url")
+		return nil, fmt.Errorf(paramNotSpecifiedError, "url")
 	}
 
 	response, err := SendAzureRequest(url, "GET", nil)
@@ -43,7 +43,7 @@ func SendAzureGetRequest(url string) ([]byte, error) {
 
 func SendAzurePostRequest(url string, data []byte) (string, error) {
 	if len(url) == 0 {
-		return "", fmt.Errorf(ParamNotSpecifiedError, "url")
+		return "", fmt.Errorf(paramNotSpecifiedError, "url")
 	}
 
 	response, err := SendAzureRequest(url, "POST", data)
@@ -57,7 +57,7 @@ func SendAzurePostRequest(url string, data []byte) (string, error) {
 
 func SendAzureDeleteRequest(url string) (string, error) {
 	if len(url) == 0 {
-		return "", fmt.Errorf(ParamNotSpecifiedError, "url")
+		return "", fmt.Errorf(paramNotSpecifiedError, "url")
 	}
 
 	response, err := SendAzureRequest(url, "DELETE", nil)
@@ -71,10 +71,10 @@ func SendAzureDeleteRequest(url string) (string, error) {
 
 func SendAzureRequest(url string, requestType string, data []byte) (*http.Response, error) {
 	if len(url) == 0 {
-		return nil, fmt.Errorf(ParamNotSpecifiedError, "url")
+		return nil, fmt.Errorf(paramNotSpecifiedError, "url")
 	}
 	if len(requestType) == 0 {
-		return nil, fmt.Errorf(ParamNotSpecifiedError, "requestType")
+		return nil, fmt.Errorf(paramNotSpecifiedError, "requestType")
 	}
 
 	client := createHttpClient()
@@ -89,7 +89,7 @@ func SendAzureRequest(url string, requestType string, data []byte) (*http.Respon
 
 func ExecuteCommand(command string, input []byte) ([]byte, error) {
 	if len(command) == 0 {
-		return nil, fmt.Errorf(ParamNotSpecifiedError, "command")
+		return nil, fmt.Errorf(paramNotSpecifiedError, "command")
 	}
 
 	parts := strings.Fields(command)
@@ -111,7 +111,7 @@ func ExecuteCommand(command string, input []byte) ([]byte, error) {
 
 func GetOperationStatus(operationId string) (*Operation, error) {
 	if len(operationId) == 0 {
-		return nil, fmt.Errorf(ParamNotSpecifiedError, "operationId")
+		return nil, fmt.Errorf(paramNotSpecifiedError, "operationId")
 	}
 
 	operation := new(Operation)
@@ -131,7 +131,7 @@ func GetOperationStatus(operationId string) (*Operation, error) {
 
 func WaitAsyncOperation(operationId string) error {
 	if len(operationId) == 0 {
-		return fmt.Errorf(ParamNotSpecifiedError, "operationId")
+		return fmt.Errorf(paramNotSpecifiedError, "operationId")
 	}
 
 	status := "InProgress"
@@ -156,7 +156,7 @@ func WaitAsyncOperation(operationId string) error {
 
 func CheckStringParams(url string) ([]byte, error) {
 	if len(url) == 0 {
-		return nil, fmt.Errorf(ParamNotSpecifiedError, "url")
+		return nil, fmt.Errorf(paramNotSpecifiedError, "url")
 	}
 
 	response, err := SendAzureRequest(url, "GET", nil)

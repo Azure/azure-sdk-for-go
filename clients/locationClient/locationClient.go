@@ -1,12 +1,10 @@
 package locationClient
 
 import (
-	"bytes"
 	"encoding/xml"
 	"errors"
 	"fmt"
 	azure "github.com/MSOpenTech/azure-sdk-for-go"
-	"strings"
 )
 
 const (
@@ -32,12 +30,7 @@ func ResolveLocation(location string) error {
 		return nil
 	}
 
-	var availableLocations bytes.Buffer
-	for _, existingLocation := range locations.Locations {
-		availableLocations.WriteString(existingLocation.Name + ", ")
-	}
-
-	return errors.New(fmt.Sprintf(invalidLocationError, location, strings.Trim(availableLocations.String(), ", ")))
+	return errors.New(fmt.Sprintf(invalidLocationError, location, locations.String()))
 }
 
 func GetLocationList() (LocationList, error) {
@@ -74,10 +67,5 @@ func GetLocation(location string) (*Location, error) {
 		return &existingLocation, nil
 	}
 
-	var availableLocations bytes.Buffer
-	for _, existingLocation := range locations.Locations {
-		availableLocations.WriteString(existingLocation.Name + ", ")
-	}
-
-	return nil, errors.New(fmt.Sprintf(invalidLocationError, location, strings.Trim(availableLocations.String(), ", ")))
+	return nil, errors.New(fmt.Sprintf(invalidLocationError, location, locations.String()))
 }

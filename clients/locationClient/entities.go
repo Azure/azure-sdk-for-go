@@ -1,7 +1,10 @@
 package locationClient
 
 import (
+	"bytes"
 	"encoding/xml"
+	"fmt"
+	"strings"
 )
 
 type LocationList struct {
@@ -16,4 +19,14 @@ type Location struct {
 	AvailableServices       []string `xml:"AvailableServices>AvailableService"`
 	WebWorkerRoleSizes      []string `xml:"ComputeCapabilities>WebWorkerRoleSizes>RoleSize"`
 	VirtualMachineRoleSizes []string `xml:"ComputeCapabilities>VirtualMachinesRoleSizes>RoleSize"`
+}
+
+func (locationList LocationList) String() string {
+	var buf bytes.Buffer
+
+	for _, location := range locationList.Locations {
+		buf.WriteString(fmt.Sprintf("%s, ", location.Name))
+	}
+
+	return strings.Trim(buf.String(), ", ")
 }

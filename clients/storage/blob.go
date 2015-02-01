@@ -25,13 +25,6 @@ type Container struct {
 	// TODO (ahmetalpbalkan) Metadata
 }
 
-// A Blob is an entry in BlobListResponse.
-type Blob struct {
-	Name       string         `xml:"Name"`
-	Properties BlobProperties `xml:"Properties"`
-	// TODO (ahmetalpbalkan) Metadata
-}
-
 // ContainerProperties contains various properties of a
 // container returned from various endpoints like ListContainers.
 type ContainerProperties struct {
@@ -41,6 +34,25 @@ type ContainerProperties struct {
 	LeaseState    string `xml:"LeaseState"`
 	LeaseDuration string `xml:"LeaseDuration"`
 	// TODO (ahmetalpbalkan) remaining fields
+}
+
+// ContainerListResponse contains the response fields from
+// ListContainers call. https://msdn.microsoft.com/en-us/library/azure/dd179352.aspx
+type ContainerListResponse struct {
+	XMLName    xml.Name    `xml:"EnumerationResults"`
+	Xmlns      string      `xml:"xmlns,attr"`
+	Prefix     string      `xml:"Prefix"`
+	Marker     string      `xml:"Marker"`
+	NextMarker string      `xml:"NextMarker"`
+	MaxResults int64       `xml:"MaxResults"`
+	Containers []Container `xml:"Containers>Container"`
+}
+
+// A Blob is an entry in BlobListResponse.
+type Blob struct {
+	Name       string         `xml:"Name"`
+	Properties BlobProperties `xml:"Properties"`
+	// TODO (ahmetalpbalkan) Metadata
 }
 
 // BlobProperties contains various properties of a blob
@@ -60,18 +72,6 @@ type BlobProperties struct {
 	CopyProgress          string   `xml:"CopyProgress"`
 	CopyCompletionTime    string   `xml:"CopyCompletionTime"`
 	CopyStatusDescription string   `xml:"CopyStatusDescription"`
-}
-
-// ContainerListResponse contains the response fields from
-// ListContainers call. https://msdn.microsoft.com/en-us/library/azure/dd179352.aspx
-type ContainerListResponse struct {
-	XMLName    xml.Name    `xml:"EnumerationResults"`
-	Xmlns      string      `xml:"xmlns,attr"`
-	Prefix     string      `xml:"Prefix"`
-	Marker     string      `xml:"Marker"`
-	NextMarker string      `xml:"NextMarker"`
-	MaxResults int64       `xml:"MaxResults"`
-	Containers []Container `xml:"Containers>Container"`
 }
 
 // BlobListResponse contains the response fields from

@@ -30,7 +30,7 @@ func ResolveLocation(location string) error {
 		return nil
 	}
 
-	return errors.New(fmt.Sprintf(invalidLocationError, location, locations.String()))
+	return errors.New(fmt.Sprintf(invalidLocationError, location, locations))
 }
 
 func GetLocationList() (LocationList, error) {
@@ -67,5 +67,5 @@ func GetLocation(location string) (*Location, error) {
 		return &existingLocation, nil
 	}
 
-	return nil, errors.New(fmt.Sprintf(invalidLocationError, location, locations.String()))
+	return nil, errors.New(fmt.Sprintf(invalidLocationError, location, locations))
 }

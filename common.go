@@ -17,12 +17,12 @@ import (
 const (
 	paramNotSpecifiedError = "Parameter %s is not specified."
 
-	azureManagementDnsName = "https://management.core.windows.net"
-	msVersionHeader        = "x-ms-version"
-	msVersionHeaderValue   = "2014-05-01"
-	contentHeader          = "Content-Type"
-	contentHeaderValue     = "application/xml"
-	requestIdHeader        = "X-Ms-Request-Id"
+	azureManagementDnsName    = "https://management.core.windows.net"
+	msVersionHeader           = "x-ms-version"
+	msVersionHeaderValue      = "2014-05-01"
+	contentHeader             = "Content-Type"
+	defaultContentHeaderValue = "application/xml"
+	requestIdHeader           = "X-Ms-Request-Id"
 )
 
 //Region public methods starts
@@ -32,7 +32,7 @@ func SendAzureGetRequest(url string) ([]byte, error) {
 		return nil, fmt.Errorf(paramNotSpecifiedError, "url")
 	}
 
-	response, err := SendAzureRequest(url, "GET", nil)
+	response, err := SendAzureRequest(url, "GET", "", nil)
 	if err != nil {
 		return nil, err
 	}
@@ -46,7 +46,21 @@ func SendAzurePostRequest(url string, data []byte) (string, error) {
 		return "", fmt.Errorf(paramNotSpecifiedError, "url")
 	}
 
-	response, err := SendAzureRequest(url, "POST", data)
+	response, err := SendAzureRequest(url, "POST", "", data)
+	if err != nil {
+		return "", err
+	}
+
+	requestId := response.Header[requestIdHeader]
+	return requestId[0], nil
+}
+
+func SendAzurePutRequest(url string, contentType string, data []byte) (string, error) {
+	if len(url) == 0 {
+		return "", fmt.Errorf(paramNotSpecifiedError, contentType, "url")
+	}
+
+	response, err := SendAzureRequest(url, "PUT", contentType, data)
 	if err != nil {
 		return "", err
 	}
@@ -60,7 +74,7 @@ func SendAzureDeleteRequest(url string) (string, error) {
 		return "", fmt.Errorf(paramNotSpecifiedError, "url")
 	}
 
-	response, err := SendAzureRequest(url, "DELETE", nil)
+	response, err := SendAzureRequest(url, "DELETE", "", nil)
 	if err != nil {
 		return "", err
 	}
@@ -69,7 +83,7 @@ func SendAzureDeleteRequest(url string) (string, error) {
 	return requestId[0], nil
 }
 
-func SendAzureRequest(url string, requestType string, data []byte) (*http.Response, error) {
+func SendAzureRequest(url string, requestType string, contentType string, data []byte) (*http.Response, error) {
 	if len(url) == 0 {
 		return nil, fmt.Errorf(paramNotSpecifiedError, "url")
 	}
@@ -79,7 +93,7 @@ func SendAzureRequest(url string, requestType string, data []byte) (*http.Respon
 
 	client := createHttpClient()
 
-	response, err := sendRequest(client, url, requestType, data, 7)
+	response, err := sendRequest(client, url, requestType, contentType, data, 7)
 	if err != nil {
 		return nil, err
 	}
@@ -159,7 +173,7 @@ func CheckStringParams(url string) ([]byte, error) {
 		return nil, fmt.Errorf(paramNotSpecifiedError, "url")
 	}
 
-	response, err := SendAzureRequest(url, "GET", nil)
+	response, err := SendAzureRequest(url, "GET", "", nil)
 	if err != nil {
 		return nil, err
 	}
@@ -188,8 +202,8 @@ func NewUUID() (string, error) {
 
 //Region private methods starts
 
-func sendRequest(client *http.Client, url string, requestType string, data []byte, numberOfRetries int) (*http.Response, error) {
-	request, reqErr := createAzureRequest(url, requestType, data)
+func sendRequest(client *http.Client, url string, requestType string, contentType string, data []byte, numberOfRetries int) (*http.Response, error) {
+	request, reqErr := createAzureRequest(url, requestType, contentType, data)
 	if reqErr != nil {
 		return nil, reqErr
 	}
@@ -200,7 +214,7 @@ func sendRequest(client *http.Client, url string, requestType string, data []byt
 			return nil, err
 		}
 
-		return sendRequest(client, url, requestType, data, numberOfRetries-1)
+		return sendRequest(client, url, requestType, contentType, data, numberOfRetries-1)
 	}
 
 	if response.StatusCode > 299 {
@@ -211,7 +225,7 @@ func sendRequest(client *http.Client, url string, requestType string, data []byt
 				return nil, azureErr
 			}
 
-			return sendRequest(client, url, requestType, data, numberOfRetries-1)
+			return sendRequest(client, url, requestType, contentType, data, numberOfRetries-1)
 		}
 	}
 
@@ -228,7 +242,7 @@ func getAzureError(responseBody []byte) error {
 	return error
 }
 
-func createAzureRequest(url string, requestType string, data []byte) (*http.Request, error) {
+func createAzureRequest(url string, requestType string, contentType string, data []byte) (*http.Request, error) {
 	var request *http.Request
 	var err error
 
@@ -245,7 +259,11 @@ func createAzureRequest(url string, requestType string, data []byte) (*http.Requ
 	}
 
 	request.Header.Add(msVersionHeader, msVersionHeaderValue)
-	request.Header.Add(contentHeader, contentHeaderValue)
+	if len(contentType) > 0 {
+		request.Header.Add(contentHeader, contentType)
+	} else {
+		request.Header.Add(contentHeader, defaultContentHeaderValue)
+	}
 
 	return request, nil
 }

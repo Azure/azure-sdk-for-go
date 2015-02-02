@@ -20,7 +20,6 @@ func (c StorageClient) computeHmac256(message string) string {
 }
 
 func currentTimeRfc1123Formatted() string {
-	const dateLayout = http.TimeFormat // reuse from net/http package
 	return timeRfc1123Formatted(time.Now().UTC())
 }
 

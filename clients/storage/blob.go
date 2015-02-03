@@ -305,7 +305,7 @@ func (b BlobStorageClient) CreateContainerIfNotExists(name string, access Contai
 
 func (b BlobStorageClient) createContainer(name string, access ContainerAccessType) (*storageResponse, error) {
 	verb := "PUT"
-	uri := b.client.getEndpoint(blobServiceName, name, url.Values{"restype": {"container"}})
+	uri := b.client.getEndpoint(blobServiceName, pathForContainer(name), url.Values{"restype": {"container"}})
 
 	headers := b.client.getStandardHeaders()
 	headers["Content-Length"] = "0"
@@ -319,8 +319,7 @@ func (b BlobStorageClient) createContainer(name string, access ContainerAccessTy
 // on the storage account, otherwise returns false.
 func (b BlobStorageClient) ContainerExists(name string) (bool, error) {
 	verb := "HEAD"
-	path := fmt.Sprintf("%s", name)
-	uri := b.client.getEndpoint(blobServiceName, path, url.Values{"restype": {"container"}})
+	uri := b.client.getEndpoint(blobServiceName, pathForContainer(name), url.Values{"restype": {"container"}})
 	headers := b.client.getStandardHeaders()
 
 	resp, err := b.client.exec(verb, uri, headers, nil)
@@ -358,7 +357,7 @@ func (b BlobStorageClient) DeleteContainerIfExists(name string) (bool, error) {
 
 func (b BlobStorageClient) deleteContainer(name string) (*storageResponse, error) {
 	verb := "DELETE"
-	uri := b.client.getEndpoint(blobServiceName, name, url.Values{"restype": {"container"}})
+	uri := b.client.getEndpoint(blobServiceName, pathForContainer(name), url.Values{"restype": {"container"}})
 
 	headers := b.client.getStandardHeaders()
 	return b.client.exec(verb, uri, headers, nil)
@@ -371,7 +370,7 @@ func (b BlobStorageClient) ListBlobs(container string, params ListBlobsParameter
 	q := mergeParams(params.getParameters(), url.Values{
 		"restype": {"container"},
 		"comp":    {"list"}})
-	uri := b.client.getEndpoint(blobServiceName, container, q)
+	uri := b.client.getEndpoint(blobServiceName, pathForContainer(container), q)
 	headers := b.client.getStandardHeaders()
 
 	var out BlobListResponse
@@ -388,8 +387,7 @@ func (b BlobStorageClient) ListBlobs(container string, params ListBlobsParameter
 // specified container of the storage account.
 func (b BlobStorageClient) BlobExists(container, name string) (bool, error) {
 	verb := "HEAD"
-	path := fmt.Sprintf("%s/%s", container, name)
-	uri := b.client.getEndpoint(blobServiceName, path, url.Values{})
+	uri := b.client.getEndpoint(blobServiceName, pathForBlob(container, name), url.Values{})
 
 	headers := b.client.getStandardHeaders()
 	resp, err := b.client.exec(verb, uri, headers, nil)
@@ -407,8 +405,7 @@ func (b BlobStorageClient) GetBlobUrl(container, name string) string {
 	if container == "" {
 		container = "$root"
 	}
-	path := fmt.Sprintf("%s/%s", container, name)
-	return b.client.getEndpoint(blobServiceName, path, url.Values{})
+	return b.client.getEndpoint(blobServiceName, pathForBlob(container, name), url.Values{})
 }
 
 // GetBlob downloads a blob to a stream. See https://msdn.microsoft.com/en-us/library/azure/dd179440.aspx
@@ -441,8 +438,7 @@ func (b BlobStorageClient) GetBlobRange(container, name, bytesRange string) (io.
 
 func (b BlobStorageClient) getBlobRange(container, name, bytesRange string) (*storageResponse, error) {
 	verb := "GET"
-	path := fmt.Sprintf("%s/%s", container, name)
-	uri := b.client.getEndpoint(blobServiceName, path, url.Values{})
+	uri := b.client.getEndpoint(blobServiceName, pathForBlob(container, name), url.Values{})
 
 	headers := b.client.getStandardHeaders()
 	if bytesRange != "" {
@@ -459,8 +455,7 @@ func (b BlobStorageClient) getBlobRange(container, name, bytesRange string) (*st
 // blob. See https://msdn.microsoft.com/en-us/library/azure/dd179394.aspx
 func (b BlobStorageClient) GetBlobProperties(container, name string) (*BlobProperties, error) {
 	verb := "HEAD"
-	path := fmt.Sprintf("%s/%s", container, name)
-	uri := b.client.getEndpoint(blobServiceName, path, url.Values{})
+	uri := b.client.getEndpoint(blobServiceName, pathForBlob(container, name), url.Values{})
 
 	headers := b.client.getStandardHeaders()
 	resp, err := b.client.exec(verb, uri, headers, nil)
@@ -566,8 +561,7 @@ func (b BlobStorageClient) putSingleBlockBlob(container, name string, chunk []by
 		return fmt.Errorf("storage: provided chunk (%d bytes) cannot fit into single-block blob (max %d bytes)", len(chunk), MaxBlobBlockSize)
 	}
 
-	path := fmt.Sprintf("%s/%s", container, name)
-	uri := b.client.getEndpoint(blobServiceName, path, url.Values{})
+	uri := b.client.getEndpoint(blobServiceName, pathForBlob(container, name), url.Values{})
 	headers := b.client.getStandardHeaders()
 	headers["x-ms-blob-type"] = string(BlobTypeBlock)
 	headers["Content-Length"] = fmt.Sprintf("%v", len(chunk))
@@ -594,8 +588,7 @@ func (b BlobStorageClient) PutBlock(container, name, blockId string, chunk []byt
 // It is an alternative to PutBlocks where data comes as stream but the length is
 // known in advance.
 func (b BlobStorageClient) PutBlockWithLength(container, name, blockId string, size uint64, blob io.Reader) error {
-	path := fmt.Sprintf("%s/%s", container, name)
-	uri := b.client.getEndpoint(blobServiceName, path, url.Values{"comp": {"block"}, "blockid": {blockId}})
+	uri := b.client.getEndpoint(blobServiceName, pathForBlob(container, name), url.Values{"comp": {"block"}, "blockid": {blockId}})
 	headers := b.client.getStandardHeaders()
 	headers["x-ms-blob-type"] = string(BlobTypeBlock)
 	headers["Content-Length"] = fmt.Sprintf("%v", size)
@@ -616,8 +609,7 @@ func (b BlobStorageClient) PutBlockWithLength(container, name, blockId string, s
 func (b BlobStorageClient) PutBlockList(container, name string, blocks []Block) error {
 	blockListXml := prepareBlockListRequest(blocks)
 
-	path := fmt.Sprintf("%s/%s", container, name)
-	uri := b.client.getEndpoint(blobServiceName, path, url.Values{"comp": {"blocklist"}})
+	uri := b.client.getEndpoint(blobServiceName, pathForBlob(container, name), url.Values{"comp": {"blocklist"}})
 	headers := b.client.getStandardHeaders()
 	headers["Content-Length"] = fmt.Sprintf("%v", len(blockListXml))
 
@@ -635,7 +627,7 @@ func (b BlobStorageClient) PutBlockList(container, name string, blocks []Block) 
 // https://msdn.microsoft.com/en-us/library/azure/dd179400.aspx
 func (b BlobStorageClient) GetBlockList(container, name string, blockType BlockListType) (BlockListResponse, error) {
 	params := url.Values{"comp": {"blocklist"}, "blocklisttype": {string(blockType)}}
-	uri := b.client.getEndpoint(blobServiceName, fmt.Sprintf("%s/%s", container, name), params)
+	uri := b.client.getEndpoint(blobServiceName, pathForBlob(container, name), params)
 	headers := b.client.getStandardHeaders()
 
 	var out BlockListResponse
@@ -738,8 +730,7 @@ func (b BlobStorageClient) CopyBlob(container, name, sourceBlob string) error {
 }
 
 func (b BlobStorageClient) startBlobCopy(container, name, sourceBlob string) (string, error) {
-	path := fmt.Sprintf("%s/%s", container, name)
-	uri := b.client.getEndpoint(blobServiceName, path, url.Values{})
+	uri := b.client.getEndpoint(blobServiceName, pathForBlob(container, name), url.Values{})
 
 	headers := b.client.getStandardHeaders()
 	headers["Content-Length"] = "0"
@@ -813,11 +804,20 @@ func (b BlobStorageClient) DeleteBlobIfExists(container, name string) (bool, err
 
 func (b BlobStorageClient) deleteBlob(container, name string) (*storageResponse, error) {
 	verb := "DELETE"
-	path := fmt.Sprintf("%s/%s", container, name)
-	uri := b.client.getEndpoint(blobServiceName, path, url.Values{})
-
+	uri := b.client.getEndpoint(blobServiceName, pathForBlob(container, name), url.Values{})
 	headers := b.client.getStandardHeaders()
+
 	return b.client.exec(verb, uri, headers, nil)
+}
+
+// helper method to construct the path to a container given its name
+func pathForContainer(name string) string {
+	return fmt.Sprintf("/%s", name)
+}
+
+// helper method to construct the path to a blob given its container and blob name
+func pathForBlob(container, name string) string {
+	return fmt.Sprintf("/%s/%s", container, name)
 }
 
 // GetBlobSASURI creates an URL to the specified blob which contains the Shared Access Signature

@@ -15,6 +15,7 @@ const (
 	azureStorageServiceURL     = "services/storageservices/%s"
 
 	blobEndpointNotFoundError = "Blob endpoint was not found in storage serice %s"
+	paramNotSpecifiedError    = "Parameter %s is not specified."
 )
 
 func GetStorageServiceList() (*StorageServiceList, error) {
@@ -35,7 +36,7 @@ func GetStorageServiceList() (*StorageServiceList, error) {
 
 func GetStorageServiceByName(serviceName string) (*StorageService, error) {
 	if len(serviceName) == 0 {
-		return nil, fmt.Errorf(azure.ParamNotSpecifiedError, "serviceName")
+		return nil, fmt.Errorf(paramNotSpecifiedError, "serviceName")
 	}
 
 	storageService := new(StorageService)
@@ -55,7 +56,7 @@ func GetStorageServiceByName(serviceName string) (*StorageService, error) {
 
 func GetStorageServiceByLocation(location string) (*StorageService, error) {
 	if len(location) == 0 {
-		return nil, fmt.Errorf(azure.ParamNotSpecifiedError, "location")
+		return nil, fmt.Errorf(paramNotSpecifiedError, "location")
 	}
 
 	storageService := new(StorageService)
@@ -77,10 +78,10 @@ func GetStorageServiceByLocation(location string) (*StorageService, error) {
 
 func CreateStorageService(name, location string) (*StorageService, error) {
 	if len(name) == 0 {
-		return nil, fmt.Errorf(azure.ParamNotSpecifiedError, "name")
+		return nil, fmt.Errorf(paramNotSpecifiedError, "name")
 	}
 	if len(location) == 0 {
-		return nil, fmt.Errorf(azure.ParamNotSpecifiedError, "location")
+		return nil, fmt.Errorf(paramNotSpecifiedError, "location")
 	}
 
 	storageDeploymentConfig := createStorageServiceDeploymentConf(name, location)

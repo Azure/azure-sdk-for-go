@@ -22,10 +22,10 @@ func setPublishSettings(id string, cert []byte, key []byte) {
 
 func ImportPublishSettings(id string, certPath string) error {
 	if len(id) == 0 {
-		return fmt.Errorf(ParamNotSpecifiedError, "id")
+		return fmt.Errorf(paramNotSpecifiedError, "id")
 	}
 	if len(certPath) == 0 {
-		return fmt.Errorf(ParamNotSpecifiedError, "certPath")
+		return fmt.Errorf(paramNotSpecifiedError, "certPath")
 	}
 
 	cert, err := ioutil.ReadFile(certPath)
@@ -39,7 +39,7 @@ func ImportPublishSettings(id string, certPath string) error {
 
 func ImportPublishSettingsFile(filePath string) error {
 	if len(filePath) == 0 {
-		return fmt.Errorf(ParamNotSpecifiedError, "filePath")
+		return fmt.Errorf(paramNotSpecifiedError, "filePath")
 	}
 
 	publishSettingsContent, err := ioutil.ReadFile(filePath)
@@ -63,17 +63,17 @@ func ImportPublishSettingsFile(filePath string) error {
 
 func getSubscriptionCert(subscription subscription) ([]byte, error) {
 	certPassword := ""
-	
+
 	pfxCert, err := base64.StdEncoding.DecodeString(subscription.ManagementCertificate)
 	if err != nil {
 		return nil, err
 	}
-	
+
 	subscriptionCert, err := ExecuteCommand(fmt.Sprintf("openssl pkcs12 -nodes -passin pass:%s", certPassword), pfxCert)
 	if err != nil {
 		return nil, err
 	}
-	
+
 	return subscriptionCert, nil
 }
 

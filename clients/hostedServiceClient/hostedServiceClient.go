@@ -18,15 +18,16 @@ const (
 	azureDeploymentURL                = "services/hostedservices/%s/deployments/%s"
 	deleteAzureDeploymentURL          = "services/hostedservices/%s/deployments/%s?comp=media"
 
-	invalidDnsLengthError = "The DNS name must be between 3 and 25 characters."
+	invalidDnsLengthError  = "The DNS name must be between 3 and 25 characters."
+	paramNotSpecifiedError = "Parameter %s is not specified."
 )
 
 func CreateHostedService(dnsName, location string, reverseDnsFqdn string) (string, error) {
 	if len(dnsName) == 0 {
-		return "", fmt.Errorf(azure.ParamNotSpecifiedError, "dnsName")
+		return "", fmt.Errorf(paramNotSpecifiedError, "dnsName")
 	}
 	if len(location) == 0 {
-		return "", fmt.Errorf(azure.ParamNotSpecifiedError, "location")
+		return "", fmt.Errorf(paramNotSpecifiedError, "location")
 	}
 
 	err := verifyDNSName(dnsName)
@@ -64,7 +65,7 @@ func CreateHostedService(dnsName, location string, reverseDnsFqdn string) (strin
 
 func CheckHostedServiceNameAvailability(dnsName string) (bool, string, error) {
 	if len(dnsName) == 0 {
-		return false, "", fmt.Errorf(azure.ParamNotSpecifiedError, "dnsName")
+		return false, "", fmt.Errorf(paramNotSpecifiedError, "dnsName")
 	}
 
 	err := verifyDNSName(dnsName)
@@ -89,7 +90,7 @@ func CheckHostedServiceNameAvailability(dnsName string) (bool, string, error) {
 
 func DeleteHostedService(dnsName string) error {
 	if len(dnsName) == 0 {
-		return fmt.Errorf(azure.ParamNotSpecifiedError, "dnsName")
+		return fmt.Errorf(paramNotSpecifiedError, "dnsName")
 	}
 
 	err := verifyDNSName(dnsName)

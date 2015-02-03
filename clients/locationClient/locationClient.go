@@ -8,13 +8,14 @@ import (
 )
 
 const (
-	azureLocationListURL = "locations"
-	invalidLocationError = "Invalid location: %s. Available locations: %s"
+	azureLocationListURL   = "locations"
+	invalidLocationError   = "Invalid location: %s. Available locations: %s"
+	paramNotSpecifiedError = "Parameter %s is not specified."
 )
 
 func ResolveLocation(location string) error {
 	if len(location) == 0 {
-		return fmt.Errorf(azure.ParamNotSpecifiedError, "location")
+		return fmt.Errorf(paramNotSpecifiedError, "location")
 	}
 
 	locations, err := GetLocationList()
@@ -51,7 +52,7 @@ func GetLocationList() (LocationList, error) {
 
 func GetLocation(location string) (*Location, error) {
 	if len(location) == 0 {
-		return nil, fmt.Errorf(azure.ParamNotSpecifiedError, "location")
+		return nil, fmt.Errorf(paramNotSpecifiedError, "location")
 	}
 
 	locations, err := GetLocationList()

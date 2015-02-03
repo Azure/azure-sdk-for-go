@@ -527,10 +527,9 @@ func (b BlobStorageClient) putBlockBlob(container, name string, blob io.Reader, 
 	} else {
 		// Does not fit into one block. Upload block by block then commit the block list
 		blockList := []Block{}
-		blockNum := 0
 
 		// Put blocks
-		for {
+		for blockNum := 0; ; blockNum++ {
 			id := base64.StdEncoding.EncodeToString([]byte(fmt.Sprintf("%011d", blockNum)))
 			data := chunk[:n]
 			err = b.PutBlock(container, name, id, data)
@@ -547,8 +546,6 @@ func (b BlobStorageClient) putBlockBlob(container, name string, blob io.Reader, 
 			if err == io.EOF {
 				break
 			}
-
-			blockNum++
 		}
 
 		// Commit block list

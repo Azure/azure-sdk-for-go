@@ -235,7 +235,7 @@ type BlockListResponse struct {
 // in the GetBlockListCall.
 type BlockResponse struct {
 	Name string `xml:"Name"`
-	Size uint64 `xml:"Size"`
+	Size int64  `xml:"Size"`
 }
 
 // GetPageRangesResponse contains the reponse fields from
@@ -500,6 +500,25 @@ func (b BlobStorageClient) GetBlobProperties(container, name string) (*BlobPrope
 		CopyStatus:            resp.headers.Get("x-ms-copy-status"),
 		BlobType:              BlobType(resp.headers.Get("x-ms-blob-type")),
 	}, nil
+}
+
+// CreateBlockBlob initializes an empty block blob with no blocks.
+// See https://msdn.microsoft.com/en-us/library/azure/dd179451.aspx
+func (b BlobStorageClient) CreateBlockBlob(container, name string) error {
+	path := fmt.Sprintf("%s/%s", container, name)
+	uri := b.client.getEndpoint(blobServiceName, path, url.Values{})
+	headers := b.client.getStandardHeaders()
+	headers["x-ms-blob-type"] = string(BlobTypeBlock)
+	headers["Content-Length"] = fmt.Sprintf("%v", 0)
+
+	resp, err := b.client.exec("PUT", uri, headers, nil)
+	if err != nil {
+		return err
+	}
+	if resp.statusCode != http.StatusCreated {
+		return ErrNotCreated
+	}
+	return nil
 }
 
 // PutBlockBlob uploads given stream into a block blob by splitting

@@ -843,8 +843,38 @@ func TestGetBlockList_PutBlockList(t *testing.T) {
 	if expected := blockId; expected != thatBlock.Name {
 		t.Fatalf("Wrong block name. Expected: %s, got: %s", expected, thatBlock.Name)
 	}
-	if expected := uint64(len(chunk)); expected != thatBlock.Size {
+	if expected := int64(len(chunk)); expected != thatBlock.Size {
 		t.Fatalf("Wrong block name. Expected: %d, got: %d", expected, thatBlock.Size)
+	}
+}
+
+func TestCreateBlockBlob(t *testing.T) {
+	cli, err := getBlobClient()
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	cnt := randContainer()
+	if err := cli.CreateContainer(cnt, ContainerAccessTypePrivate); err != nil {
+		t.Fatal(err)
+	}
+	defer cli.deleteContainer(cnt)
+
+	blob := randString(20)
+	if err := cli.CreateBlockBlob(cnt, blob); err != nil {
+		t.Fatal(err)
+	}
+
+	// Verify
+	blocks, err := cli.GetBlockList(cnt, blob, BlockListTypeAll)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if expected, got := 0, len(blocks.CommittedBlocks); expected != got {
+		t.Fatalf("Got wrong committed block count. Expected: %v, Got:%v ", expected, got)
+	}
+	if expected, got := 0, len(blocks.UncommittedBlocks); expected != got {
+		t.Fatalf("Got wrong uncommitted block count. Expected: %v, Got:%v ", expected, got)
 	}
 }
 

@@ -1,3 +1,3 @@
 language: go
 go: tip
-script: go test -v ./clients/storage
+script: go test -v ./azure

@@ -1,4 +1,4 @@
-package vmClient
+package azure
 
 import (
 	"encoding/xml"

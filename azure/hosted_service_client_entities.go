@@ -1,4 +1,4 @@
-package hostedServiceClient
+package azure
 
 import (
 	"encoding/xml"

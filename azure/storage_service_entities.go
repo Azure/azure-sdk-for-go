@@ -1,4 +1,4 @@
-package storageServiceClient
+package azure
 
 import (
 	"encoding/xml"

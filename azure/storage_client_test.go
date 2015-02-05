@@ -1,4 +1,4 @@
-package storage
+package azure
 
 import (
 	"encoding/base64"
@@ -7,7 +7,9 @@ import (
 )
 
 func TestGetBaseUrl_Basic_Https(t *testing.T) {
-	cli, err := NewBasicClient("foo", "YmFy")
+	client, err := NewClient(&Config{Anonymous: true})
+
+	cli, err := client.NewBasicStorageClient("foo", "YmFy")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -27,8 +29,10 @@ func TestGetBaseUrl_Basic_Https(t *testing.T) {
 }
 
 func TestGetBaseUrl_Custom_NoHttps(t *testing.T) {
+	client, err := NewClient(&Config{Anonymous: true})
+
 	apiVersion := DefaultApiVersion
-	cli, err := NewClient("foo", "YmFy", "core.chinacloudapi.cn", apiVersion, false)
+	cli, err := client.NewStorageClient("foo", "YmFy", "core.chinacloudapi.cn", apiVersion, false)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -45,7 +49,8 @@ func TestGetBaseUrl_Custom_NoHttps(t *testing.T) {
 }
 
 func TestGetEndpoint_None(t *testing.T) {
-	cli, err := NewBasicClient("foo", "YmFy")
+	client, err := NewClient(&Config{Anonymous: true})
+	cli, err := client.NewBasicStorageClient("foo", "YmFy")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -57,7 +62,8 @@ func TestGetEndpoint_None(t *testing.T) {
 }
 
 func TestGetEndpoint_PathOnly(t *testing.T) {
-	cli, err := NewBasicClient("foo", "YmFy")
+	client, err := NewClient(&Config{Anonymous: true})
+	cli, err := client.NewBasicStorageClient("foo", "YmFy")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -69,7 +75,8 @@ func TestGetEndpoint_PathOnly(t *testing.T) {
 }
 
 func TestGetEndpoint_ParamsOnly(t *testing.T) {
-	cli, err := NewBasicClient("foo", "YmFy")
+	client, err := NewClient(&Config{Anonymous: true})
+	cli, err := client.NewBasicStorageClient("foo", "YmFy")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -84,7 +91,8 @@ func TestGetEndpoint_ParamsOnly(t *testing.T) {
 }
 
 func TestGetEndpoint_Mixed(t *testing.T) {
-	cli, err := NewBasicClient("foo", "YmFy")
+	client, err := NewClient(&Config{Anonymous: true})
+	cli, err := client.NewBasicStorageClient("foo", "YmFy")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -99,7 +107,8 @@ func TestGetEndpoint_Mixed(t *testing.T) {
 }
 
 func Test_getStandardHeaders(t *testing.T) {
-	cli, err := NewBasicClient("foo", "YmFy")
+	client, err := NewClient(&Config{Anonymous: true})
+	cli, err := client.NewBasicStorageClient("foo", "YmFy")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -117,7 +126,8 @@ func Test_getStandardHeaders(t *testing.T) {
 }
 
 func Test_buildCanonicalizedResource(t *testing.T) {
-	cli, err := NewBasicClient("foo", "YmFy")
+	client, err := NewClient(&Config{Anonymous: true})
+	cli, err := client.NewBasicStorageClient("foo", "YmFy")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -139,7 +149,8 @@ func Test_buildCanonicalizedResource(t *testing.T) {
 }
 
 func Test_buildCanonicalizedHeader(t *testing.T) {
-	cli, err := NewBasicClient("foo", "YmFy")
+	client, err := NewClient(&Config{Anonymous: true})
+	cli, err := client.NewBasicStorageClient("foo", "YmFy")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -188,8 +199,10 @@ func TestReturnsStorageServiceError(t *testing.T) {
 }
 
 func Test_createAuthorizationHeader(t *testing.T) {
+	client, err := NewClient(&Config{Anonymous: true})
+
 	key := base64.StdEncoding.EncodeToString([]byte("bar"))
-	cli, err := NewBasicClient("foo", key)
+	cli, err := client.NewBasicStorageClient("foo", key)
 	if err != nil {
 		t.Fatal(err)
 	}

@@ -1,4 +1,4 @@
-package storage
+package azure
 
 import (
 	"bytes"
@@ -50,7 +50,8 @@ func Test_blobSASStringToSign(t *testing.T) {
 }
 
 func TestGetBlobSASURI(t *testing.T) {
-	api, err := NewClient("foo", "YmFy", DefaultBaseUrl, "2013-08-15", true)
+	client, err := NewClient(&Config{Anonymous: true})
+	api, err := client.NewStorageClient("foo", "YmFy", DefaultBaseUrl, "2013-08-15", true)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -382,7 +383,8 @@ func TestBlobExists(t *testing.T) {
 }
 
 func TestGetBlobUrl(t *testing.T) {
-	api, err := NewBasicClient("foo", "YmFy")
+	client, err := NewClient(&Config{Anonymous: true})
+	api, err := client.NewBasicStorageClient("foo", "YmFy")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -1098,7 +1100,8 @@ func getBlobClient() (*BlobStorageClient, error) {
 	if key == "" {
 		return nil, errors.New("ACCOUNT_KEY not set")
 	}
-	cli, err := NewBasicClient(name, key)
+	client, err := NewClient(&Config{Anonymous: true})
+	cli, err := client.NewBasicStorageClient(name, key)
 	if err != nil {
 		return nil, err
 	}

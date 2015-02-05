@@ -1,4 +1,4 @@
-package locationClient
+package azure
 
 import (
 	"bytes"

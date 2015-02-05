@@ -1,24 +1,32 @@
-package locationClient
+package azure
 
 import (
 	"encoding/xml"
 	"errors"
 	"fmt"
-	azure "github.com/MSOpenTech/azure-sdk-for-go"
 )
 
 const (
-	azureLocationListURL   = "locations"
-	invalidLocationError   = "Invalid location: %s. Available locations: %s"
-	paramNotSpecifiedError = "Parameter %s is not specified."
+	azureLocationListURL = "locations"
+	invalidLocationError = "Invalid location: %s. Available locations: %s"
 )
 
-func ResolveLocation(location string) error {
+//LocationClient is used to manage operations on Azure Locations
+type LocationClient struct {
+	client *Client
+}
+
+//Location is used to return a handle to the Location API
+func (client *Client) Location() *LocationClient {
+	return &LocationClient{client: client}
+}
+
+func (self *LocationClient) ResolveLocation(location string) error {
 	if len(location) == 0 {
 		return fmt.Errorf(paramNotSpecifiedError, "location")
 	}
 
-	locations, err := GetLocationList()
+	locations, err := self.GetLocationList()
 	if err != nil {
 		return err
 	}
@@ -34,10 +42,10 @@ func ResolveLocation(location string) error {
 	return errors.New(fmt.Sprintf(invalidLocationError, location, locations))
 }
 
-func GetLocationList() (LocationList, error) {
+func (self *LocationClient) GetLocationList() (LocationList, error) {
 	locationList := LocationList{}
 
-	response, err := azure.SendAzureGetRequest(azureLocationListURL)
+	response, err := self.client.sendAzureGetRequest(azureLocationListURL)
 	if err != nil {
 		return locationList, err
 	}
@@ -50,12 +58,12 @@ func GetLocationList() (LocationList, error) {
 	return locationList, nil
 }
 
-func GetLocation(location string) (*Location, error) {
+func (self *LocationClient) GetLocation(location string) (*Location, error) {
 	if len(location) == 0 {
 		return nil, fmt.Errorf(paramNotSpecifiedError, "location")
 	}
 
-	locations, err := GetLocationList()
+	locations, err := self.GetLocationList()
 	if err != nil {
 		return nil, err
 	}

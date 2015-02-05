@@ -1,4 +1,4 @@
-package azureSdkForGo
+package azure
 
 import (
 	"encoding/base64"
@@ -8,24 +8,12 @@ import (
 	"io/ioutil"
 )
 
-var settings publishSettings = publishSettings{}
-
-func GetPublishSettings() publishSettings {
-	return settings
-}
-
-func setPublishSettings(id string, cert []byte, key []byte) {
-	settings.SubscriptionID = id
-	settings.SubscriptionCert = cert
-	settings.SubscriptionKey = key
-}
-
-func ImportPublishSettings(id string, certPath string) error {
+func (client *Client) importPublishSettings(id string, certPath string) error {
 	if len(id) == 0 {
-		return fmt.Errorf(paramNotSpecifiedError, "id")
+		return fmt.Errorf(errParamNotSpecified, "id")
 	}
 	if len(certPath) == 0 {
-		return fmt.Errorf(paramNotSpecifiedError, "certPath")
+		return fmt.Errorf(errParamNotSpecified, "certPath")
 	}
 
 	cert, err := ioutil.ReadFile(certPath)
@@ -33,13 +21,16 @@ func ImportPublishSettings(id string, certPath string) error {
 		return err
 	}
 
-	setPublishSettings(id, cert, cert)
+	client.publishSettings.SubscriptionID = id
+	client.publishSettings.SubscriptionCert = cert
+	client.publishSettings.SubscriptionKey = cert
+
 	return nil
 }
 
-func ImportPublishSettingsFile(filePath string) error {
+func (client *Client) importPublishSettingsFile(filePath string) error {
 	if len(filePath) == 0 {
-		return fmt.Errorf(paramNotSpecifiedError, "filePath")
+		return fmt.Errorf(errParamNotSpecified, "filePath")
 	}
 
 	publishSettingsContent, err := ioutil.ReadFile(filePath)
@@ -57,7 +48,9 @@ func ImportPublishSettingsFile(filePath string) error {
 		return err
 	}
 
-	setPublishSettings(activeSubscription.Id, cert, cert)
+	client.publishSettings.SubscriptionID = activeSubscription.Id
+	client.publishSettings.SubscriptionCert = cert
+	client.publishSettings.SubscriptionKey = cert
 	return nil
 }
 
@@ -69,7 +62,7 @@ func getSubscriptionCert(subscription subscription) ([]byte, error) {
 		return nil, err
 	}
 
-	subscriptionCert, err := ExecuteCommand(fmt.Sprintf("openssl pkcs12 -nodes -passin pass:%s", certPassword), pfxCert)
+	subscriptionCert, err := executeCommand(fmt.Sprintf("openssl pkcs12 -nodes -passin pass:%s", certPassword), pfxCert)
 	if err != nil {
 		return nil, err
 	}

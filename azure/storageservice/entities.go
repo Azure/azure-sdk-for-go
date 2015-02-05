@@ -1,8 +1,15 @@
-package storageServiceClient
+package storageservice
 
 import (
 	"encoding/xml"
+
+	"github.com/MSOpenTech/azure-sdk-for-go/azure"
 )
+
+//StorageServiceClient is used to manage operations on Azure Storage
+type StorageServiceClient struct {
+	client azure.Client
+}
 
 type StorageServiceList struct {
 	XMLName         xml.Name         `xml:"StorageServices"`

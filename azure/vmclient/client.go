@@ -34,20 +34,19 @@ const (
 	azureCertificatListURL            = "services/hostedservices/%s/certificates"
 	azureRoleSizeListURL              = "rolesizes"
 
-	invalidDnsLengthError = "The DNS name must be between 3 and 25 characters."
-
 	osLinux                   = "Linux"
 	osWindows                 = "Windows"
 	dockerPublicConfigVersion = 2
 
-	paramNotSpecifiedError             = "Parameter %s is not specified."
-	provisioningConfDoesNotExistsError = "You should set azure VM provisioning config first"
-	invalidCertExtensionError          = "Certificate %s is invalid. Please specify %s certificate."
-	invalidOSError                     = "You must specify correct OS param. Valid values are 'Linux' and 'Windows'"
-	invalidPasswordLengthError         = "Password must be between 4 and 30 characters."
-	invalidPasswordError               = "Password must have at least one upper case, lower case and numeric character."
-	invalidRoleSizeError               = "Invalid role size: %s. Available role sizes: %s"
-	invalidRoleSizeInLocationError     = "Role size: %s not available in location: %s."
+	errParamNotSpecified            = "Parameter %s is not specified."
+	errProvisioningConfDoesNotExist = "You should set azure VM provisioning config first"
+	errInvalidCertExtension         = "Certificate %s is invalid. Please specify %s certificate."
+	errInvalidOS                    = "You must specify correct OS param. Valid values are 'Linux' and 'Windows'"
+	errInvalidPasswordLength        = "Password must be between 4 and 30 characters."
+	errInvalidPassword              = "Password must have at least one upper case, lower case and numeric character."
+	errInvalidRoleSize              = "Invalid role size: %s. Available role sizes: %s"
+	errInvalidRoleSizeInLocation    = "Role size: %s not available in location: %s."
+	errInvalidDnsLength             = "The DNS name must be between 3 and 25 characters."
 )
 
 //VmClient is used to manage operations on Azure Virtual Machines
@@ -64,13 +63,13 @@ func NewClient(client *azure.Client) *VmClient {
 
 func (self *VmClient) CreateAzureVM(azureVMConfiguration *Role, dnsName, location string) error {
 	if azureVMConfiguration == nil {
-		return fmt.Errorf(paramNotSpecifiedError, "azureVMConfiguration")
+		return fmt.Errorf(errParamNotSpecified, "azureVMConfiguration")
 	}
 	if len(dnsName) == 0 {
-		return fmt.Errorf(paramNotSpecifiedError, "dnsName")
+		return fmt.Errorf(errParamNotSpecified, "dnsName")
 	}
 	if len(location) == 0 {
-		return fmt.Errorf(paramNotSpecifiedError, "location")
+		return fmt.Errorf(errParamNotSpecified, "location")
 	}
 
 	err := self.verifyDNSname(dnsName)
@@ -115,16 +114,16 @@ func (self *VmClient) CreateAzureVM(azureVMConfiguration *Role, dnsName, locatio
 
 func (self *VmClient) CreateAzureVMConfiguration(dnsName, instanceSize, imageName, location string) (*Role, error) {
 	if len(dnsName) == 0 {
-		return nil, fmt.Errorf(paramNotSpecifiedError, "dnsName")
+		return nil, fmt.Errorf(errParamNotSpecified, "dnsName")
 	}
 	if len(instanceSize) == 0 {
-		return nil, fmt.Errorf(paramNotSpecifiedError, "instanceSize")
+		return nil, fmt.Errorf(errParamNotSpecified, "instanceSize")
 	}
 	if len(imageName) == 0 {
-		return nil, fmt.Errorf(paramNotSpecifiedError, "imageName")
+		return nil, fmt.Errorf(errParamNotSpecified, "imageName")
 	}
 	if len(location) == 0 {
-		return nil, fmt.Errorf(paramNotSpecifiedError, "location")
+		return nil, fmt.Errorf(errParamNotSpecified, "location")
 	}
 
 	err := self.verifyDNSname(dnsName)
@@ -144,7 +143,7 @@ func (self *VmClient) CreateAzureVMConfiguration(dnsName, instanceSize, imageNam
 	}
 
 	if sizeAvailable == false {
-		return nil, fmt.Errorf(invalidRoleSizeInLocationError, instanceSize, location)
+		return nil, fmt.Errorf(errInvalidRoleSizeInLocation, instanceSize, location)
 	}
 
 	role, err := self.createAzureVMRole(dnsName, instanceSize, imageName, location)
@@ -157,10 +156,10 @@ func (self *VmClient) CreateAzureVMConfiguration(dnsName, instanceSize, imageNam
 
 func (self *VmClient) AddAzureLinuxProvisioningConfig(azureVMConfiguration *Role, userName, password, certPath string, sshPort int) (*Role, error) {
 	if azureVMConfiguration == nil {
-		return nil, fmt.Errorf(paramNotSpecifiedError, "azureVMConfiguration")
+		return nil, fmt.Errorf(errParamNotSpecified, "azureVMConfiguration")
 	}
 	if len(userName) == 0 {
-		return nil, fmt.Errorf(paramNotSpecifiedError, "userName")
+		return nil, fmt.Errorf(errParamNotSpecified, "userName")
 	}
 
 	configurationSets := ConfigurationSets{}
@@ -190,19 +189,19 @@ func (self *VmClient) AddAzureLinuxProvisioningConfig(azureVMConfiguration *Role
 
 func (self *VmClient) SetAzureVMExtension(azureVMConfiguration *Role, name string, publisher string, version string, referenceName string, state string, publicConfigurationValue string, privateConfigurationValue string) (*Role, error) {
 	if azureVMConfiguration == nil {
-		return nil, fmt.Errorf(paramNotSpecifiedError, "azureVMConfiguration")
+		return nil, fmt.Errorf(errParamNotSpecified, "azureVMConfiguration")
 	}
 	if len(name) == 0 {
-		return nil, fmt.Errorf(paramNotSpecifiedError, "name")
+		return nil, fmt.Errorf(errParamNotSpecified, "name")
 	}
 	if len(publisher) == 0 {
-		return nil, fmt.Errorf(paramNotSpecifiedError, "publisher")
+		return nil, fmt.Errorf(errParamNotSpecified, "publisher")
 	}
 	if len(version) == 0 {
-		return nil, fmt.Errorf(paramNotSpecifiedError, "version")
+		return nil, fmt.Errorf(errParamNotSpecified, "version")
 	}
 	if len(referenceName) == 0 {
-		return nil, fmt.Errorf(paramNotSpecifiedError, "referenceName")
+		return nil, fmt.Errorf(errParamNotSpecified, "referenceName")
 	}
 
 	extension := ResourceExtensionReference{}
@@ -237,7 +236,7 @@ func (self *VmClient) SetAzureVMExtension(azureVMConfiguration *Role, name strin
 
 func (self *VmClient) SetAzureDockerVMExtension(azureVMConfiguration *Role, dockerPort int, version string) (*Role, error) {
 	if azureVMConfiguration == nil {
-		return nil, fmt.Errorf(paramNotSpecifiedError, "azureVMConfiguration")
+		return nil, fmt.Errorf(errParamNotSpecified, "azureVMConfiguration")
 	}
 
 	if len(version) == 0 {
@@ -262,10 +261,10 @@ func (self *VmClient) SetAzureDockerVMExtension(azureVMConfiguration *Role, dock
 
 func (self *VmClient) GetVMDeployment(cloudserviceName, deploymentName string) (*VMDeployment, error) {
 	if len(cloudserviceName) == 0 {
-		return nil, fmt.Errorf(paramNotSpecifiedError, "cloudserviceName")
+		return nil, fmt.Errorf(errParamNotSpecified, "cloudserviceName")
 	}
 	if len(deploymentName) == 0 {
-		return nil, fmt.Errorf(paramNotSpecifiedError, "deploymentName")
+		return nil, fmt.Errorf(errParamNotSpecified, "deploymentName")
 	}
 
 	deployment := new(VMDeployment)
@@ -286,10 +285,10 @@ func (self *VmClient) GetVMDeployment(cloudserviceName, deploymentName string) (
 
 func (self *VmClient) DeleteVMDeployment(cloudserviceName, deploymentName string) error {
 	if len(cloudserviceName) == 0 {
-		return fmt.Errorf(paramNotSpecifiedError, "cloudserviceName")
+		return fmt.Errorf(errParamNotSpecified, "cloudserviceName")
 	}
 	if len(deploymentName) == 0 {
-		return fmt.Errorf(paramNotSpecifiedError, "deploymentName")
+		return fmt.Errorf(errParamNotSpecified, "deploymentName")
 	}
 
 	requestURL := fmt.Sprintf(deleteAzureDeploymentURL, cloudserviceName, deploymentName)
@@ -305,13 +304,13 @@ func (self *VmClient) DeleteVMDeployment(cloudserviceName, deploymentName string
 
 func (self *VmClient) GetRole(cloudserviceName, deploymentName, roleName string) (*Role, error) {
 	if len(cloudserviceName) == 0 {
-		return nil, fmt.Errorf(paramNotSpecifiedError, "cloudserviceName")
+		return nil, fmt.Errorf(errParamNotSpecified, "cloudserviceName")
 	}
 	if len(deploymentName) == 0 {
-		return nil, fmt.Errorf(paramNotSpecifiedError, "deploymentName")
+		return nil, fmt.Errorf(errParamNotSpecified, "deploymentName")
 	}
 	if len(roleName) == 0 {
-		return nil, fmt.Errorf(paramNotSpecifiedError, "roleName")
+		return nil, fmt.Errorf(errParamNotSpecified, "roleName")
 	}
 
 	role := new(Role)
@@ -332,13 +331,13 @@ func (self *VmClient) GetRole(cloudserviceName, deploymentName, roleName string)
 
 func (self *VmClient) StartRole(cloudserviceName, deploymentName, roleName string) error {
 	if len(cloudserviceName) == 0 {
-		return fmt.Errorf(paramNotSpecifiedError, "cloudserviceName")
+		return fmt.Errorf(errParamNotSpecified, "cloudserviceName")
 	}
 	if len(deploymentName) == 0 {
-		return fmt.Errorf(paramNotSpecifiedError, "deploymentName")
+		return fmt.Errorf(errParamNotSpecified, "deploymentName")
 	}
 	if len(roleName) == 0 {
-		return fmt.Errorf(paramNotSpecifiedError, "roleName")
+		return fmt.Errorf(errParamNotSpecified, "roleName")
 	}
 
 	startRoleOperation := self.createStartRoleOperation()
@@ -360,13 +359,13 @@ func (self *VmClient) StartRole(cloudserviceName, deploymentName, roleName strin
 
 func (self *VmClient) ShutdownRole(cloudserviceName, deploymentName, roleName string) error {
 	if len(cloudserviceName) == 0 {
-		return fmt.Errorf(paramNotSpecifiedError, "cloudserviceName")
+		return fmt.Errorf(errParamNotSpecified, "cloudserviceName")
 	}
 	if len(deploymentName) == 0 {
-		return fmt.Errorf(paramNotSpecifiedError, "deploymentName")
+		return fmt.Errorf(errParamNotSpecified, "deploymentName")
 	}
 	if len(roleName) == 0 {
-		return fmt.Errorf(paramNotSpecifiedError, "roleName")
+		return fmt.Errorf(errParamNotSpecified, "roleName")
 	}
 
 	shutdownRoleOperation := self.createShutdowRoleOperation()
@@ -388,13 +387,13 @@ func (self *VmClient) ShutdownRole(cloudserviceName, deploymentName, roleName st
 
 func (self *VmClient) RestartRole(cloudserviceName, deploymentName, roleName string) error {
 	if len(cloudserviceName) == 0 {
-		return fmt.Errorf(paramNotSpecifiedError, "cloudserviceName")
+		return fmt.Errorf(errParamNotSpecified, "cloudserviceName")
 	}
 	if len(deploymentName) == 0 {
-		return fmt.Errorf(paramNotSpecifiedError, "deploymentName")
+		return fmt.Errorf(errParamNotSpecified, "deploymentName")
 	}
 	if len(roleName) == 0 {
-		return fmt.Errorf(paramNotSpecifiedError, "roleName")
+		return fmt.Errorf(errParamNotSpecified, "roleName")
 	}
 
 	restartRoleOperation := self.createRestartRoleOperation()
@@ -416,13 +415,13 @@ func (self *VmClient) RestartRole(cloudserviceName, deploymentName, roleName str
 
 func (self *VmClient) DeleteRole(cloudserviceName, deploymentName, roleName string) error {
 	if len(cloudserviceName) == 0 {
-		return fmt.Errorf(paramNotSpecifiedError, "cloudserviceName")
+		return fmt.Errorf(errParamNotSpecified, "cloudserviceName")
 	}
 	if len(deploymentName) == 0 {
-		return fmt.Errorf(paramNotSpecifiedError, "deploymentName")
+		return fmt.Errorf(errParamNotSpecified, "deploymentName")
 	}
 	if len(roleName) == 0 {
-		return fmt.Errorf(paramNotSpecifiedError, "roleName")
+		return fmt.Errorf(errParamNotSpecified, "roleName")
 	}
 
 	requestURL := fmt.Sprintf(azureRoleURL, cloudserviceName, deploymentName, roleName)
@@ -453,7 +452,7 @@ func (self *VmClient) GetRoleSizeList() (RoleSizeList, error) {
 
 func (self *VmClient) ResolveRoleSize(roleSizeName string) error {
 	if len(roleSizeName) == 0 {
-		return fmt.Errorf(paramNotSpecifiedError, "roleSizeName")
+		return fmt.Errorf(errParamNotSpecified, "roleSizeName")
 	}
 
 	roleSizeList, err := self.GetRoleSizeList()
@@ -474,7 +473,7 @@ func (self *VmClient) ResolveRoleSize(roleSizeName string) error {
 		availableSizes.WriteString(existingSize.Name + ", ")
 	}
 
-	return errors.New(fmt.Sprintf(invalidRoleSizeError, roleSizeName, strings.Trim(availableSizes.String(), ", ")))
+	return errors.New(fmt.Sprintf(errInvalidRoleSize, roleSizeName, strings.Trim(availableSizes.String(), ", ")))
 }
 
 //Region public methods ends
@@ -517,7 +516,7 @@ func (self *VmClient) createDockerPublicConfig(dockerPort int) (string, error) {
 
 func (self *VmClient) addDockerPort(configurationSets []ConfigurationSet, dockerPort int) error {
 	if len(configurationSets) == 0 {
-		return errors.New(provisioningConfDoesNotExistsError)
+		return errors.New(errProvisioningConfDoesNotExist)
 	}
 
 	for i := 0; i < len(configurationSets); i++ {
@@ -718,7 +717,7 @@ func (self *VmClient) checkServiceCertExtension(certPath string) error {
 
 	acceptedExtension := "pem"
 	if certExt != acceptedExtension {
-		return errors.New(fmt.Sprintf(invalidCertExtensionError, certPath, acceptedExtension))
+		return errors.New(fmt.Sprintf(errInvalidCertExtension, certPath, acceptedExtension))
 	}
 
 	return nil
@@ -734,7 +733,7 @@ func (self *VmClient) createNetworkConfig(os string, sshPort int) (Configuration
 	} else if os == osWindows {
 		//!TODO add rdp endpoint
 	} else {
-		return networkConfig, errors.New(fmt.Sprintf(invalidOSError))
+		return networkConfig, errors.New(fmt.Sprintf(errInvalidOS))
 	}
 
 	networkConfig.InputEndpoints.InputEndpoint = append(networkConfig.InputEndpoints.InputEndpoint, endpoint)
@@ -754,7 +753,7 @@ func (self *VmClient) createEndpoint(name string, protocol string, extertalPort 
 
 func (self *VmClient) verifyDNSname(dns string) error {
 	if len(dns) < 3 || len(dns) > 25 {
-		return fmt.Errorf(invalidDnsLengthError)
+		return fmt.Errorf(errInvalidDnsLength)
 	}
 
 	return nil
@@ -762,7 +761,7 @@ func (self *VmClient) verifyDNSname(dns string) error {
 
 func (self *VmClient) verifyPassword(password string) error {
 	if len(password) < 4 || len(password) > 30 {
-		return fmt.Errorf(invalidPasswordLengthError)
+		return fmt.Errorf(errInvalidPasswordLength)
 	}
 
 next:
@@ -776,14 +775,14 @@ next:
 				continue next
 			}
 		}
-		return fmt.Errorf(invalidPasswordError)
+		return fmt.Errorf(errInvalidPassword)
 	}
 	return nil
 }
 
 func (self *VmClient) isInstanceSizeAvailableInLocation(location *locationclient.Location, instanceSize string) (bool, error) {
 	if len(instanceSize) == 0 {
-		return false, fmt.Errorf(paramNotSpecifiedError, "vmSize")
+		return false, fmt.Errorf(errParamNotSpecified, "vmSize")
 	}
 
 	for _, availableRoleSize := range location.VirtualMachineRoleSizes {

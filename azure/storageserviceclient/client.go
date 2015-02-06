@@ -16,8 +16,8 @@ const (
 
 	azureXmlns = "http://schemas.microsoft.com/windowsazure"
 
-	blobEndpointNotFoundError = "Blob endpoint was not found in storage serice %s"
-	paramNotSpecifiedError    = "Parameter %s is not specified."
+	errBlobEndpointNotFound = "Blob endpoint was not found in storage serice %s"
+	errParamNotSpecified    = "Parameter %s is not specified."
 )
 
 //StorageServiceClient is used to manage operations on Azure Storage
@@ -48,7 +48,7 @@ func (self *StorageServiceClient) GetStorageServiceList() (*StorageServiceList, 
 
 func (self *StorageServiceClient) GetStorageServiceByName(serviceName string) (*StorageService, error) {
 	if len(serviceName) == 0 {
-		return nil, fmt.Errorf(paramNotSpecifiedError, "serviceName")
+		return nil, fmt.Errorf(errParamNotSpecified, "serviceName")
 	}
 
 	storageService := new(StorageService)
@@ -68,7 +68,7 @@ func (self *StorageServiceClient) GetStorageServiceByName(serviceName string) (*
 
 func (self *StorageServiceClient) GetStorageServiceByLocation(location string) (*StorageService, error) {
 	if len(location) == 0 {
-		return nil, fmt.Errorf(paramNotSpecifiedError, "location")
+		return nil, fmt.Errorf(errParamNotSpecified, "location")
 	}
 
 	storageService := new(StorageService)
@@ -90,10 +90,10 @@ func (self *StorageServiceClient) GetStorageServiceByLocation(location string) (
 
 func (self *StorageServiceClient) CreateStorageService(name, location string) (*StorageService, error) {
 	if len(name) == 0 {
-		return nil, fmt.Errorf(paramNotSpecifiedError, "name")
+		return nil, fmt.Errorf(errParamNotSpecified, "name")
 	}
 	if len(location) == 0 {
-		return nil, fmt.Errorf(paramNotSpecifiedError, "location")
+		return nil, fmt.Errorf(errParamNotSpecified, "location")
 	}
 
 	storageDeploymentConfig := self.createStorageServiceDeploymentConf(name, location)
@@ -125,7 +125,7 @@ func (self *StorageServiceClient) GetBlobEndpoint(storageService *StorageService
 		return endpoint, nil
 	}
 
-	return "", errors.New(fmt.Sprintf(blobEndpointNotFoundError, storageService.ServiceName))
+	return "", errors.New(fmt.Sprintf(errBlobEndpointNotFound, storageService.ServiceName))
 }
 
 func (self *StorageServiceClient) createStorageServiceDeploymentConf(name, location string) StorageServiceDeployment {

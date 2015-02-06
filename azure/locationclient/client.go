@@ -9,9 +9,9 @@ import (
 )
 
 const (
-	azureLocationListURL   = "locations"
-	invalidLocationError   = "Invalid location: %s. Available locations: %s"
-	paramNotSpecifiedError = "Parameter %s is not specified."
+	azureLocationListURL = "locations"
+	errInvalidLocation   = "Invalid location: %s. Available locations: %s"
+	errParamNotSpecified = "Parameter %s is not specified."
 )
 
 //LocationClient is used to manage operations on Azure Locations
@@ -26,7 +26,7 @@ func NewClient(client *azure.Client) *LocationClient {
 
 func (self *LocationClient) ResolveLocation(location string) error {
 	if len(location) == 0 {
-		return fmt.Errorf(paramNotSpecifiedError, "location")
+		return fmt.Errorf(errParamNotSpecified, "location")
 	}
 
 	locations, err := self.GetLocationList()
@@ -42,7 +42,7 @@ func (self *LocationClient) ResolveLocation(location string) error {
 		return nil
 	}
 
-	return errors.New(fmt.Sprintf(invalidLocationError, location, locations))
+	return errors.New(fmt.Sprintf(errInvalidLocation, location, locations))
 }
 
 func (self *LocationClient) GetLocationList() (LocationList, error) {
@@ -63,7 +63,7 @@ func (self *LocationClient) GetLocationList() (LocationList, error) {
 
 func (self *LocationClient) GetLocation(location string) (*Location, error) {
 	if len(location) == 0 {
-		return nil, fmt.Errorf(paramNotSpecifiedError, "location")
+		return nil, fmt.Errorf(errParamNotSpecified, "location")
 	}
 
 	locations, err := self.GetLocationList()
@@ -79,5 +79,5 @@ func (self *LocationClient) GetLocation(location string) (*Location, error) {
 		return &existingLocation, nil
 	}
 
-	return nil, errors.New(fmt.Sprintf(invalidLocationError, location, locations))
+	return nil, errors.New(fmt.Sprintf(errInvalidLocation, location, locations))
 }

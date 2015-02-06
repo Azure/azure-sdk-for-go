@@ -10,10 +10,10 @@ import (
 
 func (client *Client) importPublishSettings(id string, certPath string) error {
 	if len(id) == 0 {
-		return fmt.Errorf(paramNotSpecifiedError, "id")
+		return fmt.Errorf(errParamNotSpecified, "id")
 	}
 	if len(certPath) == 0 {
-		return fmt.Errorf(paramNotSpecifiedError, "certPath")
+		return fmt.Errorf(errParamNotSpecified, "certPath")
 	}
 
 	cert, err := ioutil.ReadFile(certPath)
@@ -30,7 +30,7 @@ func (client *Client) importPublishSettings(id string, certPath string) error {
 
 func (client *Client) importPublishSettingsFile(filePath string) error {
 	if len(filePath) == 0 {
-		return fmt.Errorf(paramNotSpecifiedError, "filePath")
+		return fmt.Errorf(errParamNotSpecified, "filePath")
 	}
 
 	publishSettingsContent, err := ioutil.ReadFile(filePath)

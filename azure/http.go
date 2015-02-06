@@ -21,7 +21,7 @@ const (
 //and returns the response body or an error.
 func (client *Client) SendAzureGetRequest(url string) ([]byte, error) {
 	if len(url) == 0 {
-		return nil, fmt.Errorf(paramNotSpecifiedError, "url")
+		return nil, fmt.Errorf(errParamNotSpecified, "url")
 	}
 
 	response, err := client.sendAzureRequest(url, "GET", "", nil)
@@ -37,7 +37,7 @@ func (client *Client) SendAzureGetRequest(url string) ([]byte, error) {
 //and returns the response body or an error.
 func (client *Client) SendAzurePostRequest(url string, data []byte) (string, error) {
 	if len(url) == 0 {
-		return "", fmt.Errorf(paramNotSpecifiedError, "url")
+		return "", fmt.Errorf(errParamNotSpecified, "url")
 	}
 
 	response, err := client.sendAzureRequest(url, "POST", "", data)
@@ -54,7 +54,7 @@ func (client *Client) SendAzurePostRequest(url string, data []byte) (string, err
 //if an empty string is passed, the default of "application/xml" will be used.
 func (client *Client) SendAzurePutRequest(url string, contentType string, data []byte) (string, error) {
 	if len(url) == 0 {
-		return "", fmt.Errorf(paramNotSpecifiedError, contentType, "url")
+		return "", fmt.Errorf(errParamNotSpecified, contentType, "url")
 	}
 
 	response, err := client.sendAzureRequest(url, "PUT", contentType, data)
@@ -70,7 +70,7 @@ func (client *Client) SendAzurePutRequest(url string, contentType string, data [
 //and returns the response body or an error.
 func (client *Client) SendAzureDeleteRequest(url string) (string, error) {
 	if len(url) == 0 {
-		return "", fmt.Errorf(paramNotSpecifiedError, "url")
+		return "", fmt.Errorf(errParamNotSpecified, "url")
 	}
 
 	response, err := client.sendAzureRequest(url, "DELETE", "", nil)
@@ -86,10 +86,10 @@ func (client *Client) SendAzureDeleteRequest(url string) (string, error) {
 //management API and returns the response or an error.
 func (client *Client) sendAzureRequest(url string, requestType string, contentType string, data []byte) (*http.Response, error) {
 	if len(url) == 0 {
-		return nil, fmt.Errorf(paramNotSpecifiedError, "url")
+		return nil, fmt.Errorf(errParamNotSpecified, "url")
 	}
 	if len(requestType) == 0 {
-		return nil, fmt.Errorf(paramNotSpecifiedError, "requestType")
+		return nil, fmt.Errorf(errParamNotSpecified, "requestType")
 	}
 
 	httpClient := client.createHttpClient()

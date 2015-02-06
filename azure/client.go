@@ -6,9 +6,9 @@ import (
 )
 
 const (
-	publishSettingsConfigurationError = "PublishSettingsFilePath is set. Consequently ManagementCertificatePath and SubscriptionId must not be set."
-
-	managementCertificateConfigurationError = "Both ManagementCertificatePath and SubscriptionId should be set, and PublishSettingsFilePath must not be set."
+	errPublishSettingsConfiguration       = "PublishSettingsFilePath is set. Consequently ManagementCertificatePath and SubscriptionId must not be set."
+	errManagementCertificateConfiguration = "Both ManagementCertificatePath and SubscriptionId should be set, and PublishSettingsFilePath must not be set."
+	errParamNotSpecified                  = "Parameter %s is not specified."
 )
 
 // Config is used to configure the creation of a client
@@ -65,7 +65,7 @@ func NewClient(config *Config) (*Client, error) {
 	//Set the publish settings for the client according to the configuration
 	if len(config.PublishSettingsFilePath) > 0 {
 		if len(config.ManagementCertificatePath) > 0 || len(config.SubscriptionId) > 0 {
-			return nil, fmt.Errorf(publishSettingsConfigurationError)
+			return nil, fmt.Errorf(errPublishSettingsConfiguration)
 		}
 		err := client.importPublishSettingsFile(config.PublishSettingsFilePath)
 		if err != nil {
@@ -73,7 +73,7 @@ func NewClient(config *Config) (*Client, error) {
 		}
 	} else {
 		if len(config.ManagementCertificatePath) == 0 || len(config.SubscriptionId) == 0 {
-			return nil, fmt.Errorf(managementCertificateConfigurationError)
+			return nil, fmt.Errorf(errManagementCertificateConfiguration)
 		}
 		err := client.importPublishSettings(config.SubscriptionId, config.ManagementCertificatePath)
 		if err != nil {

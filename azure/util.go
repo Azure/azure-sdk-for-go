@@ -12,7 +12,7 @@ import (
 
 func executeCommand(command string, input []byte) ([]byte, error) {
 	if len(command) == 0 {
-		return nil, fmt.Errorf(paramNotSpecifiedError, "command")
+		return nil, fmt.Errorf(errParamNotSpecified, "command")
 	}
 
 	parts := strings.Fields(command)

@@ -18,8 +18,8 @@ const (
 	azureDeploymentURL                = "services/hostedservices/%s/deployments/%s"
 	deleteAzureDeploymentURL          = "services/hostedservices/%s/deployments/%s?comp=media"
 
-	paramNotSpecifiedError = "Parameter %s is not specified."
-	invalidDnsLengthError  = "The DNS name must be between 3 and 25 characters."
+	errParamNotSpecified = "Parameter %s is not specified."
+	errInvalidDnsLength  = "The DNS name must be between 3 and 25 characters."
 )
 
 //HostedServiceClient is used to manage operations on Azure Hosted Services
@@ -34,10 +34,10 @@ func NewClient(client *azure.Client) *HostedServiceClient {
 
 func (self *HostedServiceClient) CreateHostedService(dnsName, location string, reverseDnsFqdn string) (string, error) {
 	if len(dnsName) == 0 {
-		return "", fmt.Errorf(paramNotSpecifiedError, "dnsName")
+		return "", fmt.Errorf(errParamNotSpecified, "dnsName")
 	}
 	if len(location) == 0 {
-		return "", fmt.Errorf(paramNotSpecifiedError, "location")
+		return "", fmt.Errorf(errParamNotSpecified, "location")
 	}
 
 	err := self.verifyDNSName(dnsName)
@@ -76,7 +76,7 @@ func (self *HostedServiceClient) CreateHostedService(dnsName, location string, r
 
 func (self *HostedServiceClient) CheckHostedServiceNameAvailability(dnsName string) (bool, string, error) {
 	if len(dnsName) == 0 {
-		return false, "", fmt.Errorf(paramNotSpecifiedError, "dnsName")
+		return false, "", fmt.Errorf(errParamNotSpecified, "dnsName")
 	}
 
 	err := self.verifyDNSName(dnsName)
@@ -101,7 +101,7 @@ func (self *HostedServiceClient) CheckHostedServiceNameAvailability(dnsName stri
 
 func (self *HostedServiceClient) DeleteHostedService(dnsName string) error {
 	if len(dnsName) == 0 {
-		return fmt.Errorf(paramNotSpecifiedError, "dnsName")
+		return fmt.Errorf(errParamNotSpecified, "dnsName")
 	}
 
 	err := self.verifyDNSName(dnsName)
@@ -133,7 +133,7 @@ func (self *HostedServiceClient) createHostedServiceDeploymentConfig(dnsName, lo
 
 func (self *HostedServiceClient) verifyDNSName(dns string) error {
 	if len(dns) < 3 || len(dns) > 25 {
-		return fmt.Errorf(invalidDnsLengthError)
+		return fmt.Errorf(errInvalidDnsLength)
 	}
 
 	return nil

@@ -9,9 +9,9 @@ import (
 )
 
 const (
-	azureImageListURL      = "services/images"
-	invalidImageError      = "Can not find image %s in specified subscription, please specify another image name."
-	paramNotSpecifiedError = "Parameter %s is not specified."
+	azureImageListURL    = "services/images"
+	errInvalidImage      = "Can not find image %s in specified subscription, please specify another image name."
+	errParamNotSpecified = "Parameter %s is not specified."
 )
 
 //ImageClient is used to manage operations on Azure Locations
@@ -42,7 +42,7 @@ func (self *ImageClient) GetImageList() (ImageList, error) {
 
 func (self *ImageClient) ResolveImageName(imageName string) error {
 	if len(imageName) == 0 {
-		return fmt.Errorf(paramNotSpecifiedError, "imageName")
+		return fmt.Errorf(errParamNotSpecified, "imageName")
 	}
 
 	imageList, err := self.GetImageList()
@@ -58,5 +58,5 @@ func (self *ImageClient) ResolveImageName(imageName string) error {
 		return nil
 	}
 
-	return errors.New(fmt.Sprintf(invalidImageError, imageName))
+	return errors.New(fmt.Sprintf(errInvalidImage, imageName))
 }

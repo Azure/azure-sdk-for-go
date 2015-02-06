@@ -7,8 +7,8 @@ import (
 )
 
 const (
-	azureVMDiskURL         = "services/disks/%s"
-	paramNotSpecifiedError = "Parameter %s is not specified."
+	azureVMDiskURL       = "services/disks/%s"
+	errParamNotSpecified = "Parameter %s is not specified."
 )
 
 //DiskClient is used to manage operations on Azure Disks
@@ -25,7 +25,7 @@ func Disk(client *azure.Client) *DiskClient {
 
 func (self *DiskClient) DeleteDisk(diskName string) error {
 	if len(diskName) == 0 {
-		return fmt.Errorf(paramNotSpecifiedError, "diskName")
+		return fmt.Errorf(errParamNotSpecified, "diskName")
 	}
 
 	requestURL := fmt.Sprintf(azureVMDiskURL, diskName)

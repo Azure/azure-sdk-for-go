@@ -38,8 +38,8 @@ func getResponseBody(response *http.Response) []byte {
 	return responseBody
 }
 
-// newUUID generates a random UUID according to RFC 4122
-func newUUID() (string, error) {
+// NewUUID generates a random UUID according to RFC 4122
+func NewUUID() (string, error) {
 	uuid := make([]byte, 16)
 	n, err := io.ReadFull(rand.Reader, uuid)
 	if n != len(uuid) || err != nil {

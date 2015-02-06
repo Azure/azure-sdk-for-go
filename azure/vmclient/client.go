@@ -1,4 +1,4 @@
-package azure
+package vmclient
 
 import (
 	"bytes"
@@ -13,18 +13,34 @@ import (
 	"strings"
 	"time"
 	"unicode"
+
+	"github.com/MSOpenTech/azure-sdk-for-go/azure"
+	"github.com/MSOpenTech/azure-sdk-for-go/azure/hostedserviceclient"
+	"github.com/MSOpenTech/azure-sdk-for-go/azure/imageclient"
+	"github.com/MSOpenTech/azure-sdk-for-go/azure/locationclient"
+	"github.com/MSOpenTech/azure-sdk-for-go/azure/storageserviceclient"
 )
 
 const (
-	azureRoleURL           = "services/hostedservices/%s/deployments/%s/roles/%s"
-	azureOperationsURL     = "services/hostedservices/%s/deployments/%s/roleinstances/%s/Operations"
-	azureCertificatListURL = "services/hostedservices/%s/certificates"
-	azureRoleSizeListURL   = "rolesizes"
+	azureXmlns                        = "http://schemas.microsoft.com/windowsazure"
+	azureDeploymentListURL            = "services/hostedservices/%s/deployments"
+	azureHostedServiceListURL         = "services/hostedservices"
+	deleteAzureHostedServiceURL       = "services/hostedservices/%s?comp=media"
+	azureHostedServiceAvailabilityURL = "services/hostedservices/operations/isavailable/%s"
+	azureDeploymentURL                = "services/hostedservices/%s/deployments/%s"
+	deleteAzureDeploymentURL          = "services/hostedservices/%s/deployments/%s?comp=media"
+	azureRoleURL                      = "services/hostedservices/%s/deployments/%s/roles/%s"
+	azureOperationsURL                = "services/hostedservices/%s/deployments/%s/roleinstances/%s/Operations"
+	azureCertificatListURL            = "services/hostedservices/%s/certificates"
+	azureRoleSizeListURL              = "rolesizes"
+
+	invalidDnsLengthError = "The DNS name must be between 3 and 25 characters."
 
 	osLinux                   = "Linux"
 	osWindows                 = "Windows"
 	dockerPublicConfigVersion = 2
 
+	paramNotSpecifiedError             = "Parameter %s is not specified."
 	provisioningConfDoesNotExistsError = "You should set azure VM provisioning config first"
 	invalidCertExtensionError          = "Certificate %s is invalid. Please specify %s certificate."
 	invalidOSError                     = "You must specify correct OS param. Valid values are 'Linux' and 'Windows'"
@@ -34,11 +50,13 @@ const (
 	invalidRoleSizeInLocationError     = "Role size: %s not available in location: %s."
 )
 
+//VmClient is used to manage operations on Azure Virtual Machines
 type VmClient struct {
-	client *Client
+	client *azure.Client
 }
 
-func (client *Client) Vm() *VmClient {
+//NewClient is used to instantiate a new VmClient from an Azure client
+func NewClient(client *azure.Client) *VmClient {
 	return &VmClient{client: client}
 }
 
@@ -60,14 +78,13 @@ func (self *VmClient) CreateAzureVM(azureVMConfiguration *Role, dnsName, locatio
 		return err
 	}
 
-	hostedServiceClient := self.client.HostedService()
-
+	hostedServiceClient := hostedserviceclient.NewClient(self.client)
 	requestId, err := hostedServiceClient.CreateHostedService(dnsName, location, "")
 	if err != nil {
 		return err
 	}
 
-	self.client.waitAsyncOperation(requestId)
+	self.client.WaitAsyncOperation(requestId)
 
 	if azureVMConfiguration.UseCertAuth {
 		err = self.uploadServiceCert(dnsName, azureVMConfiguration.CertPath)
@@ -85,13 +102,13 @@ func (self *VmClient) CreateAzureVM(azureVMConfiguration *Role, dnsName, locatio
 	}
 
 	requestURL := fmt.Sprintf(azureDeploymentListURL, azureVMConfiguration.RoleName)
-	requestId, err = self.client.sendAzurePostRequest(requestURL, vMDeploymentBytes)
+	requestId, err = self.client.SendAzurePostRequest(requestURL, vMDeploymentBytes)
 	if err != nil {
 		hostedServiceClient.DeleteHostedService(dnsName)
 		return err
 	}
 
-	self.client.waitAsyncOperation(requestId)
+	self.client.WaitAsyncOperation(requestId)
 
 	return nil
 }
@@ -115,7 +132,8 @@ func (self *VmClient) CreateAzureVMConfiguration(dnsName, instanceSize, imageNam
 		return nil, err
 	}
 
-	locationInfo, err := self.client.Location().GetLocation(location)
+	locationClient := locationclient.NewClient(self.client)
+	locationInfo, err := locationClient.GetLocation(location)
 	if err != nil {
 		return nil, err
 	}
@@ -253,7 +271,7 @@ func (self *VmClient) GetVMDeployment(cloudserviceName, deploymentName string) (
 	deployment := new(VMDeployment)
 
 	requestURL := fmt.Sprintf(azureDeploymentURL, cloudserviceName, deploymentName)
-	response, azureErr := self.client.sendAzureGetRequest(requestURL)
+	response, azureErr := self.client.SendAzureGetRequest(requestURL)
 	if azureErr != nil {
 		return nil, azureErr
 	}
@@ -275,12 +293,12 @@ func (self *VmClient) DeleteVMDeployment(cloudserviceName, deploymentName string
 	}
 
 	requestURL := fmt.Sprintf(deleteAzureDeploymentURL, cloudserviceName, deploymentName)
-	requestId, err := self.client.sendAzureDeleteRequest(requestURL)
+	requestId, err := self.client.SendAzureDeleteRequest(requestURL)
 	if err != nil {
 		return err
 	}
 
-	self.client.waitAsyncOperation(requestId)
+	self.client.WaitAsyncOperation(requestId)
 
 	return nil
 }
@@ -299,7 +317,7 @@ func (self *VmClient) GetRole(cloudserviceName, deploymentName, roleName string)
 	role := new(Role)
 
 	requestURL := fmt.Sprintf(azureRoleURL, cloudserviceName, deploymentName, roleName)
-	response, azureErr := self.client.sendAzureGetRequest(requestURL)
+	response, azureErr := self.client.SendAzureGetRequest(requestURL)
 	if azureErr != nil {
 		return nil, azureErr
 	}
@@ -331,12 +349,12 @@ func (self *VmClient) StartRole(cloudserviceName, deploymentName, roleName strin
 	}
 
 	requestURL := fmt.Sprintf(azureOperationsURL, cloudserviceName, deploymentName, roleName)
-	requestId, azureErr := self.client.sendAzurePostRequest(requestURL, startRoleOperationBytes)
+	requestId, azureErr := self.client.SendAzurePostRequest(requestURL, startRoleOperationBytes)
 	if azureErr != nil {
 		return azureErr
 	}
 
-	self.client.waitAsyncOperation(requestId)
+	self.client.WaitAsyncOperation(requestId)
 	return nil
 }
 
@@ -359,12 +377,12 @@ func (self *VmClient) ShutdownRole(cloudserviceName, deploymentName, roleName st
 	}
 
 	requestURL := fmt.Sprintf(azureOperationsURL, cloudserviceName, deploymentName, roleName)
-	requestId, azureErr := self.client.sendAzurePostRequest(requestURL, shutdownRoleOperationBytes)
+	requestId, azureErr := self.client.SendAzurePostRequest(requestURL, shutdownRoleOperationBytes)
 	if azureErr != nil {
 		return azureErr
 	}
 
-	self.client.waitAsyncOperation(requestId)
+	self.client.WaitAsyncOperation(requestId)
 	return nil
 }
 
@@ -387,12 +405,12 @@ func (self *VmClient) RestartRole(cloudserviceName, deploymentName, roleName str
 	}
 
 	requestURL := fmt.Sprintf(azureOperationsURL, cloudserviceName, deploymentName, roleName)
-	requestId, azureErr := self.client.sendAzurePostRequest(requestURL, restartRoleOperationBytes)
+	requestId, azureErr := self.client.SendAzurePostRequest(requestURL, restartRoleOperationBytes)
 	if azureErr != nil {
 		return azureErr
 	}
 
-	self.client.waitAsyncOperation(requestId)
+	self.client.WaitAsyncOperation(requestId)
 	return nil
 }
 
@@ -408,19 +426,19 @@ func (self *VmClient) DeleteRole(cloudserviceName, deploymentName, roleName stri
 	}
 
 	requestURL := fmt.Sprintf(azureRoleURL, cloudserviceName, deploymentName, roleName)
-	requestId, azureErr := self.client.sendAzureDeleteRequest(requestURL)
+	requestId, azureErr := self.client.SendAzureDeleteRequest(requestURL)
 	if azureErr != nil {
 		return azureErr
 	}
 
-	self.client.waitAsyncOperation(requestId)
+	self.client.WaitAsyncOperation(requestId)
 	return nil
 }
 
 func (self *VmClient) GetRoleSizeList() (RoleSizeList, error) {
 	roleSizeList := RoleSizeList{}
 
-	response, err := self.client.sendAzureGetRequest(azureRoleSizeListURL)
+	response, err := self.client.SendAzureGetRequest(azureRoleSizeListURL)
 	if err != nil {
 		return roleSizeList, err
 	}
@@ -543,7 +561,8 @@ func (self *VmClient) createAzureVMRole(name, instanceSize, imageName, location 
 func (self *VmClient) createOSVirtualHardDisk(dnsName, imageName, location string) (OSVirtualHardDisk, error) {
 	oSVirtualHardDisk := OSVirtualHardDisk{}
 
-	err := self.client.Image().ResolveImageName(imageName)
+	imageClient := imageclient.NewClient(self.client)
+	err := imageClient.ResolveImageName(imageName)
 	if err != nil {
 		return oSVirtualHardDisk, err
 	}
@@ -558,7 +577,7 @@ func (self *VmClient) createOSVirtualHardDisk(dnsName, imageName, location strin
 }
 
 func (self *VmClient) getVHDMediaLink(dnsName, location string) (string, error) {
-	storageServiceClient := self.client.StorageService()
+	storageServiceClient := storageserviceclient.NewClient(self.client)
 
 	storageService, err := storageServiceClient.GetStorageServiceByLocation(location)
 	if err != nil {
@@ -567,7 +586,7 @@ func (self *VmClient) getVHDMediaLink(dnsName, location string) (string, error) 
 
 	if storageService == nil {
 
-		uuid, err := newUUID()
+		uuid, err := azure.NewUUID()
 		if err != nil {
 			return "", err
 		}
@@ -632,12 +651,12 @@ func (self *VmClient) uploadServiceCert(dnsName, certPath string) error {
 	}
 
 	requestURL := fmt.Sprintf(azureCertificatListURL, dnsName)
-	requestId, azureErr := self.client.sendAzurePostRequest(requestURL, certificateConfigBytes)
+	requestId, azureErr := self.client.SendAzurePostRequest(requestURL, certificateConfigBytes)
 	if azureErr != nil {
 		return azureErr
 	}
 
-	err = self.client.waitAsyncOperation(requestId)
+	err = self.client.WaitAsyncOperation(requestId)
 	return err
 }
 
@@ -762,7 +781,7 @@ next:
 	return nil
 }
 
-func (self *VmClient) isInstanceSizeAvailableInLocation(location *Location, instanceSize string) (bool, error) {
+func (self *VmClient) isInstanceSizeAvailableInLocation(location *locationclient.Location, instanceSize string) (bool, error) {
 	if len(instanceSize) == 0 {
 		return false, fmt.Errorf(paramNotSpecifiedError, "vmSize")
 	}

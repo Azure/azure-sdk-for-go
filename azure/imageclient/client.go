@@ -1,30 +1,33 @@
-package azure
+package imageclient
 
 import (
 	"encoding/xml"
 	"errors"
 	"fmt"
+
+	"github.com/MSOpenTech/azure-sdk-for-go/azure"
 )
 
 const (
-	azureImageListURL = "services/images"
-	invalidImageError = "Can not find image %s in specified subscription, please specify another image name."
+	azureImageListURL      = "services/images"
+	invalidImageError      = "Can not find image %s in specified subscription, please specify another image name."
+	paramNotSpecifiedError = "Parameter %s is not specified."
 )
 
 //ImageClient is used to manage operations on Azure Locations
 type ImageClient struct {
-	client *Client
+	client *azure.Client
 }
 
-//Image is used to return a handle to the Image API
-func (client *Client) Image() *ImageClient {
+//NewClient is used to instantiate a new ImageClient from an Azure client
+func NewClient(client *azure.Client) *ImageClient {
 	return &ImageClient{client: client}
 }
 
 func (self *ImageClient) GetImageList() (ImageList, error) {
 	imageList := ImageList{}
 
-	response, err := self.client.sendAzureGetRequest(azureImageListURL)
+	response, err := self.client.SendAzureGetRequest(azureImageListURL)
 	if err != nil {
 		return imageList, err
 	}

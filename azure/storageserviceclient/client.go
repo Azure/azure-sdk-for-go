@@ -1,4 +1,4 @@
-package azure
+package storageserviceclient
 
 import (
 	"encoding/base64"
@@ -6,27 +6,34 @@ import (
 	"errors"
 	"fmt"
 	"strings"
+
+	"github.com/MSOpenTech/azure-sdk-for-go/azure"
 )
 
 const (
 	azureStorageServiceListURL = "services/storageservices"
 	azureStorageServiceURL     = "services/storageservices/%s"
 
+	azureXmlns = "http://schemas.microsoft.com/windowsazure"
+
 	blobEndpointNotFoundError = "Blob endpoint was not found in storage serice %s"
+	paramNotSpecifiedError    = "Parameter %s is not specified."
 )
 
+//StorageServiceClient is used to manage operations on Azure Storage
 type StorageServiceClient struct {
-	client *Client
+	client *azure.Client
 }
 
-func (self *Client) StorageService() *StorageServiceClient {
+//NewClient is used to instantiate a new StorageServiceClient from an Azure client
+func NewClient(self *azure.Client) *StorageServiceClient {
 	return &StorageServiceClient{client: self}
 }
 
 func (self *StorageServiceClient) GetStorageServiceList() (*StorageServiceList, error) {
 	storageServiceList := new(StorageServiceList)
 
-	response, err := self.client.sendAzureGetRequest(azureStorageServiceListURL)
+	response, err := self.client.SendAzureGetRequest(azureStorageServiceListURL)
 	if err != nil {
 		return nil, err
 	}
@@ -46,7 +53,7 @@ func (self *StorageServiceClient) GetStorageServiceByName(serviceName string) (*
 
 	storageService := new(StorageService)
 	requestURL := fmt.Sprintf(azureStorageServiceURL, serviceName)
-	response, err := self.client.sendAzureGetRequest(requestURL)
+	response, err := self.client.SendAzureGetRequest(requestURL)
 	if err != nil {
 		return nil, err
 	}
@@ -95,12 +102,12 @@ func (self *StorageServiceClient) CreateStorageService(name, location string) (*
 		return nil, err
 	}
 
-	requestId, err := self.client.sendAzurePostRequest(azureStorageServiceListURL, deploymentBytes)
+	requestId, err := self.client.SendAzurePostRequest(azureStorageServiceListURL, deploymentBytes)
 	if err != nil {
 		return nil, err
 	}
 
-	self.client.waitAsyncOperation(requestId)
+	self.client.WaitAsyncOperation(requestId)
 	storageService, err := self.GetStorageServiceByName(storageDeploymentConfig.ServiceName)
 	if err != nil {
 		return nil, err

@@ -1,4 +1,4 @@
-package azure
+package vnetclient
 
 import (
 	"encoding/xml"

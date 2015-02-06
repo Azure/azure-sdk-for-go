@@ -1,7 +1,9 @@
-package azure
+package vnetclient
 
 import (
 	"encoding/xml"
+
+	"github.com/MSOpenTech/azure-sdk-for-go/azure"
 )
 
 const (
@@ -10,11 +12,11 @@ const (
 
 //VnetClient is used to manage operations on Azure Virtual Networks
 type VnetClient struct {
-	client *Client
+	client *azure.Client
 }
 
 //VnetClient is used to return a handle to the VnetClient API
-func (client *Client) VnetClient() *VnetClient {
+func NewVnetClient(client *azure.Client) *VnetClient {
 	return &VnetClient{client: client}
 }
 
@@ -24,7 +26,7 @@ func (client *Client) VnetClient() *VnetClient {
 //for running concurrently.
 func (self *VnetClient) GetVirtualNetworkConfiguration() (NetworkConfiguration, error) {
 	networkConfiguration := self.NewNetworkConfiguration()
-	response, err := self.client.sendAzureGetRequest(azureNetworkConfigurationURL)
+	response, err := self.client.SendAzureGetRequest(azureNetworkConfigurationURL)
 	if err != nil {
 		return networkConfiguration, err
 	}
@@ -48,11 +50,11 @@ func (self *VnetClient) SetVirtualNetworkConfiguration(networkConfiguration Netw
 		return err
 	}
 
-	requestId, err := self.client.sendAzurePutRequest(azureNetworkConfigurationURL, "text/plain", networkConfigurationBytes)
+	requestId, err := self.client.SendAzurePutRequest(azureNetworkConfigurationURL, "text/plain", networkConfigurationBytes)
 	if err != nil {
 		return err
 	}
 
-	err = self.client.waitAsyncOperation(requestId)
+	err = self.client.WaitAsyncOperation(requestId)
 	return err
 }

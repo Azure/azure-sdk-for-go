@@ -1,23 +1,26 @@
-package azure
+package locationclient
 
 import (
 	"encoding/xml"
 	"errors"
 	"fmt"
+
+	"github.com/MSOpenTech/azure-sdk-for-go/azure"
 )
 
 const (
-	azureLocationListURL = "locations"
-	invalidLocationError = "Invalid location: %s. Available locations: %s"
+	azureLocationListURL   = "locations"
+	invalidLocationError   = "Invalid location: %s. Available locations: %s"
+	paramNotSpecifiedError = "Parameter %s is not specified."
 )
 
 //LocationClient is used to manage operations on Azure Locations
 type LocationClient struct {
-	client *Client
+	client *azure.Client
 }
 
-//Location is used to return a handle to the Location API
-func (client *Client) Location() *LocationClient {
+//NewClient is used to instantiate a new LocationClient from an Azure client
+func NewClient(client *azure.Client) *LocationClient {
 	return &LocationClient{client: client}
 }
 
@@ -45,7 +48,7 @@ func (self *LocationClient) ResolveLocation(location string) error {
 func (self *LocationClient) GetLocationList() (LocationList, error) {
 	locationList := LocationList{}
 
-	response, err := self.client.sendAzureGetRequest(azureLocationListURL)
+	response, err := self.client.SendAzureGetRequest(azureLocationListURL)
 	if err != nil {
 		return locationList, err
 	}

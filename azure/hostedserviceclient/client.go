@@ -1,9 +1,12 @@
-package azure
+package hostedserviceclient
 
 import (
 	"encoding/base64"
 	"encoding/xml"
 	"fmt"
+
+	"github.com/MSOpenTech/azure-sdk-for-go/azure"
+	"github.com/MSOpenTech/azure-sdk-for-go/azure/locationclient"
 )
 
 const (
@@ -15,20 +18,21 @@ const (
 	azureDeploymentURL                = "services/hostedservices/%s/deployments/%s"
 	deleteAzureDeploymentURL          = "services/hostedservices/%s/deployments/%s?comp=media"
 
-	invalidDnsLengthError = "The DNS name must be between 3 and 25 characters."
+	paramNotSpecifiedError = "Parameter %s is not specified."
+	invalidDnsLengthError  = "The DNS name must be between 3 and 25 characters."
 )
 
-//HostedService is used to manage operations on Azure Hosted Services
-type HostedService struct {
-	client *Client
+//HostedServiceClient is used to manage operations on Azure Hosted Services
+type HostedServiceClient struct {
+	client *azure.Client
 }
 
-//HostedService is used to return a handle to the HostedService API
-func (client *Client) HostedService() *HostedService {
-	return &HostedService{client: client}
+//NewClient is used to return a handle to the HostedService API
+func NewClient(client *azure.Client) *HostedServiceClient {
+	return &HostedServiceClient{client: client}
 }
 
-func (self *HostedService) CreateHostedService(dnsName, location string, reverseDnsFqdn string) (string, error) {
+func (self *HostedServiceClient) CreateHostedService(dnsName, location string, reverseDnsFqdn string) (string, error) {
 	if len(dnsName) == 0 {
 		return "", fmt.Errorf(paramNotSpecifiedError, "dnsName")
 	}
@@ -49,7 +53,8 @@ func (self *HostedService) CreateHostedService(dnsName, location string, reverse
 		return "", fmt.Errorf("%s Hosted service name: %s", reason, dnsName)
 	}
 
-	err = self.client.Location().ResolveLocation(location)
+	locationClient := locationclient.NewClient(self.client)
+	err = locationClient.ResolveLocation(location)
 	if err != nil {
 		return "", err
 	}
@@ -61,7 +66,7 @@ func (self *HostedService) CreateHostedService(dnsName, location string, reverse
 	}
 
 	requestURL := azureHostedServiceListURL
-	requestId, err := self.client.sendAzurePostRequest(requestURL, hostedServiceBytes)
+	requestId, err := self.client.SendAzurePostRequest(requestURL, hostedServiceBytes)
 	if err != nil {
 		return "", err
 	}
@@ -69,7 +74,7 @@ func (self *HostedService) CreateHostedService(dnsName, location string, reverse
 	return requestId, nil
 }
 
-func (self *HostedService) CheckHostedServiceNameAvailability(dnsName string) (bool, string, error) {
+func (self *HostedServiceClient) CheckHostedServiceNameAvailability(dnsName string) (bool, string, error) {
 	if len(dnsName) == 0 {
 		return false, "", fmt.Errorf(paramNotSpecifiedError, "dnsName")
 	}
@@ -80,7 +85,7 @@ func (self *HostedService) CheckHostedServiceNameAvailability(dnsName string) (b
 	}
 
 	requestURL := fmt.Sprintf(azureHostedServiceAvailabilityURL, dnsName)
-	response, err := self.client.sendAzureGetRequest(requestURL)
+	response, err := self.client.SendAzureGetRequest(requestURL)
 	if err != nil {
 		return false, "", err
 	}
@@ -94,7 +99,7 @@ func (self *HostedService) CheckHostedServiceNameAvailability(dnsName string) (b
 	return availabilityResponse.Result, availabilityResponse.Reason, nil
 }
 
-func (self *HostedService) DeleteHostedService(dnsName string) error {
+func (self *HostedServiceClient) DeleteHostedService(dnsName string) error {
 	if len(dnsName) == 0 {
 		return fmt.Errorf(paramNotSpecifiedError, "dnsName")
 	}
@@ -105,16 +110,16 @@ func (self *HostedService) DeleteHostedService(dnsName string) error {
 	}
 
 	requestURL := fmt.Sprintf(deleteAzureHostedServiceURL, dnsName)
-	requestId, err := self.client.sendAzureDeleteRequest(requestURL)
+	requestId, err := self.client.SendAzureDeleteRequest(requestURL)
 	if err != nil {
 		return err
 	}
 
-	self.client.waitAsyncOperation(requestId)
+	self.client.WaitAsyncOperation(requestId)
 	return nil
 }
 
-func (self *HostedService) createHostedServiceDeploymentConfig(dnsName, location string, reverseDnsFqdn string) HostedServiceDeployment {
+func (self *HostedServiceClient) createHostedServiceDeploymentConfig(dnsName, location string, reverseDnsFqdn string) HostedServiceDeployment {
 	deployment := HostedServiceDeployment{}
 	deployment.ServiceName = dnsName
 	label := base64.StdEncoding.EncodeToString([]byte(dnsName))
@@ -126,7 +131,7 @@ func (self *HostedService) createHostedServiceDeploymentConfig(dnsName, location
 	return deployment
 }
 
-func (self *HostedService) verifyDNSName(dns string) error {
+func (self *HostedServiceClient) verifyDNSName(dns string) error {
 	if len(dns) < 3 || len(dns) > 25 {
 		return fmt.Errorf(invalidDnsLengthError)
 	}

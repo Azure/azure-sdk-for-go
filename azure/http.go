@@ -19,7 +19,7 @@ const (
 
 //sendAzureGetRequest sends a request to the management API using the HTTP GET method
 //and returns the response body or an error.
-func (client *Client) sendAzureGetRequest(url string) ([]byte, error) {
+func (client *Client) SendAzureGetRequest(url string) ([]byte, error) {
 	if len(url) == 0 {
 		return nil, fmt.Errorf(paramNotSpecifiedError, "url")
 	}
@@ -35,7 +35,7 @@ func (client *Client) sendAzureGetRequest(url string) ([]byte, error) {
 
 //sendAzurePostRequest sends a request to the management API using the HTTP POST method
 //and returns the response body or an error.
-func (client *Client) sendAzurePostRequest(url string, data []byte) (string, error) {
+func (client *Client) SendAzurePostRequest(url string, data []byte) (string, error) {
 	if len(url) == 0 {
 		return "", fmt.Errorf(paramNotSpecifiedError, "url")
 	}
@@ -52,7 +52,7 @@ func (client *Client) sendAzurePostRequest(url string, data []byte) (string, err
 //sendAzurePutRequest sends a request to the management API using the HTTP PUT method
 //and returns the response body or an error. The content type can be specified, however
 //if an empty string is passed, the default of "application/xml" will be used.
-func (client *Client) sendAzurePutRequest(url string, contentType string, data []byte) (string, error) {
+func (client *Client) SendAzurePutRequest(url string, contentType string, data []byte) (string, error) {
 	if len(url) == 0 {
 		return "", fmt.Errorf(paramNotSpecifiedError, contentType, "url")
 	}
@@ -68,7 +68,7 @@ func (client *Client) sendAzurePutRequest(url string, contentType string, data [
 
 //sendAzureDeleteRequest sends a request to the management API using the HTTP DELETE method
 //and returns the response body or an error.
-func (client *Client) sendAzureDeleteRequest(url string) (string, error) {
+func (client *Client) SendAzureDeleteRequest(url string) (string, error) {
 	if len(url) == 0 {
 		return "", fmt.Errorf(paramNotSpecifiedError, "url")
 	}

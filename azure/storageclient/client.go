@@ -1,4 +1,4 @@
-package azure
+package storageclient
 
 import (
 	"bytes"
@@ -12,6 +12,8 @@ import (
 	"regexp"
 	"sort"
 	"strings"
+
+	"github.com/MSOpenTech/azure-sdk-for-go/azure"
 )
 
 const (
@@ -27,7 +29,7 @@ const (
 // StorageClient is the object that needs to be constructed
 // to perform operations on the storage account.
 type StorageClient struct {
-	client      *Client
+	client      *azure.Client
 	accountName string
 	accountKey  []byte
 	useHttps    bool
@@ -57,14 +59,14 @@ type StorageServiceError struct {
 
 // NewBasicClient constructs a StorageClient with given storage service name
 // and key.
-func (self *Client) NewBasicStorageClient(accountName, accountKey string) (*StorageClient, error) {
-	return self.NewStorageClient(accountName, accountKey, DefaultBaseUrl, DefaultApiVersion, defaultUseHttps)
+func NewBasicStorageClient(accountName, accountKey string) (*StorageClient, error) {
+	return NewStorageClient(accountName, accountKey, DefaultBaseUrl, DefaultApiVersion, defaultUseHttps)
 }
 
 // NewClient constructs a StorageClient. This should be used if the caller
 // wants to specify whether to use HTTPS, a specific REST API version or a
 // custom storage endpoint than Azure Public Cloud.
-func (self *Client) NewStorageClient(accountName, accountKey, blobServiceBaseUrl, apiVersion string, useHttps bool) (*StorageClient, error) {
+func NewStorageClient(accountName, accountKey, blobServiceBaseUrl, apiVersion string, useHttps bool) (*StorageClient, error) {
 	if accountName == "" {
 		return nil, fmt.Errorf("azure: account name required")
 	} else if accountKey == "" {
@@ -79,7 +81,6 @@ func (self *Client) NewStorageClient(accountName, accountKey, blobServiceBaseUrl
 	}
 
 	return &StorageClient{
-		client:      self,
 		accountName: accountName,
 		accountKey:  key,
 		useHttps:    useHttps,

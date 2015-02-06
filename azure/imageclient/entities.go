@@ -1,4 +1,4 @@
-package azure
+package imageclient
 
 import (
 	"encoding/xml"

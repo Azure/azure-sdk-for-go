@@ -26,7 +26,7 @@ func (client *Client) getOperationStatus(operationId string) (*operation, error)
 
 	operation := new(operation)
 	url := "operations/" + operationId
-	response, azureErr := client.sendAzureGetRequest(url)
+	response, azureErr := client.SendAzureGetRequest(url)
 	if azureErr != nil {
 		return nil, azureErr
 	}
@@ -42,7 +42,7 @@ func (client *Client) getOperationStatus(operationId string) (*operation, error)
 //waitAsyncOperation blocks until the operation with the given operationId is
 //no longer in the InProgress state. If the operation was successful, nothing is
 //returned, otherwise an error is returned.
-func (client *Client) waitAsyncOperation(operationId string) error {
+func (client *Client) WaitAsyncOperation(operationId string) error {
 	if len(operationId) == 0 {
 		return fmt.Errorf(paramNotSpecifiedError, "operationId")
 	}

@@ -5,6 +5,12 @@ import (
 	"fmt"
 )
 
+const (
+	publishSettingsConfigurationError = "PublishSettingsFilePath is set. Consequently ManagementCertificatePath and SubscriptionId must not be set."
+
+	managementCertificateConfigurationError = "Both ManagementCertificatePath and SubscriptionId should be set, and PublishSettingsFilePath must not be set."
+)
+
 // Config is used to configure the creation of a client
 type Config struct {
 	//ManagementCertificatePath is the path to a file containing the management

@@ -1,4 +1,4 @@
-package storageServiceClient
+package storageservice
 
 import (
 	"encoding/xml"

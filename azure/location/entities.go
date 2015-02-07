@@ -1,4 +1,4 @@
-package locationClient
+package location
 
 import (
 	"bytes"

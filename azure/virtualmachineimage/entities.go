@@ -1,4 +1,4 @@
-package imageClient
+package virtualmachineimage
 
 import (
 	"encoding/xml"

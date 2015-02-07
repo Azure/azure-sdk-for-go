@@ -1,4 +1,4 @@
-package vnetClient
+package virtualnetwork
 
 import (
 	"encoding/xml"
@@ -21,7 +21,7 @@ type NetworkConfiguration struct {
 
 //NewNetworkConfiguration creates a new empty NetworkConfiguration structure for
 //further configuration. The XML namespaces are set correctly.
-func NewNetworkConfiguration() NetworkConfiguration {
+func (client *VnetClient) NewNetworkConfiguration() NetworkConfiguration {
 	networkConfiguration := NetworkConfiguration{}
 	networkConfiguration.setXmlNamespaces()
 	return networkConfiguration

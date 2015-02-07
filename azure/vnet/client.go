@@ -16,7 +16,7 @@ type VnetClient struct {
 }
 
 //VnetClient is used to return a handle to the VnetClient API
-func NewVnetClient(client *azure.Client) *VnetClient {
+func NewClient(client *azure.Client) *VnetClient {
 	return &VnetClient{client: client}
 }
 

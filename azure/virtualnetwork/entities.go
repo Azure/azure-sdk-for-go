@@ -1,4 +1,4 @@
-package vnet
+package virtualnetwork
 
 import (
 	"encoding/xml"

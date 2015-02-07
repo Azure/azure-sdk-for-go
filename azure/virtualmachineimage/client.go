@@ -1,4 +1,4 @@
-package image
+package virtualmachineimage
 
 import (
 	"encoding/xml"

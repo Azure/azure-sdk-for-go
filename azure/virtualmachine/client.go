@@ -16,9 +16,9 @@ import (
 
 	"github.com/MSOpenTech/azure-sdk-for-go/azure"
 	hostedserviceclient "github.com/MSOpenTech/azure-sdk-for-go/azure/hostedservice"
-	imageclient "github.com/MSOpenTech/azure-sdk-for-go/azure/image"
 	locationclient "github.com/MSOpenTech/azure-sdk-for-go/azure/location"
 	storageserviceclient "github.com/MSOpenTech/azure-sdk-for-go/azure/storageservice"
+	imageclient "github.com/MSOpenTech/azure-sdk-for-go/azure/virtualmachineimage"
 )
 
 const (

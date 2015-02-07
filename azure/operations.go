@@ -11,7 +11,7 @@ import (
 //to get the operation given the operation ID, or use
 //client.waitAsyncOperation() to block until the operation has completed.
 type operation struct {
-	XMLName        xml.Name `xml:"operation"`
+	XMLName        xml.Name `xml:"Operation"`
 	ID             string
 	Status         string
 	HttpStatusCode string

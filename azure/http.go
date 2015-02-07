@@ -2,10 +2,10 @@ package azure
 
 import (
 	"bytes"
-	"crypto/tls"
 	"encoding/xml"
 	"fmt"
-	"net/http"
+	"github.com/MSOpenTech/azure-sdk-for-go/core/http"
+	"github.com/MSOpenTech/azure-sdk-for-go/core/tls"
 )
 
 const (

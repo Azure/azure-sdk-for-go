@@ -4,8 +4,8 @@ import (
 	"bytes"
 	"crypto/rand"
 	"fmt"
+	"github.com/MSOpenTech/azure-sdk-for-go/core/http"
 	"io"
-	"net/http"
 	"os/exec"
 	"strings"
 )

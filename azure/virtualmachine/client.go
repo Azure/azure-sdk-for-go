@@ -1,4 +1,4 @@
-package vmclient
+package virtualmachine
 
 import (
 	"bytes"
@@ -15,10 +15,10 @@ import (
 	"unicode"
 
 	"github.com/MSOpenTech/azure-sdk-for-go/azure"
-	"github.com/MSOpenTech/azure-sdk-for-go/azure/hostedserviceclient"
-	"github.com/MSOpenTech/azure-sdk-for-go/azure/imageclient"
-	"github.com/MSOpenTech/azure-sdk-for-go/azure/locationclient"
-	"github.com/MSOpenTech/azure-sdk-for-go/azure/storageserviceclient"
+	hostedserviceclient "github.com/MSOpenTech/azure-sdk-for-go/azure/hostedservice"
+	imageclient "github.com/MSOpenTech/azure-sdk-for-go/azure/image"
+	locationclient "github.com/MSOpenTech/azure-sdk-for-go/azure/location"
+	storageserviceclient "github.com/MSOpenTech/azure-sdk-for-go/azure/storageservice"
 )
 
 const (

@@ -1,4 +1,4 @@
-package vnetclient
+package vnet
 
 import (
 	"encoding/xml"

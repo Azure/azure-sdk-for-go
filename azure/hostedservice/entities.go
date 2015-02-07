@@ -1,4 +1,4 @@
-package hostedserviceclient
+package hostedservice
 
 import (
 	"encoding/xml"

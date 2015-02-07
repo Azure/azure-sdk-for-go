@@ -1,4 +1,4 @@
-package storageclient
+package storage
 
 import (
 	"bytes"

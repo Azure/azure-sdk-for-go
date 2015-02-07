@@ -1,4 +1,4 @@
-package vmclient
+package virtualmachine
 
 import (
 	"encoding/xml"

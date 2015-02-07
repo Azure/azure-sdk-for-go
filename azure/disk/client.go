@@ -1,4 +1,4 @@
-package diskclient
+package disk
 
 import (
 	"fmt"

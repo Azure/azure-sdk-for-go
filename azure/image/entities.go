@@ -1,4 +1,4 @@
-package imageclient
+package image
 
 import (
 	"encoding/xml"

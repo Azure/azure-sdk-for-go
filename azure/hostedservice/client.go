@@ -1,4 +1,4 @@
-package hostedserviceclient
+package hostedservice
 
 import (
 	"encoding/base64"
@@ -6,7 +6,7 @@ import (
 	"fmt"
 
 	"github.com/MSOpenTech/azure-sdk-for-go/azure"
-	"github.com/MSOpenTech/azure-sdk-for-go/azure/locationclient"
+	locationclient "github.com/MSOpenTech/azure-sdk-for-go/azure/location"
 )
 
 const (

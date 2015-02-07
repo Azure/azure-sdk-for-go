@@ -1,4 +1,4 @@
-package locationclient
+package location
 
 import (
 	"bytes"

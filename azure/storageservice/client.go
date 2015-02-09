@@ -20,11 +20,6 @@ const (
 	errParamNotSpecified    = "Parameter %s is not specified."
 )
 
-//StorageServiceClient is used to manage operations on Azure Storage
-type StorageServiceClient struct {
-	client *azure.Client
-}
-
 //NewClient is used to instantiate a new StorageServiceClient from an Azure client
 func NewClient(self *azure.Client) *StorageServiceClient {
 	return &StorageServiceClient{client: self}

@@ -49,11 +49,6 @@ const (
 	errInvalidDnsLength             = "The DNS name must be between 3 and 25 characters."
 )
 
-//VmClient is used to manage operations on Azure Virtual Machines
-type VmClient struct {
-	client *azure.Client
-}
-
 //NewClient is used to instantiate a new VmClient from an Azure client
 func NewClient(client *azure.Client) *VmClient {
 	return &VmClient{client: client}

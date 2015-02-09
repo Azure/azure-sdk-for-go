@@ -14,11 +14,6 @@ const (
 	errParamNotSpecified = "Parameter %s is not specified."
 )
 
-//ImageClient is used to manage operations on Azure Locations
-type ImageClient struct {
-	client *azure.Client
-}
-
 //NewClient is used to instantiate a new ImageClient from an Azure client
 func NewClient(client *azure.Client) *ImageClient {
 	return &ImageClient{client: client}

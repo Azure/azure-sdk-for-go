@@ -11,11 +11,6 @@ const (
 	errParamNotSpecified = "Parameter %s is not specified."
 )
 
-//DiskClient is used to manage operations on Azure Disks
-type DiskClient struct {
-	client *azure.Client
-}
-
 //NewClient is used to instantiate a new DiskClient from an Azure client
 func Disk(client *azure.Client) *DiskClient {
 	return &DiskClient{client: client}

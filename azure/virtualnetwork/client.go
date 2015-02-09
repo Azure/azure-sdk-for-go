@@ -10,11 +10,6 @@ const (
 	azureNetworkConfigurationURL = "services/networking/media"
 )
 
-//VnetClient is used to manage operations on Azure Virtual Networks
-type VnetClient struct {
-	client *azure.Client
-}
-
 //VnetClient is used to return a handle to the VnetClient API
 func NewClient(client *azure.Client) *VnetClient {
 	return &VnetClient{client: client}

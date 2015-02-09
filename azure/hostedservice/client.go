@@ -22,11 +22,6 @@ const (
 	errInvalidDnsLength  = "The DNS name must be between 3 and 25 characters."
 )
 
-//HostedServiceClient is used to manage operations on Azure Hosted Services
-type HostedServiceClient struct {
-	client *azure.Client
-}
-
 //NewClient is used to return a handle to the HostedService API
 func NewClient(client *azure.Client) *HostedServiceClient {
 	return &HostedServiceClient{client: client}

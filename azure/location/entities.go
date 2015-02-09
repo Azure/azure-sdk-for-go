@@ -5,7 +5,14 @@ import (
 	"encoding/xml"
 	"fmt"
 	"strings"
+
+	"github.com/MSOpenTech/azure-sdk-for-go/azure"
 )
+
+//LocationClient is used to manage operations on Azure Locations
+type LocationClient struct {
+	client *azure.Client
+}
 
 type LocationList struct {
 	XMLName   xml.Name   `xml:"Locations"`

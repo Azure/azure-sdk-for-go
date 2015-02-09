@@ -14,11 +14,6 @@ const (
 	errParamNotSpecified = "Parameter %s is not specified."
 )
 
-//LocationClient is used to manage operations on Azure Locations
-type LocationClient struct {
-	client *azure.Client
-}
-
 //NewClient is used to instantiate a new LocationClient from an Azure client
 func NewClient(client *azure.Client) *LocationClient {
 	return &LocationClient{client: client}

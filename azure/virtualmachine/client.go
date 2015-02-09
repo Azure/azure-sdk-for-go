@@ -73,7 +73,7 @@ func (self *VmClient) CreateAzureVM(azureVMConfiguration *Role, dnsName, locatio
 	}
 
 	hostedServiceClient := hostedserviceclient.NewClient(self.client)
-	requestId, err := hostedServiceClient.CreateHostedService(dnsName, location, "")
+	requestId, err := hostedServiceClient.CreateHostedService(dnsName, location, "", dnsName, "")
 	if err != nil {
 		return err
 	}

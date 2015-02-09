@@ -1,7 +1,6 @@
 package hostedservice
 
 import (
-	"encoding/base64"
 	"encoding/xml"
 	"fmt"
 
@@ -27,7 +26,7 @@ func NewClient(client *azure.Client) *HostedServiceClient {
 	return &HostedServiceClient{client: client}
 }
 
-func (self *HostedServiceClient) CreateHostedService(dnsName, location string, reverseDnsFqdn string) (string, error) {
+func (self *HostedServiceClient) CreateHostedService(dnsName, location string, reverseDnsFqdn string, label string, description string) (string, error) {
 	if len(dnsName) == 0 {
 		return "", fmt.Errorf(errParamNotSpecified, "dnsName")
 	}
@@ -54,7 +53,7 @@ func (self *HostedServiceClient) CreateHostedService(dnsName, location string, r
 		return "", err
 	}
 
-	hostedServiceDeployment := self.createHostedServiceDeploymentConfig(dnsName, location, reverseDnsFqdn)
+	hostedServiceDeployment := self.createHostedServiceDeploymentConfig(dnsName, location, reverseDnsFqdn, label, description)
 	hostedServiceBytes, err := xml.Marshal(hostedServiceDeployment)
 	if err != nil {
 		return "", err
@@ -114,15 +113,14 @@ func (self *HostedServiceClient) DeleteHostedService(dnsName string) error {
 	return nil
 }
 
-func (self *HostedServiceClient) createHostedServiceDeploymentConfig(dnsName, location string, reverseDnsFqdn string) HostedServiceDeployment {
+func (self *HostedServiceClient) createHostedServiceDeploymentConfig(dnsName, location string, reverseDnsFqdn string, label string, description string) HostedServiceDeployment {
 	deployment := HostedServiceDeployment{}
 	deployment.ServiceName = dnsName
-	label := base64.StdEncoding.EncodeToString([]byte(dnsName))
 	deployment.Label = label
+	deployment.Description = description
 	deployment.Location = location
 	deployment.ReverseDnsFqdn = reverseDnsFqdn
 	deployment.Xmlns = azureXmlns
-
 	return deployment
 }
 

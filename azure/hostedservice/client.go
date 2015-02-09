@@ -1,6 +1,7 @@
 package hostedservice
 
 import (
+	"encoding/base64"
 	"encoding/xml"
 	"fmt"
 
@@ -116,7 +117,8 @@ func (self *HostedServiceClient) DeleteHostedService(dnsName string) error {
 func (self *HostedServiceClient) createHostedServiceDeploymentConfig(dnsName, location string, reverseDnsFqdn string, label string, description string) HostedServiceDeployment {
 	deployment := HostedServiceDeployment{}
 	deployment.ServiceName = dnsName
-	deployment.Label = label
+	encodedLabel := base64.StdEncoding.EncodeToString([]byte(label))
+	deployment.Label = encodedLabel
 	deployment.Description = description
 	deployment.Location = location
 	deployment.ReverseDnsFqdn = reverseDnsFqdn

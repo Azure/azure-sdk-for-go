@@ -1,12 +1,19 @@
-package vnetClient
+package virtualnetwork
 
 import (
 	"encoding/xml"
+
+	"github.com/MSOpenTech/azure-sdk-for-go/azure"
 )
 
 const xmlNamespace = "http://schemas.microsoft.com/ServiceHosting/2011/07/NetworkConfiguration"
 const xmlNamespaceXsd = "http://www.w3.org/2001/XMLSchema"
 const xmlNamespaceXsi = "http://www.w3.org/2001/XMLSchema-instance"
+
+//VnetClient is used to manage operations on Azure Virtual Networks
+type VnetClient struct {
+	client *azure.Client
+}
 
 //NetworkConfiguration represents the network configuration for an entire Azure
 //subscription. TODO: Nicer builder methods for these that abstract away the
@@ -21,7 +28,7 @@ type NetworkConfiguration struct {
 
 //NewNetworkConfiguration creates a new empty NetworkConfiguration structure for
 //further configuration. The XML namespaces are set correctly.
-func NewNetworkConfiguration() NetworkConfiguration {
+func (client *VnetClient) NewNetworkConfiguration() NetworkConfiguration {
 	networkConfiguration := NetworkConfiguration{}
 	networkConfiguration.setXmlNamespaces()
 	return networkConfiguration

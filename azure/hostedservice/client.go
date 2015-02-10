@@ -114,8 +114,8 @@ func (self *HostedServiceClient) DeleteHostedService(dnsName string) error {
 	return nil
 }
 
-func (self *HostedServiceClient) createHostedServiceDeploymentConfig(dnsName, location string, reverseDnsFqdn string, label string, description string) HostedServiceDeployment {
-	deployment := HostedServiceDeployment{}
+func (self *HostedServiceClient) createHostedServiceDeploymentConfig(dnsName, location string, reverseDnsFqdn string, label string, description string) CreateHostedService {
+	deployment := CreateHostedService{}
 	deployment.ServiceName = dnsName
 	encodedLabel := base64.StdEncoding.EncodeToString([]byte(label))
 	deployment.Label = encodedLabel

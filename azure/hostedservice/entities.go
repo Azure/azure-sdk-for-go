@@ -11,9 +11,9 @@ type HostedServiceClient struct {
 	client *azure.Client
 }
 
-type HostedServiceDeployment struct {
-	XMLName        xml.Name `xml:"CreateHostedService"`
-	Xmlns          string   `xml:"xmlns,attr"`
+type CreateHostedService struct {
+	XMLName        xml.Name
+	Xmlns          string `xml:"xmlns,attr"`
 	ServiceName    string
 	Label          string
 	Description    string

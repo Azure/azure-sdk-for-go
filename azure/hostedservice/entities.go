@@ -26,3 +26,16 @@ type AvailabilityResponse struct {
 	Result bool
 	Reason string
 }
+
+type HostedService struct {
+	Url                               string
+	ServiceName                       string
+	Description                       string `xml:"HostedServiceProperties>Description"`
+	AffinityGroup                     string `xml:"HostedServiceProperties>AffinityGroup"`
+	Location                          string `xml:"HostedServiceProperties>Location"`
+	LabelBase64                       string `xml:"HostedServiceProperties>Label"`
+	Label                             string
+	Status                            string `xml:"HostedServiceProperties>Status"`
+	ReverseDnsFqdn                    string `xml:"HostedServiceProperties>ReverseDnsFqdn"`
+	DefaultWinRmCertificateThumbprint string
+}

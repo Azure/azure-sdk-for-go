@@ -17,6 +17,7 @@ const (
 	azureHostedServiceAvailabilityURL = "services/hostedservices/operations/isavailable/%s"
 	azureDeploymentURL                = "services/hostedservices/%s/deployments/%s"
 	deleteAzureDeploymentURL          = "services/hostedservices/%s/deployments/%s?comp=media"
+	getHostedServicePropertiesURL     = "services/hostedservices/%s"
 
 	errParamNotSpecified = "Parameter %s is not specified."
 	errInvalidDnsLength  = "The DNS name must be between 3 and 25 characters."
@@ -112,6 +113,28 @@ func (self *HostedServiceClient) DeleteHostedService(dnsName string) error {
 
 	self.client.WaitAsyncOperation(requestId)
 	return nil
+}
+
+func (self *HostedServiceClient) GetHostedService(name string) (HostedService, error) {
+	hostedService := HostedService{}
+
+	requestURL := fmt.Sprintf(getHostedServicePropertiesURL, name)
+	response, err := self.client.SendAzureGetRequest(requestURL)
+	if err != nil {
+		return hostedService, err
+	}
+
+	err = xml.Unmarshal(response, &hostedService)
+	if err != nil {
+		return hostedService, err
+	}
+
+	decodedLabel, err := base64.StdEncoding.DecodeString(hostedService.LabelBase64)
+	if err != nil {
+		return hostedService, err
+	}
+	hostedService.Label = string(decodedLabel)
+	return hostedService, nil
 }
 
 func (self *HostedServiceClient) createHostedServiceDeploymentConfig(dnsName, location string, reverseDnsFqdn string, label string, description string) CreateHostedService {

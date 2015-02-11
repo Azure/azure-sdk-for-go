@@ -45,7 +45,7 @@ type AzureError struct {
 
 //Error implements the error interface for the AzureError type.
 func (e *AzureError) Error() string {
-	return fmt.Sprintf("Code: %s, Message: %s", e.Code, e.Message)
+	return fmt.Sprintf("Error response from Azure. Code: %s, Message: %s", e.Code, e.Message)
 }
 
 // Client provides a client to the Azure API.

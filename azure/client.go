@@ -63,8 +63,8 @@ func NewClient(config *Config) (*Client, error) {
 	}
 
 	//Set the publish settings for the client according to the configuration
-	if len(config.PublishSettingsFilePath) > 0 {
-		if len(config.ManagementCertificatePath) > 0 || len(config.SubscriptionId) > 0 {
+	if config.PublishSettingsFilePath != "" {
+		if config.ManagementCertificatePath != "" || config.SubscriptionId != "" {
 			return nil, fmt.Errorf(errPublishSettingsConfiguration)
 		}
 		err := client.importPublishSettingsFile(config.PublishSettingsFilePath)
@@ -72,7 +72,7 @@ func NewClient(config *Config) (*Client, error) {
 			return nil, err
 		}
 	} else {
-		if len(config.ManagementCertificatePath) == 0 || len(config.SubscriptionId) == 0 {
+		if config.ManagementCertificatePath != "" || config.SubscriptionId != "" {
 			return nil, fmt.Errorf(errManagementCertificateConfiguration)
 		}
 		err := client.importPublishSettings(config.SubscriptionId, config.ManagementCertificatePath)

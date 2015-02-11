@@ -64,17 +64,18 @@ func NewBasicClient(accountName, accountKey string) (StorageClient, error) {
 // wants to specify whether to use HTTPS, a specific REST API version or a
 // custom storage endpoint than Azure Public Cloud.
 func NewClient(accountName, accountKey, blobServiceBaseUrl, apiVersion string, useHttps bool) (StorageClient, error) {
+	var c StorageClient
 	if accountName == "" {
-		return StorageClient{}, fmt.Errorf("azure: account name required")
+		return c, fmt.Errorf("azure: account name required")
 	} else if accountKey == "" {
-		return StorageClient{}, fmt.Errorf("azure: account key required")
+		return c, fmt.Errorf("azure: account key required")
 	} else if blobServiceBaseUrl == "" {
-		return StorageClient{}, fmt.Errorf("azure: base storage service url required")
+		return c, fmt.Errorf("azure: base storage service url required")
 	}
 
 	key, err := base64.StdEncoding.DecodeString(accountKey)
 	if err != nil {
-		return StorageClient{}, err
+		return c, nil
 	}
 
 	return StorageClient{
@@ -82,7 +83,8 @@ func NewClient(accountName, accountKey, blobServiceBaseUrl, apiVersion string, u
 		accountKey:  key,
 		useHttps:    useHttps,
 		baseUrl:     blobServiceBaseUrl,
-		apiVersion:  apiVersion}, nil
+		apiVersion:  apiVersion,
+	}, nil
 }
 
 func (c StorageClient) getBaseUrl(service string) string {

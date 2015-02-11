@@ -1,21 +1,27 @@
-package vnetClient
+package virtualnetwork
 
 import (
 	"encoding/xml"
-	azure "github.com/MSOpenTech/azure-sdk-for-go"
+
+	"github.com/MSOpenTech/azure-sdk-for-go/azure"
 )
 
 const (
 	azureNetworkConfigurationURL = "services/networking/media"
 )
 
+//VnetClient is used to return a handle to the VnetClient API
+func NewClient(client azure.Client) VirtualNetworkClient {
+	return VirtualNetworkClient{client: client}
+}
+
 //GetVirtualNetworkConfiguration retreives the current virtual network
 //configuration for the currently active subscription. Note that the
 //underlying Azure API means that network related operations are not safe
 //for running concurrently.
-func GetVirtualNetworkConfiguration() (NetworkConfiguration, error) {
-	networkConfiguration := NewNetworkConfiguration()
-	response, err := azure.SendAzureGetRequest(azureNetworkConfigurationURL)
+func (self VirtualNetworkClient) GetVirtualNetworkConfiguration() (NetworkConfiguration, error) {
+	networkConfiguration := self.NewNetworkConfiguration()
+	response, err := self.client.SendAzureGetRequest(azureNetworkConfigurationURL)
 	if err != nil {
 		return networkConfiguration, err
 	}
@@ -32,18 +38,18 @@ func GetVirtualNetworkConfiguration() (NetworkConfiguration, error) {
 //currently active subscription according to the NetworkConfiguration given.
 //Note that the underlying Azure API means that network related operations
 //are not safe for running concurrently.
-func SetVirtualNetworkConfiguration(networkConfiguration NetworkConfiguration) error {
+func (self VirtualNetworkClient) SetVirtualNetworkConfiguration(networkConfiguration NetworkConfiguration) error {
 	networkConfiguration.setXmlNamespaces()
 	networkConfigurationBytes, err := xml.Marshal(networkConfiguration)
 	if err != nil {
 		return err
 	}
 
-	requestId, err := azure.SendAzurePutRequest(azureNetworkConfigurationURL, "text/plain", networkConfigurationBytes)
+	requestId, err := self.client.SendAzurePutRequest(azureNetworkConfigurationURL, "text/plain", networkConfigurationBytes)
 	if err != nil {
 		return err
 	}
 
-	err = azure.WaitAsyncOperation(requestId)
+	err = self.client.WaitAsyncOperation(requestId)
 	return err
 }

@@ -568,7 +568,6 @@ func (self *VirtualMachineClient) getVHDMediaLink(dnsName, location string) (str
 	}
 
 	if storageService == nil {
-
 		uuid, err := newUUID()
 		if err != nil {
 			return "", err

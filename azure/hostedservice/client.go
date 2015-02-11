@@ -20,7 +20,6 @@ const (
 	getHostedServicePropertiesURL     = "services/hostedservices/%s"
 
 	errParamNotSpecified = "Parameter %s is not specified."
-	errInvalidDnsLength  = "The DNS name must be between 3 and 25 characters."
 )
 
 //NewClient is used to return a handle to the HostedService API
@@ -34,11 +33,6 @@ func (self *HostedServiceClient) CreateHostedService(dnsName, location string, r
 	}
 	if len(location) == 0 {
 		return "", fmt.Errorf(errParamNotSpecified, "location")
-	}
-
-	err := self.verifyDNSName(dnsName)
-	if err != nil {
-		return "", err
 	}
 
 	result, reason, err := self.CheckHostedServiceNameAvailability(dnsName)
@@ -75,11 +69,6 @@ func (self *HostedServiceClient) CheckHostedServiceNameAvailability(dnsName stri
 		return false, "", fmt.Errorf(errParamNotSpecified, "dnsName")
 	}
 
-	err := self.verifyDNSName(dnsName)
-	if err != nil {
-		return false, "", err
-	}
-
 	requestURL := fmt.Sprintf(azureHostedServiceAvailabilityURL, dnsName)
 	response, err := self.client.SendAzureGetRequest(requestURL)
 	if err != nil {
@@ -98,11 +87,6 @@ func (self *HostedServiceClient) CheckHostedServiceNameAvailability(dnsName stri
 func (self *HostedServiceClient) DeleteHostedService(dnsName string) error {
 	if len(dnsName) == 0 {
 		return fmt.Errorf(errParamNotSpecified, "dnsName")
-	}
-
-	err := self.verifyDNSName(dnsName)
-	if err != nil {
-		return err
 	}
 
 	requestURL := fmt.Sprintf(deleteAzureHostedServiceURL, dnsName)
@@ -147,12 +131,4 @@ func (self *HostedServiceClient) createHostedServiceDeploymentConfig(dnsName, lo
 		Xmlns:          azureXmlns,
 	}
 	return deployment
-}
-
-func (self *HostedServiceClient) verifyDNSName(dns string) error {
-	if len(dns) < 3 || len(dns) > 25 {
-		return fmt.Errorf(errInvalidDnsLength)
-	}
-
-	return nil
 }

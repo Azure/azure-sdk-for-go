@@ -137,7 +137,7 @@ func (client *Client) sendRequest(httpClient *http.Client, url string, requestTy
 		return client.sendRequest(httpClient, url, requestType, contentType, data, numberOfRetries-1)
 	}
 
-	if response.StatusCode > 299 {
+	if response.StatusCode > http.StatusBadRequest {
 		responseContent := getResponseBody(response)
 		azureErr := getAzureError(responseContent)
 		if azureErr != nil {

@@ -111,8 +111,7 @@ func (self *HostedServiceClient) DeleteHostedService(dnsName string) error {
 		return err
 	}
 
-	self.client.WaitAsyncOperation(requestId)
-	return nil
+	return self.client.WaitAsyncOperation(requestId)
 }
 
 func (self *HostedServiceClient) GetHostedService(name string) (HostedService, error) {

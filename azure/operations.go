@@ -61,7 +61,7 @@ func (client *Client) WaitAsyncOperation(operationId string) error {
 	}
 
 	if status == "Failed" {
-		return errors.New(operation.Error.Message)
+		return fmt.Errorf("Azure operation %s failed. Code: %s, Message: %s", operationId, operation.Error.Code, operation.Error.Message)
 	}
 
 	return nil

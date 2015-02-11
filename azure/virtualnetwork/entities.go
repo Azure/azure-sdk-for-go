@@ -11,7 +11,7 @@ const xmlNamespaceXsd = "http://www.w3.org/2001/XMLSchema"
 const xmlNamespaceXsi = "http://www.w3.org/2001/XMLSchema-instance"
 
 //VnetClient is used to manage operations on Azure Virtual Networks
-type VnetClient struct {
+type VirtualNetworkClient struct {
 	client *azure.Client
 }
 
@@ -28,7 +28,7 @@ type NetworkConfiguration struct {
 
 //NewNetworkConfiguration creates a new empty NetworkConfiguration structure for
 //further configuration. The XML namespaces are set correctly.
-func (client *VnetClient) NewNetworkConfiguration() NetworkConfiguration {
+func (client *VirtualNetworkClient) NewNetworkConfiguration() NetworkConfiguration {
 	networkConfiguration := NetworkConfiguration{}
 	networkConfiguration.setXmlNamespaces()
 	return networkConfiguration

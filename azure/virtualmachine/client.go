@@ -80,7 +80,10 @@ func (self *VmClient) CreateAzureVM(azureVMConfiguration *Role, dnsName, locatio
 		return err
 	}
 
-	self.client.WaitAsyncOperation(requestId)
+	err = self.client.WaitAsyncOperation(requestId)
+	if err != nil {
+		return err
+	}
 
 	if azureVMConfiguration.UseCertAuth {
 		err = self.uploadServiceCert(dnsName, azureVMConfiguration.CertPath)

@@ -59,14 +59,14 @@ type StorageServiceError struct {
 
 // NewBasicClient constructs a StorageClient with given storage service name
 // and key.
-func NewBasicStorageClient(accountName, accountKey string) (*StorageClient, error) {
-	return NewStorageClient(accountName, accountKey, DefaultBaseUrl, DefaultApiVersion, defaultUseHttps)
+func NewBasicClient(accountName, accountKey string) (*StorageClient, error) {
+	return NewClient(accountName, accountKey, DefaultBaseUrl, DefaultApiVersion, defaultUseHttps)
 }
 
 // NewClient constructs a StorageClient. This should be used if the caller
 // wants to specify whether to use HTTPS, a specific REST API version or a
 // custom storage endpoint than Azure Public Cloud.
-func NewStorageClient(accountName, accountKey, blobServiceBaseUrl, apiVersion string, useHttps bool) (*StorageClient, error) {
+func NewClient(accountName, accountKey, blobServiceBaseUrl, apiVersion string, useHttps bool) (*StorageClient, error) {
 	if accountName == "" {
 		return nil, fmt.Errorf("azure: account name required")
 	} else if accountKey == "" {

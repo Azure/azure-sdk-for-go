@@ -50,7 +50,7 @@ func Test_blobSASStringToSign(t *testing.T) {
 }
 
 func TestGetBlobSASURI(t *testing.T) {
-	api, err := NewStorageClient("foo", "YmFy", DefaultBaseUrl, "2013-08-15", true)
+	api, err := NewClient("foo", "YmFy", DefaultBaseUrl, "2013-08-15", true)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -382,7 +382,7 @@ func TestBlobExists(t *testing.T) {
 }
 
 func TestGetBlobUrl(t *testing.T) {
-	api, err := NewBasicStorageClient("foo", "YmFy")
+	api, err := NewBasicClient("foo", "YmFy")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -1098,7 +1098,7 @@ func getBlobClient() (*BlobStorageClient, error) {
 	if key == "" {
 		return nil, errors.New("ACCOUNT_KEY not set")
 	}
-	cli, err := NewBasicStorageClient(name, key)
+	cli, err := NewBasicClient(name, key)
 	if err != nil {
 		return nil, err
 	}

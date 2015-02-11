@@ -69,11 +69,6 @@ func (self *VirtualMachineClient) CreateAzureVM(azureVMConfiguration *Role, dnsN
 		return fmt.Errorf(errParamNotSpecified, "location")
 	}
 
-	err := self.verifyDNSname(dnsName)
-	if err != nil {
-		return err
-	}
-
 	hostedServiceClient := hostedserviceclient.NewClient(self.client)
 	requestId, err := hostedServiceClient.CreateHostedService(dnsName, location, "", dnsName, "")
 	if err != nil {
@@ -124,11 +119,6 @@ func (self *VirtualMachineClient) CreateAzureVMConfiguration(dnsName, instanceSi
 	}
 	if len(location) == 0 {
 		return nil, fmt.Errorf(errParamNotSpecified, "location")
-	}
-
-	err := self.verifyDNSname(dnsName)
-	if err != nil {
-		return nil, err
 	}
 
 	locationClient := locationclient.NewClient(self.client)
@@ -749,14 +739,6 @@ func (self *VirtualMachineClient) createEndpoint(name string, protocol string, e
 	endpoint.LocalPort = internalPort
 
 	return endpoint
-}
-
-func (self *VirtualMachineClient) verifyDNSname(dns string) error {
-	if len(dns) < 3 || len(dns) > 25 {
-		return fmt.Errorf(errInvalidDnsLength)
-	}
-
-	return nil
 }
 
 func (self *VirtualMachineClient) verifyPassword(password string) error {

@@ -2,6 +2,7 @@ package virtualmachine
 
 import (
 	"bytes"
+	"crypto/rand"
 	"crypto/sha1"
 	"encoding/base64"
 	"encoding/json"
@@ -9,6 +10,7 @@ import (
 	"encoding/xml"
 	"errors"
 	"fmt"
+	"io"
 	"io/ioutil"
 	"strings"
 	"time"
@@ -580,7 +582,7 @@ func (self *VmClient) getVHDMediaLink(dnsName, location string) (string, error) 
 
 	if storageService == nil {
 
-		uuid, err := azure.newUUID()
+		uuid, err := newUUID()
 		if err != nil {
 			return "", err
 		}

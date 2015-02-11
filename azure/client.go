@@ -11,30 +11,6 @@ const (
 	errParamNotSpecified                  = "Parameter %s is not specified."
 )
 
-// Config is used to configure the creation of a client
-type Config struct {
-	//ManagementCertificatePath is the path to a file containing the management
-	//certificate for the subscription on which this client will operate. If using
-	//this method of authentication, SubscriptionId must also be set, and
-	//PublishSettingsFilePath must not be set.
-	ManagementCertificatePath string
-
-	//SubscriptionId is the name of the subscription on which the subscription will
-	//operate. If using this method of authentication, ManagementCertificatePath must
-	//also be set, and PublishSettingsFilePath must not be set.
-	SubscriptionId string
-
-	//PublishSettingsFilePath is the path to an Azure PublishSettings file containing
-	//the management settings for a subscription. If using this method of authentication,
-	//neither ManagementCertificatePath or SubscriptionId may be set.
-	PublishSettingsFilePath string
-
-	//Anonymous flags whether any authentication options will be specified for the
-	//client. If Anonymous is set to true, this will override any other authentication
-	//options specified.
-	Anonymous bool
-}
-
 //AzureError represents an error returned by the management API. It has an error
 //code (for example, ResourceNotFound) and a descriptive message.
 type AzureError struct {
@@ -53,33 +29,29 @@ type Client struct {
 	publishSettings publishSettings
 }
 
-// NewClient returns a new client.
-func NewClient(config *Config) (*Client, error) {
+//NewAnonymouseClient creates a new azure.Client with no credentials set.
+func NewAnonymousClient() *Client {
+	return &Client{}
+}
+
+//NewClientFromPublishSettingsFile creates a new azure.Client and imports the publish
+//settings from the specified file path.
+func NewClientFromPublishSettingsFile(publishSettingsFilePath string) (*Client, error) {
 	client := &Client{}
-
-	//If the client is anonymous there's no need to load auth options.
-	if config.Anonymous {
-		return client, nil
+	err := client.importPublishSettingsFile(publishSettingsFilePath)
+	if err != nil {
+		return nil, err
 	}
+	return client, nil
+}
 
-	//Set the publish settings for the client according to the configuration
-	if config.PublishSettingsFilePath != "" {
-		if config.ManagementCertificatePath != "" || config.SubscriptionId != "" {
-			return nil, fmt.Errorf(errPublishSettingsConfiguration)
-		}
-		err := client.importPublishSettingsFile(config.PublishSettingsFilePath)
-		if err != nil {
-			return nil, err
-		}
-	} else {
-		if config.ManagementCertificatePath != "" || config.SubscriptionId != "" {
-			return nil, fmt.Errorf(errManagementCertificateConfiguration)
-		}
-		err := client.importPublishSettings(config.SubscriptionId, config.ManagementCertificatePath)
-		if err != nil {
-			return nil, err
-		}
+//NewClientFromPublishSettingsFile creates a new azure.Client and imports the publish
+//settings from the specified file path.
+func NewClientFromPublishSettings(subscriptionId string, managementCertificatePath string) (*Client, error) {
+	client := &Client{}
+	err := client.importPublishSettings(subscriptionId, managementCertificatePath)
+	if err != nil {
+		return nil, err
 	}
-
 	return client, nil
 }

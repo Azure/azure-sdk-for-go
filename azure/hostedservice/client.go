@@ -137,14 +137,15 @@ func (self *HostedServiceClient) GetHostedService(name string) (HostedService, e
 }
 
 func (self *HostedServiceClient) createHostedServiceDeploymentConfig(dnsName, location string, reverseDnsFqdn string, label string, description string) CreateHostedService {
-	deployment := CreateHostedService{}
-	deployment.ServiceName = dnsName
 	encodedLabel := base64.StdEncoding.EncodeToString([]byte(label))
-	deployment.Label = encodedLabel
-	deployment.Description = description
-	deployment.Location = location
-	deployment.ReverseDnsFqdn = reverseDnsFqdn
-	deployment.Xmlns = azureXmlns
+	deployment := CreateHostedService{
+		ServiceName:    dnsName,
+		Label:          encodedLabel,
+		Description:    description,
+		Location:       location,
+		ReverseDnsFqdn: reverseDnsFqdn,
+		Xmlns:          azureXmlns,
+	}
 	return deployment
 }
 

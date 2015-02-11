@@ -7,7 +7,7 @@ import (
 )
 
 //VmClient is used to manage operations on Azure Virtual Machines
-type VmClient struct {
+type VirtualMachineClient struct {
 	client *azure.Client
 }
 

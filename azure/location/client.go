@@ -15,11 +15,11 @@ const (
 )
 
 //NewClient is used to instantiate a new LocationClient from an Azure client
-func NewClient(client *azure.Client) *LocationClient {
-	return &LocationClient{client: client}
+func NewClient(client azure.Client) LocationClient {
+	return LocationClient{client: client}
 }
 
-func (self *LocationClient) ResolveLocation(location string) error {
+func (self LocationClient) ResolveLocation(location string) error {
 	if len(location) == 0 {
 		return fmt.Errorf(errParamNotSpecified, "location")
 	}
@@ -40,7 +40,7 @@ func (self *LocationClient) ResolveLocation(location string) error {
 	return errors.New(fmt.Sprintf(errInvalidLocation, location, locations))
 }
 
-func (self *LocationClient) GetLocationList() (LocationList, error) {
+func (self LocationClient) GetLocationList() (LocationList, error) {
 	locationList := LocationList{}
 
 	response, err := self.client.SendAzureGetRequest(azureLocationListURL)
@@ -56,7 +56,7 @@ func (self *LocationClient) GetLocationList() (LocationList, error) {
 	return locationList, nil
 }
 
-func (self *LocationClient) GetLocation(location string) (*Location, error) {
+func (self LocationClient) GetLocation(location string) (*Location, error) {
 	if len(location) == 0 {
 		return nil, fmt.Errorf(errParamNotSpecified, "location")
 	}

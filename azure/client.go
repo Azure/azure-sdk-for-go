@@ -30,28 +30,28 @@ type Client struct {
 }
 
 //NewAnonymouseClient creates a new azure.Client with no credentials set.
-func NewAnonymousClient() *Client {
-	return &Client{}
+func NewAnonymousClient() Client {
+	return Client{}
 }
 
 //NewClientFromPublishSettingsFile creates a new azure.Client and imports the publish
 //settings from the specified file path.
-func NewClientFromPublishSettingsFile(publishSettingsFilePath string) (*Client, error) {
-	client := &Client{}
+func NewClientFromPublishSettingsFile(publishSettingsFilePath string) (Client, error) {
+	client := Client{}
 	err := client.importPublishSettingsFile(publishSettingsFilePath)
 	if err != nil {
-		return nil, err
+		return client, err
 	}
 	return client, nil
 }
 
 //NewClientFromPublishSettingsFile creates a new azure.Client and imports the publish
 //settings from the specified file path.
-func NewClientFromPublishSettings(subscriptionId string, managementCertificatePath string) (*Client, error) {
-	client := &Client{}
+func NewClientFromPublishSettings(subscriptionId string, managementCertificatePath string) (Client, error) {
+	client := Client{}
 	err := client.importPublishSettings(subscriptionId, managementCertificatePath)
 	if err != nil {
-		return nil, err
+		return client, err
 	}
 	return client, nil
 }

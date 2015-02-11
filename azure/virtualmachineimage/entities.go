@@ -8,7 +8,7 @@ import (
 
 //ImageClient is used to manage operations on Azure Locations
 type ImageClient struct {
-	client *azure.Client
+	client azure.Client
 }
 
 type ImageList struct {

@@ -11,15 +11,15 @@ const (
 )
 
 //VnetClient is used to return a handle to the VnetClient API
-func NewClient(client *azure.Client) *VirtualNetworkClient {
-	return &VirtualNetworkClient{client: client}
+func NewClient(client azure.Client) VirtualNetworkClient {
+	return VirtualNetworkClient{client: client}
 }
 
 //GetVirtualNetworkConfiguration retreives the current virtual network
 //configuration for the currently active subscription. Note that the
 //underlying Azure API means that network related operations are not safe
 //for running concurrently.
-func (self *VirtualNetworkClient) GetVirtualNetworkConfiguration() (NetworkConfiguration, error) {
+func (self VirtualNetworkClient) GetVirtualNetworkConfiguration() (NetworkConfiguration, error) {
 	networkConfiguration := self.NewNetworkConfiguration()
 	response, err := self.client.SendAzureGetRequest(azureNetworkConfigurationURL)
 	if err != nil {
@@ -38,7 +38,7 @@ func (self *VirtualNetworkClient) GetVirtualNetworkConfiguration() (NetworkConfi
 //currently active subscription according to the NetworkConfiguration given.
 //Note that the underlying Azure API means that network related operations
 //are not safe for running concurrently.
-func (self *VirtualNetworkClient) SetVirtualNetworkConfiguration(networkConfiguration NetworkConfiguration) error {
+func (self VirtualNetworkClient) SetVirtualNetworkConfiguration(networkConfiguration NetworkConfiguration) error {
 	networkConfiguration.setXmlNamespaces()
 	networkConfigurationBytes, err := xml.Marshal(networkConfiguration)
 	if err != nil {

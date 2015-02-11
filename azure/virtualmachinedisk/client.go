@@ -12,11 +12,11 @@ const (
 )
 
 //NewClient is used to instantiate a new DiskClient from an Azure client
-func Disk(client *azure.Client) *DiskClient {
-	return &DiskClient{client: client}
+func NewClient(client azure.Client) DiskClient {
+	return DiskClient{client: client}
 }
 
-func (self *DiskClient) DeleteDisk(diskName string) error {
+func (self DiskClient) DeleteDisk(diskName string) error {
 	if len(diskName) == 0 {
 		return fmt.Errorf(errParamNotSpecified, "diskName")
 	}

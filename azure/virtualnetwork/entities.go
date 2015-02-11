@@ -12,7 +12,7 @@ const xmlNamespaceXsi = "http://www.w3.org/2001/XMLSchema-instance"
 
 //VnetClient is used to manage operations on Azure Virtual Networks
 type VirtualNetworkClient struct {
-	client *azure.Client
+	client azure.Client
 }
 
 //NetworkConfiguration represents the network configuration for an entire Azure

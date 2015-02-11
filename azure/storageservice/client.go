@@ -21,11 +21,11 @@ const (
 )
 
 //NewClient is used to instantiate a new StorageServiceClient from an Azure client
-func NewClient(self *azure.Client) *StorageServiceClient {
-	return &StorageServiceClient{client: self}
+func NewClient(self azure.Client) StorageServiceClient {
+	return StorageServiceClient{client: self}
 }
 
-func (self *StorageServiceClient) GetStorageServiceList() (*StorageServiceList, error) {
+func (self StorageServiceClient) GetStorageServiceList() (*StorageServiceList, error) {
 	storageServiceList := new(StorageServiceList)
 
 	response, err := self.client.SendAzureGetRequest(azureStorageServiceListURL)
@@ -41,7 +41,7 @@ func (self *StorageServiceClient) GetStorageServiceList() (*StorageServiceList, 
 	return storageServiceList, nil
 }
 
-func (self *StorageServiceClient) GetStorageServiceByName(serviceName string) (*StorageService, error) {
+func (self StorageServiceClient) GetStorageServiceByName(serviceName string) (*StorageService, error) {
 	if len(serviceName) == 0 {
 		return nil, fmt.Errorf(errParamNotSpecified, "serviceName")
 	}
@@ -61,7 +61,7 @@ func (self *StorageServiceClient) GetStorageServiceByName(serviceName string) (*
 	return storageService, nil
 }
 
-func (self *StorageServiceClient) GetStorageServiceByLocation(location string) (*StorageService, error) {
+func (self StorageServiceClient) GetStorageServiceByLocation(location string) (*StorageService, error) {
 	if len(location) == 0 {
 		return nil, fmt.Errorf(errParamNotSpecified, "location")
 	}
@@ -83,7 +83,7 @@ func (self *StorageServiceClient) GetStorageServiceByLocation(location string) (
 	return nil, nil
 }
 
-func (self *StorageServiceClient) CreateStorageService(name, location string) (*StorageService, error) {
+func (self StorageServiceClient) CreateStorageService(name, location string) (*StorageService, error) {
 	if len(name) == 0 {
 		return nil, fmt.Errorf(errParamNotSpecified, "name")
 	}
@@ -111,7 +111,7 @@ func (self *StorageServiceClient) CreateStorageService(name, location string) (*
 	return storageService, nil
 }
 
-func (self *StorageServiceClient) GetBlobEndpoint(storageService *StorageService) (string, error) {
+func (self StorageServiceClient) GetBlobEndpoint(storageService *StorageService) (string, error) {
 	for _, endpoint := range storageService.StorageServiceProperties.Endpoints {
 		if !strings.Contains(endpoint, ".blob.core") {
 			continue

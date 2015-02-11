@@ -8,7 +8,7 @@ import (
 
 //HostedServiceClient is used to manage operations on Azure Hosted Services
 type HostedServiceClient struct {
-	client *azure.Client
+	client azure.Client
 }
 
 type CreateHostedService struct {

@@ -23,11 +23,11 @@ const (
 )
 
 //NewClient is used to return a handle to the HostedService API
-func NewClient(client *azure.Client) *HostedServiceClient {
-	return &HostedServiceClient{client: client}
+func NewClient(client azure.Client) HostedServiceClient {
+	return HostedServiceClient{client: client}
 }
 
-func (self *HostedServiceClient) CreateHostedService(dnsName, location string, reverseDnsFqdn string, label string, description string) (string, error) {
+func (self HostedServiceClient) CreateHostedService(dnsName, location string, reverseDnsFqdn string, label string, description string) (string, error) {
 	if len(dnsName) == 0 {
 		return "", fmt.Errorf(errParamNotSpecified, "dnsName")
 	}
@@ -64,7 +64,7 @@ func (self *HostedServiceClient) CreateHostedService(dnsName, location string, r
 	return requestId, nil
 }
 
-func (self *HostedServiceClient) CheckHostedServiceNameAvailability(dnsName string) (bool, string, error) {
+func (self HostedServiceClient) CheckHostedServiceNameAvailability(dnsName string) (bool, string, error) {
 	if len(dnsName) == 0 {
 		return false, "", fmt.Errorf(errParamNotSpecified, "dnsName")
 	}
@@ -84,7 +84,7 @@ func (self *HostedServiceClient) CheckHostedServiceNameAvailability(dnsName stri
 	return availabilityResponse.Result, availabilityResponse.Reason, nil
 }
 
-func (self *HostedServiceClient) DeleteHostedService(dnsName string) error {
+func (self HostedServiceClient) DeleteHostedService(dnsName string) error {
 	if len(dnsName) == 0 {
 		return fmt.Errorf(errParamNotSpecified, "dnsName")
 	}
@@ -98,7 +98,7 @@ func (self *HostedServiceClient) DeleteHostedService(dnsName string) error {
 	return self.client.WaitAsyncOperation(requestId)
 }
 
-func (self *HostedServiceClient) GetHostedService(name string) (HostedService, error) {
+func (self HostedServiceClient) GetHostedService(name string) (HostedService, error) {
 	hostedService := HostedService{}
 
 	requestURL := fmt.Sprintf(getHostedServicePropertiesURL, name)
@@ -120,7 +120,7 @@ func (self *HostedServiceClient) GetHostedService(name string) (HostedService, e
 	return hostedService, nil
 }
 
-func (self *HostedServiceClient) createHostedServiceDeploymentConfig(dnsName, location string, reverseDnsFqdn string, label string, description string) CreateHostedService {
+func (self HostedServiceClient) createHostedServiceDeploymentConfig(dnsName, location string, reverseDnsFqdn string, label string, description string) CreateHostedService {
 	encodedLabel := base64.StdEncoding.EncodeToString([]byte(label))
 	deployment := CreateHostedService{
 		ServiceName:    dnsName,

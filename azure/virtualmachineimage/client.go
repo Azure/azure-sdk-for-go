@@ -15,11 +15,11 @@ const (
 )
 
 //NewClient is used to instantiate a new ImageClient from an Azure client
-func NewClient(client *azure.Client) *ImageClient {
-	return &ImageClient{client: client}
+func NewClient(client azure.Client) ImageClient {
+	return ImageClient{client: client}
 }
 
-func (self *ImageClient) GetImageList() (ImageList, error) {
+func (self ImageClient) GetImageList() (ImageList, error) {
 	imageList := ImageList{}
 
 	response, err := self.client.SendAzureGetRequest(azureImageListURL)
@@ -35,7 +35,7 @@ func (self *ImageClient) GetImageList() (ImageList, error) {
 	return imageList, err
 }
 
-func (self *ImageClient) ResolveImageName(imageName string) error {
+func (self ImageClient) ResolveImageName(imageName string) error {
 	if len(imageName) == 0 {
 		return fmt.Errorf(errParamNotSpecified, "imageName")
 	}

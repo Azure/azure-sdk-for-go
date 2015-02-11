@@ -11,7 +11,7 @@ import (
 
 //LocationClient is used to manage operations on Azure Locations
 type LocationClient struct {
-	client *azure.Client
+	client azure.Client
 }
 
 type LocationList struct {

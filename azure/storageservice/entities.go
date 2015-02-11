@@ -8,7 +8,7 @@ import (
 
 //StorageServiceClient is used to manage operations on Azure Storage
 type StorageServiceClient struct {
-	client *azure.Client
+	client azure.Client
 }
 
 type StorageServiceList struct {

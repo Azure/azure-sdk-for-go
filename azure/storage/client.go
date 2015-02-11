@@ -12,8 +12,6 @@ import (
 	"regexp"
 	"sort"
 	"strings"
-
-	"github.com/MSOpenTech/azure-sdk-for-go/azure"
 )
 
 const (
@@ -29,7 +27,6 @@ const (
 // StorageClient is the object that needs to be constructed
 // to perform operations on the storage account.
 type StorageClient struct {
-	client      *azure.Client
 	accountName string
 	accountKey  []byte
 	useHttps    bool
@@ -59,28 +56,28 @@ type StorageServiceError struct {
 
 // NewBasicClient constructs a StorageClient with given storage service name
 // and key.
-func NewBasicClient(accountName, accountKey string) (*StorageClient, error) {
+func NewBasicClient(accountName, accountKey string) (StorageClient, error) {
 	return NewClient(accountName, accountKey, DefaultBaseUrl, DefaultApiVersion, defaultUseHttps)
 }
 
 // NewClient constructs a StorageClient. This should be used if the caller
 // wants to specify whether to use HTTPS, a specific REST API version or a
 // custom storage endpoint than Azure Public Cloud.
-func NewClient(accountName, accountKey, blobServiceBaseUrl, apiVersion string, useHttps bool) (*StorageClient, error) {
+func NewClient(accountName, accountKey, blobServiceBaseUrl, apiVersion string, useHttps bool) (StorageClient, error) {
 	if accountName == "" {
-		return nil, fmt.Errorf("azure: account name required")
+		return StorageClient{}, fmt.Errorf("azure: account name required")
 	} else if accountKey == "" {
-		return nil, fmt.Errorf("azure: account key required")
+		return StorageClient{}, fmt.Errorf("azure: account key required")
 	} else if blobServiceBaseUrl == "" {
-		return nil, fmt.Errorf("azure: base storage service url required")
+		return StorageClient{}, fmt.Errorf("azure: base storage service url required")
 	}
 
 	key, err := base64.StdEncoding.DecodeString(accountKey)
 	if err != nil {
-		return nil, err
+		return StorageClient{}, err
 	}
 
-	return &StorageClient{
+	return StorageClient{
 		accountName: accountName,
 		accountKey:  key,
 		useHttps:    useHttps,
@@ -88,7 +85,7 @@ func NewClient(accountName, accountKey, blobServiceBaseUrl, apiVersion string, u
 		apiVersion:  apiVersion}, nil
 }
 
-func (c *StorageClient) getBaseUrl(service string) string {
+func (c StorageClient) getBaseUrl(service string) string {
 	scheme := "http"
 	if c.useHttps {
 		scheme = "https"
@@ -102,7 +99,7 @@ func (c *StorageClient) getBaseUrl(service string) string {
 	return u.String()
 }
 
-func (c *StorageClient) getEndpoint(service, path string, params url.Values) string {
+func (c StorageClient) getEndpoint(service, path string, params url.Values) string {
 	u, err := url.Parse(c.getBaseUrl(service))
 	if err != nil {
 		// really should not be happening
@@ -120,16 +117,16 @@ func (c *StorageClient) getEndpoint(service, path string, params url.Values) str
 
 // GetBlobService returns a BlobStorageClient which can operate on the
 // blob service of the storage account.
-func (c *StorageClient) GetBlobService() *BlobStorageClient {
+func (c StorageClient) GetBlobService() *BlobStorageClient {
 	return &BlobStorageClient{c}
 }
 
-func (c *StorageClient) createAuthorizationHeader(canonicalizedString string) string {
+func (c StorageClient) createAuthorizationHeader(canonicalizedString string) string {
 	signature := c.computeHmac256(canonicalizedString)
 	return fmt.Sprintf("%s %s:%s", "SharedKey", c.accountName, signature)
 }
 
-func (c *StorageClient) getAuthorizationHeader(verb, url string, headers map[string]string) (string, error) {
+func (c StorageClient) getAuthorizationHeader(verb, url string, headers map[string]string) (string, error) {
 	canonicalizedResource, err := c.buildCanonicalizedResource(url)
 	if err != nil {
 		return "", err
@@ -139,14 +136,14 @@ func (c *StorageClient) getAuthorizationHeader(verb, url string, headers map[str
 	return c.createAuthorizationHeader(canonicalizedString), nil
 }
 
-func (c *StorageClient) getStandardHeaders() map[string]string {
+func (c StorageClient) getStandardHeaders() map[string]string {
 	return map[string]string{
 		"x-ms-version": c.apiVersion,
 		"x-ms-date":    currentTimeRfc1123Formatted(),
 	}
 }
 
-func (c *StorageClient) buildCanonicalizedHeader(headers map[string]string) string {
+func (c StorageClient) buildCanonicalizedHeader(headers map[string]string) string {
 	cm := make(map[string]string)
 
 	for k, v := range headers {
@@ -180,7 +177,7 @@ func (c *StorageClient) buildCanonicalizedHeader(headers map[string]string) stri
 	return ch
 }
 
-func (c *StorageClient) buildCanonicalizedResource(uri string) (string, error) {
+func (c StorageClient) buildCanonicalizedResource(uri string) (string, error) {
 	errMsg := "buildCanonicalizedResource error: %s"
 	u, err := url.Parse(uri)
 	if err != nil {
@@ -221,7 +218,7 @@ func (c *StorageClient) buildCanonicalizedResource(uri string) (string, error) {
 	return cr, nil
 }
 
-func (c *StorageClient) buildCanonicalizedString(verb string, headers map[string]string, canonicalizedResource string) string {
+func (c StorageClient) buildCanonicalizedString(verb string, headers map[string]string, canonicalizedResource string) string {
 	canonicalizedString := fmt.Sprintf("%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s",
 		verb,
 		headers["Content-Encoding"],
@@ -241,7 +238,7 @@ func (c *StorageClient) buildCanonicalizedString(verb string, headers map[string
 	return canonicalizedString
 }
 
-func (c *StorageClient) exec(verb, url string, headers map[string]string, body io.Reader) (*storageResponse, error) {
+func (c StorageClient) exec(verb, url string, headers map[string]string, body io.Reader) (*storageResponse, error) {
 	authHeader, err := c.getAuthorizationHeader(verb, url, headers)
 	if err != nil {
 		return nil, err

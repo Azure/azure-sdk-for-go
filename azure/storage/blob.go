@@ -15,7 +15,7 @@ import (
 )
 
 type BlobStorageClient struct {
-	client *StorageClient
+	client StorageClient
 }
 
 // A Container is an entry in ContainerListResponse.

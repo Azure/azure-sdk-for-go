@@ -56,8 +56,6 @@ func NewClient(client *azure.Client) *VirtualMachineClient {
 	return &VirtualMachineClient{client: client}
 }
 
-//Region public methods starts
-
 func (self *VirtualMachineClient) CreateAzureVM(azureVMConfiguration *Role, dnsName, location string) error {
 	if azureVMConfiguration == nil {
 		return fmt.Errorf(errParamNotSpecified, "azureVMConfiguration")
@@ -466,10 +464,6 @@ func (self *VirtualMachineClient) ResolveRoleSize(roleSizeName string) error {
 	return errors.New(fmt.Sprintf(errInvalidRoleSize, roleSizeName, strings.Trim(availableSizes.String(), ", ")))
 }
 
-//Region public methods ends
-
-//Region private methods starts
-
 func (self *VirtualMachineClient) createStartRoleOperation() StartRoleOperation {
 	startRoleOperation := StartRoleOperation{}
 	startRoleOperation.OperationType = "StartRoleOperation"
@@ -790,5 +784,3 @@ func newUUID() (string, error) {
 	//return fmt.Sprintf("%x-%x-%x-%x-%x", uuid[0:4], uuid[4:6], uuid[6:8], uuid[8:10], uuid[10:]), nil
 	return fmt.Sprintf("%x", uuid[10:]), nil
 }
-
-//Region private methods ends

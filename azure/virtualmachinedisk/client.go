@@ -16,8 +16,6 @@ func Disk(client *azure.Client) *DiskClient {
 	return &DiskClient{client: client}
 }
 
-//Region public methods starts
-
 func (self *DiskClient) DeleteDisk(diskName string) error {
 	if len(diskName) == 0 {
 		return fmt.Errorf(errParamNotSpecified, "diskName")
@@ -32,5 +30,3 @@ func (self *DiskClient) DeleteDisk(diskName string) error {
 	self.client.WaitAsyncOperation(requestId)
 	return nil
 }
-
-//Region public methods ends

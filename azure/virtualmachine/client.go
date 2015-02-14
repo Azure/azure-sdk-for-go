@@ -100,9 +100,7 @@ func (self VirtualMachineClient) CreateAzureVM(azureVMConfiguration *Role, dnsNa
 		return err
 	}
 
-	self.client.WaitAsyncOperation(requestId)
-
-	return nil
+	return self.client.WaitAsyncOperation(requestId)
 }
 
 func (self VirtualMachineClient) CreateAzureVMConfiguration(dnsName, instanceSize, imageName, location string) (*Role, error) {
@@ -285,7 +283,10 @@ func (self VirtualMachineClient) DeleteVMDeployment(cloudserviceName, deployment
 		return err
 	}
 
-	self.client.WaitAsyncOperation(requestId)
+	err = self.client.WaitAsyncOperation(requestId)
+	if err != nil {
+		return err
+	}
 
 	return nil
 }
@@ -341,8 +342,7 @@ func (self VirtualMachineClient) StartRole(cloudserviceName, deploymentName, rol
 		return azureErr
 	}
 
-	self.client.WaitAsyncOperation(requestId)
-	return nil
+	return self.client.WaitAsyncOperation(requestId)
 }
 
 func (self VirtualMachineClient) ShutdownRole(cloudserviceName, deploymentName, roleName string) error {
@@ -369,8 +369,7 @@ func (self VirtualMachineClient) ShutdownRole(cloudserviceName, deploymentName, 
 		return azureErr
 	}
 
-	self.client.WaitAsyncOperation(requestId)
-	return nil
+	return self.client.WaitAsyncOperation(requestId)
 }
 
 func (self VirtualMachineClient) RestartRole(cloudserviceName, deploymentName, roleName string) error {
@@ -397,8 +396,7 @@ func (self VirtualMachineClient) RestartRole(cloudserviceName, deploymentName, r
 		return azureErr
 	}
 
-	self.client.WaitAsyncOperation(requestId)
-	return nil
+	return self.client.WaitAsyncOperation(requestId)
 }
 
 func (self VirtualMachineClient) DeleteRole(cloudserviceName, deploymentName, roleName string) error {
@@ -418,8 +416,7 @@ func (self VirtualMachineClient) DeleteRole(cloudserviceName, deploymentName, ro
 		return azureErr
 	}
 
-	self.client.WaitAsyncOperation(requestId)
-	return nil
+	return self.client.WaitAsyncOperation(requestId)
 }
 
 func (self VirtualMachineClient) GetRoleSizeList() (RoleSizeList, error) {
@@ -638,8 +635,7 @@ func (self VirtualMachineClient) uploadServiceCert(dnsName, certPath string) err
 		return azureErr
 	}
 
-	err = self.client.WaitAsyncOperation(requestId)
-	return err
+	return self.client.WaitAsyncOperation(requestId)
 }
 
 func (self VirtualMachineClient) createServiceCertDeploymentConf(certPath string) (ServiceCertificate, error) {

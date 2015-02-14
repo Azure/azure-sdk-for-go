@@ -3,12 +3,12 @@ package hostedservice
 import (
 	"encoding/xml"
 
-	"github.com/MSOpenTech/azure-sdk-for-go/azure"
+	"github.com/MSOpenTech/azure-sdk-for-go/management"
 )
 
 //HostedServiceClient is used to manage operations on Azure Hosted Services
 type HostedServiceClient struct {
-	client azure.Client
+	client management.Client
 }
 
 type CreateHostedService struct {

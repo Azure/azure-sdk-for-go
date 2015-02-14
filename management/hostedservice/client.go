@@ -5,8 +5,8 @@ import (
 	"encoding/xml"
 	"fmt"
 
-	"github.com/MSOpenTech/azure-sdk-for-go/azure"
-	locationclient "github.com/MSOpenTech/azure-sdk-for-go/azure/location"
+	"github.com/MSOpenTech/azure-sdk-for-go/management"
+	locationclient "github.com/MSOpenTech/azure-sdk-for-go/management/location"
 )
 
 const (
@@ -23,7 +23,7 @@ const (
 )
 
 //NewClient is used to return a handle to the HostedService API
-func NewClient(client azure.Client) HostedServiceClient {
+func NewClient(client management.Client) HostedServiceClient {
 	return HostedServiceClient{client: client}
 }
 

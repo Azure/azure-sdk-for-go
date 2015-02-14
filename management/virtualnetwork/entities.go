@@ -3,7 +3,7 @@ package virtualnetwork
 import (
 	"encoding/xml"
 
-	"github.com/MSOpenTech/azure-sdk-for-go/azure"
+	"github.com/MSOpenTech/azure-sdk-for-go/management"
 )
 
 const xmlNamespace = "http://schemas.microsoft.com/ServiceHosting/2011/07/NetworkConfiguration"
@@ -12,7 +12,7 @@ const xmlNamespaceXsi = "http://www.w3.org/2001/XMLSchema-instance"
 
 //VnetClient is used to manage operations on Azure Virtual Networks
 type VirtualNetworkClient struct {
-	client azure.Client
+	client management.Client
 }
 
 //NetworkConfiguration represents the network configuration for an entire Azure

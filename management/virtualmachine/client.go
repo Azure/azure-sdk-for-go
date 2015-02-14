@@ -16,11 +16,11 @@ import (
 	"time"
 	"unicode"
 
-	"github.com/MSOpenTech/azure-sdk-for-go/azure"
-	hostedserviceclient "github.com/MSOpenTech/azure-sdk-for-go/azure/hostedservice"
-	locationclient "github.com/MSOpenTech/azure-sdk-for-go/azure/location"
-	storageserviceclient "github.com/MSOpenTech/azure-sdk-for-go/azure/storageservice"
-	imageclient "github.com/MSOpenTech/azure-sdk-for-go/azure/virtualmachineimage"
+	"github.com/MSOpenTech/azure-sdk-for-go/management"
+	hostedserviceclient "github.com/MSOpenTech/azure-sdk-for-go/management/hostedservice"
+	locationclient "github.com/MSOpenTech/azure-sdk-for-go/management/location"
+	storageserviceclient "github.com/MSOpenTech/azure-sdk-for-go/management/storageservice"
+	imageclient "github.com/MSOpenTech/azure-sdk-for-go/management/virtualmachineimage"
 )
 
 const (
@@ -52,7 +52,7 @@ const (
 )
 
 //NewClient is used to instantiate a new VmClient from an Azure client
-func NewClient(client azure.Client) VirtualMachineClient {
+func NewClient(client management.Client) VirtualMachineClient {
 	return VirtualMachineClient{client: client}
 }
 

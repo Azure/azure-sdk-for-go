@@ -3,7 +3,7 @@ package virtualnetwork
 import (
 	"encoding/xml"
 
-	"github.com/MSOpenTech/azure-sdk-for-go/azure"
+	"github.com/MSOpenTech/azure-sdk-for-go/management"
 )
 
 const (
@@ -11,7 +11,7 @@ const (
 )
 
 //VnetClient is used to return a handle to the VnetClient API
-func NewClient(client azure.Client) VirtualNetworkClient {
+func NewClient(client management.Client) VirtualNetworkClient {
 	return VirtualNetworkClient{client: client}
 }
 

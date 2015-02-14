@@ -7,7 +7,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/MSOpenTech/azure-sdk-for-go/azure"
+	"github.com/MSOpenTech/azure-sdk-for-go/management"
 )
 
 const (
@@ -21,7 +21,7 @@ const (
 )
 
 //NewClient is used to instantiate a new StorageServiceClient from an Azure client
-func NewClient(self azure.Client) StorageServiceClient {
+func NewClient(self management.Client) StorageServiceClient {
 	return StorageServiceClient{client: self}
 }
 

@@ -1,4 +1,4 @@
-package azure
+package management
 
 import (
 	"bytes"

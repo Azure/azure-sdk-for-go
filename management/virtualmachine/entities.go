@@ -3,12 +3,12 @@ package virtualmachine
 import (
 	"encoding/xml"
 
-	"github.com/MSOpenTech/azure-sdk-for-go/azure"
+	"github.com/MSOpenTech/azure-sdk-for-go/management"
 )
 
 //VmClient is used to manage operations on Azure Virtual Machines
 type VirtualMachineClient struct {
-	client azure.Client
+	client management.Client
 }
 
 type VMDeployment struct {

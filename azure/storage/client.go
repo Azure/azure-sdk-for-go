@@ -75,7 +75,7 @@ func NewClient(accountName, accountKey, blobServiceBaseUrl, apiVersion string, u
 
 	key, err := base64.StdEncoding.DecodeString(accountKey)
 	if err != nil {
-		return c, nil
+		return c, err
 	}
 
 	return StorageClient{

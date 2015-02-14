@@ -102,7 +102,11 @@ func (self StorageServiceClient) CreateStorageService(name, location string) (*S
 		return nil, err
 	}
 
-	self.client.WaitAsyncOperation(requestId)
+	err = self.client.WaitAsyncOperation(requestId)
+	if err != nil {
+		return nil, err
+	}
+
 	storageService, err := self.GetStorageServiceByName(storageDeploymentConfig.ServiceName)
 	if err != nil {
 		return nil, err

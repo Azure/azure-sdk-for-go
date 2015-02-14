@@ -27,6 +27,5 @@ func (self DiskClient) DeleteDisk(diskName string) error {
 		return err
 	}
 
-	self.client.WaitAsyncOperation(requestId)
-	return nil
+	return self.client.WaitAsyncOperation(requestId)
 }

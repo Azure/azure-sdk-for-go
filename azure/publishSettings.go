@@ -8,26 +8,6 @@ import (
 	"io/ioutil"
 )
 
-func (client *Client) importPublishSettings(id string, certPath string) error {
-	if len(id) == 0 {
-		return fmt.Errorf(errParamNotSpecified, "id")
-	}
-	if len(certPath) == 0 {
-		return fmt.Errorf(errParamNotSpecified, "certPath")
-	}
-
-	cert, err := ioutil.ReadFile(certPath)
-	if err != nil {
-		return err
-	}
-
-	client.publishSettings.SubscriptionID = id
-	client.publishSettings.SubscriptionCert = cert
-	client.publishSettings.SubscriptionKey = cert
-
-	return nil
-}
-
 func (client *Client) importPublishSettingsFile(filePath string) error {
 	if len(filePath) == 0 {
 		return fmt.Errorf(errParamNotSpecified, "filePath")

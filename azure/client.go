@@ -52,41 +52,43 @@ func NewClient(subscriptionID string, managementCertificatePath string, baseURL 
 // NewClientFromPublishSettingsFile creates a new azure.Client using the
 // given publishsettings file path and custom API endpoint
 func NewClientFromPublishSettingsFile(publishSettingsFilePath string, baseURL string) (Client, error) {
-	var client Client
+	client := newClient(baseURL)
 	if publishSettingsFilePath == "" {
-		return client, errors.New("azure: publishsettings file path required")
+		return *client, errors.New("azure: publishsettings file path required")
 	} else if baseURL == "" {
-		return client, errors.New("azure: base URL required")
+		return *client, errors.New("azure: base URL required")
 	}
 
 	err := client.importPublishSettingsFile(publishSettingsFilePath)
 	if err != nil {
-		return client, err
+		return *client, err
 	}
 
-	return Client{
-		baseURL: baseURL,
-	}, nil
+	return *client, nil
 }
 
 // NewClientFromPublishSettings creates a new azure.Client using the
 // given subscription ID, management certificate path and custom API endpoint
 func NewClientFromPublishSettings(subscriptionID string, managementCertificatePath string, baseURL string) (Client, error) {
-	var client Client
+	client := newClient(baseURL)
 	if subscriptionID == "" {
-		return client, errors.New("azure: subscription ID required")
+		return *client, errors.New("azure: subscription ID required")
 	} else if managementCertificatePath == "" {
-		return client, errors.New("azure: management certificate path required")
+		return *client, errors.New("azure: management certificate path required")
 	} else if baseURL == "" {
-		return client, errors.New("azure: base URL required")
+		return *client, errors.New("azure: base URL required")
 	}
 
 	err := client.importPublishSettings(subscriptionID, managementCertificatePath)
 	if err != nil {
-		return client, err
+		return *client, err
 	}
 
-	return Client{
+	return *client, nil
+}
+
+func newClient(baseURL string) *Client {
+	return &Client{
 		baseURL: baseURL,
-	}, nil
+	}
 }

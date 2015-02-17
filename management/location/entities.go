@@ -6,12 +6,12 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/MSOpenTech/azure-sdk-for-go/azure"
+	"github.com/MSOpenTech/azure-sdk-for-go/management"
 )
 
 //LocationClient is used to manage operations on Azure Locations
 type LocationClient struct {
-	client azure.Client
+	client management.Client
 }
 
 type LocationList struct {

@@ -3,7 +3,7 @@ package virtualmachinedisk
 import (
 	"fmt"
 
-	"github.com/MSOpenTech/azure-sdk-for-go/azure"
+	"github.com/MSOpenTech/azure-sdk-for-go/management"
 )
 
 const (
@@ -12,7 +12,7 @@ const (
 )
 
 //NewClient is used to instantiate a new DiskClient from an Azure client
-func NewClient(client azure.Client) DiskClient {
+func NewClient(client management.Client) DiskClient {
 	return DiskClient{client: client}
 }
 

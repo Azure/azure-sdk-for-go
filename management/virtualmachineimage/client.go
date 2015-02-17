@@ -5,7 +5,7 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/MSOpenTech/azure-sdk-for-go/azure"
+	"github.com/MSOpenTech/azure-sdk-for-go/management"
 )
 
 const (
@@ -15,7 +15,7 @@ const (
 )
 
 //NewClient is used to instantiate a new ImageClient from an Azure client
-func NewClient(client azure.Client) ImageClient {
+func NewClient(client management.Client) ImageClient {
 	return ImageClient{client: client}
 }
 

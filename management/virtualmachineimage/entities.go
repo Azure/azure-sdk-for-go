@@ -3,12 +3,12 @@ package virtualmachineimage
 import (
 	"encoding/xml"
 
-	"github.com/MSOpenTech/azure-sdk-for-go/azure"
+	"github.com/MSOpenTech/azure-sdk-for-go/management"
 )
 
 //ImageClient is used to manage operations on Azure Locations
 type ImageClient struct {
-	client azure.Client
+	client management.Client
 }
 
 type ImageList struct {

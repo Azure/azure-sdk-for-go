@@ -25,8 +25,8 @@ import (
     "fmt"
     "os"
     
-    "github.com/MSOpenTech/azure-sdk-for-go/azure"
-    "github.com/MSOpenTech/azure-sdk-for-go/azure/virtualmachine"
+    "github.com/MSOpenTech/azure-sdk-for-go/management"
+    "github.com/MSOpenTech/azure-sdk-for-go/management/virtualmachine"
 )
 
 func main() {
@@ -39,7 +39,7 @@ func main() {
     sshCert := ""
     sshPort := 22
 
-    client, err := azure.NewClientFromPublishSettings(SUBSCRIPTION_ID, SUBSCRIPTION_CERTIFICATE)
+    client, err := management.NewClientFromPublishSettings(SUBSCRIPTION_ID, SUBSCRIPTION_CERTIFICATE)
     if err != nil {
     	fmt.Println(err)
     	os.Exit(1)

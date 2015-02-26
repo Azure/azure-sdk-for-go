@@ -2,17 +2,19 @@ package management
 
 import (
 	"encoding/xml"
+	"errors"
 	"fmt"
 )
 
 const (
+	defaultAzureManagementURL             = "https://management.core.windows.net"
 	errPublishSettingsConfiguration       = "PublishSettingsFilePath is set. Consequently ManagementCertificatePath and SubscriptionId must not be set."
 	errManagementCertificateConfiguration = "Both ManagementCertificatePath and SubscriptionId should be set, and PublishSettingsFilePath must not be set."
 	errParamNotSpecified                  = "Parameter %s is not specified."
 )
 
-//AzureError represents an error returned by the management API. It has an error
-//code (for example, ResourceNotFound) and a descriptive message.
+// AzureError represents an error returned by the management API. It has an error
+// code (for example, ResourceNotFound) and a descriptive message.
 type AzureError struct {
 	XMLName xml.Name `xml:"Error"`
 	Code    string
@@ -26,32 +28,49 @@ func (e *AzureError) Error() string {
 
 // Client provides a client to the Azure API.
 type Client struct {
+	managementURL   string
 	publishSettings publishSettings
 }
 
-//NewAnonymouseClient creates a new azure.Client with no credentials set.
+// ClientConfig provides a configuration for use by a Client
+type ClientConfig struct {
+	ManagementURL string
+}
+
+// NewAnonymousClient creates a new azure.Client with no credentials set.
 func NewAnonymousClient() Client {
 	return Client{}
 }
 
-//NewClientFromPublishSettingsFile creates a new azure.Client and imports the publish
-//settings from the specified file path.
-func NewClientFromPublishSettingsFile(publishSettingsFilePath string) (Client, error) {
-	client := Client{}
-	err := client.importPublishSettingsFile(publishSettingsFilePath)
-	if err != nil {
-		return client, err
-	}
-	return client, nil
+// NewClient creates a new Client using the given subscription ID and
+// management certificate
+func NewClient(subscriptionID string, managementCert []byte) (Client, error) {
+	return makeClient(subscriptionID, managementCert, defaultAzureManagementURL)
 }
 
-//NewClientFromPublishSettingsFile creates a new azure.Client and imports the publish
-//settings from the specified file path.
-func NewClientFromPublishSettings(subscriptionId string, managementCertificatePath string) (Client, error) {
-	client := Client{}
-	err := client.importPublishSettings(subscriptionId, managementCertificatePath)
-	if err != nil {
-		return client, err
+// NewClientFromConfig creates a new Client using a given ClientConfig
+func NewClientFromConfig(subscriptionID string, managementCert []byte, config ClientConfig) (Client, error) {
+	return makeClient(subscriptionID, managementCert, config.ManagementURL)
+}
+
+func makeClient(subscriptionID string, managementCert []byte, managementURL string) (Client, error) {
+	var client Client
+	if subscriptionID == "" {
+		return client, errors.New("azure: subscription ID required")
+	} else if len(managementCert) == 0 {
+		return client, errors.New("azure: management certificate required")
+	} else if managementURL == "" {
+		return client, errors.New("azure: base URL required")
 	}
-	return client, nil
+
+	publishSettings := publishSettings{
+		SubscriptionID:   subscriptionID,
+		SubscriptionCert: managementCert,
+		SubscriptionKey:  managementCert,
+	}
+
+	return Client{
+		managementURL:   managementURL,
+		publishSettings: publishSettings,
+	}, nil
 }

@@ -45,7 +45,8 @@ func NewAnonymousClient() Client {
 // NewClient creates a new Client using the given subscription ID and
 // management certificate
 func NewClient(subscriptionID string, managementCert []byte) (Client, error) {
-	return makeClient(subscriptionID, managementCert, defaultAzureManagementURL)
+	config := ClientConfig{ManagementURL: defaultAzureManagementURL}
+	return NewClientFromConfig(subscriptionID, managementCert, config)
 }
 
 // NewClientFromConfig creates a new Client using a given ClientConfig

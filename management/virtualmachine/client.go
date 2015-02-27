@@ -60,10 +60,10 @@ func (self VirtualMachineClient) CreateAzureVM(azureVMConfiguration *Role, dnsNa
 	if azureVMConfiguration == nil {
 		return fmt.Errorf(errParamNotSpecified, "azureVMConfiguration")
 	}
-	if len(dnsName) == 0 {
+	if dnsName == "" {
 		return fmt.Errorf(errParamNotSpecified, "dnsName")
 	}
-	if len(location) == 0 {
+	if location == "" {
 		return fmt.Errorf(errParamNotSpecified, "location")
 	}
 
@@ -104,16 +104,16 @@ func (self VirtualMachineClient) CreateAzureVM(azureVMConfiguration *Role, dnsNa
 }
 
 func (self VirtualMachineClient) CreateAzureVMConfiguration(dnsName, instanceSize, imageName, location string) (*Role, error) {
-	if len(dnsName) == 0 {
+	if dnsName == "" {
 		return nil, fmt.Errorf(errParamNotSpecified, "dnsName")
 	}
-	if len(instanceSize) == 0 {
+	if instanceSize == "" {
 		return nil, fmt.Errorf(errParamNotSpecified, "instanceSize")
 	}
-	if len(imageName) == 0 {
+	if imageName == "" {
 		return nil, fmt.Errorf(errParamNotSpecified, "imageName")
 	}
-	if len(location) == 0 {
+	if location == "" {
 		return nil, fmt.Errorf(errParamNotSpecified, "location")
 	}
 
@@ -144,7 +144,7 @@ func (self VirtualMachineClient) AddAzureLinuxProvisioningConfig(azureVMConfigur
 	if azureVMConfiguration == nil {
 		return nil, fmt.Errorf(errParamNotSpecified, "azureVMConfiguration")
 	}
-	if len(userName) == 0 {
+	if userName == "" {
 		return nil, fmt.Errorf(errParamNotSpecified, "userName")
 	}
 
@@ -177,16 +177,16 @@ func (self VirtualMachineClient) SetAzureVMExtension(azureVMConfiguration *Role,
 	if azureVMConfiguration == nil {
 		return nil, fmt.Errorf(errParamNotSpecified, "azureVMConfiguration")
 	}
-	if len(name) == 0 {
+	if name == "" {
 		return nil, fmt.Errorf(errParamNotSpecified, "name")
 	}
-	if len(publisher) == 0 {
+	if publisher == "" {
 		return nil, fmt.Errorf(errParamNotSpecified, "publisher")
 	}
-	if len(version) == 0 {
+	if version == "" {
 		return nil, fmt.Errorf(errParamNotSpecified, "version")
 	}
-	if len(referenceName) == 0 {
+	if referenceName == "" {
 		return nil, fmt.Errorf(errParamNotSpecified, "referenceName")
 	}
 
@@ -225,7 +225,7 @@ func (self VirtualMachineClient) SetAzureDockerVMExtension(azureVMConfiguration 
 		return nil, fmt.Errorf(errParamNotSpecified, "azureVMConfiguration")
 	}
 
-	if len(version) == 0 {
+	if version == "" {
 		version = "0.3"
 	}
 
@@ -246,10 +246,10 @@ func (self VirtualMachineClient) SetAzureDockerVMExtension(azureVMConfiguration 
 }
 
 func (self VirtualMachineClient) GetVMDeployment(cloudserviceName, deploymentName string) (*VMDeployment, error) {
-	if len(cloudserviceName) == 0 {
+	if cloudserviceName == "" {
 		return nil, fmt.Errorf(errParamNotSpecified, "cloudserviceName")
 	}
-	if len(deploymentName) == 0 {
+	if deploymentName == "" {
 		return nil, fmt.Errorf(errParamNotSpecified, "deploymentName")
 	}
 
@@ -270,10 +270,10 @@ func (self VirtualMachineClient) GetVMDeployment(cloudserviceName, deploymentNam
 }
 
 func (self VirtualMachineClient) DeleteVMDeployment(cloudserviceName, deploymentName string) error {
-	if len(cloudserviceName) == 0 {
+	if cloudserviceName == "" {
 		return fmt.Errorf(errParamNotSpecified, "cloudserviceName")
 	}
-	if len(deploymentName) == 0 {
+	if deploymentName == "" {
 		return fmt.Errorf(errParamNotSpecified, "deploymentName")
 	}
 
@@ -292,13 +292,13 @@ func (self VirtualMachineClient) DeleteVMDeployment(cloudserviceName, deployment
 }
 
 func (self VirtualMachineClient) GetRole(cloudserviceName, deploymentName, roleName string) (*Role, error) {
-	if len(cloudserviceName) == 0 {
+	if cloudserviceName == "" {
 		return nil, fmt.Errorf(errParamNotSpecified, "cloudserviceName")
 	}
-	if len(deploymentName) == 0 {
+	if deploymentName == "" {
 		return nil, fmt.Errorf(errParamNotSpecified, "deploymentName")
 	}
-	if len(roleName) == 0 {
+	if roleName == "" {
 		return nil, fmt.Errorf(errParamNotSpecified, "roleName")
 	}
 
@@ -319,13 +319,13 @@ func (self VirtualMachineClient) GetRole(cloudserviceName, deploymentName, roleN
 }
 
 func (self VirtualMachineClient) StartRole(cloudserviceName, deploymentName, roleName string) error {
-	if len(cloudserviceName) == 0 {
+	if cloudserviceName == "" {
 		return fmt.Errorf(errParamNotSpecified, "cloudserviceName")
 	}
-	if len(deploymentName) == 0 {
+	if deploymentName == "" {
 		return fmt.Errorf(errParamNotSpecified, "deploymentName")
 	}
-	if len(roleName) == 0 {
+	if roleName == "" {
 		return fmt.Errorf(errParamNotSpecified, "roleName")
 	}
 
@@ -346,13 +346,13 @@ func (self VirtualMachineClient) StartRole(cloudserviceName, deploymentName, rol
 }
 
 func (self VirtualMachineClient) ShutdownRole(cloudserviceName, deploymentName, roleName string) error {
-	if len(cloudserviceName) == 0 {
+	if cloudserviceName == "" {
 		return fmt.Errorf(errParamNotSpecified, "cloudserviceName")
 	}
-	if len(deploymentName) == 0 {
+	if deploymentName == "" {
 		return fmt.Errorf(errParamNotSpecified, "deploymentName")
 	}
-	if len(roleName) == 0 {
+	if roleName == "" {
 		return fmt.Errorf(errParamNotSpecified, "roleName")
 	}
 
@@ -373,13 +373,13 @@ func (self VirtualMachineClient) ShutdownRole(cloudserviceName, deploymentName, 
 }
 
 func (self VirtualMachineClient) RestartRole(cloudserviceName, deploymentName, roleName string) error {
-	if len(cloudserviceName) == 0 {
+	if cloudserviceName == "" {
 		return fmt.Errorf(errParamNotSpecified, "cloudserviceName")
 	}
-	if len(deploymentName) == 0 {
+	if deploymentName == "" {
 		return fmt.Errorf(errParamNotSpecified, "deploymentName")
 	}
-	if len(roleName) == 0 {
+	if roleName == "" {
 		return fmt.Errorf(errParamNotSpecified, "roleName")
 	}
 
@@ -400,13 +400,13 @@ func (self VirtualMachineClient) RestartRole(cloudserviceName, deploymentName, r
 }
 
 func (self VirtualMachineClient) DeleteRole(cloudserviceName, deploymentName, roleName string) error {
-	if len(cloudserviceName) == 0 {
+	if cloudserviceName == "" {
 		return fmt.Errorf(errParamNotSpecified, "cloudserviceName")
 	}
-	if len(deploymentName) == 0 {
+	if deploymentName == "" {
 		return fmt.Errorf(errParamNotSpecified, "deploymentName")
 	}
-	if len(roleName) == 0 {
+	if roleName == "" {
 		return fmt.Errorf(errParamNotSpecified, "roleName")
 	}
 
@@ -436,7 +436,7 @@ func (self VirtualMachineClient) GetRoleSizeList() (RoleSizeList, error) {
 }
 
 func (self VirtualMachineClient) ResolveRoleSize(roleSizeName string) error {
-	if len(roleSizeName) == 0 {
+	if roleSizeName == "" {
 		return fmt.Errorf(errParamNotSpecified, "roleSizeName")
 	}
 
@@ -590,7 +590,7 @@ func (self VirtualMachineClient) createLinuxProvisioningConfig(dnsName, userName
 	provisioningConfig := ConfigurationSet{}
 
 	disableSshPasswordAuthentication := false
-	if len(userPassword) == 0 {
+	if userPassword == "" {
 		disableSshPasswordAuthentication = true
 		// We need to set dummy password otherwise azure API will throw an error
 		userPassword = "P@ssword1"
@@ -752,7 +752,7 @@ next:
 }
 
 func (self VirtualMachineClient) isInstanceSizeAvailableInLocation(location *locationclient.Location, instanceSize string) (bool, error) {
-	if len(instanceSize) == 0 {
+	if instanceSize == "" {
 		return false, fmt.Errorf(errParamNotSpecified, "vmSize")
 	}
 

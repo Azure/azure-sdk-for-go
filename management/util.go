@@ -10,7 +10,7 @@ import (
 )
 
 func executeCommand(command string, input []byte) ([]byte, error) {
-	if len(command) == 0 {
+	if command == "" {
 		return nil, fmt.Errorf(errParamNotSpecified, "command")
 	}
 

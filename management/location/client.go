@@ -20,7 +20,7 @@ func NewClient(client management.Client) LocationClient {
 }
 
 func (self LocationClient) ResolveLocation(location string) error {
-	if len(location) == 0 {
+	if location == "" {
 		return fmt.Errorf(errParamNotSpecified, "location")
 	}
 
@@ -57,7 +57,7 @@ func (self LocationClient) GetLocationList() (LocationList, error) {
 }
 
 func (self LocationClient) GetLocation(location string) (*Location, error) {
-	if len(location) == 0 {
+	if location == "" {
 		return nil, fmt.Errorf(errParamNotSpecified, "location")
 	}
 

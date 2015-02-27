@@ -54,3 +54,10 @@ type ExtendedProperty struct {
 	Name  string
 	Value string
 }
+
+type AvailabilityResponse struct {
+	XMLName xml.Name `xml:"AvailabilityResponse"`
+	Xmlns   string   `xml:"xmlns,attr"`
+	Result  bool
+	Reason  string
+}

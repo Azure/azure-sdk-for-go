@@ -11,8 +11,9 @@ import (
 )
 
 const (
-	azureStorageServiceListURL = "services/storageservices"
-	azureStorageServiceURL     = "services/storageservices/%s"
+	azureStorageServiceListURL         = "services/storageservices"
+	azureStorageServiceURL             = "services/storageservices/%s"
+	azureStorageAccountAvailabilityURL = "services/storageservices/operations/isavailable/%s"
 
 	azureXmlns = "http://schemas.microsoft.com/windowsazure"
 
@@ -137,4 +138,26 @@ func (self *StorageServiceClient) createStorageServiceDeploymentConf(name, locat
 	storageServiceDeployment.Xmlns = azureXmlns
 
 	return storageServiceDeployment
+}
+
+// The Check Storage Account Name Availability operation checks to see if the specified storage account name is available, or if it has already been taken.
+// See https://msdn.microsoft.com/en-us/library/azure/jj154125.aspx
+func (self StorageServiceClient) IsAvailable(name string) (bool, string, error) {
+	if len(name) == 0 {
+		return false, "", fmt.Errorf(errParamNotSpecified, "name")
+	}
+
+	requestURL := fmt.Sprintf(azureStorageAccountAvailabilityURL, name)
+	response, err := self.client.SendAzureGetRequest(requestURL)
+	if err != nil {
+		return false, "", err
+	}
+
+	availabilityResponse := new(AvailabilityResponse)
+	err = xml.Unmarshal(response, availabilityResponse)
+	if err != nil {
+		return false, "", err
+	}
+
+	return availabilityResponse.Result, availabilityResponse.Reason, nil
 }

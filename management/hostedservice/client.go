@@ -100,6 +100,9 @@ func (self HostedServiceClient) DeleteHostedService(dnsName string) error {
 
 func (self HostedServiceClient) GetHostedService(name string) (HostedService, error) {
 	hostedService := HostedService{}
+	if name == "" {
+		return hostedService, fmt.Errorf(errParamNotSpecified, "name")
+	}
 
 	requestURL := fmt.Sprintf(getHostedServicePropertiesURL, name)
 	response, err := self.client.SendAzureGetRequest(requestURL)

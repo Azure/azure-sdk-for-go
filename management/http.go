@@ -10,7 +10,7 @@ import (
 
 const (
 	msVersionHeader           = "x-ms-version"
-	msVersionHeaderValue      = "2014-05-01"
+	msVersionHeaderValue      = "2014-10-01"
 	contentHeader             = "Content-Type"
 	defaultContentHeaderValue = "application/xml"
 	requestIdHeader           = "X-Ms-Request-Id"

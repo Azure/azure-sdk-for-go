@@ -20,7 +20,6 @@ import (
 	hostedserviceclient "github.com/MSOpenTech/azure-sdk-for-go/management/hostedservice"
 	locationclient "github.com/MSOpenTech/azure-sdk-for-go/management/location"
 	storageserviceclient "github.com/MSOpenTech/azure-sdk-for-go/management/storageservice"
-	imageclient "github.com/MSOpenTech/azure-sdk-for-go/management/virtualmachineimage"
 )
 
 const (
@@ -541,13 +540,9 @@ func (self VirtualMachineClient) createAzureVMRole(name, instanceSize, imageName
 func (self VirtualMachineClient) createOSVirtualHardDisk(dnsName, imageName, location string) (OSVirtualHardDisk, error) {
 	oSVirtualHardDisk := OSVirtualHardDisk{}
 
-	imageClient := imageclient.NewClient(self.client)
-	err := imageClient.ResolveImageName(imageName)
-	if err != nil {
-		return oSVirtualHardDisk, err
-	}
-
 	oSVirtualHardDisk.SourceImageName = imageName
+
+	var err error
 	oSVirtualHardDisk.MediaLink, err = self.getVHDMediaLink(dnsName, location)
 	if err != nil {
 		return oSVirtualHardDisk, err

@@ -17,7 +17,7 @@ func NewClient(client management.Client) DiskClient {
 }
 
 func (self DiskClient) DeleteDisk(diskName string) error {
-	if len(diskName) == 0 {
+	if diskName == "" {
 		return fmt.Errorf(errParamNotSpecified, "diskName")
 	}
 

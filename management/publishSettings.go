@@ -9,10 +9,10 @@ import (
 )
 
 func (client *Client) importPublishSettings(id string, certPath string) error {
-	if len(id) == 0 {
+	if id == "" {
 		return fmt.Errorf(errParamNotSpecified, "id")
 	}
-	if len(certPath) == 0 {
+	if certPath == "" {
 		return fmt.Errorf(errParamNotSpecified, "certPath")
 	}
 
@@ -29,7 +29,7 @@ func (client *Client) importPublishSettings(id string, certPath string) error {
 }
 
 func (client *Client) importPublishSettingsFile(filePath string) error {
-	if len(filePath) == 0 {
+	if filePath == "" {
 		return fmt.Errorf(errParamNotSpecified, "filePath")
 	}
 
@@ -93,7 +93,7 @@ func getActiveSubscription(publishSettingsContent []byte) (subscription, error) 
 
 	activeSubscription = subscriptions[0]
 
-	if len(activeSubscription.ManagementCertificate) == 0 {
+	if activeSubscription.ManagementCertificate == "" {
 		activeSubscription.ManagementCertificate = publishProfile.ManagementCertificate
 		activeSubscription.ServiceManagementUrl = publishProfile.Url
 	}

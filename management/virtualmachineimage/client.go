@@ -36,7 +36,7 @@ func (self ImageClient) GetImageList() (ImageList, error) {
 }
 
 func (self ImageClient) ResolveImageName(imageName string) error {
-	if len(imageName) == 0 {
+	if imageName == "" {
 		return fmt.Errorf(errParamNotSpecified, "imageName")
 	}
 

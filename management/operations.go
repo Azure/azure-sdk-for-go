@@ -20,7 +20,7 @@ type operation struct {
 
 //getOperationStatus gets an operation given the operation ID.
 func (client *Client) getOperationStatus(operationId string) (*operation, error) {
-	if len(operationId) == 0 {
+	if operationId == "" {
 		return nil, fmt.Errorf(errParamNotSpecified, "operationId")
 	}
 
@@ -43,7 +43,7 @@ func (client *Client) getOperationStatus(operationId string) (*operation, error)
 //no longer in the InProgress state. If the operation was successful, nothing is
 //returned, otherwise an error is returned.
 func (client *Client) WaitAsyncOperation(operationId string) error {
-	if len(operationId) == 0 {
+	if operationId == "" {
 		return fmt.Errorf(errParamNotSpecified, "operationId")
 	}
 

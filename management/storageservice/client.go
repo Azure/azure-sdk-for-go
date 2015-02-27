@@ -43,7 +43,7 @@ func (self StorageServiceClient) GetStorageServiceList() (*StorageServiceList, e
 }
 
 func (self StorageServiceClient) GetStorageServiceByName(serviceName string) (*StorageService, error) {
-	if len(serviceName) == 0 {
+	if serviceName == "" {
 		return nil, fmt.Errorf(errParamNotSpecified, "serviceName")
 	}
 
@@ -63,7 +63,7 @@ func (self StorageServiceClient) GetStorageServiceByName(serviceName string) (*S
 }
 
 func (self StorageServiceClient) GetStorageServiceByLocation(location string) (*StorageService, error) {
-	if len(location) == 0 {
+	if location == "" {
 		return nil, fmt.Errorf(errParamNotSpecified, "location")
 	}
 
@@ -85,10 +85,10 @@ func (self StorageServiceClient) GetStorageServiceByLocation(location string) (*
 }
 
 func (self StorageServiceClient) CreateStorageService(name, location string) (*StorageService, error) {
-	if len(name) == 0 {
+	if name == "" {
 		return nil, fmt.Errorf(errParamNotSpecified, "name")
 	}
-	if len(location) == 0 {
+	if location == "" {
 		return nil, fmt.Errorf(errParamNotSpecified, "location")
 	}
 
@@ -143,7 +143,7 @@ func (self *StorageServiceClient) createStorageServiceDeploymentConf(name, locat
 // The Check Storage Account Name Availability operation checks to see if the specified storage account name is available, or if it has already been taken.
 // See https://msdn.microsoft.com/en-us/library/azure/jj154125.aspx
 func (self StorageServiceClient) IsAvailable(name string) (bool, string, error) {
-	if len(name) == 0 {
+	if name == "" {
 		return false, "", fmt.Errorf(errParamNotSpecified, "name")
 	}
 

@@ -28,10 +28,10 @@ func NewClient(client management.Client) HostedServiceClient {
 }
 
 func (self HostedServiceClient) CreateHostedService(dnsName, location string, reverseDnsFqdn string, label string, description string) (string, error) {
-	if len(dnsName) == 0 {
+	if dnsName == "" {
 		return "", fmt.Errorf(errParamNotSpecified, "dnsName")
 	}
-	if len(location) == 0 {
+	if location == "" {
 		return "", fmt.Errorf(errParamNotSpecified, "location")
 	}
 
@@ -65,7 +65,7 @@ func (self HostedServiceClient) CreateHostedService(dnsName, location string, re
 }
 
 func (self HostedServiceClient) CheckHostedServiceNameAvailability(dnsName string) (bool, string, error) {
-	if len(dnsName) == 0 {
+	if dnsName == "" {
 		return false, "", fmt.Errorf(errParamNotSpecified, "dnsName")
 	}
 
@@ -85,7 +85,7 @@ func (self HostedServiceClient) CheckHostedServiceNameAvailability(dnsName strin
 }
 
 func (self HostedServiceClient) DeleteHostedService(dnsName string) error {
-	if len(dnsName) == 0 {
+	if dnsName == "" {
 		return fmt.Errorf(errParamNotSpecified, "dnsName")
 	}
 

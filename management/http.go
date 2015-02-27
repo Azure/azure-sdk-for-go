@@ -9,7 +9,6 @@ import (
 )
 
 const (
-	azureManagementDnsName    = "https://management.core.windows.net"
 	msVersionHeader           = "x-ms-version"
 	msVersionHeaderValue      = "2014-05-01"
 	contentHeader             = "Content-Type"
@@ -158,7 +157,7 @@ func (client *Client) createAzureRequest(url string, requestType string, content
 	var request *http.Request
 	var err error
 
-	url = fmt.Sprintf("%s/%s/%s", azureManagementDnsName, client.publishSettings.SubscriptionID, url)
+	url = fmt.Sprintf("%s/%s/%s", client.managementURL, client.publishSettings.SubscriptionID, url)
 	if data != nil {
 		body := bytes.NewBuffer(data)
 		request, err = http.NewRequest(requestType, url, body)

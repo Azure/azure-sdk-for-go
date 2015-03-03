@@ -23,6 +23,7 @@ package main
 
 import (
     "fmt"
+	"io/ioutil"
     "os"
     
     "github.com/MSOpenTech/azure-sdk-for-go/management"
@@ -39,7 +40,13 @@ func main() {
     sshCert := ""
     sshPort := 22
 
-    client, err := management.NewClientFromPublishSettings(SUBSCRIPTION_ID, SUBSCRIPTION_CERTIFICATE)
+	subscriptionCert, err := ioutil.ReadFile(SUBSCRIPTION_CERTIFICATE_PATH)
+	if err != nil {
+        fmt.Println(err)
+        os.Exit(1)
+    }
+
+    client, err := management.NewClient(SUBSCRIPTION_ID, subscriptionCert)
     if err != nil {
     	fmt.Println(err)
     	os.Exit(1)

@@ -136,6 +136,7 @@ func (self *StorageServiceClient) createStorageServiceDeploymentConf(name, locat
 	storageServiceDeployment.Label = label
 	storageServiceDeployment.Location = location
 	storageServiceDeployment.Xmlns = azureXmlns
+	storageServiceDeployment.AccountType = "Standard_GRS"
 
 	return storageServiceDeployment
 }

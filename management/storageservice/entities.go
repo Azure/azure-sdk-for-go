@@ -42,7 +42,7 @@ type StorageServiceDeployment struct {
 	AffinityGroup      string `xml:",omitempty"`
 	Location           string `xml:",omitempty"`
 	ExtendedProperties ExtendedPropertyList
-	AccountType        string
+	AccountType        string `xml:",omitempty"`
 }
 
 type ExtendedPropertyList struct {

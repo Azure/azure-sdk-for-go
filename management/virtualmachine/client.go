@@ -55,19 +55,19 @@ func NewClient(client management.Client) VirtualMachineClient {
 	return VirtualMachineClient{client: client}
 }
 
-func (self VirtualMachineClient) CreateAzureVM(azureVMConfiguration *Role, dnsName, location string) error {
-	if azureVMConfiguration == nil {
+func (self VirtualMachineClient) CreateAzureVM(config *VMCreateConfiguration) error {
+	if config == nil {
 		return fmt.Errorf(errParamNotSpecified, "azureVMConfiguration")
 	}
-	if dnsName == "" {
-		return fmt.Errorf(errParamNotSpecified, "dnsName")
+
+	hardDisk, err := self.createOSVirtualHardDisk(config)
+	if err != nil {
+		return err
 	}
-	if location == "" {
-		return fmt.Errorf(errParamNotSpecified, "location")
-	}
+	config.role.OSVirtualHardDisk = hardDisk
 
 	hostedServiceClient := hostedserviceclient.NewClient(self.client)
-	requestId, err := hostedServiceClient.CreateHostedService(dnsName, location, "", dnsName, "")
+	requestId, err := hostedServiceClient.CreateHostedService(config.DnsName, config.Location, "", config.DnsName, "")
 	if err != nil {
 		return err
 	}
@@ -77,32 +77,33 @@ func (self VirtualMachineClient) CreateAzureVM(azureVMConfiguration *Role, dnsNa
 		return err
 	}
 
-	if azureVMConfiguration.UseCertAuth {
-		err = self.uploadServiceCert(dnsName, azureVMConfiguration.CertPath)
+	if config.role.UseCertAuth {
+		err = self.uploadServiceCert(config.DnsName, config.role.CertPath)
 		if err != nil {
-			hostedServiceClient.DeleteHostedService(dnsName)
+			hostedServiceClient.DeleteHostedService(config.DnsName)
 			return err
 		}
 	}
 
-	vMDeployment := self.createVMDeploymentConfig(azureVMConfiguration)
+	vMDeployment := self.createVMDeploymentConfig(config.role)
 	vMDeploymentBytes, err := xml.Marshal(vMDeployment)
 	if err != nil {
-		hostedServiceClient.DeleteHostedService(dnsName)
+		hostedServiceClient.DeleteHostedService(config.DnsName)
 		return err
 	}
 
-	requestURL := fmt.Sprintf(azureDeploymentListURL, azureVMConfiguration.RoleName)
+	requestURL := fmt.Sprintf(azureDeploymentListURL, config.role.RoleName)
 	requestId, err = self.client.SendAzurePostRequest(requestURL, vMDeploymentBytes)
 	if err != nil {
-		hostedServiceClient.DeleteHostedService(dnsName)
+		hostedServiceClient.DeleteHostedService(config.DnsName)
 		return err
 	}
 
 	return self.client.WaitAsyncOperation(requestId)
 }
 
-func (self VirtualMachineClient) CreateAzureVMConfiguration(dnsName, instanceSize, imageName, location string) (*Role, error) {
+func (self VirtualMachineClient) NewVMCreateConfiguration(dnsName, instanceSize, imageName, location string) (*VMCreateConfiguration, error) {
+
 	if dnsName == "" {
 		return nil, fmt.Errorf(errParamNotSpecified, "dnsName")
 	}
@@ -131,62 +132,63 @@ func (self VirtualMachineClient) CreateAzureVMConfiguration(dnsName, instanceSiz
 		return nil, fmt.Errorf(errInvalidRoleSizeInLocation, instanceSize, location)
 	}
 
-	role, err := self.createAzureVMRole(dnsName, instanceSize, imageName, location)
-	if err != nil {
-		return nil, err
+	config := &VMCreateConfiguration{
+		ImageName: imageName,
+		Location:  location,
+		client:    self,
+		role: &Role{
+			RoleName:            dnsName,
+			RoleSize:            instanceSize,
+			RoleType:            "PersistentVMRole",
+			ProvisionGuestAgent: true,
+		},
 	}
 
-	return role, nil
+	return config, nil
 }
 
-func (self VirtualMachineClient) AddAzureLinuxProvisioningConfig(azureVMConfiguration *Role, userName, password, certPath string, sshPort int) (*Role, error) {
-	if azureVMConfiguration == nil {
-		return nil, fmt.Errorf(errParamNotSpecified, "azureVMConfiguration")
-	}
+func (self *VMCreateConfiguration) AddLinuxConfig(userName, password, certPath string, sshPort int) error {
 	if userName == "" {
-		return nil, fmt.Errorf(errParamNotSpecified, "userName")
+		return fmt.Errorf(errParamNotSpecified, "userName")
 	}
 
 	configurationSets := ConfigurationSets{}
-	provisioningConfig, err := self.createLinuxProvisioningConfig(azureVMConfiguration.RoleName, userName, password, certPath)
+	provisioningConfig, err := self.client.createLinuxProvisioningConfig(self.DnsName, userName, password, certPath)
 	if err != nil {
-		return nil, err
+		return nil
 	}
 
 	configurationSets.ConfigurationSet = append(configurationSets.ConfigurationSet, provisioningConfig)
 
-	networkConfig, networkErr := self.createNetworkConfig(osLinux, sshPort)
+	networkConfig, networkErr := self.client.createNetworkConfig(osLinux, sshPort)
 	if networkErr != nil {
-		return nil, err
+		return nil
 	}
 
 	configurationSets.ConfigurationSet = append(configurationSets.ConfigurationSet, networkConfig)
 
-	azureVMConfiguration.ConfigurationSets = configurationSets
+	self.role.ConfigurationSets = configurationSets
 
 	if len(certPath) > 0 {
-		azureVMConfiguration.UseCertAuth = true
-		azureVMConfiguration.CertPath = certPath
+		self.role.UseCertAuth = true
+		self.role.CertPath = certPath
 	}
 
-	return azureVMConfiguration, nil
+	return nil
 }
 
-func (self VirtualMachineClient) SetAzureVMExtension(azureVMConfiguration *Role, name string, publisher string, version string, referenceName string, state string, publicConfigurationValue string, privateConfigurationValue string) (*Role, error) {
-	if azureVMConfiguration == nil {
-		return nil, fmt.Errorf(errParamNotSpecified, "azureVMConfiguration")
-	}
+func (self *VMCreateConfiguration) SetExtension(name string, publisher string, version string, referenceName string, state string, publicConfigurationValue string, privateConfigurationValue string) error {
 	if name == "" {
-		return nil, fmt.Errorf(errParamNotSpecified, "name")
+		return fmt.Errorf(errParamNotSpecified, "name")
 	}
 	if publisher == "" {
-		return nil, fmt.Errorf(errParamNotSpecified, "publisher")
+		return fmt.Errorf(errParamNotSpecified, "publisher")
 	}
 	if version == "" {
-		return nil, fmt.Errorf(errParamNotSpecified, "version")
+		return fmt.Errorf(errParamNotSpecified, "version")
 	}
 	if referenceName == "" {
-		return nil, fmt.Errorf(errParamNotSpecified, "referenceName")
+		return fmt.Errorf(errParamNotSpecified, "referenceName")
 	}
 
 	extension := ResourceExtensionReference{}
@@ -214,34 +216,30 @@ func (self VirtualMachineClient) SetAzureVMExtension(azureVMConfiguration *Role,
 		extension.ResourceExtensionParameterValues.ResourceExtensionParameterValue = append(extension.ResourceExtensionParameterValues.ResourceExtensionParameterValue, publicConfig)
 	}
 
-	azureVMConfiguration.ResourceExtensionReferences.ResourceExtensionReference = append(azureVMConfiguration.ResourceExtensionReferences.ResourceExtensionReference, extension)
+	self.role.ResourceExtensionReferences.ResourceExtensionReference = append(self.role.ResourceExtensionReferences.ResourceExtensionReference, extension)
 
-	return azureVMConfiguration, nil
+	return nil
 }
 
-func (self VirtualMachineClient) SetAzureDockerVMExtension(azureVMConfiguration *Role, dockerPort int, version string) (*Role, error) {
-	if azureVMConfiguration == nil {
-		return nil, fmt.Errorf(errParamNotSpecified, "azureVMConfiguration")
-	}
-
+func (self *VMCreateConfiguration) SetDockerExtension(dockerPort int, version string) error {
 	if version == "" {
 		version = "0.3"
 	}
 
-	err := self.addDockerPort(azureVMConfiguration.ConfigurationSets.ConfigurationSet, dockerPort)
+	err := self.client.addDockerPort(self.role.ConfigurationSets.ConfigurationSet, dockerPort)
 	if err != nil {
-		return nil, err
+		return err
 	}
 
-	publicConfiguration, err := self.createDockerPublicConfig(dockerPort)
+	publicConfiguration, err := self.client.createDockerPublicConfig(dockerPort)
 	if err != nil {
-		return nil, err
+		return err
 	}
 
 	privateConfiguration := "{}"
 
-	azureVMConfiguration, err = self.SetAzureVMExtension(azureVMConfiguration, "DockerExtension", "MSOpenTech.Extensions", version, "DockerExtension", "enable", publicConfiguration, privateConfiguration)
-	return azureVMConfiguration, nil
+	err = self.SetExtension("DockerExtension", "MSOpenTech.Extensions", version, "DockerExtension", "enable", publicConfiguration, privateConfiguration)
+	return nil
 }
 
 func (self VirtualMachineClient) GetVMDeployment(cloudserviceName, deploymentName string) (*VMDeployment, error) {
@@ -522,28 +520,13 @@ func (self VirtualMachineClient) createVMDeploymentConfig(role *Role) VMDeployme
 	return deployment
 }
 
-func (self VirtualMachineClient) createAzureVMRole(name, instanceSize, imageName, location string) (*Role, error) {
-	config := new(Role)
-	config.RoleName = name
-	config.RoleSize = instanceSize
-	config.RoleType = "PersistentVMRole"
-	config.ProvisionGuestAgent = true
-	var err error
-	config.OSVirtualHardDisk, err = self.createOSVirtualHardDisk(name, imageName, location)
-	if err != nil {
-		return nil, err
-	}
-
-	return config, nil
-}
-
-func (self VirtualMachineClient) createOSVirtualHardDisk(dnsName, imageName, location string) (OSVirtualHardDisk, error) {
+func (self VirtualMachineClient) createOSVirtualHardDisk(config *VMCreateConfiguration) (OSVirtualHardDisk, error) {
 	oSVirtualHardDisk := OSVirtualHardDisk{}
 
-	oSVirtualHardDisk.SourceImageName = imageName
+	oSVirtualHardDisk.SourceImageName = config.ImageName
 
 	var err error
-	oSVirtualHardDisk.MediaLink, err = self.getVHDMediaLink(dnsName, location)
+	oSVirtualHardDisk.MediaLink, err = self.getVHDMediaLink(config)
 	if err != nil {
 		return oSVirtualHardDisk, err
 	}
@@ -551,10 +534,10 @@ func (self VirtualMachineClient) createOSVirtualHardDisk(dnsName, imageName, loc
 	return oSVirtualHardDisk, nil
 }
 
-func (self VirtualMachineClient) getVHDMediaLink(dnsName, location string) (string, error) {
+func (self VirtualMachineClient) getVHDMediaLink(config *VMCreateConfiguration) (string, error) {
 	storageServiceClient := storageserviceclient.NewClient(self.client)
 
-	storageService, err := storageServiceClient.GetStorageServiceByLocation(location)
+	storageService, err := storageServiceClient.GetStorageServiceByLocation(config.Location)
 	if err != nil {
 		return "", err
 	}
@@ -566,7 +549,7 @@ func (self VirtualMachineClient) getVHDMediaLink(dnsName, location string) (stri
 		}
 
 		serviceName := "portalvhds" + uuid
-		storageService, err = storageServiceClient.CreateStorageService(serviceName, location)
+		storageService, err = storageServiceClient.CreateStorageService(serviceName, config.Location, config.StorageAccountType)
 		if err != nil {
 			return "", err
 		}
@@ -577,7 +560,7 @@ func (self VirtualMachineClient) getVHDMediaLink(dnsName, location string) (stri
 		return "", err
 	}
 
-	vhdMediaLink := blobEndpoint + "vhds/" + dnsName + "-" + time.Now().Local().Format("20060102150405") + ".vhd"
+	vhdMediaLink := blobEndpoint + "vhds/" + config.DnsName + "-" + time.Now().Local().Format("20060102150405") + ".vhd"
 	return vhdMediaLink, nil
 }
 

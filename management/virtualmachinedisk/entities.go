@@ -6,3 +6,12 @@ import "github.com/MSOpenTech/azure-sdk-for-go/management"
 type DiskClient struct {
 	client management.Client
 }
+
+type HostCachingType string
+
+const (
+	// Enum values for HostCachingType
+	HostCachingTypeNone      = HostCachingType("None")
+	HostCachingTypeReadOnly  = HostCachingType("ReadOnly")
+	HostCachingTypeReadWrite = HostCachingType("ReadWrite")
+)

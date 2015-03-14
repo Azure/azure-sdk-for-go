@@ -4,6 +4,7 @@ import (
 	"encoding/xml"
 
 	"github.com/MSOpenTech/azure-sdk-for-go/management"
+	vmdisk "github.com/MSOpenTech/azure-sdk-for-go/management/virtualmachinedisk"
 )
 
 //ImageClient is used to manage operations on Azure Locations
@@ -42,14 +43,6 @@ type VMImage struct {
 	PublishedDate          string                  // Specifies the date when the image was added to the image repository.
 }
 
-type HostCaching string
-
-const (
-	HostCachingNone      HostCaching = "None"
-	HostCachingReadOnly  HostCaching = "ReadOnly"
-	HostCachingReadWrite HostCaching = "ReadWrite"
-)
-
 type OSState string
 
 const (
@@ -66,21 +59,21 @@ const (
 
 // Specifies configuration information for the operating system disk that is associated with the image.
 type OSDiskConfiguration struct {
-	Name            string      // Specifies the name of the operating system disk.
-	HostCaching     HostCaching // Specifies the caching behavior of the operating system disk.
-	OSState         OSState     // Specifies the state of the operating system in the image.
-	OS              string      // Specifies the operating system type of the image.
-	MediaLink       string      // Specifies the location of the blob in Azure storage. The blob location belongs to a storage account in the subscription specified by the <subscription-id> value in the operation call.
-	LogicalSizeInGB float64     // Specifies the size, in GB, of the operating system disk.
-	IOType          IOType      // Identifies the type of the storage account for the backing VHD. If the backing VHD is in an Provisioned Storage account, “Provisioned” is returned otherwise “Standard” is returned.
+	Name            string                 // Specifies the name of the operating system disk.
+	HostCaching     vmdisk.HostCachingType // Specifies the caching behavior of the operating system disk.
+	OSState         OSState                // Specifies the state of the operating system in the image.
+	OS              string                 // Specifies the operating system type of the image.
+	MediaLink       string                 // Specifies the location of the blob in Azure storage. The blob location belongs to a storage account in the subscription specified by the <subscription-id> value in the operation call.
+	LogicalSizeInGB float64                // Specifies the size, in GB, of the operating system disk.
+	IOType          IOType                 // Identifies the type of the storage account for the backing VHD. If the backing VHD is in an Provisioned Storage account, “Provisioned” is returned otherwise “Standard” is returned.
 }
 
 // Specifies configuration information for the data disks that are associated with the image.
 type DataDiskConfiguration struct {
-	Name            string      // Specifies the name of the data disk.
-	HostCaching     HostCaching // Specifies the caching behavior of the data disk.
-	Lun             string      // Specifies the Logical Unit Number (LUN) for the data disk.
-	MediaLink       string      // Specifies the location of the blob in Azure storage. The blob location belongs to a storage account in the subscription specified by the <subscription-id> value in the operation call.
-	LogicalSizeInGB float64     // Specifies the size, in GB, of the data disk.
-	IOType          IOType      // Identifies the type of the storage account for the backing VHD. If the backing VHD is in an Provisioned Storage account, “Provisioned” is returned otherwise “Standard” is returned.
+	Name            string                 // Specifies the name of the data disk.
+	HostCaching     vmdisk.HostCachingType // Specifies the caching behavior of the data disk.
+	Lun             string                 // Specifies the Logical Unit Number (LUN) for the data disk.
+	MediaLink       string                 // Specifies the location of the blob in Azure storage. The blob location belongs to a storage account in the subscription specified by the <subscription-id> value in the operation call.
+	LogicalSizeInGB float64                // Specifies the size, in GB, of the data disk.
+	IOType          IOType                 // Identifies the type of the storage account for the backing VHD. If the backing VHD is in an Provisioned Storage account, “Provisioned” is returned otherwise “Standard” is returned.
 }

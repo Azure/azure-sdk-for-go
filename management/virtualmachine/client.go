@@ -218,3 +218,43 @@ func (self VirtualMachineClient) GetRoleSizeList() (RoleSizeList, error) {
 
 	return roleSizeList, err
 }
+
+// Captures a VM. If reprovisioningConfigurationSet is non-nil, the VM role is
+// redeployed after capturing the image, otherwise, the original VM role is deleted.
+// NOTE: an image resulting from this operation shows up in osimage.GetImageList()
+// as images with Category "User".
+func (self VirtualMachineClient) CaptureRole(cloudserviceName, deploymentName, roleName, imageName, imageLabel string, reprovisioningConfigurationSet *ConfigurationSet) (requestId string, err error) {
+	if cloudserviceName == "" {
+		return "", fmt.Errorf(errParamNotSpecified, "cloudserviceName")
+	}
+	if deploymentName == "" {
+		return "", fmt.Errorf(errParamNotSpecified, "deploymentName")
+	}
+	if roleName == "" {
+		return "", fmt.Errorf(errParamNotSpecified, "roleName")
+	}
+
+	if reprovisioningConfigurationSet != nil &&
+		!(reprovisioningConfigurationSet.ConfigurationSetType == ConfigurationSetTypeLinuxProvisioning ||
+			reprovisioningConfigurationSet.ConfigurationSetType == ConfigurationSetTypeWindowsProvisioning) {
+		return "", fmt.Errorf("ConfigurationSet type can only be WindowsProvisioningConfiguration or LinuxProvisioningConfiguration")
+	}
+
+	operation := CaptureRoleOperation{
+		OperationType:             "CaptureRoleOperation",
+		PostCaptureAction:         PostCaptureActionReprovision,
+		ProvisioningConfiguration: reprovisioningConfigurationSet,
+		TargetImageLabel:          imageLabel,
+		TargetImageName:           imageName,
+	}
+	if reprovisioningConfigurationSet == nil {
+		operation.PostCaptureAction = PostCaptureActionDelete
+	}
+
+	data, err := xml.Marshal(operation)
+	if err != nil {
+		return "", err
+	}
+
+	return self.client.SendAzurePostRequest(fmt.Sprintf(azureOperationsURL, cloudserviceName, deploymentName, roleName), data)
+}

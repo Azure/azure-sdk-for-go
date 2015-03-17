@@ -409,6 +409,24 @@ type RestartRoleOperation struct {
 	OperationType string
 }
 
+// Contains the information for capturing a Role
+type CaptureRoleOperation struct {
+	XMLName                   xml.Name `xml:"http://schemas.microsoft.com/windowsazure CaptureRoleOperation"`
+	OperationType             string
+	PostCaptureAction         PostCaptureAction
+	ProvisioningConfiguration *ConfigurationSet `xml:",omitempty"`
+	TargetImageLabel          string
+	TargetImageName           string
+}
+
+type PostCaptureAction string
+
+const (
+	// Enum values for PostCaptureAction
+	PostCaptureActionDelete      PostCaptureAction = "Delete"
+	PostCaptureActionReprovision PostCaptureAction = "Reprovision"
+)
+
 // Contains a list of the available role sizes
 type RoleSizeList struct {
 	XMLName   xml.Name   `xml:"RoleSizes"`

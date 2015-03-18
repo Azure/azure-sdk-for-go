@@ -14,7 +14,7 @@ type VirtualMachineClient struct {
 
 // Type for creating a deployment and Virtual Machine in the deployment based on the specified configuration.
 // See https://msdn.microsoft.com/en-us/library/azure/jj157194.aspx
-type Deployment struct {
+type DeploymentRequest struct {
 	XMLName xml.Name `xml:"http://schemas.microsoft.com/windowsazure Deployment"`
 	// Required parameters:
 	Name           string  ``                    // Specifies a name for the deployment. The deployment name must be unique among other deployments for the cloud service.
@@ -26,6 +26,149 @@ type Deployment struct {
 	DnsServers         *[]DnsServer    `xml:"Dns>DnsServers>DnsServer,omitempty"` // Contains a list of DNS servers to associate with the Virtual Machine.
 	ReservedIPName     string          `xml:",omitempty"`                         // Specifies the name of a reserved IP address that is to be assigned to the deployment.
 	LoadBalancers      *[]LoadBalancer `xml:">LoadBalancer,omitempty"`            //Contains a list of internal load balancers that can be assigned to input endpoints.
+}
+
+// Type forreceiving deployment information
+// See https://msdn.microsoft.com/en-us/library/azure/ee460804.aspx
+type DeploymentResponse struct {
+	XMLName xml.Name `xml:"http://schemas.microsoft.com/windowsazure Deployment"`
+
+	Name                   string
+	DeploymentSlot         string
+	Status                 DeploymentStatus
+	Label                  string
+	Url                    string
+	Configuration          string
+	RoleInstanceList       []RoleInstance `xml:">RoleInstance"`
+	UpgradeStatus          UpgradeStatus
+	UpgradeDomainCount     int
+	RoleList               []Role `xml:">Role"`
+	SdkVersion             string
+	Locked                 bool
+	RollbackAllowed        bool
+	CreatedTime            string
+	LastModifiedTime       string
+	VirtualNetworkName     string
+	DnsServers             []DnsServer        `xml:"Dns>DnsServers>DnsServer"`
+	LoadBalancers          []LoadBalancer     `xml:">LoadBalancer"`
+	ExtendedProperties     []ExtendedProperty `xml:">ExtendedProperty"`
+	PersistentVMDowntime   PersistentVMDowntime
+	VirtualIPs             []VirtualIP `xml:">VirtualIP`
+	ExtensionConfiguration string      // cloud service extensions not fully implemented
+	ReservedIPName         string
+	InternalDnsSuffix      string
+}
+
+type DeploymentStatus string
+
+const (
+	DeploymentStatusRunning                DeploymentStatus = "Running"
+	DeploymentStatusSuspended              DeploymentStatus = "Suspended"
+	DeploymentStatusRunningTransitioning   DeploymentStatus = "RunningTransitioning"
+	DeploymentStatusSuspendedTransitioning DeploymentStatus = "SuspendedTransitioning"
+	DeploymentStatusStarting               DeploymentStatus = "Starting"
+	DeploymentStatusSuspending             DeploymentStatus = "Suspending"
+	DeploymentStatusDeploying              DeploymentStatus = "Deploying"
+	DeploymentStatusDeleting               DeploymentStatus = "Deleting"
+)
+
+type RoleInstance struct {
+	RoleName                          string
+	InstanceName                      string
+	InstanceStatus                    InstanceStatus
+	ExtendedInstanceStatus            string
+	InstanceUpgradeDomain             int
+	InstanceFaultDomain               int
+	InstanceSize                      string
+	InstanceStateDetails              string
+	InstanceErrorCode                 string
+	IpAddress                         string
+	InstanceEndpoints                 []InstanceEndpoint `xml:">InstanceEndpoint"`
+	PowerState                        PowerState
+	HostName                          string
+	RemoteAccessCertificateThumbprint string
+	GuestAgentStatus                  string // todo: implement
+	ResourceExtensionStatusList       string
+	PublicIPs                         []PublicIP `xml:">PublicIP"`
+}
+
+type InstanceStatus string
+
+const (
+	InstanceStatusUnknown            = "Unknown"
+	InstanceStatusCreatingVM         = "CreatingVM"
+	InstanceStatusStartingVM         = "StartingVM"
+	InstanceStatusCreatingRole       = "CreatingRole"
+	InstanceStatusStartingRole       = "StartingRole"
+	InstanceStatusReadyRole          = "ReadyRole"
+	InstanceStatusBusyRole           = "BusyRole"
+	InstanceStatusStoppingRole       = "StoppingRole"
+	InstanceStatusStoppingVM         = "StoppingVM"
+	InstanceStatusDeletingVM         = "DeletingVM"
+	InstanceStatusStoppedVM          = "StoppedVM"
+	InstanceStatusRestartingRole     = "RestartingRole"
+	InstanceStatusCyclingRole        = "CyclingRole"
+	InstanceStatusFailedStartingRole = "FailedStartingRole"
+	InstanceStatusFailedStartingVM   = "FailedStartingVM"
+	InstanceStatusUnresponsiveRole   = "UnresponsiveRole"
+	InstanceStatusStoppedDeallocated = "StoppedDeallocated"
+	InstanceStatusPreparing          = "Preparing"
+)
+
+type InstanceEndpoint struct {
+	Name       string
+	Vip        string
+	PublicPort int
+	LocalPort  int
+	Protocol   InputEndpointProtocol
+}
+type PowerState string
+
+const (
+	PowerStateStarting = "Starting"
+	PowerStateStarted  = "Started"
+	PowerStateStopping = "Stopping"
+	PowerStateStopped  = "Stopped"
+	PowerStateUnknown  = "Unknown"
+)
+
+type UpgradeStatus struct {
+	UpgradeType               UpgradeType
+	CurrentUpgradeDomainState CurrentUpgradeDomainState
+	CurrentUpgradeDomain      int
+}
+
+type UpgradeType string
+
+const (
+	UpgradeTypeAuto         = "Auto"
+	UpgradeTypeManual       = "Manual"
+	UpgradeTypeSimultaneous = "Simultaneous"
+)
+
+type CurrentUpgradeDomainState string
+
+const (
+	CurrentUpgradeDomainStateBefore = "Before"
+	CurrentUpgradeDomainStateDuring = "During"
+)
+
+type ExtendedProperty struct {
+	Name  string
+	Value string
+}
+
+type PersistentVMDowntime struct {
+	StartTime string
+	EndTime   string
+	Status    string
+}
+
+type VirtualIP struct {
+	Address        string
+	IsReserved     bool
+	ReservedIPName string
+	Type           IPAddressType
 }
 
 // Contains the configuration sets that are used to create virtual machines.

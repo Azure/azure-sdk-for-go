@@ -5,7 +5,7 @@ import (
 	"testing"
 )
 
-func TestDocumentedXml(t *testing.T) {
+func TestDocumentedDeploymentRequest(t *testing.T) {
 	// xml based on https://msdn.microsoft.com/en-us/library/azure/jj157194.aspx
 	// fixed typos, replaced strongly typed fields with values of correct type
 	xmlString := `<Deployment xmlns="http://schemas.microsoft.com/windowsazure" xmlns:i="http://www.w3.org/2001/XMLSchema-instance">
@@ -218,7 +218,7 @@ func TestDocumentedXml(t *testing.T) {
   </LoadBalancers>
 </Deployment>`
 
-	deployment := Deployment{}
+	deployment := DeploymentRequest{}
 	if err := xml.Unmarshal([]byte(xmlString), &deployment); err != nil {
 		t.Fatal(err)
 	}

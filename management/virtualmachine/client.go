@@ -242,7 +242,7 @@ func (self VirtualMachineClient) SetAzureDockerVMExtension(azureVMConfiguration 
 	return azureVMConfiguration, nil
 }
 
-func (self VirtualMachineClient) GetVMDeployment(cloudserviceName, deploymentName string) (*Deployment, error) {
+func (self VirtualMachineClient) GetVMDeployment(cloudserviceName, deploymentName string) (*DeploymentResponse, error) {
 	if cloudserviceName == "" {
 		return nil, fmt.Errorf(errParamNotSpecified, "cloudserviceName")
 	}
@@ -250,7 +250,7 @@ func (self VirtualMachineClient) GetVMDeployment(cloudserviceName, deploymentNam
 		return nil, fmt.Errorf(errParamNotSpecified, "deploymentName")
 	}
 
-	deployment := new(Deployment)
+	deployment := new(DeploymentResponse)
 
 	requestURL := fmt.Sprintf(azureDeploymentURL, cloudserviceName, deploymentName)
 	response, azureErr := self.client.SendAzureGetRequest(requestURL)
@@ -503,8 +503,8 @@ func (self VirtualMachineClient) addDockerPort(configurationSets []Configuration
 	return nil
 }
 
-func (self VirtualMachineClient) createVMDeploymentConfig(role *Role) Deployment {
-	return Deployment{
+func (self VirtualMachineClient) createVMDeploymentConfig(role *Role) DeploymentRequest {
+	return DeploymentRequest{
 		Name:           role.RoleName,
 		DeploymentSlot: "Production",
 		Label:          role.RoleName,

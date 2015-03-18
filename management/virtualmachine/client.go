@@ -566,7 +566,11 @@ func (self VirtualMachineClient) getVHDMediaLink(dnsName, location string) (stri
 		}
 
 		serviceName := "portalvhds" + uuid
-		storageService, err = storageServiceClient.CreateStorageService(serviceName, location)
+		storageService, err = storageServiceClient.Create(storageserviceclient.StorageAccountCreateParameters{
+			ServiceName: serviceName,
+			Location:    location,
+			Label:       base64.StdEncoding.EncodeToString([]byte(serviceName)),
+		})
 		if err != nil {
 			return "", err
 		}

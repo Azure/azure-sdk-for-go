@@ -33,18 +33,30 @@ type StorageServiceProperties struct {
 	GeoPrimaryRegion      string
 }
 
-type StorageServiceDeployment struct {
-	XMLName               xml.Name `xml:"CreateStorageServiceInput"`
-	Xmlns                 string   `xml:"xmlns,attr"`
-	ServiceName           string
-	Description           string
-	Label                 string
-	AffinityGroup         string `xml:",omitempty"`
-	Location              string `xml:",omitempty"`
-	GeoReplicationEnabled bool
-	ExtendedProperties    ExtendedPropertyList
-	SecondaryReadEnabled  bool
+type CreateStorageServiceInput struct {
+	XMLName xml.Name `xml:"http://schemas.microsoft.com/windowsazure CreateStorageServiceInput"`
+	StorageAccountCreateParameters
 }
+
+type StorageAccountCreateParameters struct {
+	ServiceName        string
+	Description        string `xml:",omitempty"`
+	Label              string
+	AffinityGroup      string `xml:",omitempty"`
+	Location           string `xml:",omitempty"`
+	ExtendedProperties ExtendedPropertyList
+	AccountType        AccountType
+}
+
+type AccountType string
+
+const (
+	AccountTypeStandardLRS   AccountType = "Standard_LRS"
+	AccountTypeStandardZRS   AccountType = "Standard_ZRS"
+	AccountTypeStandardGRS   AccountType = "Standard_GRS"
+	AccountTypeStandardRAGRS AccountType = "Standard_RAGRS"
+	AccountTypePremiumLRS    AccountType = "Premium_LRS"
+)
 
 type ExtendedPropertyList struct {
 	ExtendedProperty []ExtendedProperty

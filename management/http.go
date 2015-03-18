@@ -111,6 +111,7 @@ func (client *Client) createHttpClient() *http.Client {
 
 	httpClient := &http.Client{
 		Transport: &http.Transport{
+			Proxy:           http.ProxyFromEnvironment,
 			TLSClientConfig: ssl,
 		},
 	}

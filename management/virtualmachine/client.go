@@ -3,8 +3,6 @@ package virtualmachine
 
 import (
 	"bytes"
-	"encoding/base64"
-	"encoding/json"
 	"encoding/xml"
 	"errors"
 	"fmt"
@@ -21,11 +19,8 @@ const (
 	azureOperationsURL       = "services/hostedservices/%s/deployments/%s/roleinstances/%s/Operations"
 	azureRoleSizeListURL     = "rolesizes"
 
-	dockerPublicConfigVersion = 2
-
-	errParamNotSpecified            = "Parameter %s is not specified."
-	errProvisioningConfDoesNotExist = "You should set azure VM provisioning config first"
-	errInvalidRoleSize              = "Invalid role size: %s. Available role sizes: %s"
+	errParamNotSpecified = "Parameter %s is not specified."
+	errInvalidRoleSize   = "Invalid role size: %s. Available role sizes: %s"
 )
 
 //NewClient is used to instantiate a new VmClient from an Azure client
@@ -46,81 +41,6 @@ func (self VirtualMachineClient) CreateDeployment(role *Role, cloudserviceName s
 
 	requestURL := fmt.Sprintf(azureDeploymentListURL, cloudserviceName)
 	return self.client.SendAzurePostRequest(requestURL, vMDeploymentBytes)
-}
-
-func (self VirtualMachineClient) SetAzureVMExtension(azureVMConfiguration *Role, name string, publisher string, version string, referenceName string, state string, publicConfigurationValue string, privateConfigurationValue string) (*Role, error) {
-	if azureVMConfiguration == nil {
-		return nil, fmt.Errorf(errParamNotSpecified, "azureVMConfiguration")
-	}
-	if name == "" {
-		return nil, fmt.Errorf(errParamNotSpecified, "name")
-	}
-	if publisher == "" {
-		return nil, fmt.Errorf(errParamNotSpecified, "publisher")
-	}
-	if version == "" {
-		return nil, fmt.Errorf(errParamNotSpecified, "version")
-	}
-	if referenceName == "" {
-		return nil, fmt.Errorf(errParamNotSpecified, "referenceName")
-	}
-
-	extension := ResourceExtensionReference{
-		Name:          name,
-		Publisher:     publisher,
-		Version:       version,
-		ReferenceName: referenceName,
-		State:         state,
-	}
-
-	if privateConfigurationValue != "" {
-		extension.ParameterValues = append(extension.ParameterValues, ResourceExtensionParameter{
-			Key:   "ignored",
-			Value: base64.StdEncoding.EncodeToString([]byte(privateConfigurationValue)),
-			Type:  "Private",
-		})
-	}
-
-	if publicConfigurationValue != "" {
-		extension.ParameterValues = append(extension.ParameterValues, ResourceExtensionParameter{
-			Key:   "ignored",
-			Value: base64.StdEncoding.EncodeToString([]byte(publicConfigurationValue)),
-			Type:  "Public",
-		})
-	}
-
-	if azureVMConfiguration.ResourceExtensionReferences == nil {
-		azureVMConfiguration.ResourceExtensionReferences = &[]ResourceExtensionReference{extension}
-	} else {
-		*azureVMConfiguration.ResourceExtensionReferences = append(*azureVMConfiguration.ResourceExtensionReferences, extension)
-	}
-
-	return azureVMConfiguration, nil
-}
-
-func (self VirtualMachineClient) SetAzureDockerVMExtension(azureVMConfiguration *Role, dockerPort int, version string) (*Role, error) {
-	if azureVMConfiguration == nil {
-		return nil, fmt.Errorf(errParamNotSpecified, "azureVMConfiguration")
-	}
-
-	if version == "" {
-		version = "0.3"
-	}
-
-	err := self.addDockerPort(*azureVMConfiguration.ConfigurationSets, dockerPort)
-	if err != nil {
-		return nil, err
-	}
-
-	publicConfiguration, err := self.createDockerPublicConfig(dockerPort)
-	if err != nil {
-		return nil, err
-	}
-
-	privateConfiguration := "{}"
-
-	azureVMConfiguration, err = self.SetAzureVMExtension(azureVMConfiguration, "DockerExtension", "MSOpenTech.Extensions", version, "DockerExtension", "enable", publicConfiguration, privateConfiguration)
-	return azureVMConfiguration, nil
 }
 
 func (self VirtualMachineClient) GetDeployment(cloudserviceName, deploymentName string) (*DeploymentResponse, error) {
@@ -327,40 +247,4 @@ func (self VirtualMachineClient) ResolveRoleSize(roleSizeName string) error {
 	}
 
 	return errors.New(fmt.Sprintf(errInvalidRoleSize, roleSizeName, strings.Trim(availableSizes.String(), ", ")))
-}
-
-func (self VirtualMachineClient) createDockerPublicConfig(dockerPort int) (string, error) {
-	config := dockerPublicConfig{DockerPort: dockerPort, Version: dockerPublicConfigVersion}
-	configJson, err := json.Marshal(config)
-	if err != nil {
-		return "", err
-	}
-
-	return string(configJson), nil
-}
-
-func (self VirtualMachineClient) addDockerPort(configurationSets []ConfigurationSet, dockerPort int) error {
-	if len(configurationSets) == 0 {
-		return errors.New(errProvisioningConfDoesNotExist)
-	}
-
-	for i := 0; i < len(configurationSets); i++ {
-		if configurationSets[i].ConfigurationSetType != "NetworkConfiguration" {
-			continue
-		}
-
-		dockerEndpoint := self.createEndpoint("docker", "tcp", dockerPort, dockerPort)
-		*configurationSets[i].InputEndpoints = append(*configurationSets[i].InputEndpoints, dockerEndpoint)
-	}
-
-	return nil
-}
-
-func (self VirtualMachineClient) createEndpoint(name string, protocol InputEndpointProtocol, extertalPort int, internalPort int) InputEndpoint {
-	return InputEndpoint{
-		Name:      name,
-		Protocol:  protocol,
-		Port:      extertalPort,
-		LocalPort: internalPort,
-	}
 }

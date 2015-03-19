@@ -447,8 +447,3 @@ type IPAddressType string
 const (
 	IPAddressTypePrivate IPAddressType = "Private" // Only allowed value (currently) for IPAddressType
 )
-
-type dockerPublicConfig struct {
-	DockerPort int `json:"dockerport"`
-	Version    int `json:"version"`
-}

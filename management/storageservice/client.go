@@ -1,7 +1,6 @@
 package storageservice
 
 import (
-	"encoding/base64"
 	"encoding/xml"
 	"errors"
 	"fmt"
@@ -84,21 +83,18 @@ func (self StorageServiceClient) GetStorageServiceByLocation(location string) (*
 	return nil, nil
 }
 
-func (self StorageServiceClient) CreateStorageService(name, location string) (*StorageService, error) {
-	if name == "" {
-		return nil, fmt.Errorf(errParamNotSpecified, "name")
-	}
-	if location == "" {
-		return nil, fmt.Errorf(errParamNotSpecified, "location")
-	}
-
-	storageDeploymentConfig := self.createStorageServiceDeploymentConf(name, location)
-	deploymentBytes, err := xml.Marshal(storageDeploymentConfig)
+func (self StorageServiceClient) CreateAsync(parameters StorageAccountCreateParameters) (string, error) {
+	data, err := xml.Marshal(CreateStorageServiceInput{
+		StorageAccountCreateParameters: parameters})
 	if err != nil {
-		return nil, err
+		return "", err
 	}
 
-	requestId, err := self.client.SendAzurePostRequest(azureStorageServiceListURL, deploymentBytes)
+	return self.client.SendAzurePostRequest(azureStorageServiceListURL, data)
+}
+
+func (self StorageServiceClient) Create(parameters StorageAccountCreateParameters) (*StorageService, error) {
+	requestId, err := self.CreateAsync(parameters)
 	if err != nil {
 		return nil, err
 	}
@@ -108,7 +104,7 @@ func (self StorageServiceClient) CreateStorageService(name, location string) (*S
 		return nil, err
 	}
 
-	storageService, err := self.GetStorageServiceByName(storageDeploymentConfig.ServiceName)
+	storageService, err := self.GetStorageServiceByName(parameters.ServiceName)
 	if err != nil {
 		return nil, err
 	}
@@ -126,18 +122,6 @@ func (self StorageServiceClient) GetBlobEndpoint(storageService *StorageService)
 	}
 
 	return "", errors.New(fmt.Sprintf(errBlobEndpointNotFound, storageService.ServiceName))
-}
-
-func (self *StorageServiceClient) createStorageServiceDeploymentConf(name, location string) StorageServiceDeployment {
-	storageServiceDeployment := StorageServiceDeployment{}
-
-	storageServiceDeployment.ServiceName = name
-	label := base64.StdEncoding.EncodeToString([]byte(name))
-	storageServiceDeployment.Label = label
-	storageServiceDeployment.Location = location
-	storageServiceDeployment.Xmlns = azureXmlns
-
-	return storageServiceDeployment
 }
 
 // The Check Storage Account Name Availability operation checks to see if the specified storage account name is available, or if it has already been taken.

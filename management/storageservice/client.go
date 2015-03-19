@@ -84,7 +84,7 @@ func (self StorageServiceClient) GetStorageServiceByLocation(location string) (*
 	return nil, nil
 }
 
-func (self StorageServiceClient) CreateStorageService(name, location string) (*StorageService, error) {
+func (self StorageServiceClient) CreateStorageService(name, location string, accountType string) (*StorageService, error) {
 	if name == "" {
 		return nil, fmt.Errorf(errParamNotSpecified, "name")
 	}
@@ -92,7 +92,7 @@ func (self StorageServiceClient) CreateStorageService(name, location string) (*S
 		return nil, fmt.Errorf(errParamNotSpecified, "location")
 	}
 
-	storageDeploymentConfig := self.createStorageServiceDeploymentConf(name, location)
+	storageDeploymentConfig := self.createStorageServiceDeploymentConf(name, location, accountType)
 	deploymentBytes, err := xml.Marshal(storageDeploymentConfig)
 	if err != nil {
 		return nil, err
@@ -128,7 +128,7 @@ func (self StorageServiceClient) GetBlobEndpoint(storageService *StorageService)
 	return "", errors.New(fmt.Sprintf(errBlobEndpointNotFound, storageService.ServiceName))
 }
 
-func (self *StorageServiceClient) createStorageServiceDeploymentConf(name, location string) StorageServiceDeployment {
+func (self *StorageServiceClient) createStorageServiceDeploymentConf(name, location, accountType string) StorageServiceDeployment {
 	storageServiceDeployment := StorageServiceDeployment{}
 
 	storageServiceDeployment.ServiceName = name
@@ -136,6 +136,7 @@ func (self *StorageServiceClient) createStorageServiceDeploymentConf(name, locat
 	storageServiceDeployment.Label = label
 	storageServiceDeployment.Location = location
 	storageServiceDeployment.Xmlns = azureXmlns
+	storageServiceDeployment.AccountType = accountType
 
 	return storageServiceDeployment
 }

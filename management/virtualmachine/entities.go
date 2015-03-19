@@ -11,6 +11,16 @@ type VirtualMachineClient struct {
 	client management.Client
 }
 
+type VMCreateConfiguration struct {
+	DnsName            string
+	InstanceSize       string
+	ImageName          string
+	Location           string
+	StorageAccountType string
+	role               *Role
+	client             VirtualMachineClient
+}
+
 type VMDeployment struct {
 	XMLName          xml.Name `xml:"Deployment"`
 	Xmlns            string   `xml:"xmlns,attr"`

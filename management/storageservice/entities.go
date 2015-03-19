@@ -34,16 +34,15 @@ type StorageServiceProperties struct {
 }
 
 type StorageServiceDeployment struct {
-	XMLName               xml.Name `xml:"CreateStorageServiceInput"`
-	Xmlns                 string   `xml:"xmlns,attr"`
-	ServiceName           string
-	Description           string
-	Label                 string
-	AffinityGroup         string `xml:",omitempty"`
-	Location              string `xml:",omitempty"`
-	GeoReplicationEnabled bool
-	ExtendedProperties    ExtendedPropertyList
-	SecondaryReadEnabled  bool
+	XMLName            xml.Name `xml:"CreateStorageServiceInput"`
+	Xmlns              string   `xml:"xmlns,attr"`
+	ServiceName        string
+	Description        string
+	Label              string
+	AffinityGroup      string `xml:",omitempty"`
+	Location           string `xml:",omitempty"`
+	ExtendedProperties ExtendedPropertyList
+	AccountType        string `xml:",omitempty"`
 }
 
 type ExtendedPropertyList struct {

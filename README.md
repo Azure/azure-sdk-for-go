@@ -3,12 +3,12 @@ This project provides a Golang package that makes it easy to consume and manage 
 
 # Installation
 - Install Golang: https://golang.org/doc/install
-- Get Azure SDK package: 
+- Get Azure SDK package:
 
 ```sh
 go get github.com/MSOpenTech/azure-sdk-for-go
 ```
-- Install: 
+- Install:
 
 ```sh
 go install github.com/MSOpenTech/azure-sdk-for-go
@@ -25,7 +25,7 @@ import (
     "fmt"
 	"io/ioutil"
     "os"
-    
+
     "github.com/MSOpenTech/azure-sdk-for-go/management"
     "github.com/MSOpenTech/azure-sdk-for-go/management/virtualmachine"
 )
@@ -53,20 +53,20 @@ func main() {
     }
 
     vmClient := virtualmachine.NewClient(client)
-    
-    vmConfig, err := vmClient.CreateAzureVMConfiguration(dnsName, vmSize, vmImage, location)
+
+    vmConfig, err := vmClient.NewVMCreateConfiguration(dnsName, vmSize, vmImage, location)
     if err != nil {
     	fmt.Println(err)
     	os.Exit(1)
     }
-    
-    vmConfig, err = vmClient.AddAzureLinuxProvisioningConfig(vmConfig, userName, userPassword, sshCert, sshPort)
+
+    err = vmConfig.AddLinuxConfig(userName, userPassword, sshCert, sshPort)
     if err != nil {
     	fmt.Println(err)
     	os.Exit(1)
     }
-    
-    err = vmClient.CreateAzureVM(vmConfig, dnsName, location)
+
+    err = vmClient.CreateAzureVM(vmConfig)
     if err != nil {
     	fmt.Println(err)
     	os.Exit(1)

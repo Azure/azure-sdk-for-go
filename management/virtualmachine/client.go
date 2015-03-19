@@ -18,22 +18,17 @@ import (
 	"unicode"
 
 	"github.com/MSOpenTech/azure-sdk-for-go/management"
-	hostedserviceclient "github.com/MSOpenTech/azure-sdk-for-go/management/hostedservice"
 	locationclient "github.com/MSOpenTech/azure-sdk-for-go/management/location"
 	storageserviceclient "github.com/MSOpenTech/azure-sdk-for-go/management/storageservice"
 )
 
 const (
-	azureDeploymentListURL            = "services/hostedservices/%s/deployments"
-	azureHostedServiceListURL         = "services/hostedservices"
-	deleteAzureHostedServiceURL       = "services/hostedservices/%s?comp=media"
-	azureHostedServiceAvailabilityURL = "services/hostedservices/operations/isavailable/%s"
-	azureDeploymentURL                = "services/hostedservices/%s/deployments/%s"
-	deleteAzureDeploymentURL          = "services/hostedservices/%s/deployments/%s?comp=media"
-	azureRoleURL                      = "services/hostedservices/%s/deployments/%s/roles/%s"
-	azureOperationsURL                = "services/hostedservices/%s/deployments/%s/roleinstances/%s/Operations"
-	azureCertificatListURL            = "services/hostedservices/%s/certificates"
-	azureRoleSizeListURL              = "rolesizes"
+	azureDeploymentListURL   = "services/hostedservices/%s/deployments"
+	azureDeploymentURL       = "services/hostedservices/%s/deployments/%s"
+	deleteAzureDeploymentURL = "services/hostedservices/%s/deployments/%s?comp=media"
+	azureRoleURL             = "services/hostedservices/%s/deployments/%s/roles/%s"
+	azureOperationsURL       = "services/hostedservices/%s/deployments/%s/roleinstances/%s/Operations"
+	azureRoleSizeListURL     = "rolesizes"
 
 	osLinux                   = "Linux"
 	osWindows                 = "Windows"
@@ -47,7 +42,6 @@ const (
 	errInvalidPassword              = "Password must have at least one upper case, lower case and numeric character."
 	errInvalidRoleSize              = "Invalid role size: %s. Available role sizes: %s"
 	errInvalidRoleSizeInLocation    = "Role size: %s not available in location: %s."
-	errInvalidDnsLength             = "The DNS name must be between 3 and 25 characters."
 )
 
 //NewClient is used to instantiate a new VmClient from an Azure client
@@ -55,51 +49,19 @@ func NewClient(client management.Client) VirtualMachineClient {
 	return VirtualMachineClient{client: client}
 }
 
-func (self VirtualMachineClient) CreateAzureVM(azureVMConfiguration *Role, dnsName, location string) error {
-	if azureVMConfiguration == nil {
-		return fmt.Errorf(errParamNotSpecified, "azureVMConfiguration")
-	}
-	if dnsName == "" {
-		return fmt.Errorf(errParamNotSpecified, "dnsName")
-	}
-	if location == "" {
-		return fmt.Errorf(errParamNotSpecified, "location")
+func (self VirtualMachineClient) CreateDeployment(role *Role, cloudserviceName string) (requestId string, err error) {
+	if role == nil {
+		return "", fmt.Errorf(errParamNotSpecified, "role")
 	}
 
-	hostedServiceClient := hostedserviceclient.NewClient(self.client)
-	requestId, err := hostedServiceClient.CreateHostedService(dnsName, location, "", dnsName, "")
-	if err != nil {
-		return err
-	}
+	vMDeploymentBytes, err := xml.Marshal(DeploymentRequest{
+		Name:           role.RoleName,
+		DeploymentSlot: "Production",
+		Label:          role.RoleName,
+		RoleList:       []*Role{role}})
 
-	err = self.client.WaitAsyncOperation(requestId)
-	if err != nil {
-		return err
-	}
-
-	if azureVMConfiguration.UseCertAuth {
-		err = self.uploadServiceCert(dnsName, azureVMConfiguration.CertPath)
-		if err != nil {
-			hostedServiceClient.DeleteHostedService(dnsName)
-			return err
-		}
-	}
-
-	vMDeployment := self.createVMDeploymentConfig(azureVMConfiguration)
-	vMDeploymentBytes, err := xml.Marshal(vMDeployment)
-	if err != nil {
-		hostedServiceClient.DeleteHostedService(dnsName)
-		return err
-	}
-
-	requestURL := fmt.Sprintf(azureDeploymentListURL, azureVMConfiguration.RoleName)
-	requestId, err = self.client.SendAzurePostRequest(requestURL, vMDeploymentBytes)
-	if err != nil {
-		hostedServiceClient.DeleteHostedService(dnsName)
-		return err
-	}
-
-	return self.client.WaitAsyncOperation(requestId)
+	requestURL := fmt.Sprintf(azureDeploymentListURL, cloudserviceName)
+	return self.client.SendAzurePostRequest(requestURL, vMDeploymentBytes)
 }
 
 func (self VirtualMachineClient) CreateAzureVMConfiguration(dnsName, instanceSize, imageName, location string) (*Role, error) {
@@ -242,7 +204,7 @@ func (self VirtualMachineClient) SetAzureDockerVMExtension(azureVMConfiguration 
 	return azureVMConfiguration, nil
 }
 
-func (self VirtualMachineClient) GetVMDeployment(cloudserviceName, deploymentName string) (*DeploymentResponse, error) {
+func (self VirtualMachineClient) GetDeployment(cloudserviceName, deploymentName string) (*DeploymentResponse, error) {
 	if cloudserviceName == "" {
 		return nil, fmt.Errorf(errParamNotSpecified, "cloudserviceName")
 	}
@@ -266,26 +228,16 @@ func (self VirtualMachineClient) GetVMDeployment(cloudserviceName, deploymentNam
 	return deployment, nil
 }
 
-func (self VirtualMachineClient) DeleteVMDeployment(cloudserviceName, deploymentName string) error {
+func (self VirtualMachineClient) DeleteDeployment(cloudserviceName, deploymentName string) (requestId string, err error) {
 	if cloudserviceName == "" {
-		return fmt.Errorf(errParamNotSpecified, "cloudserviceName")
+		return "", fmt.Errorf(errParamNotSpecified, "cloudserviceName")
 	}
 	if deploymentName == "" {
-		return fmt.Errorf(errParamNotSpecified, "deploymentName")
+		return "", fmt.Errorf(errParamNotSpecified, "deploymentName")
 	}
 
 	requestURL := fmt.Sprintf(deleteAzureDeploymentURL, cloudserviceName, deploymentName)
-	requestId, err := self.client.SendAzureDeleteRequest(requestURL)
-	if err != nil {
-		return err
-	}
-
-	err = self.client.WaitAsyncOperation(requestId)
-	if err != nil {
-		return err
-	}
-
-	return nil
+	return self.client.SendAzureDeleteRequest(requestURL)
 }
 
 func (self VirtualMachineClient) GetRole(cloudserviceName, deploymentName, roleName string) (*Role, error) {
@@ -326,9 +278,9 @@ func (self VirtualMachineClient) StartRole(cloudserviceName, deploymentName, rol
 		return fmt.Errorf(errParamNotSpecified, "roleName")
 	}
 
-	startRoleOperation := self.createStartRoleOperation()
-
-	startRoleOperationBytes, err := xml.Marshal(startRoleOperation)
+	startRoleOperationBytes, err := xml.Marshal(StartRoleOperation{
+		OperationType: "StartRoleOperation",
+	})
 	if err != nil {
 		return err
 	}
@@ -353,9 +305,9 @@ func (self VirtualMachineClient) ShutdownRole(cloudserviceName, deploymentName, 
 		return fmt.Errorf(errParamNotSpecified, "roleName")
 	}
 
-	shutdownRoleOperation := self.createShutdowRoleOperation()
-
-	shutdownRoleOperationBytes, err := xml.Marshal(shutdownRoleOperation)
+	shutdownRoleOperationBytes, err := xml.Marshal(ShutdownRoleOperation{
+		OperationType: "ShutdownRoleOperation",
+	})
 	if err != nil {
 		return err
 	}
@@ -380,9 +332,9 @@ func (self VirtualMachineClient) RestartRole(cloudserviceName, deploymentName, r
 		return fmt.Errorf(errParamNotSpecified, "roleName")
 	}
 
-	restartRoleOperation := self.createRestartRoleOperation()
-
-	restartRoleOperationBytes, err := xml.Marshal(restartRoleOperation)
+	restartRoleOperationBytes, err := xml.Marshal(RestartRoleOperation{
+		OperationType: "RestartRoleOperation",
+	})
 	if err != nil {
 		return err
 	}
@@ -458,24 +410,6 @@ func (self VirtualMachineClient) ResolveRoleSize(roleSizeName string) error {
 	return errors.New(fmt.Sprintf(errInvalidRoleSize, roleSizeName, strings.Trim(availableSizes.String(), ", ")))
 }
 
-func (self VirtualMachineClient) createStartRoleOperation() StartRoleOperation {
-	return StartRoleOperation{
-		OperationType: "StartRoleOperation",
-	}
-}
-
-func (self VirtualMachineClient) createShutdowRoleOperation() ShutdownRoleOperation {
-	return ShutdownRoleOperation{
-		OperationType: "ShutdownRoleOperation",
-	}
-}
-
-func (self VirtualMachineClient) createRestartRoleOperation() RestartRoleOperation {
-	return RestartRoleOperation{
-		OperationType: "RestartRoleOperation",
-	}
-}
-
 func (self VirtualMachineClient) createDockerPublicConfig(dockerPort int) (string, error) {
 	config := dockerPublicConfig{DockerPort: dockerPort, Version: dockerPublicConfigVersion}
 	configJson, err := json.Marshal(config)
@@ -502,16 +436,6 @@ func (self VirtualMachineClient) addDockerPort(configurationSets []Configuration
 
 	return nil
 }
-
-func (self VirtualMachineClient) createVMDeploymentConfig(role *Role) DeploymentRequest {
-	return DeploymentRequest{
-		Name:           role.RoleName,
-		DeploymentSlot: "Production",
-		Label:          role.RoleName,
-		RoleList:       []*Role{role},
-	}
-}
-
 func (self VirtualMachineClient) createAzureVMRole(name, instanceSize, imageName, location string) (*Role, error) {
 	vhd, err := self.createOSVirtualHardDisk(name, imageName, location)
 	if err != nil {
@@ -606,41 +530,6 @@ func (self VirtualMachineClient) createLinuxProvisioningConfig(dnsName, userName
 	}
 
 	return provisioningConfig, nil
-}
-
-func (self VirtualMachineClient) uploadServiceCert(dnsName, certPath string) error {
-	certificateConfig, err := self.createServiceCertDeploymentConf(certPath)
-	if err != nil {
-		return err
-	}
-
-	certificateConfigBytes, err := xml.Marshal(certificateConfig)
-	if err != nil {
-		return err
-	}
-
-	requestURL := fmt.Sprintf(azureCertificatListURL, dnsName)
-	requestId, azureErr := self.client.SendAzurePostRequest(requestURL, certificateConfigBytes)
-	if azureErr != nil {
-		return azureErr
-	}
-
-	return self.client.WaitAsyncOperation(requestId)
-}
-
-func (self VirtualMachineClient) createServiceCertDeploymentConf(certPath string) (ServiceCertificate, error) {
-	certConfig := ServiceCertificate{}
-
-	data, err := ioutil.ReadFile(certPath)
-	if err != nil {
-		return certConfig, err
-	}
-
-	certData := base64.StdEncoding.EncodeToString(data)
-	certConfig.Data = certData
-	certConfig.CertificateFormat = "pfx"
-
-	return certConfig, nil
 }
 
 func (self VirtualMachineClient) createSshConfig(certPath, userName string) (SSH, error) {

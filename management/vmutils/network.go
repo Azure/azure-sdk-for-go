@@ -1,0 +1,47 @@
+package vmutils
+
+import (
+	"fmt"
+
+	. "github.com/MSOpenTech/azure-sdk-for-go/management/virtualmachine"
+)
+
+// Adds configuration exposing port 22 externally
+func ConfigureWithPublicSSH(role *Role) error {
+	if role == nil {
+		return fmt.Errorf(errParamNotSpecified, "role")
+	}
+
+	return ConfigureWithExternalPort(role, "SSH", 22, 22, InputEndpointProtocolTcp)
+}
+
+// Adds configuration exposing port 3389 externally
+func ConfigureWithPublicRDP(role *Role) error {
+	if role == nil {
+		return fmt.Errorf(errParamNotSpecified, "role")
+	}
+
+	return ConfigureWithExternalPort(role, "RDP", 3389, 3389, InputEndpointProtocolTcp)
+}
+
+// Adds a new InputEndpoint to the Role, exposing a port externally
+func ConfigureWithExternalPort(role *Role, name string, localport, externalport int, protocol InputEndpointProtocol) error {
+	if role == nil {
+		return fmt.Errorf(errParamNotSpecified, "role")
+	}
+
+	role.ConfigurationSets = updateOrAddConfig(role.ConfigurationSets, ConfigurationSetTypeNetwork,
+		func(config *ConfigurationSet) {
+			if config.InputEndpoints == nil {
+				config.InputEndpoints = &[]InputEndpoint{}
+			}
+			newInputEndpoints := append(*config.InputEndpoints, InputEndpoint{
+				LocalPort: localport,
+				Name:      name,
+				Port:      externalport,
+				Protocol:  protocol,
+			})
+			config.InputEndpoints = &newInputEndpoints
+		})
+	return nil
+}

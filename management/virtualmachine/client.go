@@ -3,23 +3,14 @@ package virtualmachine
 
 import (
 	"bytes"
-	"crypto/rand"
-	"crypto/sha1"
 	"encoding/base64"
 	"encoding/json"
-	"encoding/pem"
 	"encoding/xml"
 	"errors"
 	"fmt"
-	"io"
-	"io/ioutil"
 	"strings"
-	"time"
-	"unicode"
 
 	"github.com/MSOpenTech/azure-sdk-for-go/management"
-	locationclient "github.com/MSOpenTech/azure-sdk-for-go/management/location"
-	storageserviceclient "github.com/MSOpenTech/azure-sdk-for-go/management/storageservice"
 )
 
 const (
@@ -30,18 +21,11 @@ const (
 	azureOperationsURL       = "services/hostedservices/%s/deployments/%s/roleinstances/%s/Operations"
 	azureRoleSizeListURL     = "rolesizes"
 
-	osLinux                   = "Linux"
-	osWindows                 = "Windows"
 	dockerPublicConfigVersion = 2
 
 	errParamNotSpecified            = "Parameter %s is not specified."
 	errProvisioningConfDoesNotExist = "You should set azure VM provisioning config first"
-	errInvalidCertExtension         = "Certificate %s is invalid. Please specify %s certificate."
-	errInvalidOS                    = "You must specify correct OS param. Valid values are 'Linux' and 'Windows'"
-	errInvalidPasswordLength        = "Password must be between 4 and 30 characters."
-	errInvalidPassword              = "Password must have at least one upper case, lower case and numeric character."
 	errInvalidRoleSize              = "Invalid role size: %s. Available role sizes: %s"
-	errInvalidRoleSizeInLocation    = "Role size: %s not available in location: %s."
 )
 
 //NewClient is used to instantiate a new VmClient from an Azure client
@@ -62,71 +46,6 @@ func (self VirtualMachineClient) CreateDeployment(role *Role, cloudserviceName s
 
 	requestURL := fmt.Sprintf(azureDeploymentListURL, cloudserviceName)
 	return self.client.SendAzurePostRequest(requestURL, vMDeploymentBytes)
-}
-
-func (self VirtualMachineClient) CreateAzureVMConfiguration(dnsName, instanceSize, imageName, location string) (*Role, error) {
-	if dnsName == "" {
-		return nil, fmt.Errorf(errParamNotSpecified, "dnsName")
-	}
-	if instanceSize == "" {
-		return nil, fmt.Errorf(errParamNotSpecified, "instanceSize")
-	}
-	if imageName == "" {
-		return nil, fmt.Errorf(errParamNotSpecified, "imageName")
-	}
-	if location == "" {
-		return nil, fmt.Errorf(errParamNotSpecified, "location")
-	}
-
-	locationClient := locationclient.NewClient(self.client)
-	locationInfo, err := locationClient.GetLocation(location)
-	if err != nil {
-		return nil, err
-	}
-
-	sizeAvailable, err := self.isInstanceSizeAvailableInLocation(locationInfo, instanceSize)
-	if err != nil {
-		return nil, err
-	}
-
-	if sizeAvailable == false {
-		return nil, fmt.Errorf(errInvalidRoleSizeInLocation, instanceSize, location)
-	}
-
-	role, err := self.createAzureVMRole(dnsName, instanceSize, imageName, location)
-	if err != nil {
-		return nil, err
-	}
-
-	return role, nil
-}
-
-func (self VirtualMachineClient) AddAzureLinuxProvisioningConfig(azureVMConfiguration *Role, userName, password, certPath string, sshPort int) (*Role, error) {
-	if azureVMConfiguration == nil {
-		return nil, fmt.Errorf(errParamNotSpecified, "azureVMConfiguration")
-	}
-	if userName == "" {
-		return nil, fmt.Errorf(errParamNotSpecified, "userName")
-	}
-
-	provisioningConfig, err := self.createLinuxProvisioningConfig(azureVMConfiguration.RoleName, userName, password, certPath)
-	if err != nil {
-		return nil, err
-	}
-
-	networkConfig, networkErr := self.createNetworkConfig(osLinux, sshPort)
-	if networkErr != nil {
-		return nil, err
-	}
-
-	azureVMConfiguration.ConfigurationSets = &[]ConfigurationSet{provisioningConfig, networkConfig}
-
-	if len(certPath) > 0 {
-		azureVMConfiguration.UseCertAuth = true
-		azureVMConfiguration.CertPath = certPath
-	}
-
-	return azureVMConfiguration, nil
 }
 
 func (self VirtualMachineClient) SetAzureVMExtension(azureVMConfiguration *Role, name string, publisher string, version string, referenceName string, state string, publicConfigurationValue string, privateConfigurationValue string) (*Role, error) {
@@ -436,169 +355,6 @@ func (self VirtualMachineClient) addDockerPort(configurationSets []Configuration
 
 	return nil
 }
-func (self VirtualMachineClient) createAzureVMRole(name, instanceSize, imageName, location string) (*Role, error) {
-	vhd, err := self.createOSVirtualHardDisk(name, imageName, location)
-	if err != nil {
-		return nil, err
-	}
-
-	return &Role{
-		RoleName:            name,
-		RoleSize:            instanceSize,
-		RoleType:            "PersistentVMRole",
-		ProvisionGuestAgent: true,
-		OSVirtualHardDisk:   vhd,
-	}, nil
-}
-
-func (self VirtualMachineClient) createOSVirtualHardDisk(dnsName, imageName, location string) (*OSVirtualHardDisk, error) {
-	link, err := self.getVHDMediaLink(dnsName, location)
-	if err != nil {
-		return &OSVirtualHardDisk{}, err
-	}
-
-	return &OSVirtualHardDisk{
-		SourceImageName: imageName,
-		MediaLink:       link,
-	}, nil
-}
-
-func (self VirtualMachineClient) getVHDMediaLink(dnsName, location string) (string, error) {
-	storageServiceClient := storageserviceclient.NewClient(self.client)
-
-	storageService, err := storageServiceClient.GetStorageServiceByLocation(location)
-	if err != nil {
-		return "", err
-	}
-
-	if storageService == nil {
-		uuid, err := newUUID()
-		if err != nil {
-			return "", err
-		}
-
-		serviceName := "portalvhds" + uuid
-		storageService, err = storageServiceClient.Create(storageserviceclient.StorageAccountCreateParameters{
-			ServiceName: serviceName,
-			Location:    location,
-			Label:       base64.StdEncoding.EncodeToString([]byte(serviceName)),
-		})
-		if err != nil {
-			return "", err
-		}
-	}
-
-	blobEndpoint, err := storageServiceClient.GetBlobEndpoint(storageService)
-	if err != nil {
-		return "", err
-	}
-
-	vhdMediaLink := blobEndpoint + "vhds/" + dnsName + "-" + time.Now().Local().Format("20060102150405") + ".vhd"
-	return vhdMediaLink, nil
-}
-
-func (self VirtualMachineClient) createLinuxProvisioningConfig(dnsName, userName, userPassword, certPath string) (ConfigurationSet, error) {
-	provisioningConfig := ConfigurationSet{}
-
-	disableSshPasswordAuthentication := false
-	if userPassword == "" {
-		disableSshPasswordAuthentication = true
-		// We need to set dummy password otherwise azure API will throw an error
-		userPassword = "P@ssword1"
-	} else {
-		err := self.verifyPassword(userPassword)
-		if err != nil {
-			return provisioningConfig, err
-		}
-	}
-
-	if !disableSshPasswordAuthentication {
-		provisioningConfig.DisableSshPasswordAuthentication = "false"
-	}
-	provisioningConfig.ConfigurationSetType = "LinuxProvisioningConfiguration"
-	provisioningConfig.HostName = dnsName
-	provisioningConfig.UserName = userName
-	provisioningConfig.UserPassword = userPassword
-
-	if len(certPath) > 0 {
-		var err error
-		ssh, err := self.createSshConfig(certPath, userName)
-		if err != nil {
-			return provisioningConfig, err
-		}
-		provisioningConfig.SSH = &ssh
-	}
-
-	return provisioningConfig, nil
-}
-
-func (self VirtualMachineClient) createSshConfig(certPath, userName string) (SSH, error) {
-	sshConfig := SSH{}
-	publicKey := PublicKey{}
-
-	err := self.checkServiceCertExtension(certPath)
-	if err != nil {
-		return sshConfig, err
-	}
-
-	fingerprint, err := self.getServiceCertFingerprint(certPath)
-	if err != nil {
-		return sshConfig, err
-	}
-
-	publicKey.Fingerprint = fingerprint
-	publicKey.Path = "/home/" + userName + "/.ssh/authorized_keys"
-
-	sshConfig.PublicKeys = &[]PublicKey{publicKey}
-	return sshConfig, nil
-}
-
-func (self VirtualMachineClient) getServiceCertFingerprint(certPath string) (string, error) {
-	certData, readErr := ioutil.ReadFile(certPath)
-	if readErr != nil {
-		return "", readErr
-	}
-
-	block, rest := pem.Decode(certData)
-	if block == nil {
-		return "", errors.New(string(rest))
-	}
-
-	sha1sum := sha1.Sum(block.Bytes)
-	fingerprint := fmt.Sprintf("%X", sha1sum)
-	return fingerprint, nil
-}
-
-func (self VirtualMachineClient) checkServiceCertExtension(certPath string) error {
-	certParts := strings.Split(certPath, ".")
-	certExt := certParts[len(certParts)-1]
-
-	acceptedExtension := "pem"
-	if certExt != acceptedExtension {
-		return errors.New(fmt.Sprintf(errInvalidCertExtension, certPath, acceptedExtension))
-	}
-
-	return nil
-}
-
-func (self VirtualMachineClient) createNetworkConfig(os string, sshPort int) (ConfigurationSet, error) {
-	networkConfig := ConfigurationSet{
-		ConfigurationSetType: "NetworkConfiguration",
-	}
-
-	var endpoint InputEndpoint
-	if os == osLinux {
-		endpoint = self.createEndpoint("ssh", "tcp", sshPort, 22)
-	} else if os == osWindows {
-		//!TODO add rdp endpoint
-	} else {
-		return networkConfig, errors.New(fmt.Sprintf(errInvalidOS))
-	}
-
-	*networkConfig.InputEndpoints = append(*networkConfig.InputEndpoints, endpoint)
-
-	return networkConfig, nil
-}
 
 func (self VirtualMachineClient) createEndpoint(name string, protocol InputEndpointProtocol, extertalPort int, internalPort int) InputEndpoint {
 	return InputEndpoint{
@@ -607,53 +363,4 @@ func (self VirtualMachineClient) createEndpoint(name string, protocol InputEndpo
 		Port:      extertalPort,
 		LocalPort: internalPort,
 	}
-}
-
-func (self VirtualMachineClient) verifyPassword(password string) error {
-	if len(password) < 4 || len(password) > 30 {
-		return fmt.Errorf(errInvalidPasswordLength)
-	}
-
-next:
-	for _, classes := range map[string][]*unicode.RangeTable{
-		"upper case": {unicode.Upper, unicode.Title},
-		"lower case": {unicode.Lower},
-		"numeric":    {unicode.Number, unicode.Digit},
-	} {
-		for _, r := range password {
-			if unicode.IsOneOf(classes, r) {
-				continue next
-			}
-		}
-		return fmt.Errorf(errInvalidPassword)
-	}
-	return nil
-}
-
-func (self VirtualMachineClient) isInstanceSizeAvailableInLocation(location *locationclient.Location, instanceSize string) (bool, error) {
-	if instanceSize == "" {
-		return false, fmt.Errorf(errParamNotSpecified, "vmSize")
-	}
-
-	for _, availableRoleSize := range location.VirtualMachineRoleSizes {
-		if availableRoleSize == instanceSize {
-			return true, nil
-		}
-	}
-
-	return false, nil
-}
-
-func newUUID() (string, error) {
-	uuid := make([]byte, 16)
-	n, err := io.ReadFull(rand.Reader, uuid)
-	if n != len(uuid) || err != nil {
-		return "", err
-	}
-	// variant bits; see section 4.1.1
-	uuid[8] = uuid[8]&^0xc0 | 0x80
-	// version 4 (pseudo-random); see section 4.1.3
-	uuid[6] = uuid[6]&^0xf0 | 0x40
-
-	return fmt.Sprintf("%x", uuid[10:]), nil
 }

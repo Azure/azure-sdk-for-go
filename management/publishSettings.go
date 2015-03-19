@@ -2,10 +2,13 @@ package management
 
 import (
 	"encoding/base64"
+	"encoding/pem"
 	"encoding/xml"
 	"errors"
 	"fmt"
 	"io/ioutil"
+
+	"github.com/Azure/go-pkcs12"
 )
 
 func (client *Client) importPublishSettings(id string, certPath string) error {
@@ -62,12 +65,17 @@ func getSubscriptionCert(subscription subscription) ([]byte, error) {
 		return nil, err
 	}
 
-	subscriptionCert, err := executeCommand(fmt.Sprintf("openssl pkcs12 -nodes -passin pass:%s", certPassword), pfxCert)
+	pemBlocks, err := pkcs12.ConvertToPEM(pfxCert, certPassword)
 	if err != nil {
 		return nil, err
 	}
 
-	return subscriptionCert, nil
+	var certData []byte
+	for _, block := range pemBlocks {
+		certData = append(certData, pem.EncodeToMemory(block)...)
+	}
+
+	return certData, nil
 }
 
 func getActiveSubscription(publishSettingsContent []byte) (subscription, error) {

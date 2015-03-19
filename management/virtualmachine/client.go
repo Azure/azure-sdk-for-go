@@ -2,11 +2,8 @@
 package virtualmachine
 
 import (
-	"bytes"
 	"encoding/xml"
-	"errors"
 	"fmt"
-	"strings"
 
 	"github.com/MSOpenTech/azure-sdk-for-go/management"
 )
@@ -20,7 +17,6 @@ const (
 	azureRoleSizeListURL     = "rolesizes"
 
 	errParamNotSpecified = "Parameter %s is not specified."
-	errInvalidRoleSize   = "Invalid role size: %s. Available role sizes: %s"
 )
 
 //NewClient is used to instantiate a new VmClient from an Azure client
@@ -221,30 +217,4 @@ func (self VirtualMachineClient) GetRoleSizeList() (RoleSizeList, error) {
 	}
 
 	return roleSizeList, err
-}
-
-func (self VirtualMachineClient) ResolveRoleSize(roleSizeName string) error {
-	if roleSizeName == "" {
-		return fmt.Errorf(errParamNotSpecified, "roleSizeName")
-	}
-
-	roleSizeList, err := self.GetRoleSizeList()
-	if err != nil {
-		return err
-	}
-
-	for _, roleSize := range roleSizeList.RoleSizes {
-		if roleSize.Name != roleSizeName {
-			continue
-		}
-
-		return nil
-	}
-
-	var availableSizes bytes.Buffer
-	for _, existingSize := range roleSizeList.RoleSizes {
-		availableSizes.WriteString(existingSize.Name + ", ")
-	}
-
-	return errors.New(fmt.Sprintf(errInvalidRoleSize, roleSizeName, strings.Trim(availableSizes.String(), ", ")))
 }

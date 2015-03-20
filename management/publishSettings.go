@@ -4,113 +4,70 @@ import (
 	"encoding/base64"
 	"encoding/pem"
 	"encoding/xml"
-	"errors"
 	"fmt"
 	"io/ioutil"
 
 	"github.com/Azure/go-pkcs12"
 )
 
-func (client *Client) importPublishSettings(id string, certPath string) error {
-	if id == "" {
-		return fmt.Errorf(errParamNotSpecified, "id")
-	}
-	if certPath == "" {
-		return fmt.Errorf(errParamNotSpecified, "certPath")
-	}
-
-	cert, err := ioutil.ReadFile(certPath)
-	if err != nil {
-		return err
-	}
-
-	client.publishSettings.SubscriptionID = id
-	client.publishSettings.SubscriptionCert = cert
-	client.publishSettings.SubscriptionKey = cert
-
-	return nil
+// ClientFromPublishSettingsFile reads a publish settings file downloaded from https://manage.windowsazure.com/publishsettings.
+// If subscriptionId is left empty, the first subscription in the file is used.
+func ClientFromPublishSettingsFile(filePath, subscriptionId string) (client Client, err error) {
+	return ClientFromPublishSettingsFileWithConfig(filePath, subscriptionId,
+		ClientConfig{ManagementURL: defaultAzureManagementURL})
 }
 
-func (client *Client) importPublishSettingsFile(filePath string) error {
+// ClientFromPublishSettingsFileWithConfig reads a publish settings file downloaded from https://manage.windowsazure.com/publishsettings.
+// If subscriptionId is left empty, the first subscription in the file is used.
+func ClientFromPublishSettingsFileWithConfig(filePath, subscriptionId string, config ClientConfig) (client Client, err error) {
 	if filePath == "" {
-		return fmt.Errorf(errParamNotSpecified, "filePath")
+		return client, fmt.Errorf(errParamNotSpecified, "filePath")
 	}
 
 	publishSettingsContent, err := ioutil.ReadFile(filePath)
 	if err != nil {
-		return err
+		return client, err
 	}
 
-	activeSubscription, err := getActiveSubscription(publishSettingsContent)
-	if err != nil {
-		return err
-	}
-
-	cert, err := getSubscriptionCert(activeSubscription)
-	if err != nil {
-		return err
-	}
-
-	client.publishSettings.SubscriptionID = activeSubscription.Id
-	client.publishSettings.SubscriptionCert = cert
-	client.publishSettings.SubscriptionKey = cert
-	return nil
-}
-
-func getSubscriptionCert(subscription subscription) ([]byte, error) {
-	certPassword := ""
-
-	pfxCert, err := base64.StdEncoding.DecodeString(subscription.ManagementCertificate)
-	if err != nil {
-		return nil, err
-	}
-
-	pemBlocks, err := pkcs12.ConvertToPEM(pfxCert, certPassword)
-	if err != nil {
-		return nil, err
-	}
-
-	var certData []byte
-	for _, block := range pemBlocks {
-		certData = append(certData, pem.EncodeToMemory(block)...)
-	}
-
-	return certData, nil
-}
-
-func getActiveSubscription(publishSettingsContent []byte) (subscription, error) {
 	publishData := publishData{}
-	activeSubscription := subscription{}
-
-	err := xml.Unmarshal(publishSettingsContent, &publishData)
-	if err != nil {
-		return activeSubscription, err
+	if err = xml.Unmarshal(publishSettingsContent, &publishData); err != nil {
+		return client, err
 	}
 
-	if len(publishData.PublishProfiles) == 0 {
-		err = errors.New("No publish profiles were found")
-		return activeSubscription, err
+	for _, profile := range publishData.PublishProfiles {
+		for _, sub := range profile.Subscriptions {
+			if sub.Id == subscriptionId || subscriptionId == "" {
+				base64Cert := sub.ManagementCertificate
+				if base64Cert == "" {
+					base64Cert = profile.ManagementCertificate
+				}
+
+				pfxData, err := base64.StdEncoding.DecodeString(base64Cert)
+				if err != nil {
+					return client, err
+				}
+
+				pems, err := pkcs12.ConvertToPEM(pfxData, "")
+
+				cert := []byte{}
+				for _, b := range pems {
+					cert = append(cert, pem.EncodeToMemory(b)...)
+				}
+
+				managementURL := sub.ServiceManagementUrl
+				if config.ManagementURL != "" {
+					managementURL = config.ManagementURL
+				}
+
+				return makeClient(subscriptionId, cert, managementURL)
+			}
+		}
 	}
 
-	publishProfile := publishData.PublishProfiles[0]
-	subscriptions := publishProfile.Subscriptions
-	if len(subscriptions) == 0 {
-		err = errors.New("No subscriptions were found")
-		return activeSubscription, err
-	}
-
-	activeSubscription = subscriptions[0]
-
-	if activeSubscription.ManagementCertificate == "" {
-		activeSubscription.ManagementCertificate = publishProfile.ManagementCertificate
-		activeSubscription.ServiceManagementUrl = publishProfile.Url
-	}
-
-	return activeSubscription, nil
+	return client, fmt.Errorf("could not find subscription '%s' in '%s'", subscriptionId, filePath)
 }
 
 type publishSettings struct {
-	XMLName          xml.Name `xml:"PublishSettings"`
 	SubscriptionID   string
 	SubscriptionCert []byte
 	SubscriptionKey  []byte

@@ -16,60 +16,62 @@ go install github.com/MSOpenTech/azure-sdk-for-go
 
 # Usage
 
+Download publish settings file from https://manage.windowsazure.com/publishsettings.
 Create linux VM:
 
-```C
+```go
 package main
 
 import (
     "fmt"
-	"io/ioutil"
-    "os"
-    
+
     "github.com/MSOpenTech/azure-sdk-for-go/management"
+    "github.com/MSOpenTech/azure-sdk-for-go/management/hostedservice"
     "github.com/MSOpenTech/azure-sdk-for-go/management/virtualmachine"
+    "github.com/MSOpenTech/azure-sdk-for-go/management/vmutils"
 )
 
 func main() {
     dnsName := "test-vm-from-go"
+    storageAccount := "mystorageaccount"
     location := "West US"
     vmSize := "Small"
     vmImage := "b39f27a8b8c64d52b05eac6a62ebad85__Ubuntu-14_04-LTS-amd64-server-20140724-en-us-30GB"
     userName := "testuser"
     userPassword := "Test123"
-    sshCert := ""
-    sshPort := 22
 
-	subscriptionCert, err := ioutil.ReadFile(SUBSCRIPTION_CERTIFICATE_PATH)
-	if err != nil {
-        fmt.Println(err)
-        os.Exit(1)
+    client, err := management.ClientFromPublishSettingsFile("path/to/downloaded.publishsettings", "")
+    if err != nil {
+        panic(err)
     }
 
-    client, err := management.NewClient(SUBSCRIPTION_ID, subscriptionCert)
+    // create hosted service
+    requestId, err := hostedservice.NewClient(client).CreateHostedService(dnsName, location, "", dnsName, "")
     if err != nil {
-    	fmt.Println(err)
-    	os.Exit(1)
+        panic(err)
+    }
+    err = client.WaitAsyncOperation(requestId)
+    if err != nil {
+        panic(err)
     }
 
-    vmClient := virtualmachine.NewClient(client)
-    
-    vmConfig, err := vmClient.CreateAzureVMConfiguration(dnsName, vmSize, vmImage, location)
+    // create virtual machine
+    role, err := vmutils.NewVmConfiguration(dnsName, vmSize)
     if err != nil {
-    	fmt.Println(err)
-    	os.Exit(1)
+        panic(err)
     }
-    
-    vmConfig, err = vmClient.AddAzureLinuxProvisioningConfig(vmConfig, userName, userPassword, sshCert, sshPort)
+    vmutils.ConfigureDeploymentFromPlatformImage(&role,
+        vmImage, fmt.Sprintf("http://%s.blob.core.windows.net/sdktest/%s.vhd", storageAccount, dnsName), "")
+    vmutils.ConfigureForLinux(&role, dnsName, userName, userPassword)
+    vmutils.ConfigureWithPublicSSH(&role)
+
+    requestId, err = virtualmachine.NewClient(client).CreateDeployment(role, dnsName)
     if err != nil {
-    	fmt.Println(err)
-    	os.Exit(1)
+        panic(err)
     }
-    
-    err = vmClient.CreateAzureVM(vmConfig, dnsName, location)
+    err = client.WaitAsyncOperation(requestId)
     if err != nil {
-    	fmt.Println(err)
-    	os.Exit(1)
+        panic(err)
     }
 }
 ```

@@ -1,3 +1,4 @@
+// Package virtualmachine implements operations on Azure virtual machines using the Service Management REST API
 package virtualmachine
 
 import (
@@ -23,7 +24,6 @@ import (
 )
 
 const (
-	azureXmlns                        = "http://schemas.microsoft.com/windowsazure"
 	azureDeploymentListURL            = "services/hostedservices/%s/deployments"
 	azureHostedServiceListURL         = "services/hostedservices"
 	deleteAzureHostedServiceURL       = "services/hostedservices/%s?comp=media"
@@ -147,22 +147,17 @@ func (self VirtualMachineClient) AddAzureLinuxProvisioningConfig(azureVMConfigur
 		return nil, fmt.Errorf(errParamNotSpecified, "userName")
 	}
 
-	configurationSets := ConfigurationSets{}
 	provisioningConfig, err := self.createLinuxProvisioningConfig(azureVMConfiguration.RoleName, userName, password, certPath)
 	if err != nil {
 		return nil, err
 	}
-
-	configurationSets.ConfigurationSet = append(configurationSets.ConfigurationSet, provisioningConfig)
 
 	networkConfig, networkErr := self.createNetworkConfig(osLinux, sshPort)
 	if networkErr != nil {
 		return nil, err
 	}
 
-	configurationSets.ConfigurationSet = append(configurationSets.ConfigurationSet, networkConfig)
-
-	azureVMConfiguration.ConfigurationSets = configurationSets
+	azureVMConfiguration.ConfigurationSets = &[]ConfigurationSet{provisioningConfig, networkConfig}
 
 	if len(certPath) > 0 {
 		azureVMConfiguration.UseCertAuth = true
@@ -189,32 +184,35 @@ func (self VirtualMachineClient) SetAzureVMExtension(azureVMConfiguration *Role,
 		return nil, fmt.Errorf(errParamNotSpecified, "referenceName")
 	}
 
-	extension := ResourceExtensionReference{}
-	extension.Name = name
-	extension.Publisher = publisher
-	extension.Version = version
-	extension.ReferenceName = referenceName
-	extension.State = state
-
-	if len(privateConfigurationValue) > 0 {
-		privateConfig := ResourceExtensionParameter{}
-		privateConfig.Key = "ignored"
-		privateConfig.Value = base64.StdEncoding.EncodeToString([]byte(privateConfigurationValue))
-		privateConfig.Type = "Private"
-
-		extension.ResourceExtensionParameterValues.ResourceExtensionParameterValue = append(extension.ResourceExtensionParameterValues.ResourceExtensionParameterValue, privateConfig)
+	extension := ResourceExtensionReference{
+		Name:          name,
+		Publisher:     publisher,
+		Version:       version,
+		ReferenceName: referenceName,
+		State:         state,
 	}
 
-	if len(publicConfigurationValue) > 0 {
-		publicConfig := ResourceExtensionParameter{}
-		publicConfig.Key = "ignored"
-		publicConfig.Value = base64.StdEncoding.EncodeToString([]byte(publicConfigurationValue))
-		publicConfig.Type = "Public"
-
-		extension.ResourceExtensionParameterValues.ResourceExtensionParameterValue = append(extension.ResourceExtensionParameterValues.ResourceExtensionParameterValue, publicConfig)
+	if privateConfigurationValue != "" {
+		extension.ParameterValues = append(extension.ParameterValues, ResourceExtensionParameter{
+			Key:   "ignored",
+			Value: base64.StdEncoding.EncodeToString([]byte(privateConfigurationValue)),
+			Type:  "Private",
+		})
 	}
 
-	azureVMConfiguration.ResourceExtensionReferences.ResourceExtensionReference = append(azureVMConfiguration.ResourceExtensionReferences.ResourceExtensionReference, extension)
+	if publicConfigurationValue != "" {
+		extension.ParameterValues = append(extension.ParameterValues, ResourceExtensionParameter{
+			Key:   "ignored",
+			Value: base64.StdEncoding.EncodeToString([]byte(publicConfigurationValue)),
+			Type:  "Public",
+		})
+	}
+
+	if azureVMConfiguration.ResourceExtensionReferences == nil {
+		azureVMConfiguration.ResourceExtensionReferences = &[]ResourceExtensionReference{extension}
+	} else {
+		*azureVMConfiguration.ResourceExtensionReferences = append(*azureVMConfiguration.ResourceExtensionReferences, extension)
+	}
 
 	return azureVMConfiguration, nil
 }
@@ -228,7 +226,7 @@ func (self VirtualMachineClient) SetAzureDockerVMExtension(azureVMConfiguration 
 		version = "0.3"
 	}
 
-	err := self.addDockerPort(azureVMConfiguration.ConfigurationSets.ConfigurationSet, dockerPort)
+	err := self.addDockerPort(*azureVMConfiguration.ConfigurationSets, dockerPort)
 	if err != nil {
 		return nil, err
 	}
@@ -244,7 +242,7 @@ func (self VirtualMachineClient) SetAzureDockerVMExtension(azureVMConfiguration 
 	return azureVMConfiguration, nil
 }
 
-func (self VirtualMachineClient) GetVMDeployment(cloudserviceName, deploymentName string) (*VMDeployment, error) {
+func (self VirtualMachineClient) GetVMDeployment(cloudserviceName, deploymentName string) (*DeploymentResponse, error) {
 	if cloudserviceName == "" {
 		return nil, fmt.Errorf(errParamNotSpecified, "cloudserviceName")
 	}
@@ -252,7 +250,7 @@ func (self VirtualMachineClient) GetVMDeployment(cloudserviceName, deploymentNam
 		return nil, fmt.Errorf(errParamNotSpecified, "deploymentName")
 	}
 
-	deployment := new(VMDeployment)
+	deployment := new(DeploymentResponse)
 
 	requestURL := fmt.Sprintf(azureDeploymentURL, cloudserviceName, deploymentName)
 	response, azureErr := self.client.SendAzureGetRequest(requestURL)
@@ -461,27 +459,21 @@ func (self VirtualMachineClient) ResolveRoleSize(roleSizeName string) error {
 }
 
 func (self VirtualMachineClient) createStartRoleOperation() StartRoleOperation {
-	startRoleOperation := StartRoleOperation{}
-	startRoleOperation.OperationType = "StartRoleOperation"
-	startRoleOperation.Xmlns = azureXmlns
-
-	return startRoleOperation
+	return StartRoleOperation{
+		OperationType: "StartRoleOperation",
+	}
 }
 
 func (self VirtualMachineClient) createShutdowRoleOperation() ShutdownRoleOperation {
-	shutdownRoleOperation := ShutdownRoleOperation{}
-	shutdownRoleOperation.OperationType = "ShutdownRoleOperation"
-	shutdownRoleOperation.Xmlns = azureXmlns
-
-	return shutdownRoleOperation
+	return ShutdownRoleOperation{
+		OperationType: "ShutdownRoleOperation",
+	}
 }
 
 func (self VirtualMachineClient) createRestartRoleOperation() RestartRoleOperation {
-	startRoleOperation := RestartRoleOperation{}
-	startRoleOperation.OperationType = "RestartRoleOperation"
-	startRoleOperation.Xmlns = azureXmlns
-
-	return startRoleOperation
+	return RestartRoleOperation{
+		OperationType: "RestartRoleOperation",
+	}
 }
 
 func (self VirtualMachineClient) createDockerPublicConfig(dockerPort int) (string, error) {
@@ -505,50 +497,46 @@ func (self VirtualMachineClient) addDockerPort(configurationSets []Configuration
 		}
 
 		dockerEndpoint := self.createEndpoint("docker", "tcp", dockerPort, dockerPort)
-		configurationSets[i].InputEndpoints.InputEndpoint = append(configurationSets[i].InputEndpoints.InputEndpoint, dockerEndpoint)
+		*configurationSets[i].InputEndpoints = append(*configurationSets[i].InputEndpoints, dockerEndpoint)
 	}
 
 	return nil
 }
 
-func (self VirtualMachineClient) createVMDeploymentConfig(role *Role) VMDeployment {
-	deployment := VMDeployment{}
-	deployment.Name = role.RoleName
-	deployment.Xmlns = azureXmlns
-	deployment.DeploymentSlot = "Production"
-	deployment.Label = role.RoleName
-	deployment.RoleList.Role = append(deployment.RoleList.Role, role)
-
-	return deployment
+func (self VirtualMachineClient) createVMDeploymentConfig(role *Role) DeploymentRequest {
+	return DeploymentRequest{
+		Name:           role.RoleName,
+		DeploymentSlot: "Production",
+		Label:          role.RoleName,
+		RoleList:       []*Role{role},
+	}
 }
 
 func (self VirtualMachineClient) createAzureVMRole(name, instanceSize, imageName, location string) (*Role, error) {
-	config := new(Role)
-	config.RoleName = name
-	config.RoleSize = instanceSize
-	config.RoleType = "PersistentVMRole"
-	config.ProvisionGuestAgent = true
-	var err error
-	config.OSVirtualHardDisk, err = self.createOSVirtualHardDisk(name, imageName, location)
+	vhd, err := self.createOSVirtualHardDisk(name, imageName, location)
 	if err != nil {
 		return nil, err
 	}
 
-	return config, nil
+	return &Role{
+		RoleName:            name,
+		RoleSize:            instanceSize,
+		RoleType:            "PersistentVMRole",
+		ProvisionGuestAgent: true,
+		OSVirtualHardDisk:   vhd,
+	}, nil
 }
 
-func (self VirtualMachineClient) createOSVirtualHardDisk(dnsName, imageName, location string) (OSVirtualHardDisk, error) {
-	oSVirtualHardDisk := OSVirtualHardDisk{}
-
-	oSVirtualHardDisk.SourceImageName = imageName
-
-	var err error
-	oSVirtualHardDisk.MediaLink, err = self.getVHDMediaLink(dnsName, location)
+func (self VirtualMachineClient) createOSVirtualHardDisk(dnsName, imageName, location string) (*OSVirtualHardDisk, error) {
+	link, err := self.getVHDMediaLink(dnsName, location)
 	if err != nil {
-		return oSVirtualHardDisk, err
+		return &OSVirtualHardDisk{}, err
 	}
 
-	return oSVirtualHardDisk, nil
+	return &OSVirtualHardDisk{
+		SourceImageName: imageName,
+		MediaLink:       link,
+	}, nil
 }
 
 func (self VirtualMachineClient) getVHDMediaLink(dnsName, location string) (string, error) {
@@ -600,7 +588,9 @@ func (self VirtualMachineClient) createLinuxProvisioningConfig(dnsName, userName
 		}
 	}
 
-	provisioningConfig.DisableSshPasswordAuthentication = disableSshPasswordAuthentication
+	if !disableSshPasswordAuthentication {
+		provisioningConfig.DisableSshPasswordAuthentication = "false"
+	}
 	provisioningConfig.ConfigurationSetType = "LinuxProvisioningConfiguration"
 	provisioningConfig.HostName = dnsName
 	provisioningConfig.UserName = userName
@@ -608,10 +598,11 @@ func (self VirtualMachineClient) createLinuxProvisioningConfig(dnsName, userName
 
 	if len(certPath) > 0 {
 		var err error
-		provisioningConfig.SSH, err = self.createSshConfig(certPath, userName)
+		ssh, err := self.createSshConfig(certPath, userName)
 		if err != nil {
 			return provisioningConfig, err
 		}
+		provisioningConfig.SSH = &ssh
 	}
 
 	return provisioningConfig, nil
@@ -639,7 +630,7 @@ func (self VirtualMachineClient) uploadServiceCert(dnsName, certPath string) err
 
 func (self VirtualMachineClient) createServiceCertDeploymentConf(certPath string) (ServiceCertificate, error) {
 	certConfig := ServiceCertificate{}
-	certConfig.Xmlns = azureXmlns
+
 	data, err := ioutil.ReadFile(certPath)
 	if err != nil {
 		return certConfig, err
@@ -669,7 +660,7 @@ func (self VirtualMachineClient) createSshConfig(certPath, userName string) (SSH
 	publicKey.Fingerprint = fingerprint
 	publicKey.Path = "/home/" + userName + "/.ssh/authorized_keys"
 
-	sshConfig.PublicKeys.PublicKey = append(sshConfig.PublicKeys.PublicKey, publicKey)
+	sshConfig.PublicKeys = &[]PublicKey{publicKey}
 	return sshConfig, nil
 }
 
@@ -702,8 +693,9 @@ func (self VirtualMachineClient) checkServiceCertExtension(certPath string) erro
 }
 
 func (self VirtualMachineClient) createNetworkConfig(os string, sshPort int) (ConfigurationSet, error) {
-	networkConfig := ConfigurationSet{}
-	networkConfig.ConfigurationSetType = "NetworkConfiguration"
+	networkConfig := ConfigurationSet{
+		ConfigurationSetType: "NetworkConfiguration",
+	}
 
 	var endpoint InputEndpoint
 	if os == osLinux {
@@ -714,19 +706,18 @@ func (self VirtualMachineClient) createNetworkConfig(os string, sshPort int) (Co
 		return networkConfig, errors.New(fmt.Sprintf(errInvalidOS))
 	}
 
-	networkConfig.InputEndpoints.InputEndpoint = append(networkConfig.InputEndpoints.InputEndpoint, endpoint)
+	*networkConfig.InputEndpoints = append(*networkConfig.InputEndpoints, endpoint)
 
 	return networkConfig, nil
 }
 
-func (self VirtualMachineClient) createEndpoint(name string, protocol string, extertalPort int, internalPort int) InputEndpoint {
-	endpoint := InputEndpoint{}
-	endpoint.Name = name
-	endpoint.Protocol = protocol
-	endpoint.Port = extertalPort
-	endpoint.LocalPort = internalPort
-
-	return endpoint
+func (self VirtualMachineClient) createEndpoint(name string, protocol InputEndpointProtocol, extertalPort int, internalPort int) InputEndpoint {
+	return InputEndpoint{
+		Name:      name,
+		Protocol:  protocol,
+		Port:      extertalPort,
+		LocalPort: internalPort,
+	}
 }
 
 func (self VirtualMachineClient) verifyPassword(password string) error {

@@ -54,6 +54,24 @@ func NewClientFromConfig(subscriptionID string, managementCert []byte, config Cl
 	return makeClient(subscriptionID, managementCert, config.ManagementURL)
 }
 
+// NewClientFromPublishSettingsFile creates a new Client using a publishsettings file
+func NewClientFromPublishSettingsFile(filePath string) (Client, error) {
+	client := Client{
+		managementURL: defaultAzureManagementURL,
+	}
+	err := client.importPublishSettingsFile(filePath)
+	return client, err
+}
+
+// NewClientFromPublishSettingsFileAndConfig creates a new Client using a publishsettings file and a given Client Config
+func NewClientFromPublishSettingsFileAndConfig(filePath string, config ClientConfig) (Client, error) {
+	client := Client{
+		managementURL: config.ManagementURL,
+	}
+	err := client.importPublishSettingsFile(filePath)
+	return client, err
+}
+
 func makeClient(subscriptionID string, managementCert []byte, managementURL string) (Client, error) {
 	var client Client
 	if subscriptionID == "" {

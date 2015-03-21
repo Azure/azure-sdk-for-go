@@ -535,6 +535,14 @@ func (b BlobStorageClient) putBlockBlob(container, name string, blob io.Reader, 
 	}
 
 	chunk := make([]byte, chunkSize)
+	preChunk := make([]byte, chunkSize)
+	pren, err := blob.Read(preChunk)
+	if err != nil && err != io.EOF {
+		return err
+	}
+	if err == io.EOF {
+		return fmt.Errorf("Need blob content")
+	}
 	n, err := blob.Read(chunk)
 	if err != nil && err != io.EOF {
 		return err
@@ -542,13 +550,22 @@ func (b BlobStorageClient) putBlockBlob(container, name string, blob io.Reader, 
 
 	if err == io.EOF {
 		// Fits into one block
-		return b.putSingleBlockBlob(container, name, chunk[:n])
+		return b.putSingleBlockBlob(container, name, preChunk[:pren])
 	} else {
 		// Does not fit into one block. Upload block by block then commit the block list
 		blockList := []Block{}
 
+		// Put first blocks
+		id := base64.StdEncoding.EncodeToString([]byte(fmt.Sprintf("%011d", 0)))
+		data := preChunk[:pren]
+		err = b.PutBlock(container, name, id, data)
+		if err != nil {
+			return err
+		}
+		blockList = append(blockList, Block{id, BlockStatusLatest})
+
 		// Put blocks
-		for blockNum := 0; ; blockNum++ {
+		for blockNum := 1; ; blockNum++ {
 			id := base64.StdEncoding.EncodeToString([]byte(fmt.Sprintf("%011d", blockNum)))
 			data := chunk[:n]
 			err = b.PutBlock(container, name, id, data)

@@ -17,10 +17,10 @@ type VirtualMachineClient struct {
 type DeploymentRequest struct {
 	XMLName xml.Name `xml:"http://schemas.microsoft.com/windowsazure Deployment"`
 	// Required parameters:
-	Name           string  ``                    // Specifies a name for the deployment. The deployment name must be unique among other deployments for the cloud service.
-	DeploymentSlot string  ``                    // Specifies the environment in which the Virtual Machine is to be deployed. The only allowable value is Production.
-	Label          string  ``                    // Specifies an identifier for the deployment. The label can be up to 100 characters long. The label can be used for tracking purposes.
-	RoleList       []*Role `xml:"RoleList>Role"` // Contains information about the Virtual Machines that are to be deployed.
+	Name           string ``            // Specifies a name for the deployment. The deployment name must be unique among other deployments for the cloud service.
+	DeploymentSlot string ``            // Specifies the environment in which the Virtual Machine is to be deployed. The only allowable value is Production.
+	Label          string ``            // Specifies an identifier for the deployment. The label can be up to 100 characters long. The label can be used for tracking purposes.
+	RoleList       []Role `xml:">Role"` // Contains information about the Virtual Machines that are to be deployed.
 	// Optional parameters:
 	VirtualNetworkName string          `xml:",omitempty"`                         // Specifies the name of an existing virtual network to which the deployment will belong.
 	DnsServers         *[]DnsServer    `xml:"Dns>DnsServers>DnsServer,omitempty"` // Contains a list of DNS servers to associate with the Virtual Machine.

@@ -8,13 +8,16 @@ import (
 )
 
 func TestNewLinuxVmRemoteImage(t *testing.T) {
-	role, _ := NewVmConfiguration("myvm", "Standard_D3")
-	ConfigureDeploymentFromRemoteImage(role,
+	role, err := NewVmConfiguration("myvm", "Standard_D3")
+	if err != nil {
+		t.Fatal(err)
+	}
+	ConfigureDeploymentFromRemoteImage(&role,
 		"http://remote.host/some.vhd?sv=12&sig=ukhfiuwef78687", "Linux",
 		"myvm-os-disk", "http://mystorageacct.blob.core.windows.net/vhds/mybrandnewvm.vhd",
 		"OSDisk")
-	ConfigureForLinux(role, "myvm", "azureuser", "P@ssword", "2398yyKJGd78e2389ydfncuirowebhf89yh3IUOBY")
-	ConfigureWithPublicSSH(role)
+	ConfigureForLinux(&role, "myvm", "azureuser", "P@ssword", "2398yyKJGd78e2389ydfncuirowebhf89yh3IUOBY")
+	ConfigureWithPublicSSH(&role)
 
 	bytes, err := xml.MarshalIndent(role, "", "  ")
 	if err != nil {
@@ -69,11 +72,14 @@ func TestNewLinuxVmRemoteImage(t *testing.T) {
 }
 
 func TestNewLinuxVmPlatformImage(t *testing.T) {
-	role, _ := NewVmConfiguration("myplatformvm", "Standard_D3")
-	ConfigureDeploymentFromPlatformImage(role,
+	role, err := NewVmConfiguration("myplatformvm", "Standard_D3")
+	if err != nil {
+		t.Fatal(err)
+	}
+	ConfigureDeploymentFromPlatformImage(&role,
 		"b39f27a8b8c64d52b05eac6a62ebad85__Ubuntu-14_04_2_LTS-amd64-server-20150309-en-us-30GB",
 		"http://mystorageacct.blob.core.windows.net/vhds/mybrandnewvm.vhd", "mydisklabel")
-	ConfigureForLinux(role, "myvm", "azureuser", "", "2398yyKJGd78e2389ydfncuirdebhf89yh3IUOBY")
+	ConfigureForLinux(&role, "myvm", "azureuser", "", "2398yyKJGd78e2389ydfncuirdebhf89yh3IUOBY")
 
 	bytes, err := xml.MarshalIndent(role, "", "  ")
 	if err != nil {
@@ -112,8 +118,11 @@ func TestNewLinuxVmPlatformImage(t *testing.T) {
 }
 
 func TestNewVmFromVMImage(t *testing.T) {
-	role, _ := NewVmConfiguration("restoredbackup", "Standard_D1")
-	ConfigureDeploymentFromVMImage(role, "myvm-backup-20150209",
+	role, err := NewVmConfiguration("restoredbackup", "Standard_D1")
+	if err != nil {
+		t.Fatal(err)
+	}
+	ConfigureDeploymentFromVMImage(&role, "myvm-backup-20150209",
 		"http://mystorageacct.blob.core.windows.net/vhds/myoldnewvm.vhd")
 
 	bytes, err := xml.MarshalIndent(role, "", "  ")
@@ -135,13 +144,16 @@ func TestNewVmFromVMImage(t *testing.T) {
 }
 
 func TestNewVmFromExistingDisk(t *testing.T) {
-	role, _ := NewVmConfiguration("blobvm", "Standard_D14")
-	ConfigureDeploymentFromExistingOSDisk(role, "myvm-backup-20150209", "OSDisk")
-	ConfigureForWindows(role, "WINVM", "azuser", "P2ssw@rd", true, "")
-	ConfigureWindowsToJoinDomain(role, "user@domain.com", "youReN3verG0nnaGu3ss", "redmond.corp.contoso.com", "")
-	ConfigureWithNewDataDisk(role, "my-brand-new-disk", "http://account.blob.core.windows.net/vhds/newdatadisk.vhd",
+	role, err := NewVmConfiguration("blobvm", "Standard_D14")
+	if err != nil {
+		t.Fatal(err)
+	}
+	ConfigureDeploymentFromExistingOSDisk(&role, "myvm-backup-20150209", "OSDisk")
+	ConfigureForWindows(&role, "WINVM", "azuser", "P2ssw@rd", true, "")
+	ConfigureWindowsToJoinDomain(&role, "user@domain.com", "youReN3verG0nnaGu3ss", "redmond.corp.contoso.com", "")
+	ConfigureWithNewDataDisk(&role, "my-brand-new-disk", "http://account.blob.core.windows.net/vhds/newdatadisk.vhd",
 		30, vmdisk.HostCachingTypeReadWrite)
-	ConfigureWithExistingDataDisk(role, "data-disk", vmdisk.HostCachingTypeReadOnly)
+	ConfigureWithExistingDataDisk(&role, "data-disk", vmdisk.HostCachingTypeReadOnly)
 
 	bytes, err := xml.MarshalIndent(role, "", "  ")
 	if err != nil {

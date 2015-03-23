@@ -12,8 +12,8 @@ const (
 )
 
 // Creates configuration for a new virtual machine Role
-func NewVmConfiguration(name string, rolesize string) (*Role, error) {
-	return &Role{
+func NewVmConfiguration(name string, rolesize string) (Role, error) {
+	return Role{
 		RoleName:            name,
 		RoleType:            "PersistentVMRole",
 		RoleSize:            rolesize,

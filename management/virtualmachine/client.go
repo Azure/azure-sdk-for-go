@@ -24,16 +24,13 @@ func NewClient(client management.Client) VirtualMachineClient {
 	return VirtualMachineClient{client: client}
 }
 
-func (self VirtualMachineClient) CreateDeployment(role *Role, cloudserviceName string) (requestId string, err error) {
-	if role == nil {
-		return "", fmt.Errorf(errParamNotSpecified, "role")
-	}
+func (self VirtualMachineClient) CreateDeployment(role Role, cloudserviceName string) (requestId string, err error) {
 
 	vMDeploymentBytes, err := xml.Marshal(DeploymentRequest{
 		Name:           role.RoleName,
 		DeploymentSlot: "Production",
 		Label:          role.RoleName,
-		RoleList:       []*Role{role}})
+		RoleList:       []Role{role}})
 
 	requestURL := fmt.Sprintf(azureDeploymentListURL, cloudserviceName)
 	return self.client.SendAzurePostRequest(requestURL, vMDeploymentBytes)

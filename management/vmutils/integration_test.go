@@ -23,13 +23,16 @@ func TestDeployPlatformImage(t *testing.T) {
 	sa := GetTestStorageAccount(t, client)
 	location := sa.StorageServiceProperties.Location
 
-	role, _ := NewVmConfiguration(vmname, "Standard_D3")
-	ConfigureDeploymentFromPlatformImage(role,
+	role, err := NewVmConfiguration(vmname, "Standard_D3")
+	if err != nil {
+		t.Fatal(err)
+	}
+	ConfigureDeploymentFromPlatformImage(&role,
 		GetLinuxTestImage(t, client).Name,
 		fmt.Sprintf("http://%s.blob.core.windows.net/sdktest/%s.vhd", sa.ServiceName, vmname),
 		GenerateName())
-	ConfigureForLinux(role, "myvm", "azureuser", GeneratePassword())
-	ConfigureWithPublicSSH(role)
+	ConfigureForLinux(&role, "myvm", "azureuser", GeneratePassword())
+	ConfigureWithPublicSSH(&role)
 
 	testRoleConfiguration(t, client, role, location)
 }
@@ -49,13 +52,16 @@ func TestDeployPlatformCaptureRedeploy(t *testing.T) {
 	sa := GetTestStorageAccount(t, client)
 	location := sa.StorageServiceProperties.Location
 
-	role, _ := NewVmConfiguration(vmname, "Standard_D3")
-	ConfigureDeploymentFromPlatformImage(role,
+	role, err := NewVmConfiguration(vmname, "Standard_D3")
+	if err != nil {
+		t.Fatal(err)
+	}
+	ConfigureDeploymentFromPlatformImage(&role,
 		GetLinuxTestImage(t, client).Name,
 		fmt.Sprintf("http://%s.blob.core.windows.net/sdktest/%s.vhd", sa.ServiceName, vmname),
 		GenerateName())
-	ConfigureForLinux(role, "myvm", "azureuser", GeneratePassword())
-	ConfigureWithPublicSSH(role)
+	ConfigureForLinux(&role, "myvm", "azureuser", GeneratePassword())
+	ConfigureWithPublicSSH(&role)
 
 	t.Logf("Deploying VM: %s", vmname)
 	createRoleConfiguration(t, client, role, location)
@@ -87,13 +93,16 @@ func TestDeployPlatformCaptureRedeploy(t *testing.T) {
 	t.Logf("Found image: %+v", im)
 
 	newvmname := GenerateName()
-	role, _ = NewVmConfiguration(newvmname, "Standard_D3")
-	ConfigureDeploymentFromPlatformImage(role,
+	role, err = NewVmConfiguration(newvmname, "Standard_D3")
+	if err != nil {
+		t.Fatal(err)
+	}
+	ConfigureDeploymentFromPlatformImage(&role,
 		im.Name,
 		fmt.Sprintf("http://%s.blob.core.windows.net/sdktest/%s.vhd", sa.ServiceName, newvmname),
 		GenerateName())
-	ConfigureForLinux(role, newvmname, "azureuser", GeneratePassword())
-	ConfigureWithPublicSSH(role)
+	ConfigureForLinux(&role, newvmname, "azureuser", GeneratePassword())
+	ConfigureWithPublicSSH(&role)
 
 	t.Logf("Deploying new VM from freshly captured VM image: %s", newvmname)
 	if err := Await(client, func() (string, error) {
@@ -118,11 +127,14 @@ func TestDeployFromVmImage(t *testing.T) {
 		return im.Name == "fb83b3509582419d99629ce476bcb5c8__SQL-Server-2014-RTM-12.0.2430.0-OLTP-ENU-Win2012R2-cy14su11"
 	})
 
-	role, _ := NewVmConfiguration(vmname, "Standard_D4")
-	ConfigureDeploymentFromVMImage(role, im.Name,
+	role, err := NewVmConfiguration(vmname, "Standard_D4")
+	if err != nil {
+		t.Fatal(err)
+	}
+	ConfigureDeploymentFromVMImage(&role, im.Name,
 		fmt.Sprintf("http://%s.blob.core.windows.net/%s", sa.ServiceName, vmname))
-	ConfigureForWindows(role, vmname, "azureuser", GeneratePassword(), true, "")
-	ConfigureWithPublicSSH(role)
+	ConfigureForWindows(&role, vmname, "azureuser", GeneratePassword(), true, "")
+	ConfigureWithPublicSSH(&role)
 
 	testRoleConfiguration(t, client, role, location)
 }
@@ -133,12 +145,15 @@ func TestRoleStateOperations(t *testing.T) {
 	sa := GetTestStorageAccount(t, client)
 	location := sa.StorageServiceProperties.Location
 
-	role, _ := NewVmConfiguration(vmname, "Standard_D3")
-	ConfigureDeploymentFromPlatformImage(role,
+	role, err := NewVmConfiguration(vmname, "Standard_D3")
+	if err != nil {
+		t.Fatal(err)
+	}
+	ConfigureDeploymentFromPlatformImage(&role,
 		GetLinuxTestImage(t, client).Name,
 		fmt.Sprintf("http://%s.blob.core.windows.net/sdktest/%s.vhd", sa.ServiceName, vmname),
 		GenerateName())
-	ConfigureForLinux(role, "myvm", "azureuser", GeneratePassword())
+	ConfigureForLinux(&role, "myvm", "azureuser", GeneratePassword())
 
 	createRoleConfiguration(t, client, role, location)
 
@@ -152,7 +167,7 @@ func TestRoleStateOperations(t *testing.T) {
 	}
 }
 
-func testRoleConfiguration(t *testing.T, client management.Client, role *vm.Role, location string) {
+func testRoleConfiguration(t *testing.T, client management.Client, role vm.Role, location string) {
 	createRoleConfiguration(t, client, role, location)
 
 	if err := hostedservice.NewClient(client).DeleteHostedService(role.RoleName); err != nil {
@@ -160,7 +175,7 @@ func testRoleConfiguration(t *testing.T, client management.Client, role *vm.Role
 	}
 }
 
-func createRoleConfiguration(t *testing.T, client management.Client, role *vm.Role, location string) {
+func createRoleConfiguration(t *testing.T, client management.Client, role vm.Role, location string) {
 	vmc := vm.NewClient(client)
 	hsc := hostedservice.NewClient(client)
 	vmname := role.RoleName

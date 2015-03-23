@@ -37,10 +37,10 @@ func Example() {
 	if err != nil {
 		panic(err)
 	}
-	ConfigureDeploymentFromPlatformImage(role,
+	ConfigureDeploymentFromPlatformImage(&role,
 		vmImage, fmt.Sprintf("http://%s.blob.core.windows.net/sdktest/%s.vhd", storageAccount, dnsName), "")
-	ConfigureForLinux(role, dnsName, userName, userPassword)
-	ConfigureWithPublicSSH(role)
+	ConfigureForLinux(&role, dnsName, userName, userPassword)
+	ConfigureWithPublicSSH(&role)
 
 	requestId, err = virtualmachine.NewClient(client).CreateDeployment(role, dnsName)
 	if err != nil {

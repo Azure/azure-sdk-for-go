@@ -7,9 +7,9 @@ import (
 	vmdisk "github.com/MSOpenTech/azure-sdk-for-go/management/virtualmachinedisk"
 )
 
-//ImageClient is used to manage operations on Azure Locations
-type VMImageClient struct {
-	client management.Client
+//Client is used to manage operations on Azure VM images
+type Client struct {
+	management.Client
 }
 
 type vmImageList struct {
@@ -76,4 +76,20 @@ type DataDiskConfiguration struct {
 	MediaLink       string                 // Specifies the location of the blob in Azure storage. The blob location belongs to a storage account in the subscription specified by the <subscription-id> value in the operation call.
 	LogicalSizeInGB float64                // Specifies the size, in GB, of the data disk.
 	IOType          IOType                 // Identifies the type of the storage account for the backing VHD. If the backing VHD is in an Provisioned Storage account, “Provisioned” is returned otherwise “Standard” is returned.
+}
+
+type CaptureRoleAsVMImageOperation struct {
+	XMLName       xml.Name `xml:"http://schemas.microsoft.com/windowsazure CaptureRoleAsVMImageOperation"`
+	OperationType string   //CaptureRoleAsVMImageOperation
+	OSState       OSState
+	VMImageName   string
+	VMImageLabel  string
+	CaptureParameters
+}
+
+type CaptureParameters struct {
+	Description       string `xml:",omitempty"`
+	Language          string `xml:",omitempty"`
+	ImageFamily       string `xml:",omitempty"`
+	RecommendedVMSize string `xml:",omitempty"`
 }

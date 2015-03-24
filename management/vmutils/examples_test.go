@@ -33,10 +33,7 @@ func Example() {
 	}
 
 	// create virtual machine
-	role, err := NewVmConfiguration(dnsName, vmSize)
-	if err != nil {
-		panic(err)
-	}
+	role := NewVmConfiguration(dnsName, vmSize)
 	ConfigureDeploymentFromPlatformImage(&role,
 		vmImage, fmt.Sprintf("http://%s.blob.core.windows.net/sdktest/%s.vhd", storageAccount, dnsName), "")
 	ConfigureForLinux(&role, dnsName, userName, userPassword)

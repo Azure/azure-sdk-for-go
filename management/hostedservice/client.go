@@ -18,6 +18,7 @@ const (
 	azureDeploymentURL                = "services/hostedservices/%s/deployments/%s"
 	deleteAzureDeploymentURL          = "services/hostedservices/%s/deployments/%s"
 	getHostedServicePropertiesURL     = "services/hostedservices/%s"
+	azureServiceCertificateURL        = "services/hostedservices/%s/certificates"
 
 	errParamNotSpecified = "Parameter %s is not specified."
 )
@@ -132,4 +133,26 @@ func (self HostedServiceClient) createHostedServiceDeploymentConfig(dnsName, loc
 		Xmlns:          azureXmlns,
 	}
 	return deployment
+}
+
+func (self HostedServiceClient) AddCertificate(dnsName string, certData []byte, certificateFormat CertificateFormat, password string) (string, error) {
+	if dnsName == "" {
+		return "", fmt.Errorf(errParamNotSpecified, "dnsName")
+	}
+
+	certBase64 := base64.StdEncoding.EncodeToString(certData)
+
+	addCertificate := CertificateFile{
+		Data:              certBase64,
+		CertificateFormat: certificateFormat,
+		Password:          password,
+		Xmlns:             azureXmlns,
+	}
+	buffer, err := xml.Marshal(addCertificate)
+	if err != nil {
+		return "", err
+	}
+
+	requestURL := fmt.Sprintf(azureServiceCertificateURL, dnsName)
+	return self.client.SendAzurePostRequest(requestURL, buffer)
 }

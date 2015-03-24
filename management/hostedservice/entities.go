@@ -39,3 +39,17 @@ type HostedService struct {
 	ReverseDnsFqdn                    string `xml:"HostedServiceProperties>ReverseDnsFqdn"`
 	DefaultWinRmCertificateThumbprint string
 }
+
+type CertificateFile struct {
+	Xmlns             string `xml:"xmlns,attr"`
+	Data              string
+	CertificateFormat CertificateFormat
+	Password          string `xml:"omitempty"`
+}
+
+type CertificateFormat string
+
+const (
+	CertificateFormatPfx = CertificateFormat("pfx")
+	CertificateFormatCer = CertificateFormat("cer")
+)

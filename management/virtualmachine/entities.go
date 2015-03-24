@@ -514,6 +514,31 @@ const (
 	IPAddressTypePrivate IPAddressType = "Private" // Only allowed value (currently) for IPAddressType
 )
 
+type ResourceExtensions struct {
+	List []ResourceExtension `xml:"ResourceExtension"`
+}
+
+type ResourceExtension struct {
+	Publisher                   string
+	Name                        string
+	Version                     string
+	Label                       string
+	Description                 string
+	PublicConfigurationSchema   string
+	PrivateConfigurationSchema  string
+	SampleConfig                string
+	ReplicationCompleted        string
+	Eula                        string
+	PrivacyUri                  string
+	HomepageUri                 string
+	IsJsonExtension             bool
+	IsInternalExtension         bool
+	DisallowMajorVersionUpgrade bool
+	CompanyName                 string
+	SupportedOS                 string
+	PublishedDate               string
+}
+
 type PersistentVMRole struct {
 	XMLName xml.Name `xml:"http://schemas.microsoft.com/windowsazure PersistentVMRole"`
 	Role

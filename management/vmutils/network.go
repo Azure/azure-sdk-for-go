@@ -24,6 +24,15 @@ func ConfigureWithPublicRDP(role *Role) error {
 	return ConfigureWithExternalPort(role, "RDP", 3389, 3389, InputEndpointProtocolTcp)
 }
 
+// Adds configuration exposing port 5986 externally
+func ConfigureWithPublicPowerShell(role *Role) error {
+	if role == nil {
+		return fmt.Errorf(errParamNotSpecified, "role")
+	}
+
+	return ConfigureWithExternalPort(role, "PowerShell", 5986, 5986, InputEndpointProtocolTcp)
+}
+
 // Adds a new InputEndpoint to the Role, exposing a port externally
 func ConfigureWithExternalPort(role *Role, name string, localport, externalport int, protocol InputEndpointProtocol) error {
 	if role == nil {

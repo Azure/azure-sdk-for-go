@@ -2,25 +2,26 @@ package virtualmachineimage
 
 import (
 	"encoding/xml"
+	"fmt"
 
 	"github.com/MSOpenTech/azure-sdk-for-go/management"
 )
 
 const (
-	azureImageListURL    = "services/vmimages"
-	errInvalidImage      = "Can not find image %s in specified subscription, please specify another image name."
-	errParamNotSpecified = "Parameter %s is not specified."
+	azureImageListURL      = "services/vmimages"
+	azureRoleOperationsURL = "services/hostedservices/%s/deployments/%s/roleinstances/%s/operations"
+	errParamNotSpecified   = "Parameter %s is not specified."
 )
 
-//NewClient is used to instantiate a new VmImageClient from an Azure client
-func NewClient(client management.Client) VMImageClient {
-	return VMImageClient{client: client}
+//NewClient is used to instantiate a new Client from an Azure client
+func NewClient(client management.Client) Client {
+	return Client{client}
 }
 
-func (self VMImageClient) GetImageList() ([]VMImage, error) {
+func (self Client) GetImageList() ([]VMImage, error) {
 	imageList := vmImageList{}
 
-	response, err := self.client.SendAzureGetRequest(azureImageListURL)
+	response, err := self.SendAzureGetRequest(azureImageListURL)
 	if err != nil {
 		return imageList.VMImages, err
 	}
@@ -28,4 +29,31 @@ func (self VMImageClient) GetImageList() ([]VMImage, error) {
 	err = xml.Unmarshal(response, &imageList)
 
 	return imageList.VMImages, err
+}
+
+func (self Client) Capture(cloudServiceName, deploymentName, roleName string,
+	name, label string, osState OSState, parameters CaptureParameters) (string, error) {
+	if cloudServiceName == "" {
+		return "", fmt.Errorf(errParamNotSpecified, "cloudServiceName")
+	}
+	if deploymentName == "" {
+		return "", fmt.Errorf(errParamNotSpecified, "deploymentName")
+	}
+	if roleName == "" {
+		return "", fmt.Errorf(errParamNotSpecified, "roleName")
+	}
+
+	request := CaptureRoleAsVMImageOperation{
+		VMImageName:       name,
+		VMImageLabel:      label,
+		OSState:           osState,
+		CaptureParameters: parameters,
+	}
+	data, err := xml.Marshal(request)
+	if err != nil {
+		return "", err
+	}
+
+	return self.SendAzurePostRequest(fmt.Sprintf(azureRoleOperationsURL,
+		cloudServiceName, deploymentName, roleName), data)
 }

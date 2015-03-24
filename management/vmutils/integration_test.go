@@ -23,10 +23,7 @@ func TestDeployPlatformImage(t *testing.T) {
 	sa := GetTestStorageAccount(t, client)
 	location := sa.StorageServiceProperties.Location
 
-	role, err := NewVmConfiguration(vmname, "Standard_D3")
-	if err != nil {
-		t.Fatal(err)
-	}
+	role := NewVmConfiguration(vmname, "Standard_D3")
 	ConfigureDeploymentFromPlatformImage(&role,
 		GetLinuxTestImage(t, client).Name,
 		fmt.Sprintf("http://%s.blob.core.windows.net/sdktest/%s.vhd", sa.ServiceName, vmname),
@@ -52,10 +49,7 @@ func TestDeployPlatformCaptureRedeploy(t *testing.T) {
 	sa := GetTestStorageAccount(t, client)
 	location := sa.StorageServiceProperties.Location
 
-	role, err := NewVmConfiguration(vmname, "Standard_D3")
-	if err != nil {
-		t.Fatal(err)
-	}
+	role := NewVmConfiguration(vmname, "Standard_D3")
 	ConfigureDeploymentFromPlatformImage(&role,
 		GetLinuxTestImage(t, client).Name,
 		fmt.Sprintf("http://%s.blob.core.windows.net/sdktest/%s.vhd", sa.ServiceName, vmname),
@@ -93,10 +87,7 @@ func TestDeployPlatformCaptureRedeploy(t *testing.T) {
 	t.Logf("Found image: %+v", im)
 
 	newvmname := GenerateName()
-	role, err = NewVmConfiguration(newvmname, "Standard_D3")
-	if err != nil {
-		t.Fatal(err)
-	}
+	role = NewVmConfiguration(newvmname, "Standard_D3")
 	ConfigureDeploymentFromPlatformImage(&role,
 		im.Name,
 		fmt.Sprintf("http://%s.blob.core.windows.net/sdktest/%s.vhd", sa.ServiceName, newvmname),
@@ -127,10 +118,7 @@ func TestDeployFromVmImage(t *testing.T) {
 		return im.Name == "fb83b3509582419d99629ce476bcb5c8__SQL-Server-2014-RTM-12.0.2430.0-OLTP-ENU-Win2012R2-cy14su11"
 	})
 
-	role, err := NewVmConfiguration(vmname, "Standard_D4")
-	if err != nil {
-		t.Fatal(err)
-	}
+	role := NewVmConfiguration(vmname, "Standard_D4")
 	ConfigureDeploymentFromVMImage(&role, im.Name,
 		fmt.Sprintf("http://%s.blob.core.windows.net/%s", sa.ServiceName, vmname))
 	ConfigureForWindows(&role, vmname, "azureuser", GeneratePassword(), true, "")
@@ -145,10 +133,7 @@ func TestRoleStateOperations(t *testing.T) {
 	sa := GetTestStorageAccount(t, client)
 	location := sa.StorageServiceProperties.Location
 
-	role, err := NewVmConfiguration(vmname, "Standard_D3")
-	if err != nil {
-		t.Fatal(err)
-	}
+	role := NewVmConfiguration(vmname, "Standard_D3")
 	ConfigureDeploymentFromPlatformImage(&role,
 		GetLinuxTestImage(t, client).Name,
 		fmt.Sprintf("http://%s.blob.core.windows.net/sdktest/%s.vhd", sa.ServiceName, vmname),

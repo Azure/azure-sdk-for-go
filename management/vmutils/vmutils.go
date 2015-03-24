@@ -12,13 +12,13 @@ const (
 )
 
 // Creates configuration for a new virtual machine Role
-func NewVmConfiguration(name string, rolesize string) (Role, error) {
+func NewVmConfiguration(name string, roleSize string) Role {
 	return Role{
 		RoleName:            name,
 		RoleType:            "PersistentVMRole",
-		RoleSize:            rolesize,
+		RoleSize:            roleSize,
 		ProvisionGuestAgent: true,
-	}, nil
+	}
 }
 
 // Adds configuration for when deploying a generalized Linux image. If "password" is left empty,

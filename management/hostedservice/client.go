@@ -16,7 +16,7 @@ const (
 	deleteAzureHostedServiceURL       = "services/hostedservices/%s?comp=media"
 	azureHostedServiceAvailabilityURL = "services/hostedservices/operations/isavailable/%s"
 	azureDeploymentURL                = "services/hostedservices/%s/deployments/%s"
-	deleteAzureDeploymentURL          = "services/hostedservices/%s/deployments/%s?comp=media"
+	deleteAzureDeploymentURL          = "services/hostedservices/%s/deployments/%s"
 	getHostedServicePropertiesURL     = "services/hostedservices/%s"
 
 	errParamNotSpecified = "Parameter %s is not specified."
@@ -84,18 +84,16 @@ func (self HostedServiceClient) CheckHostedServiceNameAvailability(dnsName strin
 	return availabilityResponse.Result, availabilityResponse.Reason, nil
 }
 
-func (self HostedServiceClient) DeleteHostedService(dnsName string) error {
+func (self HostedServiceClient) DeleteHostedService(dnsName string, deleteDisksAndBlobsToo bool) (string, error) {
 	if dnsName == "" {
-		return fmt.Errorf(errParamNotSpecified, "dnsName")
+		return "", fmt.Errorf(errParamNotSpecified, "dnsName")
 	}
 
 	requestURL := fmt.Sprintf(deleteAzureHostedServiceURL, dnsName)
-	requestId, err := self.client.SendAzureDeleteRequest(requestURL)
-	if err != nil {
-		return err
+	if deleteDisksAndBlobsToo {
+		requestURL += "?comp=media"
 	}
-
-	return self.client.WaitAsyncOperation(requestId)
+	return self.client.SendAzureDeleteRequest(requestURL)
 }
 
 func (self HostedServiceClient) GetHostedService(name string) (HostedService, error) {

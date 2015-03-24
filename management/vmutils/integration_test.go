@@ -111,10 +111,7 @@ func TestDeployPlatformCaptureRedeploy(t *testing.T) {
 		t.Error(err)
 	}
 
-	t.Logf("Deleting hosted service: %s", vmname)
-	if err := hostedservice.NewClient(client).DeleteHostedService(vmname); err != nil {
-		t.Error(err)
-	}
+	deleteHostedService(t, client, vmname)
 }
 
 func TestDeployFromVmImage(t *testing.T) {
@@ -162,17 +159,13 @@ func TestRoleStateOperations(t *testing.T) {
 	vmc.StartRole(vmname, vmname, vmname)
 	vmc.RestartRole(vmname, vmname, vmname)
 
-	if err := hostedservice.NewClient(client).DeleteHostedService(role.RoleName); err != nil {
-		t.Error(err)
-	}
+	deleteHostedService(t, client, vmname)
 }
 
 func testRoleConfiguration(t *testing.T, client management.Client, role vm.Role, location string) {
 	createRoleConfiguration(t, client, role, location)
 
-	if err := hostedservice.NewClient(client).DeleteHostedService(role.RoleName); err != nil {
-		t.Error(err)
-	}
+	deleteHostedService(t, client, role.RoleName)
 }
 
 func createRoleConfiguration(t *testing.T, client management.Client, role vm.Role, location string) {
@@ -188,6 +181,15 @@ func createRoleConfiguration(t *testing.T, client management.Client, role vm.Rol
 
 	if err := Await(client, func() (string, error) {
 		return vmc.CreateDeployment(role, vmname)
+	}); err != nil {
+		t.Error(err)
+	}
+}
+
+func deleteHostedService(t *testing.T, client management.Client, vmname string) {
+	t.Logf("Deleting hosted service: %s", vmname)
+	if err := client.ExecuteAsyncOperation(func() (string, error) {
+		return hostedservice.NewClient(client).DeleteHostedService(vmname, true)
 	}); err != nil {
 		t.Error(err)
 	}

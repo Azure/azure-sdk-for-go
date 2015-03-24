@@ -16,16 +16,15 @@ func NewClient(client management.Client) DiskClient {
 	return DiskClient{client: client}
 }
 
-func (self DiskClient) DeleteDisk(diskName string) error {
+func (self DiskClient) DeleteDisk(diskName string, deleteVhdToo bool) (string, error) {
 	if diskName == "" {
-		return fmt.Errorf(errParamNotSpecified, "diskName")
+		return "", fmt.Errorf(errParamNotSpecified, "diskName")
 	}
 
 	requestURL := fmt.Sprintf(azureVMDiskURL, diskName)
-	requestId, err := self.client.SendAzureDeleteRequest(requestURL)
-	if err != nil {
-		return err
+	if deleteVhdToo {
+		requestURL += "?comp=media"
 	}
 
-	return self.client.WaitAsyncOperation(requestId)
+	return self.client.SendAzureDeleteRequest(requestURL)
 }

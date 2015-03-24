@@ -4,7 +4,6 @@ import (
 	"encoding/base64"
 	"fmt"
 	"math/rand"
-	"os"
 	"testing"
 	"time"
 
@@ -15,10 +14,12 @@ import (
 	storage "github.com/MSOpenTech/azure-sdk-for-go/management/storageservice"
 	vm "github.com/MSOpenTech/azure-sdk-for-go/management/virtualmachine"
 	vmimage "github.com/MSOpenTech/azure-sdk-for-go/management/virtualmachineimage"
+
+	"github.com/MSOpenTech/azure-sdk-for-go/management/testutils"
 )
 
 func TestDeployPlatformImage(t *testing.T) {
-	client := GetTestClient(t)
+	client := testutils.GetTestClient(t)
 	vmname := GenerateName()
 	sa := GetTestStorageAccount(t, client)
 	location := sa.StorageServiceProperties.Location
@@ -38,7 +39,7 @@ func TestDeployPlatformImage(t *testing.T) {
 }
 
 func TestVMImageList(t *testing.T) {
-	client := GetTestClient(t)
+	client := testutils.GetTestClient(t)
 	vmic := vmimage.NewClient(client)
 	il, _ := vmic.GetImageList()
 	for _, im := range il {
@@ -47,7 +48,7 @@ func TestVMImageList(t *testing.T) {
 }
 
 func TestDeployPlatformCaptureRedeploy(t *testing.T) {
-	client := GetTestClient(t)
+	client := testutils.GetTestClient(t)
 	vmname := GenerateName()
 	sa := GetTestStorageAccount(t, client)
 	location := sa.StorageServiceProperties.Location
@@ -115,7 +116,7 @@ func TestDeployPlatformCaptureRedeploy(t *testing.T) {
 }
 
 func TestDeployFromVmImage(t *testing.T) {
-	client := GetTestClient(t)
+	client := testutils.GetTestClient(t)
 	vmname := GenerateName()
 	sa := GetTestStorageAccount(t, client)
 	location := sa.StorageServiceProperties.Location
@@ -137,7 +138,7 @@ func TestDeployFromVmImage(t *testing.T) {
 }
 
 func TestRoleStateOperations(t *testing.T) {
-	client := GetTestClient(t)
+	client := testutils.GetTestClient(t)
 	vmname := GenerateName()
 	sa := GetTestStorageAccount(t, client)
 	location := sa.StorageServiceProperties.Location
@@ -196,27 +197,6 @@ func deleteHostedService(t *testing.T, client management.Client, vmname string) 
 }
 
 // === utility funcs ===
-
-// Returns a management Client for testing. Expects AZSUBSCRIPTIONID
-// and AZCERTDATA to be present in the environment. AZCERTDATA is the
-// base64encoded binary representation of the PEM certificate data.
-func GetTestClient(t *testing.T) management.Client {
-	subid := os.Getenv("AZSUBSCRIPTIONID")
-	certdata := os.Getenv("AZCERTDATA")
-	if subid == "" || certdata == "" {
-		t.Skip("AZSUBSCRIPTIONID or AZCERTDATA not set, skipping test")
-	}
-	cert, err := base64.StdEncoding.DecodeString(certdata)
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	client, err := management.NewClient(subid, cert)
-	if err != nil {
-		t.Fatal(err)
-	}
-	return client
-}
 
 func GetTestStorageAccount(t *testing.T, client management.Client) *storage.StorageService {
 	t.Log("Retrieving storage account")

@@ -125,11 +125,11 @@ type InstanceEndpoint struct {
 type PowerState string
 
 const (
-	PowerStateStarting = "Starting"
-	PowerStateStarted  = "Started"
-	PowerStateStopping = "Stopping"
-	PowerStateStopped  = "Stopped"
-	PowerStateUnknown  = "Unknown"
+	PowerStateStarting PowerState = "Starting"
+	PowerStateStarted  PowerState = "Started"
+	PowerStateStopping PowerState = "Stopping"
+	PowerStateStopped  PowerState = "Stopped"
+	PowerStateUnknown  PowerState = "Unknown"
 )
 
 type UpgradeStatus struct {
@@ -141,16 +141,16 @@ type UpgradeStatus struct {
 type UpgradeType string
 
 const (
-	UpgradeTypeAuto         = "Auto"
-	UpgradeTypeManual       = "Manual"
-	UpgradeTypeSimultaneous = "Simultaneous"
+	UpgradeTypeAuto         UpgradeType = "Auto"
+	UpgradeTypeManual       UpgradeType = "Manual"
+	UpgradeTypeSimultaneous UpgradeType = "Simultaneous"
 )
 
 type CurrentUpgradeDomainState string
 
 const (
-	CurrentUpgradeDomainStateBefore = "Before"
-	CurrentUpgradeDomainStateDuring = "During"
+	CurrentUpgradeDomainStateBefore CurrentUpgradeDomainState = "Before"
+	CurrentUpgradeDomainStateDuring CurrentUpgradeDomainState = "During"
 )
 
 type ExtendedProperty struct {

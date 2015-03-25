@@ -83,6 +83,23 @@ func (self StorageServiceClient) GetStorageServiceByLocation(location string) (*
 	return nil, nil
 }
 
+func (self StorageServiceClient) GetStorageServiceKeys(serviceName string) (GetStorageServiceKeysResponse, error) {
+	if serviceName == "" {
+		return GetStorageServiceKeysResponse{}, fmt.Errorf(errParamNotSpecified, "serviceName")
+	}
+
+	requestURL := fmt.Sprintf(azureStorageServiceURL, serviceName)
+	data, err := self.client.SendAzureGetRequest(requestURL)
+	if err != nil {
+		return GetStorageServiceKeysResponse{}, err
+	}
+
+	response := GetStorageServiceKeysResponse{}
+	err = xml.Unmarshal(data, response)
+
+	return response, err
+}
+
 func (self StorageServiceClient) CreateAsync(parameters StorageAccountCreateParameters) (string, error) {
 	data, err := xml.Marshal(CreateStorageServiceInput{
 		StorageAccountCreateParameters: parameters})

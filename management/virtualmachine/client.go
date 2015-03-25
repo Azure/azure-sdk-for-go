@@ -99,6 +99,28 @@ func (self VirtualMachineClient) GetRole(cloudServiceName, deploymentName, roleN
 	return role, nil
 }
 
+// updates the configuration of the specified virtual machine
+// See https://msdn.microsoft.com/en-us/library/azure/jj157187.aspx
+func (self VirtualMachineClient) UpdateRole(cloudServiceName, deploymentName, roleName string, role Role) (string, error) {
+	if cloudServiceName == "" {
+		return "", fmt.Errorf(errParamNotSpecified, "cloudServiceName")
+	}
+	if deploymentName == "" {
+		return "", fmt.Errorf(errParamNotSpecified, "deploymentName")
+	}
+	if roleName == "" {
+		return "", fmt.Errorf(errParamNotSpecified, "roleName")
+	}
+
+	data, err := xml.Marshal(PersistentVMRole{Role: role})
+	if err != nil {
+		return "", err
+	}
+
+	requestURL := fmt.Sprintf(azureRoleURL, cloudServiceName, deploymentName, roleName)
+	return self.client.SendAzurePutRequest(requestURL, "text/xml", data)
+}
+
 func (self VirtualMachineClient) StartRole(cloudServiceName, deploymentName, roleName string) (string, error) {
 	if cloudServiceName == "" {
 		return "", fmt.Errorf(errParamNotSpecified, "cloudServiceName")

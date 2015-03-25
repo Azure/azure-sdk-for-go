@@ -465,3 +465,8 @@ type IPAddressType string
 const (
 	IPAddressTypePrivate IPAddressType = "Private" // Only allowed value (currently) for IPAddressType
 )
+
+type PersistentVMRole struct {
+	XMLName xml.Name `xml:"http://schemas.microsoft.com/windowsazure PersistentVMRole"`
+	Role
+}

@@ -87,9 +87,9 @@ type RoleInstance struct {
 	PowerState                        PowerState
 	HostName                          string
 	RemoteAccessCertificateThumbprint string
-	GuestAgentStatus                  string // todo: implement
-	ResourceExtensionStatusList       string
-	PublicIPs                         []PublicIP `xml:">PublicIP"`
+	GuestAgentStatus                  string                    // todo: implement
+	ResourceExtensionStatusList       []ResourceExtensionStatus `xml:">ResourceExtensionStatus"`
+	PublicIPs                         []PublicIP                `xml:">PublicIP"`
 }
 
 type InstanceStatus string
@@ -131,6 +131,54 @@ const (
 	PowerStateStopped  = "Stopped"
 	PowerStateUnknown  = "Unknown"
 )
+
+type ResourceExtensionStatus struct {
+	HandlerName            string
+	Version                string
+	Status                 ResourceExtensionState
+	Code                   string
+	FormattedMessage       FormattedMessage
+	ExtensionSettingStatus ExtensionSettingStatus
+}
+
+type ResourceExtensionState string
+
+const (
+	ResourceExtensionStateInstalling   ResourceExtensionState = "Installing"
+	ResourceExtensionStateReady        ResourceExtensionState = "Ready"
+	ResourceExtensionStateNotReady     ResourceExtensionState = "NotReady"
+	ResourceExtensionStateUnresponsive ResourceExtensionState = "Unresponsive"
+)
+
+type FormattedMessage struct {
+	Language string
+	Message  string
+}
+
+type ExtensionSettingStatus struct {
+	Timestamp        string
+	Name             string
+	Operation        string
+	Status           ExtensionSettingState
+	Code             string
+	FormattedMessage FormattedMessage
+	SubStatusList    []SubStatus `xml:">SubStatus"`
+}
+
+type ExtensionSettingState string
+
+const (
+	ExtensionSettingStateTransitioning ExtensionSettingState = "transitioning"
+	ExtensionSettingStateError         ExtensionSettingState = "error"
+	ExtensionSettingStateSuccess       ExtensionSettingState = "success"
+	ExtensionSettingStateWarning       ExtensionSettingState = "warning"
+)
+
+type SubStatus struct {
+	Name             string
+	Status           ExtensionSettingState
+	FormattedMessage FormattedMessage
+}
 
 type UpgradeStatus struct {
 	UpgradeType               UpgradeType

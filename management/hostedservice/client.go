@@ -28,7 +28,7 @@ func NewClient(client management.Client) HostedServiceClient {
 	return HostedServiceClient{client: client}
 }
 
-func (self HostedServiceClient) CreateHostedService(dnsName, location string, reverseDnsFqdn string, label string, description string) (string, error) {
+func (self HostedServiceClient) CreateHostedService(dnsName, location string, reverseDnsFqdn string, label string, description string) (management.OperationId, error) {
 	if dnsName == "" {
 		return "", fmt.Errorf(errParamNotSpecified, "dnsName")
 	}
@@ -57,12 +57,7 @@ func (self HostedServiceClient) CreateHostedService(dnsName, location string, re
 	}
 
 	requestURL := azureHostedServiceListURL
-	requestId, err := self.client.SendAzurePostRequest(requestURL, hostedServiceBytes)
-	if err != nil {
-		return "", err
-	}
-
-	return requestId, nil
+	return self.client.SendAzurePostRequest(requestURL, hostedServiceBytes)
 }
 
 func (self HostedServiceClient) CheckHostedServiceNameAvailability(dnsName string) (bool, string, error) {
@@ -85,7 +80,7 @@ func (self HostedServiceClient) CheckHostedServiceNameAvailability(dnsName strin
 	return availabilityResponse.Result, availabilityResponse.Reason, nil
 }
 
-func (self HostedServiceClient) DeleteHostedService(dnsName string, deleteDisksAndBlobsToo bool) (string, error) {
+func (self HostedServiceClient) DeleteHostedService(dnsName string, deleteDisksAndBlobsToo bool) (management.OperationId, error) {
 	if dnsName == "" {
 		return "", fmt.Errorf(errParamNotSpecified, "dnsName")
 	}
@@ -135,7 +130,7 @@ func (self HostedServiceClient) createHostedServiceDeploymentConfig(dnsName, loc
 	return deployment
 }
 
-func (self HostedServiceClient) AddCertificate(dnsName string, certData []byte, certificateFormat CertificateFormat, password string) (string, error) {
+func (self HostedServiceClient) AddCertificate(dnsName string, certData []byte, certificateFormat CertificateFormat, password string) (management.OperationId, error) {
 	if dnsName == "" {
 		return "", fmt.Errorf(errParamNotSpecified, "dnsName")
 	}

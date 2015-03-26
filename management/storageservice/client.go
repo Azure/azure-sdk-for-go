@@ -100,7 +100,7 @@ func (self StorageServiceClient) GetStorageServiceKeys(serviceName string) (GetS
 	return response, err
 }
 
-func (self StorageServiceClient) CreateAsync(parameters StorageAccountCreateParameters) (string, error) {
+func (self StorageServiceClient) CreateAsync(parameters StorageAccountCreateParameters) (management.OperationId, error) {
 	data, err := xml.Marshal(CreateStorageServiceInput{
 		StorageAccountCreateParameters: parameters})
 	if err != nil {
@@ -111,12 +111,12 @@ func (self StorageServiceClient) CreateAsync(parameters StorageAccountCreatePara
 }
 
 func (self StorageServiceClient) Create(parameters StorageAccountCreateParameters) (*StorageService, error) {
-	requestId, err := self.CreateAsync(parameters)
+	operationId, err := self.CreateAsync(parameters)
 	if err != nil {
 		return nil, err
 	}
 
-	err = self.client.WaitAsyncOperation(requestId)
+	err = self.client.WaitAsyncOperation(operationId)
 	if err != nil {
 		return nil, err
 	}

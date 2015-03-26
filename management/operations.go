@@ -18,22 +18,25 @@ type operation struct {
 	Error          AzureError
 }
 
+// OperationId is assigned by Azure API and can be used to look up the status of an operation
+type OperationId string
+
 //getOperationStatus gets an operation given the operation ID.
-func (client *Client) getOperationStatus(operationId string) (*operation, error) {
+func (client *Client) getOperationStatus(operationId OperationId) (operation, error) {
+	operation := operation{}
 	if operationId == "" {
-		return nil, fmt.Errorf(errParamNotSpecified, "operationId")
+		return operation, fmt.Errorf(errParamNotSpecified, "operationId")
 	}
 
-	operation := new(operation)
-	url := "operations/" + operationId
+	url := fmt.Sprintf("operations/%s", operationId)
 	response, azureErr := client.SendAzureGetRequest(url)
 	if azureErr != nil {
-		return nil, azureErr
+		return operation, azureErr
 	}
 
-	err := xml.Unmarshal(response, operation)
+	err := xml.Unmarshal(response, &operation)
 	if err != nil {
-		return nil, err
+		return operation, err
 	}
 
 	return operation, nil
@@ -42,13 +45,13 @@ func (client *Client) getOperationStatus(operationId string) (*operation, error)
 //waitAsyncOperation blocks until the operation with the given operationId is
 //no longer in the InProgress state. If the operation was successful, nothing is
 //returned, otherwise an error is returned.
-func (client *Client) WaitAsyncOperation(operationId string) error {
+func (client *Client) WaitAsyncOperation(operationId OperationId) error {
 	if operationId == "" {
 		return fmt.Errorf(errParamNotSpecified, "operationId")
 	}
 
 	status := "InProgress"
-	operation := new(operation)
+	operation := operation{}
 	err := errors.New("")
 	for status == "InProgress" {
 		time.Sleep(2000 * time.Millisecond)

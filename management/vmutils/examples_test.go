@@ -23,11 +23,11 @@ func Example() {
 	}
 
 	// create hosted service
-	requestId, err := hostedservice.NewClient(client).CreateHostedService(dnsName, location, "", dnsName, "")
+	operationId, err := hostedservice.NewClient(client).CreateHostedService(dnsName, location, "", dnsName, "")
 	if err != nil {
 		panic(err)
 	}
-	err = client.WaitAsyncOperation(requestId)
+	err = client.WaitAsyncOperation(operationId)
 	if err != nil {
 		panic(err)
 	}
@@ -39,11 +39,11 @@ func Example() {
 	ConfigureForLinux(&role, dnsName, userName, userPassword)
 	ConfigureWithPublicSSH(&role)
 
-	requestId, err = virtualmachine.NewClient(client).CreateDeployment(role, dnsName)
+	operationId, err = virtualmachine.NewClient(client).CreateDeployment(role, dnsName)
 	if err != nil {
 		panic(err)
 	}
-	err = client.WaitAsyncOperation(requestId)
+	err = client.WaitAsyncOperation(operationId)
 	if err != nil {
 		panic(err)
 	}

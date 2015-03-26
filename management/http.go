@@ -34,7 +34,7 @@ func (client *Client) SendAzureGetRequest(url string) ([]byte, error) {
 
 //sendAzurePostRequest sends a request to the management API using the HTTP POST method
 //and returns the request ID or an error.
-func (client *Client) SendAzurePostRequest(url string, data []byte) (string, error) {
+func (client *Client) SendAzurePostRequest(url string, data []byte) (OperationId, error) {
 	if url == "" {
 		return "", fmt.Errorf(errParamNotSpecified, "url")
 	}
@@ -44,14 +44,13 @@ func (client *Client) SendAzurePostRequest(url string, data []byte) (string, err
 		return "", err
 	}
 
-	requestId := response.Header[requestIdHeader]
-	return requestId[0], nil
+	return getOperationId(response)
 }
 
 //sendAzurePutRequest sends a request to the management API using the HTTP PUT method
 //and returns the request ID or an error. The content type can be specified, however
 //if an empty string is passed, the default of "application/xml" will be used.
-func (client *Client) SendAzurePutRequest(url string, contentType string, data []byte) (string, error) {
+func (client *Client) SendAzurePutRequest(url string, contentType string, data []byte) (OperationId, error) {
 	if url == "" {
 		return "", fmt.Errorf(errParamNotSpecified, contentType, "url")
 	}
@@ -61,13 +60,12 @@ func (client *Client) SendAzurePutRequest(url string, contentType string, data [
 		return "", err
 	}
 
-	requestId := response.Header[requestIdHeader]
-	return requestId[0], nil
+	return getOperationId(response)
 }
 
 //sendAzureDeleteRequest sends a request to the management API using the HTTP DELETE method
 //and returns the request ID or an error.
-func (client *Client) SendAzureDeleteRequest(url string) (string, error) {
+func (client *Client) SendAzureDeleteRequest(url string) (OperationId, error) {
 	if url == "" {
 		return "", fmt.Errorf(errParamNotSpecified, "url")
 	}
@@ -77,8 +75,15 @@ func (client *Client) SendAzureDeleteRequest(url string) (string, error) {
 		return "", err
 	}
 
+	return getOperationId(response)
+}
+
+func getOperationId(response *http.Response) (OperationId, error) {
 	requestId := response.Header[requestIdHeader]
-	return requestId[0], nil
+	if len(requestId) == 0 {
+		return "", fmt.Errorf("Could not retrieve operation id from %q header", requestIdHeader)
+	}
+	return OperationId(requestId[0]), nil
 }
 
 //sendAzureRequest constructs an HTTP client for the request, sends it to the

@@ -78,7 +78,7 @@ func TestDeployPlatformCaptureRedeploy(t *testing.T) {
 
 	imagename := GenerateName()
 	t.Logf("Capturing VMImage: %s", imagename)
-	if err := Await(client, func() (string, error) {
+	if err := Await(client, func() (management.OperationId, error) {
 		return vmc.CaptureRole(vmname, vmname, vmname, imagename, imagename, nil)
 	}); err != nil {
 		t.Error(err)
@@ -97,7 +97,7 @@ func TestDeployPlatformCaptureRedeploy(t *testing.T) {
 	ConfigureWithPublicSSH(&role)
 
 	t.Logf("Deploying new VM from freshly captured VM image: %s", newvmname)
-	if err := Await(client, func() (string, error) {
+	if err := Await(client, func() (management.OperationId, error) {
 		return vmc.CreateDeployment(role, vmname)
 	}); err != nil {
 		t.Error(err)
@@ -159,13 +159,13 @@ func createRoleConfiguration(t *testing.T, client management.Client, role vm.Rol
 	hsc := hostedservice.NewClient(client)
 	vmname := role.RoleName
 
-	if err := Await(client, func() (string, error) {
+	if err := Await(client, func() (management.OperationId, error) {
 		return hsc.CreateHostedService(vmname, location, "", vmname, "")
 	}); err != nil {
 		t.Error(err)
 	}
 
-	if err := Await(client, func() (string, error) {
+	if err := Await(client, func() (management.OperationId, error) {
 		return vmc.CreateDeployment(role, vmname)
 	}); err != nil {
 		t.Error(err)
@@ -174,7 +174,7 @@ func createRoleConfiguration(t *testing.T, client management.Client, role vm.Rol
 
 func deleteHostedService(t *testing.T, client management.Client, vmname string) {
 	t.Logf("Deleting hosted service: %s", vmname)
-	if err := Await(client, func() (string, error) {
+	if err := Await(client, func() (management.OperationId, error) {
 		return hostedservice.NewClient(client).DeleteHostedService(vmname, true)
 	}); err != nil {
 		t.Error(err)
@@ -318,7 +318,7 @@ func GenerateString(length int, from string) string {
 	return str
 }
 
-type asyncFunc func() (requestId string, err error)
+type asyncFunc func() (operationId management.OperationId, err error)
 
 func Await(client management.Client, async asyncFunc) error {
 	reqId, err := async()

@@ -174,7 +174,7 @@ func createRoleConfiguration(t *testing.T, client management.Client, role vm.Rol
 
 func deleteHostedService(t *testing.T, client management.Client, vmname string) {
 	t.Logf("Deleting hosted service: %s", vmname)
-	if err := client.ExecuteAsyncOperation(func() (string, error) {
+	if err := Await(client, func() (string, error) {
 		return hostedservice.NewClient(client).DeleteHostedService(vmname, true)
 	}); err != nil {
 		t.Error(err)

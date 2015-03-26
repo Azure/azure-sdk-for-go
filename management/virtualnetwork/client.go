@@ -45,11 +45,11 @@ func (self VirtualNetworkClient) SetVirtualNetworkConfiguration(networkConfigura
 		return err
 	}
 
-	requestId, err := self.client.SendAzurePutRequest(azureNetworkConfigurationURL, "text/plain", networkConfigurationBytes)
+	operationId, err := self.client.SendAzurePutRequest(azureNetworkConfigurationURL, "text/plain", networkConfigurationBytes)
 	if err != nil {
 		return err
 	}
 
-	err = self.client.WaitAsyncOperation(requestId)
+	err = self.client.WaitAsyncOperation(operationId)
 	return err
 }

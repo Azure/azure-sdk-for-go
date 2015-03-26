@@ -32,7 +32,7 @@ func (self Client) GetImageList() ([]VMImage, error) {
 }
 
 func (self Client) Capture(cloudServiceName, deploymentName, roleName string,
-	name, label string, osState OSState, parameters CaptureParameters) (string, error) {
+	name, label string, osState OSState, parameters CaptureParameters) (management.OperationId, error) {
 	if cloudServiceName == "" {
 		return "", fmt.Errorf(errParamNotSpecified, "cloudServiceName")
 	}

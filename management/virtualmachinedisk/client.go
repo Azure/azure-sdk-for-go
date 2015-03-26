@@ -16,7 +16,7 @@ func NewClient(client management.Client) DiskClient {
 	return DiskClient{client: client}
 }
 
-func (self DiskClient) DeleteDisk(diskName string, deleteVhdToo bool) (string, error) {
+func (self DiskClient) DeleteDisk(diskName string, deleteVhdToo bool) (management.OperationId, error) {
 	if diskName == "" {
 		return "", fmt.Errorf(errParamNotSpecified, "diskName")
 	}

@@ -24,16 +24,18 @@ func NewClient(client management.Client) VirtualMachineClient {
 	return VirtualMachineClient{client: client}
 }
 
-func (self VirtualMachineClient) CreateDeployment(role Role, cloudServiceName string) (requestId string, err error) {
-
-	vMDeploymentBytes, err := xml.Marshal(DeploymentRequest{
+func (self VirtualMachineClient) CreateDeployment(role Role, cloudServiceName string) (management.OperationId, error) {
+	data, err := xml.Marshal(DeploymentRequest{
 		Name:           role.RoleName,
 		DeploymentSlot: "Production",
 		Label:          role.RoleName,
 		RoleList:       []Role{role}})
+	if err != nil {
+		return "", err
+	}
 
 	requestURL := fmt.Sprintf(azureDeploymentListURL, cloudServiceName)
-	return self.client.SendAzurePostRequest(requestURL, vMDeploymentBytes)
+	return self.client.SendAzurePostRequest(requestURL, data)
 }
 
 func (self VirtualMachineClient) GetDeployment(cloudServiceName, deploymentName string) (*DeploymentResponse, error) {
@@ -60,7 +62,7 @@ func (self VirtualMachineClient) GetDeployment(cloudServiceName, deploymentName 
 	return deployment, nil
 }
 
-func (self VirtualMachineClient) DeleteDeployment(cloudServiceName, deploymentName string) (requestId string, err error) {
+func (self VirtualMachineClient) DeleteDeployment(cloudServiceName, deploymentName string) (management.OperationId, error) {
 	if cloudServiceName == "" {
 		return "", fmt.Errorf(errParamNotSpecified, "cloudServiceName")
 	}
@@ -101,7 +103,7 @@ func (self VirtualMachineClient) GetRole(cloudServiceName, deploymentName, roleN
 
 // updates the configuration of the specified virtual machine
 // See https://msdn.microsoft.com/en-us/library/azure/jj157187.aspx
-func (self VirtualMachineClient) UpdateRole(cloudServiceName, deploymentName, roleName string, role Role) (string, error) {
+func (self VirtualMachineClient) UpdateRole(cloudServiceName, deploymentName, roleName string, role Role) (management.OperationId, error) {
 	if cloudServiceName == "" {
 		return "", fmt.Errorf(errParamNotSpecified, "cloudServiceName")
 	}
@@ -121,7 +123,7 @@ func (self VirtualMachineClient) UpdateRole(cloudServiceName, deploymentName, ro
 	return self.client.SendAzurePutRequest(requestURL, "text/xml", data)
 }
 
-func (self VirtualMachineClient) StartRole(cloudServiceName, deploymentName, roleName string) (string, error) {
+func (self VirtualMachineClient) StartRole(cloudServiceName, deploymentName, roleName string) (management.OperationId, error) {
 	if cloudServiceName == "" {
 		return "", fmt.Errorf(errParamNotSpecified, "cloudServiceName")
 	}
@@ -143,7 +145,7 @@ func (self VirtualMachineClient) StartRole(cloudServiceName, deploymentName, rol
 	return self.client.SendAzurePostRequest(requestURL, startRoleOperationBytes)
 }
 
-func (self VirtualMachineClient) ShutdownRole(cloudServiceName, deploymentName, roleName string) (string, error) {
+func (self VirtualMachineClient) ShutdownRole(cloudServiceName, deploymentName, roleName string) (management.OperationId, error) {
 	if cloudServiceName == "" {
 		return "", fmt.Errorf(errParamNotSpecified, "cloudServiceName")
 	}
@@ -165,7 +167,7 @@ func (self VirtualMachineClient) ShutdownRole(cloudServiceName, deploymentName, 
 	return self.client.SendAzurePostRequest(requestURL, shutdownRoleOperationBytes)
 }
 
-func (self VirtualMachineClient) RestartRole(cloudServiceName, deploymentName, roleName string) (string, error) {
+func (self VirtualMachineClient) RestartRole(cloudServiceName, deploymentName, roleName string) (management.OperationId, error) {
 	if cloudServiceName == "" {
 		return "", fmt.Errorf(errParamNotSpecified, "cloudServiceName")
 	}
@@ -187,7 +189,7 @@ func (self VirtualMachineClient) RestartRole(cloudServiceName, deploymentName, r
 	return self.client.SendAzurePostRequest(requestURL, restartRoleOperationBytes)
 }
 
-func (self VirtualMachineClient) DeleteRole(cloudServiceName, deploymentName, roleName string) (string, error) {
+func (self VirtualMachineClient) DeleteRole(cloudServiceName, deploymentName, roleName string) (management.OperationId, error) {
 	if cloudServiceName == "" {
 		return "", fmt.Errorf(errParamNotSpecified, "cloudServiceName")
 	}
@@ -222,7 +224,8 @@ func (self VirtualMachineClient) GetRoleSizeList() (RoleSizeList, error) {
 // redeployed after capturing the image, otherwise, the original VM role is deleted.
 // NOTE: an image resulting from this operation shows up in osimage.GetImageList()
 // as images with Category "User".
-func (self VirtualMachineClient) CaptureRole(cloudServiceName, deploymentName, roleName, imageName, imageLabel string, reprovisioningConfigurationSet *ConfigurationSet) (requestId string, err error) {
+func (self VirtualMachineClient) CaptureRole(cloudServiceName, deploymentName, roleName, imageName, imageLabel string,
+	reprovisioningConfigurationSet *ConfigurationSet) (management.OperationId, error) {
 	if cloudServiceName == "" {
 		return "", fmt.Errorf(errParamNotSpecified, "cloudServiceName")
 	}

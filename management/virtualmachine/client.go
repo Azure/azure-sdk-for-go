@@ -38,28 +38,24 @@ func (self VirtualMachineClient) CreateDeployment(role Role, cloudServiceName st
 	return self.client.SendAzurePostRequest(requestURL, data)
 }
 
-func (self VirtualMachineClient) GetDeployment(cloudServiceName, deploymentName string) (*DeploymentResponse, error) {
+func (self VirtualMachineClient) GetDeployment(cloudServiceName, deploymentName string) (DeploymentResponse, error) {
+	var deployment DeploymentResponse
 	if cloudServiceName == "" {
-		return nil, fmt.Errorf(errParamNotSpecified, "cloudServiceName")
+		return deployment, fmt.Errorf(errParamNotSpecified, "cloudServiceName")
 	}
 	if deploymentName == "" {
-		return nil, fmt.Errorf(errParamNotSpecified, "deploymentName")
+		return deployment, fmt.Errorf(errParamNotSpecified, "deploymentName")
 	}
-
-	deployment := new(DeploymentResponse)
 
 	requestURL := fmt.Sprintf(azureDeploymentURL, cloudServiceName, deploymentName)
 	response, azureErr := self.client.SendAzureGetRequest(requestURL)
 	if azureErr != nil {
-		return nil, azureErr
+		return deployment, azureErr
 	}
 
 	err := xml.Unmarshal(response, deployment)
-	if err != nil {
-		return nil, err
-	}
 
-	return deployment, nil
+	return deployment, err
 }
 
 func (self VirtualMachineClient) DeleteDeployment(cloudServiceName, deploymentName string) (management.OperationId, error) {

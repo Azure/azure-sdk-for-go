@@ -74,7 +74,15 @@ func TestDeployPlatformCaptureRedeploy(t *testing.T) {
 	}
 
 	t.Logf("Shutting down VM: %s", vmname)
-	vmc.ShutdownRole(vmname, vmname, vmname)
+	if err := Await(client, func() (management.OperationId, error) {
+		return vmc.ShutdownRole(vmname, vmname, vmname)
+	}); err != nil {
+		t.Error(err)
+	}
+
+	if err := WaitForDeploymentPowerState(client, vmname, vmname, vm.PowerStateStopped); err != nil {
+		t.Fatal(err)
+	}
 
 	imagename := GenerateName()
 	t.Logf("Capturing VMImage: %s", imagename)
@@ -141,9 +149,21 @@ func TestRoleStateOperations(t *testing.T) {
 	createRoleConfiguration(t, client, role, location)
 
 	vmc := vm.NewClient(client)
-	vmc.ShutdownRole(vmname, vmname, vmname)
-	vmc.StartRole(vmname, vmname, vmname)
-	vmc.RestartRole(vmname, vmname, vmname)
+	if err := Await(client, func() (management.OperationId, error) {
+		return vmc.ShutdownRole(vmname, vmname, vmname)
+	}); err != nil {
+		t.Error(err)
+	}
+	if err := Await(client, func() (management.OperationId, error) {
+		return vmc.StartRole(vmname, vmname, vmname)
+	}); err != nil {
+		t.Error(err)
+	}
+	if err := Await(client, func() (management.OperationId, error) {
+		return vmc.RestartRole(vmname, vmname, vmname)
+	}); err != nil {
+		t.Error(err)
+	}
 
 	deleteHostedService(t, client, vmname)
 }

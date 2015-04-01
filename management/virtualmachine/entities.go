@@ -122,6 +122,7 @@ type InstanceEndpoint struct {
 	LocalPort  int
 	Protocol   InputEndpointProtocol
 }
+
 type PowerState string
 
 const (

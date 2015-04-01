@@ -53,3 +53,7 @@ const (
 	CertificateFormatPfx = CertificateFormat("pfx")
 	CertificateFormatCer = CertificateFormat("cer")
 )
+
+type ListHostedServiceResponse struct {
+	HostedServices []HostedService `xml:"HostedService"`
+}

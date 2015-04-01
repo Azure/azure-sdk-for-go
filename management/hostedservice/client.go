@@ -117,6 +117,19 @@ func (self HostedServiceClient) GetHostedService(name string) (HostedService, er
 	return hostedService, nil
 }
 
+func (self HostedServiceClient) ListHostedServices() (ListHostedServiceResponse, error) {
+	var response ListHostedServiceResponse
+
+	data, err := self.client.SendAzureGetRequest(azureHostedServiceListURL)
+	if err != nil {
+		return response, err
+	}
+
+	err = xml.Unmarshal(data, &response)
+
+	return response, err
+}
+
 func (self HostedServiceClient) createHostedServiceDeploymentConfig(dnsName, location string, reverseDnsFqdn string, label string, description string) CreateHostedService {
 	encodedLabel := base64.StdEncoding.EncodeToString([]byte(label))
 	deployment := CreateHostedService{

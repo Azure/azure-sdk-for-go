@@ -13,7 +13,6 @@ const (
 	azureXmlns                        = "http://schemas.microsoft.com/windowsazure"
 	azureDeploymentListURL            = "services/hostedservices/%s/deployments"
 	azureHostedServiceListURL         = "services/hostedservices"
-	deleteAzureHostedServiceURL       = "services/hostedservices/%s?comp=media"
 	azureHostedServiceAvailabilityURL = "services/hostedservices/operations/isavailable/%s"
 	azureDeploymentURL                = "services/hostedservices/%s/deployments/%s"
 	deleteAzureDeploymentURL          = "services/hostedservices/%s/deployments/%s"
@@ -85,7 +84,7 @@ func (self HostedServiceClient) DeleteHostedService(dnsName string, deleteDisksA
 		return "", fmt.Errorf(errParamNotSpecified, "dnsName")
 	}
 
-	requestURL := fmt.Sprintf(deleteAzureHostedServiceURL, dnsName)
+	requestURL := fmt.Sprintf(getHostedServicePropertiesURL, dnsName)
 	if deleteDisksAndBlobsToo {
 		requestURL += "?comp=media"
 	}

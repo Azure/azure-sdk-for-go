@@ -53,7 +53,7 @@ func (self VirtualMachineClient) GetDeployment(cloudServiceName, deploymentName 
 		return deployment, azureErr
 	}
 
-	err := xml.Unmarshal(response, deployment)
+	err := xml.Unmarshal(response, &deployment)
 
 	return deployment, err
 }

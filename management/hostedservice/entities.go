@@ -18,7 +18,7 @@ type CreateHostedService struct {
 	Label          string
 	Description    string
 	Location       string
-	ReverseDnsFqdn string `xml:"omitempty"`
+	ReverseDnsFqdn string `xml:",omitempty"`
 }
 
 type AvailabilityResponse struct {
@@ -44,7 +44,7 @@ type CertificateFile struct {
 	Xmlns             string `xml:"xmlns,attr"`
 	Data              string
 	CertificateFormat CertificateFormat
-	Password          string `xml:"omitempty"`
+	Password          string `xml:",omitempty"`
 }
 
 type CertificateFormat string

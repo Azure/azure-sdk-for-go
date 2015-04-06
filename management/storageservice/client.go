@@ -95,7 +95,7 @@ func (self StorageServiceClient) GetStorageServiceKeys(serviceName string) (GetS
 	}
 
 	response := GetStorageServiceKeysResponse{}
-	err = xml.Unmarshal(data, response)
+	err = xml.Unmarshal(data, &response)
 
 	return response, err
 }

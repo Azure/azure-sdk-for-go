@@ -222,8 +222,8 @@ type VirtualIP struct {
 
 // Contains the configuration sets that are used to create virtual machines.
 type Role struct {
-	RoleName                    string                        // Specifies the name for the Virtual Machine.
-	RoleType                    string                        // Specifies the type of role to use. For Virtual Machines, this must be PersistentVMRole.
+	RoleName                    string                        `xml:",omitempty"` // Specifies the name for the Virtual Machine.
+	RoleType                    string                        `xml:",omitempty"` // Specifies the type of role to use. For Virtual Machines, this must be PersistentVMRole.
 	ConfigurationSets           *[]ConfigurationSet           `xml:"ConfigurationSets>ConfigurationSet",omitempty"`
 	ResourceExtensionReferences *[]ResourceExtensionReference `xml:"ResourceExtensionReferences>ResourceExtensionReference,omitempty"`
 	VMImageName                 string                        `xml:",omitempty"`                                         // Specifies the name of the VM Image that is to be used to create the Virtual Machine. If this element is used, the ConfigurationSets element is not used.

@@ -12,6 +12,7 @@ import (
 const (
 	azureStorageServiceListURL         = "services/storageservices"
 	azureStorageServiceURL             = "services/storageservices/%s"
+	azureStorageServiceKeysURL         = "services/storageservices/%s/keys"
 	azureStorageAccountAvailabilityURL = "services/storageservices/operations/isavailable/%s"
 
 	azureXmlns = "http://schemas.microsoft.com/windowsazure"
@@ -88,7 +89,7 @@ func (self StorageServiceClient) GetStorageServiceKeys(serviceName string) (GetS
 		return GetStorageServiceKeysResponse{}, fmt.Errorf(errParamNotSpecified, "serviceName")
 	}
 
-	requestURL := fmt.Sprintf(azureStorageServiceURL, serviceName)
+	requestURL := fmt.Sprintf(azureStorageServiceKeysURL, serviceName)
 	data, err := self.client.SendAzureGetRequest(requestURL)
 	if err != nil {
 		return GetStorageServiceKeysResponse{}, err

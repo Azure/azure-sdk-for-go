@@ -47,7 +47,7 @@ func ClientFromPublishSettingsFileWithConfig(filePath, subscriptionId string, co
 					return client, err
 				}
 
-				pems, err := pkcs12.ConvertToPEM(pfxData, "")
+				pems, err := pkcs12.ConvertToPEM(pfxData, nil)
 
 				cert := []byte{}
 				for _, b := range pems {

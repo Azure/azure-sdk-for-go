@@ -59,7 +59,7 @@ func ClientFromPublishSettingsFileWithConfig(filePath, subscriptionId string, co
 					managementURL = config.ManagementURL
 				}
 
-				return makeClient(subscriptionId, cert, managementURL)
+				return makeClient(sub.Id, cert, managementURL)
 			}
 		}
 	}

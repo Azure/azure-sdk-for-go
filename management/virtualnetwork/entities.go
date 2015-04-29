@@ -51,7 +51,7 @@ type VirtualNetworkConfiguration struct {
 }
 
 type Dns struct {
-	DnsServers []DnsServer `xml:"DnsServers,omitempty>DnsServer,omitempty"`
+	DnsServers []DnsServer `xml:"DnsServers>DnsServer,omitempty"`
 }
 
 type DnsServer struct {
@@ -69,7 +69,7 @@ type VirtualNetworkSite struct {
 	Location      string         `xml:"Location,attr"`
 	AddressSpace  AddressSpace   `xml:"AddressSpace"`
 	Subnets       []Subnet       `xml:"Subnets>Subnet"`
-	DnsServersRef []DnsServerRef `xml:"DnsServersRef,omitempty>DnsServerRef"`
+	DnsServersRef []DnsServerRef `xml:"DnsServersRef>DnsServerRef,omitempty"`
 }
 
 type LocalNetworkSite struct {

@@ -39,7 +39,7 @@ func Example() {
 	ConfigureForLinux(&role, dnsName, userName, userPassword)
 	ConfigureWithPublicSSH(&role)
 
-	operationId, err = virtualmachine.NewClient(client).CreateDeployment(role, dnsName)
+	operationId, err = virtualmachine.NewClient(client).CreateDeployment(role, dnsName, nil)
 	if err != nil {
 		panic(err)
 	}

@@ -106,7 +106,7 @@ func TestDeployPlatformCaptureRedeploy(t *testing.T) {
 
 	t.Logf("Deploying new VM from freshly captured VM image: %s", newvmname)
 	if err := Await(client, func() (management.OperationId, error) {
-		return vmc.CreateDeployment(role, vmname)
+		return vmc.CreateDeployment(role, vmname, nil)
 	}); err != nil {
 		t.Error(err)
 	}
@@ -186,7 +186,7 @@ func createRoleConfiguration(t *testing.T, client management.Client, role vm.Rol
 	}
 
 	if err := Await(client, func() (management.OperationId, error) {
-		return vmc.CreateDeployment(role, vmname)
+		return vmc.CreateDeployment(role, vmname, nil)
 	}); err != nil {
 		t.Error(err)
 	}

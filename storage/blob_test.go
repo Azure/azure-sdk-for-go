@@ -12,7 +12,6 @@ import (
 	"os"
 	"reflect"
 	"sort"
-	"strings"
 	"sync"
 	"testing"
 	"time"
@@ -120,7 +119,7 @@ func TestBlobSASURICorrectness(t *testing.T) {
 	}
 	defer cli.DeleteContainer(cnt)
 
-	err = cli.PutBlockBlob(cnt, blob, bytes.NewReader(body))
+	err = cli.putSingleBlockBlob(cnt, blob, body)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -358,7 +357,7 @@ func TestBlobExists(t *testing.T) {
 		t.Fatal(err)
 	}
 	defer cli.DeleteContainer(cnt)
-	err = cli.PutBlockBlob(cnt, blob, strings.NewReader("Hello!"))
+	err = cli.putSingleBlockBlob(cnt, blob, []byte("Hello!"))
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -425,7 +424,7 @@ func TestBlobCopy(t *testing.T) {
 	}
 	defer cli.deleteContainer(cnt)
 
-	err = cli.PutBlockBlob(cnt, src, bytes.NewReader(body))
+	err = cli.putSingleBlockBlob(cnt, src, body)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -499,7 +498,7 @@ func TestGetBlobProperties(t *testing.T) {
 	}
 
 	// Put the blob
-	err = cli.PutBlockBlob(cnt, blob, strings.NewReader(contents))
+	err = cli.putSingleBlockBlob(cnt, blob, []byte(contents))
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -536,7 +535,7 @@ func TestListBlobsPagination(t *testing.T) {
 	const pageSize = 2
 	for i := 0; i < n; i++ {
 		name := randString(20)
-		err := cli.PutBlockBlob(cnt, name, strings.NewReader("Hello, world!"))
+		err := cli.putSingleBlockBlob(cnt, name, []byte("Hello, world!"))
 		if err != nil {
 			t.Fatal(err)
 		}
@@ -589,7 +588,7 @@ func TestPutEmptyBlockBlob(t *testing.T) {
 	defer cli.deleteContainer(cnt)
 
 	blob := randString(20)
-	err = cli.PutBlockBlob(cnt, blob, bytes.NewReader([]byte{}))
+	err = cli.putSingleBlockBlob(cnt, blob, []byte{})
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -600,61 +599,6 @@ func TestPutEmptyBlockBlob(t *testing.T) {
 	}
 	if props.ContentLength != 0 {
 		t.Fatalf("Wrong content length for empty blob: %d", props.ContentLength)
-	}
-}
-
-func TestPutSingleBlockBlob(t *testing.T) {
-	cnt := randContainer()
-	blob := randString(20)
-	body := []byte(randString(1024))
-
-	cli, err := getBlobClient()
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	err = cli.CreateContainer(cnt, ContainerAccessTypeBlob)
-	if err != nil {
-		t.Fatal(err)
-	}
-	defer cli.DeleteContainer(cnt)
-
-	err = cli.PutBlockBlob(cnt, blob, bytes.NewReader(body))
-	if err != nil {
-		t.Fatal(err)
-	}
-	defer cli.DeleteBlob(cnt, blob)
-
-	resp, err := cli.GetBlob(cnt, blob)
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	// Verify contents
-	respBody, err := ioutil.ReadAll(resp)
-	defer resp.Close()
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	if !reflect.DeepEqual(body, respBody) {
-		t.Fatalf("Wrong blob contents.\nExpected: %d bytes, Got: %d byes", len(body), len(respBody))
-	}
-
-	// Verify block list
-	blocks, err := cli.GetBlockList(cnt, blob, BlockListTypeAll)
-	if err != nil {
-		t.Fatal(err)
-	}
-	if expected := 1; len(blocks.CommittedBlocks) != expected {
-		t.Fatalf("Wrong committed block count. Expected: %d, Got: %d", expected, len(blocks.CommittedBlocks))
-	}
-	if expected := 0; len(blocks.UncommittedBlocks) != expected {
-		t.Fatalf("Wrong unccommitted block count. Expected: %d, Got: %d", expected, len(blocks.UncommittedBlocks))
-	}
-	thatBlock := blocks.CommittedBlocks[0]
-	if expected := base64.StdEncoding.EncodeToString([]byte(fmt.Sprintf("%011d", 0))); thatBlock.Name != expected {
-		t.Fatalf("Wrong block name. Expected: %s, Got: %s", expected, thatBlock.Name)
 	}
 }
 
@@ -674,7 +618,7 @@ func TestGetBlobRange(t *testing.T) {
 	}
 	defer cli.DeleteContainer(cnt)
 
-	err = cli.PutBlockBlob(cnt, blob, strings.NewReader(body))
+	err = cli.putSingleBlockBlob(cnt, blob, []byte(body))
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -720,57 +664,6 @@ func TestPutBlock(t *testing.T) {
 	chunk := []byte(randString(1024))
 	blockId := base64.StdEncoding.EncodeToString([]byte("foo"))
 	err = cli.PutBlock(cnt, blob, blockId, chunk)
-	if err != nil {
-		t.Fatal(err)
-	}
-}
-
-func TestPutMultiBlockBlob(t *testing.T) {
-	var (
-		cnt       = randContainer()
-		blob      = randString(20)
-		blockSize = 32 * 1024                                     // 32 KB
-		body      = []byte(randString(blockSize*2 + blockSize/2)) // 3 blocks
-	)
-
-	cli, err := getBlobClient()
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	err = cli.CreateContainer(cnt, ContainerAccessTypeBlob)
-	if err != nil {
-		t.Fatal(err)
-	}
-	defer cli.DeleteContainer(cnt)
-
-	err = cli.putBlockBlob(cnt, blob, bytes.NewReader(body), blockSize)
-	if err != nil {
-		t.Fatal(err)
-	}
-	defer cli.DeleteBlob(cnt, blob)
-
-	resp, err := cli.GetBlob(cnt, blob)
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	// Verify contents
-	respBody, err := ioutil.ReadAll(resp)
-	defer resp.Close()
-	if err != nil {
-		t.Fatal(err)
-	}
-	if !reflect.DeepEqual(body, respBody) {
-		t.Fatalf("Wrong blob contents.\nExpected: %d bytes, Got: %d byes", len(body), len(respBody))
-	}
-
-	err = cli.DeleteBlob(cnt, blob)
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	err = cli.DeleteContainer(cnt)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -1103,6 +996,27 @@ func getBlobClient() (*BlobStorageClient, error) {
 		return nil, err
 	}
 	return cli.GetBlobService(), nil
+}
+
+func (b BlobStorageClient) putSingleBlockBlob(container, name string, chunk []byte) error {
+	if len(chunk) > MaxBlobBlockSize {
+		return fmt.Errorf("storage: provided chunk (%d bytes) cannot fit into single-block blob (max %d bytes)", len(chunk), MaxBlobBlockSize)
+	}
+
+	uri := b.client.getEndpoint(blobServiceName, pathForBlob(container, name), url.Values{})
+	headers := b.client.getStandardHeaders()
+	headers["x-ms-blob-type"] = string(BlobTypeBlock)
+	headers["Content-Length"] = fmt.Sprintf("%v", len(chunk))
+
+	resp, err := b.client.exec("PUT", uri, headers, bytes.NewReader(chunk))
+	if err != nil {
+		return err
+	}
+	if resp.statusCode != http.StatusCreated {
+		return ErrNotCreated
+	}
+
+	return nil
 }
 
 func randContainer() string {

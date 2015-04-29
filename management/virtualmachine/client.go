@@ -1,4 +1,7 @@
-// Package virtualmachine implements operations on Azure virtual machines using the Service Management REST API
+// Package virtualmachine implements operations for managing virtual machines
+// using the Service Management REST API
+//
+// https://msdn.microsoft.com/en-us/library/azure/jj157206.aspx
 package virtualmachine
 
 import (
@@ -19,23 +22,51 @@ const (
 	errParamNotSpecified = "Parameter %s is not specified."
 )
 
-//NewClient is used to instantiate a new VmClient from an Azure client
+//NewClient is used to instantiate a new VirtualMachineClient from an Azure client
 func NewClient(client management.Client) VirtualMachineClient {
 	return VirtualMachineClient{client: client}
 }
 
-func (self VirtualMachineClient) CreateDeployment(role Role, cloudServiceName string) (management.OperationId, error) {
-	data, err := xml.Marshal(DeploymentRequest{
+// CreateDeploymentOptions can be used to create a customized deployement request
+type CreateDeploymentOptions struct {
+	DnsServers         *[]DnsServer
+	LoadBalancers      *[]LoadBalancer
+	ReservedIPName     string
+	Subnet             string
+	VirtualNetworkName string
+}
+
+// CreateDeployment creates a deployment and then creates a virtual machine
+// in the deployment based on the specified configuration.
+//
+// https://msdn.microsoft.com/en-us/library/azure/jj157194.aspx
+func (vm VirtualMachineClient) CreateDeployment(
+	role Role,
+	cloudServiceName string,
+	options *CreateDeploymentOptions) (management.OperationId, error) {
+
+	req := DeploymentRequest{
 		Name:           role.RoleName,
 		DeploymentSlot: "Production",
 		Label:          role.RoleName,
-		RoleList:       []Role{role}})
+		RoleList:       []Role{role},
+	}
+
+	if options != nil {
+		req.DnsServers = options.DnsServers
+		req.LoadBalancers = options.LoadBalancers
+		req.ReservedIPName = options.ReservedIPName
+		req.Subnet = options.Subnet
+		req.VirtualNetworkName = options.VirtualNetworkName
+	}
+
+	data, err := xml.Marshal(req)
 	if err != nil {
 		return "", err
 	}
 
 	requestURL := fmt.Sprintf(azureDeploymentListURL, cloudServiceName)
-	return self.client.SendAzurePostRequest(requestURL, data)
+	return vm.client.SendAzurePostRequest(requestURL, data)
 }
 
 func (self VirtualMachineClient) GetDeployment(cloudServiceName, deploymentName string) (DeploymentResponse, error) {

@@ -2,7 +2,6 @@ package storage
 
 import (
 	"bytes"
-	"encoding/base64"
 	"encoding/xml"
 	"errors"
 	"fmt"
@@ -518,78 +517,6 @@ func (b BlobStorageClient) CreateBlockBlob(container, name string) error {
 	if resp.statusCode != http.StatusCreated {
 		return ErrNotCreated
 	}
-	return nil
-}
-
-// PutBlockBlob uploads given stream into a block blob by splitting
-// data stream into chunks and uploading as blocks. Commits the block
-// list at the end. This is a helper method built on top of PutBlock
-// and PutBlockList methods with sequential block ID counting logic.
-func (b BlobStorageClient) PutBlockBlob(container, name string, blob io.Reader) error { // TODO (ahmetalpbalkan) consider ReadCloser and closing
-	return b.putBlockBlob(container, name, blob, MaxBlobBlockSize)
-}
-
-func (b BlobStorageClient) putBlockBlob(container, name string, blob io.Reader, chunkSize int) error {
-	if chunkSize <= 0 || chunkSize > MaxBlobBlockSize {
-		chunkSize = MaxBlobBlockSize
-	}
-
-	chunk := make([]byte, chunkSize)
-	n, err := blob.Read(chunk)
-	if err != nil && err != io.EOF {
-		return err
-	}
-
-	if err == io.EOF {
-		// Fits into one block
-		return b.putSingleBlockBlob(container, name, chunk[:n])
-	} else {
-		// Does not fit into one block. Upload block by block then commit the block list
-		blockList := []Block{}
-
-		// Put blocks
-		for blockNum := 0; ; blockNum++ {
-			id := base64.StdEncoding.EncodeToString([]byte(fmt.Sprintf("%011d", blockNum)))
-			data := chunk[:n]
-			err = b.PutBlock(container, name, id, data)
-			if err != nil {
-				return err
-			}
-			blockList = append(blockList, Block{id, BlockStatusLatest})
-
-			// Read next block
-			n, err = blob.Read(chunk)
-			if err != nil && err != io.EOF {
-				return err
-			}
-			if err == io.EOF {
-				break
-			}
-		}
-
-		// Commit block list
-		return b.PutBlockList(container, name, blockList)
-	}
-}
-
-func (b BlobStorageClient) putSingleBlockBlob(container, name string, chunk []byte) error {
-	if len(chunk) > MaxBlobBlockSize {
-		return fmt.Errorf("storage: provided chunk (%d bytes) cannot fit into single-block blob (max %d bytes)", len(chunk), MaxBlobBlockSize)
-	}
-
-	uri := b.client.getEndpoint(blobServiceName, pathForBlob(container, name), url.Values{})
-	headers := b.client.getStandardHeaders()
-	headers["x-ms-blob-type"] = string(BlobTypeBlock)
-	headers["Content-Length"] = fmt.Sprintf("%v", len(chunk))
-
-	resp, err := b.client.exec("PUT", uri, headers, bytes.NewReader(chunk))
-	if err != nil {
-		return err
-	}
-	if resp.statusCode != http.StatusCreated {
-		return ErrNotCreated
-	}
-
 	return nil
 }
 

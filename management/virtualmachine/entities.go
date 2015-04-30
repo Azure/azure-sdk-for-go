@@ -22,6 +22,7 @@ type DeploymentRequest struct {
 	Label          string ``            // Specifies an identifier for the deployment. The label can be up to 100 characters long. The label can be used for tracking purposes.
 	RoleList       []Role `xml:">Role"` // Contains information about the Virtual Machines that are to be deployed.
 	// Optional parameters:
+	Subnet             string          `xml:",omitempty"`                         // Specifies the name of an existing subnet to which the deployment will belong.
 	VirtualNetworkName string          `xml:",omitempty"`                         // Specifies the name of an existing virtual network to which the deployment will belong.
 	DnsServers         *[]DnsServer    `xml:"Dns>DnsServers>DnsServer,omitempty"` // Contains a list of DNS servers to associate with the Virtual Machine.
 	ReservedIPName     string          `xml:",omitempty"`                         // Specifies the name of a reserved IP address that is to be assigned to the deployment.

@@ -4,8 +4,8 @@ import (
 	"bytes"
 	"encoding/xml"
 	"fmt"
-	"github.com/MSOpenTech/azure-sdk-for-go/core/http"
-	"github.com/MSOpenTech/azure-sdk-for-go/core/tls"
+	"github.com/Azure/azure-sdk-for-go/core/http"
+	"github.com/Azure/azure-sdk-for-go/core/tls"
 )
 
 const (

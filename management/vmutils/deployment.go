@@ -3,7 +3,7 @@ package vmutils
 import (
 	"fmt"
 
-	. "github.com/MSOpenTech/azure-sdk-for-go/management/virtualmachine"
+	. "github.com/Azure/azure-sdk-for-go/management/virtualmachine"
 )
 
 // Configures vm role to deploy from a remote image source. "remoteImageSourceUrl" can be any publically

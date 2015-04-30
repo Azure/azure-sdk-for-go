@@ -3,7 +3,7 @@ package hostedservice
 import (
 	"encoding/xml"
 
-	"github.com/MSOpenTech/azure-sdk-for-go/management"
+	"github.com/Azure/azure-sdk-for-go/management"
 )
 
 //HostedServiceClient is used to manage operations on Azure Hosted Services

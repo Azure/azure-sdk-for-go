@@ -3,8 +3,8 @@ package vmutils
 import (
 	"time"
 
-	"github.com/MSOpenTech/azure-sdk-for-go/management"
-	vm "github.com/MSOpenTech/azure-sdk-for-go/management/virtualmachine"
+	"github.com/Azure/azure-sdk-for-go/management"
+	vm "github.com/Azure/azure-sdk-for-go/management/virtualmachine"
 )
 
 // Blocks until all role instances in deployment to reach desired power state

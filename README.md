@@ -6,11 +6,11 @@ Microsoft Azure Services.
 - Install Golang: https://golang.org/doc/install
 - Get Azure SDK package: 
 
-    go get -d github.com/MSOpenTech/azure-sdk-for-go
+    go get -d github.com/Azure/azure-sdk-for-go
 
 # Usage
 
-Read Godoc of the package at: http://godoc.org/github.com/MSOpenTech/azure-sdk-for-go/management
+Read Godoc of the package at: http://godoc.org/github.com/Azure/azure-sdk-for-go/management
 
 Download publish settings file from https://manage.windowsazure.com/publishsettings.
 
@@ -22,10 +22,10 @@ package main
 import (
     "fmt"
 
-    "github.com/MSOpenTech/azure-sdk-for-go/management"
-    "github.com/MSOpenTech/azure-sdk-for-go/management/hostedservice"
-    "github.com/MSOpenTech/azure-sdk-for-go/management/virtualmachine"
-    "github.com/MSOpenTech/azure-sdk-for-go/management/vmutils"
+    "github.com/Azure/azure-sdk-for-go/management"
+    "github.com/Azure/azure-sdk-for-go/management/hostedservice"
+    "github.com/Azure/azure-sdk-for-go/management/virtualmachine"
+    "github.com/Azure/azure-sdk-for-go/management/vmutils"
 )
 
 func main() {

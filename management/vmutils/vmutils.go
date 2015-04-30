@@ -4,7 +4,7 @@ package vmutils
 import (
 	"fmt"
 
-	. "github.com/MSOpenTech/azure-sdk-for-go/management/virtualmachine"
+	. "github.com/Azure/azure-sdk-for-go/management/virtualmachine"
 )
 
 const (

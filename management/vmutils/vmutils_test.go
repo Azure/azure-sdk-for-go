@@ -4,7 +4,7 @@ import (
 	"encoding/xml"
 	"testing"
 
-	vmdisk "github.com/MSOpenTech/azure-sdk-for-go/management/virtualmachinedisk"
+	vmdisk "github.com/Azure/azure-sdk-for-go/management/virtualmachinedisk"
 )
 
 func TestNewLinuxVmRemoteImage(t *testing.T) {

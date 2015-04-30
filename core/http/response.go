@@ -10,7 +10,7 @@ import (
 	"bufio"
 	"bytes"
 	"errors"
-	"github.com/MSOpenTech/azure-sdk-for-go/core/tls"
+	"github.com/Azure/azure-sdk-for-go/core/tls"
 	"io"
 	"net/textproto"
 	"net/url"

@@ -3,9 +3,9 @@ package vmutils
 import (
 	"fmt"
 
-	"github.com/MSOpenTech/azure-sdk-for-go/management"
-	"github.com/MSOpenTech/azure-sdk-for-go/management/hostedservice"
-	"github.com/MSOpenTech/azure-sdk-for-go/management/virtualmachine"
+	"github.com/Azure/azure-sdk-for-go/management"
+	"github.com/Azure/azure-sdk-for-go/management/hostedservice"
+	"github.com/Azure/azure-sdk-for-go/management/virtualmachine"
 )
 
 func Example() {

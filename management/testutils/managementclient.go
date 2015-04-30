@@ -6,7 +6,7 @@ import (
 	"os"
 	"testing"
 
-	"github.com/MSOpenTech/azure-sdk-for-go/management"
+	"github.com/Azure/azure-sdk-for-go/management"
 )
 
 // Returns a management Client for testing. Expects AZSUBSCRIPTIONID

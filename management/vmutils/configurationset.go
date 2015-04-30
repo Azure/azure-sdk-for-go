@@ -1,7 +1,7 @@
 package vmutils
 
 import (
-	. "github.com/MSOpenTech/azure-sdk-for-go/management/virtualmachine"
+	. "github.com/Azure/azure-sdk-for-go/management/virtualmachine"
 )
 
 func updateOrAddConfig(configs *[]ConfigurationSet, configType ConfigurationSetType, update func(*ConfigurationSet)) *[]ConfigurationSet {

@@ -3,8 +3,8 @@ package vmutils
 import (
 	"fmt"
 
-	. "github.com/MSOpenTech/azure-sdk-for-go/management/virtualmachine"
-	vmdisk "github.com/MSOpenTech/azure-sdk-for-go/management/virtualmachinedisk"
+	. "github.com/Azure/azure-sdk-for-go/management/virtualmachine"
+	vmdisk "github.com/Azure/azure-sdk-for-go/management/virtualmachinedisk"
 )
 
 // Adds configuration for a new (empty) data disk

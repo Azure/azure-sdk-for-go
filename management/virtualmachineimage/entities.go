@@ -3,8 +3,8 @@ package virtualmachineimage
 import (
 	"encoding/xml"
 
-	"github.com/MSOpenTech/azure-sdk-for-go/management"
-	vmdisk "github.com/MSOpenTech/azure-sdk-for-go/management/virtualmachinedisk"
+	"github.com/Azure/azure-sdk-for-go/management"
+	vmdisk "github.com/Azure/azure-sdk-for-go/management/virtualmachinedisk"
 )
 
 //Client is used to manage operations on Azure VM images

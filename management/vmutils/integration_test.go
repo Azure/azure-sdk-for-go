@@ -7,15 +7,15 @@ import (
 	"testing"
 	"time"
 
-	"github.com/MSOpenTech/azure-sdk-for-go/management"
-	"github.com/MSOpenTech/azure-sdk-for-go/management/hostedservice"
-	"github.com/MSOpenTech/azure-sdk-for-go/management/location"
-	"github.com/MSOpenTech/azure-sdk-for-go/management/osimage"
-	storage "github.com/MSOpenTech/azure-sdk-for-go/management/storageservice"
-	vm "github.com/MSOpenTech/azure-sdk-for-go/management/virtualmachine"
-	vmimage "github.com/MSOpenTech/azure-sdk-for-go/management/virtualmachineimage"
+	"github.com/Azure/azure-sdk-for-go/management"
+	"github.com/Azure/azure-sdk-for-go/management/hostedservice"
+	"github.com/Azure/azure-sdk-for-go/management/location"
+	"github.com/Azure/azure-sdk-for-go/management/osimage"
+	storage "github.com/Azure/azure-sdk-for-go/management/storageservice"
+	vm "github.com/Azure/azure-sdk-for-go/management/virtualmachine"
+	vmimage "github.com/Azure/azure-sdk-for-go/management/virtualmachineimage"
 
-	"github.com/MSOpenTech/azure-sdk-for-go/management/testutils"
+	"github.com/Azure/azure-sdk-for-go/management/testutils"
 )
 
 func TestDeployPlatformImage(t *testing.T) {

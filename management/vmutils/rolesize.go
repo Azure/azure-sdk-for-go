@@ -3,9 +3,9 @@ package vmutils
 import (
 	"fmt"
 
-	"github.com/MSOpenTech/azure-sdk-for-go/management"
-	locationclient "github.com/MSOpenTech/azure-sdk-for-go/management/location"
-	. "github.com/MSOpenTech/azure-sdk-for-go/management/virtualmachine"
+	"github.com/Azure/azure-sdk-for-go/management"
+	locationclient "github.com/Azure/azure-sdk-for-go/management/location"
+	. "github.com/Azure/azure-sdk-for-go/management/virtualmachine"
 )
 
 // Retrieves the available rolesizes using vmclient.GetRoleSizeList() and returns

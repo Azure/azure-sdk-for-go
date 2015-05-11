@@ -18,8 +18,8 @@ func TestIsResourceNotFoundError(t *testing.T) {
 	}{
 		{nil, false},
 		{fmt.Errorf("Some other random error."), false},
-		{&management.AzureError{Code: "ResourceNotFound"}, true},
-		{&management.AzureError{Code: "NotAResourceNotFound"}, false},
+		{management.AzureError{Code: "ResourceNotFound"}, true},
+		{management.AzureError{Code: "NotAResourceNotFound"}, false},
 	}
 
 	for i, testCase := range isResourceNotFoundTestCases {

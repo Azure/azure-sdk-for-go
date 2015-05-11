@@ -1,10 +1,6 @@
 package management
 
-import (
-	"encoding/xml"
-	"errors"
-	"fmt"
-)
+import "errors"
 
 const (
 	defaultAzureManagementURL             = "https://management.core.windows.net"
@@ -12,19 +8,6 @@ const (
 	errManagementCertificateConfiguration = "Both ManagementCertificatePath and SubscriptionId should be set, and PublishSettingsFilePath must not be set."
 	errParamNotSpecified                  = "Parameter %s is not specified."
 )
-
-// AzureError represents an error returned by the management API. It has an error
-// code (for example, ResourceNotFound) and a descriptive message.
-type AzureError struct {
-	XMLName xml.Name `xml:"Error"`
-	Code    string
-	Message string
-}
-
-//Error implements the error interface for the AzureError type.
-func (e *AzureError) Error() string {
-	return fmt.Sprintf("Error response from Azure. Code: %s, Message: %s", e.Code, e.Message)
-}
 
 // Client provides a client to the Azure API.
 type Client struct {

@@ -21,9 +21,6 @@ func (e *AzureError) Error() string {
 // IsResourceNotFoundError returns true if the provided error is an AzureError
 // reporting that a given resource has not been found.
 func IsResourceNotFoundError(err error) bool {
-	if err, ok := err.(*AzureError); ok && err.Code == "ResourceNotFound" {
-		return true
-	}
-
-	return false
+	azureErr, ok := err.(*AzureError)
+	return ok && azureErr.Code == "ResourceNotFound"
 }

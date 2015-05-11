@@ -106,7 +106,7 @@ func TestDeployPlatformCaptureRedeploy(t *testing.T) {
 
 	t.Logf("Deploying new VM from freshly captured VM image: %s", newvmname)
 	if err := Await(client, func() (management.OperationId, error) {
-		return vmc.CreateDeployment(role, vmname, nil)
+		return vmc.CreateDeployment(role, vmname, vm.CreateDeploymentOptions{})
 	}); err != nil {
 		t.Error(err)
 	}
@@ -121,7 +121,8 @@ func TestDeployFromVmImage(t *testing.T) {
 	location := sa.StorageServiceProperties.Location
 
 	im := GetVMImage(t, client, func(im vmimage.VMImage) bool {
-		return im.Name == "fb83b3509582419d99629ce476bcb5c8__SQL-Server-2014-RTM-12.0.2430.0-OLTP-ENU-Win2012R2-cy14su11"
+		return im.Name ==
+			"fb83b3509582419d99629ce476bcb5c8__SQL-Server-2014-RTM-12.0.2430.0-OLTP-ENU-Win2012R2-cy14su11"
 	})
 
 	role := NewVmConfiguration(vmname, "Standard_D4")
@@ -186,7 +187,7 @@ func createRoleConfiguration(t *testing.T, client management.Client, role vm.Rol
 	}
 
 	if err := Await(client, func() (management.OperationId, error) {
-		return vmc.CreateDeployment(role, vmname, nil)
+		return vmc.CreateDeployment(role, vmname, vm.CreateDeploymentOptions{})
 	}); err != nil {
 		t.Error(err)
 	}
@@ -256,7 +257,10 @@ func GetUserImage(t *testing.T, client management.Client, name string) osimage.O
 	})
 }
 
-func GetOSImage(t *testing.T, client management.Client, filter func(osimage.OSImage) bool) osimage.OSImage {
+func GetOSImage(
+	t *testing.T,
+	client management.Client,
+	filter func(osimage.OSImage) bool) osimage.OSImage {
 	t.Log("Selecting OS image")
 	osc := osimage.NewClient(client)
 	allimages, err := osc.GetImageList()
@@ -284,7 +288,10 @@ func GetOSImage(t *testing.T, client management.Client, filter func(osimage.OSIm
 	return image
 }
 
-func GetVMImage(t *testing.T, client management.Client, filter func(vmimage.VMImage) bool) vmimage.VMImage {
+func GetVMImage(
+	t *testing.T,
+	client management.Client,
+	filter func(vmimage.VMImage) bool) vmimage.VMImage {
 	t.Log("Selecting VM image")
 	allimages, err := vmimage.NewClient(client).GetImageList()
 	if err != nil {

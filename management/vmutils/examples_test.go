@@ -23,7 +23,8 @@ func Example() {
 	}
 
 	// create hosted service
-	operationId, err := hostedservice.NewClient(client).CreateHostedService(dnsName, location, "", dnsName, "")
+	operationId, err := hostedservice.NewClient(client).
+		CreateHostedService(dnsName, location, "", dnsName, "")
 	if err != nil {
 		panic(err)
 	}
@@ -34,12 +35,16 @@ func Example() {
 
 	// create virtual machine
 	role := NewVmConfiguration(dnsName, vmSize)
-	ConfigureDeploymentFromPlatformImage(&role,
-		vmImage, fmt.Sprintf("http://%s.blob.core.windows.net/sdktest/%s.vhd", storageAccount, dnsName), "")
+	ConfigureDeploymentFromPlatformImage(
+		&role,
+		vmImage,
+		fmt.Sprintf("http://%s.blob.core.windows.net/sdktest/%s.vhd", storageAccount, dnsName),
+		"")
 	ConfigureForLinux(&role, dnsName, userName, userPassword)
 	ConfigureWithPublicSSH(&role)
 
-	operationId, err = virtualmachine.NewClient(client).CreateDeployment(role, dnsName)
+	operationId, err = virtualmachine.NewClient(client).
+		CreateDeployment(role, dnsName, virtualmachine.CreateDeploymentOptions{})
 	if err != nil {
 		panic(err)
 	}

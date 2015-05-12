@@ -35,20 +35,6 @@ func (self HostedServiceClient) CreateHostedService(dnsName, location string, re
 		return "", fmt.Errorf(errParamNotSpecified, "location")
 	}
 
-	result, reason, err := self.CheckHostedServiceNameAvailability(dnsName)
-	if err != nil {
-		return "", err
-	}
-	if !result {
-		return "", fmt.Errorf("%s Hosted service name: %s", reason, dnsName)
-	}
-
-	locationClient := locationclient.NewClient(self.client)
-	err = locationClient.ResolveLocation(location)
-	if err != nil {
-		return "", err
-	}
-
 	hostedServiceDeployment := self.createHostedServiceDeploymentConfig(dnsName, location, reverseDnsFqdn, label, description)
 	hostedServiceBytes, err := xml.Marshal(hostedServiceDeployment)
 	if err != nil {
@@ -79,13 +65,13 @@ func (self HostedServiceClient) CheckHostedServiceNameAvailability(dnsName strin
 	return availabilityResponse.Result, availabilityResponse.Reason, nil
 }
 
-func (self HostedServiceClient) DeleteHostedService(dnsName string, deleteDisksAndBlobsToo bool) (management.OperationId, error) {
+func (self HostedServiceClient) DeleteHostedService(dnsName string, deleteDisksAndBlobs bool) (management.OperationId, error) {
 	if dnsName == "" {
 		return "", fmt.Errorf(errParamNotSpecified, "dnsName")
 	}
 
 	requestURL := fmt.Sprintf(getHostedServicePropertiesURL, dnsName)
-	if deleteDisksAndBlobsToo {
+	if deleteDisksAndBlobs {
 		requestURL += "?comp=media"
 	}
 	return self.client.SendAzureDeleteRequest(requestURL)

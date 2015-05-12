@@ -22,11 +22,10 @@ type DeploymentRequest struct {
 	Label          string ``            // Specifies an identifier for the deployment. The label can be up to 100 characters long. The label can be used for tracking purposes.
 	RoleList       []Role `xml:">Role"` // Contains information about the Virtual Machines that are to be deployed.
 	// Optional parameters:
-	Subnet             string          `xml:",omitempty"`                         // Specifies the name of an existing subnet to which the deployment will belong.
 	VirtualNetworkName string          `xml:",omitempty"`                         // Specifies the name of an existing virtual network to which the deployment will belong.
 	DnsServers         *[]DnsServer    `xml:"Dns>DnsServers>DnsServer,omitempty"` // Contains a list of DNS servers to associate with the Virtual Machine.
+	LoadBalancers      *[]LoadBalancer `xml:">LoadBalancer,omitempty"`            // Contains a list of internal load balancers that can be assigned to input endpoints.
 	ReservedIPName     string          `xml:",omitempty"`                         // Specifies the name of a reserved IP address that is to be assigned to the deployment.
-	LoadBalancers      *[]LoadBalancer `xml:">LoadBalancer,omitempty"`            //Contains a list of internal load balancers that can be assigned to input endpoints.
 }
 
 // Type forreceiving deployment information
@@ -339,6 +338,7 @@ type ConfigurationSet struct {
 	InputEndpoints                *[]InputEndpoint `xml:"InputEndpoints>InputEndpoint,omitempty"` // Optional in NetworkConfiguration. Contains a collection of external endpoints for the Virtual Machine.
 	SubnetNames                   *[]string        `xml:"SubnetNames>SubnetName,omitempty"`       // Required if StaticVirtualNetworkIPAddress is specified; otherwise, optional in NetworkConfiguration. Contains a list of subnets to which the Virtual Machine will belong.
 	StaticVirtualNetworkIPAddress string           `xml:",omitempty"`                             // Specifies the internal IP address for the Virtual Machine in a Virtual Network. If you specify this element, you must also specify the SubnetNames element with only one subnet defined. The IP address specified in this element must belong to the subnet that is defined in SubnetNames and it should not be the one of the first four IP addresses or the last IP address in the subnet. Deploying web roles or worker roles into a subnet that has Virtual Machines with StaticVirtualNetworkIPAddress defined is not supported.
+	NetworkSecurityGroup          string           `xml:",omitempty"`                             // Optional in NetworkConfiguration. Represents the name of the Network Security Group that will be associated with the Virtual Machine. Network Security Group must exist in the context of subscription and be created in same region to which the virtual machine will be deployed.
 	PublicIPs                     *[]PublicIP      `xml:"PublicIPs>PublicIP,omitempty"`           // Contains a public IP address that can be used in addition to the default virtual IP address for the Virtual Machine.
 }
 

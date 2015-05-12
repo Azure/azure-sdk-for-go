@@ -55,8 +55,22 @@ func ConfigureWithExternalPort(role *Role, name string, localport, externalport 
 	return nil
 }
 
-// ConfigureForSubnet associates the Role to a specific subnet
-func ConfigureForSubnet(role *Role, subnet string) error {
+// ConfigureWithSecurityGroup associates the Role with a specific network security group
+func ConfigureWithSecurityGroup(role *Role, networkSecurityGroup string) error {
+	if role == nil {
+		return fmt.Errorf(errParamNotSpecified, "role")
+	}
+
+	role.ConfigurationSets = updateOrAddConfig(role.ConfigurationSets, ConfigurationSetTypeNetwork,
+		func(config *ConfigurationSet) {
+			config.NetworkSecurityGroup = networkSecurityGroup
+		})
+
+	return nil
+}
+
+// ConfigureWithSubnet associates the Role with a specific subnet
+func ConfigureWithSubnet(role *Role, subnet string) error {
 	if role == nil {
 		return fmt.Errorf(errParamNotSpecified, "role")
 	}

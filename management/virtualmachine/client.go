@@ -32,7 +32,6 @@ type CreateDeploymentOptions struct {
 	DnsServers         *[]DnsServer
 	LoadBalancers      *[]LoadBalancer
 	ReservedIPName     string
-	Subnet             string
 	VirtualNetworkName string
 }
 
@@ -53,7 +52,6 @@ func (vm VirtualMachineClient) CreateDeployment(
 		DnsServers:         options.DnsServers,
 		LoadBalancers:      options.LoadBalancers,
 		ReservedIPName:     options.ReservedIPName,
-		Subnet:             options.Subnet,
 		VirtualNetworkName: options.VirtualNetworkName,
 	}
 

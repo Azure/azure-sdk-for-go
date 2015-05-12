@@ -29,8 +29,8 @@ func NewClient(client management.Client) VirtualMachineClient {
 
 // CreateDeploymentOptions can be used to create a customized deployement request
 type CreateDeploymentOptions struct {
-	DnsServers         *[]DnsServer
-	LoadBalancers      *[]LoadBalancer
+	DnsServers         []DnsServer
+	LoadBalancers      []LoadBalancer
 	ReservedIPName     string
 	VirtualNetworkName string
 }

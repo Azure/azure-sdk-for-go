@@ -27,6 +27,7 @@ func TestNewLinuxVmRemoteImage(t *testing.T) {
   <ConfigurationSets>
     <ConfigurationSet>
       <ConfigurationSetType>LinuxProvisioningConfiguration</ConfigurationSetType>
+      <StoredCertificateSettings></StoredCertificateSettings>
       <HostName>myvm</HostName>
       <UserName>azureuser</UserName>
       <UserPassword>P@ssword</UserPassword>
@@ -38,10 +39,15 @@ func TestNewLinuxVmRemoteImage(t *testing.T) {
             <Path>/home/azureuser/.ssh/authorized_keys</Path>
           </PublicKey>
         </PublicKeys>
+        <KeyPairs></KeyPairs>
       </SSH>
+      <InputEndpoints></InputEndpoints>
+      <SubnetNames></SubnetNames>
+      <PublicIPs></PublicIPs>
     </ConfigurationSet>
     <ConfigurationSet>
       <ConfigurationSetType>NetworkConfiguration</ConfigurationSetType>
+      <StoredCertificateSettings></StoredCertificateSettings>
       <InputEndpoints>
         <InputEndpoint>
           <LocalPort>22</LocalPort>
@@ -50,8 +56,12 @@ func TestNewLinuxVmRemoteImage(t *testing.T) {
           <Protocol>TCP</Protocol>
         </InputEndpoint>
       </InputEndpoints>
+      <SubnetNames></SubnetNames>
+      <PublicIPs></PublicIPs>
     </ConfigurationSet>
   </ConfigurationSets>
+  <ResourceExtensionReferences></ResourceExtensionReferences>
+  <DataVirtualHardDisks></DataVirtualHardDisks>
   <OSVirtualHardDisk>
     <DiskName>myvm-os-disk</DiskName>
     <DiskLabel>OSDisk</DiskLabel>
@@ -86,6 +96,7 @@ func TestNewLinuxVmPlatformImage(t *testing.T) {
   <ConfigurationSets>
     <ConfigurationSet>
       <ConfigurationSetType>LinuxProvisioningConfiguration</ConfigurationSetType>
+      <StoredCertificateSettings></StoredCertificateSettings>
       <HostName>myvm</HostName>
       <UserName>azureuser</UserName>
       <SSH>
@@ -95,9 +106,15 @@ func TestNewLinuxVmPlatformImage(t *testing.T) {
             <Path>/home/azureuser/.ssh/authorized_keys</Path>
           </PublicKey>
         </PublicKeys>
+        <KeyPairs></KeyPairs>
       </SSH>
+      <InputEndpoints></InputEndpoints>
+      <SubnetNames></SubnetNames>
+      <PublicIPs></PublicIPs>
     </ConfigurationSet>
   </ConfigurationSets>
+  <ResourceExtensionReferences></ResourceExtensionReferences>
+  <DataVirtualHardDisks></DataVirtualHardDisks>
   <OSVirtualHardDisk>
     <MediaLink>http://mystorageacct.blob.core.windows.net/vhds/mybrandnewvm.vhd</MediaLink>
     <SourceImageName>b39f27a8b8c64d52b05eac6a62ebad85__Ubuntu-14_04_2_LTS-amd64-server-20150309-en-us-30GB</SourceImageName>
@@ -124,8 +141,11 @@ func TestNewVmFromVMImage(t *testing.T) {
 	expected := `<Role>
   <RoleName>restoredbackup</RoleName>
   <RoleType>PersistentVMRole</RoleType>
+  <ConfigurationSets></ConfigurationSets>
+  <ResourceExtensionReferences></ResourceExtensionReferences>
   <VMImageName>myvm-backup-20150209</VMImageName>
   <MediaLocation>http://mystorageacct.blob.core.windows.net/vhds/myoldnewvm.vhd</MediaLocation>
+  <DataVirtualHardDisks></DataVirtualHardDisks>
   <RoleSize>Standard_D1</RoleSize>
 </Role>`
 
@@ -165,9 +185,14 @@ func TestNewVmFromExistingDisk(t *testing.T) {
         </Credentials>
         <JoinDomain>redmond.corp.contoso.com</JoinDomain>
       </DomainJoin>
+      <StoredCertificateSettings></StoredCertificateSettings>
       <AdminUsername>azuser</AdminUsername>
+      <InputEndpoints></InputEndpoints>
+      <SubnetNames></SubnetNames>
+      <PublicIPs></PublicIPs>
     </ConfigurationSet>
   </ConfigurationSets>
+  <ResourceExtensionReferences></ResourceExtensionReferences>
   <DataVirtualHardDisks>
     <DataVirtualHardDisk>
       <DiskLabel>my-brand-new-disk</DiskLabel>

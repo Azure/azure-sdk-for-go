@@ -44,7 +44,7 @@ func ConfigureForLinux(role *Role, hostname, user, password string, sshPubkeyCer
 				if config.SSH.PublicKeys == nil {
 					keys = []PublicKey{}
 				} else {
-					keys = *config.SSH.PublicKeys
+					keys = config.SSH.PublicKeys
 				}
 				for _, k := range sshPubkeyCertificateThumbprint {
 					keys = append(keys,
@@ -53,7 +53,7 @@ func ConfigureForLinux(role *Role, hostname, user, password string, sshPubkeyCer
 							Path:        "/home/" + user + "/.ssh/authorized_keys",
 						})
 				}
-				config.SSH.PublicKeys = &keys
+				config.SSH.PublicKeys = keys
 			}
 		})
 	return nil
@@ -86,7 +86,7 @@ func ConfigureWindowsToJoinDomain(role *Role, username, password, domainToJoin, 
 		return fmt.Errorf(errParamNotSpecified, "role")
 	}
 
-	winconfig := findConfig(*role.ConfigurationSets, ConfigurationSetTypeWindowsProvisioning)
+	winconfig := findConfig(role.ConfigurationSets, ConfigurationSetTypeWindowsProvisioning)
 	if winconfig != nil {
 		winconfig.DomainJoin = &DomainJoin{
 			Credentials:     Credentials{Username: username, Password: password},

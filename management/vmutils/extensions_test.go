@@ -18,6 +18,7 @@ func Test_AddAzureVMExtensionConfiguration(t *testing.T) {
 		t.Fatal(err)
 	}
 	if expected := `<Role>
+  <ConfigurationSets></ConfigurationSets>
   <ResourceExtensionReferences>
     <ResourceExtensionReference>
       <ReferenceName>nameOfReference</ReferenceName>
@@ -39,6 +40,7 @@ func Test_AddAzureVMExtensionConfiguration(t *testing.T) {
       <State>state</State>
     </ResourceExtensionReference>
   </ResourceExtensionReferences>
+  <DataVirtualHardDisks></DataVirtualHardDisks>
 </Role>`; string(data) != expected {
 		t.Fatalf("Expected %q, but got %q", expected, string(data))
 	}

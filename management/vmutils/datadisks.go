@@ -50,10 +50,10 @@ func ConfigureWithVhdDataDisk(role *Role, sourceVhdStorageUrl string, cachingTyp
 
 func appendDataDisk(role *Role, disk DataVirtualHardDisk) {
 	if role.DataVirtualHardDisks == nil {
-		role.DataVirtualHardDisks = &[]DataVirtualHardDisk{disk}
+		role.DataVirtualHardDisks = []DataVirtualHardDisk{disk}
 	} else {
-		disk.Lun = len(*role.DataVirtualHardDisks)
-		newDisks := append(*role.DataVirtualHardDisks, disk)
-		role.DataVirtualHardDisks = &newDisks
+		disk.Lun = len(role.DataVirtualHardDisks)
+		newDisks := append(role.DataVirtualHardDisks, disk)
+		role.DataVirtualHardDisks = newDisks
 	}
 }

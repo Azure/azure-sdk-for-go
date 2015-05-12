@@ -4,15 +4,15 @@ import (
 	. "github.com/Azure/azure-sdk-for-go/management/virtualmachine"
 )
 
-func updateOrAddConfig(configs *[]ConfigurationSet, configType ConfigurationSetType, update func(*ConfigurationSet)) *[]ConfigurationSet {
+func updateOrAddConfig(configs []ConfigurationSet, configType ConfigurationSetType, update func(*ConfigurationSet)) []ConfigurationSet {
 	if configs == nil {
-		configs = &[]ConfigurationSet{}
+		configs = []ConfigurationSet{}
 	}
-	config := findConfig(*configs, configType)
+	config := findConfig(configs, configType)
 	if config == nil {
-		newConfigs := append(*configs, ConfigurationSet{ConfigurationSetType: configType})
-		configs = &newConfigs
-		config = findConfig(*configs, configType)
+		newConfigs := append(configs, ConfigurationSet{ConfigurationSetType: configType})
+		configs = newConfigs
+		config = findConfig(configs, configType)
 	}
 	update(config)
 

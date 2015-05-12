@@ -6,7 +6,6 @@ import (
 	"fmt"
 
 	"github.com/Azure/azure-sdk-for-go/management"
-	locationclient "github.com/Azure/azure-sdk-for-go/management/location"
 )
 
 const (

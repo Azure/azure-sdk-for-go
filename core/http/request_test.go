@@ -398,7 +398,7 @@ func TestParseHTTPVersion(t *testing.T) {
 
 type logWrites struct {
 	t   *testing.T
-	dst []string
+	dst *[]string
 }
 
 func (l logWrites) WriteByte(c byte) error {

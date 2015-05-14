@@ -49,7 +49,7 @@ func Test_blobSASStringToSign(t *testing.T) {
 }
 
 func TestGetBlobSASURI(t *testing.T) {
-	api, err := NewClient("foo", "YmFy", DefaultBaseUrl, "2013-08-15", true)
+	api, err := NewClient("foo", "YmFy", DefaultBaseURL, "2013-08-15", true)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -124,14 +124,14 @@ func TestBlobSASURICorrectness(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	sasUri, err := cli.GetBlobSASURI(cnt, blob, expiry, permissions)
+	sasURI, err := cli.GetBlobSASURI(cnt, blob, expiry, permissions)
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	resp, err := http.Get(sasUri)
+	resp, err := http.Get(sasURI)
 	if err != nil {
-		t.Logf("SAS URI: %s", sasUri)
+		t.Logf("SAS URI: %s", sasURI)
 		t.Fatal(err)
 	}
 
@@ -380,24 +380,24 @@ func TestBlobExists(t *testing.T) {
 	}
 }
 
-func TestGetBlobUrl(t *testing.T) {
+func TestGetBlobURL(t *testing.T) {
 	api, err := NewBasicClient("foo", "YmFy")
 	if err != nil {
 		t.Fatal(err)
 	}
 	cli := api.GetBlobService()
 
-	out := cli.GetBlobUrl("c", "nested/blob")
+	out := cli.GetBlobURL("c", "nested/blob")
 	if expected := "https://foo.blob.core.windows.net/c/nested/blob"; out != expected {
 		t.Fatalf("Wrong blob URL. Expected: '%s', got:'%s'", expected, out)
 	}
 
-	out = cli.GetBlobUrl("", "blob")
+	out = cli.GetBlobURL("", "blob")
 	if expected := "https://foo.blob.core.windows.net/$root/blob"; out != expected {
 		t.Fatalf("Wrong blob URL. Expected: '%s', got:'%s'", expected, out)
 	}
 
-	out = cli.GetBlobUrl("", "nested/blob")
+	out = cli.GetBlobURL("", "nested/blob")
 	if expected := "https://foo.blob.core.windows.net/$root/nested/blob"; out != expected {
 		t.Fatalf("Wrong blob URL. Expected: '%s', got:'%s'", expected, out)
 	}
@@ -430,7 +430,7 @@ func TestBlobCopy(t *testing.T) {
 	}
 	defer cli.DeleteBlob(cnt, src)
 
-	err = cli.CopyBlob(cnt, dst, cli.GetBlobUrl(cnt, src))
+	err = cli.CopyBlob(cnt, dst, cli.GetBlobURL(cnt, src))
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -662,8 +662,8 @@ func TestPutBlock(t *testing.T) {
 
 	blob := randString(20)
 	chunk := []byte(randString(1024))
-	blockId := base64.StdEncoding.EncodeToString([]byte("foo"))
-	err = cli.PutBlock(cnt, blob, blockId, chunk)
+	blockID := base64.StdEncoding.EncodeToString([]byte("foo"))
+	err = cli.PutBlock(cnt, blob, blockID, chunk)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -683,10 +683,10 @@ func TestGetBlockList_PutBlockList(t *testing.T) {
 
 	blob := randString(20)
 	chunk := []byte(randString(1024))
-	blockId := base64.StdEncoding.EncodeToString([]byte("foo"))
+	blockID := base64.StdEncoding.EncodeToString([]byte("foo"))
 
 	// Put one block
-	err = cli.PutBlock(cnt, blob, blockId, chunk)
+	err = cli.PutBlock(cnt, blob, blockID, chunk)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -713,7 +713,7 @@ func TestGetBlockList_PutBlockList(t *testing.T) {
 	}
 
 	// Commit block list
-	err = cli.PutBlockList(cnt, blob, []Block{{blockId, BlockStatusUncommitted}})
+	err = cli.PutBlockList(cnt, blob, []Block{{blockID, BlockStatusUncommitted}})
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -733,7 +733,7 @@ func TestGetBlockList_PutBlockList(t *testing.T) {
 
 	// Verify the block
 	thatBlock := all.CommittedBlocks[0]
-	if expected := blockId; expected != thatBlock.Name {
+	if expected := blockID; expected != thatBlock.Name {
 		t.Fatalf("Wrong block name. Expected: %s, got: %s", expected, thatBlock.Name)
 	}
 	if expected := int64(len(chunk)); expected != thatBlock.Size {

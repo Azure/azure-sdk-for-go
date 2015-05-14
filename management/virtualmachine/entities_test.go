@@ -237,10 +237,10 @@ func TestDocumentedDeploymentRequest(t *testing.T) {
 
 	// ======
 
-	t.Logf("deployment.DnsServers[0]: %+v", deployment.DnsServers[0])
-	if deployment.DnsServers[0].Name != "dns-name" {
-		t.Fatalf("Expected deployment.DnsServers[0].Name=\"dns-name\", but got \"%s\"",
-			deployment.DnsServers[0].Name)
+	t.Logf("deployment.DNSServers[0]: %+v", deployment.DNSServers[0])
+	if deployment.DNSServers[0].Name != "dns-name" {
+		t.Fatalf("Expected deployment.DNSServers[0].Name=\"dns-name\", but got \"%s\"",
+			deployment.DNSServers[0].Name)
 	}
 
 	// ======

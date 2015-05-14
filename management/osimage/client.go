@@ -17,10 +17,10 @@ func NewClient(client management.Client) OsImageClient {
 	return OsImageClient{client: client}
 }
 
-func (self OsImageClient) GetImageList() ([]OSImage, error) {
+func (c OsImageClient) GetImageList() ([]OSImage, error) {
 	imageList := imageList{}
 
-	response, err := self.client.SendAzureGetRequest(azureImageListURL)
+	response, err := c.client.SendAzureGetRequest(azureImageListURL)
 	if err != nil {
 		return imageList.OSImages, err
 	}

@@ -7,7 +7,7 @@ import (
 	vmdisk "github.com/Azure/azure-sdk-for-go/management/virtualmachinedisk"
 )
 
-//Client is used to manage operations on Azure VM images
+// Client is used to manage operations on Azure VM Images.
 type Client struct {
 	management.Client
 }
@@ -37,9 +37,9 @@ type VMImage struct {
 	RecommendedVMSize      string                  // Optional. Specifies the size to use for the Virtual Machine that is created from the VM Image.
 	IsPremium              string                  // Indicates whether the image contains software or associated services that will incur charges above the core price for the virtual machine. For additional details, see the PricingDetailLink element.
 	Eula                   string                  // Specifies the End User License Agreement that is associated with the image. The value for this element is a string, but it is recommended that the value be a URL that points to a EULA.
-	IconUri                string                  // Specifies the URI to the icon that is displayed for the image in the Management Portal.
-	SmallIconUri           string                  // Specifies the URI to the small icon that is displayed for the image in the Management Portal.
-	PrivacyUri             string                  // Specifies the URI that points to a document that contains the privacy policy related to the image.
+	IconURI                string                  `xml:"IconUri"`      // Specifies the URI to the icon that is displayed for the image in the Management Portal.
+	SmallIconURI           string                  `xml:"SmallIconUri"` // Specifies the URI to the small icon that is displayed for the image in the Management Portal.
+	PrivacyURI             string                  `xml:"PrivacyUri"`   // Specifies the URI that points to a document that contains the privacy policy related to the image.
 	PublishedDate          string                  // Specifies the date when the image was added to the image repository.
 }
 
@@ -57,7 +57,8 @@ const (
 	IOTypeStandard    IOType = "Standard"
 )
 
-// Specifies configuration information for the operating system disk that is associated with the image.
+// OSDiskConfiguration specifies configuration information for the operating
+// system disk that is associated with the image.
 type OSDiskConfiguration struct {
 	Name            string                 // Specifies the name of the operating system disk.
 	HostCaching     vmdisk.HostCachingType // Specifies the caching behavior of the operating system disk.
@@ -68,7 +69,8 @@ type OSDiskConfiguration struct {
 	IOType          IOType                 // Identifies the type of the storage account for the backing VHD. If the backing VHD is in an Provisioned Storage account, “Provisioned” is returned otherwise “Standard” is returned.
 }
 
-// Specifies configuration information for the data disks that are associated with the image.
+// DataDiskConfiguration specifies configuration information for the data disks
+// that are associated with the image.
 type DataDiskConfiguration struct {
 	Name            string                 // Specifies the name of the data disk.
 	HostCaching     vmdisk.HostCachingType // Specifies the caching behavior of the data disk.

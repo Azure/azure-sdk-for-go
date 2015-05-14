@@ -5,20 +5,20 @@ import (
 	"encoding/json"
 	"fmt"
 
-	. "github.com/Azure/azure-sdk-for-go/management/virtualmachine"
+	vm "github.com/Azure/azure-sdk-for-go/management/virtualmachine"
 )
 
 const (
 	dockerPublicConfigVersion = 2
 )
 
-func AddAzureVMExtensionConfiguration(role *Role, name, publisher, version, referenceName, state string,
+func AddAzureVMExtensionConfiguration(role *vm.Role, name, publisher, version, referenceName, state string,
 	publicConfigurationValue, privateConfigurationValue []byte) error {
 	if role == nil {
 		return fmt.Errorf(errParamNotSpecified, "role")
 	}
 
-	extension := ResourceExtensionReference{
+	extension := vm.ResourceExtensionReference{
 		Name:          name,
 		Publisher:     publisher,
 		Version:       version,
@@ -27,7 +27,7 @@ func AddAzureVMExtensionConfiguration(role *Role, name, publisher, version, refe
 	}
 
 	if len(privateConfigurationValue) == 0 {
-		extension.ParameterValues = append(extension.ParameterValues, ResourceExtensionParameter{
+		extension.ParameterValues = append(extension.ParameterValues, vm.ResourceExtensionParameter{
 			Key:   "ignored",
 			Value: base64.StdEncoding.EncodeToString(privateConfigurationValue),
 			Type:  "Private",
@@ -35,7 +35,7 @@ func AddAzureVMExtensionConfiguration(role *Role, name, publisher, version, refe
 	}
 
 	if len(publicConfigurationValue) == 0 {
-		extension.ParameterValues = append(extension.ParameterValues, ResourceExtensionParameter{
+		extension.ParameterValues = append(extension.ParameterValues, vm.ResourceExtensionParameter{
 			Key:   "ignored",
 			Value: base64.StdEncoding.EncodeToString(publicConfigurationValue),
 			Type:  "Public",
@@ -43,17 +43,18 @@ func AddAzureVMExtensionConfiguration(role *Role, name, publisher, version, refe
 	}
 
 	role.ResourceExtensionReferences = append(role.ResourceExtensionReferences, extension)
-
 	return nil
 }
 
-// Adds the DockerExtension to the role configuratioon and opens a port "dockerPort"
-func AddAzureDockerVMExtensionConfiguration(role *Role, dockerPort int, version string) error {
+// AddAzureDockerVMExtensionConfiguration adds the DockerExtension to the role
+// configuratioon and opens a port "dockerPort"
+// TODO(ahmetalpbalkan) Deprecate this and move to 'docker-machine' codebase.
+func AddAzureDockerVMExtensionConfiguration(role *vm.Role, dockerPort int, version string) error {
 	if role == nil {
 		return fmt.Errorf(errParamNotSpecified, "role")
 	}
 
-	ConfigureWithExternalPort(role, "docker", dockerPort, dockerPort, InputEndpointProtocolTcp)
+	ConfigureWithExternalPort(role, "docker", dockerPort, dockerPort, vm.InputEndpointProtocolTCP)
 
 	publicConfiguration, err := createDockerPublicConfig(dockerPort)
 	if err != nil {

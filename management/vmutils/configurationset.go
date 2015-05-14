@@ -1,13 +1,13 @@
 package vmutils
 
 import (
-	. "github.com/Azure/azure-sdk-for-go/management/virtualmachine"
+	vm "github.com/Azure/azure-sdk-for-go/management/virtualmachine"
 )
 
-func updateOrAddConfig(configs []ConfigurationSet, configType ConfigurationSetType, update func(*ConfigurationSet)) []ConfigurationSet {
+func updateOrAddConfig(configs []vm.ConfigurationSet, configType vm.ConfigurationSetType, update func(*vm.ConfigurationSet)) []vm.ConfigurationSet {
 	config := findConfig(configs, configType)
 	if config == nil {
-		configs = append(configs, ConfigurationSet{ConfigurationSetType: configType})
+		configs = append(configs, vm.ConfigurationSet{ConfigurationSetType: configType})
 		config = findConfig(configs, configType)
 	}
 	update(config)
@@ -15,7 +15,7 @@ func updateOrAddConfig(configs []ConfigurationSet, configType ConfigurationSetTy
 	return configs
 }
 
-func findConfig(configs []ConfigurationSet, configType ConfigurationSetType) *ConfigurationSet {
+func findConfig(configs []vm.ConfigurationSet, configType vm.ConfigurationSetType) *vm.ConfigurationSet {
 	for i, config := range configs {
 		if config.ConfigurationSetType == configType {
 			// need to return a pointer to the original set in configs,

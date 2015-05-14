@@ -7,13 +7,14 @@ import (
 	vmdisk "github.com/Azure/azure-sdk-for-go/management/virtualmachinedisk"
 )
 
-// VmClient is used to manage operations on Azure Virtual Machines
+// VirtualMachineClient is used to manage operations on Azure Virtual Machines
 type VirtualMachineClient struct {
 	client management.Client
 }
 
-// Type for creating a deployment and Virtual Machine in the deployment based on the specified configuration.
-// See https://msdn.microsoft.com/en-us/library/azure/jj157194.aspx
+// DeploymentRequest is the type for creating a deployment and Virtual Machine
+// in the deployment based on the specified configuration. See
+// https://msdn.microsoft.com/en-us/library/azure/jj157194.aspx
 type DeploymentRequest struct {
 	XMLName xml.Name `xml:"http://schemas.microsoft.com/windowsazure Deployment"`
 	// Required parameters:
@@ -23,12 +24,12 @@ type DeploymentRequest struct {
 	RoleList       []Role `xml:">Role"` // Contains information about the Virtual Machines that are to be deployed.
 	// Optional parameters:
 	VirtualNetworkName string         `xml:",omitempty"`                         // Specifies the name of an existing virtual network to which the deployment will belong.
-	DnsServers         []DnsServer    `xml:"Dns>DnsServers>DnsServer,omitempty"` // Contains a list of DNS servers to associate with the Virtual Machine.
+	DNSServers         []DNSServer    `xml:"Dns>DnsServers>DnsServer,omitempty"` // Contains a list of DNS servers to associate with the Virtual Machine.
 	LoadBalancers      []LoadBalancer `xml:">LoadBalancer,omitempty"`            // Contains a list of internal load balancers that can be assigned to input endpoints.
 	ReservedIPName     string         `xml:",omitempty"`                         // Specifies the name of a reserved IP address that is to be assigned to the deployment.
 }
 
-// Type forreceiving deployment information
+// DeploymentResponse is the type for receiving deployment information
 // See https://msdn.microsoft.com/en-us/library/azure/ee460804.aspx
 type DeploymentResponse struct {
 	XMLName xml.Name `xml:"http://schemas.microsoft.com/windowsazure Deployment"`
@@ -37,7 +38,7 @@ type DeploymentResponse struct {
 	DeploymentSlot         string
 	Status                 DeploymentStatus
 	Label                  string
-	Url                    string
+	URL                    string `xml:"Url"`
 	Configuration          string
 	RoleInstanceList       []RoleInstance `xml:">RoleInstance"`
 	UpgradeStatus          UpgradeStatus
@@ -49,14 +50,14 @@ type DeploymentResponse struct {
 	CreatedTime            string
 	LastModifiedTime       string
 	VirtualNetworkName     string
-	DnsServers             []DnsServer        `xml:"Dns>DnsServers>DnsServer"`
+	DNSServers             []DNSServer        `xml:"Dns>DnsServers>DnsServer"`
 	LoadBalancers          []LoadBalancer     `xml:">LoadBalancer"`
 	ExtendedProperties     []ExtendedProperty `xml:">ExtendedProperty"`
 	PersistentVMDowntime   PersistentVMDowntime
 	VirtualIPs             []VirtualIP `xml:">VirtualIP"`
 	ExtensionConfiguration string      // cloud service extensions not fully implemented
 	ReservedIPName         string
-	InternalDnsSuffix      string
+	InternalDNSSuffix      string `xml:"InternalDnsSuffix"`
 }
 
 type DeploymentStatus string
@@ -82,7 +83,7 @@ type RoleInstance struct {
 	InstanceSize                      string
 	InstanceStateDetails              string
 	InstanceErrorCode                 string
-	IpAddress                         string
+	IPAddress                         string             `xml:"IpAddress"`
 	InstanceEndpoints                 []InstanceEndpoint `xml:">InstanceEndpoint"`
 	PowerState                        PowerState
 	HostName                          string
@@ -220,45 +221,55 @@ type VirtualIP struct {
 	Type           IPAddressType
 }
 
-// Contains the configuration sets that are used to create virtual machines.
+// Role contains the configuration sets that are used to create virtual
+// machines.
 type Role struct {
 	RoleName                    string                       `xml:",omitempty"` // Specifies the name for the Virtual Machine.
 	RoleType                    string                       `xml:",omitempty"` // Specifies the type of role to use. For Virtual Machines, this must be PersistentVMRole.
-	ConfigurationSets           []ConfigurationSet           `xml:">ConfigurationSet,omitempty"`
-	ResourceExtensionReferences []ResourceExtensionReference `xml:">ResourceExtensionReference,omitempty"`
-	VMImageName                 string                       `xml:",omitempty"`                     // Specifies the name of the VM Image that is to be used to create the Virtual Machine. If this element is used, the ConfigurationSets element is not used.
-	MediaLocation               string                       `xml:",omitempty"`                     // Required if the Virtual Machine is being created from a published VM Image. Specifies the location of the VHD file that is created when VMImageName specifies a published VM Image.
-	AvailabilitySetName         string                       `xml:",omitempty"`                     // Specifies the name of a collection of Virtual Machines. Virtual Machines specified in the same availability set are allocated to different nodes to maximize availability.
-	DataVirtualHardDisks        []DataVirtualHardDisk        `xml:">DataVirtualHardDisk,omitempty"` // Contains the parameters that are used to add a data disk to a Virtual Machine. If you are creating a Virtual Machine by using a VM Image, this element is not used.
-	OSVirtualHardDisk           *OSVirtualHardDisk           `xml:",omitempty"`                     // Contains the parameters that are used to create the operating system disk for a Virtual Machine. If you are creating a Virtual Machine by using a VM Image, this element is not used.
-	RoleSize                    string                       `xml:",omitempty"`                     // Specifies the size of the Virtual Machine. The default size is Small.
-	ProvisionGuestAgent         bool                         `xml:",omitempty"`                     // Indicates whether the VM Agent is installed on the Virtual Machine. To run a resource extension in a Virtual Machine, this service must be installed.
-	VMImageInput                *VMImageInput                `xml:",omitempty"`                     // When a VM Image is used to create a new PersistentVMRole, the DiskConfigurations in the VM Image are used to create new Disks for the new VM. This parameter can be used to resize the newly created Disks to a larger size than the underlying DiskConfigurations in the VM Image.
+	ConfigurationSets           []ConfigurationSet           `xml:"ConfigurationSets>ConfigurationSet,omitempty"`
+	ResourceExtensionReferences []ResourceExtensionReference `xml:"ResourceExtensionReferences>ResourceExtensionReference,omitempty"`
+	VMImageName                 string                       `xml:",omitempty"`                                         // Specifies the name of the VM Image that is to be used to create the Virtual Machine. If this element is used, the ConfigurationSets element is not used.
+	MediaLocation               string                       `xml:",omitempty"`                                         // Required if the Virtual Machine is being created from a published VM Image. Specifies the location of the VHD file that is created when VMImageName specifies a published VM Image.
+	AvailabilitySetName         string                       `xml:",omitempty"`                                         // Specifies the name of a collection of Virtual Machines. Virtual Machines specified in the same availability set are allocated to different nodes to maximize availability.
+	DataVirtualHardDisks        []DataVirtualHardDisk        `xml:"DataVirtualHardDisks>DataVirtualHardDisk,omitempty"` // Contains the parameters that are used to add a data disk to a Virtual Machine. If you are creating a Virtual Machine by using a VM Image, this element is not used.
+	OSVirtualHardDisk           *OSVirtualHardDisk           `xml:",omitempty"`                                         // Contains the parameters that are used to create the operating system disk for a Virtual Machine. If you are creating a Virtual Machine by using a VM Image, this element is not used.
+	RoleSize                    string                       `xml:",omitempty"`                                         // Specifies the size of the Virtual Machine. The default size is Small.
+	ProvisionGuestAgent         bool                         `xml:",omitempty"`                                         // Indicates whether the VM Agent is installed on the Virtual Machine. To run a resource extension in a Virtual Machine, this service must be installed.
+	VMImageInput                *VMImageInput                `xml:",omitempty"`                                         // When a VM Image is used to create a new PersistentVMRole, the DiskConfigurations in the VM Image are used to create new Disks for the new VM. This parameter can be used to resize the newly created Disks to a larger size than the underlying DiskConfigurations in the VM Image.
 
 	UseCertAuth bool   `xml:"-"`
 	CertPath    string `xml:"-"`
 }
 
-// When a VM Image is used to create a new PersistantVMRole, the DiskConfigurations in the VM Image are used to create new Disks for the new VM. This parameter can be used to resize the newly created Disks to a larger size than the underlying DiskConfigurations in the VM Image.
+// VMImageInput is for when a VM Image is used to create a new PersistantVMRole,
+// the DiskConfigurations in the VM Image are used to create new Disks for the
+// new VM. This parameter can be used to resize the newly created Disks to a
+// larger size than the underlying DiskConfigurations in the VM Image.
 type VMImageInput struct {
 	OSDiskConfiguration    *OSDiskConfiguration    `xml:",omitempty"`                       // This corresponds to the OSDiskConfiguration of the VM Image used to create a new role. The OSDiskConfiguration element is only available using version 2014-10-01 or higher.
 	DataDiskConfigurations []DataDiskConfiguration `xml:">DataDiskConfiguration,omitempty"` // This corresponds to the DataDiskConfigurations of the VM Image used to create a new role. The DataDiskConfigurations element is only available using version 2014-10-01 or higher.
 }
 
-// Used to resize the OS disk of a new VM created from a previously saved VM image
+// OSDiskConfiguration is used to resize the OS disk of a new VM created from a
+// previously saved VM image.
 type OSDiskConfiguration struct {
 	ResizedSizeInGB float64
 }
 
-// Used to resize the data disks of a new VM created from a previously saved VM image
+// DataDiskConfiguration is used to resize the data disks of a new VM created
+// from a previously saved VM image.
 type DataDiskConfiguration struct {
 	OSDiskConfiguration
 	Name string // The Name of the DataDiskConfiguration being referenced to.
 
 }
 
-// Contains a collection of resource extensions that are to be installed on the Virtual Machine. The VM Agent must be installed on the Virtual Machine to install resource extensions.
-// For more information, see Manage Extensions: https://msdn.microsoft.com/en-us/library/dn606311.aspx.
+// ResourceExtensionReference contains a collection of resource extensions that
+// are to be installed on the Virtual Machine. The VM Agent must be installed on
+// the Virtual Machine to install resource extensions. For more information, see
+// Manage Extensions:
+//
+// https://msdn.microsoft.com/en-us/library/dn606311.aspx.
 type ResourceExtensionReference struct {
 	ReferenceName   string
 	Publisher       string
@@ -268,7 +279,8 @@ type ResourceExtensionReference struct {
 	State           string
 }
 
-// Specifies the key, value, and type of a parameter that is passed to the resource extension when it is installed.
+// ResourceExtensionParameter specifies the key, value, and type of a parameter that is passed to the
+// resource extension when it is installed.
 type ResourceExtensionParameter struct {
 	Key   string
 	Value string
@@ -277,13 +289,14 @@ type ResourceExtensionParameter struct {
 
 type ResourceExtensionParameterType string
 
+// Enum values for ResourceExtensionParameterType
 const (
-	// Enum values for ResourceExtensionParameterType
 	ResourceExtensionParameterTypePublic  ResourceExtensionParameterType = "Public"
 	ResourceExtensionParameterTypePrivate ResourceExtensionParameterType = "Private"
 )
 
-// Specifies the properties that are used to create a data disk.
+// DataVirtualHardDisk specifies the properties that are used to create a data
+// disk.
 type DataVirtualHardDisk struct {
 	DiskName    string                 `xml:",omitempty"` // If the disk that is being added is already registered in the subscription, this element is used to identify the disk to add. If a new disk and the associated VHD are being created by Azure, this element is not used and Azure assigns a unique name that is a combination of the deployment name, role name, and identifying number. The name of the disk must contain only alphanumeric characters, underscores, periods, or dashes. The name must not be longer than 256 characters. The name must not end with period or dash.
 	DiskLabel   string                 `xml:",omitempty"` // If the disk that is being added is already registered in the subscription, this element is ignored. If a new disk is being created, this element is used to provide a description of the disk. The value of this element is only obtained programmatically and does not appear in the Management Portal.
@@ -295,7 +308,8 @@ type DataVirtualHardDisk struct {
 	SourceMediaLink     string  `xml:",omitempty"` // If the disk that is being added is already registered in the subscription or the VHD for the disk does not exist in blob storage, this element is ignored. If the VHD file exists in blob storage, this element defines the path to the VHD and a disk is registered from it and attached to the virtual machine.
 }
 
-// Specifies the properties that are used to create an OS disk.
+// OSVirtualHardDisk specifies the properties that are used to create an OS
+// disk.
 type OSVirtualHardDisk struct {
 	DiskName    string                 `xml:",omitempty"` // If the disk that is being added is already registered in the subscription, this element is used to identify the disk to add. If a new disk and the associated VHD are being created by Azure, this element is not used and Azure assigns a unique name that is a combination of the deployment name, role name, and identifying number. The name of the disk must contain only alphanumeric characters, underscores, periods, or dashes. The name must not be longer than 256 characters. The name must not end with period or dash.
 	DiskLabel   string                 `xml:",omitempty"` // If the disk that is being added is already registered in the subscription, this element is ignored. If a new disk is being created, this element is used to provide a description of the disk. The value of this element is only obtained programmatically and does not appear in the Management Portal.
@@ -308,7 +322,9 @@ type OSVirtualHardDisk struct {
 	ResizedSizeInGB       float64 `xml:",omitempty"`
 }
 
-// Specifies the configuration elements of the Virtual Machine. The type attribute is required to prevent the administrator password from being written to the operation history file.
+// ConfigurationSet specifies the configuration elements of the Virtual Machine.
+// The type attribute is required to prevent the administrator password from
+// being written to the operation history file.
 type ConfigurationSet struct {
 	ConfigurationSetType ConfigurationSetType
 
@@ -324,11 +340,11 @@ type ConfigurationSet struct {
 	AdditionalUnattendContent string               `xml:",omitempty"`                          // Specifies additional base-64 encoded XML formatted information that can be included in the Unattend.xml file, which is used by Windows Setup.
 
 	// Linux provisioning:
-	HostName                         string `xml:",omitempty"` // Required. Specifies the host name for the Virtual Machine. Host names must be 1 to 64 characters long.
-	UserName                         string `xml:",omitempty"` // Required. Specifies the name of a user account to be created in the sudoer group of the Virtual Machine. User account names must be 1 to 32 characters long.
-	UserPassword                     string `xml:",omitempty"` // Required. Specifies the password for the user account. Passwords must be 6 to 72 characters long.
-	DisableSshPasswordAuthentication string `xml:",omitempty"` // Optional. Specifies whether SSH password authentication is disabled. By default this value is set to true.
-	SSH                              *SSH   `xml:",omitempty"` // Optional. Specifies the SSH public keys and key pairs to use with the Virtual Machine.
+	HostName                         string `xml:",omitempty"`                                 // Required. Specifies the host name for the Virtual Machine. Host names must be 1 to 64 characters long.
+	UserName                         string `xml:",omitempty"`                                 // Required. Specifies the name of a user account to be created in the sudoer group of the Virtual Machine. User account names must be 1 to 32 characters long.
+	UserPassword                     string `xml:",omitempty"`                                 // Required. Specifies the password for the user account. Passwords must be 6 to 72 characters long.
+	DisableSSHPasswordAuthentication string `xml:"DisableSshPasswordAuthentication,omitempty"` // Optional. Specifies whether SSH password authentication is disabled. By default this value is set to true.
+	SSH                              *SSH   `xml:",omitempty"`                                 // Optional. Specifies the SSH public keys and key pairs to use with the Virtual Machine.
 
 	// In WindowsProvisioningConfiguration: The base-64 encoded string is decoded to a binary array that is saved as a file on the Virtual Machine. The maximum length of the binary array is 65535 bytes. The file is saved to %SYSTEMDRIVE%\AzureData\CustomData.bin. If the file exists, it is overwritten. The security on directory is set to System:Full Control and Administrators:Full Control.
 	// In LinuxProvisioningConfiguration: The base-64 encoded string is located in the ovf-env.xml file on the ISO of the Virtual Machine. The file is copied to /var/lib/waagent/ovf-env.xml by the Azure Linux Agent. The Azure Linux Agent will also place the base-64 encoded data in /var/lib/waagent/CustomData during provisioning. The maximum length of the binary array is 65535 bytes.
@@ -344,36 +360,41 @@ type ConfigurationSet struct {
 
 type ConfigurationSetType string
 
+// Enum values for ConfigurationSetType
 const (
-	// Enum values for ConfigurationSetType
 	ConfigurationSetTypeWindowsProvisioning ConfigurationSetType = "WindowsProvisioningConfiguration"
 	ConfigurationSetTypeLinuxProvisioning   ConfigurationSetType = "LinuxProvisioningConfiguration"
 	ConfigurationSetTypeNetwork             ConfigurationSetType = "NetworkConfiguration"
 )
 
-// Contains properties that define a domain to which the Virtual Machine will be joined.
+// DomainJoin contains properties that define a domain to which the Virtual
+// Machine will be joined.
 type DomainJoin struct {
 	Credentials     Credentials `xml:",omitempty"` // Specifies the credentials to use to join the Virtual Machine to the domain.
 	JoinDomain      string      `xml:",omitempty"` // Specifies the domain to join.
 	MachineObjectOU string      `xml:",omitempty"` // Specifies the Lightweight Directory Access Protocol (LDAP) X 500-distinguished name of the organizational unit (OU) in which the computer account is created. This account is in Active Directory on a domain controller in the domain to which the computer is being joined.
 }
 
-// Specifies the credentials to use to join the Virtual Machine to the domain.
-// If Domain is not specified, Username must specify the user principal name (UPN) format (user@fully-qualified-DNS-domain) or the fully-qualified-DNS-domain\username format.
+// Credentials specifies the credentials to use to join the Virtual Machine to
+// the domain. If Domain is not specified, Username must specify the user
+// principal name (UPN) format (user@fully-qualified-DNS-domain) or the fully-
+// qualified-DNS-domain\username format.
 type Credentials struct {
 	Domain   string // Specifies the name of the domain used to authenticate an account. The value is a fully qualified DNS domain.
 	Username string // Specifies a user name in the domain that can be used to join the domain.
 	Password string // Specifies the password to use to join the domain.
 }
 
-// Specifies the parameters for the certificate which to provision to the new Virtual Machine.
+// CertificateSetting specifies the parameters for the certificate which to
+// provision to the new Virtual Machine.
 type CertificateSetting struct {
 	StoreLocation string // Required. Specifies the certificate store location on the Virtual Machine. The only supported value is "LocalMachine".
 	StoreName     string // Required. Specifies the name of the certificate store from which the certificate is retrieved. For example, "My".
 	Thumbprint    string // Required. Specifies the thumbprint of the certificate. The thumbprint must specify an existing service certificate.
 }
 
-// Specifies the protocol and certificate information for a WinRM listener.
+// WinRMListener specifies the protocol and certificate information for a WinRM
+// listener.
 type WinRMListener struct {
 	Protocol              WinRMProtocol // Specifies the protocol of listener.
 	CertificateThumbprint string        `xml:",omitempty"` // Specifies the certificate thumbprint for the secure connection. If this value is not specified, a self-signed certificate is generated and used for the Virtual Machine.
@@ -381,19 +402,19 @@ type WinRMListener struct {
 
 type WinRMProtocol string
 
+// Enum values for WinRMProtocol
 const (
-	// Enum values for WinRMProtocol
-	WinRMProtocolHttp  WinRMProtocol = "Http"
-	WinRMProtocolHttps WinRMProtocol = "Https"
+	WinRMProtocolHTTP  WinRMProtocol = "Http"
+	WinRMProtocolHTTPS WinRMProtocol = "Https"
 )
 
-// Specifies the SSH public keys and key pairs to use with the Virtual Machine.
+// SSH specifies the SSH public keys and key pairs to use with the Virtual Machine.
 type SSH struct {
 	PublicKeys []PublicKey `xml:">PublicKey"`
 	KeyPairs   []KeyPair   `xml:">KeyPair"`
 }
 
-// Specifies a public SSH key.
+// PublicKey specifies a public SSH key.
 type PublicKey struct {
 	Fingerprint string // Specifies the SHA1 fingerprint of an X509 certificate associated with the cloud service and includes the SSH public key.
 	// Specifies the full path of a file, on the Virtual Machine, where the SSH public key is stored. If
@@ -401,7 +422,7 @@ type PublicKey struct {
 	Path string // Usually /home/username/.ssh/authorized_keys
 }
 
-// Specifies an SSH keypair.
+// KeyPair specifies an SSH keypair.
 type KeyPair struct {
 	Fingerprint string // Specifies the SHA1 fingerprint of an X509 certificate that is associated with the cloud service and includes the SSH keypair.
 	// Specifies the full path of a file, on the virtual machine, which stores the SSH private key. The
@@ -410,7 +431,8 @@ type KeyPair struct {
 	Path string // Usually /home/username/.ssh/id_rsa
 }
 
-// Specifies the properties that define an external endpoint for the Virtual Machine.
+// InputEndpoint specifies the properties that define an external endpoint for
+// the Virtual Machine.
 type InputEndpoint struct {
 	LocalPort int                   // Specifies the internal port on which the Virtual Machine is listening.
 	Name      string                // Specifies the name of the external endpoint.
@@ -421,19 +443,20 @@ type InputEndpoint struct {
 
 type InputEndpointProtocol string
 
+// Enum values for InputEndpointProtocol
 const (
-	// Enum values for InputEndpointProtocol
-	InputEndpointProtocolTcp InputEndpointProtocol = "TCP"
-	InputEndpointProtocolUdp InputEndpointProtocol = "UDP"
+	InputEndpointProtocolTCP InputEndpointProtocol = "TCP"
+	InputEndpointProtocolUDP InputEndpointProtocol = "UDP"
 )
 
-// Contains a public IP address that can be used in addition to default virtual IP address for the Virtual Machine.
+// PublicIP contains a public IP address that can be used in addition to default
+// virtual IP address for the Virtual Machine.
 type PublicIP struct {
 	Name                 string // Specifies the name of the public IP address.
 	IdleTimeoutInMinutes int    `xml:",omitempty"` // Specifies the timeout for the TCP idle connection. The value can be set between 4 and 30 minutes. The default value is 4 minutes. This element is only used when the protocol is set to TCP.
 }
 
-// Contains a certificate for adding it to a hosted service
+// ServiceCertificate contains a certificate for adding it to a hosted service
 type ServiceCertificate struct {
 	XMLName           xml.Name `xml:"CertificateFile"`
 	Data              string
@@ -441,25 +464,25 @@ type ServiceCertificate struct {
 	Password          string `xml:",omitempty"`
 }
 
-// Contains the information for starting a Role.
+// StartRoleOperation contains the information for starting a Role.
 type StartRoleOperation struct {
 	XMLName       xml.Name `xml:"http://schemas.microsoft.com/windowsazure StartRoleOperation"`
 	OperationType string
 }
 
-// Contains the information for shutting down a Role.
+// ShutdownRoleOperation contains the information for shutting down a Role.
 type ShutdownRoleOperation struct {
 	XMLName       xml.Name `xml:"http://schemas.microsoft.com/windowsazure ShutdownRoleOperation"`
 	OperationType string
 }
 
-// Contains the information for restarting a Role.
+// RestartRoleOperation contains the information for restarting a Role.
 type RestartRoleOperation struct {
 	XMLName       xml.Name `xml:"http://schemas.microsoft.com/windowsazure RestartRoleOperation"`
 	OperationType string
 }
 
-// Contains the information for capturing a Role
+// CaptureRoleOperation contains the information for capturing a Role
 type CaptureRoleOperation struct {
 	XMLName                   xml.Name `xml:"http://schemas.microsoft.com/windowsazure CaptureRoleOperation"`
 	OperationType             string
@@ -471,19 +494,19 @@ type CaptureRoleOperation struct {
 
 type PostCaptureAction string
 
+// Enum values for PostCaptureAction
 const (
-	// Enum values for PostCaptureAction
 	PostCaptureActionDelete      PostCaptureAction = "Delete"
 	PostCaptureActionReprovision PostCaptureAction = "Reprovision"
 )
 
-// Contains a list of the available role sizes
+// RoleSizeList contains a list of the available role sizes
 type RoleSizeList struct {
 	XMLName   xml.Name   `xml:"RoleSizes"`
 	RoleSizes []RoleSize `xml:"RoleSize"`
 }
 
-// Contains a detailed explanation of a role size
+// RoleSize contains a detailed explanation of a role size
 type RoleSize struct {
 	Name                               string
 	Label                              string
@@ -496,13 +519,13 @@ type RoleSize struct {
 	VirtualMachineResourceDiskSizeInMb int
 }
 
-// Contains the definition of a DNS server for virtual machine deployment
-type DnsServer struct {
+// DNSServer contains the definition of a DNS server for virtual machine deployment
+type DNSServer struct {
 	Name    string
 	Address string
 }
 
-// Contains the definition of a load balancer for virtual machine deployment
+// LoadBalancer contains the definition of a load balancer for virtual machine deployment
 type LoadBalancer struct {
 	Name                          string        // Specifies the name of the internal load balancer.
 	Type                          IPAddressType `xml:"FrontendIpConfiguration>Type"`                                    // Specifies the type of virtual IP address that is provided by the load balancer. The only allowable value is Private.
@@ -512,6 +535,7 @@ type LoadBalancer struct {
 
 type IPAddressType string
 
+// Enum values for IPAddressType
 const (
 	IPAddressTypePrivate IPAddressType = "Private" // Only allowed value (currently) for IPAddressType
 )
@@ -531,9 +555,9 @@ type ResourceExtension struct {
 	SampleConfig                string
 	ReplicationCompleted        string
 	Eula                        string
-	PrivacyUri                  string
-	HomepageUri                 string
-	IsJsonExtension             bool
+	PrivacyURI                  string `xml:"PrivacyUri"`
+	HomepageURI                 string `xml:"HomepageUri"`
+	IsJSONExtension             bool   `xml:"IsJsonExtension"`
 	IsInternalExtension         bool
 	DisallowMajorVersionUpgrade bool
 	CompanyName                 string

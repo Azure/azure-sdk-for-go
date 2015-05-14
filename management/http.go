@@ -14,11 +14,11 @@ const (
 	msVersionHeaderValue      = "2014-10-01"
 	contentHeader             = "Content-Type"
 	defaultContentHeaderValue = "application/xml"
-	requestIdHeader           = "X-Ms-Request-Id"
+	requestIDHeader           = "X-Ms-Request-Id"
 )
 
-//sendAzureGetRequest sends a request to the management API using the HTTP GET method
-//and returns the response body or an error.
+// SendAzureGetRequest sends a request to the management API using the HTTP GET method
+// and returns the response body or an error.
 func (client *Client) SendAzureGetRequest(url string) ([]byte, error) {
 	if url == "" {
 		return nil, fmt.Errorf(errParamNotSpecified, "url")
@@ -33,9 +33,9 @@ func (client *Client) SendAzureGetRequest(url string) ([]byte, error) {
 	return responseContent, nil
 }
 
-//sendAzurePostRequest sends a request to the management API using the HTTP POST method
-//and returns the request ID or an error.
-func (client *Client) SendAzurePostRequest(url string, data []byte) (OperationId, error) {
+// SendAzurePostRequest sends a request to the management API using the HTTP POST method
+// and returns the request ID or an error.
+func (client *Client) SendAzurePostRequest(url string, data []byte) (OperationID, error) {
 	if url == "" {
 		return "", fmt.Errorf(errParamNotSpecified, "url")
 	}
@@ -45,15 +45,15 @@ func (client *Client) SendAzurePostRequest(url string, data []byte) (OperationId
 		return "", err
 	}
 
-	return getOperationId(response)
+	return getOperationID(response)
 }
 
-//sendAzurePutRequest sends a request to the management API using the HTTP PUT method
-//and returns the request ID or an error. The content type can be specified, however
-//if an empty string is passed, the default of "application/xml" will be used.
-func (client *Client) SendAzurePutRequest(url string, contentType string, data []byte) (OperationId, error) {
+// SendAzurePutRequest sends a request to the management API using the HTTP PUT method
+// and returns the request ID or an error. The content type can be specified, however
+// if an empty string is passed, the default of "application/xml" will be used.
+func (client *Client) SendAzurePutRequest(url string, contentType string, data []byte) (OperationID, error) {
 	if url == "" {
-		return "", fmt.Errorf(errParamNotSpecified, contentType, "url")
+		return "", fmt.Errorf(errParamNotSpecified, "url")
 	}
 
 	response, err := client.sendAzureRequest(url, "PUT", contentType, data)
@@ -61,12 +61,12 @@ func (client *Client) SendAzurePutRequest(url string, contentType string, data [
 		return "", err
 	}
 
-	return getOperationId(response)
+	return getOperationID(response)
 }
 
-//sendAzureDeleteRequest sends a request to the management API using the HTTP DELETE method
-//and returns the request ID or an error.
-func (client *Client) SendAzureDeleteRequest(url string) (OperationId, error) {
+// SendAzureDeleteRequest sends a request to the management API using the HTTP DELETE method
+// and returns the request ID or an error.
+func (client *Client) SendAzureDeleteRequest(url string) (OperationID, error) {
 	if url == "" {
 		return "", fmt.Errorf(errParamNotSpecified, "url")
 	}
@@ -76,19 +76,19 @@ func (client *Client) SendAzureDeleteRequest(url string) (OperationId, error) {
 		return "", err
 	}
 
-	return getOperationId(response)
+	return getOperationID(response)
 }
 
-func getOperationId(response *http.Response) (OperationId, error) {
-	requestId := response.Header[requestIdHeader]
-	if len(requestId) == 0 {
-		return "", fmt.Errorf("Could not retrieve operation id from %q header", requestIdHeader)
+func getOperationID(response *http.Response) (OperationID, error) {
+	requestID := response.Header[requestIDHeader]
+	if len(requestID) == 0 {
+		return "", fmt.Errorf("Could not retrieve operation id from %q header", requestIDHeader)
 	}
-	return OperationId(requestId[0]), nil
+	return OperationID(requestID[0]), nil
 }
 
-//sendAzureRequest constructs an HTTP client for the request, sends it to the
-//management API and returns the response or an error.
+// sendAzureRequest constructs an HTTP client for the request, sends it to the
+// management API and returns the response or an error.
 func (client *Client) sendAzureRequest(url string, requestType string, contentType string, data []byte) (*http.Response, error) {
 	if url == "" {
 		return nil, fmt.Errorf(errParamNotSpecified, "url")
@@ -97,7 +97,7 @@ func (client *Client) sendAzureRequest(url string, requestType string, contentTy
 		return nil, fmt.Errorf(errParamNotSpecified, "requestType")
 	}
 
-	httpClient := client.createHttpClient()
+	httpClient := client.createHTTPClient()
 
 	response, err := client.sendRequest(httpClient, url, requestType, contentType, data, 7)
 	if err != nil {
@@ -107,9 +107,9 @@ func (client *Client) sendAzureRequest(url string, requestType string, contentTy
 	return response, nil
 }
 
-//createHttpClient creates an HTTP Client configured with the key pair for
-//the subscription for this client.
-func (client *Client) createHttpClient() *http.Client {
+// createHTTPClient creates an HTTP Client configured with the key pair for
+// the subscription for this client.
+func (client *Client) createHTTPClient() *http.Client {
 	cert, _ := tls.X509KeyPair(client.publishSettings.SubscriptionCert, client.publishSettings.SubscriptionKey)
 
 	ssl := &tls.Config{}
@@ -125,9 +125,9 @@ func (client *Client) createHttpClient() *http.Client {
 	return httpClient
 }
 
-//sendRequest sends a request to the Azure management API using the given
-//HTTP client and parameters. It returns the response from the call or an
-//error.
+// sendRequest sends a request to the Azure management API using the given
+// HTTP client and parameters. It returns the response from the call or an
+// error.
 func (client *Client) sendRequest(httpClient *http.Client, url string, requestType string, contentType string, data []byte, numberOfRetries int) (*http.Response, error) {
 	request, reqErr := client.createAzureRequest(url, requestType, contentType, data)
 	if reqErr != nil {
@@ -158,8 +158,8 @@ func (client *Client) sendRequest(httpClient *http.Client, url string, requestTy
 	return response, nil
 }
 
-//createAzureRequest packages up the request with the correct set of headers and returns
-//the request object or an error.
+// createAzureRequest packages up the request with the correct set of headers and returns
+// the request object or an error.
 func (client *Client) createAzureRequest(url string, requestType string, contentType string, data []byte) (*http.Request, error) {
 	var request *http.Request
 	var err error
@@ -186,7 +186,7 @@ func (client *Client) createAzureRequest(url string, requestType string, content
 	return request, nil
 }
 
-//getAzureError converts an error response body into an AzureError type.
+// getAzureError converts an error response body into an AzureError type.
 func getAzureError(responseBody []byte) error {
 	error := new(AzureError)
 	err := xml.Unmarshal(responseBody, error)

@@ -2,7 +2,6 @@ package storageservice
 
 import (
 	"encoding/xml"
-	"errors"
 	"fmt"
 	"strings"
 
@@ -21,15 +20,16 @@ const (
 	errParamNotSpecified    = "Parameter %s is not specified."
 )
 
-//NewClient is used to instantiate a new StorageServiceClient from an Azure client
-func NewClient(self management.Client) StorageServiceClient {
-	return StorageServiceClient{client: self}
+// NewClient is used to instantiate a new StorageServiceClient from an Azure
+// client.
+func NewClient(s management.Client) StorageServiceClient {
+	return StorageServiceClient{client: s}
 }
 
-func (self StorageServiceClient) GetStorageServiceList() (*StorageServiceList, error) {
+func (s StorageServiceClient) GetStorageServiceList() (*StorageServiceList, error) {
 	storageServiceList := new(StorageServiceList)
 
-	response, err := self.client.SendAzureGetRequest(azureStorageServiceListURL)
+	response, err := s.client.SendAzureGetRequest(azureStorageServiceListURL)
 	if err != nil {
 		return nil, err
 	}
@@ -42,14 +42,14 @@ func (self StorageServiceClient) GetStorageServiceList() (*StorageServiceList, e
 	return storageServiceList, nil
 }
 
-func (self StorageServiceClient) GetStorageServiceByName(serviceName string) (*StorageService, error) {
+func (s StorageServiceClient) GetStorageServiceByName(serviceName string) (*StorageService, error) {
 	if serviceName == "" {
 		return nil, fmt.Errorf(errParamNotSpecified, "serviceName")
 	}
 
 	storageService := new(StorageService)
 	requestURL := fmt.Sprintf(azureStorageServiceURL, serviceName)
-	response, err := self.client.SendAzureGetRequest(requestURL)
+	response, err := s.client.SendAzureGetRequest(requestURL)
 	if err != nil {
 		return nil, err
 	}
@@ -62,13 +62,13 @@ func (self StorageServiceClient) GetStorageServiceByName(serviceName string) (*S
 	return storageService, nil
 }
 
-func (self StorageServiceClient) GetStorageServiceByLocation(location string) (*StorageService, error) {
+func (s StorageServiceClient) GetStorageServiceByLocation(location string) (*StorageService, error) {
 	if location == "" {
 		return nil, fmt.Errorf(errParamNotSpecified, "location")
 	}
 
 	storageService := new(StorageService)
-	storageServiceList, err := self.GetStorageServiceList()
+	storageServiceList, err := s.GetStorageServiceList()
 	if err != nil {
 		return storageService, err
 	}
@@ -84,13 +84,13 @@ func (self StorageServiceClient) GetStorageServiceByLocation(location string) (*
 	return nil, nil
 }
 
-func (self StorageServiceClient) GetStorageServiceKeys(serviceName string) (GetStorageServiceKeysResponse, error) {
+func (s StorageServiceClient) GetStorageServiceKeys(serviceName string) (GetStorageServiceKeysResponse, error) {
 	if serviceName == "" {
 		return GetStorageServiceKeysResponse{}, fmt.Errorf(errParamNotSpecified, "serviceName")
 	}
 
 	requestURL := fmt.Sprintf(azureStorageServiceKeysURL, serviceName)
-	data, err := self.client.SendAzureGetRequest(requestURL)
+	data, err := s.client.SendAzureGetRequest(requestURL)
 	if err != nil {
 		return GetStorageServiceKeysResponse{}, err
 	}
@@ -101,36 +101,31 @@ func (self StorageServiceClient) GetStorageServiceKeys(serviceName string) (GetS
 	return response, err
 }
 
-func (self StorageServiceClient) CreateAsync(parameters StorageAccountCreateParameters) (management.OperationId, error) {
+func (s StorageServiceClient) CreateAsync(parameters StorageAccountCreateParameters) (management.OperationID, error) {
 	data, err := xml.Marshal(CreateStorageServiceInput{
 		StorageAccountCreateParameters: parameters})
 	if err != nil {
 		return "", err
 	}
 
-	return self.client.SendAzurePostRequest(azureStorageServiceListURL, data)
+	return s.client.SendAzurePostRequest(azureStorageServiceListURL, data)
 }
 
-func (self StorageServiceClient) Create(parameters StorageAccountCreateParameters) (*StorageService, error) {
-	operationId, err := self.CreateAsync(parameters)
+func (s StorageServiceClient) Create(parameters StorageAccountCreateParameters) (*StorageService, error) {
+	operationID, err := s.CreateAsync(parameters)
 	if err != nil {
 		return nil, err
 	}
 
-	err = self.client.WaitAsyncOperation(operationId)
+	err = s.client.WaitAsyncOperation(operationID)
 	if err != nil {
 		return nil, err
 	}
 
-	storageService, err := self.GetStorageServiceByName(parameters.ServiceName)
-	if err != nil {
-		return nil, err
-	}
-
-	return storageService, nil
+	return s.GetStorageServiceByName(parameters.ServiceName)
 }
 
-func (self StorageServiceClient) GetBlobEndpoint(storageService *StorageService) (string, error) {
+func (s StorageServiceClient) GetBlobEndpoint(storageService *StorageService) (string, error) {
 	for _, endpoint := range storageService.StorageServiceProperties.Endpoints {
 		if !strings.Contains(endpoint, ".blob.core") {
 			continue
@@ -139,18 +134,19 @@ func (self StorageServiceClient) GetBlobEndpoint(storageService *StorageService)
 		return endpoint, nil
 	}
 
-	return "", errors.New(fmt.Sprintf(errBlobEndpointNotFound, storageService.ServiceName))
+	return "", fmt.Errorf(errBlobEndpointNotFound, storageService.ServiceName)
 }
 
-// The Check Storage Account Name Availability operation checks to see if the specified storage account name is available, or if it has already been taken.
+// IsAvailable checks to see if the specified storage account name is available,
+// or if it has already been taken.
 // See https://msdn.microsoft.com/en-us/library/azure/jj154125.aspx
-func (self StorageServiceClient) IsAvailable(name string) (bool, string, error) {
+func (s StorageServiceClient) IsAvailable(name string) (bool, string, error) {
 	if name == "" {
 		return false, "", fmt.Errorf(errParamNotSpecified, "name")
 	}
 
 	requestURL := fmt.Sprintf(azureStorageAccountAvailabilityURL, name)
-	response, err := self.client.SendAzureGetRequest(requestURL)
+	response, err := s.client.SendAzureGetRequest(requestURL)
 	if err != nil {
 		return false, "", err
 	}

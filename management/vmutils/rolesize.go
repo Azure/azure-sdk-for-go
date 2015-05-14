@@ -5,12 +5,13 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/management"
 	locationclient "github.com/Azure/azure-sdk-for-go/management/location"
-	. "github.com/Azure/azure-sdk-for-go/management/virtualmachine"
+	vm "github.com/Azure/azure-sdk-for-go/management/virtualmachine"
 )
 
-// Retrieves the available rolesizes using vmclient.GetRoleSizeList() and returns
-// whether that the provided roleSizeName is part of that list
-func IsRoleSizeValid(vmclient VirtualMachineClient, roleSizeName string) (bool, error) {
+// IsRoleSizeValid retrieves the available rolesizes using
+// vmclient.GetRoleSizeList() and returns whether that the provided roleSizeName
+// is part of that list
+func IsRoleSizeValid(vmclient vm.VirtualMachineClient, roleSizeName string) (bool, error) {
 	if roleSizeName == "" {
 		return false, fmt.Errorf(errParamNotSpecified, "roleSizeName")
 	}
@@ -29,8 +30,9 @@ func IsRoleSizeValid(vmclient VirtualMachineClient, roleSizeName string) (bool, 
 	return false, nil
 }
 
-// Retrieves all available sizes in the specified location using location.GetLocation() and returns
-// whether that the provided roleSizeName is part of that list.
+// IsRoleSizeAvailableInLocation retrieves all available sizes in the specified
+// location using location.GetLocation() and returns whether that the provided
+// roleSizeName is part of that list.
 func IsRoleSizeAvailableInLocation(managementclient management.Client, location, roleSizeName string) (bool, error) {
 	if location == "" {
 		return false, fmt.Errorf(errParamNotSpecified, "location")

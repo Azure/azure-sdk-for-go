@@ -16,7 +16,6 @@ type LocationClient struct {
 
 type LocationList struct {
 	XMLName   xml.Name   `xml:"Locations"`
-	Xmlns     string     `xml:"xmlns,attr"`
 	Locations []Location `xml:"Location"`
 }
 

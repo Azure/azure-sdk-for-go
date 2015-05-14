@@ -18,7 +18,7 @@ type CreateHostedService struct {
 	Label          string
 	Description    string
 	Location       string
-	ReverseDnsFqdn string `xml:",omitempty"`
+	ReverseDNSFqdn string `xml:"ReverseDnsFqdn,omitempty"`
 }
 
 type AvailabilityResponse struct {
@@ -28,7 +28,7 @@ type AvailabilityResponse struct {
 }
 
 type HostedService struct {
-	Url                               string
+	URL                               string `xml:"Url"`
 	ServiceName                       string
 	Description                       string `xml:"HostedServiceProperties>Description"`
 	AffinityGroup                     string `xml:"HostedServiceProperties>AffinityGroup"`
@@ -36,7 +36,7 @@ type HostedService struct {
 	LabelBase64                       string `xml:"HostedServiceProperties>Label"`
 	Label                             string
 	Status                            string `xml:"HostedServiceProperties>Status"`
-	ReverseDnsFqdn                    string `xml:"HostedServiceProperties>ReverseDnsFqdn"`
+	ReverseDNSFqdn                    string `xml:"HostedServiceProperties>ReverseDnsFqdn"`
 	DefaultWinRmCertificateThumbprint string
 }
 

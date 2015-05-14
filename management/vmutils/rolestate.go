@@ -7,7 +7,8 @@ import (
 	vm "github.com/Azure/azure-sdk-for-go/management/virtualmachine"
 )
 
-// Blocks until all role instances in deployment to reach desired power state
+// WaitForDeploymentPowerState blocks until all role instances in deployment to
+// reach desired power state.
 func WaitForDeploymentPowerState(client management.Client, cloudServiceName, deploymentName string, desiredPowerstate vm.PowerState) error {
 	for {
 		deployment, err := vm.NewClient(client).GetDeployment(cloudServiceName, deploymentName)

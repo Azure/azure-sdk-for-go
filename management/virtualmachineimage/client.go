@@ -18,10 +18,10 @@ func NewClient(client management.Client) Client {
 	return Client{client}
 }
 
-func (self Client) GetImageList() ([]VMImage, error) {
+func (c Client) GetImageList() ([]VMImage, error) {
 	imageList := vmImageList{}
 
-	response, err := self.SendAzureGetRequest(azureImageListURL)
+	response, err := c.SendAzureGetRequest(azureImageListURL)
 	if err != nil {
 		return imageList.VMImages, err
 	}
@@ -31,8 +31,8 @@ func (self Client) GetImageList() ([]VMImage, error) {
 	return imageList.VMImages, err
 }
 
-func (self Client) Capture(cloudServiceName, deploymentName, roleName string,
-	name, label string, osState OSState, parameters CaptureParameters) (management.OperationId, error) {
+func (c Client) Capture(cloudServiceName, deploymentName, roleName string,
+	name, label string, osState OSState, parameters CaptureParameters) (management.OperationID, error) {
 	if cloudServiceName == "" {
 		return "", fmt.Errorf(errParamNotSpecified, "cloudServiceName")
 	}
@@ -54,6 +54,6 @@ func (self Client) Capture(cloudServiceName, deploymentName, roleName string,
 		return "", err
 	}
 
-	return self.SendAzurePostRequest(fmt.Sprintf(azureRoleOperationsURL,
+	return c.SendAzurePostRequest(fmt.Sprintf(azureRoleOperationsURL,
 		cloudServiceName, deploymentName, roleName), data)
 }

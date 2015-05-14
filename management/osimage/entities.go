@@ -6,14 +6,13 @@ import (
 	"github.com/Azure/azure-sdk-for-go/management"
 )
 
-//ImageClient is used to manage operations on Azure Locations
+// OsImageClient is used to manage operations on Azure Locations
 type OsImageClient struct {
 	client management.Client
 }
 
 type imageList struct {
 	XMLName  xml.Name  `xml:"Images"`
-	Xmlns    string    `xml:"xmlns,attr"`
 	OSImages []OSImage `xml:"OSImage"`
 }
 
@@ -31,11 +30,11 @@ type OSImage struct {
 	ImageFamily       string  // Specifies a value that can be used to group images.
 	PublishedDate     string  // Specifies the date when the image was added to the image repository.
 	IsPremium         string  // Indicates whether the image contains software or associated services that will incur charges above the core price for the virtual machine. For additional details, see the PricingDetailLink element.
-	PrivacyUri        string  // Specifies the URI that points to a document that contains the privacy policy related to the image.
+	PrivacyURI        string  `xml:"PrivacyUri"` // Specifies the URI that points to a document that contains the privacy policy related to the image.
 	RecommendedVMSize string  // Specifies the size to use for the virtual machine that is created from the image.
 	PublisherName     string  // The name of the publisher of the image. All user images have a publisher name of User.
 	PricingDetailLink string  // Specifies a URL for an image with IsPremium set to true, which contains the pricing details for a virtual machine that is created from the image.
-	SmallIconUri      string  // Specifies the URI to the small icon that is displayed when the image is presented in the Microsoft Azure Management Portal.
+	SmallIconURI      string  `xml:"SmallIconUri"` // Specifies the URI to the small icon that is displayed when the image is presented in the Microsoft Azure Management Portal.
 	Language          string  // Specifies the language of the image.
 	IOType            IOType  // Provisioned || Standard
 }

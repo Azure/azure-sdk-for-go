@@ -6,19 +6,18 @@ import (
 	"github.com/Azure/azure-sdk-for-go/management"
 )
 
-//StorageServiceClient is used to manage operations on Azure Storage
+// StorageServiceClient is used to manage operations on Azure Storage
 type StorageServiceClient struct {
 	client management.Client
 }
 
 type StorageServiceList struct {
 	XMLName         xml.Name         `xml:"StorageServices"`
-	Xmlns           string           `xml:"xmlns,attr"`
 	StorageServices []StorageService `xml:"StorageService"`
 }
 
 type StorageService struct {
-	Url                      string
+	URL                      string `xml:"Url"`
 	ServiceName              string
 	StorageServiceProperties StorageServiceProperties
 }
@@ -33,10 +32,8 @@ type StorageServiceProperties struct {
 	GeoPrimaryRegion      string
 }
 
-// Receiver type for Get Storage Account Keys operation
-// See https://msdn.microsoft.com/en-us/library/azure/ee460785.aspx
 type GetStorageServiceKeysResponse struct {
-	Url          string
+	URL          string `xml:"Url"`
 	PrimaryKey   string `xml:"StorageServiceKeys>Primary"`
 	SecondaryKey string `xml:"StorageServiceKeys>Secondary"`
 }

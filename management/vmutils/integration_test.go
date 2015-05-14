@@ -24,7 +24,7 @@ func TestDeployPlatformImage(t *testing.T) {
 	sa := GetTestStorageAccount(t, client)
 	location := sa.StorageServiceProperties.Location
 
-	role := NewVmConfiguration(vmname, "Standard_D3")
+	role := NewVMConfiguration(vmname, "Standard_D3")
 	ConfigureDeploymentFromPlatformImage(&role,
 		GetLinuxTestImage(t, client).Name,
 		fmt.Sprintf("http://%s.blob.core.windows.net/sdktest/%s.vhd", sa.ServiceName, vmname),
@@ -50,7 +50,7 @@ func TestDeployPlatformCaptureRedeploy(t *testing.T) {
 	sa := GetTestStorageAccount(t, client)
 	location := sa.StorageServiceProperties.Location
 
-	role := NewVmConfiguration(vmname, "Standard_D3")
+	role := NewVMConfiguration(vmname, "Standard_D3")
 	ConfigureDeploymentFromPlatformImage(&role,
 		GetLinuxTestImage(t, client).Name,
 		fmt.Sprintf("http://%s.blob.core.windows.net/sdktest/%s.vhd", sa.ServiceName, vmname),
@@ -74,7 +74,7 @@ func TestDeployPlatformCaptureRedeploy(t *testing.T) {
 	}
 
 	t.Logf("Shutting down VM: %s", vmname)
-	if err := Await(client, func() (management.OperationId, error) {
+	if err := Await(client, func() (management.OperationID, error) {
 		return vmc.ShutdownRole(vmname, vmname, vmname)
 	}); err != nil {
 		t.Error(err)
@@ -86,7 +86,7 @@ func TestDeployPlatformCaptureRedeploy(t *testing.T) {
 
 	imagename := GenerateName()
 	t.Logf("Capturing VMImage: %s", imagename)
-	if err := Await(client, func() (management.OperationId, error) {
+	if err := Await(client, func() (management.OperationID, error) {
 		return vmc.CaptureRole(vmname, vmname, vmname, imagename, imagename, nil)
 	}); err != nil {
 		t.Error(err)
@@ -96,7 +96,7 @@ func TestDeployPlatformCaptureRedeploy(t *testing.T) {
 	t.Logf("Found image: %+v", im)
 
 	newvmname := GenerateName()
-	role = NewVmConfiguration(newvmname, "Standard_D3")
+	role = NewVMConfiguration(newvmname, "Standard_D3")
 	ConfigureDeploymentFromPlatformImage(&role,
 		im.Name,
 		fmt.Sprintf("http://%s.blob.core.windows.net/sdktest/%s.vhd", sa.ServiceName, newvmname),
@@ -105,7 +105,7 @@ func TestDeployPlatformCaptureRedeploy(t *testing.T) {
 	ConfigureWithPublicSSH(&role)
 
 	t.Logf("Deploying new VM from freshly captured VM image: %s", newvmname)
-	if err := Await(client, func() (management.OperationId, error) {
+	if err := Await(client, func() (management.OperationID, error) {
 		return vmc.CreateDeployment(role, vmname, vm.CreateDeploymentOptions{})
 	}); err != nil {
 		t.Error(err)
@@ -125,7 +125,7 @@ func TestDeployFromVmImage(t *testing.T) {
 			"fb83b3509582419d99629ce476bcb5c8__SQL-Server-2014-RTM-12.0.2430.0-OLTP-ENU-Win2012R2-cy14su11"
 	})
 
-	role := NewVmConfiguration(vmname, "Standard_D4")
+	role := NewVMConfiguration(vmname, "Standard_D4")
 	ConfigureDeploymentFromVMImage(&role, im.Name,
 		fmt.Sprintf("http://%s.blob.core.windows.net/%s", sa.ServiceName, vmname))
 	ConfigureForWindows(&role, vmname, "azureuser", GeneratePassword(), true, "")
@@ -140,7 +140,7 @@ func TestRoleStateOperations(t *testing.T) {
 	sa := GetTestStorageAccount(t, client)
 	location := sa.StorageServiceProperties.Location
 
-	role := NewVmConfiguration(vmname, "Standard_D3")
+	role := NewVMConfiguration(vmname, "Standard_D3")
 	ConfigureDeploymentFromPlatformImage(&role,
 		GetLinuxTestImage(t, client).Name,
 		fmt.Sprintf("http://%s.blob.core.windows.net/sdktest/%s.vhd", sa.ServiceName, vmname),
@@ -150,17 +150,17 @@ func TestRoleStateOperations(t *testing.T) {
 	createRoleConfiguration(t, client, role, location)
 
 	vmc := vm.NewClient(client)
-	if err := Await(client, func() (management.OperationId, error) {
+	if err := Await(client, func() (management.OperationID, error) {
 		return vmc.ShutdownRole(vmname, vmname, vmname)
 	}); err != nil {
 		t.Error(err)
 	}
-	if err := Await(client, func() (management.OperationId, error) {
+	if err := Await(client, func() (management.OperationID, error) {
 		return vmc.StartRole(vmname, vmname, vmname)
 	}); err != nil {
 		t.Error(err)
 	}
-	if err := Await(client, func() (management.OperationId, error) {
+	if err := Await(client, func() (management.OperationID, error) {
 		return vmc.RestartRole(vmname, vmname, vmname)
 	}); err != nil {
 		t.Error(err)
@@ -180,13 +180,13 @@ func createRoleConfiguration(t *testing.T, client management.Client, role vm.Rol
 	hsc := hostedservice.NewClient(client)
 	vmname := role.RoleName
 
-	if err := Await(client, func() (management.OperationId, error) {
+	if err := Await(client, func() (management.OperationID, error) {
 		return hsc.CreateHostedService(vmname, location, "", vmname, "")
 	}); err != nil {
 		t.Error(err)
 	}
 
-	if err := Await(client, func() (management.OperationId, error) {
+	if err := Await(client, func() (management.OperationID, error) {
 		return vmc.CreateDeployment(role, vmname, vm.CreateDeploymentOptions{})
 	}); err != nil {
 		t.Error(err)
@@ -195,7 +195,7 @@ func createRoleConfiguration(t *testing.T, client management.Client, role vm.Rol
 
 func deleteHostedService(t *testing.T, client management.Client, vmname string) {
 	t.Logf("Deleting hosted service: %s", vmname)
-	if err := Await(client, func() (management.OperationId, error) {
+	if err := Await(client, func() (management.OperationID, error) {
 		return hostedservice.NewClient(client).DeleteHostedService(vmname, true)
 	}); err != nil {
 		t.Error(err)
@@ -345,12 +345,12 @@ func GenerateString(length int, from string) string {
 	return str
 }
 
-type asyncFunc func() (operationId management.OperationId, err error)
+type asyncFunc func() (operationId management.OperationID, err error)
 
 func Await(client management.Client, async asyncFunc) error {
-	reqId, err := async()
+	requestID, err := async()
 	if err != nil {
 		return err
 	}
-	return client.WaitAsyncOperation(reqId)
+	return client.WaitAsyncOperation(requestID)
 }

@@ -3,45 +3,47 @@ package vmutils
 import (
 	"fmt"
 
-	. "github.com/Azure/azure-sdk-for-go/management/virtualmachine"
+	vm "github.com/Azure/azure-sdk-for-go/management/virtualmachine"
 )
 
-// Adds configuration exposing port 22 externally
-func ConfigureWithPublicSSH(role *Role) error {
+// ConfigureWithPublicSSH adds configuration exposing port 22 externally
+func ConfigureWithPublicSSH(role *vm.Role) error {
 	if role == nil {
 		return fmt.Errorf(errParamNotSpecified, "role")
 	}
 
-	return ConfigureWithExternalPort(role, "SSH", 22, 22, InputEndpointProtocolTcp)
+	return ConfigureWithExternalPort(role, "SSH", 22, 22, vm.InputEndpointProtocolTCP)
 }
 
-// Adds configuration exposing port 3389 externally
-func ConfigureWithPublicRDP(role *Role) error {
+// ConfigureWithPublicRDP adds configuration exposing port 3389 externally
+func ConfigureWithPublicRDP(role *vm.Role) error {
 	if role == nil {
 		return fmt.Errorf(errParamNotSpecified, "role")
 	}
 
-	return ConfigureWithExternalPort(role, "RDP", 3389, 3389, InputEndpointProtocolTcp)
+	return ConfigureWithExternalPort(role, "RDP", 3389, 3389, vm.InputEndpointProtocolTCP)
 }
 
-// Adds configuration exposing port 5986 externally
-func ConfigureWithPublicPowerShell(role *Role) error {
+// ConfigureWithPublicPowerShell adds configuration exposing port 5986
+// externally
+func ConfigureWithPublicPowerShell(role *vm.Role) error {
 	if role == nil {
 		return fmt.Errorf(errParamNotSpecified, "role")
 	}
 
-	return ConfigureWithExternalPort(role, "PowerShell", 5986, 5986, InputEndpointProtocolTcp)
+	return ConfigureWithExternalPort(role, "PowerShell", 5986, 5986, vm.InputEndpointProtocolTCP)
 }
 
-// Adds a new InputEndpoint to the Role, exposing a port externally
-func ConfigureWithExternalPort(role *Role, name string, localport, externalport int, protocol InputEndpointProtocol) error {
+// ConfigureWithExternalPort adds a new InputEndpoint to the Role, exposing a
+// port externally
+func ConfigureWithExternalPort(role *vm.Role, name string, localport, externalport int, protocol vm.InputEndpointProtocol) error {
 	if role == nil {
 		return fmt.Errorf(errParamNotSpecified, "role")
 	}
 
-	role.ConfigurationSets = updateOrAddConfig(role.ConfigurationSets, ConfigurationSetTypeNetwork,
-		func(config *ConfigurationSet) {
-			config.InputEndpoints = append(config.InputEndpoints, InputEndpoint{
+	role.ConfigurationSets = updateOrAddConfig(role.ConfigurationSets, vm.ConfigurationSetTypeNetwork,
+		func(config *vm.ConfigurationSet) {
+			config.InputEndpoints = append(config.InputEndpoints, vm.InputEndpoint{
 				LocalPort: localport,
 				Name:      name,
 				Port:      externalport,
@@ -53,13 +55,13 @@ func ConfigureWithExternalPort(role *Role, name string, localport, externalport 
 }
 
 // ConfigureWithSecurityGroup associates the Role with a specific network security group
-func ConfigureWithSecurityGroup(role *Role, networkSecurityGroup string) error {
+func ConfigureWithSecurityGroup(role *vm.Role, networkSecurityGroup string) error {
 	if role == nil {
 		return fmt.Errorf(errParamNotSpecified, "role")
 	}
 
-	role.ConfigurationSets = updateOrAddConfig(role.ConfigurationSets, ConfigurationSetTypeNetwork,
-		func(config *ConfigurationSet) {
+	role.ConfigurationSets = updateOrAddConfig(role.ConfigurationSets, vm.ConfigurationSetTypeNetwork,
+		func(config *vm.ConfigurationSet) {
 			config.NetworkSecurityGroup = networkSecurityGroup
 		})
 
@@ -67,13 +69,13 @@ func ConfigureWithSecurityGroup(role *Role, networkSecurityGroup string) error {
 }
 
 // ConfigureWithSubnet associates the Role with a specific subnet
-func ConfigureWithSubnet(role *Role, subnet string) error {
+func ConfigureWithSubnet(role *vm.Role, subnet string) error {
 	if role == nil {
 		return fmt.Errorf(errParamNotSpecified, "role")
 	}
 
-	role.ConfigurationSets = updateOrAddConfig(role.ConfigurationSets, ConfigurationSetTypeNetwork,
-		func(config *ConfigurationSet) {
+	role.ConfigurationSets = updateOrAddConfig(role.ConfigurationSets, vm.ConfigurationSetTypeNetwork,
+		func(config *vm.ConfigurationSet) {
 			config.SubnetNames = append(config.SubnetNames, subnet)
 		})
 

@@ -3,33 +3,33 @@ package vmutils
 import (
 	"fmt"
 
-	. "github.com/Azure/azure-sdk-for-go/management/virtualmachine"
+	vm "github.com/Azure/azure-sdk-for-go/management/virtualmachine"
 	vmdisk "github.com/Azure/azure-sdk-for-go/management/virtualmachinedisk"
 )
 
-// Adds configuration for a new (empty) data disk
-func ConfigureWithNewDataDisk(role *Role, label, destinationVhdStorageUrl string, sizeInGB float64, cachingType vmdisk.HostCachingType) error {
+// ConfigureWithNewDataDisk adds configuration for a new (empty) data disk
+func ConfigureWithNewDataDisk(role *vm.Role, label, destinationVhdStorageURL string, sizeInGB float64, cachingType vmdisk.HostCachingType) error {
 	if role == nil {
 		return fmt.Errorf(errParamNotSpecified, "role")
 	}
 
-	appendDataDisk(role, DataVirtualHardDisk{
+	appendDataDisk(role, vm.DataVirtualHardDisk{
 		DiskLabel:           label,
 		HostCaching:         cachingType,
 		LogicalDiskSizeInGB: sizeInGB,
-		MediaLink:           destinationVhdStorageUrl,
+		MediaLink:           destinationVhdStorageURL,
 	})
 
 	return nil
 }
 
-// Adds configuration for an existing data disk
-func ConfigureWithExistingDataDisk(role *Role, diskname string, cachingType vmdisk.HostCachingType) error {
+// ConfigureWithExistingDataDisk adds configuration for an existing data disk
+func ConfigureWithExistingDataDisk(role *vm.Role, diskname string, cachingType vmdisk.HostCachingType) error {
 	if role == nil {
 		return fmt.Errorf(errParamNotSpecified, "role")
 	}
 
-	appendDataDisk(role, DataVirtualHardDisk{
+	appendDataDisk(role, vm.DataVirtualHardDisk{
 		DiskName:    diskname,
 		HostCaching: cachingType,
 	})
@@ -37,21 +37,22 @@ func ConfigureWithExistingDataDisk(role *Role, diskname string, cachingType vmdi
 	return nil
 }
 
-// Adds configuration for adding a vhd in a storage account as a data disk
-func ConfigureWithVhdDataDisk(role *Role, sourceVhdStorageUrl string, cachingType vmdisk.HostCachingType) error {
+// ConfigureWithVhdDataDisk adds configuration for adding a vhd in a storage
+// account as a data disk
+func ConfigureWithVhdDataDisk(role *vm.Role, sourceVhdStorageURL string, cachingType vmdisk.HostCachingType) error {
 	if role == nil {
 		return fmt.Errorf(errParamNotSpecified, "role")
 	}
 
-	appendDataDisk(role, DataVirtualHardDisk{
-		SourceMediaLink: sourceVhdStorageUrl,
+	appendDataDisk(role, vm.DataVirtualHardDisk{
+		SourceMediaLink: sourceVhdStorageURL,
 		HostCaching:     cachingType,
 	})
 
 	return nil
 }
 
-func appendDataDisk(role *Role, disk DataVirtualHardDisk) {
+func appendDataDisk(role *vm.Role, disk vm.DataVirtualHardDisk) {
 	disk.Lun = len(role.DataVirtualHardDisks)
 	role.DataVirtualHardDisks = append(role.DataVirtualHardDisks, disk)
 }

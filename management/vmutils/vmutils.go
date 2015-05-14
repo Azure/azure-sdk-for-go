@@ -4,16 +4,16 @@ package vmutils
 import (
 	"fmt"
 
-	. "github.com/Azure/azure-sdk-for-go/management/virtualmachine"
+	vm "github.com/Azure/azure-sdk-for-go/management/virtualmachine"
 )
 
 const (
 	errParamNotSpecified = "Parameter %s is not specified."
 )
 
-// Creates configuration for a new virtual machine Role
-func NewVmConfiguration(name string, roleSize string) Role {
-	return Role{
+// NewVMConfiguration creates configuration for a new virtual machine Role.
+func NewVMConfiguration(name string, roleSize string) vm.Role {
+	return vm.Role{
 		RoleName:            name,
 		RoleType:            "PersistentVMRole",
 		RoleSize:            roleSize,
@@ -21,28 +21,29 @@ func NewVmConfiguration(name string, roleSize string) Role {
 	}
 }
 
-// Adds configuration for when deploying a generalized Linux image. If "password" is left empty,
-// SSH password security will be disabled by default. Certificates with SSH public keys
-// should already be uploaded to the cloud service where the VM will be deployed
-// and referenced here only by their thumbprint.
-func ConfigureForLinux(role *Role, hostname, user, password string, sshPubkeyCertificateThumbprint ...string) error {
+// ConfigureForLinux adds configuration for when deploying a generalized Linux
+// image. If "password" is left empty, SSH password security will be disabled by
+// default. Certificates with SSH public keys should already be uploaded to the
+// cloud service where the VM will be deployed and referenced here only by their
+// thumbprint.
+func ConfigureForLinux(role *vm.Role, hostname, user, password string, sshPubkeyCertificateThumbprint ...string) error {
 	if role == nil {
 		return fmt.Errorf(errParamNotSpecified, "role")
 	}
 
-	role.ConfigurationSets = updateOrAddConfig(role.ConfigurationSets, ConfigurationSetTypeLinuxProvisioning,
-		func(config *ConfigurationSet) {
+	role.ConfigurationSets = updateOrAddConfig(role.ConfigurationSets, vm.ConfigurationSetTypeLinuxProvisioning,
+		func(config *vm.ConfigurationSet) {
 			config.HostName = hostname
 			config.UserName = user
 			config.UserPassword = password
 			if password != "" {
-				config.DisableSshPasswordAuthentication = "false"
+				config.DisableSSHPasswordAuthentication = "false"
 			}
 			if len(sshPubkeyCertificateThumbprint) != 0 {
-				config.SSH = &SSH{}
+				config.SSH = &vm.SSH{}
 				for _, k := range sshPubkeyCertificateThumbprint {
 					config.SSH.PublicKeys = append(config.SSH.PublicKeys,
-						PublicKey{
+						vm.PublicKey{
 							Fingerprint: k,
 							Path:        "/home/" + user + "/.ssh/authorized_keys",
 						},
@@ -55,17 +56,18 @@ func ConfigureForLinux(role *Role, hostname, user, password string, sshPubkeyCer
 	return nil
 }
 
-// Adds configuration for when deploying a generalized Windows image.
-// timeZone can be left empty. For a complete list of supported time zone entries, you can either
-// refer to the values listed in the registry entry "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Time Zones"
-// or you can use the tzutil command-line tool to list the valid time.
-func ConfigureForWindows(role *Role, hostname, user, password string, enableAutomaticUpdates bool, timeZone string) error {
+// ConfigureForWindows adds configuration for when deploying a generalized
+// Windows image. timeZone can be left empty. For a complete list of supported
+// time zone entries, you can either refer to the values listed in the registry
+// entry "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Time
+// Zones" or you can use the tzutil command-line tool to list the valid time.
+func ConfigureForWindows(role *vm.Role, hostname, user, password string, enableAutomaticUpdates bool, timeZone string) error {
 	if role == nil {
 		return fmt.Errorf(errParamNotSpecified, "role")
 	}
 
-	role.ConfigurationSets = updateOrAddConfig(role.ConfigurationSets, ConfigurationSetTypeWindowsProvisioning,
-		func(config *ConfigurationSet) {
+	role.ConfigurationSets = updateOrAddConfig(role.ConfigurationSets, vm.ConfigurationSetTypeWindowsProvisioning,
+		func(config *vm.ConfigurationSet) {
 			config.ComputerName = hostname
 			config.AdminUsername = user
 			config.AdminPassword = password
@@ -77,17 +79,18 @@ func ConfigureForWindows(role *Role, hostname, user, password string, enableAuto
 	return nil
 }
 
-// Adds configuration to join a new Windows vm to a domain. "username" must be in UPN form (user@domain.com),
-// "machineOU" can be left empty
-func ConfigureWindowsToJoinDomain(role *Role, username, password, domainToJoin, machineOU string) error {
+// ConfigureWindowsToJoinDomain adds configuration to join a new Windows vm to a
+// domain. "username" must be in UPN form (user@domain.com), "machineOU" can be
+// left empty
+func ConfigureWindowsToJoinDomain(role *vm.Role, username, password, domainToJoin, machineOU string) error {
 	if role == nil {
 		return fmt.Errorf(errParamNotSpecified, "role")
 	}
 
-	winconfig := findConfig(role.ConfigurationSets, ConfigurationSetTypeWindowsProvisioning)
+	winconfig := findConfig(role.ConfigurationSets, vm.ConfigurationSetTypeWindowsProvisioning)
 	if winconfig != nil {
-		winconfig.DomainJoin = &DomainJoin{
-			Credentials:     Credentials{Username: username, Password: password},
+		winconfig.DomainJoin = &vm.DomainJoin{
+			Credentials:     vm.Credentials{Username: username, Password: password},
 			JoinDomain:      domainToJoin,
 			MachineObjectOU: machineOU,
 		}

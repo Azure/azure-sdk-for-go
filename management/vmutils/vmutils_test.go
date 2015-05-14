@@ -8,7 +8,7 @@ import (
 )
 
 func TestNewLinuxVmRemoteImage(t *testing.T) {
-	role := NewVmConfiguration("myvm", "Standard_D3")
+	role := NewVMConfiguration("myvm", "Standard_D3")
 	ConfigureDeploymentFromRemoteImage(&role,
 		"http://remote.host/some.vhd?sv=12&sig=ukhfiuwef78687", "Linux",
 		"myvm-os-disk", "http://mystorageacct.blob.core.windows.net/vhds/mybrandnewvm.vhd",
@@ -79,7 +79,7 @@ func TestNewLinuxVmRemoteImage(t *testing.T) {
 }
 
 func TestNewLinuxVmPlatformImage(t *testing.T) {
-	role := NewVmConfiguration("myplatformvm", "Standard_D3")
+	role := NewVMConfiguration("myplatformvm", "Standard_D3")
 	ConfigureDeploymentFromPlatformImage(&role,
 		"b39f27a8b8c64d52b05eac6a62ebad85__Ubuntu-14_04_2_LTS-amd64-server-20150309-en-us-30GB",
 		"http://mystorageacct.blob.core.windows.net/vhds/mybrandnewvm.vhd", "mydisklabel")
@@ -129,7 +129,7 @@ func TestNewLinuxVmPlatformImage(t *testing.T) {
 }
 
 func TestNewVmFromVMImage(t *testing.T) {
-	role := NewVmConfiguration("restoredbackup", "Standard_D1")
+	role := NewVMConfiguration("restoredbackup", "Standard_D1")
 	ConfigureDeploymentFromVMImage(&role, "myvm-backup-20150209",
 		"http://mystorageacct.blob.core.windows.net/vhds/myoldnewvm.vhd")
 
@@ -155,7 +155,7 @@ func TestNewVmFromVMImage(t *testing.T) {
 }
 
 func TestNewVmFromExistingDisk(t *testing.T) {
-	role := NewVmConfiguration("blobvm", "Standard_D14")
+	role := NewVMConfiguration("blobvm", "Standard_D14")
 	ConfigureDeploymentFromExistingOSDisk(&role, "myvm-backup-20150209", "OSDisk")
 	ConfigureForWindows(&role, "WINVM", "azuser", "P2ssw@rd", true, "")
 	ConfigureWindowsToJoinDomain(&role, "user@domain.com", "youReN3verG0nnaGu3ss", "redmond.corp.contoso.com", "")

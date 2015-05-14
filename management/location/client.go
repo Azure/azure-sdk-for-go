@@ -2,7 +2,6 @@ package location
 
 import (
 	"encoding/xml"
-	"errors"
 	"fmt"
 
 	"github.com/Azure/azure-sdk-for-go/management"
@@ -19,12 +18,12 @@ func NewClient(client management.Client) LocationClient {
 	return LocationClient{client: client}
 }
 
-func (self LocationClient) ResolveLocation(location string) error {
+func (c LocationClient) ResolveLocation(location string) error {
 	if location == "" {
 		return fmt.Errorf(errParamNotSpecified, "location")
 	}
 
-	locations, err := self.GetLocationList()
+	locations, err := c.GetLocationList()
 	if err != nil {
 		return err
 	}
@@ -37,13 +36,13 @@ func (self LocationClient) ResolveLocation(location string) error {
 		return nil
 	}
 
-	return errors.New(fmt.Sprintf(errInvalidLocation, location, locations))
+	return fmt.Errorf(errInvalidLocation, location, locations)
 }
 
-func (self LocationClient) GetLocationList() (LocationList, error) {
+func (c LocationClient) GetLocationList() (LocationList, error) {
 	locationList := LocationList{}
 
-	response, err := self.client.SendAzureGetRequest(azureLocationListURL)
+	response, err := c.client.SendAzureGetRequest(azureLocationListURL)
 	if err != nil {
 		return locationList, err
 	}
@@ -56,12 +55,12 @@ func (self LocationClient) GetLocationList() (LocationList, error) {
 	return locationList, nil
 }
 
-func (self LocationClient) GetLocation(location string) (*Location, error) {
+func (c LocationClient) GetLocation(location string) (*Location, error) {
 	if location == "" {
 		return nil, fmt.Errorf(errParamNotSpecified, "location")
 	}
 
-	locations, err := self.GetLocationList()
+	locations, err := c.GetLocationList()
 	if err != nil {
 		return nil, err
 	}
@@ -74,5 +73,5 @@ func (self LocationClient) GetLocation(location string) (*Location, error) {
 		return &existingLocation, nil
 	}
 
-	return nil, errors.New(fmt.Sprintf(errInvalidLocation, location, locations))
+	return nil, fmt.Errorf(errInvalidLocation, location, locations)
 }

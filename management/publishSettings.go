@@ -11,15 +11,15 @@ import (
 )
 
 // ClientFromPublishSettingsFile reads a publish settings file downloaded from https://manage.windowsazure.com/publishsettings.
-// If subscriptionId is left empty, the first subscription in the file is used.
-func ClientFromPublishSettingsFile(filePath, subscriptionId string) (client Client, err error) {
-	return ClientFromPublishSettingsFileWithConfig(filePath, subscriptionId,
+// If subscriptionID is left empty, the first subscription in the file is used.
+func ClientFromPublishSettingsFile(filePath, subscriptionID string) (client Client, err error) {
+	return ClientFromPublishSettingsFileWithConfig(filePath, subscriptionID,
 		ClientConfig{ManagementURL: defaultAzureManagementURL})
 }
 
 // ClientFromPublishSettingsFileWithConfig reads a publish settings file downloaded from https://manage.windowsazure.com/publishsettings.
-// If subscriptionId is left empty, the first subscription in the file is used.
-func ClientFromPublishSettingsFileWithConfig(filePath, subscriptionId string, config ClientConfig) (client Client, err error) {
+// If subscriptionID is left empty, the first subscription in the file is used.
+func ClientFromPublishSettingsFileWithConfig(filePath, subscriptionID string, config ClientConfig) (client Client, err error) {
 	if filePath == "" {
 		return client, fmt.Errorf(errParamNotSpecified, "filePath")
 	}
@@ -36,7 +36,7 @@ func ClientFromPublishSettingsFileWithConfig(filePath, subscriptionId string, co
 
 	for _, profile := range publishData.PublishProfiles {
 		for _, sub := range profile.Subscriptions {
-			if sub.Id == subscriptionId || subscriptionId == "" {
+			if sub.ID == subscriptionID || subscriptionID == "" {
 				base64Cert := sub.ManagementCertificate
 				if base64Cert == "" {
 					base64Cert = profile.ManagementCertificate
@@ -54,17 +54,17 @@ func ClientFromPublishSettingsFileWithConfig(filePath, subscriptionId string, co
 					cert = append(cert, pem.EncodeToMemory(b)...)
 				}
 
-				managementURL := sub.ServiceManagementUrl
+				managementURL := sub.ServiceManagementURL
 				if config.ManagementURL != "" {
 					managementURL = config.ManagementURL
 				}
 
-				return makeClient(sub.Id, cert, managementURL)
+				return makeClient(sub.ID, cert, managementURL)
 			}
 		}
 	}
 
-	return client, fmt.Errorf("could not find subscription '%s' in '%s'", subscriptionId, filePath)
+	return client, fmt.Errorf("could not find subscription '%s' in '%s'", subscriptionID, filePath)
 }
 
 type publishSettings struct {
@@ -82,15 +82,15 @@ type publishProfile struct {
 	XMLName               xml.Name       `xml:"PublishProfile"`
 	SchemaVersion         string         `xml:",attr"`
 	PublishMethod         string         `xml:",attr"`
-	Url                   string         `xml:",attr"`
+	URL                   string         `xml:"Url,attr"`
 	ManagementCertificate string         `xml:",attr"`
 	Subscriptions         []subscription `xml:"Subscription"`
 }
 
 type subscription struct {
 	XMLName               xml.Name `xml:"Subscription"`
-	ServiceManagementUrl  string   `xml:",attr"`
-	Id                    string   `xml:",attr"`
+	ServiceManagementURL  string   `xml:"ServiceManagementUrl,attr"`
+	ID                    string   `xml:"Id,attr"`
 	Name                  string   `xml:",attr"`
 	ManagementCertificate string   `xml:",attr"`
 }

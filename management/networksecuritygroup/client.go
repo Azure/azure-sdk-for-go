@@ -37,7 +37,7 @@ func NewClient(client management.Client) SecurityGroupClient {
 func (sg SecurityGroupClient) CreateNetworkSecurityGroup(
 	name string,
 	label string,
-	location string) (management.OperationId, error) {
+	location string) (management.OperationID, error) {
 	if name == "" {
 		return "", fmt.Errorf(errParamNotSpecified, "name")
 	}
@@ -62,7 +62,7 @@ func (sg SecurityGroupClient) CreateNetworkSecurityGroup(
 //
 // https://msdn.microsoft.com/en-us/library/azure/dn913825.aspx
 func (sg SecurityGroupClient) DeleteNetworkSecurityGroup(
-	name string) (management.OperationId, error) {
+	name string) (management.OperationID, error) {
 	if name == "" {
 		return "", fmt.Errorf(errParamNotSpecified, "name")
 	}
@@ -114,7 +114,7 @@ func (sg SecurityGroupClient) ListNetworkSecurityGroups() (SecurityGroupList, er
 func (sg SecurityGroupClient) AddNetworkSecurityToSubnet(
 	name string,
 	subnet string,
-	virtualNetwork string) (management.OperationId, error) {
+	virtualNetwork string) (management.OperationID, error) {
 	if name == "" {
 		return "", fmt.Errorf(errParamNotSpecified, "name")
 	}
@@ -167,7 +167,7 @@ func (sg SecurityGroupClient) GetNetworkSecurityGroupForSubnet(
 func (sg SecurityGroupClient) RemoveNetworkSecurityGroupFromSubnet(
 	name string,
 	subnet string,
-	virtualNetwork string) (management.OperationId, error) {
+	virtualNetwork string) (management.OperationID, error) {
 	if name == "" {
 		return "", fmt.Errorf(errParamNotSpecified, "name")
 	}
@@ -188,7 +188,7 @@ func (sg SecurityGroupClient) RemoveNetworkSecurityGroupFromSubnet(
 // https://msdn.microsoft.com/en-us/library/azure/dn913819.aspx
 func (sg SecurityGroupClient) SetNetworkSecurityGroupRule(
 	securityGroup string,
-	rule RuleRequest) (management.OperationId, error) {
+	rule RuleRequest) (management.OperationID, error) {
 	if securityGroup == "" {
 		return "", fmt.Errorf(errParamNotSpecified, "securityGroup")
 	}
@@ -235,7 +235,7 @@ func (sg SecurityGroupClient) SetNetworkSecurityGroupRule(
 // https://msdn.microsoft.com/en-us/library/azure/dn913816.aspx
 func (sg SecurityGroupClient) DeleteNetworkSecurityGroupRule(
 	securityGroup string,
-	rule string) (management.OperationId, error) {
+	rule string) (management.OperationID, error) {
 	if securityGroup == "" {
 		return "", fmt.Errorf(errParamNotSpecified, "securityGroup")
 	}

@@ -23,18 +23,18 @@ func Example() {
 	}
 
 	// create hosted service
-	operationId, err := hostedservice.NewClient(client).
+	operationID, err := hostedservice.NewClient(client).
 		CreateHostedService(dnsName, location, "", dnsName, "")
 	if err != nil {
 		panic(err)
 	}
-	err = client.WaitAsyncOperation(operationId)
+	err = client.WaitAsyncOperation(operationID)
 	if err != nil {
 		panic(err)
 	}
 
 	// create virtual machine
-	role := NewVmConfiguration(dnsName, vmSize)
+	role := NewVMConfiguration(dnsName, vmSize)
 	ConfigureDeploymentFromPlatformImage(
 		&role,
 		vmImage,
@@ -43,12 +43,12 @@ func Example() {
 	ConfigureForLinux(&role, dnsName, userName, userPassword)
 	ConfigureWithPublicSSH(&role)
 
-	operationId, err = virtualmachine.NewClient(client).
+	operationID, err = virtualmachine.NewClient(client).
 		CreateDeployment(role, dnsName, virtualmachine.CreateDeploymentOptions{})
 	if err != nil {
 		panic(err)
 	}
-	err = client.WaitAsyncOperation(operationId)
+	err = client.WaitAsyncOperation(operationID)
 	if err != nil {
 		panic(err)
 	}

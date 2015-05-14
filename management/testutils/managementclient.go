@@ -9,9 +9,9 @@ import (
 	"github.com/Azure/azure-sdk-for-go/management"
 )
 
-// Returns a management Client for testing. Expects AZSUBSCRIPTIONID
-// and AZCERTDATA to be present in the environment. AZCERTDATA is the
-// base64encoded binary representation of the PEM certificate data.
+// GetTestClient returns a management Client for testing. Expects
+// AZSUBSCRIPTIONID and AZCERTDATA to be present in the environment. AZCERTDATA
+// is the base64encoded binary representation of the PEM certificate data.
 func GetTestClient(t *testing.T) management.Client {
 	subid := os.Getenv("AZSUBSCRIPTIONID")
 	certdata := os.Getenv("AZCERTDATA")

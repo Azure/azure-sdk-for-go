@@ -66,6 +66,7 @@ func (vm VirtualMachineClient) CreateDeployment(
 
 func (self VirtualMachineClient) GetDeployment(cloudServiceName, deploymentName string) (DeploymentResponse, error) {
 	var deployment DeploymentResponse
+
 	if cloudServiceName == "" {
 		return deployment, fmt.Errorf(errParamNotSpecified, "cloudServiceName")
 	}
@@ -80,7 +81,6 @@ func (self VirtualMachineClient) GetDeployment(cloudServiceName, deploymentName 
 	}
 
 	err := xml.Unmarshal(response, &deployment)
-
 	return deployment, err
 }
 
@@ -235,10 +235,6 @@ func (self VirtualMachineClient) GetRoleSizeList() (RoleSizeList, error) {
 	}
 
 	err = xml.Unmarshal(response, &roleSizeList)
-	if err != nil {
-		return roleSizeList, err
-	}
-
 	return roleSizeList, err
 }
 

@@ -53,7 +53,7 @@ type DeploymentResponse struct {
 	LoadBalancers          []LoadBalancer     `xml:">LoadBalancer"`
 	ExtendedProperties     []ExtendedProperty `xml:">ExtendedProperty"`
 	PersistentVMDowntime   PersistentVMDowntime
-	VirtualIPs             []VirtualIP `xml:">VirtualIP`
+	VirtualIPs             []VirtualIP `xml:">VirtualIP"`
 	ExtensionConfiguration string      // cloud service extensions not fully implemented
 	ReservedIPName         string
 	InternalDnsSuffix      string
@@ -224,16 +224,16 @@ type VirtualIP struct {
 type Role struct {
 	RoleName                    string                       `xml:",omitempty"` // Specifies the name for the Virtual Machine.
 	RoleType                    string                       `xml:",omitempty"` // Specifies the type of role to use. For Virtual Machines, this must be PersistentVMRole.
-	ConfigurationSets           []ConfigurationSet           `xml:"ConfigurationSets>ConfigurationSet",omitempty"`
-	ResourceExtensionReferences []ResourceExtensionReference `xml:"ResourceExtensionReferences>ResourceExtensionReference,omitempty"`
-	VMImageName                 string                       `xml:",omitempty"`                                         // Specifies the name of the VM Image that is to be used to create the Virtual Machine. If this element is used, the ConfigurationSets element is not used.
-	MediaLocation               string                       `xml:",omitempty"`                                         // Required if the Virtual Machine is being created from a published VM Image. Specifies the location of the VHD file that is created when VMImageName specifies a published VM Image.
-	AvailabilitySetName         string                       `xml:",omitempty"`                                         // Specifies the name of a collection of Virtual Machines. Virtual Machines specified in the same availability set are allocated to different nodes to maximize availability.
-	DataVirtualHardDisks        []DataVirtualHardDisk        `xml:"DataVirtualHardDisks>DataVirtualHardDisk,omitempty"` // Contains the parameters that are used to add a data disk to a Virtual Machine. If you are creating a Virtual Machine by using a VM Image, this element is not used.
-	OSVirtualHardDisk           *OSVirtualHardDisk           `xml:",omitempty"`                                         // Contains the parameters that are used to create the operating system disk for a Virtual Machine. If you are creating a Virtual Machine by using a VM Image, this element is not used.
-	RoleSize                    string                       `xml:",omitempty"`                                         // Specifies the size of the Virtual Machine. The default size is Small.
-	ProvisionGuestAgent         bool                         `xml:",omitempty"`                                         // Indicates whether the VM Agent is installed on the Virtual Machine. To run a resource extension in a Virtual Machine, this service must be installed.
-	VMImageInput                *VMImageInput                `xml:",omitempty"`                                         // When a VM Image is used to create a new PersistentVMRole, the DiskConfigurations in the VM Image are used to create new Disks for the new VM. This parameter can be used to resize the newly created Disks to a larger size than the underlying DiskConfigurations in the VM Image.
+	ConfigurationSets           []ConfigurationSet           `xml:">ConfigurationSet,omitempty"`
+	ResourceExtensionReferences []ResourceExtensionReference `xml:">ResourceExtensionReference,omitempty"`
+	VMImageName                 string                       `xml:",omitempty"`                     // Specifies the name of the VM Image that is to be used to create the Virtual Machine. If this element is used, the ConfigurationSets element is not used.
+	MediaLocation               string                       `xml:",omitempty"`                     // Required if the Virtual Machine is being created from a published VM Image. Specifies the location of the VHD file that is created when VMImageName specifies a published VM Image.
+	AvailabilitySetName         string                       `xml:",omitempty"`                     // Specifies the name of a collection of Virtual Machines. Virtual Machines specified in the same availability set are allocated to different nodes to maximize availability.
+	DataVirtualHardDisks        []DataVirtualHardDisk        `xml:">DataVirtualHardDisk,omitempty"` // Contains the parameters that are used to add a data disk to a Virtual Machine. If you are creating a Virtual Machine by using a VM Image, this element is not used.
+	OSVirtualHardDisk           *OSVirtualHardDisk           `xml:",omitempty"`                     // Contains the parameters that are used to create the operating system disk for a Virtual Machine. If you are creating a Virtual Machine by using a VM Image, this element is not used.
+	RoleSize                    string                       `xml:",omitempty"`                     // Specifies the size of the Virtual Machine. The default size is Small.
+	ProvisionGuestAgent         bool                         `xml:",omitempty"`                     // Indicates whether the VM Agent is installed on the Virtual Machine. To run a resource extension in a Virtual Machine, this service must be installed.
+	VMImageInput                *VMImageInput                `xml:",omitempty"`                     // When a VM Image is used to create a new PersistentVMRole, the DiskConfigurations in the VM Image are used to create new Disks for the new VM. This parameter can be used to resize the newly created Disks to a larger size than the underlying DiskConfigurations in the VM Image.
 
 	UseCertAuth bool   `xml:"-"`
 	CertPath    string `xml:"-"`
@@ -241,8 +241,8 @@ type Role struct {
 
 // When a VM Image is used to create a new PersistantVMRole, the DiskConfigurations in the VM Image are used to create new Disks for the new VM. This parameter can be used to resize the newly created Disks to a larger size than the underlying DiskConfigurations in the VM Image.
 type VMImageInput struct {
-	OSDiskConfiguration    *OSDiskConfiguration    `xml:",omitempty"`                                             // This corresponds to the OSDiskConfiguration of the VM Image used to create a new role. The OSDiskConfiguration element is only available using version 2014-10-01 or higher.
-	DataDiskConfigurations []DataDiskConfiguration `xml:"DataDiskConfigurations>DataDiskConfiguration,omitempty"` // This corresponds to the DataDiskConfigurations of the VM Image used to create a new role. The DataDiskConfigurations element is only available using version 2014-10-01 or higher.
+	OSDiskConfiguration    *OSDiskConfiguration    `xml:",omitempty"`                       // This corresponds to the OSDiskConfiguration of the VM Image used to create a new role. The OSDiskConfiguration element is only available using version 2014-10-01 or higher.
+	DataDiskConfigurations []DataDiskConfiguration `xml:">DataDiskConfiguration,omitempty"` // This corresponds to the DataDiskConfigurations of the VM Image used to create a new role. The DataDiskConfigurations element is only available using version 2014-10-01 or higher.
 }
 
 // Used to resize the OS disk of a new VM created from a previously saved VM image
@@ -313,15 +313,15 @@ type ConfigurationSet struct {
 	ConfigurationSetType ConfigurationSetType
 
 	// Windows provisioning:
-	ComputerName              string               `xml:",omitempty"`                                                   // Optional. Specifies the computer name for the Virtual Machine. If you do not specify a computer name, one is assigned that is a combination of the deployment name, role name, and identifying number. Computer names must be 1 to 15 characters long.
-	AdminPassword             string               `xml:",omitempty"`                                                   // Optional. Specifies the password to use for an administrator account on the Virtual Machine that is being created. If you are creating a Virtual Machine using an image, you must specify a name of an administrator account to be created on the machine using the AdminUsername element. You must use the AdminPassword element to specify the password of the administrator account that is being created. If you are creating a Virtual Machine using an existing specialized disk, this element is not used because the account should already exist on the disk.
-	EnableAutomaticUpdates    bool                 `xml:",omitempty"`                                                   // Optional. Specifies whether automatic updates are enabled for the Virtual Machine. The default value is true.
-	TimeZone                  string               `xml:",omitempty"`                                                   // Optional. Specifies the time zone for the Virtual Machine.
-	DomainJoin                *DomainJoin          `xml:",omitempty"`                                                   // Optional. Contains properties that define a domain to which the Virtual Machine will be joined.
-	StoredCertificateSettings []CertificateSetting `xml:"StoredCertificateSettings>StoredCertificateSetting,omitempty"` // Optional. Contains a list of service certificates with which to provision to the new Virtual Machine.
-	WinRMListeners            *WinRMListener       `xml:"WinRM>Listeners>Listener,omitempty"`                           // Optional. Contains configuration settings for the Windows Remote Management service on the Virtual Machine. This enables remote Windows PowerShell.
-	AdminUsername             string               `xml:",omitempty"`                                                   // Optional. Specifies the name of the administrator account that is created to access the Virtual Machine. If you are creating a Virtual Machine using an image, you must specify a name of an administrator account to be created by using this element. You must use the AdminPassword element to specify the password of the administrator account that is being created. If you are creating a Virtual Machine using an existing specialized disk, this element is not used because the account should already exist on the disk.
-	AdditionalUnattendContent string               `xml:",omitempty"`                                                   // Specifies additional base-64 encoded XML formatted information that can be included in the Unattend.xml file, which is used by Windows Setup.
+	ComputerName              string               `xml:",omitempty"`                          // Optional. Specifies the computer name for the Virtual Machine. If you do not specify a computer name, one is assigned that is a combination of the deployment name, role name, and identifying number. Computer names must be 1 to 15 characters long.
+	AdminPassword             string               `xml:",omitempty"`                          // Optional. Specifies the password to use for an administrator account on the Virtual Machine that is being created. If you are creating a Virtual Machine using an image, you must specify a name of an administrator account to be created on the machine using the AdminUsername element. You must use the AdminPassword element to specify the password of the administrator account that is being created. If you are creating a Virtual Machine using an existing specialized disk, this element is not used because the account should already exist on the disk.
+	EnableAutomaticUpdates    bool                 `xml:",omitempty"`                          // Optional. Specifies whether automatic updates are enabled for the Virtual Machine. The default value is true.
+	TimeZone                  string               `xml:",omitempty"`                          // Optional. Specifies the time zone for the Virtual Machine.
+	DomainJoin                *DomainJoin          `xml:",omitempty"`                          // Optional. Contains properties that define a domain to which the Virtual Machine will be joined.
+	StoredCertificateSettings []CertificateSetting `xml:">StoredCertificateSetting,omitempty"` // Optional. Contains a list of service certificates with which to provision to the new Virtual Machine.
+	WinRMListeners            *WinRMListener       `xml:"WinRM>Listeners>Listener,omitempty"`  // Optional. Contains configuration settings for the Windows Remote Management service on the Virtual Machine. This enables remote Windows PowerShell.
+	AdminUsername             string               `xml:",omitempty"`                          // Optional. Specifies the name of the administrator account that is created to access the Virtual Machine. If you are creating a Virtual Machine using an image, you must specify a name of an administrator account to be created by using this element. You must use the AdminPassword element to specify the password of the administrator account that is being created. If you are creating a Virtual Machine using an existing specialized disk, this element is not used because the account should already exist on the disk.
+	AdditionalUnattendContent string               `xml:",omitempty"`                          // Specifies additional base-64 encoded XML formatted information that can be included in the Unattend.xml file, which is used by Windows Setup.
 
 	// Linux provisioning:
 	HostName                         string `xml:",omitempty"` // Required. Specifies the host name for the Virtual Machine. Host names must be 1 to 64 characters long.
@@ -335,11 +335,11 @@ type ConfigurationSet struct {
 	CustomData string `xml:",omitempty"` // Specifies a base-64 encoded string of custom data.
 
 	// Network configuration:
-	InputEndpoints                []InputEndpoint `xml:"InputEndpoints>InputEndpoint,omitempty"` // Optional in NetworkConfiguration. Contains a collection of external endpoints for the Virtual Machine.
-	SubnetNames                   []string        `xml:"SubnetNames>SubnetName,omitempty"`       // Required if StaticVirtualNetworkIPAddress is specified; otherwise, optional in NetworkConfiguration. Contains a list of subnets to which the Virtual Machine will belong.
-	StaticVirtualNetworkIPAddress string          `xml:",omitempty"`                             // Specifies the internal IP address for the Virtual Machine in a Virtual Network. If you specify this element, you must also specify the SubnetNames element with only one subnet defined. The IP address specified in this element must belong to the subnet that is defined in SubnetNames and it should not be the one of the first four IP addresses or the last IP address in the subnet. Deploying web roles or worker roles into a subnet that has Virtual Machines with StaticVirtualNetworkIPAddress defined is not supported.
-	NetworkSecurityGroup          string          `xml:",omitempty"`                             // Optional in NetworkConfiguration. Represents the name of the Network Security Group that will be associated with the Virtual Machine. Network Security Group must exist in the context of subscription and be created in same region to which the virtual machine will be deployed.
-	PublicIPs                     []PublicIP      `xml:"PublicIPs>PublicIP,omitempty"`           // Contains a public IP address that can be used in addition to the default virtual IP address for the Virtual Machine.
+	InputEndpoints                []InputEndpoint `xml:">InputEndpoint,omitempty"` // Optional in NetworkConfiguration. Contains a collection of external endpoints for the Virtual Machine.
+	SubnetNames                   []string        `xml:">SubnetName,omitempty"`    // Required if StaticVirtualNetworkIPAddress is specified; otherwise, optional in NetworkConfiguration. Contains a list of subnets to which the Virtual Machine will belong.
+	StaticVirtualNetworkIPAddress string          `xml:",omitempty"`               // Specifies the internal IP address for the Virtual Machine in a Virtual Network. If you specify this element, you must also specify the SubnetNames element with only one subnet defined. The IP address specified in this element must belong to the subnet that is defined in SubnetNames and it should not be the one of the first four IP addresses or the last IP address in the subnet. Deploying web roles or worker roles into a subnet that has Virtual Machines with StaticVirtualNetworkIPAddress defined is not supported.
+	NetworkSecurityGroup          string          `xml:",omitempty"`               // Optional in NetworkConfiguration. Represents the name of the Network Security Group that will be associated with the Virtual Machine. Network Security Group must exist in the context of subscription and be created in same region to which the virtual machine will be deployed.
+	PublicIPs                     []PublicIP      `xml:">PublicIP,omitempty"`      // Contains a public IP address that can be used in addition to the default virtual IP address for the Virtual Machine.
 }
 
 type ConfigurationSetType string
@@ -389,8 +389,8 @@ const (
 
 // Specifies the SSH public keys and key pairs to use with the Virtual Machine.
 type SSH struct {
-	PublicKeys []PublicKey `xml:"PublicKeys>PublicKey"`
-	KeyPairs   []KeyPair   `xml:"KeyPairs>KeyPair"`
+	PublicKeys []PublicKey `xml:">PublicKey"`
+	KeyPairs   []KeyPair   `xml:">KeyPair"`
 }
 
 // Specifies a public SSH key.

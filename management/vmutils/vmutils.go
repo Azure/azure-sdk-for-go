@@ -40,22 +40,18 @@ func ConfigureForLinux(role *Role, hostname, user, password string, sshPubkeyCer
 			}
 			if len(sshPubkeyCertificateThumbprint) != 0 {
 				config.SSH = &SSH{}
-				var keys []PublicKey
-				if config.SSH.PublicKeys == nil {
-					keys = []PublicKey{}
-				} else {
-					keys = config.SSH.PublicKeys
-				}
 				for _, k := range sshPubkeyCertificateThumbprint {
-					keys = append(keys,
+					config.SSH.PublicKeys = append(config.SSH.PublicKeys,
 						PublicKey{
 							Fingerprint: k,
 							Path:        "/home/" + user + "/.ssh/authorized_keys",
-						})
+						},
+					)
 				}
-				config.SSH.PublicKeys = keys
 			}
-		})
+		},
+	)
+
 	return nil
 }
 
@@ -75,7 +71,9 @@ func ConfigureForWindows(role *Role, hostname, user, password string, enableAuto
 			config.AdminPassword = password
 			config.EnableAutomaticUpdates = enableAutomaticUpdates
 			config.TimeZone = timeZone
-		})
+		},
+	)
+
 	return nil
 }
 
@@ -94,5 +92,6 @@ func ConfigureWindowsToJoinDomain(role *Role, username, password, domainToJoin, 
 			MachineObjectOU: machineOU,
 		}
 	}
+
 	return nil
 }

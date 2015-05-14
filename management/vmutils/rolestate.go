@@ -27,5 +27,6 @@ func allInstancesInPowerState(instances []vm.RoleInstance, desiredPowerstate vm.
 			return false
 		}
 	}
+
 	return true
 }

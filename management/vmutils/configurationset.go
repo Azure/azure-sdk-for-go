@@ -5,13 +5,9 @@ import (
 )
 
 func updateOrAddConfig(configs []ConfigurationSet, configType ConfigurationSetType, update func(*ConfigurationSet)) []ConfigurationSet {
-	if configs == nil {
-		configs = []ConfigurationSet{}
-	}
 	config := findConfig(configs, configType)
 	if config == nil {
-		newConfigs := append(configs, ConfigurationSet{ConfigurationSetType: configType})
-		configs = newConfigs
+		configs = append(configs, ConfigurationSet{ConfigurationSetType: configType})
 		config = findConfig(configs, configType)
 	}
 	update(config)
@@ -27,5 +23,6 @@ func findConfig(configs []ConfigurationSet, configType ConfigurationSetType) *Co
 			return &configs[i]
 		}
 	}
+
 	return nil
 }

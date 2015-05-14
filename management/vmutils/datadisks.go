@@ -19,6 +19,7 @@ func ConfigureWithNewDataDisk(role *Role, label, destinationVhdStorageUrl string
 		LogicalDiskSizeInGB: sizeInGB,
 		MediaLink:           destinationVhdStorageUrl,
 	})
+
 	return nil
 }
 
@@ -32,6 +33,7 @@ func ConfigureWithExistingDataDisk(role *Role, diskname string, cachingType vmdi
 		DiskName:    diskname,
 		HostCaching: cachingType,
 	})
+
 	return nil
 }
 
@@ -45,15 +47,11 @@ func ConfigureWithVhdDataDisk(role *Role, sourceVhdStorageUrl string, cachingTyp
 		SourceMediaLink: sourceVhdStorageUrl,
 		HostCaching:     cachingType,
 	})
+
 	return nil
 }
 
 func appendDataDisk(role *Role, disk DataVirtualHardDisk) {
-	if role.DataVirtualHardDisks == nil {
-		role.DataVirtualHardDisks = []DataVirtualHardDisk{disk}
-	} else {
-		disk.Lun = len(role.DataVirtualHardDisks)
-		newDisks := append(role.DataVirtualHardDisks, disk)
-		role.DataVirtualHardDisks = newDisks
-	}
+	disk.Lun = len(role.DataVirtualHardDisks)
+	role.DataVirtualHardDisks = append(role.DataVirtualHardDisks, disk)
 }

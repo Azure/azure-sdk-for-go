@@ -6,28 +6,28 @@ import (
 	"testing"
 )
 
-func TestGetBaseUrl_Basic_Https(t *testing.T) {
+func TestGetBaseURL_Basic_Https(t *testing.T) {
 	cli, err := NewBasicClient("foo", "YmFy")
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	if cli.apiVersion != DefaultApiVersion {
-		t.Fatalf("Wrong api version. Expected: '%s', got: '%s'", DefaultApiVersion, cli.apiVersion)
+	if cli.apiVersion != DefaultAPIVersion {
+		t.Fatalf("Wrong api version. Expected: '%s', got: '%s'", DefaultAPIVersion, cli.apiVersion)
 	}
 
 	if err != nil {
 		t.Fatal(err)
 	}
-	output := cli.getBaseUrl("table")
+	output := cli.getBaseURL("table")
 
 	if expected := "https://foo.table.core.windows.net"; output != expected {
 		t.Fatalf("Wrong base url. Expected: '%s', got: '%s'", expected, output)
 	}
 }
 
-func TestGetBaseUrl_Custom_NoHttps(t *testing.T) {
-	apiVersion := DefaultApiVersion
+func TestGetBaseURL_Custom_NoHttps(t *testing.T) {
+	apiVersion := DefaultAPIVersion
 	cli, err := NewClient("foo", "YmFy", "core.chinacloudapi.cn", apiVersion, false)
 	if err != nil {
 		t.Fatal(err)
@@ -37,7 +37,7 @@ func TestGetBaseUrl_Custom_NoHttps(t *testing.T) {
 		t.Fatalf("Wrong api version. Expected: '%s', got: '%s'", apiVersion, cli.apiVersion)
 	}
 
-	output := cli.getBaseUrl("table")
+	output := cli.getBaseURL("table")
 
 	if expected := "http://foo.table.core.chinacloudapi.cn"; output != expected {
 		t.Fatalf("Wrong base url. Expected: '%s', got: '%s'", expected, output)
@@ -176,14 +176,14 @@ func TestReturnsStorageServiceError(t *testing.T) {
 		t.Fatal("Service has not returned an error")
 	}
 
-	if v, ok := err.(StorageServiceError); !ok {
+	if v, ok := err.(AzureStorageServiceError); !ok {
 		t.Fatal("Cannot assert to specific error")
 	} else if v.StatusCode != 404 {
 		t.Fatalf("Expected status:%d, got: %d", 404, v.StatusCode)
 	} else if v.Code != "ContainerNotFound" {
 		t.Fatalf("Expected code: %s, got: %s", "ContainerNotFound", v.Code)
-	} else if v.RequestId == "" {
-		t.Fatalf("RequestId does not exist")
+	} else if v.RequestID == "" {
+		t.Fatalf("RequestID does not exist")
 	}
 }
 

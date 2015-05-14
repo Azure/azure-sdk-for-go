@@ -237,41 +237,41 @@ func TestDocumentedDeploymentRequest(t *testing.T) {
 
 	// ======
 
-	t.Logf("deployment.DnsServers[0]: %+v", (*deployment.DnsServers)[0])
-	if (*deployment.DnsServers)[0].Name != "dns-name" {
+	t.Logf("deployment.DnsServers[0]: %+v", deployment.DnsServers[0])
+	if deployment.DnsServers[0].Name != "dns-name" {
 		t.Fatalf("Expected deployment.DnsServers[0].Name=\"dns-name\", but got \"%s\"",
-			(*deployment.DnsServers)[0].Name)
+			deployment.DnsServers[0].Name)
 	}
 
 	// ======
 
-	t.Logf("deployment.LoadBalancers[0]: %+v", (*deployment.LoadBalancers)[0])
-	if (*deployment.LoadBalancers)[0].Name != "name-of-internal-load-balancer" {
+	t.Logf("deployment.LoadBalancers[0]: %+v", deployment.LoadBalancers[0])
+	if deployment.LoadBalancers[0].Name != "name-of-internal-load-balancer" {
 		t.Fatalf("Expected deployment.LoadBalancers[0].Name=\"name-of-internal-load-balancer\", but got \"%s\"",
-			(*deployment.LoadBalancers)[0].Name)
+			deployment.LoadBalancers[0].Name)
 	}
 
-	if (*deployment.LoadBalancers)[0].Type != IPAddressTypePrivate {
+	if deployment.LoadBalancers[0].Type != IPAddressTypePrivate {
 		t.Fatalf("Expected deployment.LoadBalancers[0].Type=IPAddressTypePrivate, but got \"%s\"",
-			(*deployment.LoadBalancers)[0].Type)
+			deployment.LoadBalancers[0].Type)
 	}
 
-	if (*deployment.LoadBalancers)[0].StaticVirtualNetworkIPAddress != "static-ip-address" {
+	if deployment.LoadBalancers[0].StaticVirtualNetworkIPAddress != "static-ip-address" {
 		t.Fatalf("Expected deployment.LoadBalancers[0].StaticVirtualNetworkIPAddress=\"static-ip-address\", but got \"%s\"",
-			(*deployment.LoadBalancers)[0].StaticVirtualNetworkIPAddress)
+			deployment.LoadBalancers[0].StaticVirtualNetworkIPAddress)
 	}
 
 	// ======
 
-	t.Logf("(*deployment.RoleList[0].ResourceExtensionReferences)[0]: %+v", (*deployment.RoleList[0].ResourceExtensionReferences)[0])
-	if (*deployment.RoleList[0].ResourceExtensionReferences)[0].Name != "name-of-extension" {
+	t.Logf("(*deployment.RoleList[0].ResourceExtensionReferences)[0]: %+v", deployment.RoleList[0].ResourceExtensionReferences[0])
+	if deployment.RoleList[0].ResourceExtensionReferences[0].Name != "name-of-extension" {
 		t.Fatalf("Expected (*deployment.RoleList[0].ResourceExtensionReferences)[0].Name=\"name-of-extension\", but got \"%s\"",
-			(*deployment.RoleList[0].ResourceExtensionReferences)[0].Name)
+			deployment.RoleList[0].ResourceExtensionReferences[0].Name)
 	}
 
-	if (*deployment.RoleList[0].ResourceExtensionReferences)[0].ParameterValues[0].Key != "name-of-parameter-key" {
+	if deployment.RoleList[0].ResourceExtensionReferences[0].ParameterValues[0].Key != "name-of-parameter-key" {
 		t.Fatalf("Expected (*deployment.RoleList[0].ResourceExtensionReferences)[0].ParameterValues[0].Key=\"name-of-parameter-key\", but got %v",
-			(*deployment.RoleList[0].ResourceExtensionReferences)[0].ParameterValues[0].Key)
+			deployment.RoleList[0].ResourceExtensionReferences[0].ParameterValues[0].Key)
 	}
 
 	// ======

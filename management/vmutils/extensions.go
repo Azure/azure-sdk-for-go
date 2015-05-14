@@ -42,11 +42,7 @@ func AddAzureVMExtensionConfiguration(role *Role, name, publisher, version, refe
 		})
 	}
 
-	if role.ResourceExtensionReferences == nil {
-		role.ResourceExtensionReferences = &[]ResourceExtensionReference{extension}
-	} else {
-		*role.ResourceExtensionReferences = append(*role.ResourceExtensionReferences, extension)
-	}
+	role.ResourceExtensionReferences = append(role.ResourceExtensionReferences, extension)
 
 	return nil
 }

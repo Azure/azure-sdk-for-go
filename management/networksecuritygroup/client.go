@@ -79,18 +79,16 @@ func (sg SecurityGroupClient) GetNetworkSecurityGroup(name string) (SecurityGrou
 		return SecurityGroupResponse{}, fmt.Errorf(errParamNotSpecified, "name")
 	}
 
+	var securityGroup SecurityGroupResponse
+
 	requestURL := fmt.Sprintf(getSecurityGroupURL, name)
 	response, err := sg.client.SendAzureGetRequest(requestURL)
 	if err != nil {
-		return SecurityGroupResponse{}, err
+		return securityGroup, err
 	}
 
-	var securityGroup SecurityGroupResponse
-	if err := xml.Unmarshal(response, &securityGroup); err != nil {
-		return SecurityGroupResponse{}, err
-	}
-
-	return securityGroup, nil
+	err = xml.Unmarshal(response, &securityGroup)
+	return securityGroup, err
 }
 
 // ListNetworkSecurityGroups returns a list of the network security groups
@@ -98,17 +96,15 @@ func (sg SecurityGroupClient) GetNetworkSecurityGroup(name string) (SecurityGrou
 //
 // https://msdn.microsoft.com/en-us/library/azure/dn913815.aspx
 func (sg SecurityGroupClient) ListNetworkSecurityGroups() (SecurityGroupList, error) {
+	var securityGroups SecurityGroupList
+
 	response, err := sg.client.SendAzureGetRequest(listSecurityGroupsURL)
 	if err != nil {
-		return nil, err
+		return securityGroups, err
 	}
 
-	var securityGroups SecurityGroupList
-	if err = xml.Unmarshal(response, &securityGroups); err != nil {
-		return nil, err
-	}
-
-	return securityGroups, nil
+	err = xml.Unmarshal(response, &securityGroups)
+	return securityGroups, err
 }
 
 // AddNetworkSecurityToSubnet associates the network security group with
@@ -152,18 +148,16 @@ func (sg SecurityGroupClient) GetNetworkSecurityGroupForSubnet(
 		return SecurityGroupResponse{}, fmt.Errorf(errParamNotSpecified, "virtualNetwork")
 	}
 
+	var securityGroup SecurityGroupResponse
+
 	requestURL := fmt.Sprintf(getSecurityGroupForSubnetURL, virtualNetwork, subnet)
 	response, err := sg.client.SendAzureGetRequest(requestURL)
 	if err != nil {
-		return SecurityGroupResponse{}, err
+		return securityGroup, err
 	}
 
-	var securityGroup SecurityGroupResponse
-	if err := xml.Unmarshal(response, &securityGroup); err != nil {
-		return SecurityGroupResponse{}, err
-	}
-
-	return securityGroup, nil
+	err = xml.Unmarshal(response, &securityGroup)
+	return securityGroup, err
 }
 
 // RemoveNetworkSecurityGroupFromSubnet removes the association of the

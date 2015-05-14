@@ -41,17 +41,14 @@ func ConfigureWithExternalPort(role *Role, name string, localport, externalport 
 
 	role.ConfigurationSets = updateOrAddConfig(role.ConfigurationSets, ConfigurationSetTypeNetwork,
 		func(config *ConfigurationSet) {
-			if config.InputEndpoints == nil {
-				config.InputEndpoints = &[]InputEndpoint{}
-			}
-			newInputEndpoints := append(*config.InputEndpoints, InputEndpoint{
+			config.InputEndpoints = append(config.InputEndpoints, InputEndpoint{
 				LocalPort: localport,
 				Name:      name,
 				Port:      externalport,
 				Protocol:  protocol,
 			})
-			config.InputEndpoints = &newInputEndpoints
 		})
+
 	return nil
 }
 
@@ -77,11 +74,7 @@ func ConfigureWithSubnet(role *Role, subnet string) error {
 
 	role.ConfigurationSets = updateOrAddConfig(role.ConfigurationSets, ConfigurationSetTypeNetwork,
 		func(config *ConfigurationSet) {
-			if config.SubnetNames == nil {
-				config.SubnetNames = &[]string{}
-			}
-
-			*config.SubnetNames = append(*config.SubnetNames, subnet)
+			config.SubnetNames = append(config.SubnetNames, subnet)
 		})
 
 	return nil

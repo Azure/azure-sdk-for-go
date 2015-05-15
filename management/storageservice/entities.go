@@ -12,11 +12,10 @@ type StorageServiceClient struct {
 }
 
 type StorageServiceList struct {
-	XMLName         xml.Name         `xml:"StorageServices"`
-	StorageServices []StorageService `xml:"StorageService"`
+	StorageServices []StorageServiceResponse `xml:"StorageService"`
 }
 
-type StorageService struct {
+type StorageServiceResponse struct {
 	URL                      string `xml:"Url"`
 	ServiceName              string
 	StorageServiceProperties StorageServiceProperties

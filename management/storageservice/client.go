@@ -3,7 +3,6 @@ package storageservice
 import (
 	"encoding/xml"
 	"fmt"
-	"strings"
 
 	"github.com/Azure/azure-sdk-for-go/management"
 )
@@ -16,8 +15,7 @@ const (
 
 	azureXmlns = "http://schemas.microsoft.com/windowsazure"
 
-	errBlobEndpointNotFound = "Blob endpoint was not found in storage serice %s"
-	errParamNotSpecified    = "Parameter %s is not specified."
+	errParamNotSpecified = "Parameter %s is not specified."
 )
 
 // NewClient is used to instantiate a new StorageServiceClient from an Azure
@@ -26,79 +24,47 @@ func NewClient(s management.Client) StorageServiceClient {
 	return StorageServiceClient{client: s}
 }
 
-func (s StorageServiceClient) GetStorageServiceList() (*StorageServiceList, error) {
-	storageServiceList := new(StorageServiceList)
-
+func (s StorageServiceClient) GetStorageServiceList() (StorageServiceList, error) {
+	var l StorageServiceList
 	response, err := s.client.SendAzureGetRequest(azureStorageServiceListURL)
 	if err != nil {
-		return nil, err
+		return l, err
 	}
 
-	err = xml.Unmarshal(response, storageServiceList)
-	if err != nil {
-		return storageServiceList, err
-	}
-
-	return storageServiceList, nil
+	err = xml.Unmarshal(response, &l)
+	return l, err
 }
 
-func (s StorageServiceClient) GetStorageServiceByName(serviceName string) (*StorageService, error) {
+func (s StorageServiceClient) GetStorageService(serviceName string) (StorageServiceResponse, error) {
+	var svc StorageServiceResponse
 	if serviceName == "" {
-		return nil, fmt.Errorf(errParamNotSpecified, "serviceName")
+		return svc, fmt.Errorf(errParamNotSpecified, "serviceName")
 	}
 
-	storageService := new(StorageService)
 	requestURL := fmt.Sprintf(azureStorageServiceURL, serviceName)
 	response, err := s.client.SendAzureGetRequest(requestURL)
 	if err != nil {
-		return nil, err
+		return svc, err
 	}
 
-	err = xml.Unmarshal(response, storageService)
-	if err != nil {
-		return nil, err
-	}
-
-	return storageService, nil
-}
-
-func (s StorageServiceClient) GetStorageServiceByLocation(location string) (*StorageService, error) {
-	if location == "" {
-		return nil, fmt.Errorf(errParamNotSpecified, "location")
-	}
-
-	storageService := new(StorageService)
-	storageServiceList, err := s.GetStorageServiceList()
-	if err != nil {
-		return storageService, err
-	}
-
-	for _, storageService := range storageServiceList.StorageServices {
-		if storageService.StorageServiceProperties.Location != location {
-			continue
-		}
-
-		return &storageService, nil
-	}
-
-	return nil, nil
+	err = xml.Unmarshal(response, &svc)
+	return svc, err
 }
 
 func (s StorageServiceClient) GetStorageServiceKeys(serviceName string) (GetStorageServiceKeysResponse, error) {
+	var r GetStorageServiceKeysResponse
 	if serviceName == "" {
-		return GetStorageServiceKeysResponse{}, fmt.Errorf(errParamNotSpecified, "serviceName")
+		return r, fmt.Errorf(errParamNotSpecified, "serviceName")
 	}
 
 	requestURL := fmt.Sprintf(azureStorageServiceKeysURL, serviceName)
 	data, err := s.client.SendAzureGetRequest(requestURL)
 	if err != nil {
-		return GetStorageServiceKeysResponse{}, err
+		return r, err
 	}
 
-	response := GetStorageServiceKeysResponse{}
-	err = xml.Unmarshal(data, &response)
-
-	return response, err
+	err = xml.Unmarshal(data, &r)
+	return r, err
 }
 
 func (s StorageServiceClient) CreateAsync(parameters StorageAccountCreateParameters) (management.OperationID, error) {
@@ -109,32 +75,6 @@ func (s StorageServiceClient) CreateAsync(parameters StorageAccountCreateParamet
 	}
 
 	return s.client.SendAzurePostRequest(azureStorageServiceListURL, data)
-}
-
-func (s StorageServiceClient) Create(parameters StorageAccountCreateParameters) (*StorageService, error) {
-	operationID, err := s.CreateAsync(parameters)
-	if err != nil {
-		return nil, err
-	}
-
-	err = s.client.WaitAsyncOperation(operationID)
-	if err != nil {
-		return nil, err
-	}
-
-	return s.GetStorageServiceByName(parameters.ServiceName)
-}
-
-func (s StorageServiceClient) GetBlobEndpoint(storageService *StorageService) (string, error) {
-	for _, endpoint := range storageService.StorageServiceProperties.Endpoints {
-		if !strings.Contains(endpoint, ".blob.core") {
-			continue
-		}
-
-		return endpoint, nil
-	}
-
-	return "", fmt.Errorf(errBlobEndpointNotFound, storageService.ServiceName)
 }
 
 // CheckStorageAccountNameAvailability checks to if the specified storage account

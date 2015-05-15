@@ -2,6 +2,8 @@
 This project provides various Golang packages that makes it easy to consume and manage
 Microsoft Azure Services.
 
+[![GoDoc](https://godoc.org/github.com/Azure/azure-sdk-for-go?status.svg)](https://godoc.org/github.com/Azure/azure-sdk-for-go) [![Build Status](https://travis-ci.org/Azure/azure-sdk-for-go.svg?branch=master)](https://travis-ci.org/Azure/azure-sdk-for-go)
+
 # Installation
 - Install Golang: https://golang.org/doc/install
 - Get Azure SDK package: 

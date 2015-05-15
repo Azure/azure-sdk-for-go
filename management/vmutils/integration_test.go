@@ -204,10 +204,10 @@ func deleteHostedService(t *testing.T, client management.Client, vmname string) 
 
 // === utility funcs ===
 
-func GetTestStorageAccount(t *testing.T, client management.Client) *storage.StorageService {
+func GetTestStorageAccount(t *testing.T, client management.Client) storage.StorageServiceResponse {
 	t.Log("Retrieving storage account")
 	sc := storage.NewClient(client)
-	var sa *storage.StorageService
+	var sa storage.StorageServiceResponse
 	ssl, err := sc.GetStorageServiceList()
 	if err != nil {
 		t.Fatal(err)
@@ -226,7 +226,7 @@ func GetTestStorageAccount(t *testing.T, client management.Client) *storage.Stor
 
 		t.Logf("Location for new storage account: %s", loc)
 		name := GenerateName()
-		sa, err = sc.Create(storage.StorageAccountCreateParameters{
+		op, err := sc.CreateAsync(storage.StorageAccountCreateParameters{
 			ServiceName: name,
 			Label:       base64.StdEncoding.EncodeToString([]byte(name)),
 			Location:    loc,
@@ -234,9 +234,13 @@ func GetTestStorageAccount(t *testing.T, client management.Client) *storage.Stor
 		if err != nil {
 			t.Fatal(err)
 		}
+		if err := client.WaitAsyncOperation(op); err != nil {
+			t.Fatal(err)
+		}
+		sa, err = sc.GetStorageService(name)
 	} else {
 
-		sa = &ssl.StorageServices[rnd.Intn(len(ssl.StorageServices))]
+		sa = ssl.StorageServices[rnd.Intn(len(ssl.StorageServices))]
 	}
 
 	t.Logf("Selected storage account '%s' in location '%s'",

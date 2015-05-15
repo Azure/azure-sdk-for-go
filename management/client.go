@@ -16,13 +16,14 @@ const (
 	errParamNotSpecified                  = "Parameter %s is not specified."
 )
 
-// Client provides a client to the Azure API.
+// Client is the base Azure Service Management API client instance that
+// can be used to construct client instances for various services.
 type Client struct {
 	publishSettings publishSettings
 	config          ClientConfig
 }
 
-// ClientConfig provides a configuration for use by a Client
+// ClientConfig provides a configuration for use by a Client.
 type ClientConfig struct {
 	ManagementURL         string
 	OperationPollInterval time.Duration
@@ -48,12 +49,12 @@ func DefaultConfig() ClientConfig {
 }
 
 // NewClient creates a new Client using the given subscription ID and
-// management certificate
+// management certificate.
 func NewClient(subscriptionID string, managementCert []byte) (Client, error) {
 	return NewClientFromConfig(subscriptionID, managementCert, DefaultConfig())
 }
 
-// NewClientFromConfig creates a new Client using a given ClientConfig
+// NewClientFromConfig creates a new Client using a given ClientConfig.
 func NewClientFromConfig(subscriptionID string, managementCert []byte, config ClientConfig) (Client, error) {
 	return makeClient(subscriptionID, managementCert, config)
 }

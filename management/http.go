@@ -20,62 +20,37 @@ const (
 // SendAzureGetRequest sends a request to the management API using the HTTP GET method
 // and returns the response body or an error.
 func (client *Client) SendAzureGetRequest(url string) ([]byte, error) {
-	if url == "" {
-		return nil, fmt.Errorf(errParamNotSpecified, "url")
-	}
-
-	response, err := client.sendAzureRequest(url, "GET", "", nil)
+	resp, err := client.sendAzureRequest("GET", url, "", nil)
 	if err != nil {
 		return nil, err
 	}
-
-	responseContent := getResponseBody(response)
-	return responseContent, nil
+	return getResponseBody(resp)
 }
 
 // SendAzurePostRequest sends a request to the management API using the HTTP POST method
 // and returns the request ID or an error.
 func (client *Client) SendAzurePostRequest(url string, data []byte) (OperationID, error) {
-	if url == "" {
-		return "", fmt.Errorf(errParamNotSpecified, "url")
-	}
-
-	response, err := client.sendAzureRequest(url, "POST", "", data)
-	if err != nil {
-		return "", err
-	}
-
-	return getOperationID(response)
+	return client.doAzureOperation("POST", url, "", data)
 }
 
 // SendAzurePutRequest sends a request to the management API using the HTTP PUT method
 // and returns the request ID or an error. The content type can be specified, however
 // if an empty string is passed, the default of "application/xml" will be used.
-func (client *Client) SendAzurePutRequest(url string, contentType string, data []byte) (OperationID, error) {
-	if url == "" {
-		return "", fmt.Errorf(errParamNotSpecified, "url")
-	}
-
-	response, err := client.sendAzureRequest(url, "PUT", contentType, data)
-	if err != nil {
-		return "", err
-	}
-
-	return getOperationID(response)
+func (client *Client) SendAzurePutRequest(url, contentType string, data []byte) (OperationID, error) {
+	return client.doAzureOperation("PUT", url, "", data)
 }
 
 // SendAzureDeleteRequest sends a request to the management API using the HTTP DELETE method
 // and returns the request ID or an error.
 func (client *Client) SendAzureDeleteRequest(url string) (OperationID, error) {
-	if url == "" {
-		return "", fmt.Errorf(errParamNotSpecified, "url")
-	}
+	return client.doAzureOperation("DELETE", url, "", nil)
+}
 
-	response, err := client.sendAzureRequest(url, "DELETE", "", nil)
+func (client *Client) doAzureOperation(method, url, contentType string, data []byte) (OperationID, error) {
+	response, err := client.sendAzureRequest(method, url, "", nil)
 	if err != nil {
 		return "", err
 	}
-
 	return getOperationID(response)
 }
 
@@ -89,17 +64,17 @@ func getOperationID(response *http.Response) (OperationID, error) {
 
 // sendAzureRequest constructs an HTTP client for the request, sends it to the
 // management API and returns the response or an error.
-func (client *Client) sendAzureRequest(url string, requestType string, contentType string, data []byte) (*http.Response, error) {
+func (client *Client) sendAzureRequest(method, url, contentType string, data []byte) (*http.Response, error) {
 	if url == "" {
 		return nil, fmt.Errorf(errParamNotSpecified, "url")
 	}
-	if requestType == "" {
-		return nil, fmt.Errorf(errParamNotSpecified, "requestType")
+	if method == "" {
+		return nil, fmt.Errorf(errParamNotSpecified, "method")
 	}
 
 	httpClient := client.createHTTPClient()
 
-	response, err := client.sendRequest(httpClient, url, requestType, contentType, data, 7)
+	response, err := client.sendRequest(httpClient, url, method, contentType, data, 7)
 	if err != nil {
 		return nil, err
 	}
@@ -144,8 +119,12 @@ func (client *Client) sendRequest(httpClient *http.Client, url string, requestTy
 	}
 
 	if response.StatusCode >= http.StatusBadRequest {
-		responseContent := getResponseBody(response)
-		azureErr := getAzureError(responseContent)
+		body, err := getResponseBody(response)
+		if err != nil {
+			// Failed to read the response body
+			return nil, err
+		}
+		azureErr := getAzureError(body)
 		if azureErr != nil {
 			if numberOfRetries == 0 {
 				return nil, azureErr

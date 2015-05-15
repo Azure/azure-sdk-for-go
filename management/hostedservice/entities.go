@@ -11,7 +11,7 @@ type HostedServiceClient struct {
 	client management.Client
 }
 
-type CreateHostedService struct {
+type CreateHostedServiceParameters struct {
 	XMLName        xml.Name
 	Xmlns          string `xml:"xmlns,attr"`
 	ServiceName    string

@@ -180,9 +180,9 @@ func createRoleConfiguration(t *testing.T, client management.Client, role vm.Rol
 	hsc := hostedservice.NewClient(client)
 	vmname := role.RoleName
 
-	if err := Await(client, func() (management.OperationID, error) {
-		return hsc.CreateHostedService(vmname, location, "", vmname, "")
-	}); err != nil {
+	if err := hsc.CreateHostedService(hostedservice.CreateHostedServiceParameters{
+		ServiceName: vmname, Location: location,
+		Label: base64.StdEncoding.EncodeToString([]byte(vmname))}); err != nil {
 		t.Error(err)
 	}
 

@@ -137,25 +137,22 @@ func (s StorageServiceClient) GetBlobEndpoint(storageService *StorageService) (s
 	return "", fmt.Errorf(errBlobEndpointNotFound, storageService.ServiceName)
 }
 
-// IsAvailable checks to see if the specified storage account name is available,
-// or if it has already been taken.
+// CheckStorageAccountNameAvailability checks to if the specified storage account
+// name is available.
+//
 // See https://msdn.microsoft.com/en-us/library/azure/jj154125.aspx
-func (s StorageServiceClient) IsAvailable(name string) (bool, string, error) {
+func (s StorageServiceClient) CheckStorageAccountNameAvailability(name string) (AvailabilityResponse, error) {
+	var r AvailabilityResponse
 	if name == "" {
-		return false, "", fmt.Errorf(errParamNotSpecified, "name")
+		return r, fmt.Errorf(errParamNotSpecified, "name")
 	}
 
 	requestURL := fmt.Sprintf(azureStorageAccountAvailabilityURL, name)
 	response, err := s.client.SendAzureGetRequest(requestURL)
 	if err != nil {
-		return false, "", err
+		return r, err
 	}
 
-	availabilityResponse := new(AvailabilityResponse)
-	err = xml.Unmarshal(response, availabilityResponse)
-	if err != nil {
-		return false, "", err
-	}
-
-	return availabilityResponse.Result, availabilityResponse.Reason, nil
+	err = xml.Unmarshal(response, &r)
+	return r, err
 }

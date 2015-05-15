@@ -13,8 +13,7 @@ import (
 // ClientFromPublishSettingsFile reads a publish settings file downloaded from https://manage.windowsazure.com/publishsettings.
 // If subscriptionID is left empty, the first subscription in the file is used.
 func ClientFromPublishSettingsFile(filePath, subscriptionID string) (client Client, err error) {
-	return ClientFromPublishSettingsFileWithConfig(filePath, subscriptionID,
-		ClientConfig{ManagementURL: defaultAzureManagementURL})
+	return ClientFromPublishSettingsFileWithConfig(filePath, subscriptionID, defaultConfig())
 }
 
 // ClientFromPublishSettingsFileWithConfig reads a publish settings file downloaded from https://manage.windowsazure.com/publishsettings.
@@ -54,12 +53,8 @@ func ClientFromPublishSettingsFileWithConfig(filePath, subscriptionID string, co
 					cert = append(cert, pem.EncodeToMemory(b)...)
 				}
 
-				managementURL := sub.ServiceManagementURL
-				if config.ManagementURL != "" {
-					managementURL = config.ManagementURL
-				}
-
-				return makeClient(sub.ID, cert, managementURL)
+				config.ManagementURL = sub.ServiceManagementURL
+				return makeClient(sub.ID, cert, config)
 			}
 		}
 	}

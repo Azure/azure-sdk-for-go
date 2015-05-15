@@ -50,8 +50,6 @@ func (client *Client) GetOperationStatus(operationID OperationID) (GetOperationS
 	return operation, err
 }
 
-const pollInterval = 30 * time.Second
-
 // WaitAsyncOperation blocks until the operation with the given operationId is
 // no longer in the InProgress state. If the operation was successful, nothing
 // is returned, otherwise an error is returned.
@@ -71,7 +69,7 @@ func (client *Client) WaitAsyncOperation(operationID OperationID) error {
 			}
 			return fmt.Errorf("Azure Operation ID=%s has failed", operationID)
 		case OperationStatusInProgress:
-			time.Sleep(pollInterval)
+			time.Sleep(client.pollInterval)
 		default:
 			return fmt.Errorf("Unknown operation status:%s (ID=%s)", operation.Status, operationID)
 		}

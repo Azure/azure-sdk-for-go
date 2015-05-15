@@ -69,7 +69,7 @@ func (client *Client) WaitAsyncOperation(operationID OperationID) error {
 			}
 			return fmt.Errorf("Azure Operation ID=%s has failed", operationID)
 		case OperationStatusInProgress:
-			time.Sleep(client.pollInterval)
+			time.Sleep(client.config.OperationPollInterval)
 		default:
 			return fmt.Errorf("Unknown operation status:%s (ID=%s)", operation.Status, operationID)
 		}

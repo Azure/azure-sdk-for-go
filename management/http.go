@@ -11,7 +11,7 @@ import (
 
 const (
 	msVersionHeader           = "x-ms-version"
-	msVersionHeaderValue      = "2014-10-01"
+	uaHeader                  = "User-Agent"
 	contentHeader             = "Content-Type"
 	defaultContentHeaderValue = "application/xml"
 	requestIDHeader           = "X-Ms-Request-Id"
@@ -143,7 +143,7 @@ func (client *Client) createAzureRequest(url string, requestType string, content
 	var request *http.Request
 	var err error
 
-	url = fmt.Sprintf("%s/%s/%s", client.managementURL, client.publishSettings.SubscriptionID, url)
+	url = fmt.Sprintf("%s/%s/%s", client.config.ManagementURL, client.publishSettings.SubscriptionID, url)
 	if data != nil {
 		body := bytes.NewBuffer(data)
 		request, err = http.NewRequest(requestType, url, body)
@@ -155,7 +155,9 @@ func (client *Client) createAzureRequest(url string, requestType string, content
 		return nil, err
 	}
 
-	request.Header.Add(msVersionHeader, msVersionHeaderValue)
+	request.Header.Add(msVersionHeader, client.config.APIVersion)
+	request.Header.Add(uaHeader, client.config.UserAgent)
+
 	if len(contentType) > 0 {
 		request.Header.Add(contentHeader, contentType)
 	} else {

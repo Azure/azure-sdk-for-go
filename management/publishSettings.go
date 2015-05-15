@@ -13,7 +13,7 @@ import (
 // ClientFromPublishSettingsFile reads a publish settings file downloaded from https://manage.windowsazure.com/publishsettings.
 // If subscriptionID is left empty, the first subscription in the file is used.
 func ClientFromPublishSettingsFile(filePath, subscriptionID string) (client Client, err error) {
-	return ClientFromPublishSettingsFileWithConfig(filePath, subscriptionID, defaultConfig())
+	return ClientFromPublishSettingsFileWithConfig(filePath, subscriptionID, DefaultConfig())
 }
 
 // ClientFromPublishSettingsFileWithConfig reads a publish settings file downloaded from https://manage.windowsazure.com/publishsettings.

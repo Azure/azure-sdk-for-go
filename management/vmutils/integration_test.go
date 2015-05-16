@@ -234,7 +234,7 @@ func GetTestStorageAccount(t *testing.T, client management.Client) storage.Stora
 		if err != nil {
 			t.Fatal(err)
 		}
-		if err := client.WaitAsyncOperation(op); err != nil {
+		if err := client.WaitForOperation(op, nil); err != nil {
 			t.Fatal(err)
 		}
 		sa, err = sc.GetStorageService(name)
@@ -356,5 +356,5 @@ func Await(client management.Client, async asyncFunc) error {
 	if err != nil {
 		return err
 	}
-	return client.WaitAsyncOperation(requestID)
+	return client.WaitForOperation(requestID, nil)
 }

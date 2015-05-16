@@ -36,16 +36,12 @@ func (c VirtualNetworkClient) GetVirtualNetworkConfiguration() (NetworkConfigura
 // currently active subscription according to the NetworkConfiguration given.
 // Note that the underlying Azure API means that network related operations
 // are not safe for running concurrently.
-func (c VirtualNetworkClient) SetVirtualNetworkConfiguration(networkConfiguration NetworkConfiguration) error {
+func (c VirtualNetworkClient) SetVirtualNetworkConfiguration(networkConfiguration NetworkConfiguration) (management.OperationID, error) {
 	networkConfiguration.setXMLNamespaces()
 	networkConfigurationBytes, err := xml.Marshal(networkConfiguration)
 	if err != nil {
-		return err
+		return "", err
 	}
 
-	operationID, err := c.client.SendAzurePutRequest(azureNetworkConfigurationURL, "text/plain", networkConfigurationBytes)
-	if err != nil {
-		return err
-	}
-	return c.client.WaitAsyncOperation(operationID)
+	return c.client.SendAzurePutRequest(azureNetworkConfigurationURL, "text/plain", networkConfigurationBytes)
 }

@@ -1,3 +1,4 @@
+// Package location provides a client for Locations.
 package location
 
 import (

@@ -10,20 +10,22 @@ const xmlNamespace = "http://schemas.microsoft.com/ServiceHosting/2011/07/Networ
 const xmlNamespaceXsd = "http://www.w3.org/2001/XMLSchema"
 const xmlNamespaceXsi = "http://www.w3.org/2001/XMLSchema-instance"
 
-// VirtualNetworkClient is used to manage operations on Azure Virtual Networks
+// VirtualNetworkClient is used to perform operations on Virtual Networks.
 type VirtualNetworkClient struct {
 	client management.Client
 }
 
 // NetworkConfiguration represents the network configuration for an entire Azure
-// subscription. TODO: Nicer builder methods for these that abstract away the
-// underlying structure
+// subscription.
 type NetworkConfiguration struct {
 	XMLName         xml.Name                    `xml:"NetworkConfiguration"`
 	XMLNamespaceXsd string                      `xml:"xmlns:xsd,attr"`
 	XMLNamespaceXsi string                      `xml:"xmlns:xsi,attr"`
 	XMLNs           string                      `xml:"xmlns,attr"`
 	Configuration   VirtualNetworkConfiguration `xml:"VirtualNetworkConfiguration"`
+
+	// TODO: Nicer builder methods for these that abstract away the
+	// underlying structure.
 }
 
 // NewNetworkConfiguration creates a new empty NetworkConfiguration structure

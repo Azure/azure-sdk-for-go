@@ -7,7 +7,7 @@ import (
 	vmdisk "github.com/Azure/azure-sdk-for-go/management/virtualmachinedisk"
 )
 
-// Client is used to manage operations on Azure VM Images.
+// Client is used to perform operations on Azure VM Images.
 type Client struct {
 	management.Client
 }

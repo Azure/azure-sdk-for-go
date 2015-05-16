@@ -1,3 +1,4 @@
+// Package osimage provides a client for Operating System Images.
 package osimage
 
 import (

@@ -1,3 +1,4 @@
+// Package hostedservice provides a client for Hosted Services.
 package hostedservice
 
 import (

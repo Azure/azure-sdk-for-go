@@ -1,4 +1,5 @@
-// Package vmutils provides convenience methods for building vm role configurations
+// Package vmutils provides convenience methods for creating Virtual
+// Machine Role configurations.
 package vmutils
 
 import (

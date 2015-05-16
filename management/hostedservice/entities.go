@@ -6,7 +6,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/management"
 )
 
-//HostedServiceClient is used to manage operations on Azure Hosted Services
+//HostedServiceClient is used to perform operations on Azure Hosted Services
 type HostedServiceClient struct {
 	client management.Client
 }

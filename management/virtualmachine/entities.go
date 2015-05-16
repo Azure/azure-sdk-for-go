@@ -7,7 +7,7 @@ import (
 	vmdisk "github.com/Azure/azure-sdk-for-go/management/virtualmachinedisk"
 )
 
-// VirtualMachineClient is used to manage operations on Azure Virtual Machines
+// VirtualMachineClient is used to perform operations on Azure Virtual Machines
 type VirtualMachineClient struct {
 	client management.Client
 }

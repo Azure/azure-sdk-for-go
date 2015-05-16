@@ -1,7 +1,4 @@
-// Package networksecuritygroup implements operations for managing network security groups
-// using the Service Management REST API
-//
-// https://msdn.microsoft.com/en-us/library/azure/dn913824.aspx
+// Package networksecuritygroup provides a client for Network Security Groups.
 package networksecuritygroup
 
 import (

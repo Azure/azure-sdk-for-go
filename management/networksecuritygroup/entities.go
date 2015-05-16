@@ -10,7 +10,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/management"
 )
 
-// SecurityGroupClient is used to manage operations on network security groups
+// SecurityGroupClient is used to perform operations on network security groups
 type SecurityGroupClient struct {
 	client management.Client
 }

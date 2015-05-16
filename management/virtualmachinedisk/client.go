@@ -1,3 +1,4 @@
+// Package virtualmachinedisk provides a client for Virtual Machine Disks.
 package virtualmachinedisk
 
 import (

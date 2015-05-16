@@ -1,3 +1,4 @@
+// Package storageservice provides a client for Storage Services.
 package storageservice
 
 import (

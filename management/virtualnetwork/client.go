@@ -1,3 +1,4 @@
+// Package virtualnetwork provides a client for Virtual Networks.
 package virtualnetwork
 
 import (

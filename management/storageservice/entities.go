@@ -6,7 +6,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/management"
 )
 
-// StorageServiceClient is used to manage operations on Azure Storage
+// StorageServiceClient is used to perform operations on Azure Storage
 type StorageServiceClient struct {
 	client management.Client
 }

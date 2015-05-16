@@ -1,3 +1,4 @@
+// Package virtualmachineimage provides a client for Virtual Machine Images.
 package virtualmachineimage
 
 import (

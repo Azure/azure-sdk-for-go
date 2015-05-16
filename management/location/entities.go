@@ -9,7 +9,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/management"
 )
 
-//LocationClient is used to manage operations on Azure Locations
+//LocationClient is used to perform operations on Azure Locations
 type LocationClient struct {
 	client management.Client
 }

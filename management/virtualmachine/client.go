@@ -1,7 +1,4 @@
-// Package virtualmachine implements operations for managing virtual machines
-// using the Service Management REST API
-//
-// https://msdn.microsoft.com/en-us/library/azure/jj157206.aspx
+// Package virtualmachine provides a client for Virtual Machines.
 package virtualmachine
 
 import (

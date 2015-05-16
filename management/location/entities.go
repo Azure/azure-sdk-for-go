@@ -14,7 +14,7 @@ type LocationClient struct {
 	client management.Client
 }
 
-type LocationList struct {
+type ListLocationsResponse struct {
 	XMLName   xml.Name   `xml:"Locations"`
 	Locations []Location `xml:"Location"`
 }
@@ -27,11 +27,10 @@ type Location struct {
 	VirtualMachineRoleSizes []string `xml:"ComputeCapabilities>VirtualMachinesRoleSizes>RoleSize"`
 }
 
-func (locationList LocationList) String() string {
+func (ll ListLocationsResponse) String() string {
 	var buf bytes.Buffer
-
-	for _, location := range locationList.Locations {
-		buf.WriteString(fmt.Sprintf("%s, ", location.Name))
+	for _, l := range ll.Locations {
+		fmt.Fprintf(&buf, "%s, ", l.Name)
 	}
 
 	return strings.Trim(buf.String(), ", ")

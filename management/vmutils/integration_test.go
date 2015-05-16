@@ -218,7 +218,7 @@ func GetTestStorageAccount(t *testing.T, client management.Client) storage.Stora
 	if len(ssl.StorageServices) == 0 {
 		t.Log("No storage accounts found, creating a new one")
 		lc := location.NewClient(client)
-		ll, err := lc.GetLocationList()
+		ll, err := lc.ListLocations()
 		if err != nil {
 			t.Fatal(err)
 		}

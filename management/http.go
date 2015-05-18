@@ -2,7 +2,6 @@ package management
 
 import (
 	"bytes"
-	"encoding/xml"
 	"fmt"
 
 	"github.com/Azure/azure-sdk-for-go/core/http"
@@ -165,15 +164,4 @@ func (client *Client) createAzureRequest(url string, requestType string, content
 	}
 
 	return request, nil
-}
-
-// getAzureError converts an error response body into an AzureError type.
-func getAzureError(responseBody []byte) error {
-	error := new(AzureError)
-	err := xml.Unmarshal(responseBody, error)
-	if err != nil {
-		return err
-	}
-
-	return error
 }

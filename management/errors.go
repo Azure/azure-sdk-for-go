@@ -8,7 +8,6 @@ import (
 // AzureError represents an error returned by the management API. It has an error
 // code (for example, ResourceNotFound) and a descriptive message.
 type AzureError struct {
-	XMLName xml.Name `xml:"Error"`
 	Code    string
 	Message string
 }
@@ -23,4 +22,15 @@ func (e AzureError) Error() string {
 func IsResourceNotFoundError(err error) bool {
 	azureErr, ok := err.(AzureError)
 	return ok && azureErr.Code == "ResourceNotFound"
+}
+
+// getAzureError converts an error response body into an AzureError instance.
+func getAzureError(responseBody []byte) error {
+	var azErr AzureError
+	err := xml.Unmarshal(responseBody, &azErr)
+	if err != nil {
+		return fmt.Errorf("Failed parsing contents to AzureError format: %v", err)
+	}
+	return azErr
+
 }

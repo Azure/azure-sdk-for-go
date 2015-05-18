@@ -267,12 +267,12 @@ func GetOSImage(
 	filter func(osimage.OSImage) bool) osimage.OSImage {
 	t.Log("Selecting OS image")
 	osc := osimage.NewClient(client)
-	allimages, err := osc.GetImageList()
+	allimages, err := osc.ListOSImages()
 	if err != nil {
 		t.Fatal(err)
 	}
 	filtered := []osimage.OSImage{}
-	for _, im := range allimages {
+	for _, im := range allimages.OSImages {
 		if filter(im) {
 			filtered = append(filtered, im)
 		}

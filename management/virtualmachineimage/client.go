@@ -19,17 +19,15 @@ func NewClient(client management.Client) Client {
 	return Client{client}
 }
 
-func (c Client) GetImageList() ([]VMImage, error) {
-	imageList := vmImageList{}
+func (c Client) ListVirtualMachineImages() (ListVirtualMachineImagesResponse, error) {
+	var imageList ListVirtualMachineImagesResponse
 
 	response, err := c.SendAzureGetRequest(azureImageListURL)
 	if err != nil {
-		return imageList.VMImages, err
+		return imageList, err
 	}
-
 	err = xml.Unmarshal(response, &imageList)
-
-	return imageList.VMImages, err
+	return imageList, err
 }
 
 func (c Client) Capture(cloudServiceName, deploymentName, roleName string,

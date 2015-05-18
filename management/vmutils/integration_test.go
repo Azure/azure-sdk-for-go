@@ -38,8 +38,8 @@ func TestDeployPlatformImage(t *testing.T) {
 func TestVMImageList(t *testing.T) {
 	client := testutils.GetTestClient(t)
 	vmic := vmimage.NewClient(client)
-	il, _ := vmic.GetImageList()
-	for _, im := range il {
+	il, _ := vmic.ListVirtualMachineImages()
+	for _, im := range il.VMImages {
 		t.Logf("%s -%s", im.Name, im.Description)
 	}
 }
@@ -297,12 +297,12 @@ func GetVMImage(
 	client management.Client,
 	filter func(vmimage.VMImage) bool) vmimage.VMImage {
 	t.Log("Selecting VM image")
-	allimages, err := vmimage.NewClient(client).GetImageList()
+	allimages, err := vmimage.NewClient(client).ListVirtualMachineImages()
 	if err != nil {
 		t.Fatal(err)
 	}
 	filtered := []vmimage.VMImage{}
-	for _, im := range allimages {
+	for _, im := range allimages.VMImages {
 		if filter(im) {
 			filtered = append(filtered, im)
 		}

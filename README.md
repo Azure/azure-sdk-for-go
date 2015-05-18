@@ -1,22 +1,31 @@
-# Azure SDK for Go
-This project provides various Golang packages that makes it easy to consume and manage
-Microsoft Azure Services.
+# Microsoft Azure SDK for Go
+
+This project provides various Go packages to perform operations
+on Microsoft Azure REST APIs.
 
 [![GoDoc](https://godoc.org/github.com/Azure/azure-sdk-for-go?status.svg)](https://godoc.org/github.com/Azure/azure-sdk-for-go) [![Build Status](https://travis-ci.org/Azure/azure-sdk-for-go.svg?branch=master)](https://travis-ci.org/Azure/azure-sdk-for-go)
 
-# Installation
-- Install Golang: https://golang.org/doc/install
-- Get Azure SDK package: 
+See list of implemented API clients [here](http://godoc.org/github.com/Azure/azure-sdk-for-go).
 
-    go get -d github.com/Azure/azure-sdk-for-go
+> **NOTE:** This repository is under heavy ongoing development and
+is likely to break over time. We currently do not have any releases
+yet. If you are planning to use the repository, please consider vendoring
+the packages in your project and update them when a stable tag is out.
+
+# Installation
+
+    go get -d github.com/Azure/azure-sdk-for-go/management
 
 # Usage
 
-Read Godoc of the package at: http://godoc.org/github.com/Azure/azure-sdk-for-go/management
+Read Godoc of the repository at: http://godoc.org/github.com/Azure/azure-sdk-for-go/
 
-Download publish settings file from https://manage.windowsazure.com/publishsettings.
+The client currently supports authentication to the Service Management
+API with certificates or Azure `.publishSettings` file. You can 
+download the `.publishSettings` file for your subscriptions
+[here](https://manage.windowsazure.com/publishsettings).
 
-# Example: Create a Linux VM
+### Example: Creating a Linux Virtual Machine
 
 ```go
 package main

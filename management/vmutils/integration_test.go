@@ -127,7 +127,7 @@ func TestDeployFromVmImage(t *testing.T) {
 
 	role := NewVMConfiguration(vmname, "Standard_D4")
 	ConfigureDeploymentFromVMImage(&role, im.Name,
-		fmt.Sprintf("http://%s.blob.core.windows.net/%s", sa.ServiceName, vmname))
+		fmt.Sprintf("http://%s.blob.core.windows.net/%s", sa.ServiceName, vmname), false)
 	ConfigureForWindows(&role, vmname, "azureuser", GeneratePassword(), true, "")
 	ConfigureWithPublicSSH(&role)
 

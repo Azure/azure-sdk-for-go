@@ -12,7 +12,7 @@ type Client struct {
 	management.Client
 }
 
-type vmImageList struct {
+type ListVirtualMachineImagesResponse struct {
 	XMLName  xml.Name  `xml:"VMImages"`
 	Xmlns    string    `xml:"xmlns,attr"`
 	VMImages []VMImage `xml:"VMImage"`

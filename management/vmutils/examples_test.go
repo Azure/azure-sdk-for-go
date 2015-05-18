@@ -1,6 +1,7 @@
 package vmutils
 
 import (
+	"encoding/base64"
 	"fmt"
 
 	"github.com/Azure/azure-sdk-for-go/management"
@@ -23,13 +24,10 @@ func Example() {
 	}
 
 	// create hosted service
-	operationID, err := hostedservice.NewClient(client).
-		CreateHostedService(dnsName, location, "", dnsName, "")
-	if err != nil {
-		panic(err)
-	}
-	err = client.WaitAsyncOperation(operationID)
-	if err != nil {
+	if err := hostedservice.NewClient(client).CreateHostedService(hostedservice.CreateHostedServiceParameters{
+		ServiceName: dnsName,
+		Location:    location,
+		Label:       base64.StdEncoding.EncodeToString([]byte(dnsName))}); err != nil {
 		panic(err)
 	}
 
@@ -43,13 +41,12 @@ func Example() {
 	ConfigureForLinux(&role, dnsName, userName, userPassword)
 	ConfigureWithPublicSSH(&role)
 
-	operationID, err = virtualmachine.NewClient(client).
+	operationID, err := virtualmachine.NewClient(client).
 		CreateDeployment(role, dnsName, virtualmachine.CreateDeploymentOptions{})
 	if err != nil {
 		panic(err)
 	}
-	err = client.WaitAsyncOperation(operationID)
-	if err != nil {
+	if err := client.WaitAsyncOperation(operationID); err != nil {
 		panic(err)
 	}
 }

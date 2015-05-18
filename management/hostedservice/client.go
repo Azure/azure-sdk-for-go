@@ -27,42 +27,30 @@ func NewClient(client management.Client) HostedServiceClient {
 	return HostedServiceClient{client: client}
 }
 
-func (h HostedServiceClient) CreateHostedService(dnsName, location string, reverseDNSFqdn string, label string, description string) (management.OperationID, error) {
-	if dnsName == "" {
-		return "", fmt.Errorf(errParamNotSpecified, "dnsName")
-	}
-	if location == "" {
-		return "", fmt.Errorf(errParamNotSpecified, "location")
-	}
-
-	hostedServiceDeployment := h.createHostedServiceDeploymentConfig(dnsName, location, reverseDNSFqdn, label, description)
-	hostedServiceBytes, err := xml.Marshal(hostedServiceDeployment)
+func (h HostedServiceClient) CreateHostedService(params CreateHostedServiceParameters) error {
+	req, err := xml.Marshal(params)
 	if err != nil {
-		return "", err
+		return err
 	}
 
-	requestURL := azureHostedServiceListURL
-	return h.client.SendAzurePostRequest(requestURL, hostedServiceBytes)
+	_, err = h.client.SendAzurePostRequest(azureHostedServiceListURL, req) // not a long running operation
+	return err
 }
 
-func (h HostedServiceClient) CheckHostedServiceNameAvailability(dnsName string) (bool, string, error) {
+func (h HostedServiceClient) CheckHostedServiceNameAvailability(dnsName string) (AvailabilityResponse, error) {
+	var r AvailabilityResponse
 	if dnsName == "" {
-		return false, "", fmt.Errorf(errParamNotSpecified, "dnsName")
+		return r, fmt.Errorf(errParamNotSpecified, "dnsName")
 	}
 
 	requestURL := fmt.Sprintf(azureHostedServiceAvailabilityURL, dnsName)
 	response, err := h.client.SendAzureGetRequest(requestURL)
 	if err != nil {
-		return false, "", err
+		return r, err
 	}
 
-	availabilityResponse := new(AvailabilityResponse)
-	err = xml.Unmarshal(response, availabilityResponse)
-	if err != nil {
-		return false, "", err
-	}
-
-	return availabilityResponse.Result, availabilityResponse.Reason, nil
+	err = xml.Unmarshal(response, &r)
+	return r, err
 }
 
 func (h HostedServiceClient) DeleteHostedService(dnsName string, deleteDisksAndBlobs bool) (management.OperationID, error) {
@@ -113,19 +101,6 @@ func (h HostedServiceClient) ListHostedServices() (ListHostedServiceResponse, er
 	err = xml.Unmarshal(data, &response)
 
 	return response, err
-}
-
-func (h HostedServiceClient) createHostedServiceDeploymentConfig(dnsName, location string, reverseDNSFqdn string, label string, description string) CreateHostedService {
-	encodedLabel := base64.StdEncoding.EncodeToString([]byte(label))
-	deployment := CreateHostedService{
-		ServiceName:    dnsName,
-		Label:          encodedLabel,
-		Description:    description,
-		Location:       location,
-		ReverseDNSFqdn: reverseDNSFqdn,
-		Xmlns:          azureXmlns,
-	}
-	return deployment
 }
 
 func (h HostedServiceClient) AddCertificate(dnsName string, certData []byte, certificateFormat CertificateFormat, password string) (management.OperationID, error) {

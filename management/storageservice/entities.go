@@ -11,7 +11,7 @@ type StorageServiceClient struct {
 	client management.Client
 }
 
-type StorageServiceList struct {
+type ListStorageServicesResponse struct {
 	StorageServices []StorageServiceResponse `xml:"StorageService"`
 }
 

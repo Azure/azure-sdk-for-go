@@ -208,11 +208,10 @@ func GetTestStorageAccount(t *testing.T, client management.Client) storage.Stora
 	t.Log("Retrieving storage account")
 	sc := storage.NewClient(client)
 	var sa storage.StorageServiceResponse
-	ssl, err := sc.GetStorageServiceList()
+	ssl, err := sc.ListStorageServices()
 	if err != nil {
 		t.Fatal(err)
 	}
-
 	rnd := rand.New(rand.NewSource(time.Now().UnixNano()))
 
 	if len(ssl.StorageServices) == 0 {

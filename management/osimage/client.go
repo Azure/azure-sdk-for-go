@@ -13,22 +13,19 @@ const (
 	errParamNotSpecified = "Parameter %s is not specified."
 )
 
-//NewClient is used to instantiate a new OsImageClient from an Azure client
-func NewClient(client management.Client) OsImageClient {
-	return OsImageClient{client: client}
+// NewClient is used to instantiate a new OSImageClient from an Azure client.
+func NewClient(client management.Client) OSImageClient {
+	return OSImageClient{client: client}
 }
 
-func (c OsImageClient) GetImageList() ([]OSImage, error) {
-	imageList := imageList{}
+func (c OSImageClient) ListOSImages() (ListOSImagesResponse, error) {
+	var l ListOSImagesResponse
 
 	response, err := c.client.SendAzureGetRequest(azureImageListURL)
 	if err != nil {
-		return imageList.OSImages, err
+		return l, err
 	}
 
-	if err = xml.Unmarshal(response, &imageList); err != nil {
-		return imageList.OSImages, err
-	}
-
-	return imageList.OSImages, err
+	err = xml.Unmarshal(response, &l)
+	return l, err
 }

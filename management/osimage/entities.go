@@ -6,12 +6,12 @@ import (
 	"github.com/Azure/azure-sdk-for-go/management"
 )
 
-// OsImageClient is used to perform operations on Azure Locations
-type OsImageClient struct {
+// OSImageClient is used to perform operations on Azure Locations
+type OSImageClient struct {
 	client management.Client
 }
 
-type imageList struct {
+type ListOSImagesResponse struct {
 	XMLName  xml.Name  `xml:"Images"`
 	OSImages []OSImage `xml:"OSImage"`
 }

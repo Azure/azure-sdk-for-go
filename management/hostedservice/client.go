@@ -90,8 +90,8 @@ func (h HostedServiceClient) GetHostedService(name string) (HostedService, error
 	return hostedService, nil
 }
 
-func (h HostedServiceClient) ListHostedServices() (ListHostedServiceResponse, error) {
-	var response ListHostedServiceResponse
+func (h HostedServiceClient) ListHostedServices() (ListHostedServicesResponse, error) {
+	var response ListHostedServicesResponse
 
 	data, err := h.client.SendAzureGetRequest(azureHostedServiceListURL)
 	if err != nil {
@@ -99,7 +99,6 @@ func (h HostedServiceClient) ListHostedServices() (ListHostedServiceResponse, er
 	}
 
 	err = xml.Unmarshal(data, &response)
-
 	return response, err
 }
 

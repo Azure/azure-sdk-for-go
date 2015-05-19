@@ -46,7 +46,8 @@ func Example() {
 	if err != nil {
 		panic(err)
 	}
-	if err := client.WaitAsyncOperation(operationID); err != nil {
+	err = client.WaitForOperation(operationID, nil)
+	if err != nil {
 		panic(err)
 	}
 }

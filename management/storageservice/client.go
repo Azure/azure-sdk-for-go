@@ -25,8 +25,8 @@ func NewClient(s management.Client) StorageServiceClient {
 	return StorageServiceClient{client: s}
 }
 
-func (s StorageServiceClient) GetStorageServiceList() (StorageServiceList, error) {
-	var l StorageServiceList
+func (s StorageServiceClient) ListStorageServices() (ListStorageServicesResponse, error) {
+	var l ListStorageServicesResponse
 	response, err := s.client.SendAzureGetRequest(azureStorageServiceListURL)
 	if err != nil {
 		return l, err

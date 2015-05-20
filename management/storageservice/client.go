@@ -68,7 +68,7 @@ func (s StorageServiceClient) GetStorageServiceKeys(serviceName string) (GetStor
 	return r, err
 }
 
-func (s StorageServiceClient) CreateAsync(parameters StorageAccountCreateParameters) (management.OperationID, error) {
+func (s StorageServiceClient) CreateStorageService(parameters StorageAccountCreateParameters) (management.OperationID, error) {
 	data, err := xml.Marshal(CreateStorageServiceInput{
 		StorageAccountCreateParameters: parameters})
 	if err != nil {
@@ -76,6 +76,15 @@ func (s StorageServiceClient) CreateAsync(parameters StorageAccountCreateParamet
 	}
 
 	return s.client.SendAzurePostRequest(azureStorageServiceListURL, data)
+}
+
+func (s StorageServiceClient) DeleteStorageService(serviceName string) (management.OperationID, error) {
+	if serviceName == "" {
+		return "", fmt.Errorf(errParamNotSpecified, "serviceName")
+	}
+
+	requestURL := fmt.Sprintf(azureStorageServiceURL, serviceName)
+	return s.client.SendAzureDeleteRequest(requestURL)
 }
 
 // CheckStorageAccountNameAvailability checks to if the specified storage account

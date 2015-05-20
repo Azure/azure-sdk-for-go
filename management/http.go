@@ -10,10 +10,10 @@ import (
 
 const (
 	msVersionHeader           = "x-ms-version"
+	requestIDHeader           = "x-ms-request-id"
 	uaHeader                  = "User-Agent"
 	contentHeader             = "Content-Type"
 	defaultContentHeaderValue = "application/xml"
-	requestIDHeader           = "X-Ms-Request-Id"
 )
 
 // SendAzureGetRequest sends a request to the management API using the HTTP GET method
@@ -36,7 +36,7 @@ func (client *Client) SendAzurePostRequest(url string, data []byte) (OperationID
 // and returns the request ID or an error. The content type can be specified, however
 // if an empty string is passed, the default of "application/xml" will be used.
 func (client *Client) SendAzurePutRequest(url, contentType string, data []byte) (OperationID, error) {
-	return client.doAzureOperation("PUT", url, "", data)
+	return client.doAzureOperation("PUT", url, contentType, data)
 }
 
 // SendAzureDeleteRequest sends a request to the management API using the HTTP DELETE method
@@ -46,7 +46,7 @@ func (client *Client) SendAzureDeleteRequest(url string) (OperationID, error) {
 }
 
 func (client *Client) doAzureOperation(method, url, contentType string, data []byte) (OperationID, error) {
-	response, err := client.sendAzureRequest(method, url, "", nil)
+	response, err := client.sendAzureRequest(method, url, contentType, data)
 	if err != nil {
 		return "", err
 	}
@@ -54,26 +54,26 @@ func (client *Client) doAzureOperation(method, url, contentType string, data []b
 }
 
 func getOperationID(response *http.Response) (OperationID, error) {
-	requestID := response.Header[requestIDHeader]
-	if len(requestID) == 0 {
+	requestID := response.Header.Get(requestIDHeader)
+	if requestID == "" {
 		return "", fmt.Errorf("Could not retrieve operation id from %q header", requestIDHeader)
 	}
-	return OperationID(requestID[0]), nil
+	return OperationID(requestID), nil
 }
 
 // sendAzureRequest constructs an HTTP client for the request, sends it to the
 // management API and returns the response or an error.
 func (client *Client) sendAzureRequest(method, url, contentType string, data []byte) (*http.Response, error) {
-	if url == "" {
-		return nil, fmt.Errorf(errParamNotSpecified, "url")
-	}
 	if method == "" {
 		return nil, fmt.Errorf(errParamNotSpecified, "method")
+	}
+	if url == "" {
+		return nil, fmt.Errorf(errParamNotSpecified, "url")
 	}
 
 	httpClient := client.createHTTPClient()
 
-	response, err := client.sendRequest(httpClient, url, method, contentType, data, 7)
+	response, err := client.sendRequest(httpClient, url, method, contentType, data, 5)
 	if err != nil {
 		return nil, err
 	}
@@ -102,7 +102,7 @@ func (client *Client) createHTTPClient() *http.Client {
 // sendRequest sends a request to the Azure management API using the given
 // HTTP client and parameters. It returns the response from the call or an
 // error.
-func (client *Client) sendRequest(httpClient *http.Client, url string, requestType string, contentType string, data []byte, numberOfRetries int) (*http.Response, error) {
+func (client *Client) sendRequest(httpClient *http.Client, url, requestType, contentType string, data []byte, numberOfRetries int) (*http.Response, error) {
 	request, reqErr := client.createAzureRequest(url, requestType, contentType, data)
 	if reqErr != nil {
 		return nil, reqErr
@@ -154,13 +154,13 @@ func (client *Client) createAzureRequest(url string, requestType string, content
 		return nil, err
 	}
 
-	request.Header.Add(msVersionHeader, client.config.APIVersion)
-	request.Header.Add(uaHeader, client.config.UserAgent)
+	request.Header.Set(msVersionHeader, client.config.APIVersion)
+	request.Header.Set(uaHeader, client.config.UserAgent)
 
-	if len(contentType) > 0 {
-		request.Header.Add(contentHeader, contentType)
+	if contentType != "" {
+		request.Header.Set(contentHeader, contentType)
 	} else {
-		request.Header.Add(contentHeader, defaultContentHeaderValue)
+		request.Header.Set(contentHeader, defaultContentHeaderValue)
 	}
 
 	return request, nil

@@ -12,8 +12,7 @@ type HostedServiceClient struct {
 }
 
 type CreateHostedServiceParameters struct {
-	XMLName        xml.Name
-	Xmlns          string `xml:"xmlns,attr"`
+	XMLName        xml.Name `xml:"http://schemas.microsoft.com/windowsazure CreateHostedService"`
 	ServiceName    string
 	Label          string
 	Description    string

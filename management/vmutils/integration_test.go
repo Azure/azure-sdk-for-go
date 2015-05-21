@@ -225,7 +225,7 @@ func GetTestStorageAccount(t *testing.T, client management.Client) storage.Stora
 
 		t.Logf("Location for new storage account: %s", loc)
 		name := GenerateName()
-		op, err := sc.CreateAsync(storage.StorageAccountCreateParameters{
+		op, err := sc.CreateStorageService(storage.StorageAccountCreateParameters{
 			ServiceName: name,
 			Label:       base64.StdEncoding.EncodeToString([]byte(name)),
 			Location:    loc,

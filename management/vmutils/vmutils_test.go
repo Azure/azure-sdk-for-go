@@ -63,8 +63,8 @@ func TestNewLinuxVmRemoteImage(t *testing.T) {
   <ResourceExtensionReferences></ResourceExtensionReferences>
   <DataVirtualHardDisks></DataVirtualHardDisks>
   <OSVirtualHardDisk>
-    <DiskName>myvm-os-disk</DiskName>
     <DiskLabel>OSDisk</DiskLabel>
+    <DiskName>myvm-os-disk</DiskName>
     <MediaLink>http://mystorageacct.blob.core.windows.net/vhds/mybrandnewvm.vhd</MediaLink>
     <OS>Linux</OS>
     <RemoteSourceImageLink>http://remote.host/some.vhd?sv=12&amp;sig=ukhfiuwef78687</RemoteSourceImageLink>
@@ -195,20 +195,20 @@ func TestNewVmFromExistingDisk(t *testing.T) {
   <ResourceExtensionReferences></ResourceExtensionReferences>
   <DataVirtualHardDisks>
     <DataVirtualHardDisk>
-      <DiskLabel>my-brand-new-disk</DiskLabel>
       <HostCaching>ReadWrite</HostCaching>
-      <MediaLink>http://account.blob.core.windows.net/vhds/newdatadisk.vhd</MediaLink>
+      <DiskLabel>my-brand-new-disk</DiskLabel>
       <LogicalDiskSizeInGB>30</LogicalDiskSizeInGB>
+      <MediaLink>http://account.blob.core.windows.net/vhds/newdatadisk.vhd</MediaLink>
     </DataVirtualHardDisk>
     <DataVirtualHardDisk>
-      <DiskName>data-disk</DiskName>
       <HostCaching>ReadOnly</HostCaching>
+      <DiskName>data-disk</DiskName>
       <Lun>1</Lun>
     </DataVirtualHardDisk>
   </DataVirtualHardDisks>
   <OSVirtualHardDisk>
-    <DiskName>myvm-backup-20150209</DiskName>
     <DiskLabel>OSDisk</DiskLabel>
+    <DiskName>myvm-backup-20150209</DiskName>
   </OSVirtualHardDisk>
   <RoleSize>Standard_D14</RoleSize>
   <ProvisionGuestAgent>true</ProvisionGuestAgent>

@@ -18,11 +18,43 @@ const (
 	errParamNotSpecified                  = "Parameter %s is not specified."
 )
 
-// Client is the base Azure Service Management API client instance that
-// can be used to construct client instances for various services.
-type Client struct {
+type client struct {
 	publishSettings publishSettings
 	config          ClientConfig
+}
+
+// Client is the base Azure Service Management API client instance that
+// can be used to construct client instances for various services.
+type Client interface {
+	// SendAzureGetRequest sends a request to the management API using the HTTP GET method
+	// and returns the response body or an error.
+	SendAzureGetRequest(url string) ([]byte, error)
+	// SendAzurePostRequest sends a request to the management API using the HTTP POST method
+	// and returns the request ID or an error.
+	SendAzurePostRequest(url string, data []byte) (OperationID, error)
+	// SendAzurePutRequest sends a request to the management API using the HTTP PUT method
+	// and returns the request ID or an error. The content type can be specified, however
+	// if an empty string is passed, the default of "application/xml" will be used.
+	SendAzurePutRequest(url, contentType string, data []byte) (OperationID, error)
+	// SendAzureDeleteRequest sends a request to the management API using the HTTP DELETE method
+	// and returns the request ID or an error.
+	SendAzureDeleteRequest(url string) (OperationID, error)
+	// GetOperationStatus gets the status of operation with given Operation ID.
+	// WaitForOperation utility method can be used for polling for operation status.
+	GetOperationStatus(operationID OperationID) (GetOperationStatusResponse, error)
+	// WaitForOperation polls the Azure API for given operation ID indefinitely
+	// until the operation is completed with either success or failure.
+	// It is meant to be used for waiting for the result of the methods that
+	// return an OperationID value (meaning a long running operation has started).
+	//
+	// Cancellation of the polling loop (for instance, timing out) is done through
+	// cancel channel. If the user does not want to cancel, a nil chan can be provided.
+	// To cancel the method, it is recommended to close the channel provided to this
+	// method.
+	//
+	// If the operation was not successful or cancelling is signaled, an error
+	// is returned.
+	WaitForOperation(operationID OperationID, cancel chan struct{}) error
 }
 
 // ClientConfig provides a configuration for use by a Client.
@@ -35,7 +67,7 @@ type ClientConfig struct {
 
 // NewAnonymousClient creates a new azure.Client with no credentials set.
 func NewAnonymousClient() Client {
-	return Client{}
+	return client{}
 }
 
 // DefaultConfig returns the default client configuration used to construct
@@ -62,12 +94,12 @@ func NewClientFromConfig(subscriptionID string, managementCert []byte, config Cl
 }
 
 func makeClient(subscriptionID string, managementCert []byte, config ClientConfig) (Client, error) {
-	var client Client
+	var c client
 
 	if subscriptionID == "" {
-		return client, errors.New("azure: subscription ID required")
+		return c, errors.New("azure: subscription ID required")
 	} else if len(managementCert) == 0 {
-		return client, errors.New("azure: management certificate required")
+		return c, errors.New("azure: management certificate required")
 	}
 
 	publishSettings := publishSettings{
@@ -78,16 +110,16 @@ func makeClient(subscriptionID string, managementCert []byte, config ClientConfi
 
 	// Validate client configuration
 	if config.ManagementURL == "" {
-		return client, errors.New("azure: base URL required")
+		return c, errors.New("azure: base URL required")
 	} else if config.OperationPollInterval <= 0 {
-		return client, errors.New("azure: operation polling interval must be a positive duration")
+		return c, errors.New("azure: operation polling interval must be a positive duration")
 	} else if config.APIVersion == "" {
-		return client, errors.New("azure: client configuration must specify an API version")
+		return c, errors.New("azure: client configuration must specify an API version")
 	} else if config.UserAgent == "" {
 		config.UserAgent = DefaultUserAgent
 	}
 
-	return Client{
+	return client{
 		publishSettings: publishSettings,
 		config:          config,
 	}, nil

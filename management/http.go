@@ -16,9 +16,7 @@ const (
 	defaultContentHeaderValue = "application/xml"
 )
 
-// SendAzureGetRequest sends a request to the management API using the HTTP GET method
-// and returns the response body or an error.
-func (client *Client) SendAzureGetRequest(url string) ([]byte, error) {
+func (client client) SendAzureGetRequest(url string) ([]byte, error) {
 	resp, err := client.sendAzureRequest("GET", url, "", nil)
 	if err != nil {
 		return nil, err
@@ -26,26 +24,19 @@ func (client *Client) SendAzureGetRequest(url string) ([]byte, error) {
 	return getResponseBody(resp)
 }
 
-// SendAzurePostRequest sends a request to the management API using the HTTP POST method
-// and returns the request ID or an error.
-func (client *Client) SendAzurePostRequest(url string, data []byte) (OperationID, error) {
+func (client client) SendAzurePostRequest(url string, data []byte) (OperationID, error) {
 	return client.doAzureOperation("POST", url, "", data)
 }
 
-// SendAzurePutRequest sends a request to the management API using the HTTP PUT method
-// and returns the request ID or an error. The content type can be specified, however
-// if an empty string is passed, the default of "application/xml" will be used.
-func (client *Client) SendAzurePutRequest(url, contentType string, data []byte) (OperationID, error) {
+func (client client) SendAzurePutRequest(url, contentType string, data []byte) (OperationID, error) {
 	return client.doAzureOperation("PUT", url, contentType, data)
 }
 
-// SendAzureDeleteRequest sends a request to the management API using the HTTP DELETE method
-// and returns the request ID or an error.
-func (client *Client) SendAzureDeleteRequest(url string) (OperationID, error) {
+func (client client) SendAzureDeleteRequest(url string) (OperationID, error) {
 	return client.doAzureOperation("DELETE", url, "", nil)
 }
 
-func (client *Client) doAzureOperation(method, url, contentType string, data []byte) (OperationID, error) {
+func (client client) doAzureOperation(method, url, contentType string, data []byte) (OperationID, error) {
 	response, err := client.sendAzureRequest(method, url, contentType, data)
 	if err != nil {
 		return "", err
@@ -63,7 +54,7 @@ func getOperationID(response *http.Response) (OperationID, error) {
 
 // sendAzureRequest constructs an HTTP client for the request, sends it to the
 // management API and returns the response or an error.
-func (client *Client) sendAzureRequest(method, url, contentType string, data []byte) (*http.Response, error) {
+func (client client) sendAzureRequest(method, url, contentType string, data []byte) (*http.Response, error) {
 	if method == "" {
 		return nil, fmt.Errorf(errParamNotSpecified, "method")
 	}
@@ -83,7 +74,7 @@ func (client *Client) sendAzureRequest(method, url, contentType string, data []b
 
 // createHTTPClient creates an HTTP Client configured with the key pair for
 // the subscription for this client.
-func (client *Client) createHTTPClient() *http.Client {
+func (client client) createHTTPClient() *http.Client {
 	cert, _ := tls.X509KeyPair(client.publishSettings.SubscriptionCert, client.publishSettings.SubscriptionKey)
 
 	ssl := &tls.Config{}
@@ -102,7 +93,7 @@ func (client *Client) createHTTPClient() *http.Client {
 // sendRequest sends a request to the Azure management API using the given
 // HTTP client and parameters. It returns the response from the call or an
 // error.
-func (client *Client) sendRequest(httpClient *http.Client, url, requestType, contentType string, data []byte, numberOfRetries int) (*http.Response, error) {
+func (client client) sendRequest(httpClient *http.Client, url, requestType, contentType string, data []byte, numberOfRetries int) (*http.Response, error) {
 	request, reqErr := client.createAzureRequest(url, requestType, contentType, data)
 	if reqErr != nil {
 		return nil, reqErr
@@ -138,7 +129,7 @@ func (client *Client) sendRequest(httpClient *http.Client, url, requestType, con
 
 // createAzureRequest packages up the request with the correct set of headers and returns
 // the request object or an error.
-func (client *Client) createAzureRequest(url string, requestType string, contentType string, data []byte) (*http.Request, error) {
+func (client client) createAzureRequest(url string, requestType string, contentType string, data []byte) (*http.Request, error) {
 	var request *http.Request
 	var err error
 

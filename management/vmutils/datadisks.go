@@ -8,7 +8,7 @@ import (
 )
 
 // ConfigureWithNewDataDisk adds configuration for a new (empty) data disk
-func ConfigureWithNewDataDisk(role *vm.Role, label, destinationVhdStorageURL string, sizeInGB float64, cachingType vmdisk.HostCachingType) error {
+func ConfigureWithNewDataDisk(role *vm.Role, label, destinationVhdStorageURL string, sizeInGB int, cachingType vmdisk.HostCachingType) error {
 	if role == nil {
 		return fmt.Errorf(errParamNotSpecified, "role")
 	}
@@ -24,13 +24,13 @@ func ConfigureWithNewDataDisk(role *vm.Role, label, destinationVhdStorageURL str
 }
 
 // ConfigureWithExistingDataDisk adds configuration for an existing data disk
-func ConfigureWithExistingDataDisk(role *vm.Role, diskname string, cachingType vmdisk.HostCachingType) error {
+func ConfigureWithExistingDataDisk(role *vm.Role, diskName string, cachingType vmdisk.HostCachingType) error {
 	if role == nil {
 		return fmt.Errorf(errParamNotSpecified, "role")
 	}
 
 	appendDataDisk(role, vm.DataVirtualHardDisk{
-		DiskName:    diskname,
+		DiskName:    diskName,
 		HostCaching: cachingType,
 	})
 

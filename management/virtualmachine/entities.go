@@ -253,7 +253,7 @@ type VMImageInput struct {
 // OSDiskConfiguration is used to resize the OS disk of a new VM created from a
 // previously saved VM image.
 type OSDiskConfiguration struct {
-	ResizedSizeInGB float64
+	ResizedSizeInGB int
 }
 
 // DataDiskConfiguration is used to resize the data disks of a new VM created
@@ -298,28 +298,26 @@ const (
 // DataVirtualHardDisk specifies the properties that are used to create a data
 // disk.
 type DataVirtualHardDisk struct {
-	DiskName    string                 `xml:",omitempty"` // If the disk that is being added is already registered in the subscription, this element is used to identify the disk to add. If a new disk and the associated VHD are being created by Azure, this element is not used and Azure assigns a unique name that is a combination of the deployment name, role name, and identifying number. The name of the disk must contain only alphanumeric characters, underscores, periods, or dashes. The name must not be longer than 256 characters. The name must not end with period or dash.
-	DiskLabel   string                 `xml:",omitempty"` // If the disk that is being added is already registered in the subscription, this element is ignored. If a new disk is being created, this element is used to provide a description of the disk. The value of this element is only obtained programmatically and does not appear in the Management Portal.
-	HostCaching vmdisk.HostCachingType `xml:",omitempty"` // Specifies the caching mode of the data disk. The default value is None.
-	MediaLink   string                 `xml:",omitempty"` // If the disk that is being added is already registered in the subscription or the VHD for the disk already exists in blob storage, this element is ignored. If a VHD file does not exist in blob storage, this element defines the location of the new VHD that is created when the new disk is added.
-
-	Lun                 int     `xml:",omitempty"` // Specifies the Logical Unit Number (LUN) for the data disk. If the disk is the first disk that is added, this element is optional and the default value of 0 is used. If more than one disk is being added, this element is required. Valid LUN values are 0 through 31.
-	LogicalDiskSizeInGB float64 `xml:",omitempty"` // Specifies the size, in GB, of an empty disk to be attached to the Virtual Machine. If the disk that is being added is already registered in the subscription, this element is ignored. If the disk and VHD is being created by Azure as it is added, this element defines the size of the new disk.
-	SourceMediaLink     string  `xml:",omitempty"` // If the disk that is being added is already registered in the subscription or the VHD for the disk does not exist in blob storage, this element is ignored. If the VHD file exists in blob storage, this element defines the path to the VHD and a disk is registered from it and attached to the virtual machine.
+	HostCaching         vmdisk.HostCachingType `xml:",omitempty"` // Specifies the caching mode of the data disk. The default value is None.
+	DiskLabel           string                 `xml:",omitempty"` // If the disk that is being added is already registered in the subscription, this element is ignored. If a new disk is being created, this element is used to provide a description of the disk. The value of this element is only obtained programmatically and does not appear in the Management Portal.
+	DiskName            string                 `xml:",omitempty"` // If the disk that is being added is already registered in the subscription, this element is used to identify the disk to add. If a new disk and the associated VHD are being created by Azure, this element is not used and Azure assigns a unique name that is a combination of the deployment name, role name, and identifying number. The name of the disk must contain only alphanumeric characters, underscores, periods, or dashes. The name must not be longer than 256 characters. The name must not end with period or dash.
+	Lun                 int                    `xml:",omitempty"` // Specifies the Logical Unit Number (LUN) for the data disk. If the disk is the first disk that is added, this element is optional and the default value of 0 is used. If more than one disk is being added, this element is required. Valid LUN values are 0 through 31.
+	LogicalDiskSizeInGB int                    `xml:",omitempty"` // Specifies the size, in GB, of an empty disk to be attached to the Virtual Machine. If the disk that is being added is already registered in the subscription, this element is ignored. If the disk and VHD is being created by Azure as it is added, this element defines the size of the new disk.
+	MediaLink           string                 `xml:",omitempty"` // If the disk that is being added is already registered in the subscription or the VHD for the disk already exists in blob storage, this element is ignored. If a VHD file does not exist in blob storage, this element defines the location of the new VHD that is created when the new disk is added.
+	SourceMediaLink     string                 `xml:",omitempty"` // If the disk that is being added is already registered in the subscription or the VHD for the disk does not exist in blob storage, this element is ignored. If the VHD file exists in blob storage, this element defines the path to the VHD and a disk is registered from it and attached to the virtual machine.
 }
 
 // OSVirtualHardDisk specifies the properties that are used to create an OS
 // disk.
 type OSVirtualHardDisk struct {
-	DiskName    string                 `xml:",omitempty"` // If the disk that is being added is already registered in the subscription, this element is used to identify the disk to add. If a new disk and the associated VHD are being created by Azure, this element is not used and Azure assigns a unique name that is a combination of the deployment name, role name, and identifying number. The name of the disk must contain only alphanumeric characters, underscores, periods, or dashes. The name must not be longer than 256 characters. The name must not end with period or dash.
-	DiskLabel   string                 `xml:",omitempty"` // If the disk that is being added is already registered in the subscription, this element is ignored. If a new disk is being created, this element is used to provide a description of the disk. The value of this element is only obtained programmatically and does not appear in the Management Portal.
-	HostCaching vmdisk.HostCachingType `xml:",omitempty"` // Specifies the caching mode of the data disk. The default value is None.
-	MediaLink   string                 `xml:",omitempty"` // If the disk that is being added is already registered in the subscription or the VHD for the disk already exists in blob storage, this element is ignored. If a VHD file does not exist in blob storage, this element defines the location of the new VHD that is created when the new disk is added.
-
-	SourceImageName       string  `xml:",omitempty"`
-	OS                    string  `xml:",omitempty"`
-	RemoteSourceImageLink string  `xml:",omitempty"` // Specifies a publicly accessible URI or a SAS URI to the location where an OS image is stored that is used to create the Virtual Machine. This location can be a different location than the user or platform image repositories in Azure. An image is always associated with a VHD, which is a .vhd file stored as a page blob in a storage account in Azure. If you specify the path to an image with this element, an associated VHD is created and you must use the MediaLink element to specify the location in storage where the VHD will be located. If this element is used, SourceImageName is not used.
-	ResizedSizeInGB       float64 `xml:",omitempty"`
+	HostCaching           vmdisk.HostCachingType `xml:",omitempty"` // Specifies the caching mode of the data disk. The default value is None.
+	DiskLabel             string                 `xml:",omitempty"` // If the disk that is being added is already registered in the subscription, this element is ignored. If a new disk is being created, this element is used to provide a description of the disk. The value of this element is only obtained programmatically and does not appear in the Management Portal.
+	DiskName              string                 `xml:",omitempty"` // If the disk that is being added is already registered in the subscription, this element is used to identify the disk to add. If a new disk and the associated VHD are being created by Azure, this element is not used and Azure assigns a unique name that is a combination of the deployment name, role name, and identifying number. The name of the disk must contain only alphanumeric characters, underscores, periods, or dashes. The name must not be longer than 256 characters. The name must not end with period or dash.
+	MediaLink             string                 `xml:",omitempty"` // If the disk that is being added is already registered in the subscription or the VHD for the disk already exists in blob storage, this element is ignored. If a VHD file does not exist in blob storage, this element defines the location of the new VHD that is created when the new disk is added.
+	SourceImageName       string                 `xml:",omitempty"`
+	OS                    string                 `xml:",omitempty"`
+	RemoteSourceImageLink string                 `xml:",omitempty"` // Specifies a publicly accessible URI or a SAS URI to the location where an OS image is stored that is used to create the Virtual Machine. This location can be a different location than the user or platform image repositories in Azure. An image is always associated with a VHD, which is a .vhd file stored as a page blob in a storage account in Azure. If you specify the path to an image with this element, an associated VHD is created and you must use the MediaLink element to specify the location in storage where the VHD will be located. If this element is used, SourceImageName is not used.
+	ResizedSizeInGB       int                    `xml:",omitempty"`
 }
 
 // ConfigurationSet specifies the configuration elements of the Virtual Machine.

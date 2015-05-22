@@ -40,16 +40,14 @@ const (
 // an operation
 type OperationID string
 
-// GetOperationStatus gets the status of operation with given Operation ID.
-// WaitForOperation utility method can be used for polling for operation status.
-func (client *Client) GetOperationStatus(operationID OperationID) (GetOperationStatusResponse, error) {
+func (c client) GetOperationStatus(operationID OperationID) (GetOperationStatusResponse, error) {
 	operation := GetOperationStatusResponse{}
 	if operationID == "" {
 		return operation, fmt.Errorf(errParamNotSpecified, "operationID")
 	}
 
 	url := fmt.Sprintf("operations/%s", operationID)
-	response, azureErr := client.SendAzureGetRequest(url)
+	response, azureErr := c.SendAzureGetRequest(url)
 	if azureErr != nil {
 		return operation, azureErr
 	}
@@ -58,34 +56,22 @@ func (client *Client) GetOperationStatus(operationID OperationID) (GetOperationS
 	return operation, err
 }
 
-// WaitForOperation polls the Azure API for given operation ID indefinitely
-// until the operation is completed with either success or failure.
-// It is meant to be used for waiting for the result of the methods that
-// return an OperationID value (meaning a long running operation has started).
-//
-// Cancellation of the polling loop (for instance, timing out) is done through
-// cancel channel. If the user does not want to cancel, a nil chan can be provided.
-// To cancel the method, it is recommended to close the channel provided to this
-// method.
-//
-// If the operation was not successful or cancelling is signaled, an error
-// is returned.
-func (client *Client) WaitForOperation(operationID OperationID, cancel chan struct{}) error {
+func (c client) WaitForOperation(operationID OperationID, cancel chan struct{}) error {
 	for {
-		done, err := client.checkOperationStatus(operationID)
+		done, err := c.checkOperationStatus(operationID)
 		if err != nil || done {
 			return err
 		}
 		select {
-		case <-time.After(client.config.OperationPollInterval):
+		case <-time.After(c.config.OperationPollInterval):
 		case <-cancel:
 			return ErrOperationCancelled
 		}
 	}
 }
 
-func (client *Client) checkOperationStatus(id OperationID) (done bool, err error) {
-	op, err := client.GetOperationStatus(id)
+func (c client) checkOperationStatus(id OperationID) (done bool, err error) {
+	op, err := c.GetOperationStatus(id)
 	if err != nil {
 		return false, fmt.Errorf("Failed to get operation status '%s': %v", id, err)
 	}

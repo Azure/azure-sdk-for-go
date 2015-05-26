@@ -13,9 +13,9 @@ const (
 	deleteSecurityGroupURL           = "services/networking/networksecuritygroups/%s"
 	getSecurityGroupURL              = "services/networking/networksecuritygroups/%s?detaillevel=full"
 	listSecurityGroupsURL            = "services/networking/networksecuritygroups"
-	addSecurityGroupToSubnetURL      = "services/virtualnetwork/%s/subnets/%s/networksecuritygroups"
-	getSecurityGroupForSubnetURL     = "services/virtualnetwork/%s/subnets/%s/networksecuritygroups"
-	removeSecurityGroupFromSubnetURL = "services/virtualnetwork/%s/subnets/%s/networksecuritygroups/%s"
+	addSecurityGroupToSubnetURL      = "services/networking/virtualnetwork/%s/subnets/%s/networksecuritygroups"
+	getSecurityGroupForSubnetURL     = "services/networking/virtualnetwork/%s/subnets/%s/networksecuritygroups"
+	removeSecurityGroupFromSubnetURL = "services/networking/virtualnetwork/%s/subnets/%s/networksecuritygroups/%s"
 	setSecurityGroupRuleURL          = "services/networking/networksecuritygroups/%s/rules/%s"
 	deleteSecurityGroupRuleURL       = "services/networking/networksecuritygroups/%s/rules/%s"
 

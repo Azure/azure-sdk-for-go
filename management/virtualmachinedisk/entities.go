@@ -27,7 +27,7 @@ type CreateDiskParameters struct {
 // https://msdn.microsoft.com/en-us/library/azure/jj157188.aspx
 type UpdateDiskParameters struct {
 	XMLName         xml.Name `xml:"http://schemas.microsoft.com/windowsazure Disk"`
-	Name            string
+	DiskName        string
 	Label           string `xml:",omitempty"`
 	ResizedSizeInGB int    `xml:",omitempty"`
 }

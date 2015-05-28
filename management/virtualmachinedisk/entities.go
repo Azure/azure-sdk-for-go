@@ -27,9 +27,9 @@ type CreateDiskParameters struct {
 // https://msdn.microsoft.com/en-us/library/azure/jj157188.aspx
 type UpdateDiskParameters struct {
 	XMLName         xml.Name `xml:"http://schemas.microsoft.com/windowsazure Disk"`
-	DiskName        string
-	Label           string `xml:",omitempty"`
-	ResizedSizeInGB int    `xml:",omitempty"`
+	Label           string   `xml:",omitempty"`
+	Name            string
+	ResizedSizeInGB int `xml:",omitempty"`
 }
 
 // ListDiskResponse represents a disk

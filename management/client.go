@@ -98,7 +98,9 @@ func makeClient(subscriptionID string, managementCert []byte, config ClientConfi
 
 	if subscriptionID == "" {
 		return c, errors.New("azure: subscription ID required")
-	} else if len(managementCert) == 0 {
+	}
+
+	if len(managementCert) == 0 {
 		return c, errors.New("azure: management certificate required")
 	}
 
@@ -109,13 +111,14 @@ func makeClient(subscriptionID string, managementCert []byte, config ClientConfi
 	}
 
 	// Validate client configuration
-	if config.ManagementURL == "" {
+	switch {
+	case config.ManagementURL == "":
 		return c, errors.New("azure: base URL required")
-	} else if config.OperationPollInterval <= 0 {
+	case config.OperationPollInterval <= 0:
 		return c, errors.New("azure: operation polling interval must be a positive duration")
-	} else if config.APIVersion == "" {
+	case config.APIVersion == "":
 		return c, errors.New("azure: client configuration must specify an API version")
-	} else if config.UserAgent == "" {
+	case config.UserAgent == "":
 		config.UserAgent = DefaultUserAgent
 	}
 

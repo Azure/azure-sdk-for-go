@@ -26,8 +26,8 @@ type Container struct {
 	// TODO (ahmetalpbalkan) Metadata
 }
 
-// ContainerProperties contains various properties of a
-// container returned from various endpoints like ListContainers.
+// ContainerProperties contains various properties of a container returned from
+// various endpoints like ListContainers.
 type ContainerProperties struct {
 	LastModified  string `xml:"Last-Modified"`
 	Etag          string `xml:"Etag"`
@@ -38,7 +38,9 @@ type ContainerProperties struct {
 }
 
 // ContainerListResponse contains the response fields from
-// ListContainers call. https://msdn.microsoft.com/en-us/library/azure/dd179352.aspx
+// ListContainers call.
+//
+// See https://msdn.microsoft.com/en-us/library/azure/dd179352.aspx
 type ContainerListResponse struct {
 	XMLName    xml.Name    `xml:"EnumerationResults"`
 	Xmlns      string      `xml:"xmlns,attr"`
@@ -76,7 +78,8 @@ type BlobProperties struct {
 }
 
 // BlobListResponse contains the response fields from ListBlobs call.
-// https://msdn.microsoft.com/en-us/library/azure/dd135734.aspx
+//
+// See https://msdn.microsoft.com/en-us/library/azure/dd135734.aspx
 type BlobListResponse struct {
 	XMLName    xml.Name `xml:"EnumerationResults"`
 	Xmlns      string   `xml:"xmlns,attr"`
@@ -87,8 +90,10 @@ type BlobListResponse struct {
 	Blobs      []Blob   `xml:"Blobs>Blob"`
 }
 
-// ListContainersParameters defines the set of customizable
-// parameters to make a List Containers call. https://msdn.microsoft.com/en-us/library/azure/dd179352.aspx
+// ListContainersParameters defines the set of customizable parameters to make a
+// List Containers call.
+//
+// See https://msdn.microsoft.com/en-us/library/azure/dd179352.aspx
 type ListContainersParameters struct {
 	Prefix     string
 	Marker     string
@@ -120,7 +125,9 @@ func (p ListContainersParameters) getParameters() url.Values {
 }
 
 // ListBlobsParameters defines the set of customizable
-// parameters to make a List Blobs call. https://msdn.microsoft.com/en-us/library/azure/dd135734.aspx
+// parameters to make a List Blobs call.
+//
+// See https://msdn.microsoft.com/en-us/library/azure/dd135734.aspx
 type ListBlobsParameters struct {
 	Prefix     string
 	Delimiter  string
@@ -181,10 +188,11 @@ const (
 	blobCopyStatusFailed  = "failed"
 )
 
-// BlockListType is used to filter out types of blocks
-// in a Get Blocks List call for a block blob. See
-// https://msdn.microsoft.com/en-us/library/azure/dd179400.aspx
-// for all block types.
+// BlockListType is used to filter out types of blocks in a Get Blocks List call
+// for a block blob.
+//
+// See https://msdn.microsoft.com/en-us/library/azure/dd179400.aspx for all
+// block types.
 type BlockListType string
 
 // Filters for listing blocks in block blobs
@@ -194,9 +202,11 @@ const (
 	BlockListTypeUncommitted BlockListType = "uncommitted"
 )
 
-// ContainerAccessType defines the access level to the container
-// from a public request. See https://msdn.microsoft.com/en-us/library/azure/dd179468.aspx
-// and "x-ms-blob-public-access" header.
+// ContainerAccessType defines the access level to the container from a public
+// request.
+//
+// See https://msdn.microsoft.com/en-us/library/azure/dd179468.aspx and "x-ms-
+// blob-public-access" header.
 type ContainerAccessType string
 
 // Access options for containers
@@ -230,8 +240,9 @@ type Block struct {
 	Status BlockStatus
 }
 
-// BlockListResponse contains the response fields from
-// Get Block List call. https://msdn.microsoft.com/en-us/library/azure/dd179400.aspx
+// BlockListResponse contains the response fields from Get Block List call.
+//
+// See https://msdn.microsoft.com/en-us/library/azure/dd179400.aspx
 type BlockListResponse struct {
 	XMLName           xml.Name        `xml:"BlockList"`
 	CommittedBlocks   []BlockResponse `xml:"CommittedBlocks>Block"`
@@ -246,32 +257,32 @@ type BlockResponse struct {
 }
 
 // GetPageRangesResponse contains the reponse fields from
-// Get Page Ranges call. https://msdn.microsoft.com/en-us/library/azure/ee691973.aspx
+// Get Page Ranges call.
+//
+// See https://msdn.microsoft.com/en-us/library/azure/ee691973.aspx
 type GetPageRangesResponse struct {
 	XMLName  xml.Name    `xml:"PageList"`
 	PageList []PageRange `xml:"PageRange"`
 }
 
 // PageRange contains information about a page of a page blob from
-// Get Pages Range call. https://msdn.microsoft.com/en-us/library/azure/ee691973.aspx
+// Get Pages Range call.
+//
+// See https://msdn.microsoft.com/en-us/library/azure/ee691973.aspx
 type PageRange struct {
 	Start int64 `xml:"Start"`
 	End   int64 `xml:"End"`
 }
 
-// Various specific errors that can be returned from the methods
 var (
-	ErrNotCreated  = errors.New("storage: operation has returned a successful error code other than 201 Created")
-	ErrNotAccepted = errors.New("storage: operation has returned a successful error code other than 202 Accepted")
-
 	errBlobCopyAborted    = errors.New("storage: blob copy is aborted")
 	errBlobCopyIDMismatch = errors.New("storage: blob copy id is a mismatch")
 )
 
-const errUnexpectedStatus = "storage: was expecting status code: %d, got: %d"
-
 // ListContainers returns the list of containers in a storage account along with
-// pagination token and other response details. See https://msdn.microsoft.com/en-us/library/azure/dd179352.aspx
+// pagination token and other response details.
+//
+// See https://msdn.microsoft.com/en-us/library/azure/dd179352.aspx
 func (b BlobStorageClient) ListContainers(params ListContainersParameters) (ContainerListResponse, error) {
 	q := mergeParams(params.getParameters(), url.Values{"comp": {"list"}})
 	uri := b.client.getEndpoint(blobServiceName, "", q)
@@ -288,17 +299,15 @@ func (b BlobStorageClient) ListContainers(params ListContainersParameters) (Cont
 }
 
 // CreateContainer creates a blob container within the storage account
-// with given name and access level. See https://msdn.microsoft.com/en-us/library/azure/dd179468.aspx
-// Returns error if container already exists.
+// with given name and access level. Returns error if container already exists.
+//
+// See https://msdn.microsoft.com/en-us/library/azure/dd179468.aspx
 func (b BlobStorageClient) CreateContainer(name string, access ContainerAccessType) error {
 	resp, err := b.createContainer(name, access)
 	if err != nil {
 		return err
 	}
-	if resp.statusCode != http.StatusCreated {
-		return ErrNotCreated
-	}
-	return nil
+	return checkRespCode(resp.statusCode, []int{http.StatusCreated})
 }
 
 // CreateContainerIfNotExists creates a blob container if it does not exist. Returns
@@ -338,23 +347,23 @@ func (b BlobStorageClient) ContainerExists(name string) (bool, error) {
 }
 
 // DeleteContainer deletes the container with given name on the storage
-// account. See https://msdn.microsoft.com/en-us/library/azure/dd179408.aspx
-// If the container does not exist returns error.
+// account. If the container does not exist returns error.
+//
+// See https://msdn.microsoft.com/en-us/library/azure/dd179408.aspx
 func (b BlobStorageClient) DeleteContainer(name string) error {
 	resp, err := b.deleteContainer(name)
 	if err != nil {
 		return err
 	}
-	if resp.statusCode != http.StatusAccepted {
-		return ErrNotAccepted
-	}
-	return nil
+	return checkRespCode(resp.statusCode, []int{http.StatusAccepted})
 }
 
 // DeleteContainerIfExists deletes the container with given name on the storage
-// account if it exists. See https://msdn.microsoft.com/en-us/library/azure/dd179408.aspx
-// Returns true if container is deleted with this call, or false
-// if the container did not exist at the time of the Delete Container operation.
+// account if it exists. Returns true if container is deleted with this call, or
+// false if the container did not exist at the time of the Delete Container
+// operation.
+//
+// See https://msdn.microsoft.com/en-us/library/azure/dd179408.aspx
 func (b BlobStorageClient) DeleteContainerIfExists(name string) (bool, error) {
 	resp, err := b.deleteContainer(name)
 	if resp != nil && (resp.statusCode == http.StatusAccepted || resp.statusCode == http.StatusNotFound) {
@@ -373,6 +382,7 @@ func (b BlobStorageClient) deleteContainer(name string) (*storageResponse, error
 
 // ListBlobs returns an object that contains list of blobs in the container,
 // pagination token and other information in the response of List Blobs call.
+//
 // See https://msdn.microsoft.com/en-us/library/azure/dd135734.aspx
 func (b BlobStorageClient) ListBlobs(container string, params ListBlobsParameters) (BlobListResponse, error) {
 	q := mergeParams(params.getParameters(), url.Values{
@@ -391,8 +401,8 @@ func (b BlobStorageClient) ListBlobs(container string, params ListBlobsParameter
 	return out, err
 }
 
-// BlobExists returns true if a blob with given name exists on the
-// specified container of the storage account.
+// BlobExists returns true if a blob with given name exists on the specified
+// container of the storage account.
 func (b BlobStorageClient) BlobExists(container, name string) (bool, error) {
 	verb := "HEAD"
 	uri := b.client.getEndpoint(blobServiceName, pathForBlob(container, name), url.Values{})
@@ -405,10 +415,10 @@ func (b BlobStorageClient) BlobExists(container, name string) (bool, error) {
 	return false, err
 }
 
-// GetBlobURL gets the canonical URL to the blob with the specified
-// name in the specified container. This method does not create a
-// publicly accessible URL if the blob or container is private and this
-// method does not check if the blob exists.
+// GetBlobURL gets the canonical URL to the blob with the specified name in the
+// specified container. This method does not create a publicly accessible URL if
+// the blob or container is private and this method does not check if the blob
+// exists.
 func (b BlobStorageClient) GetBlobURL(container, name string) string {
 	if container == "" {
 		container = "$root"
@@ -416,30 +426,33 @@ func (b BlobStorageClient) GetBlobURL(container, name string) string {
 	return b.client.getEndpoint(blobServiceName, pathForBlob(container, name), url.Values{})
 }
 
-// GetBlob downloads a blob to a stream. See https://msdn.microsoft.com/en-us/library/azure/dd179440.aspx
+// GetBlob returns a stream to read the blob.
+//
+// See https://msdn.microsoft.com/en-us/library/azure/dd179440.aspx
 func (b BlobStorageClient) GetBlob(container, name string) (io.ReadCloser, error) {
 	resp, err := b.getBlobRange(container, name, "")
 	if err != nil {
 		return nil, err
 	}
 
-	if resp.statusCode != http.StatusOK {
-		return nil, fmt.Errorf(errUnexpectedStatus, http.StatusOK, resp.statusCode)
+	if err := checkRespCode(resp.statusCode, []int{http.StatusOK}); err != nil {
+		return nil, err
 	}
 	return resp.body, nil
 }
 
-// GetBlobRange reads the specified range of a blob to a stream.
-// The bytesRange string must be in a format like "0-", "10-100"
-// as defined in HTTP 1.1 spec. See https://msdn.microsoft.com/en-us/library/azure/dd179440.aspx
+// GetBlobRange reads the specified range of a blob to a stream. The bytesRange
+// string must be in a format like "0-", "10-100" as defined in HTTP 1.1 spec.
+//
+// See https://msdn.microsoft.com/en-us/library/azure/dd179440.aspx
 func (b BlobStorageClient) GetBlobRange(container, name, bytesRange string) (io.ReadCloser, error) {
 	resp, err := b.getBlobRange(container, name, bytesRange)
 	if err != nil {
 		return nil, err
 	}
 
-	if resp.statusCode != http.StatusPartialContent {
-		return nil, fmt.Errorf(errUnexpectedStatus, http.StatusPartialContent, resp.statusCode)
+	if err := checkRespCode(resp.statusCode, []int{http.StatusPartialContent}); err != nil {
+		return nil, err
 	}
 	return resp.body, nil
 }
@@ -471,8 +484,8 @@ func (b BlobStorageClient) GetBlobProperties(container, name string) (*BlobPrope
 		return nil, err
 	}
 
-	if resp.statusCode != http.StatusOK {
-		return nil, fmt.Errorf(errUnexpectedStatus, http.StatusOK, resp.statusCode)
+	if err := checkRespCode(resp.statusCode, []int{http.StatusOK}); err != nil {
+		return nil, err
 	}
 
 	var contentLength int64
@@ -511,6 +524,7 @@ func (b BlobStorageClient) GetBlobProperties(container, name string) (*BlobPrope
 }
 
 // CreateBlockBlob initializes an empty block blob with no blocks.
+//
 // See https://msdn.microsoft.com/en-us/library/azure/dd179451.aspx
 func (b BlobStorageClient) CreateBlockBlob(container, name string) error {
 	path := fmt.Sprintf("%s/%s", container, name)
@@ -523,22 +537,22 @@ func (b BlobStorageClient) CreateBlockBlob(container, name string) error {
 	if err != nil {
 		return err
 	}
-	if resp.statusCode != http.StatusCreated {
-		return ErrNotCreated
-	}
-	return nil
+	return checkRespCode(resp.statusCode, []int{http.StatusCreated})
 }
 
 // PutBlock saves the given data chunk to the specified block blob with
-// given ID. See https://msdn.microsoft.com/en-us/library/azure/dd135726.aspx
+// given ID.
+//
+// See https://msdn.microsoft.com/en-us/library/azure/dd135726.aspx
 func (b BlobStorageClient) PutBlock(container, name, blockID string, chunk []byte) error {
 	return b.PutBlockWithLength(container, name, blockID, uint64(len(chunk)), bytes.NewReader(chunk))
 }
 
-// PutBlockWithLength saves the given data stream of exactly specified size to the block blob
-// with given ID. See https://msdn.microsoft.com/en-us/library/azure/dd135726.aspx
-// It is an alternative to PutBlocks where data comes as stream but the length is
-// known in advance.
+// PutBlockWithLength saves the given data stream of exactly specified size to
+// the block blob with given ID. It is an alternative to PutBlocks where data
+// comes as stream but the length is known in advance.
+//
+// See https://msdn.microsoft.com/en-us/library/azure/dd135726.aspx
 func (b BlobStorageClient) PutBlockWithLength(container, name, blockID string, size uint64, blob io.Reader) error {
 	uri := b.client.getEndpoint(blobServiceName, pathForBlob(container, name), url.Values{"comp": {"block"}, "blockid": {blockID}})
 	headers := b.client.getStandardHeaders()
@@ -549,15 +563,12 @@ func (b BlobStorageClient) PutBlockWithLength(container, name, blockID string, s
 	if err != nil {
 		return err
 	}
-	if resp.statusCode != http.StatusCreated {
-		return ErrNotCreated
-	}
-
-	return nil
+	return checkRespCode(resp.statusCode, []int{http.StatusCreated})
 }
 
-// PutBlockList saves list of blocks to the specified block blob. See
-// https://msdn.microsoft.com/en-us/library/azure/dd179467.aspx
+// PutBlockList saves list of blocks to the specified block blob.
+//
+// See https://msdn.microsoft.com/en-us/library/azure/dd179467.aspx
 func (b BlobStorageClient) PutBlockList(container, name string, blocks []Block) error {
 	blockListXML := prepareBlockListRequest(blocks)
 
@@ -569,14 +580,12 @@ func (b BlobStorageClient) PutBlockList(container, name string, blocks []Block) 
 	if err != nil {
 		return err
 	}
-	if resp.statusCode != http.StatusCreated {
-		return ErrNotCreated
-	}
-	return nil
+	return checkRespCode(resp.statusCode, []int{http.StatusCreated})
 }
 
-// GetBlockList retrieves list of blocks in the specified block blob. See
-// https://msdn.microsoft.com/en-us/library/azure/dd179400.aspx
+// GetBlockList retrieves list of blocks in the specified block blob.
+//
+// See https://msdn.microsoft.com/en-us/library/azure/dd179400.aspx
 func (b BlobStorageClient) GetBlockList(container, name string, blockType BlockListType) (BlockListResponse, error) {
 	params := url.Values{"comp": {"blocklist"}, "blocklisttype": {string(blockType)}}
 	uri := b.client.getEndpoint(blobServiceName, pathForBlob(container, name), params)
@@ -595,6 +604,7 @@ func (b BlobStorageClient) GetBlockList(container, name string, blockType BlockL
 // PutPageBlob initializes an empty page blob with specified name and maximum
 // size in bytes (size must be aligned to a 512-byte boundary). A page blob must
 // be created using this method before writing pages.
+//
 // See https://msdn.microsoft.com/en-us/library/azure/dd179451.aspx
 func (b BlobStorageClient) PutPageBlob(container, name string, size int64) error {
 	path := fmt.Sprintf("%s/%s", container, name)
@@ -608,15 +618,13 @@ func (b BlobStorageClient) PutPageBlob(container, name string, size int64) error
 	if err != nil {
 		return err
 	}
-	if resp.statusCode != http.StatusCreated {
-		return ErrNotCreated
-	}
-	return nil
+	return checkRespCode(resp.statusCode, []int{http.StatusCreated})
 }
 
 // PutPage writes a range of pages to a page blob or clears the given range.
 // In case of 'clear' writes, given chunk is discarded. Ranges must be aligned
 // with 512-byte boundaries and chunk must be of size multiplies by 512.
+//
 // See https://msdn.microsoft.com/en-us/library/ee691975.aspx
 func (b BlobStorageClient) PutPage(container, name string, startByte, endByte int64, writeType PageWriteType, chunk []byte) error {
 	path := fmt.Sprintf("%s/%s", container, name)
@@ -641,13 +649,11 @@ func (b BlobStorageClient) PutPage(container, name string, startByte, endByte in
 	if err != nil {
 		return err
 	}
-	if resp.statusCode != http.StatusCreated {
-		return ErrNotCreated
-	}
-	return nil
+	return checkRespCode(resp.statusCode, []int{http.StatusCreated})
 }
 
 // GetPageRanges returns the list of valid page ranges for a page blob.
+//
 // See https://msdn.microsoft.com/en-us/library/azure/ee691973.aspx
 func (b BlobStorageClient) GetPageRanges(container, name string) (GetPageRangesResponse, error) {
 	path := fmt.Sprintf("%s/%s", container, name)
@@ -660,18 +666,19 @@ func (b BlobStorageClient) GetPageRanges(container, name string) (GetPageRangesR
 		return out, err
 	}
 
-	if resp.statusCode != http.StatusOK {
-		return out, fmt.Errorf(errUnexpectedStatus, http.StatusOK, resp.statusCode)
+	if err := checkRespCode(resp.statusCode, []int{http.StatusOK}); err != nil {
+		return out, err
 	}
-
 	err = xmlUnmarshal(resp.body, &out)
 	return out, err
 }
 
-// CopyBlob starts a blob copy operation and waits for the operation to complete.
-// sourceBlob parameter must be a canonical URL to the blob (can be obtained using
-// GetBlobURL method.) There is no SLA on blob copy and therefore this helper
-// method works faster on smaller files. See https://msdn.microsoft.com/en-us/library/azure/dd894037.aspx
+// CopyBlob starts a blob copy operation and waits for the operation to
+// complete. sourceBlob parameter must be a canonical URL to the blob (can be
+// obtained using GetBlobURL method.) There is no SLA on blob copy and therefore
+// this helper method works faster on smaller files.
+//
+// See https://msdn.microsoft.com/en-us/library/azure/dd894037.aspx
 func (b BlobStorageClient) CopyBlob(container, name, sourceBlob string) error {
 	copyID, err := b.startBlobCopy(container, name, sourceBlob)
 	if err != nil {
@@ -692,8 +699,9 @@ func (b BlobStorageClient) startBlobCopy(container, name, sourceBlob string) (st
 	if err != nil {
 		return "", err
 	}
-	if resp.statusCode != http.StatusAccepted && resp.statusCode != http.StatusCreated {
-		return "", fmt.Errorf(errUnexpectedStatus, []int{http.StatusAccepted, http.StatusCreated}, resp.statusCode)
+
+	if err := checkRespCode(resp.statusCode, []int{http.StatusAccepted, http.StatusCreated}); err != nil {
+		return "", err
 	}
 
 	copyID := resp.headers.Get("x-ms-copy-id")
@@ -737,15 +745,13 @@ func (b BlobStorageClient) DeleteBlob(container, name string) error {
 	if err != nil {
 		return err
 	}
-	if resp.statusCode != http.StatusAccepted {
-		return ErrNotAccepted
-	}
-	return nil
+	return checkRespCode(resp.statusCode, []int{http.StatusAccepted})
 }
 
-// DeleteBlobIfExists deletes the given blob from the specified container
-// If the blob is deleted with this call, returns true. Otherwise returns
-// false. See https://msdn.microsoft.com/en-us/library/azure/dd179413.aspx
+// DeleteBlobIfExists deletes the given blob from the specified container If the
+// blob is deleted with this call, returns true. Otherwise returns false.
+//
+// See https://msdn.microsoft.com/en-us/library/azure/dd179413.aspx
 func (b BlobStorageClient) DeleteBlobIfExists(container, name string) (bool, error) {
 	resp, err := b.deleteBlob(container, name)
 	if resp != nil && (resp.statusCode == http.StatusAccepted || resp.statusCode == http.StatusNotFound) {
@@ -767,13 +773,16 @@ func pathForContainer(name string) string {
 	return fmt.Sprintf("/%s", name)
 }
 
-// helper method to construct the path to a blob given its container and blob name
+// helper method to construct the path to a blob given its container and blob
+// name
 func pathForBlob(container, name string) string {
 	return fmt.Sprintf("/%s/%s", container, name)
 }
 
-// GetBlobSASURI creates an URL to the specified blob which contains the Shared Access Signature
-// with specified permissions and expiration time. See https://msdn.microsoft.com/en-us/library/azure/ee395415.aspx
+// GetBlobSASURI creates an URL to the specified blob which contains the Shared
+// Access Signature with specified permissions and expiration time.
+//
+// See https://msdn.microsoft.com/en-us/library/azure/ee395415.aspx
 func (b BlobStorageClient) GetBlobSASURI(container, name string, expiry time.Time, permissions string) (string, error) {
 	var (
 		signedPermissions = permissions

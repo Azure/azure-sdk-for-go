@@ -1,6 +1,7 @@
 package storage
 
 import (
+	"bytes"
 	"crypto/hmac"
 	"crypto/sha256"
 	"encoding/base64"
@@ -60,4 +61,12 @@ func xmlUnmarshal(body io.ReadCloser, v interface{}) error {
 	}
 	defer body.Close()
 	return xml.Unmarshal(data, v)
+}
+
+func xmlMarshal(v interface{}) (io.Reader, int, error) {
+	b, err := xml.Marshal(v)
+	if err != nil {
+		return nil, 0, err
+	}
+	return bytes.NewReader(b), len(b), nil
 }

@@ -4,12 +4,10 @@ import (
 	"bytes"
 	"crypto/rand"
 	"encoding/base64"
-	"errors"
 	"fmt"
 	"io/ioutil"
 	"net/http"
 	"net/url"
-	"os"
 	"reflect"
 	"sort"
 	"sync"
@@ -18,6 +16,10 @@ import (
 )
 
 const testContainerPrefix = "zzzztest-"
+
+func getBlobClient(t *testing.T) BlobStorageClient {
+	return getBasicClient(t).GetBlobService()
+}
 
 func Test_pathForContainer(t *testing.T) {
 	out := pathForContainer("foo")
@@ -103,17 +105,14 @@ func TestGetBlobSASURI(t *testing.T) {
 }
 
 func TestBlobSASURICorrectness(t *testing.T) {
-	cli, err := getBlobClient()
-	if err != nil {
-		t.Fatal(err)
-	}
+	cli := getBlobClient(t)
 	cnt := randContainer()
 	blob := randString(20)
 	body := []byte(randString(100))
 	expiry := time.Now().UTC().Add(time.Hour)
 	permissions := "r"
 
-	err = cli.CreateContainer(cnt, ContainerAccessTypePrivate)
+	err := cli.CreateContainer(cnt, ContainerAccessTypePrivate)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -151,12 +150,8 @@ func TestBlobSASURICorrectness(t *testing.T) {
 }
 
 func TestListContainersPagination(t *testing.T) {
-	cli, err := getBlobClient()
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	err = deleteTestContainers(cli)
+	cli := getBlobClient(t)
+	err := deleteTestContainers(cli)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -229,12 +224,7 @@ func TestListContainersPagination(t *testing.T) {
 
 func TestContainerExists(t *testing.T) {
 	cnt := randContainer()
-
-	cli, err := getBlobClient()
-	if err != nil {
-		t.Fatal(err)
-	}
-
+	cli := getBlobClient(t)
 	ok, err := cli.ContainerExists(cnt)
 	if err != nil {
 		t.Fatal(err)
@@ -260,13 +250,8 @@ func TestContainerExists(t *testing.T) {
 
 func TestCreateDeleteContainer(t *testing.T) {
 	cnt := randContainer()
-
-	cli, err := getBlobClient()
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	err = cli.CreateContainer(cnt, ContainerAccessTypePrivate)
+	cli := getBlobClient(t)
+	err := cli.CreateContainer(cnt, ContainerAccessTypePrivate)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -280,12 +265,7 @@ func TestCreateDeleteContainer(t *testing.T) {
 
 func TestCreateContainerIfNotExists(t *testing.T) {
 	cnt := randContainer()
-
-	cli, err := getBlobClient()
-	if err != nil {
-		t.Fatal(err)
-	}
-
+	cli := getBlobClient(t)
 	// First create
 	ok, err := cli.CreateContainerIfNotExists(cnt, ContainerAccessTypePrivate)
 	if err != nil {
@@ -309,14 +289,9 @@ func TestCreateContainerIfNotExists(t *testing.T) {
 
 func TestDeleteContainerIfExists(t *testing.T) {
 	cnt := randContainer()
-
-	cli, err := getBlobClient()
-	if err != nil {
-		t.Fatal(err)
-	}
-
+	cli := getBlobClient(t)
 	// Nonexisting container
-	err = cli.DeleteContainer(cnt)
+	err := cli.DeleteContainer(cnt)
 	if err == nil {
 		t.Fatal("Expected error, got nil")
 	}
@@ -347,12 +322,8 @@ func TestBlobExists(t *testing.T) {
 	cnt := randContainer()
 	blob := randString(20)
 
-	cli, err := getBlobClient()
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	err = cli.CreateContainer(cnt, ContainerAccessTypeBlob)
+	cli := getBlobClient(t)
+	err := cli.CreateContainer(cnt, ContainerAccessTypeBlob)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -408,17 +379,13 @@ func TestBlobCopy(t *testing.T) {
 		t.Skip("skipping blob copy in short mode, no SLA on async operation")
 	}
 
-	cli, err := getBlobClient()
-	if err != nil {
-		t.Fatal(err)
-	}
-
+	cli := getBlobClient(t)
 	cnt := randContainer()
 	src := randString(20)
 	dst := randString(20)
 	body := []byte(randString(1024))
 
-	err = cli.CreateContainer(cnt, ContainerAccessTypePrivate)
+	err := cli.CreateContainer(cnt, ContainerAccessTypePrivate)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -456,12 +423,8 @@ func TestDeleteBlobIfExists(t *testing.T) {
 	cnt := randContainer()
 	blob := randString(20)
 
-	cli, err := getBlobClient()
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	err = cli.DeleteBlob(cnt, blob)
+	cli := getBlobClient(t)
+	err := cli.DeleteBlob(cnt, blob)
 	if err == nil {
 		t.Fatal("Nonexisting blob did not return error")
 	}
@@ -480,12 +443,8 @@ func TestGetBlobProperties(t *testing.T) {
 	blob := randString(20)
 	contents := randString(64)
 
-	cli, err := getBlobClient()
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	err = cli.CreateContainer(cnt, ContainerAccessTypePrivate)
+	cli := getBlobClient(t)
+	err := cli.CreateContainer(cnt, ContainerAccessTypePrivate)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -518,13 +477,9 @@ func TestGetBlobProperties(t *testing.T) {
 }
 
 func TestListBlobsPagination(t *testing.T) {
-	cli, err := getBlobClient()
-	if err != nil {
-		t.Fatal(err)
-	}
-
+	cli := getBlobClient(t)
 	cnt := randContainer()
-	err = cli.CreateContainer(cnt, ContainerAccessTypePrivate)
+	err := cli.CreateContainer(cnt, ContainerAccessTypePrivate)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -576,11 +531,7 @@ func TestListBlobsPagination(t *testing.T) {
 }
 
 func TestPutEmptyBlockBlob(t *testing.T) {
-	cli, err := getBlobClient()
-	if err != nil {
-		t.Fatal(err)
-	}
-
+	cli := getBlobClient(t)
 	cnt := randContainer()
 	if err := cli.CreateContainer(cnt, ContainerAccessTypePrivate); err != nil {
 		t.Fatal(err)
@@ -588,7 +539,7 @@ func TestPutEmptyBlockBlob(t *testing.T) {
 	defer cli.deleteContainer(cnt)
 
 	blob := randString(20)
-	err = cli.putSingleBlockBlob(cnt, blob, []byte{})
+	err := cli.putSingleBlockBlob(cnt, blob, []byte{})
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -607,12 +558,8 @@ func TestGetBlobRange(t *testing.T) {
 	blob := randString(20)
 	body := "0123456789"
 
-	cli, err := getBlobClient()
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	err = cli.CreateContainer(cnt, ContainerAccessTypeBlob)
+	cli := getBlobClient(t)
+	err := cli.CreateContainer(cnt, ContainerAccessTypeBlob)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -649,11 +596,7 @@ func TestGetBlobRange(t *testing.T) {
 }
 
 func TestPutBlock(t *testing.T) {
-	cli, err := getBlobClient()
-	if err != nil {
-		t.Fatal(err)
-	}
-
+	cli := getBlobClient(t)
 	cnt := randContainer()
 	if err := cli.CreateContainer(cnt, ContainerAccessTypePrivate); err != nil {
 		t.Fatal(err)
@@ -663,18 +606,14 @@ func TestPutBlock(t *testing.T) {
 	blob := randString(20)
 	chunk := []byte(randString(1024))
 	blockID := base64.StdEncoding.EncodeToString([]byte("foo"))
-	err = cli.PutBlock(cnt, blob, blockID, chunk)
+	err := cli.PutBlock(cnt, blob, blockID, chunk)
 	if err != nil {
 		t.Fatal(err)
 	}
 }
 
 func TestGetBlockList_PutBlockList(t *testing.T) {
-	cli, err := getBlobClient()
-	if err != nil {
-		t.Fatal(err)
-	}
-
+	cli := getBlobClient(t)
 	cnt := randContainer()
 	if err := cli.CreateContainer(cnt, ContainerAccessTypePrivate); err != nil {
 		t.Fatal(err)
@@ -686,7 +625,7 @@ func TestGetBlockList_PutBlockList(t *testing.T) {
 	blockID := base64.StdEncoding.EncodeToString([]byte("foo"))
 
 	// Put one block
-	err = cli.PutBlock(cnt, blob, blockID, chunk)
+	err := cli.PutBlock(cnt, blob, blockID, chunk)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -742,11 +681,7 @@ func TestGetBlockList_PutBlockList(t *testing.T) {
 }
 
 func TestCreateBlockBlob(t *testing.T) {
-	cli, err := getBlobClient()
-	if err != nil {
-		t.Fatal(err)
-	}
-
+	cli := getBlobClient(t)
 	cnt := randContainer()
 	if err := cli.CreateContainer(cnt, ContainerAccessTypePrivate); err != nil {
 		t.Fatal(err)
@@ -772,11 +707,7 @@ func TestCreateBlockBlob(t *testing.T) {
 }
 
 func TestPutPageBlob(t *testing.T) {
-	cli, err := getBlobClient()
-	if err != nil {
-		t.Fatal(err)
-	}
-
+	cli := getBlobClient(t)
 	cnt := randContainer()
 	if err := cli.CreateContainer(cnt, ContainerAccessTypePrivate); err != nil {
 		t.Fatal(err)
@@ -803,11 +734,7 @@ func TestPutPageBlob(t *testing.T) {
 }
 
 func TestPutPagesUpdate(t *testing.T) {
-	cli, err := getBlobClient()
-	if err != nil {
-		t.Fatal(err)
-	}
-
+	cli := getBlobClient(t)
 	cnt := randContainer()
 	if err := cli.CreateContainer(cnt, ContainerAccessTypePrivate); err != nil {
 		t.Fatal(err)
@@ -867,11 +794,7 @@ func TestPutPagesUpdate(t *testing.T) {
 }
 
 func TestPutPagesClear(t *testing.T) {
-	cli, err := getBlobClient()
-	if err != nil {
-		t.Fatal(err)
-	}
-
+	cli := getBlobClient(t)
 	cnt := randContainer()
 	if err := cli.CreateContainer(cnt, ContainerAccessTypePrivate); err != nil {
 		t.Fatal(err)
@@ -913,11 +836,7 @@ func TestPutPagesClear(t *testing.T) {
 }
 
 func TestGetPageRanges(t *testing.T) {
-	cli, err := getBlobClient()
-	if err != nil {
-		t.Fatal(err)
-	}
-
+	cli := getBlobClient(t)
 	cnt := randContainer()
 	if err := cli.CreateContainer(cnt, ContainerAccessTypePrivate); err != nil {
 		t.Fatal(err)
@@ -939,7 +858,7 @@ func TestGetPageRanges(t *testing.T) {
 	}
 
 	// Add 0-512 page
-	err = cli.PutPage(cnt, blob, 0, 511, PageWriteTypeUpdate, []byte(randString(512)))
+	err := cli.PutPage(cnt, blob, 0, 511, PageWriteTypeUpdate, []byte(randString(512)))
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -963,7 +882,7 @@ func TestGetPageRanges(t *testing.T) {
 	}
 }
 
-func deleteTestContainers(cli *BlobStorageClient) error {
+func deleteTestContainers(cli BlobStorageClient) error {
 	for {
 		resp, err := cli.ListContainers(ListContainersParameters{Prefix: testContainerPrefix})
 		if err != nil {
@@ -982,22 +901,6 @@ func deleteTestContainers(cli *BlobStorageClient) error {
 	return nil
 }
 
-func getBlobClient() (*BlobStorageClient, error) {
-	name := os.Getenv("ACCOUNT_NAME")
-	if name == "" {
-		return nil, errors.New("ACCOUNT_NAME not set, need an empty storage account to test")
-	}
-	key := os.Getenv("ACCOUNT_KEY")
-	if key == "" {
-		return nil, errors.New("ACCOUNT_KEY not set")
-	}
-	cli, err := NewBasicClient(name, key)
-	if err != nil {
-		return nil, err
-	}
-	return cli.GetBlobService(), nil
-}
-
 func (b BlobStorageClient) putSingleBlockBlob(container, name string, chunk []byte) error {
 	if len(chunk) > MaxBlobBlockSize {
 		return fmt.Errorf("storage: provided chunk (%d bytes) cannot fit into single-block blob (max %d bytes)", len(chunk), MaxBlobBlockSize)
@@ -1012,11 +915,7 @@ func (b BlobStorageClient) putSingleBlockBlob(container, name string, chunk []by
 	if err != nil {
 		return err
 	}
-	if resp.statusCode != http.StatusCreated {
-		return ErrNotCreated
-	}
-
-	return nil
+	return checkRespCode(resp.statusCode, []int{http.StatusCreated})
 }
 
 func randContainer() string {

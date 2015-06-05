@@ -61,6 +61,24 @@ type AzureStorageServiceError struct {
 	RequestID                 string
 }
 
+// UnexpectedStatusCodeError is returned when a storage service responds with neither an error
+// nor with an HTTP status code indicating success.
+type UnexpectedStatusCodeError struct {
+	allowed []int
+	got     int
+}
+
+func (e UnexpectedStatusCodeError) Error() string {
+	s := func(i int) string { return fmt.Sprintf("%d %s", i, http.StatusText(i)) }
+
+	got := s(e.got)
+	expected := []string{}
+	for _, v := range e.allowed {
+		expected = append(expected, s(v))
+	}
+	return fmt.Sprintf("storage: status code from service response is %s; was expecting %s", got, strings.Join(expected, " or "))
+}
+
 // NewBasicClient constructs a Client with given storage service name and
 // key.
 func NewBasicClient(accountName, accountKey string) (Client, error) {
@@ -126,8 +144,8 @@ func (c Client) getEndpoint(service, path string, params url.Values) string {
 
 // GetBlobService returns a BlobStorageClient which can operate on the blob
 // service of the storage account.
-func (c Client) GetBlobService() *BlobStorageClient {
-	return &BlobStorageClient{c}
+func (c Client) GetBlobService() BlobStorageClient {
+	return BlobStorageClient{c}
 }
 
 func (c Client) createAuthorizationHeader(canonicalizedString string) string {
@@ -320,5 +338,16 @@ func serviceErrFromXML(body []byte, statusCode int, requestID string) (AzureStor
 }
 
 func (e AzureStorageServiceError) Error() string {
-	return fmt.Sprintf("storage: remote server returned error. StatusCode=%d, ErrorCode=%s, ErrorMessage=%s, RequestId=%s", e.StatusCode, e.Code, e.Message, e.RequestID)
+	return fmt.Sprintf("storage: service returned error: StatusCode=%d, ErrorCode=%s, ErrorMessage=%s, RequestId=%s", e.StatusCode, e.Code, e.Message, e.RequestID)
+}
+
+// checkRespCode returns UnexpectedStatusError if the given response code is not
+// one of the allowed status codes; otherwise nil.
+func checkRespCode(respCode int, allowed []int) error {
+	for _, v := range allowed {
+		if respCode == v {
+			return nil
+		}
+	}
+	return UnexpectedStatusCodeError{allowed, respCode}
 }

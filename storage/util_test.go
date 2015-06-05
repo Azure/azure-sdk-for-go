@@ -1,6 +1,7 @@
 package storage
 
 import (
+	"encoding/xml"
 	"io/ioutil"
 	"net/url"
 	"reflect"
@@ -76,5 +77,34 @@ func Test_xmlUnmarshal(t *testing.T) {
 
 	if blob.Name != "myblob" {
 		t.Fatal("Got wrong value")
+	}
+}
+
+func Test_xmlMarshal(t *testing.T) {
+	type s struct {
+		XMLName xml.Name `xml:"S"`
+		Name    string   `xml:"Name"`
+	}
+
+	b := s{Name: "myblob"}
+	expected := `<S><Name>myblob</Name></S>`
+
+	r, i, err := xmlMarshal(b)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	o, err := ioutil.ReadAll(r)
+	if err != nil {
+		t.Fatal(err)
+	}
+	out := string(o)
+
+	if out != expected {
+		t.Fatalf("got wrong output: expected: '%s'; got: '%s'", expected, out)
+	}
+
+	if i != len(expected) {
+		t.Fatalf("got wrong length: %d; expected: %d", i, len(expected))
 	}
 }

@@ -3,6 +3,7 @@ package storage
 import (
 	"encoding/base64"
 	"net/url"
+	"os"
 	"testing"
 )
 
@@ -165,13 +166,8 @@ func Test_buildCanonicalizedHeader(t *testing.T) {
 }
 
 func TestReturnsStorageServiceError(t *testing.T) {
-	cli, err := getBlobClient()
-	if err != nil {
-		t.Fatal(err)
-	}
-
 	// attempt to delete a nonexisting container
-	_, err = cli.deleteContainer(randContainer())
+	_, err := getBlobClient(t).deleteContainer(randContainer())
 	if err == nil {
 		t.Fatal("Service has not returned an error")
 	}
@@ -185,6 +181,22 @@ func TestReturnsStorageServiceError(t *testing.T) {
 	} else if v.RequestID == "" {
 		t.Fatalf("RequestID does not exist")
 	}
+}
+
+func getBasicClient(t *testing.T) Client {
+	name := os.Getenv("ACCOUNT_NAME")
+	if name == "" {
+		t.Fatal("ACCOUNT_NAME not set, need an empty storage account to test")
+	}
+	key := os.Getenv("ACCOUNT_KEY")
+	if key == "" {
+		t.Fatal("ACCOUNT_KEY not set")
+	}
+	cli, err := NewBasicClient(name, key)
+	if err != nil {
+		t.Fatal(err)
+	}
+	return cli
 }
 
 func Test_createAuthorizationHeader(t *testing.T) {

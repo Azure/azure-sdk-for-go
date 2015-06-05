@@ -5,123 +5,97 @@ import (
 	"net/url"
 	"os"
 	"testing"
+
+	chk "gopkg.in/check.v1"
 )
 
-func TestGetBaseURL_Basic_Https(t *testing.T) {
-	cli, err := NewBasicClient("foo", "YmFy")
-	if err != nil {
-		t.Fatal(err)
-	}
+// Hook up gocheck to testing
+func Test(t *testing.T) { chk.TestingT(t) }
 
-	if cli.apiVersion != DefaultAPIVersion {
-		t.Fatalf("Wrong api version. Expected: '%s', got: '%s'", DefaultAPIVersion, cli.apiVersion)
-	}
+type StorageClientSuite struct{}
 
-	if err != nil {
-		t.Fatal(err)
-	}
-	output := cli.getBaseURL("table")
+var _ = chk.Suite(&StorageClientSuite{})
 
-	if expected := "https://foo.table.core.windows.net"; output != expected {
-		t.Fatalf("Wrong base url. Expected: '%s', got: '%s'", expected, output)
+// getBasicClient returns a test client from storage credentials in the env
+func getBasicClient(c *chk.C) Client {
+	name := os.Getenv("ACCOUNT_NAME")
+	if name == "" {
+		c.Fatal("ACCOUNT_NAME not set, need an empty storage account to test")
 	}
+	key := os.Getenv("ACCOUNT_KEY")
+	if key == "" {
+		c.Fatal("ACCOUNT_KEY not set")
+	}
+	cli, err := NewBasicClient(name, key)
+	c.Assert(err, chk.IsNil)
+	return cli
 }
 
-func TestGetBaseURL_Custom_NoHttps(t *testing.T) {
-	apiVersion := DefaultAPIVersion
+func (s *StorageClientSuite) TestGetBaseURL_Basic_Https(c *chk.C) {
+	cli, err := NewBasicClient("foo", "YmFy")
+	c.Assert(err, chk.IsNil)
+	c.Assert(cli.apiVersion, chk.Equals, DefaultAPIVersion)
+	c.Assert(err, chk.IsNil)
+	c.Assert(cli.getBaseURL("table"), chk.Equals, "https://foo.table.core.windows.net")
+}
+
+func (s *StorageClientSuite) TestGetBaseURL_Custom_NoHttps(c *chk.C) {
+	apiVersion := "2015-01-01" // a non existing one
 	cli, err := NewClient("foo", "YmFy", "core.chinacloudapi.cn", apiVersion, false)
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	if cli.apiVersion != apiVersion {
-		t.Fatalf("Wrong api version. Expected: '%s', got: '%s'", apiVersion, cli.apiVersion)
-	}
-
-	output := cli.getBaseURL("table")
-
-	if expected := "http://foo.table.core.chinacloudapi.cn"; output != expected {
-		t.Fatalf("Wrong base url. Expected: '%s', got: '%s'", expected, output)
-	}
+	c.Assert(err, chk.IsNil)
+	c.Assert(cli.apiVersion, chk.Equals, apiVersion)
+	c.Assert(cli.getBaseURL("table"), chk.Equals, "http://foo.table.core.chinacloudapi.cn")
 }
 
-func TestGetEndpoint_None(t *testing.T) {
+func (s *StorageClientSuite) TestGetEndpoint_None(c *chk.C) {
 	cli, err := NewBasicClient("foo", "YmFy")
-	if err != nil {
-		t.Fatal(err)
-	}
+	c.Assert(err, chk.IsNil)
 	output := cli.getEndpoint(blobServiceName, "", url.Values{})
-
-	if expected := "https://foo.blob.core.windows.net/"; output != expected {
-		t.Fatalf("Wrong endpoint url. Expected: '%s', got: '%s'", expected, output)
-	}
+	c.Assert(output, chk.Equals, "https://foo.blob.core.windows.net/")
 }
 
-func TestGetEndpoint_PathOnly(t *testing.T) {
+func (s *StorageClientSuite) TestGetEndpoint_PathOnly(c *chk.C) {
 	cli, err := NewBasicClient("foo", "YmFy")
-	if err != nil {
-		t.Fatal(err)
-	}
+	c.Assert(err, chk.IsNil)
 	output := cli.getEndpoint(blobServiceName, "path", url.Values{})
-
-	if expected := "https://foo.blob.core.windows.net/path"; output != expected {
-		t.Fatalf("Wrong endpoint url. Expected: '%s', got: '%s'", expected, output)
-	}
+	c.Assert(output, chk.Equals, "https://foo.blob.core.windows.net/path")
 }
 
-func TestGetEndpoint_ParamsOnly(t *testing.T) {
+func (s *StorageClientSuite) TestGetEndpoint_ParamsOnly(c *chk.C) {
 	cli, err := NewBasicClient("foo", "YmFy")
-	if err != nil {
-		t.Fatal(err)
-	}
+	c.Assert(err, chk.IsNil)
 	params := url.Values{}
 	params.Set("a", "b")
 	params.Set("c", "d")
 	output := cli.getEndpoint(blobServiceName, "", params)
-
-	if expected := "https://foo.blob.core.windows.net/?a=b&c=d"; output != expected {
-		t.Fatalf("Wrong endpoint url. Expected: '%s', got: '%s'", expected, output)
-	}
+	c.Assert(output, chk.Equals, "https://foo.blob.core.windows.net/?a=b&c=d")
 }
 
-func TestGetEndpoint_Mixed(t *testing.T) {
+func (s *StorageClientSuite) TestGetEndpoint_Mixed(c *chk.C) {
 	cli, err := NewBasicClient("foo", "YmFy")
-	if err != nil {
-		t.Fatal(err)
-	}
+	c.Assert(err, chk.IsNil)
 	params := url.Values{}
 	params.Set("a", "b")
 	params.Set("c", "d")
 	output := cli.getEndpoint(blobServiceName, "path", params)
-
-	if expected := "https://foo.blob.core.windows.net/path?a=b&c=d"; output != expected {
-		t.Fatalf("Wrong endpoint url. Expected: '%s', got: '%s'", expected, output)
-	}
+	c.Assert(output, chk.Equals, "https://foo.blob.core.windows.net/path?a=b&c=d")
 }
 
-func Test_getStandardHeaders(t *testing.T) {
+func (s *StorageClientSuite) Test_getStandardHeaders(c *chk.C) {
 	cli, err := NewBasicClient("foo", "YmFy")
-	if err != nil {
-		t.Fatal(err)
-	}
+	c.Assert(err, chk.IsNil)
 
 	headers := cli.getStandardHeaders()
-	if len(headers) != 2 {
-		t.Fatal("Wrong standard header count")
-	}
-	if v, ok := headers["x-ms-version"]; !ok || v != cli.apiVersion {
-		t.Fatal("Wrong version header")
-	}
+	c.Assert(len(headers), chk.Equals, 2)
+	c.Assert(headers["x-ms-version"], chk.Equals, cli.apiVersion)
 	if _, ok := headers["x-ms-date"]; !ok {
-		t.Fatal("Missing date header")
+		c.Fatal("Missing date header")
 	}
 }
 
-func Test_buildCanonicalizedResource(t *testing.T) {
+func (s *StorageClientSuite) Test_buildCanonicalizedResource(c *chk.C) {
 	cli, err := NewBasicClient("foo", "YmFy")
-	if err != nil {
-		t.Fatal(err)
-	}
+	c.Assert(err, chk.IsNil)
 
 	type test struct{ url, expected string }
 	tests := []test{
@@ -131,19 +105,15 @@ func Test_buildCanonicalizedResource(t *testing.T) {
 	}
 
 	for _, i := range tests {
-		if out, err := cli.buildCanonicalizedResource(i.url); err != nil {
-			t.Fatal(err)
-		} else if out != i.expected {
-			t.Fatalf("Wrong canonicalized resource. Expected:\n'%s', Got:\n'%s'", i.expected, out)
-		}
+		out, err := cli.buildCanonicalizedResource(i.url)
+		c.Assert(err, chk.IsNil)
+		c.Assert(out, chk.Equals, i.expected)
 	}
 }
 
-func Test_buildCanonicalizedHeader(t *testing.T) {
+func (s *StorageClientSuite) Test_buildCanonicalizedHeader(c *chk.C) {
 	cli, err := NewBasicClient("foo", "YmFy")
-	if err != nil {
-		t.Fatal(err)
-	}
+	c.Assert(err, chk.IsNil)
 
 	type test struct {
 		headers  map[string]string
@@ -159,57 +129,28 @@ func Test_buildCanonicalizedHeader(t *testing.T) {
 			"x-ms-blob-type": "BlockBlob"}, "x-ms-blob-type:BlockBlob\nx-ms-version:9999-99-99"}}
 
 	for _, i := range tests {
-		if out := cli.buildCanonicalizedHeader(i.headers); out != i.expected {
-			t.Fatalf("Wrong canonicalized resource. Expected:\n'%s', Got:\n'%s'", i.expected, out)
-		}
+		c.Assert(cli.buildCanonicalizedHeader(i.headers), chk.Equals, i.expected)
 	}
 }
 
-func TestReturnsStorageServiceError(t *testing.T) {
+func (s *StorageClientSuite) TestReturnsStorageServiceError(c *chk.C) {
 	// attempt to delete a nonexisting container
-	_, err := getBlobClient(t).deleteContainer(randContainer())
-	if err == nil {
-		t.Fatal("Service has not returned an error")
-	}
+	_, err := getBlobClient(c).deleteContainer(randContainer())
+	c.Assert(err, chk.NotNil)
 
-	if v, ok := err.(AzureStorageServiceError); !ok {
-		t.Fatal("Cannot assert to specific error")
-	} else if v.StatusCode != 404 {
-		t.Fatalf("Expected status:%d, got: %d", 404, v.StatusCode)
-	} else if v.Code != "ContainerNotFound" {
-		t.Fatalf("Expected code: %s, got: %s", "ContainerNotFound", v.Code)
-	} else if v.RequestID == "" {
-		t.Fatalf("RequestID does not exist")
-	}
+	v, ok := err.(AzureStorageServiceError)
+	c.Check(ok, chk.Equals, true)
+	c.Assert(v.StatusCode, chk.Equals, 404)
+	c.Assert(v.Code, chk.Equals, "ContainerNotFound")
+	c.Assert(v.Code, chk.Not(chk.Equals), "")
 }
 
-func getBasicClient(t *testing.T) Client {
-	name := os.Getenv("ACCOUNT_NAME")
-	if name == "" {
-		t.Fatal("ACCOUNT_NAME not set, need an empty storage account to test")
-	}
-	key := os.Getenv("ACCOUNT_KEY")
-	if key == "" {
-		t.Fatal("ACCOUNT_KEY not set")
-	}
-	cli, err := NewBasicClient(name, key)
-	if err != nil {
-		t.Fatal(err)
-	}
-	return cli
-}
-
-func Test_createAuthorizationHeader(t *testing.T) {
+func (s *StorageClientSuite) Test_createAuthorizationHeader(c *chk.C) {
 	key := base64.StdEncoding.EncodeToString([]byte("bar"))
 	cli, err := NewBasicClient("foo", key)
-	if err != nil {
-		t.Fatal(err)
-	}
+	c.Assert(err, chk.IsNil)
 
 	canonicalizedString := `foobarzoo`
 	expected := `SharedKey foo:h5U0ATVX6SpbFX1H6GNuxIMeXXCILLoIvhflPtuQZ30=`
-
-	if out := cli.createAuthorizationHeader(canonicalizedString); out != expected {
-		t.Fatalf("Wrong authorization header. Expected: '%s', Got:'%s'", expected, out)
-	}
+	c.Assert(cli.createAuthorizationHeader(canonicalizedString), chk.Equals, expected)
 }

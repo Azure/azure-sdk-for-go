@@ -8,53 +8,44 @@ import (
 	"io/ioutil"
 	"net/http"
 	"net/url"
-	"reflect"
 	"sort"
 	"sync"
 	"testing"
 	"time"
+
+	chk "gopkg.in/check.v1"
 )
+
+type StorageBlobSuite struct{}
+
+var _ = chk.Suite(&StorageBlobSuite{})
 
 const testContainerPrefix = "zzzztest-"
 
-func getBlobClient(t *testing.T) BlobStorageClient {
-	return getBasicClient(t).GetBlobService()
+func getBlobClient(c *chk.C) BlobStorageClient {
+	return getBasicClient(c).GetBlobService()
 }
 
-func Test_pathForContainer(t *testing.T) {
-	out := pathForContainer("foo")
-	if expected := "/foo"; out != expected {
-		t.Errorf("Wrong pathForContainer. Expected: '%s', got: '%s'", expected, out)
-	}
+func (s *StorageBlobSuite) Test_pathForContainer(c *chk.C) {
+	c.Assert(pathForContainer("foo"), chk.Equals, "/foo")
 }
 
-func Test_pathForBlob(t *testing.T) {
-	out := pathForBlob("foo", "blob")
-	if expected := "/foo/blob"; out != expected {
-		t.Errorf("Wrong pathForBlob. Expected: '%s', got: '%s'", expected, out)
-	}
+func (s *StorageBlobSuite) Test_pathForBlob(c *chk.C) {
+	c.Assert(pathForBlob("foo", "blob"), chk.Equals, "/foo/blob")
 }
 
-func Test_blobSASStringToSign(t *testing.T) {
+func (s *StorageBlobSuite) Test_blobSASStringToSign(c *chk.C) {
 	_, err := blobSASStringToSign("2012-02-12", "CS", "SE", "SP")
-	if err == nil {
-		t.Fatal("Expected error, got nil")
-	}
+	c.Assert(err, chk.NotNil) // not implemented SAS for versions earlier than 2013-08-15
 
 	out, err := blobSASStringToSign("2013-08-15", "CS", "SE", "SP")
-	if err != nil {
-		t.Fatal(err)
-	}
-	if expected := "SP\n\nSE\nCS\n\n2013-08-15\n\n\n\n\n"; out != expected {
-		t.Errorf("Wrong stringToSign. Expected: '%s', got: '%s'", expected, out)
-	}
+	c.Assert(err, chk.IsNil)
+	c.Assert(out, chk.Equals, "SP\n\nSE\nCS\n\n2013-08-15\n\n\n\n\n")
 }
 
-func TestGetBlobSASURI(t *testing.T) {
+func (s *StorageBlobSuite) TestGetBlobSASURI(c *chk.C) {
 	api, err := NewClient("foo", "YmFy", DefaultBaseURL, "2013-08-15", true)
-	if err != nil {
-		t.Fatal(err)
-	}
+	c.Assert(err, chk.IsNil)
 	cli := api.GetBlobService()
 	expiry := time.Time{}
 
@@ -71,90 +62,43 @@ func TestGetBlobSASURI(t *testing.T) {
 		}.Encode()}
 
 	u, err := cli.GetBlobSASURI("container", "name", expiry, "r")
-	if err != nil {
-		t.Fatal(err)
-	}
+	c.Assert(err, chk.IsNil)
 	sasParts, err := url.Parse(u)
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	expectedQuery := expectedParts.Query()
-	sasQuery := sasParts.Query()
-
-	expectedParts.RawQuery = "" // reset
-	sasParts.RawQuery = ""
-
-	if expectedParts.String() != sasParts.String() {
-		t.Fatalf("Base URL wrong for SAS. Expected: '%s', got: '%s'", expectedParts, sasParts)
-	}
-
-	if len(expectedQuery) != len(sasQuery) {
-		t.Fatalf("Query string wrong for SAS URL. Expected: '%d keys', got: '%d keys'", len(expectedQuery), len(sasQuery))
-	}
-
-	for k, v := range expectedQuery {
-		out, ok := sasQuery[k]
-		if !ok {
-			t.Fatalf("Query parameter '%s' not found in generated SAS query. Expected: '%s'", k, v)
-		}
-		if !reflect.DeepEqual(v, out) {
-			t.Fatalf("Wrong value for query parameter '%s'. Expected: '%s', got: '%s'", k, v, out)
-		}
-	}
+	c.Assert(err, chk.IsNil)
+	c.Assert(expectedParts.String(), chk.Equals, sasParts.String())
+	c.Assert(expectedParts.Query(), chk.DeepEquals, sasParts.Query())
 }
 
-func TestBlobSASURICorrectness(t *testing.T) {
-	cli := getBlobClient(t)
+func (s *StorageBlobSuite) TestBlobSASURICorrectness(c *chk.C) {
+	cli := getBlobClient(c)
 	cnt := randContainer()
 	blob := randString(20)
 	body := []byte(randString(100))
 	expiry := time.Now().UTC().Add(time.Hour)
 	permissions := "r"
 
-	err := cli.CreateContainer(cnt, ContainerAccessTypePrivate)
-	if err != nil {
-		t.Fatal(err)
-	}
+	c.Assert(cli.CreateContainer(cnt, ContainerAccessTypePrivate), chk.IsNil)
 	defer cli.DeleteContainer(cnt)
 
-	err = cli.putSingleBlockBlob(cnt, blob, body)
-	if err != nil {
-		t.Fatal(err)
-	}
+	c.Assert(cli.putSingleBlockBlob(cnt, blob, body), chk.IsNil)
 
 	sasURI, err := cli.GetBlobSASURI(cnt, blob, expiry, permissions)
-	if err != nil {
-		t.Fatal(err)
-	}
+	c.Assert(err, chk.IsNil)
 
 	resp, err := http.Get(sasURI)
-	if err != nil {
-		t.Logf("SAS URI: %s", sasURI)
-		t.Fatal(err)
-	}
+	c.Assert(err, chk.IsNil)
 
 	blobResp, err := ioutil.ReadAll(resp.Body)
 	defer resp.Body.Close()
-	if err != nil {
-		t.Fatal(err)
-	}
+	c.Assert(err, chk.IsNil)
 
-	if resp.StatusCode != http.StatusOK {
-		t.Fatalf("Non-ok status code: %s", resp.Status)
-	}
-
-	if len(blobResp) != len(body) {
-		t.Fatalf("Wrong blob size on SAS URI. Expected: %d, Got: %d", len(body), len(blobResp))
-	}
+	c.Assert(resp.StatusCode, chk.Equals, http.StatusOK)
+	c.Assert(len(blobResp), chk.Equals, len(body))
 }
 
-func TestListContainersPagination(t *testing.T) {
-	cli := getBlobClient(t)
-	err := deleteTestContainers(cli)
-	if err != nil {
-		t.Fatal(err)
-	}
+func (s *StorageBlobSuite) TestListContainersPagination(c *chk.C) {
+	cli := getBlobClient(c)
+	c.Assert(deleteTestContainers(cli), chk.IsNil)
 
 	const n = 5
 	const pageSize = 2
@@ -163,10 +107,7 @@ func TestListContainersPagination(t *testing.T) {
 	created := []string{}
 	for i := 0; i < n; i++ {
 		name := randContainer()
-		err := cli.CreateContainer(name, ContainerAccessTypePrivate)
-		if err != nil {
-			t.Fatalf("Error creating test container: %s", err)
-		}
+		c.Assert(cli.CreateContainer(name, ContainerAccessTypePrivate), chk.IsNil)
 		created = append(created, name)
 	}
 	sort.Strings(created)
@@ -177,10 +118,7 @@ func TestListContainersPagination(t *testing.T) {
 		for _, cnt := range created {
 			wg.Add(1)
 			go func(name string) {
-				err := cli.DeleteContainer(name)
-				if err != nil {
-					t.Logf("Error while deleting test container: %s", err)
-				}
+				c.Assert(cli.DeleteContainer(name), chk.IsNil)
 				wg.Done()
 			}(cnt)
 		}
@@ -195,15 +133,11 @@ func TestListContainersPagination(t *testing.T) {
 			Prefix:     testContainerPrefix,
 			MaxResults: pageSize,
 			Marker:     marker})
-
-		if err != nil {
-			t.Fatal(err)
-		}
+		c.Assert(err, chk.IsNil)
 
 		containers := resp.Containers
-
 		if len(containers) > pageSize {
-			t.Fatalf("Got a bigger page. Expected: %d, got: %d", pageSize, len(containers))
+			c.Fatalf("Got a bigger page. Expected: %d, got: %d", pageSize, len(containers))
 		}
 
 		for _, c := range containers {
@@ -216,273 +150,164 @@ func TestListContainersPagination(t *testing.T) {
 		}
 	}
 
-	// Compare
-	if !reflect.DeepEqual(created, seen) {
-		t.Fatalf("Wrong pagination results:\nExpected:\t\t%v\nGot:\t\t%v", created, seen)
-	}
+	c.Assert(seen, chk.DeepEquals, created)
 }
 
-func TestContainerExists(t *testing.T) {
+func (s *StorageBlobSuite) TestContainerExists(c *chk.C) {
 	cnt := randContainer()
-	cli := getBlobClient(t)
+	cli := getBlobClient(c)
 	ok, err := cli.ContainerExists(cnt)
-	if err != nil {
-		t.Fatal(err)
-	}
-	if ok {
-		t.Fatalf("Non-existing container returned as existing: %s", cnt)
-	}
+	c.Assert(err, chk.IsNil)
+	c.Assert(ok, chk.Equals, false)
 
-	err = cli.CreateContainer(cnt, ContainerAccessTypeBlob)
-	if err != nil {
-		t.Fatal(err)
-	}
+	c.Assert(cli.CreateContainer(cnt, ContainerAccessTypeBlob), chk.IsNil)
 	defer cli.DeleteContainer(cnt)
 
 	ok, err = cli.ContainerExists(cnt)
-	if err != nil {
-		t.Fatal(err)
-	}
-	if !ok {
-		t.Fatalf("Existing container returned as non-existing: %s", cnt)
-	}
+	c.Assert(err, chk.IsNil)
+	c.Assert(ok, chk.Equals, true)
 }
 
-func TestCreateDeleteContainer(t *testing.T) {
+func (s *StorageBlobSuite) TestCreateDeleteContainer(c *chk.C) {
 	cnt := randContainer()
-	cli := getBlobClient(t)
-	err := cli.CreateContainer(cnt, ContainerAccessTypePrivate)
-	if err != nil {
-		t.Fatal(err)
-	}
-	defer cli.DeleteContainer(cnt)
-
-	err = cli.DeleteContainer(cnt)
-	if err != nil {
-		t.Fatal(err)
-	}
+	cli := getBlobClient(c)
+	c.Assert(cli.CreateContainer(cnt, ContainerAccessTypePrivate), chk.IsNil)
+	c.Assert(cli.DeleteContainer(cnt), chk.IsNil)
 }
 
-func TestCreateContainerIfNotExists(t *testing.T) {
+func (s *StorageBlobSuite) TestCreateContainerIfNotExists(c *chk.C) {
 	cnt := randContainer()
-	cli := getBlobClient(t)
+	cli := getBlobClient(c)
+
 	// First create
 	ok, err := cli.CreateContainerIfNotExists(cnt, ContainerAccessTypePrivate)
-	if err != nil {
-		t.Fatal(err)
-	}
-	if expected := true; ok != expected {
-		t.Fatalf("Wrong creation status. Expected: %v; Got: %v", expected, ok)
-	}
+	c.Assert(err, chk.IsNil)
+	c.Assert(ok, chk.Equals, true)
 
 	// Second create, should not give errors
 	ok, err = cli.CreateContainerIfNotExists(cnt, ContainerAccessTypePrivate)
-	if err != nil {
-		t.Fatal(err)
-	}
-	if expected := false; ok != expected {
-		t.Fatalf("Wrong creation status. Expected: %v; Got: %v", expected, ok)
-	}
-
+	c.Assert(err, chk.IsNil)
 	defer cli.DeleteContainer(cnt)
+	c.Assert(ok, chk.Equals, false)
 }
 
-func TestDeleteContainerIfExists(t *testing.T) {
+func (s *StorageBlobSuite) TestDeleteContainerIfExists(c *chk.C) {
 	cnt := randContainer()
-	cli := getBlobClient(t)
+	cli := getBlobClient(c)
+
 	// Nonexisting container
-	err := cli.DeleteContainer(cnt)
-	if err == nil {
-		t.Fatal("Expected error, got nil")
-	}
+	c.Assert(cli.DeleteContainer(cnt), chk.NotNil)
 
 	ok, err := cli.DeleteContainerIfExists(cnt)
-	if err != nil {
-		t.Fatalf("Not supposed to return error, got: %s", err)
-	}
-	if expected := false; ok != expected {
-		t.Fatalf("Wrong deletion status. Expected: %v; Got: %v", expected, ok)
-	}
+	c.Assert(err, chk.IsNil)
+	c.Assert(ok, chk.Equals, false)
 
 	// Existing container
-	err = cli.CreateContainer(cnt, ContainerAccessTypePrivate)
-	if err != nil {
-		t.Fatal(err)
-	}
+	c.Assert(cli.CreateContainer(cnt, ContainerAccessTypePrivate), chk.IsNil)
 	ok, err = cli.DeleteContainerIfExists(cnt)
-	if err != nil {
-		t.Fatalf("Not supposed to return error, got: %s", err)
-	}
-	if expected := true; ok != expected {
-		t.Fatalf("Wrong deletion status. Expected: %v; Got: %v", expected, ok)
-	}
+	c.Assert(err, chk.IsNil)
+	c.Assert(ok, chk.Equals, true)
 }
 
-func TestBlobExists(t *testing.T) {
+func (s *StorageBlobSuite) TestBlobExists(c *chk.C) {
 	cnt := randContainer()
 	blob := randString(20)
+	cli := getBlobClient(c)
 
-	cli := getBlobClient(t)
-	err := cli.CreateContainer(cnt, ContainerAccessTypeBlob)
-	if err != nil {
-		t.Fatal(err)
-	}
+	c.Assert(cli.CreateContainer(cnt, ContainerAccessTypeBlob), chk.IsNil)
 	defer cli.DeleteContainer(cnt)
-	err = cli.putSingleBlockBlob(cnt, blob, []byte("Hello!"))
-	if err != nil {
-		t.Fatal(err)
-	}
+	c.Assert(cli.putSingleBlockBlob(cnt, blob, []byte("Hello!")), chk.IsNil)
 	defer cli.DeleteBlob(cnt, blob)
 
 	ok, err := cli.BlobExists(cnt, blob+".foo")
-	if err != nil {
-		t.Fatal(err)
-	}
-	if ok {
-		t.Errorf("Non-existing blob returned as existing: %s/%s", cnt, blob)
-	}
+	c.Assert(err, chk.IsNil)
+	c.Assert(ok, chk.Equals, false)
 
 	ok, err = cli.BlobExists(cnt, blob)
-	if err != nil {
-		t.Fatal(err)
-	}
-	if !ok {
-		t.Errorf("Existing blob returned as non-existing: %s/%s", cnt, blob)
-	}
+	c.Assert(err, chk.IsNil)
+	c.Assert(ok, chk.Equals, true)
 }
 
-func TestGetBlobURL(t *testing.T) {
+func (s *StorageBlobSuite) TestGetBlobURL(c *chk.C) {
 	api, err := NewBasicClient("foo", "YmFy")
-	if err != nil {
-		t.Fatal(err)
-	}
+	c.Assert(err, chk.IsNil)
 	cli := api.GetBlobService()
 
-	out := cli.GetBlobURL("c", "nested/blob")
-	if expected := "https://foo.blob.core.windows.net/c/nested/blob"; out != expected {
-		t.Fatalf("Wrong blob URL. Expected: '%s', got:'%s'", expected, out)
-	}
-
-	out = cli.GetBlobURL("", "blob")
-	if expected := "https://foo.blob.core.windows.net/$root/blob"; out != expected {
-		t.Fatalf("Wrong blob URL. Expected: '%s', got:'%s'", expected, out)
-	}
-
-	out = cli.GetBlobURL("", "nested/blob")
-	if expected := "https://foo.blob.core.windows.net/$root/nested/blob"; out != expected {
-		t.Fatalf("Wrong blob URL. Expected: '%s', got:'%s'", expected, out)
-	}
+	c.Assert(cli.GetBlobURL("c", "nested/blob"), chk.Equals, "https://foo.blob.core.windows.net/c/nested/blob")
+	c.Assert(cli.GetBlobURL("", "blob"), chk.Equals, "https://foo.blob.core.windows.net/$root/blob")
+	c.Assert(cli.GetBlobURL("", "nested/blob"), chk.Equals, "https://foo.blob.core.windows.net/$root/nested/blob")
 }
 
-func TestBlobCopy(t *testing.T) {
+func (s *StorageBlobSuite) TestBlobCopy(c *chk.C) {
 	if testing.Short() {
-		t.Skip("skipping blob copy in short mode, no SLA on async operation")
+		c.Skip("skipping blob copy in short mode, no SLA on async operation")
 	}
 
-	cli := getBlobClient(t)
+	cli := getBlobClient(c)
 	cnt := randContainer()
 	src := randString(20)
 	dst := randString(20)
 	body := []byte(randString(1024))
 
-	err := cli.CreateContainer(cnt, ContainerAccessTypePrivate)
-	if err != nil {
-		t.Fatal(err)
-	}
+	c.Assert(cli.CreateContainer(cnt, ContainerAccessTypePrivate), chk.IsNil)
 	defer cli.deleteContainer(cnt)
 
-	err = cli.putSingleBlockBlob(cnt, src, body)
-	if err != nil {
-		t.Fatal(err)
-	}
+	c.Assert(cli.putSingleBlockBlob(cnt, src, body), chk.IsNil)
 	defer cli.DeleteBlob(cnt, src)
 
-	err = cli.CopyBlob(cnt, dst, cli.GetBlobURL(cnt, src))
-	if err != nil {
-		t.Fatal(err)
-	}
+	c.Assert(cli.CopyBlob(cnt, dst, cli.GetBlobURL(cnt, src)), chk.IsNil)
 	defer cli.DeleteBlob(cnt, dst)
 
 	blobBody, err := cli.GetBlob(cnt, dst)
-	if err != nil {
-		t.Fatal(err)
-	}
+	c.Assert(err, chk.IsNil)
 
 	b, err := ioutil.ReadAll(blobBody)
 	defer blobBody.Close()
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	if !reflect.DeepEqual(body, b) {
-		t.Fatalf("Copied blob is wrong. Expected: %d bytes, got: %d bytes\n%s\n%s", len(body), len(b), body, b)
-	}
+	c.Assert(err, chk.IsNil)
+	c.Assert(b, chk.DeepEquals, body)
 }
 
-func TestDeleteBlobIfExists(t *testing.T) {
+func (s *StorageBlobSuite) TestDeleteBlobIfExists(c *chk.C) {
 	cnt := randContainer()
 	blob := randString(20)
 
-	cli := getBlobClient(t)
-	err := cli.DeleteBlob(cnt, blob)
-	if err == nil {
-		t.Fatal("Nonexisting blob did not return error")
-	}
+	cli := getBlobClient(c)
+	c.Assert(cli.DeleteBlob(cnt, blob), chk.NotNil)
 
 	ok, err := cli.DeleteBlobIfExists(cnt, blob)
-	if err != nil {
-		t.Fatalf("Not supposed to return error: %s", err)
-	}
-	if expected := false; ok != expected {
-		t.Fatalf("Wrong deletion status. Expected: %v; Got: %v", expected, ok)
-	}
+	c.Assert(err, chk.IsNil)
+	c.Assert(ok, chk.Equals, false)
 }
 
-func TestGetBlobProperties(t *testing.T) {
+func (s *StorageBlobSuite) TestGetBlobProperties(c *chk.C) {
 	cnt := randContainer()
 	blob := randString(20)
 	contents := randString(64)
 
-	cli := getBlobClient(t)
-	err := cli.CreateContainer(cnt, ContainerAccessTypePrivate)
-	if err != nil {
-		t.Fatal(err)
-	}
+	cli := getBlobClient(c)
+	c.Assert(cli.CreateContainer(cnt, ContainerAccessTypePrivate), chk.IsNil)
 	defer cli.DeleteContainer(cnt)
 
 	// Nonexisting blob
-	_, err = cli.GetBlobProperties(cnt, blob)
-	if err == nil {
-		t.Fatal("Did not return error for non-existing blob")
-	}
+	_, err := cli.GetBlobProperties(cnt, blob)
+	c.Assert(err, chk.NotNil)
 
 	// Put the blob
-	err = cli.putSingleBlockBlob(cnt, blob, []byte(contents))
-	if err != nil {
-		t.Fatal(err)
-	}
+	c.Assert(cli.putSingleBlockBlob(cnt, blob, []byte(contents)), chk.IsNil)
 
 	// Get blob properties
 	props, err := cli.GetBlobProperties(cnt, blob)
-	if err != nil {
-		t.Fatal(err)
-	}
+	c.Assert(err, chk.IsNil)
 
-	if props.ContentLength != int64(len(contents)) {
-		t.Fatalf("Got wrong Content-Length: '%d', expected: %d", props.ContentLength, len(contents))
-	}
-	if props.BlobType != BlobTypeBlock {
-		t.Fatalf("Got wrong BlobType. Expected:'%s', got:'%s'", BlobTypeBlock, props.BlobType)
-	}
+	c.Assert(props.ContentLength, chk.Equals, int64(len(contents)))
+	c.Assert(props.BlobType, chk.Equals, BlobTypeBlock)
 }
 
-func TestListBlobsPagination(t *testing.T) {
-	cli := getBlobClient(t)
+func (s *StorageBlobSuite) TestListBlobsPagination(c *chk.C) {
+	cli := getBlobClient(c)
 	cnt := randContainer()
-	err := cli.CreateContainer(cnt, ContainerAccessTypePrivate)
-	if err != nil {
-		t.Fatal(err)
-	}
+
+	c.Assert(cli.CreateContainer(cnt, ContainerAccessTypePrivate), chk.IsNil)
 	defer cli.DeleteContainer(cnt)
 
 	blobs := []string{}
@@ -490,10 +315,7 @@ func TestListBlobsPagination(t *testing.T) {
 	const pageSize = 2
 	for i := 0; i < n; i++ {
 		name := randString(20)
-		err := cli.putSingleBlockBlob(cnt, name, []byte("Hello, world!"))
-		if err != nil {
-			t.Fatal(err)
-		}
+		c.Assert(cli.putSingleBlockBlob(cnt, name, []byte("Hello, world!")), chk.IsNil)
 		blobs = append(blobs, name)
 	}
 	sort.Strings(blobs)
@@ -505,9 +327,7 @@ func TestListBlobsPagination(t *testing.T) {
 		resp, err := cli.ListBlobs(cnt, ListBlobsParameters{
 			MaxResults: pageSize,
 			Marker:     marker})
-		if err != nil {
-			t.Fatal(err)
-		}
+		c.Assert(err, chk.IsNil)
 
 		for _, v := range resp.Blobs {
 			seen = append(seen, v.Name)
@@ -520,55 +340,34 @@ func TestListBlobsPagination(t *testing.T) {
 	}
 
 	// Compare
-	if !reflect.DeepEqual(blobs, seen) {
-		t.Fatalf("Got wrong list of blobs. Expected: %s, Got: %s", blobs, seen)
-	}
-
-	err = cli.DeleteContainer(cnt)
-	if err != nil {
-		t.Fatal(err)
-	}
+	c.Assert(seen, chk.DeepEquals, blobs)
 }
 
-func TestPutEmptyBlockBlob(t *testing.T) {
-	cli := getBlobClient(t)
+func (s *StorageBlobSuite) TestPutEmptyBlockBlob(c *chk.C) {
+	cli := getBlobClient(c)
 	cnt := randContainer()
-	if err := cli.CreateContainer(cnt, ContainerAccessTypePrivate); err != nil {
-		t.Fatal(err)
-	}
+
+	c.Assert(cli.CreateContainer(cnt, ContainerAccessTypePrivate), chk.IsNil)
 	defer cli.deleteContainer(cnt)
 
 	blob := randString(20)
-	err := cli.putSingleBlockBlob(cnt, blob, []byte{})
-	if err != nil {
-		t.Fatal(err)
-	}
+	c.Assert(cli.putSingleBlockBlob(cnt, blob, []byte{}), chk.IsNil)
 
 	props, err := cli.GetBlobProperties(cnt, blob)
-	if err != nil {
-		t.Fatal(err)
-	}
-	if props.ContentLength != 0 {
-		t.Fatalf("Wrong content length for empty blob: %d", props.ContentLength)
-	}
+	c.Assert(err, chk.IsNil)
+	c.Assert(props.ContentLength, chk.Not(chk.Equals), 0)
 }
 
-func TestGetBlobRange(t *testing.T) {
+func (s *StorageBlobSuite) TestGetBlobRange(c *chk.C) {
 	cnt := randContainer()
 	blob := randString(20)
 	body := "0123456789"
 
-	cli := getBlobClient(t)
-	err := cli.CreateContainer(cnt, ContainerAccessTypeBlob)
-	if err != nil {
-		t.Fatal(err)
-	}
+	cli := getBlobClient(c)
+	c.Assert(cli.CreateContainer(cnt, ContainerAccessTypeBlob), chk.IsNil)
 	defer cli.DeleteContainer(cnt)
 
-	err = cli.putSingleBlockBlob(cnt, blob, []byte(body))
-	if err != nil {
-		t.Fatal(err)
-	}
+	c.Assert(cli.putSingleBlockBlob(cnt, blob, []byte(body)), chk.IsNil)
 	defer cli.DeleteBlob(cnt, blob)
 
 	// Read 1-3
@@ -581,43 +380,31 @@ func TestGetBlobRange(t *testing.T) {
 		{"3-", body[3:]},
 	} {
 		resp, err := cli.GetBlobRange(cnt, blob, r.rangeStr)
-		if err != nil {
-			t.Fatal(err)
-		}
+		c.Assert(err, chk.IsNil)
 		blobBody, err := ioutil.ReadAll(resp)
-		if err != nil {
-			t.Fatal(err)
-		}
+		c.Assert(err, chk.IsNil)
+
 		str := string(blobBody)
-		if str != r.expected {
-			t.Fatalf("Got wrong range. Expected: '%s'; Got:'%s'", r.expected, str)
-		}
+		c.Assert(str, chk.Equals, r.expected)
 	}
 }
 
-func TestPutBlock(t *testing.T) {
-	cli := getBlobClient(t)
+func (s *StorageBlobSuite) TestPutBlock(c *chk.C) {
+	cli := getBlobClient(c)
 	cnt := randContainer()
-	if err := cli.CreateContainer(cnt, ContainerAccessTypePrivate); err != nil {
-		t.Fatal(err)
-	}
+	c.Assert(cli.CreateContainer(cnt, ContainerAccessTypePrivate), chk.IsNil)
 	defer cli.deleteContainer(cnt)
 
 	blob := randString(20)
 	chunk := []byte(randString(1024))
 	blockID := base64.StdEncoding.EncodeToString([]byte("foo"))
-	err := cli.PutBlock(cnt, blob, blockID, chunk)
-	if err != nil {
-		t.Fatal(err)
-	}
+	c.Assert(cli.PutBlock(cnt, blob, blockID, chunk), chk.IsNil)
 }
 
-func TestGetBlockList_PutBlockList(t *testing.T) {
-	cli := getBlobClient(t)
+func (s *StorageBlobSuite) TestGetBlockList_PutBlockList(c *chk.C) {
+	cli := getBlobClient(c)
 	cnt := randContainer()
-	if err := cli.CreateContainer(cnt, ContainerAccessTypePrivate); err != nil {
-		t.Fatal(err)
-	}
+	c.Assert(cli.CreateContainer(cnt, ContainerAccessTypePrivate), chk.IsNil)
 	defer cli.deleteContainer(cnt)
 
 	blob := randString(20)
@@ -625,261 +412,163 @@ func TestGetBlockList_PutBlockList(t *testing.T) {
 	blockID := base64.StdEncoding.EncodeToString([]byte("foo"))
 
 	// Put one block
-	err := cli.PutBlock(cnt, blob, blockID, chunk)
-	if err != nil {
-		t.Fatal(err)
-	}
+	c.Assert(cli.PutBlock(cnt, blob, blockID, chunk), chk.IsNil)
 	defer cli.deleteBlob(cnt, blob)
 
 	// Get committed blocks
 	committed, err := cli.GetBlockList(cnt, blob, BlockListTypeCommitted)
-	if err != nil {
-		t.Fatal(err)
-	}
+	c.Assert(err, chk.IsNil)
 
 	if len(committed.CommittedBlocks) > 0 {
-		t.Fatal("There are committed blocks")
+		c.Fatal("There are committed blocks")
 	}
 
 	// Get uncommitted blocks
 	uncommitted, err := cli.GetBlockList(cnt, blob, BlockListTypeUncommitted)
-	if err != nil {
-		t.Fatal(err)
-	}
+	c.Assert(err, chk.IsNil)
 
-	if expected := 1; len(uncommitted.UncommittedBlocks) != expected {
-		t.Fatalf("Uncommitted blocks wrong. Expected: %d, got: %d", expected, len(uncommitted.UncommittedBlocks))
-	}
-
+	c.Assert(len(uncommitted.UncommittedBlocks), chk.Equals, 1)
 	// Commit block list
-	err = cli.PutBlockList(cnt, blob, []Block{{blockID, BlockStatusUncommitted}})
-	if err != nil {
-		t.Fatal(err)
-	}
+	c.Assert(cli.PutBlockList(cnt, blob, []Block{{blockID, BlockStatusUncommitted}}), chk.IsNil)
 
 	// Get all blocks
 	all, err := cli.GetBlockList(cnt, blob, BlockListTypeAll)
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	if expected := 1; len(all.CommittedBlocks) != expected {
-		t.Fatalf("Uncommitted blocks wrong. Expected: %d, got: %d", expected, len(uncommitted.CommittedBlocks))
-	}
-	if expected := 0; len(all.UncommittedBlocks) != expected {
-		t.Fatalf("Uncommitted blocks wrong. Expected: %d, got: %d", expected, len(uncommitted.UncommittedBlocks))
-	}
+	c.Assert(err, chk.IsNil)
+	c.Assert(len(all.CommittedBlocks), chk.Equals, 1)
+	c.Assert(len(all.UncommittedBlocks), chk.Equals, 0)
 
 	// Verify the block
 	thatBlock := all.CommittedBlocks[0]
-	if expected := blockID; expected != thatBlock.Name {
-		t.Fatalf("Wrong block name. Expected: %s, got: %s", expected, thatBlock.Name)
-	}
-	if expected := int64(len(chunk)); expected != thatBlock.Size {
-		t.Fatalf("Wrong block name. Expected: %d, got: %d", expected, thatBlock.Size)
-	}
+	c.Assert(thatBlock.Name, chk.Equals, blockID)
+	c.Assert(thatBlock.Size, chk.Equals, int64(len(chunk)))
 }
 
-func TestCreateBlockBlob(t *testing.T) {
-	cli := getBlobClient(t)
+func (s *StorageBlobSuite) TestCreateBlockBlob(c *chk.C) {
+	cli := getBlobClient(c)
 	cnt := randContainer()
-	if err := cli.CreateContainer(cnt, ContainerAccessTypePrivate); err != nil {
-		t.Fatal(err)
-	}
+	c.Assert(cli.CreateContainer(cnt, ContainerAccessTypePrivate), chk.IsNil)
 	defer cli.deleteContainer(cnt)
 
 	blob := randString(20)
-	if err := cli.CreateBlockBlob(cnt, blob); err != nil {
-		t.Fatal(err)
-	}
+	c.Assert(cli.CreateBlockBlob(cnt, blob), chk.IsNil)
 
 	// Verify
 	blocks, err := cli.GetBlockList(cnt, blob, BlockListTypeAll)
-	if err != nil {
-		t.Fatal(err)
-	}
-	if expected, got := 0, len(blocks.CommittedBlocks); expected != got {
-		t.Fatalf("Got wrong committed block count. Expected: %v, Got:%v ", expected, got)
-	}
-	if expected, got := 0, len(blocks.UncommittedBlocks); expected != got {
-		t.Fatalf("Got wrong uncommitted block count. Expected: %v, Got:%v ", expected, got)
-	}
+	c.Assert(err, chk.IsNil)
+	c.Assert(len(blocks.CommittedBlocks), chk.Equals, 0)
+	c.Assert(len(blocks.UncommittedBlocks), chk.Equals, 0)
 }
 
-func TestPutPageBlob(t *testing.T) {
-	cli := getBlobClient(t)
+func (s *StorageBlobSuite) TestPutPageBlob(c *chk.C) {
+	cli := getBlobClient(c)
 	cnt := randContainer()
-	if err := cli.CreateContainer(cnt, ContainerAccessTypePrivate); err != nil {
-		t.Fatal(err)
-	}
+	c.Assert(cli.CreateContainer(cnt, ContainerAccessTypePrivate), chk.IsNil)
 	defer cli.deleteContainer(cnt)
 
 	blob := randString(20)
 	size := int64(10 * 1024 * 1024)
-	if err := cli.PutPageBlob(cnt, blob, size); err != nil {
-		t.Fatal(err)
-	}
+	c.Assert(cli.PutPageBlob(cnt, blob, size), chk.IsNil)
 
 	// Verify
 	props, err := cli.GetBlobProperties(cnt, blob)
-	if err != nil {
-		t.Fatal(err)
-	}
-	if expected := size; expected != props.ContentLength {
-		t.Fatalf("Got wrong Content-Length. Expected: %v, Got:%v ", expected, props.ContentLength)
-	}
-	if expected := BlobTypePage; expected != props.BlobType {
-		t.Fatalf("Got wrong x-ms-blob-type. Expected: %v, Got:%v ", expected, props.BlobType)
-	}
+	c.Assert(err, chk.IsNil)
+	c.Assert(props.ContentLength, chk.Equals, size)
+	c.Assert(props.BlobType, chk.Equals, BlobTypePage)
 }
 
-func TestPutPagesUpdate(t *testing.T) {
-	cli := getBlobClient(t)
+func (s *StorageBlobSuite) TestPutPagesUpdate(c *chk.C) {
+	cli := getBlobClient(c)
 	cnt := randContainer()
-	if err := cli.CreateContainer(cnt, ContainerAccessTypePrivate); err != nil {
-		t.Fatal(err)
-	}
+	c.Assert(cli.CreateContainer(cnt, ContainerAccessTypePrivate), chk.IsNil)
 	defer cli.deleteContainer(cnt)
 
 	blob := randString(20)
 	size := int64(10 * 1024 * 1024) // larger than we'll use
-	if err := cli.PutPageBlob(cnt, blob, size); err != nil {
-		t.Fatal(err)
-	}
+	c.Assert(cli.PutPageBlob(cnt, blob, size), chk.IsNil)
 
 	chunk1 := []byte(randString(1024))
 	chunk2 := []byte(randString(512))
+
 	// Append chunks
-	if err := cli.PutPage(cnt, blob, 0, int64(len(chunk1)-1), PageWriteTypeUpdate, chunk1); err != nil {
-		t.Fatal(err)
-	}
-	if err := cli.PutPage(cnt, blob, int64(len(chunk1)), int64(len(chunk1)+len(chunk2)-1), PageWriteTypeUpdate, chunk2); err != nil {
-		t.Fatal(err)
-	}
+	c.Assert(cli.PutPage(cnt, blob, 0, int64(len(chunk1)-1), PageWriteTypeUpdate, chunk1), chk.IsNil)
+	c.Assert(cli.PutPage(cnt, blob, int64(len(chunk1)), int64(len(chunk1)+len(chunk2)-1), PageWriteTypeUpdate, chunk2), chk.IsNil)
 
 	// Verify contents
-	out, err := cli.GetBlobRange(cnt, blob, fmt.Sprintf("%v-%v", 0, len(chunk1)+len(chunk2)))
-	if err != nil {
-		t.Fatal(err)
-	}
-	blobContents, err := ioutil.ReadAll(out)
+	out, err := cli.GetBlobRange(cnt, blob, fmt.Sprintf("%v-%v", 0, len(chunk1)+len(chunk2)-1))
+	c.Assert(err, chk.IsNil)
 	defer out.Close()
-	if err != nil {
-		t.Fatal(err)
-	}
-	if expected := append(chunk1, chunk2...); reflect.DeepEqual(blobContents, expected) {
-		t.Fatalf("Got wrong blob.\nGot:%d bytes, Expected:%d bytes", len(blobContents), len(expected))
-	}
+	blobContents, err := ioutil.ReadAll(out)
+	c.Assert(err, chk.IsNil)
+	c.Assert(blobContents, chk.DeepEquals, append(chunk1, chunk2...))
 	out.Close()
 
 	// Overwrite first half of chunk1
 	chunk0 := []byte(randString(512))
-	if err := cli.PutPage(cnt, blob, 0, int64(len(chunk0)-1), PageWriteTypeUpdate, chunk0); err != nil {
-		t.Fatal(err)
-	}
+	c.Assert(cli.PutPage(cnt, blob, 0, int64(len(chunk0)-1), PageWriteTypeUpdate, chunk0), chk.IsNil)
 
 	// Verify contents
-	out, err = cli.GetBlobRange(cnt, blob, fmt.Sprintf("%v-%v", 0, len(chunk1)+len(chunk2)))
-	if err != nil {
-		t.Fatal(err)
-	}
-	blobContents, err = ioutil.ReadAll(out)
+	out, err = cli.GetBlobRange(cnt, blob, fmt.Sprintf("%v-%v", 0, len(chunk1)+len(chunk2)-1))
+	c.Assert(err, chk.IsNil)
 	defer out.Close()
-	if err != nil {
-		t.Fatal(err)
-	}
-	if expected := append(append(chunk0, chunk1[512:]...), chunk2...); reflect.DeepEqual(blobContents, expected) {
-		t.Fatalf("Got wrong blob.\nGot:%d bytes, Expected:%d bytes", len(blobContents), len(expected))
-	}
+	blobContents, err = ioutil.ReadAll(out)
+	c.Assert(err, chk.IsNil)
+	c.Assert(blobContents, chk.DeepEquals, append(append(chunk0, chunk1[512:]...), chunk2...))
 }
 
-func TestPutPagesClear(t *testing.T) {
-	cli := getBlobClient(t)
+func (s *StorageBlobSuite) TestPutPagesClear(c *chk.C) {
+	cli := getBlobClient(c)
 	cnt := randContainer()
-	if err := cli.CreateContainer(cnt, ContainerAccessTypePrivate); err != nil {
-		t.Fatal(err)
-	}
+	c.Assert(cli.CreateContainer(cnt, ContainerAccessTypePrivate), chk.IsNil)
 	defer cli.deleteContainer(cnt)
 
 	blob := randString(20)
 	size := int64(10 * 1024 * 1024) // larger than we'll use
-
-	if err := cli.PutPageBlob(cnt, blob, size); err != nil {
-		t.Fatal(err)
-	}
+	c.Assert(cli.PutPageBlob(cnt, blob, size), chk.IsNil)
 
 	// Put 0-2047
 	chunk := []byte(randString(2048))
-	if err := cli.PutPage(cnt, blob, 0, 2047, PageWriteTypeUpdate, chunk); err != nil {
-		t.Fatal(err)
-	}
+	c.Assert(cli.PutPage(cnt, blob, 0, 2047, PageWriteTypeUpdate, chunk), chk.IsNil)
 
 	// Clear 512-1023
-	if err := cli.PutPage(cnt, blob, 512, 1023, PageWriteTypeClear, nil); err != nil {
-		t.Fatal(err)
-	}
+	c.Assert(cli.PutPage(cnt, blob, 512, 1023, PageWriteTypeClear, nil), chk.IsNil)
 
-	// Get blob contents
-	if out, err := cli.GetBlobRange(cnt, blob, "0-2048"); err != nil {
-		t.Fatal(err)
-	} else {
-		contents, err := ioutil.ReadAll(out)
-		defer out.Close()
-		if err != nil {
-			t.Fatal(err)
-		}
-
-		if expected := append(append(chunk[:512], make([]byte, 512)...), chunk[1024:]...); reflect.DeepEqual(contents, expected) {
-			t.Fatalf("Cleared blob is not the same. Expected: (%d) %v; got: (%d) %v", len(expected), expected, len(contents), contents)
-		}
-	}
+	// Verify contents
+	out, err := cli.GetBlobRange(cnt, blob, "0-2047")
+	c.Assert(err, chk.IsNil)
+	contents, err := ioutil.ReadAll(out)
+	c.Assert(err, chk.IsNil)
+	defer out.Close()
+	c.Assert(contents, chk.DeepEquals, append(append(chunk[:512], make([]byte, 512)...), chunk[1024:]...))
 }
 
-func TestGetPageRanges(t *testing.T) {
-	cli := getBlobClient(t)
+func (s *StorageBlobSuite) TestGetPageRanges(c *chk.C) {
+	cli := getBlobClient(c)
 	cnt := randContainer()
-	if err := cli.CreateContainer(cnt, ContainerAccessTypePrivate); err != nil {
-		t.Fatal(err)
-	}
+	c.Assert(cli.CreateContainer(cnt, ContainerAccessTypePrivate), chk.IsNil)
 	defer cli.deleteContainer(cnt)
 
 	blob := randString(20)
 	size := int64(10 * 1024 * 1024) // larger than we'll use
-
-	if err := cli.PutPageBlob(cnt, blob, size); err != nil {
-		t.Fatal(err)
-	}
+	c.Assert(cli.PutPageBlob(cnt, blob, size), chk.IsNil)
 
 	// Get page ranges on empty blob
-	if out, err := cli.GetPageRanges(cnt, blob); err != nil {
-		t.Fatal(err)
-	} else if len(out.PageList) != 0 {
-		t.Fatal("Blob has pages")
-	}
+	out, err := cli.GetPageRanges(cnt, blob)
+	c.Assert(err, chk.IsNil)
+	c.Assert(len(out.PageList), chk.Equals, 0)
 
 	// Add 0-512 page
-	err := cli.PutPage(cnt, blob, 0, 511, PageWriteTypeUpdate, []byte(randString(512)))
-	if err != nil {
-		t.Fatal(err)
-	}
+	c.Assert(cli.PutPage(cnt, blob, 0, 511, PageWriteTypeUpdate, []byte(randString(512))), chk.IsNil)
 
-	if out, err := cli.GetPageRanges(cnt, blob); err != nil {
-		t.Fatal(err)
-	} else if expected := 1; len(out.PageList) != expected {
-		t.Fatalf("Expected %d pages, got: %d -- %v", expected, len(out.PageList), out.PageList)
-	}
+	out, err = cli.GetPageRanges(cnt, blob)
+	c.Assert(err, chk.IsNil)
+	c.Assert(len(out.PageList), chk.Equals, 1)
 
 	// Add 1024-2048
-	err = cli.PutPage(cnt, blob, 1024, 2047, PageWriteTypeUpdate, []byte(randString(1024)))
-	if err != nil {
-		t.Fatal(err)
-	}
+	c.Assert(cli.PutPage(cnt, blob, 1024, 2047, PageWriteTypeUpdate, []byte(randString(1024))), chk.IsNil)
 
-	if out, err := cli.GetPageRanges(cnt, blob); err != nil {
-		t.Fatal(err)
-	} else if expected := 2; len(out.PageList) != expected {
-		t.Fatalf("Expected %d pages, got: %d -- %v", expected, len(out.PageList), out.PageList)
-	}
+	out, err = cli.GetPageRanges(cnt, blob)
+	c.Assert(err, chk.IsNil)
+	c.Assert(len(out.PageList), chk.Equals, 2)
 }
 
 func deleteTestContainers(cli BlobStorageClient) error {

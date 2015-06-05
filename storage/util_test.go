@@ -4,107 +4,66 @@ import (
 	"encoding/xml"
 	"io/ioutil"
 	"net/url"
-	"reflect"
 	"strings"
-	"testing"
 	"time"
+
+	chk "gopkg.in/check.v1"
 )
 
-func Test_timeRfc1123Formatted(t *testing.T) {
+func (s *StorageClientSuite) Test_timeRfc1123Formatted(c *chk.C) {
 	now := time.Now().UTC()
-
 	expectedLayout := "Mon, 02 Jan 2006 15:04:05 GMT"
-	expected := now.Format(expectedLayout)
-
-	if output := timeRfc1123Formatted(now); output != expected {
-		t.Errorf("Expected: %s, got: %s", expected, output)
-	}
+	c.Assert(timeRfc1123Formatted(now), chk.Equals, now.Format(expectedLayout))
 }
 
-func Test_mergeParams(t *testing.T) {
+func (s *StorageClientSuite) Test_mergeParams(c *chk.C) {
 	v1 := url.Values{
 		"k1": {"v1"},
 		"k2": {"v2"}}
 	v2 := url.Values{
 		"k1": {"v11"},
 		"k3": {"v3"}}
-
 	out := mergeParams(v1, v2)
-	if v := out.Get("k1"); v != "v1" {
-		t.Errorf("Wrong value for k1: %s", v)
-	}
-
-	if v := out.Get("k2"); v != "v2" {
-		t.Errorf("Wrong value for k2: %s", v)
-	}
-
-	if v := out.Get("k3"); v != "v3" {
-		t.Errorf("Wrong value for k3: %s", v)
-	}
-
-	if v := out["k1"]; !reflect.DeepEqual(v, []string{"v1", "v11"}) {
-		t.Errorf("Wrong multi-value for k1: %s", v)
-	}
+	c.Assert(out.Get("k1"), chk.Equals, "v1")
+	c.Assert(out.Get("k2"), chk.Equals, "v2")
+	c.Assert(out.Get("k3"), chk.Equals, "v3")
+	c.Assert(out["k1"], chk.DeepEquals, []string{"v1", "v11"})
 }
 
-func Test_prepareBlockListRequest(t *testing.T) {
+func (s *StorageClientSuite) Test_prepareBlockListRequest(c *chk.C) {
 	empty := []Block{}
 	expected := `<?xml version="1.0" encoding="utf-8"?><BlockList></BlockList>`
-	if out := prepareBlockListRequest(empty); expected != out {
-		t.Errorf("Wrong block list. Expected: '%s', got: '%s'", expected, out)
-	}
+	c.Assert(prepareBlockListRequest(empty), chk.DeepEquals, expected)
 
 	blocks := []Block{{"foo", BlockStatusLatest}, {"bar", BlockStatusUncommitted}}
 	expected = `<?xml version="1.0" encoding="utf-8"?><BlockList><Latest>foo</Latest><Uncommitted>bar</Uncommitted></BlockList>`
-	if out := prepareBlockListRequest(blocks); expected != out {
-		t.Errorf("Wrong block list. Expected: '%s', got: '%s'", expected, out)
-	}
+	c.Assert(prepareBlockListRequest(blocks), chk.DeepEquals, expected)
 }
 
-func Test_xmlUnmarshal(t *testing.T) {
+func (s *StorageClientSuite) Test_xmlUnmarshal(c *chk.C) {
 	xml := `<?xml version="1.0" encoding="utf-8"?>
 	<Blob>
 		<Name>myblob</Name>
 	</Blob>`
-
-	body := ioutil.NopCloser(strings.NewReader(xml))
-
 	var blob Blob
-	err := xmlUnmarshal(body, &blob)
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	if blob.Name != "myblob" {
-		t.Fatal("Got wrong value")
-	}
+	body := ioutil.NopCloser(strings.NewReader(xml))
+	c.Assert(xmlUnmarshal(body, &blob), chk.IsNil)
+	c.Assert(blob.Name, chk.Equals, "myblob")
 }
 
-func Test_xmlMarshal(t *testing.T) {
-	type s struct {
+func (s *StorageClientSuite) Test_xmlMarshal(c *chk.C) {
+	type t struct {
 		XMLName xml.Name `xml:"S"`
 		Name    string   `xml:"Name"`
 	}
 
-	b := s{Name: "myblob"}
+	b := t{Name: "myblob"}
 	expected := `<S><Name>myblob</Name></S>`
-
 	r, i, err := xmlMarshal(b)
-	if err != nil {
-		t.Fatal(err)
-	}
-
+	c.Assert(err, chk.IsNil)
 	o, err := ioutil.ReadAll(r)
-	if err != nil {
-		t.Fatal(err)
-	}
+	c.Assert(err, chk.IsNil)
 	out := string(o)
-
-	if out != expected {
-		t.Fatalf("got wrong output: expected: '%s'; got: '%s'", expected, out)
-	}
-
-	if i != len(expected) {
-		t.Fatalf("got wrong length: %d; expected: %d", i, len(expected))
-	}
+	c.Assert(out, chk.Equals, expected)
+	c.Assert(i, chk.Equals, len(expected))
 }

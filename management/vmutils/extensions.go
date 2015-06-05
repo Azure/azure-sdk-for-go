@@ -26,7 +26,7 @@ func AddAzureVMExtensionConfiguration(role *vm.Role, name, publisher, version, r
 		State:         state,
 	}
 
-	if len(privateConfigurationValue) == 0 {
+	if len(privateConfigurationValue) != 0 {
 		extension.ParameterValues = append(extension.ParameterValues, vm.ResourceExtensionParameter{
 			Key:   "ignored",
 			Value: base64.StdEncoding.EncodeToString(privateConfigurationValue),
@@ -34,7 +34,7 @@ func AddAzureVMExtensionConfiguration(role *vm.Role, name, publisher, version, r
 		})
 	}
 
-	if len(publicConfigurationValue) == 0 {
+	if len(publicConfigurationValue) != 0 {
 		extension.ParameterValues = append(extension.ParameterValues, vm.ResourceExtensionParameter{
 			Key:   "ignored",
 			Value: base64.StdEncoding.EncodeToString(publicConfigurationValue),
@@ -42,7 +42,11 @@ func AddAzureVMExtensionConfiguration(role *vm.Role, name, publisher, version, r
 		})
 	}
 
-	role.ResourceExtensionReferences = append(role.ResourceExtensionReferences, extension)
+	if role.ResourceExtensionReferences == nil {
+		role.ResourceExtensionReferences = &[]vm.ResourceExtensionReference{}
+	}
+	extensionList := append(*role.ResourceExtensionReferences, extension)
+	role.ResourceExtensionReferences = &extensionList
 	return nil
 }
 

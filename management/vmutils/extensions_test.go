@@ -11,7 +11,7 @@ func Test_AddAzureVMExtensionConfiguration(t *testing.T) {
 
 	role := vm.Role{}
 	AddAzureVMExtensionConfiguration(&role,
-		"nameOfExtension", "nameOfPublisher", "versionOfExtension", "nameOfReference", "state", []byte{}, []byte{})
+		"nameOfExtension", "nameOfPublisher", "versionOfExtension", "nameOfReference", "state", []byte{1, 2, 3}, []byte{})
 
 	data, err := xml.MarshalIndent(role, "", "  ")
 	if err != nil {
@@ -28,12 +28,7 @@ func Test_AddAzureVMExtensionConfiguration(t *testing.T) {
       <ResourceExtensionParameterValues>
         <ResourceExtensionParameterValue>
           <Key>ignored</Key>
-          <Value></Value>
-          <Type>Private</Type>
-        </ResourceExtensionParameterValue>
-        <ResourceExtensionParameterValue>
-          <Key>ignored</Key>
-          <Value></Value>
+          <Value>AQID</Value>
           <Type>Public</Type>
         </ResourceExtensionParameterValue>
       </ResourceExtensionParameterValues>

@@ -263,15 +263,16 @@ func TestDocumentedDeploymentRequest(t *testing.T) {
 
 	// ======
 
-	t.Logf("(*deployment.RoleList[0].ResourceExtensionReferences)[0]: %+v", deployment.RoleList[0].ResourceExtensionReferences[0])
-	if deployment.RoleList[0].ResourceExtensionReferences[0].Name != "name-of-extension" {
+	extensionReferences := (*deployment.RoleList[0].ResourceExtensionReferences)
+	t.Logf("(*deployment.RoleList[0].ResourceExtensionReferences)[0]: %+v", extensionReferences[0])
+	if extensionReferences[0].Name != "name-of-extension" {
 		t.Fatalf("Expected (*deployment.RoleList[0].ResourceExtensionReferences)[0].Name=\"name-of-extension\", but got \"%s\"",
-			deployment.RoleList[0].ResourceExtensionReferences[0].Name)
+			extensionReferences[0].Name)
 	}
 
-	if deployment.RoleList[0].ResourceExtensionReferences[0].ParameterValues[0].Key != "name-of-parameter-key" {
+	if extensionReferences[0].ParameterValues[0].Key != "name-of-parameter-key" {
 		t.Fatalf("Expected (*deployment.RoleList[0].ResourceExtensionReferences)[0].ParameterValues[0].Key=\"name-of-parameter-key\", but got %v",
-			deployment.RoleList[0].ResourceExtensionReferences[0].ParameterValues[0].Key)
+			extensionReferences[0].ParameterValues[0].Key)
 	}
 
 	// ======

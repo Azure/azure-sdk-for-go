@@ -60,7 +60,6 @@ func TestNewLinuxVmRemoteImage(t *testing.T) {
       <PublicIPs></PublicIPs>
     </ConfigurationSet>
   </ConfigurationSets>
-  <ResourceExtensionReferences></ResourceExtensionReferences>
   <DataVirtualHardDisks></DataVirtualHardDisks>
   <OSVirtualHardDisk>
     <DiskLabel>OSDisk</DiskLabel>
@@ -113,7 +112,6 @@ func TestNewLinuxVmPlatformImage(t *testing.T) {
       <PublicIPs></PublicIPs>
     </ConfigurationSet>
   </ConfigurationSets>
-  <ResourceExtensionReferences></ResourceExtensionReferences>
   <DataVirtualHardDisks></DataVirtualHardDisks>
   <OSVirtualHardDisk>
     <MediaLink>http://mystorageacct.blob.core.windows.net/vhds/mybrandnewvm.vhd</MediaLink>
@@ -142,7 +140,6 @@ func TestNewVmFromVMImage(t *testing.T) {
   <RoleName>restoredbackup</RoleName>
   <RoleType>PersistentVMRole</RoleType>
   <ConfigurationSets></ConfigurationSets>
-  <ResourceExtensionReferences></ResourceExtensionReferences>
   <VMImageName>myvm-backup-20150209</VMImageName>
   <MediaLocation>http://mystorageacct.blob.core.windows.net/vhds/myoldnewvm.vhd</MediaLocation>
   <DataVirtualHardDisks></DataVirtualHardDisks>
@@ -192,7 +189,6 @@ func TestNewVmFromExistingDisk(t *testing.T) {
       <PublicIPs></PublicIPs>
     </ConfigurationSet>
   </ConfigurationSets>
-  <ResourceExtensionReferences></ResourceExtensionReferences>
   <DataVirtualHardDisks>
     <DataVirtualHardDisk>
       <HostCaching>ReadWrite</HostCaching>

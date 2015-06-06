@@ -224,18 +224,18 @@ type VirtualIP struct {
 // Role contains the configuration sets that are used to create virtual
 // machines.
 type Role struct {
-	RoleName                    string                       `xml:",omitempty"` // Specifies the name for the Virtual Machine.
-	RoleType                    string                       `xml:",omitempty"` // Specifies the type of role to use. For Virtual Machines, this must be PersistentVMRole.
-	ConfigurationSets           []ConfigurationSet           `xml:"ConfigurationSets>ConfigurationSet,omitempty"`
-	ResourceExtensionReferences []ResourceExtensionReference `xml:"ResourceExtensionReferences>ResourceExtensionReference,omitempty"`
-	VMImageName                 string                       `xml:",omitempty"`                                         // Specifies the name of the VM Image that is to be used to create the Virtual Machine. If this element is used, the ConfigurationSets element is not used.
-	MediaLocation               string                       `xml:",omitempty"`                                         // Required if the Virtual Machine is being created from a published VM Image. Specifies the location of the VHD file that is created when VMImageName specifies a published VM Image.
-	AvailabilitySetName         string                       `xml:",omitempty"`                                         // Specifies the name of a collection of Virtual Machines. Virtual Machines specified in the same availability set are allocated to different nodes to maximize availability.
-	DataVirtualHardDisks        []DataVirtualHardDisk        `xml:"DataVirtualHardDisks>DataVirtualHardDisk,omitempty"` // Contains the parameters that are used to add a data disk to a Virtual Machine. If you are creating a Virtual Machine by using a VM Image, this element is not used.
-	OSVirtualHardDisk           *OSVirtualHardDisk           `xml:",omitempty"`                                         // Contains the parameters that are used to create the operating system disk for a Virtual Machine. If you are creating a Virtual Machine by using a VM Image, this element is not used.
-	RoleSize                    string                       `xml:",omitempty"`                                         // Specifies the size of the Virtual Machine. The default size is Small.
-	ProvisionGuestAgent         bool                         `xml:",omitempty"`                                         // Indicates whether the VM Agent is installed on the Virtual Machine. To run a resource extension in a Virtual Machine, this service must be installed.
-	VMImageInput                *VMImageInput                `xml:",omitempty"`                                         // When a VM Image is used to create a new PersistentVMRole, the DiskConfigurations in the VM Image are used to create new Disks for the new VM. This parameter can be used to resize the newly created Disks to a larger size than the underlying DiskConfigurations in the VM Image.
+	RoleName                    string                        `xml:",omitempty"` // Specifies the name for the Virtual Machine.
+	RoleType                    string                        `xml:",omitempty"` // Specifies the type of role to use. For Virtual Machines, this must be PersistentVMRole.
+	ConfigurationSets           []ConfigurationSet            `xml:"ConfigurationSets>ConfigurationSet,omitempty"`
+	ResourceExtensionReferences *[]ResourceExtensionReference `xml:"ResourceExtensionReferences>ResourceExtensionReference,omitempty"`
+	VMImageName                 string                        `xml:",omitempty"`                                         // Specifies the name of the VM Image that is to be used to create the Virtual Machine. If this element is used, the ConfigurationSets element is not used.
+	MediaLocation               string                        `xml:",omitempty"`                                         // Required if the Virtual Machine is being created from a published VM Image. Specifies the location of the VHD file that is created when VMImageName specifies a published VM Image.
+	AvailabilitySetName         string                        `xml:",omitempty"`                                         // Specifies the name of a collection of Virtual Machines. Virtual Machines specified in the same availability set are allocated to different nodes to maximize availability.
+	DataVirtualHardDisks        []DataVirtualHardDisk         `xml:"DataVirtualHardDisks>DataVirtualHardDisk,omitempty"` // Contains the parameters that are used to add a data disk to a Virtual Machine. If you are creating a Virtual Machine by using a VM Image, this element is not used.
+	OSVirtualHardDisk           *OSVirtualHardDisk            `xml:",omitempty"`                                         // Contains the parameters that are used to create the operating system disk for a Virtual Machine. If you are creating a Virtual Machine by using a VM Image, this element is not used.
+	RoleSize                    string                        `xml:",omitempty"`                                         // Specifies the size of the Virtual Machine. The default size is Small.
+	ProvisionGuestAgent         bool                          `xml:",omitempty"`                                         // Indicates whether the VM Agent is installed on the Virtual Machine. To run a resource extension in a Virtual Machine, this service must be installed.
+	VMImageInput                *VMImageInput                 `xml:",omitempty"`                                         // When a VM Image is used to create a new PersistentVMRole, the DiskConfigurations in the VM Image are used to create new Disks for the new VM. This parameter can be used to resize the newly created Disks to a larger size than the underlying DiskConfigurations in the VM Image.
 
 	UseCertAuth bool   `xml:"-"`
 	CertPath    string `xml:"-"`

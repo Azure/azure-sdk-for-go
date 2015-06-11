@@ -293,6 +293,7 @@ func (b BlobStorageClient) ListContainers(params ListContainersParameters) (Cont
 	if err != nil {
 		return out, err
 	}
+	defer resp.body.Close()
 
 	err = xmlUnmarshal(resp.body, &out)
 	return out, err
@@ -307,6 +308,7 @@ func (b BlobStorageClient) CreateContainer(name string, access ContainerAccessTy
 	if err != nil {
 		return err
 	}
+	defer resp.body.Close()
 	return checkRespCode(resp.statusCode, []int{http.StatusCreated})
 }
 
@@ -314,8 +316,11 @@ func (b BlobStorageClient) CreateContainer(name string, access ContainerAccessTy
 // true if container is newly created or false if container already exists.
 func (b BlobStorageClient) CreateContainerIfNotExists(name string, access ContainerAccessType) (bool, error) {
 	resp, err := b.createContainer(name, access)
-	if resp != nil && (resp.statusCode == http.StatusCreated || resp.statusCode == http.StatusConflict) {
-		return resp.statusCode == http.StatusCreated, nil
+	if resp != nil {
+		defer resp.body.Close()
+		if resp.statusCode == http.StatusCreated || resp.statusCode == http.StatusConflict {
+			return resp.statusCode == http.StatusCreated, nil
+		}
 	}
 	return false, err
 }
@@ -340,8 +345,11 @@ func (b BlobStorageClient) ContainerExists(name string) (bool, error) {
 	headers := b.client.getStandardHeaders()
 
 	resp, err := b.client.exec(verb, uri, headers, nil)
-	if resp != nil && (resp.statusCode == http.StatusOK || resp.statusCode == http.StatusNotFound) {
-		return resp.statusCode == http.StatusOK, nil
+	if resp != nil {
+		defer resp.body.Close()
+		if resp.statusCode == http.StatusOK || resp.statusCode == http.StatusNotFound {
+			return resp.statusCode == http.StatusOK, nil
+		}
 	}
 	return false, err
 }
@@ -355,6 +363,7 @@ func (b BlobStorageClient) DeleteContainer(name string) error {
 	if err != nil {
 		return err
 	}
+	defer resp.body.Close()
 	return checkRespCode(resp.statusCode, []int{http.StatusAccepted})
 }
 
@@ -366,8 +375,11 @@ func (b BlobStorageClient) DeleteContainer(name string) error {
 // See https://msdn.microsoft.com/en-us/library/azure/dd179408.aspx
 func (b BlobStorageClient) DeleteContainerIfExists(name string) (bool, error) {
 	resp, err := b.deleteContainer(name)
-	if resp != nil && (resp.statusCode == http.StatusAccepted || resp.statusCode == http.StatusNotFound) {
-		return resp.statusCode == http.StatusAccepted, nil
+	if resp != nil {
+		defer resp.body.Close()
+		if resp.statusCode == http.StatusAccepted || resp.statusCode == http.StatusNotFound {
+			return resp.statusCode == http.StatusAccepted, nil
+		}
 	}
 	return false, err
 }
@@ -396,6 +408,7 @@ func (b BlobStorageClient) ListBlobs(container string, params ListBlobsParameter
 	if err != nil {
 		return out, err
 	}
+	defer resp.body.Close()
 
 	err = xmlUnmarshal(resp.body, &out)
 	return out, err
@@ -409,8 +422,11 @@ func (b BlobStorageClient) BlobExists(container, name string) (bool, error) {
 
 	headers := b.client.getStandardHeaders()
 	resp, err := b.client.exec(verb, uri, headers, nil)
-	if resp != nil && (resp.statusCode == http.StatusOK || resp.statusCode == http.StatusNotFound) {
-		return resp.statusCode == http.StatusOK, nil
+	if resp != nil {
+		defer resp.body.Close()
+		if resp.statusCode == http.StatusOK || resp.statusCode == http.StatusNotFound {
+			return resp.statusCode == http.StatusOK, nil
+		}
 	}
 	return false, err
 }
@@ -426,7 +442,8 @@ func (b BlobStorageClient) GetBlobURL(container, name string) string {
 	return b.client.getEndpoint(blobServiceName, pathForBlob(container, name), url.Values{})
 }
 
-// GetBlob returns a stream to read the blob.
+// GetBlob returns a stream to read the blob. Caller must call Close() the
+// reader to close on the underlying connection.
 //
 // See https://msdn.microsoft.com/en-us/library/azure/dd179440.aspx
 func (b BlobStorageClient) GetBlob(container, name string) (io.ReadCloser, error) {
@@ -483,6 +500,7 @@ func (b BlobStorageClient) GetBlobProperties(container, name string) (*BlobPrope
 	if err != nil {
 		return nil, err
 	}
+	defer resp.body.Close()
 
 	if err := checkRespCode(resp.statusCode, []int{http.StatusOK}); err != nil {
 		return nil, err
@@ -537,6 +555,7 @@ func (b BlobStorageClient) CreateBlockBlob(container, name string) error {
 	if err != nil {
 		return err
 	}
+	defer resp.body.Close()
 	return checkRespCode(resp.statusCode, []int{http.StatusCreated})
 }
 
@@ -563,6 +582,7 @@ func (b BlobStorageClient) PutBlockWithLength(container, name, blockID string, s
 	if err != nil {
 		return err
 	}
+	defer resp.body.Close()
 	return checkRespCode(resp.statusCode, []int{http.StatusCreated})
 }
 
@@ -580,6 +600,7 @@ func (b BlobStorageClient) PutBlockList(container, name string, blocks []Block) 
 	if err != nil {
 		return err
 	}
+	defer resp.body.Close()
 	return checkRespCode(resp.statusCode, []int{http.StatusCreated})
 }
 
@@ -596,6 +617,7 @@ func (b BlobStorageClient) GetBlockList(container, name string, blockType BlockL
 	if err != nil {
 		return out, err
 	}
+	defer resp.body.Close()
 
 	err = xmlUnmarshal(resp.body, &out)
 	return out, err
@@ -618,6 +640,8 @@ func (b BlobStorageClient) PutPageBlob(container, name string, size int64) error
 	if err != nil {
 		return err
 	}
+	defer resp.body.Close()
+
 	return checkRespCode(resp.statusCode, []int{http.StatusCreated})
 }
 
@@ -649,6 +673,8 @@ func (b BlobStorageClient) PutPage(container, name string, startByte, endByte in
 	if err != nil {
 		return err
 	}
+	defer resp.body.Close()
+
 	return checkRespCode(resp.statusCode, []int{http.StatusCreated})
 }
 
@@ -665,6 +691,7 @@ func (b BlobStorageClient) GetPageRanges(container, name string) (GetPageRangesR
 	if err != nil {
 		return out, err
 	}
+	defer resp.body.Close()
 
 	if err := checkRespCode(resp.statusCode, []int{http.StatusOK}); err != nil {
 		return out, err
@@ -699,6 +726,7 @@ func (b BlobStorageClient) startBlobCopy(container, name, sourceBlob string) (st
 	if err != nil {
 		return "", err
 	}
+	defer resp.body.Close()
 
 	if err := checkRespCode(resp.statusCode, []int{http.StatusAccepted, http.StatusCreated}); err != nil {
 		return "", err
@@ -745,6 +773,7 @@ func (b BlobStorageClient) DeleteBlob(container, name string) error {
 	if err != nil {
 		return err
 	}
+	defer resp.body.Close()
 	return checkRespCode(resp.statusCode, []int{http.StatusAccepted})
 }
 
@@ -757,6 +786,7 @@ func (b BlobStorageClient) DeleteBlobIfExists(container, name string) (bool, err
 	if resp != nil && (resp.statusCode == http.StatusAccepted || resp.statusCode == http.StatusNotFound) {
 		return resp.statusCode == http.StatusAccepted, nil
 	}
+	defer resp.body.Close()
 	return false, err
 }
 

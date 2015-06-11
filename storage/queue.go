@@ -122,6 +122,7 @@ func (c QueueServiceClient) CreateQueue(name string) error {
 	if err != nil {
 		return err
 	}
+	defer resp.body.Close()
 	return checkRespCode(resp.statusCode, []int{http.StatusCreated})
 }
 
@@ -134,6 +135,7 @@ func (c QueueServiceClient) DeleteQueue(name string) error {
 	if err != nil {
 		return err
 	}
+	defer resp.body.Close()
 	return checkRespCode(resp.statusCode, []int{http.StatusNoContent})
 }
 
@@ -164,6 +166,7 @@ func (c QueueServiceClient) PutMessage(queue string, message string, params PutM
 	if err != nil {
 		return err
 	}
+	defer resp.body.Close()
 	return checkRespCode(resp.statusCode, []int{http.StatusCreated})
 }
 
@@ -176,6 +179,7 @@ func (c QueueServiceClient) ClearMessages(queue string) error {
 	if err != nil {
 		return err
 	}
+	defer resp.body.Close()
 	return checkRespCode(resp.statusCode, []int{http.StatusNoContent})
 }
 
@@ -190,6 +194,7 @@ func (c QueueServiceClient) GetMessages(queue string, params GetMessagesParamete
 	if err != nil {
 		return r, err
 	}
+	defer resp.body.Close()
 	err = xmlUnmarshal(resp.body, &r)
 	return r, err
 }
@@ -205,6 +210,7 @@ func (c QueueServiceClient) PeekMessages(queue string, params PeekMessagesParame
 	if err != nil {
 		return r, err
 	}
+	defer resp.body.Close()
 	err = xmlUnmarshal(resp.body, &r)
 	return r, err
 }
@@ -219,5 +225,6 @@ func (c QueueServiceClient) DeleteMessage(queue, messageID, popReceipt string) e
 	if err != nil {
 		return err
 	}
+	defer resp.body.Close()
 	return checkRespCode(resp.statusCode, []int{http.StatusNoContent})
 }

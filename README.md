@@ -77,7 +77,7 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	if err := client.WaitAsyncOperation(operationID); err != nil {
+	if err := client.WaitForOperation(operationID, nil); err != nil {
 		panic(err)
 	}
 }

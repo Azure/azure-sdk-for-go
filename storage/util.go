@@ -54,8 +54,7 @@ func prepareBlockListRequest(blocks []Block) string {
 	return s
 }
 
-func xmlUnmarshal(body io.ReadCloser, v interface{}) error {
-	defer body.Close()
+func xmlUnmarshal(body io.Reader, v interface{}) error {
 	data, err := ioutil.ReadAll(body)
 	if err != nil {
 		return err

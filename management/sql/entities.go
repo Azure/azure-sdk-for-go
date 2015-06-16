@@ -1,0 +1,76 @@
+package sql
+
+import (
+	"encoding/xml"
+)
+
+// DatabaseServerCreateParams represents the set of possible parameters
+// when issuing a database server creation request to Azure.
+//
+// https://msdn.microsoft.com/en-us/library/azure/dn505699.aspx
+type DatabaseServerCreateParams struct {
+	XMLName                    xml.Name `xml:"http://schemas.microsoft.com/sqlazure/2010/12/ Server"`
+	AdministratorLogin         string
+	AdministratorLoginPassword string
+	Location                   string
+	Version                    string
+}
+
+// DatabaseServerCreateResponse represents the response following the creation of
+// a database server on Azure.
+type DatabaseServerCreateResponse struct {
+	ServerName string
+}
+
+const (
+	DatabaseServerVersion11 = "2.0"
+	DatabaseServerVersion12 = "12.0"
+)
+
+// DatabaseServer represents the set of data recieved from
+// a database server list operation.
+//
+// https://msdn.microsoft.com/en-us/library/azure/dn505702.aspx
+type DatabaseServer struct {
+	Name                     string
+	AdministratorLogin       string
+	Location                 string
+	FullyQualifiedDomainName string
+	Version                  string
+	State                    string
+}
+
+type ListServersResponse struct {
+	DatabaseServers []DatabaseServer `xml:"Server"`
+}
+
+// DatabaseCreateParams represents the set of possible parameters when issuing
+// a database creation to Azure, and reading a list response from Azure.
+//
+// https://msdn.microsoft.com/en-us/library/azure/dn505701.aspx
+type DatabaseCreateParams struct {
+	XMLName            xml.Name `xml:"http://schemas.microsoft.com/windowsazure ServiceResource"`
+	Name               string
+	Edition            string `xml:",omitempty"`
+	CollationName      string `xml:",omitempty"`
+	MaxSizeBytes       int64  `xml:",omitempty"`
+	ServiceObjectiveID string `xml:"ServiceObjectiveId,omitempty"`
+}
+
+// ServiceResource represents the set of parameters obtained from a database
+// get or list call.
+//
+// https://msdn.microsoft.com/en-us/library/azure/dn505708.aspx
+type ServiceResource struct {
+	Name               string
+	State              string
+	SelfLink           string
+	Edition            string
+	CollationName      string
+	MaxSizeBytes       int64
+	ServiceObjectiveID string `xml:"ServiceObjectiveId,omitempty"`
+}
+
+type ListDatabasesResponse struct {
+	ServiceResources []ServiceResource `xml:"ServiceResource"`
+}

@@ -29,19 +29,28 @@ type Client interface {
 	// SendAzureGetRequest sends a request to the management API using the HTTP GET method
 	// and returns the response body or an error.
 	SendAzureGetRequest(url string) ([]byte, error)
+
 	// SendAzurePostRequest sends a request to the management API using the HTTP POST method
 	// and returns the request ID or an error.
 	SendAzurePostRequest(url string, data []byte) (OperationID, error)
+
+	// SendAzurePostRequestWithReturnedResponse sends a request to the management API using
+	// the HTTP POST method and returns the response body or an error.
+	SendAzurePostRequestWithReturnedResponse(url string, data []byte) ([]byte, error)
+
 	// SendAzurePutRequest sends a request to the management API using the HTTP PUT method
 	// and returns the request ID or an error. The content type can be specified, however
 	// if an empty string is passed, the default of "application/xml" will be used.
 	SendAzurePutRequest(url, contentType string, data []byte) (OperationID, error)
+
 	// SendAzureDeleteRequest sends a request to the management API using the HTTP DELETE method
 	// and returns the request ID or an error.
 	SendAzureDeleteRequest(url string) (OperationID, error)
+
 	// GetOperationStatus gets the status of operation with given Operation ID.
 	// WaitForOperation utility method can be used for polling for operation status.
 	GetOperationStatus(operationID OperationID) (GetOperationStatusResponse, error)
+
 	// WaitForOperation polls the Azure API for given operation ID indefinitely
 	// until the operation is completed with either success or failure.
 	// It is meant to be used for waiting for the result of the methods that

@@ -28,6 +28,15 @@ func (client client) SendAzurePostRequest(url string, data []byte) (OperationID,
 	return client.doAzureOperation("POST", url, "", data)
 }
 
+func (client client) SendAzurePostRequestWithReturnedResponse(url string, data []byte) ([]byte, error) {
+	resp, err := client.sendAzureRequest("POST", url, "", data)
+	if err != nil {
+		return nil, err
+	}
+
+	return getResponseBody(resp)
+}
+
 func (client client) SendAzurePutRequest(url, contentType string, data []byte) (OperationID, error) {
 	return client.doAzureOperation("PUT", url, contentType, data)
 }

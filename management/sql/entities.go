@@ -74,3 +74,15 @@ type ServiceResource struct {
 type ListDatabasesResponse struct {
 	ServiceResources []ServiceResource `xml:"ServiceResource"`
 }
+
+// ServiceResourceUpdateParams represents the set of parameters available
+// for a database service update operation.
+//
+// https://msdn.microsoft.com/en-us/library/azure/dn505718.aspx
+type ServiceResourceUpdateParams struct {
+	XMLName       xml.Name `xml:"http://schemas.microsoft.com/windowsazure ServiceResource"`
+	Name          string
+	Edition       string `xml:",omitempty"`
+	CollationName string `xml:",omitempty"`
+	MaxSizeBytes  int64  `xml:",omitempty"`
+}

@@ -3,6 +3,7 @@ package sql
 import (
 	"encoding/xml"
 	"fmt"
+	"time"
 
 	"github.com/Azure/azure-sdk-for-go/management"
 )
@@ -16,9 +17,12 @@ const (
 	azureCreateDatabaseURL = "services/sqlservers/servers/%s/databases"
 	azureGetDatabaseURL    = "/services/sqlservers/servers/%s/databases/%s"
 	azureListDatabasesURL  = "/services/sqlservers/servers/%s/databases?contentview=generic"
+	azureUpdateDatabaseURL = "/services/sqlservers/servers/%s/databases/%s"
 	azureDeleteDatabaseURL = "/services/sqlservers/servers/%s/databases/%s"
 
 	errParamNotSpecified = "Parameter %s was not specified."
+
+	DatabaseStateCreating = "Creating"
 )
 
 // SqlDatabaseClient defines various database CRUD operations.
@@ -99,6 +103,28 @@ func (c SqlDatabaseClient) CreateDatabase(server string, params DatabaseCreatePa
 	return err
 }
 
+// WaitForDatabaseCreation is a helper method which waits
+// for the creation of the database on the given server.
+func (c SqlDatabaseClient) WaitForDatabaseCreation(
+	server, database string,
+	cancel chan struct{}) error {
+	for {
+		stat, err := c.GetDatabase(server, database)
+		if err != nil {
+			return err
+		}
+		if stat.State != DatabaseStateCreating {
+			return nil
+		}
+
+		select {
+		case <-time.After(management.DefaultOperationPollInterval):
+		case <-cancel:
+			return management.ErrOperationCancelled
+		}
+	}
+}
+
 // GetDatabase gets the details for an Azure SQL Database.
 //
 // https://msdn.microsoft.com/en-us/library/azure/dn505708.aspx
@@ -106,10 +132,10 @@ func (c SqlDatabaseClient) GetDatabase(server, database string) (ServiceResource
 	var db ServiceResource
 
 	if database == "" {
-		return db, fmt.Errorf(errParamNotSpecified, "database name")
+		return db, fmt.Errorf(errParamNotSpecified, "database")
 	}
 	if server == "" {
-		return db, fmt.Errorf(errParamNotSpecified, "server name")
+		return db, fmt.Errorf(errParamNotSpecified, "server")
 	}
 
 	url := fmt.Sprintf(azureGetDatabaseURL, server, database)
@@ -141,15 +167,37 @@ func (c SqlDatabaseClient) ListDatabases(server string) (ListDatabasesResponse, 
 	return databases, err
 }
 
+// UpdateDatabase updates the details of the given Database off the given server.
+//
+// https://msdn.microsoft.com/en-us/library/azure/dn505718.aspx
+func (c SqlDatabaseClient) UpdateDatabase(
+	server, database string,
+	params ServiceResourceUpdateParams) (management.OperationID, error) {
+	if database == "" {
+		return "", fmt.Errorf(errParamNotSpecified, "database")
+	}
+	if server == "" {
+		return "", fmt.Errorf(errParamNotSpecified, "server")
+	}
+
+	url := fmt.Sprintf(azureUpdateDatabaseURL, server, database)
+	req, err := xml.Marshal(params)
+	if err != nil {
+		return "", err
+	}
+
+	return c.mgmtClient.SendAzurePutRequest(url, "text/xml", req)
+}
+
 // DeleteDatabase deletes the Azure SQL Database off the given server.
 //
 // https://msdn.microsoft.com/en-us/library/azure/dn505705.aspx
 func (c SqlDatabaseClient) DeleteDatabase(server, database string) error {
 	if database == "" {
-		return fmt.Errorf(errParamNotSpecified, "database name")
+		return fmt.Errorf(errParamNotSpecified, "database")
 	}
 	if server == "" {
-		return fmt.Errorf(errParamNotSpecified, "server name")
+		return fmt.Errorf(errParamNotSpecified, "server")
 	}
 
 	url := fmt.Sprintf(azureDeleteDatabaseURL, server, database)

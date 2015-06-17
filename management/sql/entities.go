@@ -80,9 +80,9 @@ type ListDatabasesResponse struct {
 //
 // https://msdn.microsoft.com/en-us/library/azure/dn505718.aspx
 type ServiceResourceUpdateParams struct {
-	XMLName       xml.Name `xml:"http://schemas.microsoft.com/windowsazure ServiceResource"`
-	Name          string
-	Edition       string `xml:",omitempty"`
-	CollationName string `xml:",omitempty"`
-	MaxSizeBytes  int64  `xml:",omitempty"`
+	XMLName            xml.Name `xml:"http://schemas.microsoft.com/windowsazure ServiceResource"`
+	Name               string
+	Edition            string `xml:",omitempty"`
+	MaxSizeBytes       int64  `xml:",omitempty"`
+	ServiceObjectiveID string `xml:"ServiceObjectiveId,omitempty"`
 }

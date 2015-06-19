@@ -25,22 +25,22 @@ const (
 	DatabaseStateCreating = "Creating"
 )
 
-// SqlDatabaseClient defines various database CRUD operations.
+// SQLDatabaseClient defines various database CRUD operations.
 // It contains a management.Client for making the actual http calls.
-type SqlDatabaseClient struct {
+type SQLDatabaseClient struct {
 	mgmtClient management.Client
 }
 
-// NewClient returns a new SqlDatabaseClient struct with the provided
+// NewClient returns a new SQLDatabaseClient struct with the provided
 // management.Client as the underlying client.
-func NewClient(mgmtClient management.Client) SqlDatabaseClient {
-	return SqlDatabaseClient{mgmtClient}
+func NewClient(mgmtClient management.Client) SQLDatabaseClient {
+	return SQLDatabaseClient{mgmtClient}
 }
 
 // CreateServer creates a new Azure SQL Database server and return its name.
 //
 // https://msdn.microsoft.com/en-us/library/azure/dn505699.aspx
-func (c SqlDatabaseClient) CreateServer(params DatabaseServerCreateParams) (string, error) {
+func (c SQLDatabaseClient) CreateServer(params DatabaseServerCreateParams) (string, error) {
 	req, err := xml.Marshal(params)
 	if err != nil {
 		return "", err
@@ -60,7 +60,7 @@ func (c SqlDatabaseClient) CreateServer(params DatabaseServerCreateParams) (stri
 // ListServers retrieves the Azure SQL Database servers for this subscription.
 //
 // https://msdn.microsoft.com/en-us/library/azure/dn505702.aspx
-func (c SqlDatabaseClient) ListServers() (ListServersResponse, error) {
+func (c SQLDatabaseClient) ListServers() (ListServersResponse, error) {
 	var resp ListServersResponse
 
 	data, err := c.mgmtClient.SendAzureGetRequest(azureListDatabaseServersURL)
@@ -75,7 +75,7 @@ func (c SqlDatabaseClient) ListServers() (ListServersResponse, error) {
 // DeleteServer deletes an Azure SQL Database server (including all its databases).
 //
 // https://msdn.microsoft.com/en-us/library/azure/dn505695.aspx
-func (c SqlDatabaseClient) DeleteServer(name string) error {
+func (c SQLDatabaseClient) DeleteServer(name string) error {
 	if name == "" {
 		return fmt.Errorf(errParamNotSpecified, "name")
 	}
@@ -88,7 +88,7 @@ func (c SqlDatabaseClient) DeleteServer(name string) error {
 // CreateDatabase creates a new Microsoft Azure SQL Database on the given database server.
 //
 // https://msdn.microsoft.com/en-us/library/azure/dn505701.aspx
-func (c SqlDatabaseClient) CreateDatabase(server string, params DatabaseCreateParams) error {
+func (c SQLDatabaseClient) CreateDatabase(server string, params DatabaseCreateParams) error {
 	if server == "" {
 		return fmt.Errorf(errParamNotSpecified, "server")
 	}
@@ -105,7 +105,7 @@ func (c SqlDatabaseClient) CreateDatabase(server string, params DatabaseCreatePa
 
 // WaitForDatabaseCreation is a helper method which waits
 // for the creation of the database on the given server.
-func (c SqlDatabaseClient) WaitForDatabaseCreation(
+func (c SQLDatabaseClient) WaitForDatabaseCreation(
 	server, database string,
 	cancel chan struct{}) error {
 	for {
@@ -128,7 +128,7 @@ func (c SqlDatabaseClient) WaitForDatabaseCreation(
 // GetDatabase gets the details for an Azure SQL Database.
 //
 // https://msdn.microsoft.com/en-us/library/azure/dn505708.aspx
-func (c SqlDatabaseClient) GetDatabase(server, database string) (ServiceResource, error) {
+func (c SQLDatabaseClient) GetDatabase(server, database string) (ServiceResource, error) {
 	var db ServiceResource
 
 	if database == "" {
@@ -151,7 +151,7 @@ func (c SqlDatabaseClient) GetDatabase(server, database string) (ServiceResource
 // ListDatabases returns a list of Azure SQL Databases on the given server.
 //
 // https://msdn.microsoft.com/en-us/library/azure/dn505711.aspx
-func (c SqlDatabaseClient) ListDatabases(server string) (ListDatabasesResponse, error) {
+func (c SQLDatabaseClient) ListDatabases(server string) (ListDatabasesResponse, error) {
 	var databases ListDatabasesResponse
 	if server == "" {
 		return databases, fmt.Errorf(errParamNotSpecified, "server name")
@@ -170,7 +170,7 @@ func (c SqlDatabaseClient) ListDatabases(server string) (ListDatabasesResponse, 
 // UpdateDatabase updates the details of the given Database off the given server.
 //
 // https://msdn.microsoft.com/en-us/library/azure/dn505718.aspx
-func (c SqlDatabaseClient) UpdateDatabase(
+func (c SQLDatabaseClient) UpdateDatabase(
 	server, database string,
 	params ServiceResourceUpdateParams) (management.OperationID, error) {
 	if database == "" {
@@ -192,7 +192,7 @@ func (c SqlDatabaseClient) UpdateDatabase(
 // DeleteDatabase deletes the Azure SQL Database off the given server.
 //
 // https://msdn.microsoft.com/en-us/library/azure/dn505705.aspx
-func (c SqlDatabaseClient) DeleteDatabase(server, database string) error {
+func (c SQLDatabaseClient) DeleteDatabase(server, database string) error {
 	if database == "" {
 		return fmt.Errorf(errParamNotSpecified, "database")
 	}

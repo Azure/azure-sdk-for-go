@@ -44,6 +44,42 @@ type ListServersResponse struct {
 	DatabaseServers []DatabaseServer `xml:"Server"`
 }
 
+// FirewallRuleCreateParams represents the set of possible
+// paramaters when creating a firewall rule on an Azure database server.
+//
+// https://msdn.microsoft.com/en-us/library/azure/dn505712.aspx
+type FirewallRuleCreateParams struct {
+	XMLName        xml.Name `xml:"http://schemas.microsoft.com/windowsazure ServiceResource"`
+	Name           string
+	StartIPAddress string
+	EndIPAddress   string
+}
+
+// FirewallRuleResponse represents the set of data recieved from
+// an Azure database server firewall rule get response.
+//
+// https://msdn.microsoft.com/en-us/library/azure/dn505698.aspx
+type FirewallRuleResponse struct {
+	Name           string
+	StartIPAddress string
+	EndIPAddress   string
+}
+
+type ListFirewallRulesResponse struct {
+	FirewallRules []FirewallRuleResponse `xml:"ServiceResource"`
+}
+
+// FirewallRuleUpdateParams represents the set of possible
+// parameters when issuing an update of a database server firewall rule.
+//
+// https://msdn.microsoft.com/en-us/library/azure/dn505707.aspx
+type FirewallRuleUpdateParams struct {
+	XMLName        xml.Name `xml:"http://schemas.microsoft.com/windowsazure ServiceResource"`
+	Name           string
+	StartIPAddress string
+	EndIPAddress   string
+}
+
 // DatabaseCreateParams represents the set of possible parameters when issuing
 // a database creation to Azure, and reading a list response from Azure.
 //

@@ -11,14 +11,20 @@ import (
 // Definitions of numerous constants representing API endpoints.
 const (
 	azureCreateDatabaseServerURL = "services/sqlservers/servers"
-	azureListDatabaseServersURL  = "/services/sqlservers/servers"
-	azureDeleteDatabaseServerURL = "/services/sqlservers/servers/%s"
+	azureListDatabaseServersURL  = "services/sqlservers/servers"
+	azureDeleteDatabaseServerURL = "services/sqlservers/servers/%s"
+
+	azureCreateFirewallRuleURL = "services/sqlservers/servers/%s/firewallrules"
+	azureGetFirewallRuleURL    = "services/sqlservers/servers/%s/firewallrules/%s"
+	azureListFirewallRulesURL  = "services/sqlservers/servers/%s/firewallrules"
+	azureUpdateFirewallRuleURL = "services/sqlservers/servers/%s/firewallrules/%s"
+	azureDeleteFirewallRuleURL = "services/sqlservers/servers/%s/firewallrules/%s"
 
 	azureCreateDatabaseURL = "services/sqlservers/servers/%s/databases"
-	azureGetDatabaseURL    = "/services/sqlservers/servers/%s/databases/%s"
-	azureListDatabasesURL  = "/services/sqlservers/servers/%s/databases?contentview=generic"
-	azureUpdateDatabaseURL = "/services/sqlservers/servers/%s/databases/%s"
-	azureDeleteDatabaseURL = "/services/sqlservers/servers/%s/databases/%s"
+	azureGetDatabaseURL    = "services/sqlservers/servers/%s/databases/%s"
+	azureListDatabasesURL  = "services/sqlservers/servers/%s/databases?contentview=generic"
+	azureUpdateDatabaseURL = "services/sqlservers/servers/%s/databases/%s"
+	azureDeleteDatabaseURL = "services/sqlservers/servers/%s/databases/%s"
 
 	errParamNotSpecified = "Parameter %s was not specified."
 
@@ -81,6 +87,108 @@ func (c SQLDatabaseClient) DeleteServer(name string) error {
 	}
 
 	url := fmt.Sprintf(azureDeleteDatabaseServerURL, name)
+	_, err := c.mgmtClient.SendAzureDeleteRequest(url)
+	return err
+}
+
+// CreateFirewallRule creates an Azure SQL Database server
+// firewall rule.
+//
+// https://msdn.microsoft.com/en-us/library/azure/dn505712.aspx
+func (c SQLDatabaseClient) CreateFirewallRule(server string, params FirewallRuleCreateParams) error {
+	if server == "" {
+		return fmt.Errorf(errParamNotSpecified, "server")
+	}
+
+	req, err := xml.Marshal(params)
+	if err != nil {
+		return err
+	}
+
+	url := fmt.Sprintf(azureCreateFirewallRuleURL, server)
+
+	_, err = c.mgmtClient.SendAzurePostRequest(url, req)
+	return err
+}
+
+// GetFirewallRule gets the details of an Azure SQL Database Server firewall rule.
+//
+// https://msdn.microsoft.com/en-us/library/azure/dn505698.aspx
+func (c SQLDatabaseClient) GetFirewallRule(server, ruleName string) (FirewallRuleResponse, error) {
+	var rule FirewallRuleResponse
+
+	if server == "" {
+		return rule, fmt.Errorf(errParamNotSpecified, "server")
+	}
+	if ruleName == "" {
+		return rule, fmt.Errorf(errParamNotSpecified, "ruleName")
+	}
+
+	url := fmt.Sprintf(azureGetFirewallRuleURL, server, ruleName)
+	resp, err := c.mgmtClient.SendAzureGetRequest(url)
+	if err != nil {
+		return rule, err
+	}
+
+	err = xml.Unmarshal(resp, &rule)
+	return rule, err
+}
+
+// ListFirewallRules retrieves the set of firewall rules for an Azure SQL
+// Database Server.
+//
+// https://msdn.microsoft.com/en-us/library/azure/dn505715.aspx
+func (c SQLDatabaseClient) ListFirewallRules(server string) (ListFirewallRulesResponse, error) {
+	var rules ListFirewallRulesResponse
+
+	if server == "" {
+		return rules, fmt.Errorf(errParamNotSpecified, "server")
+	}
+
+	url := fmt.Sprintf(azureListFirewallRulesURL, server)
+	resp, err := c.mgmtClient.SendAzureGetRequest(url)
+	if err != nil {
+		return rules, err
+	}
+
+	err = xml.Unmarshal(resp, &rules)
+	return rules, err
+}
+
+// UpdateFirewallRule update a firewall rule for an Azure SQL Database server.
+//
+// https://msdn.microsoft.com/en-us/library/azure/dn505707.aspx
+func (c SQLDatabaseClient) UpdateFirewallRule(server, ruleName string, params FirewallRuleUpdateParams) error {
+	if server == "" {
+		return fmt.Errorf(errParamNotSpecified, "server")
+	}
+	if ruleName == "" {
+		return fmt.Errorf(errParamNotSpecified, "ruleName")
+	}
+
+	req, err := xml.Marshal(params)
+	if err != nil {
+		return err
+	}
+
+	url := fmt.Sprintf(azureUpdateFirewallRuleURL, server, ruleName)
+	_, err = c.mgmtClient.SendAzurePutRequest(url, "text/xml", req)
+	return err
+}
+
+// DeleteFirewallRule deletes an Azure SQL Database server firewall rule.
+//
+// https://msdn.microsoft.com/en-us/library/azure/dn505706.aspx
+func (c SQLDatabaseClient) DeleteFirewallRule(server, ruleName string) error {
+	if server == "" {
+		return fmt.Errorf(errParamNotSpecified, "server")
+	}
+	if ruleName == "" {
+		return fmt.Errorf(errParamNotSpecified, "ruleName")
+	}
+
+	url := fmt.Sprintf(azureDeleteFirewallRuleURL, server, ruleName)
+
 	_, err := c.mgmtClient.SendAzureDeleteRequest(url)
 	return err
 }

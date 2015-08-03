@@ -21,12 +21,7 @@ func ClientFromPublishSettingsData(settingsData []byte, subscriptionID string) (
 // from https://manage.windowsazure.com/publishsettings.
 // If subscriptionID is left empty, the first subscription in the string is used.
 func ClientFromPublishSettingsDataWithConfig(settingsData []byte, subscriptionID string, config ClientConfig) (client Client, err error) {
-	publishData := publishData{}
-	if err = xml.Unmarshal(settingsData, &publishData); err != nil {
-		return client, err
-	}
-
-	return clientFromPublishData(publishData, subscriptionID, config)
+	return clientFromPublishData(settingsData, subscriptionID, config)
 }
 
 // ClientFromPublishSettingsFile reads a publish settings file downloaded from https://manage.windowsazure.com/publishsettings.
@@ -47,15 +42,15 @@ func ClientFromPublishSettingsFileWithConfig(filePath, subscriptionID string, co
 		return client, err
 	}
 
+	return clientFromPublishData(publishSettingsContent, subscriptionID, config)
+}
+
+func clientFromPublishData(data []byte, subscriptionID string, config ClientConfig) (client Client, err error) {
 	publishData := publishData{}
-	if err = xml.Unmarshal(publishSettingsContent, &publishData); err != nil {
+	if err = xml.Unmarshal(data, &publishData); err != nil {
 		return client, err
 	}
 
-	return clientFromPublishData(publishData, subscriptionID, config)
-}
-
-func clientFromPublishData(publishData publishData, subscriptionID string, config ClientConfig) (client Client, err error) {
 	for _, profile := range publishData.PublishProfiles {
 		for _, sub := range profile.Subscriptions {
 			if sub.ID == subscriptionID || subscriptionID == "" {

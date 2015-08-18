@@ -284,14 +284,16 @@ func TestDocumentedDeploymentRequest(t *testing.T) {
 
   // ======
 
-  if string(deployment.RoleList[0].ConfigurationSets[0].WinRMListeners[0].Protocol) != "listener-protocol" {
-    t.Fatalf("Expected deployment.RoleList[0].ConfigurationSets[0].WinRMListeners[0].Protocol to be listener-protocol, but got %s",
-      string(deployment.RoleList[0].ConfigurationSets[0].WinRMListeners[0].Protocol))
+  winRMlisteners := *deployment.RoleList[0].ConfigurationSets[0].WinRMListeners
+  if string(winRMlisteners[0].Protocol) != "listener-protocol" {
+    t.Fatalf("Expected winRMlisteners[0].Protocol to be listener-protocol, but got %s",
+      string(winRMlisteners[0].Protocol))
   }
 
-  if deployment.RoleList[0].ConfigurationSets[0].WinRMListeners[1].CertificateThumbprint != "certificate-thumbprint" {
-    t.Fatalf("Expected deployment.RoleList[0].ConfigurationSets[0].WinRMListeners[1].CertificateThumbprint to be certificate-thumbprint, but got %s",
-      deployment.RoleList[0].ConfigurationSets[0].WinRMListeners[1].CertificateThumbprint)
+  winRMlisteners2 := *deployment.RoleList[0].ConfigurationSets[0].WinRMListeners
+  if winRMlisteners2[1].CertificateThumbprint != "certificate-thumbprint" {
+    t.Fatalf("Expected winRMlisteners2[1].CertificateThumbprint to be certificate-thumbprint, but got %s",
+      winRMlisteners2[1].CertificateThumbprint)
   }
 
 }

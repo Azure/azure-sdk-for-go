@@ -50,7 +50,7 @@ func ConfigureForLinux(role *vm.Role, hostname, user, password string, sshPubkey
 						},
 					)
 				}
-			}
+			}			
 		},
 	)
 
@@ -73,7 +73,7 @@ func ConfigureForWindows(role *vm.Role, hostname, user, password string, enableA
 			config.AdminUsername = user
 			config.AdminPassword = password
 			config.EnableAutomaticUpdates = enableAutomaticUpdates
-			config.TimeZone = timeZone
+			config.TimeZone = timeZone			
 		},
 	)
 
@@ -98,4 +98,49 @@ func ConfigureWindowsToJoinDomain(role *vm.Role, username, password, domainToJoi
 	}
 
 	return nil
+}
+
+func ConfigureWinRMListener(role *vm.Role, protocol vm.WinRMProtocol, certificateThumbprint string) error {
+
+	if role == nil {
+		return fmt.Errorf(errParamNotSpecified, "role")
+	}	
+
+	winconfig := findConfig(role.ConfigurationSets, vm.ConfigurationSetTypeWindowsProvisioning)
+
+	if winconfig != nil {
+
+		listener := vm.WinRMListener{
+			Protocol: protocol,
+			CertificateThumbprint: certificateThumbprint,
+		}				
+
+		if winconfig.WinRMListeners == nil {
+			winconfig.WinRMListeners = &[]vm.WinRMListener {}
+		}
+
+		currentListeners := *winconfig.WinRMListeners
+
+		// replace existing listener if it's already configured
+		for i, existingListener := range currentListeners {
+			if existingListener.Protocol == protocol {
+				currentListeners[i] = listener
+				return nil
+			}			
+		}
+
+		// otherwise append to list of listeners
+		newListeners := append(currentListeners, listener)
+		winconfig.WinRMListeners = &newListeners
+	}
+
+	return nil
+}
+
+func ConfigureWinRMOverHttp(role *vm.Role) error {	
+	return ConfigureWinRMListener(role, vm.WinRMProtocolHTTP, "")
+}
+
+func ConfigureWinRMOverHttps(role *vm.Role, certificateThumbprint string) error {	
+	return ConfigureWinRMListener(role, vm.WinRMProtocolHTTPS, certificateThumbprint)
 }

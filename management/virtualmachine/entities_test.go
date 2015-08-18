@@ -282,4 +282,16 @@ func TestDocumentedDeploymentRequest(t *testing.T) {
 			deployment.RoleList[0].VMImageInput.DataDiskConfigurations[0].ResizedSizeInGB)
 	}
 
+  // ======
+
+  if string(deployment.RoleList[0].ConfigurationSets[0].WinRMListeners[0].Protocol) != "listener-protocol" {
+    t.Fatalf("Expected deployment.RoleList[0].ConfigurationSets[0].WinRMListeners[0].Protocol to be listener-protocol, but got %s",
+      string(deployment.RoleList[0].ConfigurationSets[0].WinRMListeners[0].Protocol))
+  }
+
+  if deployment.RoleList[0].ConfigurationSets[0].WinRMListeners[1].CertificateThumbprint != "certificate-thumbprint" {
+    t.Fatalf("Expected deployment.RoleList[0].ConfigurationSets[0].WinRMListeners[1].CertificateThumbprint to be certificate-thumbprint, but got %s",
+      deployment.RoleList[0].ConfigurationSets[0].WinRMListeners[1].CertificateThumbprint)
+  }
+
 }

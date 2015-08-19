@@ -50,7 +50,7 @@ func ConfigureForLinux(role *vm.Role, hostname, user, password string, sshPubkey
 						},
 					)
 				}
-			}			
+			}
 		},
 	)
 
@@ -73,7 +73,7 @@ func ConfigureForWindows(role *vm.Role, hostname, user, password string, enableA
 			config.AdminUsername = user
 			config.AdminPassword = password
 			config.EnableAutomaticUpdates = enableAutomaticUpdates
-			config.TimeZone = timeZone			
+			config.TimeZone = timeZone
 		},
 	)
 

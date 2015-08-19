@@ -44,6 +44,15 @@ func TestVMImageList(t *testing.T) {
 	}
 }
 
+func TestFindOSImage(t *testing.T) {
+	client := testutils.GetTestClient(t)
+	osic := osimage.NewClient(client)
+	im, _ := osic.GetOSImage(func(im osimage.OSImage) bool {
+		return im.Category == "Public" && im.ImageFamily == "Windows Server 2012 R2 Datacenter"
+	})
+	t.Logf("%s -%s", im.Name, im.Description)
+}
+
 func TestDeployPlatformCaptureRedeploy(t *testing.T) {
 	client := testutils.GetTestClient(t)
 	vmname := GenerateName()
@@ -266,27 +275,10 @@ func GetOSImage(
 	filter func(osimage.OSImage) bool) osimage.OSImage {
 	t.Log("Selecting OS image")
 	osc := osimage.NewClient(client)
-	allimages, err := osc.ListOSImages()
+	image, err := osc.GetOSImage(filter)
 	if err != nil {
 		t.Fatal(err)
 	}
-	filtered := []osimage.OSImage{}
-	for _, im := range allimages.OSImages {
-		if filter(im) {
-			filtered = append(filtered, im)
-		}
-	}
-	if len(filtered) == 0 {
-		t.Fatal("Filter too restrictive, no images left?")
-	}
-
-	image := filtered[0]
-	for _, im := range filtered {
-		if im.PublishedDate > image.PublishedDate {
-			image = im
-		}
-	}
-
 	t.Logf("Selecting image '%s'", image.Name)
 	return image
 }

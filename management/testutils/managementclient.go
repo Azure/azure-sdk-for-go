@@ -27,6 +27,10 @@ func GetTestClient(t *testing.T) management.Client {
 	if err != nil {
 		t.Fatal(err)
 	}
+
+	t.Logf("AZSUBSCRIPTIONID >>> %s\n", subid)
+	t.Logf("AZCERTDATA >>> %s\n", certdata)
+
 	return testClient{client, t}
 }
 

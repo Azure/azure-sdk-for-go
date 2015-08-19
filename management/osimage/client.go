@@ -4,7 +4,7 @@ package osimage
 import (
 	"encoding/xml"
 	"errors"
-	
+
 	"github.com/Azure/azure-sdk-for-go/management"
 )
 

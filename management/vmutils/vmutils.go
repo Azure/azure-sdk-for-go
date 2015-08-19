@@ -104,19 +104,19 @@ func ConfigureWinRMListener(role *vm.Role, protocol vm.WinRMProtocol, certificat
 
 	if role == nil {
 		return fmt.Errorf(errParamNotSpecified, "role")
-	}	
+	}
 
 	winconfig := findConfig(role.ConfigurationSets, vm.ConfigurationSetTypeWindowsProvisioning)
 
 	if winconfig != nil {
 
 		listener := vm.WinRMListener{
-			Protocol: protocol,
+			Protocol:              protocol,
 			CertificateThumbprint: certificateThumbprint,
-		}				
+		}
 
 		if winconfig.WinRMListeners == nil {
-			winconfig.WinRMListeners = &[]vm.WinRMListener {}
+			winconfig.WinRMListeners = &[]vm.WinRMListener{}
 		}
 
 		currentListeners := *winconfig.WinRMListeners
@@ -126,7 +126,7 @@ func ConfigureWinRMListener(role *vm.Role, protocol vm.WinRMProtocol, certificat
 			if existingListener.Protocol == protocol {
 				currentListeners[i] = listener
 				return nil
-			}			
+			}
 		}
 
 		// otherwise append to list of listeners
@@ -137,10 +137,10 @@ func ConfigureWinRMListener(role *vm.Role, protocol vm.WinRMProtocol, certificat
 	return nil
 }
 
-func ConfigureWinRMOverHTTP(role *vm.Role) error {	
+func ConfigureWinRMOverHTTP(role *vm.Role) error {
 	return ConfigureWinRMListener(role, vm.WinRMProtocolHTTP, "")
 }
 
-func ConfigureWinRMOverHTTPS(role *vm.Role, certificateThumbprint string) error {	
+func ConfigureWinRMOverHTTPS(role *vm.Role, certificateThumbprint string) error {
 	return ConfigureWinRMListener(role, vm.WinRMProtocolHTTPS, certificateThumbprint)
 }

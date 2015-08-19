@@ -15,8 +15,8 @@ func TestNewLinuxVmRemoteImage(t *testing.T) {
 		"OSDisk")
 	ConfigureForLinux(&role, "myvm", "azureuser", "P@ssword", "2398yyKJGd78e2389ydfncuirowebhf89yh3IUOBY")
 	ConfigureWithPublicSSH(&role)
-  
-  bytes, err := xml.MarshalIndent(role, "", "  ")
+
+	bytes, err := xml.MarshalIndent(role, "", "  ")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -216,16 +216,16 @@ func TestNewVmFromExistingDisk(t *testing.T) {
 }
 
 func TestWinRMOverHttps(t *testing.T) {
-  role := NewVMConfiguration("winrmoverhttp", "Standard_D1")
-  ConfigureForWindows(&role, "WINVM", "azuser", "P2ssw@rd", true, "")
-  ConfigureWinRMOverHTTPS(&role, "abcdef")
+	role := NewVMConfiguration("winrmoverhttp", "Standard_D1")
+	ConfigureForWindows(&role, "WINVM", "azuser", "P2ssw@rd", true, "")
+	ConfigureWinRMOverHTTPS(&role, "abcdef")
 
-  bytes, err := xml.MarshalIndent(role, "", "  ")
-  if err != nil {
-    t.Fatal(err)
-  }
+	bytes, err := xml.MarshalIndent(role, "", "  ")
+	if err != nil {
+		t.Fatal(err)
+	}
 
-  expected := `<Role>
+	expected := `<Role>
   <RoleName>winrmoverhttp</RoleName>
   <RoleType>PersistentVMRole</RoleType>
   <ConfigurationSets>
@@ -254,22 +254,22 @@ func TestWinRMOverHttps(t *testing.T) {
   <ProvisionGuestAgent>true</ProvisionGuestAgent>
 </Role>`
 
-  if string(bytes) != expected {
-    t.Fatalf("Expected marshalled xml to be %q, but got %q", expected, string(bytes))
-  }
+	if string(bytes) != expected {
+		t.Fatalf("Expected marshalled xml to be %q, but got %q", expected, string(bytes))
+	}
 }
 
 func TestWinRMOverHttpsWithNoThumbprint(t *testing.T) {
-  role := NewVMConfiguration("winrmoverhttp", "Standard_D1")
-  ConfigureForWindows(&role, "WINVM", "azuser", "P2ssw@rd", true, "")
-  ConfigureWinRMOverHTTPS(&role, "")
+	role := NewVMConfiguration("winrmoverhttp", "Standard_D1")
+	ConfigureForWindows(&role, "WINVM", "azuser", "P2ssw@rd", true, "")
+	ConfigureWinRMOverHTTPS(&role, "")
 
-  bytes, err := xml.MarshalIndent(role, "", "  ")
-  if err != nil {
-    t.Fatal(err)
-  }
+	bytes, err := xml.MarshalIndent(role, "", "  ")
+	if err != nil {
+		t.Fatal(err)
+	}
 
-  expected := `<Role>
+	expected := `<Role>
   <RoleName>winrmoverhttp</RoleName>
   <RoleType>PersistentVMRole</RoleType>
   <ConfigurationSets>
@@ -297,23 +297,22 @@ func TestWinRMOverHttpsWithNoThumbprint(t *testing.T) {
   <ProvisionGuestAgent>true</ProvisionGuestAgent>
 </Role>`
 
-  if string(bytes) != expected {
-    t.Fatalf("Expected marshalled xml to be %q, but got %q", expected, string(bytes))
-  }
+	if string(bytes) != expected {
+		t.Fatalf("Expected marshalled xml to be %q, but got %q", expected, string(bytes))
+	}
 }
 
-
 func TestWinRMOverHttp(t *testing.T) {
-  role := NewVMConfiguration("winrmoverhttp", "Standard_D1")
-  ConfigureForWindows(&role, "WINVM", "azuser", "P2ssw@rd", true, "")
-  ConfigureWinRMOverHTTP(&role)
+	role := NewVMConfiguration("winrmoverhttp", "Standard_D1")
+	ConfigureForWindows(&role, "WINVM", "azuser", "P2ssw@rd", true, "")
+	ConfigureWinRMOverHTTP(&role)
 
-  bytes, err := xml.MarshalIndent(role, "", "  ")
-  if err != nil {
-    t.Fatal(err)
-  }
+	bytes, err := xml.MarshalIndent(role, "", "  ")
+	if err != nil {
+		t.Fatal(err)
+	}
 
-  expected := `<Role>
+	expected := `<Role>
   <RoleName>winrmoverhttp</RoleName>
   <RoleType>PersistentVMRole</RoleType>
   <ConfigurationSets>
@@ -341,23 +340,23 @@ func TestWinRMOverHttp(t *testing.T) {
   <ProvisionGuestAgent>true</ProvisionGuestAgent>
 </Role>`
 
-  if string(bytes) != expected {
-    t.Fatalf("Expected marshalled xml to be %q, but got %q", expected, string(bytes))
-  }
+	if string(bytes) != expected {
+		t.Fatalf("Expected marshalled xml to be %q, but got %q", expected, string(bytes))
+	}
 }
 
 func TestSettingWinRMOverHttpTwice(t *testing.T) {
-  role := NewVMConfiguration("winrmoverhttp", "Standard_D1")
-  ConfigureForWindows(&role, "WINVM", "azuser", "P2ssw@rd", true, "")
-  ConfigureWinRMOverHTTP(&role)
-  ConfigureWinRMOverHTTP(&role)
+	role := NewVMConfiguration("winrmoverhttp", "Standard_D1")
+	ConfigureForWindows(&role, "WINVM", "azuser", "P2ssw@rd", true, "")
+	ConfigureWinRMOverHTTP(&role)
+	ConfigureWinRMOverHTTP(&role)
 
-  bytes, err := xml.MarshalIndent(role, "", "  ")
-  if err != nil {
-    t.Fatal(err)
-  }
+	bytes, err := xml.MarshalIndent(role, "", "  ")
+	if err != nil {
+		t.Fatal(err)
+	}
 
-  expected := `<Role>
+	expected := `<Role>
   <RoleName>winrmoverhttp</RoleName>
   <RoleType>PersistentVMRole</RoleType>
   <ConfigurationSets>
@@ -385,25 +384,25 @@ func TestSettingWinRMOverHttpTwice(t *testing.T) {
   <ProvisionGuestAgent>true</ProvisionGuestAgent>
 </Role>`
 
-  if string(bytes) != expected {
-    t.Fatalf("Expected marshalled xml to be %q, but got %q", expected, string(bytes))
-  }
+	if string(bytes) != expected {
+		t.Fatalf("Expected marshalled xml to be %q, but got %q", expected, string(bytes))
+	}
 }
 
 func TestSettingWinRMOverHttpAndHttpsTwice(t *testing.T) {
-  role := NewVMConfiguration("winrmoverhttp", "Standard_D1")
-  ConfigureForWindows(&role, "WINVM", "azuser", "P2ssw@rd", true, "")
-  ConfigureWinRMOverHTTP(&role)
-  ConfigureWinRMOverHTTPS(&role, "")
-  ConfigureWinRMOverHTTP(&role)
-  ConfigureWinRMOverHTTPS(&role, "abcdef")
+	role := NewVMConfiguration("winrmoverhttp", "Standard_D1")
+	ConfigureForWindows(&role, "WINVM", "azuser", "P2ssw@rd", true, "")
+	ConfigureWinRMOverHTTP(&role)
+	ConfigureWinRMOverHTTPS(&role, "")
+	ConfigureWinRMOverHTTP(&role)
+	ConfigureWinRMOverHTTPS(&role, "abcdef")
 
-  bytes, err := xml.MarshalIndent(role, "", "  ")
-  if err != nil {
-    t.Fatal(err)
-  }
+	bytes, err := xml.MarshalIndent(role, "", "  ")
+	if err != nil {
+		t.Fatal(err)
+	}
 
-  expected := `<Role>
+	expected := `<Role>
   <RoleName>winrmoverhttp</RoleName>
   <RoleType>PersistentVMRole</RoleType>
   <ConfigurationSets>
@@ -435,7 +434,7 @@ func TestSettingWinRMOverHttpAndHttpsTwice(t *testing.T) {
   <ProvisionGuestAgent>true</ProvisionGuestAgent>
 </Role>`
 
-  if string(bytes) != expected {
-    t.Fatalf("Expected marshalled xml to be %q, but got %q", expected, string(bytes))
-  }
+	if string(bytes) != expected {
+		t.Fatalf("Expected marshalled xml to be %q, but got %q", expected, string(bytes))
+	}
 }

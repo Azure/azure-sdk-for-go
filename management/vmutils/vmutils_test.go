@@ -218,7 +218,7 @@ func TestNewVmFromExistingDisk(t *testing.T) {
 func TestWinRMOverHttps(t *testing.T) {
   role := NewVMConfiguration("winrmoverhttp", "Standard_D1")
   ConfigureForWindows(&role, "WINVM", "azuser", "P2ssw@rd", true, "")
-  ConfigureWinRMOverHttps(&role, "abcdef")
+  ConfigureWinRMOverHTTPS(&role, "abcdef")
 
   bytes, err := xml.MarshalIndent(role, "", "  ")
   if err != nil {
@@ -262,7 +262,7 @@ func TestWinRMOverHttps(t *testing.T) {
 func TestWinRMOverHttpsWithNoThumbprint(t *testing.T) {
   role := NewVMConfiguration("winrmoverhttp", "Standard_D1")
   ConfigureForWindows(&role, "WINVM", "azuser", "P2ssw@rd", true, "")
-  ConfigureWinRMOverHttps(&role, "")
+  ConfigureWinRMOverHTTPS(&role, "")
 
   bytes, err := xml.MarshalIndent(role, "", "  ")
   if err != nil {
@@ -306,7 +306,7 @@ func TestWinRMOverHttpsWithNoThumbprint(t *testing.T) {
 func TestWinRMOverHttp(t *testing.T) {
   role := NewVMConfiguration("winrmoverhttp", "Standard_D1")
   ConfigureForWindows(&role, "WINVM", "azuser", "P2ssw@rd", true, "")
-  ConfigureWinRMOverHttp(&role)
+  ConfigureWinRMOverHTTP(&role)
 
   bytes, err := xml.MarshalIndent(role, "", "  ")
   if err != nil {
@@ -349,8 +349,8 @@ func TestWinRMOverHttp(t *testing.T) {
 func TestSettingWinRMOverHttpTwice(t *testing.T) {
   role := NewVMConfiguration("winrmoverhttp", "Standard_D1")
   ConfigureForWindows(&role, "WINVM", "azuser", "P2ssw@rd", true, "")
-  ConfigureWinRMOverHttp(&role)
-  ConfigureWinRMOverHttp(&role)
+  ConfigureWinRMOverHTTP(&role)
+  ConfigureWinRMOverHTTP(&role)
 
   bytes, err := xml.MarshalIndent(role, "", "  ")
   if err != nil {
@@ -393,10 +393,10 @@ func TestSettingWinRMOverHttpTwice(t *testing.T) {
 func TestSettingWinRMOverHttpAndHttpsTwice(t *testing.T) {
   role := NewVMConfiguration("winrmoverhttp", "Standard_D1")
   ConfigureForWindows(&role, "WINVM", "azuser", "P2ssw@rd", true, "")
-  ConfigureWinRMOverHttp(&role)
-  ConfigureWinRMOverHttps(&role, "")
-  ConfigureWinRMOverHttp(&role)
-  ConfigureWinRMOverHttps(&role, "abcdef")
+  ConfigureWinRMOverHTTP(&role)
+  ConfigureWinRMOverHTTPS(&role, "")
+  ConfigureWinRMOverHTTP(&role)
+  ConfigureWinRMOverHTTPS(&role, "abcdef")
 
   bytes, err := xml.MarshalIndent(role, "", "  ")
   if err != nil {

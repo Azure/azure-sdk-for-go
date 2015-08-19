@@ -137,10 +137,10 @@ func ConfigureWinRMListener(role *vm.Role, protocol vm.WinRMProtocol, certificat
 	return nil
 }
 
-func ConfigureWinRMOverHttp(role *vm.Role) error {	
+func ConfigureWinRMOverHTTP(role *vm.Role) error {	
 	return ConfigureWinRMListener(role, vm.WinRMProtocolHTTP, "")
 }
 
-func ConfigureWinRMOverHttps(role *vm.Role, certificateThumbprint string) error {	
+func ConfigureWinRMOverHTTPS(role *vm.Role, certificateThumbprint string) error {	
 	return ConfigureWinRMListener(role, vm.WinRMProtocolHTTPS, certificateThumbprint)
 }

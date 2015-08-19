@@ -47,8 +47,8 @@ func TestDeployPlatformWindowsImage(t *testing.T) {
 		fmt.Sprintf("http://%s.blob.core.windows.net/sdktest/%s.vhd", sa.ServiceName, vmname),
 		GenerateName())
 	ConfigureForWindows(&role, vmname, "azureuser", GeneratePassword(), true, "")
-	ConfigureWinRMOverHttp(&role)
-	ConfigureWinRMOverHttps(&role, "")
+	ConfigureWinRMOverHTTP(&role)
+	ConfigureWinRMOverHTTPS(&role, "")
 
 	testRoleConfiguration(t, client, role, location)
 }

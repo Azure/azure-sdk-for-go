@@ -72,7 +72,7 @@ func Storage(args []string) {
 
 	sa, err := sac.Create(resourceGroup, name, cp)
 	if err != nil {
-		if sa.Response.StatusCode != 202 {
+		if sa.Response.StatusCode != http.StatusAccepted {
 			fmt.Printf("Creation of %s.%s failed with err -- %v\n", resourceGroup, name, err)
 			return
 		} else {

@@ -40,16 +40,14 @@ func Client(args []string) {
 
 	c, err := helpers.LoadCredentials()
 	if err != nil {
-		fmt.Println(err)
-		return
+		log.Fatalf("Error: %v", err)
 	}
 
 	sac := storage.NewStorageAccountsClient(c["subscriptionID"])
 
 	spt, err := helpers.NewServicePrincipalTokenFromCredentials(c, azure.AzureResourceManagerScope)
 	if err != nil {
-		fmt.Println(err)
-		return
+		log.Fatalf("Error: %v", err)
 	}
 	sac.Authorizer = spt
 
@@ -66,7 +64,7 @@ func Client(args []string) {
 			Type: "Microsoft.Storage/storageAccounts"})
 
 	if err != nil {
-		fmt.Printf("ERROR: %s\n", err)
+		log.Fatalf("Error: %v", err)
 	} else {
 		if cna.NameAvailable {
 			fmt.Printf("The name '%s' is available\n", name)

@@ -34,7 +34,7 @@ func (i Inspectors) ByInspecting() autorest.RespondDecorator {
 
 func Client(args []string) {
 	if len(args) < 1 {
-		fmt.Println("Please provide a name to check")
+		log.Fatalf("Please provide a name to check")
 		return
 	}
 	name := args[0]

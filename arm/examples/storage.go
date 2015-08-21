@@ -32,7 +32,6 @@ func withWatcher() autorest.SendDecorator {
 func Storage(args []string) {
 	if len(args) < 2 {
 		log.Fatalf("Please provide a resource group and name to use")
-		return
 	}
 	resourceGroup := args[0]
 	name := args[1]
@@ -40,7 +39,6 @@ func Storage(args []string) {
 	c, err := helpers.LoadCredentials()
 	if err != nil {
 		log.Fatalf("Error: %v", err)
-		return
 	}
 
 	sac := storage.NewStorageAccountsClient(c["subscriptionID"])
@@ -48,7 +46,6 @@ func Storage(args []string) {
 	spt, err := helpers.NewServicePrincipalTokenFromCredentials(c, azure.AzureResourceManagerScope)
 	if err != nil {
 		log.Fatalf("Error: %v", err)
-		return
 	}
 	sac.Authorizer = spt
 
@@ -58,7 +55,6 @@ func Storage(args []string) {
 			Type: "Microsoft.Storage/storageAccounts"})
 	if err != nil {
 		log.Fatalf("Error: %v", err)
-		return
 	}
 	if !cna.NameAvailable {
 		fmt.Printf("%s is unavailable -- try again\n", name)

@@ -1,9 +1,8 @@
-package main
+package examples
 
 import (
 	"fmt"
 	"net/http"
-	"os"
 	"time"
 
 	"github.com/azure/azure-sdk-for-go/arm/examples/helpers"
@@ -29,18 +28,18 @@ func withWatcher() autorest.SendDecorator {
 	}
 }
 
-func main() {
-	if len(os.Args) < 3 {
+func Storage(args []string) {
+	if len(args) < 2 {
 		fmt.Println("Please provide a resource group and name to use")
-		os.Exit(1)
+		return
 	}
-	resourceGroup := os.Args[1]
-	name := os.Args[2]
+	resourceGroup := args[0]
+	name := args[1]
 
 	c, err := helpers.LoadCredentials()
 	if err != nil {
 		fmt.Println(err)
-		os.Exit(1)
+		return
 	}
 
 	sac := storage.NewStorageAccountsClient(c["subscriptionID"])
@@ -48,7 +47,7 @@ func main() {
 	spt, err := helpers.NewServicePrincipalTokenFromCredentials(c, azure.AzureResourceManagerScope)
 	if err != nil {
 		fmt.Println(err)
-		os.Exit(1)
+		return
 	}
 	sac.Authorizer = spt
 
@@ -58,11 +57,11 @@ func main() {
 			Type: "Microsoft.Storage/storageAccounts"})
 	if err != nil {
 		fmt.Println(err)
-		os.Exit(1)
+		return
 	}
 	if !cna.NameAvailable {
 		fmt.Printf("%s is unavailable -- try again\n", name)
-		os.Exit(1)
+		return
 	}
 	fmt.Printf("%s is available\n\n", name)
 
@@ -78,13 +77,13 @@ func main() {
 	if err != nil {
 		if sa.Response.StatusCode != 202 {
 			fmt.Printf("Creation of %s.%s failed with err -- %v\n", resourceGroup, name, err)
-			os.Exit(1)
+			return
 		} else {
 			fmt.Printf("Create initiated for %s.%s -- poll %s to check status\n",
 				resourceGroup,
 				name,
 				sa.GetPollingLocation())
-			os.Exit(1)
+			return
 		}
 	}
 
@@ -94,7 +93,7 @@ func main() {
 	r, err := sac.Delete(resourceGroup, name)
 	if err != nil {
 		fmt.Printf("Delete of %s.%s failed with status %s\n...%v\n", resourceGroup, name, r.Status, err)
-		os.Exit(1)
+		return
 	}
 	fmt.Printf("Deletion of %s.%s succeeded -- %s\n", resourceGroup, name, r.Status)
 }

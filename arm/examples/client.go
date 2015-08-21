@@ -1,4 +1,4 @@
-package main
+package examples
 
 import (
 	"fmt"
@@ -32,25 +32,22 @@ func (i Inspectors) ByInspecting() autorest.RespondDecorator {
 	}
 }
 
-func main() {
-	if len(os.Args) < 2 {
-		fmt.Println("Please provide a name to check")
-		os.Exit(1)
+func Client(args []string) {
+	if len(args) < 1 {
+		log.Fatalf("Please provide a name to check")
 	}
-	name := os.Args[1]
+	name := args[0]
 
 	c, err := helpers.LoadCredentials()
 	if err != nil {
-		fmt.Println(err)
-		os.Exit(1)
+		log.Fatalf("Error: %v", err)
 	}
 
 	sac := storage.NewStorageAccountsClient(c["subscriptionID"])
 
 	spt, err := helpers.NewServicePrincipalTokenFromCredentials(c, azure.AzureResourceManagerScope)
 	if err != nil {
-		fmt.Println(err)
-		os.Exit(1)
+		log.Fatalf("Error: %v", err)
 	}
 	sac.Authorizer = spt
 
@@ -67,7 +64,7 @@ func main() {
 			Type: "Microsoft.Storage/storageAccounts"})
 
 	if err != nil {
-		fmt.Printf("ERROR: %s\n", err)
+		log.Fatalf("Error: %v", err)
 	} else {
 		if cna.NameAvailable {
 			fmt.Printf("The name '%s' is available\n", name)

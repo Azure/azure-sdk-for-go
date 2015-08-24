@@ -29,13 +29,7 @@ func withWatcher() autorest.SendDecorator {
 	}
 }
 
-func Storage(args []string) {
-	if len(args) < 2 {
-		log.Fatalf("Please provide a resource group and name to use")
-	}
-	resourceGroup := args[0]
-	name := args[1]
-
+func createAccount(resourceGroup, name string) {
 	c, err := helpers.LoadCredentials()
 	if err != nil {
 		log.Fatalf("Error: %v", err)

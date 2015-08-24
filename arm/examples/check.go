@@ -12,9 +12,9 @@ import (
 	"github.com/azure/go-autorest/autorest/azure"
 )
 
-type Inspectors struct{}
+type inspectors struct{}
 
-func (i Inspectors) WithInspection() autorest.PrepareDecorator {
+func (i inspectors) WithInspection() autorest.PrepareDecorator {
 	return func(p autorest.Preparer) autorest.Preparer {
 		return autorest.PreparerFunc(func(r *http.Request) (*http.Request, error) {
 			fmt.Printf("Inspecting Request: %s %s\n", r.Method, r.URL)
@@ -23,7 +23,7 @@ func (i Inspectors) WithInspection() autorest.PrepareDecorator {
 	}
 }
 
-func (i Inspectors) ByInspecting() autorest.RespondDecorator {
+func (i inspectors) ByInspecting() autorest.RespondDecorator {
 	return func(r autorest.Responder) autorest.Responder {
 		return autorest.ResponderFunc(func(resp *http.Response) error {
 			fmt.Printf("Inspecting Response: %s for %s %s\n", resp.Status, resp.Request.Method, resp.Request.URL)
@@ -32,12 +32,7 @@ func (i Inspectors) ByInspecting() autorest.RespondDecorator {
 	}
 }
 
-func Client(args []string) {
-	if len(args) < 1 {
-		log.Fatalf("Please provide a name to check")
-	}
-	name := args[0]
-
+func checkName(name string) {
 	c, err := helpers.LoadCredentials()
 	if err != nil {
 		log.Fatalf("Error: %v", err)
@@ -54,7 +49,7 @@ func Client(args []string) {
 	sac.Sender = autorest.CreateSender(
 		autorest.WithLogging(log.New(os.Stdout, "sdk-example: ", log.LstdFlags)))
 
-	i := Inspectors{}
+	i := inspectors{}
 	sac.RequestInspector = i
 	sac.ResponseInspector = i
 

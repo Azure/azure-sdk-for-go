@@ -100,14 +100,13 @@ package main
 
 import(
   "fmt"
-  "os"
 
   "github.com/azure/azure-sdk-for-go/examples/helpers"
   "github.com/azure/azure-sdk-for-go/arm/storage"
 )
 
-func main() {
-  name := os.Args[1]
+func check_name(args []string) {
+  name := args[0]
   
   c, _ := helpers.LoadCredentials()
   spt, _ := helpers.NewServicePrincipalTokenFromCredentials(c, azure.AzureResourceManagerScope)
@@ -150,7 +149,7 @@ an
 or an
 [autorest.ResponseInspector](https://godoc.org/github.com/Azure/go-autorest/autorest#ResponseInspector)
 enables more control. See the included example file
-[client.go](https://github.com/azure/azure-sdk-for-go/blob/master/arm/examples/client.go)
+[check.go](https://github.com/azure/azure-sdk-for-go/blob/master/arm/examples/check.go)
 for more details. Through these you can modify the outgoing request, inspect the incoming response,
 or even go so far as to provide a
 [circuit breaker](https://msdn.microsoft.com/en-us/library/dn589784.aspx)
@@ -163,8 +162,8 @@ Not only does the interface give anonymous access to the original
 but provides the package type (e.g.,
 [storage.StorageAccountsClient](https://godoc.org/github.com/Azure/azure-sdk-for-go/arm/storage#StorageAccountsClient)),
 the failing method (e.g.,
-[CheckNameAvailability](https://godoc.org/github.com/Azure/azure-sdk-for-go/arm/storage#CheckNameAvailability)), and
-a detailed error message.
+[CheckNameAvailability](https://godoc.org/github.com/Azure/azure-sdk-for-go/arm/storage#StorageAccountsClient.CheckNameAvailability)),
+and a detailed error message.
 
 ## Something a Bit More Complex: Creating a new Azure Storage account
 
@@ -206,14 +205,14 @@ package main
 
 import(
   "fmt"
-  "os"
 
   "github.com/azure/azure-sdk-for-go/examples/helpers"
   "github.com/azure/azure-sdk-for-go/arm/storage"
 )
 
-func main() {
-  name := os.Args[1]
+func create_account(args []string) {
+  resourceGroup := args[0]
+  name := args[1]
   
   c, _ := helpers.LoadCredentials()
   spt, _ := helpers.NewServicePrincipalTokenFromCredentials(c, azure.AzureResourceManagerScope)
@@ -229,7 +228,7 @@ func main() {
 
   sa, err := sac.Create(resourceGroup, name, cp)
   if err != nil {
-    if sa.Response.StatusCode != 202 {
+    if sa.Response.StatusCode != http.StatusAccepted {
       fmt.Printf("Creation of %s.%s failed with err -- %v\n", resourceGroup, name, err)
     } else {
       fmt.Printf("Create initiated for %s.%s -- poll %s to check status\n",
@@ -253,7 +252,7 @@ prints the URL the
 [Azure Storage](http://azure.microsoft.com/en-us/documentation/services/storage/)
 service returned for polling.
 More details, including deleting the created account, are in the example code file
-[storage.go](https://github.com/azure/azure-sdk-for-go/blob/master/arm/examples/storage.go).
+[create.go](https://github.com/azure/azure-sdk-for-go/blob/master/arm/examples/create.go).
 
 ## Summing Up
 

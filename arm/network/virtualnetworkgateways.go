@@ -59,7 +59,10 @@ func (client VirtualNetworkGatewaysClient) CreateOrUpdate(resourceGroupName stri
 		return result, autorest.NewErrorWithError(err, "network.VirtualNetworkGatewaysClient", "CreateOrUpdate", "Failure preparing request")
 	}
 
-	resp, err := autorest.SendWithSender(client, req)
+	resp, err := autorest.SendWithSender(
+		client,
+		req,
+		autorest.DoErrorUnlessStatusCode(http.StatusCreated, http.StatusOK))
 
 	if err == nil {
 		err = autorest.Respond(
@@ -128,7 +131,10 @@ func (client VirtualNetworkGatewaysClient) Get(resourceGroupName string, virtual
 		return result, autorest.NewErrorWithError(err, "network.VirtualNetworkGatewaysClient", "Get", "Failure preparing request")
 	}
 
-	resp, err := autorest.SendWithSender(client, req)
+	resp, err := autorest.SendWithSender(
+		client,
+		req,
+		autorest.DoErrorUnlessStatusCode(http.StatusOK))
 
 	if err == nil {
 		err = autorest.Respond(
@@ -196,9 +202,12 @@ func (client VirtualNetworkGatewaysClient) Delete(resourceGroupName string, virt
 		return result, autorest.NewErrorWithError(err, "network.VirtualNetworkGatewaysClient", "Delete", "Failure preparing request")
 	}
 
-	resp, err := autorest.SendWithSender(client, req)
+	resp, err := autorest.SendWithSender(
+		client,
+		req,
+		autorest.DoErrorUnlessStatusCode(http.StatusAccepted, http.StatusOK, http.StatusNoContent))
 	if err == nil {
-		err = client.ShouldPoll(resp)
+		err = client.IsPollingAllowed(resp)
 		if err == nil {
 			resp, err = client.PollAsNeeded(resp)
 		}
@@ -268,7 +277,10 @@ func (client VirtualNetworkGatewaysClient) List(resourceGroupName string) (resul
 		return result, autorest.NewErrorWithError(err, "network.VirtualNetworkGatewaysClient", "List", "Failure preparing request")
 	}
 
-	resp, err := autorest.SendWithSender(client, req)
+	resp, err := autorest.SendWithSender(
+		client,
+		req,
+		autorest.DoErrorUnlessStatusCode(http.StatusOK))
 
 	if err == nil {
 		err = autorest.Respond(
@@ -338,9 +350,12 @@ func (client VirtualNetworkGatewaysClient) Reset(resourceGroupName string, virtu
 		return result, autorest.NewErrorWithError(err, "network.VirtualNetworkGatewaysClient", "Reset", "Failure preparing request")
 	}
 
-	resp, err := autorest.SendWithSender(client, req)
+	resp, err := autorest.SendWithSender(
+		client,
+		req,
+		autorest.DoErrorUnlessStatusCode(http.StatusAccepted, http.StatusOK))
 	if err == nil {
-		err = client.ShouldPoll(resp)
+		err = client.IsPollingAllowed(resp)
 		if err == nil {
 			resp, err = client.PollAsNeeded(resp)
 		}

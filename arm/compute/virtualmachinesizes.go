@@ -54,7 +54,10 @@ func (client VirtualMachineSizesClient) List(location string) (result VirtualMac
 		return result, autorest.NewErrorWithError(err, "compute.VirtualMachineSizesClient", "List", "Failure preparing request")
 	}
 
-	resp, err := autorest.SendWithSender(client, req)
+	resp, err := autorest.SendWithSender(
+		client,
+		req,
+		autorest.DoErrorUnlessStatusCode(http.StatusOK))
 
 	if err == nil {
 		err = autorest.Respond(

@@ -56,7 +56,10 @@ func (client WorkflowRunActionsClient) List(resourceGroupName string, workflowNa
 		return result, autorest.NewErrorWithError(err, "logic.WorkflowRunActionsClient", "List", "Failure preparing request")
 	}
 
-	resp, err := autorest.SendWithSender(client, req)
+	resp, err := autorest.SendWithSender(
+		client,
+		req,
+		autorest.DoErrorUnlessStatusCode(http.StatusOK))
 
 	if err == nil {
 		err = autorest.Respond(
@@ -127,7 +130,10 @@ func (client WorkflowRunActionsClient) Get(resourceGroupName string, workflowNam
 		return result, autorest.NewErrorWithError(err, "logic.WorkflowRunActionsClient", "Get", "Failure preparing request")
 	}
 
-	resp, err := autorest.SendWithSender(client, req)
+	resp, err := autorest.SendWithSender(
+		client,
+		req,
+		autorest.DoErrorUnlessStatusCode(http.StatusOK))
 
 	if err == nil {
 		err = autorest.Respond(

@@ -54,7 +54,10 @@ func (client TagsClient) DeleteValue(tagName string, tagValue string) (result au
 		return result, autorest.NewErrorWithError(err, "resources.TagsClient", "DeleteValue", "Failure preparing request")
 	}
 
-	resp, err := autorest.SendWithSender(client, req)
+	resp, err := autorest.SendWithSender(
+		client,
+		req,
+		autorest.DoErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent))
 
 	if err == nil {
 		err = autorest.Respond(
@@ -119,7 +122,10 @@ func (client TagsClient) CreateOrUpdateValue(tagName string, tagValue string) (r
 		return result, autorest.NewErrorWithError(err, "resources.TagsClient", "CreateOrUpdateValue", "Failure preparing request")
 	}
 
-	resp, err := autorest.SendWithSender(client, req)
+	resp, err := autorest.SendWithSender(
+		client,
+		req,
+		autorest.DoErrorUnlessStatusCode(http.StatusOK, http.StatusCreated))
 
 	if err == nil {
 		err = autorest.Respond(
@@ -185,7 +191,10 @@ func (client TagsClient) CreateOrUpdate(tagName string) (result TagDetails, ae a
 		return result, autorest.NewErrorWithError(err, "resources.TagsClient", "CreateOrUpdate", "Failure preparing request")
 	}
 
-	resp, err := autorest.SendWithSender(client, req)
+	resp, err := autorest.SendWithSender(
+		client,
+		req,
+		autorest.DoErrorUnlessStatusCode(http.StatusOK, http.StatusCreated))
 
 	if err == nil {
 		err = autorest.Respond(
@@ -250,7 +259,10 @@ func (client TagsClient) Delete(tagName string) (result autorest.Response, ae au
 		return result, autorest.NewErrorWithError(err, "resources.TagsClient", "Delete", "Failure preparing request")
 	}
 
-	resp, err := autorest.SendWithSender(client, req)
+	resp, err := autorest.SendWithSender(
+		client,
+		req,
+		autorest.DoErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent))
 
 	if err == nil {
 		err = autorest.Respond(
@@ -312,7 +324,10 @@ func (client TagsClient) List() (result TagsListResult, ae autorest.Error) {
 		return result, autorest.NewErrorWithError(err, "resources.TagsClient", "List", "Failure preparing request")
 	}
 
-	resp, err := autorest.SendWithSender(client, req)
+	resp, err := autorest.SendWithSender(
+		client,
+		req,
+		autorest.DoErrorUnlessStatusCode(http.StatusOK))
 
 	if err == nil {
 		err = autorest.Respond(

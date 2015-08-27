@@ -57,9 +57,12 @@ func (client VirtualMachinesClient) Capture(resourceGroupName string, vmName str
 		return result, autorest.NewErrorWithError(err, "compute.VirtualMachinesClient", "Capture", "Failure preparing request")
 	}
 
-	resp, err := autorest.SendWithSender(client, req)
+	resp, err := autorest.SendWithSender(
+		client,
+		req,
+		autorest.DoErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted))
 	if err == nil {
-		err = client.ShouldPoll(resp)
+		err = client.IsPollingAllowed(resp)
 		if err == nil {
 			resp, err = client.PollAsNeeded(resp)
 		}
@@ -132,7 +135,10 @@ func (client VirtualMachinesClient) CreateOrUpdate(resourceGroupName string, vmN
 		return result, autorest.NewErrorWithError(err, "compute.VirtualMachinesClient", "CreateOrUpdate", "Failure preparing request")
 	}
 
-	resp, err := autorest.SendWithSender(client, req)
+	resp, err := autorest.SendWithSender(
+		client,
+		req,
+		autorest.DoErrorUnlessStatusCode(http.StatusCreated, http.StatusOK))
 
 	if err == nil {
 		err = autorest.Respond(
@@ -200,9 +206,12 @@ func (client VirtualMachinesClient) Delete(resourceGroupName string, vmName stri
 		return result, autorest.NewErrorWithError(err, "compute.VirtualMachinesClient", "Delete", "Failure preparing request")
 	}
 
-	resp, err := autorest.SendWithSender(client, req)
+	resp, err := autorest.SendWithSender(
+		client,
+		req,
+		autorest.DoErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent, http.StatusAccepted))
 	if err == nil {
-		err = client.ShouldPoll(resp)
+		err = client.IsPollingAllowed(resp)
 		if err == nil {
 			resp, err = client.PollAsNeeded(resp)
 		}
@@ -273,7 +282,10 @@ func (client VirtualMachinesClient) Get(resourceGroupName string, vmName string,
 		return result, autorest.NewErrorWithError(err, "compute.VirtualMachinesClient", "Get", "Failure preparing request")
 	}
 
-	resp, err := autorest.SendWithSender(client, req)
+	resp, err := autorest.SendWithSender(
+		client,
+		req,
+		autorest.DoErrorUnlessStatusCode(http.StatusOK))
 
 	if err == nil {
 		err = autorest.Respond(
@@ -343,9 +355,12 @@ func (client VirtualMachinesClient) Deallocate(resourceGroupName string, vmName 
 		return result, autorest.NewErrorWithError(err, "compute.VirtualMachinesClient", "Deallocate", "Failure preparing request")
 	}
 
-	resp, err := autorest.SendWithSender(client, req)
+	resp, err := autorest.SendWithSender(
+		client,
+		req,
+		autorest.DoErrorUnlessStatusCode(http.StatusAccepted))
 	if err == nil {
-		err = client.ShouldPoll(resp)
+		err = client.IsPollingAllowed(resp)
 		if err == nil {
 			resp, err = client.PollAsNeeded(resp)
 		}
@@ -415,7 +430,10 @@ func (client VirtualMachinesClient) Generalize(resourceGroupName string, vmName 
 		return result, autorest.NewErrorWithError(err, "compute.VirtualMachinesClient", "Generalize", "Failure preparing request")
 	}
 
-	resp, err := autorest.SendWithSender(client, req)
+	resp, err := autorest.SendWithSender(
+		client,
+		req,
+		autorest.DoErrorUnlessStatusCode(http.StatusOK))
 
 	if err == nil {
 		err = autorest.Respond(
@@ -480,7 +498,10 @@ func (client VirtualMachinesClient) List(resourceGroupName string) (result Virtu
 		return result, autorest.NewErrorWithError(err, "compute.VirtualMachinesClient", "List", "Failure preparing request")
 	}
 
-	resp, err := autorest.SendWithSender(client, req)
+	resp, err := autorest.SendWithSender(
+		client,
+		req,
+		autorest.DoErrorUnlessStatusCode(http.StatusOK))
 
 	if err == nil {
 		err = autorest.Respond(
@@ -545,7 +566,10 @@ func (client VirtualMachinesClient) ListAll() (result VirtualMachineListResult, 
 		return result, autorest.NewErrorWithError(err, "compute.VirtualMachinesClient", "ListAll", "Failure preparing request")
 	}
 
-	resp, err := autorest.SendWithSender(client, req)
+	resp, err := autorest.SendWithSender(
+		client,
+		req,
+		autorest.DoErrorUnlessStatusCode(http.StatusOK))
 
 	if err == nil {
 		err = autorest.Respond(
@@ -611,7 +635,10 @@ func (client VirtualMachinesClient) ListAvailableSizes(resourceGroupName string,
 		return result, autorest.NewErrorWithError(err, "compute.VirtualMachinesClient", "ListAvailableSizes", "Failure preparing request")
 	}
 
-	resp, err := autorest.SendWithSender(client, req)
+	resp, err := autorest.SendWithSender(
+		client,
+		req,
+		autorest.DoErrorUnlessStatusCode(http.StatusOK))
 
 	if err == nil {
 		err = autorest.Respond(
@@ -678,9 +705,12 @@ func (client VirtualMachinesClient) PowerOff(resourceGroupName string, vmName st
 		return result, autorest.NewErrorWithError(err, "compute.VirtualMachinesClient", "PowerOff", "Failure preparing request")
 	}
 
-	resp, err := autorest.SendWithSender(client, req)
+	resp, err := autorest.SendWithSender(
+		client,
+		req,
+		autorest.DoErrorUnlessStatusCode(http.StatusAccepted))
 	if err == nil {
-		err = client.ShouldPoll(resp)
+		err = client.IsPollingAllowed(resp)
 		if err == nil {
 			resp, err = client.PollAsNeeded(resp)
 		}
@@ -750,9 +780,12 @@ func (client VirtualMachinesClient) Restart(resourceGroupName string, vmName str
 		return result, autorest.NewErrorWithError(err, "compute.VirtualMachinesClient", "Restart", "Failure preparing request")
 	}
 
-	resp, err := autorest.SendWithSender(client, req)
+	resp, err := autorest.SendWithSender(
+		client,
+		req,
+		autorest.DoErrorUnlessStatusCode(http.StatusAccepted))
 	if err == nil {
-		err = client.ShouldPoll(resp)
+		err = client.IsPollingAllowed(resp)
 		if err == nil {
 			resp, err = client.PollAsNeeded(resp)
 		}
@@ -822,9 +855,12 @@ func (client VirtualMachinesClient) Start(resourceGroupName string, vmName strin
 		return result, autorest.NewErrorWithError(err, "compute.VirtualMachinesClient", "Start", "Failure preparing request")
 	}
 
-	resp, err := autorest.SendWithSender(client, req)
+	resp, err := autorest.SendWithSender(
+		client,
+		req,
+		autorest.DoErrorUnlessStatusCode(http.StatusAccepted))
 	if err == nil {
-		err = client.ShouldPoll(resp)
+		err = client.IsPollingAllowed(resp)
 		if err == nil {
 			resp, err = client.PollAsNeeded(resp)
 		}

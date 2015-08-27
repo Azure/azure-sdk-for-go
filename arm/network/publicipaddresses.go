@@ -56,9 +56,12 @@ func (client PublicIpAddressesClient) Delete(resourceGroupName string, publicIpA
 		return result, autorest.NewErrorWithError(err, "network.PublicIpAddressesClient", "Delete", "Failure preparing request")
 	}
 
-	resp, err := autorest.SendWithSender(client, req)
+	resp, err := autorest.SendWithSender(
+		client,
+		req,
+		autorest.DoErrorUnlessStatusCode(http.StatusAccepted, http.StatusNoContent, http.StatusOK))
 	if err == nil {
-		err = client.ShouldPoll(resp)
+		err = client.IsPollingAllowed(resp)
 		if err == nil {
 			resp, err = client.PollAsNeeded(resp)
 		}
@@ -129,7 +132,10 @@ func (client PublicIpAddressesClient) Get(resourceGroupName string, publicIpAddr
 		return result, autorest.NewErrorWithError(err, "network.PublicIpAddressesClient", "Get", "Failure preparing request")
 	}
 
-	resp, err := autorest.SendWithSender(client, req)
+	resp, err := autorest.SendWithSender(
+		client,
+		req,
+		autorest.DoErrorUnlessStatusCode(http.StatusOK))
 
 	if err == nil {
 		err = autorest.Respond(
@@ -198,7 +204,10 @@ func (client PublicIpAddressesClient) CreateOrUpdate(resourceGroupName string, p
 		return result, autorest.NewErrorWithError(err, "network.PublicIpAddressesClient", "CreateOrUpdate", "Failure preparing request")
 	}
 
-	resp, err := autorest.SendWithSender(client, req)
+	resp, err := autorest.SendWithSender(
+		client,
+		req,
+		autorest.DoErrorUnlessStatusCode(http.StatusOK, http.StatusCreated))
 
 	if err == nil {
 		err = autorest.Respond(
@@ -264,7 +273,10 @@ func (client PublicIpAddressesClient) ListAll() (result PublicIpAddressListResul
 		return result, autorest.NewErrorWithError(err, "network.PublicIpAddressesClient", "ListAll", "Failure preparing request")
 	}
 
-	resp, err := autorest.SendWithSender(client, req)
+	resp, err := autorest.SendWithSender(
+		client,
+		req,
+		autorest.DoErrorUnlessStatusCode(http.StatusOK))
 
 	if err == nil {
 		err = autorest.Respond(
@@ -329,7 +341,10 @@ func (client PublicIpAddressesClient) List(resourceGroupName string) (result Pub
 		return result, autorest.NewErrorWithError(err, "network.PublicIpAddressesClient", "List", "Failure preparing request")
 	}
 
-	resp, err := autorest.SendWithSender(client, req)
+	resp, err := autorest.SendWithSender(
+		client,
+		req,
+		autorest.DoErrorUnlessStatusCode(http.StatusOK))
 
 	if err == nil {
 		err = autorest.Respond(

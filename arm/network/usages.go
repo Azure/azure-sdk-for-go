@@ -54,7 +54,10 @@ func (client UsagesClient) List(location string) (result UsagesListResult, ae au
 		return result, autorest.NewErrorWithError(err, "network.UsagesClient", "List", "Failure preparing request")
 	}
 
-	resp, err := autorest.SendWithSender(client, req)
+	resp, err := autorest.SendWithSender(
+		client,
+		req,
+		autorest.DoErrorUnlessStatusCode(http.StatusOK))
 
 	if err == nil {
 		err = autorest.Respond(

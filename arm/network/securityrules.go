@@ -57,9 +57,12 @@ func (client SecurityRulesClient) Delete(resourceGroupName string, networkSecuri
 		return result, autorest.NewErrorWithError(err, "network.SecurityRulesClient", "Delete", "Failure preparing request")
 	}
 
-	resp, err := autorest.SendWithSender(client, req)
+	resp, err := autorest.SendWithSender(
+		client,
+		req,
+		autorest.DoErrorUnlessStatusCode(http.StatusAccepted, http.StatusOK, http.StatusNoContent))
 	if err == nil {
-		err = client.ShouldPoll(resp)
+		err = client.IsPollingAllowed(resp)
 		if err == nil {
 			resp, err = client.PollAsNeeded(resp)
 		}
@@ -132,7 +135,10 @@ func (client SecurityRulesClient) Get(resourceGroupName string, networkSecurityG
 		return result, autorest.NewErrorWithError(err, "network.SecurityRulesClient", "Get", "Failure preparing request")
 	}
 
-	resp, err := autorest.SendWithSender(client, req)
+	resp, err := autorest.SendWithSender(
+		client,
+		req,
+		autorest.DoErrorUnlessStatusCode(http.StatusOK))
 
 	if err == nil {
 		err = autorest.Respond(
@@ -204,7 +210,10 @@ func (client SecurityRulesClient) CreateOrUpdate(resourceGroupName string, netwo
 		return result, autorest.NewErrorWithError(err, "network.SecurityRulesClient", "CreateOrUpdate", "Failure preparing request")
 	}
 
-	resp, err := autorest.SendWithSender(client, req)
+	resp, err := autorest.SendWithSender(
+		client,
+		req,
+		autorest.DoErrorUnlessStatusCode(http.StatusOK, http.StatusCreated))
 
 	if err == nil {
 		err = autorest.Respond(
@@ -274,7 +283,10 @@ func (client SecurityRulesClient) List(resourceGroupName string, networkSecurity
 		return result, autorest.NewErrorWithError(err, "network.SecurityRulesClient", "List", "Failure preparing request")
 	}
 
-	resp, err := autorest.SendWithSender(client, req)
+	resp, err := autorest.SendWithSender(
+		client,
+		req,
+		autorest.DoErrorUnlessStatusCode(http.StatusOK))
 
 	if err == nil {
 		err = autorest.Respond(

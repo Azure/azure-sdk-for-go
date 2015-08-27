@@ -56,7 +56,10 @@ func (client StorageAccountsClient) CheckNameAvailability(accountName StorageAcc
 		return result, autorest.NewErrorWithError(err, "storage.StorageAccountsClient", "CheckNameAvailability", "Failure preparing request")
 	}
 
-	resp, err := autorest.SendWithSender(client, req)
+	resp, err := autorest.SendWithSender(
+		client,
+		req,
+		autorest.DoErrorUnlessStatusCode(http.StatusOK))
 
 	if err == nil {
 		err = autorest.Respond(
@@ -129,9 +132,12 @@ func (client StorageAccountsClient) Create(resourceGroupName string, accountName
 		return result, autorest.NewErrorWithError(err, "storage.StorageAccountsClient", "Create", "Failure preparing request")
 	}
 
-	resp, err := autorest.SendWithSender(client, req)
+	resp, err := autorest.SendWithSender(
+		client,
+		req,
+		autorest.DoErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted))
 	if err == nil {
-		err = client.ShouldPoll(resp)
+		err = client.IsPollingAllowed(resp)
 		if err == nil {
 			resp, err = client.PollAsNeeded(resp)
 		}
@@ -205,7 +211,10 @@ func (client StorageAccountsClient) Delete(resourceGroupName string, accountName
 		return result, autorest.NewErrorWithError(err, "storage.StorageAccountsClient", "Delete", "Failure preparing request")
 	}
 
-	resp, err := autorest.SendWithSender(client, req)
+	resp, err := autorest.SendWithSender(
+		client,
+		req,
+		autorest.DoErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent))
 
 	if err == nil {
 		err = autorest.Respond(
@@ -275,7 +284,10 @@ func (client StorageAccountsClient) GetProperties(resourceGroupName string, acco
 		return result, autorest.NewErrorWithError(err, "storage.StorageAccountsClient", "GetProperties", "Failure preparing request")
 	}
 
-	resp, err := autorest.SendWithSender(client, req)
+	resp, err := autorest.SendWithSender(
+		client,
+		req,
+		autorest.DoErrorUnlessStatusCode(http.StatusOK))
 
 	if err == nil {
 		err = autorest.Respond(
@@ -354,7 +366,10 @@ func (client StorageAccountsClient) Update(resourceGroupName string, accountName
 		return result, autorest.NewErrorWithError(err, "storage.StorageAccountsClient", "Update", "Failure preparing request")
 	}
 
-	resp, err := autorest.SendWithSender(client, req)
+	resp, err := autorest.SendWithSender(
+		client,
+		req,
+		autorest.DoErrorUnlessStatusCode(http.StatusOK))
 
 	if err == nil {
 		err = autorest.Respond(
@@ -422,7 +437,10 @@ func (client StorageAccountsClient) ListKeys(resourceGroupName string, accountNa
 		return result, autorest.NewErrorWithError(err, "storage.StorageAccountsClient", "ListKeys", "Failure preparing request")
 	}
 
-	resp, err := autorest.SendWithSender(client, req)
+	resp, err := autorest.SendWithSender(
+		client,
+		req,
+		autorest.DoErrorUnlessStatusCode(http.StatusOK))
 
 	if err == nil {
 		err = autorest.Respond(
@@ -487,7 +505,10 @@ func (client StorageAccountsClient) List() (result StorageAccountListResult, ae 
 		return result, autorest.NewErrorWithError(err, "storage.StorageAccountsClient", "List", "Failure preparing request")
 	}
 
-	resp, err := autorest.SendWithSender(client, req)
+	resp, err := autorest.SendWithSender(
+		client,
+		req,
+		autorest.DoErrorUnlessStatusCode(http.StatusOK))
 
 	if err == nil {
 		err = autorest.Respond(
@@ -554,7 +575,10 @@ func (client StorageAccountsClient) ListByResourceGroup(resourceGroupName string
 		return result, autorest.NewErrorWithError(err, "storage.StorageAccountsClient", "ListByResourceGroup", "Failure preparing request")
 	}
 
-	resp, err := autorest.SendWithSender(client, req)
+	resp, err := autorest.SendWithSender(
+		client,
+		req,
+		autorest.DoErrorUnlessStatusCode(http.StatusOK))
 
 	if err == nil {
 		err = autorest.Respond(
@@ -623,7 +647,10 @@ func (client StorageAccountsClient) RegenerateKey(resourceGroupName string, acco
 		return result, autorest.NewErrorWithError(err, "storage.StorageAccountsClient", "RegenerateKey", "Failure preparing request")
 	}
 
-	resp, err := autorest.SendWithSender(client, req)
+	resp, err := autorest.SendWithSender(
+		client,
+		req,
+		autorest.DoErrorUnlessStatusCode(http.StatusOK))
 
 	if err == nil {
 		err = autorest.Respond(

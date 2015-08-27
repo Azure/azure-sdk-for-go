@@ -55,7 +55,10 @@ func (client AvailabilitySetsClient) Delete(resourceGroupName string, availabili
 		return result, autorest.NewErrorWithError(err, "compute.AvailabilitySetsClient", "Delete", "Failure preparing request")
 	}
 
-	resp, err := autorest.SendWithSender(client, req)
+	resp, err := autorest.SendWithSender(
+		client,
+		req,
+		autorest.DoErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent))
 
 	if err == nil {
 		err = autorest.Respond(
@@ -121,7 +124,10 @@ func (client AvailabilitySetsClient) Get(resourceGroupName string, availabilityS
 		return result, autorest.NewErrorWithError(err, "compute.AvailabilitySetsClient", "Get", "Failure preparing request")
 	}
 
-	resp, err := autorest.SendWithSender(client, req)
+	resp, err := autorest.SendWithSender(
+		client,
+		req,
+		autorest.DoErrorUnlessStatusCode(http.StatusOK))
 
 	if err == nil {
 		err = autorest.Respond(
@@ -187,7 +193,10 @@ func (client AvailabilitySetsClient) List(resourceGroupName string) (result Avai
 		return result, autorest.NewErrorWithError(err, "compute.AvailabilitySetsClient", "List", "Failure preparing request")
 	}
 
-	resp, err := autorest.SendWithSender(client, req)
+	resp, err := autorest.SendWithSender(
+		client,
+		req,
+		autorest.DoErrorUnlessStatusCode(http.StatusOK))
 
 	if err == nil {
 		err = autorest.Respond(
@@ -254,7 +263,10 @@ func (client AvailabilitySetsClient) ListAvailableSizes(resourceGroupName string
 		return result, autorest.NewErrorWithError(err, "compute.AvailabilitySetsClient", "ListAvailableSizes", "Failure preparing request")
 	}
 
-	resp, err := autorest.SendWithSender(client, req)
+	resp, err := autorest.SendWithSender(
+		client,
+		req,
+		autorest.DoErrorUnlessStatusCode(http.StatusOK))
 
 	if err == nil {
 		err = autorest.Respond(
@@ -322,7 +334,10 @@ func (client AvailabilitySetsClient) CreateOrUpdate(resourceGroupName string, na
 		return result, autorest.NewErrorWithError(err, "compute.AvailabilitySetsClient", "CreateOrUpdate", "Failure preparing request")
 	}
 
-	resp, err := autorest.SendWithSender(client, req)
+	resp, err := autorest.SendWithSender(
+		client,
+		req,
+		autorest.DoErrorUnlessStatusCode(http.StatusOK))
 
 	if err == nil {
 		err = autorest.Respond(

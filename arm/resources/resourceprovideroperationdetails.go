@@ -54,7 +54,10 @@ func (client ResourceProviderOperationDetailsClient) List(resourceProviderNamesp
 		return result, autorest.NewErrorWithError(err, "resources.ResourceProviderOperationDetailsClient", "List", "Failure preparing request")
 	}
 
-	resp, err := autorest.SendWithSender(client, req)
+	resp, err := autorest.SendWithSender(
+		client,
+		req,
+		autorest.DoErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent))
 
 	if err == nil {
 		err = autorest.Respond(

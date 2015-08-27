@@ -55,7 +55,10 @@ func (client WorkflowAccessKeysClient) List(resourceGroupName string, workflowNa
 		return result, autorest.NewErrorWithError(err, "logic.WorkflowAccessKeysClient", "List", "Failure preparing request")
 	}
 
-	resp, err := autorest.SendWithSender(client, req)
+	resp, err := autorest.SendWithSender(
+		client,
+		req,
+		autorest.DoErrorUnlessStatusCode(http.StatusOK))
 
 	if err == nil {
 		err = autorest.Respond(
@@ -123,7 +126,10 @@ func (client WorkflowAccessKeysClient) Get(resourceGroupName string, workflowNam
 		return result, autorest.NewErrorWithError(err, "logic.WorkflowAccessKeysClient", "Get", "Failure preparing request")
 	}
 
-	resp, err := autorest.SendWithSender(client, req)
+	resp, err := autorest.SendWithSender(
+		client,
+		req,
+		autorest.DoErrorUnlessStatusCode(http.StatusOK))
 
 	if err == nil {
 		err = autorest.Respond(
@@ -192,7 +198,10 @@ func (client WorkflowAccessKeysClient) CreateOrUpdate(resourceGroupName string, 
 		return result, autorest.NewErrorWithError(err, "logic.WorkflowAccessKeysClient", "CreateOrUpdate", "Failure preparing request")
 	}
 
-	resp, err := autorest.SendWithSender(client, req)
+	resp, err := autorest.SendWithSender(
+		client,
+		req,
+		autorest.DoErrorUnlessStatusCode(http.StatusOK, http.StatusCreated))
 
 	if err == nil {
 		err = autorest.Respond(
@@ -261,7 +270,10 @@ func (client WorkflowAccessKeysClient) Delete(resourceGroupName string, workflow
 		return result, autorest.NewErrorWithError(err, "logic.WorkflowAccessKeysClient", "Delete", "Failure preparing request")
 	}
 
-	resp, err := autorest.SendWithSender(client, req)
+	resp, err := autorest.SendWithSender(
+		client,
+		req,
+		autorest.DoErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent))
 
 	if err == nil {
 		err = autorest.Respond(
@@ -328,7 +340,10 @@ func (client WorkflowAccessKeysClient) ListSecretKeys(resourceGroupName string, 
 		return result, autorest.NewErrorWithError(err, "logic.WorkflowAccessKeysClient", "ListSecretKeys", "Failure preparing request")
 	}
 
-	resp, err := autorest.SendWithSender(client, req)
+	resp, err := autorest.SendWithSender(
+		client,
+		req,
+		autorest.DoErrorUnlessStatusCode(http.StatusOK))
 
 	if err == nil {
 		err = autorest.Respond(
@@ -397,7 +412,10 @@ func (client WorkflowAccessKeysClient) RegenerateSecretKey(resourceGroupName str
 		return result, autorest.NewErrorWithError(err, "logic.WorkflowAccessKeysClient", "RegenerateSecretKey", "Failure preparing request")
 	}
 
-	resp, err := autorest.SendWithSender(client, req)
+	resp, err := autorest.SendWithSender(
+		client,
+		req,
+		autorest.DoErrorUnlessStatusCode(http.StatusOK))
 
 	if err == nil {
 		err = autorest.Respond(

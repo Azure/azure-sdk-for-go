@@ -56,7 +56,10 @@ func (client ManagementLocksClient) CreateOrUpdateAtResourceGroupLevel(resourceG
 		return result, autorest.NewErrorWithError(err, "authorization.ManagementLocksClient", "CreateOrUpdateAtResourceGroupLevel", "Failure preparing request")
 	}
 
-	resp, err := autorest.SendWithSender(client, req)
+	resp, err := autorest.SendWithSender(
+		client,
+		req,
+		autorest.DoErrorUnlessStatusCode(http.StatusOK, http.StatusCreated))
 
 	if err == nil {
 		err = autorest.Respond(
@@ -128,7 +131,10 @@ func (client ManagementLocksClient) CreateOrUpdateAtResourceLevel(resourceGroupN
 		return result, autorest.NewErrorWithError(err, "authorization.ManagementLocksClient", "CreateOrUpdateAtResourceLevel", "Failure preparing request")
 	}
 
-	resp, err := autorest.SendWithSender(client, req)
+	resp, err := autorest.SendWithSender(
+		client,
+		req,
+		autorest.DoErrorUnlessStatusCode(http.StatusOK, http.StatusCreated))
 
 	if err == nil {
 		err = autorest.Respond(
@@ -203,9 +209,12 @@ func (client ManagementLocksClient) DeleteAtResourceLevel(resourceGroupName stri
 		return result, autorest.NewErrorWithError(err, "authorization.ManagementLocksClient", "DeleteAtResourceLevel", "Failure preparing request")
 	}
 
-	resp, err := autorest.SendWithSender(client, req)
+	resp, err := autorest.SendWithSender(
+		client,
+		req,
+		autorest.DoErrorUnlessStatusCode(http.StatusNoContent, http.StatusOK, http.StatusAccepted))
 	if err == nil {
-		err = client.ShouldPoll(resp)
+		err = client.IsPollingAllowed(resp)
 		if err == nil {
 			resp, err = client.PollAsNeeded(resp)
 		}
@@ -279,7 +288,10 @@ func (client ManagementLocksClient) CreateOrUpdateAtSubscriptionLevel(lockName s
 		return result, autorest.NewErrorWithError(err, "authorization.ManagementLocksClient", "CreateOrUpdateAtSubscriptionLevel", "Failure preparing request")
 	}
 
-	resp, err := autorest.SendWithSender(client, req)
+	resp, err := autorest.SendWithSender(
+		client,
+		req,
+		autorest.DoErrorUnlessStatusCode(http.StatusCreated, http.StatusOK))
 
 	if err == nil {
 		err = autorest.Respond(
@@ -345,9 +357,12 @@ func (client ManagementLocksClient) DeleteAtSubscriptionLevel(lockName string) (
 		return result, autorest.NewErrorWithError(err, "authorization.ManagementLocksClient", "DeleteAtSubscriptionLevel", "Failure preparing request")
 	}
 
-	resp, err := autorest.SendWithSender(client, req)
+	resp, err := autorest.SendWithSender(
+		client,
+		req,
+		autorest.DoErrorUnlessStatusCode(http.StatusNoContent, http.StatusOK, http.StatusAccepted))
 	if err == nil {
-		err = client.ShouldPoll(resp)
+		err = client.IsPollingAllowed(resp)
 		if err == nil {
 			resp, err = client.PollAsNeeded(resp)
 		}
@@ -415,7 +430,10 @@ func (client ManagementLocksClient) Get(lockName string) (result ManagementLock,
 		return result, autorest.NewErrorWithError(err, "authorization.ManagementLocksClient", "Get", "Failure preparing request")
 	}
 
-	resp, err := autorest.SendWithSender(client, req)
+	resp, err := autorest.SendWithSender(
+		client,
+		req,
+		autorest.DoErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent))
 
 	if err == nil {
 		err = autorest.Respond(
@@ -480,9 +498,12 @@ func (client ManagementLocksClient) DeleteAtResourceGroupLevel(resourceGroup str
 		return result, autorest.NewErrorWithError(err, "authorization.ManagementLocksClient", "DeleteAtResourceGroupLevel", "Failure preparing request")
 	}
 
-	resp, err := autorest.SendWithSender(client, req)
+	resp, err := autorest.SendWithSender(
+		client,
+		req,
+		autorest.DoErrorUnlessStatusCode(http.StatusNoContent, http.StatusOK, http.StatusAccepted))
 	if err == nil {
-		err = client.ShouldPoll(resp)
+		err = client.IsPollingAllowed(resp)
 		if err == nil {
 			resp, err = client.PollAsNeeded(resp)
 		}
@@ -552,7 +573,10 @@ func (client ManagementLocksClient) ListAtResourceGroupLevel(resourceGroupName s
 		return result, autorest.NewErrorWithError(err, "authorization.ManagementLocksClient", "ListAtResourceGroupLevel", "Failure preparing request")
 	}
 
-	resp, err := autorest.SendWithSender(client, req)
+	resp, err := autorest.SendWithSender(
+		client,
+		req,
+		autorest.DoErrorUnlessStatusCode(http.StatusOK))
 
 	if err == nil {
 		err = autorest.Respond(
@@ -623,7 +647,10 @@ func (client ManagementLocksClient) ListAtResourceLevel(resourceGroupName string
 		return result, autorest.NewErrorWithError(err, "authorization.ManagementLocksClient", "ListAtResourceLevel", "Failure preparing request")
 	}
 
-	resp, err := autorest.SendWithSender(client, req)
+	resp, err := autorest.SendWithSender(
+		client,
+		req,
+		autorest.DoErrorUnlessStatusCode(http.StatusOK))
 
 	if err == nil {
 		err = autorest.Respond(
@@ -693,7 +720,10 @@ func (client ManagementLocksClient) ListNext(nextLink string) (result Management
 		return result, autorest.NewErrorWithError(err, "authorization.ManagementLocksClient", "ListNext", "Failure preparing request")
 	}
 
-	resp, err := autorest.SendWithSender(client, req)
+	resp, err := autorest.SendWithSender(
+		client,
+		req,
+		autorest.DoErrorUnlessStatusCode(http.StatusOK))
 
 	if err == nil {
 		err = autorest.Respond(
@@ -753,7 +783,10 @@ func (client ManagementLocksClient) ListAtSubscriptionLevel(filter string) (resu
 		return result, autorest.NewErrorWithError(err, "authorization.ManagementLocksClient", "ListAtSubscriptionLevel", "Failure preparing request")
 	}
 
-	resp, err := autorest.SendWithSender(client, req)
+	resp, err := autorest.SendWithSender(
+		client,
+		req,
+		autorest.DoErrorUnlessStatusCode(http.StatusOK))
 
 	if err == nil {
 		err = autorest.Respond(

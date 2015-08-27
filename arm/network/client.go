@@ -67,7 +67,10 @@ func (client NetworkResourceProviderClient) CheckDnsNameAvailability(location st
 		return result, autorest.NewErrorWithError(err, "network.NetworkResourceProviderClient", "CheckDnsNameAvailability", "Failure preparing request")
 	}
 
-	resp, err := autorest.SendWithSender(client, req)
+	resp, err := autorest.SendWithSender(
+		client,
+		req,
+		autorest.DoErrorUnlessStatusCode(http.StatusOK))
 
 	if err == nil {
 		err = autorest.Respond(

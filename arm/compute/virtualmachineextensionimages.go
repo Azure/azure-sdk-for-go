@@ -19,7 +19,7 @@ package compute
 // regenerated.
 
 import (
-	"github.com/azure/go-autorest/autorest"
+	"github.com/Azure/go-autorest/autorest"
 	"net/http"
 	"net/url"
 )
@@ -53,7 +53,10 @@ func (client VirtualMachineExtensionImagesClient) Get(location string, publisher
 		return result, autorest.NewErrorWithError(err, "compute.VirtualMachineExtensionImagesClient", "Get", "Failure preparing request")
 	}
 
-	resp, err := autorest.SendWithSender(client, req)
+	resp, err := autorest.SendWithSender(
+		client,
+		req,
+		autorest.DoErrorUnlessStatusCode(http.StatusOK))
 
 	if err == nil {
 		err = autorest.Respond(
@@ -121,7 +124,10 @@ func (client VirtualMachineExtensionImagesClient) ListVersions(location string, 
 		return result, autorest.NewErrorWithError(err, "compute.VirtualMachineExtensionImagesClient", "ListVersions", "Failure preparing request")
 	}
 
-	resp, err := autorest.SendWithSender(client, req)
+	resp, err := autorest.SendWithSender(
+		client,
+		req,
+		autorest.DoErrorUnlessStatusCode(http.StatusOK))
 
 	if err == nil {
 		err = autorest.Respond(
@@ -190,7 +196,10 @@ func (client VirtualMachineExtensionImagesClient) ListTypes(location string, pub
 		return result, autorest.NewErrorWithError(err, "compute.VirtualMachineExtensionImagesClient", "ListTypes", "Failure preparing request")
 	}
 
-	resp, err := autorest.SendWithSender(client, req)
+	resp, err := autorest.SendWithSender(
+		client,
+		req,
+		autorest.DoErrorUnlessStatusCode(http.StatusOK))
 
 	if err == nil {
 		err = autorest.Respond(

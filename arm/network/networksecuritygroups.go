@@ -19,7 +19,7 @@ package network
 // regenerated.
 
 import (
-	"github.com/azure/go-autorest/autorest"
+	"github.com/Azure/go-autorest/autorest"
 	"net/http"
 	"net/url"
 )
@@ -56,9 +56,12 @@ func (client NetworkSecurityGroupsClient) Delete(resourceGroupName string, netwo
 		return result, autorest.NewErrorWithError(err, "network.NetworkSecurityGroupsClient", "Delete", "Failure preparing request")
 	}
 
-	resp, err := autorest.SendWithSender(client, req)
+	resp, err := autorest.SendWithSender(
+		client,
+		req,
+		autorest.DoErrorUnlessStatusCode(http.StatusNoContent, http.StatusAccepted, http.StatusOK))
 	if err == nil {
-		err = client.ShouldPoll(resp)
+		err = client.IsPollingAllowed(resp)
 		if err == nil {
 			resp, err = client.PollAsNeeded(resp)
 		}
@@ -129,7 +132,10 @@ func (client NetworkSecurityGroupsClient) Get(resourceGroupName string, networkS
 		return result, autorest.NewErrorWithError(err, "network.NetworkSecurityGroupsClient", "Get", "Failure preparing request")
 	}
 
-	resp, err := autorest.SendWithSender(client, req)
+	resp, err := autorest.SendWithSender(
+		client,
+		req,
+		autorest.DoErrorUnlessStatusCode(http.StatusOK))
 
 	if err == nil {
 		err = autorest.Respond(
@@ -199,7 +205,10 @@ func (client NetworkSecurityGroupsClient) CreateOrUpdate(resourceGroupName strin
 		return result, autorest.NewErrorWithError(err, "network.NetworkSecurityGroupsClient", "CreateOrUpdate", "Failure preparing request")
 	}
 
-	resp, err := autorest.SendWithSender(client, req)
+	resp, err := autorest.SendWithSender(
+		client,
+		req,
+		autorest.DoErrorUnlessStatusCode(http.StatusCreated, http.StatusOK))
 
 	if err == nil {
 		err = autorest.Respond(
@@ -265,7 +274,10 @@ func (client NetworkSecurityGroupsClient) ListAll() (result NetworkSecurityGroup
 		return result, autorest.NewErrorWithError(err, "network.NetworkSecurityGroupsClient", "ListAll", "Failure preparing request")
 	}
 
-	resp, err := autorest.SendWithSender(client, req)
+	resp, err := autorest.SendWithSender(
+		client,
+		req,
+		autorest.DoErrorUnlessStatusCode(http.StatusOK))
 
 	if err == nil {
 		err = autorest.Respond(
@@ -330,7 +342,10 @@ func (client NetworkSecurityGroupsClient) List(resourceGroupName string) (result
 		return result, autorest.NewErrorWithError(err, "network.NetworkSecurityGroupsClient", "List", "Failure preparing request")
 	}
 
-	resp, err := autorest.SendWithSender(client, req)
+	resp, err := autorest.SendWithSender(
+		client,
+		req,
+		autorest.DoErrorUnlessStatusCode(http.StatusOK))
 
 	if err == nil {
 		err = autorest.Respond(

@@ -19,7 +19,7 @@ package resources
 // regenerated.
 
 import (
-	"github.com/azure/go-autorest/autorest"
+	"github.com/Azure/go-autorest/autorest"
 	"net/http"
 	"net/url"
 )
@@ -54,7 +54,10 @@ func (client ResourceProviderOperationDetailsClient) List(resourceProviderNamesp
 		return result, autorest.NewErrorWithError(err, "resources.ResourceProviderOperationDetailsClient", "List", "Failure preparing request")
 	}
 
-	resp, err := autorest.SendWithSender(client, req)
+	resp, err := autorest.SendWithSender(
+		client,
+		req,
+		autorest.DoErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent))
 
 	if err == nil {
 		err = autorest.Respond(

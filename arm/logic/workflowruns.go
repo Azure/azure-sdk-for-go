@@ -19,7 +19,7 @@ package logic
 // regenerated.
 
 import (
-	"github.com/azure/go-autorest/autorest"
+	"github.com/Azure/go-autorest/autorest"
 	"net/http"
 	"net/url"
 )
@@ -56,7 +56,10 @@ func (client WorkflowRunsClient) List(resourceGroupName string, workflowName str
 		return result, autorest.NewErrorWithError(err, "logic.WorkflowRunsClient", "List", "Failure preparing request")
 	}
 
-	resp, err := autorest.SendWithSender(client, req)
+	resp, err := autorest.SendWithSender(
+		client,
+		req,
+		autorest.DoErrorUnlessStatusCode(http.StatusOK))
 
 	if err == nil {
 		err = autorest.Respond(
@@ -125,7 +128,10 @@ func (client WorkflowRunsClient) Get(resourceGroupName string, workflowName stri
 		return result, autorest.NewErrorWithError(err, "logic.WorkflowRunsClient", "Get", "Failure preparing request")
 	}
 
-	resp, err := autorest.SendWithSender(client, req)
+	resp, err := autorest.SendWithSender(
+		client,
+		req,
+		autorest.DoErrorUnlessStatusCode(http.StatusOK))
 
 	if err == nil {
 		err = autorest.Respond(
@@ -193,7 +199,10 @@ func (client WorkflowRunsClient) Cancel(resourceGroupName string, workflowName s
 		return result, autorest.NewErrorWithError(err, "logic.WorkflowRunsClient", "Cancel", "Failure preparing request")
 	}
 
-	resp, err := autorest.SendWithSender(client, req)
+	resp, err := autorest.SendWithSender(
+		client,
+		req,
+		autorest.DoErrorUnlessStatusCode(http.StatusOK))
 
 	if err == nil {
 		err = autorest.Respond(

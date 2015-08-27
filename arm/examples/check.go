@@ -6,10 +6,10 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/azure/azure-sdk-for-go/arm/examples/helpers"
-	"github.com/azure/azure-sdk-for-go/arm/storage"
-	"github.com/azure/go-autorest/autorest"
-	"github.com/azure/go-autorest/autorest/azure"
+	"github.com/Azure/azure-sdk-for-go/arm/examples/helpers"
+	"github.com/Azure/azure-sdk-for-go/arm/storage"
+	"github.com/Azure/go-autorest/autorest"
+	"github.com/Azure/go-autorest/autorest/azure"
 )
 
 type inspectors struct{}

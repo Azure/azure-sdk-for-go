@@ -19,7 +19,7 @@ package subscriptions
 // regenerated.
 
 import (
-	"github.com/azure/go-autorest/autorest"
+	"github.com/Azure/go-autorest/autorest"
 	"net/http"
 	"net/url"
 )
@@ -54,7 +54,10 @@ func (client SubscriptionsClient) Get(subscriptionId string) (result Subscriptio
 		return result, autorest.NewErrorWithError(err, "subscriptions.SubscriptionsClient", "Get", "Failure preparing request")
 	}
 
-	resp, err := autorest.SendWithSender(client, req)
+	resp, err := autorest.SendWithSender(
+		client,
+		req,
+		autorest.DoErrorUnlessStatusCode(http.StatusOK))
 
 	if err == nil {
 		err = autorest.Respond(
@@ -116,7 +119,10 @@ func (client SubscriptionsClient) List() (result SubscriptionListResult, ae auto
 		return result, autorest.NewErrorWithError(err, "subscriptions.SubscriptionsClient", "List", "Failure preparing request")
 	}
 
-	resp, err := autorest.SendWithSender(client, req)
+	resp, err := autorest.SendWithSender(
+		client,
+		req,
+		autorest.DoErrorUnlessStatusCode(http.StatusOK))
 
 	if err == nil {
 		err = autorest.Respond(

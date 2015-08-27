@@ -19,8 +19,8 @@ package compute
 // regenerated.
 
 import (
-	"github.com/azure/go-autorest/autorest"
-	"github.com/azure/go-autorest/autorest/date"
+	"github.com/Azure/go-autorest/autorest"
+	"github.com/Azure/go-autorest/autorest/date"
 )
 
 type CachingTypes string

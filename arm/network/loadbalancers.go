@@ -19,7 +19,7 @@ package network
 // regenerated.
 
 import (
-	"github.com/azure/go-autorest/autorest"
+	"github.com/Azure/go-autorest/autorest"
 	"net/http"
 	"net/url"
 )
@@ -55,9 +55,12 @@ func (client LoadBalancersClient) Delete(resourceGroupName string, loadBalancerN
 		return result, autorest.NewErrorWithError(err, "network.LoadBalancersClient", "Delete", "Failure preparing request")
 	}
 
-	resp, err := autorest.SendWithSender(client, req)
+	resp, err := autorest.SendWithSender(
+		client,
+		req,
+		autorest.DoErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent, http.StatusAccepted))
 	if err == nil {
-		err = client.ShouldPoll(resp)
+		err = client.IsPollingAllowed(resp)
 		if err == nil {
 			resp, err = client.PollAsNeeded(resp)
 		}
@@ -128,7 +131,10 @@ func (client LoadBalancersClient) Get(resourceGroupName string, loadBalancerName
 		return result, autorest.NewErrorWithError(err, "network.LoadBalancersClient", "Get", "Failure preparing request")
 	}
 
-	resp, err := autorest.SendWithSender(client, req)
+	resp, err := autorest.SendWithSender(
+		client,
+		req,
+		autorest.DoErrorUnlessStatusCode(http.StatusOK))
 
 	if err == nil {
 		err = autorest.Respond(
@@ -196,7 +202,10 @@ func (client LoadBalancersClient) CreateOrUpdate(resourceGroupName string, loadB
 		return result, autorest.NewErrorWithError(err, "network.LoadBalancersClient", "CreateOrUpdate", "Failure preparing request")
 	}
 
-	resp, err := autorest.SendWithSender(client, req)
+	resp, err := autorest.SendWithSender(
+		client,
+		req,
+		autorest.DoErrorUnlessStatusCode(http.StatusCreated, http.StatusOK))
 
 	if err == nil {
 		err = autorest.Respond(
@@ -262,7 +271,10 @@ func (client LoadBalancersClient) ListAll() (result LoadBalancerListResult, ae a
 		return result, autorest.NewErrorWithError(err, "network.LoadBalancersClient", "ListAll", "Failure preparing request")
 	}
 
-	resp, err := autorest.SendWithSender(client, req)
+	resp, err := autorest.SendWithSender(
+		client,
+		req,
+		autorest.DoErrorUnlessStatusCode(http.StatusOK))
 
 	if err == nil {
 		err = autorest.Respond(
@@ -327,7 +339,10 @@ func (client LoadBalancersClient) List(resourceGroupName string) (result LoadBal
 		return result, autorest.NewErrorWithError(err, "network.LoadBalancersClient", "List", "Failure preparing request")
 	}
 
-	resp, err := autorest.SendWithSender(client, req)
+	resp, err := autorest.SendWithSender(
+		client,
+		req,
+		autorest.DoErrorUnlessStatusCode(http.StatusOK))
 
 	if err == nil {
 		err = autorest.Respond(

@@ -19,7 +19,7 @@ package resources
 // regenerated.
 
 import (
-	"github.com/azure/go-autorest/autorest"
+	"github.com/Azure/go-autorest/autorest"
 	"net/http"
 	"net/url"
 )
@@ -56,7 +56,10 @@ func (client DeploymentOperationsClient) Get(resourceGroupName string, deploymen
 		return result, autorest.NewErrorWithError(err, "resources.DeploymentOperationsClient", "Get", "Failure preparing request")
 	}
 
-	resp, err := autorest.SendWithSender(client, req)
+	resp, err := autorest.SendWithSender(
+		client,
+		req,
+		autorest.DoErrorUnlessStatusCode(http.StatusOK))
 
 	if err == nil {
 		err = autorest.Respond(
@@ -125,7 +128,10 @@ func (client DeploymentOperationsClient) List(resourceGroupName string, deployme
 		return result, autorest.NewErrorWithError(err, "resources.DeploymentOperationsClient", "List", "Failure preparing request")
 	}
 
-	resp, err := autorest.SendWithSender(client, req)
+	resp, err := autorest.SendWithSender(
+		client,
+		req,
+		autorest.DoErrorUnlessStatusCode(http.StatusOK))
 
 	if err == nil {
 		err = autorest.Respond(

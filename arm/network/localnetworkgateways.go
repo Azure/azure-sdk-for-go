@@ -19,7 +19,7 @@ package network
 // regenerated.
 
 import (
-	"github.com/azure/go-autorest/autorest"
+	"github.com/Azure/go-autorest/autorest"
 	"net/http"
 	"net/url"
 )
@@ -59,7 +59,10 @@ func (client LocalNetworkGatewaysClient) CreateOrUpdate(resourceGroupName string
 		return result, autorest.NewErrorWithError(err, "network.LocalNetworkGatewaysClient", "CreateOrUpdate", "Failure preparing request")
 	}
 
-	resp, err := autorest.SendWithSender(client, req)
+	resp, err := autorest.SendWithSender(
+		client,
+		req,
+		autorest.DoErrorUnlessStatusCode(http.StatusCreated, http.StatusOK))
 
 	if err == nil {
 		err = autorest.Respond(
@@ -128,7 +131,10 @@ func (client LocalNetworkGatewaysClient) Get(resourceGroupName string, localNetw
 		return result, autorest.NewErrorWithError(err, "network.LocalNetworkGatewaysClient", "Get", "Failure preparing request")
 	}
 
-	resp, err := autorest.SendWithSender(client, req)
+	resp, err := autorest.SendWithSender(
+		client,
+		req,
+		autorest.DoErrorUnlessStatusCode(http.StatusOK))
 
 	if err == nil {
 		err = autorest.Respond(
@@ -196,9 +202,12 @@ func (client LocalNetworkGatewaysClient) Delete(resourceGroupName string, localN
 		return result, autorest.NewErrorWithError(err, "network.LocalNetworkGatewaysClient", "Delete", "Failure preparing request")
 	}
 
-	resp, err := autorest.SendWithSender(client, req)
+	resp, err := autorest.SendWithSender(
+		client,
+		req,
+		autorest.DoErrorUnlessStatusCode(http.StatusAccepted, http.StatusNoContent, http.StatusOK))
 	if err == nil {
-		err = client.ShouldPoll(resp)
+		err = client.IsPollingAllowed(resp)
 		if err == nil {
 			resp, err = client.PollAsNeeded(resp)
 		}
@@ -268,7 +277,10 @@ func (client LocalNetworkGatewaysClient) List(resourceGroupName string) (result 
 		return result, autorest.NewErrorWithError(err, "network.LocalNetworkGatewaysClient", "List", "Failure preparing request")
 	}
 
-	resp, err := autorest.SendWithSender(client, req)
+	resp, err := autorest.SendWithSender(
+		client,
+		req,
+		autorest.DoErrorUnlessStatusCode(http.StatusOK))
 
 	if err == nil {
 		err = autorest.Respond(

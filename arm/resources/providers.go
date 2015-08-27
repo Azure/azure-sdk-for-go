@@ -19,7 +19,7 @@ package resources
 // regenerated.
 
 import (
-	"github.com/azure/go-autorest/autorest"
+	"github.com/Azure/go-autorest/autorest"
 	"net/http"
 	"net/url"
 )
@@ -54,7 +54,10 @@ func (client ProvidersClient) Unregister(resourceProviderNamespace string) (resu
 		return result, autorest.NewErrorWithError(err, "resources.ProvidersClient", "Unregister", "Failure preparing request")
 	}
 
-	resp, err := autorest.SendWithSender(client, req)
+	resp, err := autorest.SendWithSender(
+		client,
+		req,
+		autorest.DoErrorUnlessStatusCode(http.StatusOK))
 
 	if err == nil {
 		err = autorest.Respond(
@@ -119,7 +122,10 @@ func (client ProvidersClient) Register(resourceProviderNamespace string) (result
 		return result, autorest.NewErrorWithError(err, "resources.ProvidersClient", "Register", "Failure preparing request")
 	}
 
-	resp, err := autorest.SendWithSender(client, req)
+	resp, err := autorest.SendWithSender(
+		client,
+		req,
+		autorest.DoErrorUnlessStatusCode(http.StatusOK))
 
 	if err == nil {
 		err = autorest.Respond(
@@ -184,7 +190,10 @@ func (client ProvidersClient) List(top int) (result ProviderListResult, ae autor
 		return result, autorest.NewErrorWithError(err, "resources.ProvidersClient", "List", "Failure preparing request")
 	}
 
-	resp, err := autorest.SendWithSender(client, req)
+	resp, err := autorest.SendWithSender(
+		client,
+		req,
+		autorest.DoErrorUnlessStatusCode(http.StatusOK))
 
 	if err == nil {
 		err = autorest.Respond(
@@ -249,7 +258,10 @@ func (client ProvidersClient) Get(resourceProviderNamespace string) (result Prov
 		return result, autorest.NewErrorWithError(err, "resources.ProvidersClient", "Get", "Failure preparing request")
 	}
 
-	resp, err := autorest.SendWithSender(client, req)
+	resp, err := autorest.SendWithSender(
+		client,
+		req,
+		autorest.DoErrorUnlessStatusCode(http.StatusOK))
 
 	if err == nil {
 		err = autorest.Respond(

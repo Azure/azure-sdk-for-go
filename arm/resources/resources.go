@@ -19,7 +19,7 @@ package resources
 // regenerated.
 
 import (
-	"github.com/azure/go-autorest/autorest"
+	"github.com/Azure/go-autorest/autorest"
 	"net/http"
 	"net/url"
 )
@@ -55,9 +55,12 @@ func (client ResourcesClient) MoveResources(sourceResourceGroupName string, para
 		return result, autorest.NewErrorWithError(err, "resources.ResourcesClient", "MoveResources", "Failure preparing request")
 	}
 
-	resp, err := autorest.SendWithSender(client, req)
+	resp, err := autorest.SendWithSender(
+		client,
+		req,
+		autorest.DoErrorUnlessStatusCode(http.StatusAccepted))
 	if err == nil {
-		err = client.ShouldPoll(resp)
+		err = client.IsPollingAllowed(resp)
 		if err == nil {
 			resp, err = client.PollAsNeeded(resp)
 		}
@@ -127,7 +130,10 @@ func (client ResourcesClient) List(filter string, top int) (result ResourceListR
 		return result, autorest.NewErrorWithError(err, "resources.ResourcesClient", "List", "Failure preparing request")
 	}
 
-	resp, err := autorest.SendWithSender(client, req)
+	resp, err := autorest.SendWithSender(
+		client,
+		req,
+		autorest.DoErrorUnlessStatusCode(http.StatusOK))
 
 	if err == nil {
 		err = autorest.Respond(
@@ -196,7 +202,10 @@ func (client ResourcesClient) CheckExistence(resourceGroupName string, resourceP
 		return result, autorest.NewErrorWithError(err, "resources.ResourcesClient", "CheckExistence", "Failure preparing request")
 	}
 
-	resp, err := autorest.SendWithSender(client, req)
+	resp, err := autorest.SendWithSender(
+		client,
+		req,
+		autorest.DoErrorUnlessStatusCode(http.StatusNoContent, http.StatusNotFound))
 
 	if err == nil {
 		err = autorest.Respond(
@@ -267,9 +276,12 @@ func (client ResourcesClient) Delete(resourceGroupName string, resourceProviderN
 		return result, autorest.NewErrorWithError(err, "resources.ResourcesClient", "Delete", "Failure preparing request")
 	}
 
-	resp, err := autorest.SendWithSender(client, req)
+	resp, err := autorest.SendWithSender(
+		client,
+		req,
+		autorest.DoErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent, http.StatusAccepted))
 	if err == nil {
-		err = client.ShouldPoll(resp)
+		err = client.IsPollingAllowed(resp)
 		if err == nil {
 			resp, err = client.PollAsNeeded(resp)
 		}
@@ -345,9 +357,12 @@ func (client ResourcesClient) CreateOrUpdate(resourceGroupName string, resourceP
 		return result, autorest.NewErrorWithError(err, "resources.ResourcesClient", "CreateOrUpdate", "Failure preparing request")
 	}
 
-	resp, err := autorest.SendWithSender(client, req)
+	resp, err := autorest.SendWithSender(
+		client,
+		req,
+		autorest.DoErrorUnlessStatusCode(http.StatusCreated, http.StatusAccepted, http.StatusOK))
 	if err == nil {
-		err = client.ShouldPoll(resp)
+		err = client.IsPollingAllowed(resp)
 		if err == nil {
 			resp, err = client.PollAsNeeded(resp)
 		}
@@ -424,7 +439,10 @@ func (client ResourcesClient) Get(resourceGroupName string, resourceProviderName
 		return result, autorest.NewErrorWithError(err, "resources.ResourcesClient", "Get", "Failure preparing request")
 	}
 
-	resp, err := autorest.SendWithSender(client, req)
+	resp, err := autorest.SendWithSender(
+		client,
+		req,
+		autorest.DoErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent))
 
 	if err == nil {
 		err = autorest.Respond(

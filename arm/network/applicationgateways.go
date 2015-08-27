@@ -19,7 +19,7 @@ package network
 // regenerated.
 
 import (
-	"github.com/azure/go-autorest/autorest"
+	"github.com/Azure/go-autorest/autorest"
 	"net/http"
 	"net/url"
 )
@@ -56,9 +56,12 @@ func (client ApplicationGatewaysClient) Delete(resourceGroupName string, applica
 		return result, autorest.NewErrorWithError(err, "network.ApplicationGatewaysClient", "Delete", "Failure preparing request")
 	}
 
-	resp, err := autorest.SendWithSender(client, req)
+	resp, err := autorest.SendWithSender(
+		client,
+		req,
+		autorest.DoErrorUnlessStatusCode(http.StatusNoContent, http.StatusAccepted, http.StatusOK))
 	if err == nil {
-		err = client.ShouldPoll(resp)
+		err = client.IsPollingAllowed(resp)
 		if err == nil {
 			resp, err = client.PollAsNeeded(resp)
 		}
@@ -129,7 +132,10 @@ func (client ApplicationGatewaysClient) Get(resourceGroupName string, applicatio
 		return result, autorest.NewErrorWithError(err, "network.ApplicationGatewaysClient", "Get", "Failure preparing request")
 	}
 
-	resp, err := autorest.SendWithSender(client, req)
+	resp, err := autorest.SendWithSender(
+		client,
+		req,
+		autorest.DoErrorUnlessStatusCode(http.StatusOK))
 
 	if err == nil {
 		err = autorest.Respond(
@@ -198,7 +204,10 @@ func (client ApplicationGatewaysClient) CreateOrUpdate(resourceGroupName string,
 		return result, autorest.NewErrorWithError(err, "network.ApplicationGatewaysClient", "CreateOrUpdate", "Failure preparing request")
 	}
 
-	resp, err := autorest.SendWithSender(client, req)
+	resp, err := autorest.SendWithSender(
+		client,
+		req,
+		autorest.DoErrorUnlessStatusCode(http.StatusCreated, http.StatusOK))
 
 	if err == nil {
 		err = autorest.Respond(
@@ -266,7 +275,10 @@ func (client ApplicationGatewaysClient) List(resourceGroupName string) (result A
 		return result, autorest.NewErrorWithError(err, "network.ApplicationGatewaysClient", "List", "Failure preparing request")
 	}
 
-	resp, err := autorest.SendWithSender(client, req)
+	resp, err := autorest.SendWithSender(
+		client,
+		req,
+		autorest.DoErrorUnlessStatusCode(http.StatusOK))
 
 	if err == nil {
 		err = autorest.Respond(
@@ -330,7 +342,10 @@ func (client ApplicationGatewaysClient) ListAll() (result ApplicationGatewayList
 		return result, autorest.NewErrorWithError(err, "network.ApplicationGatewaysClient", "ListAll", "Failure preparing request")
 	}
 
-	resp, err := autorest.SendWithSender(client, req)
+	resp, err := autorest.SendWithSender(
+		client,
+		req,
+		autorest.DoErrorUnlessStatusCode(http.StatusOK))
 
 	if err == nil {
 		err = autorest.Respond(
@@ -396,9 +411,12 @@ func (client ApplicationGatewaysClient) Start(resourceGroupName string, applicat
 		return result, autorest.NewErrorWithError(err, "network.ApplicationGatewaysClient", "Start", "Failure preparing request")
 	}
 
-	resp, err := autorest.SendWithSender(client, req)
+	resp, err := autorest.SendWithSender(
+		client,
+		req,
+		autorest.DoErrorUnlessStatusCode(http.StatusAccepted))
 	if err == nil {
-		err = client.ShouldPoll(resp)
+		err = client.IsPollingAllowed(resp)
 		if err == nil {
 			resp, err = client.PollAsNeeded(resp)
 		}
@@ -469,9 +487,12 @@ func (client ApplicationGatewaysClient) Stop(resourceGroupName string, applicati
 		return result, autorest.NewErrorWithError(err, "network.ApplicationGatewaysClient", "Stop", "Failure preparing request")
 	}
 
-	resp, err := autorest.SendWithSender(client, req)
+	resp, err := autorest.SendWithSender(
+		client,
+		req,
+		autorest.DoErrorUnlessStatusCode(http.StatusAccepted, http.StatusOK))
 	if err == nil {
-		err = client.ShouldPoll(resp)
+		err = client.IsPollingAllowed(resp)
 		if err == nil {
 			resp, err = client.PollAsNeeded(resp)
 		}

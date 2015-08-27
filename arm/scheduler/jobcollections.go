@@ -19,7 +19,7 @@ package scheduler
 // regenerated.
 
 import (
-	"github.com/azure/go-autorest/autorest"
+	"github.com/Azure/go-autorest/autorest"
 	"net/http"
 	"net/url"
 )
@@ -52,7 +52,10 @@ func (client JobCollectionsClient) ListBySubscription() (result JobCollectionLis
 		return result, autorest.NewErrorWithError(err, "scheduler.JobCollectionsClient", "ListBySubscription", "Failure preparing request")
 	}
 
-	resp, err := autorest.SendWithSender(client, req)
+	resp, err := autorest.SendWithSender(
+		client,
+		req,
+		autorest.DoErrorUnlessStatusCode(http.StatusOK))
 
 	if err == nil {
 		err = autorest.Respond(
@@ -116,7 +119,10 @@ func (client JobCollectionsClient) ListByResourceGroup(resourceGroupName string)
 		return result, autorest.NewErrorWithError(err, "scheduler.JobCollectionsClient", "ListByResourceGroup", "Failure preparing request")
 	}
 
-	resp, err := autorest.SendWithSender(client, req)
+	resp, err := autorest.SendWithSender(
+		client,
+		req,
+		autorest.DoErrorUnlessStatusCode(http.StatusOK))
 
 	if err == nil {
 		err = autorest.Respond(
@@ -182,7 +188,10 @@ func (client JobCollectionsClient) Get(resourceGroupName string, jobCollectionNa
 		return result, autorest.NewErrorWithError(err, "scheduler.JobCollectionsClient", "Get", "Failure preparing request")
 	}
 
-	resp, err := autorest.SendWithSender(client, req)
+	resp, err := autorest.SendWithSender(
+		client,
+		req,
+		autorest.DoErrorUnlessStatusCode(http.StatusOK))
 
 	if err == nil {
 		err = autorest.Respond(
@@ -250,7 +259,10 @@ func (client JobCollectionsClient) CreateOrUpdate(resourceGroupName string, jobC
 		return result, autorest.NewErrorWithError(err, "scheduler.JobCollectionsClient", "CreateOrUpdate", "Failure preparing request")
 	}
 
-	resp, err := autorest.SendWithSender(client, req)
+	resp, err := autorest.SendWithSender(
+		client,
+		req,
+		autorest.DoErrorUnlessStatusCode(http.StatusOK, http.StatusCreated))
 
 	if err == nil {
 		err = autorest.Respond(
@@ -318,7 +330,10 @@ func (client JobCollectionsClient) Patch(resourceGroupName string, jobCollection
 		return result, autorest.NewErrorWithError(err, "scheduler.JobCollectionsClient", "Patch", "Failure preparing request")
 	}
 
-	resp, err := autorest.SendWithSender(client, req)
+	resp, err := autorest.SendWithSender(
+		client,
+		req,
+		autorest.DoErrorUnlessStatusCode(http.StatusOK))
 
 	if err == nil {
 		err = autorest.Respond(
@@ -386,7 +401,10 @@ func (client JobCollectionsClient) Delete(resourceGroupName string, jobCollectio
 		return result, autorest.NewErrorWithError(err, "scheduler.JobCollectionsClient", "Delete", "Failure preparing request")
 	}
 
-	resp, err := autorest.SendWithSender(client, req)
+	resp, err := autorest.SendWithSender(
+		client,
+		req,
+		autorest.DoErrorUnlessStatusCode(http.StatusOK))
 
 	if err == nil {
 		err = autorest.Respond(
@@ -452,7 +470,10 @@ func (client JobCollectionsClient) Enable(resourceGroupName string, jobCollectio
 		return result, autorest.NewErrorWithError(err, "scheduler.JobCollectionsClient", "Enable", "Failure preparing request")
 	}
 
-	resp, err := autorest.SendWithSender(client, req)
+	resp, err := autorest.SendWithSender(
+		client,
+		req,
+		autorest.DoErrorUnlessStatusCode(http.StatusOK))
 
 	if err == nil {
 		err = autorest.Respond(
@@ -518,7 +539,10 @@ func (client JobCollectionsClient) Disable(resourceGroupName string, jobCollecti
 		return result, autorest.NewErrorWithError(err, "scheduler.JobCollectionsClient", "Disable", "Failure preparing request")
 	}
 
-	resp, err := autorest.SendWithSender(client, req)
+	resp, err := autorest.SendWithSender(
+		client,
+		req,
+		autorest.DoErrorUnlessStatusCode(http.StatusOK))
 
 	if err == nil {
 		err = autorest.Respond(

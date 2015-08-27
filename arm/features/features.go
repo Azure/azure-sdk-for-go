@@ -19,7 +19,7 @@ package features
 // regenerated.
 
 import (
-	"github.com/azure/go-autorest/autorest"
+	"github.com/Azure/go-autorest/autorest"
 	"net/http"
 	"net/url"
 )
@@ -53,7 +53,10 @@ func (client FeaturesClient) ListAll() (result FeatureOperationsListResult, ae a
 		return result, autorest.NewErrorWithError(err, "features.FeaturesClient", "ListAll", "Failure preparing request")
 	}
 
-	resp, err := autorest.SendWithSender(client, req)
+	resp, err := autorest.SendWithSender(
+		client,
+		req,
+		autorest.DoErrorUnlessStatusCode(http.StatusOK))
 
 	if err == nil {
 		err = autorest.Respond(
@@ -117,7 +120,10 @@ func (client FeaturesClient) List(resourceProviderNamespace string) (result Feat
 		return result, autorest.NewErrorWithError(err, "features.FeaturesClient", "List", "Failure preparing request")
 	}
 
-	resp, err := autorest.SendWithSender(client, req)
+	resp, err := autorest.SendWithSender(
+		client,
+		req,
+		autorest.DoErrorUnlessStatusCode(http.StatusOK))
 
 	if err == nil {
 		err = autorest.Respond(
@@ -183,7 +189,10 @@ func (client FeaturesClient) Get(resourceProviderNamespace string, featureName s
 		return result, autorest.NewErrorWithError(err, "features.FeaturesClient", "Get", "Failure preparing request")
 	}
 
-	resp, err := autorest.SendWithSender(client, req)
+	resp, err := autorest.SendWithSender(
+		client,
+		req,
+		autorest.DoErrorUnlessStatusCode(http.StatusOK))
 
 	if err == nil {
 		err = autorest.Respond(
@@ -250,7 +259,10 @@ func (client FeaturesClient) Register(resourceProviderNamespace string, featureN
 		return result, autorest.NewErrorWithError(err, "features.FeaturesClient", "Register", "Failure preparing request")
 	}
 
-	resp, err := autorest.SendWithSender(client, req)
+	resp, err := autorest.SendWithSender(
+		client,
+		req,
+		autorest.DoErrorUnlessStatusCode(http.StatusOK))
 
 	if err == nil {
 		err = autorest.Respond(

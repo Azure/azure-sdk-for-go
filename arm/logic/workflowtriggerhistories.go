@@ -19,7 +19,7 @@ package logic
 // regenerated.
 
 import (
-	"github.com/azure/go-autorest/autorest"
+	"github.com/Azure/go-autorest/autorest"
 	"net/http"
 	"net/url"
 )
@@ -56,7 +56,10 @@ func (client WorkflowTriggerHistoriesClient) List(resourceGroupName string, work
 		return result, autorest.NewErrorWithError(err, "logic.WorkflowTriggerHistoriesClient", "List", "Failure preparing request")
 	}
 
-	resp, err := autorest.SendWithSender(client, req)
+	resp, err := autorest.SendWithSender(
+		client,
+		req,
+		autorest.DoErrorUnlessStatusCode(http.StatusOK))
 
 	if err == nil {
 		err = autorest.Respond(
@@ -126,7 +129,10 @@ func (client WorkflowTriggerHistoriesClient) Get(resourceGroupName string, workf
 		return result, autorest.NewErrorWithError(err, "logic.WorkflowTriggerHistoriesClient", "Get", "Failure preparing request")
 	}
 
-	resp, err := autorest.SendWithSender(client, req)
+	resp, err := autorest.SendWithSender(
+		client,
+		req,
+		autorest.DoErrorUnlessStatusCode(http.StatusOK))
 
 	if err == nil {
 		err = autorest.Respond(

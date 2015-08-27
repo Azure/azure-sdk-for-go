@@ -19,7 +19,7 @@ package network
 // regenerated.
 
 import (
-	"github.com/azure/go-autorest/autorest"
+	"github.com/Azure/go-autorest/autorest"
 	"net/http"
 	"net/url"
 )
@@ -56,9 +56,12 @@ func (client NetworkInterfacesClient) Delete(resourceGroupName string, networkIn
 		return result, autorest.NewErrorWithError(err, "network.NetworkInterfacesClient", "Delete", "Failure preparing request")
 	}
 
-	resp, err := autorest.SendWithSender(client, req)
+	resp, err := autorest.SendWithSender(
+		client,
+		req,
+		autorest.DoErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent, http.StatusAccepted))
 	if err == nil {
-		err = client.ShouldPoll(resp)
+		err = client.IsPollingAllowed(resp)
 		if err == nil {
 			resp, err = client.PollAsNeeded(resp)
 		}
@@ -129,7 +132,10 @@ func (client NetworkInterfacesClient) Get(resourceGroupName string, networkInter
 		return result, autorest.NewErrorWithError(err, "network.NetworkInterfacesClient", "Get", "Failure preparing request")
 	}
 
-	resp, err := autorest.SendWithSender(client, req)
+	resp, err := autorest.SendWithSender(
+		client,
+		req,
+		autorest.DoErrorUnlessStatusCode(http.StatusOK))
 
 	if err == nil {
 		err = autorest.Respond(
@@ -198,7 +204,10 @@ func (client NetworkInterfacesClient) CreateOrUpdate(resourceGroupName string, n
 		return result, autorest.NewErrorWithError(err, "network.NetworkInterfacesClient", "CreateOrUpdate", "Failure preparing request")
 	}
 
-	resp, err := autorest.SendWithSender(client, req)
+	resp, err := autorest.SendWithSender(
+		client,
+		req,
+		autorest.DoErrorUnlessStatusCode(http.StatusCreated, http.StatusOK))
 
 	if err == nil {
 		err = autorest.Respond(
@@ -264,7 +273,10 @@ func (client NetworkInterfacesClient) ListAll() (result NetworkInterfaceListResu
 		return result, autorest.NewErrorWithError(err, "network.NetworkInterfacesClient", "ListAll", "Failure preparing request")
 	}
 
-	resp, err := autorest.SendWithSender(client, req)
+	resp, err := autorest.SendWithSender(
+		client,
+		req,
+		autorest.DoErrorUnlessStatusCode(http.StatusOK))
 
 	if err == nil {
 		err = autorest.Respond(
@@ -329,7 +341,10 @@ func (client NetworkInterfacesClient) List(resourceGroupName string) (result Net
 		return result, autorest.NewErrorWithError(err, "network.NetworkInterfacesClient", "List", "Failure preparing request")
 	}
 
-	resp, err := autorest.SendWithSender(client, req)
+	resp, err := autorest.SendWithSender(
+		client,
+		req,
+		autorest.DoErrorUnlessStatusCode(http.StatusOK))
 
 	if err == nil {
 		err = autorest.Respond(

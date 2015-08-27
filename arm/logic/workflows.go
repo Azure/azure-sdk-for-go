@@ -19,7 +19,7 @@ package logic
 // regenerated.
 
 import (
-	"github.com/azure/go-autorest/autorest"
+	"github.com/Azure/go-autorest/autorest"
 	"net/http"
 	"net/url"
 )
@@ -55,7 +55,10 @@ func (client WorkflowsClient) ListBySubscription(top int, filter string) (result
 		return result, autorest.NewErrorWithError(err, "logic.WorkflowsClient", "ListBySubscription", "Failure preparing request")
 	}
 
-	resp, err := autorest.SendWithSender(client, req)
+	resp, err := autorest.SendWithSender(
+		client,
+		req,
+		autorest.DoErrorUnlessStatusCode(http.StatusOK))
 
 	if err == nil {
 		err = autorest.Respond(
@@ -122,7 +125,10 @@ func (client WorkflowsClient) ListByResourceGroup(resourceGroupName string, top 
 		return result, autorest.NewErrorWithError(err, "logic.WorkflowsClient", "ListByResourceGroup", "Failure preparing request")
 	}
 
-	resp, err := autorest.SendWithSender(client, req)
+	resp, err := autorest.SendWithSender(
+		client,
+		req,
+		autorest.DoErrorUnlessStatusCode(http.StatusOK))
 
 	if err == nil {
 		err = autorest.Respond(
@@ -190,7 +196,10 @@ func (client WorkflowsClient) Get(resourceGroupName string, workflowName string)
 		return result, autorest.NewErrorWithError(err, "logic.WorkflowsClient", "Get", "Failure preparing request")
 	}
 
-	resp, err := autorest.SendWithSender(client, req)
+	resp, err := autorest.SendWithSender(
+		client,
+		req,
+		autorest.DoErrorUnlessStatusCode(http.StatusOK))
 
 	if err == nil {
 		err = autorest.Respond(
@@ -257,7 +266,10 @@ func (client WorkflowsClient) CreateOrUpdate(resourceGroupName string, workflowN
 		return result, autorest.NewErrorWithError(err, "logic.WorkflowsClient", "CreateOrUpdate", "Failure preparing request")
 	}
 
-	resp, err := autorest.SendWithSender(client, req)
+	resp, err := autorest.SendWithSender(
+		client,
+		req,
+		autorest.DoErrorUnlessStatusCode(http.StatusOK, http.StatusCreated))
 
 	if err == nil {
 		err = autorest.Respond(
@@ -325,7 +337,10 @@ func (client WorkflowsClient) Update(resourceGroupName string, workflowName stri
 		return result, autorest.NewErrorWithError(err, "logic.WorkflowsClient", "Update", "Failure preparing request")
 	}
 
-	resp, err := autorest.SendWithSender(client, req)
+	resp, err := autorest.SendWithSender(
+		client,
+		req,
+		autorest.DoErrorUnlessStatusCode(http.StatusOK))
 
 	if err == nil {
 		err = autorest.Respond(
@@ -393,7 +408,10 @@ func (client WorkflowsClient) Delete(resourceGroupName string, workflowName stri
 		return result, autorest.NewErrorWithError(err, "logic.WorkflowsClient", "Delete", "Failure preparing request")
 	}
 
-	resp, err := autorest.SendWithSender(client, req)
+	resp, err := autorest.SendWithSender(
+		client,
+		req,
+		autorest.DoErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent))
 
 	if err == nil {
 		err = autorest.Respond(
@@ -459,9 +477,12 @@ func (client WorkflowsClient) Run(resourceGroupName string, workflowName string,
 		return result, autorest.NewErrorWithError(err, "logic.WorkflowsClient", "Run", "Failure preparing request")
 	}
 
-	resp, err := autorest.SendWithSender(client, req)
+	resp, err := autorest.SendWithSender(
+		client,
+		req,
+		autorest.DoErrorUnlessStatusCode(http.StatusAccepted))
 	if err == nil {
-		err = client.ShouldPoll(resp)
+		err = client.IsPollingAllowed(resp)
 		if err == nil {
 			resp, err = client.PollAsNeeded(resp)
 		}
@@ -533,7 +554,10 @@ func (client WorkflowsClient) Disable(resourceGroupName string, workflowName str
 		return result, autorest.NewErrorWithError(err, "logic.WorkflowsClient", "Disable", "Failure preparing request")
 	}
 
-	resp, err := autorest.SendWithSender(client, req)
+	resp, err := autorest.SendWithSender(
+		client,
+		req,
+		autorest.DoErrorUnlessStatusCode(http.StatusOK))
 
 	if err == nil {
 		err = autorest.Respond(
@@ -599,7 +623,10 @@ func (client WorkflowsClient) Enable(resourceGroupName string, workflowName stri
 		return result, autorest.NewErrorWithError(err, "logic.WorkflowsClient", "Enable", "Failure preparing request")
 	}
 
-	resp, err := autorest.SendWithSender(client, req)
+	resp, err := autorest.SendWithSender(
+		client,
+		req,
+		autorest.DoErrorUnlessStatusCode(http.StatusOK))
 
 	if err == nil {
 		err = autorest.Respond(
@@ -665,7 +692,10 @@ func (client WorkflowsClient) Validate(resourceGroupName string, workflowName st
 		return result, autorest.NewErrorWithError(err, "logic.WorkflowsClient", "Validate", "Failure preparing request")
 	}
 
-	resp, err := autorest.SendWithSender(client, req)
+	resp, err := autorest.SendWithSender(
+		client,
+		req,
+		autorest.DoErrorUnlessStatusCode(http.StatusOK))
 
 	if err == nil {
 		err = autorest.Respond(

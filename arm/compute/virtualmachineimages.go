@@ -19,7 +19,7 @@ package compute
 // regenerated.
 
 import (
-	"github.com/azure/go-autorest/autorest"
+	"github.com/Azure/go-autorest/autorest"
 	"net/http"
 	"net/url"
 )
@@ -53,7 +53,10 @@ func (client VirtualMachineImagesClient) Get(location string, publisherName stri
 		return result, autorest.NewErrorWithError(err, "compute.VirtualMachineImagesClient", "Get", "Failure preparing request")
 	}
 
-	resp, err := autorest.SendWithSender(client, req)
+	resp, err := autorest.SendWithSender(
+		client,
+		req,
+		autorest.DoErrorUnlessStatusCode(http.StatusOK))
 
 	if err == nil {
 		err = autorest.Respond(
@@ -121,7 +124,10 @@ func (client VirtualMachineImagesClient) ListOffers(location string, publisherNa
 		return result, autorest.NewErrorWithError(err, "compute.VirtualMachineImagesClient", "ListOffers", "Failure preparing request")
 	}
 
-	resp, err := autorest.SendWithSender(client, req)
+	resp, err := autorest.SendWithSender(
+		client,
+		req,
+		autorest.DoErrorUnlessStatusCode(http.StatusOK))
 
 	if err == nil {
 		err = autorest.Respond(
@@ -186,7 +192,10 @@ func (client VirtualMachineImagesClient) ListPublishers(location string) (result
 		return result, autorest.NewErrorWithError(err, "compute.VirtualMachineImagesClient", "ListPublishers", "Failure preparing request")
 	}
 
-	resp, err := autorest.SendWithSender(client, req)
+	resp, err := autorest.SendWithSender(
+		client,
+		req,
+		autorest.DoErrorUnlessStatusCode(http.StatusOK))
 
 	if err == nil {
 		err = autorest.Respond(
@@ -250,7 +259,10 @@ func (client VirtualMachineImagesClient) ListSkus(location string, publisherName
 		return result, autorest.NewErrorWithError(err, "compute.VirtualMachineImagesClient", "ListSkus", "Failure preparing request")
 	}
 
-	resp, err := autorest.SendWithSender(client, req)
+	resp, err := autorest.SendWithSender(
+		client,
+		req,
+		autorest.DoErrorUnlessStatusCode(http.StatusOK))
 
 	if err == nil {
 		err = autorest.Respond(
@@ -317,7 +329,10 @@ func (client VirtualMachineImagesClient) List(location string, publisherName str
 		return result, autorest.NewErrorWithError(err, "compute.VirtualMachineImagesClient", "List", "Failure preparing request")
 	}
 
-	resp, err := autorest.SendWithSender(client, req)
+	resp, err := autorest.SendWithSender(
+		client,
+		req,
+		autorest.DoErrorUnlessStatusCode(http.StatusOK))
 
 	if err == nil {
 		err = autorest.Respond(

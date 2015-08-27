@@ -7,7 +7,7 @@ import (
 	"os"
 	"os/user"
 
-	"github.com/azure/go-autorest/autorest/azure"
+	"github.com/Azure/go-autorest/autorest/azure"
 )
 
 const (

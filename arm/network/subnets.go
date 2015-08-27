@@ -19,7 +19,7 @@ package network
 // regenerated.
 
 import (
-	"github.com/azure/go-autorest/autorest"
+	"github.com/Azure/go-autorest/autorest"
 	"net/http"
 	"net/url"
 )
@@ -55,9 +55,12 @@ func (client SubnetsClient) Delete(resourceGroupName string, virtualNetworkName 
 		return result, autorest.NewErrorWithError(err, "network.SubnetsClient", "Delete", "Failure preparing request")
 	}
 
-	resp, err := autorest.SendWithSender(client, req)
+	resp, err := autorest.SendWithSender(
+		client,
+		req,
+		autorest.DoErrorUnlessStatusCode(http.StatusNoContent, http.StatusAccepted, http.StatusOK))
 	if err == nil {
-		err = client.ShouldPoll(resp)
+		err = client.IsPollingAllowed(resp)
 		if err == nil {
 			resp, err = client.PollAsNeeded(resp)
 		}
@@ -129,7 +132,10 @@ func (client SubnetsClient) Get(resourceGroupName string, virtualNetworkName str
 		return result, autorest.NewErrorWithError(err, "network.SubnetsClient", "Get", "Failure preparing request")
 	}
 
-	resp, err := autorest.SendWithSender(client, req)
+	resp, err := autorest.SendWithSender(
+		client,
+		req,
+		autorest.DoErrorUnlessStatusCode(http.StatusOK))
 
 	if err == nil {
 		err = autorest.Respond(
@@ -200,7 +206,10 @@ func (client SubnetsClient) CreateOrUpdate(resourceGroupName string, virtualNetw
 		return result, autorest.NewErrorWithError(err, "network.SubnetsClient", "CreateOrUpdate", "Failure preparing request")
 	}
 
-	resp, err := autorest.SendWithSender(client, req)
+	resp, err := autorest.SendWithSender(
+		client,
+		req,
+		autorest.DoErrorUnlessStatusCode(http.StatusOK, http.StatusCreated))
 
 	if err == nil {
 		err = autorest.Respond(
@@ -270,7 +279,10 @@ func (client SubnetsClient) List(resourceGroupName string, virtualNetworkName st
 		return result, autorest.NewErrorWithError(err, "network.SubnetsClient", "List", "Failure preparing request")
 	}
 
-	resp, err := autorest.SendWithSender(client, req)
+	resp, err := autorest.SendWithSender(
+		client,
+		req,
+		autorest.DoErrorUnlessStatusCode(http.StatusOK))
 
 	if err == nil {
 		err = autorest.Respond(

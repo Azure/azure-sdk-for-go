@@ -19,7 +19,7 @@ package resources
 // regenerated.
 
 import (
-	"github.com/azure/go-autorest/autorest"
+	"github.com/Azure/go-autorest/autorest"
 	"net/http"
 	"net/url"
 )
@@ -55,7 +55,10 @@ func (client DeploymentsClient) Cancel(resourceGroupName string, deploymentName 
 		return result, autorest.NewErrorWithError(err, "resources.DeploymentsClient", "Cancel", "Failure preparing request")
 	}
 
-	resp, err := autorest.SendWithSender(client, req)
+	resp, err := autorest.SendWithSender(
+		client,
+		req,
+		autorest.DoErrorUnlessStatusCode(http.StatusNoContent))
 
 	if err == nil {
 		err = autorest.Respond(
@@ -122,7 +125,10 @@ func (client DeploymentsClient) Validate(resourceGroupName string, deploymentNam
 		return result, autorest.NewErrorWithError(err, "resources.DeploymentsClient", "Validate", "Failure preparing request")
 	}
 
-	resp, err := autorest.SendWithSender(client, req)
+	resp, err := autorest.SendWithSender(
+		client,
+		req,
+		autorest.DoErrorUnlessStatusCode(http.StatusOK, http.StatusBadRequest))
 
 	if err == nil {
 		err = autorest.Respond(
@@ -191,7 +197,10 @@ func (client DeploymentsClient) CreateOrUpdate(resourceGroupName string, deploym
 		return result, autorest.NewErrorWithError(err, "resources.DeploymentsClient", "CreateOrUpdate", "Failure preparing request")
 	}
 
-	resp, err := autorest.SendWithSender(client, req)
+	resp, err := autorest.SendWithSender(
+		client,
+		req,
+		autorest.DoErrorUnlessStatusCode(http.StatusOK, http.StatusCreated))
 
 	if err == nil {
 		err = autorest.Respond(
@@ -259,7 +268,10 @@ func (client DeploymentsClient) Get(resourceGroupName string, deploymentName str
 		return result, autorest.NewErrorWithError(err, "resources.DeploymentsClient", "Get", "Failure preparing request")
 	}
 
-	resp, err := autorest.SendWithSender(client, req)
+	resp, err := autorest.SendWithSender(
+		client,
+		req,
+		autorest.DoErrorUnlessStatusCode(http.StatusOK))
 
 	if err == nil {
 		err = autorest.Respond(
@@ -327,7 +339,10 @@ func (client DeploymentsClient) List(resourceGroupName string, filter string, to
 		return result, autorest.NewErrorWithError(err, "resources.DeploymentsClient", "List", "Failure preparing request")
 	}
 
-	resp, err := autorest.SendWithSender(client, req)
+	resp, err := autorest.SendWithSender(
+		client,
+		req,
+		autorest.DoErrorUnlessStatusCode(http.StatusOK))
 
 	if err == nil {
 		err = autorest.Respond(

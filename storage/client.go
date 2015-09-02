@@ -79,6 +79,11 @@ func (e UnexpectedStatusCodeError) Error() string {
 	return fmt.Sprintf("storage: status code from service response is %s; was expecting %s", got, strings.Join(expected, " or "))
 }
 
+// Got is the actual status code returned by Azure.
+func (e UnexpectedStatusCodeError) Got() int {
+	return e.got
+}
+
 // NewBasicClient constructs a Client with given storage service name and
 // key.
 func NewBasicClient(accountName, accountKey string) (Client, error) {

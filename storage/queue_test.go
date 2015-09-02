@@ -1,6 +1,8 @@
 package storage
 
 import (
+	"time"
+
 	chk "gopkg.in/check.v1"
 )
 
@@ -29,6 +31,27 @@ func (s *StorageQueueSuite) TestCreateQueue_DeleteQueue(c *chk.C) {
 	name := randString(20)
 	c.Assert(cli.CreateQueue(name), chk.IsNil)
 	c.Assert(cli.DeleteQueue(name), chk.IsNil)
+}
+
+func (s *StorageQueueSuite) Test_GetMetadata_GetApproximateCount(c *chk.C) {
+	cli := getQueueClient(c)
+	name := randString(20)
+	c.Assert(cli.CreateQueue(name), chk.IsNil)
+	defer cli.DeleteQueue(name)
+
+	qm, err := cli.GetMetadata(name)
+	c.Assert(err, chk.IsNil)
+	c.Assert(qm.ApproximateMessageCount, chk.Equals, 0)
+
+	for ix := 0; ix < 3; ix++ {
+		err = cli.PutMessage(name, "foobar", PutMessageParameters{})
+		c.Assert(err, chk.IsNil)
+	}
+	time.Sleep(1 * time.Second)
+
+	qm, err = cli.GetMetadata(name)
+	c.Assert(err, chk.IsNil)
+	c.Assert(qm.ApproximateMessageCount, chk.Equals, 3)
 }
 
 func (s *StorageQueueSuite) TestQueueExists(c *chk.C) {

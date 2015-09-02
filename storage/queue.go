@@ -111,6 +111,44 @@ type PeekMessageResponse struct {
 	MessageText    string `xml:"MessageText"`
 }
 
+// QueueMetadata represents queue properties on
+// a specific queue.
+//
+// See https://msdn.microsoft.com/en-us/library/azure/dd179384.aspx
+type QueueMetadata struct {
+	ApproximateMessageCount int
+}
+
+// GetMetadata operation retrieves queue
+// properties on the specified queue.
+//
+// See https://msdn.microsoft.com/en-us/library/azure/dd179384.aspx
+func (c QueueServiceClient) GetMetadata(name string) (QueueMetadata, error) {
+	qm := QueueMetadata{}
+	uri := c.client.getEndpoint(queueServiceName, pathForQueue(name), url.Values{"comp": []string{"metadata"}})
+	headers := c.client.getStandardHeaders()
+	resp, err := c.client.exec("GET", uri, headers, nil)
+	if err != nil {
+		return qm, err
+	}
+	defer resp.body.Close()
+
+	for k, v := range resp.headers {
+		if len(v) != 1 {
+			return qm, fmt.Errorf("Unexpected number of valuus (%d) in response header '%s'", len(v), k)
+		}
+
+		if k == approximateMessagesCountHeader {
+			qm.ApproximateMessageCount, err = strconv.Atoi(v[0])
+			if err != nil {
+				return qm, fmt.Errorf("Unexpected value in response header '%s': '%s' ", k, v[0])
+			}
+		}
+	}
+
+	return qm, checkRespCode(resp.statusCode, []int{http.StatusOK})
+}
+
 // CreateQueue operation creates a queue under the given account.
 //
 // See https://msdn.microsoft.com/en-us/library/azure/dd179342.aspx
@@ -228,3 +266,6 @@ func (c QueueServiceClient) DeleteMessage(queue, messageID, popReceipt string) e
 	defer resp.body.Close()
 	return checkRespCode(resp.statusCode, []int{http.StatusNoContent})
 }
+
+const approximateMessagesCountHeader = "X-Ms-Approximate-Messages-Count"
+const userDefinedMetadataHeaderPrefix = "X-Ms-Meta-"

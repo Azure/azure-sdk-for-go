@@ -51,7 +51,7 @@ type ProvisioningState string
 
 const (
 	Creating     ProvisioningState = "Creating"
-	ResolvingDNS ProvisioningState = "ResolvingDNS"
+	ResolvingDNS ProvisioningState = "ResolvingDns"
 	Succeeded    ProvisioningState = "Succeeded"
 )
 

@@ -2,6 +2,7 @@ package storage
 
 import (
 	"bytes"
+	"encoding/base64"
 	"encoding/xml"
 	"errors"
 	"fmt"
@@ -573,6 +574,11 @@ func (b BlobStorageClient) PutBlock(container, name, blockID string, chunk []byt
 //
 // See https://msdn.microsoft.com/en-us/library/azure/dd135726.aspx
 func (b BlobStorageClient) PutBlockWithLength(container, name, blockID string, size uint64, blob io.Reader) error {
+
+	// mindflavor: we should base64 encode the blockID in the library IMHO.
+	//The client should not need to do this itself: without it Azure will answer with a puzzling http code 400.
+	blockID = base64.StdEncoding.EncodeToString([]byte(blockID))
+
 	uri := b.client.getEndpoint(blobServiceName, pathForBlob(container, name), url.Values{"comp": {"block"}, "blockid": {blockID}})
 	headers := b.client.getStandardHeaders()
 	headers["x-ms-blob-type"] = string(BlobTypeBlock)
@@ -590,6 +596,12 @@ func (b BlobStorageClient) PutBlockWithLength(container, name, blockID string, s
 //
 // See https://msdn.microsoft.com/en-us/library/azure/dd179467.aspx
 func (b BlobStorageClient) PutBlockList(container, name string, blocks []Block) error {
+	// mindflavor: we should base64 encode the blockID in the library IMHO.
+	// The client should not need to do this itself: without it Azure will answer with a puzzling http code 400: InvalidXmlDocument, ErrorMessage=XML specified is not syntactically valid.
+	for i, _ := range blocks {
+		blocks[i].ID = base64.StdEncoding.EncodeToString([]byte(blocks[i].ID))
+	}
+
 	blockListXML := prepareBlockListRequest(blocks)
 
 	uri := b.client.getEndpoint(blobServiceName, pathForBlob(container, name), url.Values{"comp": {"blocklist"}})
@@ -856,3 +868,18 @@ func blobSASStringToSign(signedVersion, canonicalizedResource, signedExpiry, sig
 	}
 	return "", errors.New("storage: not implemented SAS for versions earlier than 2013-08-15")
 }
+
+//func (b BlobStorageClient) CreateBlockBlob(container, name string) error {
+//	path := fmt.Sprintf("%s/%s", container, name)
+//	uri := b.client.getEndpoint(blobServiceName, path, url.Values{})
+//	headers := b.client.getStandardHeaders()
+//	headers["x-ms-blob-type"] = string(BlobTypeBlock)
+//	headers["Content-Length"] = fmt.Sprintf("%v", 0)
+
+//	resp, err := b.client.exec("PUT", uri, headers, nil)
+//	if err != nil {
+//		return err
+//	}
+//	defer resp.body.Close()
+//	return checkRespCode(resp.statusCode, []int{http.StatusCreated})
+//}

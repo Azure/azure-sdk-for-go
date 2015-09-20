@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"io"
 	"io/ioutil"
+	//"log"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -159,6 +160,10 @@ func (c Client) GetQueueService() QueueServiceClient {
 	return QueueServiceClient{c}
 }
 
+func (c Client) GetTableService() TableServiceClient {
+	return TableServiceClient{c}
+}
+
 func (c Client) createAuthorizationHeader(canonicalizedString string) string {
 	signature := c.computeHmac256(canonicalizedString)
 	return fmt.Sprintf("%s %s:%s", "SharedKey", c.accountName, signature)
@@ -276,21 +281,12 @@ func (c Client) buildCanonicalizedString(verb string, headers map[string]string,
 	return canonicalizedString
 }
 
-func (c Client) exec(verb, url string, headers map[string]string, body io.Reader) (*storageResponse, error) {
-	authHeader, err := c.getAuthorizationHeader(verb, url, headers)
-	if err != nil {
-		return nil, err
-	}
-	headers["Authorization"] = authHeader
-
-	if err != nil {
-		return nil, err
-	}
-
+func (c Client) execInternal(verb, url string, headers map[string]string, body io.Reader) (*storageResponse, error) {
 	req, err := http.NewRequest(verb, url, body)
 	for k, v := range headers {
 		req.Header.Add(k, v)
 	}
+
 	httpClient := http.Client{}
 	resp, err := httpClient.Do(req)
 	if err != nil {
@@ -327,6 +323,29 @@ func (c Client) exec(verb, url string, headers map[string]string, body io.Reader
 		statusCode: resp.StatusCode,
 		headers:    resp.Header,
 		body:       resp.Body}, nil
+}
+
+func (c Client) execLite(verb, url string, headers map[string]string, body io.Reader) (*storageResponse, error) {
+	can, err := c.buildCanonicalizedResource(url)
+	if err != nil {
+		return nil, err
+	}
+	strToSign := headers["x-ms-date"] + "\n" + can
+
+	hmac := c.computeHmac256(strToSign)
+	headers["Authorization"] = fmt.Sprintf("SharedKeyLite %s:%s", c.accountName, hmac)
+
+	return c.execInternal(verb, url, headers, body)
+}
+
+func (c Client) exec(verb, url string, headers map[string]string, body io.Reader) (*storageResponse, error) {
+	authHeader, err := c.getAuthorizationHeader(verb, url, headers)
+	if err != nil {
+		return nil, err
+	}
+	headers["Authorization"] = authHeader
+
+	return c.execInternal(verb, url, headers, body)
 }
 
 func readResponseBody(resp *http.Response) ([]byte, error) {

@@ -26,7 +26,7 @@ type createTableRequest struct {
 
 type queryTablesResponse struct {
 	TableName []struct {
-		tableName string `json:"TableName"`
+		TableName string `json:"TableName"`
 	} `json:"value"`
 }
 
@@ -65,17 +65,18 @@ func (c *TableServiceClient) QueryTables() ([]string, error) {
 
 	buf := new(bytes.Buffer)
 	buf.ReadFrom(resp.body)
-
-	log.Printf("%s", string(buf.Bytes()))
 	
 	var respArray queryTablesResponse
 	if err := json.Unmarshal(buf.Bytes(), &respArray); err != nil {
 		return nil, err
 	}
 	
-	log.Printf("elems %s", len(respArray.TableName))	
+	s := make([]string, len(respArray.TableName))
+	for i, elem := range respArray.TableName {
+		s[i] = elem.TableName
+	}
 		
-	return nil, nil
+	return s, nil
 }
 
 func (c *TableServiceClient) CreateTable(tableName string) error {

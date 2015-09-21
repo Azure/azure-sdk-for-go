@@ -31,9 +31,9 @@ func pathForTable(queue string) string { return fmt.Sprintf("/%s", queue) }
 
 func (c *TableServiceClient) getStandardHeaders() map[string]string {
 	return map[string]string{
-		"x-ms-version":          c.client.apiVersion,
+		"x-ms-version":          "2015-02-21",
 		"x-ms-date":             currentTimeRfc1123Formatted(),
-		"accept":                "application/atom+xml,application/xml",
+		"accept":                "application/atom+xml",
 		"Accept-Charset":        "UTF-8",
 		"DataServiceVersion":    "1.0;NetFx",
 		"MaxDataServiceVersion": "2.0;NetFx",

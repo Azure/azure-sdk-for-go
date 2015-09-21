@@ -23,6 +23,13 @@ type createTableRequest struct {
 	TableName string `json:"TableName"`
 }
 
+
+type queryTablesResponse struct {
+	TableName []struct {
+		tableName string `json:"TableName"`
+	} `json:"value"`
+}
+
 func pathForTable(queue string) string { return fmt.Sprintf("/%s", queue) }
 
 //func pathForQueueMessages(queue string) string { return fmt.Sprintf("/%s/messages", queue) }
@@ -55,15 +62,20 @@ func (c *TableServiceClient) QueryTables() ([]string, error) {
 		log.Printf("resp.body after error == %s \t%s", err.Error(), resp.body)
 		return nil, err
 	}
-	
+
 	buf := new(bytes.Buffer)
 	buf.ReadFrom(resp.body)
-	
+
 	log.Printf("%s", string(buf.Bytes()))
-
-	// Reformat error
+	
+	var respArray queryTablesResponse
+	if err := json.Unmarshal(buf.Bytes(), &respArray); err != nil {
+		return nil, err
+	}
+	
+	log.Printf("elems %s", len(respArray.TableName))	
+		
 	return nil, nil
-
 }
 
 func (c *TableServiceClient) CreateTable(tableName string) error {

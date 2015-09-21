@@ -2,14 +2,12 @@
 package storage
 
 import (
-	"log"
 	"bytes"
 	"encoding/base64"
 	"encoding/xml"
 	"fmt"
 	"io"
 	"io/ioutil"
-	//"log"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -288,9 +286,11 @@ func (c Client) execInternal(verb, url string, headers map[string]string, body i
 		req.Header.Add(k, v)
 	}
 	
-	for k := range req.Header {
-		log.Printf("header[\"%s\"] == %s", k, req.Header[k])
-	}
+//	for k := range req.Header {
+//		log.Printf("header[\"%s\"] == %s", k, req.Header[k])
+//	}
+	
+//	log.Printf("req.Body == %s", req.Body)
 
 	httpClient := http.Client{}
 	resp, err := httpClient.Do(req)
@@ -305,6 +305,8 @@ func (c Client) execInternal(verb, url string, headers map[string]string, body i
 		if err != nil {
 			return nil, err
 		}
+		
+//		log.Printf("respBody == %s", respBody)
 
 		if len(respBody) == 0 {
 			// no error in response body
@@ -337,7 +339,7 @@ func (c Client) execLite(verb, url string, headers map[string]string, body io.Re
 	}
 	strToSign := headers["x-ms-date"] + "\n" + can
 	
-	log.Printf("strToSign %s == ", strToSign)
+//	log.Printf("strToSign %s == ", strToSign)
 
 	hmac := c.computeHmac256(strToSign)
 	headers["Authorization"] = fmt.Sprintf("SharedKeyLite %s:%s", c.accountName, hmac)	

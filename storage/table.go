@@ -1,9 +1,9 @@
 package storage
 
 import (
-	//	"encoding/xml"
+	"encoding/xml"
+	"time"
 	"bytes"
-	//	"encoding/json"
 	"fmt"
 	"log"
 	"net/http"
@@ -65,23 +65,25 @@ func (c *TableServiceClient) CreateTable(tableName string) error {
 	headers["accept"] = "application/atom+xml"
 	headers["Content-Type"] = "application/atom+xml"
 
-	//	req := createTableRequest{TableName: tableName}
-
 	buf := new(bytes.Buffer)
-	//	if err := json.NewEncoder(buf).Encode(req); err != nil {
-	//		return err
-	//	}
+	
+	nowBytes, err := xml.Marshal(time.Now())
+	if err != nil {
+		log.Printf("Cannot convert time.Now() to XML datetime: %s", err.Error())
+		return err
+	}
 
-	fmt.Fprintf(buf, "<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"yes\"?><entry xmlns:d=\"http://schemas.microsoft.com/ado/2007/08/dataservices\" xmlns:m=\"http://schemas.microsoft.com/ado/2007/08/dataservices/metadata\" xmlns=\"http://www.w3.org/2005/Atom\"> <title /> <updated>%s</updated> <author><name/></author><id/><content type=\"application/xml\"><m:properties> <d:TableName>%s</d:TableName> </m:properties> </content> </entry>", "2009-03-18T11:48:34.9840639-07:00", tableName)
+	fmt.Fprintf(buf, "<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"yes\"?>\n<entry xmlns:d=\"http://schemas.microsoft.com/ado/2007/08/dataservices\" xmlns:m=\"http://schemas.microsoft.com/ado/2007/08/dataservices/metadata\" xmlns=\"http://www.w3.org/2005/Atom\"> <title /> <updated>%s</updated> <author><name/></author><id/><content type=\"application/xml\"><m:properties> <d:TableName>%s</d:TableName> </m:properties> </content> </entry>", string(nowBytes), tableName)
 
-	log.Printf(string(buf.Bytes()))
+//	log.Printf(string(buf.Bytes()))
 
-	headers["Content-Length"] = fmt.Sprintf("%n", buf.Len())
-	buf.Reset()
+	headers["Content-Length"] = fmt.Sprintf("%d", buf.Len())
 
 	resp, err := c.client.execLite("POST", uri, headers, buf)
-	log.Printf("resp == %s", resp)
-	log.Printf("resp.statusCode == %d", resp.statusCode)
+	
+//	log.Printf("resp == %s", resp)
+//	log.Printf("resp.statusCode == %d", resp.statusCode)
+	
 	if err != nil {
 		return err
 	}

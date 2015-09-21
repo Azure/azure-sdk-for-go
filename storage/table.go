@@ -33,7 +33,7 @@ func (c *TableServiceClient) getStandardHeaders() map[string]string {
 	return map[string]string{
 		"x-ms-version":          c.client.apiVersion,
 		"x-ms-date":             currentTimeRfc1123Formatted(),
-		"accept":                "application/json;odata=nometadata",
+		"accept":                "application/atom+xml,application/xml",
 		"Accept-Charset":        "UTF-8",
 		"DataServiceVersion":    "1.0;NetFx",
 		"MaxDataServiceVersion": "2.0;NetFx",
@@ -62,7 +62,7 @@ func (c *TableServiceClient) CreateTable(tableName string) error {
 	uri := c.client.getEndpoint(tableServiceName, TablesURIPath, url.Values{})
 
 	headers := c.getStandardHeaders()
-	headers["accept"] = "application/atom+xml,application/xml"
+	headers["accept"] = "application/atom+xml"
 	headers["Content-Type"] = "application/atom+xml"
 
 	//	req := createTableRequest{TableName: tableName}
@@ -72,11 +72,11 @@ func (c *TableServiceClient) CreateTable(tableName string) error {
 	//		return err
 	//	}
 
-	fmt.Fprintf(buf, "<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"yes\"?><entry xmlns:d=\"http://schemas.microsoft.com/ado/2007/08/dataservices\" xmlns:m=\"http://schemas.microsoft.com/ado/2007/08/dataservices/metadata\" xmlns=\"http://www.w3.org/2005/Atom\"> <title /> <updated></updated> <author><name/></author><id/><content type=\"application/xml\"><m:properties> <d:TableName>%s</d:TableName> </m:properties> </content> </entry>", tableName)
+	fmt.Fprintf(buf, "<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"yes\"?><entry xmlns:d=\"http://schemas.microsoft.com/ado/2007/08/dataservices\" xmlns:m=\"http://schemas.microsoft.com/ado/2007/08/dataservices/metadata\" xmlns=\"http://www.w3.org/2005/Atom\"> <title /> <updated>%s</updated> <author><name/></author><id/><content type=\"application/xml\"><m:properties> <d:TableName>%s</d:TableName> </m:properties> </content> </entry>", "2009-03-18T11:48:34.9840639-07:00", tableName)
 
 	log.Printf(string(buf.Bytes()))
 
-	headers["Content-Length"] = string(buf.Len())
+	headers["Content-Length"] = fmt.Sprintf("%n", buf.Len())
 	buf.Reset()
 
 	resp, err := c.client.execLite("POST", uri, headers, buf)

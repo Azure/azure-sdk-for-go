@@ -2,6 +2,7 @@
 package storage
 
 import (
+	"log"
 	"bytes"
 	"encoding/base64"
 	"encoding/xml"
@@ -286,6 +287,10 @@ func (c Client) execInternal(verb, url string, headers map[string]string, body i
 	for k, v := range headers {
 		req.Header.Add(k, v)
 	}
+	
+	for k := range req.Header {
+		log.Printf("header[\"%s\"] == %s", k, req.Header[k])
+	}
 
 	httpClient := http.Client{}
 	resp, err := httpClient.Do(req)
@@ -331,9 +336,11 @@ func (c Client) execLite(verb, url string, headers map[string]string, body io.Re
 		return nil, err
 	}
 	strToSign := headers["x-ms-date"] + "\n" + can
+	
+	log.Printf("strToSign %s == ", strToSign)
 
 	hmac := c.computeHmac256(strToSign)
-	headers["Authorization"] = fmt.Sprintf("SharedKeyLite %s:%s", c.accountName, hmac)
+	headers["Authorization"] = fmt.Sprintf("SharedKeyLite %s:%s", c.accountName, hmac)	
 
 	return c.execInternal(verb, url, headers, body)
 }

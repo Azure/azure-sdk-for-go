@@ -2,13 +2,14 @@
 package storage
 
 import (
-	"log"
 	"bytes"
 	"encoding/base64"
+	"encoding/json"
 	"encoding/xml"
 	"fmt"
 	"io"
 	"io/ioutil"
+	"log"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -48,6 +49,11 @@ type storageResponse struct {
 	body       io.ReadCloser
 }
 
+type odataResponse struct {
+	storageResponse
+	odata odataErrorMessage
+}
+
 // AzureStorageServiceError contains fields of the error response from
 // Azure Storage Service REST API. See https://msdn.microsoft.com/en-us/library/azure/dd179382.aspx
 // Some fields might be specific to certain calls.
@@ -60,6 +66,20 @@ type AzureStorageServiceError struct {
 	Reason                    string `xml:"Reason"`
 	StatusCode                int
 	RequestID                 string
+}
+
+type odataErrorMessageMessage struct {
+	Lang  string `json:"lang"`
+	Value string `json:"value"`
+}
+
+type odataErrorMessageInternal struct {
+	Code    string                   `json:"code"`
+	Message odataErrorMessageMessage `json:"message"`
+}
+
+type odataErrorMessage struct {
+	Err odataErrorMessageInternal `json:"odata.error"`
 }
 
 // UnexpectedStatusCodeError is returned when a storage service responds with neither an error
@@ -281,17 +301,15 @@ func (c Client) buildCanonicalizedString(verb string, headers map[string]string,
 	return canonicalizedString
 }
 
-func (c Client) execInternal(verb, url string, headers map[string]string, body io.Reader) (*storageResponse, error) {
+func (c Client) execInternalXML(verb, url string, headers map[string]string, body io.Reader) (*storageResponse, error) {
 	req, err := http.NewRequest(verb, url, body)
 	for k, v := range headers {
 		req.Header.Add(k, v)
 	}
-	
+
 	for k := range req.Header {
 		log.Printf("header[\"%s\"] == %s", k, req.Header[k])
 	}
-	
-	log.Printf("req.Body == %s", req.Body)
 
 	httpClient := http.Client{}
 	resp, err := httpClient.Do(req)
@@ -306,8 +324,6 @@ func (c Client) execInternal(verb, url string, headers map[string]string, body i
 		if err != nil {
 			return nil, err
 		}
-		
-		log.Printf("respBody == %s", respBody)
 
 		if len(respBody) == 0 {
 			// no error in response body
@@ -315,7 +331,7 @@ func (c Client) execInternal(verb, url string, headers map[string]string, body i
 		} else {
 			// response contains storage service error object, unmarshal
 			storageErr, errIn := serviceErrFromXML(respBody, resp.StatusCode, resp.Header.Get("x-ms-request-id"))
-			if err != nil { // error unmarshaling the error response
+			if errIn != nil { // error unmarshaling the error response
 				err = errIn
 			}
 			err = storageErr
@@ -333,19 +349,64 @@ func (c Client) execInternal(verb, url string, headers map[string]string, body i
 		body:       resp.Body}, nil
 }
 
-func (c Client) execLite(verb, url string, headers map[string]string, body io.Reader) (*storageResponse, error) {
+func (c Client) execInternalJSON(verb, url string, headers map[string]string, body io.Reader) (*odataResponse, error) {
+	req, err := http.NewRequest(verb, url, body)
+	for k, v := range headers {
+		req.Header.Add(k, v)
+	}
+
+	for k := range req.Header {
+		log.Printf("header[\"%s\"] == %s", k, req.Header[k])
+	}
+
+	httpClient := http.Client{}
+	resp, err := httpClient.Do(req)
+	if err != nil {
+		return nil, err
+	}
+
+	log.Printf("execInternalJSON.resp.Body == %s", resp.Body)
+
+	respToRet := &odataResponse{}
+	respToRet.body = resp.Body
+	respToRet.statusCode = resp.StatusCode
+	respToRet.headers = resp.Header
+
+	statusCode := resp.StatusCode
+	if statusCode >= 400 && statusCode <= 505 {
+		var respBody []byte
+		respBody, err = readResponseBody(resp)
+		if err != nil {
+			return nil, err
+		}
+
+		if len(respBody) == 0 {
+			// no error in response body
+			err = fmt.Errorf("storage: service returned without a response body (%s)", resp.StatusCode)
+			return respToRet, err
+		} else {
+			// try unmarshal as odata.error json
+			err = json.Unmarshal(respBody, &respToRet.odata)
+			return respToRet, err
+		}
+	}
+
+	return respToRet, nil
+}
+
+func (c Client) execLite(verb, url string, headers map[string]string, body io.Reader) (*odataResponse, error) {
 	can, err := c.buildCanonicalizedResource(url)
 	if err != nil {
 		return nil, err
 	}
 	strToSign := headers["x-ms-date"] + "\n" + can
-	
-//	log.Printf("strToSign %s == ", strToSign)
+
+	//	log.Printf("strToSign %s == ", strToSign)
 
 	hmac := c.computeHmac256(strToSign)
-	headers["Authorization"] = fmt.Sprintf("SharedKeyLite %s:%s", c.accountName, hmac)	
+	headers["Authorization"] = fmt.Sprintf("SharedKeyLite %s:%s", c.accountName, hmac)
 
-	return c.execInternal(verb, url, headers, body)
+	return c.execInternalJSON(verb, url, headers, body)
 }
 
 func (c Client) exec(verb, url string, headers map[string]string, body io.Reader) (*storageResponse, error) {
@@ -355,7 +416,7 @@ func (c Client) exec(verb, url string, headers map[string]string, body io.Reader
 	}
 	headers["Authorization"] = authHeader
 
-	return c.execInternal(verb, url, headers, body)
+	return c.execInternalXML(verb, url, headers, body)
 }
 
 func readResponseBody(resp *http.Response) ([]byte, error) {

@@ -38,8 +38,8 @@ func (c *TableServiceClient) getStandardHeaders() map[string]string {
 		"accept":         "application/json;odata=nometadata",
 		"Accept-Charset": "UTF-8",
 		"Content-Type":   "application/json",
-//				"DataServiceVersion":    "1.0;NetFx",
-//				"MaxDataServiceVersion": "2.0;NetFx",
+		//				"DataServiceVersion":    "1.0;NetFx",
+		//				"MaxDataServiceVersion": "2.0;NetFx",
 	}
 }
 
@@ -117,30 +117,29 @@ func (c *TableServiceClient) InsertEntity(tableName string, partitionKey string,
 	headers := c.getStandardHeaders()
 
 	buf := new(bytes.Buffer)
-	
+
 	if err := json.NewEncoder(buf).Encode(entity); err != nil {
 		return err
 	}
-	
+
 	dec := make(map[string]interface{})
 	if err := json.NewDecoder(buf).Decode(&dec); err != nil {
 		return err
 	}
-	
+
 	// Inject PartitionKey and RowKey
 	dec["PartitionKey"] = partitionKey
 	dec["RowKey"] = rowKey
-	
+
 	buf.Reset()
-	
+
 	if err := json.NewEncoder(buf).Encode(&dec); err != nil {
 		return err
 	}
-	
+
 	log.Printf("request.body == %s", string(buf.Bytes()))
 
 	headers["Content-Length"] = fmt.Sprintf("%d", buf.Len())
-	
 
 	resp, err := c.client.execLite("POST", uri, headers, buf)
 

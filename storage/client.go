@@ -361,7 +361,7 @@ func (c Client) execInternalJSON(verb, url string, headers map[string]string, bo
 	}
 
 	for k := range req.Header {
-		log.Printf("header[\"%s\"] == %s", k, req.Header[k])
+		log.Printf("headers[\"%s\"] = %s", k, req.Header[k])
 	}
 
 	httpClient := http.Client{}
@@ -413,7 +413,7 @@ func (c Client) execLite(verb, url string, headers map[string]string, body io.Re
 	}
 	strToSign := headers["x-ms-date"] + "\n" + can
 
-	//	log.Printf("strToSign %s == ", strToSign)
+	log.Printf("strToSign '%s'", strToSign)
 
 	hmac := c.computeHmac256(strToSign)
 	headers["Authorization"] = fmt.Sprintf("SharedKeyLite %s:%s", c.accountName, hmac)

@@ -16,7 +16,9 @@ type TableServiceClient struct {
 }
 
 const (
-	TablesURIPath = "/Tables"
+	tablesURIPath = "/Tables"
+	partitionKeyNode = "PartitionKey"
+	rowKeyNode = "RowKey"
 )
 
 type createTableRequest struct {
@@ -42,7 +44,7 @@ func (c *TableServiceClient) getStandardHeaders() map[string]string {
 }
 
 func (c *TableServiceClient) QueryTables() ([]string, error) {
-	uri := c.client.getEndpoint(tableServiceName, TablesURIPath, url.Values{})
+	uri := c.client.getEndpoint(tableServiceName, tablesURIPath, url.Values{})
 
 	headers := c.getStandardHeaders()
 	headers["Content-Length"] = "0"
@@ -75,7 +77,7 @@ func (c *TableServiceClient) QueryTables() ([]string, error) {
 }
 
 func (c *TableServiceClient) CreateTable(tableName string) error {
-	uri := c.client.getEndpoint(tableServiceName, TablesURIPath, url.Values{})
+	uri := c.client.getEndpoint(tableServiceName, tablesURIPath, url.Values{})
 
 	headers := c.getStandardHeaders()
 
@@ -122,8 +124,8 @@ func (c *TableServiceClient) InsertEntity(tableName string, partitionKey string,
 	}
 
 	// Inject PartitionKey and RowKey
-	dec["PartitionKey"] = partitionKey
-	dec["RowKey"] = rowKey
+	dec[partitionKeyNode] = partitionKey
+	dec[rowKeyNode] = rowKey
 
 	buf.Reset()
 

@@ -9,7 +9,6 @@ import (
 	"fmt"
 	"io"
 	"io/ioutil"
-	"log"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -360,9 +359,15 @@ func (c Client) execInternalJSON(verb, url string, headers map[string]string, bo
 		req.Header.Add(k, v)
 	}
 
+<<<<<<< HEAD
 	for k := range req.Header {
 		log.Printf("headers[\"%s\"] = %s", k, req.Header[k])
 	}
+=======
+	//	for k := range req.Header {
+	//		log.Printf("headers[\"%s\"] = %s", k, req.Header[k])
+	//	}
+>>>>>>> tableok
 
 	httpClient := http.Client{}
 	resp, err := httpClient.Do(req)
@@ -370,11 +375,19 @@ func (c Client) execInternalJSON(verb, url string, headers map[string]string, bo
 		return nil, err
 	}
 
+<<<<<<< HEAD
 	log.Printf("execInternalJSON.resp.Body == %s", resp.Body)
 
 	buf := new(bytes.Buffer)
 	buf.ReadFrom(resp.Body)
 	log.Printf("execInternalJSON buf == %s", string(buf.Bytes()))
+=======
+	//	log.Printf("execInternalJSON.resp.Body == %s", resp.Body)
+
+	//	buf := new(bytes.Buffer)
+	//	buf.ReadFrom(resp.Body)
+	//	log.Printf("execInternalJSON buf == %s", string(buf.Bytes()))
+>>>>>>> tableok
 
 	respToRet := &odataResponse{}
 	respToRet.body = resp.Body
@@ -404,17 +417,22 @@ func (c Client) execInternalJSON(verb, url string, headers map[string]string, bo
 }
 
 func (c Client) execLite(verb, url string, headers map[string]string, body io.Reader) (*odataResponse, error) {
-	log.Printf("url == %s", url)
 	can, err := c.buildCanonicalizedResource(url)
+<<<<<<< HEAD
 	log.Printf("buildCanonicalizedResource == %s", can)
+=======
+>>>>>>> tableok
 
 	if err != nil {
 		return nil, err
 	}
 	strToSign := headers["x-ms-date"] + "\n" + can
 
+<<<<<<< HEAD
 	log.Printf("strToSign '%s'", strToSign)
 
+=======
+>>>>>>> tableok
 	hmac := c.computeHmac256(strToSign)
 	headers["Authorization"] = fmt.Sprintf("SharedKeyLite %s:%s", c.accountName, hmac)
 

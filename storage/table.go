@@ -31,7 +31,7 @@ type queryTablesResponse struct {
 	} `json:"value"`
 }
 
-func pathForTable(table string) string { return fmt.Sprintf("%s/%s", TablesURIPath, table) }
+func pathForTable(table string) string { return fmt.Sprintf("%s", table) }
 
 func (c *TableServiceClient) getStandardHeaders() map[string]string {
 	return map[string]string{
@@ -40,8 +40,11 @@ func (c *TableServiceClient) getStandardHeaders() map[string]string {
 		"Accept":         "application/json;odata=nometadata",
 		"Accept-Charset": "UTF-8",
 		"Content-Type":   "application/json",
+<<<<<<< HEAD
 		"DataServiceVersion": "1.0;NetFx",
 		"MaxDataServiceVersion":"2.0;NetFx",
+=======
+>>>>>>> tableok
 	}
 }
 
@@ -98,9 +101,6 @@ func (c *TableServiceClient) CreateTable(tableName string) error {
 
 	log.Printf("err == %s", err)
 
-	//	log.Printf("resp == %s", resp)
-	//	log.Printf("resp.statusCode == %d", resp.statusCode)
-
 	if err != nil {
 		return err
 	}
@@ -119,6 +119,7 @@ func (c *TableServiceClient) InsertEntity(tableName string, partitionKey string,
 
 	headers := make(map[string]string)
 
+<<<<<<< HEAD
 	headers["Accept"] = "application/atom+xml,application/xml"
 	headers["Accept-Charset"] = "UTF-8"
 	headers["User-Agent"] = "Microsoft ADO.NET Data Services"
@@ -161,11 +162,34 @@ func (c *TableServiceClient) InsertEntity(tableName string, partitionKey string,
 	headers["Content-Length"] = fmt.Sprintf("%d", buf.Len())
 	 
 	resp, err := c.client.execLite("PUT", uri, headers, buf)
+=======
+	buf := new(bytes.Buffer)
 
-	log.Printf("err == %s", err)
+	if err := json.NewEncoder(buf).Encode(entity); err != nil {
+		return err
+	}
 
-	//	log.Printf("resp == %s", resp)
-	//	log.Printf("resp.statusCode == %d", resp.statusCode)
+	dec := make(map[string]interface{})
+	if err := json.NewDecoder(buf).Decode(&dec); err != nil {
+		return err
+	}
+
+	// Inject PartitionKey and RowKey
+	dec["PartitionKey"] = partitionKey
+	dec["RowKey"] = rowKey
+
+	buf.Reset()
+
+	if err := json.NewEncoder(buf).Encode(&dec); err != nil {
+		return err
+	}
+
+	//	log.Printf("request.body == %s", string(buf.Bytes()))
+
+	headers["Content-Length"] = fmt.Sprintf("%d", buf.Len())
+
+	resp, err := c.client.execLite("POST", uri, headers, buf)
+>>>>>>> tableok
 
 	if err != nil {
 		return err

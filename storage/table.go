@@ -108,12 +108,7 @@ func (c *TableServiceClient) CreateTable(tableName string) error {
 	}
 }
 
-func (c *TableServiceClient) InsertEntity(tableName string, partitionKey string, rowKey string, entity interface{}) error {
-	uri := c.client.getEndpoint(tableServiceName, pathForTable(tableName), url.Values{})
-	headers := c.getStandardHeaders()
-
-	buf := new(bytes.Buffer)
-
+func injectPartitionAndRowKeys(partitionKey string, rowKey string, entity interface{}, buf* bytes.Buffer) error {
 	if err := json.NewEncoder(buf).Encode(entity); err != nil {
 		return err
 	}
@@ -132,7 +127,20 @@ func (c *TableServiceClient) InsertEntity(tableName string, partitionKey string,
 	if err := json.NewEncoder(buf).Encode(&dec); err != nil {
 		return err
 	}
+	
+	return nil
+}
 
+func (c *TableServiceClient) InsertEntity(tableName string, partitionKey string, rowKey string, entity interface{}) error {
+	uri := c.client.getEndpoint(tableServiceName, pathForTable(tableName), url.Values{})
+	headers := c.getStandardHeaders()
+
+	buf := new(bytes.Buffer)
+
+	if err := injectPartitionAndRowKeys(partitionKey, rowKey, entity, buf); err != nil {
+		return err
+	}
+	
 	//	log.Printf("request.body == %s", string(buf.Bytes()))
 
 	headers["Content-Length"] = fmt.Sprintf("%d", buf.Len())
@@ -145,6 +153,36 @@ func (c *TableServiceClient) InsertEntity(tableName string, partitionKey string,
 	defer resp.body.Close()
 
 	if err := checkRespCode(resp.statusCode, []int{http.StatusCreated}); err != nil {
+		return err
+	} else {
+		return nil
+	}
+}
+
+func (c *TableServiceClient) InsertOrReplaceEntity(tableName string, partitionKey string, rowKey string, entity interface{}) error {
+	uri := c.client.getEndpoint(tableServiceName, pathForTable(tableName), url.Values{})	
+	uri += fmt.Sprintf("(PartitionKey='%s',RowKey='%s')", url.QueryEscape(partitionKey), url.QueryEscape(rowKey))
+	
+	headers := c.getStandardHeaders()
+
+	buf := new(bytes.Buffer)
+
+	if err := injectPartitionAndRowKeys(partitionKey, rowKey, entity, buf); err != nil {
+		return err
+	}
+	
+	//	log.Printf("request.body == %s", string(buf.Bytes()))
+
+	headers["Content-Length"] = fmt.Sprintf("%d", buf.Len())
+
+	resp, err := c.client.execLite("PUT", uri, headers, buf)
+
+	if err != nil {
+		return err
+	}
+	defer resp.body.Close()
+
+	if err := checkRespCode(resp.statusCode, []int{http.StatusNoContent}); err != nil {
 		return err
 	} else {
 		return nil

@@ -400,7 +400,7 @@ func (c Client) execInternalJSON(verb, url string, headers map[string]string, bo
 
 func (c Client) execLite(verb, url string, headers map[string]string, body io.Reader) (*odataResponse, error) {
 	can, err := c.buildCanonicalizedResource(url)
-
+	
 	if err != nil {
 		return nil, err
 	}

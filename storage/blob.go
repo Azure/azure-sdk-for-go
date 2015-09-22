@@ -868,18 +868,3 @@ func blobSASStringToSign(signedVersion, canonicalizedResource, signedExpiry, sig
 	}
 	return "", errors.New("storage: not implemented SAS for versions earlier than 2013-08-15")
 }
-
-//func (b BlobStorageClient) CreateBlockBlob(container, name string) error {
-//	path := fmt.Sprintf("%s/%s", container, name)
-//	uri := b.client.getEndpoint(blobServiceName, path, url.Values{})
-//	headers := b.client.getStandardHeaders()
-//	headers["x-ms-blob-type"] = string(BlobTypeBlock)
-//	headers["Content-Length"] = fmt.Sprintf("%v", 0)
-
-//	resp, err := b.client.exec("PUT", uri, headers, nil)
-//	if err != nil {
-//		return err
-//	}
-//	defer resp.body.Close()
-//	return checkRespCode(resp.statusCode, []int{http.StatusCreated})
-//}

@@ -365,11 +365,11 @@ func (c Client) execInternalJSON(verb, url string, headers map[string]string, bo
 		return nil, err
 	}
 
-//	log.Printf("execInternalJSON.resp.Body == %s", resp.Body)
+	//	log.Printf("execInternalJSON.resp.Body == %s", resp.Body)
 
-//	buf := new(bytes.Buffer)
-//	buf.ReadFrom(resp.Body)
-//	log.Printf("execInternalJSON buf == %s", string(buf.Bytes()))
+	//	buf := new(bytes.Buffer)
+	//	buf.ReadFrom(resp.Body)
+	//	log.Printf("execInternalJSON buf == %s", string(buf.Bytes()))
 
 	respToRet := &odataResponse{}
 	respToRet.body = resp.Body

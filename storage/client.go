@@ -9,7 +9,6 @@ import (
 	"fmt"
 	"io"
 	"io/ioutil"
-	"log"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -301,16 +300,21 @@ func (c Client) buildCanonicalizedString(verb string, headers map[string]string,
 	return canonicalizedString
 }
 
-func (c Client) execInternalXML(verb, url string, headers map[string]string, body io.Reader) (*storageResponse, error) {
+func (c Client) exec(verb, url string, headers map[string]string, body io.Reader) (*storageResponse, error) {
+	authHeader, err := c.getAuthorizationHeader(verb, url, headers)
+	if err != nil {
+		return nil, err
+	}
+	headers["Authorization"] = authHeader
+
+	if err != nil {
+		return nil, err
+	}
+
 	req, err := http.NewRequest(verb, url, body)
 	for k, v := range headers {
 		req.Header.Add(k, v)
 	}
-
-	for k := range req.Header {
-		log.Printf("header[\"%s\"] == %s", k, req.Header[k])
-	}
-
 	httpClient := http.Client{}
 	resp, err := httpClient.Do(req)
 	if err != nil {
@@ -331,7 +335,7 @@ func (c Client) execInternalXML(verb, url string, headers map[string]string, bod
 		} else {
 			// response contains storage service error object, unmarshal
 			storageErr, errIn := serviceErrFromXML(respBody, resp.StatusCode, resp.Header.Get("x-ms-request-id"))
-			if errIn != nil { // error unmarshaling the error response
+			if err != nil { // error unmarshaling the error response
 				err = errIn
 			}
 			err = storageErr
@@ -355,9 +359,9 @@ func (c Client) execInternalJSON(verb, url string, headers map[string]string, bo
 		req.Header.Add(k, v)
 	}
 
-	for k := range req.Header {
-		log.Printf("header[\"%s\"] == %s", k, req.Header[k])
-	}
+	//	for k := range req.Header {
+	//		log.Printf("headers[\"%s\"] = %s", k, req.Header[k])
+	//	}
 
 	httpClient := http.Client{}
 	resp, err := httpClient.Do(req)
@@ -365,12 +369,11 @@ func (c Client) execInternalJSON(verb, url string, headers map[string]string, bo
 		return nil, err
 	}
 
-	log.Printf("execInternalJSON.resp.Body == %s", resp.Body)
-	
-	buf := new(bytes.Buffer)
-	buf.ReadFrom(resp.Body)	
-	log.Printf("execInternalJSON buf == %s", string(buf.Bytes()))		
+	//	log.Printf("execInternalJSON.resp.Body == %s", resp.Body)
 
+	//	buf := new(bytes.Buffer)
+	//	buf.ReadFrom(resp.Body)
+	//	log.Printf("execInternalJSON buf == %s", string(buf.Bytes()))
 
 	respToRet := &odataResponse{}
 	respToRet.body = resp.Body
@@ -400,31 +403,17 @@ func (c Client) execInternalJSON(verb, url string, headers map[string]string, bo
 }
 
 func (c Client) execLite(verb, url string, headers map[string]string, body io.Reader) (*odataResponse, error) {
-	log.Printf("url == %s", url)
 	can, err := c.buildCanonicalizedResource(url)
-	log.Printf("buildCanonicalizedResource == %s", can)
-	
+
 	if err != nil {
 		return nil, err
 	}
 	strToSign := headers["x-ms-date"] + "\n" + can
 
-	//	log.Printf("strToSign %s == ", strToSign)
-
 	hmac := c.computeHmac256(strToSign)
 	headers["Authorization"] = fmt.Sprintf("SharedKeyLite %s:%s", c.accountName, hmac)
 
 	return c.execInternalJSON(verb, url, headers, body)
-}
-
-func (c Client) exec(verb, url string, headers map[string]string, body io.Reader) (*storageResponse, error) {
-	authHeader, err := c.getAuthorizationHeader(verb, url, headers)
-	if err != nil {
-		return nil, err
-	}
-	headers["Authorization"] = authHeader
-
-	return c.execInternalXML(verb, url, headers, body)
 }
 
 func readResponseBody(resp *http.Response) ([]byte, error) {

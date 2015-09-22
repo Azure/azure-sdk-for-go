@@ -168,7 +168,7 @@ func (s *StorageBlobSuite) TestContainerExists(c *chk.C) {
 	c.Assert(ok, chk.Equals, true)
 }
 
-func (s *StorageBlobSuite) TestCreateDeleteContainer(c *chk.C) {
+func (s *StorageBlobSuite) TestCreateContainerDeleteContainer(c *chk.C) {
 	cnt := randContainer()
 	cli := getBlobClient(c)
 	c.Assert(cli.CreateContainer(cnt, ContainerAccessTypePrivate), chk.IsNil)
@@ -178,6 +178,7 @@ func (s *StorageBlobSuite) TestCreateDeleteContainer(c *chk.C) {
 func (s *StorageBlobSuite) TestCreateContainerIfNotExists(c *chk.C) {
 	cnt := randContainer()
 	cli := getBlobClient(c)
+	defer cli.DeleteContainer(cnt)
 
 	// First create
 	ok, err := cli.CreateContainerIfNotExists(cnt, ContainerAccessTypePrivate)
@@ -187,7 +188,6 @@ func (s *StorageBlobSuite) TestCreateContainerIfNotExists(c *chk.C) {
 	// Second create, should not give errors
 	ok, err = cli.CreateContainerIfNotExists(cnt, ContainerAccessTypePrivate)
 	c.Assert(err, chk.IsNil)
-	defer cli.DeleteContainer(cnt)
 	c.Assert(ok, chk.Equals, false)
 }
 

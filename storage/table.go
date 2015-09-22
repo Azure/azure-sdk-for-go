@@ -1,6 +1,7 @@
 package storage
 
 import (
+	"encoding/xml"
 	"bytes"
 	"encoding/json"
 	"fmt"
@@ -115,15 +116,17 @@ func (c *TableServiceClient) InsertEntity(tableName string, partitionKey string,
 	uri := c.client.getEndpoint(tableServiceName, pathForTable(tableName), url.Values{})
 
 	headers := c.getStandardHeaders()
+	
+	headers["Prefer"] = "return-no-content"
 
 	buf := new(bytes.Buffer)
 
-	if err := json.NewEncoder(buf).Encode(entity); err != nil {
+	if err := xml.NewEncoder(buf).Encode(entity); err != nil {
 		return err
 	}
 
-	dec := make(map[string]interface{})
-	if err := json.NewDecoder(buf).Decode(&dec); err != nil {
+	dec := make([]interface{},0)
+	if err := xml.NewDecoder(buf).Decode(&dec); err != nil {
 		return err
 	}
 
@@ -133,7 +136,7 @@ func (c *TableServiceClient) InsertEntity(tableName string, partitionKey string,
 
 	buf.Reset()
 
-	if err := json.NewEncoder(buf).Encode(&dec); err != nil {
+	if err := xml.NewEncoder(buf).Encode(&dec); err != nil {
 		return err
 	}
 

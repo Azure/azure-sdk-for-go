@@ -7,6 +7,7 @@ import (
 	"log"
 	"net/http"
 	"net/url"
+	"reflect"
 )
 
 // QueueServiceClient contains operations for Microsoft Azure Table Storage
@@ -19,6 +20,8 @@ const (
 	tablesURIPath    = "/Tables"
 	partitionKeyNode = "PartitionKey"
 	rowKeyNode       = "RowKey"
+	tag              = "table"
+	tagIgnore        = "-"
 )
 
 type createTableRequest struct {
@@ -29,6 +32,17 @@ type queryTablesResponse struct {
 	TableName []struct {
 		TableName string `json:"TableName"`
 	} `json:"value"`
+}
+
+type TableEntry interface {
+	PartitionKey() string
+	RowKey() string
+	SetPartitionKey(string) error
+	SetRowKey(string) error
+}
+
+type getTableEntriesResponse struct {
+	Elements []map[string]interface{} `json:"value"`
 }
 
 func pathForTable(table string) string { return fmt.Sprintf("%s", table) }
@@ -108,8 +122,8 @@ func (c *TableServiceClient) CreateTable(tableName string) error {
 	}
 }
 
-func injectPartitionAndRowKeys(partitionKey string, rowKey string, entity interface{}, buf *bytes.Buffer) error {
-	if err := json.NewEncoder(buf).Encode(entity); err != nil {
+func injectPartitionAndRowKeys(entry TableEntry, buf *bytes.Buffer) error {
+	if err := json.NewEncoder(buf).Encode(entry); err != nil {
 		return err
 	}
 
@@ -119,8 +133,29 @@ func injectPartitionAndRowKeys(partitionKey string, rowKey string, entity interf
 	}
 
 	// Inject PartitionKey and RowKey
-	dec[partitionKeyNode] = partitionKey
-	dec[rowKeyNode] = rowKey
+	dec[partitionKeyNode] = entry.PartitionKey()
+	dec[rowKeyNode] = entry.RowKey()
+
+	// Remove tagged fields
+	// The tag is defined in the const section
+	// This is useful to avoid storing the partitionkey and rowkey twice.
+	numFields := reflect.ValueOf(entry).Elem().NumField()
+	for i := 0; i < numFields; i++ {
+		f := reflect.ValueOf(entry).Elem().Type().Field(i)
+
+		log.Printf("f.Name == %s, f.Tag == %s", f.Name, f.Tag)
+
+		if f.Tag.Get(tag) == tagIgnore {
+			log.Printf("\tIgnoring %s", f.Name)
+			// we must look for its JSON name in the dictionary
+			// as the user can rename it using a tag
+			jsonName := f.Name
+			if f.Tag.Get("json") != "" {
+				jsonName = f.Tag.Get("json")
+			}
+			delete(dec, jsonName)
+		}
+	}
 
 	buf.Reset()
 
@@ -131,13 +166,13 @@ func injectPartitionAndRowKeys(partitionKey string, rowKey string, entity interf
 	return nil
 }
 
-func (c *TableServiceClient) InsertEntity(tableName string, partitionKey string, rowKey string, entity interface{}) error {
+func (c *TableServiceClient) InsertEntry(tableName string, entry TableEntry) error {
 	uri := c.client.getEndpoint(tableServiceName, pathForTable(tableName), url.Values{})
 	headers := c.getStandardHeaders()
 
 	buf := new(bytes.Buffer)
 
-	if err := injectPartitionAndRowKeys(partitionKey, rowKey, entity, buf); err != nil {
+	if err := injectPartitionAndRowKeys(entry, buf); err != nil {
 		return err
 	}
 
@@ -159,15 +194,15 @@ func (c *TableServiceClient) InsertEntity(tableName string, partitionKey string,
 	}
 }
 
-func (c *TableServiceClient) InsertOrReplaceEntity(tableName string, partitionKey string, rowKey string, entity interface{}) error {
+func (c *TableServiceClient) InsertOrReplaceEntry(tableName string, entry TableEntry) error {
 	uri := c.client.getEndpoint(tableServiceName, pathForTable(tableName), url.Values{})
-	uri += fmt.Sprintf("(PartitionKey='%s',RowKey='%s')", url.QueryEscape(partitionKey), url.QueryEscape(rowKey))
+	uri += fmt.Sprintf("(PartitionKey='%s',RowKey='%s')", url.QueryEscape(entry.PartitionKey()), url.QueryEscape(entry.RowKey()))
 
 	headers := c.getStandardHeaders()
 
 	buf := new(bytes.Buffer)
 
-	if err := injectPartitionAndRowKeys(partitionKey, rowKey, entity, buf); err != nil {
+	if err := injectPartitionAndRowKeys(entry, buf); err != nil {
 		return err
 	}
 
@@ -187,4 +222,41 @@ func (c *TableServiceClient) InsertOrReplaceEntity(tableName string, partitionKe
 	} else {
 		return nil
 	}
+}
+
+func (c *TableServiceClient) GetTableEntries(tableName string, continuationNextTableName *string, entriesToPopolate *[]TableEntry) error {
+	uri := c.client.getEndpoint(tableServiceName, pathForTable(tableName), url.Values{})
+	uri += fmt.Sprintf("()")
+
+	headers := c.getStandardHeaders()
+	buf := new(bytes.Buffer)
+	headers["Content-Length"] = fmt.Sprintf("%d", buf.Len())
+	if continuationNextTableName != nil {
+		log.Printf("Setting continuationNextTableName to %s", continuationNextTableName)
+		headers["x-ms-continuation-NextTableName"] = *continuationNextTableName
+	}
+
+	resp, err := c.client.execLite("GET", uri, headers, buf)
+
+	if err != nil {
+		return err
+	}
+	defer resp.body.Close()
+
+	if err := checkRespCode(resp.statusCode, []int{http.StatusOK}); err != nil {
+		return err
+	}
+
+	var ret getTableEntriesResponse
+	json.NewDecoder(resp.body).Decode(&ret)
+
+	log.Printf("ret == %s", ret)
+
+	//	for _, elem := range ret.Elements {
+	//		*entriesToPopolate = append(*entriesToPopolate, TableEntry{PartitionKey:elem[partitionKeyNode].(string), RowKey:elem[rowKeyNode].(string)})
+	//	}
+
+	//	log.Printf("*entriesToPopolate == %s", *entriesToPopolate)
+
+	return nil
 }

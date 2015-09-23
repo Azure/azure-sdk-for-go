@@ -398,16 +398,25 @@ func (c Client) execInternalJSON(verb, url string, headers map[string]string, bo
 	return respToRet, nil
 }
 
-func (c Client) execLite(verb, url string, headers map[string]string, body io.Reader) (*odataResponse, error) {
+func (c Client) createSharedKeyLite(url string, headers map[string]string) (string, error) {
 	can, err := c.buildCanonicalizedResource(url)
 
 	if err != nil {
-		return nil, err
+		return "", err
 	}
 	strToSign := headers["x-ms-date"] + "\n" + can
 
 	hmac := c.computeHmac256(strToSign)
-	headers["Authorization"] = fmt.Sprintf("SharedKeyLite %s:%s", c.accountName, hmac)
+	return fmt.Sprintf("SharedKeyLite %s:%s", c.accountName, hmac), nil
+}
+
+func (c Client) execLite(verb, url string, headers map[string]string, body io.Reader) (*odataResponse, error) {
+	var err error
+	headers["Authorization"], err = c.createSharedKeyLite(url, headers)
+
+	if err != nil {
+		return nil, err
+	}
 
 	return c.execInternalJSON(verb, url, headers, body)
 }

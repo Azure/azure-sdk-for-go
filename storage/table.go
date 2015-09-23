@@ -166,6 +166,106 @@ func injectPartitionAndRowKeys(entry TableEntry, buf *bytes.Buffer) error {
 	return nil
 }
 
+func (c *TableServiceClient) GetTableEntries(tableName string, continuationNextTableName *string, retType reflect.Type) ([](*TableEntry), error) {
+	uri := c.client.getEndpoint(tableServiceName, pathForTable(tableName), url.Values{})
+	uri += fmt.Sprintf("()")
+
+	headers := c.getStandardHeaders()
+	buf := new(bytes.Buffer)
+	headers["Content-Length"] = fmt.Sprintf("%d", buf.Len())
+	if continuationNextTableName != nil {
+		log.Printf("Setting continuationNextTableName to %s", continuationNextTableName)
+		headers["x-ms-continuation-NextTableName"] = *continuationNextTableName
+	}
+
+	resp, err := c.client.execLite("GET", uri, headers, buf)
+
+	if err != nil {
+		return nil, err
+	}
+	defer resp.body.Close()
+
+	if err := checkRespCode(resp.statusCode, []int{http.StatusOK}); err != nil {
+		return nil, err
+	}
+
+	var ret getTableEntriesResponse
+	if err := json.NewDecoder(resp.body).Decode(&ret)	; err != nil {
+		return nil, err
+	}
+	
+	tEntries := make([]*TableEntry, len(ret.Elements))
+	
+	for i, entry := range ret.Elements {
+		//log.Printf("entry == %s", entry)
+	
+		buf.Reset()	
+		if err := json.NewEncoder(buf).Encode(entry); err != nil {
+			return nil, err
+		}	
+		//log.Printf("buf == %s", buf.Bytes())		
+		
+		dec := make(map[string]interface{})
+		if err := json.NewDecoder(buf).Decode(&dec); err != nil {
+			return nil, err
+		}	
+		
+		var  pKey, rKey string
+		// strip pk and rk
+		for key, val := range dec {
+			switch {
+				case key == partitionKeyNode:
+					pKey = val.(string)
+				case key == rowKeyNode:
+					rKey = val.(string)			
+			}
+		}
+				
+		delete(dec, partitionKeyNode)
+		delete(dec, rowKeyNode)
+					
+//		log.Printf("dec == %s", dec)
+		
+		buf.Reset()	
+		if err := json.NewEncoder(buf).Encode(dec); err != nil {
+			return nil, err
+		}		
+		
+		e := reflect.New(retType.Elem()).Interface().(TableEntry)
+		
+//		log.Printf("e == %s", e)	
+		
+//		log.Printf("buf mangled == %s", buf.Bytes())
+		
+		if err := json.NewDecoder(buf).Decode(&e); err != nil {
+			return nil, err
+		}	
+
+		// Reset PartitionKey and RowKey		
+		e.SetPartitionKey(pKey)
+		e.SetRowKey(rKey)	
+		
+		// store the pointer
+		tEntries[i] = &e
+				
+//		log.Printf("e == %s", e)	
+		
+//		log.Printf("")
+	}
+	
+	
+
+	//	for _, elem := range ret.Elements {
+	//		*entriesToPopolate = append(*entriesToPopolate, TableEntry{PartitionKey:elem[partitionKeyNode].(string), RowKey:elem[rowKeyNode].(string)})
+	//	}
+
+	//	log.Printf("*entriesToPopolate == %s", *entriesToPopolate)
+
+	return tEntries, nil
+}
+
+
+
 func (c *TableServiceClient) InsertEntry(tableName string, entry TableEntry) error {
 	uri := c.client.getEndpoint(tableServiceName, pathForTable(tableName), url.Values{})
 	headers := c.getStandardHeaders()
@@ -222,41 +322,4 @@ func (c *TableServiceClient) InsertOrReplaceEntry(tableName string, entry TableE
 	} else {
 		return nil
 	}
-}
-
-func (c *TableServiceClient) GetTableEntries(tableName string, continuationNextTableName *string, entriesToPopolate *[]TableEntry) error {
-	uri := c.client.getEndpoint(tableServiceName, pathForTable(tableName), url.Values{})
-	uri += fmt.Sprintf("()")
-
-	headers := c.getStandardHeaders()
-	buf := new(bytes.Buffer)
-	headers["Content-Length"] = fmt.Sprintf("%d", buf.Len())
-	if continuationNextTableName != nil {
-		log.Printf("Setting continuationNextTableName to %s", continuationNextTableName)
-		headers["x-ms-continuation-NextTableName"] = *continuationNextTableName
-	}
-
-	resp, err := c.client.execLite("GET", uri, headers, buf)
-
-	if err != nil {
-		return err
-	}
-	defer resp.body.Close()
-
-	if err := checkRespCode(resp.statusCode, []int{http.StatusOK}); err != nil {
-		return err
-	}
-
-	var ret getTableEntriesResponse
-	json.NewDecoder(resp.body).Decode(&ret)
-
-	log.Printf("ret == %s", ret)
-
-	//	for _, elem := range ret.Elements {
-	//		*entriesToPopolate = append(*entriesToPopolate, TableEntry{PartitionKey:elem[partitionKeyNode].(string), RowKey:elem[rowKeyNode].(string)})
-	//	}
-
-	//	log.Printf("*entriesToPopolate == %s", *entriesToPopolate)
-
-	return nil
 }

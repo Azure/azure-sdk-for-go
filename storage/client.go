@@ -180,6 +180,11 @@ func (c Client) GetQueueService() QueueServiceClient {
 	return QueueServiceClient{c}
 }
 
+// GetTableService returns a TableServiceClient which can operate on the table
+// service of the storage account.
+func (c Client) GetTableService() TableServiceClient {
+	return TableServiceClient{c}
+}
 
 // GetFileService returns a FileServiceClient which can operate on the file
 // service of the storage account.
@@ -417,7 +422,6 @@ func (c Client) createSharedKeyLite(url string, headers map[string]string) (stri
 func (c Client) execLite(verb, url string, headers map[string]string, body io.Reader) (*odataResponse, error) {
 	var err error
 	headers["Authorization"], err = c.createSharedKeyLite(url, headers)
-
 	if err != nil {
 		return nil, err
 	}

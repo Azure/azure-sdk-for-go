@@ -9,6 +9,7 @@ import (
 	"fmt"
 	"io"
 	"io/ioutil"
+	"log"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -256,6 +257,7 @@ func (c Client) buildCanonicalizedResource(uri string) (string, error) {
 	}
 
 	cr := "/" + c.accountName
+
 	if len(u.Path) > 0 {
 		cr += u.Path
 	}
@@ -410,10 +412,14 @@ func (c Client) execInternalJSON(verb, url string, headers map[string]string, bo
 func (c Client) createSharedKeyLite(url string, headers map[string]string) (string, error) {
 	can, err := c.buildCanonicalizedResource(url)
 
+	log.Printf("buildCanonicalizedResource == %s", can)
+
 	if err != nil {
 		return "", err
 	}
 	strToSign := headers["x-ms-date"] + "\n" + can
+
+	log.Printf("strToSign == %s", strToSign)
 
 	hmac := c.computeHmac256(strToSign)
 	return fmt.Sprintf("SharedKeyLite %s:%s", c.accountName, hmac), nil

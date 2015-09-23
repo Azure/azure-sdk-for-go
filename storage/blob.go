@@ -574,11 +574,6 @@ func (b BlobStorageClient) PutBlock(container, name, blockID string, chunk []byt
 //
 // See https://msdn.microsoft.com/en-us/library/azure/dd135726.aspx
 func (b BlobStorageClient) PutBlockWithLength(container, name, blockID string, size uint64, blob io.Reader) error {
-
-	// mindflavor: we should base64 encode the blockID in the library IMHO.
-	//The client should not need to do this itself: without it Azure will answer with a puzzling http code 400.
-	blockID = base64.StdEncoding.EncodeToString([]byte(blockID))
-
 	uri := b.client.getEndpoint(blobServiceName, pathForBlob(container, name), url.Values{"comp": {"block"}, "blockid": {blockID}})
 	headers := b.client.getStandardHeaders()
 	headers["x-ms-blob-type"] = string(BlobTypeBlock)

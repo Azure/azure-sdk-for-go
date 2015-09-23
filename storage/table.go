@@ -142,7 +142,7 @@ func injectPartitionAndRowKeys(entry TableEntry, buf *bytes.Buffer) error {
 
 	// Remove tagged fields
 	// The tag is defined in the const section
-	// This is useful to avoid storing the partitionkey and rowkey twice.
+	// This is useful to avoid storing the PartitionKey and RowKey twice.
 	numFields := reflect.ValueOf(entry).Elem().NumField()
 	for i := 0; i < numFields; i++ {
 		f := reflect.ValueOf(entry).Elem().Type().Field(i)

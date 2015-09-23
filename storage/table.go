@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+	"io"
 	"log"
 	"net/http"
 	"net/url"
@@ -17,11 +18,12 @@ type TableServiceClient struct {
 }
 
 const (
-	tablesURIPath    = "/Tables"
-	partitionKeyNode = "PartitionKey"
-	rowKeyNode       = "RowKey"
-	tag              = "table"
-	tagIgnore        = "-"
+	tablesURIPath           = "/Tables"
+	partitionKeyNode        = "PartitionKey"
+	rowKeyNode              = "RowKey"
+	tag                     = "table"
+	tagIgnore               = "-"
+	continuationTokenHeader = "x-ms-continuation-NextTableName"
 )
 
 type createTableRequest struct {
@@ -44,6 +46,8 @@ type TableEntry interface {
 type getTableEntriesResponse struct {
 	Elements []map[string]interface{} `json:"value"`
 }
+
+type ContinuationToken string
 
 func pathForTable(table string) string { return fmt.Sprintf("%s", table) }
 
@@ -166,94 +170,72 @@ func injectPartitionAndRowKeys(entry TableEntry, buf *bytes.Buffer) error {
 	return nil
 }
 
-func (c *TableServiceClient) GetTableEntries(tableName string, continuationNextTableName *string, retType reflect.Type) ([](*TableEntry), error) {
-	uri := c.client.getEndpoint(tableServiceName, pathForTable(tableName), url.Values{})
-	uri += fmt.Sprintf("()")
-
-	headers := c.getStandardHeaders()
+func deserializeEntry(retType reflect.Type, reader io.Reader) ([](*TableEntry), error) {
 	buf := new(bytes.Buffer)
-	headers["Content-Length"] = fmt.Sprintf("%d", buf.Len())
-	if continuationNextTableName != nil {
-		log.Printf("Setting continuationNextTableName to %s", continuationNextTableName)
-		headers["x-ms-continuation-NextTableName"] = *continuationNextTableName
-	}
-
-	resp, err := c.client.execLite("GET", uri, headers, buf)
-
-	if err != nil {
-		return nil, err
-	}
-	defer resp.body.Close()
-
-	if err := checkRespCode(resp.statusCode, []int{http.StatusOK}); err != nil {
-		return nil, err
-	}
 
 	var ret getTableEntriesResponse
-	if err := json.NewDecoder(resp.body).Decode(&ret)	; err != nil {
+	if err := json.NewDecoder(reader).Decode(&ret); err != nil {
 		return nil, err
 	}
-	
+
 	tEntries := make([]*TableEntry, len(ret.Elements))
-	
+
 	for i, entry := range ret.Elements {
 		//log.Printf("entry == %s", entry)
-	
-		buf.Reset()	
+
+		buf.Reset()
 		if err := json.NewEncoder(buf).Encode(entry); err != nil {
 			return nil, err
-		}	
-		//log.Printf("buf == %s", buf.Bytes())		
-		
+		}
+		//log.Printf("buf == %s", buf.Bytes())
+
 		dec := make(map[string]interface{})
 		if err := json.NewDecoder(buf).Decode(&dec); err != nil {
 			return nil, err
-		}	
-		
-		var  pKey, rKey string
+		}
+
+		var pKey, rKey string
 		// strip pk and rk
 		for key, val := range dec {
 			switch {
-				case key == partitionKeyNode:
-					pKey = val.(string)
-				case key == rowKeyNode:
-					rKey = val.(string)			
+			case key == partitionKeyNode:
+				pKey = val.(string)
+			case key == rowKeyNode:
+				rKey = val.(string)
 			}
 		}
-				
+
 		delete(dec, partitionKeyNode)
 		delete(dec, rowKeyNode)
-					
-//		log.Printf("dec == %s", dec)
-		
-		buf.Reset()	
+
+		//		log.Printf("dec == %s", dec)
+
+		buf.Reset()
 		if err := json.NewEncoder(buf).Encode(dec); err != nil {
 			return nil, err
-		}		
-		
+		}
+
 		e := reflect.New(retType.Elem()).Interface().(TableEntry)
-		
-//		log.Printf("e == %s", e)	
-		
-//		log.Printf("buf mangled == %s", buf.Bytes())
-		
+
+		//		log.Printf("e == %s", e)
+
+		//		log.Printf("buf mangled == %s", buf.Bytes())
+
 		if err := json.NewDecoder(buf).Decode(&e); err != nil {
 			return nil, err
-		}	
+		}
 
-		// Reset PartitionKey and RowKey		
+		// Reset PartitionKey and RowKey
 		e.SetPartitionKey(pKey)
-		e.SetRowKey(rKey)	
-		
+		e.SetRowKey(rKey)
+
 		// store the pointer
 		tEntries[i] = &e
-				
-//		log.Printf("e == %s", e)	
-		
-//		log.Printf("")
+
+		//		log.Printf("e == %s", e)
+
+		//		log.Printf("")
 	}
-	
-	
 
 	//	for _, elem := range ret.Elements {
 	//		*entriesToPopolate = append(*entriesToPopolate, TableEntry{PartitionKey:elem[partitionKeyNode].(string), RowKey:elem[rowKeyNode].(string)})
@@ -264,7 +246,44 @@ func (c *TableServiceClient) GetTableEntries(tableName string, continuationNextT
 	return tEntries, nil
 }
 
+func (c *TableServiceClient) GetTableEntries(tableName string, previousContToken ContinuationToken, retType reflect.Type) ([](*TableEntry), ContinuationToken, error) {
+	buf := new(bytes.Buffer)
 
+	uri := c.client.getEndpoint(tableServiceName, pathForTable(tableName), url.Values{})
+	uri += fmt.Sprintf("()")
+
+	log.Printf("uri == %s ", uri)
+
+	headers := c.getStandardHeaders()
+	headers["Content-Length"] = fmt.Sprintf("%d", buf.Len())
+	if previousContToken != "" {
+		log.Printf("Setting continuationNextTableName to %s", string(previousContToken))
+		headers["x-ms-continuation-NextTableName"] = string(previousContToken)
+	}
+
+	resp, err := c.client.execLite("GET", uri, headers, buf)
+
+	var contToken ContinuationToken
+	tcontToken := resp.headers[continuationTokenHeader]
+
+	log.Printf("tcontToken == %s", tcontToken)
+
+	if err != nil {
+		return nil, contToken, err
+	}
+	defer resp.body.Close()
+
+	if err := checkRespCode(resp.statusCode, []int{http.StatusOK}); err != nil {
+		return nil, contToken, err
+	}
+
+	retEntries, err := deserializeEntry(retType, resp.body)
+	if err != nil {
+		return nil, contToken, err
+	}
+
+	return retEntries, contToken, nil
+}
 
 func (c *TableServiceClient) InsertEntry(tableName string, entry TableEntry) error {
 	uri := c.client.getEndpoint(tableServiceName, pathForTable(tableName), url.Values{})

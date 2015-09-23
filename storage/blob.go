@@ -2,7 +2,6 @@ package storage
 
 import (
 	"bytes"
-	"encoding/base64"
 	"encoding/xml"
 	"errors"
 	"fmt"
@@ -591,12 +590,6 @@ func (b BlobStorageClient) PutBlockWithLength(container, name, blockID string, s
 //
 // See https://msdn.microsoft.com/en-us/library/azure/dd179467.aspx
 func (b BlobStorageClient) PutBlockList(container, name string, blocks []Block) error {
-	// mindflavor: we should base64 encode the blockID in the library IMHO.
-	// The client should not need to do this itself: without it Azure will answer with a puzzling http code 400: InvalidXmlDocument, ErrorMessage=XML specified is not syntactically valid.
-	for i, _ := range blocks {
-		blocks[i].ID = base64.StdEncoding.EncodeToString([]byte(blocks[i].ID))
-	}
-
 	blockListXML := prepareBlockListRequest(blocks)
 
 	uri := b.client.getEndpoint(blobServiceName, pathForBlob(container, name), url.Values{"comp": {"blocklist"}})

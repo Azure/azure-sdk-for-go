@@ -30,6 +30,7 @@ const (
 	blobServiceName  = "blob"
 	tableServiceName = "table"
 	queueServiceName = "queue"
+	fileServiceName  = "file"
 )
 
 // Client is the object that needs to be constructed to perform
@@ -179,8 +180,11 @@ func (c Client) GetQueueService() QueueServiceClient {
 	return QueueServiceClient{c}
 }
 
-func (c Client) GetTableService() TableServiceClient {
-	return TableServiceClient{c}
+
+// GetFileService returns a FileServiceClient which can operate on the file
+// service of the storage account.
+func (c Client) GetFileService() FileServiceClient {
+	return FileServiceClient{c}
 }
 
 func (c Client) createAuthorizationHeader(canonicalizedString string) string {

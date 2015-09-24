@@ -163,9 +163,9 @@ func (c *TableServiceClient) DeleteEntityWithoutCheck(table AzureTable, entity T
 func (c *TableServiceClient) DeleteEntity(table AzureTable, entity TableEntity, ifMatch string) error {
 	uri := c.client.getEndpoint(tableServiceName, pathForTable(table), url.Values{})
 	uri += fmt.Sprintf("(PartitionKey='%s',RowKey='%s')", url.QueryEscape(entity.PartitionKey()), url.QueryEscape(entity.RowKey()))
-	
+
 	headers := c.getStandardHeaders()
-	
+
 	headers["Content-Length"] = "0"
 	headers["If-Match"] = ifMatch
 

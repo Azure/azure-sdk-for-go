@@ -228,14 +228,14 @@ func (s *StorageBlobSuite) Test_InsertAndDeleteEntities(c *chk.C) {
 	c.Assert(len(entries), chk.Equals, 1)
 
 	c.Assert(ce, chk.DeepEquals, *entries[0])
-	
+
 	c.Assert(cli.DeleteEntityWithoutCheck(tn, *entries[0]), chk.IsNil)
-	
+
 	entries, _, err = cli.QueryTableEntities(tn, nil, reflect.TypeOf(ce), 10, "")
 	c.Assert(err, chk.IsNil)
 
-	// only 1 entry must be present	
-	c.Assert(len(entries), chk.Equals, 1)	
+	// only 1 entry must be present
+	c.Assert(len(entries), chk.Equals, 1)
 }
 
 func randTable() string {

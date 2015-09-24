@@ -48,8 +48,6 @@ func (c *TableServiceClient) QueryTableEntities(tableName AzureTable, previousCo
 		return nil, nil, errors.New(fmt.Sprintf("Top accepts at maximum %d elements. Requested %d instead.", maxTopParameter, top))
 	}
 
-	buf := new(bytes.Buffer)
-
 	uri := c.client.getEndpoint(tableServiceName, pathForTable(tableName), url.Values{})
 	uri += fmt.Sprintf("()?$top=%d", top)
 	if query != "" {
@@ -62,9 +60,9 @@ func (c *TableServiceClient) QueryTableEntities(tableName AzureTable, previousCo
 
 	headers := c.getStandardHeaders()
 
-	headers["Content-Length"] = fmt.Sprintf("%d", buf.Len())
+	headers["Content-Length"] = "0"
 
-	resp, err := c.client.execTable("GET", uri, headers, buf)
+	resp, err := c.client.execTable("GET", uri, headers, nil)
 
 	contToken := extractContinuationTokenFromHeaders(resp.headers)
 

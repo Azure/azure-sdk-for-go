@@ -238,6 +238,39 @@ func (s *StorageBlobSuite) Test_InsertAndDeleteEntities(c *chk.C) {
 	c.Assert(len(entries), chk.Equals, 1)
 }
 
+func (s *StorageBlobSuite) Test_ContinuationToken(c *chk.C) {
+	cli := getTableClient(c)
+
+	tn := AzureTable(randTable())
+
+	err := cli.CreateTable(tn)
+	c.Assert(err, chk.IsNil)
+	defer cli.DeleteTable(tn)
+	
+	var ce *CustomEntity
+	for i:=0; i<5; i++ {
+		ce = &CustomEntity{Name: "Test", Surname: "Test2", SomeDate: time.Now(), Number: i, PKey: "pkey", RKey: fmt.Sprintf("r%d", i)}
+		c.Assert(cli.InsertOrReplaceEntity(tn, ce), chk.IsNil)
+	}
+	
+	// retrieve using top = 2. Should return 2 entries, 2 entries and finally 
+	// 1 entry
+	entries, contToken, err := cli.QueryTableEntities(tn, nil, reflect.TypeOf(ce), 2, "")
+	c.Assert(err, chk.IsNil)
+	c.Assert(len(entries), chk.Equals, 2)	
+	c.Assert(contToken, chk.NotNil)	
+	
+	entries, contToken, err = cli.QueryTableEntities(tn, contToken, reflect.TypeOf(ce), 2, "")
+	c.Assert(err, chk.IsNil)
+	c.Assert(len(entries), chk.Equals, 2)	
+	c.Assert(contToken, chk.NotNil)		
+
+	entries, contToken, err = cli.QueryTableEntities(tn, contToken, reflect.TypeOf(ce), 2, "")
+	c.Assert(err, chk.IsNil)
+	c.Assert(len(entries), chk.Equals, 1)	
+	c.Assert(contToken, chk.IsNil)	
+}
+
 func randTable() string {
 	const alphanum = "abcdefghijklmnopqrstuvwxyz"
 	var bytes = make([]byte, 32)

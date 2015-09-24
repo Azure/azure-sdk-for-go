@@ -1,14 +1,45 @@
 package storage
 
 import (
+	"crypto/rand"
 	"encoding/base64"
+	"fmt"
 	chk "gopkg.in/check.v1"
+	"reflect"
+	"time"
 )
 
 type TableClient struct{}
 
 func getTableClient(c *chk.C) TableServiceClient {
 	return getBasicClient(c).GetTableService()
+}
+
+type CustomEntity struct {
+	Name     string `json:"name"`
+	Surname  string `json:"surname"`
+	SomeDate time.Time
+	Number   int
+	PKey     string `json:"pk" table:"-"`
+	RKey     string `json:"rk" table:"-"`
+}
+
+func (c *CustomEntity) PartitionKey() string {
+	return c.PKey
+}
+
+func (c *CustomEntity) RowKey() string {
+	return c.RKey
+}
+
+func (c *CustomEntity) SetPartitionKey(s string) error {
+	c.PKey = s
+	return nil
+}
+
+func (c *CustomEntity) SetRowKey(s string) error {
+	c.RKey = s
+	return nil
 }
 
 func (s *StorageBlobSuite) Test_SharedKeyLite(c *chk.C) {
@@ -43,7 +74,7 @@ func (s *StorageBlobSuite) Test_SharedKeyLite(c *chk.C) {
 	}
 	url := "https://mindgotest.table.core.windows.net/tquery()"
 
-	ret, err := cli.client.createSharedKeyLite(url, headers)
+	ret, err := cli.client.CreateSharedKeyLiteTable(url, headers)
 	if err != nil {
 		c.Fail()
 	}
@@ -51,10 +82,110 @@ func (s *StorageBlobSuite) Test_SharedKeyLite(c *chk.C) {
 	c.Assert(ret, chk.Equals, "SharedKeyLite mindgotest:+32DTgsPUgXPo/O7RYaTs0DllA6FTXMj3uK4Qst8y/E=")
 }
 
-func (s *StorageBlobSuite) Test_CreateTable(c *chk.C) {
+func (s *StorageBlobSuite) Test_CreateAndDeleteTable(c *chk.C) {
 	cli := getTableClient(c)
 
-	err := cli.CreateTable("longtimeagoinagalaxyfarfaraway")
+	tn := AzureTable(randTable())
 
+	err := cli.CreateTable(tn)
 	c.Assert(err, chk.IsNil)
+
+	err = cli.DeleteTable(tn)
+	c.Assert(err, chk.IsNil)
+}
+
+func (s *StorageBlobSuite) Test_InsertEntries(c *chk.C) {
+	cli := getTableClient(c)
+
+	tn := AzureTable(randTable())
+
+	err := cli.CreateTable(tn)
+	c.Assert(err, chk.IsNil)
+	defer cli.DeleteTable(tn)
+
+	ce := &CustomEntity{Name: "Luke", Surname: "Skywalker", SomeDate: time.Now(), Number: 1543, PKey: "pkey"}
+
+	for i := 0; i < 12; i++ {
+		ce.SetRowKey(fmt.Sprintf("%d", i))
+
+		err = cli.InsertEntry(tn, ce)
+		c.Assert(err, chk.IsNil)
+	}
+}
+
+func (s *StorageBlobSuite) Test_InsertOrReplace(c *chk.C) {
+	cli := getTableClient(c)
+
+	tn := AzureTable(randTable())
+
+	err := cli.CreateTable(tn)
+	c.Assert(err, chk.IsNil)
+	defer cli.DeleteTable(tn)
+
+	ce := &CustomEntity{Name: "Darth", Surname: "Skywalker", SomeDate: time.Now(), Number: 60, PKey: "pkey", RKey: "5"}
+
+	err = cli.InsertOrReplaceEntry(tn, ce)
+	c.Assert(err, chk.IsNil)
+
+	ce.Number = 1400
+}
+
+func (s *StorageBlobSuite) Test_InsertAndGet(c *chk.C) {
+	cli := getTableClient(c)
+
+	tn := AzureTable(randTable())
+
+	err := cli.CreateTable(tn)
+	c.Assert(err, chk.IsNil)
+	defer cli.DeleteTable(tn)
+
+	ce := &CustomEntity{Name: "Darth", Surname: "Skywalker", SomeDate: time.Now(), Number: 60, PKey: "pkey", RKey: "100"}
+	c.Assert(cli.InsertOrReplaceEntry(tn, ce), chk.IsNil)
+
+	ce.SetRowKey("200")
+	c.Assert(cli.InsertOrReplaceEntry(tn, ce), chk.IsNil)
+
+	entries, _, err := cli.QueryTableEntries(tn, nil, reflect.TypeOf(ce), 10, "")
+	c.Assert(err, chk.IsNil)
+
+	c.Assert(len(entries), chk.Equals, 2)
+
+	c.Assert(ce.RowKey(), chk.Equals, (*entries[1]).RowKey())
+
+	c.Assert(ce, chk.DeepEquals, *entries[1])
+}
+
+func (s *StorageBlobSuite) Test_InsertAndQuery(c *chk.C) {
+	cli := getTableClient(c)
+
+	tn := AzureTable(randTable())
+
+	err := cli.CreateTable(tn)
+	c.Assert(err, chk.IsNil)
+	defer cli.DeleteTable(tn)
+
+	ce := &CustomEntity{Name: "Darth", Surname: "Skywalker", SomeDate: time.Now(), Number: 60, PKey: "pkey", RKey: "100"}
+	c.Assert(cli.InsertOrReplaceEntry(tn, ce), chk.IsNil)
+
+	ce.SetRowKey("200")
+	c.Assert(cli.InsertOrReplaceEntry(tn, ce), chk.IsNil)
+
+	entries, _, err := cli.QueryTableEntries(tn, nil, reflect.TypeOf(ce), 10, "RowKey eq '200'")
+	c.Assert(err, chk.IsNil)
+
+	c.Assert(len(entries), chk.Equals, 1)
+
+	c.Assert(ce.RowKey(), chk.Equals, (*entries[0]).RowKey())
+
+	c.Assert(ce, chk.DeepEquals, *entries[0])
+}
+
+func randTable() string {
+	const alphanum = "abcdefghijklmnopqrstuvwxyz"
+	var bytes = make([]byte, 32)
+	rand.Read(bytes)
+	for i, b := range bytes {
+		bytes[i] = alphanum[b%byte(len(alphanum))]
+	}
+	return string(bytes)
 }

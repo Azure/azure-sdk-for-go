@@ -9,7 +9,6 @@ import (
 	"fmt"
 	"io"
 	"io/ioutil"
-	"log"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -249,6 +248,22 @@ func (c Client) buildCanonicalizedHeader(headers map[string]string) string {
 	return ch
 }
 
+func (c Client) buildCanonicalizedResourceTable(uri string) (string, error) {
+	errMsg := "buildCanonicalizedResourceTable error: %s"
+	u, err := url.Parse(uri)
+	if err != nil {
+		return "", fmt.Errorf(errMsg, err.Error())
+	}
+	
+	cr := "/" + c.accountName
+
+	if len(u.Path) > 0 {		
+		cr += u.Path
+	}
+	
+	return cr, nil
+}
+
 func (c Client) buildCanonicalizedResource(uri string) (string, error) {
 	errMsg := "buildCanonicalizedResource error: %s"
 	u, err := url.Parse(uri)
@@ -258,7 +273,7 @@ func (c Client) buildCanonicalizedResource(uri string) (string, error) {
 
 	cr := "/" + c.accountName
 
-	if len(u.Path) > 0 {
+	if len(u.Path) > 0 {		
 		cr += u.Path
 	}
 
@@ -288,7 +303,16 @@ func (c Client) buildCanonicalizedResource(uri string) (string, error) {
 			}
 		}
 	}
+		
 	return cr, nil
+}
+
+func deDollarKey(key string) string {
+	if key[0] == '$' {
+		key = key[1:]
+	}
+	
+	return key
 }
 
 func (c Client) buildCanonicalizedString(verb string, headers map[string]string, canonicalizedResource string) string {
@@ -331,6 +355,16 @@ func (c Client) exec(verb, url string, headers map[string]string, body io.Reader
 	if err != nil {
 		return nil, err
 	}
+	
+//	/* DEBUG */
+//	log.Printf("in exec::after httpClient.Do(%s)", req)
+
+//	log.Printf("exec.resp.Body == %s", resp.Body)
+
+//	buf := new(bytes.Buffer)
+//	buf.ReadFrom(resp.Body)
+//	log.Printf("exec buf == %s", string(buf.Bytes()))
+//	/* DEBUG end */
 
 	statusCode := resp.StatusCode
 	if statusCode >= 400 && statusCode <= 505 {
@@ -376,11 +410,15 @@ func (c Client) execInternalJSON(verb, url string, headers map[string]string, bo
 		return nil, err
 	}
 
-	//	log.Printf("execInternalJSON.resp.Body == %s", resp.Body)
+//	/* DEBUG */
+//	log.Printf("in execInternalJSON::after httpClient.Do(%s)", req)
 
-	//	buf := new(bytes.Buffer)
-	//	buf.ReadFrom(resp.Body)
-	//	log.Printf("execInternalJSON buf == %s", string(buf.Bytes()))
+//	log.Printf("execInternalJSON.resp.Body == %s", resp.Body)
+
+//	buf := new(bytes.Buffer)
+//	buf.ReadFrom(resp.Body)
+//	log.Printf("execInternalJSON buf == %s", string(buf.Bytes()))
+//	/* DEBUG end */
 
 	respToRet := &odataResponse{}
 	respToRet.body = resp.Body
@@ -409,25 +447,21 @@ func (c Client) execInternalJSON(verb, url string, headers map[string]string, bo
 	return respToRet, nil
 }
 
-func (c Client) createSharedKeyLite(url string, headers map[string]string) (string, error) {
-	can, err := c.buildCanonicalizedResource(url)
-
-	log.Printf("buildCanonicalizedResource == %s", can)
+func (c Client) CreateSharedKeyLiteTable(url string, headers map[string]string) (string, error) {
+	can, err := c.buildCanonicalizedResourceTable(url)
 
 	if err != nil {
 		return "", err
 	}
 	strToSign := headers["x-ms-date"] + "\n" + can
 
-	log.Printf("strToSign == %s", strToSign)
-
 	hmac := c.computeHmac256(strToSign)
 	return fmt.Sprintf("SharedKeyLite %s:%s", c.accountName, hmac), nil
 }
 
-func (c Client) execLite(verb, url string, headers map[string]string, body io.Reader) (*odataResponse, error) {
+func (c Client) execTable(verb, url string, headers map[string]string, body io.Reader) (*odataResponse, error) {
 	var err error
-	headers["Authorization"], err = c.createSharedKeyLite(url, headers)
+	headers["Authorization"], err = c.CreateSharedKeyLiteTable(url, headers)
 	if err != nil {
 		return nil, err
 	}

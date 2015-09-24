@@ -24,6 +24,11 @@ type CustomEntity struct {
 	RKey     string `json:"rk" table:"-"`
 }
 
+type CustomEntityExtended struct {
+	*CustomEntity
+	ExtraField string
+}
+
 func (c *CustomEntity) PartitionKey() string {
 	return c.PKey
 }
@@ -127,7 +132,28 @@ func (s *StorageBlobSuite) Test_InsertOrReplace(c *chk.C) {
 	err = cli.InsertOrReplaceEntry(tn, ce)
 	c.Assert(err, chk.IsNil)
 
-	ce.Number = 1400
+	cextra := &CustomEntityExtended{&CustomEntity{PKey: "pkey", RKey: "5"}, "extra"}
+	err = cli.InsertOrReplaceEntry(tn, cextra)
+	c.Assert(err, chk.IsNil)
+}
+
+func (s *StorageBlobSuite) Test_InsertOrMerge(c *chk.C) {
+	cli := getTableClient(c)
+
+	tn := AzureTable(randTable())
+
+	err := cli.CreateTable(tn)
+	c.Assert(err, chk.IsNil)
+	defer cli.DeleteTable(tn)
+
+	ce := &CustomEntity{Name: "Darth", Surname: "Skywalker", SomeDate: time.Now(), Number: 60, PKey: "pkey", RKey: "5"}
+
+	err = cli.InsertOrMergeEntry(tn, ce)
+	c.Assert(err, chk.IsNil)
+
+	cextra := &CustomEntityExtended{&CustomEntity{PKey: "pkey", RKey: "5"}, "extra"}
+	err = cli.InsertOrReplaceEntry(tn, cextra)
+	c.Assert(err, chk.IsNil)
 }
 
 func (s *StorageBlobSuite) Test_InsertAndGet(c *chk.C) {

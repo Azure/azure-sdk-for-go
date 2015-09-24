@@ -187,13 +187,6 @@ func (c *TableServiceClient) QueryTableEntries(tableName AzureTable, previousCon
 	return retEntries, contToken, nil
 }
 
-func extractContinuationTokenFromHeaders(headers map[string][]string) *ContinuationToken {
-	if len(headers[continuationTokenPartitionKeyHeader]) > 0 {
-		return &ContinuationToken{headers[continuationTokenPartitionKeyHeader][0], headers[continuationTokenRowHeader][0]}
-	}
-	return nil
-}
-
 func (c *TableServiceClient) InsertEntry(tableName AzureTable, entry TableEntry) error {
 	uri := c.client.getEndpoint(tableServiceName, pathForTable(tableName), url.Values{})
 	headers := c.getStandardHeaders()
@@ -308,4 +301,11 @@ func (c *TableServiceClient) insertOrReplaceOrMergeEntry(table AzureTable, entry
 	} else {
 		return nil
 	}
+}
+
+func extractContinuationTokenFromHeaders(headers map[string][]string) *ContinuationToken {
+	if len(headers[continuationTokenPartitionKeyHeader]) > 0 {
+		return &ContinuationToken{headers[continuationTokenPartitionKeyHeader][0], headers[continuationTokenRowHeader][0]}
+	}
+	return nil
 }

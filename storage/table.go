@@ -102,10 +102,9 @@ func (c *TableServiceClient) DeleteTable(table AzureTable) error {
 
 	headers := c.getStandardHeaders()
 
-	buf := new(bytes.Buffer)
-	headers["Content-Length"] = fmt.Sprintf("%d", buf.Len())
+	headers["Content-Length"] = "0"
 
-	resp, err := c.client.execTable("DELETE", uri, headers, buf)
+	resp, err := c.client.execTable("DELETE", uri, headers, nil)
 
 	if err != nil {
 		return err

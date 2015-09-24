@@ -99,7 +99,7 @@ func (s *StorageBlobSuite) Test_CreateAndDeleteTable(c *chk.C) {
 	c.Assert(err, chk.IsNil)
 }
 
-func (s *StorageBlobSuite) Test_InsertEntries(c *chk.C) {
+func (s *StorageBlobSuite) Test_InsertEntities(c *chk.C) {
 	cli := getTableClient(c)
 
 	tn := AzureTable(randTable())
@@ -113,12 +113,12 @@ func (s *StorageBlobSuite) Test_InsertEntries(c *chk.C) {
 	for i := 0; i < 12; i++ {
 		ce.SetRowKey(fmt.Sprintf("%d", i))
 
-		err = cli.InsertEntry(tn, ce)
+		err = cli.InsertEntity(tn, ce)
 		c.Assert(err, chk.IsNil)
 	}
 }
 
-func (s *StorageBlobSuite) Test_InsertOrReplace(c *chk.C) {
+func (s *StorageBlobSuite) Test_InsertOrReplaceEntities(c *chk.C) {
 	cli := getTableClient(c)
 
 	tn := AzureTable(randTable())
@@ -129,15 +129,15 @@ func (s *StorageBlobSuite) Test_InsertOrReplace(c *chk.C) {
 
 	ce := &CustomEntity{Name: "Darth", Surname: "Skywalker", SomeDate: time.Now(), Number: 60, PKey: "pkey", RKey: "5"}
 
-	err = cli.InsertOrReplaceEntry(tn, ce)
+	err = cli.InsertOrReplaceEntity(tn, ce)
 	c.Assert(err, chk.IsNil)
 
 	cextra := &CustomEntityExtended{&CustomEntity{PKey: "pkey", RKey: "5"}, "extra"}
-	err = cli.InsertOrReplaceEntry(tn, cextra)
+	err = cli.InsertOrReplaceEntity(tn, cextra)
 	c.Assert(err, chk.IsNil)
 }
 
-func (s *StorageBlobSuite) Test_InsertOrMerge(c *chk.C) {
+func (s *StorageBlobSuite) Test_InsertOrMergeEntities(c *chk.C) {
 	cli := getTableClient(c)
 
 	tn := AzureTable(randTable())
@@ -148,15 +148,15 @@ func (s *StorageBlobSuite) Test_InsertOrMerge(c *chk.C) {
 
 	ce := &CustomEntity{Name: "Darth", Surname: "Skywalker", SomeDate: time.Now(), Number: 60, PKey: "pkey", RKey: "5"}
 
-	err = cli.InsertOrMergeEntry(tn, ce)
+	err = cli.InsertOrMergeEntity(tn, ce)
 	c.Assert(err, chk.IsNil)
 
 	cextra := &CustomEntityExtended{&CustomEntity{PKey: "pkey", RKey: "5"}, "extra"}
-	err = cli.InsertOrReplaceEntry(tn, cextra)
+	err = cli.InsertOrReplaceEntity(tn, cextra)
 	c.Assert(err, chk.IsNil)
 }
 
-func (s *StorageBlobSuite) Test_InsertAndGet(c *chk.C) {
+func (s *StorageBlobSuite) Test_InsertAndGetEntities(c *chk.C) {
 	cli := getTableClient(c)
 
 	tn := AzureTable(randTable())
@@ -166,12 +166,12 @@ func (s *StorageBlobSuite) Test_InsertAndGet(c *chk.C) {
 	defer cli.DeleteTable(tn)
 
 	ce := &CustomEntity{Name: "Darth", Surname: "Skywalker", SomeDate: time.Now(), Number: 60, PKey: "pkey", RKey: "100"}
-	c.Assert(cli.InsertOrReplaceEntry(tn, ce), chk.IsNil)
+	c.Assert(cli.InsertOrReplaceEntity(tn, ce), chk.IsNil)
 
 	ce.SetRowKey("200")
-	c.Assert(cli.InsertOrReplaceEntry(tn, ce), chk.IsNil)
+	c.Assert(cli.InsertOrReplaceEntity(tn, ce), chk.IsNil)
 
-	entries, _, err := cli.QueryTableEntries(tn, nil, reflect.TypeOf(ce), 10, "")
+	entries, _, err := cli.QueryTableEntities(tn, nil, reflect.TypeOf(ce), 10, "")
 	c.Assert(err, chk.IsNil)
 
 	c.Assert(len(entries), chk.Equals, 2)
@@ -181,7 +181,7 @@ func (s *StorageBlobSuite) Test_InsertAndGet(c *chk.C) {
 	c.Assert(ce, chk.DeepEquals, *entries[1])
 }
 
-func (s *StorageBlobSuite) Test_InsertAndQuery(c *chk.C) {
+func (s *StorageBlobSuite) Test_InsertAndQueryEntities(c *chk.C) {
 	cli := getTableClient(c)
 
 	tn := AzureTable(randTable())
@@ -191,12 +191,12 @@ func (s *StorageBlobSuite) Test_InsertAndQuery(c *chk.C) {
 	defer cli.DeleteTable(tn)
 
 	ce := &CustomEntity{Name: "Darth", Surname: "Skywalker", SomeDate: time.Now(), Number: 60, PKey: "pkey", RKey: "100"}
-	c.Assert(cli.InsertOrReplaceEntry(tn, ce), chk.IsNil)
+	c.Assert(cli.InsertOrReplaceEntity(tn, ce), chk.IsNil)
 
 	ce.SetRowKey("200")
-	c.Assert(cli.InsertOrReplaceEntry(tn, ce), chk.IsNil)
+	c.Assert(cli.InsertOrReplaceEntity(tn, ce), chk.IsNil)
 
-	entries, _, err := cli.QueryTableEntries(tn, nil, reflect.TypeOf(ce), 10, "RowKey eq '200'")
+	entries, _, err := cli.QueryTableEntities(tn, nil, reflect.TypeOf(ce), 10, "RowKey eq '200'")
 	c.Assert(err, chk.IsNil)
 
 	c.Assert(len(entries), chk.Equals, 1)
@@ -204,6 +204,38 @@ func (s *StorageBlobSuite) Test_InsertAndQuery(c *chk.C) {
 	c.Assert(ce.RowKey(), chk.Equals, (*entries[0]).RowKey())
 
 	c.Assert(ce, chk.DeepEquals, *entries[0])
+}
+
+func (s *StorageBlobSuite) Test_InsertAndDeleteEntities(c *chk.C) {
+	cli := getTableClient(c)
+
+	tn := AzureTable(randTable())
+
+	err := cli.CreateTable(tn)
+	c.Assert(err, chk.IsNil)
+	defer cli.DeleteTable(tn)
+
+	ce := &CustomEntity{Name: "Test", Surname: "Test2", SomeDate: time.Now(), Number: 0, PKey: "pkey", RKey: "r01"}
+	c.Assert(cli.InsertOrReplaceEntity(tn, ce), chk.IsNil)
+
+	ce.Number = 1
+	ce.SetRowKey("r02")
+	c.Assert(cli.InsertOrReplaceEntity(tn, ce), chk.IsNil)
+
+	entries, _, err := cli.QueryTableEntities(tn, nil, reflect.TypeOf(ce), 10, "Number eq 1")
+	c.Assert(err, chk.IsNil)
+
+	c.Assert(len(entries), chk.Equals, 1)
+
+	c.Assert(ce, chk.DeepEquals, *entries[0])
+	
+	c.Assert(cli.DeleteEntityWithoutCheck(tn, *entries[0]), chk.IsNil)
+	
+	entries, _, err = cli.QueryTableEntities(tn, nil, reflect.TypeOf(ce), 10, "")
+	c.Assert(err, chk.IsNil)
+
+	// only 1 entry must be present	
+	c.Assert(len(entries), chk.Equals, 1)	
 }
 
 func randTable() string {

@@ -19,369 +19,339 @@ package compute
 // regenerated.
 
 import (
-	"github.com/Azure/go-autorest/autorest"
+	"github.com/Azure/azure-sdk-for-go/Godeps/_workspace/src/github.com/Azure/go-autorest/autorest"
 	"net/http"
 	"net/url"
 )
 
-// VirtualMachineImages Client
+// VirtualMachineImagesClient is the client for the VirtualMachineImages
+// methods of the Compute service.
 type VirtualMachineImagesClient struct {
-	ComputeManagementClient
+	ManagementClient
 }
 
-func NewVirtualMachineImagesClient(subscriptionId string) VirtualMachineImagesClient {
-	return NewVirtualMachineImagesClientWithBaseUri(DefaultBaseUri, subscriptionId)
+// NewVirtualMachineImagesClient creates an instance of the
+// VirtualMachineImagesClient client.
+func NewVirtualMachineImagesClient(subscriptionID string) VirtualMachineImagesClient {
+	return NewVirtualMachineImagesClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-func NewVirtualMachineImagesClientWithBaseUri(baseUri string, subscriptionId string) VirtualMachineImagesClient {
-	return VirtualMachineImagesClient{NewWithBaseUri(baseUri, subscriptionId)}
+// NewVirtualMachineImagesClientWithBaseURI creates an instance of the
+// VirtualMachineImagesClient client.
+func NewVirtualMachineImagesClientWithBaseURI(baseURI string, subscriptionID string) VirtualMachineImagesClient {
+	return VirtualMachineImagesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // Get gets a virtual machine image.
 //
-func (client VirtualMachineImagesClient) Get(location string, publisherName string, offer string, skus string, version string) (result VirtualMachineImage, ae autorest.Error) {
-	req, err := client.NewGetRequest(location, publisherName, offer, skus, version)
+func (client VirtualMachineImagesClient) Get(location string, publisherName string, offer string, skus string, version string) (result VirtualMachineImage, ae error) {
+	req, err := client.GetPreparer(location, publisherName, offer, skus, version)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "compute.VirtualMachineImagesClient", "Get", "Failure creating request")
+		return result, autorest.NewErrorWithError(err, "compute/VirtualMachineImagesClient", "Get", "Failure preparing request")
 	}
 
-	req, err = autorest.Prepare(
-		req,
-		client.WithAuthorization(),
-		client.WithInspection())
+	resp, err := client.GetSender(req)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "compute.VirtualMachineImagesClient", "Get", "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "compute/VirtualMachineImagesClient", "Get", "Failure sending request")
 	}
 
-	resp, err := autorest.SendWithSender(
-		client,
-		req,
-		autorest.DoErrorUnlessStatusCode(http.StatusOK))
-
-	if err == nil {
-		err = autorest.Respond(
-			resp,
-			client.ByInspecting(),
-			autorest.WithErrorUnlessOK(),
-			autorest.ByUnmarshallingJSON(&result))
-		if err != nil {
-			ae = autorest.NewErrorWithError(err, "compute.VirtualMachineImagesClient", "Get", "Failure responding to request")
-		}
-	} else {
-		ae = autorest.NewErrorWithError(err, "compute.VirtualMachineImagesClient", "Get", "Failure sending request")
+	result, err = client.GetResponder(resp)
+	if err != nil {
+		ae = autorest.NewErrorWithError(err, "compute/VirtualMachineImagesClient", "Get", "Failure responding to request")
 	}
-
-	autorest.Respond(resp,
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
 
 	return
 }
 
-// Create the Get request.
-func (client VirtualMachineImagesClient) NewGetRequest(location string, publisherName string, offer string, skus string, version string) (*http.Request, error) {
+// GetPreparer prepares the Get request.
+func (client VirtualMachineImagesClient) GetPreparer(location string, publisherName string, offer string, skus string, version string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"location":       url.QueryEscape(location),
 		"offer":          url.QueryEscape(offer),
 		"publisherName":  url.QueryEscape(publisherName),
 		"skus":           url.QueryEscape(skus),
-		"subscriptionId": url.QueryEscape(client.SubscriptionId),
+		"subscriptionId": url.QueryEscape(client.SubscriptionID),
 		"version":        url.QueryEscape(version),
 	}
 
 	queryParameters := map[string]interface{}{
-		"api-version": ApiVersion,
+		"api-version": APIVersion,
 	}
 
-	return autorest.DecoratePreparer(
-		client.GetRequestPreparer(),
-		autorest.WithPathParameters(pathParameters),
-		autorest.WithQueryParameters(queryParameters)).Prepare(&http.Request{})
-}
-
-// Create a Preparer by which to prepare the Get request.
-func (client VirtualMachineImagesClient) GetRequestPreparer() autorest.Preparer {
-	return autorest.CreatePreparer(
+	return autorest.Prepare(&http.Request{},
 		autorest.AsJSON(),
 		autorest.AsGet(),
-		autorest.WithBaseURL(client.BaseUri),
-		autorest.WithPath("/subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/publishers/{publisherName}/artifacttypes/vmimage/offers/{offer}/skus/{skus}/versions/{version}"))
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPath("/subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/publishers/{publisherName}/artifacttypes/vmimage/offers/{offer}/skus/{skus}/versions/{version}"),
+		autorest.WithPathParameters(pathParameters),
+		autorest.WithQueryParameters(queryParameters))
 }
 
-// ListOffers gets a list of virtual machine image offers.
-//
-func (client VirtualMachineImagesClient) ListOffers(location string, publisherName string) (result VirtualMachineImageResourceList, ae autorest.Error) {
-	req, err := client.NewListOffersRequest(location, publisherName)
-	if err != nil {
-		return result, autorest.NewErrorWithError(err, "compute.VirtualMachineImagesClient", "ListOffers", "Failure creating request")
-	}
+// GetSender sends the Get request. The method will close the
+// http.Response Body if it receives an error.
+func (client VirtualMachineImagesClient) GetSender(req *http.Request) (*http.Response, error) {
+	return client.Send(req, http.StatusOK)
+}
 
-	req, err = autorest.Prepare(
-		req,
-		client.WithAuthorization(),
-		client.WithInspection())
-	if err != nil {
-		return result, autorest.NewErrorWithError(err, "compute.VirtualMachineImagesClient", "ListOffers", "Failure preparing request")
-	}
-
-	resp, err := autorest.SendWithSender(
-		client,
-		req,
-		autorest.DoErrorUnlessStatusCode(http.StatusOK))
-
-	if err == nil {
-		err = autorest.Respond(
-			resp,
-			client.ByInspecting(),
-			autorest.WithErrorUnlessOK(),
-			autorest.ByUnmarshallingJSON(&result.Value))
-		if err != nil {
-			ae = autorest.NewErrorWithError(err, "compute.VirtualMachineImagesClient", "ListOffers", "Failure responding to request")
-		}
-	} else {
-		ae = autorest.NewErrorWithError(err, "compute.VirtualMachineImagesClient", "ListOffers", "Failure sending request")
-	}
-
-	autorest.Respond(resp,
+// GetResponder handles the response to the Get request. The method always
+// closes the http.Response Body.
+func (client VirtualMachineImagesClient) GetResponder(resp *http.Response) (result VirtualMachineImage, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		autorest.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
-
 	return
-}
-
-// Create the ListOffers request.
-func (client VirtualMachineImagesClient) NewListOffersRequest(location string, publisherName string) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"location":       url.QueryEscape(location),
-		"publisherName":  url.QueryEscape(publisherName),
-		"subscriptionId": url.QueryEscape(client.SubscriptionId),
-	}
-
-	queryParameters := map[string]interface{}{
-		"api-version": ApiVersion,
-	}
-
-	return autorest.DecoratePreparer(
-		client.ListOffersRequestPreparer(),
-		autorest.WithPathParameters(pathParameters),
-		autorest.WithQueryParameters(queryParameters)).Prepare(&http.Request{})
-}
-
-// Create a Preparer by which to prepare the ListOffers request.
-func (client VirtualMachineImagesClient) ListOffersRequestPreparer() autorest.Preparer {
-	return autorest.CreatePreparer(
-		autorest.AsJSON(),
-		autorest.AsGet(),
-		autorest.WithBaseURL(client.BaseUri),
-		autorest.WithPath("/subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/publishers/{publisherName}/artifacttypes/vmimage/offers"))
-}
-
-// ListPublishers gets a list of virtual machine image publishers.
-//
-func (client VirtualMachineImagesClient) ListPublishers(location string) (result VirtualMachineImageResourceList, ae autorest.Error) {
-	req, err := client.NewListPublishersRequest(location)
-	if err != nil {
-		return result, autorest.NewErrorWithError(err, "compute.VirtualMachineImagesClient", "ListPublishers", "Failure creating request")
-	}
-
-	req, err = autorest.Prepare(
-		req,
-		client.WithAuthorization(),
-		client.WithInspection())
-	if err != nil {
-		return result, autorest.NewErrorWithError(err, "compute.VirtualMachineImagesClient", "ListPublishers", "Failure preparing request")
-	}
-
-	resp, err := autorest.SendWithSender(
-		client,
-		req,
-		autorest.DoErrorUnlessStatusCode(http.StatusOK))
-
-	if err == nil {
-		err = autorest.Respond(
-			resp,
-			client.ByInspecting(),
-			autorest.WithErrorUnlessOK(),
-			autorest.ByUnmarshallingJSON(&result.Value))
-		if err != nil {
-			ae = autorest.NewErrorWithError(err, "compute.VirtualMachineImagesClient", "ListPublishers", "Failure responding to request")
-		}
-	} else {
-		ae = autorest.NewErrorWithError(err, "compute.VirtualMachineImagesClient", "ListPublishers", "Failure sending request")
-	}
-
-	autorest.Respond(resp,
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-
-	return
-}
-
-// Create the ListPublishers request.
-func (client VirtualMachineImagesClient) NewListPublishersRequest(location string) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"location":       url.QueryEscape(location),
-		"subscriptionId": url.QueryEscape(client.SubscriptionId),
-	}
-
-	queryParameters := map[string]interface{}{
-		"api-version": ApiVersion,
-	}
-
-	return autorest.DecoratePreparer(
-		client.ListPublishersRequestPreparer(),
-		autorest.WithPathParameters(pathParameters),
-		autorest.WithQueryParameters(queryParameters)).Prepare(&http.Request{})
-}
-
-// Create a Preparer by which to prepare the ListPublishers request.
-func (client VirtualMachineImagesClient) ListPublishersRequestPreparer() autorest.Preparer {
-	return autorest.CreatePreparer(
-		autorest.AsJSON(),
-		autorest.AsGet(),
-		autorest.WithBaseURL(client.BaseUri),
-		autorest.WithPath("/subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/publishers"))
-}
-
-// ListSkus gets a list of virtual machine image skus.
-//
-func (client VirtualMachineImagesClient) ListSkus(location string, publisherName string, offer string) (result VirtualMachineImageResourceList, ae autorest.Error) {
-	req, err := client.NewListSkusRequest(location, publisherName, offer)
-	if err != nil {
-		return result, autorest.NewErrorWithError(err, "compute.VirtualMachineImagesClient", "ListSkus", "Failure creating request")
-	}
-
-	req, err = autorest.Prepare(
-		req,
-		client.WithAuthorization(),
-		client.WithInspection())
-	if err != nil {
-		return result, autorest.NewErrorWithError(err, "compute.VirtualMachineImagesClient", "ListSkus", "Failure preparing request")
-	}
-
-	resp, err := autorest.SendWithSender(
-		client,
-		req,
-		autorest.DoErrorUnlessStatusCode(http.StatusOK))
-
-	if err == nil {
-		err = autorest.Respond(
-			resp,
-			client.ByInspecting(),
-			autorest.WithErrorUnlessOK(),
-			autorest.ByUnmarshallingJSON(&result.Value))
-		if err != nil {
-			ae = autorest.NewErrorWithError(err, "compute.VirtualMachineImagesClient", "ListSkus", "Failure responding to request")
-		}
-	} else {
-		ae = autorest.NewErrorWithError(err, "compute.VirtualMachineImagesClient", "ListSkus", "Failure sending request")
-	}
-
-	autorest.Respond(resp,
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-
-	return
-}
-
-// Create the ListSkus request.
-func (client VirtualMachineImagesClient) NewListSkusRequest(location string, publisherName string, offer string) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"location":       url.QueryEscape(location),
-		"offer":          url.QueryEscape(offer),
-		"publisherName":  url.QueryEscape(publisherName),
-		"subscriptionId": url.QueryEscape(client.SubscriptionId),
-	}
-
-	queryParameters := map[string]interface{}{
-		"api-version": ApiVersion,
-	}
-
-	return autorest.DecoratePreparer(
-		client.ListSkusRequestPreparer(),
-		autorest.WithPathParameters(pathParameters),
-		autorest.WithQueryParameters(queryParameters)).Prepare(&http.Request{})
-}
-
-// Create a Preparer by which to prepare the ListSkus request.
-func (client VirtualMachineImagesClient) ListSkusRequestPreparer() autorest.Preparer {
-	return autorest.CreatePreparer(
-		autorest.AsJSON(),
-		autorest.AsGet(),
-		autorest.WithBaseURL(client.BaseUri),
-		autorest.WithPath("/subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/publishers/{publisherName}/artifacttypes/vmimage/offers/{offer}/skus"))
 }
 
 // List gets a list of virtual machine images.
 //
 // filter is the filter to apply on the operation.
-func (client VirtualMachineImagesClient) List(location string, publisherName string, offer string, skus string, filter string, top int, orderby string) (result VirtualMachineImageResourceList, ae autorest.Error) {
-	req, err := client.NewListRequest(location, publisherName, offer, skus, filter, top, orderby)
+func (client VirtualMachineImagesClient) List(location string, publisherName string, offer string, skus string, filter string, top int, orderby string) (result VirtualMachineImageResourceList, ae error) {
+	req, err := client.ListPreparer(location, publisherName, offer, skus, filter, top, orderby)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "compute.VirtualMachineImagesClient", "List", "Failure creating request")
+		return result, autorest.NewErrorWithError(err, "compute/VirtualMachineImagesClient", "List", "Failure preparing request")
 	}
 
-	req, err = autorest.Prepare(
-		req,
-		client.WithAuthorization(),
-		client.WithInspection())
+	resp, err := client.ListSender(req)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "compute.VirtualMachineImagesClient", "List", "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "compute/VirtualMachineImagesClient", "List", "Failure sending request")
 	}
 
-	resp, err := autorest.SendWithSender(
-		client,
-		req,
-		autorest.DoErrorUnlessStatusCode(http.StatusOK))
-
-	if err == nil {
-		err = autorest.Respond(
-			resp,
-			client.ByInspecting(),
-			autorest.WithErrorUnlessOK(),
-			autorest.ByUnmarshallingJSON(&result.Value))
-		if err != nil {
-			ae = autorest.NewErrorWithError(err, "compute.VirtualMachineImagesClient", "List", "Failure responding to request")
-		}
-	} else {
-		ae = autorest.NewErrorWithError(err, "compute.VirtualMachineImagesClient", "List", "Failure sending request")
+	result, err = client.ListResponder(resp)
+	if err != nil {
+		ae = autorest.NewErrorWithError(err, "compute/VirtualMachineImagesClient", "List", "Failure responding to request")
 	}
-
-	autorest.Respond(resp,
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
 
 	return
 }
 
-// Create the List request.
-func (client VirtualMachineImagesClient) NewListRequest(location string, publisherName string, offer string, skus string, filter string, top int, orderby string) (*http.Request, error) {
+// ListPreparer prepares the List request.
+func (client VirtualMachineImagesClient) ListPreparer(location string, publisherName string, offer string, skus string, filter string, top int, orderby string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"location":       url.QueryEscape(location),
 		"offer":          url.QueryEscape(offer),
 		"publisherName":  url.QueryEscape(publisherName),
 		"skus":           url.QueryEscape(skus),
-		"subscriptionId": url.QueryEscape(client.SubscriptionId),
+		"subscriptionId": url.QueryEscape(client.SubscriptionID),
 	}
 
 	queryParameters := map[string]interface{}{
 		"$filter":     filter,
 		"$orderby":    orderby,
 		"$top":        top,
-		"api-version": ApiVersion,
+		"api-version": APIVersion,
 	}
 
-	return autorest.DecoratePreparer(
-		client.ListRequestPreparer(),
-		autorest.WithPathParameters(pathParameters),
-		autorest.WithQueryParameters(queryParameters)).Prepare(&http.Request{})
-}
-
-// Create a Preparer by which to prepare the List request.
-func (client VirtualMachineImagesClient) ListRequestPreparer() autorest.Preparer {
-	return autorest.CreatePreparer(
+	return autorest.Prepare(&http.Request{},
 		autorest.AsJSON(),
 		autorest.AsGet(),
-		autorest.WithBaseURL(client.BaseUri),
-		autorest.WithPath("/subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/publishers/{publisherName}/artifacttypes/vmimage/offers/{offer}/skus/{skus}/versions"))
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPath("/subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/publishers/{publisherName}/artifacttypes/vmimage/offers/{offer}/skus/{skus}/versions"),
+		autorest.WithPathParameters(pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+}
+
+// ListSender sends the List request. The method will close the
+// http.Response Body if it receives an error.
+func (client VirtualMachineImagesClient) ListSender(req *http.Request) (*http.Response, error) {
+	return client.Send(req, http.StatusOK)
+}
+
+// ListResponder handles the response to the List request. The method always
+// closes the http.Response Body.
+func (client VirtualMachineImagesClient) ListResponder(resp *http.Response) (result VirtualMachineImageResourceList, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		autorest.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result.Value),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// ListOffers gets a list of virtual machine image offers.
+//
+func (client VirtualMachineImagesClient) ListOffers(location string, publisherName string) (result VirtualMachineImageResourceList, ae error) {
+	req, err := client.ListOffersPreparer(location, publisherName)
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "compute/VirtualMachineImagesClient", "ListOffers", "Failure preparing request")
+	}
+
+	resp, err := client.ListOffersSender(req)
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "compute/VirtualMachineImagesClient", "ListOffers", "Failure sending request")
+	}
+
+	result, err = client.ListOffersResponder(resp)
+	if err != nil {
+		ae = autorest.NewErrorWithError(err, "compute/VirtualMachineImagesClient", "ListOffers", "Failure responding to request")
+	}
+
+	return
+}
+
+// ListOffersPreparer prepares the ListOffers request.
+func (client VirtualMachineImagesClient) ListOffersPreparer(location string, publisherName string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"location":       url.QueryEscape(location),
+		"publisherName":  url.QueryEscape(publisherName),
+		"subscriptionId": url.QueryEscape(client.SubscriptionID),
+	}
+
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPath("/subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/publishers/{publisherName}/artifacttypes/vmimage/offers"),
+		autorest.WithPathParameters(pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+}
+
+// ListOffersSender sends the ListOffers request. The method will close the
+// http.Response Body if it receives an error.
+func (client VirtualMachineImagesClient) ListOffersSender(req *http.Request) (*http.Response, error) {
+	return client.Send(req, http.StatusOK)
+}
+
+// ListOffersResponder handles the response to the ListOffers request. The method always
+// closes the http.Response Body.
+func (client VirtualMachineImagesClient) ListOffersResponder(resp *http.Response) (result VirtualMachineImageResourceList, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		autorest.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result.Value),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// ListPublishers gets a list of virtual machine image publishers.
+//
+func (client VirtualMachineImagesClient) ListPublishers(location string) (result VirtualMachineImageResourceList, ae error) {
+	req, err := client.ListPublishersPreparer(location)
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "compute/VirtualMachineImagesClient", "ListPublishers", "Failure preparing request")
+	}
+
+	resp, err := client.ListPublishersSender(req)
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "compute/VirtualMachineImagesClient", "ListPublishers", "Failure sending request")
+	}
+
+	result, err = client.ListPublishersResponder(resp)
+	if err != nil {
+		ae = autorest.NewErrorWithError(err, "compute/VirtualMachineImagesClient", "ListPublishers", "Failure responding to request")
+	}
+
+	return
+}
+
+// ListPublishersPreparer prepares the ListPublishers request.
+func (client VirtualMachineImagesClient) ListPublishersPreparer(location string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"location":       url.QueryEscape(location),
+		"subscriptionId": url.QueryEscape(client.SubscriptionID),
+	}
+
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPath("/subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/publishers"),
+		autorest.WithPathParameters(pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+}
+
+// ListPublishersSender sends the ListPublishers request. The method will close the
+// http.Response Body if it receives an error.
+func (client VirtualMachineImagesClient) ListPublishersSender(req *http.Request) (*http.Response, error) {
+	return client.Send(req, http.StatusOK)
+}
+
+// ListPublishersResponder handles the response to the ListPublishers request. The method always
+// closes the http.Response Body.
+func (client VirtualMachineImagesClient) ListPublishersResponder(resp *http.Response) (result VirtualMachineImageResourceList, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		autorest.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result.Value),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// ListSkus gets a list of virtual machine image skus.
+//
+func (client VirtualMachineImagesClient) ListSkus(location string, publisherName string, offer string) (result VirtualMachineImageResourceList, ae error) {
+	req, err := client.ListSkusPreparer(location, publisherName, offer)
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "compute/VirtualMachineImagesClient", "ListSkus", "Failure preparing request")
+	}
+
+	resp, err := client.ListSkusSender(req)
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "compute/VirtualMachineImagesClient", "ListSkus", "Failure sending request")
+	}
+
+	result, err = client.ListSkusResponder(resp)
+	if err != nil {
+		ae = autorest.NewErrorWithError(err, "compute/VirtualMachineImagesClient", "ListSkus", "Failure responding to request")
+	}
+
+	return
+}
+
+// ListSkusPreparer prepares the ListSkus request.
+func (client VirtualMachineImagesClient) ListSkusPreparer(location string, publisherName string, offer string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"location":       url.QueryEscape(location),
+		"offer":          url.QueryEscape(offer),
+		"publisherName":  url.QueryEscape(publisherName),
+		"subscriptionId": url.QueryEscape(client.SubscriptionID),
+	}
+
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPath("/subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/publishers/{publisherName}/artifacttypes/vmimage/offers/{offer}/skus"),
+		autorest.WithPathParameters(pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+}
+
+// ListSkusSender sends the ListSkus request. The method will close the
+// http.Response Body if it receives an error.
+func (client VirtualMachineImagesClient) ListSkusSender(req *http.Request) (*http.Response, error) {
+	return client.Send(req, http.StatusOK)
+}
+
+// ListSkusResponder handles the response to the ListSkus request. The method always
+// closes the http.Response Body.
+func (client VirtualMachineImagesClient) ListSkusResponder(resp *http.Response) (result VirtualMachineImageResourceList, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		autorest.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result.Value),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
 }

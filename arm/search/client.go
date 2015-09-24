@@ -19,29 +19,35 @@ package search
 // regenerated.
 
 import (
-	"github.com/Azure/go-autorest/autorest"
+	"github.com/Azure/azure-sdk-for-go/Godeps/_workspace/src/github.com/Azure/go-autorest/autorest"
 )
 
 const (
-	ApiVersion     = "2015-02-28"
-	DefaultBaseUri = "https://management.azure.com"
+	// APIVersion is the version of the Search
+	APIVersion = "2015-02-28"
+
+	// DefaultBaseURI is the default URI used for the service Search
+	DefaultBaseURI = "https://management.azure.com"
 )
 
-// Client that can be used to manage Azure Search services and API keys.
-type SearchManagementClient struct {
+// ManagementClient is the client that can be used to manage Azure Search
+// services and API keys.
+type ManagementClient struct {
 	autorest.Client
-	BaseUri        string
-	SubscriptionId string
+	BaseURI        string
+	SubscriptionID string
 }
 
-func New(subscriptionId string) SearchManagementClient {
-	return NewWithBaseUri(DefaultBaseUri, subscriptionId)
+// New creates an instance of the ManagementClient client.
+func New(subscriptionID string) ManagementClient {
+	return NewWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-func NewWithBaseUri(baseUri string, subscriptionId string) SearchManagementClient {
-	return SearchManagementClient{
-		Client:         autorest.DefaultClient,
-		BaseUri:        baseUri,
-		SubscriptionId: subscriptionId,
+// NewWithBaseURI creates an instance of the ManagementClient client.
+func NewWithBaseURI(baseURI string, subscriptionID string) ManagementClient {
+	return ManagementClient{
+		Client:         autorest.NewClientWithUserAgent(UserAgent()),
+		BaseURI:        baseURI,
+		SubscriptionID: subscriptionID,
 	}
 }

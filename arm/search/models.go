@@ -19,91 +19,141 @@ package search
 // regenerated.
 
 import (
-	"github.com/Azure/go-autorest/autorest"
+	"github.com/Azure/azure-sdk-for-go/Godeps/_workspace/src/github.com/Azure/go-autorest/autorest"
 )
 
+// ProvisioningState enumerates the values for provisioning state.
 type ProvisioningState string
 
 const (
-	ProvisioningStateFailed       ProvisioningState = "failed"
+	// ProvisioningStateFailed specifies the provisioning state failed state
+	// for provisioning state.
+	ProvisioningStateFailed ProvisioningState = "failed"
+	// ProvisioningStateProvisioning specifies the provisioning state
+	// provisioning state for provisioning state.
 	ProvisioningStateProvisioning ProvisioningState = "provisioning"
-	ProvisioningStateSucceeded    ProvisioningState = "succeeded"
+	// ProvisioningStateSucceeded specifies the provisioning state succeeded
+	// state for provisioning state.
+	ProvisioningStateSucceeded ProvisioningState = "succeeded"
 )
 
-type SearchServiceStatus string
+// ServiceStatus enumerates the values for service status.
+type ServiceStatus string
 
 const (
-	SearchServiceStatusDegraded     SearchServiceStatus = "degraded"
-	SearchServiceStatusDeleting     SearchServiceStatus = "deleting"
-	SearchServiceStatusDisabled     SearchServiceStatus = "disabled"
-	SearchServiceStatusError        SearchServiceStatus = "error"
-	SearchServiceStatusProvisioning SearchServiceStatus = "provisioning"
-	SearchServiceStatusRunning      SearchServiceStatus = "running"
+	// ServiceStatusDegraded specifies the service status degraded state for
+	// service status.
+	ServiceStatusDegraded ServiceStatus = "degraded"
+	// ServiceStatusDeleting specifies the service status deleting state for
+	// service status.
+	ServiceStatusDeleting ServiceStatus = "deleting"
+	// ServiceStatusDisabled specifies the service status disabled state for
+	// service status.
+	ServiceStatusDisabled ServiceStatus = "disabled"
+	// ServiceStatusError specifies the service status error state for service
+	// status.
+	ServiceStatusError ServiceStatus = "error"
+	// ServiceStatusProvisioning specifies the service status provisioning
+	// state for service status.
+	ServiceStatusProvisioning ServiceStatus = "provisioning"
+	// ServiceStatusRunning specifies the service status running state for
+	// service status.
+	ServiceStatusRunning ServiceStatus = "running"
 )
 
+// SkuType enumerates the values for sku type.
 type SkuType string
 
 const (
-	Free      SkuType = "free"
-	Standard  SkuType = "standard"
+	// Free specifies the free state for sku type.
+	Free SkuType = "free"
+	// Standard specifies the standard state for sku type.
+	Standard SkuType = "standard"
+	// Standard2 specifies the standard 2 state for sku type.
 	Standard2 SkuType = "standard2"
 )
 
-// Response containing the primary and secondary API keys for a given Azure
-// Search service.
+// AdminKeyResult is response containing the primary and secondary API keys
+// for a given Azure Search service.
 type AdminKeyResult struct {
 	autorest.Response `json:"-"`
-	PrimaryKey        string `json:"primaryKey,omitempty"`
-	SecondaryKey      string `json:"secondaryKey,omitempty"`
+	PrimaryKey        *string `json:"primaryKey,omitempty"`
+	SecondaryKey      *string `json:"secondaryKey,omitempty"`
 }
 
-// Response containing the query API keys for a given Azure Search service.
+// ListQueryKeysResult is response containing the query API keys for a given
+// Azure Search service.
 type ListQueryKeysResult struct {
 	autorest.Response `json:"-"`
-	Value             []QueryKey `json:"value,omitempty"`
+	Value             *[]QueryKey `json:"value,omitempty"`
 }
 
-// Describes an API key for a given Azure Search service that has permissions
-// for query operations only.
+// QueryKey is describes an API key for a given Azure Search service that has
+// permissions for query operations only.
 type QueryKey struct {
-	Name string `json:"name,omitempty"`
-	Key  string `json:"key,omitempty"`
+	Name *string `json:"name,omitempty"`
+	Key  *string `json:"key,omitempty"`
 }
 
-// Properties that describe an Azure Search service.
-type SearchServiceCreateOrUpdateParameters struct {
-	Location   string            `json:"location,omitempty"`
-	Tags       map[string]string `json:"tags,omitempty"`
-	Properties struct {
-		Sku struct {
-			Name SkuType `json:"name,omitempty"`
-		} `json:"sku,omitempty"`
-		ReplicaCount   int `json:"replicaCount,omitempty"`
-		PartitionCount int `json:"partitionCount,omitempty"`
-	} `json:"properties,omitempty"`
+// Resource is
+type Resource struct {
+	ID       *string             `json:"id,omitempty"`
+	Name     *string             `json:"name,omitempty"`
+	Type     *string             `json:"type,omitempty"`
+	Location *string             `json:"location,omitempty"`
+	Tags     *map[string]*string `json:"tags,omitempty"`
 }
 
-// Response containing a list of Azure Search services for a given resource
-// group.
-type SearchServiceListResult struct {
+// ServiceCreateOrUpdateParameters is properties that describe an Azure Search
+// service.
+type ServiceCreateOrUpdateParameters struct {
+	Location   *string             `json:"location,omitempty"`
+	Tags       *map[string]*string `json:"tags,omitempty"`
+	Properties *ServiceProperties  `json:"properties,omitempty"`
+}
+
+// ServiceListResult is response containing a list of Azure Search services
+// for a given resource group.
+type ServiceListResult struct {
 	autorest.Response `json:"-"`
-	Value             []SearchServiceResource `json:"value,omitempty"`
+	Value             *[]ServiceResource `json:"value,omitempty"`
 }
 
-// Describes an Azure Search service and its current state.
-type SearchServiceResource struct {
+// ServiceProperties is defines properties of an Azure Search service that can
+// be modified.
+type ServiceProperties struct {
+	Sku            *Sku `json:"sku,omitempty"`
+	ReplicaCount   *int `json:"replicaCount,omitempty"`
+	PartitionCount *int `json:"partitionCount,omitempty"`
+}
+
+// ServiceReadableProperties is defines all the properties of an Azure Search
+// service.
+type ServiceReadableProperties struct {
+	Status            ServiceStatus     `json:"status,omitempty"`
+	StatusDetails     *string           `json:"statusDetails,omitempty"`
+	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
+	Sku               *Sku              `json:"sku,omitempty"`
+	ReplicaCount      *int              `json:"replicaCount,omitempty"`
+	PartitionCount    *int              `json:"partitionCount,omitempty"`
+}
+
+// ServiceResource is describes an Azure Search service and its current state.
+type ServiceResource struct {
 	autorest.Response `json:"-"`
-	Name              string            `json:"name,omitempty"`
-	Location          string            `json:"location,omitempty"`
-	Tags              map[string]string `json:"tags,omitempty"`
-	Properties        struct {
-		Status            SearchServiceStatus `json:"status,omitempty"`
-		StatusDetails     string              `json:"statusDetails,omitempty"`
-		ProvisioningState ProvisioningState   `json:"provisioningState,omitempty"`
-		Sku               struct {
-			Name SkuType `json:"name,omitempty"`
-		} `json:"sku,omitempty"`
-		ReplicaCount   int `json:"replicaCount,omitempty"`
-		PartitionCount int `json:"partitionCount,omitempty"`
-	} `json:"properties,omitempty"`
+	Name              *string                    `json:"name,omitempty"`
+	Location          *string                    `json:"location,omitempty"`
+	Tags              *map[string]*string        `json:"tags,omitempty"`
+	Properties        *ServiceReadableProperties `json:"properties,omitempty"`
+}
+
+// Sku is defines the SKU of an Azure Search Service, which determines price
+// tier and capacity limits.
+type Sku struct {
+	Name SkuType `json:"name,omitempty"`
+}
+
+// SubResource is
+type SubResource struct {
+	ID *string `json:"id,omitempty"`
 }

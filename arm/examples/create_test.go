@@ -5,5 +5,5 @@ import (
 )
 
 func TestCreateAccount(t *testing.T) {
-	createAccount("brendand-gosdk", "gosdktestname01")
+	createAccount("gosdk", "gosdktestname01")
 }

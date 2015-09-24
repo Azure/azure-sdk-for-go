@@ -19,32 +19,85 @@ package authorization
 // regenerated.
 
 import (
-	"github.com/Azure/go-autorest/autorest"
+	"github.com/Azure/azure-sdk-for-go/Godeps/_workspace/src/github.com/Azure/go-autorest/autorest"
+	"github.com/Azure/azure-sdk-for-go/Godeps/_workspace/src/github.com/Azure/go-autorest/autorest/to"
+	"net/http"
 )
 
+// LockLevel enumerates the values for lock level.
 type LockLevel string
 
 const (
+	// CanNotDelete specifies the can not delete state for lock level.
 	CanNotDelete LockLevel = "CanNotDelete"
+	// NotSpecified specifies the not specified state for lock level.
 	NotSpecified LockLevel = "NotSpecified"
-	ReadOnly     LockLevel = "ReadOnly"
+	// ReadOnly specifies the read only state for lock level.
+	ReadOnly LockLevel = "ReadOnly"
 )
 
-// Management lock information.
-type ManagementLock struct {
-	autorest.Response `json:"-"`
-	Properties        struct {
-		Level LockLevel `json:"level,omitempty"`
-		Notes string    `json:"notes,omitempty"`
-	} `json:"properties,omitempty"`
-	Id   string `json:"id,omitempty"`
-	Type string `json:"type,omitempty"`
-	Name string `json:"name,omitempty"`
+// DeploymentExtendedFilter is deployment filter.
+type DeploymentExtendedFilter struct {
+	ProvisioningState *string `json:"provisioningState,omitempty"`
 }
 
-// List of management locks.
+// GenericResourceFilter is resource filter.
+type GenericResourceFilter struct {
+	ResourceType *string `json:"resourceType,omitempty"`
+	Tagname      *string `json:"tagname,omitempty"`
+	Tagvalue     *string `json:"tagvalue,omitempty"`
+}
+
+// ManagementLock is management lock information.
+type ManagementLock struct {
+	autorest.Response `json:"-"`
+	Properties        *ManagementLockProperties `json:"properties,omitempty"`
+	ID                *string                   `json:"id,omitempty"`
+	Type              *string                   `json:"type,omitempty"`
+	Name              *string                   `json:"name,omitempty"`
+}
+
+// ManagementLockListResult is list of management locks.
 type ManagementLockListResult struct {
 	autorest.Response `json:"-"`
-	Value             []ManagementLock `json:"value,omitempty"`
-	NextLink          string           `json:"nextLink,omitempty"`
+	Value             *[]ManagementLock `json:"value,omitempty"`
+	NextLink          *string           `json:"nextLink,omitempty"`
+}
+
+// ManagementLockListResultPreparer prepares a request to retrieve the next set of results. It returns
+// nil if no more results exist.
+func (client ManagementLockListResult) ManagementLockListResultPreparer() (*http.Request, error) {
+	if client.NextLink == nil || len(to.String(client.NextLink)) <= 0 {
+		return nil, nil
+	}
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(client.NextLink)))
+}
+
+// ManagementLockProperties is the management lock properties.
+type ManagementLockProperties struct {
+	Level LockLevel `json:"level,omitempty"`
+	Notes *string   `json:"notes,omitempty"`
+}
+
+// Resource is
+type Resource struct {
+	ID       *string             `json:"id,omitempty"`
+	Name     *string             `json:"name,omitempty"`
+	Type     *string             `json:"type,omitempty"`
+	Location *string             `json:"location,omitempty"`
+	Tags     *map[string]*string `json:"tags,omitempty"`
+}
+
+// ResourceGroupFilter is resource group filter.
+type ResourceGroupFilter struct {
+	TagName  *string `json:"tagName,omitempty"`
+	TagValue *string `json:"tagValue,omitempty"`
+}
+
+// SubResource is
+type SubResource struct {
+	ID *string `json:"id,omitempty"`
 }

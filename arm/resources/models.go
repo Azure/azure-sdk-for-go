@@ -19,259 +19,378 @@ package resources
 // regenerated.
 
 import (
-	"github.com/Azure/go-autorest/autorest"
-	"github.com/Azure/go-autorest/autorest/date"
+	"github.com/Azure/azure-sdk-for-go/Godeps/_workspace/src/github.com/Azure/go-autorest/autorest"
+	"github.com/Azure/azure-sdk-for-go/Godeps/_workspace/src/github.com/Azure/go-autorest/autorest/date"
+	"github.com/Azure/azure-sdk-for-go/Godeps/_workspace/src/github.com/Azure/go-autorest/autorest/to"
+	"net/http"
 )
 
+// DeploymentMode enumerates the values for deployment mode.
 type DeploymentMode string
 
 const (
+	// Incremental specifies the incremental state for deployment mode.
 	Incremental DeploymentMode = "Incremental"
 )
 
-// Deployment dependency information.
+// BasicDependency is deployment dependency information.
 type BasicDependency struct {
-	Id           string `json:"id,omitempty"`
-	ResourceType string `json:"resourceType,omitempty"`
-	ResourceName string `json:"resourceName,omitempty"`
+	ID           *string `json:"id,omitempty"`
+	ResourceType *string `json:"resourceType,omitempty"`
+	ResourceName *string `json:"resourceName,omitempty"`
 }
 
-// Deployment dependency information.
+// Dependency is deployment dependency information.
 type Dependency struct {
-	DependsOn    []BasicDependency `json:"dependsOn,omitempty"`
-	Id           string            `json:"id,omitempty"`
-	ResourceType string            `json:"resourceType,omitempty"`
-	ResourceName string            `json:"resourceName,omitempty"`
+	DependsOn    *[]BasicDependency `json:"dependsOn,omitempty"`
+	ID           *string            `json:"id,omitempty"`
+	ResourceType *string            `json:"resourceType,omitempty"`
+	ResourceName *string            `json:"resourceName,omitempty"`
 }
 
-// Deployment operation parameters.
+// Deployment is deployment operation parameters.
 type Deployment struct {
-	Properties struct {
-		Template     map[string]string `json:"template,omitempty"`
-		TemplateLink struct {
-			Uri            string `json:"uri,omitempty"`
-			ContentVersion string `json:"contentVersion,omitempty"`
-		} `json:"templateLink,omitempty"`
-		Parameters     map[string]string `json:"parameters,omitempty"`
-		ParametersLink struct {
-			Uri            string `json:"uri,omitempty"`
-			ContentVersion string `json:"contentVersion,omitempty"`
-		} `json:"parametersLink,omitempty"`
-		Mode DeploymentMode `json:"mode,omitempty"`
-	} `json:"properties,omitempty"`
+	Properties *DeploymentProperties `json:"properties,omitempty"`
 }
 
-// Deployment information.
+// DeploymentExtended is deployment information.
 type DeploymentExtended struct {
 	autorest.Response `json:"-"`
-	Id                string `json:"id,omitempty"`
-	Name              string `json:"name,omitempty"`
-	Properties        struct {
-		ProvisioningState string            `json:"provisioningState,omitempty"`
-		CorrelationId     string            `json:"correlationId,omitempty"`
-		Timestamp         date.Time         `json:"timestamp,omitempty"`
-		Outputs           map[string]string `json:"outputs,omitempty"`
-		Providers         []Provider        `json:"providers,omitempty"`
-		Dependencies      []Dependency      `json:"dependencies,omitempty"`
-		Template          map[string]string `json:"template,omitempty"`
-		TemplateLink      struct {
-			Uri            string `json:"uri,omitempty"`
-			ContentVersion string `json:"contentVersion,omitempty"`
-		} `json:"templateLink,omitempty"`
-		Parameters     map[string]string `json:"parameters,omitempty"`
-		ParametersLink struct {
-			Uri            string `json:"uri,omitempty"`
-			ContentVersion string `json:"contentVersion,omitempty"`
-		} `json:"parametersLink,omitempty"`
-		Mode DeploymentMode `json:"mode,omitempty"`
-	} `json:"properties,omitempty"`
+	ID                *string                       `json:"id,omitempty"`
+	Name              *string                       `json:"name,omitempty"`
+	Properties        *DeploymentPropertiesExtended `json:"properties,omitempty"`
 }
 
-// List of deployments.
+// DeploymentExtendedFilter is deployment filter.
+type DeploymentExtendedFilter struct {
+	ProvisioningState *string `json:"provisioningState,omitempty"`
+}
+
+// DeploymentListResult is list of deployments.
 type DeploymentListResult struct {
 	autorest.Response `json:"-"`
-	Value             []DeploymentExtended `json:"value,omitempty"`
-	NextLink          string               `json:"nextLink,omitempty"`
+	Value             *[]DeploymentExtended `json:"value,omitempty"`
+	NextLink          *string               `json:"nextLink,omitempty"`
 }
 
-// Deployment operation information.
+// DeploymentListResultPreparer prepares a request to retrieve the next set of results. It returns
+// nil if no more results exist.
+func (client DeploymentListResult) DeploymentListResultPreparer() (*http.Request, error) {
+	if client.NextLink == nil || len(to.String(client.NextLink)) <= 0 {
+		return nil, nil
+	}
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(client.NextLink)))
+}
+
+// DeploymentOperation is deployment operation information.
 type DeploymentOperation struct {
 	autorest.Response `json:"-"`
-	Id                string `json:"id,omitempty"`
-	OperationId       string `json:"operationId,omitempty"`
-	Properties        struct {
-		ProvisioningState string            `json:"provisioningState,omitempty"`
-		Timestamp         date.Time         `json:"timestamp,omitempty"`
-		StatusCode        string            `json:"statusCode,omitempty"`
-		StatusMessage     map[string]string `json:"statusMessage,omitempty"`
-		TargetResource    struct {
-			Id           string `json:"id,omitempty"`
-			ResourceName string `json:"resourceName,omitempty"`
-			ResourceType string `json:"resourceType,omitempty"`
-		} `json:"targetResource,omitempty"`
-	} `json:"properties,omitempty"`
+	ID                *string                        `json:"id,omitempty"`
+	OperationID       *string                        `json:"operationId,omitempty"`
+	Properties        *DeploymentOperationProperties `json:"properties,omitempty"`
 }
 
-// List of deployment operations.
+// DeploymentOperationProperties is deployment operation properties.
+type DeploymentOperationProperties struct {
+	ProvisioningState *string             `json:"provisioningState,omitempty"`
+	Timestamp         *date.Time          `json:"timestamp,omitempty"`
+	StatusCode        *string             `json:"statusCode,omitempty"`
+	StatusMessage     *map[string]*string `json:"statusMessage,omitempty"`
+	TargetResource    *TargetResource     `json:"targetResource,omitempty"`
+}
+
+// DeploymentOperationsListResult is list of deployment operations.
 type DeploymentOperationsListResult struct {
 	autorest.Response `json:"-"`
-	Value             []DeploymentOperation `json:"value,omitempty"`
-	NextLink          string                `json:"nextLink,omitempty"`
+	Value             *[]DeploymentOperation `json:"value,omitempty"`
+	NextLink          *string                `json:"nextLink,omitempty"`
 }
 
-// Information from validate template deployment response.
+// DeploymentOperationsListResultPreparer prepares a request to retrieve the next set of results. It returns
+// nil if no more results exist.
+func (client DeploymentOperationsListResult) DeploymentOperationsListResultPreparer() (*http.Request, error) {
+	if client.NextLink == nil || len(to.String(client.NextLink)) <= 0 {
+		return nil, nil
+	}
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(client.NextLink)))
+}
+
+// DeploymentProperties is deployment properties.
+type DeploymentProperties struct {
+	Template       *map[string]*string `json:"template,omitempty"`
+	TemplateLink   *TemplateLink       `json:"templateLink,omitempty"`
+	Parameters     *map[string]*string `json:"parameters,omitempty"`
+	ParametersLink *ParametersLink     `json:"parametersLink,omitempty"`
+	Mode           DeploymentMode      `json:"mode,omitempty"`
+}
+
+// DeploymentPropertiesExtended is deployment properties with additional
+// details.
+type DeploymentPropertiesExtended struct {
+	ProvisioningState *string             `json:"provisioningState,omitempty"`
+	CorrelationID     *string             `json:"correlationId,omitempty"`
+	Timestamp         *date.Time          `json:"timestamp,omitempty"`
+	Outputs           *map[string]*string `json:"outputs,omitempty"`
+	Providers         *[]Provider         `json:"providers,omitempty"`
+	Dependencies      *[]Dependency       `json:"dependencies,omitempty"`
+	Template          *map[string]*string `json:"template,omitempty"`
+	TemplateLink      *TemplateLink       `json:"templateLink,omitempty"`
+	Parameters        *map[string]*string `json:"parameters,omitempty"`
+	ParametersLink    *ParametersLink     `json:"parametersLink,omitempty"`
+	Mode              DeploymentMode      `json:"mode,omitempty"`
+}
+
+// DeploymentValidateResult is information from validate template deployment
+// response.
 type DeploymentValidateResult struct {
 	autorest.Response `json:"-"`
-	Error             struct {
-		Details []ResourceManagementError `json:"details,omitempty"`
-		Code    string                    `json:"code,omitempty"`
-		Message string                    `json:"message,omitempty"`
-		Target  string                    `json:"target,omitempty"`
-	} `json:"error,omitempty"`
-	Properties struct {
-		ProvisioningState string            `json:"provisioningState,omitempty"`
-		CorrelationId     string            `json:"correlationId,omitempty"`
-		Timestamp         date.Time         `json:"timestamp,omitempty"`
-		Outputs           map[string]string `json:"outputs,omitempty"`
-		Providers         []Provider        `json:"providers,omitempty"`
-		Dependencies      []Dependency      `json:"dependencies,omitempty"`
-		Template          map[string]string `json:"template,omitempty"`
-		TemplateLink      struct {
-			Uri            string `json:"uri,omitempty"`
-			ContentVersion string `json:"contentVersion,omitempty"`
-		} `json:"templateLink,omitempty"`
-		Parameters     map[string]string `json:"parameters,omitempty"`
-		ParametersLink struct {
-			Uri            string `json:"uri,omitempty"`
-			ContentVersion string `json:"contentVersion,omitempty"`
-		} `json:"parametersLink,omitempty"`
-		Mode DeploymentMode `json:"mode,omitempty"`
-	} `json:"properties,omitempty"`
+	Error             *ManagementErrorWithDetails   `json:"error,omitempty"`
+	Properties        *DeploymentPropertiesExtended `json:"properties,omitempty"`
 }
 
-// Resource information.
+// GenericResource is resource information.
 type GenericResource struct {
 	autorest.Response `json:"-"`
-	Id                string            `json:"id,omitempty"`
-	Name              string            `json:"name,omitempty"`
-	Type              string            `json:"type,omitempty"`
-	Location          string            `json:"location,omitempty"`
-	Tags              map[string]string `json:"tags,omitempty"`
-	Plan              struct {
-		Name          string `json:"name,omitempty"`
-		Publisher     string `json:"publisher,omitempty"`
-		Product       string `json:"product,omitempty"`
-		PromotionCode string `json:"promotionCode,omitempty"`
-	} `json:"plan,omitempty"`
-	Properties map[string]string `json:"properties,omitempty"`
+	ID                *string             `json:"id,omitempty"`
+	Name              *string             `json:"name,omitempty"`
+	Type              *string             `json:"type,omitempty"`
+	Location          *string             `json:"location,omitempty"`
+	Tags              *map[string]*string `json:"tags,omitempty"`
+	Plan              *Plan               `json:"plan,omitempty"`
+	Properties        *map[string]*string `json:"properties,omitempty"`
 }
 
-// Resource provider information.
+// GenericResourceFilter is resource filter.
+type GenericResourceFilter struct {
+	ResourceType *string `json:"resourceType,omitempty"`
+	Tagname      *string `json:"tagname,omitempty"`
+	Tagvalue     *string `json:"tagvalue,omitempty"`
+}
+
+// Group is resource group information.
+type Group struct {
+	autorest.Response `json:"-"`
+	ID                *string             `json:"id,omitempty"`
+	Name              *string             `json:"name,omitempty"`
+	Properties        *GroupProperties    `json:"properties,omitempty"`
+	Location          *string             `json:"location,omitempty"`
+	Tags              *map[string]*string `json:"tags,omitempty"`
+}
+
+// GroupFilter is resource group filter.
+type GroupFilter struct {
+	TagName  *string `json:"tagName,omitempty"`
+	TagValue *string `json:"tagValue,omitempty"`
+}
+
+// GroupListResult is list of resource groups.
+type GroupListResult struct {
+	autorest.Response `json:"-"`
+	Value             *[]Group `json:"value,omitempty"`
+	NextLink          *string  `json:"nextLink,omitempty"`
+}
+
+// GroupListResultPreparer prepares a request to retrieve the next set of results. It returns
+// nil if no more results exist.
+func (client GroupListResult) GroupListResultPreparer() (*http.Request, error) {
+	if client.NextLink == nil || len(to.String(client.NextLink)) <= 0 {
+		return nil, nil
+	}
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(client.NextLink)))
+}
+
+// GroupProperties is the resource group properties.
+type GroupProperties struct {
+	ProvisioningState *string `json:"provisioningState,omitempty"`
+}
+
+// ListResult is list of resource groups.
+type ListResult struct {
+	autorest.Response `json:"-"`
+	Value             *[]GenericResource `json:"value,omitempty"`
+	NextLink          *string            `json:"nextLink,omitempty"`
+}
+
+// ListResultPreparer prepares a request to retrieve the next set of results. It returns
+// nil if no more results exist.
+func (client ListResult) ListResultPreparer() (*http.Request, error) {
+	if client.NextLink == nil || len(to.String(client.NextLink)) <= 0 {
+		return nil, nil
+	}
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(client.NextLink)))
+}
+
+// ManagementError is
+type ManagementError struct {
+	Code    *string `json:"code,omitempty"`
+	Message *string `json:"message,omitempty"`
+	Target  *string `json:"target,omitempty"`
+}
+
+// ManagementErrorWithDetails is
+type ManagementErrorWithDetails struct {
+	Details *[]ManagementError `json:"details,omitempty"`
+	Code    *string            `json:"code,omitempty"`
+	Message *string            `json:"message,omitempty"`
+	Target  *string            `json:"target,omitempty"`
+}
+
+// MoveInfo is parameters of move resources.
+type MoveInfo struct {
+	Resources           *[]string `json:"resources,omitempty"`
+	TargetResourceGroup *string   `json:"targetResourceGroup,omitempty"`
+}
+
+// ParametersLink is entity representing the reference to the deployment
+// paramaters.
+type ParametersLink struct {
+	URI            *string `json:"uri,omitempty"`
+	ContentVersion *string `json:"contentVersion,omitempty"`
+}
+
+// Plan is plan for the resource.
+type Plan struct {
+	Name          *string `json:"name,omitempty"`
+	Publisher     *string `json:"publisher,omitempty"`
+	Product       *string `json:"product,omitempty"`
+	PromotionCode *string `json:"promotionCode,omitempty"`
+}
+
+// Provider is resource provider information.
 type Provider struct {
 	autorest.Response `json:"-"`
-	Id                string                 `json:"id,omitempty"`
-	Namespace         string                 `json:"namespace,omitempty"`
-	RegistrationState string                 `json:"registrationState,omitempty"`
-	ResourceTypes     []ProviderResourceType `json:"resourceTypes,omitempty"`
+	ID                *string                 `json:"id,omitempty"`
+	Namespace         *string                 `json:"namespace,omitempty"`
+	RegistrationState *string                 `json:"registrationState,omitempty"`
+	ResourceTypes     *[]ProviderResourceType `json:"resourceTypes,omitempty"`
 }
 
-// List of resource providers.
+// ProviderListResult is list of resource providers.
 type ProviderListResult struct {
 	autorest.Response `json:"-"`
-	Value             []Provider `json:"value,omitempty"`
-	NextLink          string     `json:"nextLink,omitempty"`
+	Value             *[]Provider `json:"value,omitempty"`
+	NextLink          *string     `json:"nextLink,omitempty"`
 }
 
-// Resource type managed by the resource provider.
+// ProviderListResultPreparer prepares a request to retrieve the next set of results. It returns
+// nil if no more results exist.
+func (client ProviderListResult) ProviderListResultPreparer() (*http.Request, error) {
+	if client.NextLink == nil || len(to.String(client.NextLink)) <= 0 {
+		return nil, nil
+	}
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(client.NextLink)))
+}
+
+// ProviderOperationDefinition is resource provider operation information.
+type ProviderOperationDefinition struct {
+	Name    *string                             `json:"name,omitempty"`
+	Display *ProviderOperationDisplayProperties `json:"display,omitempty"`
+}
+
+// ProviderOperationDetailListResult is list of resource provider operations.
+type ProviderOperationDetailListResult struct {
+	autorest.Response `json:"-"`
+	Value             *[]ProviderOperationDefinition `json:"value,omitempty"`
+}
+
+// ProviderOperationDisplayProperties is resource provider operation's display
+// properties.
+type ProviderOperationDisplayProperties struct {
+	Publisher   *string `json:"publisher,omitempty"`
+	Provider    *string `json:"provider,omitempty"`
+	Resource    *string `json:"resource,omitempty"`
+	Operation   *string `json:"operation,omitempty"`
+	Description *string `json:"description,omitempty"`
+}
+
+// ProviderResourceType is resource type managed by the resource provider.
 type ProviderResourceType struct {
-	ResourceType string            `json:"resourceType,omitempty"`
-	Locations    []string          `json:"locations,omitempty"`
-	ApiVersions  []string          `json:"apiVersions,omitempty"`
-	Properties   map[string]string `json:"properties,omitempty"`
+	ResourceType *string             `json:"resourceType,omitempty"`
+	Locations    *[]string           `json:"locations,omitempty"`
+	APIVersions  *[]string           `json:"apiVersions,omitempty"`
+	Properties   *map[string]*string `json:"properties,omitempty"`
 }
 
-// Resource group information.
-type ResourceGroup struct {
-	autorest.Response `json:"-"`
-	Id                string `json:"id,omitempty"`
-	Name              string `json:"name,omitempty"`
-	Properties        struct {
-		ProvisioningState string `json:"provisioningState,omitempty"`
-	} `json:"properties,omitempty"`
-	Location string            `json:"location,omitempty"`
-	Tags     map[string]string `json:"tags,omitempty"`
+// Resource is
+type Resource struct {
+	ID       *string             `json:"id,omitempty"`
+	Name     *string             `json:"name,omitempty"`
+	Type     *string             `json:"type,omitempty"`
+	Location *string             `json:"location,omitempty"`
+	Tags     *map[string]*string `json:"tags,omitempty"`
 }
 
-// List of resource groups.
-type ResourceGroupListResult struct {
-	autorest.Response `json:"-"`
-	Value             []ResourceGroup `json:"value,omitempty"`
-	NextLink          string          `json:"nextLink,omitempty"`
+// SubResource is
+type SubResource struct {
+	ID *string `json:"id,omitempty"`
 }
 
-// List of resource groups.
-type ResourceListResult struct {
-	autorest.Response `json:"-"`
-	Value             []GenericResource `json:"value,omitempty"`
-	NextLink          string            `json:"nextLink,omitempty"`
+// TagCount is tag count.
+type TagCount struct {
+	Type  *string `json:"type,omitempty"`
+	Value *string `json:"value,omitempty"`
 }
 
-type ResourceManagementError struct {
-	Code    string `json:"code,omitempty"`
-	Message string `json:"message,omitempty"`
-	Target  string `json:"target,omitempty"`
-}
-
-// Resource provider operation information.
-type ResourceProviderOperationDefinition struct {
-	Name    string `json:"name,omitempty"`
-	Display struct {
-		Publisher   string `json:"publisher,omitempty"`
-		Provider    string `json:"provider,omitempty"`
-		Resource    string `json:"resource,omitempty"`
-		Operation   string `json:"operation,omitempty"`
-		Description string `json:"description,omitempty"`
-	} `json:"display,omitempty"`
-}
-
-// List of resource provider operations.
-type ResourceProviderOperationDetailListResult struct {
-	autorest.Response `json:"-"`
-	Value             []ResourceProviderOperationDefinition `json:"value,omitempty"`
-}
-
-// Parameters of move resources.
-type ResourcesMoveInfo struct {
-	Resources           []string `json:"resources,omitempty"`
-	TargetResourceGroup string   `json:"targetResourceGroup,omitempty"`
-}
-
-// Tag details.
+// TagDetails is tag details.
 type TagDetails struct {
 	autorest.Response `json:"-"`
-	Id                string `json:"id,omitempty"`
-	TagName           string `json:"tagName,omitempty"`
-	Count             struct {
-		Type  string `json:"type,omitempty"`
-		Value string `json:"value,omitempty"`
-	} `json:"count,omitempty"`
-	Values []TagValue `json:"values,omitempty"`
+	ID                *string     `json:"id,omitempty"`
+	TagName           *string     `json:"tagName,omitempty"`
+	Count             *TagCount   `json:"count,omitempty"`
+	Values            *[]TagValue `json:"values,omitempty"`
 }
 
-// List of subscription tags.
+// TagsListResult is list of subscription tags.
 type TagsListResult struct {
 	autorest.Response `json:"-"`
-	Value             []TagDetails `json:"value,omitempty"`
-	NextLink          string       `json:"nextLink,omitempty"`
+	Value             *[]TagDetails `json:"value,omitempty"`
+	NextLink          *string       `json:"nextLink,omitempty"`
 }
 
-// Tag information.
+// TagsListResultPreparer prepares a request to retrieve the next set of results. It returns
+// nil if no more results exist.
+func (client TagsListResult) TagsListResultPreparer() (*http.Request, error) {
+	if client.NextLink == nil || len(to.String(client.NextLink)) <= 0 {
+		return nil, nil
+	}
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(client.NextLink)))
+}
+
+// TagValue is tag information.
 type TagValue struct {
 	autorest.Response `json:"-"`
-	Id                string `json:"id,omitempty"`
-	TagValueProperty  string `json:"tagValue,omitempty"`
-	Count             struct {
-		Type  string `json:"type,omitempty"`
-		Value string `json:"value,omitempty"`
-	} `json:"count,omitempty"`
+	ID                *string   `json:"id,omitempty"`
+	TagValueProperty  *string   `json:"tagValue,omitempty"`
+	Count             *TagCount `json:"count,omitempty"`
+}
+
+// TargetResource is target resource.
+type TargetResource struct {
+	ID           *string `json:"id,omitempty"`
+	ResourceName *string `json:"resourceName,omitempty"`
+	ResourceType *string `json:"resourceType,omitempty"`
+}
+
+// TemplateLink is entity representing the reference to the template.
+type TemplateLink struct {
+	URI            *string `json:"uri,omitempty"`
+	ContentVersion *string `json:"contentVersion,omitempty"`
 }

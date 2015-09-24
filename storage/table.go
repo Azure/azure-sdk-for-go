@@ -68,12 +68,12 @@ func (c *TableServiceClient) QueryTables() ([]AzureTable, error) {
 	return s, nil
 }
 
-func (c *TableServiceClient) CreateTable(tableName AzureTable) error {
+func (c *TableServiceClient) CreateTable(table AzureTable) error {
 	uri := c.client.getEndpoint(tableServiceName, tablesURIPath, url.Values{})
 
 	headers := c.getStandardHeaders()
 
-	req := createTableRequest{TableName: string(tableName)}
+	req := createTableRequest{TableName: string(table)}
 	buf := new(bytes.Buffer)
 
 	if err := json.NewEncoder(buf).Encode(req); err != nil {
@@ -90,6 +90,29 @@ func (c *TableServiceClient) CreateTable(tableName AzureTable) error {
 	defer resp.body.Close()
 
 	if err := checkRespCode(resp.statusCode, []int{http.StatusCreated}); err != nil {
+		return err
+	} else {
+		return nil
+	}
+}
+
+func (c *TableServiceClient) DeleteTable(table AzureTable) error {
+	uri := c.client.getEndpoint(tableServiceName, tablesURIPath, url.Values{})
+	uri += fmt.Sprintf("('%s')", string(table))
+
+	headers := c.getStandardHeaders()
+
+	buf := new(bytes.Buffer)
+	headers["Content-Length"] = fmt.Sprintf("%d", buf.Len())
+
+	resp, err := c.client.execTable("DELETE", uri, headers, buf)
+
+	if err != nil {
+		return err
+	}
+	defer resp.body.Close()
+
+	if err := checkRespCode(resp.statusCode, []int{http.StatusNoContent}); err != nil {
 		return err
 	} else {
 		return nil

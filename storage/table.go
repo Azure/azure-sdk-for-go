@@ -16,13 +16,16 @@ type TableServiceClient struct {
 	client Client
 }
 
+type TableName string
+
 const (
-	tablesURIPath           = "/Tables"
-	partitionKeyNode        = "PartitionKey"
-	rowKeyNode              = "RowKey"
-	tag                     = "table"
-	tagIgnore               = "-"
-	continuationTokenHeader = "x-ms-continuation-NextTableName"
+	tablesURIPath                       = "/Tables"
+	partitionKeyNode                    = "PartitionKey"
+	rowKeyNode                          = "RowKey"
+	tag                                 = "table"
+	tagIgnore                           = "-"
+	continuationTokenPartitionKeyHeader = "X-Ms-Continuation-Nextpartitionkey"
+	continuationTokenRowHeader          = "X-Ms-Continuation-Nextrowkey"
 )
 
 type createTableRequest struct {
@@ -42,13 +45,16 @@ type TableEntry interface {
 	SetRowKey(string) error
 }
 
+type ContinuationToken struct {
+	NextPartitionKey string
+	NextRowKey       string
+}
+
 type getTableEntriesResponse struct {
 	Elements []map[string]interface{} `json:"value"`
 }
 
-type ContinuationToken string
-
-func pathForTable(table string) string { return fmt.Sprintf("%s", table) }
+func pathForTable(table TableName) string { return fmt.Sprintf("%s", table) }
 
 func (c *TableServiceClient) getStandardHeaders() map[string]string {
 	return map[string]string{
@@ -60,7 +66,7 @@ func (c *TableServiceClient) getStandardHeaders() map[string]string {
 	}
 }
 
-func (c *TableServiceClient) QueryTables() ([]string, error) {
+func (c *TableServiceClient) QueryTables() ([]TableName, error) {
 	uri := c.client.getEndpoint(tableServiceName, tablesURIPath, url.Values{})
 
 	headers := c.getStandardHeaders()
@@ -84,20 +90,20 @@ func (c *TableServiceClient) QueryTables() ([]string, error) {
 		return nil, err
 	}
 
-	s := make([]string, len(respArray.TableName))
+	s := make([]TableName, len(respArray.TableName))
 	for i, elem := range respArray.TableName {
-		s[i] = elem.TableName
+		s[i] = TableName(elem.TableName)
 	}
 
 	return s, nil
 }
 
-func (c *TableServiceClient) CreateTable(tableName string) error {
+func (c *TableServiceClient) CreateTable(tableName TableName) error {
 	uri := c.client.getEndpoint(tableServiceName, tablesURIPath, url.Values{})
 
 	headers := c.getStandardHeaders()
 
-	req := createTableRequest{TableName: tableName}
+	req := createTableRequest{TableName: string(tableName)}
 	buf := new(bytes.Buffer)
 
 	if err := json.NewEncoder(buf).Encode(req); err != nil {
@@ -216,32 +222,38 @@ func deserializeEntry(retType reflect.Type, reader io.Reader) ([](*TableEntry), 
 
 		// store the pointer
 		tEntries[i] = &e
-		
+
 	}
 
 	return tEntries, nil
 }
 
-func (c *TableServiceClient) QueryTableEntries(tableName string, previousContToken ContinuationToken, retType reflect.Type, top int, query string) ([](*TableEntry), ContinuationToken, error) {
+func (c *TableServiceClient) QueryTableEntries(tableName TableName, previousContToken *ContinuationToken, retType reflect.Type, top int, query string) ([](*TableEntry), *ContinuationToken, error) {
 	buf := new(bytes.Buffer)
 
 	uri := c.client.getEndpoint(tableServiceName, pathForTable(tableName), url.Values{})
 	uri += fmt.Sprintf("()?$top=%d", top)
-	uri += fmt.Sprintf("&$filter=%s", url.QueryEscape(query))
+	if query != "" {
+		uri += fmt.Sprintf("&$filter=%s", url.QueryEscape(query))
+	}
+
+	if previousContToken != nil {
+		uri += fmt.Sprintf("&NextPartitionKey=%s&NextRowKey=%s", previousContToken.NextPartitionKey, previousContToken.NextRowKey)
+	}
 
 	headers := c.getStandardHeaders()
 	headers["DataServiceVersion"] = "1.0;NetFx"
 	headers["MaxDataServiceVersion"] = "3.0;NetFx"
 
 	headers["Content-Length"] = fmt.Sprintf("%d", buf.Len())
-	if previousContToken != "" {
-		headers["x-ms-continuation-NextTableName"] = string(previousContToken)
-	}
 
 	resp, err := c.client.execTable("GET", uri, headers, buf)
 
-	var contToken ContinuationToken
-//	lcontToken := resp.headers[continuationTokenHeader]
+	contToken := ExtractContinuationTokenFromHeaders(resp.headers)
+
+	//	for key, val := range resp.headers {
+	//		log.Printf("headers[%s] = %s", key, val)
+	//	}
 
 	if err != nil {
 		return nil, contToken, err
@@ -260,22 +272,26 @@ func (c *TableServiceClient) QueryTableEntries(tableName string, previousContTok
 	return retEntries, contToken, nil
 }
 
-func (c *TableServiceClient) GetTableEntries(tableName string, previousContToken ContinuationToken, retType reflect.Type) ([](*TableEntry), ContinuationToken, error) {
+func (c *TableServiceClient) GetTableEntries(tableName TableName, previousContToken *ContinuationToken, retType reflect.Type, top int) ([](*TableEntry), *ContinuationToken, error) {
 	buf := new(bytes.Buffer)
 
 	uri := c.client.getEndpoint(tableServiceName, pathForTable(tableName), url.Values{})
-	uri += fmt.Sprintf("()")
+	uri += fmt.Sprintf("()?$top=%d", top)
+
+	if previousContToken != nil {
+		uri += fmt.Sprintf("&NextPartitionKey=%s&NextRowKey=%s", previousContToken.NextPartitionKey, previousContToken.NextRowKey)
+	}
 
 	headers := c.getStandardHeaders()
 	headers["Content-Length"] = fmt.Sprintf("%d", buf.Len())
-	if previousContToken != "" {
-		headers["x-ms-continuation-NextTableName"] = string(previousContToken)
-	}
 
 	resp, err := c.client.execTable("GET", uri, headers, buf)
 
-	var contToken ContinuationToken
-	//tcontToken := resp.headers[continuationTokenHeader]
+	contToken := ExtractContinuationTokenFromHeaders(resp.headers)
+
+	//	for key, val := range resp.headers {
+	//		log.Printf("headers[%s] = %s", key, val)
+	//	}
 
 	if err != nil {
 		return nil, contToken, err
@@ -294,7 +310,14 @@ func (c *TableServiceClient) GetTableEntries(tableName string, previousContToken
 	return retEntries, contToken, nil
 }
 
-func (c *TableServiceClient) InsertEntry(tableName string, entry TableEntry) error {
+func ExtractContinuationTokenFromHeaders(headers map[string][]string) *ContinuationToken {
+	if len(headers[continuationTokenPartitionKeyHeader]) > 0 {
+		return &ContinuationToken{headers[continuationTokenPartitionKeyHeader][0], headers[continuationTokenRowHeader][0]}
+	}
+	return nil
+}
+
+func (c *TableServiceClient) InsertEntry(tableName TableName, entry TableEntry) error {
 	uri := c.client.getEndpoint(tableServiceName, pathForTable(tableName), url.Values{})
 	headers := c.getStandardHeaders()
 
@@ -322,7 +345,7 @@ func (c *TableServiceClient) InsertEntry(tableName string, entry TableEntry) err
 	}
 }
 
-func (c *TableServiceClient) InsertOrReplaceEntry(tableName string, entry TableEntry) error {
+func (c *TableServiceClient) InsertOrReplaceEntry(tableName TableName, entry TableEntry) error {
 	uri := c.client.getEndpoint(tableServiceName, pathForTable(tableName), url.Values{})
 	uri += fmt.Sprintf("(PartitionKey='%s',RowKey='%s')", url.QueryEscape(entry.PartitionKey()), url.QueryEscape(entry.RowKey()))
 

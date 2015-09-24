@@ -1,9 +1,9 @@
 package storage
 
 import (
-	"errors"
 	"bytes"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"io"
 	"net/http"
@@ -18,7 +18,7 @@ const (
 	tagIgnore                           = "-"
 	continuationTokenPartitionKeyHeader = "X-Ms-Continuation-Nextpartitionkey"
 	continuationTokenRowHeader          = "X-Ms-Continuation-Nextrowkey"
-	maxTopParameter = 1000
+	maxTopParameter                     = 1000
 )
 
 type queryTablesResponse struct {
@@ -149,7 +149,7 @@ func (c *TableServiceClient) QueryTableEntries(tableName AzureTable, previousCon
 	if top > maxTopParameter {
 		return nil, nil, errors.New(fmt.Sprintf("Top accepts at maximum %d elements. Requested %d instead.", maxTopParameter, top))
 	}
-	
+
 	buf := new(bytes.Buffer)
 
 	uri := c.client.getEndpoint(tableServiceName, pathForTable(tableName), url.Values{})
@@ -222,8 +222,59 @@ func (c *TableServiceClient) InsertEntry(tableName AzureTable, entry TableEntry)
 	}
 }
 
-func (c *TableServiceClient) InsertOrReplaceEntry(tableName AzureTable, entry TableEntry) error {
-	uri := c.client.getEndpoint(tableServiceName, pathForTable(tableName), url.Values{})
+func (c *TableServiceClient) UpdateEntry(table AzureTable, entry TableEntry) error {
+	return c.updateOrMergeEntry(table, entry, true)
+}
+
+func (c *TableServiceClient) MergeEntry(table AzureTable, entry TableEntry) error {
+	return c.updateOrMergeEntry(table, entry, false)
+}
+
+func (c *TableServiceClient) updateOrMergeEntry(table AzureTable, entry TableEntry, updateInsteadOfMerge bool) error {
+	uri := c.client.getEndpoint(tableServiceName, pathForTable(table), url.Values{})
+	headers := c.getStandardHeaders()
+
+	buf := new(bytes.Buffer)
+
+	if err := injectPartitionAndRowKeys(entry, buf); err != nil {
+		return err
+	}
+
+	//	log.Printf("request.body == %s", string(buf.Bytes()))
+
+	headers["Content-Length"] = fmt.Sprintf("%d", buf.Len())
+
+	var err error
+	var resp *odataResponse
+
+	if updateInsteadOfMerge {
+		resp, err = c.client.execTable("PUT", uri, headers, buf)
+	} else {
+		resp, err = c.client.execTable("MERGE", uri, headers, buf)
+	}
+
+	if err != nil {
+		return err
+	}
+	defer resp.body.Close()
+
+	if err := checkRespCode(resp.statusCode, []int{http.StatusCreated}); err != nil {
+		return err
+	} else {
+		return nil
+	}
+}
+
+func (c *TableServiceClient) InsertOrReplaceEntry(table AzureTable, entry TableEntry) error {
+	return c.insertOrReplaceOrMergeEntry(table, entry, false)
+}
+
+func (c *TableServiceClient) InsertOrMergeEntry(table AzureTable, entry TableEntry) error {
+	return c.insertOrReplaceOrMergeEntry(table, entry, true)
+}
+
+func (c *TableServiceClient) insertOrReplaceOrMergeEntry(table AzureTable, entry TableEntry, mergeInsteadOfReplace bool) error {
+	uri := c.client.getEndpoint(tableServiceName, pathForTable(table), url.Values{})
 	uri += fmt.Sprintf("(PartitionKey='%s',RowKey='%s')", url.QueryEscape(entry.PartitionKey()), url.QueryEscape(entry.RowKey()))
 
 	headers := c.getStandardHeaders()
@@ -238,7 +289,14 @@ func (c *TableServiceClient) InsertOrReplaceEntry(tableName AzureTable, entry Ta
 
 	headers["Content-Length"] = fmt.Sprintf("%d", buf.Len())
 
-	resp, err := c.client.execTable("PUT", uri, headers, buf)
+	var err error
+	var resp *odataResponse
+
+	if mergeInsteadOfReplace {
+		resp, err = c.client.execTable("MERGE", uri, headers, buf)
+	} else {
+		resp, err = c.client.execTable("PUT", uri, headers, buf)
+	}
 
 	if err != nil {
 		return err

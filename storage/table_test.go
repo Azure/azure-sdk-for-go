@@ -246,29 +246,29 @@ func (s *StorageBlobSuite) Test_ContinuationToken(c *chk.C) {
 	err := cli.CreateTable(tn)
 	c.Assert(err, chk.IsNil)
 	defer cli.DeleteTable(tn)
-	
+
 	var ce *CustomEntity
-	for i:=0; i<5; i++ {
+	for i := 0; i < 5; i++ {
 		ce = &CustomEntity{Name: "Test", Surname: "Test2", SomeDate: time.Now(), Number: i, PKey: "pkey", RKey: fmt.Sprintf("r%d", i)}
 		c.Assert(cli.InsertOrReplaceEntity(tn, ce), chk.IsNil)
 	}
-	
-	// retrieve using top = 2. Should return 2 entries, 2 entries and finally 
+
+	// retrieve using top = 2. Should return 2 entries, 2 entries and finally
 	// 1 entry
 	entries, contToken, err := cli.QueryTableEntities(tn, nil, reflect.TypeOf(ce), 2, "")
 	c.Assert(err, chk.IsNil)
-	c.Assert(len(entries), chk.Equals, 2)	
-	c.Assert(contToken, chk.NotNil)	
-	
-	entries, contToken, err = cli.QueryTableEntities(tn, contToken, reflect.TypeOf(ce), 2, "")
-	c.Assert(err, chk.IsNil)
-	c.Assert(len(entries), chk.Equals, 2)	
-	c.Assert(contToken, chk.NotNil)		
+	c.Assert(len(entries), chk.Equals, 2)
+	c.Assert(contToken, chk.NotNil)
 
 	entries, contToken, err = cli.QueryTableEntities(tn, contToken, reflect.TypeOf(ce), 2, "")
 	c.Assert(err, chk.IsNil)
-	c.Assert(len(entries), chk.Equals, 1)	
-	c.Assert(contToken, chk.IsNil)	
+	c.Assert(len(entries), chk.Equals, 2)
+	c.Assert(contToken, chk.NotNil)
+
+	entries, contToken, err = cli.QueryTableEntities(tn, contToken, reflect.TypeOf(ce), 2, "")
+	c.Assert(err, chk.IsNil)
+	c.Assert(len(entries), chk.Equals, 1)
+	c.Assert(contToken, chk.IsNil)
 }
 
 func randTable() string {

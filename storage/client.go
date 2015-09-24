@@ -307,14 +307,6 @@ func (c Client) buildCanonicalizedResource(uri string) (string, error) {
 	return cr, nil
 }
 
-func deDollarKey(key string) string {
-	if key[0] == '$' {
-		key = key[1:]
-	}
-
-	return key
-}
-
 func (c Client) buildCanonicalizedString(verb string, headers map[string]string, canonicalizedResource string) string {
 	canonicalizedString := fmt.Sprintf("%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s",
 		verb,
@@ -355,16 +347,6 @@ func (c Client) exec(verb, url string, headers map[string]string, body io.Reader
 	if err != nil {
 		return nil, err
 	}
-
-	//	/* DEBUG */
-	//	log.Printf("in exec::after httpClient.Do(%s)", req)
-
-	//	log.Printf("exec.resp.Body == %s", resp.Body)
-
-	//	buf := new(bytes.Buffer)
-	//	buf.ReadFrom(resp.Body)
-	//	log.Printf("exec buf == %s", string(buf.Bytes()))
-	//	/* DEBUG end */
 
 	statusCode := resp.StatusCode
 	if statusCode >= 400 && statusCode <= 505 {
@@ -409,16 +391,6 @@ func (c Client) execInternalJSON(verb, url string, headers map[string]string, bo
 	if err != nil {
 		return nil, err
 	}
-
-	//	/* DEBUG */
-	//	log.Printf("in execInternalJSON::after httpClient.Do(%s)", req)
-
-	//	log.Printf("execInternalJSON.resp.Body == %s", resp.Body)
-
-	//	buf := new(bytes.Buffer)
-	//	buf.ReadFrom(resp.Body)
-	//	log.Printf("execInternalJSON buf == %s", string(buf.Bytes()))
-	//	/* DEBUG end */
 
 	respToRet := &odataResponse{}
 	respToRet.body = resp.Body

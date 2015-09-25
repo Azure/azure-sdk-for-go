@@ -541,6 +541,77 @@ func (b BlobStorageClient) GetBlobProperties(container, name string) (*BlobPrope
 	}, nil
 }
 
+// SetBlobMetadata replaces the metadata for the specified blob.
+//
+// Some keys may be converted to Camel-Case before sending. All keys
+// are returned in lower case by GetBlobMetadata. HTTP header names
+// are case-insensitive so case munging should not matter to other
+// applications either.
+//
+// See https://msdn.microsoft.com/en-us/library/azure/dd179414.aspx
+func (b BlobStorageClient) SetBlobMetadata(container, name string, metadata map[string]string) error {
+	params := url.Values{"comp": {"metadata"}}
+	uri := b.client.getEndpoint(blobServiceName, pathForBlob(container, name), params)
+	headers := b.client.getStandardHeaders()
+	for k, v := range metadata {
+		headers["x-ms-meta-"+k] = v
+	}
+	headers["Content-Length"] = "0"
+
+	resp, err := b.client.exec("PUT", uri, headers, nil)
+	if err != nil {
+		return err
+	}
+	defer resp.body.Close()
+
+	return checkRespCode(resp.statusCode, []int{http.StatusOK})
+}
+
+// GetBlobMetadata returns all user-defined metadata for the specified blob.
+//
+// All metadata keys will be returned in lower case. (HTTP header
+// names are case-insensitive.)
+//
+// See https://msdn.microsoft.com/en-us/library/azure/dd179414.aspx
+func (b BlobStorageClient) GetBlobMetadata(container, name string) (map[string]string, error) {
+	params := url.Values{"comp": {"metadata"}}
+	uri := b.client.getEndpoint(blobServiceName, pathForBlob(container, name), params)
+	headers := b.client.getStandardHeaders()
+
+	resp, err := b.client.exec("GET", uri, headers, nil)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.body.Close()
+
+	if err := checkRespCode(resp.statusCode, []int{http.StatusOK}); err != nil {
+		return nil, err
+	}
+
+	metadata := map[string]string{}
+	metaPrefix := "x-ms-meta-"
+	for k, v := range resp.headers {
+		if len(k) <= len(metaPrefix) || len(v) == 0 {
+			continue
+		}
+		// Can't trust CanonicalHeaderKey() to munge case
+		// reliably. "_" is allowed in identifiers:
+		// https://msdn.microsoft.com/en-us/library/azure/dd179414.aspx
+		// https://msdn.microsoft.com/library/aa664670(VS.71).aspx
+		// http://tools.ietf.org/html/rfc7230#section-3.2
+		// ...but "_" is considered invalid by
+		// CanonicalMIMEHeaderKey in
+		// https://golang.org/src/net/textproto/reader.go?s=14615:14659#L542
+		// so k can be "X-Ms-Meta-Foo" or "x-ms-meta-foo_bar".
+		if strings.ToLower(k[:len(metaPrefix)]) != metaPrefix {
+			continue
+		}
+		// metadata["foo"] = content of the last X-Ms-Meta-Foo header
+		metadata[strings.ToLower(k[len(metaPrefix):])] = v[len(v)-1]
+	}
+	return metadata, nil
+}
+
 // CreateBlockBlob initializes an empty block blob with no blocks.
 //
 // See https://msdn.microsoft.com/en-us/library/azure/dd179451.aspx

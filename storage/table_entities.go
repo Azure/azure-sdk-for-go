@@ -43,7 +43,7 @@ type getTableEntriesResponse struct {
 	Elements []map[string]interface{} `json:"value"`
 }
 
-func (c *TableServiceClient) QueryTableEntities(tableName AzureTable, previousContToken *ContinuationToken, retType reflect.Type, top int, query string) ([](*TableEntity), *ContinuationToken, error) {
+func (c *TableServiceClient) QueryTableEntities(tableName AzureTable, previousContToken *ContinuationToken, retType reflect.Type, top int, query string) (*[]TableEntity, *ContinuationToken, error) {
 	if top > maxTopParameter {
 		return nil, nil, errors.New(fmt.Sprintf("Top accepts at maximum %d elements. Requested %d instead.", maxTopParameter, top))
 	}
@@ -267,7 +267,7 @@ func injectPartitionAndRowKeys(entity TableEntity, buf *bytes.Buffer) error {
 	return nil
 }
 
-func deserializeEntity(retType reflect.Type, reader io.Reader) ([](*TableEntity), error) {
+func deserializeEntity(retType reflect.Type, reader io.Reader) (*[]TableEntity, error) {
 	buf := new(bytes.Buffer)
 
 	var ret getTableEntriesResponse
@@ -275,7 +275,7 @@ func deserializeEntity(retType reflect.Type, reader io.Reader) ([](*TableEntity)
 		return nil, err
 	}
 
-	tEntries := make([]*TableEntity, len(ret.Elements))
+	tEntries := make([]TableEntity, len(ret.Elements))
 
 	for i, entry := range ret.Elements {
 
@@ -309,23 +309,18 @@ func deserializeEntity(retType reflect.Type, reader io.Reader) ([](*TableEntity)
 		}
 
 		// Create a empty retType instance
-		e := reflect.New(retType.Elem()).Interface().(TableEntity)
-
+		tEntries[i] = reflect.New(retType.Elem()).Interface().(TableEntity)
 		// Popolate it with the values
-		if err := json.NewDecoder(buf).Decode(&e); err != nil {
+		if err := json.NewDecoder(buf).Decode(&tEntries[i]); err != nil {
 			return nil, err
 		}
 
 		// Reset PartitionKey and RowKey
-		e.SetPartitionKey(pKey)
-		e.SetRowKey(rKey)
-
-		// store the pointer
-		tEntries[i] = &e
-
+		tEntries[i].SetPartitionKey(pKey)
+		tEntries[i].SetRowKey(rKey)
 	}
 
-	return tEntries, nil
+	return &tEntries, nil
 }
 
 func extractContinuationTokenFromHeaders(headers map[string][]string) *ContinuationToken {

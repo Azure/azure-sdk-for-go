@@ -174,11 +174,11 @@ func (s *StorageBlobSuite) Test_InsertAndGetEntities(c *chk.C) {
 	entries, _, err := cli.QueryTableEntities(tn, nil, reflect.TypeOf(ce), 10, "")
 	c.Assert(err, chk.IsNil)
 
-	c.Assert(len(entries), chk.Equals, 2)
+	c.Assert(len(*entries), chk.Equals, 2)
 
-	c.Assert(ce.RowKey(), chk.Equals, (*entries[1]).RowKey())
-
-	c.Assert(ce, chk.DeepEquals, *entries[1])
+	c.Assert(ce.RowKey(), chk.Equals, (*entries)[1].RowKey())
+	
+	testEquality(c, ce, (*entries)[1].(*CustomEntity))
 }
 
 func (s *StorageBlobSuite) Test_InsertAndQueryEntities(c *chk.C) {
@@ -199,11 +199,10 @@ func (s *StorageBlobSuite) Test_InsertAndQueryEntities(c *chk.C) {
 	entries, _, err := cli.QueryTableEntities(tn, nil, reflect.TypeOf(ce), 10, "RowKey eq '200'")
 	c.Assert(err, chk.IsNil)
 
-	c.Assert(len(entries), chk.Equals, 1)
+	c.Assert(len(*entries), chk.Equals, 1)
 
-	c.Assert(ce.RowKey(), chk.Equals, (*entries[0]).RowKey())
-
-	c.Assert(ce, chk.DeepEquals, *entries[0])
+	c.Assert(ce.RowKey(), chk.Equals, (*entries)[0].RowKey())
+		
 }
 
 func (s *StorageBlobSuite) Test_InsertAndDeleteEntities(c *chk.C) {
@@ -225,17 +224,17 @@ func (s *StorageBlobSuite) Test_InsertAndDeleteEntities(c *chk.C) {
 	entries, _, err := cli.QueryTableEntities(tn, nil, reflect.TypeOf(ce), 10, "Number eq 1")
 	c.Assert(err, chk.IsNil)
 
-	c.Assert(len(entries), chk.Equals, 1)
+	c.Assert(len(*entries), chk.Equals, 1)
 
-	c.Assert(ce, chk.DeepEquals, *entries[0])
+	testEquality(c, ce, (*entries)[0].(*CustomEntity))
 
-	c.Assert(cli.DeleteEntityWithoutCheck(tn, *entries[0]), chk.IsNil)
+	c.Assert(cli.DeleteEntityWithoutCheck(tn, (*entries)[0]), chk.IsNil)
 
 	entries, _, err = cli.QueryTableEntities(tn, nil, reflect.TypeOf(ce), 10, "")
 	c.Assert(err, chk.IsNil)
 
 	// only 1 entry must be present
-	c.Assert(len(entries), chk.Equals, 1)
+	c.Assert(len(*entries), chk.Equals, 1)
 }
 
 func (s *StorageBlobSuite) Test_ContinuationToken(c *chk.C) {
@@ -257,17 +256,17 @@ func (s *StorageBlobSuite) Test_ContinuationToken(c *chk.C) {
 	// 1 entry
 	entries, contToken, err := cli.QueryTableEntities(tn, nil, reflect.TypeOf(ce), 2, "")
 	c.Assert(err, chk.IsNil)
-	c.Assert(len(entries), chk.Equals, 2)
+	c.Assert(len(*entries), chk.Equals, 2)
 	c.Assert(contToken, chk.NotNil)
 
 	entries, contToken, err = cli.QueryTableEntities(tn, contToken, reflect.TypeOf(ce), 2, "")
 	c.Assert(err, chk.IsNil)
-	c.Assert(len(entries), chk.Equals, 2)
+	c.Assert(len(*entries), chk.Equals, 2)
 	c.Assert(contToken, chk.NotNil)
 
 	entries, contToken, err = cli.QueryTableEntities(tn, contToken, reflect.TypeOf(ce), 2, "")
 	c.Assert(err, chk.IsNil)
-	c.Assert(len(entries), chk.Equals, 1)
+	c.Assert(len(*entries), chk.Equals, 1)
 	c.Assert(contToken, chk.IsNil)
 }
 
@@ -280,3 +279,23 @@ func randTable() string {
 	}
 	return string(bytes)
 }
+
+func testEquality(c *chk.C, c1, c2 *CustomEntity) {
+	if c1 == nil {
+		c.Assert(c2, chk.IsNil)
+		return
+	} 
+	if c2 == nil {
+		c.Assert(c1, chk.IsNil)
+		return
+	} 
+	
+	c.Assert(c1.Name, chk.Equals, c2.Name)
+	c.Assert(c1.Surname, chk.Equals, c2.Surname)		
+	c.Assert(c1.Number, chk.Equals, c2.Number)
+	c.Assert(c1.PKey, chk.Equals, c2.PKey)
+	c.Assert(c1.RKey, chk.Equals, c2.RKey)
+	c.Assert(c1.SomeDate, chk.Equals, c2.SomeDate)
+}
+
+

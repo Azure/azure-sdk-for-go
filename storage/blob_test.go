@@ -372,18 +372,21 @@ func (s *StorageBlobSuite) TestGetAndSetMetadata(c *chk.C) {
 
 	// Case munging
 
-	mPut2 := map[string]string{
+	mPutUpper := map[string]string{
 		"Foo":     "different bar",
 		"bar_BAZ": "different waz qux",
 	}
+	mExpectLower := map[string]string{
+		"foo":     "different bar",
+		"bar_baz": "different waz qux",
+	}
 
-	err = cli.SetBlobMetadata(cnt, blob, mPut2)
+	err = cli.SetBlobMetadata(cnt, blob, mPutUpper)
 	c.Assert(err, chk.IsNil)
 
 	m, err = cli.GetBlobMetadata(cnt, blob)
 	c.Assert(err, chk.IsNil)
-	c.Check(m["foo"], chk.Equals, mPut2["Foo"])
-	c.Check(m["bar_baz"], chk.Equals, mPut2["bar_BAZ"])
+	c.Check(m, chk.DeepEquals, mExpectLower)
 }
 
 func (s *StorageBlobSuite) TestPutEmptyBlockBlob(c *chk.C) {

@@ -294,5 +294,5 @@ func testEquality(c *chk.C, c1, c2 *CustomEntity) {
 	c.Assert(c1.Number, chk.Equals, c2.Number)
 	c.Assert(c1.PKey, chk.Equals, c2.PKey)
 	c.Assert(c1.RKey, chk.Equals, c2.RKey)
-	c.Assert(c1.SomeDate, chk.Equals, c2.SomeDate)
+	c.Assert(c1.SomeDate.Unix(), chk.Equals, c2.SomeDate.Unix())
 }

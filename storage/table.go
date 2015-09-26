@@ -14,10 +14,7 @@ type TableServiceClient struct {
 	client Client
 }
 
-<<<<<<< HEAD
-=======
 // AzureTable is the typedef of the Azure Table name
->>>>>>> table
 type AzureTable string
 
 const (
@@ -40,11 +37,8 @@ func (c *TableServiceClient) getStandardHeaders() map[string]string {
 	}
 }
 
-<<<<<<< HEAD
-=======
 // QueryTables returns the tables created in the
 // *TableServiceClient storage account.
->>>>>>> table
 func (c *TableServiceClient) QueryTables() ([]AzureTable, error) {
 	uri := c.client.getEndpoint(tableServiceName, tablesURIPath, url.Values{})
 
@@ -77,12 +71,9 @@ func (c *TableServiceClient) QueryTables() ([]AzureTable, error) {
 	return s, nil
 }
 
-<<<<<<< HEAD
-=======
 // CreateTable creates the table given the specific
 // name. This function fails if the name is not compliant
 // with the specification or the tables already exists.
->>>>>>> table
 func (c *TableServiceClient) CreateTable(table AzureTable) error {
 	uri := c.client.getEndpoint(tableServiceName, tablesURIPath, url.Values{})
 
@@ -111,13 +102,10 @@ func (c *TableServiceClient) CreateTable(table AzureTable) error {
 	}
 }
 
-<<<<<<< HEAD
-=======
 // DeleteTable deletes the table given the specific
 // name. This function fails if the table is not present.
 // Be advised: DeleteTable deletes all the entries
 // that may be present.
->>>>>>> table
 func (c *TableServiceClient) DeleteTable(table AzureTable) error {
 	uri := c.client.getEndpoint(tableServiceName, tablesURIPath, url.Values{})
 	uri += fmt.Sprintf("('%s')", string(table))

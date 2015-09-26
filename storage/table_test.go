@@ -174,19 +174,11 @@ func (s *StorageBlobSuite) Test_InsertAndGetEntities(c *chk.C) {
 	entries, _, err := cli.QueryTableEntities(tn, nil, reflect.TypeOf(ce), 10, "")
 	c.Assert(err, chk.IsNil)
 
-<<<<<<< HEAD
-	c.Assert(len(entries), chk.Equals, 2)
-
-	c.Assert(ce.RowKey(), chk.Equals, (*entries[1]).RowKey())
-
-	c.Assert(ce, chk.DeepEquals, *entries[1])
-=======
 	c.Assert(len(*entries), chk.Equals, 2)
 
 	c.Assert(ce.RowKey(), chk.Equals, (*entries)[1].RowKey())
 
 	testEquality(c, ce, (*entries)[1].(*CustomEntity))
->>>>>>> table
 }
 
 func (s *StorageBlobSuite) Test_InsertAndQueryEntities(c *chk.C) {
@@ -207,18 +199,9 @@ func (s *StorageBlobSuite) Test_InsertAndQueryEntities(c *chk.C) {
 	entries, _, err := cli.QueryTableEntities(tn, nil, reflect.TypeOf(ce), 10, "RowKey eq '200'")
 	c.Assert(err, chk.IsNil)
 
-<<<<<<< HEAD
-	c.Assert(len(entries), chk.Equals, 1)
-
-	c.Assert(ce.RowKey(), chk.Equals, (*entries[0]).RowKey())
-
-	c.Assert(ce, chk.DeepEquals, *entries[0])
-=======
 	c.Assert(len(*entries), chk.Equals, 1)
 
 	c.Assert(ce.RowKey(), chk.Equals, (*entries)[0].RowKey())
-
->>>>>>> table
 }
 
 func (s *StorageBlobSuite) Test_InsertAndDeleteEntities(c *chk.C) {
@@ -240,29 +223,17 @@ func (s *StorageBlobSuite) Test_InsertAndDeleteEntities(c *chk.C) {
 	entries, _, err := cli.QueryTableEntities(tn, nil, reflect.TypeOf(ce), 10, "Number eq 1")
 	c.Assert(err, chk.IsNil)
 
-<<<<<<< HEAD
-	c.Assert(len(entries), chk.Equals, 1)
-
-	c.Assert(ce, chk.DeepEquals, *entries[0])
-
-	c.Assert(cli.DeleteEntityWithoutCheck(tn, *entries[0]), chk.IsNil)
-=======
 	c.Assert(len(*entries), chk.Equals, 1)
 
 	testEquality(c, ce, (*entries)[0].(*CustomEntity))
 
 	c.Assert(cli.DeleteEntityWithoutCheck(tn, (*entries)[0]), chk.IsNil)
->>>>>>> table
 
 	entries, _, err = cli.QueryTableEntities(tn, nil, reflect.TypeOf(ce), 10, "")
 	c.Assert(err, chk.IsNil)
 
 	// only 1 entry must be present
-<<<<<<< HEAD
-	c.Assert(len(entries), chk.Equals, 1)
-=======
 	c.Assert(len(*entries), chk.Equals, 1)
->>>>>>> table
 }
 
 func (s *StorageBlobSuite) Test_ContinuationToken(c *chk.C) {
@@ -284,29 +255,17 @@ func (s *StorageBlobSuite) Test_ContinuationToken(c *chk.C) {
 	// 1 entry
 	entries, contToken, err := cli.QueryTableEntities(tn, nil, reflect.TypeOf(ce), 2, "")
 	c.Assert(err, chk.IsNil)
-<<<<<<< HEAD
-	c.Assert(len(entries), chk.Equals, 2)
-=======
 	c.Assert(len(*entries), chk.Equals, 2)
->>>>>>> table
 	c.Assert(contToken, chk.NotNil)
 
 	entries, contToken, err = cli.QueryTableEntities(tn, contToken, reflect.TypeOf(ce), 2, "")
 	c.Assert(err, chk.IsNil)
-<<<<<<< HEAD
-	c.Assert(len(entries), chk.Equals, 2)
-=======
 	c.Assert(len(*entries), chk.Equals, 2)
->>>>>>> table
 	c.Assert(contToken, chk.NotNil)
 
 	entries, contToken, err = cli.QueryTableEntities(tn, contToken, reflect.TypeOf(ce), 2, "")
 	c.Assert(err, chk.IsNil)
-<<<<<<< HEAD
-	c.Assert(len(entries), chk.Equals, 1)
-=======
 	c.Assert(len(*entries), chk.Equals, 1)
->>>>>>> table
 	c.Assert(contToken, chk.IsNil)
 }
 
@@ -319,8 +278,6 @@ func randTable() string {
 	}
 	return string(bytes)
 }
-<<<<<<< HEAD
-=======
 
 func testEquality(c *chk.C, c1, c2 *CustomEntity) {
 	if c1 == nil {
@@ -339,4 +296,3 @@ func testEquality(c *chk.C, c1, c2 *CustomEntity) {
 	c.Assert(c1.RKey, chk.Equals, c2.RKey)
 	c.Assert(c1.SomeDate, chk.Equals, c2.SomeDate)
 }
->>>>>>> table

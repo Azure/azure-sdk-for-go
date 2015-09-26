@@ -27,6 +27,15 @@ type queryTablesResponse struct {
 	} `json:"value"`
 }
 
+<<<<<<< HEAD
+=======
+// TableEntity interface specifies
+// the functions needed to support
+// marshaling and unmarshaling into
+// Azure Tables. The struct must only contain
+// simple types because Azure Tables do not
+// support hierarchy.
+>>>>>>> table
 type TableEntity interface {
 	PartitionKey() string
 	RowKey() string
@@ -34,6 +43,14 @@ type TableEntity interface {
 	SetRowKey(string) error
 }
 
+<<<<<<< HEAD
+=======
+// ContinuationToken is an opaque (ie not useful to inspect)
+// struct that Get... methods can return if there are more
+// entries to be returned than the ones already
+// returned. Just pass it to the same function to continue
+// receiving the remaining entries.
+>>>>>>> table
 type ContinuationToken struct {
 	NextPartitionKey string
 	NextRowKey       string
@@ -43,7 +60,25 @@ type getTableEntriesResponse struct {
 	Elements []map[string]interface{} `json:"value"`
 }
 
+<<<<<<< HEAD
 func (c *TableServiceClient) QueryTableEntities(tableName AzureTable, previousContToken *ContinuationToken, retType reflect.Type, top int, query string) ([](*TableEntity), *ContinuationToken, error) {
+=======
+// QueryTableEntities queries the specified table and returns the unmarshaled
+// entities of type retType.
+// top parameter limits the returned entries up to top. Maximum top
+// allowed by Azure API is 1000. In case there are more than top entries to be
+// returned the function will return a non nil *ContinuationToken. You can call the
+// same function again passing the received ContinuationToken as previousContToken
+// parameter in order to get the following entries. The query parameter
+// is the odata query. To retrieve all the entries pass the empty string.
+// The function returns a pointer to a TableEntity slice, the *ContinuationToken
+// if there are more entries to be returned and an error in case something went
+// wrong.
+//
+// Example:
+// 		entities, cToken, err = tSvc.QueryTableEntities("table", cToken, reflect.TypeOf(entity), 20, "")
+func (c *TableServiceClient) QueryTableEntities(tableName AzureTable, previousContToken *ContinuationToken, retType reflect.Type, top int, query string) (*[]TableEntity, *ContinuationToken, error) {
+>>>>>>> table
 	if top > maxTopParameter {
 		return nil, nil, errors.New(fmt.Sprintf("Top accepts at maximum %d elements. Requested %d instead.", maxTopParameter, top))
 	}
@@ -83,6 +118,12 @@ func (c *TableServiceClient) QueryTableEntities(tableName AzureTable, previousCo
 	return retEntries, contToken, nil
 }
 
+<<<<<<< HEAD
+=======
+// InsertEntity inserts an entity in the specified table.
+// The function fails if there is an entity with the same
+// PartitionKey and RowKey in the table.
+>>>>>>> table
 func (c *TableServiceClient) InsertEntity(tableName AzureTable, entity TableEntity) error {
 	uri := c.client.getEndpoint(tableServiceName, pathForTable(tableName), url.Values{})
 	headers := c.getStandardHeaders()
@@ -111,10 +152,23 @@ func (c *TableServiceClient) InsertEntity(tableName AzureTable, entity TableEnti
 	}
 }
 
+<<<<<<< HEAD
+=======
+// UpdateEntity updates the contents of an entity with the
+// one passed as parameter. The function fails if there is no entity
+// with the same PartitionKey and RowKey in the table.
+>>>>>>> table
 func (c *TableServiceClient) UpdateEntity(table AzureTable, entity TableEntity) error {
 	return c.updateOrMergeEntity(table, entity, true)
 }
 
+<<<<<<< HEAD
+=======
+// UpdateEntity merges the contents of an entity with the
+// one passed as parameter.
+// The function fails if there is no entity
+// with the same PartitionKey and RowKey in the table.
+>>>>>>> table
 func (c *TableServiceClient) MergeEntity(table AzureTable, entity TableEntity) error {
 	return c.updateOrMergeEntity(table, entity, false)
 }
@@ -154,10 +208,26 @@ func (c *TableServiceClient) updateOrMergeEntity(table AzureTable, entity TableE
 	}
 }
 
+<<<<<<< HEAD
+=======
+// DeleteEntityWithoutCheck deletes the entity matching by
+// PartitionKey and RowKey. There is no check on IfMatch
+// parameter so the entity is always deleted.
+// The function fails if there is no entity
+// with the same PartitionKey and RowKey in the table.
+>>>>>>> table
 func (c *TableServiceClient) DeleteEntityWithoutCheck(table AzureTable, entity TableEntity) error {
 	return c.DeleteEntity(table, entity, "*")
 }
 
+<<<<<<< HEAD
+=======
+// DeleteEntity deletes the entity matching by
+// PartitionKey, RowKey and ifMatch field.
+// The function fails if there is no entity
+// with the same PartitionKey and RowKey in the table or
+// the ifMatch is different.
+>>>>>>> table
 func (c *TableServiceClient) DeleteEntity(table AzureTable, entity TableEntity, ifMatch string) error {
 	uri := c.client.getEndpoint(tableServiceName, pathForTable(table), url.Values{})
 	uri += fmt.Sprintf("(PartitionKey='%s',RowKey='%s')", url.QueryEscape(entity.PartitionKey()), url.QueryEscape(entity.RowKey()))
@@ -181,10 +251,20 @@ func (c *TableServiceClient) DeleteEntity(table AzureTable, entity TableEntity, 
 	}
 }
 
+<<<<<<< HEAD
+=======
+// InsertOrReplaceEntity inserts an entity in the specified table
+// or replaced the existing one.
+>>>>>>> table
 func (c *TableServiceClient) InsertOrReplaceEntity(table AzureTable, entity TableEntity) error {
 	return c.insertOrReplaceOrMergeEntity(table, entity, false)
 }
 
+<<<<<<< HEAD
+=======
+// InsertOrReplaceEntity inserts an entity in the specified table
+// or merges the existing one.
+>>>>>>> table
 func (c *TableServiceClient) InsertOrMergeEntity(table AzureTable, entity TableEntity) error {
 	return c.insertOrReplaceOrMergeEntity(table, entity, true)
 }
@@ -267,7 +347,11 @@ func injectPartitionAndRowKeys(entity TableEntity, buf *bytes.Buffer) error {
 	return nil
 }
 
+<<<<<<< HEAD
 func deserializeEntity(retType reflect.Type, reader io.Reader) ([](*TableEntity), error) {
+=======
+func deserializeEntity(retType reflect.Type, reader io.Reader) (*[]TableEntity, error) {
+>>>>>>> table
 	buf := new(bytes.Buffer)
 
 	var ret getTableEntriesResponse
@@ -275,7 +359,11 @@ func deserializeEntity(retType reflect.Type, reader io.Reader) ([](*TableEntity)
 		return nil, err
 	}
 
+<<<<<<< HEAD
 	tEntries := make([]*TableEntity, len(ret.Elements))
+=======
+	tEntries := make([]TableEntity, len(ret.Elements))
+>>>>>>> table
 
 	for i, entry := range ret.Elements {
 
@@ -309,14 +397,21 @@ func deserializeEntity(retType reflect.Type, reader io.Reader) ([](*TableEntity)
 		}
 
 		// Create a empty retType instance
+<<<<<<< HEAD
 		e := reflect.New(retType.Elem()).Interface().(TableEntity)
 
 		// Popolate it with the values
 		if err := json.NewDecoder(buf).Decode(&e); err != nil {
+=======
+		tEntries[i] = reflect.New(retType.Elem()).Interface().(TableEntity)
+		// Popolate it with the values
+		if err := json.NewDecoder(buf).Decode(&tEntries[i]); err != nil {
+>>>>>>> table
 			return nil, err
 		}
 
 		// Reset PartitionKey and RowKey
+<<<<<<< HEAD
 		e.SetPartitionKey(pKey)
 		e.SetRowKey(rKey)
 
@@ -326,6 +421,13 @@ func deserializeEntity(retType reflect.Type, reader io.Reader) ([](*TableEntity)
 	}
 
 	return tEntries, nil
+=======
+		tEntries[i].SetPartitionKey(pKey)
+		tEntries[i].SetRowKey(rKey)
+	}
+
+	return &tEntries, nil
+>>>>>>> table
 }
 
 func extractContinuationTokenFromHeaders(headers map[string][]string) *ContinuationToken {

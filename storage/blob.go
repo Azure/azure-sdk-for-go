@@ -13,6 +13,10 @@ import (
 	"time"
 )
 
+var (
+	userDefinedMetadataHeaderPrefixLcase = strings.ToLower(userDefinedMetadataHeaderPrefix)
+)
+
 // BlobStorageClient contains operations for Microsoft Azure Blob Storage
 // Service.
 type BlobStorageClient struct {
@@ -554,7 +558,7 @@ func (b BlobStorageClient) SetBlobMetadata(container, name string, metadata map[
 	uri := b.client.getEndpoint(blobServiceName, pathForBlob(container, name), params)
 	headers := b.client.getStandardHeaders()
 	for k, v := range metadata {
-		headers["x-ms-meta-"+k] = v
+		headers[userDefinedMetadataHeaderPrefix+k] = v
 	}
 	headers["Content-Length"] = "0"
 
@@ -589,9 +593,9 @@ func (b BlobStorageClient) GetBlobMetadata(container, name string) (map[string]s
 	}
 
 	metadata := map[string]string{}
-	metaPrefix := "x-ms-meta-"
+	prefixLen := len(userDefinedMetadataHeaderPrefixLcase)
 	for k, v := range resp.headers {
-		if len(k) <= len(metaPrefix) || len(v) == 0 {
+		if len(k) <= prefixLen || len(v) == 0 {
 			continue
 		}
 		// Can't trust CanonicalHeaderKey() to munge case
@@ -603,11 +607,11 @@ func (b BlobStorageClient) GetBlobMetadata(container, name string) (map[string]s
 		// CanonicalMIMEHeaderKey in
 		// https://golang.org/src/net/textproto/reader.go?s=14615:14659#L542
 		// so k can be "X-Ms-Meta-Foo" or "x-ms-meta-foo_bar".
-		if strings.ToLower(k[:len(metaPrefix)]) != metaPrefix {
+		if strings.ToLower(k[:prefixLen]) != userDefinedMetadataHeaderPrefixLcase {
 			continue
 		}
 		// metadata["foo"] = content of the last X-Ms-Meta-Foo header
-		metadata[strings.ToLower(k[len(metaPrefix):])] = v[len(v)-1]
+		metadata[strings.ToLower(k[prefixLen:])] = v[len(v)-1]
 	}
 	return metadata, nil
 }

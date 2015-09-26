@@ -548,16 +548,13 @@ func (b BlobStorageClient) CreateBlockBlob(container, name string) error {
 	return b.CreateBlockBlobFromReader(container, name, 0, nil)
 }
 
-// CreateBlockBlobWithData initializes a block blob with the given data.
-//
-// See https://msdn.microsoft.com/en-us/library/azure/dd179451.aspx
-func (b BlobStorageClient) CreateBlockBlobWithData(container, name string, data []byte) error {
-	return b.CreateBlockBlobFromReader(container, name, uint64(len(data)), bytes.NewReader(data))
-}
-
 // CreateBlockBlobFromReader initializes a block blob using data from
 // reader. Size must be the number of bytes read from reader. To
 // create an empty blob, use size==0 and reader==nil.
+//
+// The API rejects requests with size > 64 MiB (but this limit is not
+// checked by the SDK). To write a larger blob, use CreateBlockBlob,
+// PutBlock, and PutBlockList.
 //
 // See https://msdn.microsoft.com/en-us/library/azure/dd179451.aspx
 func (b BlobStorageClient) CreateBlockBlobFromReader(container, name string, size uint64, blob io.Reader) error {

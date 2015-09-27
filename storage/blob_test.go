@@ -343,6 +343,52 @@ func (s *StorageBlobSuite) TestListBlobsPagination(c *chk.C) {
 	c.Assert(seen, chk.DeepEquals, blobs)
 }
 
+func (s *StorageBlobSuite) TestGetAndSetMetadata(c *chk.C) {
+	cli := getBlobClient(c)
+	cnt := randContainer()
+
+	c.Assert(cli.CreateContainer(cnt, ContainerAccessTypePrivate), chk.IsNil)
+	defer cli.deleteContainer(cnt)
+
+	blob := randString(20)
+	c.Assert(cli.putSingleBlockBlob(cnt, blob, []byte{}), chk.IsNil)
+
+	m, err := cli.GetBlobMetadata(cnt, blob)
+	c.Assert(err, chk.IsNil)
+	c.Assert(m, chk.Not(chk.Equals), nil)
+	c.Assert(len(m), chk.Equals, 0)
+
+	mPut := map[string]string{
+		"foo":     "bar",
+		"bar_baz": "waz qux",
+	}
+
+	err = cli.SetBlobMetadata(cnt, blob, mPut)
+	c.Assert(err, chk.IsNil)
+
+	m, err = cli.GetBlobMetadata(cnt, blob)
+	c.Assert(err, chk.IsNil)
+	c.Check(m, chk.DeepEquals, mPut)
+
+	// Case munging
+
+	mPutUpper := map[string]string{
+		"Foo":     "different bar",
+		"bar_BAZ": "different waz qux",
+	}
+	mExpectLower := map[string]string{
+		"foo":     "different bar",
+		"bar_baz": "different waz qux",
+	}
+
+	err = cli.SetBlobMetadata(cnt, blob, mPutUpper)
+	c.Assert(err, chk.IsNil)
+
+	m, err = cli.GetBlobMetadata(cnt, blob)
+	c.Assert(err, chk.IsNil)
+	c.Check(m, chk.DeepEquals, mExpectLower)
+}
+
 func (s *StorageBlobSuite) TestPutEmptyBlockBlob(c *chk.C) {
 	cli := getBlobClient(c)
 	cnt := randContainer()

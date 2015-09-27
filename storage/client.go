@@ -407,7 +407,7 @@ func (c Client) execInternalJSON(verb, url string, headers map[string]string, bo
 
 		if len(respBody) == 0 {
 			// no error in response body
-			err = fmt.Errorf("storage: service returned without a response body (%s)", resp.StatusCode)
+			err = fmt.Errorf("storage: service returned without a response body (%d)", resp.StatusCode)
 			return respToRet, err
 		} else {
 			// try unmarshal as odata.error json

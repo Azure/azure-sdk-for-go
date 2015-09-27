@@ -79,7 +79,7 @@ func (s *StorageBlobSuite) Test_SharedKeyLite(c *chk.C) {
 	}
 	url := "https://mindgotest.table.core.windows.net/tquery()"
 
-	ret, err := cli.client.CreateSharedKeyLiteTable(url, headers)
+	ret, err := cli.client.createSharedKeyLiteTable(url, headers)
 	if err != nil {
 		c.Fail()
 	}

@@ -5,6 +5,7 @@ import (
 	"crypto/rand"
 	"encoding/base64"
 	"fmt"
+	"io"
 	"io/ioutil"
 	"net/http"
 	"net/url"
@@ -435,6 +436,41 @@ func (s *StorageBlobSuite) TestGetBlobRange(c *chk.C) {
 	}
 }
 
+func (s *StorageBlobSuite) TestCreateBlockBlobFromReader(c *chk.C) {
+	cli := getBlobClient(c)
+	cnt := randContainer()
+	c.Assert(cli.CreateContainer(cnt, ContainerAccessTypePrivate), chk.IsNil)
+	defer cli.deleteContainer(cnt)
+
+	name := randString(20)
+	data := randBytes(8888)
+	c.Assert(cli.CreateBlockBlobFromReader(cnt, name, uint64(len(data)), bytes.NewReader(data)), chk.IsNil)
+
+	body, err := cli.GetBlob(cnt, name)
+	c.Assert(err, chk.IsNil)
+	gotData, err := ioutil.ReadAll(body)
+	body.Close()
+
+	c.Assert(err, chk.IsNil)
+	c.Assert(gotData, chk.DeepEquals, data)
+}
+
+func (s *StorageBlobSuite) TestCreateBlockBlobFromReaderWithShortData(c *chk.C) {
+	cli := getBlobClient(c)
+	cnt := randContainer()
+	c.Assert(cli.CreateContainer(cnt, ContainerAccessTypePrivate), chk.IsNil)
+	defer cli.deleteContainer(cnt)
+
+	name := randString(20)
+	data := randBytes(8888)
+	err := cli.CreateBlockBlobFromReader(cnt, name, 9999, bytes.NewReader(data))
+	c.Assert(err, chk.Not(chk.IsNil))
+
+	_, err = cli.GetBlob(cnt, name)
+	// Upload was incomplete: blob should not have been created.
+	c.Assert(err, chk.Not(chk.IsNil))
+}
+
 func (s *StorageBlobSuite) TestPutBlock(c *chk.C) {
 	cli := getBlobClient(c)
 	cnt := randContainer()
@@ -668,4 +704,12 @@ func randString(n int) string {
 		bytes[i] = alphanum[b%byte(len(alphanum))]
 	}
 	return string(bytes)
+}
+
+func randBytes(n int) []byte {
+	data := make([]byte, n)
+	if _, err := io.ReadFull(rand.Reader, data); err != nil {
+		panic(err)
+	}
+	return data
 }

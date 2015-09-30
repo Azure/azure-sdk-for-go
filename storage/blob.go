@@ -614,13 +614,26 @@ func (b BlobStorageClient) GetBlobMetadata(container, name string) (map[string]s
 //
 // See https://msdn.microsoft.com/en-us/library/azure/dd179451.aspx
 func (b BlobStorageClient) CreateBlockBlob(container, name string) error {
+	return b.CreateBlockBlobFromReader(container, name, 0, nil)
+}
+
+// CreateBlockBlobFromReader initializes a block blob using data from
+// reader. Size must be the number of bytes read from reader. To
+// create an empty blob, use size==0 and reader==nil.
+//
+// The API rejects requests with size > 64 MiB (but this limit is not
+// checked by the SDK). To write a larger blob, use CreateBlockBlob,
+// PutBlock, and PutBlockList.
+//
+// See https://msdn.microsoft.com/en-us/library/azure/dd179451.aspx
+func (b BlobStorageClient) CreateBlockBlobFromReader(container, name string, size uint64, blob io.Reader) error {
 	path := fmt.Sprintf("%s/%s", container, name)
 	uri := b.client.getEndpoint(blobServiceName, path, url.Values{})
 	headers := b.client.getStandardHeaders()
 	headers["x-ms-blob-type"] = string(BlobTypeBlock)
-	headers["Content-Length"] = fmt.Sprintf("%v", 0)
+	headers["Content-Length"] = fmt.Sprintf("%d", size)
 
-	resp, err := b.client.exec("PUT", uri, headers, nil)
+	resp, err := b.client.exec("PUT", uri, headers, blob)
 	if err != nil {
 		return err
 	}
@@ -631,6 +644,9 @@ func (b BlobStorageClient) CreateBlockBlob(container, name string) error {
 // PutBlock saves the given data chunk to the specified block blob with
 // given ID.
 //
+// The API rejects chunks larger than 4 MiB (but this limit is not
+// checked by the SDK).
+//
 // See https://msdn.microsoft.com/en-us/library/azure/dd135726.aspx
 func (b BlobStorageClient) PutBlock(container, name, blockID string, chunk []byte) error {
 	return b.PutBlockWithLength(container, name, blockID, uint64(len(chunk)), bytes.NewReader(chunk))
@@ -639,6 +655,9 @@ func (b BlobStorageClient) PutBlock(container, name, blockID string, chunk []byt
 // PutBlockWithLength saves the given data stream of exactly specified size to
 // the block blob with given ID. It is an alternative to PutBlocks where data
 // comes as stream but the length is known in advance.
+//
+// The API rejects requests with size > 4 MiB (but this limit is not
+// checked by the SDK).
 //
 // See https://msdn.microsoft.com/en-us/library/azure/dd135726.aspx
 func (b BlobStorageClient) PutBlockWithLength(container, name, blockID string, size uint64, blob io.Reader) error {

@@ -55,6 +55,7 @@ func (client JobCollectionsClient) CreateOrUpdate(resourceGroupName string, jobC
 
 	resp, err := client.CreateOrUpdateSender(req)
 	if err != nil {
+		result.Response = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "scheduler/JobCollectionsClient", "CreateOrUpdate", "Failure sending request")
 	}
 
@@ -119,6 +120,7 @@ func (client JobCollectionsClient) Delete(resourceGroupName string, jobCollectio
 
 	resp, err := client.DeleteSender(req)
 	if err != nil {
+		result.Response = resp
 		return result, autorest.NewErrorWithError(err, "scheduler/JobCollectionsClient", "Delete", "Failure sending request")
 	}
 
@@ -181,6 +183,7 @@ func (client JobCollectionsClient) Disable(resourceGroupName string, jobCollecti
 
 	resp, err := client.DisableSender(req)
 	if err != nil {
+		result.Response = resp
 		return result, autorest.NewErrorWithError(err, "scheduler/JobCollectionsClient", "Disable", "Failure sending request")
 	}
 
@@ -243,6 +246,7 @@ func (client JobCollectionsClient) Enable(resourceGroupName string, jobCollectio
 
 	resp, err := client.EnableSender(req)
 	if err != nil {
+		result.Response = resp
 		return result, autorest.NewErrorWithError(err, "scheduler/JobCollectionsClient", "Enable", "Failure sending request")
 	}
 
@@ -305,6 +309,7 @@ func (client JobCollectionsClient) Get(resourceGroupName string, jobCollectionNa
 
 	resp, err := client.GetSender(req)
 	if err != nil {
+		result.Response = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "scheduler/JobCollectionsClient", "Get", "Failure sending request")
 	}
 
@@ -367,6 +372,7 @@ func (client JobCollectionsClient) ListByResourceGroup(resourceGroupName string)
 
 	resp, err := client.ListByResourceGroupSender(req)
 	if err != nil {
+		result.Response = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "scheduler/JobCollectionsClient", "ListByResourceGroup", "Failure sending request")
 	}
 
@@ -429,6 +435,7 @@ func (client JobCollectionsClient) ListByResourceGroupNextResults(lastResults Jo
 
 	resp, err := client.ListByResourceGroupSender(req)
 	if err != nil {
+		result.Response = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "scheduler/JobCollectionsClient", "ListByResourceGroup", "Failure sending next results request request")
 	}
 
@@ -449,6 +456,7 @@ func (client JobCollectionsClient) ListBySubscription() (result JobCollectionLis
 
 	resp, err := client.ListBySubscriptionSender(req)
 	if err != nil {
+		result.Response = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "scheduler/JobCollectionsClient", "ListBySubscription", "Failure sending request")
 	}
 
@@ -510,6 +518,7 @@ func (client JobCollectionsClient) ListBySubscriptionNextResults(lastResults Job
 
 	resp, err := client.ListBySubscriptionSender(req)
 	if err != nil {
+		result.Response = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "scheduler/JobCollectionsClient", "ListBySubscription", "Failure sending next results request request")
 	}
 
@@ -533,6 +542,7 @@ func (client JobCollectionsClient) Patch(resourceGroupName string, jobCollection
 
 	resp, err := client.PatchSender(req)
 	if err != nil {
+		result.Response = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "scheduler/JobCollectionsClient", "Patch", "Failure sending request")
 	}
 

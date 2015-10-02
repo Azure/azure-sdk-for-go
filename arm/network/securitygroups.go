@@ -57,6 +57,7 @@ func (client SecurityGroupsClient) CreateOrUpdate(resourceGroupName string, netw
 
 	resp, err := client.CreateOrUpdateSender(req)
 	if err != nil {
+		result.Response = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "network/SecurityGroupsClient", "CreateOrUpdate", "Failure sending request")
 	}
 
@@ -122,6 +123,7 @@ func (client SecurityGroupsClient) Delete(resourceGroupName string, networkSecur
 
 	resp, err := client.DeleteSender(req)
 	if err != nil {
+		result.Response = resp
 		return result, autorest.NewErrorWithError(err, "network/SecurityGroupsClient", "Delete", "Failure sending request")
 	}
 
@@ -185,6 +187,7 @@ func (client SecurityGroupsClient) Get(resourceGroupName string, networkSecurity
 
 	resp, err := client.GetSender(req)
 	if err != nil {
+		result.Response = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "network/SecurityGroupsClient", "Get", "Failure sending request")
 	}
 
@@ -248,6 +251,7 @@ func (client SecurityGroupsClient) List(resourceGroupName string) (result Securi
 
 	resp, err := client.ListSender(req)
 	if err != nil {
+		result.Response = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "network/SecurityGroupsClient", "List", "Failure sending request")
 	}
 
@@ -310,6 +314,7 @@ func (client SecurityGroupsClient) ListNextResults(lastResults SecurityGroupList
 
 	resp, err := client.ListSender(req)
 	if err != nil {
+		result.Response = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "network/SecurityGroupsClient", "List", "Failure sending next results request request")
 	}
 
@@ -331,6 +336,7 @@ func (client SecurityGroupsClient) ListAll() (result SecurityGroupListResult, ae
 
 	resp, err := client.ListAllSender(req)
 	if err != nil {
+		result.Response = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "network/SecurityGroupsClient", "ListAll", "Failure sending request")
 	}
 
@@ -392,6 +398,7 @@ func (client SecurityGroupsClient) ListAllNextResults(lastResults SecurityGroupL
 
 	resp, err := client.ListAllSender(req)
 	if err != nil {
+		result.Response = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "network/SecurityGroupsClient", "ListAll", "Failure sending next results request request")
 	}
 

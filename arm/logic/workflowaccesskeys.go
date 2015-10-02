@@ -55,6 +55,7 @@ func (client WorkflowAccessKeysClient) CreateOrUpdate(resourceGroupName string, 
 
 	resp, err := client.CreateOrUpdateSender(req)
 	if err != nil {
+		result.Response = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "logic/WorkflowAccessKeysClient", "CreateOrUpdate", "Failure sending request")
 	}
 
@@ -120,6 +121,7 @@ func (client WorkflowAccessKeysClient) Delete(resourceGroupName string, workflow
 
 	resp, err := client.DeleteSender(req)
 	if err != nil {
+		result.Response = resp
 		return result, autorest.NewErrorWithError(err, "logic/WorkflowAccessKeysClient", "Delete", "Failure sending request")
 	}
 
@@ -183,6 +185,7 @@ func (client WorkflowAccessKeysClient) Get(resourceGroupName string, workflowNam
 
 	resp, err := client.GetSender(req)
 	if err != nil {
+		result.Response = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "logic/WorkflowAccessKeysClient", "Get", "Failure sending request")
 	}
 
@@ -247,6 +250,7 @@ func (client WorkflowAccessKeysClient) List(resourceGroupName string, workflowNa
 
 	resp, err := client.ListSender(req)
 	if err != nil {
+		result.Response = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "logic/WorkflowAccessKeysClient", "List", "Failure sending request")
 	}
 
@@ -311,6 +315,7 @@ func (client WorkflowAccessKeysClient) ListNextResults(lastResults WorkflowAcces
 
 	resp, err := client.ListSender(req)
 	if err != nil {
+		result.Response = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "logic/WorkflowAccessKeysClient", "List", "Failure sending next results request request")
 	}
 
@@ -334,6 +339,7 @@ func (client WorkflowAccessKeysClient) ListSecretKeys(resourceGroupName string, 
 
 	resp, err := client.ListSecretKeysSender(req)
 	if err != nil {
+		result.Response = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "logic/WorkflowAccessKeysClient", "ListSecretKeys", "Failure sending request")
 	}
 
@@ -399,6 +405,7 @@ func (client WorkflowAccessKeysClient) RegenerateSecretKey(resourceGroupName str
 
 	resp, err := client.RegenerateSecretKeySender(req)
 	if err != nil {
+		result.Response = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "logic/WorkflowAccessKeysClient", "RegenerateSecretKey", "Failure sending request")
 	}
 

@@ -54,6 +54,7 @@ func (client AccountsClient) CheckNameAvailability(accountName AccountCheckNameA
 
 	resp, err := client.CheckNameAvailabilitySender(req)
 	if err != nil {
+		result.Response = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "storage/AccountsClient", "CheckNameAvailability", "Failure sending request")
 	}
 
@@ -123,6 +124,7 @@ func (client AccountsClient) Create(resourceGroupName string, accountName string
 
 	resp, err := client.CreateSender(req)
 	if err != nil {
+		result.Response = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "storage/AccountsClient", "Create", "Failure sending request")
 	}
 
@@ -189,6 +191,7 @@ func (client AccountsClient) Delete(resourceGroupName string, accountName string
 
 	resp, err := client.DeleteSender(req)
 	if err != nil {
+		result.Response = resp
 		return result, autorest.NewErrorWithError(err, "storage/AccountsClient", "Delete", "Failure sending request")
 	}
 
@@ -255,6 +258,7 @@ func (client AccountsClient) GetProperties(resourceGroupName string, accountName
 
 	resp, err := client.GetPropertiesSender(req)
 	if err != nil {
+		result.Response = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "storage/AccountsClient", "GetProperties", "Failure sending request")
 	}
 
@@ -316,6 +320,7 @@ func (client AccountsClient) List() (result AccountListResult, ae error) {
 
 	resp, err := client.ListSender(req)
 	if err != nil {
+		result.Response = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "storage/AccountsClient", "List", "Failure sending request")
 	}
 
@@ -379,6 +384,7 @@ func (client AccountsClient) ListByResourceGroup(resourceGroupName string) (resu
 
 	resp, err := client.ListByResourceGroupSender(req)
 	if err != nil {
+		result.Response = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "storage/AccountsClient", "ListByResourceGroup", "Failure sending request")
 	}
 
@@ -441,6 +447,7 @@ func (client AccountsClient) ListKeys(resourceGroupName string, accountName stri
 
 	resp, err := client.ListKeysSender(req)
 	if err != nil {
+		result.Response = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "storage/AccountsClient", "ListKeys", "Failure sending request")
 	}
 
@@ -507,6 +514,7 @@ func (client AccountsClient) RegenerateKey(resourceGroupName string, accountName
 
 	resp, err := client.RegenerateKeySender(req)
 	if err != nil {
+		result.Response = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "storage/AccountsClient", "RegenerateKey", "Failure sending request")
 	}
 
@@ -583,6 +591,7 @@ func (client AccountsClient) Update(resourceGroupName string, accountName string
 
 	resp, err := client.UpdateSender(req)
 	if err != nil {
+		result.Response = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "storage/AccountsClient", "Update", "Failure sending request")
 	}
 

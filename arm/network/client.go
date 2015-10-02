@@ -67,6 +67,7 @@ func (client ManagementClient) CheckDNSNameAvailability(location string, domainN
 
 	resp, err := client.CheckDNSNameAvailabilitySender(req)
 	if err != nil {
+		result.Response = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "network/ManagementClient", "CheckDNSNameAvailability", "Failure sending request")
 	}
 

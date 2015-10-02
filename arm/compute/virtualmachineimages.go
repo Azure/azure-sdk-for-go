@@ -52,6 +52,7 @@ func (client VirtualMachineImagesClient) Get(location string, publisherName stri
 
 	resp, err := client.GetSender(req)
 	if err != nil {
+		result.Response = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "compute/VirtualMachineImagesClient", "Get", "Failure sending request")
 	}
 
@@ -117,6 +118,7 @@ func (client VirtualMachineImagesClient) List(location string, publisherName str
 
 	resp, err := client.ListSender(req)
 	if err != nil {
+		result.Response = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "compute/VirtualMachineImagesClient", "List", "Failure sending request")
 	}
 
@@ -183,6 +185,7 @@ func (client VirtualMachineImagesClient) ListOffers(location string, publisherNa
 
 	resp, err := client.ListOffersSender(req)
 	if err != nil {
+		result.Response = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "compute/VirtualMachineImagesClient", "ListOffers", "Failure sending request")
 	}
 
@@ -244,6 +247,7 @@ func (client VirtualMachineImagesClient) ListPublishers(location string) (result
 
 	resp, err := client.ListPublishersSender(req)
 	if err != nil {
+		result.Response = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "compute/VirtualMachineImagesClient", "ListPublishers", "Failure sending request")
 	}
 
@@ -304,6 +308,7 @@ func (client VirtualMachineImagesClient) ListSkus(location string, publisherName
 
 	resp, err := client.ListSkusSender(req)
 	if err != nil {
+		result.Response = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "compute/VirtualMachineImagesClient", "ListSkus", "Failure sending request")
 	}
 

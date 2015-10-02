@@ -51,6 +51,7 @@ func (client GroupsClient) CheckExistence(resourceGroupName string) (result auto
 
 	resp, err := client.CheckExistenceSender(req)
 	if err != nil {
+		result.Response = resp
 		return result, autorest.NewErrorWithError(err, "resources/GroupsClient", "CheckExistence", "Failure sending request")
 	}
 
@@ -113,6 +114,7 @@ func (client GroupsClient) CreateOrUpdate(resourceGroupName string, parameters G
 
 	resp, err := client.CreateOrUpdateSender(req)
 	if err != nil {
+		result.Response = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "resources/GroupsClient", "CreateOrUpdate", "Failure sending request")
 	}
 
@@ -177,6 +179,7 @@ func (client GroupsClient) Delete(resourceGroupName string) (result autorest.Res
 
 	resp, err := client.DeleteSender(req)
 	if err != nil {
+		result.Response = resp
 		return result, autorest.NewErrorWithError(err, "resources/GroupsClient", "Delete", "Failure sending request")
 	}
 
@@ -238,6 +241,7 @@ func (client GroupsClient) Get(resourceGroupName string) (result Group, ae error
 
 	resp, err := client.GetSender(req)
 	if err != nil {
+		result.Response = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "resources/GroupsClient", "Get", "Failure sending request")
 	}
 
@@ -300,6 +304,7 @@ func (client GroupsClient) List(filter string, top int) (result GroupListResult,
 
 	resp, err := client.ListSender(req)
 	if err != nil {
+		result.Response = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "resources/GroupsClient", "List", "Failure sending request")
 	}
 
@@ -363,6 +368,7 @@ func (client GroupsClient) ListNextResults(lastResults GroupListResult) (result 
 
 	resp, err := client.ListSender(req)
 	if err != nil {
+		result.Response = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "resources/GroupsClient", "List", "Failure sending next results request request")
 	}
 
@@ -387,6 +393,7 @@ func (client GroupsClient) ListResources(resourceGroupName string, filter string
 
 	resp, err := client.ListResourcesSender(req)
 	if err != nil {
+		result.Response = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "resources/GroupsClient", "ListResources", "Failure sending request")
 	}
 
@@ -451,6 +458,7 @@ func (client GroupsClient) ListResourcesNextResults(lastResults ListResult) (res
 
 	resp, err := client.ListResourcesSender(req)
 	if err != nil {
+		result.Response = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "resources/GroupsClient", "ListResources", "Failure sending next results request request")
 	}
 
@@ -478,6 +486,7 @@ func (client GroupsClient) Patch(resourceGroupName string, parameters Group) (re
 
 	resp, err := client.PatchSender(req)
 	if err != nil {
+		result.Response = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "resources/GroupsClient", "Patch", "Failure sending request")
 	}
 

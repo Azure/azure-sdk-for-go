@@ -55,6 +55,7 @@ func (client AdminKeysClient) List(resourceGroupName string, serviceName string)
 
 	resp, err := client.ListSender(req)
 	if err != nil {
+		result.Response = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "search/AdminKeysClient", "List", "Failure sending request")
 	}
 

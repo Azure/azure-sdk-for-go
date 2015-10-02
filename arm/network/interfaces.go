@@ -55,6 +55,7 @@ func (client InterfacesClient) CreateOrUpdate(resourceGroupName string, networkI
 
 	resp, err := client.CreateOrUpdateSender(req)
 	if err != nil {
+		result.Response = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "network/InterfacesClient", "CreateOrUpdate", "Failure sending request")
 	}
 
@@ -120,6 +121,7 @@ func (client InterfacesClient) Delete(resourceGroupName string, networkInterface
 
 	resp, err := client.DeleteSender(req)
 	if err != nil {
+		result.Response = resp
 		return result, autorest.NewErrorWithError(err, "network/InterfacesClient", "Delete", "Failure sending request")
 	}
 
@@ -183,6 +185,7 @@ func (client InterfacesClient) Get(resourceGroupName string, networkInterfaceNam
 
 	resp, err := client.GetSender(req)
 	if err != nil {
+		result.Response = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "network/InterfacesClient", "Get", "Failure sending request")
 	}
 
@@ -246,6 +249,7 @@ func (client InterfacesClient) List(resourceGroupName string) (result InterfaceL
 
 	resp, err := client.ListSender(req)
 	if err != nil {
+		result.Response = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "network/InterfacesClient", "List", "Failure sending request")
 	}
 
@@ -308,6 +312,7 @@ func (client InterfacesClient) ListNextResults(lastResults InterfaceListResult) 
 
 	resp, err := client.ListSender(req)
 	if err != nil {
+		result.Response = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "network/InterfacesClient", "List", "Failure sending next results request request")
 	}
 
@@ -329,6 +334,7 @@ func (client InterfacesClient) ListAll() (result InterfaceListResult, ae error) 
 
 	resp, err := client.ListAllSender(req)
 	if err != nil {
+		result.Response = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "network/InterfacesClient", "ListAll", "Failure sending request")
 	}
 
@@ -390,6 +396,7 @@ func (client InterfacesClient) ListAllNextResults(lastResults InterfaceListResul
 
 	resp, err := client.ListAllSender(req)
 	if err != nil {
+		result.Response = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "network/InterfacesClient", "ListAll", "Failure sending next results request request")
 	}
 

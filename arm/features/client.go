@@ -65,6 +65,7 @@ func (client ManagementClient) Get(resourceProviderNamespace string, featureName
 
 	resp, err := client.GetSender(req)
 	if err != nil {
+		result.Response = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "features/ManagementClient", "Get", "Failure sending request")
 	}
 
@@ -127,6 +128,7 @@ func (client ManagementClient) List(resourceProviderNamespace string) (result Op
 
 	resp, err := client.ListSender(req)
 	if err != nil {
+		result.Response = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "features/ManagementClient", "List", "Failure sending request")
 	}
 
@@ -189,6 +191,7 @@ func (client ManagementClient) ListNextResults(lastResults OperationsListResult)
 
 	resp, err := client.ListSender(req)
 	if err != nil {
+		result.Response = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "features/ManagementClient", "List", "Failure sending next results request request")
 	}
 
@@ -210,6 +213,7 @@ func (client ManagementClient) ListAll() (result OperationsListResult, ae error)
 
 	resp, err := client.ListAllSender(req)
 	if err != nil {
+		result.Response = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "features/ManagementClient", "ListAll", "Failure sending request")
 	}
 
@@ -271,6 +275,7 @@ func (client ManagementClient) ListAllNextResults(lastResults OperationsListResu
 
 	resp, err := client.ListAllSender(req)
 	if err != nil {
+		result.Response = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "features/ManagementClient", "ListAll", "Failure sending next results request request")
 	}
 
@@ -294,6 +299,7 @@ func (client ManagementClient) Register(resourceProviderNamespace string, featur
 
 	resp, err := client.RegisterSender(req)
 	if err != nil {
+		result.Response = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "features/ManagementClient", "Register", "Failure sending request")
 	}
 

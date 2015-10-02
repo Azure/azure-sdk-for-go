@@ -55,6 +55,7 @@ func (client LoadBalancersClient) CreateOrUpdate(resourceGroupName string, loadB
 
 	resp, err := client.CreateOrUpdateSender(req)
 	if err != nil {
+		result.Response = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "network/LoadBalancersClient", "CreateOrUpdate", "Failure sending request")
 	}
 
@@ -119,6 +120,7 @@ func (client LoadBalancersClient) Delete(resourceGroupName string, loadBalancerN
 
 	resp, err := client.DeleteSender(req)
 	if err != nil {
+		result.Response = resp
 		return result, autorest.NewErrorWithError(err, "network/LoadBalancersClient", "Delete", "Failure sending request")
 	}
 
@@ -182,6 +184,7 @@ func (client LoadBalancersClient) Get(resourceGroupName string, loadBalancerName
 
 	resp, err := client.GetSender(req)
 	if err != nil {
+		result.Response = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "network/LoadBalancersClient", "Get", "Failure sending request")
 	}
 
@@ -245,6 +248,7 @@ func (client LoadBalancersClient) List(resourceGroupName string) (result LoadBal
 
 	resp, err := client.ListSender(req)
 	if err != nil {
+		result.Response = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "network/LoadBalancersClient", "List", "Failure sending request")
 	}
 
@@ -307,6 +311,7 @@ func (client LoadBalancersClient) ListNextResults(lastResults LoadBalancerListRe
 
 	resp, err := client.ListSender(req)
 	if err != nil {
+		result.Response = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "network/LoadBalancersClient", "List", "Failure sending next results request request")
 	}
 
@@ -328,6 +333,7 @@ func (client LoadBalancersClient) ListAll() (result LoadBalancerListResult, ae e
 
 	resp, err := client.ListAllSender(req)
 	if err != nil {
+		result.Response = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "network/LoadBalancersClient", "ListAll", "Failure sending request")
 	}
 
@@ -389,6 +395,7 @@ func (client LoadBalancersClient) ListAllNextResults(lastResults LoadBalancerLis
 
 	resp, err := client.ListAllSender(req)
 	if err != nil {
+		result.Response = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "network/LoadBalancersClient", "ListAll", "Failure sending next results request request")
 	}
 

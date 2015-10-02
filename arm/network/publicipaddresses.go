@@ -56,6 +56,7 @@ func (client PublicIPAddressesClient) CreateOrUpdate(resourceGroupName string, p
 
 	resp, err := client.CreateOrUpdateSender(req)
 	if err != nil {
+		result.Response = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "network/PublicIPAddressesClient", "CreateOrUpdate", "Failure sending request")
 	}
 
@@ -121,6 +122,7 @@ func (client PublicIPAddressesClient) Delete(resourceGroupName string, publicIPA
 
 	resp, err := client.DeleteSender(req)
 	if err != nil {
+		result.Response = resp
 		return result, autorest.NewErrorWithError(err, "network/PublicIPAddressesClient", "Delete", "Failure sending request")
 	}
 
@@ -184,6 +186,7 @@ func (client PublicIPAddressesClient) Get(resourceGroupName string, publicIPAddr
 
 	resp, err := client.GetSender(req)
 	if err != nil {
+		result.Response = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "network/PublicIPAddressesClient", "Get", "Failure sending request")
 	}
 
@@ -247,6 +250,7 @@ func (client PublicIPAddressesClient) List(resourceGroupName string) (result Pub
 
 	resp, err := client.ListSender(req)
 	if err != nil {
+		result.Response = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "network/PublicIPAddressesClient", "List", "Failure sending request")
 	}
 
@@ -309,6 +313,7 @@ func (client PublicIPAddressesClient) ListNextResults(lastResults PublicIPAddres
 
 	resp, err := client.ListSender(req)
 	if err != nil {
+		result.Response = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "network/PublicIPAddressesClient", "List", "Failure sending next results request request")
 	}
 
@@ -330,6 +335,7 @@ func (client PublicIPAddressesClient) ListAll() (result PublicIPAddressListResul
 
 	resp, err := client.ListAllSender(req)
 	if err != nil {
+		result.Response = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "network/PublicIPAddressesClient", "ListAll", "Failure sending request")
 	}
 
@@ -391,6 +397,7 @@ func (client PublicIPAddressesClient) ListAllNextResults(lastResults PublicIPAdd
 
 	resp, err := client.ListAllSender(req)
 	if err != nil {
+		result.Response = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "network/PublicIPAddressesClient", "ListAll", "Failure sending next results request request")
 	}
 

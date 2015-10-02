@@ -54,6 +54,7 @@ func (client WorkflowVersionsClient) Get(resourceGroupName string, workflowName 
 
 	resp, err := client.GetSender(req)
 	if err != nil {
+		result.Response = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "logic/WorkflowVersionsClient", "Get", "Failure sending request")
 	}
 

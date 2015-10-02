@@ -13,7 +13,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/arm/storage"
 )
 
-func WithInspection() autorest.PrepareDecorator {
+func withInspection() autorest.PrepareDecorator {
 	return func(p autorest.Preparer) autorest.Preparer {
 		return autorest.PreparerFunc(func(r *http.Request) (*http.Request, error) {
 			fmt.Printf("Inspecting Request: %s %s\n", r.Method, r.URL)
@@ -22,7 +22,7 @@ func WithInspection() autorest.PrepareDecorator {
 	}
 }
 
-func ByInspecting() autorest.RespondDecorator {
+func byInspecting() autorest.RespondDecorator {
 	return func(r autorest.Responder) autorest.Responder {
 		return autorest.ResponderFunc(func(resp *http.Response) error {
 			fmt.Printf("Inspecting Response: %s for %s %s\n", resp.Status, resp.Request.Method, resp.Request.URL)
@@ -48,8 +48,8 @@ func checkName(name string) {
 	ac.Sender = autorest.CreateSender(
 		autorest.WithLogging(log.New(os.Stdout, "sdk-example: ", log.LstdFlags)))
 
-	ac.RequestInspector = WithInspection()
-	ac.ResponseInspector = ByInspecting()
+	ac.RequestInspector = withInspection()
+	ac.ResponseInspector = byInspecting()
 
 	cna, err := ac.CheckNameAvailability(
 		storage.AccountCheckNameAvailabilityParameters{

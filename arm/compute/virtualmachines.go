@@ -56,6 +56,7 @@ func (client VirtualMachinesClient) Capture(resourceGroupName string, vmName str
 
 	resp, err := client.CaptureSender(req)
 	if err != nil {
+		result.Response = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "compute/VirtualMachinesClient", "Capture", "Failure sending request")
 	}
 
@@ -121,6 +122,7 @@ func (client VirtualMachinesClient) CreateOrUpdate(resourceGroupName string, vmN
 
 	resp, err := client.CreateOrUpdateSender(req)
 	if err != nil {
+		result.Response = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "compute/VirtualMachinesClient", "CreateOrUpdate", "Failure sending request")
 	}
 
@@ -187,6 +189,7 @@ func (client VirtualMachinesClient) Deallocate(resourceGroupName string, vmName 
 
 	resp, err := client.DeallocateSender(req)
 	if err != nil {
+		result.Response = resp
 		return result, autorest.NewErrorWithError(err, "compute/VirtualMachinesClient", "Deallocate", "Failure sending request")
 	}
 
@@ -249,6 +252,7 @@ func (client VirtualMachinesClient) Delete(resourceGroupName string, vmName stri
 
 	resp, err := client.DeleteSender(req)
 	if err != nil {
+		result.Response = resp
 		return result, autorest.NewErrorWithError(err, "compute/VirtualMachinesClient", "Delete", "Failure sending request")
 	}
 
@@ -311,6 +315,7 @@ func (client VirtualMachinesClient) Generalize(resourceGroupName string, vmName 
 
 	resp, err := client.GeneralizeSender(req)
 	if err != nil {
+		result.Response = resp
 		return result, autorest.NewErrorWithError(err, "compute/VirtualMachinesClient", "Generalize", "Failure sending request")
 	}
 
@@ -374,6 +379,7 @@ func (client VirtualMachinesClient) Get(resourceGroupName string, vmName string,
 
 	resp, err := client.GetSender(req)
 	if err != nil {
+		result.Response = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "compute/VirtualMachinesClient", "Get", "Failure sending request")
 	}
 
@@ -437,6 +443,7 @@ func (client VirtualMachinesClient) List(resourceGroupName string) (result Virtu
 
 	resp, err := client.ListSender(req)
 	if err != nil {
+		result.Response = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "compute/VirtualMachinesClient", "List", "Failure sending request")
 	}
 
@@ -499,6 +506,7 @@ func (client VirtualMachinesClient) ListNextResults(lastResults VirtualMachineLi
 
 	resp, err := client.ListSender(req)
 	if err != nil {
+		result.Response = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "compute/VirtualMachinesClient", "List", "Failure sending next results request request")
 	}
 
@@ -521,6 +529,7 @@ func (client VirtualMachinesClient) ListAll() (result VirtualMachineListResult, 
 
 	resp, err := client.ListAllSender(req)
 	if err != nil {
+		result.Response = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "compute/VirtualMachinesClient", "ListAll", "Failure sending request")
 	}
 
@@ -582,6 +591,7 @@ func (client VirtualMachinesClient) ListAllNextResults(lastResults VirtualMachin
 
 	resp, err := client.ListAllSender(req)
 	if err != nil {
+		result.Response = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "compute/VirtualMachinesClient", "ListAll", "Failure sending next results request request")
 	}
 
@@ -606,6 +616,7 @@ func (client VirtualMachinesClient) ListAvailableSizes(resourceGroupName string,
 
 	resp, err := client.ListAvailableSizesSender(req)
 	if err != nil {
+		result.Response = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "compute/VirtualMachinesClient", "ListAvailableSizes", "Failure sending request")
 	}
 
@@ -669,6 +680,7 @@ func (client VirtualMachinesClient) PowerOff(resourceGroupName string, vmName st
 
 	resp, err := client.PowerOffSender(req)
 	if err != nil {
+		result.Response = resp
 		return result, autorest.NewErrorWithError(err, "compute/VirtualMachinesClient", "PowerOff", "Failure sending request")
 	}
 
@@ -731,6 +743,7 @@ func (client VirtualMachinesClient) Restart(resourceGroupName string, vmName str
 
 	resp, err := client.RestartSender(req)
 	if err != nil {
+		result.Response = resp
 		return result, autorest.NewErrorWithError(err, "compute/VirtualMachinesClient", "Restart", "Failure sending request")
 	}
 
@@ -793,6 +806,7 @@ func (client VirtualMachinesClient) Start(resourceGroupName string, vmName strin
 
 	resp, err := client.StartSender(req)
 	if err != nil {
+		result.Response = resp
 		return result, autorest.NewErrorWithError(err, "compute/VirtualMachinesClient", "Start", "Failure sending request")
 	}
 

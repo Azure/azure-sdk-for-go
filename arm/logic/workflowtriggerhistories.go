@@ -55,6 +55,7 @@ func (client WorkflowTriggerHistoriesClient) Get(resourceGroupName string, workf
 
 	resp, err := client.GetSender(req)
 	if err != nil {
+		result.Response = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "logic/WorkflowTriggerHistoriesClient", "Get", "Failure sending request")
 	}
 
@@ -121,6 +122,7 @@ func (client WorkflowTriggerHistoriesClient) List(resourceGroupName string, work
 
 	resp, err := client.ListSender(req)
 	if err != nil {
+		result.Response = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "logic/WorkflowTriggerHistoriesClient", "List", "Failure sending request")
 	}
 
@@ -186,6 +188,7 @@ func (client WorkflowTriggerHistoriesClient) ListNextResults(lastResults Workflo
 
 	resp, err := client.ListSender(req)
 	if err != nil {
+		result.Response = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "logic/WorkflowTriggerHistoriesClient", "List", "Failure sending next results request request")
 	}
 

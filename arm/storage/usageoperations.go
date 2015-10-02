@@ -52,6 +52,7 @@ func (client UsageOperationsClient) List() (result UsageListResult, ae error) {
 
 	resp, err := client.ListSender(req)
 	if err != nil {
+		result.Response = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "storage/UsageOperationsClient", "List", "Failure sending request")
 	}
 

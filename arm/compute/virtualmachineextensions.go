@@ -57,6 +57,7 @@ func (client VirtualMachineExtensionsClient) CreateOrUpdate(resourceGroupName st
 
 	resp, err := client.CreateOrUpdateSender(req)
 	if err != nil {
+		result.Response = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "compute/VirtualMachineExtensionsClient", "CreateOrUpdate", "Failure sending request")
 	}
 
@@ -123,6 +124,7 @@ func (client VirtualMachineExtensionsClient) Delete(resourceGroupName string, vm
 
 	resp, err := client.DeleteSender(req)
 	if err != nil {
+		result.Response = resp
 		return result, autorest.NewErrorWithError(err, "compute/VirtualMachineExtensionsClient", "Delete", "Failure sending request")
 	}
 
@@ -188,6 +190,7 @@ func (client VirtualMachineExtensionsClient) Get(resourceGroupName string, vmNam
 
 	resp, err := client.GetSender(req)
 	if err != nil {
+		result.Response = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "compute/VirtualMachineExtensionsClient", "Get", "Failure sending request")
 	}
 

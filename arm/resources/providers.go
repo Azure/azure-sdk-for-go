@@ -52,6 +52,7 @@ func (client ProvidersClient) Get(resourceProviderNamespace string) (result Prov
 
 	resp, err := client.GetSender(req)
 	if err != nil {
+		result.Response = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "resources/ProvidersClient", "Get", "Failure sending request")
 	}
 
@@ -113,6 +114,7 @@ func (client ProvidersClient) List(top int) (result ProviderListResult, ae error
 
 	resp, err := client.ListSender(req)
 	if err != nil {
+		result.Response = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "resources/ProvidersClient", "List", "Failure sending request")
 	}
 
@@ -175,6 +177,7 @@ func (client ProvidersClient) ListNextResults(lastResults ProviderListResult) (r
 
 	resp, err := client.ListSender(req)
 	if err != nil {
+		result.Response = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "resources/ProvidersClient", "List", "Failure sending next results request request")
 	}
 
@@ -197,6 +200,7 @@ func (client ProvidersClient) Register(resourceProviderNamespace string) (result
 
 	resp, err := client.RegisterSender(req)
 	if err != nil {
+		result.Response = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "resources/ProvidersClient", "Register", "Failure sending request")
 	}
 
@@ -258,6 +262,7 @@ func (client ProvidersClient) Unregister(resourceProviderNamespace string) (resu
 
 	resp, err := client.UnregisterSender(req)
 	if err != nil {
+		result.Response = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "resources/ProvidersClient", "Unregister", "Failure sending request")
 	}
 

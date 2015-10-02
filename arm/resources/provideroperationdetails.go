@@ -53,6 +53,7 @@ func (client ProviderOperationDetailsClient) List(resourceProviderNamespace stri
 
 	resp, err := client.ListSender(req)
 	if err != nil {
+		result.Response = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "resources/ProviderOperationDetailsClient", "List", "Failure sending request")
 	}
 

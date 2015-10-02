@@ -53,6 +53,7 @@ func (client WorkflowRunsClient) Cancel(resourceGroupName string, workflowName s
 
 	resp, err := client.CancelSender(req)
 	if err != nil {
+		result.Response = resp
 		return result, autorest.NewErrorWithError(err, "logic/WorkflowRunsClient", "Cancel", "Failure sending request")
 	}
 
@@ -116,6 +117,7 @@ func (client WorkflowRunsClient) Get(resourceGroupName string, workflowName stri
 
 	resp, err := client.GetSender(req)
 	if err != nil {
+		result.Response = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "logic/WorkflowRunsClient", "Get", "Failure sending request")
 	}
 
@@ -181,6 +183,7 @@ func (client WorkflowRunsClient) List(resourceGroupName string, workflowName str
 
 	resp, err := client.ListSender(req)
 	if err != nil {
+		result.Response = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "logic/WorkflowRunsClient", "List", "Failure sending request")
 	}
 
@@ -246,6 +249,7 @@ func (client WorkflowRunsClient) ListNextResults(lastResults WorkflowRunListResu
 
 	resp, err := client.ListSender(req)
 	if err != nil {
+		result.Response = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "logic/WorkflowRunsClient", "List", "Failure sending next results request request")
 	}
 

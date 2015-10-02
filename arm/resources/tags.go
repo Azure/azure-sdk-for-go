@@ -50,6 +50,7 @@ func (client TagsClient) CreateOrUpdate(tagName string) (result TagDetails, ae e
 
 	resp, err := client.CreateOrUpdateSender(req)
 	if err != nil {
+		result.Response = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "resources/TagsClient", "CreateOrUpdate", "Failure sending request")
 	}
 
@@ -111,6 +112,7 @@ func (client TagsClient) CreateOrUpdateValue(tagName string, tagValue string) (r
 
 	resp, err := client.CreateOrUpdateValueSender(req)
 	if err != nil {
+		result.Response = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "resources/TagsClient", "CreateOrUpdateValue", "Failure sending request")
 	}
 
@@ -173,6 +175,7 @@ func (client TagsClient) Delete(tagName string) (result autorest.Response, ae er
 
 	resp, err := client.DeleteSender(req)
 	if err != nil {
+		result.Response = resp
 		return result, autorest.NewErrorWithError(err, "resources/TagsClient", "Delete", "Failure sending request")
 	}
 
@@ -233,6 +236,7 @@ func (client TagsClient) DeleteValue(tagName string, tagValue string) (result au
 
 	resp, err := client.DeleteValueSender(req)
 	if err != nil {
+		result.Response = resp
 		return result, autorest.NewErrorWithError(err, "resources/TagsClient", "DeleteValue", "Failure sending request")
 	}
 
@@ -292,6 +296,7 @@ func (client TagsClient) List() (result TagsListResult, ae error) {
 
 	resp, err := client.ListSender(req)
 	if err != nil {
+		result.Response = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "resources/TagsClient", "List", "Failure sending request")
 	}
 
@@ -353,6 +358,7 @@ func (client TagsClient) ListNextResults(lastResults TagsListResult) (result Tag
 
 	resp, err := client.ListSender(req)
 	if err != nil {
+		result.Response = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "resources/TagsClient", "List", "Failure sending next results request request")
 	}
 

@@ -55,6 +55,7 @@ func (client DeploymentOperationsClient) Get(resourceGroupName string, deploymen
 
 	resp, err := client.GetSender(req)
 	if err != nil {
+		result.Response = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "resources/DeploymentOperationsClient", "Get", "Failure sending request")
 	}
 
@@ -120,6 +121,7 @@ func (client DeploymentOperationsClient) List(resourceGroupName string, deployme
 
 	resp, err := client.ListSender(req)
 	if err != nil {
+		result.Response = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "resources/DeploymentOperationsClient", "List", "Failure sending request")
 	}
 
@@ -184,6 +186,7 @@ func (client DeploymentOperationsClient) ListNextResults(lastResults DeploymentO
 
 	resp, err := client.ListSender(req)
 	if err != nil {
+		result.Response = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "resources/DeploymentOperationsClient", "List", "Failure sending next results request request")
 	}
 

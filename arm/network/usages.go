@@ -50,6 +50,7 @@ func (client UsagesClient) List(location string) (result UsagesListResult, ae er
 
 	resp, err := client.ListSender(req)
 	if err != nil {
+		result.Response = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "network/UsagesClient", "List", "Failure sending request")
 	}
 

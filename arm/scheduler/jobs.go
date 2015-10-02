@@ -51,6 +51,7 @@ func (client JobsClient) CreateOrUpdate(resourceGroupName string, jobCollectionN
 
 	resp, err := client.CreateOrUpdateSender(req)
 	if err != nil {
+		result.Response = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "scheduler/JobsClient", "CreateOrUpdate", "Failure sending request")
 	}
 
@@ -116,6 +117,7 @@ func (client JobsClient) Delete(resourceGroupName string, jobCollectionName stri
 
 	resp, err := client.DeleteSender(req)
 	if err != nil {
+		result.Response = resp
 		return result, autorest.NewErrorWithError(err, "scheduler/JobsClient", "Delete", "Failure sending request")
 	}
 
@@ -179,6 +181,7 @@ func (client JobsClient) Get(resourceGroupName string, jobCollectionName string,
 
 	resp, err := client.GetSender(req)
 	if err != nil {
+		result.Response = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "scheduler/JobsClient", "Get", "Failure sending request")
 	}
 
@@ -245,6 +248,7 @@ func (client JobsClient) List(resourceGroupName string, jobCollectionName string
 
 	resp, err := client.ListSender(req)
 	if err != nil {
+		result.Response = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "scheduler/JobsClient", "List", "Failure sending request")
 	}
 
@@ -310,6 +314,7 @@ func (client JobsClient) ListNextResults(lastResults JobListResult) (result JobL
 
 	resp, err := client.ListSender(req)
 	if err != nil {
+		result.Response = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "scheduler/JobsClient", "List", "Failure sending next results request request")
 	}
 
@@ -335,6 +340,7 @@ func (client JobsClient) ListJobHistory(resourceGroupName string, jobCollectionN
 
 	resp, err := client.ListJobHistorySender(req)
 	if err != nil {
+		result.Response = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "scheduler/JobsClient", "ListJobHistory", "Failure sending request")
 	}
 
@@ -401,6 +407,7 @@ func (client JobsClient) ListJobHistoryNextResults(lastResults JobHistoryListRes
 
 	resp, err := client.ListJobHistorySender(req)
 	if err != nil {
+		result.Response = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "scheduler/JobsClient", "ListJobHistory", "Failure sending next results request request")
 	}
 
@@ -424,6 +431,7 @@ func (client JobsClient) Patch(resourceGroupName string, jobCollectionName strin
 
 	resp, err := client.PatchSender(req)
 	if err != nil {
+		result.Response = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "scheduler/JobsClient", "Patch", "Failure sending request")
 	}
 
@@ -489,6 +497,7 @@ func (client JobsClient) Run(resourceGroupName string, jobCollectionName string,
 
 	resp, err := client.RunSender(req)
 	if err != nil {
+		result.Response = resp
 		return result, autorest.NewErrorWithError(err, "scheduler/JobsClient", "Run", "Failure sending request")
 	}
 

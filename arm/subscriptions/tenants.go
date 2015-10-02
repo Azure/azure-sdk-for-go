@@ -49,6 +49,7 @@ func (client TenantsClient) List() (result TenantListResult, ae error) {
 
 	resp, err := client.ListSender(req)
 	if err != nil {
+		result.Response = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "subscriptions/TenantsClient", "List", "Failure sending request")
 	}
 
@@ -110,6 +111,7 @@ func (client TenantsClient) ListNextResults(lastResults TenantListResult) (resul
 
 	resp, err := client.ListSender(req)
 	if err != nil {
+		result.Response = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "subscriptions/TenantsClient", "List", "Failure sending next results request request")
 	}
 

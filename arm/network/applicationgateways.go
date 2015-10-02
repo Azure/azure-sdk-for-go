@@ -56,6 +56,7 @@ func (client ApplicationGatewaysClient) CreateOrUpdate(resourceGroupName string,
 
 	resp, err := client.CreateOrUpdateSender(req)
 	if err != nil {
+		result.Response = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "network/ApplicationGatewaysClient", "CreateOrUpdate", "Failure sending request")
 	}
 
@@ -121,6 +122,7 @@ func (client ApplicationGatewaysClient) Delete(resourceGroupName string, applica
 
 	resp, err := client.DeleteSender(req)
 	if err != nil {
+		result.Response = resp
 		return result, autorest.NewErrorWithError(err, "network/ApplicationGatewaysClient", "Delete", "Failure sending request")
 	}
 
@@ -184,6 +186,7 @@ func (client ApplicationGatewaysClient) Get(resourceGroupName string, applicatio
 
 	resp, err := client.GetSender(req)
 	if err != nil {
+		result.Response = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "network/ApplicationGatewaysClient", "Get", "Failure sending request")
 	}
 
@@ -247,6 +250,7 @@ func (client ApplicationGatewaysClient) List(resourceGroupName string) (result A
 
 	resp, err := client.ListSender(req)
 	if err != nil {
+		result.Response = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "network/ApplicationGatewaysClient", "List", "Failure sending request")
 	}
 
@@ -309,6 +313,7 @@ func (client ApplicationGatewaysClient) ListNextResults(lastResults ApplicationG
 
 	resp, err := client.ListSender(req)
 	if err != nil {
+		result.Response = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "network/ApplicationGatewaysClient", "List", "Failure sending next results request request")
 	}
 
@@ -330,6 +335,7 @@ func (client ApplicationGatewaysClient) ListAll() (result ApplicationGatewayList
 
 	resp, err := client.ListAllSender(req)
 	if err != nil {
+		result.Response = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "network/ApplicationGatewaysClient", "ListAll", "Failure sending request")
 	}
 
@@ -391,6 +397,7 @@ func (client ApplicationGatewaysClient) ListAllNextResults(lastResults Applicati
 
 	resp, err := client.ListAllSender(req)
 	if err != nil {
+		result.Response = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "network/ApplicationGatewaysClient", "ListAll", "Failure sending next results request request")
 	}
 
@@ -415,6 +422,7 @@ func (client ApplicationGatewaysClient) Start(resourceGroupName string, applicat
 
 	resp, err := client.StartSender(req)
 	if err != nil {
+		result.Response = resp
 		return result, autorest.NewErrorWithError(err, "network/ApplicationGatewaysClient", "Start", "Failure sending request")
 	}
 
@@ -478,6 +486,7 @@ func (client ApplicationGatewaysClient) Stop(resourceGroupName string, applicati
 
 	resp, err := client.StopSender(req)
 	if err != nil {
+		result.Response = resp
 		return result, autorest.NewErrorWithError(err, "network/ApplicationGatewaysClient", "Stop", "Failure sending request")
 	}
 

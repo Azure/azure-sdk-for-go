@@ -55,6 +55,7 @@ func (client ManagementLocksClient) CreateOrUpdateAtResourceGroupLevel(resourceG
 
 	resp, err := client.CreateOrUpdateAtResourceGroupLevelSender(req)
 	if err != nil {
+		result.Response = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "authorization/ManagementLocksClient", "CreateOrUpdateAtResourceGroupLevel", "Failure sending request")
 	}
 
@@ -123,6 +124,7 @@ func (client ManagementLocksClient) CreateOrUpdateAtResourceLevel(resourceGroupN
 
 	resp, err := client.CreateOrUpdateAtResourceLevelSender(req)
 	if err != nil {
+		result.Response = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "authorization/ManagementLocksClient", "CreateOrUpdateAtResourceLevel", "Failure sending request")
 	}
 
@@ -191,6 +193,7 @@ func (client ManagementLocksClient) CreateOrUpdateAtSubscriptionLevel(lockName s
 
 	resp, err := client.CreateOrUpdateAtSubscriptionLevelSender(req)
 	if err != nil {
+		result.Response = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "authorization/ManagementLocksClient", "CreateOrUpdateAtSubscriptionLevel", "Failure sending request")
 	}
 
@@ -253,6 +256,7 @@ func (client ManagementLocksClient) DeleteAtResourceGroupLevel(resourceGroup str
 
 	resp, err := client.DeleteAtResourceGroupLevelSender(req)
 	if err != nil {
+		result.Response = resp
 		return result, autorest.NewErrorWithError(err, "authorization/ManagementLocksClient", "DeleteAtResourceGroupLevel", "Failure sending request")
 	}
 
@@ -318,6 +322,7 @@ func (client ManagementLocksClient) DeleteAtResourceLevel(resourceGroupName stri
 
 	resp, err := client.DeleteAtResourceLevelSender(req)
 	if err != nil {
+		result.Response = resp
 		return result, autorest.NewErrorWithError(err, "authorization/ManagementLocksClient", "DeleteAtResourceLevel", "Failure sending request")
 	}
 
@@ -383,6 +388,7 @@ func (client ManagementLocksClient) DeleteAtSubscriptionLevel(lockName string) (
 
 	resp, err := client.DeleteAtSubscriptionLevelSender(req)
 	if err != nil {
+		result.Response = resp
 		return result, autorest.NewErrorWithError(err, "authorization/ManagementLocksClient", "DeleteAtSubscriptionLevel", "Failure sending request")
 	}
 
@@ -443,6 +449,7 @@ func (client ManagementLocksClient) Get(lockName string) (result ManagementLock,
 
 	resp, err := client.GetSender(req)
 	if err != nil {
+		result.Response = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "authorization/ManagementLocksClient", "Get", "Failure sending request")
 	}
 
@@ -505,6 +512,7 @@ func (client ManagementLocksClient) ListAtResourceGroupLevel(resourceGroupName s
 
 	resp, err := client.ListAtResourceGroupLevelSender(req)
 	if err != nil {
+		result.Response = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "authorization/ManagementLocksClient", "ListAtResourceGroupLevel", "Failure sending request")
 	}
 
@@ -568,6 +576,7 @@ func (client ManagementLocksClient) ListAtResourceGroupLevelNextResults(lastResu
 
 	resp, err := client.ListAtResourceGroupLevelSender(req)
 	if err != nil {
+		result.Response = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "authorization/ManagementLocksClient", "ListAtResourceGroupLevel", "Failure sending next results request request")
 	}
 
@@ -595,6 +604,7 @@ func (client ManagementLocksClient) ListAtResourceLevel(resourceGroupName string
 
 	resp, err := client.ListAtResourceLevelSender(req)
 	if err != nil {
+		result.Response = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "authorization/ManagementLocksClient", "ListAtResourceLevel", "Failure sending request")
 	}
 
@@ -662,6 +672,7 @@ func (client ManagementLocksClient) ListAtResourceLevelNextResults(lastResults M
 
 	resp, err := client.ListAtResourceLevelSender(req)
 	if err != nil {
+		result.Response = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "authorization/ManagementLocksClient", "ListAtResourceLevel", "Failure sending next results request request")
 	}
 
@@ -684,6 +695,7 @@ func (client ManagementLocksClient) ListAtSubscriptionLevel(filter string) (resu
 
 	resp, err := client.ListAtSubscriptionLevelSender(req)
 	if err != nil {
+		result.Response = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "authorization/ManagementLocksClient", "ListAtSubscriptionLevel", "Failure sending request")
 	}
 
@@ -746,6 +758,7 @@ func (client ManagementLocksClient) ListAtSubscriptionLevelNextResults(lastResul
 
 	resp, err := client.ListAtSubscriptionLevelSender(req)
 	if err != nil {
+		result.Response = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "authorization/ManagementLocksClient", "ListAtSubscriptionLevel", "Failure sending next results request request")
 	}
 
@@ -768,6 +781,7 @@ func (client ManagementLocksClient) ListNext(nextLink string) (result Management
 
 	resp, err := client.ListNextSender(req)
 	if err != nil {
+		result.Response = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "authorization/ManagementLocksClient", "ListNext", "Failure sending request")
 	}
 
@@ -825,6 +839,7 @@ func (client ManagementLocksClient) ListNextNextResults(lastResults ManagementLo
 
 	resp, err := client.ListNextSender(req)
 	if err != nil {
+		result.Response = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "authorization/ManagementLocksClient", "ListNext", "Failure sending next results request request")
 	}
 

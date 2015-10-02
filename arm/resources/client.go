@@ -67,6 +67,7 @@ func (client ManagementClient) CheckExistence(resourceGroupName string, resource
 
 	resp, err := client.CheckExistenceSender(req)
 	if err != nil {
+		result.Response = resp
 		return result, autorest.NewErrorWithError(err, "resources/ManagementClient", "CheckExistence", "Failure sending request")
 	}
 
@@ -135,6 +136,7 @@ func (client ManagementClient) CreateOrUpdate(resourceGroupName string, resource
 
 	resp, err := client.CreateOrUpdateSender(req)
 	if err != nil {
+		result.Response = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "resources/ManagementClient", "CreateOrUpdate", "Failure sending request")
 	}
 
@@ -204,6 +206,7 @@ func (client ManagementClient) Delete(resourceGroupName string, resourceProvider
 
 	resp, err := client.DeleteSender(req)
 	if err != nil {
+		result.Response = resp
 		return result, autorest.NewErrorWithError(err, "resources/ManagementClient", "Delete", "Failure sending request")
 	}
 
@@ -271,6 +274,7 @@ func (client ManagementClient) Get(resourceGroupName string, resourceProviderNam
 
 	resp, err := client.GetSender(req)
 	if err != nil {
+		result.Response = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "resources/ManagementClient", "Get", "Failure sending request")
 	}
 
@@ -337,6 +341,7 @@ func (client ManagementClient) List(filter string, top int) (result ListResult, 
 
 	resp, err := client.ListSender(req)
 	if err != nil {
+		result.Response = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "resources/ManagementClient", "List", "Failure sending request")
 	}
 
@@ -400,6 +405,7 @@ func (client ManagementClient) ListNextResults(lastResults ListResult) (result L
 
 	resp, err := client.ListSender(req)
 	if err != nil {
+		result.Response = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "resources/ManagementClient", "List", "Failure sending next results request request")
 	}
 
@@ -423,6 +429,7 @@ func (client ManagementClient) MoveResources(sourceResourceGroupName string, par
 
 	resp, err := client.MoveResourcesSender(req)
 	if err != nil {
+		result.Response = resp
 		return result, autorest.NewErrorWithError(err, "resources/ManagementClient", "MoveResources", "Failure sending request")
 	}
 

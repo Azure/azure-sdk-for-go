@@ -53,6 +53,7 @@ func (client WorkflowsClient) CreateOrUpdate(resourceGroupName string, workflowN
 
 	resp, err := client.CreateOrUpdateSender(req)
 	if err != nil {
+		result.Response = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "logic/WorkflowsClient", "CreateOrUpdate", "Failure sending request")
 	}
 
@@ -117,6 +118,7 @@ func (client WorkflowsClient) Delete(resourceGroupName string, workflowName stri
 
 	resp, err := client.DeleteSender(req)
 	if err != nil {
+		result.Response = resp
 		return result, autorest.NewErrorWithError(err, "logic/WorkflowsClient", "Delete", "Failure sending request")
 	}
 
@@ -179,6 +181,7 @@ func (client WorkflowsClient) Disable(resourceGroupName string, workflowName str
 
 	resp, err := client.DisableSender(req)
 	if err != nil {
+		result.Response = resp
 		return result, autorest.NewErrorWithError(err, "logic/WorkflowsClient", "Disable", "Failure sending request")
 	}
 
@@ -241,6 +244,7 @@ func (client WorkflowsClient) Enable(resourceGroupName string, workflowName stri
 
 	resp, err := client.EnableSender(req)
 	if err != nil {
+		result.Response = resp
 		return result, autorest.NewErrorWithError(err, "logic/WorkflowsClient", "Enable", "Failure sending request")
 	}
 
@@ -303,6 +307,7 @@ func (client WorkflowsClient) Get(resourceGroupName string, workflowName string)
 
 	resp, err := client.GetSender(req)
 	if err != nil {
+		result.Response = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "logic/WorkflowsClient", "Get", "Failure sending request")
 	}
 
@@ -366,6 +371,7 @@ func (client WorkflowsClient) ListByResourceGroup(resourceGroupName string, top 
 
 	resp, err := client.ListByResourceGroupSender(req)
 	if err != nil {
+		result.Response = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "logic/WorkflowsClient", "ListByResourceGroup", "Failure sending request")
 	}
 
@@ -430,6 +436,7 @@ func (client WorkflowsClient) ListByResourceGroupNextResults(lastResults Workflo
 
 	resp, err := client.ListByResourceGroupSender(req)
 	if err != nil {
+		result.Response = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "logic/WorkflowsClient", "ListByResourceGroup", "Failure sending next results request request")
 	}
 
@@ -453,6 +460,7 @@ func (client WorkflowsClient) ListBySubscription(top int, filter string) (result
 
 	resp, err := client.ListBySubscriptionSender(req)
 	if err != nil {
+		result.Response = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "logic/WorkflowsClient", "ListBySubscription", "Failure sending request")
 	}
 
@@ -516,6 +524,7 @@ func (client WorkflowsClient) ListBySubscriptionNextResults(lastResults Workflow
 
 	resp, err := client.ListBySubscriptionSender(req)
 	if err != nil {
+		result.Response = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "logic/WorkflowsClient", "ListBySubscription", "Failure sending next results request request")
 	}
 
@@ -539,6 +548,7 @@ func (client WorkflowsClient) Run(resourceGroupName string, workflowName string,
 
 	resp, err := client.RunSender(req)
 	if err != nil {
+		result.Response = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "logic/WorkflowsClient", "Run", "Failure sending request")
 	}
 
@@ -603,6 +613,7 @@ func (client WorkflowsClient) Update(resourceGroupName string, workflowName stri
 
 	resp, err := client.UpdateSender(req)
 	if err != nil {
+		result.Response = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "logic/WorkflowsClient", "Update", "Failure sending request")
 	}
 
@@ -667,6 +678,7 @@ func (client WorkflowsClient) Validate(resourceGroupName string, workflowName st
 
 	resp, err := client.ValidateSender(req)
 	if err != nil {
+		result.Response = resp
 		return result, autorest.NewErrorWithError(err, "logic/WorkflowsClient", "Validate", "Failure sending request")
 	}
 

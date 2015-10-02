@@ -54,6 +54,7 @@ func (client SubnetsClient) CreateOrUpdate(resourceGroupName string, virtualNetw
 
 	resp, err := client.CreateOrUpdateSender(req)
 	if err != nil {
+		result.Response = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "network/SubnetsClient", "CreateOrUpdate", "Failure sending request")
 	}
 
@@ -119,6 +120,7 @@ func (client SubnetsClient) Delete(resourceGroupName string, virtualNetworkName 
 
 	resp, err := client.DeleteSender(req)
 	if err != nil {
+		result.Response = resp
 		return result, autorest.NewErrorWithError(err, "network/SubnetsClient", "Delete", "Failure sending request")
 	}
 
@@ -183,6 +185,7 @@ func (client SubnetsClient) Get(resourceGroupName string, virtualNetworkName str
 
 	resp, err := client.GetSender(req)
 	if err != nil {
+		result.Response = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "network/SubnetsClient", "Get", "Failure sending request")
 	}
 
@@ -248,6 +251,7 @@ func (client SubnetsClient) List(resourceGroupName string, virtualNetworkName st
 
 	resp, err := client.ListSender(req)
 	if err != nil {
+		result.Response = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "network/SubnetsClient", "List", "Failure sending request")
 	}
 
@@ -311,6 +315,7 @@ func (client SubnetsClient) ListNextResults(lastResults SubnetListResult) (resul
 
 	resp, err := client.ListSender(req)
 	if err != nil {
+		result.Response = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "network/SubnetsClient", "List", "Failure sending next results request request")
 	}
 

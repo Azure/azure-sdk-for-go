@@ -55,6 +55,7 @@ func (client AvailabilitySetsClient) CreateOrUpdate(resourceGroupName string, na
 
 	resp, err := client.CreateOrUpdateSender(req)
 	if err != nil {
+		result.Response = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "compute/AvailabilitySetsClient", "CreateOrUpdate", "Failure sending request")
 	}
 
@@ -119,6 +120,7 @@ func (client AvailabilitySetsClient) Delete(resourceGroupName string, availabili
 
 	resp, err := client.DeleteSender(req)
 	if err != nil {
+		result.Response = resp
 		return result, autorest.NewErrorWithError(err, "compute/AvailabilitySetsClient", "Delete", "Failure sending request")
 	}
 
@@ -181,6 +183,7 @@ func (client AvailabilitySetsClient) Get(resourceGroupName string, availabilityS
 
 	resp, err := client.GetSender(req)
 	if err != nil {
+		result.Response = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "compute/AvailabilitySetsClient", "Get", "Failure sending request")
 	}
 
@@ -243,6 +246,7 @@ func (client AvailabilitySetsClient) List(resourceGroupName string) (result Avai
 
 	resp, err := client.ListSender(req)
 	if err != nil {
+		result.Response = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "compute/AvailabilitySetsClient", "List", "Failure sending request")
 	}
 
@@ -306,6 +310,7 @@ func (client AvailabilitySetsClient) ListAvailableSizes(resourceGroupName string
 
 	resp, err := client.ListAvailableSizesSender(req)
 	if err != nil {
+		result.Response = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "compute/AvailabilitySetsClient", "ListAvailableSizes", "Failure sending request")
 	}
 

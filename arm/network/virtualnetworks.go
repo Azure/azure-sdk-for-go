@@ -56,6 +56,7 @@ func (client VirtualNetworksClient) CreateOrUpdate(resourceGroupName string, vir
 
 	resp, err := client.CreateOrUpdateSender(req)
 	if err != nil {
+		result.Response = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "network/VirtualNetworksClient", "CreateOrUpdate", "Failure sending request")
 	}
 
@@ -121,6 +122,7 @@ func (client VirtualNetworksClient) Delete(resourceGroupName string, virtualNetw
 
 	resp, err := client.DeleteSender(req)
 	if err != nil {
+		result.Response = resp
 		return result, autorest.NewErrorWithError(err, "network/VirtualNetworksClient", "Delete", "Failure sending request")
 	}
 
@@ -184,6 +186,7 @@ func (client VirtualNetworksClient) Get(resourceGroupName string, virtualNetwork
 
 	resp, err := client.GetSender(req)
 	if err != nil {
+		result.Response = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "network/VirtualNetworksClient", "Get", "Failure sending request")
 	}
 
@@ -247,6 +250,7 @@ func (client VirtualNetworksClient) List(resourceGroupName string) (result Virtu
 
 	resp, err := client.ListSender(req)
 	if err != nil {
+		result.Response = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "network/VirtualNetworksClient", "List", "Failure sending request")
 	}
 
@@ -309,6 +313,7 @@ func (client VirtualNetworksClient) ListNextResults(lastResults VirtualNetworkLi
 
 	resp, err := client.ListSender(req)
 	if err != nil {
+		result.Response = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "network/VirtualNetworksClient", "List", "Failure sending next results request request")
 	}
 
@@ -330,6 +335,7 @@ func (client VirtualNetworksClient) ListAll() (result VirtualNetworkListResult, 
 
 	resp, err := client.ListAllSender(req)
 	if err != nil {
+		result.Response = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "network/VirtualNetworksClient", "ListAll", "Failure sending request")
 	}
 
@@ -391,6 +397,7 @@ func (client VirtualNetworksClient) ListAllNextResults(lastResults VirtualNetwor
 
 	resp, err := client.ListAllSender(req)
 	if err != nil {
+		result.Response = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "network/VirtualNetworksClient", "ListAll", "Failure sending next results request request")
 	}
 

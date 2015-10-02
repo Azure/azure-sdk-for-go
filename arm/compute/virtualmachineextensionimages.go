@@ -52,6 +52,7 @@ func (client VirtualMachineExtensionImagesClient) Get(location string, publisher
 
 	resp, err := client.GetSender(req)
 	if err != nil {
+		result.Response = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "compute/VirtualMachineExtensionImagesClient", "Get", "Failure sending request")
 	}
 
@@ -115,6 +116,7 @@ func (client VirtualMachineExtensionImagesClient) ListTypes(location string, pub
 
 	resp, err := client.ListTypesSender(req)
 	if err != nil {
+		result.Response = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "compute/VirtualMachineExtensionImagesClient", "ListTypes", "Failure sending request")
 	}
 
@@ -177,6 +179,7 @@ func (client VirtualMachineExtensionImagesClient) ListVersions(location string, 
 
 	resp, err := client.ListVersionsSender(req)
 	if err != nil {
+		result.Response = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "compute/VirtualMachineExtensionImagesClient", "ListVersions", "Failure sending request")
 	}
 

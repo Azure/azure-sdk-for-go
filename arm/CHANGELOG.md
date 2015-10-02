@@ -1,5 +1,16 @@
 # CHANGELOG
 
+## v0.1.1-beta -------------------------------------------------------------------------------------
+
+- Improves the UserAgent string to disambiguate arm packages from others in the SDK
+- Improves setting the http.Response into generated results (reduces likelihood of a nil reference)
+- Adds gofmt, golint, and govet to Travis CI for the arm packages
+
+### Fixed Issues
+
+- https://github.com/Azure/azure-sdk-for-go/issues/196
+- https://github.com/Azure/azure-sdk-for-go/issues/213
+
 ## v0.1.0-beta -------------------------------------------------------------------------------------
 
 This release addresses the issues raised against the alpha release and adds more features. Most

@@ -53,6 +53,7 @@ func (client VirtualMachineSizesClient) List(location string) (result VirtualMac
 
 	resp, err := client.ListSender(req)
 	if err != nil {
+		result.Response = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "compute/VirtualMachineSizesClient", "List", "Failure sending request")
 	}
 

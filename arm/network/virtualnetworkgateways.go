@@ -58,6 +58,7 @@ func (client VirtualNetworkGatewaysClient) CreateOrUpdate(resourceGroupName stri
 
 	resp, err := client.CreateOrUpdateSender(req)
 	if err != nil {
+		result.Response = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "network/VirtualNetworkGatewaysClient", "CreateOrUpdate", "Failure sending request")
 	}
 
@@ -123,6 +124,7 @@ func (client VirtualNetworkGatewaysClient) Delete(resourceGroupName string, virt
 
 	resp, err := client.DeleteSender(req)
 	if err != nil {
+		result.Response = resp
 		return result, autorest.NewErrorWithError(err, "network/VirtualNetworkGatewaysClient", "Delete", "Failure sending request")
 	}
 
@@ -186,6 +188,7 @@ func (client VirtualNetworkGatewaysClient) Get(resourceGroupName string, virtual
 
 	resp, err := client.GetSender(req)
 	if err != nil {
+		result.Response = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "network/VirtualNetworkGatewaysClient", "Get", "Failure sending request")
 	}
 
@@ -249,6 +252,7 @@ func (client VirtualNetworkGatewaysClient) List(resourceGroupName string) (resul
 
 	resp, err := client.ListSender(req)
 	if err != nil {
+		result.Response = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "network/VirtualNetworkGatewaysClient", "List", "Failure sending request")
 	}
 
@@ -311,6 +315,7 @@ func (client VirtualNetworkGatewaysClient) ListNextResults(lastResults VirtualNe
 
 	resp, err := client.ListSender(req)
 	if err != nil {
+		result.Response = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "network/VirtualNetworkGatewaysClient", "List", "Failure sending next results request request")
 	}
 
@@ -338,6 +343,7 @@ func (client VirtualNetworkGatewaysClient) Reset(resourceGroupName string, virtu
 
 	resp, err := client.ResetSender(req)
 	if err != nil {
+		result.Response = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "network/VirtualNetworkGatewaysClient", "Reset", "Failure sending request")
 	}
 

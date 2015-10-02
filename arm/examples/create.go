@@ -50,6 +50,7 @@ func createAccount(resourceGroup, name string) {
 			Type: to.StringPtr("Microsoft.Storage/storageAccounts")})
 	if err != nil {
 		log.Fatalf("Error: %v", err)
+		return
 	}
 	if !to.Bool(cna.NameAvailable) {
 		fmt.Printf("%s is unavailable -- try again\n", name)
@@ -70,13 +71,12 @@ func createAccount(resourceGroup, name string) {
 		if sa.Response.StatusCode != http.StatusAccepted {
 			fmt.Printf("Creation of %s.%s failed with err -- %v\n", resourceGroup, name, err)
 			return
-		} else {
-			fmt.Printf("Create initiated for %s.%s -- poll %s to check status\n",
-				resourceGroup,
-				name,
-				sa.GetPollingLocation())
-			return
 		}
+		fmt.Printf("Create initiated for %s.%s -- poll %s to check status\n",
+			resourceGroup,
+			name,
+			sa.GetPollingLocation())
+		return
 	}
 
 	fmt.Printf("Successfully created %s.%s\n\n", resourceGroup, name)

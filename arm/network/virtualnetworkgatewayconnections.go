@@ -59,6 +59,7 @@ func (client VirtualNetworkGatewayConnectionsClient) CreateOrUpdate(resourceGrou
 
 	resp, err := client.CreateOrUpdateSender(req)
 	if err != nil {
+		result.Response = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "network/VirtualNetworkGatewayConnectionsClient", "CreateOrUpdate", "Failure sending request")
 	}
 
@@ -126,6 +127,7 @@ func (client VirtualNetworkGatewayConnectionsClient) Delete(resourceGroupName st
 
 	resp, err := client.DeleteSender(req)
 	if err != nil {
+		result.Response = resp
 		return result, autorest.NewErrorWithError(err, "network/VirtualNetworkGatewayConnectionsClient", "Delete", "Failure sending request")
 	}
 
@@ -191,6 +193,7 @@ func (client VirtualNetworkGatewayConnectionsClient) Get(resourceGroupName strin
 
 	resp, err := client.GetSender(req)
 	if err != nil {
+		result.Response = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "network/VirtualNetworkGatewayConnectionsClient", "Get", "Failure sending request")
 	}
 
@@ -257,6 +260,7 @@ func (client VirtualNetworkGatewayConnectionsClient) GetSharedKey(resourceGroupN
 
 	resp, err := client.GetSharedKeySender(req)
 	if err != nil {
+		result.Response = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "network/VirtualNetworkGatewayConnectionsClient", "GetSharedKey", "Failure sending request")
 	}
 
@@ -320,6 +324,7 @@ func (client VirtualNetworkGatewayConnectionsClient) List(resourceGroupName stri
 
 	resp, err := client.ListSender(req)
 	if err != nil {
+		result.Response = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "network/VirtualNetworkGatewayConnectionsClient", "List", "Failure sending request")
 	}
 
@@ -382,6 +387,7 @@ func (client VirtualNetworkGatewayConnectionsClient) ListNextResults(lastResults
 
 	resp, err := client.ListSender(req)
 	if err != nil {
+		result.Response = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "network/VirtualNetworkGatewayConnectionsClient", "List", "Failure sending next results request request")
 	}
 
@@ -411,6 +417,7 @@ func (client VirtualNetworkGatewayConnectionsClient) ResetSharedKey(resourceGrou
 
 	resp, err := client.ResetSharedKeySender(req)
 	if err != nil {
+		result.Response = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "network/VirtualNetworkGatewayConnectionsClient", "ResetSharedKey", "Failure sending request")
 	}
 
@@ -481,6 +488,7 @@ func (client VirtualNetworkGatewayConnectionsClient) SetSharedKey(resourceGroupN
 
 	resp, err := client.SetSharedKeySender(req)
 	if err != nil {
+		result.Response = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "network/VirtualNetworkGatewayConnectionsClient", "SetSharedKey", "Failure sending request")
 	}
 

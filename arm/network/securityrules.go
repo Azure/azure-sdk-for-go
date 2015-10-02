@@ -58,6 +58,7 @@ func (client SecurityRulesClient) CreateOrUpdate(resourceGroupName string, netwo
 
 	resp, err := client.CreateOrUpdateSender(req)
 	if err != nil {
+		result.Response = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "network/SecurityRulesClient", "CreateOrUpdate", "Failure sending request")
 	}
 
@@ -125,6 +126,7 @@ func (client SecurityRulesClient) Delete(resourceGroupName string, networkSecuri
 
 	resp, err := client.DeleteSender(req)
 	if err != nil {
+		result.Response = resp
 		return result, autorest.NewErrorWithError(err, "network/SecurityRulesClient", "Delete", "Failure sending request")
 	}
 
@@ -190,6 +192,7 @@ func (client SecurityRulesClient) Get(resourceGroupName string, networkSecurityG
 
 	resp, err := client.GetSender(req)
 	if err != nil {
+		result.Response = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "network/SecurityRulesClient", "Get", "Failure sending request")
 	}
 
@@ -255,6 +258,7 @@ func (client SecurityRulesClient) List(resourceGroupName string, networkSecurity
 
 	resp, err := client.ListSender(req)
 	if err != nil {
+		result.Response = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "network/SecurityRulesClient", "List", "Failure sending request")
 	}
 
@@ -318,6 +322,7 @@ func (client SecurityRulesClient) ListNextResults(lastResults SecurityRuleListRe
 
 	resp, err := client.ListSender(req)
 	if err != nil {
+		result.Response = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "network/SecurityRulesClient", "List", "Failure sending next results request request")
 	}
 

@@ -64,6 +64,7 @@ func (client ManagementClient) Get(subscriptionID string) (result Subscription, 
 
 	resp, err := client.GetSender(req)
 	if err != nil {
+		result.Response = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "subscriptions/ManagementClient", "Get", "Failure sending request")
 	}
 
@@ -122,6 +123,7 @@ func (client ManagementClient) List() (result ListResult, ae error) {
 
 	resp, err := client.ListSender(req)
 	if err != nil {
+		result.Response = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "subscriptions/ManagementClient", "List", "Failure sending request")
 	}
 
@@ -183,6 +185,7 @@ func (client ManagementClient) ListNextResults(lastResults ListResult) (result L
 
 	resp, err := client.ListSender(req)
 	if err != nil {
+		result.Response = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "subscriptions/ManagementClient", "List", "Failure sending next results request request")
 	}
 

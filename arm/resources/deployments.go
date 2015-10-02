@@ -53,6 +53,7 @@ func (client DeploymentsClient) Cancel(resourceGroupName string, deploymentName 
 
 	resp, err := client.CancelSender(req)
 	if err != nil {
+		result.Response = resp
 		return result, autorest.NewErrorWithError(err, "resources/DeploymentsClient", "Cancel", "Failure sending request")
 	}
 
@@ -116,6 +117,7 @@ func (client DeploymentsClient) CreateOrUpdate(resourceGroupName string, deploym
 
 	resp, err := client.CreateOrUpdateSender(req)
 	if err != nil {
+		result.Response = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "resources/DeploymentsClient", "CreateOrUpdate", "Failure sending request")
 	}
 
@@ -180,6 +182,7 @@ func (client DeploymentsClient) Get(resourceGroupName string, deploymentName str
 
 	resp, err := client.GetSender(req)
 	if err != nil {
+		result.Response = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "resources/DeploymentsClient", "Get", "Failure sending request")
 	}
 
@@ -244,6 +247,7 @@ func (client DeploymentsClient) List(resourceGroupName string, filter string, to
 
 	resp, err := client.ListSender(req)
 	if err != nil {
+		result.Response = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "resources/DeploymentsClient", "List", "Failure sending request")
 	}
 
@@ -308,6 +312,7 @@ func (client DeploymentsClient) ListNextResults(lastResults DeploymentListResult
 
 	resp, err := client.ListSender(req)
 	if err != nil {
+		result.Response = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "resources/DeploymentsClient", "List", "Failure sending next results request request")
 	}
 
@@ -332,6 +337,7 @@ func (client DeploymentsClient) Validate(resourceGroupName string, deploymentNam
 
 	resp, err := client.ValidateSender(req)
 	if err != nil {
+		result.Response = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "resources/DeploymentsClient", "Validate", "Failure sending request")
 	}
 

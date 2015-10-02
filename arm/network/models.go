@@ -19,786 +19,1086 @@ package network
 // regenerated.
 
 import (
-	"github.com/Azure/go-autorest/autorest"
+	"github.com/Azure/azure-sdk-for-go/Godeps/_workspace/src/github.com/Azure/go-autorest/autorest"
+	"github.com/Azure/azure-sdk-for-go/Godeps/_workspace/src/github.com/Azure/go-autorest/autorest/to"
+	"net/http"
 )
 
+// ApplicationGatewayCookieBasedAffinity enumerates the values for application
+// gateway cookie based affinity.
 type ApplicationGatewayCookieBasedAffinity string
 
 const (
+	// Disabled specifies the disabled state for application gateway cookie
+	// based affinity.
 	Disabled ApplicationGatewayCookieBasedAffinity = "Disabled"
-	Enabled  ApplicationGatewayCookieBasedAffinity = "Enabled"
+	// Enabled specifies the enabled state for application gateway cookie
+	// based affinity.
+	Enabled ApplicationGatewayCookieBasedAffinity = "Enabled"
 )
 
+// ApplicationGatewayOperationalState enumerates the values for application
+// gateway operational state.
 type ApplicationGatewayOperationalState string
 
 const (
-	Running  ApplicationGatewayOperationalState = "Running"
+	// Running specifies the running state for application gateway operational
+	// state.
+	Running ApplicationGatewayOperationalState = "Running"
+	// Starting specifies the starting state for application gateway
+	// operational state.
 	Starting ApplicationGatewayOperationalState = "Starting"
-	Stopped  ApplicationGatewayOperationalState = "Stopped"
+	// Stopped specifies the stopped state for application gateway operational
+	// state.
+	Stopped ApplicationGatewayOperationalState = "Stopped"
+	// Stopping specifies the stopping state for application gateway
+	// operational state.
 	Stopping ApplicationGatewayOperationalState = "Stopping"
 )
 
+// ApplicationGatewayProtocol enumerates the values for application gateway
+// protocol.
 type ApplicationGatewayProtocol string
 
 const (
-	ApplicationGatewayProtocolHttp  ApplicationGatewayProtocol = "Http"
-	ApplicationGatewayProtocolHttps ApplicationGatewayProtocol = "Https"
+	// ApplicationGatewayProtocolHTTP specifies the application gateway
+	// protocol http state for application gateway protocol.
+	ApplicationGatewayProtocolHTTP ApplicationGatewayProtocol = "Http"
+	// ApplicationGatewayProtocolHTTPS specifies the application gateway
+	// protocol https state for application gateway protocol.
+	ApplicationGatewayProtocolHTTPS ApplicationGatewayProtocol = "Https"
 )
 
+// ApplicationGatewayRequestRoutingRuleType enumerates the values for
+// application gateway request routing rule type.
 type ApplicationGatewayRequestRoutingRuleType string
 
 const (
+	// Basic specifies the basic state for application gateway request routing
+	// rule type.
 	Basic ApplicationGatewayRequestRoutingRuleType = "Basic"
 )
 
+// ApplicationGatewaySkuName enumerates the values for application gateway sku
+// name.
 type ApplicationGatewaySkuName string
 
 const (
-	StandardLarge  ApplicationGatewaySkuName = "Standard_Large"
+	// StandardLarge specifies the standard large state for application
+	// gateway sku name.
+	StandardLarge ApplicationGatewaySkuName = "Standard_Large"
+	// StandardMedium specifies the standard medium state for application
+	// gateway sku name.
 	StandardMedium ApplicationGatewaySkuName = "Standard_Medium"
-	StandardSmall  ApplicationGatewaySkuName = "Standard_Small"
+	// StandardSmall specifies the standard small state for application
+	// gateway sku name.
+	StandardSmall ApplicationGatewaySkuName = "Standard_Small"
 )
 
+// ApplicationGatewayTier enumerates the values for application gateway tier.
 type ApplicationGatewayTier string
 
 const (
+	// Standard specifies the standard state for application gateway tier.
 	Standard ApplicationGatewayTier = "Standard"
 )
 
-type IpAllocationMethod string
+// IPAllocationMethod enumerates the values for ip allocation method.
+type IPAllocationMethod string
 
 const (
-	Dynamic IpAllocationMethod = "Dynamic"
-	Static  IpAllocationMethod = "Static"
+	// Dynamic specifies the dynamic state for ip allocation method.
+	Dynamic IPAllocationMethod = "Dynamic"
+	// Static specifies the static state for ip allocation method.
+	Static IPAllocationMethod = "Static"
 )
 
+// LoadDistribution enumerates the values for load distribution.
 type LoadDistribution string
 
 const (
-	Default          LoadDistribution = "Default"
-	SourceIP         LoadDistribution = "SourceIP"
+	// Default specifies the default state for load distribution.
+	Default LoadDistribution = "Default"
+	// SourceIP specifies the source ip state for load distribution.
+	SourceIP LoadDistribution = "SourceIP"
+	// SourceIPProtocol specifies the source ip protocol state for load
+	// distribution.
 	SourceIPProtocol LoadDistribution = "SourceIPProtocol"
 )
 
+// OperationStatus enumerates the values for operation status.
 type OperationStatus string
 
 const (
-	Failed     OperationStatus = "Failed"
+	// Failed specifies the failed state for operation status.
+	Failed OperationStatus = "Failed"
+	// InProgress specifies the in progress state for operation status.
 	InProgress OperationStatus = "InProgress"
-	Succeeded  OperationStatus = "Succeeded"
+	// Succeeded specifies the succeeded state for operation status.
+	Succeeded OperationStatus = "Succeeded"
 )
 
+// ProbeProtocol enumerates the values for probe protocol.
 type ProbeProtocol string
 
 const (
-	ProbeProtocolHttp ProbeProtocol = "Http"
-	ProbeProtocolTcp  ProbeProtocol = "Tcp"
+	// ProbeProtocolHTTP specifies the probe protocol http state for probe
+	// protocol.
+	ProbeProtocolHTTP ProbeProtocol = "Http"
+	// ProbeProtocolTCP specifies the probe protocol tcp state for probe
+	// protocol.
+	ProbeProtocolTCP ProbeProtocol = "Tcp"
 )
 
+// SecurityRuleAccess enumerates the values for security rule access.
 type SecurityRuleAccess string
 
 const (
+	// Allow specifies the allow state for security rule access.
 	Allow SecurityRuleAccess = "Allow"
-	Deny  SecurityRuleAccess = "Deny"
+	// Deny specifies the deny state for security rule access.
+	Deny SecurityRuleAccess = "Deny"
 )
 
+// SecurityRuleDirection enumerates the values for security rule direction.
 type SecurityRuleDirection string
 
 const (
-	Inbound  SecurityRuleDirection = "Inbound"
+	// Inbound specifies the inbound state for security rule direction.
+	Inbound SecurityRuleDirection = "Inbound"
+	// Outbound specifies the outbound state for security rule direction.
 	Outbound SecurityRuleDirection = "Outbound"
 )
 
+// SecurityRuleProtocol enumerates the values for security rule protocol.
 type SecurityRuleProtocol string
 
 const (
+	// SecurityRuleProtocolAsterisk specifies the security rule protocol
+	// asterisk state for security rule protocol.
 	SecurityRuleProtocolAsterisk SecurityRuleProtocol = "*"
-	SecurityRuleProtocolTcp      SecurityRuleProtocol = "Tcp"
-	SecurityRuleProtocolUdp      SecurityRuleProtocol = "Udp"
+	// SecurityRuleProtocolTCP specifies the security rule protocol tcp state
+	// for security rule protocol.
+	SecurityRuleProtocolTCP SecurityRuleProtocol = "Tcp"
+	// SecurityRuleProtocolUDP specifies the security rule protocol udp state
+	// for security rule protocol.
+	SecurityRuleProtocolUDP SecurityRuleProtocol = "Udp"
 )
 
+// TransportProtocol enumerates the values for transport protocol.
 type TransportProtocol string
 
 const (
-	TransportProtocolTcp TransportProtocol = "Tcp"
-	TransportProtocolUdp TransportProtocol = "Udp"
+	// TransportProtocolTCP specifies the transport protocol tcp state for
+	// transport protocol.
+	TransportProtocolTCP TransportProtocol = "Tcp"
+	// TransportProtocolUDP specifies the transport protocol udp state for
+	// transport protocol.
+	TransportProtocolUDP TransportProtocol = "Udp"
 )
 
+// UsageUnit enumerates the values for usage unit.
 type UsageUnit string
 
 const (
+	// Count specifies the count state for usage unit.
 	Count UsageUnit = "Count"
 )
 
+// VirtualNetworkGatewayConnectionType enumerates the values for virtual
+// network gateway connection type.
 type VirtualNetworkGatewayConnectionType string
 
 const (
+	// ExpressRoute specifies the express route state for virtual network
+	// gateway connection type.
 	ExpressRoute VirtualNetworkGatewayConnectionType = "ExpressRoute"
-	IPsec        VirtualNetworkGatewayConnectionType = "IPsec"
-	Vnet2Vnet    VirtualNetworkGatewayConnectionType = "Vnet2Vnet"
-	VPNClient    VirtualNetworkGatewayConnectionType = "VPNClient"
+	// IPsec specifies the i psec state for virtual network gateway connection
+	// type.
+	IPsec VirtualNetworkGatewayConnectionType = "IPsec"
+	// Vnet2Vnet specifies the vnet 2 vnet state for virtual network gateway
+	// connection type.
+	Vnet2Vnet VirtualNetworkGatewayConnectionType = "Vnet2Vnet"
+	// VPNClient specifies the vpn client state for virtual network gateway
+	// connection type.
+	VPNClient VirtualNetworkGatewayConnectionType = "VPNClient"
 )
 
+// VirtualNetworkGatewayType enumerates the values for virtual network gateway
+// type.
 type VirtualNetworkGatewayType string
 
 const (
+	// Vpn specifies the vpn state for virtual network gateway type.
 	Vpn VirtualNetworkGatewayType = "Vpn"
 )
 
+// VpnType enumerates the values for vpn type.
 type VpnType string
 
 const (
+	// PolicyBased specifies the policy based state for vpn type.
 	PolicyBased VpnType = "PolicyBased"
-	RouteBased  VpnType = "RouteBased"
+	// RouteBased specifies the route based state for vpn type.
+	RouteBased VpnType = "RouteBased"
 )
 
-// ApplicationGateways resource
+// AddressSpace is addressSpace contains an array of IP address ranges that
+// can be used by subnets
+type AddressSpace struct {
+	AddressPrefixes *[]string `json:"addressPrefixes,omitempty"`
+}
+
+// ApplicationGateway is applicationGateways resource
 type ApplicationGateway struct {
 	autorest.Response `json:"-"`
-	Id                string            `json:"id,omitempty"`
-	Name              string            `json:"name,omitempty"`
-	Type              string            `json:"type,omitempty"`
-	Location          string            `json:"location,omitempty"`
-	Tags              map[string]string `json:"tags,omitempty"`
-	Properties        struct {
-		Sku struct {
-			Name     ApplicationGatewaySkuName `json:"name,omitempty"`
-			Tier     ApplicationGatewayTier    `json:"tier,omitempty"`
-			Capacity int                       `json:"capacity,omitempty"`
-		} `json:"sku,omitempty"`
-		OperationalState              ApplicationGatewayOperationalState          `json:"operationalState,omitempty"`
-		GatewayIpConfigurations       []ApplicationGatewayIpConfiguration         `json:"gatewayIpConfigurations,omitempty"`
-		SslCertificates               []ApplicationGatewaySslCertificate          `json:"sslCertificates,omitempty"`
-		FrontendIpConfigurations      []ApplicationGatewayFrontendIpConfiguration `json:"frontendIpConfigurations,omitempty"`
-		FrontendPorts                 []ApplicationGatewayFrontendPort            `json:"frontendPorts,omitempty"`
-		BackendAddressPools           []ApplicationGatewayBackendAddressPool      `json:"backendAddressPools,omitempty"`
-		BackendHttpSettingsCollection []ApplicationGatewayBackendHttpSettings     `json:"backendHttpSettingsCollection,omitempty"`
-		HttpListeners                 []ApplicationGatewayHttpListener            `json:"httpListeners,omitempty"`
-		RequestRoutingRules           []ApplicationGatewayRequestRoutingRule      `json:"requestRoutingRules,omitempty"`
-		ProvisioningState             string                                      `json:"provisioningState,omitempty"`
-	} `json:"properties,omitempty"`
-	Etag string `json:"etag,omitempty"`
+	ID                *string                             `json:"id,omitempty"`
+	Name              *string                             `json:"name,omitempty"`
+	Type              *string                             `json:"type,omitempty"`
+	Location          *string                             `json:"location,omitempty"`
+	Tags              *map[string]*string                 `json:"tags,omitempty"`
+	Properties        *ApplicationGatewayPropertiesFormat `json:"properties,omitempty"`
+	Etag              *string                             `json:"etag,omitempty"`
 }
 
-// Backend Address of application gateway
+// ApplicationGatewayBackendAddress is backend Address of application gateway
 type ApplicationGatewayBackendAddress struct {
-	Fqdn      string `json:"fqdn,omitempty"`
-	IpAddress string `json:"ipAddress,omitempty"`
+	Fqdn      *string `json:"fqdn,omitempty"`
+	IPAddress *string `json:"ipAddress,omitempty"`
 }
 
-// Backend Address Pool of application gateway
+// ApplicationGatewayBackendAddressPool is backend Address Pool of application
+// gateway
 type ApplicationGatewayBackendAddressPool struct {
-	Id         string `json:"id,omitempty"`
-	Properties struct {
-		BackendIpConfigurations []SubResource                      `json:"backendIpConfigurations,omitempty"`
-		BackendAddresses        []ApplicationGatewayBackendAddress `json:"backendAddresses,omitempty"`
-		ProvisioningState       string                             `json:"provisioningState,omitempty"`
-	} `json:"properties,omitempty"`
-	Name string `json:"name,omitempty"`
-	Etag string `json:"etag,omitempty"`
+	ID         *string                                               `json:"id,omitempty"`
+	Properties *ApplicationGatewayBackendAddressPoolPropertiesFormat `json:"properties,omitempty"`
+	Name       *string                                               `json:"name,omitempty"`
+	Etag       *string                                               `json:"etag,omitempty"`
 }
 
+// ApplicationGatewayBackendAddressPoolPropertiesFormat is properties of
+// Backend Address Pool of application gateway
+type ApplicationGatewayBackendAddressPoolPropertiesFormat struct {
+	BackendIPConfigurations *[]SubResource                      `json:"backendIpConfigurations,omitempty"`
+	BackendAddresses        *[]ApplicationGatewayBackendAddress `json:"backendAddresses,omitempty"`
+	ProvisioningState       *string                             `json:"provisioningState,omitempty"`
+}
+
+// ApplicationGatewayBackendHTTPSettings is backend address pool settings of
+// application gateway
+type ApplicationGatewayBackendHTTPSettings struct {
+	ID         *string                                                `json:"id,omitempty"`
+	Properties *ApplicationGatewayBackendHTTPSettingsPropertiesFormat `json:"properties,omitempty"`
+	Name       *string                                                `json:"name,omitempty"`
+	Etag       *string                                                `json:"etag,omitempty"`
+}
+
+// ApplicationGatewayBackendHTTPSettingsPropertiesFormat is properties of
 // Backend address pool settings of application gateway
-type ApplicationGatewayBackendHttpSettings struct {
-	Id         string `json:"id,omitempty"`
-	Properties struct {
-		Port                int                                   `json:"port,omitempty"`
-		Protocol            ApplicationGatewayProtocol            `json:"protocol,omitempty"`
-		CookieBasedAffinity ApplicationGatewayCookieBasedAffinity `json:"cookieBasedAffinity,omitempty"`
-		ProvisioningState   string                                `json:"provisioningState,omitempty"`
-	} `json:"properties,omitempty"`
-	Name string `json:"name,omitempty"`
-	Etag string `json:"etag,omitempty"`
+type ApplicationGatewayBackendHTTPSettingsPropertiesFormat struct {
+	Port                *int                                  `json:"port,omitempty"`
+	Protocol            ApplicationGatewayProtocol            `json:"protocol,omitempty"`
+	CookieBasedAffinity ApplicationGatewayCookieBasedAffinity `json:"cookieBasedAffinity,omitempty"`
+	ProvisioningState   *string                               `json:"provisioningState,omitempty"`
 }
 
+// ApplicationGatewayFrontendIPConfiguration is frontend IP configuration of
+// application gateway
+type ApplicationGatewayFrontendIPConfiguration struct {
+	ID         *string                                                    `json:"id,omitempty"`
+	Properties *ApplicationGatewayFrontendIPConfigurationPropertiesFormat `json:"properties,omitempty"`
+	Name       *string                                                    `json:"name,omitempty"`
+	Etag       *string                                                    `json:"etag,omitempty"`
+}
+
+// ApplicationGatewayFrontendIPConfigurationPropertiesFormat is properties of
 // Frontend IP configuration of application gateway
-type ApplicationGatewayFrontendIpConfiguration struct {
-	Id         string `json:"id,omitempty"`
-	Properties struct {
-		PrivateIPAddress          string             `json:"privateIPAddress,omitempty"`
-		PrivateIPAllocationMethod IpAllocationMethod `json:"privateIPAllocationMethod,omitempty"`
-		Subnet                    struct {
-			Id string `json:"id,omitempty"`
-		} `json:"subnet,omitempty"`
-		PublicIPAddress struct {
-			Id string `json:"id,omitempty"`
-		} `json:"publicIPAddress,omitempty"`
-		ProvisioningState string `json:"provisioningState,omitempty"`
-	} `json:"properties,omitempty"`
-	Name string `json:"name,omitempty"`
-	Etag string `json:"etag,omitempty"`
+type ApplicationGatewayFrontendIPConfigurationPropertiesFormat struct {
+	PrivateIPAddress          *string            `json:"privateIPAddress,omitempty"`
+	PrivateIPAllocationMethod IPAllocationMethod `json:"privateIPAllocationMethod,omitempty"`
+	Subnet                    *SubResource       `json:"subnet,omitempty"`
+	PublicIPAddress           *SubResource       `json:"publicIPAddress,omitempty"`
+	ProvisioningState         *string            `json:"provisioningState,omitempty"`
 }
 
-// Frontend Port of application gateway
+// ApplicationGatewayFrontendPort is frontend Port of application gateway
 type ApplicationGatewayFrontendPort struct {
-	Id         string `json:"id,omitempty"`
-	Properties struct {
-		Port              int    `json:"port,omitempty"`
-		ProvisioningState string `json:"provisioningState,omitempty"`
-	} `json:"properties,omitempty"`
-	Name string `json:"name,omitempty"`
-	Etag string `json:"etag,omitempty"`
+	ID         *string                                         `json:"id,omitempty"`
+	Properties *ApplicationGatewayFrontendPortPropertiesFormat `json:"properties,omitempty"`
+	Name       *string                                         `json:"name,omitempty"`
+	Etag       *string                                         `json:"etag,omitempty"`
 }
 
-// Http listener of application gateway
-type ApplicationGatewayHttpListener struct {
-	Id         string `json:"id,omitempty"`
-	Properties struct {
-		FrontendIpConfiguration struct {
-			Id string `json:"id,omitempty"`
-		} `json:"frontendIpConfiguration,omitempty"`
-		FrontendPort struct {
-			Id string `json:"id,omitempty"`
-		} `json:"frontendPort,omitempty"`
-		Protocol       ApplicationGatewayProtocol `json:"protocol,omitempty"`
-		SslCertificate struct {
-			Id string `json:"id,omitempty"`
-		} `json:"sslCertificate,omitempty"`
-		ProvisioningState string `json:"provisioningState,omitempty"`
-	} `json:"properties,omitempty"`
-	Name string `json:"name,omitempty"`
-	Etag string `json:"etag,omitempty"`
+// ApplicationGatewayFrontendPortPropertiesFormat is properties of Frontend
+// Port of application gateway
+type ApplicationGatewayFrontendPortPropertiesFormat struct {
+	Port              *int    `json:"port,omitempty"`
+	ProvisioningState *string `json:"provisioningState,omitempty"`
 }
 
-// IP configuration of application gateway
-type ApplicationGatewayIpConfiguration struct {
-	Id         string `json:"id,omitempty"`
-	Properties struct {
-		Subnet struct {
-			Id string `json:"id,omitempty"`
-		} `json:"subnet,omitempty"`
-		ProvisioningState string `json:"provisioningState,omitempty"`
-	} `json:"properties,omitempty"`
-	Name string `json:"name,omitempty"`
-	Etag string `json:"etag,omitempty"`
+// ApplicationGatewayHTTPListener is http listener of application gateway
+type ApplicationGatewayHTTPListener struct {
+	ID         *string                                         `json:"id,omitempty"`
+	Properties *ApplicationGatewayHTTPListenerPropertiesFormat `json:"properties,omitempty"`
+	Name       *string                                         `json:"name,omitempty"`
+	Etag       *string                                         `json:"etag,omitempty"`
 }
 
-// Response for ListLoadBalancers Api service call
+// ApplicationGatewayHTTPListenerPropertiesFormat is properties of Http
+// listener of application gateway
+type ApplicationGatewayHTTPListenerPropertiesFormat struct {
+	FrontendIPConfiguration *SubResource               `json:"frontendIpConfiguration,omitempty"`
+	FrontendPort            *SubResource               `json:"frontendPort,omitempty"`
+	Protocol                ApplicationGatewayProtocol `json:"protocol,omitempty"`
+	SslCertificate          *SubResource               `json:"sslCertificate,omitempty"`
+	ProvisioningState       *string                    `json:"provisioningState,omitempty"`
+}
+
+// ApplicationGatewayIPConfiguration is iP configuration of application gateway
+type ApplicationGatewayIPConfiguration struct {
+	ID         *string                                            `json:"id,omitempty"`
+	Properties *ApplicationGatewayIPConfigurationPropertiesFormat `json:"properties,omitempty"`
+	Name       *string                                            `json:"name,omitempty"`
+	Etag       *string                                            `json:"etag,omitempty"`
+}
+
+// ApplicationGatewayIPConfigurationPropertiesFormat is properties of IP
+// configuration of application gateway
+type ApplicationGatewayIPConfigurationPropertiesFormat struct {
+	Subnet            *SubResource `json:"subnet,omitempty"`
+	ProvisioningState *string      `json:"provisioningState,omitempty"`
+}
+
+// ApplicationGatewayListResult is response for ListLoadBalancers Api service
+// call
 type ApplicationGatewayListResult struct {
 	autorest.Response `json:"-"`
-	Value             []ApplicationGateway `json:"value,omitempty"`
-	NextLink          string               `json:"nextLink,omitempty"`
+	Value             *[]ApplicationGateway `json:"value,omitempty"`
+	NextLink          *string               `json:"nextLink,omitempty"`
 }
 
-// Request routing rule of application gateway
+// ApplicationGatewayListResultPreparer prepares a request to retrieve the next set of results. It returns
+// nil if no more results exist.
+func (client ApplicationGatewayListResult) ApplicationGatewayListResultPreparer() (*http.Request, error) {
+	if client.NextLink == nil || len(to.String(client.NextLink)) <= 0 {
+		return nil, nil
+	}
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(client.NextLink)))
+}
+
+// ApplicationGatewayPropertiesFormat is properties of Application Gateway
+type ApplicationGatewayPropertiesFormat struct {
+	Sku                           *ApplicationGatewaySku                       `json:"sku,omitempty"`
+	OperationalState              ApplicationGatewayOperationalState           `json:"operationalState,omitempty"`
+	GatewayIPConfigurations       *[]ApplicationGatewayIPConfiguration         `json:"gatewayIpConfigurations,omitempty"`
+	SslCertificates               *[]ApplicationGatewaySslCertificate          `json:"sslCertificates,omitempty"`
+	FrontendIPConfigurations      *[]ApplicationGatewayFrontendIPConfiguration `json:"frontendIpConfigurations,omitempty"`
+	FrontendPorts                 *[]ApplicationGatewayFrontendPort            `json:"frontendPorts,omitempty"`
+	BackendAddressPools           *[]ApplicationGatewayBackendAddressPool      `json:"backendAddressPools,omitempty"`
+	BackendHTTPSettingsCollection *[]ApplicationGatewayBackendHTTPSettings     `json:"backendHttpSettingsCollection,omitempty"`
+	HTTPListeners                 *[]ApplicationGatewayHTTPListener            `json:"httpListeners,omitempty"`
+	RequestRoutingRules           *[]ApplicationGatewayRequestRoutingRule      `json:"requestRoutingRules,omitempty"`
+	ProvisioningState             *string                                      `json:"provisioningState,omitempty"`
+}
+
+// ApplicationGatewayRequestRoutingRule is request routing rule of application
+// gateway
 type ApplicationGatewayRequestRoutingRule struct {
-	Id         string `json:"id,omitempty"`
-	Properties struct {
-		RuleType           ApplicationGatewayRequestRoutingRuleType `json:"ruleType,omitempty"`
-		BackendAddressPool struct {
-			Id string `json:"id,omitempty"`
-		} `json:"backendAddressPool,omitempty"`
-		BackendHttpSettings struct {
-			Id string `json:"id,omitempty"`
-		} `json:"backendHttpSettings,omitempty"`
-		HttpListener struct {
-			Id string `json:"id,omitempty"`
-		} `json:"httpListener,omitempty"`
-		ProvisioningState string `json:"provisioningState,omitempty"`
-	} `json:"properties,omitempty"`
-	Name string `json:"name,omitempty"`
-	Etag string `json:"etag,omitempty"`
+	ID         *string                                               `json:"id,omitempty"`
+	Properties *ApplicationGatewayRequestRoutingRulePropertiesFormat `json:"properties,omitempty"`
+	Name       *string                                               `json:"name,omitempty"`
+	Etag       *string                                               `json:"etag,omitempty"`
 }
 
-// SSL certificates of application gateway
+// ApplicationGatewayRequestRoutingRulePropertiesFormat is properties of
+// Request routing rule of application gateway
+type ApplicationGatewayRequestRoutingRulePropertiesFormat struct {
+	RuleType            ApplicationGatewayRequestRoutingRuleType `json:"ruleType,omitempty"`
+	BackendAddressPool  *SubResource                             `json:"backendAddressPool,omitempty"`
+	BackendHTTPSettings *SubResource                             `json:"backendHttpSettings,omitempty"`
+	HTTPListener        *SubResource                             `json:"httpListener,omitempty"`
+	ProvisioningState   *string                                  `json:"provisioningState,omitempty"`
+}
+
+// ApplicationGatewaySku is sKU of application gateway
+type ApplicationGatewaySku struct {
+	Name     ApplicationGatewaySkuName `json:"name,omitempty"`
+	Tier     ApplicationGatewayTier    `json:"tier,omitempty"`
+	Capacity *int                      `json:"capacity,omitempty"`
+}
+
+// ApplicationGatewaySslCertificate is sSL certificates of application gateway
 type ApplicationGatewaySslCertificate struct {
-	Id         string `json:"id,omitempty"`
-	Properties struct {
-		Data              string `json:"data,omitempty"`
-		Password          string `json:"password,omitempty"`
-		PublicCertData    string `json:"publicCertData,omitempty"`
-		ProvisioningState string `json:"provisioningState,omitempty"`
-	} `json:"properties,omitempty"`
-	Name string `json:"name,omitempty"`
-	Etag string `json:"etag,omitempty"`
+	ID         *string                                           `json:"id,omitempty"`
+	Properties *ApplicationGatewaySslCertificatePropertiesFormat `json:"properties,omitempty"`
+	Name       *string                                           `json:"name,omitempty"`
+	Etag       *string                                           `json:"etag,omitempty"`
 }
 
-// Pool of backend IP addresseses
+// ApplicationGatewaySslCertificatePropertiesFormat is properties of SSL
+// certificates of application gateway
+type ApplicationGatewaySslCertificatePropertiesFormat struct {
+	Data              *string `json:"data,omitempty"`
+	Password          *string `json:"password,omitempty"`
+	PublicCertData    *string `json:"publicCertData,omitempty"`
+	ProvisioningState *string `json:"provisioningState,omitempty"`
+}
+
+// AzureAsyncOperationResult is the response body contains the status of the
+// specified asynchronous operation, indicating whether it has succeeded, is
+// inprogress, or has failed. Note that this status is distinct from the HTTP
+// status code returned for the Get Operation Status operation itself. If the
+// asynchronous operation succeeded, the response body includes the HTTP
+// status code for the successful request. If the asynchronous operation
+// failed, the response body includes the HTTP status code for the failed
+// request and error information regarding the failure.
+type AzureAsyncOperationResult struct {
+	Status OperationStatus `json:"status,omitempty"`
+	Error  *Error          `json:"error,omitempty"`
+}
+
+// BackendAddressPool is pool of backend IP addresseses
 type BackendAddressPool struct {
-	Id         string `json:"id,omitempty"`
-	Properties struct {
-		BackendIPConfigurations []SubResource `json:"backendIPConfigurations,omitempty"`
-		LoadBalancingRules      []SubResource `json:"loadBalancingRules,omitempty"`
-		ProvisioningState       string        `json:"provisioningState,omitempty"`
-	} `json:"properties,omitempty"`
-	Name string `json:"name,omitempty"`
-	Etag string `json:"etag,omitempty"`
+	ID         *string                             `json:"id,omitempty"`
+	Properties *BackendAddressPoolPropertiesFormat `json:"properties,omitempty"`
+	Name       *string                             `json:"name,omitempty"`
+	Etag       *string                             `json:"etag,omitempty"`
 }
 
+// BackendAddressPoolPropertiesFormat is properties of BackendAddressPool
+type BackendAddressPoolPropertiesFormat struct {
+	BackendIPConfigurations *[]SubResource `json:"backendIPConfigurations,omitempty"`
+	LoadBalancingRules      *[]SubResource `json:"loadBalancingRules,omitempty"`
+	ProvisioningState       *string        `json:"provisioningState,omitempty"`
+}
+
+// ConnectionResetSharedKey is
 type ConnectionResetSharedKey struct {
 	autorest.Response `json:"-"`
-	Properties        struct {
-		KeyLength int32 `json:"keyLength,omitempty"`
-	} `json:"properties,omitempty"`
+	Properties        *ConnectionResetSharedKeyPropertiesFormat `json:"properties,omitempty"`
 }
 
-// Response for GetConnectionSharedKey Api servive call
+// ConnectionResetSharedKeyPropertiesFormat is
+// virtualNeworkGatewayConnectionResetSharedKey properties
+type ConnectionResetSharedKeyPropertiesFormat struct {
+	KeyLength *int32 `json:"keyLength,omitempty"`
+}
+
+// ConnectionSharedKey is response for GetConnectionSharedKey Api servive call
 type ConnectionSharedKey struct {
 	autorest.Response `json:"-"`
-	Value             string `json:"value,omitempty"`
+	Value             *string `json:"value,omitempty"`
 }
 
-// Response for CheckDnsNameAvailability Api servive call
-type DnsNameAvailabilityResult struct {
+// DhcpOptions is dHCPOptions contains an array of DNS servers available to
+// VMs deployed in the virtual networkStandard DHCP option for a subnet
+// overrides VNET DHCP options.
+type DhcpOptions struct {
+	DNSServers *[]string `json:"dnsServers,omitempty"`
+}
+
+// DNSNameAvailabilityResult is response for CheckDnsNameAvailability Api
+// servive call
+type DNSNameAvailabilityResult struct {
 	autorest.Response `json:"-"`
-	Available         bool `json:"available,omitempty"`
+	Available         *bool `json:"available,omitempty"`
 }
 
-// Frontend IP address of the load balancer
-type FrontendIpConfiguration struct {
-	Id         string `json:"id,omitempty"`
-	Properties struct {
-		PrivateIPAddress          string             `json:"privateIPAddress,omitempty"`
-		PrivateIPAllocationMethod IpAllocationMethod `json:"privateIPAllocationMethod,omitempty"`
-		Subnet                    struct {
-			Id string `json:"id,omitempty"`
-		} `json:"subnet,omitempty"`
-		PublicIPAddress struct {
-			Id string `json:"id,omitempty"`
-		} `json:"publicIPAddress,omitempty"`
-		InboundNatRules    []SubResource `json:"inboundNatRules,omitempty"`
-		LoadBalancingRules []SubResource `json:"loadBalancingRules,omitempty"`
-		ProvisioningState  string        `json:"provisioningState,omitempty"`
-	} `json:"properties,omitempty"`
-	Name string `json:"name,omitempty"`
-	Etag string `json:"etag,omitempty"`
+// Error is
+type Error struct {
+	Code       *string         `json:"code,omitempty"`
+	Message    *string         `json:"message,omitempty"`
+	Target     *string         `json:"target,omitempty"`
+	Details    *[]ErrorDetails `json:"details,omitempty"`
+	InnerError *string         `json:"innerError,omitempty"`
 }
 
-// Inbound NAT rule of the loadbalancer
+// ErrorDetails is
+type ErrorDetails struct {
+	Code    *string `json:"code,omitempty"`
+	Target  *string `json:"target,omitempty"`
+	Message *string `json:"message,omitempty"`
+}
+
+// FrontendIPConfiguration is frontend IP address of the load balancer
+type FrontendIPConfiguration struct {
+	ID         *string                                  `json:"id,omitempty"`
+	Properties *FrontendIPConfigurationPropertiesFormat `json:"properties,omitempty"`
+	Name       *string                                  `json:"name,omitempty"`
+	Etag       *string                                  `json:"etag,omitempty"`
+}
+
+// FrontendIPConfigurationPropertiesFormat is properties of Frontend IP
+// Configuration of the load balancer
+type FrontendIPConfigurationPropertiesFormat struct {
+	PrivateIPAddress          *string            `json:"privateIPAddress,omitempty"`
+	PrivateIPAllocationMethod IPAllocationMethod `json:"privateIPAllocationMethod,omitempty"`
+	Subnet                    *SubResource       `json:"subnet,omitempty"`
+	PublicIPAddress           *SubResource       `json:"publicIPAddress,omitempty"`
+	InboundNatRules           *[]SubResource     `json:"inboundNatRules,omitempty"`
+	LoadBalancingRules        *[]SubResource     `json:"loadBalancingRules,omitempty"`
+	ProvisioningState         *string            `json:"provisioningState,omitempty"`
+}
+
+// InboundNatRule is inbound NAT rule of the loadbalancer
 type InboundNatRule struct {
-	Id         string `json:"id,omitempty"`
-	Properties struct {
-		FrontendIPConfiguration struct {
-			Id string `json:"id,omitempty"`
-		} `json:"frontendIPConfiguration,omitempty"`
-		BackendIPConfiguration struct {
-			Id string `json:"id,omitempty"`
-		} `json:"backendIPConfiguration,omitempty"`
-		Protocol             TransportProtocol `json:"protocol,omitempty"`
-		FrontendPort         int               `json:"frontendPort,omitempty"`
-		BackendPort          int               `json:"backendPort,omitempty"`
-		IdleTimeoutInMinutes int               `json:"idleTimeoutInMinutes,omitempty"`
-		EnableFloatingIP     bool              `json:"enableFloatingIP,omitempty"`
-		ProvisioningState    string            `json:"provisioningState,omitempty"`
-	} `json:"properties,omitempty"`
-	Name string `json:"name,omitempty"`
-	Etag string `json:"etag,omitempty"`
+	ID         *string                         `json:"id,omitempty"`
+	Properties *InboundNatRulePropertiesFormat `json:"properties,omitempty"`
+	Name       *string                         `json:"name,omitempty"`
+	Etag       *string                         `json:"etag,omitempty"`
 }
 
-// LoadBalancer resource
+// InboundNatRulePropertiesFormat is properties of Inbound NAT rule
+type InboundNatRulePropertiesFormat struct {
+	FrontendIPConfiguration *SubResource      `json:"frontendIPConfiguration,omitempty"`
+	BackendIPConfiguration  *SubResource      `json:"backendIPConfiguration,omitempty"`
+	Protocol                TransportProtocol `json:"protocol,omitempty"`
+	FrontendPort            *int              `json:"frontendPort,omitempty"`
+	BackendPort             *int              `json:"backendPort,omitempty"`
+	IdleTimeoutInMinutes    *int              `json:"idleTimeoutInMinutes,omitempty"`
+	EnableFloatingIP        *bool             `json:"enableFloatingIP,omitempty"`
+	ProvisioningState       *string           `json:"provisioningState,omitempty"`
+}
+
+// Interface is a NetworkInterface in a resource group
+type Interface struct {
+	autorest.Response `json:"-"`
+	ID                *string                    `json:"id,omitempty"`
+	Name              *string                    `json:"name,omitempty"`
+	Type              *string                    `json:"type,omitempty"`
+	Location          *string                    `json:"location,omitempty"`
+	Tags              *map[string]*string        `json:"tags,omitempty"`
+	Properties        *InterfacePropertiesFormat `json:"properties,omitempty"`
+	Etag              *string                    `json:"etag,omitempty"`
+}
+
+// InterfaceDNSSettings is dns Settings of a network interface
+type InterfaceDNSSettings struct {
+	DNSServers           *[]string `json:"dnsServers,omitempty"`
+	AppliedDNSServers    *[]string `json:"appliedDnsServers,omitempty"`
+	InternalDNSNameLabel *string   `json:"internalDnsNameLabel,omitempty"`
+	InternalFqdn         *string   `json:"internalFqdn,omitempty"`
+}
+
+// InterfaceIPConfiguration is iPConfiguration in a NetworkInterface
+type InterfaceIPConfiguration struct {
+	ID         *string                                   `json:"id,omitempty"`
+	Properties *InterfaceIPConfigurationPropertiesFormat `json:"properties,omitempty"`
+	Name       *string                                   `json:"name,omitempty"`
+	Etag       *string                                   `json:"etag,omitempty"`
+}
+
+// InterfaceIPConfigurationPropertiesFormat is properties of IPConfiguration
+type InterfaceIPConfigurationPropertiesFormat struct {
+	PrivateIPAddress                *string            `json:"privateIPAddress,omitempty"`
+	PrivateIPAllocationMethod       IPAllocationMethod `json:"privateIPAllocationMethod,omitempty"`
+	Subnet                          *SubResource       `json:"subnet,omitempty"`
+	PublicIPAddress                 *SubResource       `json:"publicIPAddress,omitempty"`
+	LoadBalancerBackendAddressPools *[]SubResource     `json:"loadBalancerBackendAddressPools,omitempty"`
+	LoadBalancerInboundNatRules     *[]SubResource     `json:"loadBalancerInboundNatRules,omitempty"`
+	ProvisioningState               *string            `json:"provisioningState,omitempty"`
+}
+
+// InterfaceListResult is response for ListNetworkInterface Api service call
+type InterfaceListResult struct {
+	autorest.Response `json:"-"`
+	Value             *[]Interface `json:"value,omitempty"`
+	NextLink          *string      `json:"nextLink,omitempty"`
+}
+
+// InterfaceListResultPreparer prepares a request to retrieve the next set of results. It returns
+// nil if no more results exist.
+func (client InterfaceListResult) InterfaceListResultPreparer() (*http.Request, error) {
+	if client.NextLink == nil || len(to.String(client.NextLink)) <= 0 {
+		return nil, nil
+	}
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(client.NextLink)))
+}
+
+// InterfacePropertiesFormat is networkInterface properties.
+type InterfacePropertiesFormat struct {
+	VirtualMachine       *SubResource                `json:"virtualMachine,omitempty"`
+	NetworkSecurityGroup *SubResource                `json:"networkSecurityGroup,omitempty"`
+	IPConfigurations     *[]InterfaceIPConfiguration `json:"ipConfigurations,omitempty"`
+	DNSSettings          *InterfaceDNSSettings       `json:"dnsSettings,omitempty"`
+	MacAddress           *string                     `json:"macAddress,omitempty"`
+	Primary              *bool                       `json:"primary,omitempty"`
+	ProvisioningState    *string                     `json:"provisioningState,omitempty"`
+}
+
+// LoadBalancer is loadBalancer resource
 type LoadBalancer struct {
 	autorest.Response `json:"-"`
-	Id                string            `json:"id,omitempty"`
-	Name              string            `json:"name,omitempty"`
-	Type              string            `json:"type,omitempty"`
-	Location          string            `json:"location,omitempty"`
-	Tags              map[string]string `json:"tags,omitempty"`
-	Properties        struct {
-		FrontendIPConfigurations []FrontendIpConfiguration `json:"frontendIPConfigurations,omitempty"`
-		BackendAddressPools      []BackendAddressPool      `json:"backendAddressPools,omitempty"`
-		LoadBalancingRules       []LoadBalancingRule       `json:"loadBalancingRules,omitempty"`
-		Probes                   []Probe                   `json:"probes,omitempty"`
-		InboundNatRules          []InboundNatRule          `json:"inboundNatRules,omitempty"`
-		ProvisioningState        string                    `json:"provisioningState,omitempty"`
-	} `json:"properties,omitempty"`
-	Etag string `json:"etag,omitempty"`
+	ID                *string                       `json:"id,omitempty"`
+	Name              *string                       `json:"name,omitempty"`
+	Type              *string                       `json:"type,omitempty"`
+	Location          *string                       `json:"location,omitempty"`
+	Tags              *map[string]*string           `json:"tags,omitempty"`
+	Properties        *LoadBalancerPropertiesFormat `json:"properties,omitempty"`
+	Etag              *string                       `json:"etag,omitempty"`
 }
 
-// Response for ListLoadBalancers Api service call
+// LoadBalancerListResult is response for ListLoadBalancers Api service call
 type LoadBalancerListResult struct {
 	autorest.Response `json:"-"`
-	Value             []LoadBalancer `json:"value,omitempty"`
-	NextLink          string         `json:"nextLink,omitempty"`
+	Value             *[]LoadBalancer `json:"value,omitempty"`
+	NextLink          *string         `json:"nextLink,omitempty"`
 }
 
-// Rules of the load balancer
+// LoadBalancerListResultPreparer prepares a request to retrieve the next set of results. It returns
+// nil if no more results exist.
+func (client LoadBalancerListResult) LoadBalancerListResultPreparer() (*http.Request, error) {
+	if client.NextLink == nil || len(to.String(client.NextLink)) <= 0 {
+		return nil, nil
+	}
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(client.NextLink)))
+}
+
+// LoadBalancerPropertiesFormat is properties of Load Balancer
+type LoadBalancerPropertiesFormat struct {
+	FrontendIPConfigurations *[]FrontendIPConfiguration `json:"frontendIPConfigurations,omitempty"`
+	BackendAddressPools      *[]BackendAddressPool      `json:"backendAddressPools,omitempty"`
+	LoadBalancingRules       *[]LoadBalancingRule       `json:"loadBalancingRules,omitempty"`
+	Probes                   *[]Probe                   `json:"probes,omitempty"`
+	InboundNatRules          *[]InboundNatRule          `json:"inboundNatRules,omitempty"`
+	ProvisioningState        *string                    `json:"provisioningState,omitempty"`
+}
+
+// LoadBalancingRule is rules of the load balancer
 type LoadBalancingRule struct {
-	Id         string `json:"id,omitempty"`
-	Properties struct {
-		FrontendIPConfiguration struct {
-			Id string `json:"id,omitempty"`
-		} `json:"frontendIPConfiguration,omitempty"`
-		BackendAddressPool struct {
-			Id string `json:"id,omitempty"`
-		} `json:"backendAddressPool,omitempty"`
-		Probe struct {
-			Id string `json:"id,omitempty"`
-		} `json:"probe,omitempty"`
-		Protocol             TransportProtocol `json:"protocol,omitempty"`
-		LoadDistribution     LoadDistribution  `json:"loadDistribution,omitempty"`
-		FrontendPort         int               `json:"frontendPort,omitempty"`
-		BackendPort          int               `json:"backendPort,omitempty"`
-		IdleTimeoutInMinutes int               `json:"idleTimeoutInMinutes,omitempty"`
-		EnableFloatingIP     bool              `json:"enableFloatingIP,omitempty"`
-		ProvisioningState    string            `json:"provisioningState,omitempty"`
-	} `json:"properties,omitempty"`
-	Name string `json:"name,omitempty"`
-	Etag string `json:"etag,omitempty"`
+	ID         *string                            `json:"id,omitempty"`
+	Properties *LoadBalancingRulePropertiesFormat `json:"properties,omitempty"`
+	Name       *string                            `json:"name,omitempty"`
+	Etag       *string                            `json:"etag,omitempty"`
 }
 
-// A common class for general resource information
+// LoadBalancingRulePropertiesFormat is properties of the load balancer
+type LoadBalancingRulePropertiesFormat struct {
+	FrontendIPConfiguration *SubResource      `json:"frontendIPConfiguration,omitempty"`
+	BackendAddressPool      *SubResource      `json:"backendAddressPool,omitempty"`
+	Probe                   *SubResource      `json:"probe,omitempty"`
+	Protocol                TransportProtocol `json:"protocol,omitempty"`
+	LoadDistribution        LoadDistribution  `json:"loadDistribution,omitempty"`
+	FrontendPort            *int              `json:"frontendPort,omitempty"`
+	BackendPort             *int              `json:"backendPort,omitempty"`
+	IdleTimeoutInMinutes    *int              `json:"idleTimeoutInMinutes,omitempty"`
+	EnableFloatingIP        *bool             `json:"enableFloatingIP,omitempty"`
+	ProvisioningState       *string           `json:"provisioningState,omitempty"`
+}
+
+// LocalNetworkGateway is a common class for general resource information
 type LocalNetworkGateway struct {
 	autorest.Response `json:"-"`
-	Id                string            `json:"id,omitempty"`
-	Name              string            `json:"name,omitempty"`
-	Type              string            `json:"type,omitempty"`
-	Location          string            `json:"location,omitempty"`
-	Tags              map[string]string `json:"tags,omitempty"`
-	Properties        struct {
-		LocalNetworkAddressSpace struct {
-			AddressPrefixes []string `json:"addressPrefixes,omitempty"`
-		} `json:"localNetworkAddressSpace,omitempty"`
-		GatewayIpAddress  string `json:"gatewayIpAddress,omitempty"`
-		ProvisioningState string `json:"provisioningState,omitempty"`
-	} `json:"properties,omitempty"`
-	Etag string `json:"etag,omitempty"`
+	ID                *string                              `json:"id,omitempty"`
+	Name              *string                              `json:"name,omitempty"`
+	Type              *string                              `json:"type,omitempty"`
+	Location          *string                              `json:"location,omitempty"`
+	Tags              *map[string]*string                  `json:"tags,omitempty"`
+	Properties        *LocalNetworkGatewayPropertiesFormat `json:"properties,omitempty"`
+	Etag              *string                              `json:"etag,omitempty"`
 }
 
-// Response for ListLocalNetworkGateways Api service call
+// LocalNetworkGatewayListResult is response for ListLocalNetworkGateways Api
+// service call
 type LocalNetworkGatewayListResult struct {
 	autorest.Response `json:"-"`
-	Value             []LocalNetworkGateway `json:"value,omitempty"`
-	NextLink          string                `json:"nextLink,omitempty"`
+	Value             *[]LocalNetworkGateway `json:"value,omitempty"`
+	NextLink          *string                `json:"nextLink,omitempty"`
 }
 
-// A NetworkInterface in a resource group
-type NetworkInterface struct {
-	autorest.Response `json:"-"`
-	Id                string            `json:"id,omitempty"`
-	Name              string            `json:"name,omitempty"`
-	Type              string            `json:"type,omitempty"`
-	Location          string            `json:"location,omitempty"`
-	Tags              map[string]string `json:"tags,omitempty"`
-	Properties        struct {
-		VirtualMachine struct {
-			Id string `json:"id,omitempty"`
-		} `json:"virtualMachine,omitempty"`
-		NetworkSecurityGroup struct {
-			Id string `json:"id,omitempty"`
-		} `json:"networkSecurityGroup,omitempty"`
-		IpConfigurations []NetworkInterfaceIpConfiguration `json:"ipConfigurations,omitempty"`
-		DnsSettings      struct {
-			DnsServers           []string `json:"dnsServers,omitempty"`
-			AppliedDnsServers    []string `json:"appliedDnsServers,omitempty"`
-			InternalDnsNameLabel string   `json:"internalDnsNameLabel,omitempty"`
-			InternalFqdn         string   `json:"internalFqdn,omitempty"`
-		} `json:"dnsSettings,omitempty"`
-		MacAddress        string `json:"macAddress,omitempty"`
-		Primary           bool   `json:"primary,omitempty"`
-		ProvisioningState string `json:"provisioningState,omitempty"`
-	} `json:"properties,omitempty"`
-	Etag string `json:"etag,omitempty"`
+// LocalNetworkGatewayListResultPreparer prepares a request to retrieve the next set of results. It returns
+// nil if no more results exist.
+func (client LocalNetworkGatewayListResult) LocalNetworkGatewayListResultPreparer() (*http.Request, error) {
+	if client.NextLink == nil || len(to.String(client.NextLink)) <= 0 {
+		return nil, nil
+	}
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(client.NextLink)))
 }
 
-// IPConfiguration in a NetworkInterface
-type NetworkInterfaceIpConfiguration struct {
-	Id         string `json:"id,omitempty"`
-	Properties struct {
-		PrivateIPAddress          string             `json:"privateIPAddress,omitempty"`
-		PrivateIPAllocationMethod IpAllocationMethod `json:"privateIPAllocationMethod,omitempty"`
-		Subnet                    struct {
-			Id string `json:"id,omitempty"`
-		} `json:"subnet,omitempty"`
-		PublicIPAddress struct {
-			Id string `json:"id,omitempty"`
-		} `json:"publicIPAddress,omitempty"`
-		LoadBalancerBackendAddressPools []SubResource `json:"loadBalancerBackendAddressPools,omitempty"`
-		LoadBalancerInboundNatRules     []SubResource `json:"loadBalancerInboundNatRules,omitempty"`
-		ProvisioningState               string        `json:"provisioningState,omitempty"`
-	} `json:"properties,omitempty"`
-	Name string `json:"name,omitempty"`
-	Etag string `json:"etag,omitempty"`
+// LocalNetworkGatewayPropertiesFormat is localNetworkGateway properties
+type LocalNetworkGatewayPropertiesFormat struct {
+	LocalNetworkAddressSpace *AddressSpace `json:"localNetworkAddressSpace,omitempty"`
+	GatewayIPAddress         *string       `json:"gatewayIpAddress,omitempty"`
+	ProvisioningState        *string       `json:"provisioningState,omitempty"`
 }
 
-// Response for ListNetworkInterface Api service call
-type NetworkInterfaceListResult struct {
-	autorest.Response `json:"-"`
-	Value             []NetworkInterface `json:"value,omitempty"`
-	NextLink          string             `json:"nextLink,omitempty"`
-}
-
-// NetworkSecurityGroup resource
-type NetworkSecurityGroup struct {
-	autorest.Response `json:"-"`
-	Id                string            `json:"id,omitempty"`
-	Name              string            `json:"name,omitempty"`
-	Type              string            `json:"type,omitempty"`
-	Location          string            `json:"location,omitempty"`
-	Tags              map[string]string `json:"tags,omitempty"`
-	Properties        struct {
-		SecurityRules        []SecurityRule `json:"securityRules,omitempty"`
-		DefaultSecurityRules []SecurityRule `json:"defaultSecurityRules,omitempty"`
-		NetworkInterfaces    []SubResource  `json:"networkInterfaces,omitempty"`
-		Subnets              []SubResource  `json:"subnets,omitempty"`
-		ProvisioningState    string         `json:"provisioningState,omitempty"`
-	} `json:"properties,omitempty"`
-	Etag string `json:"etag,omitempty"`
-}
-
-// Response for ListNetworkSecurityGroups Api servive call
-type NetworkSecurityGroupListResult struct {
-	autorest.Response `json:"-"`
-	Value             []NetworkSecurityGroup `json:"value,omitempty"`
-	NextLink          string                 `json:"nextLink,omitempty"`
-}
-
-// Load balancer Probe
+// Probe is load balancer Probe
 type Probe struct {
-	Id         string `json:"id,omitempty"`
-	Properties struct {
-		LoadBalancingRules []SubResource `json:"loadBalancingRules,omitempty"`
-		Protocol           ProbeProtocol `json:"protocol,omitempty"`
-		Port               int           `json:"port,omitempty"`
-		IntervalInSeconds  int           `json:"intervalInSeconds,omitempty"`
-		NumberOfProbes     int           `json:"numberOfProbes,omitempty"`
-		RequestPath        string        `json:"requestPath,omitempty"`
-		ProvisioningState  string        `json:"provisioningState,omitempty"`
-	} `json:"properties,omitempty"`
-	Name string `json:"name,omitempty"`
-	Etag string `json:"etag,omitempty"`
+	ID         *string                `json:"id,omitempty"`
+	Properties *ProbePropertiesFormat `json:"properties,omitempty"`
+	Name       *string                `json:"name,omitempty"`
+	Etag       *string                `json:"etag,omitempty"`
 }
 
-// PublicIPAddress resource
-type PublicIpAddress struct {
+// ProbePropertiesFormat is
+type ProbePropertiesFormat struct {
+	LoadBalancingRules *[]SubResource `json:"loadBalancingRules,omitempty"`
+	Protocol           ProbeProtocol  `json:"protocol,omitempty"`
+	Port               *int           `json:"port,omitempty"`
+	IntervalInSeconds  *int           `json:"intervalInSeconds,omitempty"`
+	NumberOfProbes     *int           `json:"numberOfProbes,omitempty"`
+	RequestPath        *string        `json:"requestPath,omitempty"`
+	ProvisioningState  *string        `json:"provisioningState,omitempty"`
+}
+
+// PublicIPAddress is publicIPAddress resource
+type PublicIPAddress struct {
 	autorest.Response `json:"-"`
-	Id                string            `json:"id,omitempty"`
-	Name              string            `json:"name,omitempty"`
-	Type              string            `json:"type,omitempty"`
-	Location          string            `json:"location,omitempty"`
-	Tags              map[string]string `json:"tags,omitempty"`
-	Properties        struct {
-		PublicIPAllocationMethod IpAllocationMethod `json:"publicIPAllocationMethod,omitempty"`
-		IpConfiguration          struct {
-			Id string `json:"id,omitempty"`
-		} `json:"ipConfiguration,omitempty"`
-		DnsSettings struct {
-			DomainNameLabel string `json:"domainNameLabel,omitempty"`
-			Fqdn            string `json:"fqdn,omitempty"`
-			ReverseFqdn     string `json:"reverseFqdn,omitempty"`
-		} `json:"dnsSettings,omitempty"`
-		IpAddress            string `json:"ipAddress,omitempty"`
-		IdleTimeoutInMinutes int    `json:"idleTimeoutInMinutes,omitempty"`
-		ProvisioningState    string `json:"provisioningState,omitempty"`
-	} `json:"properties,omitempty"`
-	Etag string `json:"etag,omitempty"`
+	ID                *string                          `json:"id,omitempty"`
+	Name              *string                          `json:"name,omitempty"`
+	Type              *string                          `json:"type,omitempty"`
+	Location          *string                          `json:"location,omitempty"`
+	Tags              *map[string]*string              `json:"tags,omitempty"`
+	Properties        *PublicIPAddressPropertiesFormat `json:"properties,omitempty"`
+	Etag              *string                          `json:"etag,omitempty"`
 }
 
-// Response for ListPublicIpAddresses Api service call
-type PublicIpAddressListResult struct {
+// PublicIPAddressDNSSettings is contains FQDN of the DNS record associated
+// with the public IP address
+type PublicIPAddressDNSSettings struct {
+	DomainNameLabel *string `json:"domainNameLabel,omitempty"`
+	Fqdn            *string `json:"fqdn,omitempty"`
+	ReverseFqdn     *string `json:"reverseFqdn,omitempty"`
+}
+
+// PublicIPAddressListResult is response for ListPublicIpAddresses Api service
+// call
+type PublicIPAddressListResult struct {
 	autorest.Response `json:"-"`
-	Value             []PublicIpAddress `json:"value,omitempty"`
-	NextLink          string            `json:"nextLink,omitempty"`
+	Value             *[]PublicIPAddress `json:"value,omitempty"`
+	NextLink          *string            `json:"nextLink,omitempty"`
 }
 
-// Network security rule
+// PublicIPAddressListResultPreparer prepares a request to retrieve the next set of results. It returns
+// nil if no more results exist.
+func (client PublicIPAddressListResult) PublicIPAddressListResultPreparer() (*http.Request, error) {
+	if client.NextLink == nil || len(to.String(client.NextLink)) <= 0 {
+		return nil, nil
+	}
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(client.NextLink)))
+}
+
+// PublicIPAddressPropertiesFormat is publicIpAddress properties
+type PublicIPAddressPropertiesFormat struct {
+	PublicIPAllocationMethod IPAllocationMethod          `json:"publicIPAllocationMethod,omitempty"`
+	IPConfiguration          *SubResource                `json:"ipConfiguration,omitempty"`
+	DNSSettings              *PublicIPAddressDNSSettings `json:"dnsSettings,omitempty"`
+	IPAddress                *string                     `json:"ipAddress,omitempty"`
+	IdleTimeoutInMinutes     *int                        `json:"idleTimeoutInMinutes,omitempty"`
+	ProvisioningState        *string                     `json:"provisioningState,omitempty"`
+}
+
+// Resource is
+type Resource struct {
+	ID       *string             `json:"id,omitempty"`
+	Name     *string             `json:"name,omitempty"`
+	Type     *string             `json:"type,omitempty"`
+	Location *string             `json:"location,omitempty"`
+	Tags     *map[string]*string `json:"tags,omitempty"`
+}
+
+// SecurityGroup is networkSecurityGroup resource
+type SecurityGroup struct {
+	autorest.Response `json:"-"`
+	ID                *string                        `json:"id,omitempty"`
+	Name              *string                        `json:"name,omitempty"`
+	Type              *string                        `json:"type,omitempty"`
+	Location          *string                        `json:"location,omitempty"`
+	Tags              *map[string]*string            `json:"tags,omitempty"`
+	Properties        *SecurityGroupPropertiesFormat `json:"properties,omitempty"`
+	Etag              *string                        `json:"etag,omitempty"`
+}
+
+// SecurityGroupListResult is response for ListNetworkSecurityGroups Api
+// servive call
+type SecurityGroupListResult struct {
+	autorest.Response `json:"-"`
+	Value             *[]SecurityGroup `json:"value,omitempty"`
+	NextLink          *string          `json:"nextLink,omitempty"`
+}
+
+// SecurityGroupListResultPreparer prepares a request to retrieve the next set of results. It returns
+// nil if no more results exist.
+func (client SecurityGroupListResult) SecurityGroupListResultPreparer() (*http.Request, error) {
+	if client.NextLink == nil || len(to.String(client.NextLink)) <= 0 {
+		return nil, nil
+	}
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(client.NextLink)))
+}
+
+// SecurityGroupPropertiesFormat is network Security Group resource
+type SecurityGroupPropertiesFormat struct {
+	SecurityRules        *[]SecurityRule `json:"securityRules,omitempty"`
+	DefaultSecurityRules *[]SecurityRule `json:"defaultSecurityRules,omitempty"`
+	NetworkInterfaces    *[]SubResource  `json:"networkInterfaces,omitempty"`
+	Subnets              *[]SubResource  `json:"subnets,omitempty"`
+	ProvisioningState    *string         `json:"provisioningState,omitempty"`
+}
+
+// SecurityRule is network security rule
 type SecurityRule struct {
 	autorest.Response `json:"-"`
-	Id                string `json:"id,omitempty"`
-	Properties        struct {
-		Description              string                `json:"description,omitempty"`
-		Protocol                 SecurityRuleProtocol  `json:"protocol,omitempty"`
-		SourcePortRange          string                `json:"sourcePortRange,omitempty"`
-		DestinationPortRange     string                `json:"destinationPortRange,omitempty"`
-		SourceAddressPrefix      string                `json:"sourceAddressPrefix,omitempty"`
-		DestinationAddressPrefix string                `json:"destinationAddressPrefix,omitempty"`
-		Access                   SecurityRuleAccess    `json:"access,omitempty"`
-		Priority                 int                   `json:"priority,omitempty"`
-		Direction                SecurityRuleDirection `json:"direction,omitempty"`
-		ProvisioningState        string                `json:"provisioningState,omitempty"`
-	} `json:"properties,omitempty"`
-	Name string `json:"name,omitempty"`
-	Etag string `json:"etag,omitempty"`
+	ID                *string                       `json:"id,omitempty"`
+	Properties        *SecurityRulePropertiesFormat `json:"properties,omitempty"`
+	Name              *string                       `json:"name,omitempty"`
+	Etag              *string                       `json:"etag,omitempty"`
 }
 
-// Response for ListSecurityRule Api service callRetrieves all security rules
-// that belongs to a network security group
+// SecurityRuleListResult is response for ListSecurityRule Api service
+// callRetrieves all security rules that belongs to a network security group
 type SecurityRuleListResult struct {
 	autorest.Response `json:"-"`
-	Value             []SecurityRule `json:"value,omitempty"`
-	NextLink          string         `json:"nextLink,omitempty"`
+	Value             *[]SecurityRule `json:"value,omitempty"`
+	NextLink          *string         `json:"nextLink,omitempty"`
 }
 
-// Subnet in a VirtualNework resource
+// SecurityRuleListResultPreparer prepares a request to retrieve the next set of results. It returns
+// nil if no more results exist.
+func (client SecurityRuleListResult) SecurityRuleListResultPreparer() (*http.Request, error) {
+	if client.NextLink == nil || len(to.String(client.NextLink)) <= 0 {
+		return nil, nil
+	}
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(client.NextLink)))
+}
+
+// SecurityRulePropertiesFormat is
+type SecurityRulePropertiesFormat struct {
+	Description              *string               `json:"description,omitempty"`
+	Protocol                 SecurityRuleProtocol  `json:"protocol,omitempty"`
+	SourcePortRange          *string               `json:"sourcePortRange,omitempty"`
+	DestinationPortRange     *string               `json:"destinationPortRange,omitempty"`
+	SourceAddressPrefix      *string               `json:"sourceAddressPrefix,omitempty"`
+	DestinationAddressPrefix *string               `json:"destinationAddressPrefix,omitempty"`
+	Access                   SecurityRuleAccess    `json:"access,omitempty"`
+	Priority                 *int                  `json:"priority,omitempty"`
+	Direction                SecurityRuleDirection `json:"direction,omitempty"`
+	ProvisioningState        *string               `json:"provisioningState,omitempty"`
+}
+
+// Subnet is subnet in a VirtualNework resource
 type Subnet struct {
 	autorest.Response `json:"-"`
-	Id                string `json:"id,omitempty"`
-	Properties        struct {
-		AddressPrefix        string `json:"addressPrefix,omitempty"`
-		NetworkSecurityGroup struct {
-			Id string `json:"id,omitempty"`
-		} `json:"networkSecurityGroup,omitempty"`
-		IpConfigurations  []SubResource `json:"ipConfigurations,omitempty"`
-		ProvisioningState string        `json:"provisioningState,omitempty"`
-	} `json:"properties,omitempty"`
-	Name string `json:"name,omitempty"`
-	Etag string `json:"etag,omitempty"`
+	ID                *string                 `json:"id,omitempty"`
+	Properties        *SubnetPropertiesFormat `json:"properties,omitempty"`
+	Name              *string                 `json:"name,omitempty"`
+	Etag              *string                 `json:"etag,omitempty"`
 }
 
-// Response for ListSubnets Api service callRetrieves all subnet that belongs
-// to a virtual network
+// SubnetListResult is response for ListSubnets Api service callRetrieves all
+// subnet that belongs to a virtual network
 type SubnetListResult struct {
 	autorest.Response `json:"-"`
-	Value             []Subnet `json:"value,omitempty"`
-	NextLink          string   `json:"nextLink,omitempty"`
+	Value             *[]Subnet `json:"value,omitempty"`
+	NextLink          *string   `json:"nextLink,omitempty"`
 }
 
+// SubnetListResultPreparer prepares a request to retrieve the next set of results. It returns
+// nil if no more results exist.
+func (client SubnetListResult) SubnetListResultPreparer() (*http.Request, error) {
+	if client.NextLink == nil || len(to.String(client.NextLink)) <= 0 {
+		return nil, nil
+	}
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(client.NextLink)))
+}
+
+// SubnetPropertiesFormat is
+type SubnetPropertiesFormat struct {
+	AddressPrefix        *string        `json:"addressPrefix,omitempty"`
+	NetworkSecurityGroup *SubResource   `json:"networkSecurityGroup,omitempty"`
+	IPConfigurations     *[]SubResource `json:"ipConfigurations,omitempty"`
+	ProvisioningState    *string        `json:"provisioningState,omitempty"`
+}
+
+// SubResource is
 type SubResource struct {
-	Id string `json:"id,omitempty"`
+	ID *string `json:"id,omitempty"`
 }
 
-// Describes Network Resource Usage.
+// Usage is describes Network Resource Usage.
 type Usage struct {
-	Unit         UsageUnit `json:"unit,omitempty"`
-	CurrentValue int       `json:"currentValue,omitempty"`
-	Limit        int32     `json:"limit,omitempty"`
-	Name         struct {
-		Value          string `json:"value,omitempty"`
-		LocalizedValue string `json:"localizedValue,omitempty"`
-	} `json:"name,omitempty"`
+	Unit         UsageUnit  `json:"unit,omitempty"`
+	CurrentValue *int       `json:"currentValue,omitempty"`
+	Limit        *int32     `json:"limit,omitempty"`
+	Name         *UsageName `json:"name,omitempty"`
 }
 
-// The List Usages operation response.
+// UsageName is the Usage Names.
+type UsageName struct {
+	Value          *string `json:"value,omitempty"`
+	LocalizedValue *string `json:"localizedValue,omitempty"`
+}
+
+// UsagesListResult is the List Usages operation response.
 type UsagesListResult struct {
 	autorest.Response `json:"-"`
-	Value             []Usage `json:"value,omitempty"`
+	Value             *[]Usage `json:"value,omitempty"`
 }
 
-// Virtual Network resource
+// VirtualNetwork is virtual Network resource
 type VirtualNetwork struct {
 	autorest.Response `json:"-"`
-	Id                string            `json:"id,omitempty"`
-	Name              string            `json:"name,omitempty"`
-	Type              string            `json:"type,omitempty"`
-	Location          string            `json:"location,omitempty"`
-	Tags              map[string]string `json:"tags,omitempty"`
-	Properties        struct {
-		AddressSpace struct {
-			AddressPrefixes []string `json:"addressPrefixes,omitempty"`
-		} `json:"addressSpace,omitempty"`
-		DhcpOptions struct {
-			DnsServers []string `json:"dnsServers,omitempty"`
-		} `json:"dhcpOptions,omitempty"`
-		Subnets           []Subnet `json:"subnets,omitempty"`
-		ProvisioningState string   `json:"provisioningState,omitempty"`
-	} `json:"properties,omitempty"`
-	Etag string `json:"etag,omitempty"`
+	ID                *string                         `json:"id,omitempty"`
+	Name              *string                         `json:"name,omitempty"`
+	Type              *string                         `json:"type,omitempty"`
+	Location          *string                         `json:"location,omitempty"`
+	Tags              *map[string]*string             `json:"tags,omitempty"`
+	Properties        *VirtualNetworkPropertiesFormat `json:"properties,omitempty"`
+	Etag              *string                         `json:"etag,omitempty"`
 }
 
-// A common class for general resource information
+// VirtualNetworkGateway is a common class for general resource information
 type VirtualNetworkGateway struct {
 	autorest.Response `json:"-"`
-	Id                string            `json:"id,omitempty"`
-	Name              string            `json:"name,omitempty"`
-	Type              string            `json:"type,omitempty"`
-	Location          string            `json:"location,omitempty"`
-	Tags              map[string]string `json:"tags,omitempty"`
-	Properties        struct {
-		IpConfigurations  []VirtualNetworkGatewayIpConfiguration `json:"ipConfigurations,omitempty"`
-		GatewayType       VirtualNetworkGatewayType              `json:"gatewayType,omitempty"`
-		VpnType           VpnType                                `json:"vpnType,omitempty"`
-		EnableBgp         bool                                   `json:"enableBgp,omitempty"`
-		ProvisioningState string                                 `json:"provisioningState,omitempty"`
-	} `json:"properties,omitempty"`
-	Etag string `json:"etag,omitempty"`
+	ID                *string                                `json:"id,omitempty"`
+	Name              *string                                `json:"name,omitempty"`
+	Type              *string                                `json:"type,omitempty"`
+	Location          *string                                `json:"location,omitempty"`
+	Tags              *map[string]*string                    `json:"tags,omitempty"`
+	Properties        *VirtualNetworkGatewayPropertiesFormat `json:"properties,omitempty"`
+	Etag              *string                                `json:"etag,omitempty"`
 }
 
-// A common class for general resource information
+// VirtualNetworkGatewayConnection is a common class for general resource
+// information
 type VirtualNetworkGatewayConnection struct {
 	autorest.Response `json:"-"`
-	Id                string            `json:"id,omitempty"`
-	Name              string            `json:"name,omitempty"`
-	Type              string            `json:"type,omitempty"`
-	Location          string            `json:"location,omitempty"`
-	Tags              map[string]string `json:"tags,omitempty"`
-	Properties        struct {
-		VirtualNetworkGateway1 struct {
-			Id         string            `json:"id,omitempty"`
-			Name       string            `json:"name,omitempty"`
-			Type       string            `json:"type,omitempty"`
-			Location   string            `json:"location,omitempty"`
-			Tags       map[string]string `json:"tags,omitempty"`
-			Properties struct {
-				IpConfigurations  []VirtualNetworkGatewayIpConfiguration `json:"ipConfigurations,omitempty"`
-				GatewayType       VirtualNetworkGatewayType              `json:"gatewayType,omitempty"`
-				VpnType           VpnType                                `json:"vpnType,omitempty"`
-				EnableBgp         bool                                   `json:"enableBgp,omitempty"`
-				ProvisioningState string                                 `json:"provisioningState,omitempty"`
-			} `json:"properties,omitempty"`
-			Etag string `json:"etag,omitempty"`
-		} `json:"virtualNetworkGateway1,omitempty"`
-		VirtualNetworkGateway2 struct {
-			Id         string            `json:"id,omitempty"`
-			Name       string            `json:"name,omitempty"`
-			Type       string            `json:"type,omitempty"`
-			Location   string            `json:"location,omitempty"`
-			Tags       map[string]string `json:"tags,omitempty"`
-			Properties struct {
-				IpConfigurations  []VirtualNetworkGatewayIpConfiguration `json:"ipConfigurations,omitempty"`
-				GatewayType       VirtualNetworkGatewayType              `json:"gatewayType,omitempty"`
-				VpnType           VpnType                                `json:"vpnType,omitempty"`
-				EnableBgp         bool                                   `json:"enableBgp,omitempty"`
-				ProvisioningState string                                 `json:"provisioningState,omitempty"`
-			} `json:"properties,omitempty"`
-			Etag string `json:"etag,omitempty"`
-		} `json:"virtualNetworkGateway2,omitempty"`
-		LocalNetworkGateway2 struct {
-			Id         string            `json:"id,omitempty"`
-			Name       string            `json:"name,omitempty"`
-			Type       string            `json:"type,omitempty"`
-			Location   string            `json:"location,omitempty"`
-			Tags       map[string]string `json:"tags,omitempty"`
-			Properties struct {
-				LocalNetworkAddressSpace struct {
-					AddressPrefixes []string `json:"addressPrefixes,omitempty"`
-				} `json:"localNetworkAddressSpace,omitempty"`
-				GatewayIpAddress  string `json:"gatewayIpAddress,omitempty"`
-				ProvisioningState string `json:"provisioningState,omitempty"`
-			} `json:"properties,omitempty"`
-			Etag string `json:"etag,omitempty"`
-		} `json:"localNetworkGateway2,omitempty"`
-		ConnectionType    VirtualNetworkGatewayConnectionType `json:"connectionType,omitempty"`
-		RoutingWeight     int                                 `json:"routingWeight,omitempty"`
-		SharedKey         string                              `json:"sharedKey,omitempty"`
-		ProvisioningState string                              `json:"provisioningState,omitempty"`
-	} `json:"properties,omitempty"`
-	Etag string `json:"etag,omitempty"`
+	ID                *string                                          `json:"id,omitempty"`
+	Name              *string                                          `json:"name,omitempty"`
+	Type              *string                                          `json:"type,omitempty"`
+	Location          *string                                          `json:"location,omitempty"`
+	Tags              *map[string]*string                              `json:"tags,omitempty"`
+	Properties        *VirtualNetworkGatewayConnectionPropertiesFormat `json:"properties,omitempty"`
+	Etag              *string                                          `json:"etag,omitempty"`
 }
 
-// Response for ListVirtualNetworkGatewayConnections Api service call
+// VirtualNetworkGatewayConnectionListResult is response for
+// ListVirtualNetworkGatewayConnections Api service call
 type VirtualNetworkGatewayConnectionListResult struct {
 	autorest.Response `json:"-"`
-	Value             []VirtualNetworkGatewayConnection `json:"value,omitempty"`
-	NextLink          string                            `json:"nextLink,omitempty"`
+	Value             *[]VirtualNetworkGatewayConnection `json:"value,omitempty"`
+	NextLink          *string                            `json:"nextLink,omitempty"`
 }
 
-// IpConfiguration for Virtual network gateway
-type VirtualNetworkGatewayIpConfiguration struct {
-	Id         string `json:"id,omitempty"`
-	Properties struct {
-		PrivateIPAddress          string             `json:"privateIPAddress,omitempty"`
-		PrivateIPAllocationMethod IpAllocationMethod `json:"privateIPAllocationMethod,omitempty"`
-		Subnet                    struct {
-			Id string `json:"id,omitempty"`
-		} `json:"subnet,omitempty"`
-		PublicIPAddress struct {
-			Id string `json:"id,omitempty"`
-		} `json:"publicIPAddress,omitempty"`
-		ProvisioningState string `json:"provisioningState,omitempty"`
-	} `json:"properties,omitempty"`
-	Name string `json:"name,omitempty"`
-	Etag string `json:"etag,omitempty"`
+// VirtualNetworkGatewayConnectionListResultPreparer prepares a request to retrieve the next set of results. It returns
+// nil if no more results exist.
+func (client VirtualNetworkGatewayConnectionListResult) VirtualNetworkGatewayConnectionListResultPreparer() (*http.Request, error) {
+	if client.NextLink == nil || len(to.String(client.NextLink)) <= 0 {
+		return nil, nil
+	}
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(client.NextLink)))
 }
 
-// Response for ListVirtualNetworkGateways Api service call
+// VirtualNetworkGatewayConnectionPropertiesFormat is
+// virtualNeworkGatewayConnection properties
+type VirtualNetworkGatewayConnectionPropertiesFormat struct {
+	VirtualNetworkGateway1 *VirtualNetworkGateway              `json:"virtualNetworkGateway1,omitempty"`
+	VirtualNetworkGateway2 *VirtualNetworkGateway              `json:"virtualNetworkGateway2,omitempty"`
+	LocalNetworkGateway2   *LocalNetworkGateway                `json:"localNetworkGateway2,omitempty"`
+	ConnectionType         VirtualNetworkGatewayConnectionType `json:"connectionType,omitempty"`
+	RoutingWeight          *int                                `json:"routingWeight,omitempty"`
+	SharedKey              *string                             `json:"sharedKey,omitempty"`
+	ProvisioningState      *string                             `json:"provisioningState,omitempty"`
+}
+
+// VirtualNetworkGatewayIPConfiguration is ipConfiguration for Virtual network
+// gateway
+type VirtualNetworkGatewayIPConfiguration struct {
+	ID         *string                                               `json:"id,omitempty"`
+	Properties *VirtualNetworkGatewayIPConfigurationPropertiesFormat `json:"properties,omitempty"`
+	Name       *string                                               `json:"name,omitempty"`
+	Etag       *string                                               `json:"etag,omitempty"`
+}
+
+// VirtualNetworkGatewayIPConfigurationPropertiesFormat is properties of
+// VirtualNetworkGatewayIPConfiguration
+type VirtualNetworkGatewayIPConfigurationPropertiesFormat struct {
+	PrivateIPAddress          *string            `json:"privateIPAddress,omitempty"`
+	PrivateIPAllocationMethod IPAllocationMethod `json:"privateIPAllocationMethod,omitempty"`
+	Subnet                    *SubResource       `json:"subnet,omitempty"`
+	PublicIPAddress           *SubResource       `json:"publicIPAddress,omitempty"`
+	ProvisioningState         *string            `json:"provisioningState,omitempty"`
+}
+
+// VirtualNetworkGatewayListResult is response for ListVirtualNetworkGateways
+// Api service call
 type VirtualNetworkGatewayListResult struct {
 	autorest.Response `json:"-"`
-	Value             []VirtualNetworkGateway `json:"value,omitempty"`
-	NextLink          string                  `json:"nextLink,omitempty"`
+	Value             *[]VirtualNetworkGateway `json:"value,omitempty"`
+	NextLink          *string                  `json:"nextLink,omitempty"`
 }
 
-// Response for ListVirtualNetworks Api servive call
+// VirtualNetworkGatewayListResultPreparer prepares a request to retrieve the next set of results. It returns
+// nil if no more results exist.
+func (client VirtualNetworkGatewayListResult) VirtualNetworkGatewayListResultPreparer() (*http.Request, error) {
+	if client.NextLink == nil || len(to.String(client.NextLink)) <= 0 {
+		return nil, nil
+	}
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(client.NextLink)))
+}
+
+// VirtualNetworkGatewayPropertiesFormat is virtualNeworkGateay properties
+type VirtualNetworkGatewayPropertiesFormat struct {
+	IPConfigurations  *[]VirtualNetworkGatewayIPConfiguration `json:"ipConfigurations,omitempty"`
+	GatewayType       VirtualNetworkGatewayType               `json:"gatewayType,omitempty"`
+	VpnType           VpnType                                 `json:"vpnType,omitempty"`
+	EnableBgp         *bool                                   `json:"enableBgp,omitempty"`
+	ProvisioningState *string                                 `json:"provisioningState,omitempty"`
+}
+
+// VirtualNetworkListResult is response for ListVirtualNetworks Api servive
+// call
 type VirtualNetworkListResult struct {
 	autorest.Response `json:"-"`
-	Value             []VirtualNetwork `json:"value,omitempty"`
-	NextLink          string           `json:"nextLink,omitempty"`
+	Value             *[]VirtualNetwork `json:"value,omitempty"`
+	NextLink          *string           `json:"nextLink,omitempty"`
+}
+
+// VirtualNetworkListResultPreparer prepares a request to retrieve the next set of results. It returns
+// nil if no more results exist.
+func (client VirtualNetworkListResult) VirtualNetworkListResultPreparer() (*http.Request, error) {
+	if client.NextLink == nil || len(to.String(client.NextLink)) <= 0 {
+		return nil, nil
+	}
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(client.NextLink)))
+}
+
+// VirtualNetworkPropertiesFormat is
+type VirtualNetworkPropertiesFormat struct {
+	AddressSpace      *AddressSpace `json:"addressSpace,omitempty"`
+	DhcpOptions       *DhcpOptions  `json:"dhcpOptions,omitempty"`
+	Subnets           *[]Subnet     `json:"subnets,omitempty"`
+	ProvisioningState *string       `json:"provisioningState,omitempty"`
 }

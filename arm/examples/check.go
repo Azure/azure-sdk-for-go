@@ -6,15 +6,14 @@ import (
 	"net/http"
 	"os"
 
+	"github.com/Azure/azure-sdk-for-go/Godeps/_workspace/src/github.com/Azure/go-autorest/autorest"
+	"github.com/Azure/azure-sdk-for-go/Godeps/_workspace/src/github.com/Azure/go-autorest/autorest/azure"
+	"github.com/Azure/azure-sdk-for-go/Godeps/_workspace/src/github.com/Azure/go-autorest/autorest/to"
 	"github.com/Azure/azure-sdk-for-go/arm/examples/helpers"
 	"github.com/Azure/azure-sdk-for-go/arm/storage"
-	"github.com/Azure/go-autorest/autorest"
-	"github.com/Azure/go-autorest/autorest/azure"
 )
 
-type inspectors struct{}
-
-func (i inspectors) WithInspection() autorest.PrepareDecorator {
+func WithInspection() autorest.PrepareDecorator {
 	return func(p autorest.Preparer) autorest.Preparer {
 		return autorest.PreparerFunc(func(r *http.Request) (*http.Request, error) {
 			fmt.Printf("Inspecting Request: %s %s\n", r.Method, r.URL)
@@ -23,7 +22,7 @@ func (i inspectors) WithInspection() autorest.PrepareDecorator {
 	}
 }
 
-func (i inspectors) ByInspecting() autorest.RespondDecorator {
+func ByInspecting() autorest.RespondDecorator {
 	return func(r autorest.Responder) autorest.Responder {
 		return autorest.ResponderFunc(func(resp *http.Response) error {
 			fmt.Printf("Inspecting Response: %s for %s %s\n", resp.Status, resp.Request.Method, resp.Request.URL)
@@ -38,33 +37,32 @@ func checkName(name string) {
 		log.Fatalf("Error: %v", err)
 	}
 
-	sac := storage.NewStorageAccountsClient(c["subscriptionID"])
+	ac := storage.NewAccountsClient(c["subscriptionID"])
 
 	spt, err := helpers.NewServicePrincipalTokenFromCredentials(c, azure.AzureResourceManagerScope)
 	if err != nil {
 		log.Fatalf("Error: %v", err)
 	}
-	sac.Authorizer = spt
+	ac.Authorizer = spt
 
-	sac.Sender = autorest.CreateSender(
+	ac.Sender = autorest.CreateSender(
 		autorest.WithLogging(log.New(os.Stdout, "sdk-example: ", log.LstdFlags)))
 
-	i := inspectors{}
-	sac.RequestInspector = i
-	sac.ResponseInspector = i
+	ac.RequestInspector = WithInspection()
+	ac.ResponseInspector = ByInspecting()
 
-	cna, err := sac.CheckNameAvailability(
-		storage.StorageAccountCheckNameAvailabilityParameters{
-			Name: name,
-			Type: "Microsoft.Storage/storageAccounts"})
+	cna, err := ac.CheckNameAvailability(
+		storage.AccountCheckNameAvailabilityParameters{
+			Name: to.StringPtr(name),
+			Type: to.StringPtr("Microsoft.Storage/storageAccounts")})
 
 	if err != nil {
 		log.Fatalf("Error: %v", err)
 	} else {
-		if cna.NameAvailable {
+		if to.Bool(cna.NameAvailable) {
 			fmt.Printf("The name '%s' is available\n", name)
 		} else {
-			fmt.Printf("The name '%s' is unavailable because %s\n", name, cna.Message)
+			fmt.Printf("The name '%s' is unavailable because %s\n", name, to.String(cna.Message))
 		}
 	}
 }

@@ -19,23 +19,72 @@ package features
 // regenerated.
 
 import (
-	"github.com/Azure/go-autorest/autorest"
+	"github.com/Azure/azure-sdk-for-go/Godeps/_workspace/src/github.com/Azure/go-autorest/autorest"
+	"github.com/Azure/azure-sdk-for-go/Godeps/_workspace/src/github.com/Azure/go-autorest/autorest/to"
+	"net/http"
 )
 
-// List of previewed features.
-type FeatureOperationsListResult struct {
-	autorest.Response `json:"-"`
-	Value             []FeatureResult `json:"value,omitempty"`
-	NextLink          string          `json:"nextLink,omitempty"`
+// DeploymentExtendedFilter is deployment filter.
+type DeploymentExtendedFilter struct {
+	ProvisioningState *string `json:"provisioningState,omitempty"`
 }
 
-// Previewed feature information.
-type FeatureResult struct {
+// GenericResourceFilter is resource filter.
+type GenericResourceFilter struct {
+	ResourceType *string `json:"resourceType,omitempty"`
+	Tagname      *string `json:"tagname,omitempty"`
+	Tagvalue     *string `json:"tagvalue,omitempty"`
+}
+
+// OperationsListResult is list of previewed features.
+type OperationsListResult struct {
 	autorest.Response `json:"-"`
-	Name              string `json:"name,omitempty"`
-	Properties        struct {
-		State string `json:"state,omitempty"`
-	} `json:"properties,omitempty"`
-	Id   string `json:"id,omitempty"`
-	Type string `json:"type,omitempty"`
+	Value             *[]Result `json:"value,omitempty"`
+	NextLink          *string   `json:"nextLink,omitempty"`
+}
+
+// OperationsListResultPreparer prepares a request to retrieve the next set of results. It returns
+// nil if no more results exist.
+func (client OperationsListResult) OperationsListResultPreparer() (*http.Request, error) {
+	if client.NextLink == nil || len(to.String(client.NextLink)) <= 0 {
+		return nil, nil
+	}
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(client.NextLink)))
+}
+
+// Properties is previewed feature information.
+type Properties struct {
+	State *string `json:"state,omitempty"`
+}
+
+// Resource is
+type Resource struct {
+	ID       *string             `json:"id,omitempty"`
+	Name     *string             `json:"name,omitempty"`
+	Type     *string             `json:"type,omitempty"`
+	Location *string             `json:"location,omitempty"`
+	Tags     *map[string]*string `json:"tags,omitempty"`
+}
+
+// ResourceGroupFilter is resource group filter.
+type ResourceGroupFilter struct {
+	TagName  *string `json:"tagName,omitempty"`
+	TagValue *string `json:"tagValue,omitempty"`
+}
+
+// Result is previewed feature information.
+type Result struct {
+	autorest.Response `json:"-"`
+	Name              *string     `json:"name,omitempty"`
+	Properties        *Properties `json:"properties,omitempty"`
+	ID                *string     `json:"id,omitempty"`
+	Type              *string     `json:"type,omitempty"`
+}
+
+// SubResource is
+type SubResource struct {
+	ID *string `json:"id,omitempty"`
 }

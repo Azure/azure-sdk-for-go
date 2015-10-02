@@ -19,34 +19,92 @@ package subscriptions
 // regenerated.
 
 import (
-	"github.com/Azure/go-autorest/autorest"
+	"github.com/Azure/azure-sdk-for-go/Godeps/_workspace/src/github.com/Azure/go-autorest/autorest"
+	"github.com/Azure/azure-sdk-for-go/Godeps/_workspace/src/github.com/Azure/go-autorest/autorest/to"
+	"net/http"
 )
 
-// Subscription information.
+// DeploymentExtendedFilter is deployment filter.
+type DeploymentExtendedFilter struct {
+	ProvisioningState *string `json:"provisioningState,omitempty"`
+}
+
+// GenericResourceFilter is resource filter.
+type GenericResourceFilter struct {
+	ResourceType *string `json:"resourceType,omitempty"`
+	Tagname      *string `json:"tagname,omitempty"`
+	Tagvalue     *string `json:"tagvalue,omitempty"`
+}
+
+// ListResult is subscription list operation response.
+type ListResult struct {
+	autorest.Response `json:"-"`
+	Value             *[]Subscription `json:"value,omitempty"`
+	NextLink          *string         `json:"nextLink,omitempty"`
+}
+
+// ListResultPreparer prepares a request to retrieve the next set of results. It returns
+// nil if no more results exist.
+func (client ListResult) ListResultPreparer() (*http.Request, error) {
+	if client.NextLink == nil || len(to.String(client.NextLink)) <= 0 {
+		return nil, nil
+	}
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(client.NextLink)))
+}
+
+// Resource is
+type Resource struct {
+	ID       *string             `json:"id,omitempty"`
+	Name     *string             `json:"name,omitempty"`
+	Type     *string             `json:"type,omitempty"`
+	Location *string             `json:"location,omitempty"`
+	Tags     *map[string]*string `json:"tags,omitempty"`
+}
+
+// ResourceGroupFilter is resource group filter.
+type ResourceGroupFilter struct {
+	TagName  *string `json:"tagName,omitempty"`
+	TagValue *string `json:"tagValue,omitempty"`
+}
+
+// SubResource is
+type SubResource struct {
+	ID *string `json:"id,omitempty"`
+}
+
+// Subscription is subscription information.
 type Subscription struct {
 	autorest.Response `json:"-"`
-	Id                string `json:"id,omitempty"`
-	SubscriptionId    string `json:"subscriptionId,omitempty"`
-	DisplayName       string `json:"displayName,omitempty"`
-	State             string `json:"state,omitempty"`
+	ID                *string `json:"id,omitempty"`
+	SubscriptionID    *string `json:"subscriptionId,omitempty"`
+	DisplayName       *string `json:"displayName,omitempty"`
+	State             *string `json:"state,omitempty"`
 }
 
-// Subscription list operation response.
-type SubscriptionListResult struct {
-	autorest.Response `json:"-"`
-	Value             []Subscription `json:"value,omitempty"`
-	NextLink          string         `json:"nextLink,omitempty"`
+// TenantIDDescription is tenant Id information
+type TenantIDDescription struct {
+	ID       *string `json:"id,omitempty"`
+	TenantID *string `json:"tenantId,omitempty"`
 }
 
-// Tenant Id information
-type TenantIdDescription struct {
-	Id       string `json:"id,omitempty"`
-	TenantId string `json:"tenantId,omitempty"`
-}
-
-// Tenant Ids information.
+// TenantListResult is tenant Ids information.
 type TenantListResult struct {
 	autorest.Response `json:"-"`
-	Value             []TenantIdDescription `json:"value,omitempty"`
-	NextLink          string                `json:"nextLink,omitempty"`
+	Value             *[]TenantIDDescription `json:"value,omitempty"`
+	NextLink          *string                `json:"nextLink,omitempty"`
+}
+
+// TenantListResultPreparer prepares a request to retrieve the next set of results. It returns
+// nil if no more results exist.
+func (client TenantListResult) TenantListResultPreparer() (*http.Request, error) {
+	if client.NextLink == nil || len(to.String(client.NextLink)) <= 0 {
+		return nil, nil
+	}
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(client.NextLink)))
 }

@@ -22,7 +22,7 @@ the first set generated using this new toolchain.
 
 There are a couple of items to note. First, since both the tooling and the underlying support
 packages are new, the code is not yet "production ready." Treat these packages as of
-***alpha*** quality.
+***beta*** quality.
 That's not to say we don't believe in the code, but we want to see what others think and how well
 they work in a variety of environments before settling down into an official, first release. If you
 find problems or have suggestions, please submit a pull request to document what you find. However,
@@ -40,6 +40,7 @@ We intend to rapidly improve these packages until they are "production ready."
 So, try them out and give us your thoughts.
 
 ## What Have We Done?
+
 Creating new frameworks is hard and often leads to "cliffs": The code is easy to use until some
 special case or tweak arises and then, well, then you're stuck. Often times small differences in
 requirements can lead to forking the code and investing a lot of time. Cliffs occur even more 
@@ -52,7 +53,7 @@ goals were:
 fan-in set ups.
 
 These are best shown in a series of examples, all of which are included in the
-[arm/examples](https://github.com/azure/azure-sdk-for-go/blob/master/arm/examples/)
+[arm/examples](https://github.com/Azure/azure-sdk-for-go/blob/master/arm/examples/)
 sub-folder.
 
 ## First a Sidenote: Authentication and the Azure Resource Manager
@@ -100,29 +101,41 @@ package main
 
 import(
   "fmt"
+  "log"
 
-  "github.com/azure/azure-sdk-for-go/examples/helpers"
-  "github.com/azure/azure-sdk-for-go/arm/storage"
+  "github.com/Azure/azure-sdk-for-go/arm/examples/helpers"
+  "github.com/Azure/azure-sdk-for-go/arm/storage"
+  "github.com/Azure/go-autorest/autorest"
+  "github.com/Azure/go-autorest/autorest/azure"
+  "github.com/Azure/go-autorest/autorest/to"
 )
 
-func check_name(args []string) {
-  name := args[0]
-  
-  c, _ := helpers.LoadCredentials()
-  spt, _ := helpers.NewServicePrincipalTokenFromCredentials(c, azure.AzureResourceManagerScope)
+func checkName(name string) {
+  c, err := helpers.LoadCredentials()
+  if err != nil {
+    log.Fatalf("Error: %v", err)
+  }
 
-  sac := storage.NewStorageAccountsClient(c["subscriptionID"])
-  sac.Authorizer = spt
+  ac := storage.NewAccountsClient(c["subscriptionID"])
 
-  cna, err := sac.CheckNameAvailability(
-    storage.StorageAccountCheckNameAvailabilityParameters{
-      Name: name,
-      Type: "Microsoft.Storage/storageAccounts"})
+  spt, err := helpers.NewServicePrincipalTokenFromCredentials(c, azure.AzureResourceManagerScope)
+  if err != nil {
+    log.Fatalf("Error: %v", err)
+  }
+  ac.Authorizer = spt
+
+  ac.Sender = autorest.CreateSender(
+    autorest.WithLogging(log.New(os.Stdout, "sdk-example: ", log.LstdFlags)))
+
+  cna, err := ac.CheckNameAvailability(
+    storage.AccountCheckNameAvailabilityParameters{
+      Name: to.StringPtr(name),
+      Type: to.StringPtr("Microsoft.Storage/storageAccounts")})
 
   if err != nil {
-    fmt.Printf("ERROR: %s\n", err)
+    log.Fatalf("Error: %v", err)
   } else {
-    if cna.NameAvailable {
+    if to.Bool(cna.NameAvailable) {
       fmt.Printf("The name '%s' is available\n", name)
     } else {
       fmt.Printf("The name '%s' is unavailable because %s\n", name, cna.Message)
@@ -143,13 +156,14 @@ that applies the OAuth2 authorization token to the request. It will, as needed, 
 using the supplied credentials.
 
 Providing a decorated
-[autorest.Sender](https://godoc.org/github.com/Azure/go-autorest/autorest#Sender),
-an
-[autorest.RequestInspector](https://godoc.org/github.com/Azure/go-autorest/autorest#RequestInspector),
-or an
-[autorest.ResponseInspector](https://godoc.org/github.com/Azure/go-autorest/autorest#ResponseInspector)
+[autorest.Sender](https://godoc.org/github.com/Azure/go-autorest/autorest#Sender) or populating
+the [autorest.Client](https://godoc.org/github.com/Azure/go-autorest/autorest#Client)
+with a custom
+[autorest.PrepareDecorator](https://godoc.org/github.com/Azure/go-autorest/autorest#PrepareDecorator)
+or
+[autorest.RespondDecorator](https://godoc.org/github.com/Azure/go-autorest/autorest#RespondDecorator)
 enables more control. See the included example file
-[check.go](https://github.com/azure/azure-sdk-for-go/blob/master/arm/examples/check.go)
+[check.go](https://github.com/Azure/azure-sdk-for-go/blob/master/arm/examples/check.go)
 for more details. Through these you can modify the outgoing request, inspect the incoming response,
 or even go so far as to provide a
 [circuit breaker](https://msdn.microsoft.com/en-us/library/dn589784.aspx)
@@ -185,7 +199,7 @@ Whether you elect to poll or not, all Azure ARM client responses compose with an
 At present,
 [autorest.Response](https://godoc.org/github.com/Azure/go-autorest/autorest#Response)
 only composes over the standard
-[http.Response]()
+[http.Response](https://golang.org/pkg/net/http/#Response)
 object (that may change as we implement more features). When your code receives an error from an
 Azure ARM API call, you may find it useful to inspect the HTTP status code contained in the returned
 [autorest.Response](https://godoc.org/github.com/Azure/go-autorest/autorest#Response).
@@ -206,39 +220,48 @@ package main
 import(
   "fmt"
 
-  "github.com/azure/azure-sdk-for-go/examples/helpers"
-  "github.com/azure/azure-sdk-for-go/arm/storage"
+  "github.com/Azure/azure-sdk-for-go/arm/examples/helpers"
+  "github.com/Azure/azure-sdk-for-go/arm/storage"
+  "github.com/Azure/go-autorest/autorest"
+  "github.com/Azure/go-autorest/autorest/azure"
+  "github.com/Azure/go-autorest/autorest/to"
 )
 
-func create_account(args []string) {
-  resourceGroup := args[0]
-  name := args[1]
-  
-  c, _ := helpers.LoadCredentials()
-  spt, _ := helpers.NewServicePrincipalTokenFromCredentials(c, azure.AzureResourceManagerScope)
+func create_account(resourceGroup, name string) {
+  c, err := helpers.LoadCredentials()
+  if err != nil {
+    log.Fatalf("Error: %v", err)
+  }
 
-  sac := storage.NewStorageAccountsClient(c["subscriptionID"])
-  sac.Authorizer = spt
-  sac.PollingMode = autorest.PollUntilAttempts
-  sac.PollingAttempts = 5
+  ac := storage.NewAccountsClient(c["subscriptionID"])
 
-  cp := storage.StorageAccountCreateParameters{}
-  cp.Location = "westus"
-  cp.Properties.AccountType = storage.StandardLRS
+  spt, err := helpers.NewServicePrincipalTokenFromCredentials(c, azure.AzureResourceManagerScope)
+  if err != nil {
+    log.Fatalf("Error: %v", err)
+  }
+  ac.Authorizer = spt
+  ac.PollingMode = autorest.PollUntilAttempts
+  ac.PollingAttempts = 5
 
-  sa, err := sac.Create(resourceGroup, name, cp)
+  cp := storage.AccountCreateParameters{}
+  cp.Location = to.StringPtr("westus")
+  cp.Properties = &storage.AccountPropertiesCreateParameters{AccountType: storage.StandardLRS}
+
+  sa, err := ac.Create(resourceGroup, name, cp)
   if err != nil {
     if sa.Response.StatusCode != http.StatusAccepted {
       fmt.Printf("Creation of %s.%s failed with err -- %v\n", resourceGroup, name, err)
+      return
     } else {
       fmt.Printf("Create initiated for %s.%s -- poll %s to check status\n",
         resourceGroup,
         name,
         sa.GetPollingLocation())
+      return
     }
-  } else {
-    fmt.Printf("Successfully created %s.%s\n\n", resourceGroup, name)
   }
+
+  fmt.Printf("Successfully created %s.%s\n\n", resourceGroup, name)
 }
 ```
 
@@ -252,7 +275,49 @@ prints the URL the
 [Azure Storage](http://azure.microsoft.com/en-us/documentation/services/storage/)
 service returned for polling.
 More details, including deleting the created account, are in the example code file
-[create.go](https://github.com/azure/azure-sdk-for-go/blob/master/arm/examples/create.go).
+[create.go](https://github.com/Azure/azure-sdk-for-go/blob/master/arm/examples/create.go).
+
+## Making Asynchronous Requests
+
+One of Go's many strong points is how natural it makes sending and managing asynchronous requests
+by means of goroutines. We wanted the ARM packages to fit naturally in the variety of asynchronous
+patterns used in Go code, but also be straight-forward for simple use cases. We accomplished both
+by adopting a pattern for all APIs. Each package API includes (at least) four methods
+(more if the API returns a paged result set). For example, for an API call named `Foo` the package
+defines:
+
+- `FooPreparer`: This method accepts the arguments for the API and returns a prepared
+`http.Request`.
+- `FooSender`: This method sends the prepared `http.Request`. It handles the possible status codes
+and will, unless the disabled in the [autorest.Client](https://godoc.org/github.com/Azure/go-
+autorest/autorest#Client), handling polling.
+- `FooResponder`: This method accepts and handles the `http.Response` returned by the sender
+and unmarshals the JSON, if any, into the result.
+- `Foo`: This method accepts the arguments for the API and returns the result. It is a wrapper
+around the `FooPreparer`, `FooSender`, and `FooResponder`.
+
+By using the preparer, sender, and responder methods, package users can spread request and
+response handling across goroutines as needed. Further, adding a cancel channel to the
+`http.Response` (most easily through a
+[PrepareDecorator](https://godoc.org/github.com/Azure/go-autorest/autorest#PrepareDecorator)),
+enables canceling sent requests (see the documentation on
+[http.Request](https://golang.org/pkg/net/http/#Request)) for details.
+
+## Paged Result Sets
+
+Some API calls return partial results. Typically, when they do, the result structure will include
+a `Value` array and a `NextLink` URL. The `NextLink` URL is used to retrieve the next page or
+block of results.
+
+The packages add two methods to make working with and retrieving paged results natural. First,
+on paged result structures, the packages include a preparer method that returns an `http.Request`
+for the next set of results. For a result set returned in a structure named `FooResults`, the
+package will include a method named `FooResultsPreparer`. If the `NextLink` is `nil` or empty, the
+method returns `nil`.
+
+The corresponding API (which typically includes "List" in the name) has a method to ease retrieving
+the next result set given a result set. For example, for an API named `FooList`, the package will
+include `FooListNextResults` that accepts the results of the last call and returns the next set.
 
 ## Summing Up
 

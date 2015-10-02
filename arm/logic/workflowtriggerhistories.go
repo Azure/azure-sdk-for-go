@@ -19,95 +19,27 @@ package logic
 // regenerated.
 
 import (
-	"github.com/Azure/go-autorest/autorest"
+	"github.com/Azure/azure-sdk-for-go/Godeps/_workspace/src/github.com/Azure/go-autorest/autorest"
 	"net/http"
 	"net/url"
 )
 
-// WorkflowTriggerHistories Client
+// WorkflowTriggerHistoriesClient is the client for the
+// WorkflowTriggerHistories methods of the Logic service.
 type WorkflowTriggerHistoriesClient struct {
-	LogicManagementClient
+	ManagementClient
 }
 
-func NewWorkflowTriggerHistoriesClient(subscriptionId string) WorkflowTriggerHistoriesClient {
-	return NewWorkflowTriggerHistoriesClientWithBaseUri(DefaultBaseUri, subscriptionId)
+// NewWorkflowTriggerHistoriesClient creates an instance of the
+// WorkflowTriggerHistoriesClient client.
+func NewWorkflowTriggerHistoriesClient(subscriptionID string) WorkflowTriggerHistoriesClient {
+	return NewWorkflowTriggerHistoriesClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-func NewWorkflowTriggerHistoriesClientWithBaseUri(baseUri string, subscriptionId string) WorkflowTriggerHistoriesClient {
-	return WorkflowTriggerHistoriesClient{NewWithBaseUri(baseUri, subscriptionId)}
-}
-
-// List gets a list of workflow trigger histories.
-//
-// resourceGroupName is the resource group name. workflowName is the workflow
-// name. triggerName is the workflow trigger name. top is the number of items
-// to be included in the result.
-func (client WorkflowTriggerHistoriesClient) List(resourceGroupName string, workflowName string, triggerName string, top int) (result WorkflowTriggerHistoryListResult, ae autorest.Error) {
-	req, err := client.NewListRequest(resourceGroupName, workflowName, triggerName, top)
-	if err != nil {
-		return result, autorest.NewErrorWithError(err, "logic.WorkflowTriggerHistoriesClient", "List", "Failure creating request")
-	}
-
-	req, err = autorest.Prepare(
-		req,
-		client.WithAuthorization(),
-		client.WithInspection())
-	if err != nil {
-		return result, autorest.NewErrorWithError(err, "logic.WorkflowTriggerHistoriesClient", "List", "Failure preparing request")
-	}
-
-	resp, err := autorest.SendWithSender(
-		client,
-		req,
-		autorest.DoErrorUnlessStatusCode(http.StatusOK))
-
-	if err == nil {
-		err = autorest.Respond(
-			resp,
-			client.ByInspecting(),
-			autorest.WithErrorUnlessOK(),
-			autorest.ByUnmarshallingJSON(&result))
-		if err != nil {
-			ae = autorest.NewErrorWithError(err, "logic.WorkflowTriggerHistoriesClient", "List", "Failure responding to request")
-		}
-	} else {
-		ae = autorest.NewErrorWithError(err, "logic.WorkflowTriggerHistoriesClient", "List", "Failure sending request")
-	}
-
-	autorest.Respond(resp,
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-
-	return
-}
-
-// Create the List request.
-func (client WorkflowTriggerHistoriesClient) NewListRequest(resourceGroupName string, workflowName string, triggerName string, top int) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"resourceGroupName": url.QueryEscape(resourceGroupName),
-		"subscriptionId":    url.QueryEscape(client.SubscriptionId),
-		"triggerName":       url.QueryEscape(triggerName),
-		"workflowName":      url.QueryEscape(workflowName),
-	}
-
-	queryParameters := map[string]interface{}{
-		"$top":        top,
-		"api-version": ApiVersion,
-	}
-
-	return autorest.DecoratePreparer(
-		client.ListRequestPreparer(),
-		autorest.WithPathParameters(pathParameters),
-		autorest.WithQueryParameters(queryParameters)).Prepare(&http.Request{})
-}
-
-// Create a Preparer by which to prepare the List request.
-func (client WorkflowTriggerHistoriesClient) ListRequestPreparer() autorest.Preparer {
-	return autorest.CreatePreparer(
-		autorest.AsJSON(),
-		autorest.AsGet(),
-		autorest.WithBaseURL(client.BaseUri),
-		autorest.WithPath("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logic/workflows/{workflowName}/triggers/{triggerName}/histories"))
+// NewWorkflowTriggerHistoriesClientWithBaseURI creates an instance of the
+// WorkflowTriggerHistoriesClient client.
+func NewWorkflowTriggerHistoriesClientWithBaseURI(baseURI string, subscriptionID string) WorkflowTriggerHistoriesClient {
+	return WorkflowTriggerHistoriesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // Get gets a workflow trigger history.
@@ -115,70 +47,152 @@ func (client WorkflowTriggerHistoriesClient) ListRequestPreparer() autorest.Prep
 // resourceGroupName is the resource group name. workflowName is the workflow
 // name. triggerName is the workflow trigger name. historyName is the
 // workflow trigger history name.
-func (client WorkflowTriggerHistoriesClient) Get(resourceGroupName string, workflowName string, triggerName string, historyName string) (result WorkflowTriggerHistory, ae autorest.Error) {
-	req, err := client.NewGetRequest(resourceGroupName, workflowName, triggerName, historyName)
+func (client WorkflowTriggerHistoriesClient) Get(resourceGroupName string, workflowName string, triggerName string, historyName string) (result WorkflowTriggerHistory, ae error) {
+	req, err := client.GetPreparer(resourceGroupName, workflowName, triggerName, historyName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "logic.WorkflowTriggerHistoriesClient", "Get", "Failure creating request")
+		return result, autorest.NewErrorWithError(err, "logic/WorkflowTriggerHistoriesClient", "Get", "Failure preparing request")
 	}
 
-	req, err = autorest.Prepare(
-		req,
-		client.WithAuthorization(),
-		client.WithInspection())
+	resp, err := client.GetSender(req)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "logic.WorkflowTriggerHistoriesClient", "Get", "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "logic/WorkflowTriggerHistoriesClient", "Get", "Failure sending request")
 	}
 
-	resp, err := autorest.SendWithSender(
-		client,
-		req,
-		autorest.DoErrorUnlessStatusCode(http.StatusOK))
-
-	if err == nil {
-		err = autorest.Respond(
-			resp,
-			client.ByInspecting(),
-			autorest.WithErrorUnlessOK(),
-			autorest.ByUnmarshallingJSON(&result))
-		if err != nil {
-			ae = autorest.NewErrorWithError(err, "logic.WorkflowTriggerHistoriesClient", "Get", "Failure responding to request")
-		}
-	} else {
-		ae = autorest.NewErrorWithError(err, "logic.WorkflowTriggerHistoriesClient", "Get", "Failure sending request")
+	result, err = client.GetResponder(resp)
+	if err != nil {
+		ae = autorest.NewErrorWithError(err, "logic/WorkflowTriggerHistoriesClient", "Get", "Failure responding to request")
 	}
-
-	autorest.Respond(resp,
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
 
 	return
 }
 
-// Create the Get request.
-func (client WorkflowTriggerHistoriesClient) NewGetRequest(resourceGroupName string, workflowName string, triggerName string, historyName string) (*http.Request, error) {
+// GetPreparer prepares the Get request.
+func (client WorkflowTriggerHistoriesClient) GetPreparer(resourceGroupName string, workflowName string, triggerName string, historyName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"historyName":       url.QueryEscape(historyName),
 		"resourceGroupName": url.QueryEscape(resourceGroupName),
-		"subscriptionId":    url.QueryEscape(client.SubscriptionId),
+		"subscriptionId":    url.QueryEscape(client.SubscriptionID),
 		"triggerName":       url.QueryEscape(triggerName),
 		"workflowName":      url.QueryEscape(workflowName),
 	}
 
 	queryParameters := map[string]interface{}{
-		"api-version": ApiVersion,
+		"api-version": APIVersion,
 	}
 
-	return autorest.DecoratePreparer(
-		client.GetRequestPreparer(),
-		autorest.WithPathParameters(pathParameters),
-		autorest.WithQueryParameters(queryParameters)).Prepare(&http.Request{})
-}
-
-// Create a Preparer by which to prepare the Get request.
-func (client WorkflowTriggerHistoriesClient) GetRequestPreparer() autorest.Preparer {
-	return autorest.CreatePreparer(
+	return autorest.Prepare(&http.Request{},
 		autorest.AsJSON(),
 		autorest.AsGet(),
-		autorest.WithBaseURL(client.BaseUri),
-		autorest.WithPath("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logic/workflows/{workflowName}/triggers/{triggerName}/histories/{historyName}"))
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPath("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logic/workflows/{workflowName}/triggers/{triggerName}/histories/{historyName}"),
+		autorest.WithPathParameters(pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+}
+
+// GetSender sends the Get request. The method will close the
+// http.Response Body if it receives an error.
+func (client WorkflowTriggerHistoriesClient) GetSender(req *http.Request) (*http.Response, error) {
+	return client.Send(req, http.StatusOK)
+}
+
+// GetResponder handles the response to the Get request. The method always
+// closes the http.Response Body.
+func (client WorkflowTriggerHistoriesClient) GetResponder(resp *http.Response) (result WorkflowTriggerHistory, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		autorest.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// List gets a list of workflow trigger histories.
+//
+// resourceGroupName is the resource group name. workflowName is the workflow
+// name. triggerName is the workflow trigger name. top is the number of items
+// to be included in the result.
+func (client WorkflowTriggerHistoriesClient) List(resourceGroupName string, workflowName string, triggerName string, top int) (result WorkflowTriggerHistoryListResult, ae error) {
+	req, err := client.ListPreparer(resourceGroupName, workflowName, triggerName, top)
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "logic/WorkflowTriggerHistoriesClient", "List", "Failure preparing request")
+	}
+
+	resp, err := client.ListSender(req)
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "logic/WorkflowTriggerHistoriesClient", "List", "Failure sending request")
+	}
+
+	result, err = client.ListResponder(resp)
+	if err != nil {
+		ae = autorest.NewErrorWithError(err, "logic/WorkflowTriggerHistoriesClient", "List", "Failure responding to request")
+	}
+
+	return
+}
+
+// ListPreparer prepares the List request.
+func (client WorkflowTriggerHistoriesClient) ListPreparer(resourceGroupName string, workflowName string, triggerName string, top int) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"resourceGroupName": url.QueryEscape(resourceGroupName),
+		"subscriptionId":    url.QueryEscape(client.SubscriptionID),
+		"triggerName":       url.QueryEscape(triggerName),
+		"workflowName":      url.QueryEscape(workflowName),
+	}
+
+	queryParameters := map[string]interface{}{
+		"$top":        top,
+		"api-version": APIVersion,
+	}
+
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPath("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logic/workflows/{workflowName}/triggers/{triggerName}/histories"),
+		autorest.WithPathParameters(pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+}
+
+// ListSender sends the List request. The method will close the
+// http.Response Body if it receives an error.
+func (client WorkflowTriggerHistoriesClient) ListSender(req *http.Request) (*http.Response, error) {
+	return client.Send(req, http.StatusOK)
+}
+
+// ListResponder handles the response to the List request. The method always
+// closes the http.Response Body.
+func (client WorkflowTriggerHistoriesClient) ListResponder(resp *http.Response) (result WorkflowTriggerHistoryListResult, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		autorest.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// ListNextResults retrieves the next set of results, if any.
+func (client WorkflowTriggerHistoriesClient) ListNextResults(lastResults WorkflowTriggerHistoryListResult) (result WorkflowTriggerHistoryListResult, ae error) {
+	req, err := lastResults.WorkflowTriggerHistoryListResultPreparer()
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "logic/WorkflowTriggerHistoriesClient", "List", "Failure preparing next results request request")
+	}
+	if req == nil {
+		return
+	}
+
+	resp, err := client.ListSender(req)
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "logic/WorkflowTriggerHistoriesClient", "List", "Failure sending next results request request")
+	}
+
+	result, err = client.ListResponder(resp)
+	if err != nil {
+		ae = autorest.NewErrorWithError(err, "logic/WorkflowTriggerHistoriesClient", "List", "Failure responding to next results request request")
+	}
+
+	return
 }

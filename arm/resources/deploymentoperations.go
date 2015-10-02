@@ -19,94 +19,92 @@ package resources
 // regenerated.
 
 import (
-	"github.com/Azure/go-autorest/autorest"
+	"github.com/Azure/azure-sdk-for-go/Godeps/_workspace/src/github.com/Azure/go-autorest/autorest"
 	"net/http"
 	"net/url"
 )
 
-// DeploymentOperations Client
+// DeploymentOperationsClient is the client for the DeploymentOperations
+// methods of the Resources service.
 type DeploymentOperationsClient struct {
-	ResourceManagementClient
+	ManagementClient
 }
 
-func NewDeploymentOperationsClient(subscriptionId string) DeploymentOperationsClient {
-	return NewDeploymentOperationsClientWithBaseUri(DefaultBaseUri, subscriptionId)
+// NewDeploymentOperationsClient creates an instance of the
+// DeploymentOperationsClient client.
+func NewDeploymentOperationsClient(subscriptionID string) DeploymentOperationsClient {
+	return NewDeploymentOperationsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-func NewDeploymentOperationsClientWithBaseUri(baseUri string, subscriptionId string) DeploymentOperationsClient {
-	return DeploymentOperationsClient{NewWithBaseUri(baseUri, subscriptionId)}
+// NewDeploymentOperationsClientWithBaseURI creates an instance of the
+// DeploymentOperationsClient client.
+func NewDeploymentOperationsClientWithBaseURI(baseURI string, subscriptionID string) DeploymentOperationsClient {
+	return DeploymentOperationsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // Get get a list of deployments operations.
 //
 // resourceGroupName is the name of the resource group. The name is case
-// insensitive. deploymentName is the name of the deployment. operationId is
+// insensitive. deploymentName is the name of the deployment. operationID is
 // operation Id.
-func (client DeploymentOperationsClient) Get(resourceGroupName string, deploymentName string, operationId string) (result DeploymentOperation, ae autorest.Error) {
-	req, err := client.NewGetRequest(resourceGroupName, deploymentName, operationId)
+func (client DeploymentOperationsClient) Get(resourceGroupName string, deploymentName string, operationID string) (result DeploymentOperation, ae error) {
+	req, err := client.GetPreparer(resourceGroupName, deploymentName, operationID)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "resources.DeploymentOperationsClient", "Get", "Failure creating request")
+		return result, autorest.NewErrorWithError(err, "resources/DeploymentOperationsClient", "Get", "Failure preparing request")
 	}
 
-	req, err = autorest.Prepare(
-		req,
-		client.WithAuthorization(),
-		client.WithInspection())
+	resp, err := client.GetSender(req)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "resources.DeploymentOperationsClient", "Get", "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "resources/DeploymentOperationsClient", "Get", "Failure sending request")
 	}
 
-	resp, err := autorest.SendWithSender(
-		client,
-		req,
-		autorest.DoErrorUnlessStatusCode(http.StatusOK))
-
-	if err == nil {
-		err = autorest.Respond(
-			resp,
-			client.ByInspecting(),
-			autorest.WithErrorUnlessOK(),
-			autorest.ByUnmarshallingJSON(&result))
-		if err != nil {
-			ae = autorest.NewErrorWithError(err, "resources.DeploymentOperationsClient", "Get", "Failure responding to request")
-		}
-	} else {
-		ae = autorest.NewErrorWithError(err, "resources.DeploymentOperationsClient", "Get", "Failure sending request")
+	result, err = client.GetResponder(resp)
+	if err != nil {
+		ae = autorest.NewErrorWithError(err, "resources/DeploymentOperationsClient", "Get", "Failure responding to request")
 	}
-
-	autorest.Respond(resp,
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
 
 	return
 }
 
-// Create the Get request.
-func (client DeploymentOperationsClient) NewGetRequest(resourceGroupName string, deploymentName string, operationId string) (*http.Request, error) {
+// GetPreparer prepares the Get request.
+func (client DeploymentOperationsClient) GetPreparer(resourceGroupName string, deploymentName string, operationID string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"deploymentName":    url.QueryEscape(deploymentName),
-		"operationId":       url.QueryEscape(operationId),
+		"operationId":       url.QueryEscape(operationID),
 		"resourceGroupName": url.QueryEscape(resourceGroupName),
-		"subscriptionId":    url.QueryEscape(client.SubscriptionId),
+		"subscriptionId":    url.QueryEscape(client.SubscriptionID),
 	}
 
 	queryParameters := map[string]interface{}{
-		"api-version": ApiVersion,
+		"api-version": APIVersion,
 	}
 
-	return autorest.DecoratePreparer(
-		client.GetRequestPreparer(),
-		autorest.WithPathParameters(pathParameters),
-		autorest.WithQueryParameters(queryParameters)).Prepare(&http.Request{})
-}
-
-// Create a Preparer by which to prepare the Get request.
-func (client DeploymentOperationsClient) GetRequestPreparer() autorest.Preparer {
-	return autorest.CreatePreparer(
+	return autorest.Prepare(&http.Request{},
 		autorest.AsJSON(),
 		autorest.AsGet(),
-		autorest.WithBaseURL(client.BaseUri),
-		autorest.WithPath("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/deployments/{deploymentName}/operations/{operationId}"))
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPath("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/deployments/{deploymentName}/operations/{operationId}"),
+		autorest.WithPathParameters(pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+}
+
+// GetSender sends the Get request. The method will close the
+// http.Response Body if it receives an error.
+func (client DeploymentOperationsClient) GetSender(req *http.Request) (*http.Response, error) {
+	return client.Send(req, http.StatusOK)
+}
+
+// GetResponder handles the response to the Get request. The method always
+// closes the http.Response Body.
+func (client DeploymentOperationsClient) GetResponder(resp *http.Response) (result DeploymentOperation, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		autorest.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
 }
 
 // List gets a list of deployments operations.
@@ -114,69 +112,85 @@ func (client DeploymentOperationsClient) GetRequestPreparer() autorest.Preparer 
 // resourceGroupName is the name of the resource group. The name is case
 // insensitive. deploymentName is the name of the deployment. top is query
 // parameters.
-func (client DeploymentOperationsClient) List(resourceGroupName string, deploymentName string, top int) (result DeploymentOperationsListResult, ae autorest.Error) {
-	req, err := client.NewListRequest(resourceGroupName, deploymentName, top)
+func (client DeploymentOperationsClient) List(resourceGroupName string, deploymentName string, top int) (result DeploymentOperationsListResult, ae error) {
+	req, err := client.ListPreparer(resourceGroupName, deploymentName, top)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "resources.DeploymentOperationsClient", "List", "Failure creating request")
+		return result, autorest.NewErrorWithError(err, "resources/DeploymentOperationsClient", "List", "Failure preparing request")
 	}
 
-	req, err = autorest.Prepare(
-		req,
-		client.WithAuthorization(),
-		client.WithInspection())
+	resp, err := client.ListSender(req)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "resources.DeploymentOperationsClient", "List", "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "resources/DeploymentOperationsClient", "List", "Failure sending request")
 	}
 
-	resp, err := autorest.SendWithSender(
-		client,
-		req,
-		autorest.DoErrorUnlessStatusCode(http.StatusOK))
-
-	if err == nil {
-		err = autorest.Respond(
-			resp,
-			client.ByInspecting(),
-			autorest.WithErrorUnlessOK(),
-			autorest.ByUnmarshallingJSON(&result))
-		if err != nil {
-			ae = autorest.NewErrorWithError(err, "resources.DeploymentOperationsClient", "List", "Failure responding to request")
-		}
-	} else {
-		ae = autorest.NewErrorWithError(err, "resources.DeploymentOperationsClient", "List", "Failure sending request")
+	result, err = client.ListResponder(resp)
+	if err != nil {
+		ae = autorest.NewErrorWithError(err, "resources/DeploymentOperationsClient", "List", "Failure responding to request")
 	}
-
-	autorest.Respond(resp,
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
 
 	return
 }
 
-// Create the List request.
-func (client DeploymentOperationsClient) NewListRequest(resourceGroupName string, deploymentName string, top int) (*http.Request, error) {
+// ListPreparer prepares the List request.
+func (client DeploymentOperationsClient) ListPreparer(resourceGroupName string, deploymentName string, top int) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"deploymentName":    url.QueryEscape(deploymentName),
 		"resourceGroupName": url.QueryEscape(resourceGroupName),
-		"subscriptionId":    url.QueryEscape(client.SubscriptionId),
+		"subscriptionId":    url.QueryEscape(client.SubscriptionID),
 	}
 
 	queryParameters := map[string]interface{}{
 		"$top":        top,
-		"api-version": ApiVersion,
+		"api-version": APIVersion,
 	}
 
-	return autorest.DecoratePreparer(
-		client.ListRequestPreparer(),
-		autorest.WithPathParameters(pathParameters),
-		autorest.WithQueryParameters(queryParameters)).Prepare(&http.Request{})
-}
-
-// Create a Preparer by which to prepare the List request.
-func (client DeploymentOperationsClient) ListRequestPreparer() autorest.Preparer {
-	return autorest.CreatePreparer(
+	return autorest.Prepare(&http.Request{},
 		autorest.AsJSON(),
 		autorest.AsGet(),
-		autorest.WithBaseURL(client.BaseUri),
-		autorest.WithPath("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/deployments/{deploymentName}/operations"))
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPath("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/deployments/{deploymentName}/operations"),
+		autorest.WithPathParameters(pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+}
+
+// ListSender sends the List request. The method will close the
+// http.Response Body if it receives an error.
+func (client DeploymentOperationsClient) ListSender(req *http.Request) (*http.Response, error) {
+	return client.Send(req, http.StatusOK)
+}
+
+// ListResponder handles the response to the List request. The method always
+// closes the http.Response Body.
+func (client DeploymentOperationsClient) ListResponder(resp *http.Response) (result DeploymentOperationsListResult, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		autorest.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// ListNextResults retrieves the next set of results, if any.
+func (client DeploymentOperationsClient) ListNextResults(lastResults DeploymentOperationsListResult) (result DeploymentOperationsListResult, ae error) {
+	req, err := lastResults.DeploymentOperationsListResultPreparer()
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "resources/DeploymentOperationsClient", "List", "Failure preparing next results request request")
+	}
+	if req == nil {
+		return
+	}
+
+	resp, err := client.ListSender(req)
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "resources/DeploymentOperationsClient", "List", "Failure sending next results request request")
+	}
+
+	result, err = client.ListResponder(resp)
+	if err != nil {
+		ae = autorest.NewErrorWithError(err, "resources/DeploymentOperationsClient", "List", "Failure responding to next results request request")
+	}
+
+	return
 }

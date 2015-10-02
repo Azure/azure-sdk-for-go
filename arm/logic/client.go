@@ -19,28 +19,34 @@ package logic
 // regenerated.
 
 import (
-	"github.com/Azure/go-autorest/autorest"
+	"github.com/Azure/azure-sdk-for-go/Godeps/_workspace/src/github.com/Azure/go-autorest/autorest"
 )
 
 const (
-	ApiVersion     = "2015-02-01-preview"
-	DefaultBaseUri = "https://management.azure.com"
+	// APIVersion is the version of the Logic
+	APIVersion = "2015-02-01-preview"
+
+	// DefaultBaseURI is the default URI used for the service Logic
+	DefaultBaseURI = "https://management.azure.com"
 )
 
-type LogicManagementClient struct {
+// ManagementClient is the base client for Logic.
+type ManagementClient struct {
 	autorest.Client
-	BaseUri        string
-	SubscriptionId string
+	BaseURI        string
+	SubscriptionID string
 }
 
-func New(subscriptionId string) LogicManagementClient {
-	return NewWithBaseUri(DefaultBaseUri, subscriptionId)
+// New creates an instance of the ManagementClient client.
+func New(subscriptionID string) ManagementClient {
+	return NewWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-func NewWithBaseUri(baseUri string, subscriptionId string) LogicManagementClient {
-	return LogicManagementClient{
-		Client:         autorest.DefaultClient,
-		BaseUri:        baseUri,
-		SubscriptionId: subscriptionId,
+// NewWithBaseURI creates an instance of the ManagementClient client.
+func NewWithBaseURI(baseURI string, subscriptionID string) ManagementClient {
+	return ManagementClient{
+		Client:         autorest.NewClientWithUserAgent(UserAgent()),
+		BaseURI:        baseURI,
+		SubscriptionID: subscriptionID,
 	}
 }

@@ -6,10 +6,11 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/Azure/azure-sdk-for-go/Godeps/_workspace/src/github.com/Azure/go-autorest/autorest"
+	"github.com/Azure/azure-sdk-for-go/Godeps/_workspace/src/github.com/Azure/go-autorest/autorest/azure"
+	"github.com/Azure/azure-sdk-for-go/Godeps/_workspace/src/github.com/Azure/go-autorest/autorest/to"
 	"github.com/Azure/azure-sdk-for-go/arm/examples/helpers"
 	"github.com/Azure/azure-sdk-for-go/arm/storage"
-	"github.com/Azure/go-autorest/autorest"
-	"github.com/Azure/go-autorest/autorest/azure"
 )
 
 func withWatcher() autorest.SendDecorator {
@@ -35,36 +36,36 @@ func createAccount(resourceGroup, name string) {
 		log.Fatalf("Error: %v", err)
 	}
 
-	sac := storage.NewStorageAccountsClient(c["subscriptionID"])
+	ac := storage.NewAccountsClient(c["subscriptionID"])
 
 	spt, err := helpers.NewServicePrincipalTokenFromCredentials(c, azure.AzureResourceManagerScope)
 	if err != nil {
 		log.Fatalf("Error: %v", err)
 	}
-	sac.Authorizer = spt
+	ac.Authorizer = spt
 
-	cna, err := sac.CheckNameAvailability(
-		storage.StorageAccountCheckNameAvailabilityParameters{
-			Name: name,
-			Type: "Microsoft.Storage/storageAccounts"})
+	cna, err := ac.CheckNameAvailability(
+		storage.AccountCheckNameAvailabilityParameters{
+			Name: to.StringPtr(name),
+			Type: to.StringPtr("Microsoft.Storage/storageAccounts")})
 	if err != nil {
 		log.Fatalf("Error: %v", err)
 	}
-	if !cna.NameAvailable {
+	if !to.Bool(cna.NameAvailable) {
 		fmt.Printf("%s is unavailable -- try again\n", name)
 		return
 	}
 	fmt.Printf("%s is available\n\n", name)
 
-	sac.Sender = autorest.CreateSender(withWatcher())
-	sac.PollingMode = autorest.PollUntilAttempts
-	sac.PollingAttempts = 5
+	ac.Sender = autorest.CreateSender(withWatcher())
+	ac.PollingMode = autorest.PollUntilAttempts
+	ac.PollingAttempts = 5
 
-	cp := storage.StorageAccountCreateParameters{}
-	cp.Location = "westus"
-	cp.Properties.AccountType = storage.StandardLRS
+	cp := storage.AccountCreateParameters{}
+	cp.Location = to.StringPtr("westus")
+	cp.Properties = &storage.AccountPropertiesCreateParameters{AccountType: storage.StandardLRS}
 
-	sa, err := sac.Create(resourceGroup, name, cp)
+	sa, err := ac.Create(resourceGroup, name, cp)
 	if err != nil {
 		if sa.Response.StatusCode != http.StatusAccepted {
 			fmt.Printf("Creation of %s.%s failed with err -- %v\n", resourceGroup, name, err)
@@ -80,8 +81,8 @@ func createAccount(resourceGroup, name string) {
 
 	fmt.Printf("Successfully created %s.%s\n\n", resourceGroup, name)
 
-	sac.Sender = nil
-	r, err := sac.Delete(resourceGroup, name)
+	ac.Sender = nil
+	r, err := ac.Delete(resourceGroup, name)
 	if err != nil {
 		fmt.Printf("Delete of %s.%s failed with status %s\n...%v\n", resourceGroup, name, r.Status, err)
 		return

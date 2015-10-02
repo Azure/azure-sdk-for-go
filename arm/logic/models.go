@@ -19,387 +19,531 @@ package logic
 // regenerated.
 
 import (
-	"github.com/Azure/go-autorest/autorest"
-	"github.com/Azure/go-autorest/autorest/date"
+	"github.com/Azure/azure-sdk-for-go/Godeps/_workspace/src/github.com/Azure/go-autorest/autorest"
+	"github.com/Azure/azure-sdk-for-go/Godeps/_workspace/src/github.com/Azure/go-autorest/autorest/date"
+	"github.com/Azure/azure-sdk-for-go/Godeps/_workspace/src/github.com/Azure/go-autorest/autorest/to"
+	"net/http"
 )
 
+// KeyType enumerates the values for key type.
 type KeyType string
 
 const (
+	// KeyTypeNotSpecified specifies the key type not specified state for key
+	// type.
 	KeyTypeNotSpecified KeyType = "NotSpecified"
-	KeyTypePrimary      KeyType = "Primary"
-	KeyTypeSecondary    KeyType = "Secondary"
+	// KeyTypePrimary specifies the key type primary state for key type.
+	KeyTypePrimary KeyType = "Primary"
+	// KeyTypeSecondary specifies the key type secondary state for key type.
+	KeyTypeSecondary KeyType = "Secondary"
 )
 
+// ParameterType enumerates the values for parameter type.
 type ParameterType string
 
 const (
-	ParameterTypeArray        ParameterType = "Array"
-	ParameterTypeBool         ParameterType = "Bool"
-	ParameterTypeFloat        ParameterType = "Float"
-	ParameterTypeInt          ParameterType = "Int"
+	// ParameterTypeArray specifies the parameter type array state for
+	// parameter type.
+	ParameterTypeArray ParameterType = "Array"
+	// ParameterTypeBool specifies the parameter type bool state for parameter
+	// type.
+	ParameterTypeBool ParameterType = "Bool"
+	// ParameterTypeFloat specifies the parameter type float state for
+	// parameter type.
+	ParameterTypeFloat ParameterType = "Float"
+	// ParameterTypeInt specifies the parameter type int state for parameter
+	// type.
+	ParameterTypeInt ParameterType = "Int"
+	// ParameterTypeNotSpecified specifies the parameter type not specified
+	// state for parameter type.
 	ParameterTypeNotSpecified ParameterType = "NotSpecified"
-	ParameterTypeObject       ParameterType = "Object"
+	// ParameterTypeObject specifies the parameter type object state for
+	// parameter type.
+	ParameterTypeObject ParameterType = "Object"
+	// ParameterTypeSecureObject specifies the parameter type secure object
+	// state for parameter type.
 	ParameterTypeSecureObject ParameterType = "SecureObject"
+	// ParameterTypeSecureString specifies the parameter type secure string
+	// state for parameter type.
 	ParameterTypeSecureString ParameterType = "SecureString"
-	ParameterTypeString       ParameterType = "String"
+	// ParameterTypeString specifies the parameter type string state for
+	// parameter type.
+	ParameterTypeString ParameterType = "String"
 )
 
+// RecurrenceFrequency enumerates the values for recurrence frequency.
 type RecurrenceFrequency string
 
 const (
-	Day    RecurrenceFrequency = "Day"
-	Hour   RecurrenceFrequency = "Hour"
+	// Day specifies the day state for recurrence frequency.
+	Day RecurrenceFrequency = "Day"
+	// Hour specifies the hour state for recurrence frequency.
+	Hour RecurrenceFrequency = "Hour"
+	// Minute specifies the minute state for recurrence frequency.
 	Minute RecurrenceFrequency = "Minute"
-	Month  RecurrenceFrequency = "Month"
+	// Month specifies the month state for recurrence frequency.
+	Month RecurrenceFrequency = "Month"
+	// Second specifies the second state for recurrence frequency.
 	Second RecurrenceFrequency = "Second"
-	Week   RecurrenceFrequency = "Week"
-	Year   RecurrenceFrequency = "Year"
+	// Week specifies the week state for recurrence frequency.
+	Week RecurrenceFrequency = "Week"
+	// Year specifies the year state for recurrence frequency.
+	Year RecurrenceFrequency = "Year"
 )
 
+// SkuName enumerates the values for sku name.
 type SkuName string
 
 const (
-	SkuNameBasic        SkuName = "Basic"
-	SkuNameFree         SkuName = "Free"
+	// SkuNameBasic specifies the sku name basic state for sku name.
+	SkuNameBasic SkuName = "Basic"
+	// SkuNameFree specifies the sku name free state for sku name.
+	SkuNameFree SkuName = "Free"
+	// SkuNameNotSpecified specifies the sku name not specified state for sku
+	// name.
 	SkuNameNotSpecified SkuName = "NotSpecified"
-	SkuNamePremium      SkuName = "Premium"
-	SkuNameShared       SkuName = "Shared"
-	SkuNameStandard     SkuName = "Standard"
+	// SkuNamePremium specifies the sku name premium state for sku name.
+	SkuNamePremium SkuName = "Premium"
+	// SkuNameShared specifies the sku name shared state for sku name.
+	SkuNameShared SkuName = "Shared"
+	// SkuNameStandard specifies the sku name standard state for sku name.
+	SkuNameStandard SkuName = "Standard"
 )
 
+// WorkflowState enumerates the values for workflow state.
 type WorkflowState string
 
 const (
-	WorkflowStateDeleted      WorkflowState = "Deleted"
-	WorkflowStateDisabled     WorkflowState = "Disabled"
-	WorkflowStateEnabled      WorkflowState = "Enabled"
+	// WorkflowStateDeleted specifies the workflow state deleted state for
+	// workflow state.
+	WorkflowStateDeleted WorkflowState = "Deleted"
+	// WorkflowStateDisabled specifies the workflow state disabled state for
+	// workflow state.
+	WorkflowStateDisabled WorkflowState = "Disabled"
+	// WorkflowStateEnabled specifies the workflow state enabled state for
+	// workflow state.
+	WorkflowStateEnabled WorkflowState = "Enabled"
+	// WorkflowStateNotSpecified specifies the workflow state not specified
+	// state for workflow state.
 	WorkflowStateNotSpecified WorkflowState = "NotSpecified"
-	WorkflowStateSuspended    WorkflowState = "Suspended"
+	// WorkflowStateSuspended specifies the workflow state suspended state for
+	// workflow state.
+	WorkflowStateSuspended WorkflowState = "Suspended"
 )
 
+// WorkflowStatus enumerates the values for workflow status.
 type WorkflowStatus string
 
 const (
-	WorkflowStatusCancelled    WorkflowStatus = "Cancelled"
-	WorkflowStatusFailed       WorkflowStatus = "Failed"
+	// WorkflowStatusCancelled specifies the workflow status cancelled state
+	// for workflow status.
+	WorkflowStatusCancelled WorkflowStatus = "Cancelled"
+	// WorkflowStatusFailed specifies the workflow status failed state for
+	// workflow status.
+	WorkflowStatusFailed WorkflowStatus = "Failed"
+	// WorkflowStatusNotSpecified specifies the workflow status not specified
+	// state for workflow status.
 	WorkflowStatusNotSpecified WorkflowStatus = "NotSpecified"
-	WorkflowStatusPaused       WorkflowStatus = "Paused"
-	WorkflowStatusRunning      WorkflowStatus = "Running"
-	WorkflowStatusSkipped      WorkflowStatus = "Skipped"
-	WorkflowStatusSucceeded    WorkflowStatus = "Succeeded"
-	WorkflowStatusSuspended    WorkflowStatus = "Suspended"
-	WorkflowStatusWaiting      WorkflowStatus = "Waiting"
+	// WorkflowStatusPaused specifies the workflow status paused state for
+	// workflow status.
+	WorkflowStatusPaused WorkflowStatus = "Paused"
+	// WorkflowStatusRunning specifies the workflow status running state for
+	// workflow status.
+	WorkflowStatusRunning WorkflowStatus = "Running"
+	// WorkflowStatusSkipped specifies the workflow status skipped state for
+	// workflow status.
+	WorkflowStatusSkipped WorkflowStatus = "Skipped"
+	// WorkflowStatusSucceeded specifies the workflow status succeeded state
+	// for workflow status.
+	WorkflowStatusSucceeded WorkflowStatus = "Succeeded"
+	// WorkflowStatusSuspended specifies the workflow status suspended state
+	// for workflow status.
+	WorkflowStatusSuspended WorkflowStatus = "Suspended"
+	// WorkflowStatusWaiting specifies the workflow status waiting state for
+	// workflow status.
+	WorkflowStatusWaiting WorkflowStatus = "Waiting"
 )
 
+// ContentHash is
+type ContentHash struct {
+	Algorithm *string `json:"algorithm,omitempty"`
+	Value     *string `json:"value,omitempty"`
+}
+
+// ContentLink is
+type ContentLink struct {
+	URI            *string             `json:"uri,omitempty"`
+	ContentVersion *string             `json:"contentVersion,omitempty"`
+	ContentSize    *int32              `json:"contentSize,omitempty"`
+	ContentHash    *ContentHash        `json:"contentHash,omitempty"`
+	Metadata       *map[string]*string `json:"metadata,omitempty"`
+}
+
+// RegenerateSecretKeyParameters is
 type RegenerateSecretKeyParameters struct {
 	KeyType KeyType `json:"keyType,omitempty"`
 }
 
-type RunWorkflowParameters struct {
-	Name    string            `json:"name,omitempty"`
-	Outputs map[string]string `json:"outputs,omitempty"`
+// Resource is
+type Resource struct {
+	ID       *string             `json:"id,omitempty"`
+	Name     *string             `json:"name,omitempty"`
+	Type     *string             `json:"type,omitempty"`
+	Location *string             `json:"location,omitempty"`
+	Tags     *map[string]*string `json:"tags,omitempty"`
 }
 
+// ResourceReference is
+type ResourceReference struct {
+	ID   *string `json:"id,omitempty"`
+	Name *string `json:"name,omitempty"`
+	Type *string `json:"type,omitempty"`
+}
+
+// RunWorkflowParameters is
+type RunWorkflowParameters struct {
+	Name    *string             `json:"name,omitempty"`
+	Outputs *map[string]*string `json:"outputs,omitempty"`
+}
+
+// Sku is
+type Sku struct {
+	Name SkuName            `json:"name,omitempty"`
+	Plan *ResourceReference `json:"plan,omitempty"`
+}
+
+// SubResource is
+type SubResource struct {
+	ID *string `json:"id,omitempty"`
+}
+
+// Workflow is
 type Workflow struct {
 	autorest.Response `json:"-"`
-	Id                string            `json:"id,omitempty"`
-	Name              string            `json:"name,omitempty"`
-	Type              string            `json:"type,omitempty"`
-	Location          string            `json:"location,omitempty"`
-	Tags              map[string]string `json:"tags,omitempty"`
-	Properties        struct {
-		CreatedTime    date.Time     `json:"createdTime,omitempty"`
-		ChangedTime    date.Time     `json:"changedTime,omitempty"`
-		State          WorkflowState `json:"state,omitempty"`
-		Version        string        `json:"version,omitempty"`
-		AccessEndpoint string        `json:"accessEndpoint,omitempty"`
-		Sku            struct {
-			Name SkuName `json:"name,omitempty"`
-			Plan struct {
-				Id   string `json:"id,omitempty"`
-				Name string `json:"name,omitempty"`
-				Type string `json:"type,omitempty"`
-			} `json:"plan,omitempty"`
-		} `json:"sku,omitempty"`
-		DefinitionLink struct {
-			Uri            string `json:"uri,omitempty"`
-			ContentVersion string `json:"contentVersion,omitempty"`
-			ContentSize    int32  `json:"contentSize,omitempty"`
-			ContentHash    struct {
-				Algorithm string `json:"algorithm,omitempty"`
-				Value     string `json:"value,omitempty"`
-			} `json:"contentHash,omitempty"`
-			Metadata map[string]string `json:"metadata,omitempty"`
-		} `json:"definitionLink,omitempty"`
-		Definition     map[string]string `json:"definition,omitempty"`
-		ParametersLink struct {
-			Uri            string `json:"uri,omitempty"`
-			ContentVersion string `json:"contentVersion,omitempty"`
-			ContentSize    int32  `json:"contentSize,omitempty"`
-			ContentHash    struct {
-				Algorithm string `json:"algorithm,omitempty"`
-				Value     string `json:"value,omitempty"`
-			} `json:"contentHash,omitempty"`
-			Metadata map[string]string `json:"metadata,omitempty"`
-		} `json:"parametersLink,omitempty"`
-		Parameters map[string]WorkflowParameter `json:"parameters,omitempty"`
-	} `json:"properties,omitempty"`
+	ID                *string             `json:"id,omitempty"`
+	Name              *string             `json:"name,omitempty"`
+	Type              *string             `json:"type,omitempty"`
+	Location          *string             `json:"location,omitempty"`
+	Tags              *map[string]*string `json:"tags,omitempty"`
+	Properties        *WorkflowProperties `json:"properties,omitempty"`
 }
 
+// WorkflowAccessKey is
 type WorkflowAccessKey struct {
 	autorest.Response `json:"-"`
-	Id                string `json:"id,omitempty"`
-	Properties        struct {
-		NotBefore date.Time `json:"notBefore,omitempty"`
-		NotAfter  date.Time `json:"notAfter,omitempty"`
-	} `json:"properties,omitempty"`
-	Name string `json:"name,omitempty"`
-	Type string `json:"type,omitempty"`
+	ID                *string                      `json:"id,omitempty"`
+	Properties        *WorkflowAccessKeyProperties `json:"properties,omitempty"`
+	Name              *string                      `json:"name,omitempty"`
+	Type              *string                      `json:"type,omitempty"`
 }
 
+// WorkflowAccessKeyListResult is
 type WorkflowAccessKeyListResult struct {
 	autorest.Response `json:"-"`
-	Value             []WorkflowAccessKey `json:"value,omitempty"`
-	NextLink          string              `json:"nextLink,omitempty"`
+	Value             *[]WorkflowAccessKey `json:"value,omitempty"`
+	NextLink          *string              `json:"nextLink,omitempty"`
 }
 
+// WorkflowAccessKeyListResultPreparer prepares a request to retrieve the next set of results. It returns
+// nil if no more results exist.
+func (client WorkflowAccessKeyListResult) WorkflowAccessKeyListResultPreparer() (*http.Request, error) {
+	if client.NextLink == nil || len(to.String(client.NextLink)) <= 0 {
+		return nil, nil
+	}
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(client.NextLink)))
+}
+
+// WorkflowAccessKeyProperties is
+type WorkflowAccessKeyProperties struct {
+	NotBefore *date.Time `json:"notBefore,omitempty"`
+	NotAfter  *date.Time `json:"notAfter,omitempty"`
+}
+
+// WorkflowFilter is
+type WorkflowFilter struct {
+	State WorkflowState `json:"state,omitempty"`
+}
+
+// WorkflowListResult is
 type WorkflowListResult struct {
 	autorest.Response `json:"-"`
-	Value             []Workflow `json:"value,omitempty"`
-	NextLink          string     `json:"nextLink,omitempty"`
+	Value             *[]Workflow `json:"value,omitempty"`
+	NextLink          *string     `json:"nextLink,omitempty"`
 }
 
+// WorkflowListResultPreparer prepares a request to retrieve the next set of results. It returns
+// nil if no more results exist.
+func (client WorkflowListResult) WorkflowListResultPreparer() (*http.Request, error) {
+	if client.NextLink == nil || len(to.String(client.NextLink)) <= 0 {
+		return nil, nil
+	}
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(client.NextLink)))
+}
+
+// WorkflowOutputParameter is
+type WorkflowOutputParameter struct {
+	Type     ParameterType       `json:"type,omitempty"`
+	Value    *map[string]*string `json:"value,omitempty"`
+	Metadata *map[string]*string `json:"metadata,omitempty"`
+	Error    *map[string]*string `json:"error,omitempty"`
+}
+
+// WorkflowParameter is
 type WorkflowParameter struct {
-	Type     ParameterType     `json:"type,omitempty"`
-	Value    map[string]string `json:"value,omitempty"`
-	Metadata map[string]string `json:"metadata,omitempty"`
+	Type     ParameterType       `json:"type,omitempty"`
+	Value    *map[string]*string `json:"value,omitempty"`
+	Metadata *map[string]*string `json:"metadata,omitempty"`
 }
 
+// WorkflowProperties is
+type WorkflowProperties struct {
+	CreatedTime    *date.Time                     `json:"createdTime,omitempty"`
+	ChangedTime    *date.Time                     `json:"changedTime,omitempty"`
+	State          WorkflowState                  `json:"state,omitempty"`
+	Version        *string                        `json:"version,omitempty"`
+	AccessEndpoint *string                        `json:"accessEndpoint,omitempty"`
+	Sku            *Sku                           `json:"sku,omitempty"`
+	DefinitionLink *ContentLink                   `json:"definitionLink,omitempty"`
+	Definition     *map[string]*string            `json:"definition,omitempty"`
+	ParametersLink *ContentLink                   `json:"parametersLink,omitempty"`
+	Parameters     *map[string]*WorkflowParameter `json:"parameters,omitempty"`
+}
+
+// WorkflowRun is
 type WorkflowRun struct {
 	autorest.Response `json:"-"`
-	Id                string `json:"id,omitempty"`
-	Properties        struct {
-		StartTime     date.Time      `json:"startTime,omitempty"`
-		EndTime       date.Time      `json:"endTime,omitempty"`
-		Status        WorkflowStatus `json:"status,omitempty"`
-		CorrelationId string         `json:"correlationId,omitempty"`
-		Workflow      struct {
-			Id   string `json:"id,omitempty"`
-			Name string `json:"name,omitempty"`
-			Type string `json:"type,omitempty"`
-		} `json:"workflow,omitempty"`
-		Trigger struct {
-			Name       string            `json:"name,omitempty"`
-			Inputs     map[string]string `json:"inputs,omitempty"`
-			InputsLink struct {
-				Uri            string `json:"uri,omitempty"`
-				ContentVersion string `json:"contentVersion,omitempty"`
-				ContentSize    int32  `json:"contentSize,omitempty"`
-				ContentHash    struct {
-					Algorithm string `json:"algorithm,omitempty"`
-					Value     string `json:"value,omitempty"`
-				} `json:"contentHash,omitempty"`
-				Metadata map[string]string `json:"metadata,omitempty"`
-			} `json:"inputsLink,omitempty"`
-			Outputs     map[string]string `json:"outputs,omitempty"`
-			OutputsLink struct {
-				Uri            string `json:"uri,omitempty"`
-				ContentVersion string `json:"contentVersion,omitempty"`
-				ContentSize    int32  `json:"contentSize,omitempty"`
-				ContentHash    struct {
-					Algorithm string `json:"algorithm,omitempty"`
-					Value     string `json:"value,omitempty"`
-				} `json:"contentHash,omitempty"`
-				Metadata map[string]string `json:"metadata,omitempty"`
-			} `json:"outputsLink,omitempty"`
-			StartTime  date.Time         `json:"startTime,omitempty"`
-			EndTime    date.Time         `json:"endTime,omitempty"`
-			TrackingId string            `json:"trackingId,omitempty"`
-			Code       string            `json:"code,omitempty"`
-			Status     WorkflowStatus    `json:"status,omitempty"`
-			Error      map[string]string `json:"error,omitempty"`
-		} `json:"trigger,omitempty"`
-		Outputs map[string]WorkflowParameter `json:"outputs,omitempty"`
-	} `json:"properties,omitempty"`
-	Name string `json:"name,omitempty"`
-	Type string `json:"type,omitempty"`
+	ID                *string                `json:"id,omitempty"`
+	Properties        *WorkflowRunProperties `json:"properties,omitempty"`
+	Name              *string                `json:"name,omitempty"`
+	Type              *string                `json:"type,omitempty"`
 }
 
+// WorkflowRunAction is
 type WorkflowRunAction struct {
 	autorest.Response `json:"-"`
-	Id                string `json:"id,omitempty"`
-	Properties        struct {
-		StartTime  date.Time         `json:"startTime,omitempty"`
-		EndTime    date.Time         `json:"endTime,omitempty"`
-		Status     WorkflowStatus    `json:"status,omitempty"`
-		Code       string            `json:"code,omitempty"`
-		Error      map[string]string `json:"error,omitempty"`
-		TrackingId string            `json:"trackingId,omitempty"`
-		InputsLink struct {
-			Uri            string `json:"uri,omitempty"`
-			ContentVersion string `json:"contentVersion,omitempty"`
-			ContentSize    int32  `json:"contentSize,omitempty"`
-			ContentHash    struct {
-				Algorithm string `json:"algorithm,omitempty"`
-				Value     string `json:"value,omitempty"`
-			} `json:"contentHash,omitempty"`
-			Metadata map[string]string `json:"metadata,omitempty"`
-		} `json:"inputsLink,omitempty"`
-		OutputsLink struct {
-			Uri            string `json:"uri,omitempty"`
-			ContentVersion string `json:"contentVersion,omitempty"`
-			ContentSize    int32  `json:"contentSize,omitempty"`
-			ContentHash    struct {
-				Algorithm string `json:"algorithm,omitempty"`
-				Value     string `json:"value,omitempty"`
-			} `json:"contentHash,omitempty"`
-			Metadata map[string]string `json:"metadata,omitempty"`
-		} `json:"outputsLink,omitempty"`
-	} `json:"properties,omitempty"`
-	Name string `json:"name,omitempty"`
-	Type string `json:"type,omitempty"`
+	ID                *string                      `json:"id,omitempty"`
+	Properties        *WorkflowRunActionProperties `json:"properties,omitempty"`
+	Name              *string                      `json:"name,omitempty"`
+	Type              *string                      `json:"type,omitempty"`
 }
 
+// WorkflowRunActionFilter is
+type WorkflowRunActionFilter struct {
+	Status WorkflowStatus `json:"status,omitempty"`
+}
+
+// WorkflowRunActionListResult is
 type WorkflowRunActionListResult struct {
 	autorest.Response `json:"-"`
-	Value             []WorkflowRunAction `json:"value,omitempty"`
-	NextLink          string              `json:"nextLink,omitempty"`
+	Value             *[]WorkflowRunAction `json:"value,omitempty"`
+	NextLink          *string              `json:"nextLink,omitempty"`
 }
 
+// WorkflowRunActionListResultPreparer prepares a request to retrieve the next set of results. It returns
+// nil if no more results exist.
+func (client WorkflowRunActionListResult) WorkflowRunActionListResultPreparer() (*http.Request, error) {
+	if client.NextLink == nil || len(to.String(client.NextLink)) <= 0 {
+		return nil, nil
+	}
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(client.NextLink)))
+}
+
+// WorkflowRunActionProperties is
+type WorkflowRunActionProperties struct {
+	StartTime   *date.Time          `json:"startTime,omitempty"`
+	EndTime     *date.Time          `json:"endTime,omitempty"`
+	Status      WorkflowStatus      `json:"status,omitempty"`
+	Code        *string             `json:"code,omitempty"`
+	Error       *map[string]*string `json:"error,omitempty"`
+	TrackingID  *string             `json:"trackingId,omitempty"`
+	InputsLink  *ContentLink        `json:"inputsLink,omitempty"`
+	OutputsLink *ContentLink        `json:"outputsLink,omitempty"`
+}
+
+// WorkflowRunFilter is
+type WorkflowRunFilter struct {
+	Status WorkflowStatus `json:"status,omitempty"`
+}
+
+// WorkflowRunListResult is
 type WorkflowRunListResult struct {
 	autorest.Response `json:"-"`
-	Value             []WorkflowRun `json:"value,omitempty"`
-	NextLink          string        `json:"nextLink,omitempty"`
+	Value             *[]WorkflowRun `json:"value,omitempty"`
+	NextLink          *string        `json:"nextLink,omitempty"`
 }
 
+// WorkflowRunListResultPreparer prepares a request to retrieve the next set of results. It returns
+// nil if no more results exist.
+func (client WorkflowRunListResult) WorkflowRunListResultPreparer() (*http.Request, error) {
+	if client.NextLink == nil || len(to.String(client.NextLink)) <= 0 {
+		return nil, nil
+	}
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(client.NextLink)))
+}
+
+// WorkflowRunProperties is
+type WorkflowRunProperties struct {
+	StartTime     *date.Time                           `json:"startTime,omitempty"`
+	EndTime       *date.Time                           `json:"endTime,omitempty"`
+	Status        WorkflowStatus                       `json:"status,omitempty"`
+	Code          *string                              `json:"code,omitempty"`
+	Error         *map[string]*string                  `json:"error,omitempty"`
+	CorrelationID *string                              `json:"correlationId,omitempty"`
+	Workflow      *ResourceReference                   `json:"workflow,omitempty"`
+	Trigger       *WorkflowRunTrigger                  `json:"trigger,omitempty"`
+	Outputs       *map[string]*WorkflowOutputParameter `json:"outputs,omitempty"`
+}
+
+// WorkflowRunTrigger is
+type WorkflowRunTrigger struct {
+	Name        *string             `json:"name,omitempty"`
+	Inputs      *map[string]*string `json:"inputs,omitempty"`
+	InputsLink  *ContentLink        `json:"inputsLink,omitempty"`
+	Outputs     *map[string]*string `json:"outputs,omitempty"`
+	OutputsLink *ContentLink        `json:"outputsLink,omitempty"`
+	StartTime   *date.Time          `json:"startTime,omitempty"`
+	EndTime     *date.Time          `json:"endTime,omitempty"`
+	TrackingID  *string             `json:"trackingId,omitempty"`
+	Code        *string             `json:"code,omitempty"`
+	Status      WorkflowStatus      `json:"status,omitempty"`
+	Error       *map[string]*string `json:"error,omitempty"`
+}
+
+// WorkflowSecretKeys is
 type WorkflowSecretKeys struct {
 	autorest.Response  `json:"-"`
-	PrimarySecretKey   string `json:"primarySecretKey,omitempty"`
-	SecondarySecretKey string `json:"secondarySecretKey,omitempty"`
+	PrimarySecretKey   *string `json:"primarySecretKey,omitempty"`
+	SecondarySecretKey *string `json:"secondarySecretKey,omitempty"`
 }
 
+// WorkflowTrigger is
 type WorkflowTrigger struct {
 	autorest.Response `json:"-"`
-	Id                string `json:"id,omitempty"`
-	Properties        struct {
-		CreatedTime       date.Time      `json:"createdTime,omitempty"`
-		ChangedTime       date.Time      `json:"changedTime,omitempty"`
-		State             WorkflowState  `json:"state,omitempty"`
-		Status            WorkflowStatus `json:"status,omitempty"`
-		LastExecutionTime date.Time      `json:"lastExecutionTime,omitempty"`
-		NextExecutionTime date.Time      `json:"nextExecutionTime,omitempty"`
-		Recurrence        struct {
-			Frequency RecurrenceFrequency `json:"frequency,omitempty"`
-			Interval  int                 `json:"interval,omitempty"`
-			StartTime date.Time           `json:"startTime,omitempty"`
-			TimeZone  string              `json:"timeZone,omitempty"`
-		} `json:"recurrence,omitempty"`
-		Workflow struct {
-			Id   string `json:"id,omitempty"`
-			Name string `json:"name,omitempty"`
-			Type string `json:"type,omitempty"`
-		} `json:"workflow,omitempty"`
-	} `json:"properties,omitempty"`
-	Name string `json:"name,omitempty"`
-	Type string `json:"type,omitempty"`
+	ID                *string                    `json:"id,omitempty"`
+	Properties        *WorkflowTriggerProperties `json:"properties,omitempty"`
+	Name              *string                    `json:"name,omitempty"`
+	Type              *string                    `json:"type,omitempty"`
 }
 
+// WorkflowTriggerFilter is
+type WorkflowTriggerFilter struct {
+	State WorkflowState `json:"state,omitempty"`
+}
+
+// WorkflowTriggerHistory is
 type WorkflowTriggerHistory struct {
 	autorest.Response `json:"-"`
-	Id                string `json:"id,omitempty"`
-	Properties        struct {
-		StartTime  date.Time         `json:"startTime,omitempty"`
-		EndTime    date.Time         `json:"endTime,omitempty"`
-		Status     WorkflowStatus    `json:"status,omitempty"`
-		Code       string            `json:"code,omitempty"`
-		Error      map[string]string `json:"error,omitempty"`
-		TrackingId string            `json:"trackingId,omitempty"`
-		InputsLink struct {
-			Uri            string `json:"uri,omitempty"`
-			ContentVersion string `json:"contentVersion,omitempty"`
-			ContentSize    int32  `json:"contentSize,omitempty"`
-			ContentHash    struct {
-				Algorithm string `json:"algorithm,omitempty"`
-				Value     string `json:"value,omitempty"`
-			} `json:"contentHash,omitempty"`
-			Metadata map[string]string `json:"metadata,omitempty"`
-		} `json:"inputsLink,omitempty"`
-		OutputsLink struct {
-			Uri            string `json:"uri,omitempty"`
-			ContentVersion string `json:"contentVersion,omitempty"`
-			ContentSize    int32  `json:"contentSize,omitempty"`
-			ContentHash    struct {
-				Algorithm string `json:"algorithm,omitempty"`
-				Value     string `json:"value,omitempty"`
-			} `json:"contentHash,omitempty"`
-			Metadata map[string]string `json:"metadata,omitempty"`
-		} `json:"outputsLink,omitempty"`
-		Fired bool `json:"fired,omitempty"`
-		Run   struct {
-			Id   string `json:"id,omitempty"`
-			Name string `json:"name,omitempty"`
-			Type string `json:"type,omitempty"`
-		} `json:"run,omitempty"`
-	} `json:"properties,omitempty"`
-	Name string `json:"name,omitempty"`
-	Type string `json:"type,omitempty"`
+	ID                *string                           `json:"id,omitempty"`
+	Properties        *WorkflowTriggerHistoryProperties `json:"properties,omitempty"`
+	Name              *string                           `json:"name,omitempty"`
+	Type              *string                           `json:"type,omitempty"`
 }
 
+// WorkflowTriggerHistoryListResult is
 type WorkflowTriggerHistoryListResult struct {
 	autorest.Response `json:"-"`
-	Value             []WorkflowTriggerHistory `json:"value,omitempty"`
-	NextLink          string                   `json:"nextLink,omitempty"`
+	Value             *[]WorkflowTriggerHistory `json:"value,omitempty"`
+	NextLink          *string                   `json:"nextLink,omitempty"`
 }
 
+// WorkflowTriggerHistoryListResultPreparer prepares a request to retrieve the next set of results. It returns
+// nil if no more results exist.
+func (client WorkflowTriggerHistoryListResult) WorkflowTriggerHistoryListResultPreparer() (*http.Request, error) {
+	if client.NextLink == nil || len(to.String(client.NextLink)) <= 0 {
+		return nil, nil
+	}
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(client.NextLink)))
+}
+
+// WorkflowTriggerHistoryProperties is
+type WorkflowTriggerHistoryProperties struct {
+	StartTime   *date.Time          `json:"startTime,omitempty"`
+	EndTime     *date.Time          `json:"endTime,omitempty"`
+	Status      WorkflowStatus      `json:"status,omitempty"`
+	Code        *string             `json:"code,omitempty"`
+	Error       *map[string]*string `json:"error,omitempty"`
+	TrackingID  *string             `json:"trackingId,omitempty"`
+	InputsLink  *ContentLink        `json:"inputsLink,omitempty"`
+	OutputsLink *ContentLink        `json:"outputsLink,omitempty"`
+	Fired       *bool               `json:"fired,omitempty"`
+	Run         *ResourceReference  `json:"run,omitempty"`
+}
+
+// WorkflowTriggerListResult is
 type WorkflowTriggerListResult struct {
 	autorest.Response `json:"-"`
-	Value             []WorkflowTrigger `json:"value,omitempty"`
-	NextLink          string            `json:"nextLink,omitempty"`
+	Value             *[]WorkflowTrigger `json:"value,omitempty"`
+	NextLink          *string            `json:"nextLink,omitempty"`
 }
 
+// WorkflowTriggerListResultPreparer prepares a request to retrieve the next set of results. It returns
+// nil if no more results exist.
+func (client WorkflowTriggerListResult) WorkflowTriggerListResultPreparer() (*http.Request, error) {
+	if client.NextLink == nil || len(to.String(client.NextLink)) <= 0 {
+		return nil, nil
+	}
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(client.NextLink)))
+}
+
+// WorkflowTriggerProperties is
+type WorkflowTriggerProperties struct {
+	CreatedTime       *date.Time                 `json:"createdTime,omitempty"`
+	ChangedTime       *date.Time                 `json:"changedTime,omitempty"`
+	State             WorkflowState              `json:"state,omitempty"`
+	Status            WorkflowStatus             `json:"status,omitempty"`
+	LastExecutionTime *date.Time                 `json:"lastExecutionTime,omitempty"`
+	NextExecutionTime *date.Time                 `json:"nextExecutionTime,omitempty"`
+	Recurrence        *WorkflowTriggerRecurrence `json:"recurrence,omitempty"`
+	Workflow          *ResourceReference         `json:"workflow,omitempty"`
+}
+
+// WorkflowTriggerRecurrence is
+type WorkflowTriggerRecurrence struct {
+	Frequency RecurrenceFrequency `json:"frequency,omitempty"`
+	Interval  *int                `json:"interval,omitempty"`
+	StartTime *date.Time          `json:"startTime,omitempty"`
+	TimeZone  *string             `json:"timeZone,omitempty"`
+}
+
+// WorkflowVersion is
 type WorkflowVersion struct {
 	autorest.Response `json:"-"`
-	Id                string            `json:"id,omitempty"`
-	Name              string            `json:"name,omitempty"`
-	Type              string            `json:"type,omitempty"`
-	Location          string            `json:"location,omitempty"`
-	Tags              map[string]string `json:"tags,omitempty"`
-	Properties        struct {
-		CreatedTime    date.Time     `json:"createdTime,omitempty"`
-		ChangedTime    date.Time     `json:"changedTime,omitempty"`
-		State          WorkflowState `json:"state,omitempty"`
-		Version        string        `json:"version,omitempty"`
-		AccessEndpoint string        `json:"accessEndpoint,omitempty"`
-		Sku            struct {
-			Name SkuName `json:"name,omitempty"`
-			Plan struct {
-				Id   string `json:"id,omitempty"`
-				Name string `json:"name,omitempty"`
-				Type string `json:"type,omitempty"`
-			} `json:"plan,omitempty"`
-		} `json:"sku,omitempty"`
-		DefinitionLink struct {
-			Uri            string `json:"uri,omitempty"`
-			ContentVersion string `json:"contentVersion,omitempty"`
-			ContentSize    int32  `json:"contentSize,omitempty"`
-			ContentHash    struct {
-				Algorithm string `json:"algorithm,omitempty"`
-				Value     string `json:"value,omitempty"`
-			} `json:"contentHash,omitempty"`
-			Metadata map[string]string `json:"metadata,omitempty"`
-		} `json:"definitionLink,omitempty"`
-		Definition     map[string]string `json:"definition,omitempty"`
-		ParametersLink struct {
-			Uri            string `json:"uri,omitempty"`
-			ContentVersion string `json:"contentVersion,omitempty"`
-			ContentSize    int32  `json:"contentSize,omitempty"`
-			ContentHash    struct {
-				Algorithm string `json:"algorithm,omitempty"`
-				Value     string `json:"value,omitempty"`
-			} `json:"contentHash,omitempty"`
-			Metadata map[string]string `json:"metadata,omitempty"`
-		} `json:"parametersLink,omitempty"`
-		Parameters map[string]WorkflowParameter `json:"parameters,omitempty"`
-	} `json:"properties,omitempty"`
+	ID                *string                    `json:"id,omitempty"`
+	Name              *string                    `json:"name,omitempty"`
+	Type              *string                    `json:"type,omitempty"`
+	Location          *string                    `json:"location,omitempty"`
+	Tags              *map[string]*string        `json:"tags,omitempty"`
+	Properties        *WorkflowVersionProperties `json:"properties,omitempty"`
+}
+
+// WorkflowVersionProperties is
+type WorkflowVersionProperties struct {
+	CreatedTime    *date.Time                     `json:"createdTime,omitempty"`
+	ChangedTime    *date.Time                     `json:"changedTime,omitempty"`
+	State          WorkflowState                  `json:"state,omitempty"`
+	Version        *string                        `json:"version,omitempty"`
+	AccessEndpoint *string                        `json:"accessEndpoint,omitempty"`
+	Sku            *Sku                           `json:"sku,omitempty"`
+	DefinitionLink *ContentLink                   `json:"definitionLink,omitempty"`
+	Definition     *map[string]*string            `json:"definition,omitempty"`
+	ParametersLink *ContentLink                   `json:"parametersLink,omitempty"`
+	Parameters     *map[string]*WorkflowParameter `json:"parameters,omitempty"`
 }

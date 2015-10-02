@@ -19,377 +19,216 @@ package scheduler
 // regenerated.
 
 import (
-	"github.com/Azure/go-autorest/autorest"
+	"github.com/Azure/azure-sdk-for-go/Godeps/_workspace/src/github.com/Azure/go-autorest/autorest"
 	"net/http"
 	"net/url"
 )
 
-// Jobs Client
+// JobsClient is the client for the Jobs methods of the Scheduler service.
 type JobsClient struct {
-	SchedulerManagementClient
+	ManagementClient
 }
 
-func NewJobsClient(subscriptionId string) JobsClient {
-	return NewJobsClientWithBaseUri(DefaultBaseUri, subscriptionId)
+// NewJobsClient creates an instance of the JobsClient client.
+func NewJobsClient(subscriptionID string) JobsClient {
+	return NewJobsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-func NewJobsClientWithBaseUri(baseUri string, subscriptionId string) JobsClient {
-	return JobsClient{NewWithBaseUri(baseUri, subscriptionId)}
-}
-
-// Get gets a job.
-//
-// resourceGroupName is the resource group name. jobCollectionName is the job
-// collection name. jobName is the job name.
-func (client JobsClient) Get(resourceGroupName string, jobCollectionName string, jobName string) (result JobDefinition, ae autorest.Error) {
-	req, err := client.NewGetRequest(resourceGroupName, jobCollectionName, jobName)
-	if err != nil {
-		return result, autorest.NewErrorWithError(err, "scheduler.JobsClient", "Get", "Failure creating request")
-	}
-
-	req, err = autorest.Prepare(
-		req,
-		client.WithAuthorization(),
-		client.WithInspection())
-	if err != nil {
-		return result, autorest.NewErrorWithError(err, "scheduler.JobsClient", "Get", "Failure preparing request")
-	}
-
-	resp, err := autorest.SendWithSender(
-		client,
-		req,
-		autorest.DoErrorUnlessStatusCode(http.StatusOK))
-
-	if err == nil {
-		err = autorest.Respond(
-			resp,
-			client.ByInspecting(),
-			autorest.WithErrorUnlessOK(),
-			autorest.ByUnmarshallingJSON(&result))
-		if err != nil {
-			ae = autorest.NewErrorWithError(err, "scheduler.JobsClient", "Get", "Failure responding to request")
-		}
-	} else {
-		ae = autorest.NewErrorWithError(err, "scheduler.JobsClient", "Get", "Failure sending request")
-	}
-
-	autorest.Respond(resp,
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-
-	return
-}
-
-// Create the Get request.
-func (client JobsClient) NewGetRequest(resourceGroupName string, jobCollectionName string, jobName string) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"jobCollectionName": url.QueryEscape(jobCollectionName),
-		"jobName":           url.QueryEscape(jobName),
-		"resourceGroupName": url.QueryEscape(resourceGroupName),
-		"subscriptionId":    url.QueryEscape(client.SubscriptionId),
-	}
-
-	queryParameters := map[string]interface{}{
-		"api-version": ApiVersion,
-	}
-
-	return autorest.DecoratePreparer(
-		client.GetRequestPreparer(),
-		autorest.WithPathParameters(pathParameters),
-		autorest.WithQueryParameters(queryParameters)).Prepare(&http.Request{})
-}
-
-// Create a Preparer by which to prepare the Get request.
-func (client JobsClient) GetRequestPreparer() autorest.Preparer {
-	return autorest.CreatePreparer(
-		autorest.AsJSON(),
-		autorest.AsGet(),
-		autorest.WithBaseURL(client.BaseUri),
-		autorest.WithPath("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Scheduler/jobCollections/{jobCollectionName}/jobs/{jobName}"))
+// NewJobsClientWithBaseURI creates an instance of the JobsClient client.
+func NewJobsClientWithBaseURI(baseURI string, subscriptionID string) JobsClient {
+	return JobsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // CreateOrUpdate provisions a new job or updates an existing job.
 //
 // resourceGroupName is the resource group name. jobCollectionName is the job
 // collection name. jobName is the job name. job is the job definition.
-func (client JobsClient) CreateOrUpdate(resourceGroupName string, jobCollectionName string, jobName string, job JobDefinition) (result JobDefinition, ae autorest.Error) {
-	req, err := client.NewCreateOrUpdateRequest(resourceGroupName, jobCollectionName, jobName, job)
+func (client JobsClient) CreateOrUpdate(resourceGroupName string, jobCollectionName string, jobName string, job JobDefinition) (result JobDefinition, ae error) {
+	req, err := client.CreateOrUpdatePreparer(resourceGroupName, jobCollectionName, jobName, job)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "scheduler.JobsClient", "CreateOrUpdate", "Failure creating request")
+		return result, autorest.NewErrorWithError(err, "scheduler/JobsClient", "CreateOrUpdate", "Failure preparing request")
 	}
 
-	req, err = autorest.Prepare(
-		req,
-		client.WithAuthorization(),
-		client.WithInspection())
+	resp, err := client.CreateOrUpdateSender(req)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "scheduler.JobsClient", "CreateOrUpdate", "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "scheduler/JobsClient", "CreateOrUpdate", "Failure sending request")
 	}
 
-	resp, err := autorest.SendWithSender(
-		client,
-		req,
-		autorest.DoErrorUnlessStatusCode(http.StatusOK, http.StatusCreated))
-
-	if err == nil {
-		err = autorest.Respond(
-			resp,
-			client.ByInspecting(),
-			autorest.WithErrorUnlessOK(),
-			autorest.ByUnmarshallingJSON(&result))
-		if err != nil {
-			ae = autorest.NewErrorWithError(err, "scheduler.JobsClient", "CreateOrUpdate", "Failure responding to request")
-		}
-	} else {
-		ae = autorest.NewErrorWithError(err, "scheduler.JobsClient", "CreateOrUpdate", "Failure sending request")
+	result, err = client.CreateOrUpdateResponder(resp)
+	if err != nil {
+		ae = autorest.NewErrorWithError(err, "scheduler/JobsClient", "CreateOrUpdate", "Failure responding to request")
 	}
-
-	autorest.Respond(resp,
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
 
 	return
 }
 
-// Create the CreateOrUpdate request.
-func (client JobsClient) NewCreateOrUpdateRequest(resourceGroupName string, jobCollectionName string, jobName string, job JobDefinition) (*http.Request, error) {
+// CreateOrUpdatePreparer prepares the CreateOrUpdate request.
+func (client JobsClient) CreateOrUpdatePreparer(resourceGroupName string, jobCollectionName string, jobName string, job JobDefinition) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"jobCollectionName": url.QueryEscape(jobCollectionName),
 		"jobName":           url.QueryEscape(jobName),
 		"resourceGroupName": url.QueryEscape(resourceGroupName),
-		"subscriptionId":    url.QueryEscape(client.SubscriptionId),
+		"subscriptionId":    url.QueryEscape(client.SubscriptionID),
 	}
 
 	queryParameters := map[string]interface{}{
-		"api-version": ApiVersion,
+		"api-version": APIVersion,
 	}
 
-	return autorest.DecoratePreparer(
-		client.CreateOrUpdateRequestPreparer(),
-		autorest.WithJSON(job),
-		autorest.WithPathParameters(pathParameters),
-		autorest.WithQueryParameters(queryParameters)).Prepare(&http.Request{})
-}
-
-// Create a Preparer by which to prepare the CreateOrUpdate request.
-func (client JobsClient) CreateOrUpdateRequestPreparer() autorest.Preparer {
-	return autorest.CreatePreparer(
+	return autorest.Prepare(&http.Request{},
 		autorest.AsJSON(),
 		autorest.AsPut(),
-		autorest.WithBaseURL(client.BaseUri),
-		autorest.WithPath("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Scheduler/jobCollections/{jobCollectionName}/jobs/{jobName}"))
-}
-
-// Patch patches an existing job.
-//
-// resourceGroupName is the resource group name. jobCollectionName is the job
-// collection name. jobName is the job name. job is the job definition.
-func (client JobsClient) Patch(resourceGroupName string, jobCollectionName string, jobName string, job JobDefinition) (result JobDefinition, ae autorest.Error) {
-	req, err := client.NewPatchRequest(resourceGroupName, jobCollectionName, jobName, job)
-	if err != nil {
-		return result, autorest.NewErrorWithError(err, "scheduler.JobsClient", "Patch", "Failure creating request")
-	}
-
-	req, err = autorest.Prepare(
-		req,
-		client.WithAuthorization(),
-		client.WithInspection())
-	if err != nil {
-		return result, autorest.NewErrorWithError(err, "scheduler.JobsClient", "Patch", "Failure preparing request")
-	}
-
-	resp, err := autorest.SendWithSender(
-		client,
-		req,
-		autorest.DoErrorUnlessStatusCode(http.StatusOK))
-
-	if err == nil {
-		err = autorest.Respond(
-			resp,
-			client.ByInspecting(),
-			autorest.WithErrorUnlessOK(),
-			autorest.ByUnmarshallingJSON(&result))
-		if err != nil {
-			ae = autorest.NewErrorWithError(err, "scheduler.JobsClient", "Patch", "Failure responding to request")
-		}
-	} else {
-		ae = autorest.NewErrorWithError(err, "scheduler.JobsClient", "Patch", "Failure sending request")
-	}
-
-	autorest.Respond(resp,
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-
-	return
-}
-
-// Create the Patch request.
-func (client JobsClient) NewPatchRequest(resourceGroupName string, jobCollectionName string, jobName string, job JobDefinition) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"jobCollectionName": url.QueryEscape(jobCollectionName),
-		"jobName":           url.QueryEscape(jobName),
-		"resourceGroupName": url.QueryEscape(resourceGroupName),
-		"subscriptionId":    url.QueryEscape(client.SubscriptionId),
-	}
-
-	queryParameters := map[string]interface{}{
-		"api-version": ApiVersion,
-	}
-
-	return autorest.DecoratePreparer(
-		client.PatchRequestPreparer(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPath("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Scheduler/jobCollections/{jobCollectionName}/jobs/{jobName}"),
 		autorest.WithJSON(job),
 		autorest.WithPathParameters(pathParameters),
-		autorest.WithQueryParameters(queryParameters)).Prepare(&http.Request{})
+		autorest.WithQueryParameters(queryParameters))
 }
 
-// Create a Preparer by which to prepare the Patch request.
-func (client JobsClient) PatchRequestPreparer() autorest.Preparer {
-	return autorest.CreatePreparer(
-		autorest.AsJSON(),
-		autorest.AsPatch(),
-		autorest.WithBaseURL(client.BaseUri),
-		autorest.WithPath("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Scheduler/jobCollections/{jobCollectionName}/jobs/{jobName}"))
+// CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
+// http.Response Body if it receives an error.
+func (client JobsClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
+	return client.Send(req, http.StatusOK, http.StatusCreated)
+}
+
+// CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
+// closes the http.Response Body.
+func (client JobsClient) CreateOrUpdateResponder(resp *http.Response) (result JobDefinition, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		autorest.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
 }
 
 // Delete deletes a job.
 //
 // resourceGroupName is the resource group name. jobCollectionName is the job
 // collection name. jobName is the job name.
-func (client JobsClient) Delete(resourceGroupName string, jobCollectionName string, jobName string) (result autorest.Response, ae autorest.Error) {
-	req, err := client.NewDeleteRequest(resourceGroupName, jobCollectionName, jobName)
+func (client JobsClient) Delete(resourceGroupName string, jobCollectionName string, jobName string) (result autorest.Response, ae error) {
+	req, err := client.DeletePreparer(resourceGroupName, jobCollectionName, jobName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "scheduler.JobsClient", "Delete", "Failure creating request")
+		return result, autorest.NewErrorWithError(err, "scheduler/JobsClient", "Delete", "Failure preparing request")
 	}
 
-	req, err = autorest.Prepare(
-		req,
-		client.WithAuthorization(),
-		client.WithInspection())
+	resp, err := client.DeleteSender(req)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "scheduler.JobsClient", "Delete", "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "scheduler/JobsClient", "Delete", "Failure sending request")
 	}
 
-	resp, err := autorest.SendWithSender(
-		client,
-		req,
-		autorest.DoErrorUnlessStatusCode(http.StatusOK))
-
-	if err == nil {
-		err = autorest.Respond(
-			resp,
-			client.ByInspecting(),
-			autorest.WithErrorUnlessOK())
-		if err != nil {
-			ae = autorest.NewErrorWithError(err, "scheduler.JobsClient", "Delete", "Failure responding to request")
-		}
-	} else {
-		ae = autorest.NewErrorWithError(err, "scheduler.JobsClient", "Delete", "Failure sending request")
+	result, err = client.DeleteResponder(resp)
+	if err != nil {
+		ae = autorest.NewErrorWithError(err, "scheduler/JobsClient", "Delete", "Failure responding to request")
 	}
-
-	autorest.Respond(resp,
-		autorest.ByClosing())
-	result.Response = resp
 
 	return
 }
 
-// Create the Delete request.
-func (client JobsClient) NewDeleteRequest(resourceGroupName string, jobCollectionName string, jobName string) (*http.Request, error) {
+// DeletePreparer prepares the Delete request.
+func (client JobsClient) DeletePreparer(resourceGroupName string, jobCollectionName string, jobName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"jobCollectionName": url.QueryEscape(jobCollectionName),
 		"jobName":           url.QueryEscape(jobName),
 		"resourceGroupName": url.QueryEscape(resourceGroupName),
-		"subscriptionId":    url.QueryEscape(client.SubscriptionId),
+		"subscriptionId":    url.QueryEscape(client.SubscriptionID),
 	}
 
 	queryParameters := map[string]interface{}{
-		"api-version": ApiVersion,
+		"api-version": APIVersion,
 	}
 
-	return autorest.DecoratePreparer(
-		client.DeleteRequestPreparer(),
-		autorest.WithPathParameters(pathParameters),
-		autorest.WithQueryParameters(queryParameters)).Prepare(&http.Request{})
-}
-
-// Create a Preparer by which to prepare the Delete request.
-func (client JobsClient) DeleteRequestPreparer() autorest.Preparer {
-	return autorest.CreatePreparer(
+	return autorest.Prepare(&http.Request{},
 		autorest.AsJSON(),
 		autorest.AsDelete(),
-		autorest.WithBaseURL(client.BaseUri),
-		autorest.WithPath("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Scheduler/jobCollections/{jobCollectionName}/jobs/{jobName}"))
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPath("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Scheduler/jobCollections/{jobCollectionName}/jobs/{jobName}"),
+		autorest.WithPathParameters(pathParameters),
+		autorest.WithQueryParameters(queryParameters))
 }
 
-// Run runs a job.
+// DeleteSender sends the Delete request. The method will close the
+// http.Response Body if it receives an error.
+func (client JobsClient) DeleteSender(req *http.Request) (*http.Response, error) {
+	return client.Send(req, http.StatusOK)
+}
+
+// DeleteResponder handles the response to the Delete request. The method always
+// closes the http.Response Body.
+func (client JobsClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		autorest.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByClosing())
+	result.Response = resp
+	return
+}
+
+// Get gets a job.
 //
 // resourceGroupName is the resource group name. jobCollectionName is the job
 // collection name. jobName is the job name.
-func (client JobsClient) Run(resourceGroupName string, jobCollectionName string, jobName string) (result autorest.Response, ae autorest.Error) {
-	req, err := client.NewRunRequest(resourceGroupName, jobCollectionName, jobName)
+func (client JobsClient) Get(resourceGroupName string, jobCollectionName string, jobName string) (result JobDefinition, ae error) {
+	req, err := client.GetPreparer(resourceGroupName, jobCollectionName, jobName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "scheduler.JobsClient", "Run", "Failure creating request")
+		return result, autorest.NewErrorWithError(err, "scheduler/JobsClient", "Get", "Failure preparing request")
 	}
 
-	req, err = autorest.Prepare(
-		req,
-		client.WithAuthorization(),
-		client.WithInspection())
+	resp, err := client.GetSender(req)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "scheduler.JobsClient", "Run", "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "scheduler/JobsClient", "Get", "Failure sending request")
 	}
 
-	resp, err := autorest.SendWithSender(
-		client,
-		req,
-		autorest.DoErrorUnlessStatusCode(http.StatusOK))
-
-	if err == nil {
-		err = autorest.Respond(
-			resp,
-			client.ByInspecting(),
-			autorest.WithErrorUnlessOK())
-		if err != nil {
-			ae = autorest.NewErrorWithError(err, "scheduler.JobsClient", "Run", "Failure responding to request")
-		}
-	} else {
-		ae = autorest.NewErrorWithError(err, "scheduler.JobsClient", "Run", "Failure sending request")
+	result, err = client.GetResponder(resp)
+	if err != nil {
+		ae = autorest.NewErrorWithError(err, "scheduler/JobsClient", "Get", "Failure responding to request")
 	}
-
-	autorest.Respond(resp,
-		autorest.ByClosing())
-	result.Response = resp
 
 	return
 }
 
-// Create the Run request.
-func (client JobsClient) NewRunRequest(resourceGroupName string, jobCollectionName string, jobName string) (*http.Request, error) {
+// GetPreparer prepares the Get request.
+func (client JobsClient) GetPreparer(resourceGroupName string, jobCollectionName string, jobName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"jobCollectionName": url.QueryEscape(jobCollectionName),
 		"jobName":           url.QueryEscape(jobName),
 		"resourceGroupName": url.QueryEscape(resourceGroupName),
-		"subscriptionId":    url.QueryEscape(client.SubscriptionId),
+		"subscriptionId":    url.QueryEscape(client.SubscriptionID),
 	}
 
 	queryParameters := map[string]interface{}{
-		"api-version": ApiVersion,
+		"api-version": APIVersion,
 	}
 
-	return autorest.DecoratePreparer(
-		client.RunRequestPreparer(),
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPath("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Scheduler/jobCollections/{jobCollectionName}/jobs/{jobName}"),
 		autorest.WithPathParameters(pathParameters),
-		autorest.WithQueryParameters(queryParameters)).Prepare(&http.Request{})
+		autorest.WithQueryParameters(queryParameters))
 }
 
-// Create a Preparer by which to prepare the Run request.
-func (client JobsClient) RunRequestPreparer() autorest.Preparer {
-	return autorest.CreatePreparer(
-		autorest.AsJSON(),
-		autorest.AsPost(),
-		autorest.WithBaseURL(client.BaseUri),
-		autorest.WithPath("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Scheduler/jobCollections/{jobCollectionName}/jobs/{jobName}/run"))
+// GetSender sends the Get request. The method will close the
+// http.Response Body if it receives an error.
+func (client JobsClient) GetSender(req *http.Request) (*http.Response, error) {
+	return client.Send(req, http.StatusOK)
+}
+
+// GetResponder handles the response to the Get request. The method always
+// closes the http.Response Body.
+func (client JobsClient) GetResponder(resp *http.Response) (result JobDefinition, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		autorest.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
 }
 
 // List lists all jobs under the specified job collection.
@@ -398,72 +237,88 @@ func (client JobsClient) RunRequestPreparer() autorest.Preparer {
 // collection name. top is the number of jobs to request, in the of range
 // [1..100]. skip is the (0-based) index of the job history list from which
 // to begin requesting entries.
-func (client JobsClient) List(resourceGroupName string, jobCollectionName string, top int, skip int) (result JobListResult, ae autorest.Error) {
-	req, err := client.NewListRequest(resourceGroupName, jobCollectionName, top, skip)
+func (client JobsClient) List(resourceGroupName string, jobCollectionName string, top int, skip int) (result JobListResult, ae error) {
+	req, err := client.ListPreparer(resourceGroupName, jobCollectionName, top, skip)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "scheduler.JobsClient", "List", "Failure creating request")
+		return result, autorest.NewErrorWithError(err, "scheduler/JobsClient", "List", "Failure preparing request")
 	}
 
-	req, err = autorest.Prepare(
-		req,
-		client.WithAuthorization(),
-		client.WithInspection())
+	resp, err := client.ListSender(req)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "scheduler.JobsClient", "List", "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "scheduler/JobsClient", "List", "Failure sending request")
 	}
 
-	resp, err := autorest.SendWithSender(
-		client,
-		req,
-		autorest.DoErrorUnlessStatusCode(http.StatusOK))
-
-	if err == nil {
-		err = autorest.Respond(
-			resp,
-			client.ByInspecting(),
-			autorest.WithErrorUnlessOK(),
-			autorest.ByUnmarshallingJSON(&result))
-		if err != nil {
-			ae = autorest.NewErrorWithError(err, "scheduler.JobsClient", "List", "Failure responding to request")
-		}
-	} else {
-		ae = autorest.NewErrorWithError(err, "scheduler.JobsClient", "List", "Failure sending request")
+	result, err = client.ListResponder(resp)
+	if err != nil {
+		ae = autorest.NewErrorWithError(err, "scheduler/JobsClient", "List", "Failure responding to request")
 	}
-
-	autorest.Respond(resp,
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
 
 	return
 }
 
-// Create the List request.
-func (client JobsClient) NewListRequest(resourceGroupName string, jobCollectionName string, top int, skip int) (*http.Request, error) {
+// ListPreparer prepares the List request.
+func (client JobsClient) ListPreparer(resourceGroupName string, jobCollectionName string, top int, skip int) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"jobCollectionName": url.QueryEscape(jobCollectionName),
 		"resourceGroupName": url.QueryEscape(resourceGroupName),
-		"subscriptionId":    url.QueryEscape(client.SubscriptionId),
+		"subscriptionId":    url.QueryEscape(client.SubscriptionID),
 	}
 
 	queryParameters := map[string]interface{}{
 		"$skip":       skip,
 		"$top":        top,
-		"api-version": ApiVersion,
+		"api-version": APIVersion,
 	}
 
-	return autorest.DecoratePreparer(
-		client.ListRequestPreparer(),
-		autorest.WithPathParameters(pathParameters),
-		autorest.WithQueryParameters(queryParameters)).Prepare(&http.Request{})
-}
-
-// Create a Preparer by which to prepare the List request.
-func (client JobsClient) ListRequestPreparer() autorest.Preparer {
-	return autorest.CreatePreparer(
+	return autorest.Prepare(&http.Request{},
 		autorest.AsJSON(),
 		autorest.AsGet(),
-		autorest.WithBaseURL(client.BaseUri),
-		autorest.WithPath("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Scheduler/jobCollections/{jobCollectionName}/jobs"))
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPath("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Scheduler/jobCollections/{jobCollectionName}/jobs"),
+		autorest.WithPathParameters(pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+}
+
+// ListSender sends the List request. The method will close the
+// http.Response Body if it receives an error.
+func (client JobsClient) ListSender(req *http.Request) (*http.Response, error) {
+	return client.Send(req, http.StatusOK)
+}
+
+// ListResponder handles the response to the List request. The method always
+// closes the http.Response Body.
+func (client JobsClient) ListResponder(resp *http.Response) (result JobListResult, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		autorest.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// ListNextResults retrieves the next set of results, if any.
+func (client JobsClient) ListNextResults(lastResults JobListResult) (result JobListResult, ae error) {
+	req, err := lastResults.JobListResultPreparer()
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "scheduler/JobsClient", "List", "Failure preparing next results request request")
+	}
+	if req == nil {
+		return
+	}
+
+	resp, err := client.ListSender(req)
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "scheduler/JobsClient", "List", "Failure sending next results request request")
+	}
+
+	result, err = client.ListResponder(resp)
+	if err != nil {
+		ae = autorest.NewErrorWithError(err, "scheduler/JobsClient", "List", "Failure responding to next results request request")
+	}
+
+	return
 }
 
 // ListJobHistory lists job history.
@@ -472,71 +327,215 @@ func (client JobsClient) ListRequestPreparer() autorest.Preparer {
 // collection name. jobName is the job name. top is the number of job history
 // to request, in the of range [1..100]. skip is the (0-based) index of the
 // job history list from which to begin requesting entries.
-func (client JobsClient) ListJobHistory(resourceGroupName string, jobCollectionName string, jobName string, top int, skip int) (result JobHistoryListResult, ae autorest.Error) {
-	req, err := client.NewListJobHistoryRequest(resourceGroupName, jobCollectionName, jobName, top, skip)
+func (client JobsClient) ListJobHistory(resourceGroupName string, jobCollectionName string, jobName string, top int, skip int) (result JobHistoryListResult, ae error) {
+	req, err := client.ListJobHistoryPreparer(resourceGroupName, jobCollectionName, jobName, top, skip)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "scheduler.JobsClient", "ListJobHistory", "Failure creating request")
+		return result, autorest.NewErrorWithError(err, "scheduler/JobsClient", "ListJobHistory", "Failure preparing request")
 	}
 
-	req, err = autorest.Prepare(
-		req,
-		client.WithAuthorization(),
-		client.WithInspection())
+	resp, err := client.ListJobHistorySender(req)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "scheduler.JobsClient", "ListJobHistory", "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "scheduler/JobsClient", "ListJobHistory", "Failure sending request")
 	}
 
-	resp, err := autorest.SendWithSender(
-		client,
-		req,
-		autorest.DoErrorUnlessStatusCode(http.StatusOK))
-
-	if err == nil {
-		err = autorest.Respond(
-			resp,
-			client.ByInspecting(),
-			autorest.WithErrorUnlessOK(),
-			autorest.ByUnmarshallingJSON(&result))
-		if err != nil {
-			ae = autorest.NewErrorWithError(err, "scheduler.JobsClient", "ListJobHistory", "Failure responding to request")
-		}
-	} else {
-		ae = autorest.NewErrorWithError(err, "scheduler.JobsClient", "ListJobHistory", "Failure sending request")
+	result, err = client.ListJobHistoryResponder(resp)
+	if err != nil {
+		ae = autorest.NewErrorWithError(err, "scheduler/JobsClient", "ListJobHistory", "Failure responding to request")
 	}
-
-	autorest.Respond(resp,
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
 
 	return
 }
 
-// Create the ListJobHistory request.
-func (client JobsClient) NewListJobHistoryRequest(resourceGroupName string, jobCollectionName string, jobName string, top int, skip int) (*http.Request, error) {
+// ListJobHistoryPreparer prepares the ListJobHistory request.
+func (client JobsClient) ListJobHistoryPreparer(resourceGroupName string, jobCollectionName string, jobName string, top int, skip int) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"jobCollectionName": url.QueryEscape(jobCollectionName),
 		"jobName":           url.QueryEscape(jobName),
 		"resourceGroupName": url.QueryEscape(resourceGroupName),
-		"subscriptionId":    url.QueryEscape(client.SubscriptionId),
+		"subscriptionId":    url.QueryEscape(client.SubscriptionID),
 	}
 
 	queryParameters := map[string]interface{}{
 		"$skip":       skip,
 		"$top":        top,
-		"api-version": ApiVersion,
+		"api-version": APIVersion,
 	}
 
-	return autorest.DecoratePreparer(
-		client.ListJobHistoryRequestPreparer(),
-		autorest.WithPathParameters(pathParameters),
-		autorest.WithQueryParameters(queryParameters)).Prepare(&http.Request{})
-}
-
-// Create a Preparer by which to prepare the ListJobHistory request.
-func (client JobsClient) ListJobHistoryRequestPreparer() autorest.Preparer {
-	return autorest.CreatePreparer(
+	return autorest.Prepare(&http.Request{},
 		autorest.AsJSON(),
 		autorest.AsGet(),
-		autorest.WithBaseURL(client.BaseUri),
-		autorest.WithPath("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Scheduler/jobCollections/{jobCollectionName}/jobs/{jobName}/history"))
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPath("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Scheduler/jobCollections/{jobCollectionName}/jobs/{jobName}/history"),
+		autorest.WithPathParameters(pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+}
+
+// ListJobHistorySender sends the ListJobHistory request. The method will close the
+// http.Response Body if it receives an error.
+func (client JobsClient) ListJobHistorySender(req *http.Request) (*http.Response, error) {
+	return client.Send(req, http.StatusOK)
+}
+
+// ListJobHistoryResponder handles the response to the ListJobHistory request. The method always
+// closes the http.Response Body.
+func (client JobsClient) ListJobHistoryResponder(resp *http.Response) (result JobHistoryListResult, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		autorest.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// ListJobHistoryNextResults retrieves the next set of results, if any.
+func (client JobsClient) ListJobHistoryNextResults(lastResults JobHistoryListResult) (result JobHistoryListResult, ae error) {
+	req, err := lastResults.JobHistoryListResultPreparer()
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "scheduler/JobsClient", "ListJobHistory", "Failure preparing next results request request")
+	}
+	if req == nil {
+		return
+	}
+
+	resp, err := client.ListJobHistorySender(req)
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "scheduler/JobsClient", "ListJobHistory", "Failure sending next results request request")
+	}
+
+	result, err = client.ListJobHistoryResponder(resp)
+	if err != nil {
+		ae = autorest.NewErrorWithError(err, "scheduler/JobsClient", "ListJobHistory", "Failure responding to next results request request")
+	}
+
+	return
+}
+
+// Patch patches an existing job.
+//
+// resourceGroupName is the resource group name. jobCollectionName is the job
+// collection name. jobName is the job name. job is the job definition.
+func (client JobsClient) Patch(resourceGroupName string, jobCollectionName string, jobName string, job JobDefinition) (result JobDefinition, ae error) {
+	req, err := client.PatchPreparer(resourceGroupName, jobCollectionName, jobName, job)
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "scheduler/JobsClient", "Patch", "Failure preparing request")
+	}
+
+	resp, err := client.PatchSender(req)
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "scheduler/JobsClient", "Patch", "Failure sending request")
+	}
+
+	result, err = client.PatchResponder(resp)
+	if err != nil {
+		ae = autorest.NewErrorWithError(err, "scheduler/JobsClient", "Patch", "Failure responding to request")
+	}
+
+	return
+}
+
+// PatchPreparer prepares the Patch request.
+func (client JobsClient) PatchPreparer(resourceGroupName string, jobCollectionName string, jobName string, job JobDefinition) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"jobCollectionName": url.QueryEscape(jobCollectionName),
+		"jobName":           url.QueryEscape(jobName),
+		"resourceGroupName": url.QueryEscape(resourceGroupName),
+		"subscriptionId":    url.QueryEscape(client.SubscriptionID),
+	}
+
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsPatch(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPath("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Scheduler/jobCollections/{jobCollectionName}/jobs/{jobName}"),
+		autorest.WithJSON(job),
+		autorest.WithPathParameters(pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+}
+
+// PatchSender sends the Patch request. The method will close the
+// http.Response Body if it receives an error.
+func (client JobsClient) PatchSender(req *http.Request) (*http.Response, error) {
+	return client.Send(req, http.StatusOK)
+}
+
+// PatchResponder handles the response to the Patch request. The method always
+// closes the http.Response Body.
+func (client JobsClient) PatchResponder(resp *http.Response) (result JobDefinition, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		autorest.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// Run runs a job.
+//
+// resourceGroupName is the resource group name. jobCollectionName is the job
+// collection name. jobName is the job name.
+func (client JobsClient) Run(resourceGroupName string, jobCollectionName string, jobName string) (result autorest.Response, ae error) {
+	req, err := client.RunPreparer(resourceGroupName, jobCollectionName, jobName)
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "scheduler/JobsClient", "Run", "Failure preparing request")
+	}
+
+	resp, err := client.RunSender(req)
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "scheduler/JobsClient", "Run", "Failure sending request")
+	}
+
+	result, err = client.RunResponder(resp)
+	if err != nil {
+		ae = autorest.NewErrorWithError(err, "scheduler/JobsClient", "Run", "Failure responding to request")
+	}
+
+	return
+}
+
+// RunPreparer prepares the Run request.
+func (client JobsClient) RunPreparer(resourceGroupName string, jobCollectionName string, jobName string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"jobCollectionName": url.QueryEscape(jobCollectionName),
+		"jobName":           url.QueryEscape(jobName),
+		"resourceGroupName": url.QueryEscape(resourceGroupName),
+		"subscriptionId":    url.QueryEscape(client.SubscriptionID),
+	}
+
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsPost(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPath("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Scheduler/jobCollections/{jobCollectionName}/jobs/{jobName}/run"),
+		autorest.WithPathParameters(pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+}
+
+// RunSender sends the Run request. The method will close the
+// http.Response Body if it receives an error.
+func (client JobsClient) RunSender(req *http.Request) (*http.Response, error) {
+	return client.Send(req, http.StatusOK)
+}
+
+// RunResponder handles the response to the Run request. The method always
+// closes the http.Response Body.
+func (client JobsClient) RunResponder(resp *http.Response) (result autorest.Response, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		autorest.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByClosing())
+	result.Response = resp
+	return
 }

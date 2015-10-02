@@ -19,169 +19,27 @@ package network
 // regenerated.
 
 import (
-	"github.com/Azure/go-autorest/autorest"
+	"github.com/Azure/azure-sdk-for-go/Godeps/_workspace/src/github.com/Azure/go-autorest/autorest"
 	"net/http"
 	"net/url"
 )
 
-// ApplicationGateways Client
+// ApplicationGatewaysClient is the client for the ApplicationGateways methods
+// of the Network service.
 type ApplicationGatewaysClient struct {
-	NetworkResourceProviderClient
+	ManagementClient
 }
 
-func NewApplicationGatewaysClient(subscriptionId string) ApplicationGatewaysClient {
-	return NewApplicationGatewaysClientWithBaseUri(DefaultBaseUri, subscriptionId)
+// NewApplicationGatewaysClient creates an instance of the
+// ApplicationGatewaysClient client.
+func NewApplicationGatewaysClient(subscriptionID string) ApplicationGatewaysClient {
+	return NewApplicationGatewaysClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-func NewApplicationGatewaysClientWithBaseUri(baseUri string, subscriptionId string) ApplicationGatewaysClient {
-	return ApplicationGatewaysClient{NewWithBaseUri(baseUri, subscriptionId)}
-}
-
-// Delete the delete applicationgateway operation deletes the specified
-// applicationgateway.
-//
-// resourceGroupName is the name of the resource group. applicationGatewayName
-// is the name of the applicationgateway.
-func (client ApplicationGatewaysClient) Delete(resourceGroupName string, applicationGatewayName string) (result autorest.Response, ae autorest.Error) {
-	req, err := client.NewDeleteRequest(resourceGroupName, applicationGatewayName)
-	if err != nil {
-		return result, autorest.NewErrorWithError(err, "network.ApplicationGatewaysClient", "Delete", "Failure creating request")
-	}
-
-	req, err = autorest.Prepare(
-		req,
-		client.WithAuthorization(),
-		client.WithInspection())
-	if err != nil {
-		return result, autorest.NewErrorWithError(err, "network.ApplicationGatewaysClient", "Delete", "Failure preparing request")
-	}
-
-	resp, err := autorest.SendWithSender(
-		client,
-		req,
-		autorest.DoErrorUnlessStatusCode(http.StatusNoContent, http.StatusAccepted, http.StatusOK))
-	if err == nil {
-		err = client.IsPollingAllowed(resp)
-		if err == nil {
-			resp, err = client.PollAsNeeded(resp)
-		}
-	}
-
-	if err == nil {
-		err = autorest.Respond(
-			resp,
-			client.ByInspecting(),
-			autorest.WithErrorUnlessOK())
-		if err != nil {
-			ae = autorest.NewErrorWithError(err, "network.ApplicationGatewaysClient", "Delete", "Failure responding to request")
-		}
-	} else {
-		ae = autorest.NewErrorWithError(err, "network.ApplicationGatewaysClient", "Delete", "Failure sending request")
-	}
-
-	autorest.Respond(resp,
-		autorest.ByClosing())
-	result.Response = resp
-
-	return
-}
-
-// Create the Delete request.
-func (client ApplicationGatewaysClient) NewDeleteRequest(resourceGroupName string, applicationGatewayName string) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"applicationGatewayName": url.QueryEscape(applicationGatewayName),
-		"resourceGroupName":      url.QueryEscape(resourceGroupName),
-		"subscriptionId":         url.QueryEscape(client.SubscriptionId),
-	}
-
-	queryParameters := map[string]interface{}{
-		"api-version": ApiVersion,
-	}
-
-	return autorest.DecoratePreparer(
-		client.DeleteRequestPreparer(),
-		autorest.WithPathParameters(pathParameters),
-		autorest.WithQueryParameters(queryParameters)).Prepare(&http.Request{})
-}
-
-// Create a Preparer by which to prepare the Delete request.
-func (client ApplicationGatewaysClient) DeleteRequestPreparer() autorest.Preparer {
-	return autorest.CreatePreparer(
-		autorest.AsJSON(),
-		autorest.AsDelete(),
-		autorest.WithBaseURL(client.BaseUri),
-		autorest.WithPath("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/applicationGateways/{applicationGatewayName}"))
-}
-
-// Get the Get applicationgateway operation retreives information about the
-// specified applicationgateway.
-//
-// resourceGroupName is the name of the resource group. applicationGatewayName
-// is the name of the applicationgateway.
-func (client ApplicationGatewaysClient) Get(resourceGroupName string, applicationGatewayName string) (result ApplicationGateway, ae autorest.Error) {
-	req, err := client.NewGetRequest(resourceGroupName, applicationGatewayName)
-	if err != nil {
-		return result, autorest.NewErrorWithError(err, "network.ApplicationGatewaysClient", "Get", "Failure creating request")
-	}
-
-	req, err = autorest.Prepare(
-		req,
-		client.WithAuthorization(),
-		client.WithInspection())
-	if err != nil {
-		return result, autorest.NewErrorWithError(err, "network.ApplicationGatewaysClient", "Get", "Failure preparing request")
-	}
-
-	resp, err := autorest.SendWithSender(
-		client,
-		req,
-		autorest.DoErrorUnlessStatusCode(http.StatusOK))
-
-	if err == nil {
-		err = autorest.Respond(
-			resp,
-			client.ByInspecting(),
-			autorest.WithErrorUnlessOK(),
-			autorest.ByUnmarshallingJSON(&result))
-		if err != nil {
-			ae = autorest.NewErrorWithError(err, "network.ApplicationGatewaysClient", "Get", "Failure responding to request")
-		}
-	} else {
-		ae = autorest.NewErrorWithError(err, "network.ApplicationGatewaysClient", "Get", "Failure sending request")
-	}
-
-	autorest.Respond(resp,
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-
-	return
-}
-
-// Create the Get request.
-func (client ApplicationGatewaysClient) NewGetRequest(resourceGroupName string, applicationGatewayName string) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"applicationGatewayName": url.QueryEscape(applicationGatewayName),
-		"resourceGroupName":      url.QueryEscape(resourceGroupName),
-		"subscriptionId":         url.QueryEscape(client.SubscriptionId),
-	}
-
-	queryParameters := map[string]interface{}{
-		"api-version": ApiVersion,
-	}
-
-	return autorest.DecoratePreparer(
-		client.GetRequestPreparer(),
-		autorest.WithPathParameters(pathParameters),
-		autorest.WithQueryParameters(queryParameters)).Prepare(&http.Request{})
-}
-
-// Create a Preparer by which to prepare the Get request.
-func (client ApplicationGatewaysClient) GetRequestPreparer() autorest.Preparer {
-	return autorest.CreatePreparer(
-		autorest.AsJSON(),
-		autorest.AsGet(),
-		autorest.WithBaseURL(client.BaseUri),
-		autorest.WithPath("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/applicationGateways/{applicationGatewayName}"))
+// NewApplicationGatewaysClientWithBaseURI creates an instance of the
+// ApplicationGatewaysClient client.
+func NewApplicationGatewaysClientWithBaseURI(baseURI string, subscriptionID string) ApplicationGatewaysClient {
+	return ApplicationGatewaysClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // CreateOrUpdate the Put ApplicationGateway operation creates/updates a
@@ -190,206 +48,358 @@ func (client ApplicationGatewaysClient) GetRequestPreparer() autorest.Preparer {
 // resourceGroupName is the name of the resource group. applicationGatewayName
 // is the name of the ApplicationGateway. parameters is parameters supplied
 // to the create/delete ApplicationGateway operation
-func (client ApplicationGatewaysClient) CreateOrUpdate(resourceGroupName string, applicationGatewayName string, parameters ApplicationGateway) (result ApplicationGateway, ae autorest.Error) {
-	req, err := client.NewCreateOrUpdateRequest(resourceGroupName, applicationGatewayName, parameters)
+func (client ApplicationGatewaysClient) CreateOrUpdate(resourceGroupName string, applicationGatewayName string, parameters ApplicationGateway) (result ApplicationGateway, ae error) {
+	req, err := client.CreateOrUpdatePreparer(resourceGroupName, applicationGatewayName, parameters)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "network.ApplicationGatewaysClient", "CreateOrUpdate", "Failure creating request")
+		return result, autorest.NewErrorWithError(err, "network/ApplicationGatewaysClient", "CreateOrUpdate", "Failure preparing request")
 	}
 
-	req, err = autorest.Prepare(
-		req,
-		client.WithAuthorization(),
-		client.WithInspection())
+	resp, err := client.CreateOrUpdateSender(req)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "network.ApplicationGatewaysClient", "CreateOrUpdate", "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "network/ApplicationGatewaysClient", "CreateOrUpdate", "Failure sending request")
 	}
 
-	resp, err := autorest.SendWithSender(
-		client,
-		req,
-		autorest.DoErrorUnlessStatusCode(http.StatusCreated, http.StatusOK))
-
-	if err == nil {
-		err = autorest.Respond(
-			resp,
-			client.ByInspecting(),
-			autorest.WithErrorUnlessOK(),
-			autorest.ByUnmarshallingJSON(&result))
-		if err != nil {
-			ae = autorest.NewErrorWithError(err, "network.ApplicationGatewaysClient", "CreateOrUpdate", "Failure responding to request")
-		}
-	} else {
-		ae = autorest.NewErrorWithError(err, "network.ApplicationGatewaysClient", "CreateOrUpdate", "Failure sending request")
+	result, err = client.CreateOrUpdateResponder(resp)
+	if err != nil {
+		ae = autorest.NewErrorWithError(err, "network/ApplicationGatewaysClient", "CreateOrUpdate", "Failure responding to request")
 	}
-
-	autorest.Respond(resp,
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
 
 	return
 }
 
-// Create the CreateOrUpdate request.
-func (client ApplicationGatewaysClient) NewCreateOrUpdateRequest(resourceGroupName string, applicationGatewayName string, parameters ApplicationGateway) (*http.Request, error) {
+// CreateOrUpdatePreparer prepares the CreateOrUpdate request.
+func (client ApplicationGatewaysClient) CreateOrUpdatePreparer(resourceGroupName string, applicationGatewayName string, parameters ApplicationGateway) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"applicationGatewayName": url.QueryEscape(applicationGatewayName),
 		"resourceGroupName":      url.QueryEscape(resourceGroupName),
-		"subscriptionId":         url.QueryEscape(client.SubscriptionId),
+		"subscriptionId":         url.QueryEscape(client.SubscriptionID),
 	}
 
 	queryParameters := map[string]interface{}{
-		"api-version": ApiVersion,
+		"api-version": APIVersion,
 	}
 
-	return autorest.DecoratePreparer(
-		client.CreateOrUpdateRequestPreparer(),
-		autorest.WithJSON(parameters),
-		autorest.WithPathParameters(pathParameters),
-		autorest.WithQueryParameters(queryParameters)).Prepare(&http.Request{})
-}
-
-// Create a Preparer by which to prepare the CreateOrUpdate request.
-func (client ApplicationGatewaysClient) CreateOrUpdateRequestPreparer() autorest.Preparer {
-	return autorest.CreatePreparer(
+	return autorest.Prepare(&http.Request{},
 		autorest.AsJSON(),
 		autorest.AsPut(),
-		autorest.WithBaseURL(client.BaseUri),
-		autorest.WithPath("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/applicationGateways/{applicationGatewayName}"))
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPath("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/applicationGateways/{applicationGatewayName}"),
+		autorest.WithJSON(parameters),
+		autorest.WithPathParameters(pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+}
+
+// CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
+// http.Response Body if it receives an error.
+func (client ApplicationGatewaysClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
+	return client.Send(req, http.StatusCreated, http.StatusOK)
+}
+
+// CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
+// closes the http.Response Body.
+func (client ApplicationGatewaysClient) CreateOrUpdateResponder(resp *http.Response) (result ApplicationGateway, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		autorest.WithErrorUnlessStatusCode(http.StatusCreated, http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// Delete the delete applicationgateway operation deletes the specified
+// applicationgateway.
+//
+// resourceGroupName is the name of the resource group. applicationGatewayName
+// is the name of the applicationgateway.
+func (client ApplicationGatewaysClient) Delete(resourceGroupName string, applicationGatewayName string) (result autorest.Response, ae error) {
+	req, err := client.DeletePreparer(resourceGroupName, applicationGatewayName)
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "network/ApplicationGatewaysClient", "Delete", "Failure preparing request")
+	}
+
+	resp, err := client.DeleteSender(req)
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "network/ApplicationGatewaysClient", "Delete", "Failure sending request")
+	}
+
+	result, err = client.DeleteResponder(resp)
+	if err != nil {
+		ae = autorest.NewErrorWithError(err, "network/ApplicationGatewaysClient", "Delete", "Failure responding to request")
+	}
+
+	return
+}
+
+// DeletePreparer prepares the Delete request.
+func (client ApplicationGatewaysClient) DeletePreparer(resourceGroupName string, applicationGatewayName string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"applicationGatewayName": url.QueryEscape(applicationGatewayName),
+		"resourceGroupName":      url.QueryEscape(resourceGroupName),
+		"subscriptionId":         url.QueryEscape(client.SubscriptionID),
+	}
+
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsDelete(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPath("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/applicationGateways/{applicationGatewayName}"),
+		autorest.WithPathParameters(pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+}
+
+// DeleteSender sends the Delete request. The method will close the
+// http.Response Body if it receives an error.
+func (client ApplicationGatewaysClient) DeleteSender(req *http.Request) (*http.Response, error) {
+	return client.Send(req, http.StatusNoContent, http.StatusAccepted, http.StatusOK)
+}
+
+// DeleteResponder handles the response to the Delete request. The method always
+// closes the http.Response Body.
+func (client ApplicationGatewaysClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		autorest.WithErrorUnlessStatusCode(http.StatusNoContent, http.StatusAccepted, http.StatusOK),
+		autorest.ByClosing())
+	result.Response = resp
+	return
+}
+
+// Get the Get applicationgateway operation retreives information about the
+// specified applicationgateway.
+//
+// resourceGroupName is the name of the resource group. applicationGatewayName
+// is the name of the applicationgateway.
+func (client ApplicationGatewaysClient) Get(resourceGroupName string, applicationGatewayName string) (result ApplicationGateway, ae error) {
+	req, err := client.GetPreparer(resourceGroupName, applicationGatewayName)
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "network/ApplicationGatewaysClient", "Get", "Failure preparing request")
+	}
+
+	resp, err := client.GetSender(req)
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "network/ApplicationGatewaysClient", "Get", "Failure sending request")
+	}
+
+	result, err = client.GetResponder(resp)
+	if err != nil {
+		ae = autorest.NewErrorWithError(err, "network/ApplicationGatewaysClient", "Get", "Failure responding to request")
+	}
+
+	return
+}
+
+// GetPreparer prepares the Get request.
+func (client ApplicationGatewaysClient) GetPreparer(resourceGroupName string, applicationGatewayName string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"applicationGatewayName": url.QueryEscape(applicationGatewayName),
+		"resourceGroupName":      url.QueryEscape(resourceGroupName),
+		"subscriptionId":         url.QueryEscape(client.SubscriptionID),
+	}
+
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPath("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/applicationGateways/{applicationGatewayName}"),
+		autorest.WithPathParameters(pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+}
+
+// GetSender sends the Get request. The method will close the
+// http.Response Body if it receives an error.
+func (client ApplicationGatewaysClient) GetSender(req *http.Request) (*http.Response, error) {
+	return client.Send(req, http.StatusOK)
+}
+
+// GetResponder handles the response to the Get request. The method always
+// closes the http.Response Body.
+func (client ApplicationGatewaysClient) GetResponder(resp *http.Response) (result ApplicationGateway, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		autorest.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
 }
 
 // List the List ApplicationGateway opertion retrieves all the
 // applicationgateways in a resource group.
 //
 // resourceGroupName is the name of the resource group.
-func (client ApplicationGatewaysClient) List(resourceGroupName string) (result ApplicationGatewayListResult, ae autorest.Error) {
-	req, err := client.NewListRequest(resourceGroupName)
+func (client ApplicationGatewaysClient) List(resourceGroupName string) (result ApplicationGatewayListResult, ae error) {
+	req, err := client.ListPreparer(resourceGroupName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "network.ApplicationGatewaysClient", "List", "Failure creating request")
+		return result, autorest.NewErrorWithError(err, "network/ApplicationGatewaysClient", "List", "Failure preparing request")
 	}
 
-	req, err = autorest.Prepare(
-		req,
-		client.WithAuthorization(),
-		client.WithInspection())
+	resp, err := client.ListSender(req)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "network.ApplicationGatewaysClient", "List", "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "network/ApplicationGatewaysClient", "List", "Failure sending request")
 	}
 
-	resp, err := autorest.SendWithSender(
-		client,
-		req,
-		autorest.DoErrorUnlessStatusCode(http.StatusOK))
-
-	if err == nil {
-		err = autorest.Respond(
-			resp,
-			client.ByInspecting(),
-			autorest.WithErrorUnlessOK(),
-			autorest.ByUnmarshallingJSON(&result))
-		if err != nil {
-			ae = autorest.NewErrorWithError(err, "network.ApplicationGatewaysClient", "List", "Failure responding to request")
-		}
-	} else {
-		ae = autorest.NewErrorWithError(err, "network.ApplicationGatewaysClient", "List", "Failure sending request")
+	result, err = client.ListResponder(resp)
+	if err != nil {
+		ae = autorest.NewErrorWithError(err, "network/ApplicationGatewaysClient", "List", "Failure responding to request")
 	}
-
-	autorest.Respond(resp,
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
 
 	return
 }
 
-// Create the List request.
-func (client ApplicationGatewaysClient) NewListRequest(resourceGroupName string) (*http.Request, error) {
+// ListPreparer prepares the List request.
+func (client ApplicationGatewaysClient) ListPreparer(resourceGroupName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName": url.QueryEscape(resourceGroupName),
-		"subscriptionId":    url.QueryEscape(client.SubscriptionId),
+		"subscriptionId":    url.QueryEscape(client.SubscriptionID),
 	}
 
 	queryParameters := map[string]interface{}{
-		"api-version": ApiVersion,
+		"api-version": APIVersion,
 	}
 
-	return autorest.DecoratePreparer(
-		client.ListRequestPreparer(),
-		autorest.WithPathParameters(pathParameters),
-		autorest.WithQueryParameters(queryParameters)).Prepare(&http.Request{})
-}
-
-// Create a Preparer by which to prepare the List request.
-func (client ApplicationGatewaysClient) ListRequestPreparer() autorest.Preparer {
-	return autorest.CreatePreparer(
+	return autorest.Prepare(&http.Request{},
 		autorest.AsJSON(),
 		autorest.AsGet(),
-		autorest.WithBaseURL(client.BaseUri),
-		autorest.WithPath("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/applicationGateways"))
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPath("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/applicationGateways"),
+		autorest.WithPathParameters(pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+}
+
+// ListSender sends the List request. The method will close the
+// http.Response Body if it receives an error.
+func (client ApplicationGatewaysClient) ListSender(req *http.Request) (*http.Response, error) {
+	return client.Send(req, http.StatusOK)
+}
+
+// ListResponder handles the response to the List request. The method always
+// closes the http.Response Body.
+func (client ApplicationGatewaysClient) ListResponder(resp *http.Response) (result ApplicationGatewayListResult, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		autorest.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// ListNextResults retrieves the next set of results, if any.
+func (client ApplicationGatewaysClient) ListNextResults(lastResults ApplicationGatewayListResult) (result ApplicationGatewayListResult, ae error) {
+	req, err := lastResults.ApplicationGatewayListResultPreparer()
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "network/ApplicationGatewaysClient", "List", "Failure preparing next results request request")
+	}
+	if req == nil {
+		return
+	}
+
+	resp, err := client.ListSender(req)
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "network/ApplicationGatewaysClient", "List", "Failure sending next results request request")
+	}
+
+	result, err = client.ListResponder(resp)
+	if err != nil {
+		ae = autorest.NewErrorWithError(err, "network/ApplicationGatewaysClient", "List", "Failure responding to next results request request")
+	}
+
+	return
 }
 
 // ListAll the List applicationgateway opertion retrieves all the
 // applicationgateways in a subscription.
-func (client ApplicationGatewaysClient) ListAll() (result ApplicationGatewayListResult, ae autorest.Error) {
-	req, err := client.NewListAllRequest()
+func (client ApplicationGatewaysClient) ListAll() (result ApplicationGatewayListResult, ae error) {
+	req, err := client.ListAllPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "network.ApplicationGatewaysClient", "ListAll", "Failure creating request")
+		return result, autorest.NewErrorWithError(err, "network/ApplicationGatewaysClient", "ListAll", "Failure preparing request")
 	}
 
-	req, err = autorest.Prepare(
-		req,
-		client.WithAuthorization(),
-		client.WithInspection())
+	resp, err := client.ListAllSender(req)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "network.ApplicationGatewaysClient", "ListAll", "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "network/ApplicationGatewaysClient", "ListAll", "Failure sending request")
 	}
 
-	resp, err := autorest.SendWithSender(
-		client,
-		req,
-		autorest.DoErrorUnlessStatusCode(http.StatusOK))
-
-	if err == nil {
-		err = autorest.Respond(
-			resp,
-			client.ByInspecting(),
-			autorest.WithErrorUnlessOK(),
-			autorest.ByUnmarshallingJSON(&result))
-		if err != nil {
-			ae = autorest.NewErrorWithError(err, "network.ApplicationGatewaysClient", "ListAll", "Failure responding to request")
-		}
-	} else {
-		ae = autorest.NewErrorWithError(err, "network.ApplicationGatewaysClient", "ListAll", "Failure sending request")
+	result, err = client.ListAllResponder(resp)
+	if err != nil {
+		ae = autorest.NewErrorWithError(err, "network/ApplicationGatewaysClient", "ListAll", "Failure responding to request")
 	}
-
-	autorest.Respond(resp,
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
 
 	return
 }
 
-// Create the ListAll request.
-func (client ApplicationGatewaysClient) NewListAllRequest() (*http.Request, error) {
+// ListAllPreparer prepares the ListAll request.
+func (client ApplicationGatewaysClient) ListAllPreparer() (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"subscriptionId": url.QueryEscape(client.SubscriptionId),
+		"subscriptionId": url.QueryEscape(client.SubscriptionID),
 	}
 
 	queryParameters := map[string]interface{}{
-		"api-version": ApiVersion,
+		"api-version": APIVersion,
 	}
 
-	return autorest.DecoratePreparer(
-		client.ListAllRequestPreparer(),
-		autorest.WithPathParameters(pathParameters),
-		autorest.WithQueryParameters(queryParameters)).Prepare(&http.Request{})
-}
-
-// Create a Preparer by which to prepare the ListAll request.
-func (client ApplicationGatewaysClient) ListAllRequestPreparer() autorest.Preparer {
-	return autorest.CreatePreparer(
+	return autorest.Prepare(&http.Request{},
 		autorest.AsJSON(),
 		autorest.AsGet(),
-		autorest.WithBaseURL(client.BaseUri),
-		autorest.WithPath("/subscriptions/{subscriptionId}/providers/Microsoft.Network/applicationGateways"))
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPath("/subscriptions/{subscriptionId}/providers/Microsoft.Network/applicationGateways"),
+		autorest.WithPathParameters(pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+}
+
+// ListAllSender sends the ListAll request. The method will close the
+// http.Response Body if it receives an error.
+func (client ApplicationGatewaysClient) ListAllSender(req *http.Request) (*http.Response, error) {
+	return client.Send(req, http.StatusOK)
+}
+
+// ListAllResponder handles the response to the ListAll request. The method always
+// closes the http.Response Body.
+func (client ApplicationGatewaysClient) ListAllResponder(resp *http.Response) (result ApplicationGatewayListResult, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		autorest.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// ListAllNextResults retrieves the next set of results, if any.
+func (client ApplicationGatewaysClient) ListAllNextResults(lastResults ApplicationGatewayListResult) (result ApplicationGatewayListResult, ae error) {
+	req, err := lastResults.ApplicationGatewayListResultPreparer()
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "network/ApplicationGatewaysClient", "ListAll", "Failure preparing next results request request")
+	}
+	if req == nil {
+		return
+	}
+
+	resp, err := client.ListAllSender(req)
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "network/ApplicationGatewaysClient", "ListAll", "Failure sending next results request request")
+	}
+
+	result, err = client.ListAllResponder(resp)
+	if err != nil {
+		ae = autorest.NewErrorWithError(err, "network/ApplicationGatewaysClient", "ListAll", "Failure responding to next results request request")
+	}
+
+	return
 }
 
 // Start the Start ApplicationGateway operation starts application gatewayin
@@ -397,75 +407,62 @@ func (client ApplicationGatewaysClient) ListAllRequestPreparer() autorest.Prepar
 //
 // resourceGroupName is the name of the resource group. applicationGatewayName
 // is the name of the application gateway.
-func (client ApplicationGatewaysClient) Start(resourceGroupName string, applicationGatewayName string) (result autorest.Response, ae autorest.Error) {
-	req, err := client.NewStartRequest(resourceGroupName, applicationGatewayName)
+func (client ApplicationGatewaysClient) Start(resourceGroupName string, applicationGatewayName string) (result autorest.Response, ae error) {
+	req, err := client.StartPreparer(resourceGroupName, applicationGatewayName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "network.ApplicationGatewaysClient", "Start", "Failure creating request")
+		return result, autorest.NewErrorWithError(err, "network/ApplicationGatewaysClient", "Start", "Failure preparing request")
 	}
 
-	req, err = autorest.Prepare(
-		req,
-		client.WithAuthorization(),
-		client.WithInspection())
+	resp, err := client.StartSender(req)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "network.ApplicationGatewaysClient", "Start", "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "network/ApplicationGatewaysClient", "Start", "Failure sending request")
 	}
 
-	resp, err := autorest.SendWithSender(
-		client,
-		req,
-		autorest.DoErrorUnlessStatusCode(http.StatusAccepted))
-	if err == nil {
-		err = client.IsPollingAllowed(resp)
-		if err == nil {
-			resp, err = client.PollAsNeeded(resp)
-		}
+	result, err = client.StartResponder(resp)
+	if err != nil {
+		ae = autorest.NewErrorWithError(err, "network/ApplicationGatewaysClient", "Start", "Failure responding to request")
 	}
-
-	if err == nil {
-		err = autorest.Respond(
-			resp,
-			client.ByInspecting(),
-			autorest.WithErrorUnlessOK())
-		if err != nil {
-			ae = autorest.NewErrorWithError(err, "network.ApplicationGatewaysClient", "Start", "Failure responding to request")
-		}
-	} else {
-		ae = autorest.NewErrorWithError(err, "network.ApplicationGatewaysClient", "Start", "Failure sending request")
-	}
-
-	autorest.Respond(resp,
-		autorest.ByClosing())
-	result.Response = resp
 
 	return
 }
 
-// Create the Start request.
-func (client ApplicationGatewaysClient) NewStartRequest(resourceGroupName string, applicationGatewayName string) (*http.Request, error) {
+// StartPreparer prepares the Start request.
+func (client ApplicationGatewaysClient) StartPreparer(resourceGroupName string, applicationGatewayName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"applicationGatewayName": url.QueryEscape(applicationGatewayName),
 		"resourceGroupName":      url.QueryEscape(resourceGroupName),
-		"subscriptionId":         url.QueryEscape(client.SubscriptionId),
+		"subscriptionId":         url.QueryEscape(client.SubscriptionID),
 	}
 
 	queryParameters := map[string]interface{}{
-		"api-version": ApiVersion,
+		"api-version": APIVersion,
 	}
 
-	return autorest.DecoratePreparer(
-		client.StartRequestPreparer(),
-		autorest.WithPathParameters(pathParameters),
-		autorest.WithQueryParameters(queryParameters)).Prepare(&http.Request{})
-}
-
-// Create a Preparer by which to prepare the Start request.
-func (client ApplicationGatewaysClient) StartRequestPreparer() autorest.Preparer {
-	return autorest.CreatePreparer(
+	return autorest.Prepare(&http.Request{},
 		autorest.AsJSON(),
 		autorest.AsPost(),
-		autorest.WithBaseURL(client.BaseUri),
-		autorest.WithPath("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/applicationGateways/{applicationGatewayName}/start"))
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPath("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/applicationGateways/{applicationGatewayName}/start"),
+		autorest.WithPathParameters(pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+}
+
+// StartSender sends the Start request. The method will close the
+// http.Response Body if it receives an error.
+func (client ApplicationGatewaysClient) StartSender(req *http.Request) (*http.Response, error) {
+	return client.Send(req, http.StatusAccepted)
+}
+
+// StartResponder handles the response to the Start request. The method always
+// closes the http.Response Body.
+func (client ApplicationGatewaysClient) StartResponder(resp *http.Response) (result autorest.Response, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		autorest.WithErrorUnlessStatusCode(http.StatusAccepted),
+		autorest.ByClosing())
+	result.Response = resp
+	return
 }
 
 // Stop the STOP ApplicationGateway operation stops application gatewayin the
@@ -473,73 +470,60 @@ func (client ApplicationGatewaysClient) StartRequestPreparer() autorest.Preparer
 //
 // resourceGroupName is the name of the resource group. applicationGatewayName
 // is the name of the application gateway.
-func (client ApplicationGatewaysClient) Stop(resourceGroupName string, applicationGatewayName string) (result autorest.Response, ae autorest.Error) {
-	req, err := client.NewStopRequest(resourceGroupName, applicationGatewayName)
+func (client ApplicationGatewaysClient) Stop(resourceGroupName string, applicationGatewayName string) (result autorest.Response, ae error) {
+	req, err := client.StopPreparer(resourceGroupName, applicationGatewayName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "network.ApplicationGatewaysClient", "Stop", "Failure creating request")
+		return result, autorest.NewErrorWithError(err, "network/ApplicationGatewaysClient", "Stop", "Failure preparing request")
 	}
 
-	req, err = autorest.Prepare(
-		req,
-		client.WithAuthorization(),
-		client.WithInspection())
+	resp, err := client.StopSender(req)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "network.ApplicationGatewaysClient", "Stop", "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "network/ApplicationGatewaysClient", "Stop", "Failure sending request")
 	}
 
-	resp, err := autorest.SendWithSender(
-		client,
-		req,
-		autorest.DoErrorUnlessStatusCode(http.StatusAccepted, http.StatusOK))
-	if err == nil {
-		err = client.IsPollingAllowed(resp)
-		if err == nil {
-			resp, err = client.PollAsNeeded(resp)
-		}
+	result, err = client.StopResponder(resp)
+	if err != nil {
+		ae = autorest.NewErrorWithError(err, "network/ApplicationGatewaysClient", "Stop", "Failure responding to request")
 	}
-
-	if err == nil {
-		err = autorest.Respond(
-			resp,
-			client.ByInspecting(),
-			autorest.WithErrorUnlessOK())
-		if err != nil {
-			ae = autorest.NewErrorWithError(err, "network.ApplicationGatewaysClient", "Stop", "Failure responding to request")
-		}
-	} else {
-		ae = autorest.NewErrorWithError(err, "network.ApplicationGatewaysClient", "Stop", "Failure sending request")
-	}
-
-	autorest.Respond(resp,
-		autorest.ByClosing())
-	result.Response = resp
 
 	return
 }
 
-// Create the Stop request.
-func (client ApplicationGatewaysClient) NewStopRequest(resourceGroupName string, applicationGatewayName string) (*http.Request, error) {
+// StopPreparer prepares the Stop request.
+func (client ApplicationGatewaysClient) StopPreparer(resourceGroupName string, applicationGatewayName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"applicationGatewayName": url.QueryEscape(applicationGatewayName),
 		"resourceGroupName":      url.QueryEscape(resourceGroupName),
-		"subscriptionId":         url.QueryEscape(client.SubscriptionId),
+		"subscriptionId":         url.QueryEscape(client.SubscriptionID),
 	}
 
 	queryParameters := map[string]interface{}{
-		"api-version": ApiVersion,
+		"api-version": APIVersion,
 	}
 
-	return autorest.DecoratePreparer(
-		client.StopRequestPreparer(),
-		autorest.WithPathParameters(pathParameters),
-		autorest.WithQueryParameters(queryParameters)).Prepare(&http.Request{})
-}
-
-// Create a Preparer by which to prepare the Stop request.
-func (client ApplicationGatewaysClient) StopRequestPreparer() autorest.Preparer {
-	return autorest.CreatePreparer(
+	return autorest.Prepare(&http.Request{},
 		autorest.AsJSON(),
 		autorest.AsPost(),
-		autorest.WithBaseURL(client.BaseUri),
-		autorest.WithPath("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/applicationGateways/{applicationGatewayName}/stop"))
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPath("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/applicationGateways/{applicationGatewayName}/stop"),
+		autorest.WithPathParameters(pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+}
+
+// StopSender sends the Stop request. The method will close the
+// http.Response Body if it receives an error.
+func (client ApplicationGatewaysClient) StopSender(req *http.Request) (*http.Response, error) {
+	return client.Send(req, http.StatusAccepted, http.StatusOK)
+}
+
+// StopResponder handles the response to the Stop request. The method always
+// closes the http.Response Body.
+func (client ApplicationGatewaysClient) StopResponder(resp *http.Response) (result autorest.Response, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		autorest.WithErrorUnlessStatusCode(http.StatusAccepted, http.StatusOK),
+		autorest.ByClosing())
+	result.Response = resp
+	return
 }

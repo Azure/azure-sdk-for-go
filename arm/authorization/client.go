@@ -19,28 +19,34 @@ package authorization
 // regenerated.
 
 import (
-	"github.com/Azure/go-autorest/autorest"
+	"github.com/Azure/azure-sdk-for-go/Godeps/_workspace/src/github.com/Azure/go-autorest/autorest"
 )
 
 const (
-	ApiVersion     = "2015-01-01"
-	DefaultBaseUri = "https://management.azure.com"
+	// APIVersion is the version of the Authorization
+	APIVersion = "2015-01-01"
+
+	// DefaultBaseURI is the default URI used for the service Authorization
+	DefaultBaseURI = "https://management.azure.com"
 )
 
-type AuthorizationClient struct {
+// ManagementClient is the base client for Authorization.
+type ManagementClient struct {
 	autorest.Client
-	BaseUri        string
-	SubscriptionId string
+	BaseURI        string
+	SubscriptionID string
 }
 
-func New(subscriptionId string) AuthorizationClient {
-	return NewWithBaseUri(DefaultBaseUri, subscriptionId)
+// New creates an instance of the ManagementClient client.
+func New(subscriptionID string) ManagementClient {
+	return NewWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-func NewWithBaseUri(baseUri string, subscriptionId string) AuthorizationClient {
-	return AuthorizationClient{
-		Client:         autorest.DefaultClient,
-		BaseUri:        baseUri,
-		SubscriptionId: subscriptionId,
+// NewWithBaseURI creates an instance of the ManagementClient client.
+func NewWithBaseURI(baseURI string, subscriptionID string) ManagementClient {
+	return ManagementClient{
+		Client:         autorest.NewClientWithUserAgent(UserAgent()),
+		BaseURI:        baseURI,
+		SubscriptionID: subscriptionID,
 	}
 }

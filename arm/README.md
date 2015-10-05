@@ -30,7 +30,7 @@ since the code is generated, we'll use your pull request to guide changes we mak
 generator versus merging the pull request itself.
 
 The second item of note is that, to keep the generated code clean and reliable, it depends on
-another new pacakge [go-autorest](https://github.com/Azure/go-autorest).
+another new package [go-autorest](https://github.com/Azure/go-autorest).
 Though part of the SDK, we separated the code to better control versioning and maintain agility.
 Since 
 [go-autorest](https://github.com/Azure/go-autorest)

@@ -19,170 +19,24 @@ package network
 // regenerated.
 
 import (
-	"github.com/Azure/go-autorest/autorest"
+	"github.com/Azure/azure-sdk-for-go/Godeps/_workspace/src/github.com/Azure/go-autorest/autorest"
 	"net/http"
 	"net/url"
 )
 
-// Subnets Client
+// SubnetsClient is the client for the Subnets methods of the Network service.
 type SubnetsClient struct {
-	NetworkResourceProviderClient
+	ManagementClient
 }
 
-func NewSubnetsClient(subscriptionId string) SubnetsClient {
-	return NewSubnetsClientWithBaseUri(DefaultBaseUri, subscriptionId)
+// NewSubnetsClient creates an instance of the SubnetsClient client.
+func NewSubnetsClient(subscriptionID string) SubnetsClient {
+	return NewSubnetsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-func NewSubnetsClientWithBaseUri(baseUri string, subscriptionId string) SubnetsClient {
-	return SubnetsClient{NewWithBaseUri(baseUri, subscriptionId)}
-}
-
-// Delete the delete subnet operation deletes the specified subnet.
-//
-// resourceGroupName is the name of the resource group. virtualNetworkName is
-// the name of the virtual network. subnetName is the name of the subnet.
-func (client SubnetsClient) Delete(resourceGroupName string, virtualNetworkName string, subnetName string) (result autorest.Response, ae autorest.Error) {
-	req, err := client.NewDeleteRequest(resourceGroupName, virtualNetworkName, subnetName)
-	if err != nil {
-		return result, autorest.NewErrorWithError(err, "network.SubnetsClient", "Delete", "Failure creating request")
-	}
-
-	req, err = autorest.Prepare(
-		req,
-		client.WithAuthorization(),
-		client.WithInspection())
-	if err != nil {
-		return result, autorest.NewErrorWithError(err, "network.SubnetsClient", "Delete", "Failure preparing request")
-	}
-
-	resp, err := autorest.SendWithSender(
-		client,
-		req,
-		autorest.DoErrorUnlessStatusCode(http.StatusNoContent, http.StatusAccepted, http.StatusOK))
-	if err == nil {
-		err = client.IsPollingAllowed(resp)
-		if err == nil {
-			resp, err = client.PollAsNeeded(resp)
-		}
-	}
-
-	if err == nil {
-		err = autorest.Respond(
-			resp,
-			client.ByInspecting(),
-			autorest.WithErrorUnlessOK())
-		if err != nil {
-			ae = autorest.NewErrorWithError(err, "network.SubnetsClient", "Delete", "Failure responding to request")
-		}
-	} else {
-		ae = autorest.NewErrorWithError(err, "network.SubnetsClient", "Delete", "Failure sending request")
-	}
-
-	autorest.Respond(resp,
-		autorest.ByClosing())
-	result.Response = resp
-
-	return
-}
-
-// Create the Delete request.
-func (client SubnetsClient) NewDeleteRequest(resourceGroupName string, virtualNetworkName string, subnetName string) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"resourceGroupName":  url.QueryEscape(resourceGroupName),
-		"subnetName":         url.QueryEscape(subnetName),
-		"subscriptionId":     url.QueryEscape(client.SubscriptionId),
-		"virtualNetworkName": url.QueryEscape(virtualNetworkName),
-	}
-
-	queryParameters := map[string]interface{}{
-		"api-version": ApiVersion,
-	}
-
-	return autorest.DecoratePreparer(
-		client.DeleteRequestPreparer(),
-		autorest.WithPathParameters(pathParameters),
-		autorest.WithQueryParameters(queryParameters)).Prepare(&http.Request{})
-}
-
-// Create a Preparer by which to prepare the Delete request.
-func (client SubnetsClient) DeleteRequestPreparer() autorest.Preparer {
-	return autorest.CreatePreparer(
-		autorest.AsJSON(),
-		autorest.AsDelete(),
-		autorest.WithBaseURL(client.BaseUri),
-		autorest.WithPath("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualnetworks/{virtualNetworkName}/subnets/{subnetName}"))
-}
-
-// Get the Get subnet operation retreives information about the specified
-// subnet.
-//
-// resourceGroupName is the name of the resource group. virtualNetworkName is
-// the name of the virtual network. subnetName is the name of the subnet.
-func (client SubnetsClient) Get(resourceGroupName string, virtualNetworkName string, subnetName string) (result Subnet, ae autorest.Error) {
-	req, err := client.NewGetRequest(resourceGroupName, virtualNetworkName, subnetName)
-	if err != nil {
-		return result, autorest.NewErrorWithError(err, "network.SubnetsClient", "Get", "Failure creating request")
-	}
-
-	req, err = autorest.Prepare(
-		req,
-		client.WithAuthorization(),
-		client.WithInspection())
-	if err != nil {
-		return result, autorest.NewErrorWithError(err, "network.SubnetsClient", "Get", "Failure preparing request")
-	}
-
-	resp, err := autorest.SendWithSender(
-		client,
-		req,
-		autorest.DoErrorUnlessStatusCode(http.StatusOK))
-
-	if err == nil {
-		err = autorest.Respond(
-			resp,
-			client.ByInspecting(),
-			autorest.WithErrorUnlessOK(),
-			autorest.ByUnmarshallingJSON(&result))
-		if err != nil {
-			ae = autorest.NewErrorWithError(err, "network.SubnetsClient", "Get", "Failure responding to request")
-		}
-	} else {
-		ae = autorest.NewErrorWithError(err, "network.SubnetsClient", "Get", "Failure sending request")
-	}
-
-	autorest.Respond(resp,
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-
-	return
-}
-
-// Create the Get request.
-func (client SubnetsClient) NewGetRequest(resourceGroupName string, virtualNetworkName string, subnetName string) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"resourceGroupName":  url.QueryEscape(resourceGroupName),
-		"subnetName":         url.QueryEscape(subnetName),
-		"subscriptionId":     url.QueryEscape(client.SubscriptionId),
-		"virtualNetworkName": url.QueryEscape(virtualNetworkName),
-	}
-
-	queryParameters := map[string]interface{}{
-		"api-version": ApiVersion,
-	}
-
-	return autorest.DecoratePreparer(
-		client.GetRequestPreparer(),
-		autorest.WithPathParameters(pathParameters),
-		autorest.WithQueryParameters(queryParameters)).Prepare(&http.Request{})
-}
-
-// Create a Preparer by which to prepare the Get request.
-func (client SubnetsClient) GetRequestPreparer() autorest.Preparer {
-	return autorest.CreatePreparer(
-		autorest.AsJSON(),
-		autorest.AsGet(),
-		autorest.WithBaseURL(client.BaseUri),
-		autorest.WithPath("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualnetworks/{virtualNetworkName}/subnets/{subnetName}"))
+// NewSubnetsClientWithBaseURI creates an instance of the SubnetsClient client.
+func NewSubnetsClientWithBaseURI(baseURI string, subscriptionID string) SubnetsClient {
+	return SubnetsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // CreateOrUpdate the Put Subnet operation creates/updates a subnet in
@@ -192,72 +46,196 @@ func (client SubnetsClient) GetRequestPreparer() autorest.Preparer {
 // the name of the virtual network. subnetName is the name of the subnet.
 // subnetParameters is parameters supplied to the create/update Subnet
 // operation
-func (client SubnetsClient) CreateOrUpdate(resourceGroupName string, virtualNetworkName string, subnetName string, subnetParameters Subnet) (result Subnet, ae autorest.Error) {
-	req, err := client.NewCreateOrUpdateRequest(resourceGroupName, virtualNetworkName, subnetName, subnetParameters)
+func (client SubnetsClient) CreateOrUpdate(resourceGroupName string, virtualNetworkName string, subnetName string, subnetParameters Subnet) (result Subnet, ae error) {
+	req, err := client.CreateOrUpdatePreparer(resourceGroupName, virtualNetworkName, subnetName, subnetParameters)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "network.SubnetsClient", "CreateOrUpdate", "Failure creating request")
+		return result, autorest.NewErrorWithError(err, "network/SubnetsClient", "CreateOrUpdate", "Failure preparing request")
 	}
 
-	req, err = autorest.Prepare(
-		req,
-		client.WithAuthorization(),
-		client.WithInspection())
+	resp, err := client.CreateOrUpdateSender(req)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "network.SubnetsClient", "CreateOrUpdate", "Failure preparing request")
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "network/SubnetsClient", "CreateOrUpdate", "Failure sending request")
 	}
 
-	resp, err := autorest.SendWithSender(
-		client,
-		req,
-		autorest.DoErrorUnlessStatusCode(http.StatusOK, http.StatusCreated))
-
-	if err == nil {
-		err = autorest.Respond(
-			resp,
-			client.ByInspecting(),
-			autorest.WithErrorUnlessOK(),
-			autorest.ByUnmarshallingJSON(&result))
-		if err != nil {
-			ae = autorest.NewErrorWithError(err, "network.SubnetsClient", "CreateOrUpdate", "Failure responding to request")
-		}
-	} else {
-		ae = autorest.NewErrorWithError(err, "network.SubnetsClient", "CreateOrUpdate", "Failure sending request")
+	result, err = client.CreateOrUpdateResponder(resp)
+	if err != nil {
+		ae = autorest.NewErrorWithError(err, "network/SubnetsClient", "CreateOrUpdate", "Failure responding to request")
 	}
-
-	autorest.Respond(resp,
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
 
 	return
 }
 
-// Create the CreateOrUpdate request.
-func (client SubnetsClient) NewCreateOrUpdateRequest(resourceGroupName string, virtualNetworkName string, subnetName string, subnetParameters Subnet) (*http.Request, error) {
+// CreateOrUpdatePreparer prepares the CreateOrUpdate request.
+func (client SubnetsClient) CreateOrUpdatePreparer(resourceGroupName string, virtualNetworkName string, subnetName string, subnetParameters Subnet) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName":  url.QueryEscape(resourceGroupName),
 		"subnetName":         url.QueryEscape(subnetName),
-		"subscriptionId":     url.QueryEscape(client.SubscriptionId),
+		"subscriptionId":     url.QueryEscape(client.SubscriptionID),
 		"virtualNetworkName": url.QueryEscape(virtualNetworkName),
 	}
 
 	queryParameters := map[string]interface{}{
-		"api-version": ApiVersion,
+		"api-version": APIVersion,
 	}
 
-	return autorest.DecoratePreparer(
-		client.CreateOrUpdateRequestPreparer(),
-		autorest.WithJSON(subnetParameters),
-		autorest.WithPathParameters(pathParameters),
-		autorest.WithQueryParameters(queryParameters)).Prepare(&http.Request{})
-}
-
-// Create a Preparer by which to prepare the CreateOrUpdate request.
-func (client SubnetsClient) CreateOrUpdateRequestPreparer() autorest.Preparer {
-	return autorest.CreatePreparer(
+	return autorest.Prepare(&http.Request{},
 		autorest.AsJSON(),
 		autorest.AsPut(),
-		autorest.WithBaseURL(client.BaseUri),
-		autorest.WithPath("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualnetworks/{virtualNetworkName}/subnets/{subnetName}"))
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPath("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualnetworks/{virtualNetworkName}/subnets/{subnetName}"),
+		autorest.WithJSON(subnetParameters),
+		autorest.WithPathParameters(pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+}
+
+// CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
+// http.Response Body if it receives an error.
+func (client SubnetsClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
+	return client.Send(req, http.StatusOK, http.StatusCreated)
+}
+
+// CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
+// closes the http.Response Body.
+func (client SubnetsClient) CreateOrUpdateResponder(resp *http.Response) (result Subnet, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		autorest.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// Delete the delete subnet operation deletes the specified subnet.
+//
+// resourceGroupName is the name of the resource group. virtualNetworkName is
+// the name of the virtual network. subnetName is the name of the subnet.
+func (client SubnetsClient) Delete(resourceGroupName string, virtualNetworkName string, subnetName string) (result autorest.Response, ae error) {
+	req, err := client.DeletePreparer(resourceGroupName, virtualNetworkName, subnetName)
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "network/SubnetsClient", "Delete", "Failure preparing request")
+	}
+
+	resp, err := client.DeleteSender(req)
+	if err != nil {
+		result.Response = resp
+		return result, autorest.NewErrorWithError(err, "network/SubnetsClient", "Delete", "Failure sending request")
+	}
+
+	result, err = client.DeleteResponder(resp)
+	if err != nil {
+		ae = autorest.NewErrorWithError(err, "network/SubnetsClient", "Delete", "Failure responding to request")
+	}
+
+	return
+}
+
+// DeletePreparer prepares the Delete request.
+func (client SubnetsClient) DeletePreparer(resourceGroupName string, virtualNetworkName string, subnetName string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"resourceGroupName":  url.QueryEscape(resourceGroupName),
+		"subnetName":         url.QueryEscape(subnetName),
+		"subscriptionId":     url.QueryEscape(client.SubscriptionID),
+		"virtualNetworkName": url.QueryEscape(virtualNetworkName),
+	}
+
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsDelete(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPath("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualnetworks/{virtualNetworkName}/subnets/{subnetName}"),
+		autorest.WithPathParameters(pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+}
+
+// DeleteSender sends the Delete request. The method will close the
+// http.Response Body if it receives an error.
+func (client SubnetsClient) DeleteSender(req *http.Request) (*http.Response, error) {
+	return client.Send(req, http.StatusNoContent, http.StatusAccepted, http.StatusOK)
+}
+
+// DeleteResponder handles the response to the Delete request. The method always
+// closes the http.Response Body.
+func (client SubnetsClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		autorest.WithErrorUnlessStatusCode(http.StatusNoContent, http.StatusAccepted, http.StatusOK),
+		autorest.ByClosing())
+	result.Response = resp
+	return
+}
+
+// Get the Get subnet operation retreives information about the specified
+// subnet.
+//
+// resourceGroupName is the name of the resource group. virtualNetworkName is
+// the name of the virtual network. subnetName is the name of the subnet.
+func (client SubnetsClient) Get(resourceGroupName string, virtualNetworkName string, subnetName string) (result Subnet, ae error) {
+	req, err := client.GetPreparer(resourceGroupName, virtualNetworkName, subnetName)
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "network/SubnetsClient", "Get", "Failure preparing request")
+	}
+
+	resp, err := client.GetSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "network/SubnetsClient", "Get", "Failure sending request")
+	}
+
+	result, err = client.GetResponder(resp)
+	if err != nil {
+		ae = autorest.NewErrorWithError(err, "network/SubnetsClient", "Get", "Failure responding to request")
+	}
+
+	return
+}
+
+// GetPreparer prepares the Get request.
+func (client SubnetsClient) GetPreparer(resourceGroupName string, virtualNetworkName string, subnetName string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"resourceGroupName":  url.QueryEscape(resourceGroupName),
+		"subnetName":         url.QueryEscape(subnetName),
+		"subscriptionId":     url.QueryEscape(client.SubscriptionID),
+		"virtualNetworkName": url.QueryEscape(virtualNetworkName),
+	}
+
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPath("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualnetworks/{virtualNetworkName}/subnets/{subnetName}"),
+		autorest.WithPathParameters(pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+}
+
+// GetSender sends the Get request. The method will close the
+// http.Response Body if it receives an error.
+func (client SubnetsClient) GetSender(req *http.Request) (*http.Response, error) {
+	return client.Send(req, http.StatusOK)
+}
+
+// GetResponder handles the response to the Get request. The method always
+// closes the http.Response Body.
+func (client SubnetsClient) GetResponder(resp *http.Response) (result Subnet, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		autorest.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
 }
 
 // List the List subnets opertion retrieves all the subnets in a virtual
@@ -265,68 +243,86 @@ func (client SubnetsClient) CreateOrUpdateRequestPreparer() autorest.Preparer {
 //
 // resourceGroupName is the name of the resource group. virtualNetworkName is
 // the name of the virtual network.
-func (client SubnetsClient) List(resourceGroupName string, virtualNetworkName string) (result SubnetListResult, ae autorest.Error) {
-	req, err := client.NewListRequest(resourceGroupName, virtualNetworkName)
+func (client SubnetsClient) List(resourceGroupName string, virtualNetworkName string) (result SubnetListResult, ae error) {
+	req, err := client.ListPreparer(resourceGroupName, virtualNetworkName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "network.SubnetsClient", "List", "Failure creating request")
+		return result, autorest.NewErrorWithError(err, "network/SubnetsClient", "List", "Failure preparing request")
 	}
 
-	req, err = autorest.Prepare(
-		req,
-		client.WithAuthorization(),
-		client.WithInspection())
+	resp, err := client.ListSender(req)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "network.SubnetsClient", "List", "Failure preparing request")
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "network/SubnetsClient", "List", "Failure sending request")
 	}
 
-	resp, err := autorest.SendWithSender(
-		client,
-		req,
-		autorest.DoErrorUnlessStatusCode(http.StatusOK))
-
-	if err == nil {
-		err = autorest.Respond(
-			resp,
-			client.ByInspecting(),
-			autorest.WithErrorUnlessOK(),
-			autorest.ByUnmarshallingJSON(&result))
-		if err != nil {
-			ae = autorest.NewErrorWithError(err, "network.SubnetsClient", "List", "Failure responding to request")
-		}
-	} else {
-		ae = autorest.NewErrorWithError(err, "network.SubnetsClient", "List", "Failure sending request")
+	result, err = client.ListResponder(resp)
+	if err != nil {
+		ae = autorest.NewErrorWithError(err, "network/SubnetsClient", "List", "Failure responding to request")
 	}
-
-	autorest.Respond(resp,
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
 
 	return
 }
 
-// Create the List request.
-func (client SubnetsClient) NewListRequest(resourceGroupName string, virtualNetworkName string) (*http.Request, error) {
+// ListPreparer prepares the List request.
+func (client SubnetsClient) ListPreparer(resourceGroupName string, virtualNetworkName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName":  url.QueryEscape(resourceGroupName),
-		"subscriptionId":     url.QueryEscape(client.SubscriptionId),
+		"subscriptionId":     url.QueryEscape(client.SubscriptionID),
 		"virtualNetworkName": url.QueryEscape(virtualNetworkName),
 	}
 
 	queryParameters := map[string]interface{}{
-		"api-version": ApiVersion,
+		"api-version": APIVersion,
 	}
 
-	return autorest.DecoratePreparer(
-		client.ListRequestPreparer(),
-		autorest.WithPathParameters(pathParameters),
-		autorest.WithQueryParameters(queryParameters)).Prepare(&http.Request{})
-}
-
-// Create a Preparer by which to prepare the List request.
-func (client SubnetsClient) ListRequestPreparer() autorest.Preparer {
-	return autorest.CreatePreparer(
+	return autorest.Prepare(&http.Request{},
 		autorest.AsJSON(),
 		autorest.AsGet(),
-		autorest.WithBaseURL(client.BaseUri),
-		autorest.WithPath("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualnetworks/{virtualNetworkName}/subnets"))
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPath("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualnetworks/{virtualNetworkName}/subnets"),
+		autorest.WithPathParameters(pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+}
+
+// ListSender sends the List request. The method will close the
+// http.Response Body if it receives an error.
+func (client SubnetsClient) ListSender(req *http.Request) (*http.Response, error) {
+	return client.Send(req, http.StatusOK)
+}
+
+// ListResponder handles the response to the List request. The method always
+// closes the http.Response Body.
+func (client SubnetsClient) ListResponder(resp *http.Response) (result SubnetListResult, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		autorest.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// ListNextResults retrieves the next set of results, if any.
+func (client SubnetsClient) ListNextResults(lastResults SubnetListResult) (result SubnetListResult, ae error) {
+	req, err := lastResults.SubnetListResultPreparer()
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "network/SubnetsClient", "List", "Failure preparing next results request request")
+	}
+	if req == nil {
+		return
+	}
+
+	resp, err := client.ListSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "network/SubnetsClient", "List", "Failure sending next results request request")
+	}
+
+	result, err = client.ListResponder(resp)
+	if err != nil {
+		ae = autorest.NewErrorWithError(err, "network/SubnetsClient", "List", "Failure responding to next results request request")
+	}
+
+	return
 }

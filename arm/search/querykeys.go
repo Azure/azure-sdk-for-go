@@ -19,22 +19,26 @@ package search
 // regenerated.
 
 import (
-	"github.com/Azure/go-autorest/autorest"
+	"github.com/Azure/azure-sdk-for-go/Godeps/_workspace/src/github.com/Azure/go-autorest/autorest"
 	"net/http"
 	"net/url"
 )
 
-// QueryKeys Client
+// QueryKeysClient is the client that can be used to manage Azure Search
+// services and API keys.
 type QueryKeysClient struct {
-	SearchManagementClient
+	ManagementClient
 }
 
-func NewQueryKeysClient(subscriptionId string) QueryKeysClient {
-	return NewQueryKeysClientWithBaseUri(DefaultBaseUri, subscriptionId)
+// NewQueryKeysClient creates an instance of the QueryKeysClient client.
+func NewQueryKeysClient(subscriptionID string) QueryKeysClient {
+	return NewQueryKeysClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-func NewQueryKeysClientWithBaseUri(baseUri string, subscriptionId string) QueryKeysClient {
-	return QueryKeysClient{NewWithBaseUri(baseUri, subscriptionId)}
+// NewQueryKeysClientWithBaseURI creates an instance of the QueryKeysClient
+// client.
+func NewQueryKeysClientWithBaseURI(baseURI string, subscriptionID string) QueryKeysClient {
+	return QueryKeysClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // List returns the list of query API keys for the given Azure Search service.
@@ -42,68 +46,62 @@ func NewQueryKeysClientWithBaseUri(baseUri string, subscriptionId string) QueryK
 // resourceGroupName is the name of the resource group within the current
 // subscription. serviceName is the name of the Search service for which to
 // list query keys.
-func (client QueryKeysClient) List(resourceGroupName string, serviceName string) (result ListQueryKeysResult, ae autorest.Error) {
-	req, err := client.NewListRequest(resourceGroupName, serviceName)
+func (client QueryKeysClient) List(resourceGroupName string, serviceName string) (result ListQueryKeysResult, ae error) {
+	req, err := client.ListPreparer(resourceGroupName, serviceName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "search.QueryKeysClient", "List", "Failure creating request")
+		return result, autorest.NewErrorWithError(err, "search/QueryKeysClient", "List", "Failure preparing request")
 	}
 
-	req, err = autorest.Prepare(
-		req,
-		client.WithAuthorization(),
-		client.WithInspection())
+	resp, err := client.ListSender(req)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "search.QueryKeysClient", "List", "Failure preparing request")
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "search/QueryKeysClient", "List", "Failure sending request")
 	}
 
-	resp, err := autorest.SendWithSender(
-		client,
-		req,
-		autorest.DoErrorUnlessStatusCode(http.StatusOK))
-
-	if err == nil {
-		err = autorest.Respond(
-			resp,
-			client.ByInspecting(),
-			autorest.WithErrorUnlessOK(),
-			autorest.ByUnmarshallingJSON(&result))
-		if err != nil {
-			ae = autorest.NewErrorWithError(err, "search.QueryKeysClient", "List", "Failure responding to request")
-		}
-	} else {
-		ae = autorest.NewErrorWithError(err, "search.QueryKeysClient", "List", "Failure sending request")
+	result, err = client.ListResponder(resp)
+	if err != nil {
+		ae = autorest.NewErrorWithError(err, "search/QueryKeysClient", "List", "Failure responding to request")
 	}
-
-	autorest.Respond(resp,
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
 
 	return
 }
 
-// Create the List request.
-func (client QueryKeysClient) NewListRequest(resourceGroupName string, serviceName string) (*http.Request, error) {
+// ListPreparer prepares the List request.
+func (client QueryKeysClient) ListPreparer(resourceGroupName string, serviceName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName": url.QueryEscape(resourceGroupName),
 		"serviceName":       url.QueryEscape(serviceName),
-		"subscriptionId":    url.QueryEscape(client.SubscriptionId),
+		"subscriptionId":    url.QueryEscape(client.SubscriptionID),
 	}
 
 	queryParameters := map[string]interface{}{
-		"api-version": ApiVersion,
+		"api-version": APIVersion,
 	}
 
-	return autorest.DecoratePreparer(
-		client.ListRequestPreparer(),
-		autorest.WithPathParameters(pathParameters),
-		autorest.WithQueryParameters(queryParameters)).Prepare(&http.Request{})
-}
-
-// Create a Preparer by which to prepare the List request.
-func (client QueryKeysClient) ListRequestPreparer() autorest.Preparer {
-	return autorest.CreatePreparer(
+	return autorest.Prepare(&http.Request{},
 		autorest.AsJSON(),
 		autorest.AsGet(),
-		autorest.WithBaseURL(client.BaseUri),
-		autorest.WithPath("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Search/searchServices/{serviceName}/listQueryKeys"))
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPath("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Search/searchServices/{serviceName}/listQueryKeys"),
+		autorest.WithPathParameters(pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+}
+
+// ListSender sends the List request. The method will close the
+// http.Response Body if it receives an error.
+func (client QueryKeysClient) ListSender(req *http.Request) (*http.Response, error) {
+	return client.Send(req, http.StatusOK)
+}
+
+// ListResponder handles the response to the List request. The method always
+// closes the http.Response Body.
+func (client QueryKeysClient) ListResponder(resp *http.Response) (result ListQueryKeysResult, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		autorest.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
 }

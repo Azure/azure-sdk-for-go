@@ -19,88 +19,84 @@ package network
 // regenerated.
 
 import (
-	"github.com/Azure/go-autorest/autorest"
+	"github.com/Azure/azure-sdk-for-go/Godeps/_workspace/src/github.com/Azure/go-autorest/autorest"
 	"net/http"
 	"net/url"
 )
 
-// Usages Client
+// UsagesClient is the client for the Usages methods of the Network service.
 type UsagesClient struct {
-	NetworkResourceProviderClient
+	ManagementClient
 }
 
-func NewUsagesClient(subscriptionId string) UsagesClient {
-	return NewUsagesClientWithBaseUri(DefaultBaseUri, subscriptionId)
+// NewUsagesClient creates an instance of the UsagesClient client.
+func NewUsagesClient(subscriptionID string) UsagesClient {
+	return NewUsagesClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-func NewUsagesClientWithBaseUri(baseUri string, subscriptionId string) UsagesClient {
-	return UsagesClient{NewWithBaseUri(baseUri, subscriptionId)}
+// NewUsagesClientWithBaseURI creates an instance of the UsagesClient client.
+func NewUsagesClientWithBaseURI(baseURI string, subscriptionID string) UsagesClient {
+	return UsagesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // List lists compute usages for a subscription.
 //
 // location is the location upon which resource usage is queried.
-func (client UsagesClient) List(location string) (result UsagesListResult, ae autorest.Error) {
-	req, err := client.NewListRequest(location)
+func (client UsagesClient) List(location string) (result UsagesListResult, ae error) {
+	req, err := client.ListPreparer(location)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "network.UsagesClient", "List", "Failure creating request")
+		return result, autorest.NewErrorWithError(err, "network/UsagesClient", "List", "Failure preparing request")
 	}
 
-	req, err = autorest.Prepare(
-		req,
-		client.WithAuthorization(),
-		client.WithInspection())
+	resp, err := client.ListSender(req)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "network.UsagesClient", "List", "Failure preparing request")
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "network/UsagesClient", "List", "Failure sending request")
 	}
 
-	resp, err := autorest.SendWithSender(
-		client,
-		req,
-		autorest.DoErrorUnlessStatusCode(http.StatusOK))
-
-	if err == nil {
-		err = autorest.Respond(
-			resp,
-			client.ByInspecting(),
-			autorest.WithErrorUnlessOK(),
-			autorest.ByUnmarshallingJSON(&result))
-		if err != nil {
-			ae = autorest.NewErrorWithError(err, "network.UsagesClient", "List", "Failure responding to request")
-		}
-	} else {
-		ae = autorest.NewErrorWithError(err, "network.UsagesClient", "List", "Failure sending request")
+	result, err = client.ListResponder(resp)
+	if err != nil {
+		ae = autorest.NewErrorWithError(err, "network/UsagesClient", "List", "Failure responding to request")
 	}
-
-	autorest.Respond(resp,
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
 
 	return
 }
 
-// Create the List request.
-func (client UsagesClient) NewListRequest(location string) (*http.Request, error) {
+// ListPreparer prepares the List request.
+func (client UsagesClient) ListPreparer(location string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"location":       url.QueryEscape(location),
-		"subscriptionId": url.QueryEscape(client.SubscriptionId),
+		"subscriptionId": url.QueryEscape(client.SubscriptionID),
 	}
 
 	queryParameters := map[string]interface{}{
-		"api-version": ApiVersion,
+		"api-version": APIVersion,
 	}
 
-	return autorest.DecoratePreparer(
-		client.ListRequestPreparer(),
-		autorest.WithPathParameters(pathParameters),
-		autorest.WithQueryParameters(queryParameters)).Prepare(&http.Request{})
-}
-
-// Create a Preparer by which to prepare the List request.
-func (client UsagesClient) ListRequestPreparer() autorest.Preparer {
-	return autorest.CreatePreparer(
+	return autorest.Prepare(&http.Request{},
 		autorest.AsJSON(),
 		autorest.AsGet(),
-		autorest.WithBaseURL(client.BaseUri),
-		autorest.WithPath("/subscriptions/{subscriptionId}/providers/Microsoft.Network/locations/{location}/usages"))
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPath("/subscriptions/{subscriptionId}/providers/Microsoft.Network/locations/{location}/usages"),
+		autorest.WithPathParameters(pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+}
+
+// ListSender sends the List request. The method will close the
+// http.Response Body if it receives an error.
+func (client UsagesClient) ListSender(req *http.Request) (*http.Response, error) {
+	return client.Send(req, http.StatusOK)
+}
+
+// ListResponder handles the response to the List request. The method always
+// closes the http.Response Body.
+func (client UsagesClient) ListResponder(resp *http.Response) (result UsagesListResult, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		autorest.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
 }

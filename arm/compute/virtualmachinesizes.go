@@ -19,88 +19,87 @@ package compute
 // regenerated.
 
 import (
-	"github.com/Azure/go-autorest/autorest"
+	"github.com/Azure/azure-sdk-for-go/Godeps/_workspace/src/github.com/Azure/go-autorest/autorest"
 	"net/http"
 	"net/url"
 )
 
-// VirtualMachineSizes Client
+// VirtualMachineSizesClient is the client for the VirtualMachineSizes methods
+// of the Compute service.
 type VirtualMachineSizesClient struct {
-	ComputeManagementClient
+	ManagementClient
 }
 
-func NewVirtualMachineSizesClient(subscriptionId string) VirtualMachineSizesClient {
-	return NewVirtualMachineSizesClientWithBaseUri(DefaultBaseUri, subscriptionId)
+// NewVirtualMachineSizesClient creates an instance of the
+// VirtualMachineSizesClient client.
+func NewVirtualMachineSizesClient(subscriptionID string) VirtualMachineSizesClient {
+	return NewVirtualMachineSizesClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-func NewVirtualMachineSizesClientWithBaseUri(baseUri string, subscriptionId string) VirtualMachineSizesClient {
-	return VirtualMachineSizesClient{NewWithBaseUri(baseUri, subscriptionId)}
+// NewVirtualMachineSizesClientWithBaseURI creates an instance of the
+// VirtualMachineSizesClient client.
+func NewVirtualMachineSizesClientWithBaseURI(baseURI string, subscriptionID string) VirtualMachineSizesClient {
+	return VirtualMachineSizesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // List lists virtual-machine-sizes available in a location for a subscription.
 //
 // location is the location upon which virtual-machine-sizes is queried.
-func (client VirtualMachineSizesClient) List(location string) (result VirtualMachineSizeListResult, ae autorest.Error) {
-	req, err := client.NewListRequest(location)
+func (client VirtualMachineSizesClient) List(location string) (result VirtualMachineSizeListResult, ae error) {
+	req, err := client.ListPreparer(location)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "compute.VirtualMachineSizesClient", "List", "Failure creating request")
+		return result, autorest.NewErrorWithError(err, "compute/VirtualMachineSizesClient", "List", "Failure preparing request")
 	}
 
-	req, err = autorest.Prepare(
-		req,
-		client.WithAuthorization(),
-		client.WithInspection())
+	resp, err := client.ListSender(req)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "compute.VirtualMachineSizesClient", "List", "Failure preparing request")
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "compute/VirtualMachineSizesClient", "List", "Failure sending request")
 	}
 
-	resp, err := autorest.SendWithSender(
-		client,
-		req,
-		autorest.DoErrorUnlessStatusCode(http.StatusOK))
-
-	if err == nil {
-		err = autorest.Respond(
-			resp,
-			client.ByInspecting(),
-			autorest.WithErrorUnlessOK(),
-			autorest.ByUnmarshallingJSON(&result))
-		if err != nil {
-			ae = autorest.NewErrorWithError(err, "compute.VirtualMachineSizesClient", "List", "Failure responding to request")
-		}
-	} else {
-		ae = autorest.NewErrorWithError(err, "compute.VirtualMachineSizesClient", "List", "Failure sending request")
+	result, err = client.ListResponder(resp)
+	if err != nil {
+		ae = autorest.NewErrorWithError(err, "compute/VirtualMachineSizesClient", "List", "Failure responding to request")
 	}
-
-	autorest.Respond(resp,
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
 
 	return
 }
 
-// Create the List request.
-func (client VirtualMachineSizesClient) NewListRequest(location string) (*http.Request, error) {
+// ListPreparer prepares the List request.
+func (client VirtualMachineSizesClient) ListPreparer(location string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"location":       url.QueryEscape(location),
-		"subscriptionId": url.QueryEscape(client.SubscriptionId),
+		"subscriptionId": url.QueryEscape(client.SubscriptionID),
 	}
 
 	queryParameters := map[string]interface{}{
-		"api-version": ApiVersion,
+		"api-version": APIVersion,
 	}
 
-	return autorest.DecoratePreparer(
-		client.ListRequestPreparer(),
-		autorest.WithPathParameters(pathParameters),
-		autorest.WithQueryParameters(queryParameters)).Prepare(&http.Request{})
-}
-
-// Create a Preparer by which to prepare the List request.
-func (client VirtualMachineSizesClient) ListRequestPreparer() autorest.Preparer {
-	return autorest.CreatePreparer(
+	return autorest.Prepare(&http.Request{},
 		autorest.AsJSON(),
 		autorest.AsGet(),
-		autorest.WithBaseURL(client.BaseUri),
-		autorest.WithPath("/subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/vmSizes"))
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPath("/subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/vmSizes"),
+		autorest.WithPathParameters(pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+}
+
+// ListSender sends the List request. The method will close the
+// http.Response Body if it receives an error.
+func (client VirtualMachineSizesClient) ListSender(req *http.Request) (*http.Response, error) {
+	return client.Send(req, http.StatusOK)
+}
+
+// ListResponder handles the response to the List request. The method always
+// closes the http.Response Body.
+func (client VirtualMachineSizesClient) ListResponder(resp *http.Response) (result VirtualMachineSizeListResult, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		autorest.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
 }

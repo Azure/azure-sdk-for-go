@@ -19,477 +19,662 @@ package compute
 // regenerated.
 
 import (
-	"github.com/Azure/go-autorest/autorest"
-	"github.com/Azure/go-autorest/autorest/date"
+	"github.com/Azure/azure-sdk-for-go/Godeps/_workspace/src/github.com/Azure/go-autorest/autorest"
+	"github.com/Azure/azure-sdk-for-go/Godeps/_workspace/src/github.com/Azure/go-autorest/autorest/date"
+	"github.com/Azure/azure-sdk-for-go/Godeps/_workspace/src/github.com/Azure/go-autorest/autorest/to"
+	"net/http"
 )
 
+// CachingTypes enumerates the values for caching types.
 type CachingTypes string
 
 const (
-	None      CachingTypes = "None"
-	ReadOnly  CachingTypes = "ReadOnly"
+	// None specifies the none state for caching types.
+	None CachingTypes = "None"
+	// ReadOnly specifies the read only state for caching types.
+	ReadOnly CachingTypes = "ReadOnly"
+	// ReadWrite specifies the read write state for caching types.
 	ReadWrite CachingTypes = "ReadWrite"
 )
 
+// ComponentNames enumerates the values for component names.
 type ComponentNames string
 
 const (
+	// MicrosoftWindowsShellSetup specifies the microsoft windows shell setup
+	// state for component names.
 	MicrosoftWindowsShellSetup ComponentNames = "Microsoft-Windows-Shell-Setup"
 )
 
-type ComputeOperationStatus string
-
-const (
-	ComputeOperationStatusFailed     ComputeOperationStatus = "Failed"
-	ComputeOperationStatusInProgress ComputeOperationStatus = "InProgress"
-	ComputeOperationStatusPreempted  ComputeOperationStatus = "Preempted"
-	ComputeOperationStatusSucceeded  ComputeOperationStatus = "Succeeded"
-)
-
+// DiskCreateOptionTypes enumerates the values for disk create option types.
 type DiskCreateOptionTypes string
 
 const (
-	Attach    DiskCreateOptionTypes = "attach"
-	Empty     DiskCreateOptionTypes = "empty"
+	// Attach specifies the attach state for disk create option types.
+	Attach DiskCreateOptionTypes = "attach"
+	// Empty specifies the empty state for disk create option types.
+	Empty DiskCreateOptionTypes = "empty"
+	// FromImage specifies the from image state for disk create option types.
 	FromImage DiskCreateOptionTypes = "fromImage"
 )
 
+// OperatingSystemTypes enumerates the values for operating system types.
 type OperatingSystemTypes string
 
 const (
-	Linux   OperatingSystemTypes = "Linux"
+	// Linux specifies the linux state for operating system types.
+	Linux OperatingSystemTypes = "Linux"
+	// Windows specifies the windows state for operating system types.
 	Windows OperatingSystemTypes = "Windows"
 )
 
+// OperationStatus enumerates the values for operation status.
 type OperationStatus string
 
 const (
-	OperationStatusFailed     OperationStatus = "Failed"
+	// OperationStatusFailed specifies the operation status failed state for
+	// operation status.
+	OperationStatusFailed OperationStatus = "Failed"
+	// OperationStatusInProgress specifies the operation status in progress
+	// state for operation status.
 	OperationStatusInProgress OperationStatus = "InProgress"
-	OperationStatusSucceeded  OperationStatus = "Succeeded"
+	// OperationStatusPreempted specifies the operation status preempted state
+	// for operation status.
+	OperationStatusPreempted OperationStatus = "Preempted"
+	// OperationStatusSucceeded specifies the operation status succeeded state
+	// for operation status.
+	OperationStatusSucceeded OperationStatus = "Succeeded"
 )
 
+// OperationStatusEnum enumerates the values for operation status enum.
+type OperationStatusEnum string
+
+const (
+	// OperationStatusEnumFailed specifies the operation status enum failed
+	// state for operation status enum.
+	OperationStatusEnumFailed OperationStatusEnum = "Failed"
+	// OperationStatusEnumInProgress specifies the operation status enum in
+	// progress state for operation status enum.
+	OperationStatusEnumInProgress OperationStatusEnum = "InProgress"
+	// OperationStatusEnumSucceeded specifies the operation status enum
+	// succeeded state for operation status enum.
+	OperationStatusEnumSucceeded OperationStatusEnum = "Succeeded"
+)
+
+// PassNames enumerates the values for pass names.
 type PassNames string
 
 const (
+	// OobeSystem specifies the oobe system state for pass names.
 	OobeSystem PassNames = "oobeSystem"
 )
 
+// ProtocolTypes enumerates the values for protocol types.
 type ProtocolTypes string
 
 const (
-	Http  ProtocolTypes = "Http"
-	Https ProtocolTypes = "Https"
+	// HTTP specifies the http state for protocol types.
+	HTTP ProtocolTypes = "Http"
+	// HTTPS specifies the https state for protocol types.
+	HTTPS ProtocolTypes = "Https"
 )
 
+// SettingNames enumerates the values for setting names.
 type SettingNames string
 
 const (
-	AutoLogon          SettingNames = "AutoLogon"
+	// AutoLogon specifies the auto logon state for setting names.
+	AutoLogon SettingNames = "AutoLogon"
+	// FirstLogonCommands specifies the first logon commands state for setting
+	// names.
 	FirstLogonCommands SettingNames = "FirstLogonCommands"
 )
 
+// StatusLevelTypes enumerates the values for status level types.
 type StatusLevelTypes string
 
 const (
-	Error   StatusLevelTypes = "Error"
-	Info    StatusLevelTypes = "Info"
+	// Error specifies the error state for status level types.
+	Error StatusLevelTypes = "Error"
+	// Info specifies the info state for status level types.
+	Info StatusLevelTypes = "Info"
+	// Warning specifies the warning state for status level types.
 	Warning StatusLevelTypes = "Warning"
 )
 
+// UsageUnit enumerates the values for usage unit.
 type UsageUnit string
 
 const (
+	// Count specifies the count state for usage unit.
 	Count UsageUnit = "Count"
 )
 
+// VirtualMachineSizeTypes enumerates the values for virtual machine size
+// types.
 type VirtualMachineSizeTypes string
 
 const (
-	BasicA0    VirtualMachineSizeTypes = "Basic_A0"
-	BasicA1    VirtualMachineSizeTypes = "Basic_A1"
-	BasicA2    VirtualMachineSizeTypes = "Basic_A2"
-	BasicA3    VirtualMachineSizeTypes = "Basic_A3"
-	BasicA4    VirtualMachineSizeTypes = "Basic_A4"
+	// BasicA0 specifies the basic a0 state for virtual machine size types.
+	BasicA0 VirtualMachineSizeTypes = "Basic_A0"
+	// BasicA1 specifies the basic a1 state for virtual machine size types.
+	BasicA1 VirtualMachineSizeTypes = "Basic_A1"
+	// BasicA2 specifies the basic a2 state for virtual machine size types.
+	BasicA2 VirtualMachineSizeTypes = "Basic_A2"
+	// BasicA3 specifies the basic a3 state for virtual machine size types.
+	BasicA3 VirtualMachineSizeTypes = "Basic_A3"
+	// BasicA4 specifies the basic a4 state for virtual machine size types.
+	BasicA4 VirtualMachineSizeTypes = "Basic_A4"
+	// StandardA0 specifies the standard a0 state for virtual machine size
+	// types.
 	StandardA0 VirtualMachineSizeTypes = "Standard_A0"
+	// StandardA1 specifies the standard a1 state for virtual machine size
+	// types.
 	StandardA1 VirtualMachineSizeTypes = "Standard_A1"
+	// StandardA2 specifies the standard a2 state for virtual machine size
+	// types.
 	StandardA2 VirtualMachineSizeTypes = "Standard_A2"
+	// StandardA3 specifies the standard a3 state for virtual machine size
+	// types.
 	StandardA3 VirtualMachineSizeTypes = "Standard_A3"
+	// StandardA4 specifies the standard a4 state for virtual machine size
+	// types.
 	StandardA4 VirtualMachineSizeTypes = "Standard_A4"
+	// StandardA5 specifies the standard a5 state for virtual machine size
+	// types.
 	StandardA5 VirtualMachineSizeTypes = "Standard_A5"
+	// StandardA6 specifies the standard a6 state for virtual machine size
+	// types.
 	StandardA6 VirtualMachineSizeTypes = "Standard_A6"
+	// StandardA7 specifies the standard a7 state for virtual machine size
+	// types.
 	StandardA7 VirtualMachineSizeTypes = "Standard_A7"
+	// StandardA8 specifies the standard a8 state for virtual machine size
+	// types.
 	StandardA8 VirtualMachineSizeTypes = "Standard_A8"
+	// StandardA9 specifies the standard a9 state for virtual machine size
+	// types.
 	StandardA9 VirtualMachineSizeTypes = "Standard_A9"
+	// StandardG1 specifies the standard g1 state for virtual machine size
+	// types.
 	StandardG1 VirtualMachineSizeTypes = "Standard_G1"
+	// StandardG2 specifies the standard g2 state for virtual machine size
+	// types.
 	StandardG2 VirtualMachineSizeTypes = "Standard_G2"
+	// StandardG3 specifies the standard g3 state for virtual machine size
+	// types.
 	StandardG3 VirtualMachineSizeTypes = "Standard_G3"
+	// StandardG4 specifies the standard g4 state for virtual machine size
+	// types.
 	StandardG4 VirtualMachineSizeTypes = "Standard_G4"
+	// StandardG5 specifies the standard g5 state for virtual machine size
+	// types.
 	StandardG5 VirtualMachineSizeTypes = "Standard_G5"
 )
 
-// Gets or sets additional XML formatted information that can be included in
-// the Unattend.xml file, which is used by Windows Setup. Contents are
-// defined by setting name, component name, and the pass in which the content
-// is a applied.
+// AdditionalUnattendContent is gets or sets additional XML formatted
+// information that can be included in the Unattend.xml file, which is used
+// by Windows Setup. Contents are defined by setting name, component name,
+// and the pass in which the content is a applied.
 type AdditionalUnattendContent struct {
 	PassName      PassNames      `json:"passName,omitempty"`
 	ComponentName ComponentNames `json:"componentName,omitempty"`
 	SettingName   SettingNames   `json:"settingName,omitempty"`
-	Content       string         `json:"content,omitempty"`
+	Content       *string        `json:"content,omitempty"`
 }
 
-// Api error base.
-type ApiErrorBase struct {
-	Code    string `json:"code,omitempty"`
-	Target  string `json:"target,omitempty"`
-	Message string `json:"message,omitempty"`
+// APIError is api error.
+type APIError struct {
+	Details    *[]APIErrorBase `json:"details,omitempty"`
+	Innererror *InnerError     `json:"innererror,omitempty"`
+	Code       *string         `json:"code,omitempty"`
+	Target     *string         `json:"target,omitempty"`
+	Message    *string         `json:"message,omitempty"`
 }
 
-// Create or update Availability Set parameters.
+// APIErrorBase is api error base.
+type APIErrorBase struct {
+	Code    *string `json:"code,omitempty"`
+	Target  *string `json:"target,omitempty"`
+	Message *string `json:"message,omitempty"`
+}
+
+// AvailabilitySet is create or update Availability Set parameters.
 type AvailabilitySet struct {
 	autorest.Response `json:"-"`
-	Id                string            `json:"id,omitempty"`
-	Name              string            `json:"name,omitempty"`
-	Type              string            `json:"type,omitempty"`
-	Location          string            `json:"location,omitempty"`
-	Tags              map[string]string `json:"tags,omitempty"`
-	Properties        struct {
-		PlatformUpdateDomainCount int                  `json:"platformUpdateDomainCount,omitempty"`
-		PlatformFaultDomainCount  int                  `json:"platformFaultDomainCount,omitempty"`
-		VirtualMachines           []SubResource        `json:"virtualMachines,omitempty"`
-		Statuses                  []InstanceViewStatus `json:"statuses,omitempty"`
-	} `json:"properties,omitempty"`
+	ID                *string                    `json:"id,omitempty"`
+	Name              *string                    `json:"name,omitempty"`
+	Type              *string                    `json:"type,omitempty"`
+	Location          *string                    `json:"location,omitempty"`
+	Tags              *map[string]*string        `json:"tags,omitempty"`
+	Properties        *AvailabilitySetProperties `json:"properties,omitempty"`
 }
 
-// The List Availability Set operation response.
+// AvailabilitySetListResult is the List Availability Set operation response.
 type AvailabilitySetListResult struct {
 	autorest.Response `json:"-"`
-	Value             []AvailabilitySet `json:"value,omitempty"`
+	Value             *[]AvailabilitySet `json:"value,omitempty"`
 }
 
-// The Compute service response for long-running operations.
-type ComputeLongRunningOperationResult struct {
-	autorest.Response `json:"-"`
-	OperationId       string                 `json:"operationId,omitempty"`
-	Status            ComputeOperationStatus `json:"status,omitempty"`
-	StartTime         date.Time              `json:"startTime,omitempty"`
-	EndTime           date.Time              `json:"endTime,omitempty"`
-	Properties        struct {
-		Output map[string]string `json:"output,omitempty"`
-	} `json:"properties,omitempty"`
-	Error struct {
-		Details    []ApiErrorBase `json:"details,omitempty"`
-		Innererror struct {
-			Exceptiontype string `json:"exceptiontype,omitempty"`
-			Errordetail   string `json:"errordetail,omitempty"`
-		} `json:"innererror,omitempty"`
-		Code    string `json:"code,omitempty"`
-		Target  string `json:"target,omitempty"`
-		Message string `json:"message,omitempty"`
-	} `json:"error,omitempty"`
+// AvailabilitySetProperties is the instance view of a resource.
+type AvailabilitySetProperties struct {
+	PlatformUpdateDomainCount *int                  `json:"platformUpdateDomainCount,omitempty"`
+	PlatformFaultDomainCount  *int                  `json:"platformFaultDomainCount,omitempty"`
+	VirtualMachines           *[]SubResource        `json:"virtualMachines,omitempty"`
+	Statuses                  *[]InstanceViewStatus `json:"statuses,omitempty"`
 }
 
-// Describes a data disk.
+// DataDisk is describes a data disk.
 type DataDisk struct {
-	Lun        int    `json:"lun,omitempty"`
-	DiskSizeGB int    `json:"diskSizeGB,omitempty"`
-	Name       string `json:"name,omitempty"`
-	Vhd        struct {
-		Uri string `json:"uri,omitempty"`
-	} `json:"vhd,omitempty"`
-	Image struct {
-		Uri string `json:"uri,omitempty"`
-	} `json:"image,omitempty"`
+	Lun          *int                  `json:"lun,omitempty"`
+	DiskSizeGB   *int                  `json:"diskSizeGB,omitempty"`
+	Name         *string               `json:"name,omitempty"`
+	Vhd          *VirtualHardDisk      `json:"vhd,omitempty"`
+	Image        *VirtualHardDisk      `json:"image,omitempty"`
 	Caching      CachingTypes          `json:"caching,omitempty"`
 	CreateOption DiskCreateOptionTypes `json:"createOption,omitempty"`
 }
 
-// Contains the data disk images information.
+// DataDiskImage is contains the data disk images information.
 type DataDiskImage struct {
-	Lun int `json:"lun,omitempty"`
+	Lun *int `json:"lun,omitempty"`
 }
 
-// The instance view of the disk.
+// DeleteOperationResult is the compute long running operation response.
+type DeleteOperationResult struct {
+	OperationID *string             `json:"operationId,omitempty"`
+	Status      OperationStatusEnum `json:"status,omitempty"`
+	StartTime   *date.Time          `json:"startTime,omitempty"`
+	EndTime     *date.Time          `json:"endTime,omitempty"`
+	Error       *APIError           `json:"error,omitempty"`
+}
+
+// DiskInstanceView is the instance view of the disk.
 type DiskInstanceView struct {
-	Name     string               `json:"name,omitempty"`
-	Statuses []InstanceViewStatus `json:"statuses,omitempty"`
+	Name     *string               `json:"name,omitempty"`
+	Statuses *[]InstanceViewStatus `json:"statuses,omitempty"`
 }
 
-// Instance view status.
+// HardwareProfile is describes a hardware profile.
+type HardwareProfile struct {
+	VMSize VirtualMachineSizeTypes `json:"vmSize,omitempty"`
+}
+
+// ImageReference is the image reference.
+type ImageReference struct {
+	Publisher *string `json:"publisher,omitempty"`
+	Offer     *string `json:"offer,omitempty"`
+	Sku       *string `json:"sku,omitempty"`
+	Version   *string `json:"version,omitempty"`
+}
+
+// InnerError is inner error details.
+type InnerError struct {
+	Exceptiontype *string `json:"exceptiontype,omitempty"`
+	Errordetail   *string `json:"errordetail,omitempty"`
+}
+
+// InstanceViewStatus is instance view status.
 type InstanceViewStatus struct {
-	Code          string           `json:"code,omitempty"`
+	Code          *string          `json:"code,omitempty"`
 	Level         StatusLevelTypes `json:"level,omitempty"`
-	DisplayStatus string           `json:"displayStatus,omitempty"`
-	Message       string           `json:"message,omitempty"`
-	Time          date.Time        `json:"time,omitempty"`
+	DisplayStatus *string          `json:"displayStatus,omitempty"`
+	Message       *string          `json:"message,omitempty"`
+	Time          *date.Time       `json:"time,omitempty"`
 }
 
-// The List Usages operation response.
+// LinuxConfiguration is describes Windows Configuration of the OS Profile.
+type LinuxConfiguration struct {
+	DisablePasswordAuthentication *bool             `json:"disablePasswordAuthentication,omitempty"`
+	SSH                           *SSHConfiguration `json:"ssh,omitempty"`
+}
+
+// ListUsagesResult is the List Usages operation response.
 type ListUsagesResult struct {
 	autorest.Response `json:"-"`
-	Value             []Usage `json:"value,omitempty"`
+	Value             *[]Usage `json:"value,omitempty"`
 }
 
-// Describes a network interface reference.
+// LongRunningOperationProperties is compute-specific operation properties,
+// including output
+type LongRunningOperationProperties struct {
+	Output *map[string]*string `json:"output,omitempty"`
+}
+
+// LongRunningOperationResult is the Compute service response for long-running
+// operations.
+type LongRunningOperationResult struct {
+	autorest.Response `json:"-"`
+	OperationID       *string                         `json:"operationId,omitempty"`
+	Status            OperationStatus                 `json:"status,omitempty"`
+	StartTime         *date.Time                      `json:"startTime,omitempty"`
+	EndTime           *date.Time                      `json:"endTime,omitempty"`
+	Properties        *LongRunningOperationProperties `json:"properties,omitempty"`
+	Error             *APIError                       `json:"error,omitempty"`
+}
+
+// NetworkInterfaceReference is describes a network interface reference.
 type NetworkInterfaceReference struct {
-	Id         string `json:"id,omitempty"`
-	Properties struct {
-		Primary bool `json:"primary,omitempty"`
-	} `json:"properties,omitempty"`
+	ID         *string                              `json:"id,omitempty"`
+	Properties *NetworkInterfaceReferenceProperties `json:"properties,omitempty"`
 }
 
-// Contains information about SSH certificate public key and the path on the
-// Linux VM where the public key is placed.
-type SshPublicKey struct {
-	Path    string `json:"path,omitempty"`
-	KeyData string `json:"keyData,omitempty"`
+// NetworkInterfaceReferenceProperties is describes a network interface
+// reference properties.
+type NetworkInterfaceReferenceProperties struct {
+	Primary *bool `json:"primary,omitempty"`
 }
 
+// NetworkProfile is describes a network profile.
+type NetworkProfile struct {
+	NetworkInterfaces *[]NetworkInterfaceReference `json:"networkInterfaces,omitempty"`
+}
+
+// OSDisk is describes an Operating System disk.
+type OSDisk struct {
+	OsType       OperatingSystemTypes  `json:"osType,omitempty"`
+	Name         *string               `json:"name,omitempty"`
+	Vhd          *VirtualHardDisk      `json:"vhd,omitempty"`
+	Image        *VirtualHardDisk      `json:"image,omitempty"`
+	Caching      CachingTypes          `json:"caching,omitempty"`
+	CreateOption DiskCreateOptionTypes `json:"createOption,omitempty"`
+}
+
+// OSDiskImage is contains the os disk image information.
+type OSDiskImage struct {
+	OperatingSystem OperatingSystemTypes `json:"operatingSystem,omitempty"`
+}
+
+// OSProfile is describes an OS profile.
+type OSProfile struct {
+	ComputerName         *string               `json:"computerName,omitempty"`
+	AdminUsername        *string               `json:"adminUsername,omitempty"`
+	AdminPassword        *string               `json:"adminPassword,omitempty"`
+	CustomData           *string               `json:"customData,omitempty"`
+	WindowsConfiguration *WindowsConfiguration `json:"windowsConfiguration,omitempty"`
+	LinuxConfiguration   *LinuxConfiguration   `json:"linuxConfiguration,omitempty"`
+	Secrets              *[]VaultSecretGroup   `json:"secrets,omitempty"`
+}
+
+// Plan is plan for the resource.
+type Plan struct {
+	Name          *string `json:"name,omitempty"`
+	Publisher     *string `json:"publisher,omitempty"`
+	Product       *string `json:"product,omitempty"`
+	PromotionCode *string `json:"promotionCode,omitempty"`
+}
+
+// PurchasePlan is used for establishing the purchase context of any 3rd Party
+// artifact through MarketPlace.
+type PurchasePlan struct {
+	Publisher *string `json:"publisher,omitempty"`
+	Name      *string `json:"name,omitempty"`
+	Product   *string `json:"product,omitempty"`
+}
+
+// Resource is
+type Resource struct {
+	ID       *string             `json:"id,omitempty"`
+	Name     *string             `json:"name,omitempty"`
+	Type     *string             `json:"type,omitempty"`
+	Location *string             `json:"location,omitempty"`
+	Tags     *map[string]*string `json:"tags,omitempty"`
+}
+
+// SSHConfiguration is sSH configuration for Linux based VMs running on Azure
+type SSHConfiguration struct {
+	PublicKeys *[]SSHPublicKey `json:"publicKeys,omitempty"`
+}
+
+// SSHPublicKey is contains information about SSH certificate public key and
+// the path on the Linux VM where the public key is placed.
+type SSHPublicKey struct {
+	Path    *string `json:"path,omitempty"`
+	KeyData *string `json:"keyData,omitempty"`
+}
+
+// StorageProfile is describes a storage profile.
+type StorageProfile struct {
+	ImageReference *ImageReference `json:"imageReference,omitempty"`
+	OsDisk         *OSDisk         `json:"osDisk,omitempty"`
+	DataDisks      *[]DataDisk     `json:"dataDisks,omitempty"`
+}
+
+// SubResource is
 type SubResource struct {
-	Id string `json:"id,omitempty"`
+	ID *string `json:"id,omitempty"`
 }
 
-// Describes Compute Resource Usage.
+// Usage is describes Compute Resource Usage.
 type Usage struct {
-	Unit         UsageUnit `json:"unit,omitempty"`
-	CurrentValue int       `json:"currentValue,omitempty"`
-	Limit        int32     `json:"limit,omitempty"`
-	Name         struct {
-		Value          string `json:"value,omitempty"`
-		LocalizedValue string `json:"localizedValue,omitempty"`
-	} `json:"name,omitempty"`
+	Unit         UsageUnit  `json:"unit,omitempty"`
+	CurrentValue *int       `json:"currentValue,omitempty"`
+	Limit        *int32     `json:"limit,omitempty"`
+	Name         *UsageName `json:"name,omitempty"`
 }
 
-// Describes a single certificate reference in a Key Vault, and where the
-// certificate should reside on the VM.
+// UsageName is the Usage Names.
+type UsageName struct {
+	Value          *string `json:"value,omitempty"`
+	LocalizedValue *string `json:"localizedValue,omitempty"`
+}
+
+// VaultCertificate is describes a single certificate reference in a Key
+// Vault, and where the certificate should reside on the VM.
 type VaultCertificate struct {
-	CertificateUrl   string `json:"certificateUrl,omitempty"`
-	CertificateStore string `json:"certificateStore,omitempty"`
+	CertificateURL   *string `json:"certificateUrl,omitempty"`
+	CertificateStore *string `json:"certificateStore,omitempty"`
 }
 
-// Describes a set of certificates which are all in the same Key Vault.
+// VaultSecretGroup is describes a set of certificates which are all in the
+// same Key Vault.
 type VaultSecretGroup struct {
-	SourceVault struct {
-		Id string `json:"id,omitempty"`
-	} `json:"sourceVault,omitempty"`
-	VaultCertificates []VaultCertificate `json:"vaultCertificates,omitempty"`
+	SourceVault       *SubResource        `json:"sourceVault,omitempty"`
+	VaultCertificates *[]VaultCertificate `json:"vaultCertificates,omitempty"`
 }
 
-// Describes a Virtual Machine.
+// VirtualHardDisk is describes the uri of a disk.
+type VirtualHardDisk struct {
+	URI *string `json:"uri,omitempty"`
+}
+
+// VirtualMachine is describes a Virtual Machine.
 type VirtualMachine struct {
 	autorest.Response `json:"-"`
-	Id                string            `json:"id,omitempty"`
-	Name              string            `json:"name,omitempty"`
-	Type              string            `json:"type,omitempty"`
-	Location          string            `json:"location,omitempty"`
-	Tags              map[string]string `json:"tags,omitempty"`
-	Plan              struct {
-		Name          string `json:"name,omitempty"`
-		Publisher     string `json:"publisher,omitempty"`
-		Product       string `json:"product,omitempty"`
-		PromotionCode string `json:"promotionCode,omitempty"`
-	} `json:"plan,omitempty"`
-	Properties struct {
-		HardwareProfile struct {
-			VmSize VirtualMachineSizeTypes `json:"vmSize,omitempty"`
-		} `json:"hardwareProfile,omitempty"`
-		StorageProfile struct {
-			ImageReference struct {
-				Publisher string `json:"publisher,omitempty"`
-				Offer     string `json:"offer,omitempty"`
-				Sku       string `json:"sku,omitempty"`
-				Version   string `json:"version,omitempty"`
-			} `json:"imageReference,omitempty"`
-			OsDisk struct {
-				OsType OperatingSystemTypes `json:"osType,omitempty"`
-				Name   string               `json:"name,omitempty"`
-				Vhd    struct {
-					Uri string `json:"uri,omitempty"`
-				} `json:"vhd,omitempty"`
-				Image struct {
-					Uri string `json:"uri,omitempty"`
-				} `json:"image,omitempty"`
-				Caching      CachingTypes          `json:"caching,omitempty"`
-				CreateOption DiskCreateOptionTypes `json:"createOption,omitempty"`
-			} `json:"osDisk,omitempty"`
-			DataDisks []DataDisk `json:"dataDisks,omitempty"`
-		} `json:"storageProfile,omitempty"`
-		OsProfile struct {
-			ComputerName         string `json:"computerName,omitempty"`
-			AdminUsername        string `json:"adminUsername,omitempty"`
-			AdminPassword        string `json:"adminPassword,omitempty"`
-			CustomData           string `json:"customData,omitempty"`
-			WindowsConfiguration struct {
-				ProvisionVMAgent          bool                        `json:"provisionVMAgent,omitempty"`
-				EnableAutomaticUpdates    bool                        `json:"enableAutomaticUpdates,omitempty"`
-				TimeZone                  string                      `json:"timeZone,omitempty"`
-				AdditionalUnattendContent []AdditionalUnattendContent `json:"additionalUnattendContent,omitempty"`
-				WinRM                     struct {
-					Listeners []WinRMListener `json:"listeners,omitempty"`
-				} `json:"winRM,omitempty"`
-			} `json:"windowsConfiguration,omitempty"`
-			LinuxConfiguration struct {
-				DisablePasswordAuthentication bool `json:"disablePasswordAuthentication,omitempty"`
-				Ssh                           struct {
-					PublicKeys []SshPublicKey `json:"publicKeys,omitempty"`
-				} `json:"ssh,omitempty"`
-			} `json:"linuxConfiguration,omitempty"`
-			Secrets []VaultSecretGroup `json:"secrets,omitempty"`
-		} `json:"osProfile,omitempty"`
-		NetworkProfile struct {
-			NetworkInterfaces []NetworkInterfaceReference `json:"networkInterfaces,omitempty"`
-		} `json:"networkProfile,omitempty"`
-		AvailabilitySet struct {
-			Id string `json:"id,omitempty"`
-		} `json:"availabilitySet,omitempty"`
-		ProvisioningState string `json:"provisioningState,omitempty"`
-		InstanceView      struct {
-			PlatformUpdateDomain int    `json:"platformUpdateDomain,omitempty"`
-			PlatformFaultDomain  int    `json:"platformFaultDomain,omitempty"`
-			RdpThumbPrint        string `json:"rdpThumbPrint,omitempty"`
-			VmAgent              struct {
-				VmAgentVersion    string                                       `json:"vmAgentVersion,omitempty"`
-				ExtensionHandlers []VirtualMachineExtensionHandlerInstanceView `json:"extensionHandlers,omitempty"`
-				Statuses          []InstanceViewStatus                         `json:"statuses,omitempty"`
-			} `json:"vmAgent,omitempty"`
-			Disks      []DiskInstanceView                    `json:"disks,omitempty"`
-			Extensions []VirtualMachineExtensionInstanceView `json:"extensions,omitempty"`
-			Statuses   []InstanceViewStatus                  `json:"statuses,omitempty"`
-		} `json:"instanceView,omitempty"`
-	} `json:"properties,omitempty"`
-	Resources []VirtualMachineExtension `json:"resources,omitempty"`
+	ID                *string                    `json:"id,omitempty"`
+	Name              *string                    `json:"name,omitempty"`
+	Type              *string                    `json:"type,omitempty"`
+	Location          *string                    `json:"location,omitempty"`
+	Tags              *map[string]*string        `json:"tags,omitempty"`
+	Plan              *Plan                      `json:"plan,omitempty"`
+	Properties        *VirtualMachineProperties  `json:"properties,omitempty"`
+	Resources         *[]VirtualMachineExtension `json:"resources,omitempty"`
 }
 
-// Capture Virtual Machine parameters.
+// VirtualMachineAgentInstanceView is the instance view of the VM Agent
+// running on the virtual machine.
+type VirtualMachineAgentInstanceView struct {
+	VMAgentVersion    *string                                       `json:"vmAgentVersion,omitempty"`
+	ExtensionHandlers *[]VirtualMachineExtensionHandlerInstanceView `json:"extensionHandlers,omitempty"`
+	Statuses          *[]InstanceViewStatus                         `json:"statuses,omitempty"`
+}
+
+// VirtualMachineCaptureParameters is capture Virtual Machine parameters.
 type VirtualMachineCaptureParameters struct {
-	VhdPrefix                string `json:"vhdPrefix,omitempty"`
-	DestinationContainerName string `json:"destinationContainerName,omitempty"`
-	OverwriteVhds            bool   `json:"overwriteVhds,omitempty"`
+	VhdPrefix                *string `json:"vhdPrefix,omitempty"`
+	DestinationContainerName *string `json:"destinationContainerName,omitempty"`
+	OverwriteVhds            *bool   `json:"overwriteVhds,omitempty"`
 }
 
-// Describes a Virtual Machine Extension.
+// VirtualMachineExtension is describes a Virtual Machine Extension.
 type VirtualMachineExtension struct {
 	autorest.Response `json:"-"`
-	Id                string            `json:"id,omitempty"`
-	Name              string            `json:"name,omitempty"`
-	Type              string            `json:"type,omitempty"`
-	Location          string            `json:"location,omitempty"`
-	Tags              map[string]string `json:"tags,omitempty"`
-	Properties        struct {
-		Publisher               string            `json:"publisher,omitempty"`
-		Type                    string            `json:"type,omitempty"`
-		TypeHandlerVersion      string            `json:"typeHandlerVersion,omitempty"`
-		AutoUpgradeMinorVersion bool              `json:"autoUpgradeMinorVersion,omitempty"`
-		Settings                map[string]string `json:"settings,omitempty"`
-		ProtectedSettings       map[string]string `json:"protectedSettings,omitempty"`
-		ProvisioningState       string            `json:"provisioningState,omitempty"`
-		InstanceView            struct {
-			Name               string               `json:"name,omitempty"`
-			Type               string               `json:"type,omitempty"`
-			TypeHandlerVersion string               `json:"typeHandlerVersion,omitempty"`
-			Substatuses        []InstanceViewStatus `json:"substatuses,omitempty"`
-			Statuses           []InstanceViewStatus `json:"statuses,omitempty"`
-		} `json:"instanceView,omitempty"`
-	} `json:"properties,omitempty"`
+	ID                *string                            `json:"id,omitempty"`
+	Name              *string                            `json:"name,omitempty"`
+	Type              *string                            `json:"type,omitempty"`
+	Location          *string                            `json:"location,omitempty"`
+	Tags              *map[string]*string                `json:"tags,omitempty"`
+	Properties        *VirtualMachineExtensionProperties `json:"properties,omitempty"`
 }
 
-// The instance view of a virtual machine extension handler.
+// VirtualMachineExtensionHandlerInstanceView is the instance view of a
+// virtual machine extension handler.
 type VirtualMachineExtensionHandlerInstanceView struct {
-	Type               string `json:"type,omitempty"`
-	TypeHandlerVersion string `json:"typeHandlerVersion,omitempty"`
-	Status             struct {
-		Code          string           `json:"code,omitempty"`
-		Level         StatusLevelTypes `json:"level,omitempty"`
-		DisplayStatus string           `json:"displayStatus,omitempty"`
-		Message       string           `json:"message,omitempty"`
-		Time          date.Time        `json:"time,omitempty"`
-	} `json:"status,omitempty"`
+	Type               *string             `json:"type,omitempty"`
+	TypeHandlerVersion *string             `json:"typeHandlerVersion,omitempty"`
+	Status             *InstanceViewStatus `json:"status,omitempty"`
 }
 
-// Describes a Virtual Machine Extension Image.
+// VirtualMachineExtensionImage is describes a Virtual Machine Extension Image.
 type VirtualMachineExtensionImage struct {
 	autorest.Response `json:"-"`
-	Id                string `json:"id,omitempty"`
-	Properties        struct {
-		OperatingSystem            string `json:"operatingSystem,omitempty"`
-		ComputeRole                string `json:"computeRole,omitempty"`
-		HandlerSchema              string `json:"handlerSchema,omitempty"`
-		VmScaleSetEnabled          bool   `json:"vmScaleSetEnabled,omitempty"`
-		SupportsMultipleExtensions bool   `json:"supportsMultipleExtensions,omitempty"`
-	} `json:"properties,omitempty"`
-	Name     string            `json:"name,omitempty"`
-	Location string            `json:"location,omitempty"`
-	Tags     map[string]string `json:"tags,omitempty"`
+	ID                *string                                 `json:"id,omitempty"`
+	Properties        *VirtualMachineExtensionImageProperties `json:"properties,omitempty"`
+	Name              *string                                 `json:"name,omitempty"`
+	Location          *string                                 `json:"location,omitempty"`
+	Tags              *map[string]*string                     `json:"tags,omitempty"`
 }
 
-// The instance view of a virtual machine extension.
+// VirtualMachineExtensionImageProperties is describes the properties of a
+// Virtual Machine Extension Image.
+type VirtualMachineExtensionImageProperties struct {
+	OperatingSystem            *string `json:"operatingSystem,omitempty"`
+	ComputeRole                *string `json:"computeRole,omitempty"`
+	HandlerSchema              *string `json:"handlerSchema,omitempty"`
+	VMScaleSetEnabled          *bool   `json:"vmScaleSetEnabled,omitempty"`
+	SupportsMultipleExtensions *bool   `json:"supportsMultipleExtensions,omitempty"`
+}
+
+// VirtualMachineExtensionInstanceView is the instance view of a virtual
+// machine extension.
 type VirtualMachineExtensionInstanceView struct {
-	Name               string               `json:"name,omitempty"`
-	Type               string               `json:"type,omitempty"`
-	TypeHandlerVersion string               `json:"typeHandlerVersion,omitempty"`
-	Substatuses        []InstanceViewStatus `json:"substatuses,omitempty"`
-	Statuses           []InstanceViewStatus `json:"statuses,omitempty"`
+	Name               *string               `json:"name,omitempty"`
+	Type               *string               `json:"type,omitempty"`
+	TypeHandlerVersion *string               `json:"typeHandlerVersion,omitempty"`
+	Substatuses        *[]InstanceViewStatus `json:"substatuses,omitempty"`
+	Statuses           *[]InstanceViewStatus `json:"statuses,omitempty"`
 }
 
-// Describes a Virtual Machine Image.
+// VirtualMachineExtensionProperties is describes the properties of a Virtual
+// Machine Extension.
+type VirtualMachineExtensionProperties struct {
+	Publisher               *string                              `json:"publisher,omitempty"`
+	Type                    *string                              `json:"type,omitempty"`
+	TypeHandlerVersion      *string                              `json:"typeHandlerVersion,omitempty"`
+	AutoUpgradeMinorVersion *bool                                `json:"autoUpgradeMinorVersion,omitempty"`
+	Settings                *map[string]*string                  `json:"settings,omitempty"`
+	ProtectedSettings       *map[string]*string                  `json:"protectedSettings,omitempty"`
+	ProvisioningState       *string                              `json:"provisioningState,omitempty"`
+	InstanceView            *VirtualMachineExtensionInstanceView `json:"instanceView,omitempty"`
+}
+
+// VirtualMachineImage is describes a Virtual Machine Image.
 type VirtualMachineImage struct {
 	autorest.Response `json:"-"`
-	Id                string `json:"id,omitempty"`
-	Properties        struct {
-		Plan struct {
-			Publisher string `json:"publisher,omitempty"`
-			Name      string `json:"name,omitempty"`
-			Product   string `json:"product,omitempty"`
-		} `json:"plan,omitempty"`
-		OsDiskImage struct {
-			OperatingSystem OperatingSystemTypes `json:"operatingSystem,omitempty"`
-		} `json:"osDiskImage,omitempty"`
-		DataDiskImages []DataDiskImage `json:"dataDiskImages,omitempty"`
-	} `json:"properties,omitempty"`
-	Name     string            `json:"name,omitempty"`
-	Location string            `json:"location,omitempty"`
-	Tags     map[string]string `json:"tags,omitempty"`
+	ID                *string                        `json:"id,omitempty"`
+	Properties        *VirtualMachineImageProperties `json:"properties,omitempty"`
+	Name              *string                        `json:"name,omitempty"`
+	Location          *string                        `json:"location,omitempty"`
+	Tags              *map[string]*string            `json:"tags,omitempty"`
 }
 
-// Virtual machine image resource information.
+// VirtualMachineImageProperties is describes the properties of a Virtual
+// Machine Image.
+type VirtualMachineImageProperties struct {
+	Plan           *PurchasePlan    `json:"plan,omitempty"`
+	OsDiskImage    *OSDiskImage     `json:"osDiskImage,omitempty"`
+	DataDiskImages *[]DataDiskImage `json:"dataDiskImages,omitempty"`
+}
+
+// VirtualMachineImageResource is virtual machine image resource information.
 type VirtualMachineImageResource struct {
-	Id       string            `json:"id,omitempty"`
-	Name     string            `json:"name,omitempty"`
-	Location string            `json:"location,omitempty"`
-	Tags     map[string]string `json:"tags,omitempty"`
+	ID       *string             `json:"id,omitempty"`
+	Name     *string             `json:"name,omitempty"`
+	Location *string             `json:"location,omitempty"`
+	Tags     *map[string]*string `json:"tags,omitempty"`
 }
 
+// VirtualMachineImageResourceList is
 type VirtualMachineImageResourceList struct {
 	autorest.Response `json:"-"`
-	Value             []VirtualMachineImageResource `json:"value,omitempty"`
+	Value             *[]VirtualMachineImageResource `json:"value,omitempty"`
 }
 
-// The List Virtual Machine operation response.
+// VirtualMachineInstanceView is the instance view of a virtual machine.
+type VirtualMachineInstanceView struct {
+	PlatformUpdateDomain *int                                   `json:"platformUpdateDomain,omitempty"`
+	PlatformFaultDomain  *int                                   `json:"platformFaultDomain,omitempty"`
+	RdpThumbPrint        *string                                `json:"rdpThumbPrint,omitempty"`
+	VMAgent              *VirtualMachineAgentInstanceView       `json:"vmAgent,omitempty"`
+	Disks                *[]DiskInstanceView                    `json:"disks,omitempty"`
+	Extensions           *[]VirtualMachineExtensionInstanceView `json:"extensions,omitempty"`
+	Statuses             *[]InstanceViewStatus                  `json:"statuses,omitempty"`
+}
+
+// VirtualMachineListResult is the List Virtual Machine operation response.
 type VirtualMachineListResult struct {
 	autorest.Response `json:"-"`
-	Value             []VirtualMachine `json:"value,omitempty"`
-	NextLink          string           `json:"nextLink,omitempty"`
+	Value             *[]VirtualMachine `json:"value,omitempty"`
+	NextLink          *string           `json:"nextLink,omitempty"`
 }
 
-// Describes the properties of a VM size.
+// VirtualMachineListResultPreparer prepares a request to retrieve the next set of results. It returns
+// nil if no more results exist.
+func (client VirtualMachineListResult) VirtualMachineListResultPreparer() (*http.Request, error) {
+	if client.NextLink == nil || len(to.String(client.NextLink)) <= 0 {
+		return nil, nil
+	}
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(client.NextLink)))
+}
+
+// VirtualMachineProperties is describes the properties of a Virtual Machine.
+type VirtualMachineProperties struct {
+	HardwareProfile   *HardwareProfile            `json:"hardwareProfile,omitempty"`
+	StorageProfile    *StorageProfile             `json:"storageProfile,omitempty"`
+	OsProfile         *OSProfile                  `json:"osProfile,omitempty"`
+	NetworkProfile    *NetworkProfile             `json:"networkProfile,omitempty"`
+	AvailabilitySet   *SubResource                `json:"availabilitySet,omitempty"`
+	ProvisioningState *string                     `json:"provisioningState,omitempty"`
+	InstanceView      *VirtualMachineInstanceView `json:"instanceView,omitempty"`
+}
+
+// VirtualMachineSize is describes the properties of a VM size.
 type VirtualMachineSize struct {
-	Name                 string `json:"name,omitempty"`
-	NumberOfCores        int    `json:"numberOfCores,omitempty"`
-	OsDiskSizeInMB       int    `json:"osDiskSizeInMB,omitempty"`
-	ResourceDiskSizeInMB int    `json:"resourceDiskSizeInMB,omitempty"`
-	MemoryInMB           int    `json:"memoryInMB,omitempty"`
-	MaxDataDiskCount     int    `json:"maxDataDiskCount,omitempty"`
+	Name                 *string `json:"name,omitempty"`
+	NumberOfCores        *int    `json:"numberOfCores,omitempty"`
+	OsDiskSizeInMB       *int    `json:"osDiskSizeInMB,omitempty"`
+	ResourceDiskSizeInMB *int    `json:"resourceDiskSizeInMB,omitempty"`
+	MemoryInMB           *int    `json:"memoryInMB,omitempty"`
+	MaxDataDiskCount     *int    `json:"maxDataDiskCount,omitempty"`
 }
 
-// The List Virtual Machine operation response.
+// VirtualMachineSizeListResult is the List Virtual Machine operation response.
 type VirtualMachineSizeListResult struct {
 	autorest.Response `json:"-"`
-	Value             []VirtualMachineSize `json:"value,omitempty"`
+	Value             *[]VirtualMachineSize `json:"value,omitempty"`
 }
 
-// Describes Protocol and thumbprint of Windows Remote Management listener
+// WindowsConfiguration is describes Windows Configuration of the OS Profile.
+type WindowsConfiguration struct {
+	ProvisionVMAgent          *bool                        `json:"provisionVMAgent,omitempty"`
+	EnableAutomaticUpdates    *bool                        `json:"enableAutomaticUpdates,omitempty"`
+	TimeZone                  *string                      `json:"timeZone,omitempty"`
+	AdditionalUnattendContent *[]AdditionalUnattendContent `json:"additionalUnattendContent,omitempty"`
+	WinRM                     *WinRMConfiguration          `json:"winRM,omitempty"`
+}
+
+// WinRMConfiguration is describes Windows Remote Management configuration of
+// the VM
+type WinRMConfiguration struct {
+	Listeners *[]WinRMListener `json:"listeners,omitempty"`
+}
+
+// WinRMListener is describes Protocol and thumbprint of Windows Remote
+// Management listener
 type WinRMListener struct {
 	Protocol       ProtocolTypes `json:"protocol,omitempty"`
-	CertificateUrl string        `json:"certificateUrl,omitempty"`
+	CertificateURL *string       `json:"certificateUrl,omitempty"`
 }

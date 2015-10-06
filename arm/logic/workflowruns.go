@@ -19,22 +19,155 @@ package logic
 // regenerated.
 
 import (
-	"github.com/Azure/go-autorest/autorest"
+	"github.com/Azure/azure-sdk-for-go/Godeps/_workspace/src/github.com/Azure/go-autorest/autorest"
 	"net/http"
 	"net/url"
 )
 
-// WorkflowRuns Client
+// WorkflowRunsClient is the client for the WorkflowRuns methods of the Logic
+// service.
 type WorkflowRunsClient struct {
-	LogicManagementClient
+	ManagementClient
 }
 
-func NewWorkflowRunsClient(subscriptionId string) WorkflowRunsClient {
-	return NewWorkflowRunsClientWithBaseUri(DefaultBaseUri, subscriptionId)
+// NewWorkflowRunsClient creates an instance of the WorkflowRunsClient client.
+func NewWorkflowRunsClient(subscriptionID string) WorkflowRunsClient {
+	return NewWorkflowRunsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-func NewWorkflowRunsClientWithBaseUri(baseUri string, subscriptionId string) WorkflowRunsClient {
-	return WorkflowRunsClient{NewWithBaseUri(baseUri, subscriptionId)}
+// NewWorkflowRunsClientWithBaseURI creates an instance of the
+// WorkflowRunsClient client.
+func NewWorkflowRunsClientWithBaseURI(baseURI string, subscriptionID string) WorkflowRunsClient {
+	return WorkflowRunsClient{NewWithBaseURI(baseURI, subscriptionID)}
+}
+
+// Cancel cancels a workflow run.
+//
+// resourceGroupName is the resource group name. workflowName is the workflow
+// name. runName is the workflow run name.
+func (client WorkflowRunsClient) Cancel(resourceGroupName string, workflowName string, runName string) (result autorest.Response, ae error) {
+	req, err := client.CancelPreparer(resourceGroupName, workflowName, runName)
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "logic/WorkflowRunsClient", "Cancel", "Failure preparing request")
+	}
+
+	resp, err := client.CancelSender(req)
+	if err != nil {
+		result.Response = resp
+		return result, autorest.NewErrorWithError(err, "logic/WorkflowRunsClient", "Cancel", "Failure sending request")
+	}
+
+	result, err = client.CancelResponder(resp)
+	if err != nil {
+		ae = autorest.NewErrorWithError(err, "logic/WorkflowRunsClient", "Cancel", "Failure responding to request")
+	}
+
+	return
+}
+
+// CancelPreparer prepares the Cancel request.
+func (client WorkflowRunsClient) CancelPreparer(resourceGroupName string, workflowName string, runName string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"resourceGroupName": url.QueryEscape(resourceGroupName),
+		"runName":           url.QueryEscape(runName),
+		"subscriptionId":    url.QueryEscape(client.SubscriptionID),
+		"workflowName":      url.QueryEscape(workflowName),
+	}
+
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsPost(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPath("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logic/workflows/{workflowName}/runs/{runName}/cancel"),
+		autorest.WithPathParameters(pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+}
+
+// CancelSender sends the Cancel request. The method will close the
+// http.Response Body if it receives an error.
+func (client WorkflowRunsClient) CancelSender(req *http.Request) (*http.Response, error) {
+	return client.Send(req, http.StatusOK)
+}
+
+// CancelResponder handles the response to the Cancel request. The method always
+// closes the http.Response Body.
+func (client WorkflowRunsClient) CancelResponder(resp *http.Response) (result autorest.Response, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		autorest.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByClosing())
+	result.Response = resp
+	return
+}
+
+// Get gets a workflow run.
+//
+// resourceGroupName is the resource group name. workflowName is the workflow
+// name. runName is the workflow run name.
+func (client WorkflowRunsClient) Get(resourceGroupName string, workflowName string, runName string) (result WorkflowRun, ae error) {
+	req, err := client.GetPreparer(resourceGroupName, workflowName, runName)
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "logic/WorkflowRunsClient", "Get", "Failure preparing request")
+	}
+
+	resp, err := client.GetSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "logic/WorkflowRunsClient", "Get", "Failure sending request")
+	}
+
+	result, err = client.GetResponder(resp)
+	if err != nil {
+		ae = autorest.NewErrorWithError(err, "logic/WorkflowRunsClient", "Get", "Failure responding to request")
+	}
+
+	return
+}
+
+// GetPreparer prepares the Get request.
+func (client WorkflowRunsClient) GetPreparer(resourceGroupName string, workflowName string, runName string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"resourceGroupName": url.QueryEscape(resourceGroupName),
+		"runName":           url.QueryEscape(runName),
+		"subscriptionId":    url.QueryEscape(client.SubscriptionID),
+		"workflowName":      url.QueryEscape(workflowName),
+	}
+
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPath("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logic/workflows/{workflowName}/runs/{runName}"),
+		autorest.WithPathParameters(pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+}
+
+// GetSender sends the Get request. The method will close the
+// http.Response Body if it receives an error.
+func (client WorkflowRunsClient) GetSender(req *http.Request) (*http.Response, error) {
+	return client.Send(req, http.StatusOK)
+}
+
+// GetResponder handles the response to the Get request. The method always
+// closes the http.Response Body.
+func (client WorkflowRunsClient) GetResponder(resp *http.Response) (result WorkflowRun, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		autorest.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
 }
 
 // List gets a list of workflow runs.
@@ -42,211 +175,88 @@ func NewWorkflowRunsClientWithBaseUri(baseUri string, subscriptionId string) Wor
 // resourceGroupName is the resource group name. workflowName is the workflow
 // name. top is the number of items to be included in the result. filter is
 // the filter to apply on the operation.
-func (client WorkflowRunsClient) List(resourceGroupName string, workflowName string, top int, filter string) (result WorkflowRunListResult, ae autorest.Error) {
-	req, err := client.NewListRequest(resourceGroupName, workflowName, top, filter)
+func (client WorkflowRunsClient) List(resourceGroupName string, workflowName string, top int, filter string) (result WorkflowRunListResult, ae error) {
+	req, err := client.ListPreparer(resourceGroupName, workflowName, top, filter)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "logic.WorkflowRunsClient", "List", "Failure creating request")
+		return result, autorest.NewErrorWithError(err, "logic/WorkflowRunsClient", "List", "Failure preparing request")
 	}
 
-	req, err = autorest.Prepare(
-		req,
-		client.WithAuthorization(),
-		client.WithInspection())
+	resp, err := client.ListSender(req)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "logic.WorkflowRunsClient", "List", "Failure preparing request")
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "logic/WorkflowRunsClient", "List", "Failure sending request")
 	}
 
-	resp, err := autorest.SendWithSender(
-		client,
-		req,
-		autorest.DoErrorUnlessStatusCode(http.StatusOK))
-
-	if err == nil {
-		err = autorest.Respond(
-			resp,
-			client.ByInspecting(),
-			autorest.WithErrorUnlessOK(),
-			autorest.ByUnmarshallingJSON(&result))
-		if err != nil {
-			ae = autorest.NewErrorWithError(err, "logic.WorkflowRunsClient", "List", "Failure responding to request")
-		}
-	} else {
-		ae = autorest.NewErrorWithError(err, "logic.WorkflowRunsClient", "List", "Failure sending request")
+	result, err = client.ListResponder(resp)
+	if err != nil {
+		ae = autorest.NewErrorWithError(err, "logic/WorkflowRunsClient", "List", "Failure responding to request")
 	}
-
-	autorest.Respond(resp,
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
 
 	return
 }
 
-// Create the List request.
-func (client WorkflowRunsClient) NewListRequest(resourceGroupName string, workflowName string, top int, filter string) (*http.Request, error) {
+// ListPreparer prepares the List request.
+func (client WorkflowRunsClient) ListPreparer(resourceGroupName string, workflowName string, top int, filter string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName": url.QueryEscape(resourceGroupName),
-		"subscriptionId":    url.QueryEscape(client.SubscriptionId),
+		"subscriptionId":    url.QueryEscape(client.SubscriptionID),
 		"workflowName":      url.QueryEscape(workflowName),
 	}
 
 	queryParameters := map[string]interface{}{
 		"$filter":     filter,
 		"$top":        top,
-		"api-version": ApiVersion,
+		"api-version": APIVersion,
 	}
 
-	return autorest.DecoratePreparer(
-		client.ListRequestPreparer(),
-		autorest.WithPathParameters(pathParameters),
-		autorest.WithQueryParameters(queryParameters)).Prepare(&http.Request{})
-}
-
-// Create a Preparer by which to prepare the List request.
-func (client WorkflowRunsClient) ListRequestPreparer() autorest.Preparer {
-	return autorest.CreatePreparer(
+	return autorest.Prepare(&http.Request{},
 		autorest.AsJSON(),
 		autorest.AsGet(),
-		autorest.WithBaseURL(client.BaseUri),
-		autorest.WithPath("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logic/workflows/{workflowName}/runs"))
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPath("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logic/workflows/{workflowName}/runs"),
+		autorest.WithPathParameters(pathParameters),
+		autorest.WithQueryParameters(queryParameters))
 }
 
-// Get gets a workflow run.
-//
-// resourceGroupName is the resource group name. workflowName is the workflow
-// name. runName is the workflow run name.
-func (client WorkflowRunsClient) Get(resourceGroupName string, workflowName string, runName string) (result WorkflowRun, ae autorest.Error) {
-	req, err := client.NewGetRequest(resourceGroupName, workflowName, runName)
-	if err != nil {
-		return result, autorest.NewErrorWithError(err, "logic.WorkflowRunsClient", "Get", "Failure creating request")
-	}
+// ListSender sends the List request. The method will close the
+// http.Response Body if it receives an error.
+func (client WorkflowRunsClient) ListSender(req *http.Request) (*http.Response, error) {
+	return client.Send(req, http.StatusOK)
+}
 
-	req, err = autorest.Prepare(
-		req,
-		client.WithAuthorization(),
-		client.WithInspection())
-	if err != nil {
-		return result, autorest.NewErrorWithError(err, "logic.WorkflowRunsClient", "Get", "Failure preparing request")
-	}
-
-	resp, err := autorest.SendWithSender(
-		client,
-		req,
-		autorest.DoErrorUnlessStatusCode(http.StatusOK))
-
-	if err == nil {
-		err = autorest.Respond(
-			resp,
-			client.ByInspecting(),
-			autorest.WithErrorUnlessOK(),
-			autorest.ByUnmarshallingJSON(&result))
-		if err != nil {
-			ae = autorest.NewErrorWithError(err, "logic.WorkflowRunsClient", "Get", "Failure responding to request")
-		}
-	} else {
-		ae = autorest.NewErrorWithError(err, "logic.WorkflowRunsClient", "Get", "Failure sending request")
-	}
-
-	autorest.Respond(resp,
+// ListResponder handles the response to the List request. The method always
+// closes the http.Response Body.
+func (client WorkflowRunsClient) ListResponder(resp *http.Response) (result WorkflowRunListResult, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		autorest.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
-
 	return
 }
 
-// Create the Get request.
-func (client WorkflowRunsClient) NewGetRequest(resourceGroupName string, workflowName string, runName string) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"resourceGroupName": url.QueryEscape(resourceGroupName),
-		"runName":           url.QueryEscape(runName),
-		"subscriptionId":    url.QueryEscape(client.SubscriptionId),
-		"workflowName":      url.QueryEscape(workflowName),
-	}
-
-	queryParameters := map[string]interface{}{
-		"api-version": ApiVersion,
-	}
-
-	return autorest.DecoratePreparer(
-		client.GetRequestPreparer(),
-		autorest.WithPathParameters(pathParameters),
-		autorest.WithQueryParameters(queryParameters)).Prepare(&http.Request{})
-}
-
-// Create a Preparer by which to prepare the Get request.
-func (client WorkflowRunsClient) GetRequestPreparer() autorest.Preparer {
-	return autorest.CreatePreparer(
-		autorest.AsJSON(),
-		autorest.AsGet(),
-		autorest.WithBaseURL(client.BaseUri),
-		autorest.WithPath("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logic/workflows/{workflowName}/runs/{runName}"))
-}
-
-// Cancel cancels a workflow run.
-//
-// resourceGroupName is the resource group name. workflowName is the workflow
-// name. runName is the workflow run name.
-func (client WorkflowRunsClient) Cancel(resourceGroupName string, workflowName string, runName string) (result autorest.Response, ae autorest.Error) {
-	req, err := client.NewCancelRequest(resourceGroupName, workflowName, runName)
+// ListNextResults retrieves the next set of results, if any.
+func (client WorkflowRunsClient) ListNextResults(lastResults WorkflowRunListResult) (result WorkflowRunListResult, ae error) {
+	req, err := lastResults.WorkflowRunListResultPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "logic.WorkflowRunsClient", "Cancel", "Failure creating request")
+		return result, autorest.NewErrorWithError(err, "logic/WorkflowRunsClient", "List", "Failure preparing next results request request")
+	}
+	if req == nil {
+		return
 	}
 
-	req, err = autorest.Prepare(
-		req,
-		client.WithAuthorization(),
-		client.WithInspection())
+	resp, err := client.ListSender(req)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "logic.WorkflowRunsClient", "Cancel", "Failure preparing request")
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "logic/WorkflowRunsClient", "List", "Failure sending next results request request")
 	}
 
-	resp, err := autorest.SendWithSender(
-		client,
-		req,
-		autorest.DoErrorUnlessStatusCode(http.StatusOK))
-
-	if err == nil {
-		err = autorest.Respond(
-			resp,
-			client.ByInspecting(),
-			autorest.WithErrorUnlessOK())
-		if err != nil {
-			ae = autorest.NewErrorWithError(err, "logic.WorkflowRunsClient", "Cancel", "Failure responding to request")
-		}
-	} else {
-		ae = autorest.NewErrorWithError(err, "logic.WorkflowRunsClient", "Cancel", "Failure sending request")
+	result, err = client.ListResponder(resp)
+	if err != nil {
+		ae = autorest.NewErrorWithError(err, "logic/WorkflowRunsClient", "List", "Failure responding to next results request request")
 	}
-
-	autorest.Respond(resp,
-		autorest.ByClosing())
-	result.Response = resp
 
 	return
-}
-
-// Create the Cancel request.
-func (client WorkflowRunsClient) NewCancelRequest(resourceGroupName string, workflowName string, runName string) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"resourceGroupName": url.QueryEscape(resourceGroupName),
-		"runName":           url.QueryEscape(runName),
-		"subscriptionId":    url.QueryEscape(client.SubscriptionId),
-		"workflowName":      url.QueryEscape(workflowName),
-	}
-
-	queryParameters := map[string]interface{}{
-		"api-version": ApiVersion,
-	}
-
-	return autorest.DecoratePreparer(
-		client.CancelRequestPreparer(),
-		autorest.WithPathParameters(pathParameters),
-		autorest.WithQueryParameters(queryParameters)).Prepare(&http.Request{})
-}
-
-// Create a Preparer by which to prepare the Cancel request.
-func (client WorkflowRunsClient) CancelRequestPreparer() autorest.Preparer {
-	return autorest.CreatePreparer(
-		autorest.AsJSON(),
-		autorest.AsPost(),
-		autorest.WithBaseURL(client.BaseUri),
-		autorest.WithPath("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logic/workflows/{workflowName}/runs/{runName}/cancel"))
 }

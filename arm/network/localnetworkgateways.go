@@ -19,22 +19,27 @@ package network
 // regenerated.
 
 import (
-	"github.com/Azure/go-autorest/autorest"
+	"github.com/Azure/azure-sdk-for-go/Godeps/_workspace/src/github.com/Azure/go-autorest/autorest"
 	"net/http"
 	"net/url"
 )
 
-// LocalNetworkGateways Client
+// LocalNetworkGatewaysClient is the client for the LocalNetworkGateways
+// methods of the Network service.
 type LocalNetworkGatewaysClient struct {
-	NetworkResourceProviderClient
+	ManagementClient
 }
 
-func NewLocalNetworkGatewaysClient(subscriptionId string) LocalNetworkGatewaysClient {
-	return NewLocalNetworkGatewaysClientWithBaseUri(DefaultBaseUri, subscriptionId)
+// NewLocalNetworkGatewaysClient creates an instance of the
+// LocalNetworkGatewaysClient client.
+func NewLocalNetworkGatewaysClient(subscriptionID string) LocalNetworkGatewaysClient {
+	return NewLocalNetworkGatewaysClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-func NewLocalNetworkGatewaysClientWithBaseUri(baseUri string, subscriptionId string) LocalNetworkGatewaysClient {
-	return LocalNetworkGatewaysClient{NewWithBaseUri(baseUri, subscriptionId)}
+// NewLocalNetworkGatewaysClientWithBaseURI creates an instance of the
+// LocalNetworkGatewaysClient client.
+func NewLocalNetworkGatewaysClientWithBaseURI(baseURI string, subscriptionID string) LocalNetworkGatewaysClient {
+	return LocalNetworkGatewaysClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // CreateOrUpdate the Put LocalNetworkGateway operation creates/updates a
@@ -45,142 +50,65 @@ func NewLocalNetworkGatewaysClientWithBaseUri(baseUri string, subscriptionId str
 // localNetworkGatewayName is the name of the local network gateway.
 // parameters is parameters supplied to the Begin Create or update Local
 // Network Gateway operation through Network resource provider.
-func (client LocalNetworkGatewaysClient) CreateOrUpdate(resourceGroupName string, localNetworkGatewayName string, parameters LocalNetworkGateway) (result LocalNetworkGateway, ae autorest.Error) {
-	req, err := client.NewCreateOrUpdateRequest(resourceGroupName, localNetworkGatewayName, parameters)
+func (client LocalNetworkGatewaysClient) CreateOrUpdate(resourceGroupName string, localNetworkGatewayName string, parameters LocalNetworkGateway) (result LocalNetworkGateway, ae error) {
+	req, err := client.CreateOrUpdatePreparer(resourceGroupName, localNetworkGatewayName, parameters)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "network.LocalNetworkGatewaysClient", "CreateOrUpdate", "Failure creating request")
+		return result, autorest.NewErrorWithError(err, "network/LocalNetworkGatewaysClient", "CreateOrUpdate", "Failure preparing request")
 	}
 
-	req, err = autorest.Prepare(
-		req,
-		client.WithAuthorization(),
-		client.WithInspection())
+	resp, err := client.CreateOrUpdateSender(req)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "network.LocalNetworkGatewaysClient", "CreateOrUpdate", "Failure preparing request")
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "network/LocalNetworkGatewaysClient", "CreateOrUpdate", "Failure sending request")
 	}
 
-	resp, err := autorest.SendWithSender(
-		client,
-		req,
-		autorest.DoErrorUnlessStatusCode(http.StatusCreated, http.StatusOK))
-
-	if err == nil {
-		err = autorest.Respond(
-			resp,
-			client.ByInspecting(),
-			autorest.WithErrorUnlessOK(),
-			autorest.ByUnmarshallingJSON(&result))
-		if err != nil {
-			ae = autorest.NewErrorWithError(err, "network.LocalNetworkGatewaysClient", "CreateOrUpdate", "Failure responding to request")
-		}
-	} else {
-		ae = autorest.NewErrorWithError(err, "network.LocalNetworkGatewaysClient", "CreateOrUpdate", "Failure sending request")
+	result, err = client.CreateOrUpdateResponder(resp)
+	if err != nil {
+		ae = autorest.NewErrorWithError(err, "network/LocalNetworkGatewaysClient", "CreateOrUpdate", "Failure responding to request")
 	}
-
-	autorest.Respond(resp,
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
 
 	return
 }
 
-// Create the CreateOrUpdate request.
-func (client LocalNetworkGatewaysClient) NewCreateOrUpdateRequest(resourceGroupName string, localNetworkGatewayName string, parameters LocalNetworkGateway) (*http.Request, error) {
+// CreateOrUpdatePreparer prepares the CreateOrUpdate request.
+func (client LocalNetworkGatewaysClient) CreateOrUpdatePreparer(resourceGroupName string, localNetworkGatewayName string, parameters LocalNetworkGateway) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"localNetworkGatewayName": url.QueryEscape(localNetworkGatewayName),
 		"resourceGroupName":       url.QueryEscape(resourceGroupName),
-		"subscriptionId":          url.QueryEscape(client.SubscriptionId),
+		"subscriptionId":          url.QueryEscape(client.SubscriptionID),
 	}
 
 	queryParameters := map[string]interface{}{
-		"api-version": ApiVersion,
+		"api-version": APIVersion,
 	}
 
-	return autorest.DecoratePreparer(
-		client.CreateOrUpdateRequestPreparer(),
-		autorest.WithJSON(parameters),
-		autorest.WithPathParameters(pathParameters),
-		autorest.WithQueryParameters(queryParameters)).Prepare(&http.Request{})
-}
-
-// Create a Preparer by which to prepare the CreateOrUpdate request.
-func (client LocalNetworkGatewaysClient) CreateOrUpdateRequestPreparer() autorest.Preparer {
-	return autorest.CreatePreparer(
+	return autorest.Prepare(&http.Request{},
 		autorest.AsJSON(),
 		autorest.AsPut(),
-		autorest.WithBaseURL(client.BaseUri),
-		autorest.WithPath("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/localNetworkGateways/{localNetworkGatewayName}"))
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPath("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/localNetworkGateways/{localNetworkGatewayName}"),
+		autorest.WithJSON(parameters),
+		autorest.WithPathParameters(pathParameters),
+		autorest.WithQueryParameters(queryParameters))
 }
 
-// Get the Get LocalNetworkGateway operation retrieves information about the
-// specified local network gateway through Network resource provider.
-//
-// resourceGroupName is the name of the resource group.
-// localNetworkGatewayName is the name of the local network gateway.
-func (client LocalNetworkGatewaysClient) Get(resourceGroupName string, localNetworkGatewayName string) (result LocalNetworkGateway, ae autorest.Error) {
-	req, err := client.NewGetRequest(resourceGroupName, localNetworkGatewayName)
-	if err != nil {
-		return result, autorest.NewErrorWithError(err, "network.LocalNetworkGatewaysClient", "Get", "Failure creating request")
-	}
+// CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
+// http.Response Body if it receives an error.
+func (client LocalNetworkGatewaysClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
+	return client.Send(req, http.StatusCreated, http.StatusOK)
+}
 
-	req, err = autorest.Prepare(
-		req,
-		client.WithAuthorization(),
-		client.WithInspection())
-	if err != nil {
-		return result, autorest.NewErrorWithError(err, "network.LocalNetworkGatewaysClient", "Get", "Failure preparing request")
-	}
-
-	resp, err := autorest.SendWithSender(
-		client,
-		req,
-		autorest.DoErrorUnlessStatusCode(http.StatusOK))
-
-	if err == nil {
-		err = autorest.Respond(
-			resp,
-			client.ByInspecting(),
-			autorest.WithErrorUnlessOK(),
-			autorest.ByUnmarshallingJSON(&result))
-		if err != nil {
-			ae = autorest.NewErrorWithError(err, "network.LocalNetworkGatewaysClient", "Get", "Failure responding to request")
-		}
-	} else {
-		ae = autorest.NewErrorWithError(err, "network.LocalNetworkGatewaysClient", "Get", "Failure sending request")
-	}
-
-	autorest.Respond(resp,
+// CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
+// closes the http.Response Body.
+func (client LocalNetworkGatewaysClient) CreateOrUpdateResponder(resp *http.Response) (result LocalNetworkGateway, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		autorest.WithErrorUnlessStatusCode(http.StatusCreated, http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
-
 	return
-}
-
-// Create the Get request.
-func (client LocalNetworkGatewaysClient) NewGetRequest(resourceGroupName string, localNetworkGatewayName string) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"localNetworkGatewayName": url.QueryEscape(localNetworkGatewayName),
-		"resourceGroupName":       url.QueryEscape(resourceGroupName),
-		"subscriptionId":          url.QueryEscape(client.SubscriptionId),
-	}
-
-	queryParameters := map[string]interface{}{
-		"api-version": ApiVersion,
-	}
-
-	return autorest.DecoratePreparer(
-		client.GetRequestPreparer(),
-		autorest.WithPathParameters(pathParameters),
-		autorest.WithQueryParameters(queryParameters)).Prepare(&http.Request{})
-}
-
-// Create a Preparer by which to prepare the Get request.
-func (client LocalNetworkGatewaysClient) GetRequestPreparer() autorest.Preparer {
-	return autorest.CreatePreparer(
-		autorest.AsJSON(),
-		autorest.AsGet(),
-		autorest.WithBaseURL(client.BaseUri),
-		autorest.WithPath("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/localNetworkGateways/{localNetworkGatewayName}"))
 }
 
 // Delete the Delete LocalNetworkGateway operation deletes the specifed local
@@ -188,142 +116,213 @@ func (client LocalNetworkGatewaysClient) GetRequestPreparer() autorest.Preparer 
 //
 // resourceGroupName is the name of the resource group.
 // localNetworkGatewayName is the name of the local network gateway.
-func (client LocalNetworkGatewaysClient) Delete(resourceGroupName string, localNetworkGatewayName string) (result autorest.Response, ae autorest.Error) {
-	req, err := client.NewDeleteRequest(resourceGroupName, localNetworkGatewayName)
+func (client LocalNetworkGatewaysClient) Delete(resourceGroupName string, localNetworkGatewayName string) (result autorest.Response, ae error) {
+	req, err := client.DeletePreparer(resourceGroupName, localNetworkGatewayName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "network.LocalNetworkGatewaysClient", "Delete", "Failure creating request")
+		return result, autorest.NewErrorWithError(err, "network/LocalNetworkGatewaysClient", "Delete", "Failure preparing request")
 	}
 
-	req, err = autorest.Prepare(
-		req,
-		client.WithAuthorization(),
-		client.WithInspection())
+	resp, err := client.DeleteSender(req)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "network.LocalNetworkGatewaysClient", "Delete", "Failure preparing request")
+		result.Response = resp
+		return result, autorest.NewErrorWithError(err, "network/LocalNetworkGatewaysClient", "Delete", "Failure sending request")
 	}
 
-	resp, err := autorest.SendWithSender(
-		client,
-		req,
-		autorest.DoErrorUnlessStatusCode(http.StatusAccepted, http.StatusNoContent, http.StatusOK))
-	if err == nil {
-		err = client.IsPollingAllowed(resp)
-		if err == nil {
-			resp, err = client.PollAsNeeded(resp)
-		}
+	result, err = client.DeleteResponder(resp)
+	if err != nil {
+		ae = autorest.NewErrorWithError(err, "network/LocalNetworkGatewaysClient", "Delete", "Failure responding to request")
 	}
-
-	if err == nil {
-		err = autorest.Respond(
-			resp,
-			client.ByInspecting(),
-			autorest.WithErrorUnlessOK())
-		if err != nil {
-			ae = autorest.NewErrorWithError(err, "network.LocalNetworkGatewaysClient", "Delete", "Failure responding to request")
-		}
-	} else {
-		ae = autorest.NewErrorWithError(err, "network.LocalNetworkGatewaysClient", "Delete", "Failure sending request")
-	}
-
-	autorest.Respond(resp,
-		autorest.ByClosing())
-	result.Response = resp
 
 	return
 }
 
-// Create the Delete request.
-func (client LocalNetworkGatewaysClient) NewDeleteRequest(resourceGroupName string, localNetworkGatewayName string) (*http.Request, error) {
+// DeletePreparer prepares the Delete request.
+func (client LocalNetworkGatewaysClient) DeletePreparer(resourceGroupName string, localNetworkGatewayName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"localNetworkGatewayName": url.QueryEscape(localNetworkGatewayName),
 		"resourceGroupName":       url.QueryEscape(resourceGroupName),
-		"subscriptionId":          url.QueryEscape(client.SubscriptionId),
+		"subscriptionId":          url.QueryEscape(client.SubscriptionID),
 	}
 
 	queryParameters := map[string]interface{}{
-		"api-version": ApiVersion,
+		"api-version": APIVersion,
 	}
 
-	return autorest.DecoratePreparer(
-		client.DeleteRequestPreparer(),
-		autorest.WithPathParameters(pathParameters),
-		autorest.WithQueryParameters(queryParameters)).Prepare(&http.Request{})
-}
-
-// Create a Preparer by which to prepare the Delete request.
-func (client LocalNetworkGatewaysClient) DeleteRequestPreparer() autorest.Preparer {
-	return autorest.CreatePreparer(
+	return autorest.Prepare(&http.Request{},
 		autorest.AsJSON(),
 		autorest.AsDelete(),
-		autorest.WithBaseURL(client.BaseUri),
-		autorest.WithPath("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/localNetworkGateways/{localNetworkGatewayName}/"))
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPath("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/localNetworkGateways/{localNetworkGatewayName}/"),
+		autorest.WithPathParameters(pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+}
+
+// DeleteSender sends the Delete request. The method will close the
+// http.Response Body if it receives an error.
+func (client LocalNetworkGatewaysClient) DeleteSender(req *http.Request) (*http.Response, error) {
+	return client.Send(req, http.StatusAccepted, http.StatusNoContent, http.StatusOK)
+}
+
+// DeleteResponder handles the response to the Delete request. The method always
+// closes the http.Response Body.
+func (client LocalNetworkGatewaysClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		autorest.WithErrorUnlessStatusCode(http.StatusAccepted, http.StatusNoContent, http.StatusOK),
+		autorest.ByClosing())
+	result.Response = resp
+	return
+}
+
+// Get the Get LocalNetworkGateway operation retrieves information about the
+// specified local network gateway through Network resource provider.
+//
+// resourceGroupName is the name of the resource group.
+// localNetworkGatewayName is the name of the local network gateway.
+func (client LocalNetworkGatewaysClient) Get(resourceGroupName string, localNetworkGatewayName string) (result LocalNetworkGateway, ae error) {
+	req, err := client.GetPreparer(resourceGroupName, localNetworkGatewayName)
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "network/LocalNetworkGatewaysClient", "Get", "Failure preparing request")
+	}
+
+	resp, err := client.GetSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "network/LocalNetworkGatewaysClient", "Get", "Failure sending request")
+	}
+
+	result, err = client.GetResponder(resp)
+	if err != nil {
+		ae = autorest.NewErrorWithError(err, "network/LocalNetworkGatewaysClient", "Get", "Failure responding to request")
+	}
+
+	return
+}
+
+// GetPreparer prepares the Get request.
+func (client LocalNetworkGatewaysClient) GetPreparer(resourceGroupName string, localNetworkGatewayName string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"localNetworkGatewayName": url.QueryEscape(localNetworkGatewayName),
+		"resourceGroupName":       url.QueryEscape(resourceGroupName),
+		"subscriptionId":          url.QueryEscape(client.SubscriptionID),
+	}
+
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPath("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/localNetworkGateways/{localNetworkGatewayName}"),
+		autorest.WithPathParameters(pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+}
+
+// GetSender sends the Get request. The method will close the
+// http.Response Body if it receives an error.
+func (client LocalNetworkGatewaysClient) GetSender(req *http.Request) (*http.Response, error) {
+	return client.Send(req, http.StatusOK)
+}
+
+// GetResponder handles the response to the Get request. The method always
+// closes the http.Response Body.
+func (client LocalNetworkGatewaysClient) GetResponder(resp *http.Response) (result LocalNetworkGateway, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		autorest.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
 }
 
 // List the List LocalNetworkGateways opertion retrieves all the local network
 // gateways stored.
 //
 // resourceGroupName is the name of the resource group.
-func (client LocalNetworkGatewaysClient) List(resourceGroupName string) (result LocalNetworkGatewayListResult, ae autorest.Error) {
-	req, err := client.NewListRequest(resourceGroupName)
+func (client LocalNetworkGatewaysClient) List(resourceGroupName string) (result LocalNetworkGatewayListResult, ae error) {
+	req, err := client.ListPreparer(resourceGroupName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "network.LocalNetworkGatewaysClient", "List", "Failure creating request")
+		return result, autorest.NewErrorWithError(err, "network/LocalNetworkGatewaysClient", "List", "Failure preparing request")
 	}
 
-	req, err = autorest.Prepare(
-		req,
-		client.WithAuthorization(),
-		client.WithInspection())
+	resp, err := client.ListSender(req)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "network.LocalNetworkGatewaysClient", "List", "Failure preparing request")
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "network/LocalNetworkGatewaysClient", "List", "Failure sending request")
 	}
 
-	resp, err := autorest.SendWithSender(
-		client,
-		req,
-		autorest.DoErrorUnlessStatusCode(http.StatusOK))
-
-	if err == nil {
-		err = autorest.Respond(
-			resp,
-			client.ByInspecting(),
-			autorest.WithErrorUnlessOK(),
-			autorest.ByUnmarshallingJSON(&result))
-		if err != nil {
-			ae = autorest.NewErrorWithError(err, "network.LocalNetworkGatewaysClient", "List", "Failure responding to request")
-		}
-	} else {
-		ae = autorest.NewErrorWithError(err, "network.LocalNetworkGatewaysClient", "List", "Failure sending request")
+	result, err = client.ListResponder(resp)
+	if err != nil {
+		ae = autorest.NewErrorWithError(err, "network/LocalNetworkGatewaysClient", "List", "Failure responding to request")
 	}
-
-	autorest.Respond(resp,
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
 
 	return
 }
 
-// Create the List request.
-func (client LocalNetworkGatewaysClient) NewListRequest(resourceGroupName string) (*http.Request, error) {
+// ListPreparer prepares the List request.
+func (client LocalNetworkGatewaysClient) ListPreparer(resourceGroupName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName": url.QueryEscape(resourceGroupName),
-		"subscriptionId":    url.QueryEscape(client.SubscriptionId),
+		"subscriptionId":    url.QueryEscape(client.SubscriptionID),
 	}
 
 	queryParameters := map[string]interface{}{
-		"api-version": ApiVersion,
+		"api-version": APIVersion,
 	}
 
-	return autorest.DecoratePreparer(
-		client.ListRequestPreparer(),
-		autorest.WithPathParameters(pathParameters),
-		autorest.WithQueryParameters(queryParameters)).Prepare(&http.Request{})
-}
-
-// Create a Preparer by which to prepare the List request.
-func (client LocalNetworkGatewaysClient) ListRequestPreparer() autorest.Preparer {
-	return autorest.CreatePreparer(
+	return autorest.Prepare(&http.Request{},
 		autorest.AsJSON(),
 		autorest.AsGet(),
-		autorest.WithBaseURL(client.BaseUri),
-		autorest.WithPath("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/localNetworkGateways"))
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPath("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/localNetworkGateways"),
+		autorest.WithPathParameters(pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+}
+
+// ListSender sends the List request. The method will close the
+// http.Response Body if it receives an error.
+func (client LocalNetworkGatewaysClient) ListSender(req *http.Request) (*http.Response, error) {
+	return client.Send(req, http.StatusOK)
+}
+
+// ListResponder handles the response to the List request. The method always
+// closes the http.Response Body.
+func (client LocalNetworkGatewaysClient) ListResponder(resp *http.Response) (result LocalNetworkGatewayListResult, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		autorest.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// ListNextResults retrieves the next set of results, if any.
+func (client LocalNetworkGatewaysClient) ListNextResults(lastResults LocalNetworkGatewayListResult) (result LocalNetworkGatewayListResult, ae error) {
+	req, err := lastResults.LocalNetworkGatewayListResultPreparer()
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "network/LocalNetworkGatewaysClient", "List", "Failure preparing next results request request")
+	}
+	if req == nil {
+		return
+	}
+
+	resp, err := client.ListSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "network/LocalNetworkGatewaysClient", "List", "Failure sending next results request request")
+	}
+
+	result, err = client.ListResponder(resp)
+	if err != nil {
+		ae = autorest.NewErrorWithError(err, "network/LocalNetworkGatewaysClient", "List", "Failure responding to next results request request")
+	}
+
+	return
 }

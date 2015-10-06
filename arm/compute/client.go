@@ -19,28 +19,34 @@ package compute
 // regenerated.
 
 import (
-	"github.com/Azure/go-autorest/autorest"
+	"github.com/Azure/azure-sdk-for-go/Godeps/_workspace/src/github.com/Azure/go-autorest/autorest"
 )
 
 const (
-	ApiVersion     = "2015-06-15"
-	DefaultBaseUri = "https://management.azure.com"
+	// APIVersion is the version of the Compute
+	APIVersion = "2015-06-15"
+
+	// DefaultBaseURI is the default URI used for the service Compute
+	DefaultBaseURI = "https://management.azure.com"
 )
 
-type ComputeManagementClient struct {
+// ManagementClient is the base client for Compute.
+type ManagementClient struct {
 	autorest.Client
-	BaseUri        string
-	SubscriptionId string
+	BaseURI        string
+	SubscriptionID string
 }
 
-func New(subscriptionId string) ComputeManagementClient {
-	return NewWithBaseUri(DefaultBaseUri, subscriptionId)
+// New creates an instance of the ManagementClient client.
+func New(subscriptionID string) ManagementClient {
+	return NewWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-func NewWithBaseUri(baseUri string, subscriptionId string) ComputeManagementClient {
-	return ComputeManagementClient{
-		Client:         autorest.DefaultClient,
-		BaseUri:        baseUri,
-		SubscriptionId: subscriptionId,
+// NewWithBaseURI creates an instance of the ManagementClient client.
+func NewWithBaseURI(baseURI string, subscriptionID string) ManagementClient {
+	return ManagementClient{
+		Client:         autorest.NewClientWithUserAgent(UserAgent()),
+		BaseURI:        baseURI,
+		SubscriptionID: subscriptionID,
 	}
 }

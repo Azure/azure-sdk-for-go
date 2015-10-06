@@ -19,28 +19,180 @@ package subscriptions
 // regenerated.
 
 import (
-	"github.com/Azure/go-autorest/autorest"
+	"github.com/Azure/azure-sdk-for-go/Godeps/_workspace/src/github.com/Azure/go-autorest/autorest"
+	"net/http"
+	"net/url"
 )
 
 const (
-	ApiVersion     = "2014-04-01-preview"
-	DefaultBaseUri = "https://management.azure.com"
+	// APIVersion is the version of the Subscriptions
+	APIVersion = "2014-04-01-preview"
+
+	// DefaultBaseURI is the default URI used for the service Subscriptions
+	DefaultBaseURI = "https://management.azure.com"
 )
 
-type SubscriptionClient struct {
+// ManagementClient is the base client for Subscriptions.
+type ManagementClient struct {
 	autorest.Client
-	BaseUri        string
-	SubscriptionId string
+	BaseURI        string
+	SubscriptionID string
 }
 
-func New(subscriptionId string) SubscriptionClient {
-	return NewWithBaseUri(DefaultBaseUri, subscriptionId)
+// New creates an instance of the ManagementClient client.
+func New(subscriptionID string) ManagementClient {
+	return NewWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-func NewWithBaseUri(baseUri string, subscriptionId string) SubscriptionClient {
-	return SubscriptionClient{
-		Client:         autorest.DefaultClient,
-		BaseUri:        baseUri,
-		SubscriptionId: subscriptionId,
+// NewWithBaseURI creates an instance of the ManagementClient client.
+func NewWithBaseURI(baseURI string, subscriptionID string) ManagementClient {
+	return ManagementClient{
+		Client:         autorest.NewClientWithUserAgent(UserAgent()),
+		BaseURI:        baseURI,
+		SubscriptionID: subscriptionID,
 	}
+}
+
+// Get gets details about particular subscription.
+//
+// subscriptionID is id of the subscription.
+func (client ManagementClient) Get(subscriptionID string) (result Subscription, ae error) {
+	req, err := client.GetPreparer(subscriptionID)
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "subscriptions/ManagementClient", "Get", "Failure preparing request")
+	}
+
+	resp, err := client.GetSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "subscriptions/ManagementClient", "Get", "Failure sending request")
+	}
+
+	result, err = client.GetResponder(resp)
+	if err != nil {
+		ae = autorest.NewErrorWithError(err, "subscriptions/ManagementClient", "Get", "Failure responding to request")
+	}
+
+	return
+}
+
+// GetPreparer prepares the Get request.
+func (client ManagementClient) GetPreparer(subscriptionID string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"subscriptionId": url.QueryEscape(subscriptionID),
+	}
+
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPath("/subscriptions/{subscriptionId}"),
+		autorest.WithPathParameters(pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+}
+
+// GetSender sends the Get request. The method will close the
+// http.Response Body if it receives an error.
+func (client ManagementClient) GetSender(req *http.Request) (*http.Response, error) {
+	return client.Send(req, http.StatusOK)
+}
+
+// GetResponder handles the response to the Get request. The method always
+// closes the http.Response Body.
+func (client ManagementClient) GetResponder(resp *http.Response) (result Subscription, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		autorest.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// List gets a list of the subscriptionIds.
+func (client ManagementClient) List() (result ListResult, ae error) {
+	req, err := client.ListPreparer()
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "subscriptions/ManagementClient", "List", "Failure preparing request")
+	}
+
+	resp, err := client.ListSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "subscriptions/ManagementClient", "List", "Failure sending request")
+	}
+
+	result, err = client.ListResponder(resp)
+	if err != nil {
+		ae = autorest.NewErrorWithError(err, "subscriptions/ManagementClient", "List", "Failure responding to request")
+	}
+
+	return
+}
+
+// ListPreparer prepares the List request.
+func (client ManagementClient) ListPreparer() (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"subscriptionId": url.QueryEscape(client.SubscriptionID),
+	}
+
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPath("/subscriptions"),
+		autorest.WithPathParameters(pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+}
+
+// ListSender sends the List request. The method will close the
+// http.Response Body if it receives an error.
+func (client ManagementClient) ListSender(req *http.Request) (*http.Response, error) {
+	return client.Send(req, http.StatusOK)
+}
+
+// ListResponder handles the response to the List request. The method always
+// closes the http.Response Body.
+func (client ManagementClient) ListResponder(resp *http.Response) (result ListResult, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		autorest.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// ListNextResults retrieves the next set of results, if any.
+func (client ManagementClient) ListNextResults(lastResults ListResult) (result ListResult, ae error) {
+	req, err := lastResults.ListResultPreparer()
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "subscriptions/ManagementClient", "List", "Failure preparing next results request request")
+	}
+	if req == nil {
+		return
+	}
+
+	resp, err := client.ListSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "subscriptions/ManagementClient", "List", "Failure sending next results request request")
+	}
+
+	result, err = client.ListResponder(resp)
+	if err != nil {
+		ae = autorest.NewErrorWithError(err, "subscriptions/ManagementClient", "List", "Failure responding to next results request request")
+	}
+
+	return
 }

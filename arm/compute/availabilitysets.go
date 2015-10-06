@@ -19,300 +19,27 @@ package compute
 // regenerated.
 
 import (
-	"github.com/Azure/go-autorest/autorest"
+	"github.com/Azure/azure-sdk-for-go/Godeps/_workspace/src/github.com/Azure/go-autorest/autorest"
 	"net/http"
 	"net/url"
 )
 
-// AvailabilitySets Client
+// AvailabilitySetsClient is the client for the AvailabilitySets methods of
+// the Compute service.
 type AvailabilitySetsClient struct {
-	ComputeManagementClient
+	ManagementClient
 }
 
-func NewAvailabilitySetsClient(subscriptionId string) AvailabilitySetsClient {
-	return NewAvailabilitySetsClientWithBaseUri(DefaultBaseUri, subscriptionId)
+// NewAvailabilitySetsClient creates an instance of the AvailabilitySetsClient
+// client.
+func NewAvailabilitySetsClient(subscriptionID string) AvailabilitySetsClient {
+	return NewAvailabilitySetsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-func NewAvailabilitySetsClientWithBaseUri(baseUri string, subscriptionId string) AvailabilitySetsClient {
-	return AvailabilitySetsClient{NewWithBaseUri(baseUri, subscriptionId)}
-}
-
-// Delete the operation to delete the availability set.
-//
-// resourceGroupName is the name of the resource group. availabilitySetName is
-// the name of the availability set.
-func (client AvailabilitySetsClient) Delete(resourceGroupName string, availabilitySetName string) (result autorest.Response, ae autorest.Error) {
-	req, err := client.NewDeleteRequest(resourceGroupName, availabilitySetName)
-	if err != nil {
-		return result, autorest.NewErrorWithError(err, "compute.AvailabilitySetsClient", "Delete", "Failure creating request")
-	}
-
-	req, err = autorest.Prepare(
-		req,
-		client.WithAuthorization(),
-		client.WithInspection())
-	if err != nil {
-		return result, autorest.NewErrorWithError(err, "compute.AvailabilitySetsClient", "Delete", "Failure preparing request")
-	}
-
-	resp, err := autorest.SendWithSender(
-		client,
-		req,
-		autorest.DoErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent))
-
-	if err == nil {
-		err = autorest.Respond(
-			resp,
-			client.ByInspecting(),
-			autorest.WithErrorUnlessOK())
-		if err != nil {
-			ae = autorest.NewErrorWithError(err, "compute.AvailabilitySetsClient", "Delete", "Failure responding to request")
-		}
-	} else {
-		ae = autorest.NewErrorWithError(err, "compute.AvailabilitySetsClient", "Delete", "Failure sending request")
-	}
-
-	autorest.Respond(resp,
-		autorest.ByClosing())
-	result.Response = resp
-
-	return
-}
-
-// Create the Delete request.
-func (client AvailabilitySetsClient) NewDeleteRequest(resourceGroupName string, availabilitySetName string) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"availabilitySetName": url.QueryEscape(availabilitySetName),
-		"resourceGroupName":   url.QueryEscape(resourceGroupName),
-		"subscriptionId":      url.QueryEscape(client.SubscriptionId),
-	}
-
-	queryParameters := map[string]interface{}{
-		"api-version": ApiVersion,
-	}
-
-	return autorest.DecoratePreparer(
-		client.DeleteRequestPreparer(),
-		autorest.WithPathParameters(pathParameters),
-		autorest.WithQueryParameters(queryParameters)).Prepare(&http.Request{})
-}
-
-// Create a Preparer by which to prepare the Delete request.
-func (client AvailabilitySetsClient) DeleteRequestPreparer() autorest.Preparer {
-	return autorest.CreatePreparer(
-		autorest.AsJSON(),
-		autorest.AsDelete(),
-		autorest.WithBaseURL(client.BaseUri),
-		autorest.WithPath("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/availabilitySets/{availabilitySetName}"))
-}
-
-// Get the operation to get the availability set.
-//
-// resourceGroupName is the name of the resource group. availabilitySetName is
-// the name of the availability set.
-func (client AvailabilitySetsClient) Get(resourceGroupName string, availabilitySetName string) (result AvailabilitySet, ae autorest.Error) {
-	req, err := client.NewGetRequest(resourceGroupName, availabilitySetName)
-	if err != nil {
-		return result, autorest.NewErrorWithError(err, "compute.AvailabilitySetsClient", "Get", "Failure creating request")
-	}
-
-	req, err = autorest.Prepare(
-		req,
-		client.WithAuthorization(),
-		client.WithInspection())
-	if err != nil {
-		return result, autorest.NewErrorWithError(err, "compute.AvailabilitySetsClient", "Get", "Failure preparing request")
-	}
-
-	resp, err := autorest.SendWithSender(
-		client,
-		req,
-		autorest.DoErrorUnlessStatusCode(http.StatusOK))
-
-	if err == nil {
-		err = autorest.Respond(
-			resp,
-			client.ByInspecting(),
-			autorest.WithErrorUnlessOK(),
-			autorest.ByUnmarshallingJSON(&result))
-		if err != nil {
-			ae = autorest.NewErrorWithError(err, "compute.AvailabilitySetsClient", "Get", "Failure responding to request")
-		}
-	} else {
-		ae = autorest.NewErrorWithError(err, "compute.AvailabilitySetsClient", "Get", "Failure sending request")
-	}
-
-	autorest.Respond(resp,
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-
-	return
-}
-
-// Create the Get request.
-func (client AvailabilitySetsClient) NewGetRequest(resourceGroupName string, availabilitySetName string) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"availabilitySetName": url.QueryEscape(availabilitySetName),
-		"resourceGroupName":   url.QueryEscape(resourceGroupName),
-		"subscriptionId":      url.QueryEscape(client.SubscriptionId),
-	}
-
-	queryParameters := map[string]interface{}{
-		"api-version": ApiVersion,
-	}
-
-	return autorest.DecoratePreparer(
-		client.GetRequestPreparer(),
-		autorest.WithPathParameters(pathParameters),
-		autorest.WithQueryParameters(queryParameters)).Prepare(&http.Request{})
-}
-
-// Create a Preparer by which to prepare the Get request.
-func (client AvailabilitySetsClient) GetRequestPreparer() autorest.Preparer {
-	return autorest.CreatePreparer(
-		autorest.AsJSON(),
-		autorest.AsGet(),
-		autorest.WithBaseURL(client.BaseUri),
-		autorest.WithPath("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/availabilitySets/{availabilitySetName}"))
-}
-
-// List the operation to list the availability sets.
-//
-// resourceGroupName is the name of the resource group.
-func (client AvailabilitySetsClient) List(resourceGroupName string) (result AvailabilitySetListResult, ae autorest.Error) {
-	req, err := client.NewListRequest(resourceGroupName)
-	if err != nil {
-		return result, autorest.NewErrorWithError(err, "compute.AvailabilitySetsClient", "List", "Failure creating request")
-	}
-
-	req, err = autorest.Prepare(
-		req,
-		client.WithAuthorization(),
-		client.WithInspection())
-	if err != nil {
-		return result, autorest.NewErrorWithError(err, "compute.AvailabilitySetsClient", "List", "Failure preparing request")
-	}
-
-	resp, err := autorest.SendWithSender(
-		client,
-		req,
-		autorest.DoErrorUnlessStatusCode(http.StatusOK))
-
-	if err == nil {
-		err = autorest.Respond(
-			resp,
-			client.ByInspecting(),
-			autorest.WithErrorUnlessOK(),
-			autorest.ByUnmarshallingJSON(&result))
-		if err != nil {
-			ae = autorest.NewErrorWithError(err, "compute.AvailabilitySetsClient", "List", "Failure responding to request")
-		}
-	} else {
-		ae = autorest.NewErrorWithError(err, "compute.AvailabilitySetsClient", "List", "Failure sending request")
-	}
-
-	autorest.Respond(resp,
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-
-	return
-}
-
-// Create the List request.
-func (client AvailabilitySetsClient) NewListRequest(resourceGroupName string) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"resourceGroupName": url.QueryEscape(resourceGroupName),
-		"subscriptionId":    url.QueryEscape(client.SubscriptionId),
-	}
-
-	queryParameters := map[string]interface{}{
-		"api-version": ApiVersion,
-	}
-
-	return autorest.DecoratePreparer(
-		client.ListRequestPreparer(),
-		autorest.WithPathParameters(pathParameters),
-		autorest.WithQueryParameters(queryParameters)).Prepare(&http.Request{})
-}
-
-// Create a Preparer by which to prepare the List request.
-func (client AvailabilitySetsClient) ListRequestPreparer() autorest.Preparer {
-	return autorest.CreatePreparer(
-		autorest.AsJSON(),
-		autorest.AsGet(),
-		autorest.WithBaseURL(client.BaseUri),
-		autorest.WithPath("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/availabilitySets"))
-}
-
-// ListAvailableSizes lists virtual-machine-sizes available to be used for an
-// availability set.
-//
-// resourceGroupName is the name of the resource group. availabilitySetName is
-// the name of the availability set.
-func (client AvailabilitySetsClient) ListAvailableSizes(resourceGroupName string, availabilitySetName string) (result VirtualMachineSizeListResult, ae autorest.Error) {
-	req, err := client.NewListAvailableSizesRequest(resourceGroupName, availabilitySetName)
-	if err != nil {
-		return result, autorest.NewErrorWithError(err, "compute.AvailabilitySetsClient", "ListAvailableSizes", "Failure creating request")
-	}
-
-	req, err = autorest.Prepare(
-		req,
-		client.WithAuthorization(),
-		client.WithInspection())
-	if err != nil {
-		return result, autorest.NewErrorWithError(err, "compute.AvailabilitySetsClient", "ListAvailableSizes", "Failure preparing request")
-	}
-
-	resp, err := autorest.SendWithSender(
-		client,
-		req,
-		autorest.DoErrorUnlessStatusCode(http.StatusOK))
-
-	if err == nil {
-		err = autorest.Respond(
-			resp,
-			client.ByInspecting(),
-			autorest.WithErrorUnlessOK(),
-			autorest.ByUnmarshallingJSON(&result))
-		if err != nil {
-			ae = autorest.NewErrorWithError(err, "compute.AvailabilitySetsClient", "ListAvailableSizes", "Failure responding to request")
-		}
-	} else {
-		ae = autorest.NewErrorWithError(err, "compute.AvailabilitySetsClient", "ListAvailableSizes", "Failure sending request")
-	}
-
-	autorest.Respond(resp,
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-
-	return
-}
-
-// Create the ListAvailableSizes request.
-func (client AvailabilitySetsClient) NewListAvailableSizesRequest(resourceGroupName string, availabilitySetName string) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"availabilitySetName": url.QueryEscape(availabilitySetName),
-		"resourceGroupName":   url.QueryEscape(resourceGroupName),
-		"subscriptionId":      url.QueryEscape(client.SubscriptionId),
-	}
-
-	queryParameters := map[string]interface{}{
-		"api-version": ApiVersion,
-	}
-
-	return autorest.DecoratePreparer(
-		client.ListAvailableSizesRequestPreparer(),
-		autorest.WithPathParameters(pathParameters),
-		autorest.WithQueryParameters(queryParameters)).Prepare(&http.Request{})
-}
-
-// Create a Preparer by which to prepare the ListAvailableSizes request.
-func (client AvailabilitySetsClient) ListAvailableSizesRequestPreparer() autorest.Preparer {
-	return autorest.CreatePreparer(
-		autorest.AsJSON(),
-		autorest.AsGet(),
-		autorest.WithBaseURL(client.BaseUri),
-		autorest.WithPath("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/availabilitySets/{availabilitySetName}/vmSizes"))
+// NewAvailabilitySetsClientWithBaseURI creates an instance of the
+// AvailabilitySetsClient client.
+func NewAvailabilitySetsClientWithBaseURI(baseURI string, subscriptionID string) AvailabilitySetsClient {
+	return AvailabilitySetsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // CreateOrUpdate the operation to create or update the availability set.
@@ -320,69 +47,317 @@ func (client AvailabilitySetsClient) ListAvailableSizesRequestPreparer() autores
 // resourceGroupName is the name of the resource group. name is parameters
 // supplied to the Create Availability Set operation. parameters is
 // parameters supplied to the Create Availability Set operation.
-func (client AvailabilitySetsClient) CreateOrUpdate(resourceGroupName string, name string, parameters AvailabilitySet) (result AvailabilitySet, ae autorest.Error) {
-	req, err := client.NewCreateOrUpdateRequest(resourceGroupName, name, parameters)
+func (client AvailabilitySetsClient) CreateOrUpdate(resourceGroupName string, name string, parameters AvailabilitySet) (result AvailabilitySet, ae error) {
+	req, err := client.CreateOrUpdatePreparer(resourceGroupName, name, parameters)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "compute.AvailabilitySetsClient", "CreateOrUpdate", "Failure creating request")
+		return result, autorest.NewErrorWithError(err, "compute/AvailabilitySetsClient", "CreateOrUpdate", "Failure preparing request")
 	}
 
-	req, err = autorest.Prepare(
-		req,
-		client.WithAuthorization(),
-		client.WithInspection())
+	resp, err := client.CreateOrUpdateSender(req)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "compute.AvailabilitySetsClient", "CreateOrUpdate", "Failure preparing request")
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "compute/AvailabilitySetsClient", "CreateOrUpdate", "Failure sending request")
 	}
 
-	resp, err := autorest.SendWithSender(
-		client,
-		req,
-		autorest.DoErrorUnlessStatusCode(http.StatusOK))
-
-	if err == nil {
-		err = autorest.Respond(
-			resp,
-			client.ByInspecting(),
-			autorest.WithErrorUnlessOK(),
-			autorest.ByUnmarshallingJSON(&result))
-		if err != nil {
-			ae = autorest.NewErrorWithError(err, "compute.AvailabilitySetsClient", "CreateOrUpdate", "Failure responding to request")
-		}
-	} else {
-		ae = autorest.NewErrorWithError(err, "compute.AvailabilitySetsClient", "CreateOrUpdate", "Failure sending request")
+	result, err = client.CreateOrUpdateResponder(resp)
+	if err != nil {
+		ae = autorest.NewErrorWithError(err, "compute/AvailabilitySetsClient", "CreateOrUpdate", "Failure responding to request")
 	}
-
-	autorest.Respond(resp,
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
 
 	return
 }
 
-// Create the CreateOrUpdate request.
-func (client AvailabilitySetsClient) NewCreateOrUpdateRequest(resourceGroupName string, name string, parameters AvailabilitySet) (*http.Request, error) {
+// CreateOrUpdatePreparer prepares the CreateOrUpdate request.
+func (client AvailabilitySetsClient) CreateOrUpdatePreparer(resourceGroupName string, name string, parameters AvailabilitySet) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"name":              url.QueryEscape(name),
 		"resourceGroupName": url.QueryEscape(resourceGroupName),
-		"subscriptionId":    url.QueryEscape(client.SubscriptionId),
+		"subscriptionId":    url.QueryEscape(client.SubscriptionID),
 	}
 
 	queryParameters := map[string]interface{}{
-		"api-version": ApiVersion,
+		"api-version": APIVersion,
 	}
 
-	return autorest.DecoratePreparer(
-		client.CreateOrUpdateRequestPreparer(),
-		autorest.WithJSON(parameters),
-		autorest.WithPathParameters(pathParameters),
-		autorest.WithQueryParameters(queryParameters)).Prepare(&http.Request{})
-}
-
-// Create a Preparer by which to prepare the CreateOrUpdate request.
-func (client AvailabilitySetsClient) CreateOrUpdateRequestPreparer() autorest.Preparer {
-	return autorest.CreatePreparer(
+	return autorest.Prepare(&http.Request{},
 		autorest.AsJSON(),
 		autorest.AsPut(),
-		autorest.WithBaseURL(client.BaseUri),
-		autorest.WithPath("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/availabilitySets/{name}"))
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPath("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/availabilitySets/{name}"),
+		autorest.WithJSON(parameters),
+		autorest.WithPathParameters(pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+}
+
+// CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
+// http.Response Body if it receives an error.
+func (client AvailabilitySetsClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
+	return client.Send(req, http.StatusOK)
+}
+
+// CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
+// closes the http.Response Body.
+func (client AvailabilitySetsClient) CreateOrUpdateResponder(resp *http.Response) (result AvailabilitySet, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		autorest.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// Delete the operation to delete the availability set.
+//
+// resourceGroupName is the name of the resource group. availabilitySetName is
+// the name of the availability set.
+func (client AvailabilitySetsClient) Delete(resourceGroupName string, availabilitySetName string) (result autorest.Response, ae error) {
+	req, err := client.DeletePreparer(resourceGroupName, availabilitySetName)
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "compute/AvailabilitySetsClient", "Delete", "Failure preparing request")
+	}
+
+	resp, err := client.DeleteSender(req)
+	if err != nil {
+		result.Response = resp
+		return result, autorest.NewErrorWithError(err, "compute/AvailabilitySetsClient", "Delete", "Failure sending request")
+	}
+
+	result, err = client.DeleteResponder(resp)
+	if err != nil {
+		ae = autorest.NewErrorWithError(err, "compute/AvailabilitySetsClient", "Delete", "Failure responding to request")
+	}
+
+	return
+}
+
+// DeletePreparer prepares the Delete request.
+func (client AvailabilitySetsClient) DeletePreparer(resourceGroupName string, availabilitySetName string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"availabilitySetName": url.QueryEscape(availabilitySetName),
+		"resourceGroupName":   url.QueryEscape(resourceGroupName),
+		"subscriptionId":      url.QueryEscape(client.SubscriptionID),
+	}
+
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsDelete(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPath("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/availabilitySets/{availabilitySetName}"),
+		autorest.WithPathParameters(pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+}
+
+// DeleteSender sends the Delete request. The method will close the
+// http.Response Body if it receives an error.
+func (client AvailabilitySetsClient) DeleteSender(req *http.Request) (*http.Response, error) {
+	return client.Send(req, http.StatusOK, http.StatusNoContent)
+}
+
+// DeleteResponder handles the response to the Delete request. The method always
+// closes the http.Response Body.
+func (client AvailabilitySetsClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		autorest.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
+		autorest.ByClosing())
+	result.Response = resp
+	return
+}
+
+// Get the operation to get the availability set.
+//
+// resourceGroupName is the name of the resource group. availabilitySetName is
+// the name of the availability set.
+func (client AvailabilitySetsClient) Get(resourceGroupName string, availabilitySetName string) (result AvailabilitySet, ae error) {
+	req, err := client.GetPreparer(resourceGroupName, availabilitySetName)
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "compute/AvailabilitySetsClient", "Get", "Failure preparing request")
+	}
+
+	resp, err := client.GetSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "compute/AvailabilitySetsClient", "Get", "Failure sending request")
+	}
+
+	result, err = client.GetResponder(resp)
+	if err != nil {
+		ae = autorest.NewErrorWithError(err, "compute/AvailabilitySetsClient", "Get", "Failure responding to request")
+	}
+
+	return
+}
+
+// GetPreparer prepares the Get request.
+func (client AvailabilitySetsClient) GetPreparer(resourceGroupName string, availabilitySetName string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"availabilitySetName": url.QueryEscape(availabilitySetName),
+		"resourceGroupName":   url.QueryEscape(resourceGroupName),
+		"subscriptionId":      url.QueryEscape(client.SubscriptionID),
+	}
+
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPath("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/availabilitySets/{availabilitySetName}"),
+		autorest.WithPathParameters(pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+}
+
+// GetSender sends the Get request. The method will close the
+// http.Response Body if it receives an error.
+func (client AvailabilitySetsClient) GetSender(req *http.Request) (*http.Response, error) {
+	return client.Send(req, http.StatusOK)
+}
+
+// GetResponder handles the response to the Get request. The method always
+// closes the http.Response Body.
+func (client AvailabilitySetsClient) GetResponder(resp *http.Response) (result AvailabilitySet, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		autorest.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// List the operation to list the availability sets.
+//
+// resourceGroupName is the name of the resource group.
+func (client AvailabilitySetsClient) List(resourceGroupName string) (result AvailabilitySetListResult, ae error) {
+	req, err := client.ListPreparer(resourceGroupName)
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "compute/AvailabilitySetsClient", "List", "Failure preparing request")
+	}
+
+	resp, err := client.ListSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "compute/AvailabilitySetsClient", "List", "Failure sending request")
+	}
+
+	result, err = client.ListResponder(resp)
+	if err != nil {
+		ae = autorest.NewErrorWithError(err, "compute/AvailabilitySetsClient", "List", "Failure responding to request")
+	}
+
+	return
+}
+
+// ListPreparer prepares the List request.
+func (client AvailabilitySetsClient) ListPreparer(resourceGroupName string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"resourceGroupName": url.QueryEscape(resourceGroupName),
+		"subscriptionId":    url.QueryEscape(client.SubscriptionID),
+	}
+
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPath("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/availabilitySets"),
+		autorest.WithPathParameters(pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+}
+
+// ListSender sends the List request. The method will close the
+// http.Response Body if it receives an error.
+func (client AvailabilitySetsClient) ListSender(req *http.Request) (*http.Response, error) {
+	return client.Send(req, http.StatusOK)
+}
+
+// ListResponder handles the response to the List request. The method always
+// closes the http.Response Body.
+func (client AvailabilitySetsClient) ListResponder(resp *http.Response) (result AvailabilitySetListResult, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		autorest.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// ListAvailableSizes lists virtual-machine-sizes available to be used for an
+// availability set.
+//
+// resourceGroupName is the name of the resource group. availabilitySetName is
+// the name of the availability set.
+func (client AvailabilitySetsClient) ListAvailableSizes(resourceGroupName string, availabilitySetName string) (result VirtualMachineSizeListResult, ae error) {
+	req, err := client.ListAvailableSizesPreparer(resourceGroupName, availabilitySetName)
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "compute/AvailabilitySetsClient", "ListAvailableSizes", "Failure preparing request")
+	}
+
+	resp, err := client.ListAvailableSizesSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "compute/AvailabilitySetsClient", "ListAvailableSizes", "Failure sending request")
+	}
+
+	result, err = client.ListAvailableSizesResponder(resp)
+	if err != nil {
+		ae = autorest.NewErrorWithError(err, "compute/AvailabilitySetsClient", "ListAvailableSizes", "Failure responding to request")
+	}
+
+	return
+}
+
+// ListAvailableSizesPreparer prepares the ListAvailableSizes request.
+func (client AvailabilitySetsClient) ListAvailableSizesPreparer(resourceGroupName string, availabilitySetName string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"availabilitySetName": url.QueryEscape(availabilitySetName),
+		"resourceGroupName":   url.QueryEscape(resourceGroupName),
+		"subscriptionId":      url.QueryEscape(client.SubscriptionID),
+	}
+
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPath("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/availabilitySets/{availabilitySetName}/vmSizes"),
+		autorest.WithPathParameters(pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+}
+
+// ListAvailableSizesSender sends the ListAvailableSizes request. The method will close the
+// http.Response Body if it receives an error.
+func (client AvailabilitySetsClient) ListAvailableSizesSender(req *http.Request) (*http.Response, error) {
+	return client.Send(req, http.StatusOK)
+}
+
+// ListAvailableSizesResponder handles the response to the ListAvailableSizes request. The method always
+// closes the http.Response Body.
+func (client AvailabilitySetsClient) ListAvailableSizesResponder(resp *http.Response) (result VirtualMachineSizeListResult, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		autorest.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
 }

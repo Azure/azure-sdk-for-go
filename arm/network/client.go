@@ -19,102 +19,102 @@ package network
 // regenerated.
 
 import (
-	"github.com/Azure/go-autorest/autorest"
+	"github.com/Azure/azure-sdk-for-go/Godeps/_workspace/src/github.com/Azure/go-autorest/autorest"
 	"net/http"
 	"net/url"
 )
 
 const (
-	ApiVersion     = "2015-05-01-preview"
-	DefaultBaseUri = "https://management.azure.com"
+	// APIVersion is the version of the Network
+	APIVersion = "2015-05-01-preview"
+
+	// DefaultBaseURI is the default URI used for the service Network
+	DefaultBaseURI = "https://management.azure.com"
 )
 
-type NetworkResourceProviderClient struct {
+// ManagementClient is the base client for Network.
+type ManagementClient struct {
 	autorest.Client
-	BaseUri        string
-	SubscriptionId string
+	BaseURI        string
+	SubscriptionID string
 }
 
-func New(subscriptionId string) NetworkResourceProviderClient {
-	return NewWithBaseUri(DefaultBaseUri, subscriptionId)
+// New creates an instance of the ManagementClient client.
+func New(subscriptionID string) ManagementClient {
+	return NewWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-func NewWithBaseUri(baseUri string, subscriptionId string) NetworkResourceProviderClient {
-	return NetworkResourceProviderClient{
-		Client:         autorest.DefaultClient,
-		BaseUri:        baseUri,
-		SubscriptionId: subscriptionId,
+// NewWithBaseURI creates an instance of the ManagementClient client.
+func NewWithBaseURI(baseURI string, subscriptionID string) ManagementClient {
+	return ManagementClient{
+		Client:         autorest.NewClientWithUserAgent(UserAgent()),
+		BaseURI:        baseURI,
+		SubscriptionID: subscriptionID,
 	}
 }
 
-// CheckDnsNameAvailability checks whether a domain name in the cloudapp.net
+// CheckDNSNameAvailability checks whether a domain name in the cloudapp.net
 // zone is available for use.
 //
 // location is the location of the domain name domainNameLabel is the domain
 // name to be verified. It must conform to the following regular expression:
 // ^[a-z][a-z0-9-]{1,61}[a-z0-9]$.
-func (client NetworkResourceProviderClient) CheckDnsNameAvailability(location string, domainNameLabel string) (result DnsNameAvailabilityResult, ae autorest.Error) {
-	req, err := client.NewCheckDnsNameAvailabilityRequest(location, domainNameLabel)
+func (client ManagementClient) CheckDNSNameAvailability(location string, domainNameLabel string) (result DNSNameAvailabilityResult, ae error) {
+	req, err := client.CheckDNSNameAvailabilityPreparer(location, domainNameLabel)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "network.NetworkResourceProviderClient", "CheckDnsNameAvailability", "Failure creating request")
+		return result, autorest.NewErrorWithError(err, "network/ManagementClient", "CheckDNSNameAvailability", "Failure preparing request")
 	}
 
-	req, err = autorest.Prepare(
-		req,
-		client.WithAuthorization(),
-		client.WithInspection())
+	resp, err := client.CheckDNSNameAvailabilitySender(req)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "network.NetworkResourceProviderClient", "CheckDnsNameAvailability", "Failure preparing request")
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "network/ManagementClient", "CheckDNSNameAvailability", "Failure sending request")
 	}
 
-	resp, err := autorest.SendWithSender(
-		client,
-		req,
-		autorest.DoErrorUnlessStatusCode(http.StatusOK))
-
-	if err == nil {
-		err = autorest.Respond(
-			resp,
-			client.ByInspecting(),
-			autorest.WithErrorUnlessOK(),
-			autorest.ByUnmarshallingJSON(&result))
-		if err != nil {
-			ae = autorest.NewErrorWithError(err, "network.NetworkResourceProviderClient", "CheckDnsNameAvailability", "Failure responding to request")
-		}
-	} else {
-		ae = autorest.NewErrorWithError(err, "network.NetworkResourceProviderClient", "CheckDnsNameAvailability", "Failure sending request")
+	result, err = client.CheckDNSNameAvailabilityResponder(resp)
+	if err != nil {
+		ae = autorest.NewErrorWithError(err, "network/ManagementClient", "CheckDNSNameAvailability", "Failure responding to request")
 	}
-
-	autorest.Respond(resp,
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
 
 	return
 }
 
-// Create the CheckDnsNameAvailability request.
-func (client NetworkResourceProviderClient) NewCheckDnsNameAvailabilityRequest(location string, domainNameLabel string) (*http.Request, error) {
+// CheckDNSNameAvailabilityPreparer prepares the CheckDNSNameAvailability request.
+func (client ManagementClient) CheckDNSNameAvailabilityPreparer(location string, domainNameLabel string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"location":       url.QueryEscape(location),
-		"subscriptionId": url.QueryEscape(client.SubscriptionId),
+		"subscriptionId": url.QueryEscape(client.SubscriptionID),
 	}
 
 	queryParameters := map[string]interface{}{
-		"api-version":     ApiVersion,
+		"api-version":     APIVersion,
 		"domainNameLabel": domainNameLabel,
 	}
 
-	return autorest.DecoratePreparer(
-		client.CheckDnsNameAvailabilityRequestPreparer(),
-		autorest.WithPathParameters(pathParameters),
-		autorest.WithQueryParameters(queryParameters)).Prepare(&http.Request{})
-}
-
-// Create a Preparer by which to prepare the CheckDnsNameAvailability request.
-func (client NetworkResourceProviderClient) CheckDnsNameAvailabilityRequestPreparer() autorest.Preparer {
-	return autorest.CreatePreparer(
+	return autorest.Prepare(&http.Request{},
 		autorest.AsJSON(),
 		autorest.AsGet(),
-		autorest.WithBaseURL(client.BaseUri),
-		autorest.WithPath("/subscriptions/{subscriptionId}/providers/Microsoft.Network/locations/{location}/CheckDnsNameAvailability"))
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPath("/subscriptions/{subscriptionId}/providers/Microsoft.Network/locations/{location}/CheckDnsNameAvailability"),
+		autorest.WithPathParameters(pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+}
+
+// CheckDNSNameAvailabilitySender sends the CheckDNSNameAvailability request. The method will close the
+// http.Response Body if it receives an error.
+func (client ManagementClient) CheckDNSNameAvailabilitySender(req *http.Request) (*http.Response, error) {
+	return client.Send(req, http.StatusOK)
+}
+
+// CheckDNSNameAvailabilityResponder handles the response to the CheckDNSNameAvailability request. The method always
+// closes the http.Response Body.
+func (client ManagementClient) CheckDNSNameAvailabilityResponder(resp *http.Response) (result DNSNameAvailabilityResult, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		autorest.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
 }

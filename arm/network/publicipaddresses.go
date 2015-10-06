@@ -19,375 +19,392 @@ package network
 // regenerated.
 
 import (
-	"github.com/Azure/go-autorest/autorest"
+	"github.com/Azure/azure-sdk-for-go/Godeps/_workspace/src/github.com/Azure/go-autorest/autorest"
 	"net/http"
 	"net/url"
 )
 
-// PublicIpAddresses Client
-type PublicIpAddressesClient struct {
-	NetworkResourceProviderClient
+// PublicIPAddressesClient is the client for the PublicIPAddresses methods of
+// the Network service.
+type PublicIPAddressesClient struct {
+	ManagementClient
 }
 
-func NewPublicIpAddressesClient(subscriptionId string) PublicIpAddressesClient {
-	return NewPublicIpAddressesClientWithBaseUri(DefaultBaseUri, subscriptionId)
+// NewPublicIPAddressesClient creates an instance of the
+// PublicIPAddressesClient client.
+func NewPublicIPAddressesClient(subscriptionID string) PublicIPAddressesClient {
+	return NewPublicIPAddressesClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-func NewPublicIpAddressesClientWithBaseUri(baseUri string, subscriptionId string) PublicIpAddressesClient {
-	return PublicIpAddressesClient{NewWithBaseUri(baseUri, subscriptionId)}
-}
-
-// Delete the delete publicIpAddress operation deletes the specified
-// publicIpAddress.
-//
-// resourceGroupName is the name of the resource group. publicIpAddressName is
-// the name of the subnet.
-func (client PublicIpAddressesClient) Delete(resourceGroupName string, publicIpAddressName string) (result autorest.Response, ae autorest.Error) {
-	req, err := client.NewDeleteRequest(resourceGroupName, publicIpAddressName)
-	if err != nil {
-		return result, autorest.NewErrorWithError(err, "network.PublicIpAddressesClient", "Delete", "Failure creating request")
-	}
-
-	req, err = autorest.Prepare(
-		req,
-		client.WithAuthorization(),
-		client.WithInspection())
-	if err != nil {
-		return result, autorest.NewErrorWithError(err, "network.PublicIpAddressesClient", "Delete", "Failure preparing request")
-	}
-
-	resp, err := autorest.SendWithSender(
-		client,
-		req,
-		autorest.DoErrorUnlessStatusCode(http.StatusAccepted, http.StatusNoContent, http.StatusOK))
-	if err == nil {
-		err = client.IsPollingAllowed(resp)
-		if err == nil {
-			resp, err = client.PollAsNeeded(resp)
-		}
-	}
-
-	if err == nil {
-		err = autorest.Respond(
-			resp,
-			client.ByInspecting(),
-			autorest.WithErrorUnlessOK())
-		if err != nil {
-			ae = autorest.NewErrorWithError(err, "network.PublicIpAddressesClient", "Delete", "Failure responding to request")
-		}
-	} else {
-		ae = autorest.NewErrorWithError(err, "network.PublicIpAddressesClient", "Delete", "Failure sending request")
-	}
-
-	autorest.Respond(resp,
-		autorest.ByClosing())
-	result.Response = resp
-
-	return
-}
-
-// Create the Delete request.
-func (client PublicIpAddressesClient) NewDeleteRequest(resourceGroupName string, publicIpAddressName string) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"publicIpAddressName": url.QueryEscape(publicIpAddressName),
-		"resourceGroupName":   url.QueryEscape(resourceGroupName),
-		"subscriptionId":      url.QueryEscape(client.SubscriptionId),
-	}
-
-	queryParameters := map[string]interface{}{
-		"api-version": ApiVersion,
-	}
-
-	return autorest.DecoratePreparer(
-		client.DeleteRequestPreparer(),
-		autorest.WithPathParameters(pathParameters),
-		autorest.WithQueryParameters(queryParameters)).Prepare(&http.Request{})
-}
-
-// Create a Preparer by which to prepare the Delete request.
-func (client PublicIpAddressesClient) DeleteRequestPreparer() autorest.Preparer {
-	return autorest.CreatePreparer(
-		autorest.AsJSON(),
-		autorest.AsDelete(),
-		autorest.WithBaseURL(client.BaseUri),
-		autorest.WithPath("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/publicIPAddresses/{publicIpAddressName}/"))
-}
-
-// Get the Get publicIpAddress operation retreives information about the
-// specified pubicIpAddress
-//
-// resourceGroupName is the name of the resource group. publicIpAddressName is
-// the name of the subnet.
-func (client PublicIpAddressesClient) Get(resourceGroupName string, publicIpAddressName string) (result PublicIpAddress, ae autorest.Error) {
-	req, err := client.NewGetRequest(resourceGroupName, publicIpAddressName)
-	if err != nil {
-		return result, autorest.NewErrorWithError(err, "network.PublicIpAddressesClient", "Get", "Failure creating request")
-	}
-
-	req, err = autorest.Prepare(
-		req,
-		client.WithAuthorization(),
-		client.WithInspection())
-	if err != nil {
-		return result, autorest.NewErrorWithError(err, "network.PublicIpAddressesClient", "Get", "Failure preparing request")
-	}
-
-	resp, err := autorest.SendWithSender(
-		client,
-		req,
-		autorest.DoErrorUnlessStatusCode(http.StatusOK))
-
-	if err == nil {
-		err = autorest.Respond(
-			resp,
-			client.ByInspecting(),
-			autorest.WithErrorUnlessOK(),
-			autorest.ByUnmarshallingJSON(&result))
-		if err != nil {
-			ae = autorest.NewErrorWithError(err, "network.PublicIpAddressesClient", "Get", "Failure responding to request")
-		}
-	} else {
-		ae = autorest.NewErrorWithError(err, "network.PublicIpAddressesClient", "Get", "Failure sending request")
-	}
-
-	autorest.Respond(resp,
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-
-	return
-}
-
-// Create the Get request.
-func (client PublicIpAddressesClient) NewGetRequest(resourceGroupName string, publicIpAddressName string) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"publicIpAddressName": url.QueryEscape(publicIpAddressName),
-		"resourceGroupName":   url.QueryEscape(resourceGroupName),
-		"subscriptionId":      url.QueryEscape(client.SubscriptionId),
-	}
-
-	queryParameters := map[string]interface{}{
-		"api-version": ApiVersion,
-	}
-
-	return autorest.DecoratePreparer(
-		client.GetRequestPreparer(),
-		autorest.WithPathParameters(pathParameters),
-		autorest.WithQueryParameters(queryParameters)).Prepare(&http.Request{})
-}
-
-// Create a Preparer by which to prepare the Get request.
-func (client PublicIpAddressesClient) GetRequestPreparer() autorest.Preparer {
-	return autorest.CreatePreparer(
-		autorest.AsJSON(),
-		autorest.AsGet(),
-		autorest.WithBaseURL(client.BaseUri),
-		autorest.WithPath("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/publicIPAddresses/{publicIpAddressName}/"))
+// NewPublicIPAddressesClientWithBaseURI creates an instance of the
+// PublicIPAddressesClient client.
+func NewPublicIPAddressesClientWithBaseURI(baseURI string, subscriptionID string) PublicIPAddressesClient {
+	return PublicIPAddressesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // CreateOrUpdate the Put PublicIPAddress operation creates/updates a
 // stable/dynamic PublicIP address
 //
-// resourceGroupName is the name of the resource group. publicIpAddressName is
+// resourceGroupName is the name of the resource group. publicIPAddressName is
 // the name of the publicIpAddress. parameters is parameters supplied to the
 // create/update PublicIPAddress operation
-func (client PublicIpAddressesClient) CreateOrUpdate(resourceGroupName string, publicIpAddressName string, parameters PublicIpAddress) (result PublicIpAddress, ae autorest.Error) {
-	req, err := client.NewCreateOrUpdateRequest(resourceGroupName, publicIpAddressName, parameters)
+func (client PublicIPAddressesClient) CreateOrUpdate(resourceGroupName string, publicIPAddressName string, parameters PublicIPAddress) (result PublicIPAddress, ae error) {
+	req, err := client.CreateOrUpdatePreparer(resourceGroupName, publicIPAddressName, parameters)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "network.PublicIpAddressesClient", "CreateOrUpdate", "Failure creating request")
+		return result, autorest.NewErrorWithError(err, "network/PublicIPAddressesClient", "CreateOrUpdate", "Failure preparing request")
 	}
 
-	req, err = autorest.Prepare(
-		req,
-		client.WithAuthorization(),
-		client.WithInspection())
+	resp, err := client.CreateOrUpdateSender(req)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "network.PublicIpAddressesClient", "CreateOrUpdate", "Failure preparing request")
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "network/PublicIPAddressesClient", "CreateOrUpdate", "Failure sending request")
 	}
 
-	resp, err := autorest.SendWithSender(
-		client,
-		req,
-		autorest.DoErrorUnlessStatusCode(http.StatusOK, http.StatusCreated))
-
-	if err == nil {
-		err = autorest.Respond(
-			resp,
-			client.ByInspecting(),
-			autorest.WithErrorUnlessOK(),
-			autorest.ByUnmarshallingJSON(&result))
-		if err != nil {
-			ae = autorest.NewErrorWithError(err, "network.PublicIpAddressesClient", "CreateOrUpdate", "Failure responding to request")
-		}
-	} else {
-		ae = autorest.NewErrorWithError(err, "network.PublicIpAddressesClient", "CreateOrUpdate", "Failure sending request")
+	result, err = client.CreateOrUpdateResponder(resp)
+	if err != nil {
+		ae = autorest.NewErrorWithError(err, "network/PublicIPAddressesClient", "CreateOrUpdate", "Failure responding to request")
 	}
-
-	autorest.Respond(resp,
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
 
 	return
 }
 
-// Create the CreateOrUpdate request.
-func (client PublicIpAddressesClient) NewCreateOrUpdateRequest(resourceGroupName string, publicIpAddressName string, parameters PublicIpAddress) (*http.Request, error) {
+// CreateOrUpdatePreparer prepares the CreateOrUpdate request.
+func (client PublicIPAddressesClient) CreateOrUpdatePreparer(resourceGroupName string, publicIPAddressName string, parameters PublicIPAddress) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"publicIpAddressName": url.QueryEscape(publicIpAddressName),
+		"publicIpAddressName": url.QueryEscape(publicIPAddressName),
 		"resourceGroupName":   url.QueryEscape(resourceGroupName),
-		"subscriptionId":      url.QueryEscape(client.SubscriptionId),
+		"subscriptionId":      url.QueryEscape(client.SubscriptionID),
 	}
 
 	queryParameters := map[string]interface{}{
-		"api-version": ApiVersion,
+		"api-version": APIVersion,
 	}
 
-	return autorest.DecoratePreparer(
-		client.CreateOrUpdateRequestPreparer(),
-		autorest.WithJSON(parameters),
-		autorest.WithPathParameters(pathParameters),
-		autorest.WithQueryParameters(queryParameters)).Prepare(&http.Request{})
-}
-
-// Create a Preparer by which to prepare the CreateOrUpdate request.
-func (client PublicIpAddressesClient) CreateOrUpdateRequestPreparer() autorest.Preparer {
-	return autorest.CreatePreparer(
+	return autorest.Prepare(&http.Request{},
 		autorest.AsJSON(),
 		autorest.AsPut(),
-		autorest.WithBaseURL(client.BaseUri),
-		autorest.WithPath("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/publicIPAddresses/{publicIpAddressName}/"))
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPath("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/publicIPAddresses/{publicIpAddressName}/"),
+		autorest.WithJSON(parameters),
+		autorest.WithPathParameters(pathParameters),
+		autorest.WithQueryParameters(queryParameters))
 }
 
-// ListAll the List publicIpAddress opertion retrieves all the
-// publicIpAddresses in a subscription.
-func (client PublicIpAddressesClient) ListAll() (result PublicIpAddressListResult, ae autorest.Error) {
-	req, err := client.NewListAllRequest()
-	if err != nil {
-		return result, autorest.NewErrorWithError(err, "network.PublicIpAddressesClient", "ListAll", "Failure creating request")
-	}
+// CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
+// http.Response Body if it receives an error.
+func (client PublicIPAddressesClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
+	return client.Send(req, http.StatusOK, http.StatusCreated)
+}
 
-	req, err = autorest.Prepare(
-		req,
-		client.WithAuthorization(),
-		client.WithInspection())
-	if err != nil {
-		return result, autorest.NewErrorWithError(err, "network.PublicIpAddressesClient", "ListAll", "Failure preparing request")
-	}
-
-	resp, err := autorest.SendWithSender(
-		client,
-		req,
-		autorest.DoErrorUnlessStatusCode(http.StatusOK))
-
-	if err == nil {
-		err = autorest.Respond(
-			resp,
-			client.ByInspecting(),
-			autorest.WithErrorUnlessOK(),
-			autorest.ByUnmarshallingJSON(&result))
-		if err != nil {
-			ae = autorest.NewErrorWithError(err, "network.PublicIpAddressesClient", "ListAll", "Failure responding to request")
-		}
-	} else {
-		ae = autorest.NewErrorWithError(err, "network.PublicIpAddressesClient", "ListAll", "Failure sending request")
-	}
-
-	autorest.Respond(resp,
+// CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
+// closes the http.Response Body.
+func (client PublicIPAddressesClient) CreateOrUpdateResponder(resp *http.Response) (result PublicIPAddress, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		autorest.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// Delete the delete publicIpAddress operation deletes the specified
+// publicIpAddress.
+//
+// resourceGroupName is the name of the resource group. publicIPAddressName is
+// the name of the subnet.
+func (client PublicIPAddressesClient) Delete(resourceGroupName string, publicIPAddressName string) (result autorest.Response, ae error) {
+	req, err := client.DeletePreparer(resourceGroupName, publicIPAddressName)
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "network/PublicIPAddressesClient", "Delete", "Failure preparing request")
+	}
+
+	resp, err := client.DeleteSender(req)
+	if err != nil {
+		result.Response = resp
+		return result, autorest.NewErrorWithError(err, "network/PublicIPAddressesClient", "Delete", "Failure sending request")
+	}
+
+	result, err = client.DeleteResponder(resp)
+	if err != nil {
+		ae = autorest.NewErrorWithError(err, "network/PublicIPAddressesClient", "Delete", "Failure responding to request")
+	}
 
 	return
 }
 
-// Create the ListAll request.
-func (client PublicIpAddressesClient) NewListAllRequest() (*http.Request, error) {
+// DeletePreparer prepares the Delete request.
+func (client PublicIPAddressesClient) DeletePreparer(resourceGroupName string, publicIPAddressName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"subscriptionId": url.QueryEscape(client.SubscriptionId),
+		"publicIpAddressName": url.QueryEscape(publicIPAddressName),
+		"resourceGroupName":   url.QueryEscape(resourceGroupName),
+		"subscriptionId":      url.QueryEscape(client.SubscriptionID),
 	}
 
 	queryParameters := map[string]interface{}{
-		"api-version": ApiVersion,
+		"api-version": APIVersion,
 	}
 
-	return autorest.DecoratePreparer(
-		client.ListAllRequestPreparer(),
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsDelete(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPath("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/publicIPAddresses/{publicIpAddressName}/"),
 		autorest.WithPathParameters(pathParameters),
-		autorest.WithQueryParameters(queryParameters)).Prepare(&http.Request{})
+		autorest.WithQueryParameters(queryParameters))
 }
 
-// Create a Preparer by which to prepare the ListAll request.
-func (client PublicIpAddressesClient) ListAllRequestPreparer() autorest.Preparer {
-	return autorest.CreatePreparer(
+// DeleteSender sends the Delete request. The method will close the
+// http.Response Body if it receives an error.
+func (client PublicIPAddressesClient) DeleteSender(req *http.Request) (*http.Response, error) {
+	return client.Send(req, http.StatusAccepted, http.StatusNoContent, http.StatusOK)
+}
+
+// DeleteResponder handles the response to the Delete request. The method always
+// closes the http.Response Body.
+func (client PublicIPAddressesClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		autorest.WithErrorUnlessStatusCode(http.StatusAccepted, http.StatusNoContent, http.StatusOK),
+		autorest.ByClosing())
+	result.Response = resp
+	return
+}
+
+// Get the Get publicIpAddress operation retreives information about the
+// specified pubicIpAddress
+//
+// resourceGroupName is the name of the resource group. publicIPAddressName is
+// the name of the subnet.
+func (client PublicIPAddressesClient) Get(resourceGroupName string, publicIPAddressName string) (result PublicIPAddress, ae error) {
+	req, err := client.GetPreparer(resourceGroupName, publicIPAddressName)
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "network/PublicIPAddressesClient", "Get", "Failure preparing request")
+	}
+
+	resp, err := client.GetSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "network/PublicIPAddressesClient", "Get", "Failure sending request")
+	}
+
+	result, err = client.GetResponder(resp)
+	if err != nil {
+		ae = autorest.NewErrorWithError(err, "network/PublicIPAddressesClient", "Get", "Failure responding to request")
+	}
+
+	return
+}
+
+// GetPreparer prepares the Get request.
+func (client PublicIPAddressesClient) GetPreparer(resourceGroupName string, publicIPAddressName string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"publicIpAddressName": url.QueryEscape(publicIPAddressName),
+		"resourceGroupName":   url.QueryEscape(resourceGroupName),
+		"subscriptionId":      url.QueryEscape(client.SubscriptionID),
+	}
+
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	return autorest.Prepare(&http.Request{},
 		autorest.AsJSON(),
 		autorest.AsGet(),
-		autorest.WithBaseURL(client.BaseUri),
-		autorest.WithPath("/subscriptions/{subscriptionId}/providers/Microsoft.Network/publicIPAddresses"))
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPath("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/publicIPAddresses/{publicIpAddressName}/"),
+		autorest.WithPathParameters(pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+}
+
+// GetSender sends the Get request. The method will close the
+// http.Response Body if it receives an error.
+func (client PublicIPAddressesClient) GetSender(req *http.Request) (*http.Response, error) {
+	return client.Send(req, http.StatusOK)
+}
+
+// GetResponder handles the response to the Get request. The method always
+// closes the http.Response Body.
+func (client PublicIPAddressesClient) GetResponder(resp *http.Response) (result PublicIPAddress, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		autorest.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
 }
 
 // List the List publicIpAddress opertion retrieves all the publicIpAddresses
 // in a resource group.
 //
 // resourceGroupName is the name of the resource group.
-func (client PublicIpAddressesClient) List(resourceGroupName string) (result PublicIpAddressListResult, ae autorest.Error) {
-	req, err := client.NewListRequest(resourceGroupName)
+func (client PublicIPAddressesClient) List(resourceGroupName string) (result PublicIPAddressListResult, ae error) {
+	req, err := client.ListPreparer(resourceGroupName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "network.PublicIpAddressesClient", "List", "Failure creating request")
+		return result, autorest.NewErrorWithError(err, "network/PublicIPAddressesClient", "List", "Failure preparing request")
 	}
 
-	req, err = autorest.Prepare(
-		req,
-		client.WithAuthorization(),
-		client.WithInspection())
+	resp, err := client.ListSender(req)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "network.PublicIpAddressesClient", "List", "Failure preparing request")
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "network/PublicIPAddressesClient", "List", "Failure sending request")
 	}
 
-	resp, err := autorest.SendWithSender(
-		client,
-		req,
-		autorest.DoErrorUnlessStatusCode(http.StatusOK))
-
-	if err == nil {
-		err = autorest.Respond(
-			resp,
-			client.ByInspecting(),
-			autorest.WithErrorUnlessOK(),
-			autorest.ByUnmarshallingJSON(&result))
-		if err != nil {
-			ae = autorest.NewErrorWithError(err, "network.PublicIpAddressesClient", "List", "Failure responding to request")
-		}
-	} else {
-		ae = autorest.NewErrorWithError(err, "network.PublicIpAddressesClient", "List", "Failure sending request")
+	result, err = client.ListResponder(resp)
+	if err != nil {
+		ae = autorest.NewErrorWithError(err, "network/PublicIPAddressesClient", "List", "Failure responding to request")
 	}
-
-	autorest.Respond(resp,
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
 
 	return
 }
 
-// Create the List request.
-func (client PublicIpAddressesClient) NewListRequest(resourceGroupName string) (*http.Request, error) {
+// ListPreparer prepares the List request.
+func (client PublicIPAddressesClient) ListPreparer(resourceGroupName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName": url.QueryEscape(resourceGroupName),
-		"subscriptionId":    url.QueryEscape(client.SubscriptionId),
+		"subscriptionId":    url.QueryEscape(client.SubscriptionID),
 	}
 
 	queryParameters := map[string]interface{}{
-		"api-version": ApiVersion,
+		"api-version": APIVersion,
 	}
 
-	return autorest.DecoratePreparer(
-		client.ListRequestPreparer(),
-		autorest.WithPathParameters(pathParameters),
-		autorest.WithQueryParameters(queryParameters)).Prepare(&http.Request{})
-}
-
-// Create a Preparer by which to prepare the List request.
-func (client PublicIpAddressesClient) ListRequestPreparer() autorest.Preparer {
-	return autorest.CreatePreparer(
+	return autorest.Prepare(&http.Request{},
 		autorest.AsJSON(),
 		autorest.AsGet(),
-		autorest.WithBaseURL(client.BaseUri),
-		autorest.WithPath("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/publicIPAddresses"))
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPath("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/publicIPAddresses"),
+		autorest.WithPathParameters(pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+}
+
+// ListSender sends the List request. The method will close the
+// http.Response Body if it receives an error.
+func (client PublicIPAddressesClient) ListSender(req *http.Request) (*http.Response, error) {
+	return client.Send(req, http.StatusOK)
+}
+
+// ListResponder handles the response to the List request. The method always
+// closes the http.Response Body.
+func (client PublicIPAddressesClient) ListResponder(resp *http.Response) (result PublicIPAddressListResult, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		autorest.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// ListNextResults retrieves the next set of results, if any.
+func (client PublicIPAddressesClient) ListNextResults(lastResults PublicIPAddressListResult) (result PublicIPAddressListResult, ae error) {
+	req, err := lastResults.PublicIPAddressListResultPreparer()
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "network/PublicIPAddressesClient", "List", "Failure preparing next results request request")
+	}
+	if req == nil {
+		return
+	}
+
+	resp, err := client.ListSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "network/PublicIPAddressesClient", "List", "Failure sending next results request request")
+	}
+
+	result, err = client.ListResponder(resp)
+	if err != nil {
+		ae = autorest.NewErrorWithError(err, "network/PublicIPAddressesClient", "List", "Failure responding to next results request request")
+	}
+
+	return
+}
+
+// ListAll the List publicIpAddress opertion retrieves all the
+// publicIpAddresses in a subscription.
+func (client PublicIPAddressesClient) ListAll() (result PublicIPAddressListResult, ae error) {
+	req, err := client.ListAllPreparer()
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "network/PublicIPAddressesClient", "ListAll", "Failure preparing request")
+	}
+
+	resp, err := client.ListAllSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "network/PublicIPAddressesClient", "ListAll", "Failure sending request")
+	}
+
+	result, err = client.ListAllResponder(resp)
+	if err != nil {
+		ae = autorest.NewErrorWithError(err, "network/PublicIPAddressesClient", "ListAll", "Failure responding to request")
+	}
+
+	return
+}
+
+// ListAllPreparer prepares the ListAll request.
+func (client PublicIPAddressesClient) ListAllPreparer() (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"subscriptionId": url.QueryEscape(client.SubscriptionID),
+	}
+
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPath("/subscriptions/{subscriptionId}/providers/Microsoft.Network/publicIPAddresses"),
+		autorest.WithPathParameters(pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+}
+
+// ListAllSender sends the ListAll request. The method will close the
+// http.Response Body if it receives an error.
+func (client PublicIPAddressesClient) ListAllSender(req *http.Request) (*http.Response, error) {
+	return client.Send(req, http.StatusOK)
+}
+
+// ListAllResponder handles the response to the ListAll request. The method always
+// closes the http.Response Body.
+func (client PublicIPAddressesClient) ListAllResponder(resp *http.Response) (result PublicIPAddressListResult, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		autorest.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// ListAllNextResults retrieves the next set of results, if any.
+func (client PublicIPAddressesClient) ListAllNextResults(lastResults PublicIPAddressListResult) (result PublicIPAddressListResult, ae error) {
+	req, err := lastResults.PublicIPAddressListResultPreparer()
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "network/PublicIPAddressesClient", "ListAll", "Failure preparing next results request request")
+	}
+	if req == nil {
+		return
+	}
+
+	resp, err := client.ListAllSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "network/PublicIPAddressesClient", "ListAll", "Failure sending next results request request")
+	}
+
+	result, err = client.ListAllResponder(resp)
+	if err != nil {
+		ae = autorest.NewErrorWithError(err, "network/PublicIPAddressesClient", "ListAll", "Failure responding to next results request request")
+	}
+
+	return
 }

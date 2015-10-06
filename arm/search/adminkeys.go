@@ -19,22 +19,26 @@ package search
 // regenerated.
 
 import (
-	"github.com/Azure/go-autorest/autorest"
+	"github.com/Azure/azure-sdk-for-go/Godeps/_workspace/src/github.com/Azure/go-autorest/autorest"
 	"net/http"
 	"net/url"
 )
 
-// AdminKeys Client
+// AdminKeysClient is the client that can be used to manage Azure Search
+// services and API keys.
 type AdminKeysClient struct {
-	SearchManagementClient
+	ManagementClient
 }
 
-func NewAdminKeysClient(subscriptionId string) AdminKeysClient {
-	return NewAdminKeysClientWithBaseUri(DefaultBaseUri, subscriptionId)
+// NewAdminKeysClient creates an instance of the AdminKeysClient client.
+func NewAdminKeysClient(subscriptionID string) AdminKeysClient {
+	return NewAdminKeysClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-func NewAdminKeysClientWithBaseUri(baseUri string, subscriptionId string) AdminKeysClient {
-	return AdminKeysClient{NewWithBaseUri(baseUri, subscriptionId)}
+// NewAdminKeysClientWithBaseURI creates an instance of the AdminKeysClient
+// client.
+func NewAdminKeysClientWithBaseURI(baseURI string, subscriptionID string) AdminKeysClient {
+	return AdminKeysClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // List returns the primary and secondary API keys for the given Azure Search
@@ -43,68 +47,62 @@ func NewAdminKeysClientWithBaseUri(baseUri string, subscriptionId string) AdminK
 // resourceGroupName is the name of the resource group within the current
 // subscription. serviceName is the name of the Search service for which to
 // list admin keys.
-func (client AdminKeysClient) List(resourceGroupName string, serviceName string) (result AdminKeyResult, ae autorest.Error) {
-	req, err := client.NewListRequest(resourceGroupName, serviceName)
+func (client AdminKeysClient) List(resourceGroupName string, serviceName string) (result AdminKeyResult, ae error) {
+	req, err := client.ListPreparer(resourceGroupName, serviceName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "search.AdminKeysClient", "List", "Failure creating request")
+		return result, autorest.NewErrorWithError(err, "search/AdminKeysClient", "List", "Failure preparing request")
 	}
 
-	req, err = autorest.Prepare(
-		req,
-		client.WithAuthorization(),
-		client.WithInspection())
+	resp, err := client.ListSender(req)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "search.AdminKeysClient", "List", "Failure preparing request")
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "search/AdminKeysClient", "List", "Failure sending request")
 	}
 
-	resp, err := autorest.SendWithSender(
-		client,
-		req,
-		autorest.DoErrorUnlessStatusCode(http.StatusOK))
-
-	if err == nil {
-		err = autorest.Respond(
-			resp,
-			client.ByInspecting(),
-			autorest.WithErrorUnlessOK(),
-			autorest.ByUnmarshallingJSON(&result))
-		if err != nil {
-			ae = autorest.NewErrorWithError(err, "search.AdminKeysClient", "List", "Failure responding to request")
-		}
-	} else {
-		ae = autorest.NewErrorWithError(err, "search.AdminKeysClient", "List", "Failure sending request")
+	result, err = client.ListResponder(resp)
+	if err != nil {
+		ae = autorest.NewErrorWithError(err, "search/AdminKeysClient", "List", "Failure responding to request")
 	}
-
-	autorest.Respond(resp,
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
 
 	return
 }
 
-// Create the List request.
-func (client AdminKeysClient) NewListRequest(resourceGroupName string, serviceName string) (*http.Request, error) {
+// ListPreparer prepares the List request.
+func (client AdminKeysClient) ListPreparer(resourceGroupName string, serviceName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName": url.QueryEscape(resourceGroupName),
 		"serviceName":       url.QueryEscape(serviceName),
-		"subscriptionId":    url.QueryEscape(client.SubscriptionId),
+		"subscriptionId":    url.QueryEscape(client.SubscriptionID),
 	}
 
 	queryParameters := map[string]interface{}{
-		"api-version": ApiVersion,
+		"api-version": APIVersion,
 	}
 
-	return autorest.DecoratePreparer(
-		client.ListRequestPreparer(),
-		autorest.WithPathParameters(pathParameters),
-		autorest.WithQueryParameters(queryParameters)).Prepare(&http.Request{})
-}
-
-// Create a Preparer by which to prepare the List request.
-func (client AdminKeysClient) ListRequestPreparer() autorest.Preparer {
-	return autorest.CreatePreparer(
+	return autorest.Prepare(&http.Request{},
 		autorest.AsJSON(),
 		autorest.AsPost(),
-		autorest.WithBaseURL(client.BaseUri),
-		autorest.WithPath("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Search/searchServices/{serviceName}/listAdminKeys"))
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPath("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Search/searchServices/{serviceName}/listAdminKeys"),
+		autorest.WithPathParameters(pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+}
+
+// ListSender sends the List request. The method will close the
+// http.Response Body if it receives an error.
+func (client AdminKeysClient) ListSender(req *http.Request) (*http.Response, error) {
+	return client.Send(req, http.StatusOK)
+}
+
+// ListResponder handles the response to the List request. The method always
+// closes the http.Response Body.
+func (client AdminKeysClient) ListResponder(resp *http.Response) (result AdminKeyResult, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		autorest.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
 }

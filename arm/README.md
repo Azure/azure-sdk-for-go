@@ -7,7 +7,7 @@ is good for users, it is hard on SDKs. Each new service and each new feature req
 learn the details and add the needed code to the SDK. As a result, the
 [Azure SDK for Go](https://github.com/Azure/azure-sdk-for-go)
 has lagged behind Azure. It is missing
-entire services and has not kept current with features. There is simply too much change to maintian
+entire services and has not kept current with features. There is simply too much change to maintain
 a hand-written SDK.
 
 For this reason, the

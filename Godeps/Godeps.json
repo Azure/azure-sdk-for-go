@@ -2,6 +2,7 @@
 	"ImportPath": "github.com/Azure/azure-sdk-for-go",
 	"GoVersion": "go1.5.1",
 	"Packages": [
+		"./management/...",
 		"./arm/..."
 	],
 	"Deps": [
@@ -9,6 +10,10 @@
 			"ImportPath": "github.com/Azure/go-autorest/autorest",
 			"Comment": "v1.0.1",
 			"Rev": "1cebd0377050996f91857917c73f00a377e64262"
+		},
+		{
+			"ImportPath": "golang.org/x/crypto/pkcs12",
+			"Rev": "c8b9e6388ef638d5a8a9d865c634befdc46a6784"
 		}
 	]
 }

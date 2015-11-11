@@ -12,6 +12,7 @@ const (
 	azureDeploymentListURL   = "services/hostedservices/%s/deployments"
 	azureDeploymentURL       = "services/hostedservices/%s/deployments/%s"
 	deleteAzureDeploymentURL = "services/hostedservices/%s/deployments/%s?comp=media"
+	azureAddRoleURL          = "services/hostedservices/%s/deployments/%s/roles"
 	azureRoleURL             = "services/hostedservices/%s/deployments/%s/roles/%s"
 	azureOperationsURL       = "services/hostedservices/%s/deployments/%s/roleinstances/%s/Operations"
 	azureRoleSizeListURL     = "rolesizes"
@@ -116,6 +117,25 @@ func (vm VirtualMachineClient) GetRole(cloudServiceName, deploymentName, roleNam
 	}
 
 	return role, nil
+}
+
+// AddRole adds a Virtual Machine to a deployment of Virtual Machines, where role name = VM name
+// See https://msdn.microsoft.com/en-us/library/azure/jj157186.aspx
+func (vm VirtualMachineClient) AddRole(cloudServiceName string, deploymentName string, role Role) (management.OperationID, error) {
+	if cloudServiceName == "" {
+		return "", fmt.Errorf(errParamNotSpecified, "cloudServiceName")
+	}
+	if deploymentName == "" {
+		return "", fmt.Errorf(errParamNotSpecified, "deploymentName")
+	}
+
+	data, err := xml.Marshal(PersistentVMRole{Role: role})
+	if err != nil {
+		return "", err
+	}
+
+	requestURL := fmt.Sprintf(azureAddRoleURL, cloudServiceName, deploymentName)
+	return vm.client.SendAzurePostRequest(requestURL, data)
 }
 
 // UpdateRole updates the configuration of the specified virtual machine

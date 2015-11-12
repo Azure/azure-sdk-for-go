@@ -11,6 +11,7 @@ import (
 const (
 	azureDeploymentListURL   = "services/hostedservices/%s/deployments"
 	azureDeploymentURL       = "services/hostedservices/%s/deployments/%s"
+	azureListDeploymentsInSlotURL = "services/hostedservices/%s/deploymentslots/Production"
 	deleteAzureDeploymentURL = "services/hostedservices/%s/deployments/%s?comp=media"
 	azureAddRoleURL          = "services/hostedservices/%s/deployments/%s/roles"
 	azureRoleURL             = "services/hostedservices/%s/deployments/%s/roles/%s"
@@ -62,7 +63,33 @@ func (vm VirtualMachineClient) CreateDeployment(
 	return vm.client.SendAzurePostRequest(requestURL, data)
 }
 
+// GetDeploymentName queries an existing Azure cloud service for the name of the Deployment,
+// if any, in its 'Production' slot (the only slot possible). If none exists, it returns empty
+// string but no error
+//
 //https://msdn.microsoft.com/en-us/library/azure/ee460804.aspx
+func (vm VirtualMachineClient) GetDeploymentName(cloudServiceName string) (string, error) {
+	var deployment DeploymentResponse
+	if cloudServiceName == "" {
+		return "", fmt.Errorf(errParamNotSpecified, "cloudServiceName")
+	}
+	requestURL := fmt.Sprintf(azureListDeploymentsInSlotURL, cloudServiceName)
+	response, err := vm.client.SendAzureGetRequest(requestURL)
+	if err != nil {
+		if management.IsResourceNotFoundError(err) {
+			return "", nil
+		} else {
+			return "", err
+		}
+        }
+	err = xml.Unmarshal(response, &deployment)
+	if err != nil {
+		return "", err
+	}
+
+	return deployment.Name, nil
+}
+
 func (vm VirtualMachineClient) GetDeployment(cloudServiceName, deploymentName string) (DeploymentResponse, error) {
 	var deployment DeploymentResponse
 	if cloudServiceName == "" {

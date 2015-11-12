@@ -62,6 +62,7 @@ func (vm VirtualMachineClient) CreateDeployment(
 	return vm.client.SendAzurePostRequest(requestURL, data)
 }
 
+//https://msdn.microsoft.com/en-us/library/azure/ee460804.aspx
 func (vm VirtualMachineClient) GetDeployment(cloudServiceName, deploymentName string) (DeploymentResponse, error) {
 	var deployment DeploymentResponse
 	if cloudServiceName == "" {

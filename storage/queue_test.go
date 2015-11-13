@@ -3,7 +3,7 @@ package storage
 import (
 	"time"
 
-	chk "gopkg.in/check.v1"
+	chk "github.com/Azure/azure-sdk-for-go/Godeps/_workspace/src/gopkg.in/check.v1"
 )
 
 type StorageQueueSuite struct{}

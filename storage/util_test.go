@@ -7,7 +7,7 @@ import (
 	"strings"
 	"time"
 
-	chk "gopkg.in/check.v1"
+	chk "github.com/Azure/azure-sdk-for-go/Godeps/_workspace/src/gopkg.in/check.v1"
 )
 
 func (s *StorageClientSuite) Test_timeRfc1123Formatted(c *chk.C) {

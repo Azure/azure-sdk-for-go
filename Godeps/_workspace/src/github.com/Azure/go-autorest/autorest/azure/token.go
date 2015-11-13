@@ -1,18 +1,27 @@
 package azure
 
 import (
+	"crypto/rand"
+	"crypto/rsa"
+	"crypto/sha1"
+	"encoding/base64"
+	"fmt"
 	"net/http"
 	"net/url"
 	"strconv"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/Godeps/_workspace/src/github.com/Azure/go-autorest/autorest"
+	"github.com/Azure/azure-sdk-for-go/Godeps/_workspace/src/github.com/dgrijalva/jwt-go"
+	"github.com/Azure/azure-sdk-for-go/Godeps/_workspace/src/golang.org/x/crypto/pkcs12"
 )
 
 const (
 	defaultRefresh = 5 * time.Minute
 	oauthURL       = "https://login.microsoftonline.com/{tenantID}/oauth2/{requestType}?api-version=1.0"
 	tokenBaseDate  = "1970-01-01T00:00:00Z"
+
+	jwtAudienceTemplate = "https://login.microsoftonline.com/%s/oauth2/token"
 
 	// AzureResourceManagerScope is the OAuth scope for the Azure Resource Manager.
 	AzureResourceManagerScope = "https://management.azure.com/"
@@ -66,31 +75,136 @@ func (t *Token) WithAuthorization() autorest.PrepareDecorator {
 	}
 }
 
+// ServicePrincipalSecret is an interface that allows various secret mechanism to fill the form
+// that is submitted when acquiring an oAuth token.
+type ServicePrincipalSecret interface {
+	SetAuthenticationValues(spt *ServicePrincipalToken, values *url.Values) error
+}
+
+// ServicePrincipalTokenSecret implements ServicePrincipalSecret for client_secret type authorization.
+type ServicePrincipalTokenSecret struct {
+	ClientSecret string
+}
+
+// SetAuthenticationValues is a method of the interface ServicePrincipalTokenSecret.
+// It will populate the form submitted during oAuth Token Acquisition using the client_secret.
+func (tokenSecret *ServicePrincipalTokenSecret) SetAuthenticationValues(spt *ServicePrincipalToken, v *url.Values) error {
+	v.Set("client_secret", tokenSecret.ClientSecret)
+	return nil
+}
+
+// ServicePrincipalCertificateSecret implements ServicePrincipalSecret for certificate auth with signed JWTs.
+type ServicePrincipalCertificateSecret struct {
+	Pkcs12   []byte
+	Password string
+}
+
+// SignJwt returns the JWT signed with the certificate's private key.
+func (secret *ServicePrincipalCertificateSecret) SignJwt(spt *ServicePrincipalToken) (string, error) {
+	privateKey, cert, err := pkcs12.Decode(secret.Pkcs12, secret.Password)
+	if err != nil {
+		return "", err
+	}
+
+	rsaPrivateKey, isRsaKey := privateKey.(*rsa.PrivateKey)
+	if !isRsaKey {
+		return "", fmt.Errorf("PKCS12 certificate must contain an RSA private key")
+	}
+
+	hasher := sha1.New()
+	_, err = hasher.Write(cert.Raw)
+	if err != nil {
+		return "", err
+	}
+
+	thumbprint := base64.URLEncoding.EncodeToString(hasher.Sum(nil))
+
+	// The jti (JWT ID) claim provides a unique identifier for the JWT.
+	jti := make([]byte, 20)
+	_, err = rand.Read(jti)
+	if err != nil {
+		return "", err
+	}
+
+	token := jwt.New(jwt.SigningMethodRS256)
+	token.Header["x5t"] = thumbprint
+	token.Claims = map[string]interface{}{
+		"aud": fmt.Sprintf(jwtAudienceTemplate, spt.tenantID),
+		"iss": spt.clientID,
+		"sub": spt.clientID,
+		"jti": base64.URLEncoding.EncodeToString(jti),
+		"nbf": time.Now().Unix(),
+		"exp": time.Now().Add(time.Hour * 24).Unix(),
+	}
+
+	signedString, err := token.SignedString(rsaPrivateKey)
+	return signedString, nil
+}
+
+// SetAuthenticationValues is a method of the interface ServicePrincipalTokenSecret.
+// It will populate the form submitted during oAuth Token Acquisition using a JWT signed with a certificate.
+func (secret *ServicePrincipalCertificateSecret) SetAuthenticationValues(spt *ServicePrincipalToken, v *url.Values) error {
+	jwt, err := secret.SignJwt(spt)
+	if err != nil {
+		return err
+	}
+
+	v.Set("client_assertion", jwt)
+	v.Set("client_assertion_type", "urn:ietf:params:oauth:client-assertion-type:jwt-bearer")
+	return nil
+}
+
 // ServicePrincipalToken encapsulates a Token created for a Service Principal.
 type ServicePrincipalToken struct {
 	Token
 
+	secret        ServicePrincipalSecret
 	clientID      string
-	clientSecret  string
-	resource      string
 	tenantID      string
+	resource      string
 	autoRefresh   bool
 	refreshWithin time.Duration
 	sender        autorest.Sender
 }
 
-// NewServicePrincipalToken creates a ServicePrincipalToken from the supplied Service Principal
-// credentials scoped to the named resource.
-func NewServicePrincipalToken(id string, secret string, tenantID string, resource string) (*ServicePrincipalToken, error) {
+// NewServicePrincipalTokenWithSecret create a ServicePrincipalToken using the supplied ServicePrincipalSecret implementation.
+func NewServicePrincipalTokenWithSecret(id string, tenantID string, resource string, secret ServicePrincipalSecret) (*ServicePrincipalToken, error) {
 	spt := &ServicePrincipalToken{
+		secret:        secret,
 		clientID:      id,
-		clientSecret:  secret,
 		resource:      resource,
 		tenantID:      tenantID,
 		autoRefresh:   true,
 		refreshWithin: defaultRefresh,
-		sender:        &http.Client{}}
+		sender:        &http.Client{},
+	}
 	return spt, nil
+}
+
+// NewServicePrincipalToken creates a ServicePrincipalToken from the supplied Service Principal
+// credentials scoped to the named resource.
+func NewServicePrincipalToken(id string, secret string, tenantID string, resource string) (*ServicePrincipalToken, error) {
+	return NewServicePrincipalTokenWithSecret(
+		id,
+		tenantID,
+		resource,
+		&ServicePrincipalTokenSecret{
+			ClientSecret: secret,
+		},
+	)
+}
+
+// NewServicePrincipalTokenFromCertificate create a ServicePrincipalToken from the supplied pkcs12 bytes.
+func NewServicePrincipalTokenFromCertificate(id string, pkcs12 []byte, password string, tenantID string, resource string) (*ServicePrincipalToken, error) {
+	return NewServicePrincipalTokenWithSecret(
+		id,
+		tenantID,
+		resource,
+		&ServicePrincipalCertificateSecret{
+			Pkcs12:   pkcs12,
+			Password: password,
+		},
+	)
 }
 
 // EnsureFresh will refresh the token if it will expire within the refresh window (as set by
@@ -111,16 +225,23 @@ func (spt *ServicePrincipalToken) Refresh() error {
 
 	v := url.Values{}
 	v.Set("client_id", spt.clientID)
-	v.Set("client_secret", spt.clientSecret)
 	v.Set("grant_type", "client_credentials")
 	v.Set("resource", spt.resource)
 
-	req, _ := autorest.Prepare(&http.Request{},
+	err := spt.secret.SetAuthenticationValues(spt, &v)
+	if err != nil {
+		return err
+	}
+
+	req, err := autorest.Prepare(&http.Request{},
 		autorest.AsPost(),
 		autorest.AsFormURLEncoded(),
 		autorest.WithBaseURL(oauthURL),
 		autorest.WithPathParameters(p),
 		autorest.WithFormData(v))
+	if err != nil {
+		return err
+	}
 
 	resp, err := autorest.SendWithSender(spt.sender, req)
 	if err != nil {
@@ -129,15 +250,19 @@ func (spt *ServicePrincipalToken) Refresh() error {
 			spt.clientID)
 	}
 
+	var newToken Token
+
 	err = autorest.Respond(resp,
 		autorest.WithErrorUnlessOK(),
-		autorest.ByUnmarshallingJSON(spt),
+		autorest.ByUnmarshallingJSON(&newToken),
 		autorest.ByClosing())
 	if err != nil {
 		return autorest.NewErrorWithError(err,
 			"azure.ServicePrincipalToken", "Refresh", "Failure handling response to Service Principal %s request",
 			spt.clientID)
 	}
+
+	spt.Token = newToken
 
 	return nil
 }

@@ -12,10 +12,9 @@ import (
 	"github.com/Azure/azure-sdk-for-go/management/location"
 	"github.com/Azure/azure-sdk-for-go/management/osimage"
 	storage "github.com/Azure/azure-sdk-for-go/management/storageservice"
+	"github.com/Azure/azure-sdk-for-go/management/testutils"
 	vm "github.com/Azure/azure-sdk-for-go/management/virtualmachine"
 	vmimage "github.com/Azure/azure-sdk-for-go/management/virtualmachineimage"
-
-	"github.com/Azure/azure-sdk-for-go/management/testutils"
 )
 
 func TestDeployPlatformImage(t *testing.T) {

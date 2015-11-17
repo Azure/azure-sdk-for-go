@@ -19,7 +19,9 @@ package subscriptions
 // regenerated.
 
 import (
-	"github.com/Azure/azure-sdk-for-go/Godeps/_workspace/src/github.com/Azure/go-autorest/autorest"
+	"github.com/Azure/go-autorest/autorest"
+	"github.com/Azure/go-autorest/autorest/to"
+	"net/http"
 )
 
 // DeploymentExtendedFilter is deployment filter.
@@ -86,6 +88,18 @@ type SubscriptionListResult struct {
 	NextLink          *string         `json:"nextLink,omitempty"`
 }
 
+// SubscriptionListResultPreparer prepares a request to retrieve the next set of results. It returns
+// nil if no more results exist.
+func (client SubscriptionListResult) SubscriptionListResultPreparer() (*http.Request, error) {
+	if client.NextLink == nil || len(to.String(client.NextLink)) <= 0 {
+		return nil, nil
+	}
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(client.NextLink)))
+}
+
 // TenantIDDescription is tenant Id information
 type TenantIDDescription struct {
 	ID       *string `json:"id,omitempty"`
@@ -97,4 +111,16 @@ type TenantListResult struct {
 	autorest.Response `json:"-"`
 	Value             *[]TenantIDDescription `json:"value,omitempty"`
 	NextLink          *string                `json:"nextLink,omitempty"`
+}
+
+// TenantListResultPreparer prepares a request to retrieve the next set of results. It returns
+// nil if no more results exist.
+func (client TenantListResult) TenantListResultPreparer() (*http.Request, error) {
+	if client.NextLink == nil || len(to.String(client.NextLink)) <= 0 {
+		return nil, nil
+	}
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(client.NextLink)))
 }

@@ -19,55 +19,57 @@ package network
 // regenerated.
 
 import (
-	"github.com/Azure/azure-sdk-for-go/Godeps/_workspace/src/github.com/Azure/go-autorest/autorest"
+	"github.com/Azure/go-autorest/autorest"
 	"net/http"
 	"net/url"
 )
 
-// UsagesClient is the the Windows Azure Network management API provides a
-// RESTful set of web services that interact with Windows Azure Networks
-// service to manage your network resrources. The API has entities that
-// capture the relationship between an end user and the Windows Azure
-// Networks service.
-type UsagesClient struct {
-	ManagementClient
+// UsagesResourceProviderClient is the the Windows Azure Network management
+// API provides a RESTful set of web services that interact with Windows
+// Azure Networks service to manage your network resrources. The API has
+// entities that capture the relationship between an end user and the Windows
+// Azure Networks service.
+type UsagesResourceProviderClient struct {
+	ResourceProviderClient
 }
 
-// NewUsagesClient creates an instance of the UsagesClient client.
-func NewUsagesClient(subscriptionID string) UsagesClient {
-	return NewUsagesClientWithBaseURI(DefaultBaseURI, subscriptionID)
+// NewUsagesResourceProviderClient creates an instance of the
+// UsagesResourceProviderClient client.
+func NewUsagesResourceProviderClient(subscriptionID string) UsagesResourceProviderClient {
+	return NewUsagesResourceProviderClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewUsagesClientWithBaseURI creates an instance of the UsagesClient client.
-func NewUsagesClientWithBaseURI(baseURI string, subscriptionID string) UsagesClient {
-	return UsagesClient{NewWithBaseURI(baseURI, subscriptionID)}
+// NewUsagesResourceProviderClientWithBaseURI creates an instance of the
+// UsagesResourceProviderClient client.
+func NewUsagesResourceProviderClientWithBaseURI(baseURI string, subscriptionID string) UsagesResourceProviderClient {
+	return UsagesResourceProviderClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // List lists compute usages for a subscription.
 //
 // location is the location upon which resource usage is queried.
-func (client UsagesClient) List(location string) (result UsagesListResult, ae error) {
+func (client UsagesResourceProviderClient) List(location string) (result UsagesListResult, ae error) {
 	req, err := client.ListPreparer(location)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "network/UsagesClient", "List", "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "network/UsagesResourceProviderClient", "List", "Failure preparing request")
 	}
 
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "network/UsagesClient", "List", "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "network/UsagesResourceProviderClient", "List", "Failure sending request")
 	}
 
 	result, err = client.ListResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "network/UsagesClient", "List", "Failure responding to request")
+		ae = autorest.NewErrorWithError(err, "network/UsagesResourceProviderClient", "List", "Failure responding to request")
 	}
 
 	return
 }
 
 // ListPreparer prepares the List request.
-func (client UsagesClient) ListPreparer(location string) (*http.Request, error) {
+func (client UsagesResourceProviderClient) ListPreparer(location string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"location":       url.QueryEscape(location),
 		"subscriptionId": url.QueryEscape(client.SubscriptionID),
@@ -88,13 +90,13 @@ func (client UsagesClient) ListPreparer(location string) (*http.Request, error) 
 
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
-func (client UsagesClient) ListSender(req *http.Request) (*http.Response, error) {
+func (client UsagesResourceProviderClient) ListSender(req *http.Request) (*http.Response, error) {
 	return client.Send(req, http.StatusOK)
 }
 
 // ListResponder handles the response to the List request. The method always
 // closes the http.Response Body.
-func (client UsagesClient) ListResponder(resp *http.Response) (result UsagesListResult, err error) {
+func (client UsagesResourceProviderClient) ListResponder(resp *http.Response) (result UsagesListResult, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

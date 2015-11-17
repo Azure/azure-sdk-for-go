@@ -19,8 +19,10 @@ package logic
 // regenerated.
 
 import (
-	"github.com/Azure/azure-sdk-for-go/Godeps/_workspace/src/github.com/Azure/go-autorest/autorest"
-	"github.com/Azure/azure-sdk-for-go/Godeps/_workspace/src/github.com/Azure/go-autorest/autorest/date"
+	"github.com/Azure/go-autorest/autorest"
+	"github.com/Azure/go-autorest/autorest/date"
+	"github.com/Azure/go-autorest/autorest/to"
+	"net/http"
 )
 
 // KeyType enumerates the values for key type.
@@ -280,6 +282,18 @@ type WorkflowAccessKeyListResult struct {
 	NextLink          *string              `json:"nextLink,omitempty"`
 }
 
+// WorkflowAccessKeyListResultPreparer prepares a request to retrieve the next set of results. It returns
+// nil if no more results exist.
+func (client WorkflowAccessKeyListResult) WorkflowAccessKeyListResultPreparer() (*http.Request, error) {
+	if client.NextLink == nil || len(to.String(client.NextLink)) <= 0 {
+		return nil, nil
+	}
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(client.NextLink)))
+}
+
 // WorkflowAccessKeyProperties is
 type WorkflowAccessKeyProperties struct {
 	NotBefore *date.Time `json:"notBefore,omitempty"`
@@ -296,6 +310,18 @@ type WorkflowListResult struct {
 	autorest.Response `json:"-"`
 	Value             *[]Workflow `json:"value,omitempty"`
 	NextLink          *string     `json:"nextLink,omitempty"`
+}
+
+// WorkflowListResultPreparer prepares a request to retrieve the next set of results. It returns
+// nil if no more results exist.
+func (client WorkflowListResult) WorkflowListResultPreparer() (*http.Request, error) {
+	if client.NextLink == nil || len(to.String(client.NextLink)) <= 0 {
+		return nil, nil
+	}
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(client.NextLink)))
 }
 
 // WorkflowOutputParameter is
@@ -358,6 +384,18 @@ type WorkflowRunActionListResult struct {
 	NextLink          *string              `json:"nextLink,omitempty"`
 }
 
+// WorkflowRunActionListResultPreparer prepares a request to retrieve the next set of results. It returns
+// nil if no more results exist.
+func (client WorkflowRunActionListResult) WorkflowRunActionListResultPreparer() (*http.Request, error) {
+	if client.NextLink == nil || len(to.String(client.NextLink)) <= 0 {
+		return nil, nil
+	}
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(client.NextLink)))
+}
+
 // WorkflowRunActionProperties is
 type WorkflowRunActionProperties struct {
 	StartTime   *date.Time              `json:"startTime,omitempty"`
@@ -380,6 +418,18 @@ type WorkflowRunListResult struct {
 	autorest.Response `json:"-"`
 	Value             *[]WorkflowRun `json:"value,omitempty"`
 	NextLink          *string        `json:"nextLink,omitempty"`
+}
+
+// WorkflowRunListResultPreparer prepares a request to retrieve the next set of results. It returns
+// nil if no more results exist.
+func (client WorkflowRunListResult) WorkflowRunListResultPreparer() (*http.Request, error) {
+	if client.NextLink == nil || len(to.String(client.NextLink)) <= 0 {
+		return nil, nil
+	}
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(client.NextLink)))
 }
 
 // WorkflowRunProperties is
@@ -447,6 +497,18 @@ type WorkflowTriggerHistoryListResult struct {
 	NextLink          *string                   `json:"nextLink,omitempty"`
 }
 
+// WorkflowTriggerHistoryListResultPreparer prepares a request to retrieve the next set of results. It returns
+// nil if no more results exist.
+func (client WorkflowTriggerHistoryListResult) WorkflowTriggerHistoryListResultPreparer() (*http.Request, error) {
+	if client.NextLink == nil || len(to.String(client.NextLink)) <= 0 {
+		return nil, nil
+	}
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(client.NextLink)))
+}
+
 // WorkflowTriggerHistoryProperties is
 type WorkflowTriggerHistoryProperties struct {
 	StartTime   *date.Time              `json:"startTime,omitempty"`
@@ -466,6 +528,18 @@ type WorkflowTriggerListResult struct {
 	autorest.Response `json:"-"`
 	Value             *[]WorkflowTrigger `json:"value,omitempty"`
 	NextLink          *string            `json:"nextLink,omitempty"`
+}
+
+// WorkflowTriggerListResultPreparer prepares a request to retrieve the next set of results. It returns
+// nil if no more results exist.
+func (client WorkflowTriggerListResult) WorkflowTriggerListResultPreparer() (*http.Request, error) {
+	if client.NextLink == nil || len(to.String(client.NextLink)) <= 0 {
+		return nil, nil
+	}
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(client.NextLink)))
 }
 
 // WorkflowTriggerProperties is

@@ -19,26 +19,27 @@ package search
 // regenerated.
 
 import (
-	"github.com/Azure/azure-sdk-for-go/Godeps/_workspace/src/github.com/Azure/go-autorest/autorest"
+	"github.com/Azure/go-autorest/autorest"
 	"net/http"
 	"net/url"
 )
 
-// ServicesClient is the client that can be used to manage Azure Search
-// services and API keys.
-type ServicesClient struct {
+// ServicesManagementClient is the client that can be used to manage Azure
+// Search services and API keys.
+type ServicesManagementClient struct {
 	ManagementClient
 }
 
-// NewServicesClient creates an instance of the ServicesClient client.
-func NewServicesClient(subscriptionID string) ServicesClient {
-	return NewServicesClientWithBaseURI(DefaultBaseURI, subscriptionID)
+// NewServicesManagementClient creates an instance of the
+// ServicesManagementClient client.
+func NewServicesManagementClient(subscriptionID string) ServicesManagementClient {
+	return NewServicesManagementClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewServicesClientWithBaseURI creates an instance of the ServicesClient
-// client.
-func NewServicesClientWithBaseURI(baseURI string, subscriptionID string) ServicesClient {
-	return ServicesClient{NewWithBaseURI(baseURI, subscriptionID)}
+// NewServicesManagementClientWithBaseURI creates an instance of the
+// ServicesManagementClient client.
+func NewServicesManagementClientWithBaseURI(baseURI string, subscriptionID string) ServicesManagementClient {
+	return ServicesManagementClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // CreateOrUpdate creates or updates a Search service in the given resource
@@ -49,28 +50,28 @@ func NewServicesClientWithBaseURI(baseURI string, subscriptionID string) Service
 // subscription. serviceName is the name of the Search service to create or
 // update. parameters is the properties to set or update on the Search
 // service.
-func (client ServicesClient) CreateOrUpdate(resourceGroupName string, serviceName string, parameters ServiceCreateOrUpdateParameters) (result ServiceResource, ae error) {
+func (client ServicesManagementClient) CreateOrUpdate(resourceGroupName string, serviceName string, parameters ServiceCreateOrUpdateParameters) (result ServiceResource, ae error) {
 	req, err := client.CreateOrUpdatePreparer(resourceGroupName, serviceName, parameters)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "search/ServicesClient", "CreateOrUpdate", "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "search/ServicesManagementClient", "CreateOrUpdate", "Failure preparing request")
 	}
 
 	resp, err := client.CreateOrUpdateSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "search/ServicesClient", "CreateOrUpdate", "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "search/ServicesManagementClient", "CreateOrUpdate", "Failure sending request")
 	}
 
 	result, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "search/ServicesClient", "CreateOrUpdate", "Failure responding to request")
+		ae = autorest.NewErrorWithError(err, "search/ServicesManagementClient", "CreateOrUpdate", "Failure responding to request")
 	}
 
 	return
 }
 
 // CreateOrUpdatePreparer prepares the CreateOrUpdate request.
-func (client ServicesClient) CreateOrUpdatePreparer(resourceGroupName string, serviceName string, parameters ServiceCreateOrUpdateParameters) (*http.Request, error) {
+func (client ServicesManagementClient) CreateOrUpdatePreparer(resourceGroupName string, serviceName string, parameters ServiceCreateOrUpdateParameters) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName": url.QueryEscape(resourceGroupName),
 		"serviceName":       url.QueryEscape(serviceName),
@@ -93,13 +94,13 @@ func (client ServicesClient) CreateOrUpdatePreparer(resourceGroupName string, se
 
 // CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
 // http.Response Body if it receives an error.
-func (client ServicesClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
+func (client ServicesManagementClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
 	return client.Send(req, http.StatusOK, http.StatusCreated)
 }
 
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
 // closes the http.Response Body.
-func (client ServicesClient) CreateOrUpdateResponder(resp *http.Response) (result ServiceResource, err error) {
+func (client ServicesManagementClient) CreateOrUpdateResponder(resp *http.Response) (result ServiceResource, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -115,28 +116,28 @@ func (client ServicesClient) CreateOrUpdateResponder(resp *http.Response) (resul
 //
 // resourceGroupName is the name of the resource group within the current
 // subscription. serviceName is the name of the Search service to delete.
-func (client ServicesClient) Delete(resourceGroupName string, serviceName string) (result autorest.Response, ae error) {
+func (client ServicesManagementClient) Delete(resourceGroupName string, serviceName string) (result autorest.Response, ae error) {
 	req, err := client.DeletePreparer(resourceGroupName, serviceName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "search/ServicesClient", "Delete", "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "search/ServicesManagementClient", "Delete", "Failure preparing request")
 	}
 
 	resp, err := client.DeleteSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "search/ServicesClient", "Delete", "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "search/ServicesManagementClient", "Delete", "Failure sending request")
 	}
 
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "search/ServicesClient", "Delete", "Failure responding to request")
+		ae = autorest.NewErrorWithError(err, "search/ServicesManagementClient", "Delete", "Failure responding to request")
 	}
 
 	return
 }
 
 // DeletePreparer prepares the Delete request.
-func (client ServicesClient) DeletePreparer(resourceGroupName string, serviceName string) (*http.Request, error) {
+func (client ServicesManagementClient) DeletePreparer(resourceGroupName string, serviceName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName": url.QueryEscape(resourceGroupName),
 		"serviceName":       url.QueryEscape(serviceName),
@@ -158,13 +159,13 @@ func (client ServicesClient) DeletePreparer(resourceGroupName string, serviceNam
 
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
-func (client ServicesClient) DeleteSender(req *http.Request) (*http.Response, error) {
+func (client ServicesManagementClient) DeleteSender(req *http.Request) (*http.Response, error) {
 	return client.Send(req, http.StatusOK, http.StatusNotFound, http.StatusNoContent)
 }
 
 // DeleteResponder handles the response to the Delete request. The method always
 // closes the http.Response Body.
-func (client ServicesClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client ServicesManagementClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -178,28 +179,28 @@ func (client ServicesClient) DeleteResponder(resp *http.Response) (result autore
 //
 // resourceGroupName is the name of the resource group within the current
 // subscription.
-func (client ServicesClient) List(resourceGroupName string) (result ServiceListResult, ae error) {
+func (client ServicesManagementClient) List(resourceGroupName string) (result ServiceListResult, ae error) {
 	req, err := client.ListPreparer(resourceGroupName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "search/ServicesClient", "List", "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "search/ServicesManagementClient", "List", "Failure preparing request")
 	}
 
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "search/ServicesClient", "List", "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "search/ServicesManagementClient", "List", "Failure sending request")
 	}
 
 	result, err = client.ListResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "search/ServicesClient", "List", "Failure responding to request")
+		ae = autorest.NewErrorWithError(err, "search/ServicesManagementClient", "List", "Failure responding to request")
 	}
 
 	return
 }
 
 // ListPreparer prepares the List request.
-func (client ServicesClient) ListPreparer(resourceGroupName string) (*http.Request, error) {
+func (client ServicesManagementClient) ListPreparer(resourceGroupName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName": url.QueryEscape(resourceGroupName),
 		"subscriptionId":    url.QueryEscape(client.SubscriptionID),
@@ -220,13 +221,13 @@ func (client ServicesClient) ListPreparer(resourceGroupName string) (*http.Reque
 
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
-func (client ServicesClient) ListSender(req *http.Request) (*http.Response, error) {
+func (client ServicesManagementClient) ListSender(req *http.Request) (*http.Response, error) {
 	return client.Send(req, http.StatusOK)
 }
 
 // ListResponder handles the response to the List request. The method always
 // closes the http.Response Body.
-func (client ServicesClient) ListResponder(resp *http.Response) (result ServiceListResult, err error) {
+func (client ServicesManagementClient) ListResponder(resp *http.Response) (result ServiceListResult, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

@@ -19,26 +19,27 @@ package search
 // regenerated.
 
 import (
-	"github.com/Azure/azure-sdk-for-go/Godeps/_workspace/src/github.com/Azure/go-autorest/autorest"
+	"github.com/Azure/go-autorest/autorest"
 	"net/http"
 	"net/url"
 )
 
-// AdminKeysClient is the client that can be used to manage Azure Search
-// services and API keys.
-type AdminKeysClient struct {
+// AdminKeysManagementClient is the client that can be used to manage Azure
+// Search services and API keys.
+type AdminKeysManagementClient struct {
 	ManagementClient
 }
 
-// NewAdminKeysClient creates an instance of the AdminKeysClient client.
-func NewAdminKeysClient(subscriptionID string) AdminKeysClient {
-	return NewAdminKeysClientWithBaseURI(DefaultBaseURI, subscriptionID)
+// NewAdminKeysManagementClient creates an instance of the
+// AdminKeysManagementClient client.
+func NewAdminKeysManagementClient(subscriptionID string) AdminKeysManagementClient {
+	return NewAdminKeysManagementClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewAdminKeysClientWithBaseURI creates an instance of the AdminKeysClient
-// client.
-func NewAdminKeysClientWithBaseURI(baseURI string, subscriptionID string) AdminKeysClient {
-	return AdminKeysClient{NewWithBaseURI(baseURI, subscriptionID)}
+// NewAdminKeysManagementClientWithBaseURI creates an instance of the
+// AdminKeysManagementClient client.
+func NewAdminKeysManagementClientWithBaseURI(baseURI string, subscriptionID string) AdminKeysManagementClient {
+	return AdminKeysManagementClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // List returns the primary and secondary API keys for the given Azure Search
@@ -47,28 +48,28 @@ func NewAdminKeysClientWithBaseURI(baseURI string, subscriptionID string) AdminK
 // resourceGroupName is the name of the resource group within the current
 // subscription. serviceName is the name of the Search service for which to
 // list admin keys.
-func (client AdminKeysClient) List(resourceGroupName string, serviceName string) (result AdminKeyResult, ae error) {
+func (client AdminKeysManagementClient) List(resourceGroupName string, serviceName string) (result AdminKeyResult, ae error) {
 	req, err := client.ListPreparer(resourceGroupName, serviceName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "search/AdminKeysClient", "List", "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "search/AdminKeysManagementClient", "List", "Failure preparing request")
 	}
 
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "search/AdminKeysClient", "List", "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "search/AdminKeysManagementClient", "List", "Failure sending request")
 	}
 
 	result, err = client.ListResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "search/AdminKeysClient", "List", "Failure responding to request")
+		ae = autorest.NewErrorWithError(err, "search/AdminKeysManagementClient", "List", "Failure responding to request")
 	}
 
 	return
 }
 
 // ListPreparer prepares the List request.
-func (client AdminKeysClient) ListPreparer(resourceGroupName string, serviceName string) (*http.Request, error) {
+func (client AdminKeysManagementClient) ListPreparer(resourceGroupName string, serviceName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName": url.QueryEscape(resourceGroupName),
 		"serviceName":       url.QueryEscape(serviceName),
@@ -90,13 +91,13 @@ func (client AdminKeysClient) ListPreparer(resourceGroupName string, serviceName
 
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
-func (client AdminKeysClient) ListSender(req *http.Request) (*http.Response, error) {
+func (client AdminKeysManagementClient) ListSender(req *http.Request) (*http.Response, error) {
 	return client.Send(req, http.StatusOK)
 }
 
 // ListResponder handles the response to the List request. The method always
 // closes the http.Response Body.
-func (client AdminKeysClient) ListResponder(resp *http.Response) (result AdminKeyResult, err error) {
+func (client AdminKeysManagementClient) ListResponder(resp *http.Response) (result AdminKeyResult, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

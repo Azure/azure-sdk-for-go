@@ -19,55 +19,55 @@ package logic
 // regenerated.
 
 import (
-	"github.com/Azure/azure-sdk-for-go/Godeps/_workspace/src/github.com/Azure/go-autorest/autorest"
+	"github.com/Azure/go-autorest/autorest"
 	"net/http"
 	"net/url"
 )
 
-// WorkflowVersionsClient is the client for the WorkflowVersions methods of
-// the Logic service.
-type WorkflowVersionsClient struct {
+// WorkflowVersionsManagementClient is the client for the WorkflowVersions
+// methods of the Logic service.
+type WorkflowVersionsManagementClient struct {
 	ManagementClient
 }
 
-// NewWorkflowVersionsClient creates an instance of the WorkflowVersionsClient
-// client.
-func NewWorkflowVersionsClient(subscriptionID string) WorkflowVersionsClient {
-	return NewWorkflowVersionsClientWithBaseURI(DefaultBaseURI, subscriptionID)
+// NewWorkflowVersionsManagementClient creates an instance of the
+// WorkflowVersionsManagementClient client.
+func NewWorkflowVersionsManagementClient(subscriptionID string) WorkflowVersionsManagementClient {
+	return NewWorkflowVersionsManagementClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewWorkflowVersionsClientWithBaseURI creates an instance of the
-// WorkflowVersionsClient client.
-func NewWorkflowVersionsClientWithBaseURI(baseURI string, subscriptionID string) WorkflowVersionsClient {
-	return WorkflowVersionsClient{NewWithBaseURI(baseURI, subscriptionID)}
+// NewWorkflowVersionsManagementClientWithBaseURI creates an instance of the
+// WorkflowVersionsManagementClient client.
+func NewWorkflowVersionsManagementClientWithBaseURI(baseURI string, subscriptionID string) WorkflowVersionsManagementClient {
+	return WorkflowVersionsManagementClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // Get gets a workflow version.
 //
 // resourceGroupName is the resource group name. workflowName is the workflow
 // name. versionID is the workflow versionId.
-func (client WorkflowVersionsClient) Get(resourceGroupName string, workflowName string, versionID string) (result WorkflowVersion, ae error) {
+func (client WorkflowVersionsManagementClient) Get(resourceGroupName string, workflowName string, versionID string) (result WorkflowVersion, ae error) {
 	req, err := client.GetPreparer(resourceGroupName, workflowName, versionID)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "logic/WorkflowVersionsClient", "Get", "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "logic/WorkflowVersionsManagementClient", "Get", "Failure preparing request")
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "logic/WorkflowVersionsClient", "Get", "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "logic/WorkflowVersionsManagementClient", "Get", "Failure sending request")
 	}
 
 	result, err = client.GetResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "logic/WorkflowVersionsClient", "Get", "Failure responding to request")
+		ae = autorest.NewErrorWithError(err, "logic/WorkflowVersionsManagementClient", "Get", "Failure responding to request")
 	}
 
 	return
 }
 
 // GetPreparer prepares the Get request.
-func (client WorkflowVersionsClient) GetPreparer(resourceGroupName string, workflowName string, versionID string) (*http.Request, error) {
+func (client WorkflowVersionsManagementClient) GetPreparer(resourceGroupName string, workflowName string, versionID string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName": url.QueryEscape(resourceGroupName),
 		"subscriptionId":    url.QueryEscape(client.SubscriptionID),
@@ -90,13 +90,13 @@ func (client WorkflowVersionsClient) GetPreparer(resourceGroupName string, workf
 
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
-func (client WorkflowVersionsClient) GetSender(req *http.Request) (*http.Response, error) {
+func (client WorkflowVersionsManagementClient) GetSender(req *http.Request) (*http.Response, error) {
 	return client.Send(req, http.StatusOK)
 }
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
-func (client WorkflowVersionsClient) GetResponder(resp *http.Response) (result WorkflowVersion, err error) {
+func (client WorkflowVersionsManagementClient) GetResponder(resp *http.Response) (result WorkflowVersion, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

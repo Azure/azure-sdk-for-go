@@ -19,7 +19,9 @@ package features
 // regenerated.
 
 import (
-	"github.com/Azure/azure-sdk-for-go/Godeps/_workspace/src/github.com/Azure/go-autorest/autorest"
+	"github.com/Azure/go-autorest/autorest"
+	"github.com/Azure/go-autorest/autorest/to"
+	"net/http"
 )
 
 // DeploymentExtendedFilter is deployment filter.
@@ -32,6 +34,18 @@ type FeatureOperationsListResult struct {
 	autorest.Response `json:"-"`
 	Value             *[]FeatureResult `json:"value,omitempty"`
 	NextLink          *string          `json:"nextLink,omitempty"`
+}
+
+// FeatureOperationsListResultPreparer prepares a request to retrieve the next set of results. It returns
+// nil if no more results exist.
+func (client FeatureOperationsListResult) FeatureOperationsListResultPreparer() (*http.Request, error) {
+	if client.NextLink == nil || len(to.String(client.NextLink)) <= 0 {
+		return nil, nil
+	}
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(client.NextLink)))
 }
 
 // FeatureProperties is previewed feature information.

@@ -19,30 +19,30 @@ package network
 // regenerated.
 
 import (
-	"github.com/Azure/azure-sdk-for-go/Godeps/_workspace/src/github.com/Azure/go-autorest/autorest"
+	"github.com/Azure/go-autorest/autorest"
 	"net/http"
 	"net/url"
 )
 
-// LoadBalancersClient is the the Windows Azure Network management API
-// provides a RESTful set of web services that interact with Windows Azure
-// Networks service to manage your network resrources. The API has entities
-// that capture the relationship between an end user and the Windows Azure
-// Networks service.
-type LoadBalancersClient struct {
-	ManagementClient
+// LoadBalancersResourceProviderClient is the the Windows Azure Network
+// management API provides a RESTful set of web services that interact with
+// Windows Azure Networks service to manage your network resrources. The API
+// has entities that capture the relationship between an end user and the
+// Windows Azure Networks service.
+type LoadBalancersResourceProviderClient struct {
+	ResourceProviderClient
 }
 
-// NewLoadBalancersClient creates an instance of the LoadBalancersClient
-// client.
-func NewLoadBalancersClient(subscriptionID string) LoadBalancersClient {
-	return NewLoadBalancersClientWithBaseURI(DefaultBaseURI, subscriptionID)
+// NewLoadBalancersResourceProviderClient creates an instance of the
+// LoadBalancersResourceProviderClient client.
+func NewLoadBalancersResourceProviderClient(subscriptionID string) LoadBalancersResourceProviderClient {
+	return NewLoadBalancersResourceProviderClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewLoadBalancersClientWithBaseURI creates an instance of the
-// LoadBalancersClient client.
-func NewLoadBalancersClientWithBaseURI(baseURI string, subscriptionID string) LoadBalancersClient {
-	return LoadBalancersClient{NewWithBaseURI(baseURI, subscriptionID)}
+// NewLoadBalancersResourceProviderClientWithBaseURI creates an instance of
+// the LoadBalancersResourceProviderClient client.
+func NewLoadBalancersResourceProviderClientWithBaseURI(baseURI string, subscriptionID string) LoadBalancersResourceProviderClient {
+	return LoadBalancersResourceProviderClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // CreateOrUpdate the Put LoadBalancer operation creates/updates a LoadBalancer
@@ -50,28 +50,28 @@ func NewLoadBalancersClientWithBaseURI(baseURI string, subscriptionID string) Lo
 // resourceGroupName is the name of the resource group. loadBalancerName is
 // the name of the loadBalancer. parameters is parameters supplied to the
 // create/delete LoadBalancer operation
-func (client LoadBalancersClient) CreateOrUpdate(resourceGroupName string, loadBalancerName string, parameters LoadBalancer) (result LoadBalancer, ae error) {
+func (client LoadBalancersResourceProviderClient) CreateOrUpdate(resourceGroupName string, loadBalancerName string, parameters LoadBalancer) (result LoadBalancer, ae error) {
 	req, err := client.CreateOrUpdatePreparer(resourceGroupName, loadBalancerName, parameters)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "network/LoadBalancersClient", "CreateOrUpdate", "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "network/LoadBalancersResourceProviderClient", "CreateOrUpdate", "Failure preparing request")
 	}
 
 	resp, err := client.CreateOrUpdateSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "network/LoadBalancersClient", "CreateOrUpdate", "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "network/LoadBalancersResourceProviderClient", "CreateOrUpdate", "Failure sending request")
 	}
 
 	result, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "network/LoadBalancersClient", "CreateOrUpdate", "Failure responding to request")
+		ae = autorest.NewErrorWithError(err, "network/LoadBalancersResourceProviderClient", "CreateOrUpdate", "Failure responding to request")
 	}
 
 	return
 }
 
 // CreateOrUpdatePreparer prepares the CreateOrUpdate request.
-func (client LoadBalancersClient) CreateOrUpdatePreparer(resourceGroupName string, loadBalancerName string, parameters LoadBalancer) (*http.Request, error) {
+func (client LoadBalancersResourceProviderClient) CreateOrUpdatePreparer(resourceGroupName string, loadBalancerName string, parameters LoadBalancer) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"loadBalancerName":  url.QueryEscape(loadBalancerName),
 		"resourceGroupName": url.QueryEscape(resourceGroupName),
@@ -94,13 +94,13 @@ func (client LoadBalancersClient) CreateOrUpdatePreparer(resourceGroupName strin
 
 // CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
 // http.Response Body if it receives an error.
-func (client LoadBalancersClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
+func (client LoadBalancersResourceProviderClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
 	return client.Send(req, http.StatusCreated, http.StatusOK)
 }
 
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
 // closes the http.Response Body.
-func (client LoadBalancersClient) CreateOrUpdateResponder(resp *http.Response) (result LoadBalancer, err error) {
+func (client LoadBalancersResourceProviderClient) CreateOrUpdateResponder(resp *http.Response) (result LoadBalancer, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -115,28 +115,28 @@ func (client LoadBalancersClient) CreateOrUpdateResponder(resp *http.Response) (
 //
 // resourceGroupName is the name of the resource group. loadBalancerName is
 // the name of the loadBalancer.
-func (client LoadBalancersClient) Delete(resourceGroupName string, loadBalancerName string) (result autorest.Response, ae error) {
+func (client LoadBalancersResourceProviderClient) Delete(resourceGroupName string, loadBalancerName string) (result autorest.Response, ae error) {
 	req, err := client.DeletePreparer(resourceGroupName, loadBalancerName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "network/LoadBalancersClient", "Delete", "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "network/LoadBalancersResourceProviderClient", "Delete", "Failure preparing request")
 	}
 
 	resp, err := client.DeleteSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "network/LoadBalancersClient", "Delete", "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "network/LoadBalancersResourceProviderClient", "Delete", "Failure sending request")
 	}
 
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "network/LoadBalancersClient", "Delete", "Failure responding to request")
+		ae = autorest.NewErrorWithError(err, "network/LoadBalancersResourceProviderClient", "Delete", "Failure responding to request")
 	}
 
 	return
 }
 
 // DeletePreparer prepares the Delete request.
-func (client LoadBalancersClient) DeletePreparer(resourceGroupName string, loadBalancerName string) (*http.Request, error) {
+func (client LoadBalancersResourceProviderClient) DeletePreparer(resourceGroupName string, loadBalancerName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"loadBalancerName":  url.QueryEscape(loadBalancerName),
 		"resourceGroupName": url.QueryEscape(resourceGroupName),
@@ -158,13 +158,13 @@ func (client LoadBalancersClient) DeletePreparer(resourceGroupName string, loadB
 
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
-func (client LoadBalancersClient) DeleteSender(req *http.Request) (*http.Response, error) {
+func (client LoadBalancersResourceProviderClient) DeleteSender(req *http.Request) (*http.Response, error) {
 	return client.Send(req, http.StatusNoContent, http.StatusAccepted, http.StatusOK)
 }
 
 // DeleteResponder handles the response to the Delete request. The method always
 // closes the http.Response Body.
-func (client LoadBalancersClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client LoadBalancersResourceProviderClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -179,28 +179,28 @@ func (client LoadBalancersClient) DeleteResponder(resp *http.Response) (result a
 //
 // resourceGroupName is the name of the resource group. loadBalancerName is
 // the name of the loadBalancer.
-func (client LoadBalancersClient) Get(resourceGroupName string, loadBalancerName string) (result LoadBalancer, ae error) {
+func (client LoadBalancersResourceProviderClient) Get(resourceGroupName string, loadBalancerName string) (result LoadBalancer, ae error) {
 	req, err := client.GetPreparer(resourceGroupName, loadBalancerName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "network/LoadBalancersClient", "Get", "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "network/LoadBalancersResourceProviderClient", "Get", "Failure preparing request")
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "network/LoadBalancersClient", "Get", "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "network/LoadBalancersResourceProviderClient", "Get", "Failure sending request")
 	}
 
 	result, err = client.GetResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "network/LoadBalancersClient", "Get", "Failure responding to request")
+		ae = autorest.NewErrorWithError(err, "network/LoadBalancersResourceProviderClient", "Get", "Failure responding to request")
 	}
 
 	return
 }
 
 // GetPreparer prepares the Get request.
-func (client LoadBalancersClient) GetPreparer(resourceGroupName string, loadBalancerName string) (*http.Request, error) {
+func (client LoadBalancersResourceProviderClient) GetPreparer(resourceGroupName string, loadBalancerName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"loadBalancerName":  url.QueryEscape(loadBalancerName),
 		"resourceGroupName": url.QueryEscape(resourceGroupName),
@@ -222,13 +222,13 @@ func (client LoadBalancersClient) GetPreparer(resourceGroupName string, loadBala
 
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
-func (client LoadBalancersClient) GetSender(req *http.Request) (*http.Response, error) {
+func (client LoadBalancersResourceProviderClient) GetSender(req *http.Request) (*http.Response, error) {
 	return client.Send(req, http.StatusOK)
 }
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
-func (client LoadBalancersClient) GetResponder(resp *http.Response) (result LoadBalancer, err error) {
+func (client LoadBalancersResourceProviderClient) GetResponder(resp *http.Response) (result LoadBalancer, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -243,28 +243,28 @@ func (client LoadBalancersClient) GetResponder(resp *http.Response) (result Load
 // resource group.
 //
 // resourceGroupName is the name of the resource group.
-func (client LoadBalancersClient) List(resourceGroupName string) (result LoadBalancerListResult, ae error) {
+func (client LoadBalancersResourceProviderClient) List(resourceGroupName string) (result LoadBalancerListResult, ae error) {
 	req, err := client.ListPreparer(resourceGroupName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "network/LoadBalancersClient", "List", "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "network/LoadBalancersResourceProviderClient", "List", "Failure preparing request")
 	}
 
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "network/LoadBalancersClient", "List", "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "network/LoadBalancersResourceProviderClient", "List", "Failure sending request")
 	}
 
 	result, err = client.ListResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "network/LoadBalancersClient", "List", "Failure responding to request")
+		ae = autorest.NewErrorWithError(err, "network/LoadBalancersResourceProviderClient", "List", "Failure responding to request")
 	}
 
 	return
 }
 
 // ListPreparer prepares the List request.
-func (client LoadBalancersClient) ListPreparer(resourceGroupName string) (*http.Request, error) {
+func (client LoadBalancersResourceProviderClient) ListPreparer(resourceGroupName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName": url.QueryEscape(resourceGroupName),
 		"subscriptionId":    url.QueryEscape(client.SubscriptionID),
@@ -285,13 +285,13 @@ func (client LoadBalancersClient) ListPreparer(resourceGroupName string) (*http.
 
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
-func (client LoadBalancersClient) ListSender(req *http.Request) (*http.Response, error) {
+func (client LoadBalancersResourceProviderClient) ListSender(req *http.Request) (*http.Response, error) {
 	return client.Send(req, http.StatusOK)
 }
 
 // ListResponder handles the response to the List request. The method always
 // closes the http.Response Body.
-func (client LoadBalancersClient) ListResponder(resp *http.Response) (result LoadBalancerListResult, err error) {
+func (client LoadBalancersResourceProviderClient) ListResponder(resp *http.Response) (result LoadBalancerListResult, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -302,30 +302,54 @@ func (client LoadBalancersClient) ListResponder(resp *http.Response) (result Loa
 	return
 }
 
+// ListNextResults retrieves the next set of results, if any.
+func (client LoadBalancersResourceProviderClient) ListNextResults(lastResults LoadBalancerListResult) (result LoadBalancerListResult, ae error) {
+	req, err := lastResults.LoadBalancerListResultPreparer()
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "network/LoadBalancersResourceProviderClient", "List", "Failure preparing next results request request")
+	}
+	if req == nil {
+		return
+	}
+
+	resp, err := client.ListSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "network/LoadBalancersResourceProviderClient", "List", "Failure sending next results request request")
+	}
+
+	result, err = client.ListResponder(resp)
+	if err != nil {
+		ae = autorest.NewErrorWithError(err, "network/LoadBalancersResourceProviderClient", "List", "Failure responding to next results request request")
+	}
+
+	return
+}
+
 // ListAll the List loadBalancer opertion retrieves all the loadbalancers in a
 // subscription.
-func (client LoadBalancersClient) ListAll() (result LoadBalancerListResult, ae error) {
+func (client LoadBalancersResourceProviderClient) ListAll() (result LoadBalancerListResult, ae error) {
 	req, err := client.ListAllPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "network/LoadBalancersClient", "ListAll", "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "network/LoadBalancersResourceProviderClient", "ListAll", "Failure preparing request")
 	}
 
 	resp, err := client.ListAllSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "network/LoadBalancersClient", "ListAll", "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "network/LoadBalancersResourceProviderClient", "ListAll", "Failure sending request")
 	}
 
 	result, err = client.ListAllResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "network/LoadBalancersClient", "ListAll", "Failure responding to request")
+		ae = autorest.NewErrorWithError(err, "network/LoadBalancersResourceProviderClient", "ListAll", "Failure responding to request")
 	}
 
 	return
 }
 
 // ListAllPreparer prepares the ListAll request.
-func (client LoadBalancersClient) ListAllPreparer() (*http.Request, error) {
+func (client LoadBalancersResourceProviderClient) ListAllPreparer() (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"subscriptionId": url.QueryEscape(client.SubscriptionID),
 	}
@@ -345,13 +369,13 @@ func (client LoadBalancersClient) ListAllPreparer() (*http.Request, error) {
 
 // ListAllSender sends the ListAll request. The method will close the
 // http.Response Body if it receives an error.
-func (client LoadBalancersClient) ListAllSender(req *http.Request) (*http.Response, error) {
+func (client LoadBalancersResourceProviderClient) ListAllSender(req *http.Request) (*http.Response, error) {
 	return client.Send(req, http.StatusOK)
 }
 
 // ListAllResponder handles the response to the ListAll request. The method always
 // closes the http.Response Body.
-func (client LoadBalancersClient) ListAllResponder(resp *http.Response) (result LoadBalancerListResult, err error) {
+func (client LoadBalancersResourceProviderClient) ListAllResponder(resp *http.Response) (result LoadBalancerListResult, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -359,5 +383,29 @@ func (client LoadBalancersClient) ListAllResponder(resp *http.Response) (result 
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// ListAllNextResults retrieves the next set of results, if any.
+func (client LoadBalancersResourceProviderClient) ListAllNextResults(lastResults LoadBalancerListResult) (result LoadBalancerListResult, ae error) {
+	req, err := lastResults.LoadBalancerListResultPreparer()
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "network/LoadBalancersResourceProviderClient", "ListAll", "Failure preparing next results request request")
+	}
+	if req == nil {
+		return
+	}
+
+	resp, err := client.ListAllSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "network/LoadBalancersResourceProviderClient", "ListAll", "Failure sending next results request request")
+	}
+
+	result, err = client.ListAllResponder(resp)
+	if err != nil {
+		ae = autorest.NewErrorWithError(err, "network/LoadBalancersResourceProviderClient", "ListAll", "Failure responding to next results request request")
+	}
+
 	return
 }

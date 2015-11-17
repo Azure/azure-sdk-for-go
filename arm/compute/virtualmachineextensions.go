@@ -19,26 +19,27 @@ package compute
 // regenerated.
 
 import (
-	"github.com/Azure/azure-sdk-for-go/Godeps/_workspace/src/github.com/Azure/go-autorest/autorest"
+	"github.com/Azure/go-autorest/autorest"
 	"net/http"
 	"net/url"
 )
 
-// VirtualMachineExtensionsClient is the the Compute Management Client.
-type VirtualMachineExtensionsClient struct {
+// VirtualMachineExtensionsManagementClient is the the Compute Management
+// Client.
+type VirtualMachineExtensionsManagementClient struct {
 	ManagementClient
 }
 
-// NewVirtualMachineExtensionsClient creates an instance of the
-// VirtualMachineExtensionsClient client.
-func NewVirtualMachineExtensionsClient(subscriptionID string) VirtualMachineExtensionsClient {
-	return NewVirtualMachineExtensionsClientWithBaseURI(DefaultBaseURI, subscriptionID)
+// NewVirtualMachineExtensionsManagementClient creates an instance of the
+// VirtualMachineExtensionsManagementClient client.
+func NewVirtualMachineExtensionsManagementClient(subscriptionID string) VirtualMachineExtensionsManagementClient {
+	return NewVirtualMachineExtensionsManagementClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewVirtualMachineExtensionsClientWithBaseURI creates an instance of the
-// VirtualMachineExtensionsClient client.
-func NewVirtualMachineExtensionsClientWithBaseURI(baseURI string, subscriptionID string) VirtualMachineExtensionsClient {
-	return VirtualMachineExtensionsClient{NewWithBaseURI(baseURI, subscriptionID)}
+// NewVirtualMachineExtensionsManagementClientWithBaseURI creates an instance
+// of the VirtualMachineExtensionsManagementClient client.
+func NewVirtualMachineExtensionsManagementClientWithBaseURI(baseURI string, subscriptionID string) VirtualMachineExtensionsManagementClient {
+	return VirtualMachineExtensionsManagementClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // CreateOrUpdate the operation to create or update the extension.
@@ -48,28 +49,28 @@ func NewVirtualMachineExtensionsClientWithBaseURI(baseURI string, subscriptionID
 // vmExtensionName is the name of the virtual machine extension.
 // extensionParameters is parameters supplied to the Create Virtual Machine
 // Extension operation.
-func (client VirtualMachineExtensionsClient) CreateOrUpdate(resourceGroupName string, vmName string, vmExtensionName string, extensionParameters VirtualMachineExtension) (result VirtualMachineExtension, ae error) {
+func (client VirtualMachineExtensionsManagementClient) CreateOrUpdate(resourceGroupName string, vmName string, vmExtensionName string, extensionParameters VirtualMachineExtension) (result VirtualMachineExtension, ae error) {
 	req, err := client.CreateOrUpdatePreparer(resourceGroupName, vmName, vmExtensionName, extensionParameters)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "compute/VirtualMachineExtensionsClient", "CreateOrUpdate", "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "compute/VirtualMachineExtensionsManagementClient", "CreateOrUpdate", "Failure preparing request")
 	}
 
 	resp, err := client.CreateOrUpdateSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "compute/VirtualMachineExtensionsClient", "CreateOrUpdate", "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "compute/VirtualMachineExtensionsManagementClient", "CreateOrUpdate", "Failure sending request")
 	}
 
 	result, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "compute/VirtualMachineExtensionsClient", "CreateOrUpdate", "Failure responding to request")
+		ae = autorest.NewErrorWithError(err, "compute/VirtualMachineExtensionsManagementClient", "CreateOrUpdate", "Failure responding to request")
 	}
 
 	return
 }
 
 // CreateOrUpdatePreparer prepares the CreateOrUpdate request.
-func (client VirtualMachineExtensionsClient) CreateOrUpdatePreparer(resourceGroupName string, vmName string, vmExtensionName string, extensionParameters VirtualMachineExtension) (*http.Request, error) {
+func (client VirtualMachineExtensionsManagementClient) CreateOrUpdatePreparer(resourceGroupName string, vmName string, vmExtensionName string, extensionParameters VirtualMachineExtension) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName": url.QueryEscape(resourceGroupName),
 		"subscriptionId":    url.QueryEscape(client.SubscriptionID),
@@ -93,13 +94,13 @@ func (client VirtualMachineExtensionsClient) CreateOrUpdatePreparer(resourceGrou
 
 // CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
 // http.Response Body if it receives an error.
-func (client VirtualMachineExtensionsClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
+func (client VirtualMachineExtensionsManagementClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
 	return client.Send(req, http.StatusCreated, http.StatusOK)
 }
 
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
 // closes the http.Response Body.
-func (client VirtualMachineExtensionsClient) CreateOrUpdateResponder(resp *http.Response) (result VirtualMachineExtension, err error) {
+func (client VirtualMachineExtensionsManagementClient) CreateOrUpdateResponder(resp *http.Response) (result VirtualMachineExtension, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -115,28 +116,28 @@ func (client VirtualMachineExtensionsClient) CreateOrUpdateResponder(resp *http.
 // resourceGroupName is the name of the resource group. vmName is the name of
 // the virtual machine where the extension should be deleted. vmExtensionName
 // is the name of the virtual machine extension.
-func (client VirtualMachineExtensionsClient) Delete(resourceGroupName string, vmName string, vmExtensionName string) (result autorest.Response, ae error) {
+func (client VirtualMachineExtensionsManagementClient) Delete(resourceGroupName string, vmName string, vmExtensionName string) (result autorest.Response, ae error) {
 	req, err := client.DeletePreparer(resourceGroupName, vmName, vmExtensionName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "compute/VirtualMachineExtensionsClient", "Delete", "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "compute/VirtualMachineExtensionsManagementClient", "Delete", "Failure preparing request")
 	}
 
 	resp, err := client.DeleteSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "compute/VirtualMachineExtensionsClient", "Delete", "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "compute/VirtualMachineExtensionsManagementClient", "Delete", "Failure sending request")
 	}
 
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "compute/VirtualMachineExtensionsClient", "Delete", "Failure responding to request")
+		ae = autorest.NewErrorWithError(err, "compute/VirtualMachineExtensionsManagementClient", "Delete", "Failure responding to request")
 	}
 
 	return
 }
 
 // DeletePreparer prepares the Delete request.
-func (client VirtualMachineExtensionsClient) DeletePreparer(resourceGroupName string, vmName string, vmExtensionName string) (*http.Request, error) {
+func (client VirtualMachineExtensionsManagementClient) DeletePreparer(resourceGroupName string, vmName string, vmExtensionName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName": url.QueryEscape(resourceGroupName),
 		"subscriptionId":    url.QueryEscape(client.SubscriptionID),
@@ -159,13 +160,13 @@ func (client VirtualMachineExtensionsClient) DeletePreparer(resourceGroupName st
 
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
-func (client VirtualMachineExtensionsClient) DeleteSender(req *http.Request) (*http.Response, error) {
+func (client VirtualMachineExtensionsManagementClient) DeleteSender(req *http.Request) (*http.Response, error) {
 	return client.Send(req, http.StatusAccepted, http.StatusNoContent, http.StatusOK)
 }
 
 // DeleteResponder handles the response to the Delete request. The method always
 // closes the http.Response Body.
-func (client VirtualMachineExtensionsClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client VirtualMachineExtensionsManagementClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -181,28 +182,28 @@ func (client VirtualMachineExtensionsClient) DeleteResponder(resp *http.Response
 // the virtual machine containing the extension. vmExtensionName is the name
 // of the virtual machine extension. expand is the expand expression to apply
 // on the operation.
-func (client VirtualMachineExtensionsClient) Get(resourceGroupName string, vmName string, vmExtensionName string, expand string) (result VirtualMachineExtension, ae error) {
+func (client VirtualMachineExtensionsManagementClient) Get(resourceGroupName string, vmName string, vmExtensionName string, expand string) (result VirtualMachineExtension, ae error) {
 	req, err := client.GetPreparer(resourceGroupName, vmName, vmExtensionName, expand)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "compute/VirtualMachineExtensionsClient", "Get", "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "compute/VirtualMachineExtensionsManagementClient", "Get", "Failure preparing request")
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "compute/VirtualMachineExtensionsClient", "Get", "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "compute/VirtualMachineExtensionsManagementClient", "Get", "Failure sending request")
 	}
 
 	result, err = client.GetResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "compute/VirtualMachineExtensionsClient", "Get", "Failure responding to request")
+		ae = autorest.NewErrorWithError(err, "compute/VirtualMachineExtensionsManagementClient", "Get", "Failure responding to request")
 	}
 
 	return
 }
 
 // GetPreparer prepares the Get request.
-func (client VirtualMachineExtensionsClient) GetPreparer(resourceGroupName string, vmName string, vmExtensionName string, expand string) (*http.Request, error) {
+func (client VirtualMachineExtensionsManagementClient) GetPreparer(resourceGroupName string, vmName string, vmExtensionName string, expand string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName": url.QueryEscape(resourceGroupName),
 		"subscriptionId":    url.QueryEscape(client.SubscriptionID),
@@ -228,13 +229,13 @@ func (client VirtualMachineExtensionsClient) GetPreparer(resourceGroupName strin
 
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
-func (client VirtualMachineExtensionsClient) GetSender(req *http.Request) (*http.Response, error) {
+func (client VirtualMachineExtensionsManagementClient) GetSender(req *http.Request) (*http.Response, error) {
 	return client.Send(req, http.StatusOK)
 }
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
-func (client VirtualMachineExtensionsClient) GetResponder(resp *http.Response) (result VirtualMachineExtension, err error) {
+func (client VirtualMachineExtensionsManagementClient) GetResponder(resp *http.Response) (result VirtualMachineExtension, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

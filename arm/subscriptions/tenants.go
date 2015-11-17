@@ -19,7 +19,7 @@ package subscriptions
 // regenerated.
 
 import (
-	"github.com/Azure/azure-sdk-for-go/Godeps/_workspace/src/github.com/Azure/go-autorest/autorest"
+	"github.com/Azure/go-autorest/autorest"
 	"net/http"
 	"net/url"
 )
@@ -27,7 +27,7 @@ import (
 // TenantsClient is the client for the Tenants methods of the Subscriptions
 // service.
 type TenantsClient struct {
-	ManagementClient
+	Client
 }
 
 // NewTenantsClient creates an instance of the TenantsClient client.
@@ -96,5 +96,29 @@ func (client TenantsClient) ListResponder(resp *http.Response) (result TenantLis
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// ListNextResults retrieves the next set of results, if any.
+func (client TenantsClient) ListNextResults(lastResults TenantListResult) (result TenantListResult, ae error) {
+	req, err := lastResults.TenantListResultPreparer()
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "subscriptions/TenantsClient", "List", "Failure preparing next results request request")
+	}
+	if req == nil {
+		return
+	}
+
+	resp, err := client.ListSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "subscriptions/TenantsClient", "List", "Failure sending next results request request")
+	}
+
+	result, err = client.ListResponder(resp)
+	if err != nil {
+		ae = autorest.NewErrorWithError(err, "subscriptions/TenantsClient", "List", "Failure responding to next results request request")
+	}
+
 	return
 }

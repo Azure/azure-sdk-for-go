@@ -19,54 +19,54 @@ package resources
 // regenerated.
 
 import (
-	"github.com/Azure/azure-sdk-for-go/Godeps/_workspace/src/github.com/Azure/go-autorest/autorest"
+	"github.com/Azure/go-autorest/autorest"
 	"net/http"
 	"net/url"
 )
 
-// ProviderOperationDetailsClient is the client for the
+// ProviderOperationDetailsManagementClient is the client for the
 // ProviderOperationDetails methods of the Resources service.
-type ProviderOperationDetailsClient struct {
+type ProviderOperationDetailsManagementClient struct {
 	ManagementClient
 }
 
-// NewProviderOperationDetailsClient creates an instance of the
-// ProviderOperationDetailsClient client.
-func NewProviderOperationDetailsClient(subscriptionID string) ProviderOperationDetailsClient {
-	return NewProviderOperationDetailsClientWithBaseURI(DefaultBaseURI, subscriptionID)
+// NewProviderOperationDetailsManagementClient creates an instance of the
+// ProviderOperationDetailsManagementClient client.
+func NewProviderOperationDetailsManagementClient(subscriptionID string) ProviderOperationDetailsManagementClient {
+	return NewProviderOperationDetailsManagementClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewProviderOperationDetailsClientWithBaseURI creates an instance of the
-// ProviderOperationDetailsClient client.
-func NewProviderOperationDetailsClientWithBaseURI(baseURI string, subscriptionID string) ProviderOperationDetailsClient {
-	return ProviderOperationDetailsClient{NewWithBaseURI(baseURI, subscriptionID)}
+// NewProviderOperationDetailsManagementClientWithBaseURI creates an instance
+// of the ProviderOperationDetailsManagementClient client.
+func NewProviderOperationDetailsManagementClientWithBaseURI(baseURI string, subscriptionID string) ProviderOperationDetailsManagementClient {
+	return ProviderOperationDetailsManagementClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // List gets a list of resource providers.
 //
 // resourceProviderNamespace is resource identity.
-func (client ProviderOperationDetailsClient) List(resourceProviderNamespace string, apiVersion string) (result ResourceProviderOperationDetailListResult, ae error) {
+func (client ProviderOperationDetailsManagementClient) List(resourceProviderNamespace string, apiVersion string) (result ResourceProviderOperationDetailListResult, ae error) {
 	req, err := client.ListPreparer(resourceProviderNamespace, apiVersion)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "resources/ProviderOperationDetailsClient", "List", "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "resources/ProviderOperationDetailsManagementClient", "List", "Failure preparing request")
 	}
 
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "resources/ProviderOperationDetailsClient", "List", "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "resources/ProviderOperationDetailsManagementClient", "List", "Failure sending request")
 	}
 
 	result, err = client.ListResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "resources/ProviderOperationDetailsClient", "List", "Failure responding to request")
+		ae = autorest.NewErrorWithError(err, "resources/ProviderOperationDetailsManagementClient", "List", "Failure responding to request")
 	}
 
 	return
 }
 
 // ListPreparer prepares the List request.
-func (client ProviderOperationDetailsClient) ListPreparer(resourceProviderNamespace string, apiVersion string) (*http.Request, error) {
+func (client ProviderOperationDetailsManagementClient) ListPreparer(resourceProviderNamespace string, apiVersion string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceProviderNamespace": url.QueryEscape(resourceProviderNamespace),
 		"subscriptionId":            url.QueryEscape(client.SubscriptionID),
@@ -87,13 +87,13 @@ func (client ProviderOperationDetailsClient) ListPreparer(resourceProviderNamesp
 
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
-func (client ProviderOperationDetailsClient) ListSender(req *http.Request) (*http.Response, error) {
+func (client ProviderOperationDetailsManagementClient) ListSender(req *http.Request) (*http.Response, error) {
 	return client.Send(req, http.StatusOK, http.StatusNoContent)
 }
 
 // ListResponder handles the response to the List request. The method always
 // closes the http.Response Body.
-func (client ProviderOperationDetailsClient) ListResponder(resp *http.Response) (result ResourceProviderOperationDetailListResult, err error) {
+func (client ProviderOperationDetailsManagementClient) ListResponder(resp *http.Response) (result ResourceProviderOperationDetailListResult, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

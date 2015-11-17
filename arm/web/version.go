@@ -1,4 +1,4 @@
-package intune
+package web
 
 // Copyright (c) Microsoft and contributors.  All rights reserved.
 //
@@ -24,8 +24,8 @@ import (
 
 const (
 	major = "0"
-	minor = "1"
-	patch = "1"
+	minor = "2"
+	patch = "0"
 	// Always begin a "tag" with a dash (as per http://semver.org)
 	tag             = "-beta"
 	semVerFormat    = "%s.%s.%s%s"
@@ -34,7 +34,7 @@ const (
 
 // UserAgent returns the UserAgent string to use when sending http.Requests.
 func UserAgent() string {
-	return fmt.Sprintf(userAgentFormat, Version(), "intune", "2015-01-11-alpha")
+	return fmt.Sprintf(userAgentFormat, Version(), "web", "2015-08-01")
 }
 
 // Version returns the semantic version (see http://semver.org) of the client.

@@ -19,53 +19,53 @@ package storage
 // regenerated.
 
 import (
-	"github.com/Azure/azure-sdk-for-go/Godeps/_workspace/src/github.com/Azure/go-autorest/autorest"
+	"github.com/Azure/go-autorest/autorest"
 	"net/http"
 	"net/url"
 )
 
-// UsageOperationsClient is the the Storage Management Client.
-type UsageOperationsClient struct {
+// UsageOperationsManagementClient is the the Storage Management Client.
+type UsageOperationsManagementClient struct {
 	ManagementClient
 }
 
-// NewUsageOperationsClient creates an instance of the UsageOperationsClient
-// client.
-func NewUsageOperationsClient(subscriptionID string) UsageOperationsClient {
-	return NewUsageOperationsClientWithBaseURI(DefaultBaseURI, subscriptionID)
+// NewUsageOperationsManagementClient creates an instance of the
+// UsageOperationsManagementClient client.
+func NewUsageOperationsManagementClient(subscriptionID string) UsageOperationsManagementClient {
+	return NewUsageOperationsManagementClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewUsageOperationsClientWithBaseURI creates an instance of the
-// UsageOperationsClient client.
-func NewUsageOperationsClientWithBaseURI(baseURI string, subscriptionID string) UsageOperationsClient {
-	return UsageOperationsClient{NewWithBaseURI(baseURI, subscriptionID)}
+// NewUsageOperationsManagementClientWithBaseURI creates an instance of the
+// UsageOperationsManagementClient client.
+func NewUsageOperationsManagementClientWithBaseURI(baseURI string, subscriptionID string) UsageOperationsManagementClient {
+	return UsageOperationsManagementClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // List gets the current usage count and the limit for the resources under the
 // subscription.
 //
-func (client UsageOperationsClient) List(apiVersion string) (result UsageListResult, ae error) {
+func (client UsageOperationsManagementClient) List(apiVersion string) (result UsageListResult, ae error) {
 	req, err := client.ListPreparer(apiVersion)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "storage/UsageOperationsClient", "List", "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "storage/UsageOperationsManagementClient", "List", "Failure preparing request")
 	}
 
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "storage/UsageOperationsClient", "List", "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "storage/UsageOperationsManagementClient", "List", "Failure sending request")
 	}
 
 	result, err = client.ListResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "storage/UsageOperationsClient", "List", "Failure responding to request")
+		ae = autorest.NewErrorWithError(err, "storage/UsageOperationsManagementClient", "List", "Failure responding to request")
 	}
 
 	return
 }
 
 // ListPreparer prepares the List request.
-func (client UsageOperationsClient) ListPreparer(apiVersion string) (*http.Request, error) {
+func (client UsageOperationsManagementClient) ListPreparer(apiVersion string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"subscriptionId": url.QueryEscape(client.SubscriptionID),
 	}
@@ -85,13 +85,13 @@ func (client UsageOperationsClient) ListPreparer(apiVersion string) (*http.Reque
 
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
-func (client UsageOperationsClient) ListSender(req *http.Request) (*http.Response, error) {
+func (client UsageOperationsManagementClient) ListSender(req *http.Request) (*http.Response, error) {
 	return client.Send(req, http.StatusOK)
 }
 
 // ListResponder handles the response to the List request. The method always
 // closes the http.Response Body.
-func (client UsageOperationsClient) ListResponder(resp *http.Response) (result UsageListResult, err error) {
+func (client UsageOperationsManagementClient) ListResponder(resp *http.Response) (result UsageListResult, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

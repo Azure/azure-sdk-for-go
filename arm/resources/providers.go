@@ -19,53 +19,54 @@ package resources
 // regenerated.
 
 import (
-	"github.com/Azure/azure-sdk-for-go/Godeps/_workspace/src/github.com/Azure/go-autorest/autorest"
+	"github.com/Azure/go-autorest/autorest"
 	"net/http"
 	"net/url"
 )
 
-// ProvidersClient is the client for the Providers methods of the Resources
-// service.
-type ProvidersClient struct {
+// ProvidersManagementClient is the client for the Providers methods of the
+// Resources service.
+type ProvidersManagementClient struct {
 	ManagementClient
 }
 
-// NewProvidersClient creates an instance of the ProvidersClient client.
-func NewProvidersClient(subscriptionID string) ProvidersClient {
-	return NewProvidersClientWithBaseURI(DefaultBaseURI, subscriptionID)
+// NewProvidersManagementClient creates an instance of the
+// ProvidersManagementClient client.
+func NewProvidersManagementClient(subscriptionID string) ProvidersManagementClient {
+	return NewProvidersManagementClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewProvidersClientWithBaseURI creates an instance of the ProvidersClient
-// client.
-func NewProvidersClientWithBaseURI(baseURI string, subscriptionID string) ProvidersClient {
-	return ProvidersClient{NewWithBaseURI(baseURI, subscriptionID)}
+// NewProvidersManagementClientWithBaseURI creates an instance of the
+// ProvidersManagementClient client.
+func NewProvidersManagementClientWithBaseURI(baseURI string, subscriptionID string) ProvidersManagementClient {
+	return ProvidersManagementClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // Get gets a resource provider.
 //
 // resourceProviderNamespace is namespace of the resource provider.
-func (client ProvidersClient) Get(resourceProviderNamespace string) (result Provider, ae error) {
+func (client ProvidersManagementClient) Get(resourceProviderNamespace string) (result Provider, ae error) {
 	req, err := client.GetPreparer(resourceProviderNamespace)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "resources/ProvidersClient", "Get", "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "resources/ProvidersManagementClient", "Get", "Failure preparing request")
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "resources/ProvidersClient", "Get", "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "resources/ProvidersManagementClient", "Get", "Failure sending request")
 	}
 
 	result, err = client.GetResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "resources/ProvidersClient", "Get", "Failure responding to request")
+		ae = autorest.NewErrorWithError(err, "resources/ProvidersManagementClient", "Get", "Failure responding to request")
 	}
 
 	return
 }
 
 // GetPreparer prepares the Get request.
-func (client ProvidersClient) GetPreparer(resourceProviderNamespace string) (*http.Request, error) {
+func (client ProvidersManagementClient) GetPreparer(resourceProviderNamespace string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceProviderNamespace": url.QueryEscape(resourceProviderNamespace),
 		"subscriptionId":            url.QueryEscape(client.SubscriptionID),
@@ -86,13 +87,13 @@ func (client ProvidersClient) GetPreparer(resourceProviderNamespace string) (*ht
 
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
-func (client ProvidersClient) GetSender(req *http.Request) (*http.Response, error) {
+func (client ProvidersManagementClient) GetSender(req *http.Request) (*http.Response, error) {
 	return client.Send(req, http.StatusOK)
 }
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
-func (client ProvidersClient) GetResponder(resp *http.Response) (result Provider, err error) {
+func (client ProvidersManagementClient) GetResponder(resp *http.Response) (result Provider, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -106,28 +107,28 @@ func (client ProvidersClient) GetResponder(resp *http.Response) (result Provider
 // List gets a list of resource providers.
 //
 // top is query parameters. If null is passed returns all deployments.
-func (client ProvidersClient) List(top *int) (result ProviderListResult, ae error) {
+func (client ProvidersManagementClient) List(top *int) (result ProviderListResult, ae error) {
 	req, err := client.ListPreparer(top)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "resources/ProvidersClient", "List", "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "resources/ProvidersManagementClient", "List", "Failure preparing request")
 	}
 
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "resources/ProvidersClient", "List", "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "resources/ProvidersManagementClient", "List", "Failure sending request")
 	}
 
 	result, err = client.ListResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "resources/ProvidersClient", "List", "Failure responding to request")
+		ae = autorest.NewErrorWithError(err, "resources/ProvidersManagementClient", "List", "Failure responding to request")
 	}
 
 	return
 }
 
 // ListPreparer prepares the List request.
-func (client ProvidersClient) ListPreparer(top *int) (*http.Request, error) {
+func (client ProvidersManagementClient) ListPreparer(top *int) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"subscriptionId": url.QueryEscape(client.SubscriptionID),
 	}
@@ -150,13 +151,13 @@ func (client ProvidersClient) ListPreparer(top *int) (*http.Request, error) {
 
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
-func (client ProvidersClient) ListSender(req *http.Request) (*http.Response, error) {
+func (client ProvidersManagementClient) ListSender(req *http.Request) (*http.Response, error) {
 	return client.Send(req, http.StatusOK)
 }
 
 // ListResponder handles the response to the List request. The method always
 // closes the http.Response Body.
-func (client ProvidersClient) ListResponder(resp *http.Response) (result ProviderListResult, err error) {
+func (client ProvidersManagementClient) ListResponder(resp *http.Response) (result ProviderListResult, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -167,31 +168,55 @@ func (client ProvidersClient) ListResponder(resp *http.Response) (result Provide
 	return
 }
 
+// ListNextResults retrieves the next set of results, if any.
+func (client ProvidersManagementClient) ListNextResults(lastResults ProviderListResult) (result ProviderListResult, ae error) {
+	req, err := lastResults.ProviderListResultPreparer()
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "resources/ProvidersManagementClient", "List", "Failure preparing next results request request")
+	}
+	if req == nil {
+		return
+	}
+
+	resp, err := client.ListSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "resources/ProvidersManagementClient", "List", "Failure sending next results request request")
+	}
+
+	result, err = client.ListResponder(resp)
+	if err != nil {
+		ae = autorest.NewErrorWithError(err, "resources/ProvidersManagementClient", "List", "Failure responding to next results request request")
+	}
+
+	return
+}
+
 // Register registers provider to be used with a subscription.
 //
 // resourceProviderNamespace is namespace of the resource provider.
-func (client ProvidersClient) Register(resourceProviderNamespace string) (result Provider, ae error) {
+func (client ProvidersManagementClient) Register(resourceProviderNamespace string) (result Provider, ae error) {
 	req, err := client.RegisterPreparer(resourceProviderNamespace)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "resources/ProvidersClient", "Register", "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "resources/ProvidersManagementClient", "Register", "Failure preparing request")
 	}
 
 	resp, err := client.RegisterSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "resources/ProvidersClient", "Register", "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "resources/ProvidersManagementClient", "Register", "Failure sending request")
 	}
 
 	result, err = client.RegisterResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "resources/ProvidersClient", "Register", "Failure responding to request")
+		ae = autorest.NewErrorWithError(err, "resources/ProvidersManagementClient", "Register", "Failure responding to request")
 	}
 
 	return
 }
 
 // RegisterPreparer prepares the Register request.
-func (client ProvidersClient) RegisterPreparer(resourceProviderNamespace string) (*http.Request, error) {
+func (client ProvidersManagementClient) RegisterPreparer(resourceProviderNamespace string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceProviderNamespace": url.QueryEscape(resourceProviderNamespace),
 		"subscriptionId":            url.QueryEscape(client.SubscriptionID),
@@ -212,13 +237,13 @@ func (client ProvidersClient) RegisterPreparer(resourceProviderNamespace string)
 
 // RegisterSender sends the Register request. The method will close the
 // http.Response Body if it receives an error.
-func (client ProvidersClient) RegisterSender(req *http.Request) (*http.Response, error) {
+func (client ProvidersManagementClient) RegisterSender(req *http.Request) (*http.Response, error) {
 	return client.Send(req, http.StatusOK)
 }
 
 // RegisterResponder handles the response to the Register request. The method always
 // closes the http.Response Body.
-func (client ProvidersClient) RegisterResponder(resp *http.Response) (result Provider, err error) {
+func (client ProvidersManagementClient) RegisterResponder(resp *http.Response) (result Provider, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -232,28 +257,28 @@ func (client ProvidersClient) RegisterResponder(resp *http.Response) (result Pro
 // Unregister unregisters provider from a subscription.
 //
 // resourceProviderNamespace is namespace of the resource provider.
-func (client ProvidersClient) Unregister(resourceProviderNamespace string) (result Provider, ae error) {
+func (client ProvidersManagementClient) Unregister(resourceProviderNamespace string) (result Provider, ae error) {
 	req, err := client.UnregisterPreparer(resourceProviderNamespace)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "resources/ProvidersClient", "Unregister", "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "resources/ProvidersManagementClient", "Unregister", "Failure preparing request")
 	}
 
 	resp, err := client.UnregisterSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "resources/ProvidersClient", "Unregister", "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "resources/ProvidersManagementClient", "Unregister", "Failure sending request")
 	}
 
 	result, err = client.UnregisterResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "resources/ProvidersClient", "Unregister", "Failure responding to request")
+		ae = autorest.NewErrorWithError(err, "resources/ProvidersManagementClient", "Unregister", "Failure responding to request")
 	}
 
 	return
 }
 
 // UnregisterPreparer prepares the Unregister request.
-func (client ProvidersClient) UnregisterPreparer(resourceProviderNamespace string) (*http.Request, error) {
+func (client ProvidersManagementClient) UnregisterPreparer(resourceProviderNamespace string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceProviderNamespace": url.QueryEscape(resourceProviderNamespace),
 		"subscriptionId":            url.QueryEscape(client.SubscriptionID),
@@ -274,13 +299,13 @@ func (client ProvidersClient) UnregisterPreparer(resourceProviderNamespace strin
 
 // UnregisterSender sends the Unregister request. The method will close the
 // http.Response Body if it receives an error.
-func (client ProvidersClient) UnregisterSender(req *http.Request) (*http.Response, error) {
+func (client ProvidersManagementClient) UnregisterSender(req *http.Request) (*http.Response, error) {
 	return client.Send(req, http.StatusOK)
 }
 
 // UnregisterResponder handles the response to the Unregister request. The method always
 // closes the http.Response Body.
-func (client ProvidersClient) UnregisterResponder(resp *http.Response) (result Provider, err error) {
+func (client ProvidersManagementClient) UnregisterResponder(resp *http.Response) (result Provider, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

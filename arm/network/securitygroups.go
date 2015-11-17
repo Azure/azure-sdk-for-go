@@ -19,30 +19,30 @@ package network
 // regenerated.
 
 import (
-	"github.com/Azure/azure-sdk-for-go/Godeps/_workspace/src/github.com/Azure/go-autorest/autorest"
+	"github.com/Azure/go-autorest/autorest"
 	"net/http"
 	"net/url"
 )
 
-// SecurityGroupsClient is the the Windows Azure Network management API
-// provides a RESTful set of web services that interact with Windows Azure
-// Networks service to manage your network resrources. The API has entities
-// that capture the relationship between an end user and the Windows Azure
-// Networks service.
-type SecurityGroupsClient struct {
-	ManagementClient
+// SecurityGroupsResourceProviderClient is the the Windows Azure Network
+// management API provides a RESTful set of web services that interact with
+// Windows Azure Networks service to manage your network resrources. The API
+// has entities that capture the relationship between an end user and the
+// Windows Azure Networks service.
+type SecurityGroupsResourceProviderClient struct {
+	ResourceProviderClient
 }
 
-// NewSecurityGroupsClient creates an instance of the SecurityGroupsClient
-// client.
-func NewSecurityGroupsClient(subscriptionID string) SecurityGroupsClient {
-	return NewSecurityGroupsClientWithBaseURI(DefaultBaseURI, subscriptionID)
+// NewSecurityGroupsResourceProviderClient creates an instance of the
+// SecurityGroupsResourceProviderClient client.
+func NewSecurityGroupsResourceProviderClient(subscriptionID string) SecurityGroupsResourceProviderClient {
+	return NewSecurityGroupsResourceProviderClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewSecurityGroupsClientWithBaseURI creates an instance of the
-// SecurityGroupsClient client.
-func NewSecurityGroupsClientWithBaseURI(baseURI string, subscriptionID string) SecurityGroupsClient {
-	return SecurityGroupsClient{NewWithBaseURI(baseURI, subscriptionID)}
+// NewSecurityGroupsResourceProviderClientWithBaseURI creates an instance of
+// the SecurityGroupsResourceProviderClient client.
+func NewSecurityGroupsResourceProviderClientWithBaseURI(baseURI string, subscriptionID string) SecurityGroupsResourceProviderClient {
+	return SecurityGroupsResourceProviderClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // CreateOrUpdate the Put NetworkSecurityGroup operation creates/updates a
@@ -52,28 +52,28 @@ func NewSecurityGroupsClientWithBaseURI(baseURI string, subscriptionID string) S
 // networkSecurityGroupName is the name of the network security group.
 // parameters is parameters supplied to the create/update Network Security
 // Group operation
-func (client SecurityGroupsClient) CreateOrUpdate(resourceGroupName string, networkSecurityGroupName string, parameters SecurityGroup) (result SecurityGroup, ae error) {
+func (client SecurityGroupsResourceProviderClient) CreateOrUpdate(resourceGroupName string, networkSecurityGroupName string, parameters SecurityGroup) (result SecurityGroup, ae error) {
 	req, err := client.CreateOrUpdatePreparer(resourceGroupName, networkSecurityGroupName, parameters)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "network/SecurityGroupsClient", "CreateOrUpdate", "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "network/SecurityGroupsResourceProviderClient", "CreateOrUpdate", "Failure preparing request")
 	}
 
 	resp, err := client.CreateOrUpdateSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "network/SecurityGroupsClient", "CreateOrUpdate", "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "network/SecurityGroupsResourceProviderClient", "CreateOrUpdate", "Failure sending request")
 	}
 
 	result, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "network/SecurityGroupsClient", "CreateOrUpdate", "Failure responding to request")
+		ae = autorest.NewErrorWithError(err, "network/SecurityGroupsResourceProviderClient", "CreateOrUpdate", "Failure responding to request")
 	}
 
 	return
 }
 
 // CreateOrUpdatePreparer prepares the CreateOrUpdate request.
-func (client SecurityGroupsClient) CreateOrUpdatePreparer(resourceGroupName string, networkSecurityGroupName string, parameters SecurityGroup) (*http.Request, error) {
+func (client SecurityGroupsResourceProviderClient) CreateOrUpdatePreparer(resourceGroupName string, networkSecurityGroupName string, parameters SecurityGroup) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"networkSecurityGroupName": url.QueryEscape(networkSecurityGroupName),
 		"resourceGroupName":        url.QueryEscape(resourceGroupName),
@@ -96,13 +96,13 @@ func (client SecurityGroupsClient) CreateOrUpdatePreparer(resourceGroupName stri
 
 // CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
 // http.Response Body if it receives an error.
-func (client SecurityGroupsClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
+func (client SecurityGroupsResourceProviderClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
 	return client.Send(req, http.StatusCreated, http.StatusOK)
 }
 
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
 // closes the http.Response Body.
-func (client SecurityGroupsClient) CreateOrUpdateResponder(resp *http.Response) (result SecurityGroup, err error) {
+func (client SecurityGroupsResourceProviderClient) CreateOrUpdateResponder(resp *http.Response) (result SecurityGroup, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -118,28 +118,28 @@ func (client SecurityGroupsClient) CreateOrUpdateResponder(resp *http.Response) 
 //
 // resourceGroupName is the name of the resource group.
 // networkSecurityGroupName is the name of the network security group.
-func (client SecurityGroupsClient) Delete(resourceGroupName string, networkSecurityGroupName string) (result autorest.Response, ae error) {
+func (client SecurityGroupsResourceProviderClient) Delete(resourceGroupName string, networkSecurityGroupName string) (result autorest.Response, ae error) {
 	req, err := client.DeletePreparer(resourceGroupName, networkSecurityGroupName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "network/SecurityGroupsClient", "Delete", "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "network/SecurityGroupsResourceProviderClient", "Delete", "Failure preparing request")
 	}
 
 	resp, err := client.DeleteSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "network/SecurityGroupsClient", "Delete", "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "network/SecurityGroupsResourceProviderClient", "Delete", "Failure sending request")
 	}
 
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "network/SecurityGroupsClient", "Delete", "Failure responding to request")
+		ae = autorest.NewErrorWithError(err, "network/SecurityGroupsResourceProviderClient", "Delete", "Failure responding to request")
 	}
 
 	return
 }
 
 // DeletePreparer prepares the Delete request.
-func (client SecurityGroupsClient) DeletePreparer(resourceGroupName string, networkSecurityGroupName string) (*http.Request, error) {
+func (client SecurityGroupsResourceProviderClient) DeletePreparer(resourceGroupName string, networkSecurityGroupName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"networkSecurityGroupName": url.QueryEscape(networkSecurityGroupName),
 		"resourceGroupName":        url.QueryEscape(resourceGroupName),
@@ -161,13 +161,13 @@ func (client SecurityGroupsClient) DeletePreparer(resourceGroupName string, netw
 
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
-func (client SecurityGroupsClient) DeleteSender(req *http.Request) (*http.Response, error) {
+func (client SecurityGroupsResourceProviderClient) DeleteSender(req *http.Request) (*http.Response, error) {
 	return client.Send(req, http.StatusNoContent, http.StatusAccepted, http.StatusOK)
 }
 
 // DeleteResponder handles the response to the Delete request. The method always
 // closes the http.Response Body.
-func (client SecurityGroupsClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client SecurityGroupsResourceProviderClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -182,28 +182,28 @@ func (client SecurityGroupsClient) DeleteResponder(resp *http.Response) (result 
 //
 // resourceGroupName is the name of the resource group.
 // networkSecurityGroupName is the name of the network security group.
-func (client SecurityGroupsClient) Get(resourceGroupName string, networkSecurityGroupName string) (result SecurityGroup, ae error) {
+func (client SecurityGroupsResourceProviderClient) Get(resourceGroupName string, networkSecurityGroupName string) (result SecurityGroup, ae error) {
 	req, err := client.GetPreparer(resourceGroupName, networkSecurityGroupName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "network/SecurityGroupsClient", "Get", "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "network/SecurityGroupsResourceProviderClient", "Get", "Failure preparing request")
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "network/SecurityGroupsClient", "Get", "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "network/SecurityGroupsResourceProviderClient", "Get", "Failure sending request")
 	}
 
 	result, err = client.GetResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "network/SecurityGroupsClient", "Get", "Failure responding to request")
+		ae = autorest.NewErrorWithError(err, "network/SecurityGroupsResourceProviderClient", "Get", "Failure responding to request")
 	}
 
 	return
 }
 
 // GetPreparer prepares the Get request.
-func (client SecurityGroupsClient) GetPreparer(resourceGroupName string, networkSecurityGroupName string) (*http.Request, error) {
+func (client SecurityGroupsResourceProviderClient) GetPreparer(resourceGroupName string, networkSecurityGroupName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"networkSecurityGroupName": url.QueryEscape(networkSecurityGroupName),
 		"resourceGroupName":        url.QueryEscape(resourceGroupName),
@@ -225,13 +225,13 @@ func (client SecurityGroupsClient) GetPreparer(resourceGroupName string, network
 
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
-func (client SecurityGroupsClient) GetSender(req *http.Request) (*http.Response, error) {
+func (client SecurityGroupsResourceProviderClient) GetSender(req *http.Request) (*http.Response, error) {
 	return client.Send(req, http.StatusOK)
 }
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
-func (client SecurityGroupsClient) GetResponder(resp *http.Response) (result SecurityGroup, err error) {
+func (client SecurityGroupsResourceProviderClient) GetResponder(resp *http.Response) (result SecurityGroup, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -246,28 +246,28 @@ func (client SecurityGroupsClient) GetResponder(resp *http.Response) (result Sec
 // a resource group
 //
 // resourceGroupName is the name of the resource group.
-func (client SecurityGroupsClient) List(resourceGroupName string) (result SecurityGroupListResult, ae error) {
+func (client SecurityGroupsResourceProviderClient) List(resourceGroupName string) (result SecurityGroupListResult, ae error) {
 	req, err := client.ListPreparer(resourceGroupName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "network/SecurityGroupsClient", "List", "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "network/SecurityGroupsResourceProviderClient", "List", "Failure preparing request")
 	}
 
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "network/SecurityGroupsClient", "List", "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "network/SecurityGroupsResourceProviderClient", "List", "Failure sending request")
 	}
 
 	result, err = client.ListResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "network/SecurityGroupsClient", "List", "Failure responding to request")
+		ae = autorest.NewErrorWithError(err, "network/SecurityGroupsResourceProviderClient", "List", "Failure responding to request")
 	}
 
 	return
 }
 
 // ListPreparer prepares the List request.
-func (client SecurityGroupsClient) ListPreparer(resourceGroupName string) (*http.Request, error) {
+func (client SecurityGroupsResourceProviderClient) ListPreparer(resourceGroupName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName": url.QueryEscape(resourceGroupName),
 		"subscriptionId":    url.QueryEscape(client.SubscriptionID),
@@ -288,13 +288,13 @@ func (client SecurityGroupsClient) ListPreparer(resourceGroupName string) (*http
 
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
-func (client SecurityGroupsClient) ListSender(req *http.Request) (*http.Response, error) {
+func (client SecurityGroupsResourceProviderClient) ListSender(req *http.Request) (*http.Response, error) {
 	return client.Send(req, http.StatusOK)
 }
 
 // ListResponder handles the response to the List request. The method always
 // closes the http.Response Body.
-func (client SecurityGroupsClient) ListResponder(resp *http.Response) (result SecurityGroupListResult, err error) {
+func (client SecurityGroupsResourceProviderClient) ListResponder(resp *http.Response) (result SecurityGroupListResult, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -305,30 +305,54 @@ func (client SecurityGroupsClient) ListResponder(resp *http.Response) (result Se
 	return
 }
 
+// ListNextResults retrieves the next set of results, if any.
+func (client SecurityGroupsResourceProviderClient) ListNextResults(lastResults SecurityGroupListResult) (result SecurityGroupListResult, ae error) {
+	req, err := lastResults.SecurityGroupListResultPreparer()
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "network/SecurityGroupsResourceProviderClient", "List", "Failure preparing next results request request")
+	}
+	if req == nil {
+		return
+	}
+
+	resp, err := client.ListSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "network/SecurityGroupsResourceProviderClient", "List", "Failure sending next results request request")
+	}
+
+	result, err = client.ListResponder(resp)
+	if err != nil {
+		ae = autorest.NewErrorWithError(err, "network/SecurityGroupsResourceProviderClient", "List", "Failure responding to next results request request")
+	}
+
+	return
+}
+
 // ListAll the list NetworkSecurityGroups returns all network security groups
 // in a subscription
-func (client SecurityGroupsClient) ListAll() (result SecurityGroupListResult, ae error) {
+func (client SecurityGroupsResourceProviderClient) ListAll() (result SecurityGroupListResult, ae error) {
 	req, err := client.ListAllPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "network/SecurityGroupsClient", "ListAll", "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "network/SecurityGroupsResourceProviderClient", "ListAll", "Failure preparing request")
 	}
 
 	resp, err := client.ListAllSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "network/SecurityGroupsClient", "ListAll", "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "network/SecurityGroupsResourceProviderClient", "ListAll", "Failure sending request")
 	}
 
 	result, err = client.ListAllResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "network/SecurityGroupsClient", "ListAll", "Failure responding to request")
+		ae = autorest.NewErrorWithError(err, "network/SecurityGroupsResourceProviderClient", "ListAll", "Failure responding to request")
 	}
 
 	return
 }
 
 // ListAllPreparer prepares the ListAll request.
-func (client SecurityGroupsClient) ListAllPreparer() (*http.Request, error) {
+func (client SecurityGroupsResourceProviderClient) ListAllPreparer() (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"subscriptionId": url.QueryEscape(client.SubscriptionID),
 	}
@@ -348,13 +372,13 @@ func (client SecurityGroupsClient) ListAllPreparer() (*http.Request, error) {
 
 // ListAllSender sends the ListAll request. The method will close the
 // http.Response Body if it receives an error.
-func (client SecurityGroupsClient) ListAllSender(req *http.Request) (*http.Response, error) {
+func (client SecurityGroupsResourceProviderClient) ListAllSender(req *http.Request) (*http.Response, error) {
 	return client.Send(req, http.StatusOK)
 }
 
 // ListAllResponder handles the response to the ListAll request. The method always
 // closes the http.Response Body.
-func (client SecurityGroupsClient) ListAllResponder(resp *http.Response) (result SecurityGroupListResult, err error) {
+func (client SecurityGroupsResourceProviderClient) ListAllResponder(resp *http.Response) (result SecurityGroupListResult, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -362,5 +386,29 @@ func (client SecurityGroupsClient) ListAllResponder(resp *http.Response) (result
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// ListAllNextResults retrieves the next set of results, if any.
+func (client SecurityGroupsResourceProviderClient) ListAllNextResults(lastResults SecurityGroupListResult) (result SecurityGroupListResult, ae error) {
+	req, err := lastResults.SecurityGroupListResultPreparer()
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "network/SecurityGroupsResourceProviderClient", "ListAll", "Failure preparing next results request request")
+	}
+	if req == nil {
+		return
+	}
+
+	resp, err := client.ListAllSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "network/SecurityGroupsResourceProviderClient", "ListAll", "Failure sending next results request request")
+	}
+
+	result, err = client.ListAllResponder(resp)
+	if err != nil {
+		ae = autorest.NewErrorWithError(err, "network/SecurityGroupsResourceProviderClient", "ListAll", "Failure responding to next results request request")
+	}
+
 	return
 }

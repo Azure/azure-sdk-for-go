@@ -19,30 +19,30 @@ package network
 // regenerated.
 
 import (
-	"github.com/Azure/azure-sdk-for-go/Godeps/_workspace/src/github.com/Azure/go-autorest/autorest"
+	"github.com/Azure/go-autorest/autorest"
 	"net/http"
 	"net/url"
 )
 
-// ExpressRouteCircuitsClient is the the Windows Azure Network management API
-// provides a RESTful set of web services that interact with Windows Azure
-// Networks service to manage your network resrources. The API has entities
-// that capture the relationship between an end user and the Windows Azure
-// Networks service.
-type ExpressRouteCircuitsClient struct {
-	ManagementClient
+// ExpressRouteCircuitsResourceProviderClient is the the Windows Azure Network
+// management API provides a RESTful set of web services that interact with
+// Windows Azure Networks service to manage your network resrources. The API
+// has entities that capture the relationship between an end user and the
+// Windows Azure Networks service.
+type ExpressRouteCircuitsResourceProviderClient struct {
+	ResourceProviderClient
 }
 
-// NewExpressRouteCircuitsClient creates an instance of the
-// ExpressRouteCircuitsClient client.
-func NewExpressRouteCircuitsClient(subscriptionID string) ExpressRouteCircuitsClient {
-	return NewExpressRouteCircuitsClientWithBaseURI(DefaultBaseURI, subscriptionID)
+// NewExpressRouteCircuitsResourceProviderClient creates an instance of the
+// ExpressRouteCircuitsResourceProviderClient client.
+func NewExpressRouteCircuitsResourceProviderClient(subscriptionID string) ExpressRouteCircuitsResourceProviderClient {
+	return NewExpressRouteCircuitsResourceProviderClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewExpressRouteCircuitsClientWithBaseURI creates an instance of the
-// ExpressRouteCircuitsClient client.
-func NewExpressRouteCircuitsClientWithBaseURI(baseURI string, subscriptionID string) ExpressRouteCircuitsClient {
-	return ExpressRouteCircuitsClient{NewWithBaseURI(baseURI, subscriptionID)}
+// NewExpressRouteCircuitsResourceProviderClientWithBaseURI creates an
+// instance of the ExpressRouteCircuitsResourceProviderClient client.
+func NewExpressRouteCircuitsResourceProviderClientWithBaseURI(baseURI string, subscriptionID string) ExpressRouteCircuitsResourceProviderClient {
+	return ExpressRouteCircuitsResourceProviderClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // CreateOrUpdate the Put ExpressRouteCircuit operation creates/updates a
@@ -51,28 +51,28 @@ func NewExpressRouteCircuitsClientWithBaseURI(baseURI string, subscriptionID str
 // resourceGroupName is the name of the resource group. circuitName is the
 // name of the circuit. parameters is parameters supplied to the
 // create/delete ExpressRouteCircuit operation
-func (client ExpressRouteCircuitsClient) CreateOrUpdate(resourceGroupName string, circuitName string, parameters ExpressRouteCircuit) (result ExpressRouteCircuit, ae error) {
+func (client ExpressRouteCircuitsResourceProviderClient) CreateOrUpdate(resourceGroupName string, circuitName string, parameters ExpressRouteCircuit) (result ExpressRouteCircuit, ae error) {
 	req, err := client.CreateOrUpdatePreparer(resourceGroupName, circuitName, parameters)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "network/ExpressRouteCircuitsClient", "CreateOrUpdate", "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "network/ExpressRouteCircuitsResourceProviderClient", "CreateOrUpdate", "Failure preparing request")
 	}
 
 	resp, err := client.CreateOrUpdateSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "network/ExpressRouteCircuitsClient", "CreateOrUpdate", "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "network/ExpressRouteCircuitsResourceProviderClient", "CreateOrUpdate", "Failure sending request")
 	}
 
 	result, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "network/ExpressRouteCircuitsClient", "CreateOrUpdate", "Failure responding to request")
+		ae = autorest.NewErrorWithError(err, "network/ExpressRouteCircuitsResourceProviderClient", "CreateOrUpdate", "Failure responding to request")
 	}
 
 	return
 }
 
 // CreateOrUpdatePreparer prepares the CreateOrUpdate request.
-func (client ExpressRouteCircuitsClient) CreateOrUpdatePreparer(resourceGroupName string, circuitName string, parameters ExpressRouteCircuit) (*http.Request, error) {
+func (client ExpressRouteCircuitsResourceProviderClient) CreateOrUpdatePreparer(resourceGroupName string, circuitName string, parameters ExpressRouteCircuit) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"circuitName":       url.QueryEscape(circuitName),
 		"resourceGroupName": url.QueryEscape(resourceGroupName),
@@ -95,13 +95,13 @@ func (client ExpressRouteCircuitsClient) CreateOrUpdatePreparer(resourceGroupNam
 
 // CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
 // http.Response Body if it receives an error.
-func (client ExpressRouteCircuitsClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
+func (client ExpressRouteCircuitsResourceProviderClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
 	return client.Send(req, http.StatusCreated, http.StatusOK)
 }
 
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
 // closes the http.Response Body.
-func (client ExpressRouteCircuitsClient) CreateOrUpdateResponder(resp *http.Response) (result ExpressRouteCircuit, err error) {
+func (client ExpressRouteCircuitsResourceProviderClient) CreateOrUpdateResponder(resp *http.Response) (result ExpressRouteCircuit, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -117,28 +117,28 @@ func (client ExpressRouteCircuitsClient) CreateOrUpdateResponder(resp *http.Resp
 //
 // resourceGroupName is the name of the resource group. circuitName is the
 // name of the express route Circuit.
-func (client ExpressRouteCircuitsClient) Delete(resourceGroupName string, circuitName string) (result autorest.Response, ae error) {
+func (client ExpressRouteCircuitsResourceProviderClient) Delete(resourceGroupName string, circuitName string) (result autorest.Response, ae error) {
 	req, err := client.DeletePreparer(resourceGroupName, circuitName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "network/ExpressRouteCircuitsClient", "Delete", "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "network/ExpressRouteCircuitsResourceProviderClient", "Delete", "Failure preparing request")
 	}
 
 	resp, err := client.DeleteSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "network/ExpressRouteCircuitsClient", "Delete", "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "network/ExpressRouteCircuitsResourceProviderClient", "Delete", "Failure sending request")
 	}
 
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "network/ExpressRouteCircuitsClient", "Delete", "Failure responding to request")
+		ae = autorest.NewErrorWithError(err, "network/ExpressRouteCircuitsResourceProviderClient", "Delete", "Failure responding to request")
 	}
 
 	return
 }
 
 // DeletePreparer prepares the Delete request.
-func (client ExpressRouteCircuitsClient) DeletePreparer(resourceGroupName string, circuitName string) (*http.Request, error) {
+func (client ExpressRouteCircuitsResourceProviderClient) DeletePreparer(resourceGroupName string, circuitName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"circuitName":       url.QueryEscape(circuitName),
 		"resourceGroupName": url.QueryEscape(resourceGroupName),
@@ -160,13 +160,13 @@ func (client ExpressRouteCircuitsClient) DeletePreparer(resourceGroupName string
 
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
-func (client ExpressRouteCircuitsClient) DeleteSender(req *http.Request) (*http.Response, error) {
+func (client ExpressRouteCircuitsResourceProviderClient) DeleteSender(req *http.Request) (*http.Response, error) {
 	return client.Send(req, http.StatusNoContent, http.StatusAccepted, http.StatusOK)
 }
 
 // DeleteResponder handles the response to the Delete request. The method always
 // closes the http.Response Body.
-func (client ExpressRouteCircuitsClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client ExpressRouteCircuitsResourceProviderClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -181,28 +181,28 @@ func (client ExpressRouteCircuitsClient) DeleteResponder(resp *http.Response) (r
 //
 // resourceGroupName is the name of the resource group. circuitName is the
 // name of the circuit.
-func (client ExpressRouteCircuitsClient) Get(resourceGroupName string, circuitName string) (result ExpressRouteCircuit, ae error) {
+func (client ExpressRouteCircuitsResourceProviderClient) Get(resourceGroupName string, circuitName string) (result ExpressRouteCircuit, ae error) {
 	req, err := client.GetPreparer(resourceGroupName, circuitName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "network/ExpressRouteCircuitsClient", "Get", "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "network/ExpressRouteCircuitsResourceProviderClient", "Get", "Failure preparing request")
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "network/ExpressRouteCircuitsClient", "Get", "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "network/ExpressRouteCircuitsResourceProviderClient", "Get", "Failure sending request")
 	}
 
 	result, err = client.GetResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "network/ExpressRouteCircuitsClient", "Get", "Failure responding to request")
+		ae = autorest.NewErrorWithError(err, "network/ExpressRouteCircuitsResourceProviderClient", "Get", "Failure responding to request")
 	}
 
 	return
 }
 
 // GetPreparer prepares the Get request.
-func (client ExpressRouteCircuitsClient) GetPreparer(resourceGroupName string, circuitName string) (*http.Request, error) {
+func (client ExpressRouteCircuitsResourceProviderClient) GetPreparer(resourceGroupName string, circuitName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"circuitName":       url.QueryEscape(circuitName),
 		"resourceGroupName": url.QueryEscape(resourceGroupName),
@@ -224,13 +224,13 @@ func (client ExpressRouteCircuitsClient) GetPreparer(resourceGroupName string, c
 
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
-func (client ExpressRouteCircuitsClient) GetSender(req *http.Request) (*http.Response, error) {
+func (client ExpressRouteCircuitsResourceProviderClient) GetSender(req *http.Request) (*http.Response, error) {
 	return client.Send(req, http.StatusOK)
 }
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
-func (client ExpressRouteCircuitsClient) GetResponder(resp *http.Response) (result ExpressRouteCircuit, err error) {
+func (client ExpressRouteCircuitsResourceProviderClient) GetResponder(resp *http.Response) (result ExpressRouteCircuit, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -245,28 +245,28 @@ func (client ExpressRouteCircuitsClient) GetResponder(resp *http.Response) (resu
 // ExpressRouteCircuits in a resource group.
 //
 // resourceGroupName is the name of the resource group.
-func (client ExpressRouteCircuitsClient) List(resourceGroupName string) (result ExpressRouteCircuitListResult, ae error) {
+func (client ExpressRouteCircuitsResourceProviderClient) List(resourceGroupName string) (result ExpressRouteCircuitListResult, ae error) {
 	req, err := client.ListPreparer(resourceGroupName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "network/ExpressRouteCircuitsClient", "List", "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "network/ExpressRouteCircuitsResourceProviderClient", "List", "Failure preparing request")
 	}
 
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "network/ExpressRouteCircuitsClient", "List", "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "network/ExpressRouteCircuitsResourceProviderClient", "List", "Failure sending request")
 	}
 
 	result, err = client.ListResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "network/ExpressRouteCircuitsClient", "List", "Failure responding to request")
+		ae = autorest.NewErrorWithError(err, "network/ExpressRouteCircuitsResourceProviderClient", "List", "Failure responding to request")
 	}
 
 	return
 }
 
 // ListPreparer prepares the List request.
-func (client ExpressRouteCircuitsClient) ListPreparer(resourceGroupName string) (*http.Request, error) {
+func (client ExpressRouteCircuitsResourceProviderClient) ListPreparer(resourceGroupName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName": url.QueryEscape(resourceGroupName),
 		"subscriptionId":    url.QueryEscape(client.SubscriptionID),
@@ -287,13 +287,13 @@ func (client ExpressRouteCircuitsClient) ListPreparer(resourceGroupName string) 
 
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
-func (client ExpressRouteCircuitsClient) ListSender(req *http.Request) (*http.Response, error) {
+func (client ExpressRouteCircuitsResourceProviderClient) ListSender(req *http.Request) (*http.Response, error) {
 	return client.Send(req, http.StatusOK)
 }
 
 // ListResponder handles the response to the List request. The method always
 // closes the http.Response Body.
-func (client ExpressRouteCircuitsClient) ListResponder(resp *http.Response) (result ExpressRouteCircuitListResult, err error) {
+func (client ExpressRouteCircuitsResourceProviderClient) ListResponder(resp *http.Response) (result ExpressRouteCircuitListResult, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -304,30 +304,54 @@ func (client ExpressRouteCircuitsClient) ListResponder(resp *http.Response) (res
 	return
 }
 
+// ListNextResults retrieves the next set of results, if any.
+func (client ExpressRouteCircuitsResourceProviderClient) ListNextResults(lastResults ExpressRouteCircuitListResult) (result ExpressRouteCircuitListResult, ae error) {
+	req, err := lastResults.ExpressRouteCircuitListResultPreparer()
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "network/ExpressRouteCircuitsResourceProviderClient", "List", "Failure preparing next results request request")
+	}
+	if req == nil {
+		return
+	}
+
+	resp, err := client.ListSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "network/ExpressRouteCircuitsResourceProviderClient", "List", "Failure sending next results request request")
+	}
+
+	result, err = client.ListResponder(resp)
+	if err != nil {
+		ae = autorest.NewErrorWithError(err, "network/ExpressRouteCircuitsResourceProviderClient", "List", "Failure responding to next results request request")
+	}
+
+	return
+}
+
 // ListAll the List ExpressRouteCircuit opertion retrieves all the
 // ExpressRouteCircuits in a subscription.
-func (client ExpressRouteCircuitsClient) ListAll() (result ExpressRouteCircuitListResult, ae error) {
+func (client ExpressRouteCircuitsResourceProviderClient) ListAll() (result ExpressRouteCircuitListResult, ae error) {
 	req, err := client.ListAllPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "network/ExpressRouteCircuitsClient", "ListAll", "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "network/ExpressRouteCircuitsResourceProviderClient", "ListAll", "Failure preparing request")
 	}
 
 	resp, err := client.ListAllSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "network/ExpressRouteCircuitsClient", "ListAll", "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "network/ExpressRouteCircuitsResourceProviderClient", "ListAll", "Failure sending request")
 	}
 
 	result, err = client.ListAllResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "network/ExpressRouteCircuitsClient", "ListAll", "Failure responding to request")
+		ae = autorest.NewErrorWithError(err, "network/ExpressRouteCircuitsResourceProviderClient", "ListAll", "Failure responding to request")
 	}
 
 	return
 }
 
 // ListAllPreparer prepares the ListAll request.
-func (client ExpressRouteCircuitsClient) ListAllPreparer() (*http.Request, error) {
+func (client ExpressRouteCircuitsResourceProviderClient) ListAllPreparer() (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"subscriptionId": url.QueryEscape(client.SubscriptionID),
 	}
@@ -347,13 +371,13 @@ func (client ExpressRouteCircuitsClient) ListAllPreparer() (*http.Request, error
 
 // ListAllSender sends the ListAll request. The method will close the
 // http.Response Body if it receives an error.
-func (client ExpressRouteCircuitsClient) ListAllSender(req *http.Request) (*http.Response, error) {
+func (client ExpressRouteCircuitsResourceProviderClient) ListAllSender(req *http.Request) (*http.Response, error) {
 	return client.Send(req, http.StatusOK)
 }
 
 // ListAllResponder handles the response to the ListAll request. The method always
 // closes the http.Response Body.
-func (client ExpressRouteCircuitsClient) ListAllResponder(resp *http.Response) (result ExpressRouteCircuitListResult, err error) {
+func (client ExpressRouteCircuitsResourceProviderClient) ListAllResponder(resp *http.Response) (result ExpressRouteCircuitListResult, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -364,34 +388,58 @@ func (client ExpressRouteCircuitsClient) ListAllResponder(resp *http.Response) (
 	return
 }
 
+// ListAllNextResults retrieves the next set of results, if any.
+func (client ExpressRouteCircuitsResourceProviderClient) ListAllNextResults(lastResults ExpressRouteCircuitListResult) (result ExpressRouteCircuitListResult, ae error) {
+	req, err := lastResults.ExpressRouteCircuitListResultPreparer()
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "network/ExpressRouteCircuitsResourceProviderClient", "ListAll", "Failure preparing next results request request")
+	}
+	if req == nil {
+		return
+	}
+
+	resp, err := client.ListAllSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "network/ExpressRouteCircuitsResourceProviderClient", "ListAll", "Failure sending next results request request")
+	}
+
+	result, err = client.ListAllResponder(resp)
+	if err != nil {
+		ae = autorest.NewErrorWithError(err, "network/ExpressRouteCircuitsResourceProviderClient", "ListAll", "Failure responding to next results request request")
+	}
+
+	return
+}
+
 // ListArpTable the ListArpTable from ExpressRouteCircuit opertion retrieves
 // the currently advertised arp table associated with the
 // ExpressRouteCircuits in a resource group.
 //
 // resourceGroupName is the name of the resource group. circuitName is the
 // name of the circuit.
-func (client ExpressRouteCircuitsClient) ListArpTable(resourceGroupName string, circuitName string) (result ExpressRouteCircuitsArpTableListResult, ae error) {
+func (client ExpressRouteCircuitsResourceProviderClient) ListArpTable(resourceGroupName string, circuitName string) (result ExpressRouteCircuitsArpTableListResult, ae error) {
 	req, err := client.ListArpTablePreparer(resourceGroupName, circuitName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "network/ExpressRouteCircuitsClient", "ListArpTable", "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "network/ExpressRouteCircuitsResourceProviderClient", "ListArpTable", "Failure preparing request")
 	}
 
 	resp, err := client.ListArpTableSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "network/ExpressRouteCircuitsClient", "ListArpTable", "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "network/ExpressRouteCircuitsResourceProviderClient", "ListArpTable", "Failure sending request")
 	}
 
 	result, err = client.ListArpTableResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "network/ExpressRouteCircuitsClient", "ListArpTable", "Failure responding to request")
+		ae = autorest.NewErrorWithError(err, "network/ExpressRouteCircuitsResourceProviderClient", "ListArpTable", "Failure responding to request")
 	}
 
 	return
 }
 
 // ListArpTablePreparer prepares the ListArpTable request.
-func (client ExpressRouteCircuitsClient) ListArpTablePreparer(resourceGroupName string, circuitName string) (*http.Request, error) {
+func (client ExpressRouteCircuitsResourceProviderClient) ListArpTablePreparer(resourceGroupName string, circuitName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"circuitName":       url.QueryEscape(circuitName),
 		"resourceGroupName": url.QueryEscape(resourceGroupName),
@@ -413,13 +461,13 @@ func (client ExpressRouteCircuitsClient) ListArpTablePreparer(resourceGroupName 
 
 // ListArpTableSender sends the ListArpTable request. The method will close the
 // http.Response Body if it receives an error.
-func (client ExpressRouteCircuitsClient) ListArpTableSender(req *http.Request) (*http.Response, error) {
+func (client ExpressRouteCircuitsResourceProviderClient) ListArpTableSender(req *http.Request) (*http.Response, error) {
 	return client.Send(req, http.StatusOK)
 }
 
 // ListArpTableResponder handles the response to the ListArpTable request. The method always
 // closes the http.Response Body.
-func (client ExpressRouteCircuitsClient) ListArpTableResponder(resp *http.Response) (result ExpressRouteCircuitsArpTableListResult, err error) {
+func (client ExpressRouteCircuitsResourceProviderClient) ListArpTableResponder(resp *http.Response) (result ExpressRouteCircuitsArpTableListResult, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -430,34 +478,58 @@ func (client ExpressRouteCircuitsClient) ListArpTableResponder(resp *http.Respon
 	return
 }
 
+// ListArpTableNextResults retrieves the next set of results, if any.
+func (client ExpressRouteCircuitsResourceProviderClient) ListArpTableNextResults(lastResults ExpressRouteCircuitsArpTableListResult) (result ExpressRouteCircuitsArpTableListResult, ae error) {
+	req, err := lastResults.ExpressRouteCircuitsArpTableListResultPreparer()
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "network/ExpressRouteCircuitsResourceProviderClient", "ListArpTable", "Failure preparing next results request request")
+	}
+	if req == nil {
+		return
+	}
+
+	resp, err := client.ListArpTableSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "network/ExpressRouteCircuitsResourceProviderClient", "ListArpTable", "Failure sending next results request request")
+	}
+
+	result, err = client.ListArpTableResponder(resp)
+	if err != nil {
+		ae = autorest.NewErrorWithError(err, "network/ExpressRouteCircuitsResourceProviderClient", "ListArpTable", "Failure responding to next results request request")
+	}
+
+	return
+}
+
 // ListRoutesTable the ListRoutesTable from ExpressRouteCircuit opertion
 // retrieves the currently advertised routes table associated with the
 // ExpressRouteCircuits in a resource group.
 //
 // resourceGroupName is the name of the resource group. circuitName is the
 // name of the circuit.
-func (client ExpressRouteCircuitsClient) ListRoutesTable(resourceGroupName string, circuitName string) (result ExpressRouteCircuitsRoutesTableListResult, ae error) {
+func (client ExpressRouteCircuitsResourceProviderClient) ListRoutesTable(resourceGroupName string, circuitName string) (result ExpressRouteCircuitsRoutesTableListResult, ae error) {
 	req, err := client.ListRoutesTablePreparer(resourceGroupName, circuitName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "network/ExpressRouteCircuitsClient", "ListRoutesTable", "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "network/ExpressRouteCircuitsResourceProviderClient", "ListRoutesTable", "Failure preparing request")
 	}
 
 	resp, err := client.ListRoutesTableSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "network/ExpressRouteCircuitsClient", "ListRoutesTable", "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "network/ExpressRouteCircuitsResourceProviderClient", "ListRoutesTable", "Failure sending request")
 	}
 
 	result, err = client.ListRoutesTableResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "network/ExpressRouteCircuitsClient", "ListRoutesTable", "Failure responding to request")
+		ae = autorest.NewErrorWithError(err, "network/ExpressRouteCircuitsResourceProviderClient", "ListRoutesTable", "Failure responding to request")
 	}
 
 	return
 }
 
 // ListRoutesTablePreparer prepares the ListRoutesTable request.
-func (client ExpressRouteCircuitsClient) ListRoutesTablePreparer(resourceGroupName string, circuitName string) (*http.Request, error) {
+func (client ExpressRouteCircuitsResourceProviderClient) ListRoutesTablePreparer(resourceGroupName string, circuitName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"circuitName":       url.QueryEscape(circuitName),
 		"resourceGroupName": url.QueryEscape(resourceGroupName),
@@ -479,13 +551,13 @@ func (client ExpressRouteCircuitsClient) ListRoutesTablePreparer(resourceGroupNa
 
 // ListRoutesTableSender sends the ListRoutesTable request. The method will close the
 // http.Response Body if it receives an error.
-func (client ExpressRouteCircuitsClient) ListRoutesTableSender(req *http.Request) (*http.Response, error) {
+func (client ExpressRouteCircuitsResourceProviderClient) ListRoutesTableSender(req *http.Request) (*http.Response, error) {
 	return client.Send(req, http.StatusOK)
 }
 
 // ListRoutesTableResponder handles the response to the ListRoutesTable request. The method always
 // closes the http.Response Body.
-func (client ExpressRouteCircuitsClient) ListRoutesTableResponder(resp *http.Response) (result ExpressRouteCircuitsRoutesTableListResult, err error) {
+func (client ExpressRouteCircuitsResourceProviderClient) ListRoutesTableResponder(resp *http.Response) (result ExpressRouteCircuitsRoutesTableListResult, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -496,33 +568,57 @@ func (client ExpressRouteCircuitsClient) ListRoutesTableResponder(resp *http.Res
 	return
 }
 
+// ListRoutesTableNextResults retrieves the next set of results, if any.
+func (client ExpressRouteCircuitsResourceProviderClient) ListRoutesTableNextResults(lastResults ExpressRouteCircuitsRoutesTableListResult) (result ExpressRouteCircuitsRoutesTableListResult, ae error) {
+	req, err := lastResults.ExpressRouteCircuitsRoutesTableListResultPreparer()
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "network/ExpressRouteCircuitsResourceProviderClient", "ListRoutesTable", "Failure preparing next results request request")
+	}
+	if req == nil {
+		return
+	}
+
+	resp, err := client.ListRoutesTableSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "network/ExpressRouteCircuitsResourceProviderClient", "ListRoutesTable", "Failure sending next results request request")
+	}
+
+	result, err = client.ListRoutesTableResponder(resp)
+	if err != nil {
+		ae = autorest.NewErrorWithError(err, "network/ExpressRouteCircuitsResourceProviderClient", "ListRoutesTable", "Failure responding to next results request request")
+	}
+
+	return
+}
+
 // ListStats the Liststats ExpressRouteCircuit opertion retrieves all the
 // stats from a ExpressRouteCircuits in a resource group.
 //
 // resourceGroupName is the name of the resource group. circuitName is the
 // name of the loadBalancer.
-func (client ExpressRouteCircuitsClient) ListStats(resourceGroupName string, circuitName string) (result ExpressRouteCircuitsStatsListResult, ae error) {
+func (client ExpressRouteCircuitsResourceProviderClient) ListStats(resourceGroupName string, circuitName string) (result ExpressRouteCircuitsStatsListResult, ae error) {
 	req, err := client.ListStatsPreparer(resourceGroupName, circuitName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "network/ExpressRouteCircuitsClient", "ListStats", "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "network/ExpressRouteCircuitsResourceProviderClient", "ListStats", "Failure preparing request")
 	}
 
 	resp, err := client.ListStatsSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "network/ExpressRouteCircuitsClient", "ListStats", "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "network/ExpressRouteCircuitsResourceProviderClient", "ListStats", "Failure sending request")
 	}
 
 	result, err = client.ListStatsResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "network/ExpressRouteCircuitsClient", "ListStats", "Failure responding to request")
+		ae = autorest.NewErrorWithError(err, "network/ExpressRouteCircuitsResourceProviderClient", "ListStats", "Failure responding to request")
 	}
 
 	return
 }
 
 // ListStatsPreparer prepares the ListStats request.
-func (client ExpressRouteCircuitsClient) ListStatsPreparer(resourceGroupName string, circuitName string) (*http.Request, error) {
+func (client ExpressRouteCircuitsResourceProviderClient) ListStatsPreparer(resourceGroupName string, circuitName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"circuitName":       url.QueryEscape(circuitName),
 		"resourceGroupName": url.QueryEscape(resourceGroupName),
@@ -544,13 +640,13 @@ func (client ExpressRouteCircuitsClient) ListStatsPreparer(resourceGroupName str
 
 // ListStatsSender sends the ListStats request. The method will close the
 // http.Response Body if it receives an error.
-func (client ExpressRouteCircuitsClient) ListStatsSender(req *http.Request) (*http.Response, error) {
+func (client ExpressRouteCircuitsResourceProviderClient) ListStatsSender(req *http.Request) (*http.Response, error) {
 	return client.Send(req, http.StatusOK)
 }
 
 // ListStatsResponder handles the response to the ListStats request. The method always
 // closes the http.Response Body.
-func (client ExpressRouteCircuitsClient) ListStatsResponder(resp *http.Response) (result ExpressRouteCircuitsStatsListResult, err error) {
+func (client ExpressRouteCircuitsResourceProviderClient) ListStatsResponder(resp *http.Response) (result ExpressRouteCircuitsStatsListResult, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -558,5 +654,29 @@ func (client ExpressRouteCircuitsClient) ListStatsResponder(resp *http.Response)
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// ListStatsNextResults retrieves the next set of results, if any.
+func (client ExpressRouteCircuitsResourceProviderClient) ListStatsNextResults(lastResults ExpressRouteCircuitsStatsListResult) (result ExpressRouteCircuitsStatsListResult, ae error) {
+	req, err := lastResults.ExpressRouteCircuitsStatsListResultPreparer()
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "network/ExpressRouteCircuitsResourceProviderClient", "ListStats", "Failure preparing next results request request")
+	}
+	if req == nil {
+		return
+	}
+
+	resp, err := client.ListStatsSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "network/ExpressRouteCircuitsResourceProviderClient", "ListStats", "Failure sending next results request request")
+	}
+
+	result, err = client.ListStatsResponder(resp)
+	if err != nil {
+		ae = autorest.NewErrorWithError(err, "network/ExpressRouteCircuitsResourceProviderClient", "ListStats", "Failure responding to next results request request")
+	}
+
 	return
 }

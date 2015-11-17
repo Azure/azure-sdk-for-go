@@ -19,7 +19,7 @@ package authorization
 // regenerated.
 
 import (
-	"github.com/Azure/azure-sdk-for-go/Godeps/_workspace/src/github.com/Azure/go-autorest/autorest"
+	"github.com/Azure/go-autorest/autorest"
 	"net/http"
 	"net/url"
 )
@@ -27,7 +27,7 @@ import (
 // ManagementLocksClient is the client for the ManagementLocks methods of the
 // Authorization service.
 type ManagementLocksClient struct {
-	ManagementClient
+	Client
 }
 
 // NewManagementLocksClient creates an instance of the ManagementLocksClient
@@ -566,6 +566,30 @@ func (client ManagementLocksClient) ListAtResourceGroupLevelResponder(resp *http
 	return
 }
 
+// ListAtResourceGroupLevelNextResults retrieves the next set of results, if any.
+func (client ManagementLocksClient) ListAtResourceGroupLevelNextResults(lastResults ManagementLockListResult) (result ManagementLockListResult, ae error) {
+	req, err := lastResults.ManagementLockListResultPreparer()
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "authorization/ManagementLocksClient", "ListAtResourceGroupLevel", "Failure preparing next results request request")
+	}
+	if req == nil {
+		return
+	}
+
+	resp, err := client.ListAtResourceGroupLevelSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "authorization/ManagementLocksClient", "ListAtResourceGroupLevel", "Failure sending next results request request")
+	}
+
+	result, err = client.ListAtResourceGroupLevelResponder(resp)
+	if err != nil {
+		ae = autorest.NewErrorWithError(err, "authorization/ManagementLocksClient", "ListAtResourceGroupLevel", "Failure responding to next results request request")
+	}
+
+	return
+}
+
 // ListAtResourceLevel gets all the management locks of a resource or any
 // level below resource.
 //
@@ -640,6 +664,30 @@ func (client ManagementLocksClient) ListAtResourceLevelResponder(resp *http.Resp
 	return
 }
 
+// ListAtResourceLevelNextResults retrieves the next set of results, if any.
+func (client ManagementLocksClient) ListAtResourceLevelNextResults(lastResults ManagementLockListResult) (result ManagementLockListResult, ae error) {
+	req, err := lastResults.ManagementLockListResultPreparer()
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "authorization/ManagementLocksClient", "ListAtResourceLevel", "Failure preparing next results request request")
+	}
+	if req == nil {
+		return
+	}
+
+	resp, err := client.ListAtResourceLevelSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "authorization/ManagementLocksClient", "ListAtResourceLevel", "Failure sending next results request request")
+	}
+
+	result, err = client.ListAtResourceLevelResponder(resp)
+	if err != nil {
+		ae = autorest.NewErrorWithError(err, "authorization/ManagementLocksClient", "ListAtResourceLevel", "Failure responding to next results request request")
+	}
+
+	return
+}
+
 // ListAtSubscriptionLevel gets all the management locks of a subscription.
 //
 // filter is the filter to apply on the operation.
@@ -704,6 +752,30 @@ func (client ManagementLocksClient) ListAtSubscriptionLevelResponder(resp *http.
 	return
 }
 
+// ListAtSubscriptionLevelNextResults retrieves the next set of results, if any.
+func (client ManagementLocksClient) ListAtSubscriptionLevelNextResults(lastResults ManagementLockListResult) (result ManagementLockListResult, ae error) {
+	req, err := lastResults.ManagementLockListResultPreparer()
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "authorization/ManagementLocksClient", "ListAtSubscriptionLevel", "Failure preparing next results request request")
+	}
+	if req == nil {
+		return
+	}
+
+	resp, err := client.ListAtSubscriptionLevelSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "authorization/ManagementLocksClient", "ListAtSubscriptionLevel", "Failure sending next results request request")
+	}
+
+	result, err = client.ListAtSubscriptionLevelResponder(resp)
+	if err != nil {
+		ae = autorest.NewErrorWithError(err, "authorization/ManagementLocksClient", "ListAtSubscriptionLevel", "Failure responding to next results request request")
+	}
+
+	return
+}
+
 // ListNext get a list of management locks at resource level or below.
 //
 // nextLink is nextLink from the previous successful call to List operation.
@@ -758,5 +830,29 @@ func (client ManagementLocksClient) ListNextResponder(resp *http.Response) (resu
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// ListNextNextResults retrieves the next set of results, if any.
+func (client ManagementLocksClient) ListNextNextResults(lastResults ManagementLockListResult) (result ManagementLockListResult, ae error) {
+	req, err := lastResults.ManagementLockListResultPreparer()
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "authorization/ManagementLocksClient", "ListNext", "Failure preparing next results request request")
+	}
+	if req == nil {
+		return
+	}
+
+	resp, err := client.ListNextSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "authorization/ManagementLocksClient", "ListNext", "Failure sending next results request request")
+	}
+
+	result, err = client.ListNextResponder(resp)
+	if err != nil {
+		ae = autorest.NewErrorWithError(err, "authorization/ManagementLocksClient", "ListNext", "Failure responding to next results request request")
+	}
+
 	return
 }

@@ -19,54 +19,55 @@ package resources
 // regenerated.
 
 import (
-	"github.com/Azure/azure-sdk-for-go/Godeps/_workspace/src/github.com/Azure/go-autorest/autorest"
+	"github.com/Azure/go-autorest/autorest"
 	"net/http"
 	"net/url"
 )
 
-// ProviderOperationsMetadataOperationsClient is the client for the
+// ProviderOperationsMetadataOperationsManagementClient is the client for the
 // ProviderOperationsMetadataOperations methods of the Resources service.
-type ProviderOperationsMetadataOperationsClient struct {
+type ProviderOperationsMetadataOperationsManagementClient struct {
 	ManagementClient
 }
 
-// NewProviderOperationsMetadataOperationsClient creates an instance of the
-// ProviderOperationsMetadataOperationsClient client.
-func NewProviderOperationsMetadataOperationsClient(subscriptionID string) ProviderOperationsMetadataOperationsClient {
-	return NewProviderOperationsMetadataOperationsClientWithBaseURI(DefaultBaseURI, subscriptionID)
+// NewProviderOperationsMetadataOperationsManagementClient creates an instance
+// of the ProviderOperationsMetadataOperationsManagementClient client.
+func NewProviderOperationsMetadataOperationsManagementClient(subscriptionID string) ProviderOperationsMetadataOperationsManagementClient {
+	return NewProviderOperationsMetadataOperationsManagementClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewProviderOperationsMetadataOperationsClientWithBaseURI creates an
-// instance of the ProviderOperationsMetadataOperationsClient client.
-func NewProviderOperationsMetadataOperationsClientWithBaseURI(baseURI string, subscriptionID string) ProviderOperationsMetadataOperationsClient {
-	return ProviderOperationsMetadataOperationsClient{NewWithBaseURI(baseURI, subscriptionID)}
+// NewProviderOperationsMetadataOperationsManagementClientWithBaseURI creates
+// an instance of the ProviderOperationsMetadataOperationsManagementClient
+// client.
+func NewProviderOperationsMetadataOperationsManagementClientWithBaseURI(baseURI string, subscriptionID string) ProviderOperationsMetadataOperationsManagementClient {
+	return ProviderOperationsMetadataOperationsManagementClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // Get gets provider operations metadata
 //
 // resourceProviderNamespace is namespace of the resource provider.
-func (client ProviderOperationsMetadataOperationsClient) Get(resourceProviderNamespace string, apiVersion string, expand string) (result ProviderOperationsMetadata, ae error) {
+func (client ProviderOperationsMetadataOperationsManagementClient) Get(resourceProviderNamespace string, apiVersion string, expand string) (result ProviderOperationsMetadata, ae error) {
 	req, err := client.GetPreparer(resourceProviderNamespace, apiVersion, expand)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "resources/ProviderOperationsMetadataOperationsClient", "Get", "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "resources/ProviderOperationsMetadataOperationsManagementClient", "Get", "Failure preparing request")
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "resources/ProviderOperationsMetadataOperationsClient", "Get", "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "resources/ProviderOperationsMetadataOperationsManagementClient", "Get", "Failure sending request")
 	}
 
 	result, err = client.GetResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "resources/ProviderOperationsMetadataOperationsClient", "Get", "Failure responding to request")
+		ae = autorest.NewErrorWithError(err, "resources/ProviderOperationsMetadataOperationsManagementClient", "Get", "Failure responding to request")
 	}
 
 	return
 }
 
 // GetPreparer prepares the Get request.
-func (client ProviderOperationsMetadataOperationsClient) GetPreparer(resourceProviderNamespace string, apiVersion string, expand string) (*http.Request, error) {
+func (client ProviderOperationsMetadataOperationsManagementClient) GetPreparer(resourceProviderNamespace string, apiVersion string, expand string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceProviderNamespace": url.QueryEscape(resourceProviderNamespace),
 		"subscriptionId":            url.QueryEscape(client.SubscriptionID),
@@ -90,13 +91,13 @@ func (client ProviderOperationsMetadataOperationsClient) GetPreparer(resourcePro
 
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
-func (client ProviderOperationsMetadataOperationsClient) GetSender(req *http.Request) (*http.Response, error) {
+func (client ProviderOperationsMetadataOperationsManagementClient) GetSender(req *http.Request) (*http.Response, error) {
 	return client.Send(req, http.StatusOK)
 }
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
-func (client ProviderOperationsMetadataOperationsClient) GetResponder(resp *http.Response) (result ProviderOperationsMetadata, err error) {
+func (client ProviderOperationsMetadataOperationsManagementClient) GetResponder(resp *http.Response) (result ProviderOperationsMetadata, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -109,28 +110,28 @@ func (client ProviderOperationsMetadataOperationsClient) GetResponder(resp *http
 
 // List gets provider operations metadata list
 //
-func (client ProviderOperationsMetadataOperationsClient) List(apiVersion string, expand string) (result ProviderOperationsMetadataListResult, ae error) {
+func (client ProviderOperationsMetadataOperationsManagementClient) List(apiVersion string, expand string) (result ProviderOperationsMetadataListResult, ae error) {
 	req, err := client.ListPreparer(apiVersion, expand)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "resources/ProviderOperationsMetadataOperationsClient", "List", "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "resources/ProviderOperationsMetadataOperationsManagementClient", "List", "Failure preparing request")
 	}
 
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "resources/ProviderOperationsMetadataOperationsClient", "List", "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "resources/ProviderOperationsMetadataOperationsManagementClient", "List", "Failure sending request")
 	}
 
 	result, err = client.ListResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "resources/ProviderOperationsMetadataOperationsClient", "List", "Failure responding to request")
+		ae = autorest.NewErrorWithError(err, "resources/ProviderOperationsMetadataOperationsManagementClient", "List", "Failure responding to request")
 	}
 
 	return
 }
 
 // ListPreparer prepares the List request.
-func (client ProviderOperationsMetadataOperationsClient) ListPreparer(apiVersion string, expand string) (*http.Request, error) {
+func (client ProviderOperationsMetadataOperationsManagementClient) ListPreparer(apiVersion string, expand string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"subscriptionId": url.QueryEscape(client.SubscriptionID),
 	}
@@ -153,13 +154,13 @@ func (client ProviderOperationsMetadataOperationsClient) ListPreparer(apiVersion
 
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
-func (client ProviderOperationsMetadataOperationsClient) ListSender(req *http.Request) (*http.Response, error) {
+func (client ProviderOperationsMetadataOperationsManagementClient) ListSender(req *http.Request) (*http.Response, error) {
 	return client.Send(req, http.StatusOK)
 }
 
 // ListResponder handles the response to the List request. The method always
 // closes the http.Response Body.
-func (client ProviderOperationsMetadataOperationsClient) ListResponder(resp *http.Response) (result ProviderOperationsMetadataListResult, err error) {
+func (client ProviderOperationsMetadataOperationsManagementClient) ListResponder(resp *http.Response) (result ProviderOperationsMetadataListResult, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

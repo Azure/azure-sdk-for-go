@@ -19,7 +19,9 @@ package network
 // regenerated.
 
 import (
-	"github.com/Azure/azure-sdk-for-go/Godeps/_workspace/src/github.com/Azure/go-autorest/autorest"
+	"github.com/Azure/go-autorest/autorest"
+	"github.com/Azure/go-autorest/autorest/to"
+	"net/http"
 )
 
 // ApplicationGatewayCookieBasedAffinity enumerates the values for application
@@ -519,6 +521,18 @@ type ApplicationGatewayListResult struct {
 	NextLink          *string               `json:"nextLink,omitempty"`
 }
 
+// ApplicationGatewayListResultPreparer prepares a request to retrieve the next set of results. It returns
+// nil if no more results exist.
+func (client ApplicationGatewayListResult) ApplicationGatewayListResultPreparer() (*http.Request, error) {
+	if client.NextLink == nil || len(to.String(client.NextLink)) <= 0 {
+		return nil, nil
+	}
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(client.NextLink)))
+}
+
 // ApplicationGatewayPropertiesFormat is properties of Application Gateway
 type ApplicationGatewayPropertiesFormat struct {
 	Sku                           *ApplicationGatewaySku                       `json:"sku,omitempty"`
@@ -584,6 +598,18 @@ type AuthorizationListResult struct {
 	autorest.Response `json:"-"`
 	Value             *[]ExpressRouteCircuitAuthorization `json:"value,omitempty"`
 	NextLink          *string                             `json:"nextLink,omitempty"`
+}
+
+// AuthorizationListResultPreparer prepares a request to retrieve the next set of results. It returns
+// nil if no more results exist.
+func (client AuthorizationListResult) AuthorizationListResultPreparer() (*http.Request, error) {
+	if client.NextLink == nil || len(to.String(client.NextLink)) <= 0 {
+		return nil, nil
+	}
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(client.NextLink)))
 }
 
 // AuthorizationPropertiesFormat is
@@ -702,6 +728,18 @@ type ExpressRouteCircuitListResult struct {
 	NextLink          *string                `json:"nextLink,omitempty"`
 }
 
+// ExpressRouteCircuitListResultPreparer prepares a request to retrieve the next set of results. It returns
+// nil if no more results exist.
+func (client ExpressRouteCircuitListResult) ExpressRouteCircuitListResultPreparer() (*http.Request, error) {
+	if client.NextLink == nil || len(to.String(client.NextLink)) <= 0 {
+		return nil, nil
+	}
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(client.NextLink)))
+}
+
 // ExpressRouteCircuitPeering is peering in a ExpressRouteCircuit resource
 type ExpressRouteCircuitPeering struct {
 	autorest.Response `json:"-"`
@@ -725,6 +763,18 @@ type ExpressRouteCircuitPeeringListResult struct {
 	autorest.Response `json:"-"`
 	Value             *[]ExpressRouteCircuitPeering `json:"value,omitempty"`
 	NextLink          *string                       `json:"nextLink,omitempty"`
+}
+
+// ExpressRouteCircuitPeeringListResultPreparer prepares a request to retrieve the next set of results. It returns
+// nil if no more results exist.
+func (client ExpressRouteCircuitPeeringListResult) ExpressRouteCircuitPeeringListResultPreparer() (*http.Request, error) {
+	if client.NextLink == nil || len(to.String(client.NextLink)) <= 0 {
+		return nil, nil
+	}
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(client.NextLink)))
 }
 
 // ExpressRouteCircuitPeeringPropertiesFormat is
@@ -773,6 +823,18 @@ type ExpressRouteCircuitsArpTableListResult struct {
 	NextLink          *string                        `json:"nextLink,omitempty"`
 }
 
+// ExpressRouteCircuitsArpTableListResultPreparer prepares a request to retrieve the next set of results. It returns
+// nil if no more results exist.
+func (client ExpressRouteCircuitsArpTableListResult) ExpressRouteCircuitsArpTableListResultPreparer() (*http.Request, error) {
+	if client.NextLink == nil || len(to.String(client.NextLink)) <= 0 {
+		return nil, nil
+	}
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(client.NextLink)))
+}
+
 // ExpressRouteCircuitServiceProviderProperties is contains
 // ServiceProviderProperties in an ExpressRouteCircuit
 type ExpressRouteCircuitServiceProviderProperties struct {
@@ -796,12 +858,36 @@ type ExpressRouteCircuitsRoutesTableListResult struct {
 	NextLink          *string                           `json:"nextLink,omitempty"`
 }
 
+// ExpressRouteCircuitsRoutesTableListResultPreparer prepares a request to retrieve the next set of results. It returns
+// nil if no more results exist.
+func (client ExpressRouteCircuitsRoutesTableListResult) ExpressRouteCircuitsRoutesTableListResultPreparer() (*http.Request, error) {
+	if client.NextLink == nil || len(to.String(client.NextLink)) <= 0 {
+		return nil, nil
+	}
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(client.NextLink)))
+}
+
 // ExpressRouteCircuitsStatsListResult is response for ListStats from Express
 // Route Circuits Api service call
 type ExpressRouteCircuitsStatsListResult struct {
 	autorest.Response `json:"-"`
 	Value             *[]ExpressRouteCircuitStats `json:"value,omitempty"`
 	NextLink          *string                     `json:"nextLink,omitempty"`
+}
+
+// ExpressRouteCircuitsStatsListResultPreparer prepares a request to retrieve the next set of results. It returns
+// nil if no more results exist.
+func (client ExpressRouteCircuitsStatsListResult) ExpressRouteCircuitsStatsListResultPreparer() (*http.Request, error) {
+	if client.NextLink == nil || len(to.String(client.NextLink)) <= 0 {
+		return nil, nil
+	}
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(client.NextLink)))
 }
 
 // ExpressRouteCircuitStats is contains Stats associated with the peering
@@ -831,6 +917,18 @@ type ExpressRouteServiceProviderListResult struct {
 	autorest.Response `json:"-"`
 	Value             *[]ExpressRouteServiceProvider `json:"value,omitempty"`
 	NextLink          *string                        `json:"nextLink,omitempty"`
+}
+
+// ExpressRouteServiceProviderListResultPreparer prepares a request to retrieve the next set of results. It returns
+// nil if no more results exist.
+func (client ExpressRouteServiceProviderListResult) ExpressRouteServiceProviderListResultPreparer() (*http.Request, error) {
+	if client.NextLink == nil || len(to.String(client.NextLink)) <= 0 {
+		return nil, nil
+	}
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(client.NextLink)))
 }
 
 // ExpressRouteServiceProviderPropertiesFormat is properties of
@@ -947,6 +1045,18 @@ type InterfaceListResult struct {
 	NextLink          *string      `json:"nextLink,omitempty"`
 }
 
+// InterfaceListResultPreparer prepares a request to retrieve the next set of results. It returns
+// nil if no more results exist.
+func (client InterfaceListResult) InterfaceListResultPreparer() (*http.Request, error) {
+	if client.NextLink == nil || len(to.String(client.NextLink)) <= 0 {
+		return nil, nil
+	}
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(client.NextLink)))
+}
+
 // InterfacePropertiesFormat is networkInterface properties.
 type InterfacePropertiesFormat struct {
 	VirtualMachine       *SubResource                `json:"virtualMachine,omitempty"`
@@ -977,6 +1087,18 @@ type LoadBalancerListResult struct {
 	autorest.Response `json:"-"`
 	Value             *[]LoadBalancer `json:"value,omitempty"`
 	NextLink          *string         `json:"nextLink,omitempty"`
+}
+
+// LoadBalancerListResultPreparer prepares a request to retrieve the next set of results. It returns
+// nil if no more results exist.
+func (client LoadBalancerListResult) LoadBalancerListResultPreparer() (*http.Request, error) {
+	if client.NextLink == nil || len(to.String(client.NextLink)) <= 0 {
+		return nil, nil
+	}
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(client.NextLink)))
 }
 
 // LoadBalancerPropertiesFormat is properties of Load Balancer
@@ -1032,6 +1154,18 @@ type LocalNetworkGatewayListResult struct {
 	autorest.Response `json:"-"`
 	Value             *[]LocalNetworkGateway `json:"value,omitempty"`
 	NextLink          *string                `json:"nextLink,omitempty"`
+}
+
+// LocalNetworkGatewayListResultPreparer prepares a request to retrieve the next set of results. It returns
+// nil if no more results exist.
+func (client LocalNetworkGatewayListResult) LocalNetworkGatewayListResultPreparer() (*http.Request, error) {
+	if client.NextLink == nil || len(to.String(client.NextLink)) <= 0 {
+		return nil, nil
+	}
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(client.NextLink)))
 }
 
 // LocalNetworkGatewayPropertiesFormat is localNetworkGateway properties
@@ -1105,6 +1239,18 @@ type PublicIPAddressListResult struct {
 	NextLink          *string            `json:"nextLink,omitempty"`
 }
 
+// PublicIPAddressListResultPreparer prepares a request to retrieve the next set of results. It returns
+// nil if no more results exist.
+func (client PublicIPAddressListResult) PublicIPAddressListResultPreparer() (*http.Request, error) {
+	if client.NextLink == nil || len(to.String(client.NextLink)) <= 0 {
+		return nil, nil
+	}
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(client.NextLink)))
+}
+
 // PublicIPAddressPropertiesFormat is publicIpAddress properties
 type PublicIPAddressPropertiesFormat struct {
 	PublicIPAllocationMethod string                      `json:"publicIPAllocationMethod,omitempty"`
@@ -1141,6 +1287,18 @@ type RouteListResult struct {
 	NextLink          *string  `json:"nextLink,omitempty"`
 }
 
+// RouteListResultPreparer prepares a request to retrieve the next set of results. It returns
+// nil if no more results exist.
+func (client RouteListResult) RouteListResultPreparer() (*http.Request, error) {
+	if client.NextLink == nil || len(to.String(client.NextLink)) <= 0 {
+		return nil, nil
+	}
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(client.NextLink)))
+}
+
 // RoutePropertiesFormat is route resource
 type RoutePropertiesFormat struct {
 	AddressPrefix     *string `json:"addressPrefix,omitempty"`
@@ -1166,6 +1324,18 @@ type RouteTableListResult struct {
 	autorest.Response `json:"-"`
 	Value             *[]RouteTable `json:"value,omitempty"`
 	NextLink          *string       `json:"nextLink,omitempty"`
+}
+
+// RouteTableListResultPreparer prepares a request to retrieve the next set of results. It returns
+// nil if no more results exist.
+func (client RouteTableListResult) RouteTableListResultPreparer() (*http.Request, error) {
+	if client.NextLink == nil || len(to.String(client.NextLink)) <= 0 {
+		return nil, nil
+	}
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(client.NextLink)))
 }
 
 // RouteTablePropertiesFormat is route Table resource
@@ -1195,6 +1365,18 @@ type SecurityGroupListResult struct {
 	NextLink          *string          `json:"nextLink,omitempty"`
 }
 
+// SecurityGroupListResultPreparer prepares a request to retrieve the next set of results. It returns
+// nil if no more results exist.
+func (client SecurityGroupListResult) SecurityGroupListResultPreparer() (*http.Request, error) {
+	if client.NextLink == nil || len(to.String(client.NextLink)) <= 0 {
+		return nil, nil
+	}
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(client.NextLink)))
+}
+
 // SecurityGroupPropertiesFormat is network Security Group resource
 type SecurityGroupPropertiesFormat struct {
 	SecurityRules        *[]SecurityRule `json:"securityRules,omitempty"`
@@ -1220,6 +1402,18 @@ type SecurityRuleListResult struct {
 	autorest.Response `json:"-"`
 	Value             *[]SecurityRule `json:"value,omitempty"`
 	NextLink          *string         `json:"nextLink,omitempty"`
+}
+
+// SecurityRuleListResultPreparer prepares a request to retrieve the next set of results. It returns
+// nil if no more results exist.
+func (client SecurityRuleListResult) SecurityRuleListResultPreparer() (*http.Request, error) {
+	if client.NextLink == nil || len(to.String(client.NextLink)) <= 0 {
+		return nil, nil
+	}
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(client.NextLink)))
 }
 
 // SecurityRulePropertiesFormat is
@@ -1251,6 +1445,18 @@ type SubnetListResult struct {
 	autorest.Response `json:"-"`
 	Value             *[]Subnet `json:"value,omitempty"`
 	NextLink          *string   `json:"nextLink,omitempty"`
+}
+
+// SubnetListResultPreparer prepares a request to retrieve the next set of results. It returns
+// nil if no more results exist.
+func (client SubnetListResult) SubnetListResultPreparer() (*http.Request, error) {
+	if client.NextLink == nil || len(to.String(client.NextLink)) <= 0 {
+		return nil, nil
+	}
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(client.NextLink)))
 }
 
 // SubnetPropertiesFormat is
@@ -1332,6 +1538,18 @@ type VirtualNetworkGatewayConnectionListResult struct {
 	NextLink          *string                            `json:"nextLink,omitempty"`
 }
 
+// VirtualNetworkGatewayConnectionListResultPreparer prepares a request to retrieve the next set of results. It returns
+// nil if no more results exist.
+func (client VirtualNetworkGatewayConnectionListResult) VirtualNetworkGatewayConnectionListResultPreparer() (*http.Request, error) {
+	if client.NextLink == nil || len(to.String(client.NextLink)) <= 0 {
+		return nil, nil
+	}
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(client.NextLink)))
+}
+
 // VirtualNetworkGatewayConnectionPropertiesFormat is
 // virtualNeworkGatewayConnection properties
 type VirtualNetworkGatewayConnectionPropertiesFormat struct {
@@ -1376,6 +1594,18 @@ type VirtualNetworkGatewayListResult struct {
 	NextLink          *string                  `json:"nextLink,omitempty"`
 }
 
+// VirtualNetworkGatewayListResultPreparer prepares a request to retrieve the next set of results. It returns
+// nil if no more results exist.
+func (client VirtualNetworkGatewayListResult) VirtualNetworkGatewayListResultPreparer() (*http.Request, error) {
+	if client.NextLink == nil || len(to.String(client.NextLink)) <= 0 {
+		return nil, nil
+	}
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(client.NextLink)))
+}
+
 // VirtualNetworkGatewayPropertiesFormat is virtualNeworkGateay properties
 type VirtualNetworkGatewayPropertiesFormat struct {
 	IPConfigurations   *[]VirtualNetworkGatewayIPConfiguration `json:"ipConfigurations,omitempty"`
@@ -1393,6 +1623,18 @@ type VirtualNetworkListResult struct {
 	autorest.Response `json:"-"`
 	Value             *[]VirtualNetwork `json:"value,omitempty"`
 	NextLink          *string           `json:"nextLink,omitempty"`
+}
+
+// VirtualNetworkListResultPreparer prepares a request to retrieve the next set of results. It returns
+// nil if no more results exist.
+func (client VirtualNetworkListResult) VirtualNetworkListResultPreparer() (*http.Request, error) {
+	if client.NextLink == nil || len(to.String(client.NextLink)) <= 0 {
+		return nil, nil
+	}
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(client.NextLink)))
 }
 
 // VirtualNetworkPropertiesFormat is

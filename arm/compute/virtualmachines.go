@@ -19,26 +19,26 @@ package compute
 // regenerated.
 
 import (
-	"github.com/Azure/azure-sdk-for-go/Godeps/_workspace/src/github.com/Azure/go-autorest/autorest"
+	"github.com/Azure/go-autorest/autorest"
 	"net/http"
 	"net/url"
 )
 
-// VirtualMachinesClient is the the Compute Management Client.
-type VirtualMachinesClient struct {
+// VirtualMachinesManagementClient is the the Compute Management Client.
+type VirtualMachinesManagementClient struct {
 	ManagementClient
 }
 
-// NewVirtualMachinesClient creates an instance of the VirtualMachinesClient
-// client.
-func NewVirtualMachinesClient(subscriptionID string) VirtualMachinesClient {
-	return NewVirtualMachinesClientWithBaseURI(DefaultBaseURI, subscriptionID)
+// NewVirtualMachinesManagementClient creates an instance of the
+// VirtualMachinesManagementClient client.
+func NewVirtualMachinesManagementClient(subscriptionID string) VirtualMachinesManagementClient {
+	return NewVirtualMachinesManagementClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewVirtualMachinesClientWithBaseURI creates an instance of the
-// VirtualMachinesClient client.
-func NewVirtualMachinesClientWithBaseURI(baseURI string, subscriptionID string) VirtualMachinesClient {
-	return VirtualMachinesClient{NewWithBaseURI(baseURI, subscriptionID)}
+// NewVirtualMachinesManagementClientWithBaseURI creates an instance of the
+// VirtualMachinesManagementClient client.
+func NewVirtualMachinesManagementClientWithBaseURI(baseURI string, subscriptionID string) VirtualMachinesManagementClient {
+	return VirtualMachinesManagementClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // Capture captures the VM by copying VirtualHardDisks of the VM and outputs a
@@ -47,28 +47,28 @@ func NewVirtualMachinesClientWithBaseURI(baseURI string, subscriptionID string) 
 // resourceGroupName is the name of the resource group. vmName is the name of
 // the virtual machine. parameters is parameters supplied to the Capture
 // Virtual Machine operation.
-func (client VirtualMachinesClient) Capture(resourceGroupName string, vmName string, parameters VirtualMachineCaptureParameters) (result VirtualMachineCaptureResult, ae error) {
+func (client VirtualMachinesManagementClient) Capture(resourceGroupName string, vmName string, parameters VirtualMachineCaptureParameters) (result VirtualMachineCaptureResult, ae error) {
 	req, err := client.CapturePreparer(resourceGroupName, vmName, parameters)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "compute/VirtualMachinesClient", "Capture", "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "compute/VirtualMachinesManagementClient", "Capture", "Failure preparing request")
 	}
 
 	resp, err := client.CaptureSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "compute/VirtualMachinesClient", "Capture", "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "compute/VirtualMachinesManagementClient", "Capture", "Failure sending request")
 	}
 
 	result, err = client.CaptureResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "compute/VirtualMachinesClient", "Capture", "Failure responding to request")
+		ae = autorest.NewErrorWithError(err, "compute/VirtualMachinesManagementClient", "Capture", "Failure responding to request")
 	}
 
 	return
 }
 
 // CapturePreparer prepares the Capture request.
-func (client VirtualMachinesClient) CapturePreparer(resourceGroupName string, vmName string, parameters VirtualMachineCaptureParameters) (*http.Request, error) {
+func (client VirtualMachinesManagementClient) CapturePreparer(resourceGroupName string, vmName string, parameters VirtualMachineCaptureParameters) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName": url.QueryEscape(resourceGroupName),
 		"subscriptionId":    url.QueryEscape(client.SubscriptionID),
@@ -91,13 +91,13 @@ func (client VirtualMachinesClient) CapturePreparer(resourceGroupName string, vm
 
 // CaptureSender sends the Capture request. The method will close the
 // http.Response Body if it receives an error.
-func (client VirtualMachinesClient) CaptureSender(req *http.Request) (*http.Response, error) {
+func (client VirtualMachinesManagementClient) CaptureSender(req *http.Request) (*http.Response, error) {
 	return client.Send(req, http.StatusOK, http.StatusAccepted)
 }
 
 // CaptureResponder handles the response to the Capture request. The method always
 // closes the http.Response Body.
-func (client VirtualMachinesClient) CaptureResponder(resp *http.Response) (result VirtualMachineCaptureResult, err error) {
+func (client VirtualMachinesManagementClient) CaptureResponder(resp *http.Response) (result VirtualMachineCaptureResult, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -113,28 +113,28 @@ func (client VirtualMachinesClient) CaptureResponder(resp *http.Response) (resul
 // resourceGroupName is the name of the resource group. vmName is the name of
 // the virtual machine. parameters is parameters supplied to the Create
 // Virtual Machine operation.
-func (client VirtualMachinesClient) CreateOrUpdate(resourceGroupName string, vmName string, parameters VirtualMachine) (result VirtualMachine, ae error) {
+func (client VirtualMachinesManagementClient) CreateOrUpdate(resourceGroupName string, vmName string, parameters VirtualMachine) (result VirtualMachine, ae error) {
 	req, err := client.CreateOrUpdatePreparer(resourceGroupName, vmName, parameters)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "compute/VirtualMachinesClient", "CreateOrUpdate", "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "compute/VirtualMachinesManagementClient", "CreateOrUpdate", "Failure preparing request")
 	}
 
 	resp, err := client.CreateOrUpdateSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "compute/VirtualMachinesClient", "CreateOrUpdate", "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "compute/VirtualMachinesManagementClient", "CreateOrUpdate", "Failure sending request")
 	}
 
 	result, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "compute/VirtualMachinesClient", "CreateOrUpdate", "Failure responding to request")
+		ae = autorest.NewErrorWithError(err, "compute/VirtualMachinesManagementClient", "CreateOrUpdate", "Failure responding to request")
 	}
 
 	return
 }
 
 // CreateOrUpdatePreparer prepares the CreateOrUpdate request.
-func (client VirtualMachinesClient) CreateOrUpdatePreparer(resourceGroupName string, vmName string, parameters VirtualMachine) (*http.Request, error) {
+func (client VirtualMachinesManagementClient) CreateOrUpdatePreparer(resourceGroupName string, vmName string, parameters VirtualMachine) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName": url.QueryEscape(resourceGroupName),
 		"subscriptionId":    url.QueryEscape(client.SubscriptionID),
@@ -157,13 +157,13 @@ func (client VirtualMachinesClient) CreateOrUpdatePreparer(resourceGroupName str
 
 // CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
 // http.Response Body if it receives an error.
-func (client VirtualMachinesClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
+func (client VirtualMachinesManagementClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
 	return client.Send(req, http.StatusCreated, http.StatusOK)
 }
 
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
 // closes the http.Response Body.
-func (client VirtualMachinesClient) CreateOrUpdateResponder(resp *http.Response) (result VirtualMachine, err error) {
+func (client VirtualMachinesManagementClient) CreateOrUpdateResponder(resp *http.Response) (result VirtualMachine, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -180,28 +180,28 @@ func (client VirtualMachinesClient) CreateOrUpdateResponder(resp *http.Response)
 //
 // resourceGroupName is the name of the resource group. vmName is the name of
 // the virtual machine.
-func (client VirtualMachinesClient) Deallocate(resourceGroupName string, vmName string) (result autorest.Response, ae error) {
+func (client VirtualMachinesManagementClient) Deallocate(resourceGroupName string, vmName string) (result autorest.Response, ae error) {
 	req, err := client.DeallocatePreparer(resourceGroupName, vmName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "compute/VirtualMachinesClient", "Deallocate", "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "compute/VirtualMachinesManagementClient", "Deallocate", "Failure preparing request")
 	}
 
 	resp, err := client.DeallocateSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "compute/VirtualMachinesClient", "Deallocate", "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "compute/VirtualMachinesManagementClient", "Deallocate", "Failure sending request")
 	}
 
 	result, err = client.DeallocateResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "compute/VirtualMachinesClient", "Deallocate", "Failure responding to request")
+		ae = autorest.NewErrorWithError(err, "compute/VirtualMachinesManagementClient", "Deallocate", "Failure responding to request")
 	}
 
 	return
 }
 
 // DeallocatePreparer prepares the Deallocate request.
-func (client VirtualMachinesClient) DeallocatePreparer(resourceGroupName string, vmName string) (*http.Request, error) {
+func (client VirtualMachinesManagementClient) DeallocatePreparer(resourceGroupName string, vmName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName": url.QueryEscape(resourceGroupName),
 		"subscriptionId":    url.QueryEscape(client.SubscriptionID),
@@ -223,13 +223,13 @@ func (client VirtualMachinesClient) DeallocatePreparer(resourceGroupName string,
 
 // DeallocateSender sends the Deallocate request. The method will close the
 // http.Response Body if it receives an error.
-func (client VirtualMachinesClient) DeallocateSender(req *http.Request) (*http.Response, error) {
+func (client VirtualMachinesManagementClient) DeallocateSender(req *http.Request) (*http.Response, error) {
 	return client.Send(req, http.StatusOK, http.StatusAccepted)
 }
 
 // DeallocateResponder handles the response to the Deallocate request. The method always
 // closes the http.Response Body.
-func (client VirtualMachinesClient) DeallocateResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client VirtualMachinesManagementClient) DeallocateResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -243,28 +243,28 @@ func (client VirtualMachinesClient) DeallocateResponder(resp *http.Response) (re
 //
 // resourceGroupName is the name of the resource group. vmName is the name of
 // the virtual machine.
-func (client VirtualMachinesClient) Delete(resourceGroupName string, vmName string) (result autorest.Response, ae error) {
+func (client VirtualMachinesManagementClient) Delete(resourceGroupName string, vmName string) (result autorest.Response, ae error) {
 	req, err := client.DeletePreparer(resourceGroupName, vmName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "compute/VirtualMachinesClient", "Delete", "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "compute/VirtualMachinesManagementClient", "Delete", "Failure preparing request")
 	}
 
 	resp, err := client.DeleteSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "compute/VirtualMachinesClient", "Delete", "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "compute/VirtualMachinesManagementClient", "Delete", "Failure sending request")
 	}
 
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "compute/VirtualMachinesClient", "Delete", "Failure responding to request")
+		ae = autorest.NewErrorWithError(err, "compute/VirtualMachinesManagementClient", "Delete", "Failure responding to request")
 	}
 
 	return
 }
 
 // DeletePreparer prepares the Delete request.
-func (client VirtualMachinesClient) DeletePreparer(resourceGroupName string, vmName string) (*http.Request, error) {
+func (client VirtualMachinesManagementClient) DeletePreparer(resourceGroupName string, vmName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName": url.QueryEscape(resourceGroupName),
 		"subscriptionId":    url.QueryEscape(client.SubscriptionID),
@@ -286,13 +286,13 @@ func (client VirtualMachinesClient) DeletePreparer(resourceGroupName string, vmN
 
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
-func (client VirtualMachinesClient) DeleteSender(req *http.Request) (*http.Response, error) {
+func (client VirtualMachinesManagementClient) DeleteSender(req *http.Request) (*http.Response, error) {
 	return client.Send(req, http.StatusOK, http.StatusAccepted, http.StatusNoContent)
 }
 
 // DeleteResponder handles the response to the Delete request. The method always
 // closes the http.Response Body.
-func (client VirtualMachinesClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client VirtualMachinesManagementClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -306,28 +306,28 @@ func (client VirtualMachinesClient) DeleteResponder(resp *http.Response) (result
 //
 // resourceGroupName is the name of the resource group. vmName is the name of
 // the virtual machine.
-func (client VirtualMachinesClient) Generalize(resourceGroupName string, vmName string) (result autorest.Response, ae error) {
+func (client VirtualMachinesManagementClient) Generalize(resourceGroupName string, vmName string) (result autorest.Response, ae error) {
 	req, err := client.GeneralizePreparer(resourceGroupName, vmName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "compute/VirtualMachinesClient", "Generalize", "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "compute/VirtualMachinesManagementClient", "Generalize", "Failure preparing request")
 	}
 
 	resp, err := client.GeneralizeSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "compute/VirtualMachinesClient", "Generalize", "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "compute/VirtualMachinesManagementClient", "Generalize", "Failure sending request")
 	}
 
 	result, err = client.GeneralizeResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "compute/VirtualMachinesClient", "Generalize", "Failure responding to request")
+		ae = autorest.NewErrorWithError(err, "compute/VirtualMachinesManagementClient", "Generalize", "Failure responding to request")
 	}
 
 	return
 }
 
 // GeneralizePreparer prepares the Generalize request.
-func (client VirtualMachinesClient) GeneralizePreparer(resourceGroupName string, vmName string) (*http.Request, error) {
+func (client VirtualMachinesManagementClient) GeneralizePreparer(resourceGroupName string, vmName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName": url.QueryEscape(resourceGroupName),
 		"subscriptionId":    url.QueryEscape(client.SubscriptionID),
@@ -349,13 +349,13 @@ func (client VirtualMachinesClient) GeneralizePreparer(resourceGroupName string,
 
 // GeneralizeSender sends the Generalize request. The method will close the
 // http.Response Body if it receives an error.
-func (client VirtualMachinesClient) GeneralizeSender(req *http.Request) (*http.Response, error) {
+func (client VirtualMachinesManagementClient) GeneralizeSender(req *http.Request) (*http.Response, error) {
 	return client.Send(req, http.StatusOK)
 }
 
 // GeneralizeResponder handles the response to the Generalize request. The method always
 // closes the http.Response Body.
-func (client VirtualMachinesClient) GeneralizeResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client VirtualMachinesManagementClient) GeneralizeResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -370,28 +370,28 @@ func (client VirtualMachinesClient) GeneralizeResponder(resp *http.Response) (re
 // resourceGroupName is the name of the resource group. vmName is the name of
 // the virtual machine. expand is the expand expression to apply on the
 // operation.
-func (client VirtualMachinesClient) Get(resourceGroupName string, vmName string, expand string) (result VirtualMachine, ae error) {
+func (client VirtualMachinesManagementClient) Get(resourceGroupName string, vmName string, expand string) (result VirtualMachine, ae error) {
 	req, err := client.GetPreparer(resourceGroupName, vmName, expand)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "compute/VirtualMachinesClient", "Get", "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "compute/VirtualMachinesManagementClient", "Get", "Failure preparing request")
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "compute/VirtualMachinesClient", "Get", "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "compute/VirtualMachinesManagementClient", "Get", "Failure sending request")
 	}
 
 	result, err = client.GetResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "compute/VirtualMachinesClient", "Get", "Failure responding to request")
+		ae = autorest.NewErrorWithError(err, "compute/VirtualMachinesManagementClient", "Get", "Failure responding to request")
 	}
 
 	return
 }
 
 // GetPreparer prepares the Get request.
-func (client VirtualMachinesClient) GetPreparer(resourceGroupName string, vmName string, expand string) (*http.Request, error) {
+func (client VirtualMachinesManagementClient) GetPreparer(resourceGroupName string, vmName string, expand string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName": url.QueryEscape(resourceGroupName),
 		"subscriptionId":    url.QueryEscape(client.SubscriptionID),
@@ -416,13 +416,13 @@ func (client VirtualMachinesClient) GetPreparer(resourceGroupName string, vmName
 
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
-func (client VirtualMachinesClient) GetSender(req *http.Request) (*http.Response, error) {
+func (client VirtualMachinesManagementClient) GetSender(req *http.Request) (*http.Response, error) {
 	return client.Send(req, http.StatusOK)
 }
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
-func (client VirtualMachinesClient) GetResponder(resp *http.Response) (result VirtualMachine, err error) {
+func (client VirtualMachinesManagementClient) GetResponder(resp *http.Response) (result VirtualMachine, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -436,28 +436,28 @@ func (client VirtualMachinesClient) GetResponder(resp *http.Response) (result Vi
 // List the operation to list virtual machines under a resource group.
 //
 // resourceGroupName is the name of the resource group.
-func (client VirtualMachinesClient) List(resourceGroupName string) (result VirtualMachineListResult, ae error) {
+func (client VirtualMachinesManagementClient) List(resourceGroupName string) (result VirtualMachineListResult, ae error) {
 	req, err := client.ListPreparer(resourceGroupName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "compute/VirtualMachinesClient", "List", "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "compute/VirtualMachinesManagementClient", "List", "Failure preparing request")
 	}
 
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "compute/VirtualMachinesClient", "List", "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "compute/VirtualMachinesManagementClient", "List", "Failure sending request")
 	}
 
 	result, err = client.ListResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "compute/VirtualMachinesClient", "List", "Failure responding to request")
+		ae = autorest.NewErrorWithError(err, "compute/VirtualMachinesManagementClient", "List", "Failure responding to request")
 	}
 
 	return
 }
 
 // ListPreparer prepares the List request.
-func (client VirtualMachinesClient) ListPreparer(resourceGroupName string) (*http.Request, error) {
+func (client VirtualMachinesManagementClient) ListPreparer(resourceGroupName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName": url.QueryEscape(resourceGroupName),
 		"subscriptionId":    url.QueryEscape(client.SubscriptionID),
@@ -478,13 +478,13 @@ func (client VirtualMachinesClient) ListPreparer(resourceGroupName string) (*htt
 
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
-func (client VirtualMachinesClient) ListSender(req *http.Request) (*http.Response, error) {
+func (client VirtualMachinesManagementClient) ListSender(req *http.Request) (*http.Response, error) {
 	return client.Send(req, http.StatusOK)
 }
 
 // ListResponder handles the response to the List request. The method always
 // closes the http.Response Body.
-func (client VirtualMachinesClient) ListResponder(resp *http.Response) (result VirtualMachineListResult, err error) {
+func (client VirtualMachinesManagementClient) ListResponder(resp *http.Response) (result VirtualMachineListResult, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -495,31 +495,55 @@ func (client VirtualMachinesClient) ListResponder(resp *http.Response) (result V
 	return
 }
 
+// ListNextResults retrieves the next set of results, if any.
+func (client VirtualMachinesManagementClient) ListNextResults(lastResults VirtualMachineListResult) (result VirtualMachineListResult, ae error) {
+	req, err := lastResults.VirtualMachineListResultPreparer()
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "compute/VirtualMachinesManagementClient", "List", "Failure preparing next results request request")
+	}
+	if req == nil {
+		return
+	}
+
+	resp, err := client.ListSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "compute/VirtualMachinesManagementClient", "List", "Failure sending next results request request")
+	}
+
+	result, err = client.ListResponder(resp)
+	if err != nil {
+		ae = autorest.NewErrorWithError(err, "compute/VirtualMachinesManagementClient", "List", "Failure responding to next results request request")
+	}
+
+	return
+}
+
 // ListAll gets the list of Virtual Machines in the subscription. Use nextLink
 // property in the response to get the next page of Virtual Machines. Do this
 // till nextLink is not null to fetch all the Virtual Machines.
-func (client VirtualMachinesClient) ListAll() (result VirtualMachineListResult, ae error) {
+func (client VirtualMachinesManagementClient) ListAll() (result VirtualMachineListResult, ae error) {
 	req, err := client.ListAllPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "compute/VirtualMachinesClient", "ListAll", "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "compute/VirtualMachinesManagementClient", "ListAll", "Failure preparing request")
 	}
 
 	resp, err := client.ListAllSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "compute/VirtualMachinesClient", "ListAll", "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "compute/VirtualMachinesManagementClient", "ListAll", "Failure sending request")
 	}
 
 	result, err = client.ListAllResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "compute/VirtualMachinesClient", "ListAll", "Failure responding to request")
+		ae = autorest.NewErrorWithError(err, "compute/VirtualMachinesManagementClient", "ListAll", "Failure responding to request")
 	}
 
 	return
 }
 
 // ListAllPreparer prepares the ListAll request.
-func (client VirtualMachinesClient) ListAllPreparer() (*http.Request, error) {
+func (client VirtualMachinesManagementClient) ListAllPreparer() (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"subscriptionId": url.QueryEscape(client.SubscriptionID),
 	}
@@ -539,13 +563,13 @@ func (client VirtualMachinesClient) ListAllPreparer() (*http.Request, error) {
 
 // ListAllSender sends the ListAll request. The method will close the
 // http.Response Body if it receives an error.
-func (client VirtualMachinesClient) ListAllSender(req *http.Request) (*http.Response, error) {
+func (client VirtualMachinesManagementClient) ListAllSender(req *http.Request) (*http.Response, error) {
 	return client.Send(req, http.StatusOK)
 }
 
 // ListAllResponder handles the response to the ListAll request. The method always
 // closes the http.Response Body.
-func (client VirtualMachinesClient) ListAllResponder(resp *http.Response) (result VirtualMachineListResult, err error) {
+func (client VirtualMachinesManagementClient) ListAllResponder(resp *http.Response) (result VirtualMachineListResult, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -556,33 +580,57 @@ func (client VirtualMachinesClient) ListAllResponder(resp *http.Response) (resul
 	return
 }
 
+// ListAllNextResults retrieves the next set of results, if any.
+func (client VirtualMachinesManagementClient) ListAllNextResults(lastResults VirtualMachineListResult) (result VirtualMachineListResult, ae error) {
+	req, err := lastResults.VirtualMachineListResultPreparer()
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "compute/VirtualMachinesManagementClient", "ListAll", "Failure preparing next results request request")
+	}
+	if req == nil {
+		return
+	}
+
+	resp, err := client.ListAllSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "compute/VirtualMachinesManagementClient", "ListAll", "Failure sending next results request request")
+	}
+
+	result, err = client.ListAllResponder(resp)
+	if err != nil {
+		ae = autorest.NewErrorWithError(err, "compute/VirtualMachinesManagementClient", "ListAll", "Failure responding to next results request request")
+	}
+
+	return
+}
+
 // ListAvailableSizes lists virtual-machine-sizes available to be used for a
 // virtual machine.
 //
 // resourceGroupName is the name of the resource group. vmName is the name of
 // the virtual machine.
-func (client VirtualMachinesClient) ListAvailableSizes(resourceGroupName string, vmName string) (result VirtualMachineSizeListResult, ae error) {
+func (client VirtualMachinesManagementClient) ListAvailableSizes(resourceGroupName string, vmName string) (result VirtualMachineSizeListResult, ae error) {
 	req, err := client.ListAvailableSizesPreparer(resourceGroupName, vmName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "compute/VirtualMachinesClient", "ListAvailableSizes", "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "compute/VirtualMachinesManagementClient", "ListAvailableSizes", "Failure preparing request")
 	}
 
 	resp, err := client.ListAvailableSizesSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "compute/VirtualMachinesClient", "ListAvailableSizes", "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "compute/VirtualMachinesManagementClient", "ListAvailableSizes", "Failure sending request")
 	}
 
 	result, err = client.ListAvailableSizesResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "compute/VirtualMachinesClient", "ListAvailableSizes", "Failure responding to request")
+		ae = autorest.NewErrorWithError(err, "compute/VirtualMachinesManagementClient", "ListAvailableSizes", "Failure responding to request")
 	}
 
 	return
 }
 
 // ListAvailableSizesPreparer prepares the ListAvailableSizes request.
-func (client VirtualMachinesClient) ListAvailableSizesPreparer(resourceGroupName string, vmName string) (*http.Request, error) {
+func (client VirtualMachinesManagementClient) ListAvailableSizesPreparer(resourceGroupName string, vmName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName": url.QueryEscape(resourceGroupName),
 		"subscriptionId":    url.QueryEscape(client.SubscriptionID),
@@ -604,13 +652,13 @@ func (client VirtualMachinesClient) ListAvailableSizesPreparer(resourceGroupName
 
 // ListAvailableSizesSender sends the ListAvailableSizes request. The method will close the
 // http.Response Body if it receives an error.
-func (client VirtualMachinesClient) ListAvailableSizesSender(req *http.Request) (*http.Response, error) {
+func (client VirtualMachinesManagementClient) ListAvailableSizesSender(req *http.Request) (*http.Response, error) {
 	return client.Send(req, http.StatusOK)
 }
 
 // ListAvailableSizesResponder handles the response to the ListAvailableSizes request. The method always
 // closes the http.Response Body.
-func (client VirtualMachinesClient) ListAvailableSizesResponder(resp *http.Response) (result VirtualMachineSizeListResult, err error) {
+func (client VirtualMachinesManagementClient) ListAvailableSizesResponder(resp *http.Response) (result VirtualMachineSizeListResult, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -625,28 +673,28 @@ func (client VirtualMachinesClient) ListAvailableSizesResponder(resp *http.Respo
 //
 // resourceGroupName is the name of the resource group. vmName is the name of
 // the virtual machine.
-func (client VirtualMachinesClient) PowerOff(resourceGroupName string, vmName string) (result autorest.Response, ae error) {
+func (client VirtualMachinesManagementClient) PowerOff(resourceGroupName string, vmName string) (result autorest.Response, ae error) {
 	req, err := client.PowerOffPreparer(resourceGroupName, vmName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "compute/VirtualMachinesClient", "PowerOff", "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "compute/VirtualMachinesManagementClient", "PowerOff", "Failure preparing request")
 	}
 
 	resp, err := client.PowerOffSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "compute/VirtualMachinesClient", "PowerOff", "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "compute/VirtualMachinesManagementClient", "PowerOff", "Failure sending request")
 	}
 
 	result, err = client.PowerOffResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "compute/VirtualMachinesClient", "PowerOff", "Failure responding to request")
+		ae = autorest.NewErrorWithError(err, "compute/VirtualMachinesManagementClient", "PowerOff", "Failure responding to request")
 	}
 
 	return
 }
 
 // PowerOffPreparer prepares the PowerOff request.
-func (client VirtualMachinesClient) PowerOffPreparer(resourceGroupName string, vmName string) (*http.Request, error) {
+func (client VirtualMachinesManagementClient) PowerOffPreparer(resourceGroupName string, vmName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName": url.QueryEscape(resourceGroupName),
 		"subscriptionId":    url.QueryEscape(client.SubscriptionID),
@@ -668,13 +716,13 @@ func (client VirtualMachinesClient) PowerOffPreparer(resourceGroupName string, v
 
 // PowerOffSender sends the PowerOff request. The method will close the
 // http.Response Body if it receives an error.
-func (client VirtualMachinesClient) PowerOffSender(req *http.Request) (*http.Response, error) {
+func (client VirtualMachinesManagementClient) PowerOffSender(req *http.Request) (*http.Response, error) {
 	return client.Send(req, http.StatusOK, http.StatusAccepted)
 }
 
 // PowerOffResponder handles the response to the PowerOff request. The method always
 // closes the http.Response Body.
-func (client VirtualMachinesClient) PowerOffResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client VirtualMachinesManagementClient) PowerOffResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -688,28 +736,28 @@ func (client VirtualMachinesClient) PowerOffResponder(resp *http.Response) (resu
 //
 // resourceGroupName is the name of the resource group. vmName is the name of
 // the virtual machine.
-func (client VirtualMachinesClient) Restart(resourceGroupName string, vmName string) (result autorest.Response, ae error) {
+func (client VirtualMachinesManagementClient) Restart(resourceGroupName string, vmName string) (result autorest.Response, ae error) {
 	req, err := client.RestartPreparer(resourceGroupName, vmName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "compute/VirtualMachinesClient", "Restart", "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "compute/VirtualMachinesManagementClient", "Restart", "Failure preparing request")
 	}
 
 	resp, err := client.RestartSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "compute/VirtualMachinesClient", "Restart", "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "compute/VirtualMachinesManagementClient", "Restart", "Failure sending request")
 	}
 
 	result, err = client.RestartResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "compute/VirtualMachinesClient", "Restart", "Failure responding to request")
+		ae = autorest.NewErrorWithError(err, "compute/VirtualMachinesManagementClient", "Restart", "Failure responding to request")
 	}
 
 	return
 }
 
 // RestartPreparer prepares the Restart request.
-func (client VirtualMachinesClient) RestartPreparer(resourceGroupName string, vmName string) (*http.Request, error) {
+func (client VirtualMachinesManagementClient) RestartPreparer(resourceGroupName string, vmName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName": url.QueryEscape(resourceGroupName),
 		"subscriptionId":    url.QueryEscape(client.SubscriptionID),
@@ -731,13 +779,13 @@ func (client VirtualMachinesClient) RestartPreparer(resourceGroupName string, vm
 
 // RestartSender sends the Restart request. The method will close the
 // http.Response Body if it receives an error.
-func (client VirtualMachinesClient) RestartSender(req *http.Request) (*http.Response, error) {
+func (client VirtualMachinesManagementClient) RestartSender(req *http.Request) (*http.Response, error) {
 	return client.Send(req, http.StatusOK, http.StatusAccepted)
 }
 
 // RestartResponder handles the response to the Restart request. The method always
 // closes the http.Response Body.
-func (client VirtualMachinesClient) RestartResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client VirtualMachinesManagementClient) RestartResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -751,28 +799,28 @@ func (client VirtualMachinesClient) RestartResponder(resp *http.Response) (resul
 //
 // resourceGroupName is the name of the resource group. vmName is the name of
 // the virtual machine.
-func (client VirtualMachinesClient) Start(resourceGroupName string, vmName string) (result autorest.Response, ae error) {
+func (client VirtualMachinesManagementClient) Start(resourceGroupName string, vmName string) (result autorest.Response, ae error) {
 	req, err := client.StartPreparer(resourceGroupName, vmName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "compute/VirtualMachinesClient", "Start", "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "compute/VirtualMachinesManagementClient", "Start", "Failure preparing request")
 	}
 
 	resp, err := client.StartSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "compute/VirtualMachinesClient", "Start", "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "compute/VirtualMachinesManagementClient", "Start", "Failure sending request")
 	}
 
 	result, err = client.StartResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "compute/VirtualMachinesClient", "Start", "Failure responding to request")
+		ae = autorest.NewErrorWithError(err, "compute/VirtualMachinesManagementClient", "Start", "Failure responding to request")
 	}
 
 	return
 }
 
 // StartPreparer prepares the Start request.
-func (client VirtualMachinesClient) StartPreparer(resourceGroupName string, vmName string) (*http.Request, error) {
+func (client VirtualMachinesManagementClient) StartPreparer(resourceGroupName string, vmName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName": url.QueryEscape(resourceGroupName),
 		"subscriptionId":    url.QueryEscape(client.SubscriptionID),
@@ -794,13 +842,13 @@ func (client VirtualMachinesClient) StartPreparer(resourceGroupName string, vmNa
 
 // StartSender sends the Start request. The method will close the
 // http.Response Body if it receives an error.
-func (client VirtualMachinesClient) StartSender(req *http.Request) (*http.Response, error) {
+func (client VirtualMachinesManagementClient) StartSender(req *http.Request) (*http.Response, error) {
 	return client.Send(req, http.StatusOK, http.StatusAccepted)
 }
 
 // StartResponder handles the response to the Start request. The method always
 // closes the http.Response Body.
-func (client VirtualMachinesClient) StartResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client VirtualMachinesManagementClient) StartResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

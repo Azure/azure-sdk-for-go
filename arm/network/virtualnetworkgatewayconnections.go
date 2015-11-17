@@ -19,30 +19,32 @@ package network
 // regenerated.
 
 import (
-	"github.com/Azure/azure-sdk-for-go/Godeps/_workspace/src/github.com/Azure/go-autorest/autorest"
+	"github.com/Azure/go-autorest/autorest"
 	"net/http"
 	"net/url"
 )
 
-// VirtualNetworkGatewayConnectionsClient is the the Windows Azure Network
-// management API provides a RESTful set of web services that interact with
-// Windows Azure Networks service to manage your network resrources. The API
-// has entities that capture the relationship between an end user and the
-// Windows Azure Networks service.
-type VirtualNetworkGatewayConnectionsClient struct {
-	ManagementClient
+// VirtualNetworkGatewayConnectionsResourceProviderClient is the the Windows
+// Azure Network management API provides a RESTful set of web services that
+// interact with Windows Azure Networks service to manage your network
+// resrources. The API has entities that capture the relationship between an
+// end user and the Windows Azure Networks service.
+type VirtualNetworkGatewayConnectionsResourceProviderClient struct {
+	ResourceProviderClient
 }
 
-// NewVirtualNetworkGatewayConnectionsClient creates an instance of the
-// VirtualNetworkGatewayConnectionsClient client.
-func NewVirtualNetworkGatewayConnectionsClient(subscriptionID string) VirtualNetworkGatewayConnectionsClient {
-	return NewVirtualNetworkGatewayConnectionsClientWithBaseURI(DefaultBaseURI, subscriptionID)
+// NewVirtualNetworkGatewayConnectionsResourceProviderClient creates an
+// instance of the VirtualNetworkGatewayConnectionsResourceProviderClient
+// client.
+func NewVirtualNetworkGatewayConnectionsResourceProviderClient(subscriptionID string) VirtualNetworkGatewayConnectionsResourceProviderClient {
+	return NewVirtualNetworkGatewayConnectionsResourceProviderClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewVirtualNetworkGatewayConnectionsClientWithBaseURI creates an instance of
-// the VirtualNetworkGatewayConnectionsClient client.
-func NewVirtualNetworkGatewayConnectionsClientWithBaseURI(baseURI string, subscriptionID string) VirtualNetworkGatewayConnectionsClient {
-	return VirtualNetworkGatewayConnectionsClient{NewWithBaseURI(baseURI, subscriptionID)}
+// NewVirtualNetworkGatewayConnectionsResourceProviderClientWithBaseURI
+// creates an instance of the
+// VirtualNetworkGatewayConnectionsResourceProviderClient client.
+func NewVirtualNetworkGatewayConnectionsResourceProviderClientWithBaseURI(baseURI string, subscriptionID string) VirtualNetworkGatewayConnectionsResourceProviderClient {
+	return VirtualNetworkGatewayConnectionsResourceProviderClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // CreateOrUpdate the Put VirtualNetworkGatewayConnection operation
@@ -54,28 +56,28 @@ func NewVirtualNetworkGatewayConnectionsClientWithBaseURI(baseURI string, subscr
 // gateway conenction. parameters is parameters supplied to the Begin Create
 // or update Virtual Network Gateway connection operation through Network
 // resource provider.
-func (client VirtualNetworkGatewayConnectionsClient) CreateOrUpdate(resourceGroupName string, virtualNetworkGatewayConnectionName string, parameters VirtualNetworkGatewayConnection) (result VirtualNetworkGatewayConnection, ae error) {
+func (client VirtualNetworkGatewayConnectionsResourceProviderClient) CreateOrUpdate(resourceGroupName string, virtualNetworkGatewayConnectionName string, parameters VirtualNetworkGatewayConnection) (result VirtualNetworkGatewayConnection, ae error) {
 	req, err := client.CreateOrUpdatePreparer(resourceGroupName, virtualNetworkGatewayConnectionName, parameters)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "network/VirtualNetworkGatewayConnectionsClient", "CreateOrUpdate", "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "network/VirtualNetworkGatewayConnectionsResourceProviderClient", "CreateOrUpdate", "Failure preparing request")
 	}
 
 	resp, err := client.CreateOrUpdateSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "network/VirtualNetworkGatewayConnectionsClient", "CreateOrUpdate", "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "network/VirtualNetworkGatewayConnectionsResourceProviderClient", "CreateOrUpdate", "Failure sending request")
 	}
 
 	result, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "network/VirtualNetworkGatewayConnectionsClient", "CreateOrUpdate", "Failure responding to request")
+		ae = autorest.NewErrorWithError(err, "network/VirtualNetworkGatewayConnectionsResourceProviderClient", "CreateOrUpdate", "Failure responding to request")
 	}
 
 	return
 }
 
 // CreateOrUpdatePreparer prepares the CreateOrUpdate request.
-func (client VirtualNetworkGatewayConnectionsClient) CreateOrUpdatePreparer(resourceGroupName string, virtualNetworkGatewayConnectionName string, parameters VirtualNetworkGatewayConnection) (*http.Request, error) {
+func (client VirtualNetworkGatewayConnectionsResourceProviderClient) CreateOrUpdatePreparer(resourceGroupName string, virtualNetworkGatewayConnectionName string, parameters VirtualNetworkGatewayConnection) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName":                   url.QueryEscape(resourceGroupName),
 		"subscriptionId":                      url.QueryEscape(client.SubscriptionID),
@@ -98,13 +100,13 @@ func (client VirtualNetworkGatewayConnectionsClient) CreateOrUpdatePreparer(reso
 
 // CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
 // http.Response Body if it receives an error.
-func (client VirtualNetworkGatewayConnectionsClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
+func (client VirtualNetworkGatewayConnectionsResourceProviderClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
 	return client.Send(req, http.StatusCreated, http.StatusOK)
 }
 
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
 // closes the http.Response Body.
-func (client VirtualNetworkGatewayConnectionsClient) CreateOrUpdateResponder(resp *http.Response) (result VirtualNetworkGatewayConnection, err error) {
+func (client VirtualNetworkGatewayConnectionsResourceProviderClient) CreateOrUpdateResponder(resp *http.Response) (result VirtualNetworkGatewayConnection, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -122,28 +124,28 @@ func (client VirtualNetworkGatewayConnectionsClient) CreateOrUpdateResponder(res
 // resourceGroupName is the name of the resource group.
 // virtualNetworkGatewayConnectionName is the name of the virtual network
 // gateway connection.
-func (client VirtualNetworkGatewayConnectionsClient) Delete(resourceGroupName string, virtualNetworkGatewayConnectionName string) (result autorest.Response, ae error) {
+func (client VirtualNetworkGatewayConnectionsResourceProviderClient) Delete(resourceGroupName string, virtualNetworkGatewayConnectionName string) (result autorest.Response, ae error) {
 	req, err := client.DeletePreparer(resourceGroupName, virtualNetworkGatewayConnectionName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "network/VirtualNetworkGatewayConnectionsClient", "Delete", "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "network/VirtualNetworkGatewayConnectionsResourceProviderClient", "Delete", "Failure preparing request")
 	}
 
 	resp, err := client.DeleteSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "network/VirtualNetworkGatewayConnectionsClient", "Delete", "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "network/VirtualNetworkGatewayConnectionsResourceProviderClient", "Delete", "Failure sending request")
 	}
 
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "network/VirtualNetworkGatewayConnectionsClient", "Delete", "Failure responding to request")
+		ae = autorest.NewErrorWithError(err, "network/VirtualNetworkGatewayConnectionsResourceProviderClient", "Delete", "Failure responding to request")
 	}
 
 	return
 }
 
 // DeletePreparer prepares the Delete request.
-func (client VirtualNetworkGatewayConnectionsClient) DeletePreparer(resourceGroupName string, virtualNetworkGatewayConnectionName string) (*http.Request, error) {
+func (client VirtualNetworkGatewayConnectionsResourceProviderClient) DeletePreparer(resourceGroupName string, virtualNetworkGatewayConnectionName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName":                   url.QueryEscape(resourceGroupName),
 		"subscriptionId":                      url.QueryEscape(client.SubscriptionID),
@@ -165,13 +167,13 @@ func (client VirtualNetworkGatewayConnectionsClient) DeletePreparer(resourceGrou
 
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
-func (client VirtualNetworkGatewayConnectionsClient) DeleteSender(req *http.Request) (*http.Response, error) {
+func (client VirtualNetworkGatewayConnectionsResourceProviderClient) DeleteSender(req *http.Request) (*http.Response, error) {
 	return client.Send(req, http.StatusNoContent, http.StatusAccepted, http.StatusOK)
 }
 
 // DeleteResponder handles the response to the Delete request. The method always
 // closes the http.Response Body.
-func (client VirtualNetworkGatewayConnectionsClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client VirtualNetworkGatewayConnectionsResourceProviderClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -188,28 +190,28 @@ func (client VirtualNetworkGatewayConnectionsClient) DeleteResponder(resp *http.
 // resourceGroupName is the name of the resource group.
 // virtualNetworkGatewayConnectionName is the name of the virtual network
 // gateway connection.
-func (client VirtualNetworkGatewayConnectionsClient) Get(resourceGroupName string, virtualNetworkGatewayConnectionName string) (result VirtualNetworkGatewayConnection, ae error) {
+func (client VirtualNetworkGatewayConnectionsResourceProviderClient) Get(resourceGroupName string, virtualNetworkGatewayConnectionName string) (result VirtualNetworkGatewayConnection, ae error) {
 	req, err := client.GetPreparer(resourceGroupName, virtualNetworkGatewayConnectionName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "network/VirtualNetworkGatewayConnectionsClient", "Get", "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "network/VirtualNetworkGatewayConnectionsResourceProviderClient", "Get", "Failure preparing request")
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "network/VirtualNetworkGatewayConnectionsClient", "Get", "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "network/VirtualNetworkGatewayConnectionsResourceProviderClient", "Get", "Failure sending request")
 	}
 
 	result, err = client.GetResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "network/VirtualNetworkGatewayConnectionsClient", "Get", "Failure responding to request")
+		ae = autorest.NewErrorWithError(err, "network/VirtualNetworkGatewayConnectionsResourceProviderClient", "Get", "Failure responding to request")
 	}
 
 	return
 }
 
 // GetPreparer prepares the Get request.
-func (client VirtualNetworkGatewayConnectionsClient) GetPreparer(resourceGroupName string, virtualNetworkGatewayConnectionName string) (*http.Request, error) {
+func (client VirtualNetworkGatewayConnectionsResourceProviderClient) GetPreparer(resourceGroupName string, virtualNetworkGatewayConnectionName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName":                   url.QueryEscape(resourceGroupName),
 		"subscriptionId":                      url.QueryEscape(client.SubscriptionID),
@@ -231,13 +233,13 @@ func (client VirtualNetworkGatewayConnectionsClient) GetPreparer(resourceGroupNa
 
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
-func (client VirtualNetworkGatewayConnectionsClient) GetSender(req *http.Request) (*http.Response, error) {
+func (client VirtualNetworkGatewayConnectionsResourceProviderClient) GetSender(req *http.Request) (*http.Response, error) {
 	return client.Send(req, http.StatusOK)
 }
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
-func (client VirtualNetworkGatewayConnectionsClient) GetResponder(resp *http.Response) (result VirtualNetworkGatewayConnection, err error) {
+func (client VirtualNetworkGatewayConnectionsResourceProviderClient) GetResponder(resp *http.Response) (result VirtualNetworkGatewayConnection, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -255,28 +257,28 @@ func (client VirtualNetworkGatewayConnectionsClient) GetResponder(resp *http.Res
 // resourceGroupName is the name of the resource group.
 // virtualNetworkGatewayConnectionName is the virtual network gateway
 // connection shared key name.
-func (client VirtualNetworkGatewayConnectionsClient) GetSharedKey(resourceGroupName string, virtualNetworkGatewayConnectionName string) (result ConnectionSharedKey, ae error) {
+func (client VirtualNetworkGatewayConnectionsResourceProviderClient) GetSharedKey(resourceGroupName string, virtualNetworkGatewayConnectionName string) (result ConnectionSharedKey, ae error) {
 	req, err := client.GetSharedKeyPreparer(resourceGroupName, virtualNetworkGatewayConnectionName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "network/VirtualNetworkGatewayConnectionsClient", "GetSharedKey", "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "network/VirtualNetworkGatewayConnectionsResourceProviderClient", "GetSharedKey", "Failure preparing request")
 	}
 
 	resp, err := client.GetSharedKeySender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "network/VirtualNetworkGatewayConnectionsClient", "GetSharedKey", "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "network/VirtualNetworkGatewayConnectionsResourceProviderClient", "GetSharedKey", "Failure sending request")
 	}
 
 	result, err = client.GetSharedKeyResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "network/VirtualNetworkGatewayConnectionsClient", "GetSharedKey", "Failure responding to request")
+		ae = autorest.NewErrorWithError(err, "network/VirtualNetworkGatewayConnectionsResourceProviderClient", "GetSharedKey", "Failure responding to request")
 	}
 
 	return
 }
 
 // GetSharedKeyPreparer prepares the GetSharedKey request.
-func (client VirtualNetworkGatewayConnectionsClient) GetSharedKeyPreparer(resourceGroupName string, virtualNetworkGatewayConnectionName string) (*http.Request, error) {
+func (client VirtualNetworkGatewayConnectionsResourceProviderClient) GetSharedKeyPreparer(resourceGroupName string, virtualNetworkGatewayConnectionName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName":                   url.QueryEscape(resourceGroupName),
 		"subscriptionId":                      url.QueryEscape(client.SubscriptionID),
@@ -298,13 +300,13 @@ func (client VirtualNetworkGatewayConnectionsClient) GetSharedKeyPreparer(resour
 
 // GetSharedKeySender sends the GetSharedKey request. The method will close the
 // http.Response Body if it receives an error.
-func (client VirtualNetworkGatewayConnectionsClient) GetSharedKeySender(req *http.Request) (*http.Response, error) {
+func (client VirtualNetworkGatewayConnectionsResourceProviderClient) GetSharedKeySender(req *http.Request) (*http.Response, error) {
 	return client.Send(req, http.StatusOK)
 }
 
 // GetSharedKeyResponder handles the response to the GetSharedKey request. The method always
 // closes the http.Response Body.
-func (client VirtualNetworkGatewayConnectionsClient) GetSharedKeyResponder(resp *http.Response) (result ConnectionSharedKey, err error) {
+func (client VirtualNetworkGatewayConnectionsResourceProviderClient) GetSharedKeyResponder(resp *http.Response) (result ConnectionSharedKey, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -319,28 +321,28 @@ func (client VirtualNetworkGatewayConnectionsClient) GetSharedKeyResponder(resp 
 // virtual network gateways connections created.
 //
 // resourceGroupName is the name of the resource group.
-func (client VirtualNetworkGatewayConnectionsClient) List(resourceGroupName string) (result VirtualNetworkGatewayConnectionListResult, ae error) {
+func (client VirtualNetworkGatewayConnectionsResourceProviderClient) List(resourceGroupName string) (result VirtualNetworkGatewayConnectionListResult, ae error) {
 	req, err := client.ListPreparer(resourceGroupName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "network/VirtualNetworkGatewayConnectionsClient", "List", "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "network/VirtualNetworkGatewayConnectionsResourceProviderClient", "List", "Failure preparing request")
 	}
 
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "network/VirtualNetworkGatewayConnectionsClient", "List", "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "network/VirtualNetworkGatewayConnectionsResourceProviderClient", "List", "Failure sending request")
 	}
 
 	result, err = client.ListResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "network/VirtualNetworkGatewayConnectionsClient", "List", "Failure responding to request")
+		ae = autorest.NewErrorWithError(err, "network/VirtualNetworkGatewayConnectionsResourceProviderClient", "List", "Failure responding to request")
 	}
 
 	return
 }
 
 // ListPreparer prepares the List request.
-func (client VirtualNetworkGatewayConnectionsClient) ListPreparer(resourceGroupName string) (*http.Request, error) {
+func (client VirtualNetworkGatewayConnectionsResourceProviderClient) ListPreparer(resourceGroupName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName": url.QueryEscape(resourceGroupName),
 		"subscriptionId":    url.QueryEscape(client.SubscriptionID),
@@ -361,13 +363,13 @@ func (client VirtualNetworkGatewayConnectionsClient) ListPreparer(resourceGroupN
 
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
-func (client VirtualNetworkGatewayConnectionsClient) ListSender(req *http.Request) (*http.Response, error) {
+func (client VirtualNetworkGatewayConnectionsResourceProviderClient) ListSender(req *http.Request) (*http.Response, error) {
 	return client.Send(req, http.StatusOK)
 }
 
 // ListResponder handles the response to the List request. The method always
 // closes the http.Response Body.
-func (client VirtualNetworkGatewayConnectionsClient) ListResponder(resp *http.Response) (result VirtualNetworkGatewayConnectionListResult, err error) {
+func (client VirtualNetworkGatewayConnectionsResourceProviderClient) ListResponder(resp *http.Response) (result VirtualNetworkGatewayConnectionListResult, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -375,6 +377,30 @@ func (client VirtualNetworkGatewayConnectionsClient) ListResponder(resp *http.Re
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// ListNextResults retrieves the next set of results, if any.
+func (client VirtualNetworkGatewayConnectionsResourceProviderClient) ListNextResults(lastResults VirtualNetworkGatewayConnectionListResult) (result VirtualNetworkGatewayConnectionListResult, ae error) {
+	req, err := lastResults.VirtualNetworkGatewayConnectionListResultPreparer()
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "network/VirtualNetworkGatewayConnectionsResourceProviderClient", "List", "Failure preparing next results request request")
+	}
+	if req == nil {
+		return
+	}
+
+	resp, err := client.ListSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "network/VirtualNetworkGatewayConnectionsResourceProviderClient", "List", "Failure sending next results request request")
+	}
+
+	result, err = client.ListResponder(resp)
+	if err != nil {
+		ae = autorest.NewErrorWithError(err, "network/VirtualNetworkGatewayConnectionsResourceProviderClient", "List", "Failure responding to next results request request")
+	}
+
 	return
 }
 
@@ -388,28 +414,28 @@ func (client VirtualNetworkGatewayConnectionsClient) ListResponder(resp *http.Re
 // connection reset shared key Name. parameters is parameters supplied to the
 // Begin Reset Virtual Network Gateway connection shared key operation
 // through Network resource provider.
-func (client VirtualNetworkGatewayConnectionsClient) ResetSharedKey(resourceGroupName string, virtualNetworkGatewayConnectionName string, parameters ConnectionResetSharedKey) (result ConnectionResetSharedKey, ae error) {
+func (client VirtualNetworkGatewayConnectionsResourceProviderClient) ResetSharedKey(resourceGroupName string, virtualNetworkGatewayConnectionName string, parameters ConnectionResetSharedKey) (result ConnectionResetSharedKey, ae error) {
 	req, err := client.ResetSharedKeyPreparer(resourceGroupName, virtualNetworkGatewayConnectionName, parameters)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "network/VirtualNetworkGatewayConnectionsClient", "ResetSharedKey", "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "network/VirtualNetworkGatewayConnectionsResourceProviderClient", "ResetSharedKey", "Failure preparing request")
 	}
 
 	resp, err := client.ResetSharedKeySender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "network/VirtualNetworkGatewayConnectionsClient", "ResetSharedKey", "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "network/VirtualNetworkGatewayConnectionsResourceProviderClient", "ResetSharedKey", "Failure sending request")
 	}
 
 	result, err = client.ResetSharedKeyResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "network/VirtualNetworkGatewayConnectionsClient", "ResetSharedKey", "Failure responding to request")
+		ae = autorest.NewErrorWithError(err, "network/VirtualNetworkGatewayConnectionsResourceProviderClient", "ResetSharedKey", "Failure responding to request")
 	}
 
 	return
 }
 
 // ResetSharedKeyPreparer prepares the ResetSharedKey request.
-func (client VirtualNetworkGatewayConnectionsClient) ResetSharedKeyPreparer(resourceGroupName string, virtualNetworkGatewayConnectionName string, parameters ConnectionResetSharedKey) (*http.Request, error) {
+func (client VirtualNetworkGatewayConnectionsResourceProviderClient) ResetSharedKeyPreparer(resourceGroupName string, virtualNetworkGatewayConnectionName string, parameters ConnectionResetSharedKey) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName":                   url.QueryEscape(resourceGroupName),
 		"subscriptionId":                      url.QueryEscape(client.SubscriptionID),
@@ -432,13 +458,13 @@ func (client VirtualNetworkGatewayConnectionsClient) ResetSharedKeyPreparer(reso
 
 // ResetSharedKeySender sends the ResetSharedKey request. The method will close the
 // http.Response Body if it receives an error.
-func (client VirtualNetworkGatewayConnectionsClient) ResetSharedKeySender(req *http.Request) (*http.Response, error) {
+func (client VirtualNetworkGatewayConnectionsResourceProviderClient) ResetSharedKeySender(req *http.Request) (*http.Response, error) {
 	return client.Send(req, http.StatusAccepted, http.StatusOK)
 }
 
 // ResetSharedKeyResponder handles the response to the ResetSharedKey request. The method always
 // closes the http.Response Body.
-func (client VirtualNetworkGatewayConnectionsClient) ResetSharedKeyResponder(resp *http.Response) (result ConnectionResetSharedKey, err error) {
+func (client VirtualNetworkGatewayConnectionsResourceProviderClient) ResetSharedKeyResponder(resp *http.Response) (result ConnectionResetSharedKey, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -459,28 +485,28 @@ func (client VirtualNetworkGatewayConnectionsClient) ResetSharedKeyResponder(res
 // connection name. parameters is parameters supplied to the Begin Set
 // Virtual Network Gateway conection Shared key operation throughNetwork
 // resource provider.
-func (client VirtualNetworkGatewayConnectionsClient) SetSharedKey(resourceGroupName string, virtualNetworkGatewayConnectionName string, parameters ConnectionSharedKey) (result ConnectionSharedKey, ae error) {
+func (client VirtualNetworkGatewayConnectionsResourceProviderClient) SetSharedKey(resourceGroupName string, virtualNetworkGatewayConnectionName string, parameters ConnectionSharedKey) (result ConnectionSharedKey, ae error) {
 	req, err := client.SetSharedKeyPreparer(resourceGroupName, virtualNetworkGatewayConnectionName, parameters)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "network/VirtualNetworkGatewayConnectionsClient", "SetSharedKey", "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "network/VirtualNetworkGatewayConnectionsResourceProviderClient", "SetSharedKey", "Failure preparing request")
 	}
 
 	resp, err := client.SetSharedKeySender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "network/VirtualNetworkGatewayConnectionsClient", "SetSharedKey", "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "network/VirtualNetworkGatewayConnectionsResourceProviderClient", "SetSharedKey", "Failure sending request")
 	}
 
 	result, err = client.SetSharedKeyResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "network/VirtualNetworkGatewayConnectionsClient", "SetSharedKey", "Failure responding to request")
+		ae = autorest.NewErrorWithError(err, "network/VirtualNetworkGatewayConnectionsResourceProviderClient", "SetSharedKey", "Failure responding to request")
 	}
 
 	return
 }
 
 // SetSharedKeyPreparer prepares the SetSharedKey request.
-func (client VirtualNetworkGatewayConnectionsClient) SetSharedKeyPreparer(resourceGroupName string, virtualNetworkGatewayConnectionName string, parameters ConnectionSharedKey) (*http.Request, error) {
+func (client VirtualNetworkGatewayConnectionsResourceProviderClient) SetSharedKeyPreparer(resourceGroupName string, virtualNetworkGatewayConnectionName string, parameters ConnectionSharedKey) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName":                   url.QueryEscape(resourceGroupName),
 		"subscriptionId":                      url.QueryEscape(client.SubscriptionID),
@@ -503,13 +529,13 @@ func (client VirtualNetworkGatewayConnectionsClient) SetSharedKeyPreparer(resour
 
 // SetSharedKeySender sends the SetSharedKey request. The method will close the
 // http.Response Body if it receives an error.
-func (client VirtualNetworkGatewayConnectionsClient) SetSharedKeySender(req *http.Request) (*http.Response, error) {
+func (client VirtualNetworkGatewayConnectionsResourceProviderClient) SetSharedKeySender(req *http.Request) (*http.Response, error) {
 	return client.Send(req, http.StatusCreated, http.StatusOK)
 }
 
 // SetSharedKeyResponder handles the response to the SetSharedKey request. The method always
 // closes the http.Response Body.
-func (client VirtualNetworkGatewayConnectionsClient) SetSharedKeyResponder(resp *http.Response) (result ConnectionSharedKey, err error) {
+func (client VirtualNetworkGatewayConnectionsResourceProviderClient) SetSharedKeyResponder(resp *http.Response) (result ConnectionSharedKey, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

@@ -19,30 +19,32 @@ package network
 // regenerated.
 
 import (
-	"github.com/Azure/azure-sdk-for-go/Godeps/_workspace/src/github.com/Azure/go-autorest/autorest"
+	"github.com/Azure/go-autorest/autorest"
 	"net/http"
 	"net/url"
 )
 
-// ExpressRouteCircuitAuthorizationsClient is the the Windows Azure Network
-// management API provides a RESTful set of web services that interact with
-// Windows Azure Networks service to manage your network resrources. The API
-// has entities that capture the relationship between an end user and the
-// Windows Azure Networks service.
-type ExpressRouteCircuitAuthorizationsClient struct {
-	ManagementClient
+// ExpressRouteCircuitAuthorizationsResourceProviderClient is the the Windows
+// Azure Network management API provides a RESTful set of web services that
+// interact with Windows Azure Networks service to manage your network
+// resrources. The API has entities that capture the relationship between an
+// end user and the Windows Azure Networks service.
+type ExpressRouteCircuitAuthorizationsResourceProviderClient struct {
+	ResourceProviderClient
 }
 
-// NewExpressRouteCircuitAuthorizationsClient creates an instance of the
-// ExpressRouteCircuitAuthorizationsClient client.
-func NewExpressRouteCircuitAuthorizationsClient(subscriptionID string) ExpressRouteCircuitAuthorizationsClient {
-	return NewExpressRouteCircuitAuthorizationsClientWithBaseURI(DefaultBaseURI, subscriptionID)
+// NewExpressRouteCircuitAuthorizationsResourceProviderClient creates an
+// instance of the ExpressRouteCircuitAuthorizationsResourceProviderClient
+// client.
+func NewExpressRouteCircuitAuthorizationsResourceProviderClient(subscriptionID string) ExpressRouteCircuitAuthorizationsResourceProviderClient {
+	return NewExpressRouteCircuitAuthorizationsResourceProviderClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewExpressRouteCircuitAuthorizationsClientWithBaseURI creates an instance
-// of the ExpressRouteCircuitAuthorizationsClient client.
-func NewExpressRouteCircuitAuthorizationsClientWithBaseURI(baseURI string, subscriptionID string) ExpressRouteCircuitAuthorizationsClient {
-	return ExpressRouteCircuitAuthorizationsClient{NewWithBaseURI(baseURI, subscriptionID)}
+// NewExpressRouteCircuitAuthorizationsResourceProviderClientWithBaseURI
+// creates an instance of the
+// ExpressRouteCircuitAuthorizationsResourceProviderClient client.
+func NewExpressRouteCircuitAuthorizationsResourceProviderClientWithBaseURI(baseURI string, subscriptionID string) ExpressRouteCircuitAuthorizationsResourceProviderClient {
+	return ExpressRouteCircuitAuthorizationsResourceProviderClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // CreateOrUpdate the Put Authorization operation creates/updates an
@@ -52,28 +54,28 @@ func NewExpressRouteCircuitAuthorizationsClientWithBaseURI(baseURI string, subsc
 // name of the express route circuit. authorizationName is the name of the
 // authorization. authorizationParameters is parameters supplied to the
 // create/update ExpressRouteCircuitAuthorization operation
-func (client ExpressRouteCircuitAuthorizationsClient) CreateOrUpdate(resourceGroupName string, circuitName string, authorizationName string, authorizationParameters ExpressRouteCircuitAuthorization) (result ExpressRouteCircuitAuthorization, ae error) {
+func (client ExpressRouteCircuitAuthorizationsResourceProviderClient) CreateOrUpdate(resourceGroupName string, circuitName string, authorizationName string, authorizationParameters ExpressRouteCircuitAuthorization) (result ExpressRouteCircuitAuthorization, ae error) {
 	req, err := client.CreateOrUpdatePreparer(resourceGroupName, circuitName, authorizationName, authorizationParameters)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "network/ExpressRouteCircuitAuthorizationsClient", "CreateOrUpdate", "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "network/ExpressRouteCircuitAuthorizationsResourceProviderClient", "CreateOrUpdate", "Failure preparing request")
 	}
 
 	resp, err := client.CreateOrUpdateSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "network/ExpressRouteCircuitAuthorizationsClient", "CreateOrUpdate", "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "network/ExpressRouteCircuitAuthorizationsResourceProviderClient", "CreateOrUpdate", "Failure sending request")
 	}
 
 	result, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "network/ExpressRouteCircuitAuthorizationsClient", "CreateOrUpdate", "Failure responding to request")
+		ae = autorest.NewErrorWithError(err, "network/ExpressRouteCircuitAuthorizationsResourceProviderClient", "CreateOrUpdate", "Failure responding to request")
 	}
 
 	return
 }
 
 // CreateOrUpdatePreparer prepares the CreateOrUpdate request.
-func (client ExpressRouteCircuitAuthorizationsClient) CreateOrUpdatePreparer(resourceGroupName string, circuitName string, authorizationName string, authorizationParameters ExpressRouteCircuitAuthorization) (*http.Request, error) {
+func (client ExpressRouteCircuitAuthorizationsResourceProviderClient) CreateOrUpdatePreparer(resourceGroupName string, circuitName string, authorizationName string, authorizationParameters ExpressRouteCircuitAuthorization) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"authorizationName": url.QueryEscape(authorizationName),
 		"circuitName":       url.QueryEscape(circuitName),
@@ -97,13 +99,13 @@ func (client ExpressRouteCircuitAuthorizationsClient) CreateOrUpdatePreparer(res
 
 // CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
 // http.Response Body if it receives an error.
-func (client ExpressRouteCircuitAuthorizationsClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
+func (client ExpressRouteCircuitAuthorizationsResourceProviderClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
 	return client.Send(req, http.StatusCreated, http.StatusOK)
 }
 
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
 // closes the http.Response Body.
-func (client ExpressRouteCircuitAuthorizationsClient) CreateOrUpdateResponder(resp *http.Response) (result ExpressRouteCircuitAuthorization, err error) {
+func (client ExpressRouteCircuitAuthorizationsResourceProviderClient) CreateOrUpdateResponder(resp *http.Response) (result ExpressRouteCircuitAuthorization, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -120,28 +122,28 @@ func (client ExpressRouteCircuitAuthorizationsClient) CreateOrUpdateResponder(re
 // resourceGroupName is the name of the resource group. circuitName is the
 // name of the express route circuit. authorizationName is the name of the
 // authorization.
-func (client ExpressRouteCircuitAuthorizationsClient) Delete(resourceGroupName string, circuitName string, authorizationName string) (result autorest.Response, ae error) {
+func (client ExpressRouteCircuitAuthorizationsResourceProviderClient) Delete(resourceGroupName string, circuitName string, authorizationName string) (result autorest.Response, ae error) {
 	req, err := client.DeletePreparer(resourceGroupName, circuitName, authorizationName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "network/ExpressRouteCircuitAuthorizationsClient", "Delete", "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "network/ExpressRouteCircuitAuthorizationsResourceProviderClient", "Delete", "Failure preparing request")
 	}
 
 	resp, err := client.DeleteSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "network/ExpressRouteCircuitAuthorizationsClient", "Delete", "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "network/ExpressRouteCircuitAuthorizationsResourceProviderClient", "Delete", "Failure sending request")
 	}
 
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "network/ExpressRouteCircuitAuthorizationsClient", "Delete", "Failure responding to request")
+		ae = autorest.NewErrorWithError(err, "network/ExpressRouteCircuitAuthorizationsResourceProviderClient", "Delete", "Failure responding to request")
 	}
 
 	return
 }
 
 // DeletePreparer prepares the Delete request.
-func (client ExpressRouteCircuitAuthorizationsClient) DeletePreparer(resourceGroupName string, circuitName string, authorizationName string) (*http.Request, error) {
+func (client ExpressRouteCircuitAuthorizationsResourceProviderClient) DeletePreparer(resourceGroupName string, circuitName string, authorizationName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"authorizationName": url.QueryEscape(authorizationName),
 		"circuitName":       url.QueryEscape(circuitName),
@@ -164,13 +166,13 @@ func (client ExpressRouteCircuitAuthorizationsClient) DeletePreparer(resourceGro
 
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
-func (client ExpressRouteCircuitAuthorizationsClient) DeleteSender(req *http.Request) (*http.Response, error) {
+func (client ExpressRouteCircuitAuthorizationsResourceProviderClient) DeleteSender(req *http.Request) (*http.Response, error) {
 	return client.Send(req, http.StatusNoContent, http.StatusAccepted, http.StatusOK)
 }
 
 // DeleteResponder handles the response to the Delete request. The method always
 // closes the http.Response Body.
-func (client ExpressRouteCircuitAuthorizationsClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client ExpressRouteCircuitAuthorizationsResourceProviderClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -186,28 +188,28 @@ func (client ExpressRouteCircuitAuthorizationsClient) DeleteResponder(resp *http
 // resourceGroupName is the name of the resource group. circuitName is the
 // name of the express route circuit. authorizationName is the name of the
 // authorization.
-func (client ExpressRouteCircuitAuthorizationsClient) Get(resourceGroupName string, circuitName string, authorizationName string) (result ExpressRouteCircuitAuthorization, ae error) {
+func (client ExpressRouteCircuitAuthorizationsResourceProviderClient) Get(resourceGroupName string, circuitName string, authorizationName string) (result ExpressRouteCircuitAuthorization, ae error) {
 	req, err := client.GetPreparer(resourceGroupName, circuitName, authorizationName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "network/ExpressRouteCircuitAuthorizationsClient", "Get", "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "network/ExpressRouteCircuitAuthorizationsResourceProviderClient", "Get", "Failure preparing request")
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "network/ExpressRouteCircuitAuthorizationsClient", "Get", "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "network/ExpressRouteCircuitAuthorizationsResourceProviderClient", "Get", "Failure sending request")
 	}
 
 	result, err = client.GetResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "network/ExpressRouteCircuitAuthorizationsClient", "Get", "Failure responding to request")
+		ae = autorest.NewErrorWithError(err, "network/ExpressRouteCircuitAuthorizationsResourceProviderClient", "Get", "Failure responding to request")
 	}
 
 	return
 }
 
 // GetPreparer prepares the Get request.
-func (client ExpressRouteCircuitAuthorizationsClient) GetPreparer(resourceGroupName string, circuitName string, authorizationName string) (*http.Request, error) {
+func (client ExpressRouteCircuitAuthorizationsResourceProviderClient) GetPreparer(resourceGroupName string, circuitName string, authorizationName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"authorizationName": url.QueryEscape(authorizationName),
 		"circuitName":       url.QueryEscape(circuitName),
@@ -230,13 +232,13 @@ func (client ExpressRouteCircuitAuthorizationsClient) GetPreparer(resourceGroupN
 
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
-func (client ExpressRouteCircuitAuthorizationsClient) GetSender(req *http.Request) (*http.Response, error) {
+func (client ExpressRouteCircuitAuthorizationsResourceProviderClient) GetSender(req *http.Request) (*http.Response, error) {
 	return client.Send(req, http.StatusOK)
 }
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
-func (client ExpressRouteCircuitAuthorizationsClient) GetResponder(resp *http.Response) (result ExpressRouteCircuitAuthorization, err error) {
+func (client ExpressRouteCircuitAuthorizationsResourceProviderClient) GetResponder(resp *http.Response) (result ExpressRouteCircuitAuthorization, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -252,28 +254,28 @@ func (client ExpressRouteCircuitAuthorizationsClient) GetResponder(resp *http.Re
 //
 // resourceGroupName is the name of the resource group. circuitName is the
 // name of the curcuit.
-func (client ExpressRouteCircuitAuthorizationsClient) List(resourceGroupName string, circuitName string) (result AuthorizationListResult, ae error) {
+func (client ExpressRouteCircuitAuthorizationsResourceProviderClient) List(resourceGroupName string, circuitName string) (result AuthorizationListResult, ae error) {
 	req, err := client.ListPreparer(resourceGroupName, circuitName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "network/ExpressRouteCircuitAuthorizationsClient", "List", "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "network/ExpressRouteCircuitAuthorizationsResourceProviderClient", "List", "Failure preparing request")
 	}
 
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "network/ExpressRouteCircuitAuthorizationsClient", "List", "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "network/ExpressRouteCircuitAuthorizationsResourceProviderClient", "List", "Failure sending request")
 	}
 
 	result, err = client.ListResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "network/ExpressRouteCircuitAuthorizationsClient", "List", "Failure responding to request")
+		ae = autorest.NewErrorWithError(err, "network/ExpressRouteCircuitAuthorizationsResourceProviderClient", "List", "Failure responding to request")
 	}
 
 	return
 }
 
 // ListPreparer prepares the List request.
-func (client ExpressRouteCircuitAuthorizationsClient) ListPreparer(resourceGroupName string, circuitName string) (*http.Request, error) {
+func (client ExpressRouteCircuitAuthorizationsResourceProviderClient) ListPreparer(resourceGroupName string, circuitName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"circuitName":       url.QueryEscape(circuitName),
 		"resourceGroupName": url.QueryEscape(resourceGroupName),
@@ -295,13 +297,13 @@ func (client ExpressRouteCircuitAuthorizationsClient) ListPreparer(resourceGroup
 
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
-func (client ExpressRouteCircuitAuthorizationsClient) ListSender(req *http.Request) (*http.Response, error) {
+func (client ExpressRouteCircuitAuthorizationsResourceProviderClient) ListSender(req *http.Request) (*http.Response, error) {
 	return client.Send(req, http.StatusOK)
 }
 
 // ListResponder handles the response to the List request. The method always
 // closes the http.Response Body.
-func (client ExpressRouteCircuitAuthorizationsClient) ListResponder(resp *http.Response) (result AuthorizationListResult, err error) {
+func (client ExpressRouteCircuitAuthorizationsResourceProviderClient) ListResponder(resp *http.Response) (result AuthorizationListResult, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -309,5 +311,29 @@ func (client ExpressRouteCircuitAuthorizationsClient) ListResponder(resp *http.R
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// ListNextResults retrieves the next set of results, if any.
+func (client ExpressRouteCircuitAuthorizationsResourceProviderClient) ListNextResults(lastResults AuthorizationListResult) (result AuthorizationListResult, ae error) {
+	req, err := lastResults.AuthorizationListResultPreparer()
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "network/ExpressRouteCircuitAuthorizationsResourceProviderClient", "List", "Failure preparing next results request request")
+	}
+	if req == nil {
+		return
+	}
+
+	resp, err := client.ListSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "network/ExpressRouteCircuitAuthorizationsResourceProviderClient", "List", "Failure sending next results request request")
+	}
+
+	result, err = client.ListResponder(resp)
+	if err != nil {
+		ae = autorest.NewErrorWithError(err, "network/ExpressRouteCircuitAuthorizationsResourceProviderClient", "List", "Failure responding to next results request request")
+	}
+
 	return
 }

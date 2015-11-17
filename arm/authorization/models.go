@@ -19,7 +19,9 @@ package authorization
 // regenerated.
 
 import (
-	"github.com/Azure/azure-sdk-for-go/Godeps/_workspace/src/github.com/Azure/go-autorest/autorest"
+	"github.com/Azure/go-autorest/autorest"
+	"github.com/Azure/go-autorest/autorest/to"
+	"net/http"
 )
 
 // LockLevel enumerates the values for lock level.
@@ -51,6 +53,18 @@ type ManagementLockListResult struct {
 	autorest.Response `json:"-"`
 	Value             *[]ManagementLockObject `json:"value,omitempty"`
 	NextLink          *string                 `json:"nextLink,omitempty"`
+}
+
+// ManagementLockListResultPreparer prepares a request to retrieve the next set of results. It returns
+// nil if no more results exist.
+func (client ManagementLockListResult) ManagementLockListResultPreparer() (*http.Request, error) {
+	if client.NextLink == nil || len(to.String(client.NextLink)) <= 0 {
+		return nil, nil
+	}
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(client.NextLink)))
 }
 
 // ManagementLockObject is management lock information.

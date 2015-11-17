@@ -19,8 +19,10 @@ package compute
 // regenerated.
 
 import (
-	"github.com/Azure/azure-sdk-for-go/Godeps/_workspace/src/github.com/Azure/go-autorest/autorest"
-	"github.com/Azure/azure-sdk-for-go/Godeps/_workspace/src/github.com/Azure/go-autorest/autorest/date"
+	"github.com/Azure/go-autorest/autorest"
+	"github.com/Azure/go-autorest/autorest/date"
+	"github.com/Azure/go-autorest/autorest/to"
+	"net/http"
 )
 
 // CachingTypes enumerates the values for caching types.
@@ -802,6 +804,18 @@ type VirtualMachineListResult struct {
 	NextLink          *string           `json:"nextLink,omitempty"`
 }
 
+// VirtualMachineListResultPreparer prepares a request to retrieve the next set of results. It returns
+// nil if no more results exist.
+func (client VirtualMachineListResult) VirtualMachineListResultPreparer() (*http.Request, error) {
+	if client.NextLink == nil || len(to.String(client.NextLink)) <= 0 {
+		return nil, nil
+	}
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(client.NextLink)))
+}
+
 // VirtualMachineProperties is describes the properties of a Virtual Machine.
 type VirtualMachineProperties struct {
 	HardwareProfile    *HardwareProfile            `json:"hardwareProfile,omitempty"`
@@ -902,6 +916,18 @@ type VirtualMachineScaleSetListWithLinkResult struct {
 	autorest.Response `json:"-"`
 	Value             *[]VirtualMachineScaleSet `json:"value,omitempty"`
 	NextLink          *string                   `json:"nextLink,omitempty"`
+}
+
+// VirtualMachineScaleSetListWithLinkResultPreparer prepares a request to retrieve the next set of results. It returns
+// nil if no more results exist.
+func (client VirtualMachineScaleSetListWithLinkResult) VirtualMachineScaleSetListWithLinkResultPreparer() (*http.Request, error) {
+	if client.NextLink == nil || len(to.String(client.NextLink)) <= 0 {
+		return nil, nil
+	}
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(client.NextLink)))
 }
 
 // VirtualMachineScaleSetNetworkConfiguration is describes a virtual machine

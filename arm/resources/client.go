@@ -19,7 +19,7 @@ package resources
 // regenerated.
 
 import (
-	"github.com/Azure/azure-sdk-for-go/Godeps/_workspace/src/github.com/Azure/go-autorest/autorest"
+	"github.com/Azure/go-autorest/autorest"
 	"net/http"
 	"net/url"
 )
@@ -394,6 +394,30 @@ func (client ManagementClient) ListResponder(resp *http.Response) (result Resour
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// ListNextResults retrieves the next set of results, if any.
+func (client ManagementClient) ListNextResults(lastResults ResourceListResult) (result ResourceListResult, ae error) {
+	req, err := lastResults.ResourceListResultPreparer()
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "resources/ManagementClient", "List", "Failure preparing next results request request")
+	}
+	if req == nil {
+		return
+	}
+
+	resp, err := client.ListSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "resources/ManagementClient", "List", "Failure sending next results request request")
+	}
+
+	result, err = client.ListResponder(resp)
+	if err != nil {
+		ae = autorest.NewErrorWithError(err, "resources/ManagementClient", "List", "Failure responding to next results request request")
+	}
+
 	return
 }
 

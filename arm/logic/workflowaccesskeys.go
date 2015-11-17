@@ -19,27 +19,27 @@ package logic
 // regenerated.
 
 import (
-	"github.com/Azure/azure-sdk-for-go/Godeps/_workspace/src/github.com/Azure/go-autorest/autorest"
+	"github.com/Azure/go-autorest/autorest"
 	"net/http"
 	"net/url"
 )
 
-// WorkflowAccessKeysClient is the client for the WorkflowAccessKeys methods
-// of the Logic service.
-type WorkflowAccessKeysClient struct {
+// WorkflowAccessKeysManagementClient is the client for the WorkflowAccessKeys
+// methods of the Logic service.
+type WorkflowAccessKeysManagementClient struct {
 	ManagementClient
 }
 
-// NewWorkflowAccessKeysClient creates an instance of the
-// WorkflowAccessKeysClient client.
-func NewWorkflowAccessKeysClient(subscriptionID string) WorkflowAccessKeysClient {
-	return NewWorkflowAccessKeysClientWithBaseURI(DefaultBaseURI, subscriptionID)
+// NewWorkflowAccessKeysManagementClient creates an instance of the
+// WorkflowAccessKeysManagementClient client.
+func NewWorkflowAccessKeysManagementClient(subscriptionID string) WorkflowAccessKeysManagementClient {
+	return NewWorkflowAccessKeysManagementClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewWorkflowAccessKeysClientWithBaseURI creates an instance of the
-// WorkflowAccessKeysClient client.
-func NewWorkflowAccessKeysClientWithBaseURI(baseURI string, subscriptionID string) WorkflowAccessKeysClient {
-	return WorkflowAccessKeysClient{NewWithBaseURI(baseURI, subscriptionID)}
+// NewWorkflowAccessKeysManagementClientWithBaseURI creates an instance of the
+// WorkflowAccessKeysManagementClient client.
+func NewWorkflowAccessKeysManagementClientWithBaseURI(baseURI string, subscriptionID string) WorkflowAccessKeysManagementClient {
+	return WorkflowAccessKeysManagementClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // CreateOrUpdate creates or updates a workflow access key.
@@ -47,28 +47,28 @@ func NewWorkflowAccessKeysClientWithBaseURI(baseURI string, subscriptionID strin
 // resourceGroupName is the resource group name. workflowName is the workflow
 // name. accessKeyName is the workflow access key name. workflowAccesskey is
 // the workflow access key.
-func (client WorkflowAccessKeysClient) CreateOrUpdate(resourceGroupName string, workflowName string, accessKeyName string, workflowAccesskey WorkflowAccessKey) (result WorkflowAccessKey, ae error) {
+func (client WorkflowAccessKeysManagementClient) CreateOrUpdate(resourceGroupName string, workflowName string, accessKeyName string, workflowAccesskey WorkflowAccessKey) (result WorkflowAccessKey, ae error) {
 	req, err := client.CreateOrUpdatePreparer(resourceGroupName, workflowName, accessKeyName, workflowAccesskey)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "logic/WorkflowAccessKeysClient", "CreateOrUpdate", "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "logic/WorkflowAccessKeysManagementClient", "CreateOrUpdate", "Failure preparing request")
 	}
 
 	resp, err := client.CreateOrUpdateSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "logic/WorkflowAccessKeysClient", "CreateOrUpdate", "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "logic/WorkflowAccessKeysManagementClient", "CreateOrUpdate", "Failure sending request")
 	}
 
 	result, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "logic/WorkflowAccessKeysClient", "CreateOrUpdate", "Failure responding to request")
+		ae = autorest.NewErrorWithError(err, "logic/WorkflowAccessKeysManagementClient", "CreateOrUpdate", "Failure responding to request")
 	}
 
 	return
 }
 
 // CreateOrUpdatePreparer prepares the CreateOrUpdate request.
-func (client WorkflowAccessKeysClient) CreateOrUpdatePreparer(resourceGroupName string, workflowName string, accessKeyName string, workflowAccesskey WorkflowAccessKey) (*http.Request, error) {
+func (client WorkflowAccessKeysManagementClient) CreateOrUpdatePreparer(resourceGroupName string, workflowName string, accessKeyName string, workflowAccesskey WorkflowAccessKey) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"accessKeyName":     url.QueryEscape(accessKeyName),
 		"resourceGroupName": url.QueryEscape(resourceGroupName),
@@ -92,13 +92,13 @@ func (client WorkflowAccessKeysClient) CreateOrUpdatePreparer(resourceGroupName 
 
 // CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
 // http.Response Body if it receives an error.
-func (client WorkflowAccessKeysClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
+func (client WorkflowAccessKeysManagementClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
 	return client.Send(req, http.StatusOK, http.StatusCreated)
 }
 
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
 // closes the http.Response Body.
-func (client WorkflowAccessKeysClient) CreateOrUpdateResponder(resp *http.Response) (result WorkflowAccessKey, err error) {
+func (client WorkflowAccessKeysManagementClient) CreateOrUpdateResponder(resp *http.Response) (result WorkflowAccessKey, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -113,28 +113,28 @@ func (client WorkflowAccessKeysClient) CreateOrUpdateResponder(resp *http.Respon
 //
 // resourceGroupName is the resource group name. workflowName is the workflow
 // name. accessKeyName is the workflow access key name.
-func (client WorkflowAccessKeysClient) Delete(resourceGroupName string, workflowName string, accessKeyName string) (result autorest.Response, ae error) {
+func (client WorkflowAccessKeysManagementClient) Delete(resourceGroupName string, workflowName string, accessKeyName string) (result autorest.Response, ae error) {
 	req, err := client.DeletePreparer(resourceGroupName, workflowName, accessKeyName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "logic/WorkflowAccessKeysClient", "Delete", "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "logic/WorkflowAccessKeysManagementClient", "Delete", "Failure preparing request")
 	}
 
 	resp, err := client.DeleteSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "logic/WorkflowAccessKeysClient", "Delete", "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "logic/WorkflowAccessKeysManagementClient", "Delete", "Failure sending request")
 	}
 
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "logic/WorkflowAccessKeysClient", "Delete", "Failure responding to request")
+		ae = autorest.NewErrorWithError(err, "logic/WorkflowAccessKeysManagementClient", "Delete", "Failure responding to request")
 	}
 
 	return
 }
 
 // DeletePreparer prepares the Delete request.
-func (client WorkflowAccessKeysClient) DeletePreparer(resourceGroupName string, workflowName string, accessKeyName string) (*http.Request, error) {
+func (client WorkflowAccessKeysManagementClient) DeletePreparer(resourceGroupName string, workflowName string, accessKeyName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"accessKeyName":     url.QueryEscape(accessKeyName),
 		"resourceGroupName": url.QueryEscape(resourceGroupName),
@@ -157,13 +157,13 @@ func (client WorkflowAccessKeysClient) DeletePreparer(resourceGroupName string, 
 
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
-func (client WorkflowAccessKeysClient) DeleteSender(req *http.Request) (*http.Response, error) {
+func (client WorkflowAccessKeysManagementClient) DeleteSender(req *http.Request) (*http.Response, error) {
 	return client.Send(req, http.StatusOK, http.StatusNoContent)
 }
 
 // DeleteResponder handles the response to the Delete request. The method always
 // closes the http.Response Body.
-func (client WorkflowAccessKeysClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client WorkflowAccessKeysManagementClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -177,28 +177,28 @@ func (client WorkflowAccessKeysClient) DeleteResponder(resp *http.Response) (res
 //
 // resourceGroupName is the resource group name. workflowName is the workflow
 // name. accessKeyName is the workflow access key name.
-func (client WorkflowAccessKeysClient) Get(resourceGroupName string, workflowName string, accessKeyName string) (result WorkflowAccessKey, ae error) {
+func (client WorkflowAccessKeysManagementClient) Get(resourceGroupName string, workflowName string, accessKeyName string) (result WorkflowAccessKey, ae error) {
 	req, err := client.GetPreparer(resourceGroupName, workflowName, accessKeyName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "logic/WorkflowAccessKeysClient", "Get", "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "logic/WorkflowAccessKeysManagementClient", "Get", "Failure preparing request")
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "logic/WorkflowAccessKeysClient", "Get", "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "logic/WorkflowAccessKeysManagementClient", "Get", "Failure sending request")
 	}
 
 	result, err = client.GetResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "logic/WorkflowAccessKeysClient", "Get", "Failure responding to request")
+		ae = autorest.NewErrorWithError(err, "logic/WorkflowAccessKeysManagementClient", "Get", "Failure responding to request")
 	}
 
 	return
 }
 
 // GetPreparer prepares the Get request.
-func (client WorkflowAccessKeysClient) GetPreparer(resourceGroupName string, workflowName string, accessKeyName string) (*http.Request, error) {
+func (client WorkflowAccessKeysManagementClient) GetPreparer(resourceGroupName string, workflowName string, accessKeyName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"accessKeyName":     url.QueryEscape(accessKeyName),
 		"resourceGroupName": url.QueryEscape(resourceGroupName),
@@ -221,13 +221,13 @@ func (client WorkflowAccessKeysClient) GetPreparer(resourceGroupName string, wor
 
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
-func (client WorkflowAccessKeysClient) GetSender(req *http.Request) (*http.Response, error) {
+func (client WorkflowAccessKeysManagementClient) GetSender(req *http.Request) (*http.Response, error) {
 	return client.Send(req, http.StatusOK)
 }
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
-func (client WorkflowAccessKeysClient) GetResponder(resp *http.Response) (result WorkflowAccessKey, err error) {
+func (client WorkflowAccessKeysManagementClient) GetResponder(resp *http.Response) (result WorkflowAccessKey, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -242,28 +242,28 @@ func (client WorkflowAccessKeysClient) GetResponder(resp *http.Response) (result
 //
 // resourceGroupName is the resource group name. workflowName is the workflow
 // name. top is the number of items to be included in the result.
-func (client WorkflowAccessKeysClient) List(resourceGroupName string, workflowName string, top *int) (result WorkflowAccessKeyListResult, ae error) {
+func (client WorkflowAccessKeysManagementClient) List(resourceGroupName string, workflowName string, top *int) (result WorkflowAccessKeyListResult, ae error) {
 	req, err := client.ListPreparer(resourceGroupName, workflowName, top)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "logic/WorkflowAccessKeysClient", "List", "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "logic/WorkflowAccessKeysManagementClient", "List", "Failure preparing request")
 	}
 
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "logic/WorkflowAccessKeysClient", "List", "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "logic/WorkflowAccessKeysManagementClient", "List", "Failure sending request")
 	}
 
 	result, err = client.ListResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "logic/WorkflowAccessKeysClient", "List", "Failure responding to request")
+		ae = autorest.NewErrorWithError(err, "logic/WorkflowAccessKeysManagementClient", "List", "Failure responding to request")
 	}
 
 	return
 }
 
 // ListPreparer prepares the List request.
-func (client WorkflowAccessKeysClient) ListPreparer(resourceGroupName string, workflowName string, top *int) (*http.Request, error) {
+func (client WorkflowAccessKeysManagementClient) ListPreparer(resourceGroupName string, workflowName string, top *int) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName": url.QueryEscape(resourceGroupName),
 		"subscriptionId":    url.QueryEscape(client.SubscriptionID),
@@ -288,13 +288,13 @@ func (client WorkflowAccessKeysClient) ListPreparer(resourceGroupName string, wo
 
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
-func (client WorkflowAccessKeysClient) ListSender(req *http.Request) (*http.Response, error) {
+func (client WorkflowAccessKeysManagementClient) ListSender(req *http.Request) (*http.Response, error) {
 	return client.Send(req, http.StatusOK)
 }
 
 // ListResponder handles the response to the List request. The method always
 // closes the http.Response Body.
-func (client WorkflowAccessKeysClient) ListResponder(resp *http.Response) (result WorkflowAccessKeyListResult, err error) {
+func (client WorkflowAccessKeysManagementClient) ListResponder(resp *http.Response) (result WorkflowAccessKeyListResult, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -305,32 +305,56 @@ func (client WorkflowAccessKeysClient) ListResponder(resp *http.Response) (resul
 	return
 }
 
+// ListNextResults retrieves the next set of results, if any.
+func (client WorkflowAccessKeysManagementClient) ListNextResults(lastResults WorkflowAccessKeyListResult) (result WorkflowAccessKeyListResult, ae error) {
+	req, err := lastResults.WorkflowAccessKeyListResultPreparer()
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "logic/WorkflowAccessKeysManagementClient", "List", "Failure preparing next results request request")
+	}
+	if req == nil {
+		return
+	}
+
+	resp, err := client.ListSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "logic/WorkflowAccessKeysManagementClient", "List", "Failure sending next results request request")
+	}
+
+	result, err = client.ListResponder(resp)
+	if err != nil {
+		ae = autorest.NewErrorWithError(err, "logic/WorkflowAccessKeysManagementClient", "List", "Failure responding to next results request request")
+	}
+
+	return
+}
+
 // ListSecretKeys lists secret keys.
 //
 // resourceGroupName is the resource group name. workflowName is the workflow
 // name. accessKeyName is the workflow access key name.
-func (client WorkflowAccessKeysClient) ListSecretKeys(resourceGroupName string, workflowName string, accessKeyName string) (result WorkflowSecretKeys, ae error) {
+func (client WorkflowAccessKeysManagementClient) ListSecretKeys(resourceGroupName string, workflowName string, accessKeyName string) (result WorkflowSecretKeys, ae error) {
 	req, err := client.ListSecretKeysPreparer(resourceGroupName, workflowName, accessKeyName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "logic/WorkflowAccessKeysClient", "ListSecretKeys", "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "logic/WorkflowAccessKeysManagementClient", "ListSecretKeys", "Failure preparing request")
 	}
 
 	resp, err := client.ListSecretKeysSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "logic/WorkflowAccessKeysClient", "ListSecretKeys", "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "logic/WorkflowAccessKeysManagementClient", "ListSecretKeys", "Failure sending request")
 	}
 
 	result, err = client.ListSecretKeysResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "logic/WorkflowAccessKeysClient", "ListSecretKeys", "Failure responding to request")
+		ae = autorest.NewErrorWithError(err, "logic/WorkflowAccessKeysManagementClient", "ListSecretKeys", "Failure responding to request")
 	}
 
 	return
 }
 
 // ListSecretKeysPreparer prepares the ListSecretKeys request.
-func (client WorkflowAccessKeysClient) ListSecretKeysPreparer(resourceGroupName string, workflowName string, accessKeyName string) (*http.Request, error) {
+func (client WorkflowAccessKeysManagementClient) ListSecretKeysPreparer(resourceGroupName string, workflowName string, accessKeyName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"accessKeyName":     url.QueryEscape(accessKeyName),
 		"resourceGroupName": url.QueryEscape(resourceGroupName),
@@ -353,13 +377,13 @@ func (client WorkflowAccessKeysClient) ListSecretKeysPreparer(resourceGroupName 
 
 // ListSecretKeysSender sends the ListSecretKeys request. The method will close the
 // http.Response Body if it receives an error.
-func (client WorkflowAccessKeysClient) ListSecretKeysSender(req *http.Request) (*http.Response, error) {
+func (client WorkflowAccessKeysManagementClient) ListSecretKeysSender(req *http.Request) (*http.Response, error) {
 	return client.Send(req, http.StatusOK)
 }
 
 // ListSecretKeysResponder handles the response to the ListSecretKeys request. The method always
 // closes the http.Response Body.
-func (client WorkflowAccessKeysClient) ListSecretKeysResponder(resp *http.Response) (result WorkflowSecretKeys, err error) {
+func (client WorkflowAccessKeysManagementClient) ListSecretKeysResponder(resp *http.Response) (result WorkflowSecretKeys, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -375,28 +399,28 @@ func (client WorkflowAccessKeysClient) ListSecretKeysResponder(resp *http.Respon
 // resourceGroupName is the resource group name. workflowName is the workflow
 // name. accessKeyName is the workflow access key name. parameters is the
 // parameters.
-func (client WorkflowAccessKeysClient) RegenerateSecretKey(resourceGroupName string, workflowName string, accessKeyName string, parameters RegenerateSecretKeyParameters) (result WorkflowSecretKeys, ae error) {
+func (client WorkflowAccessKeysManagementClient) RegenerateSecretKey(resourceGroupName string, workflowName string, accessKeyName string, parameters RegenerateSecretKeyParameters) (result WorkflowSecretKeys, ae error) {
 	req, err := client.RegenerateSecretKeyPreparer(resourceGroupName, workflowName, accessKeyName, parameters)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "logic/WorkflowAccessKeysClient", "RegenerateSecretKey", "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "logic/WorkflowAccessKeysManagementClient", "RegenerateSecretKey", "Failure preparing request")
 	}
 
 	resp, err := client.RegenerateSecretKeySender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "logic/WorkflowAccessKeysClient", "RegenerateSecretKey", "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "logic/WorkflowAccessKeysManagementClient", "RegenerateSecretKey", "Failure sending request")
 	}
 
 	result, err = client.RegenerateSecretKeyResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "logic/WorkflowAccessKeysClient", "RegenerateSecretKey", "Failure responding to request")
+		ae = autorest.NewErrorWithError(err, "logic/WorkflowAccessKeysManagementClient", "RegenerateSecretKey", "Failure responding to request")
 	}
 
 	return
 }
 
 // RegenerateSecretKeyPreparer prepares the RegenerateSecretKey request.
-func (client WorkflowAccessKeysClient) RegenerateSecretKeyPreparer(resourceGroupName string, workflowName string, accessKeyName string, parameters RegenerateSecretKeyParameters) (*http.Request, error) {
+func (client WorkflowAccessKeysManagementClient) RegenerateSecretKeyPreparer(resourceGroupName string, workflowName string, accessKeyName string, parameters RegenerateSecretKeyParameters) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"accessKeyName":     url.QueryEscape(accessKeyName),
 		"resourceGroupName": url.QueryEscape(resourceGroupName),
@@ -420,13 +444,13 @@ func (client WorkflowAccessKeysClient) RegenerateSecretKeyPreparer(resourceGroup
 
 // RegenerateSecretKeySender sends the RegenerateSecretKey request. The method will close the
 // http.Response Body if it receives an error.
-func (client WorkflowAccessKeysClient) RegenerateSecretKeySender(req *http.Request) (*http.Response, error) {
+func (client WorkflowAccessKeysManagementClient) RegenerateSecretKeySender(req *http.Request) (*http.Response, error) {
 	return client.Send(req, http.StatusOK)
 }
 
 // RegenerateSecretKeyResponder handles the response to the RegenerateSecretKey request. The method always
 // closes the http.Response Body.
-func (client WorkflowAccessKeysClient) RegenerateSecretKeyResponder(resp *http.Response) (result WorkflowSecretKeys, err error) {
+func (client WorkflowAccessKeysManagementClient) RegenerateSecretKeyResponder(resp *http.Response) (result WorkflowSecretKeys, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

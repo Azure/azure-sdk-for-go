@@ -19,27 +19,27 @@ package logic
 // regenerated.
 
 import (
-	"github.com/Azure/azure-sdk-for-go/Godeps/_workspace/src/github.com/Azure/go-autorest/autorest"
+	"github.com/Azure/go-autorest/autorest"
 	"net/http"
 	"net/url"
 )
 
-// WorkflowRunActionsClient is the client for the WorkflowRunActions methods
-// of the Logic service.
-type WorkflowRunActionsClient struct {
+// WorkflowRunActionsManagementClient is the client for the WorkflowRunActions
+// methods of the Logic service.
+type WorkflowRunActionsManagementClient struct {
 	ManagementClient
 }
 
-// NewWorkflowRunActionsClient creates an instance of the
-// WorkflowRunActionsClient client.
-func NewWorkflowRunActionsClient(subscriptionID string) WorkflowRunActionsClient {
-	return NewWorkflowRunActionsClientWithBaseURI(DefaultBaseURI, subscriptionID)
+// NewWorkflowRunActionsManagementClient creates an instance of the
+// WorkflowRunActionsManagementClient client.
+func NewWorkflowRunActionsManagementClient(subscriptionID string) WorkflowRunActionsManagementClient {
+	return NewWorkflowRunActionsManagementClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewWorkflowRunActionsClientWithBaseURI creates an instance of the
-// WorkflowRunActionsClient client.
-func NewWorkflowRunActionsClientWithBaseURI(baseURI string, subscriptionID string) WorkflowRunActionsClient {
-	return WorkflowRunActionsClient{NewWithBaseURI(baseURI, subscriptionID)}
+// NewWorkflowRunActionsManagementClientWithBaseURI creates an instance of the
+// WorkflowRunActionsManagementClient client.
+func NewWorkflowRunActionsManagementClientWithBaseURI(baseURI string, subscriptionID string) WorkflowRunActionsManagementClient {
+	return WorkflowRunActionsManagementClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // Get gets a workflow run action.
@@ -47,28 +47,28 @@ func NewWorkflowRunActionsClientWithBaseURI(baseURI string, subscriptionID strin
 // resourceGroupName is the resource group name. workflowName is the workflow
 // name. runName is the workflow run name. actionName is the workflow action
 // name.
-func (client WorkflowRunActionsClient) Get(resourceGroupName string, workflowName string, runName string, actionName string) (result WorkflowRunAction, ae error) {
+func (client WorkflowRunActionsManagementClient) Get(resourceGroupName string, workflowName string, runName string, actionName string) (result WorkflowRunAction, ae error) {
 	req, err := client.GetPreparer(resourceGroupName, workflowName, runName, actionName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "logic/WorkflowRunActionsClient", "Get", "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "logic/WorkflowRunActionsManagementClient", "Get", "Failure preparing request")
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "logic/WorkflowRunActionsClient", "Get", "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "logic/WorkflowRunActionsManagementClient", "Get", "Failure sending request")
 	}
 
 	result, err = client.GetResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "logic/WorkflowRunActionsClient", "Get", "Failure responding to request")
+		ae = autorest.NewErrorWithError(err, "logic/WorkflowRunActionsManagementClient", "Get", "Failure responding to request")
 	}
 
 	return
 }
 
 // GetPreparer prepares the Get request.
-func (client WorkflowRunActionsClient) GetPreparer(resourceGroupName string, workflowName string, runName string, actionName string) (*http.Request, error) {
+func (client WorkflowRunActionsManagementClient) GetPreparer(resourceGroupName string, workflowName string, runName string, actionName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"actionName":        url.QueryEscape(actionName),
 		"resourceGroupName": url.QueryEscape(resourceGroupName),
@@ -92,13 +92,13 @@ func (client WorkflowRunActionsClient) GetPreparer(resourceGroupName string, wor
 
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
-func (client WorkflowRunActionsClient) GetSender(req *http.Request) (*http.Response, error) {
+func (client WorkflowRunActionsManagementClient) GetSender(req *http.Request) (*http.Response, error) {
 	return client.Send(req, http.StatusOK)
 }
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
-func (client WorkflowRunActionsClient) GetResponder(resp *http.Response) (result WorkflowRunAction, err error) {
+func (client WorkflowRunActionsManagementClient) GetResponder(resp *http.Response) (result WorkflowRunAction, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -114,28 +114,28 @@ func (client WorkflowRunActionsClient) GetResponder(resp *http.Response) (result
 // resourceGroupName is the resource group name. workflowName is the workflow
 // name. runName is the workflow run name. top is the number of items to be
 // included in the result. filter is the filter to apply on the operation.
-func (client WorkflowRunActionsClient) List(resourceGroupName string, workflowName string, runName string, top *int, filter string) (result WorkflowRunActionListResult, ae error) {
+func (client WorkflowRunActionsManagementClient) List(resourceGroupName string, workflowName string, runName string, top *int, filter string) (result WorkflowRunActionListResult, ae error) {
 	req, err := client.ListPreparer(resourceGroupName, workflowName, runName, top, filter)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "logic/WorkflowRunActionsClient", "List", "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "logic/WorkflowRunActionsManagementClient", "List", "Failure preparing request")
 	}
 
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "logic/WorkflowRunActionsClient", "List", "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "logic/WorkflowRunActionsManagementClient", "List", "Failure sending request")
 	}
 
 	result, err = client.ListResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "logic/WorkflowRunActionsClient", "List", "Failure responding to request")
+		ae = autorest.NewErrorWithError(err, "logic/WorkflowRunActionsManagementClient", "List", "Failure responding to request")
 	}
 
 	return
 }
 
 // ListPreparer prepares the List request.
-func (client WorkflowRunActionsClient) ListPreparer(resourceGroupName string, workflowName string, runName string, top *int, filter string) (*http.Request, error) {
+func (client WorkflowRunActionsManagementClient) ListPreparer(resourceGroupName string, workflowName string, runName string, top *int, filter string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName": url.QueryEscape(resourceGroupName),
 		"runName":           url.QueryEscape(runName),
@@ -164,13 +164,13 @@ func (client WorkflowRunActionsClient) ListPreparer(resourceGroupName string, wo
 
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
-func (client WorkflowRunActionsClient) ListSender(req *http.Request) (*http.Response, error) {
+func (client WorkflowRunActionsManagementClient) ListSender(req *http.Request) (*http.Response, error) {
 	return client.Send(req, http.StatusOK)
 }
 
 // ListResponder handles the response to the List request. The method always
 // closes the http.Response Body.
-func (client WorkflowRunActionsClient) ListResponder(resp *http.Response) (result WorkflowRunActionListResult, err error) {
+func (client WorkflowRunActionsManagementClient) ListResponder(resp *http.Response) (result WorkflowRunActionListResult, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -178,5 +178,29 @@ func (client WorkflowRunActionsClient) ListResponder(resp *http.Response) (resul
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// ListNextResults retrieves the next set of results, if any.
+func (client WorkflowRunActionsManagementClient) ListNextResults(lastResults WorkflowRunActionListResult) (result WorkflowRunActionListResult, ae error) {
+	req, err := lastResults.WorkflowRunActionListResultPreparer()
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "logic/WorkflowRunActionsManagementClient", "List", "Failure preparing next results request request")
+	}
+	if req == nil {
+		return
+	}
+
+	resp, err := client.ListSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "logic/WorkflowRunActionsManagementClient", "List", "Failure sending next results request request")
+	}
+
+	result, err = client.ListResponder(resp)
+	if err != nil {
+		ae = autorest.NewErrorWithError(err, "logic/WorkflowRunActionsManagementClient", "List", "Failure responding to next results request request")
+	}
+
 	return
 }

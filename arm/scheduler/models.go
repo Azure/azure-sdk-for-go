@@ -19,8 +19,10 @@ package scheduler
 // regenerated.
 
 import (
-	"github.com/Azure/azure-sdk-for-go/Godeps/_workspace/src/github.com/Azure/go-autorest/autorest"
-	"github.com/Azure/azure-sdk-for-go/Godeps/_workspace/src/github.com/Azure/go-autorest/autorest/date"
+	"github.com/Azure/go-autorest/autorest"
+	"github.com/Azure/go-autorest/autorest/date"
+	"github.com/Azure/go-autorest/autorest/to"
+	"net/http"
 )
 
 // DayOfWeek enumerates the values for day of week.
@@ -290,6 +292,18 @@ type JobCollectionListResult struct {
 	NextLink          *string                    `json:"nextLink,omitempty"`
 }
 
+// JobCollectionListResultPreparer prepares a request to retrieve the next set of results. It returns
+// nil if no more results exist.
+func (client JobCollectionListResult) JobCollectionListResultPreparer() (*http.Request, error) {
+	if client.NextLink == nil || len(to.String(client.NextLink)) <= 0 {
+		return nil, nil
+	}
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(client.NextLink)))
+}
+
 // JobCollectionProperties is
 type JobCollectionProperties struct {
 	Sku   *Sku                `json:"sku,omitempty"`
@@ -350,11 +364,35 @@ type JobHistoryListResult struct {
 	NextLink          *string                 `json:"nextLink,omitempty"`
 }
 
+// JobHistoryListResultPreparer prepares a request to retrieve the next set of results. It returns
+// nil if no more results exist.
+func (client JobHistoryListResult) JobHistoryListResultPreparer() (*http.Request, error) {
+	if client.NextLink == nil || len(to.String(client.NextLink)) <= 0 {
+		return nil, nil
+	}
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(client.NextLink)))
+}
+
 // JobListResult is
 type JobListResult struct {
 	autorest.Response `json:"-"`
 	Value             *[]JobDefinition `json:"value,omitempty"`
 	NextLink          *string          `json:"nextLink,omitempty"`
+}
+
+// JobListResultPreparer prepares a request to retrieve the next set of results. It returns
+// nil if no more results exist.
+func (client JobListResult) JobListResultPreparer() (*http.Request, error) {
+	if client.NextLink == nil || len(to.String(client.NextLink)) <= 0 {
+		return nil, nil
+	}
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(client.NextLink)))
 }
 
 // JobMaxRecurrence is

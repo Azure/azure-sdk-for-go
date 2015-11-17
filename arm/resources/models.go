@@ -19,8 +19,10 @@ package resources
 // regenerated.
 
 import (
-	"github.com/Azure/azure-sdk-for-go/Godeps/_workspace/src/github.com/Azure/go-autorest/autorest"
-	"github.com/Azure/azure-sdk-for-go/Godeps/_workspace/src/github.com/Azure/go-autorest/autorest/date"
+	"github.com/Azure/go-autorest/autorest"
+	"github.com/Azure/go-autorest/autorest/date"
+	"github.com/Azure/go-autorest/autorest/to"
+	"net/http"
 )
 
 // DeploymentMode enumerates the values for deployment mode.
@@ -73,6 +75,18 @@ type DeploymentListResult struct {
 	NextLink          *string               `json:"nextLink,omitempty"`
 }
 
+// DeploymentListResultPreparer prepares a request to retrieve the next set of results. It returns
+// nil if no more results exist.
+func (client DeploymentListResult) DeploymentListResultPreparer() (*http.Request, error) {
+	if client.NextLink == nil || len(to.String(client.NextLink)) <= 0 {
+		return nil, nil
+	}
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(client.NextLink)))
+}
+
 // DeploymentOperation is deployment operation information.
 type DeploymentOperation struct {
 	autorest.Response `json:"-"`
@@ -95,6 +109,18 @@ type DeploymentOperationsListResult struct {
 	autorest.Response `json:"-"`
 	Value             *[]DeploymentOperation `json:"value,omitempty"`
 	NextLink          *string                `json:"nextLink,omitempty"`
+}
+
+// DeploymentOperationsListResultPreparer prepares a request to retrieve the next set of results. It returns
+// nil if no more results exist.
+func (client DeploymentOperationsListResult) DeploymentOperationsListResultPreparer() (*http.Request, error) {
+	if client.NextLink == nil || len(to.String(client.NextLink)) <= 0 {
+		return nil, nil
+	}
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(client.NextLink)))
 }
 
 // DeploymentProperties is deployment properties.
@@ -195,6 +221,18 @@ type ProviderListResult struct {
 	NextLink          *string     `json:"nextLink,omitempty"`
 }
 
+// ProviderListResultPreparer prepares a request to retrieve the next set of results. It returns
+// nil if no more results exist.
+func (client ProviderListResult) ProviderListResultPreparer() (*http.Request, error) {
+	if client.NextLink == nil || len(to.String(client.NextLink)) <= 0 {
+		return nil, nil
+	}
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(client.NextLink)))
+}
+
 // ProviderOperationsMetadata is provider Operations metadata
 type ProviderOperationsMetadata struct {
 	autorest.Response `json:"-"`
@@ -252,6 +290,18 @@ type ResourceGroupListResult struct {
 	NextLink          *string          `json:"nextLink,omitempty"`
 }
 
+// ResourceGroupListResultPreparer prepares a request to retrieve the next set of results. It returns
+// nil if no more results exist.
+func (client ResourceGroupListResult) ResourceGroupListResultPreparer() (*http.Request, error) {
+	if client.NextLink == nil || len(to.String(client.NextLink)) <= 0 {
+		return nil, nil
+	}
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(client.NextLink)))
+}
+
 // ResourceGroupProperties is the resource group properties.
 type ResourceGroupProperties struct {
 	ProvisioningState *string `json:"provisioningState,omitempty"`
@@ -262,6 +312,18 @@ type ResourceListResult struct {
 	autorest.Response `json:"-"`
 	Value             *[]GenericResource `json:"value,omitempty"`
 	NextLink          *string            `json:"nextLink,omitempty"`
+}
+
+// ResourceListResultPreparer prepares a request to retrieve the next set of results. It returns
+// nil if no more results exist.
+func (client ResourceListResult) ResourceListResultPreparer() (*http.Request, error) {
+	if client.NextLink == nil || len(to.String(client.NextLink)) <= 0 {
+		return nil, nil
+	}
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(client.NextLink)))
 }
 
 // ResourceManagementError is
@@ -335,6 +397,18 @@ type TagsListResult struct {
 	autorest.Response `json:"-"`
 	Value             *[]TagDetails `json:"value,omitempty"`
 	NextLink          *string       `json:"nextLink,omitempty"`
+}
+
+// TagsListResultPreparer prepares a request to retrieve the next set of results. It returns
+// nil if no more results exist.
+func (client TagsListResult) TagsListResultPreparer() (*http.Request, error) {
+	if client.NextLink == nil || len(to.String(client.NextLink)) <= 0 {
+		return nil, nil
+	}
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(client.NextLink)))
 }
 
 // TagValue is tag information.

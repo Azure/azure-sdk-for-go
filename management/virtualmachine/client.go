@@ -9,14 +9,14 @@ import (
 )
 
 const (
-	azureDeploymentListURL   = "services/hostedservices/%s/deployments"
-	azureDeploymentURL       = "services/hostedservices/%s/deployments/%s"
+	azureDeploymentListURL        = "services/hostedservices/%s/deployments"
+	azureDeploymentURL            = "services/hostedservices/%s/deployments/%s"
 	azureListDeploymentsInSlotURL = "services/hostedservices/%s/deploymentslots/Production"
-	deleteAzureDeploymentURL = "services/hostedservices/%s/deployments/%s?comp=media"
-	azureAddRoleURL          = "services/hostedservices/%s/deployments/%s/roles"
-	azureRoleURL             = "services/hostedservices/%s/deployments/%s/roles/%s"
-	azureOperationsURL       = "services/hostedservices/%s/deployments/%s/roleinstances/%s/Operations"
-	azureRoleSizeListURL     = "rolesizes"
+	deleteAzureDeploymentURL      = "services/hostedservices/%s/deployments/%s?comp=media"
+	azureAddRoleURL               = "services/hostedservices/%s/deployments/%s/roles"
+	azureRoleURL                  = "services/hostedservices/%s/deployments/%s/roles/%s"
+	azureOperationsURL            = "services/hostedservices/%s/deployments/%s/roleinstances/%s/Operations"
+	azureRoleSizeListURL          = "rolesizes"
 
 	errParamNotSpecified = "Parameter %s is not specified."
 )
@@ -78,10 +78,9 @@ func (vm VirtualMachineClient) GetDeploymentName(cloudServiceName string) (strin
 	if err != nil {
 		if management.IsResourceNotFoundError(err) {
 			return "", nil
-		} else {
-			return "", err
 		}
-        }
+		return "", err
+	}
 	err = xml.Unmarshal(response, &deployment)
 	if err != nil {
 		return "", err

@@ -14,8 +14,7 @@ const (
 	azureListDeploymentsInSlotURL = "services/hostedservices/%s/deploymentslots/Production"
 	deleteAzureDeploymentURL = "services/hostedservices/%s/deployments/%s?comp=media"
 	azureAddRoleURL          = "services/hostedservices/%s/deployments/%s/roles"
-	azureRoleURLGetUpdate    = "services/hostedservices/%s/deployments/%s/roles/%s"
-	azureRoleURLDelete       = "services/hostedservices/%s/deployments/%s/roles/%s?comp=media"
+	azureRoleURL             = "services/hostedservices/%s/deployments/%s/roles/%s"
 	azureOperationsURL       = "services/hostedservices/%s/deployments/%s/roleinstances/%s/Operations"
 	azureRoleSizeListURL     = "rolesizes"
 
@@ -134,7 +133,7 @@ func (vm VirtualMachineClient) GetRole(cloudServiceName, deploymentName, roleNam
 
 	role := new(Role)
 
-	requestURL := fmt.Sprintf(azureRoleURLGetUpdate, cloudServiceName, deploymentName, roleName)
+	requestURL := fmt.Sprintf(azureRoleURL, cloudServiceName, deploymentName, roleName)
 	response, azureErr := vm.client.SendAzureGetRequest(requestURL)
 	if azureErr != nil {
 		return nil, azureErr
@@ -185,7 +184,7 @@ func (vm VirtualMachineClient) UpdateRole(cloudServiceName, deploymentName, role
 		return "", err
 	}
 
-	requestURL := fmt.Sprintf(azureRoleURLGetUpdate, cloudServiceName, deploymentName, roleName)
+	requestURL := fmt.Sprintf(azureRoleURL, cloudServiceName, deploymentName, roleName)
 	return vm.client.SendAzurePutRequest(requestURL, "text/xml", data)
 }
 
@@ -255,7 +254,7 @@ func (vm VirtualMachineClient) RestartRole(cloudServiceName, deploymentName, rol
 	return vm.client.SendAzurePostRequest(requestURL, restartRoleOperationBytes)
 }
 
-func (vm VirtualMachineClient) DeleteRole(cloudServiceName, deploymentName, roleName string) (management.OperationID, error) {
+func (vm VirtualMachineClient) DeleteRole(cloudServiceName, deploymentName, roleName string, deleteVHD bool) (management.OperationID, error) {
 	if cloudServiceName == "" {
 		return "", fmt.Errorf(errParamNotSpecified, "cloudServiceName")
 	}
@@ -266,7 +265,10 @@ func (vm VirtualMachineClient) DeleteRole(cloudServiceName, deploymentName, role
 		return "", fmt.Errorf(errParamNotSpecified, "roleName")
 	}
 
-	requestURL := fmt.Sprintf(azureRoleURLDelete, cloudServiceName, deploymentName, roleName)
+	requestURL := fmt.Sprintf(azureRoleURL, cloudServiceName, deploymentName, roleName)
+	if deleteVHD {
+		requestURL += "?comp=media"
+	}
 	return vm.client.SendAzureDeleteRequest(requestURL)
 }
 

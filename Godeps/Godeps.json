@@ -2,18 +2,26 @@
 	"ImportPath": "github.com/Azure/azure-sdk-for-go",
 	"GoVersion": "go1.5.1",
 	"Packages": [
-		"./management/...",
-		"./arm/..."
+		"./..."
 	],
 	"Deps": [
 		{
 			"ImportPath": "github.com/Azure/go-autorest/autorest",
-			"Comment": "v1.0.1",
-			"Rev": "1cebd0377050996f91857917c73f00a377e64262"
+			"Comment": "v1.1.0-6-ga3998c5",
+			"Rev": "a3998c5cde825491a61b5dfdb92a098e6155fef0"
+		},
+		{
+			"ImportPath": "github.com/dgrijalva/jwt-go",
+			"Comment": "v2.4.0",
+			"Rev": "f164e17f59b82642a3895ba065c385db6c547344"
 		},
 		{
 			"ImportPath": "golang.org/x/crypto/pkcs12",
-			"Rev": "c8b9e6388ef638d5a8a9d865c634befdc46a6784"
+			"Rev": "346896d57731cb5670b36c6178fc5519f3225980"
+		},
+		{
+			"ImportPath": "gopkg.in/check.v1",
+			"Rev": "11d3bc7aa68e238947792f30573146a3231fc0f1"
 		}
 	]
 }

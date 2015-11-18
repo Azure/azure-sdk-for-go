@@ -338,16 +338,19 @@ We look forward to hearing from you!
 Install the packages you require as you would any other Go package:
 
 ```bash
-go get github.com/azure/azure-sdk-for-go/arm/authorization
-go get github.com/azure/azure-sdk-for-go/arm/compute
-go get github.com/azure/azure-sdk-for-go/arm/features
-go get github.com/azure/azure-sdk-for-go/arm/logic
-go get github.com/azure/azure-sdk-for-go/arm/network
-go get github.com/azure/azure-sdk-for-go/arm/resources
-go get github.com/azure/azure-sdk-for-go/arm/scheduler
-go get github.com/azure/azure-sdk-for-go/arm/search
-go get github.com/azure/azure-sdk-for-go/arm/storage
-go get github.com/azure/azure-sdk-for-go/arm/subscriptions
+go get github.com/Azure/azure-sdk-for-go/arm/authorization
+go get github.com/Azure/azure-sdk-for-go/arm/compute
+go get github.com/Azure/azure-sdk-for-go/arm/dns
+go get github.com/Azure/azure-sdk-for-go/arm/features
+go get github.com/Azure/azure-sdk-for-go/arm/logic
+go get github.com/Azure/azure-sdk-for-go/arm/network
+go get github.com/Azure/azure-sdk-for-go/arm/redis
+go get github.com/Azure/azure-sdk-for-go/arm/resources
+go get github.com/Azure/azure-sdk-for-go/arm/scheduler
+go get github.com/Azure/azure-sdk-for-go/arm/search
+go get github.com/Azure/azure-sdk-for-go/arm/storage
+go get github.com/Azure/azure-sdk-for-go/arm/subscriptions
+go get github.com/Azure/azure-sdk-for-go/arm/web
 ```
 
 ## License

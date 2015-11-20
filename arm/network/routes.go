@@ -30,7 +30,7 @@ import (
 // capture the relationship between an end user and the Windows Azure
 // Networks service.
 type RoutesClient struct {
-	ResourceProviderClient
+	ManagementClient
 }
 
 // NewRoutesClient creates an instance of the RoutesClient client.

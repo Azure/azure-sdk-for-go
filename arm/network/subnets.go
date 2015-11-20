@@ -30,7 +30,7 @@ import (
 // capture the relationship between an end user and the Windows Azure
 // Networks service.
 type SubnetsClient struct {
-	ResourceProviderClient
+	ManagementClient
 }
 
 // NewSubnetsClient creates an instance of the SubnetsClient client.

@@ -2,6 +2,12 @@
 
 -----
 
+## `v0.3.0-beta`
+
+- Corrected unintentional struct field renaming and client renaming in v0.2.0-beta
+
+-----
+
 ## `v0.2.0-beta`
 
 - Added support for DNS, Redis, and Web site services

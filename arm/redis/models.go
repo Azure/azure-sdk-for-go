@@ -186,9 +186,9 @@ type ResourceWithAccessKey struct {
 
 // Sku is sku parameters supplied to the create redis operation.
 type Sku struct {
-	Name     string `json:"name,omitempty"`
-	Family   string `json:"family,omitempty"`
-	Capacity *int   `json:"capacity,omitempty"`
+	Name     SkuName   `json:"name,omitempty"`
+	Family   SkuFamily `json:"family,omitempty"`
+	Capacity *int      `json:"capacity,omitempty"`
 }
 
 // SubResource is

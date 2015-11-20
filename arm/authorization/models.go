@@ -78,8 +78,8 @@ type ManagementLockObject struct {
 
 // ManagementLockProperties is the management lock properties.
 type ManagementLockProperties struct {
-	Level string  `json:"level,omitempty"`
-	Notes *string `json:"notes,omitempty"`
+	Level LockLevel `json:"level,omitempty"`
+	Notes *string   `json:"notes,omitempty"`
 }
 
 // Resource is

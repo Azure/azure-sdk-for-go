@@ -30,7 +30,7 @@ import (
 // capture the relationship between an end user and the Windows Azure
 // Networks service.
 type UsagesClient struct {
-	ResourceProviderClient
+	ManagementClient
 }
 
 // NewUsagesClient creates an instance of the UsagesClient client.

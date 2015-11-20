@@ -30,7 +30,7 @@ import (
 // has entities that capture the relationship between an end user and the
 // Windows Azure Networks service.
 type ExpressRouteCircuitPeeringsClient struct {
-	ResourceProviderClient
+	ManagementClient
 }
 
 // NewExpressRouteCircuitPeeringsClient creates an instance of the

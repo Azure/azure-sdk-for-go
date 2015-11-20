@@ -30,7 +30,7 @@ import (
 // entities that capture the relationship between an end user and the Windows
 // Azure Networks service.
 type VirtualNetworkGatewaysClient struct {
-	ResourceProviderClient
+	ManagementClient
 }
 
 // NewVirtualNetworkGatewaysClient creates an instance of the

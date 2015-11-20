@@ -127,12 +127,12 @@ type ServiceProperties struct {
 // ServiceReadableProperties is defines all the properties of an Azure Search
 // service.
 type ServiceReadableProperties struct {
-	Status            string  `json:"status,omitempty"`
-	StatusDetails     *string `json:"statusDetails,omitempty"`
-	ProvisioningState string  `json:"provisioningState,omitempty"`
-	Sku               *Sku    `json:"sku,omitempty"`
-	ReplicaCount      *int    `json:"replicaCount,omitempty"`
-	PartitionCount    *int    `json:"partitionCount,omitempty"`
+	Status            ServiceStatus     `json:"status,omitempty"`
+	StatusDetails     *string           `json:"statusDetails,omitempty"`
+	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
+	Sku               *Sku              `json:"sku,omitempty"`
+	ReplicaCount      *int              `json:"replicaCount,omitempty"`
+	PartitionCount    *int              `json:"partitionCount,omitempty"`
 }
 
 // ServiceResource is describes an Azure Search service and its current state.
@@ -147,7 +147,7 @@ type ServiceResource struct {
 // Sku is defines the SKU of an Azure Search Service, which determines price
 // tier and capacity limits.
 type Sku struct {
-	Name string `json:"name,omitempty"`
+	Name SkuType `json:"name,omitempty"`
 }
 
 // SubResource is

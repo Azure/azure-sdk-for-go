@@ -335,10 +335,10 @@ const (
 // by Windows Setup. Contents are defined by setting name, component name,
 // and the pass in which the content is a applied.
 type AdditionalUnattendContent struct {
-	PassName      string  `json:"passName,omitempty"`
-	ComponentName string  `json:"componentName,omitempty"`
-	SettingName   string  `json:"settingName,omitempty"`
-	Content       *string `json:"content,omitempty"`
+	PassName      PassNames      `json:"passName,omitempty"`
+	ComponentName ComponentNames `json:"componentName,omitempty"`
+	SettingName   SettingNames   `json:"settingName,omitempty"`
+	Content       *string        `json:"content,omitempty"`
 }
 
 // APIEntityReference is the API entity reference.
@@ -402,13 +402,13 @@ type BootDiagnosticsInstanceView struct {
 
 // DataDisk is describes a data disk.
 type DataDisk struct {
-	Lun          *int             `json:"lun,omitempty"`
-	Name         *string          `json:"name,omitempty"`
-	Vhd          *VirtualHardDisk `json:"vhd,omitempty"`
-	Image        *VirtualHardDisk `json:"image,omitempty"`
-	Caching      string           `json:"caching,omitempty"`
-	CreateOption string           `json:"createOption,omitempty"`
-	DiskSizeGB   *int             `json:"diskSizeGB,omitempty"`
+	Lun          *int                  `json:"lun,omitempty"`
+	Name         *string               `json:"name,omitempty"`
+	Vhd          *VirtualHardDisk      `json:"vhd,omitempty"`
+	Image        *VirtualHardDisk      `json:"image,omitempty"`
+	Caching      CachingTypes          `json:"caching,omitempty"`
+	CreateOption DiskCreateOptionTypes `json:"createOption,omitempty"`
+	DiskSizeGB   *int                  `json:"diskSizeGB,omitempty"`
 }
 
 // DataDiskImage is contains the data disk images information.
@@ -444,7 +444,7 @@ type DiskInstanceView struct {
 
 // HardwareProfile is describes a hardware profile.
 type HardwareProfile struct {
-	VMSize string `json:"vmSize,omitempty"`
+	VMSize VirtualMachineSizeTypes `json:"vmSize,omitempty"`
 }
 
 // ImageReference is the image reference.
@@ -463,11 +463,11 @@ type InnerError struct {
 
 // InstanceViewStatus is instance view status.
 type InstanceViewStatus struct {
-	Code          *string    `json:"code,omitempty"`
-	Level         string     `json:"level,omitempty"`
-	DisplayStatus *string    `json:"displayStatus,omitempty"`
-	Message       *string    `json:"message,omitempty"`
-	Time          *date.Time `json:"time,omitempty"`
+	Code          *string          `json:"code,omitempty"`
+	Level         StatusLevelTypes `json:"level,omitempty"`
+	DisplayStatus *string          `json:"displayStatus,omitempty"`
+	Message       *string          `json:"message,omitempty"`
+	Time          *date.Time       `json:"time,omitempty"`
 }
 
 // KeyVaultKeyReference is describes a reference to Key Vault Key
@@ -530,19 +530,19 @@ type NetworkProfile struct {
 
 // OSDisk is describes an Operating System disk.
 type OSDisk struct {
-	OsType             string                  `json:"osType,omitempty"`
+	OsType             OperatingSystemTypes    `json:"osType,omitempty"`
 	EncryptionSettings *DiskEncryptionSettings `json:"encryptionSettings,omitempty"`
 	Name               *string                 `json:"name,omitempty"`
 	Vhd                *VirtualHardDisk        `json:"vhd,omitempty"`
 	Image              *VirtualHardDisk        `json:"image,omitempty"`
-	Caching            string                  `json:"caching,omitempty"`
-	CreateOption       string                  `json:"createOption,omitempty"`
+	Caching            CachingTypes            `json:"caching,omitempty"`
+	CreateOption       DiskCreateOptionTypes   `json:"createOption,omitempty"`
 	DiskSizeGB         *int                    `json:"diskSizeGB,omitempty"`
 }
 
 // OSDiskImage is contains the os disk image information.
 type OSDiskImage struct {
-	OperatingSystem string `json:"operatingSystem,omitempty"`
+	OperatingSystem OperatingSystemTypes `json:"operatingSystem,omitempty"`
 }
 
 // OSProfile is describes an OS profile.
@@ -614,7 +614,7 @@ type SubResource struct {
 
 // UpgradePolicy is describes an upgrade policy - automatic or manual.
 type UpgradePolicy struct {
-	Mode string `json:"mode,omitempty"`
+	Mode UpgradeMode `json:"mode,omitempty"`
 }
 
 // Usage is describes Compute Resource Usage.
@@ -954,12 +954,12 @@ type VirtualMachineScaleSetNetworkProfile struct {
 // VirtualMachineScaleSetOSDisk is describes a virtual machine scale set
 // operating system disk.
 type VirtualMachineScaleSetOSDisk struct {
-	Name          *string          `json:"name,omitempty"`
-	Caching       string           `json:"caching,omitempty"`
-	CreateOption  string           `json:"createOption,omitempty"`
-	OsType        string           `json:"osType,omitempty"`
-	Image         *VirtualHardDisk `json:"image,omitempty"`
-	VhdContainers *[]string        `json:"vhdContainers,omitempty"`
+	Name          *string               `json:"name,omitempty"`
+	Caching       CachingTypes          `json:"caching,omitempty"`
+	CreateOption  DiskCreateOptionTypes `json:"createOption,omitempty"`
+	OsType        OperatingSystemTypes  `json:"osType,omitempty"`
+	Image         *VirtualHardDisk      `json:"image,omitempty"`
+	VhdContainers *[]string             `json:"vhdContainers,omitempty"`
 }
 
 // VirtualMachineScaleSetOSProfile is describes a virtual machine scale set OS
@@ -992,10 +992,10 @@ type VirtualMachineScaleSetSku struct {
 
 // VirtualMachineScaleSetSkuCapacity is describes scaling information of a sku.
 type VirtualMachineScaleSetSkuCapacity struct {
-	Minimum         *int32 `json:"minimum,omitempty"`
-	Maximum         *int32 `json:"maximum,omitempty"`
-	DefaultCapacity *int32 `json:"defaultCapacity,omitempty"`
-	ScaleType       string `json:"scaleType,omitempty"`
+	Minimum         *int32                             `json:"minimum,omitempty"`
+	Maximum         *int32                             `json:"maximum,omitempty"`
+	DefaultCapacity *int32                             `json:"defaultCapacity,omitempty"`
+	ScaleType       VirtualMachineScaleSetSkuScaleType `json:"scaleType,omitempty"`
 }
 
 // VirtualMachineScaleSetStorageProfile is describes a virtual machine scale
@@ -1125,6 +1125,6 @@ type WinRMConfiguration struct {
 // WinRMListener is describes Protocol and thumbprint of Windows Remote
 // Management listener
 type WinRMListener struct {
-	Protocol       string  `json:"protocol,omitempty"`
-	CertificateURL *string `json:"certificateUrl,omitempty"`
+	Protocol       ProtocolTypes `json:"protocol,omitempty"`
+	CertificateURL *string       `json:"certificateUrl,omitempty"`
 }

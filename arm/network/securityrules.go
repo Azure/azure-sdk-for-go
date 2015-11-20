@@ -30,7 +30,7 @@ import (
 // that capture the relationship between an end user and the Windows Azure
 // Networks service.
 type SecurityRulesClient struct {
-	ResourceProviderClient
+	ManagementClient
 }
 
 // NewSecurityRulesClient creates an instance of the SecurityRulesClient

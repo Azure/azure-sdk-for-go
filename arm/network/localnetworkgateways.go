@@ -30,7 +30,7 @@ import (
 // that capture the relationship between an end user and the Windows Azure
 // Networks service.
 type LocalNetworkGatewaysClient struct {
-	ResourceProviderClient
+	ManagementClient
 }
 
 // NewLocalNetworkGatewaysClient creates an instance of the

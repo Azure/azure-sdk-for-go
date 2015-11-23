@@ -30,7 +30,7 @@ import (
 // that capture the relationship between an end user and the Windows Azure
 // Networks service.
 type LoadBalancersClient struct {
-	ResourceProviderClient
+	ManagementClient
 }
 
 // NewLoadBalancersClient creates an instance of the LoadBalancersClient

@@ -30,7 +30,7 @@ import (
 // that capture the relationship between an end user and the Windows Azure
 // Networks service.
 type PublicIPAddressesClient struct {
-	ResourceProviderClient
+	ManagementClient
 }
 
 // NewPublicIPAddressesClient creates an instance of the

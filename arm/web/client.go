@@ -30,28 +30,28 @@ const (
 	DefaultBaseURI = "https://management.azure.com"
 )
 
-// SiteManagementClient is the use these APIs to manage Azure Websites
-// resources through the Azure Resource Manager. All task operations conform
-// to the HTTP/1.1 protocol specification and each operation returns an
+// ManagementClient is the use these APIs to manage Azure Websites resources
+// through the Azure Resource Manager. All task operations conform to the
+// HTTP/1.1 protocol specification and each operation returns an
 // x-ms-request-id header that can be used to obtain information about the
 // request. You must make sure that requests made to these resources are
 // secure. For more information, see <a
 // href="https://msdn.microsoft.com/en-us/library/azure/dn790557.aspx">Authenticating
 // Azure Resource Manager requests.</a>
-type SiteManagementClient struct {
+type ManagementClient struct {
 	autorest.Client
 	BaseURI        string
 	SubscriptionID string
 }
 
-// New creates an instance of the SiteManagementClient client.
-func New(subscriptionID string) SiteManagementClient {
+// New creates an instance of the ManagementClient client.
+func New(subscriptionID string) ManagementClient {
 	return NewWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewWithBaseURI creates an instance of the SiteManagementClient client.
-func NewWithBaseURI(baseURI string, subscriptionID string) SiteManagementClient {
-	return SiteManagementClient{
+// NewWithBaseURI creates an instance of the ManagementClient client.
+func NewWithBaseURI(baseURI string, subscriptionID string) ManagementClient {
+	return ManagementClient{
 		Client:         autorest.NewClientWithUserAgent(UserAgent()),
 		BaseURI:        baseURI,
 		SubscriptionID: subscriptionID,

@@ -30,7 +30,7 @@ import (
 // capture the relationship between an end user and the Windows Azure
 // Networks service.
 type InterfacesClient struct {
-	ResourceProviderClient
+	ManagementClient
 }
 
 // NewInterfacesClient creates an instance of the InterfacesClient client.

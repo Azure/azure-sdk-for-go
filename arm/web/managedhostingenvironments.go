@@ -33,7 +33,7 @@ import (
 // href="https://msdn.microsoft.com/en-us/library/azure/dn790557.aspx">Authenticating
 // Azure Resource Manager requests.</a>
 type ManagedHostingEnvironmentsClient struct {
-	SiteManagementClient
+	ManagementClient
 }
 
 // NewManagedHostingEnvironmentsClient creates an instance of the

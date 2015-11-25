@@ -634,8 +634,9 @@ func (b BlobStorageClient) CreateBlockBlobFromReader(container, name string, siz
 	if len(splitted) == 0 {
 		splitted = []string{""}
 	}
+	mimeType := mime.TypeByExtension("." + splitted[len(splitted)-1])
 	headers := b.client.getStandardHeaders()
-	headers["Content-Type"] = mime.TypeByExtension(splitted[len(splitted)-1])
+	headers["Content-Type"] = mimeType
 	headers["x-ms-blob-type"] = string(BlobTypeBlock)
 	headers["Content-Length"] = fmt.Sprintf("%d", size)
 

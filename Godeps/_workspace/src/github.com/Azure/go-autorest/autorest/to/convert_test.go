@@ -49,7 +49,7 @@ func TestStringMapHandlesNil(t *testing.T) {
 
 func TestStringMapPtr(t *testing.T) {
 	ms := map[string]string{"foo": "foo", "bar": "bar", "baz": "baz"}
-	for k, msp := range StringMapPtr(ms) {
+	for k, msp := range *StringMapPtr(ms) {
 		if ms[k] != *msp {
 			t.Errorf("to: StringMapPtr incorrectly converted an entry -- expected [%s]%v, received[%s]%v",
 				k, ms[k], k, *msp)

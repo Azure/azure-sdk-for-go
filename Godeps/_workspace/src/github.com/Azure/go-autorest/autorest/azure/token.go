@@ -4,6 +4,7 @@ import (
 	"crypto/rand"
 	"crypto/rsa"
 	"crypto/sha1"
+	"crypto/x509"
 	"encoding/base64"
 	"fmt"
 	"net/http"
@@ -13,7 +14,6 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/Godeps/_workspace/src/github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/azure-sdk-for-go/Godeps/_workspace/src/github.com/dgrijalva/jwt-go"
-	"github.com/Azure/azure-sdk-for-go/Godeps/_workspace/src/golang.org/x/crypto/pkcs12"
 )
 
 const (
@@ -93,26 +93,16 @@ func (tokenSecret *ServicePrincipalTokenSecret) SetAuthenticationValues(spt *Ser
 	return nil
 }
 
-// ServicePrincipalCertificateSecret implements ServicePrincipalSecret for certificate auth with signed JWTs.
+// ServicePrincipalCertificateSecret implements ServicePrincipalSecret for generic RSA cert auth with signed JWTs.
 type ServicePrincipalCertificateSecret struct {
-	Pkcs12   []byte
-	Password string
+	Certificate *x509.Certificate
+	PrivateKey  *rsa.PrivateKey
 }
 
 // SignJwt returns the JWT signed with the certificate's private key.
 func (secret *ServicePrincipalCertificateSecret) SignJwt(spt *ServicePrincipalToken) (string, error) {
-	privateKey, cert, err := pkcs12.Decode(secret.Pkcs12, secret.Password)
-	if err != nil {
-		return "", err
-	}
-
-	rsaPrivateKey, isRsaKey := privateKey.(*rsa.PrivateKey)
-	if !isRsaKey {
-		return "", fmt.Errorf("PKCS12 certificate must contain an RSA private key")
-	}
-
 	hasher := sha1.New()
-	_, err = hasher.Write(cert.Raw)
+	_, err := hasher.Write(secret.Certificate.Raw)
 	if err != nil {
 		return "", err
 	}
@@ -137,7 +127,7 @@ func (secret *ServicePrincipalCertificateSecret) SignJwt(spt *ServicePrincipalTo
 		"exp": time.Now().Add(time.Hour * 24).Unix(),
 	}
 
-	signedString, err := token.SignedString(rsaPrivateKey)
+	signedString, err := token.SignedString(secret.PrivateKey)
 	return signedString, nil
 }
 
@@ -195,14 +185,14 @@ func NewServicePrincipalToken(id string, secret string, tenantID string, resourc
 }
 
 // NewServicePrincipalTokenFromCertificate create a ServicePrincipalToken from the supplied pkcs12 bytes.
-func NewServicePrincipalTokenFromCertificate(id string, pkcs12 []byte, password string, tenantID string, resource string) (*ServicePrincipalToken, error) {
+func NewServicePrincipalTokenFromCertificate(id string, certificate *x509.Certificate, privateKey *rsa.PrivateKey, tenantID string, resource string) (*ServicePrincipalToken, error) {
 	return NewServicePrincipalTokenWithSecret(
 		id,
 		tenantID,
 		resource,
 		&ServicePrincipalCertificateSecret{
-			Pkcs12:   pkcs12,
-			Password: password,
+			PrivateKey:  privateKey,
+			Certificate: certificate,
 		},
 	)
 }

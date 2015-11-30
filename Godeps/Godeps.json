@@ -7,8 +7,8 @@
 	"Deps": [
 		{
 			"ImportPath": "github.com/Azure/go-autorest/autorest",
-			"Comment": "v1.1.0-6-ga3998c5",
-			"Rev": "a3998c5cde825491a61b5dfdb92a098e6155fef0"
+			"Comment": "v2.0.0",
+			"Rev": "1f936b9ddc048ff77c5723a3837a9667120d30c5"
 		},
 		{
 			"ImportPath": "github.com/dgrijalva/jwt-go",

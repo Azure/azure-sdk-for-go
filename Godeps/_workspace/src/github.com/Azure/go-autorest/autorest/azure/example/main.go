@@ -1,7 +1,10 @@
 package main
 
 import (
+	"crypto/rsa"
+	"crypto/x509"
 	"flag"
+	"fmt"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -9,6 +12,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/Godeps/_workspace/src/github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/azure-sdk-for-go/Godeps/_workspace/src/github.com/Azure/go-autorest/autorest/azure"
+	"github.com/Azure/azure-sdk-for-go/Godeps/_workspace/src/golang.org/x/crypto/pkcs12"
 )
 
 const resourceGroupURLTemplate = "https://management.azure.com/subscriptions/{subscription-id}/resourcegroups"
@@ -49,11 +53,16 @@ func main() {
 		log.Fatalln("failed", err)
 	}
 
+	certificate, rsaPrivateKey, err := decodePkcs12(certData, "")
+	if err != nil {
+		log.Fatalln("failed", err)
+	}
+
 	log.Println("retrieve oauth token... ")
 	spt, err := azure.NewServicePrincipalTokenFromCertificate(
 		applicationID,
-		certData,
-		"",
+		certificate,
+		rsaPrivateKey,
 		tenantID,
 		azure.AzureResourceManagerScope)
 	if err != nil {
@@ -104,4 +113,18 @@ func getResourceGroups(client *autorest.Client) (*string, error) {
 	contentsString := string(contents)
 
 	return &contentsString, nil
+}
+
+func decodePkcs12(pkcs []byte, password string) (*x509.Certificate, *rsa.PrivateKey, error) {
+	privateKey, certificate, err := pkcs12.Decode(pkcs, password)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	rsaPrivateKey, isRsaKey := privateKey.(*rsa.PrivateKey)
+	if !isRsaKey {
+		return nil, nil, fmt.Errorf("PKCS#12 certificate must contain an RSA private key")
+	}
+
+	return certificate, rsaPrivateKey, nil
 }

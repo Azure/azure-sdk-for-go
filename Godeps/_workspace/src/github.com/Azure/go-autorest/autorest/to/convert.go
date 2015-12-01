@@ -31,13 +31,13 @@ func StringMap(msp map[string]*string) map[string]string {
 	return ms
 }
 
-// StringMapPtr returns a map of string pointers built from the passed map of strings.
-func StringMapPtr(ms map[string]string) map[string]*string {
+// StringMapPtr returns a pointer to a map of string pointers built from the passed map of strings.
+func StringMapPtr(ms map[string]string) *map[string]*string {
 	msp := make(map[string]*string, len(ms))
 	for k, s := range ms {
 		msp[k] = StringPtr(s)
 	}
-	return msp
+	return &msp
 }
 
 // Bool returns a bool value for the passed bool pointer. It returns false if the pointer is nil.

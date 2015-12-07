@@ -34,6 +34,24 @@ func TestDeployPlatformImage(t *testing.T) {
 	testRoleConfiguration(t, client, role, location)
 }
 
+func TestDeployPlatformWindowsImage(t *testing.T) {
+	client := testutils.GetTestClient(t)
+	vmname := GenerateName()
+	sa := GetTestStorageAccount(t, client)
+	location := sa.StorageServiceProperties.Location
+
+	role := NewVMConfiguration(vmname, "Standard_D3")
+	ConfigureDeploymentFromPlatformImage(&role,
+		GetWindowsTestImage(t, client).Name,
+		fmt.Sprintf("http://%s.blob.core.windows.net/sdktest/%s.vhd", sa.ServiceName, vmname),
+		GenerateName())
+	ConfigureForWindows(&role, vmname, "azureuser", GeneratePassword(), true, "")
+	ConfigureWinRMOverHTTP(&role)
+	ConfigureWinRMOverHTTPS(&role, "")
+
+	testRoleConfiguration(t, client, role, location)
+}
+
 func TestVMImageList(t *testing.T) {
 	client := testutils.GetTestClient(t)
 	vmic := vmimage.NewClient(client)
@@ -250,6 +268,12 @@ func GetTestStorageAccount(t *testing.T, client management.Client) storage.Stora
 func GetLinuxTestImage(t *testing.T, client management.Client) osimage.OSImage {
 	return GetOSImage(t, client, func(im osimage.OSImage) bool {
 		return im.Category == "Public" && im.ImageFamily == "Ubuntu Server 14.04 LTS"
+	})
+}
+
+func GetWindowsTestImage(t *testing.T, client management.Client) osimage.OSImage {
+	return GetOSImage(t, client, func(im osimage.OSImage) bool {
+		return im.Category == "Public" && im.ImageFamily == "Windows Server 2012 R2 Datacenter"
 	})
 }
 

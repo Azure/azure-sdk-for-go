@@ -214,3 +214,227 @@ func TestNewVmFromExistingDisk(t *testing.T) {
 		t.Fatalf("Expected marshalled xml to be %q, but got %q", expected, string(bytes))
 	}
 }
+
+func TestWinRMOverHttps(t *testing.T) {
+	role := NewVMConfiguration("winrmoverhttp", "Standard_D1")
+	ConfigureForWindows(&role, "WINVM", "azuser", "P2ssw@rd", true, "")
+	ConfigureWinRMOverHTTPS(&role, "abcdef")
+
+	bytes, err := xml.MarshalIndent(role, "", "  ")
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	expected := `<Role>
+  <RoleName>winrmoverhttp</RoleName>
+  <RoleType>PersistentVMRole</RoleType>
+  <ConfigurationSets>
+    <ConfigurationSet>
+      <ConfigurationSetType>WindowsProvisioningConfiguration</ConfigurationSetType>
+      <ComputerName>WINVM</ComputerName>
+      <AdminPassword>P2ssw@rd</AdminPassword>
+      <EnableAutomaticUpdates>true</EnableAutomaticUpdates>
+      <StoredCertificateSettings></StoredCertificateSettings>
+      <WinRM>
+        <Listeners>
+          <Listener>
+            <Protocol>Https</Protocol>
+            <CertificateThumbprint>abcdef</CertificateThumbprint>
+          </Listener>
+        </Listeners>
+      </WinRM>
+      <AdminUsername>azuser</AdminUsername>
+      <InputEndpoints></InputEndpoints>
+      <SubnetNames></SubnetNames>
+      <PublicIPs></PublicIPs>
+    </ConfigurationSet>
+  </ConfigurationSets>
+  <DataVirtualHardDisks></DataVirtualHardDisks>
+  <RoleSize>Standard_D1</RoleSize>
+  <ProvisionGuestAgent>true</ProvisionGuestAgent>
+</Role>`
+
+	if string(bytes) != expected {
+		t.Fatalf("Expected marshalled xml to be %q, but got %q", expected, string(bytes))
+	}
+}
+
+func TestWinRMOverHttpsWithNoThumbprint(t *testing.T) {
+	role := NewVMConfiguration("winrmoverhttp", "Standard_D1")
+	ConfigureForWindows(&role, "WINVM", "azuser", "P2ssw@rd", true, "")
+	ConfigureWinRMOverHTTPS(&role, "")
+
+	bytes, err := xml.MarshalIndent(role, "", "  ")
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	expected := `<Role>
+  <RoleName>winrmoverhttp</RoleName>
+  <RoleType>PersistentVMRole</RoleType>
+  <ConfigurationSets>
+    <ConfigurationSet>
+      <ConfigurationSetType>WindowsProvisioningConfiguration</ConfigurationSetType>
+      <ComputerName>WINVM</ComputerName>
+      <AdminPassword>P2ssw@rd</AdminPassword>
+      <EnableAutomaticUpdates>true</EnableAutomaticUpdates>
+      <StoredCertificateSettings></StoredCertificateSettings>
+      <WinRM>
+        <Listeners>
+          <Listener>
+            <Protocol>Https</Protocol>
+          </Listener>
+        </Listeners>
+      </WinRM>
+      <AdminUsername>azuser</AdminUsername>
+      <InputEndpoints></InputEndpoints>
+      <SubnetNames></SubnetNames>
+      <PublicIPs></PublicIPs>
+    </ConfigurationSet>
+  </ConfigurationSets>
+  <DataVirtualHardDisks></DataVirtualHardDisks>
+  <RoleSize>Standard_D1</RoleSize>
+  <ProvisionGuestAgent>true</ProvisionGuestAgent>
+</Role>`
+
+	if string(bytes) != expected {
+		t.Fatalf("Expected marshalled xml to be %q, but got %q", expected, string(bytes))
+	}
+}
+
+func TestWinRMOverHttp(t *testing.T) {
+	role := NewVMConfiguration("winrmoverhttp", "Standard_D1")
+	ConfigureForWindows(&role, "WINVM", "azuser", "P2ssw@rd", true, "")
+	ConfigureWinRMOverHTTP(&role)
+
+	bytes, err := xml.MarshalIndent(role, "", "  ")
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	expected := `<Role>
+  <RoleName>winrmoverhttp</RoleName>
+  <RoleType>PersistentVMRole</RoleType>
+  <ConfigurationSets>
+    <ConfigurationSet>
+      <ConfigurationSetType>WindowsProvisioningConfiguration</ConfigurationSetType>
+      <ComputerName>WINVM</ComputerName>
+      <AdminPassword>P2ssw@rd</AdminPassword>
+      <EnableAutomaticUpdates>true</EnableAutomaticUpdates>
+      <StoredCertificateSettings></StoredCertificateSettings>
+      <WinRM>
+        <Listeners>
+          <Listener>
+            <Protocol>Http</Protocol>
+          </Listener>
+        </Listeners>
+      </WinRM>
+      <AdminUsername>azuser</AdminUsername>
+      <InputEndpoints></InputEndpoints>
+      <SubnetNames></SubnetNames>
+      <PublicIPs></PublicIPs>
+    </ConfigurationSet>
+  </ConfigurationSets>
+  <DataVirtualHardDisks></DataVirtualHardDisks>
+  <RoleSize>Standard_D1</RoleSize>
+  <ProvisionGuestAgent>true</ProvisionGuestAgent>
+</Role>`
+
+	if string(bytes) != expected {
+		t.Fatalf("Expected marshalled xml to be %q, but got %q", expected, string(bytes))
+	}
+}
+
+func TestSettingWinRMOverHttpTwice(t *testing.T) {
+	role := NewVMConfiguration("winrmoverhttp", "Standard_D1")
+	ConfigureForWindows(&role, "WINVM", "azuser", "P2ssw@rd", true, "")
+	ConfigureWinRMOverHTTP(&role)
+	ConfigureWinRMOverHTTP(&role)
+
+	bytes, err := xml.MarshalIndent(role, "", "  ")
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	expected := `<Role>
+  <RoleName>winrmoverhttp</RoleName>
+  <RoleType>PersistentVMRole</RoleType>
+  <ConfigurationSets>
+    <ConfigurationSet>
+      <ConfigurationSetType>WindowsProvisioningConfiguration</ConfigurationSetType>
+      <ComputerName>WINVM</ComputerName>
+      <AdminPassword>P2ssw@rd</AdminPassword>
+      <EnableAutomaticUpdates>true</EnableAutomaticUpdates>
+      <StoredCertificateSettings></StoredCertificateSettings>
+      <WinRM>
+        <Listeners>
+          <Listener>
+            <Protocol>Http</Protocol>
+          </Listener>
+        </Listeners>
+      </WinRM>
+      <AdminUsername>azuser</AdminUsername>
+      <InputEndpoints></InputEndpoints>
+      <SubnetNames></SubnetNames>
+      <PublicIPs></PublicIPs>
+    </ConfigurationSet>
+  </ConfigurationSets>
+  <DataVirtualHardDisks></DataVirtualHardDisks>
+  <RoleSize>Standard_D1</RoleSize>
+  <ProvisionGuestAgent>true</ProvisionGuestAgent>
+</Role>`
+
+	if string(bytes) != expected {
+		t.Fatalf("Expected marshalled xml to be %q, but got %q", expected, string(bytes))
+	}
+}
+
+func TestSettingWinRMOverHttpAndHttpsTwice(t *testing.T) {
+	role := NewVMConfiguration("winrmoverhttp", "Standard_D1")
+	ConfigureForWindows(&role, "WINVM", "azuser", "P2ssw@rd", true, "")
+	ConfigureWinRMOverHTTP(&role)
+	ConfigureWinRMOverHTTPS(&role, "")
+	ConfigureWinRMOverHTTP(&role)
+	ConfigureWinRMOverHTTPS(&role, "abcdef")
+
+	bytes, err := xml.MarshalIndent(role, "", "  ")
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	expected := `<Role>
+  <RoleName>winrmoverhttp</RoleName>
+  <RoleType>PersistentVMRole</RoleType>
+  <ConfigurationSets>
+    <ConfigurationSet>
+      <ConfigurationSetType>WindowsProvisioningConfiguration</ConfigurationSetType>
+      <ComputerName>WINVM</ComputerName>
+      <AdminPassword>P2ssw@rd</AdminPassword>
+      <EnableAutomaticUpdates>true</EnableAutomaticUpdates>
+      <StoredCertificateSettings></StoredCertificateSettings>
+      <WinRM>
+        <Listeners>
+          <Listener>
+            <Protocol>Http</Protocol>
+          </Listener>
+          <Listener>
+            <Protocol>Https</Protocol>
+            <CertificateThumbprint>abcdef</CertificateThumbprint>
+          </Listener>
+        </Listeners>
+      </WinRM>
+      <AdminUsername>azuser</AdminUsername>
+      <InputEndpoints></InputEndpoints>
+      <SubnetNames></SubnetNames>
+      <PublicIPs></PublicIPs>
+    </ConfigurationSet>
+  </ConfigurationSets>
+  <DataVirtualHardDisks></DataVirtualHardDisks>
+  <RoleSize>Standard_D1</RoleSize>
+  <ProvisionGuestAgent>true</ProvisionGuestAgent>
+</Role>`
+
+	if string(bytes) != expected {
+		t.Fatalf("Expected marshalled xml to be %q, but got %q", expected, string(bytes))
+	}
+}

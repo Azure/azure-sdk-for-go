@@ -132,9 +132,11 @@ func ConfigureWinRMListener(role *vm.Role, protocol vm.WinRMProtocol, certificat
 		// otherwise append to list of listeners
 		newListeners := append(currentListeners, listener)
 		winconfig.WinRMListeners = &newListeners
+
+		return nil
 	}
 
-	return nil
+	return fmt.Errorf("WindowsProvisioningConfigurationSet not found in 'role'")
 }
 
 func ConfigureWinRMOverHTTP(role *vm.Role) error {

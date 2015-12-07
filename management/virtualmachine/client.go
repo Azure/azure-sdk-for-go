@@ -253,7 +253,7 @@ func (vm VirtualMachineClient) RestartRole(cloudServiceName, deploymentName, rol
 	return vm.client.SendAzurePostRequest(requestURL, restartRoleOperationBytes)
 }
 
-func (vm VirtualMachineClient) DeleteRole(cloudServiceName, deploymentName, roleName string) (management.OperationID, error) {
+func (vm VirtualMachineClient) DeleteRole(cloudServiceName, deploymentName, roleName string, deleteVHD bool) (management.OperationID, error) {
 	if cloudServiceName == "" {
 		return "", fmt.Errorf(errParamNotSpecified, "cloudServiceName")
 	}
@@ -265,6 +265,9 @@ func (vm VirtualMachineClient) DeleteRole(cloudServiceName, deploymentName, role
 	}
 
 	requestURL := fmt.Sprintf(azureRoleURL, cloudServiceName, deploymentName, roleName)
+	if deleteVHD {
+		requestURL += "?comp=media"
+	}
 	return vm.client.SendAzureDeleteRequest(requestURL)
 }
 

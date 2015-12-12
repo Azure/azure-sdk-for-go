@@ -13,8 +13,6 @@ type Client struct {
 }
 
 type ListVirtualMachineImagesResponse struct {
-	XMLName  xml.Name  `xml:"VMImages"`
-	Xmlns    string    `xml:"xmlns,attr"`
 	VMImages []VMImage `xml:"VMImage"`
 }
 
@@ -24,7 +22,7 @@ type VMImage struct {
 	Category               string                  // Specifies the repository classification of the image. All user images have the category User.
 	Description            string                  // Specifies the description of the image.
 	OSDiskConfiguration    OSDiskConfiguration     // Specifies configuration information for the operating system disk that is associated with the image.
-	DataDiskConfigurations []DataDiskConfiguration // Specifies configuration information for the data disks that are associated with the image. A VM Image might not have data disks associated with it.
+	DataDiskConfigurations []DataDiskConfiguration `xml:">DataDiskConfiguration"` // Specifies configuration information for the data disks that are associated with the image. A VM Image might not have data disks associated with it.
 	ServiceName            string                  // Specifies the name of the cloud service that contained the Virtual Machine from which the image was created.
 	DeploymentName         string                  // Specifies the name of the deployment that contained the Virtual Machine from which the image was created.
 	RoleName               string                  // Specifies the name of the Virtual Machine from which the image was created.

@@ -98,9 +98,9 @@ func (c DiskClient) DeleteDataDisk(
 // repository that is associated with the specified subscription
 //
 // https://msdn.microsoft.com/en-us/library/azure/jj157200.aspx
-func (c DiskClient) DeleteDisk(name string, deleteVHD bool) (management.OperationID, error) {
+func (c DiskClient) DeleteDisk(name string, deleteVHD bool) error {
 	if name == "" {
-		return "", fmt.Errorf(errParamNotSpecified, "name")
+		return fmt.Errorf(errParamNotSpecified, "name")
 	}
 
 	requestURL := fmt.Sprintf(deleteDiskURL, name)
@@ -108,7 +108,8 @@ func (c DiskClient) DeleteDisk(name string, deleteVHD bool) (management.Operatio
 		requestURL += "?comp=media"
 	}
 
-	return c.client.SendAzureDeleteRequest(requestURL)
+	_, err := c.client.SendAzureDeleteRequest(requestURL) // request is handled synchronously
+	return err
 }
 
 // GetDataDisk retrieves the specified data disk from a Virtual Machine

@@ -4,6 +4,7 @@ package virtualmachineimage
 import (
 	"encoding/xml"
 	"fmt"
+	"net/url"
 
 	"github.com/Azure/azure-sdk-for-go/management"
 )
@@ -19,10 +20,32 @@ func NewClient(client management.Client) Client {
 	return Client{client}
 }
 
-func (c Client) ListVirtualMachineImages() (ListVirtualMachineImagesResponse, error) {
+//ListVirtualMachineImages lists the available VM images, filtered by the optional parameters.
+//See https://msdn.microsoft.com/en-us/library/azure/dn499770.aspx
+func (c Client) ListVirtualMachineImages(parameters ListParameters) (ListVirtualMachineImagesResponse, error) {
 	var imageList ListVirtualMachineImagesResponse
 
-	response, err := c.SendAzureGetRequest(azureImageListURL)
+	listURL := azureImageListURL
+
+	v := url.Values{}
+	if parameters.Location != "" {
+		v.Add("location", parameters.Location)
+	}
+
+	if parameters.Publisher != "" {
+		v.Add("publisher", parameters.Publisher)
+	}
+
+	if parameters.Category != "" {
+		v.Add("category", parameters.Category)
+	}
+
+	query := v.Encode()
+	if query != "" {
+		listURL = listURL + "?" + query
+	}
+
+	response, err := c.SendAzureGetRequest(listURL)
 	if err != nil {
 		return imageList, err
 	}
@@ -30,6 +53,16 @@ func (c Client) ListVirtualMachineImages() (ListVirtualMachineImagesResponse, er
 	return imageList, err
 }
 
+type ListParameters struct {
+	Location  string
+	Publisher string
+	Category  string
+}
+
+const CategoryUser = "User"
+
+//Capture captures a VM into a VM image. The VM has to be shut down previously.
+//See https://msdn.microsoft.com/en-us/library/azure/dn499768.aspx
 func (c Client) Capture(cloudServiceName, deploymentName, roleName string,
 	name, label string, osState OSState, parameters CaptureParameters) (management.OperationID, error) {
 	if cloudServiceName == "" {

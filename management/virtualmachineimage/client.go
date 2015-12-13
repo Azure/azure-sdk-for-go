@@ -10,9 +10,10 @@ import (
 )
 
 const (
-	azureImageListURL      = "services/vmimages"
-	azureRoleOperationsURL = "services/hostedservices/%s/deployments/%s/roleinstances/%s/operations"
-	errParamNotSpecified   = "Parameter %s is not specified."
+	azureImageListURL         = "services/vmimages"
+	azureImageDeleteURLformat = "services/vmimages/%s"
+	azureRoleOperationsURL    = "services/hostedservices/%s/deployments/%s/roleinstances/%s/operations"
+	errParamNotSpecified      = "Parameter %s is not specified."
 )
 
 //NewClient is used to instantiate a new Client from an Azure client
@@ -51,6 +52,24 @@ func (c Client) ListVirtualMachineImages(parameters ListParameters) (ListVirtual
 	}
 	err = xml.Unmarshal(response, &imageList)
 	return imageList, err
+}
+
+//DeleteVirtualMachineImage deletes the named VM image. If deleteVHDs is specified,
+//the referenced OS and data disks are also deleted.
+//See https://msdn.microsoft.com/en-us/library/azure/dn499769.aspx
+func (c Client) DeleteVirtualMachineImage(name string, deleteVHDs bool) error {
+	if name == "" {
+		return fmt.Errorf(errParamNotSpecified, "name")
+	}
+
+	uri := fmt.Sprintf(azureImageDeleteURLformat, name)
+
+	if deleteVHDs {
+		uri = uri + "?comp=media"
+	}
+
+	_, err := c.SendAzureDeleteRequest(uri) // delete is synchronous for this operation
+	return err
 }
 
 type ListParameters struct {

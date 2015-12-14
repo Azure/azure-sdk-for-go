@@ -103,37 +103,58 @@ func (client client) createHTTPClient() *http.Client {
 // HTTP client and parameters. It returns the response from the call or an
 // error.
 func (client client) sendRequest(httpClient *http.Client, url, requestType, contentType string, data []byte, numberOfRetries int) (*http.Response, error) {
-	request, reqErr := client.createAzureRequest(url, requestType, contentType, data)
-	if reqErr != nil {
-		return nil, reqErr
-	}
 
-	response, err := httpClient.Do(request)
-	if err != nil {
-		if numberOfRetries == 0 {
-			return nil, err
+	absURI := client.createAzureRequestURI(url)
+
+	for {
+		request, reqErr := client.createAzureRequest(absURI, requestType, contentType, data)
+		if reqErr != nil {
+			return nil, reqErr
 		}
 
-		return client.sendRequest(httpClient, url, requestType, contentType, data, numberOfRetries-1)
-	}
-
-	if response.StatusCode >= http.StatusBadRequest {
-		body, err := getResponseBody(response)
+		response, err := httpClient.Do(request)
 		if err != nil {
-			// Failed to read the response body
-			return nil, err
-		}
-		azureErr := getAzureError(body)
-		if azureErr != nil {
 			if numberOfRetries == 0 {
-				return nil, azureErr
+				return nil, err
 			}
 
 			return client.sendRequest(httpClient, url, requestType, contentType, data, numberOfRetries-1)
 		}
-	}
+		if response.StatusCode == http.StatusTemporaryRedirect {
+			// ASM's way of moving traffic around, see https://msdn.microsoft.com/en-us/library/azure/ee460801.aspx
+			// Only handled automatically for GET/HEAD requests. This is for the rest of the http verbs.
+			u, err := response.Location()
+			if err != nil {
+				return response, fmt.Errorf("Redirect requested but location header could not be retrieved: %v", err)
+			}
+			absURI = u.String()
+			continue // re-issue request
+		}
 
-	return response, nil
+		if response.StatusCode >= http.StatusBadRequest {
+			body, err := getResponseBody(response)
+			if err != nil {
+				// Failed to read the response body
+				return nil, err
+			}
+			azureErr := getAzureError(body)
+			if azureErr != nil {
+				if numberOfRetries == 0 {
+					return nil, azureErr
+				}
+
+				return client.sendRequest(httpClient, url, requestType, contentType, data, numberOfRetries-1)
+			}
+		}
+
+		return response, nil
+	}
+}
+
+// createAzureRequestURI constructs the request uri using the management API endpoint and
+// subscription ID associated with the client.
+func (client client) createAzureRequestURI(url string) string {
+	return fmt.Sprintf("%s/%s/%s", client.config.ManagementURL, client.publishSettings.SubscriptionID, url)
 }
 
 // createAzureRequest packages up the request with the correct set of headers and returns
@@ -142,7 +163,6 @@ func (client client) createAzureRequest(url string, requestType string, contentT
 	var request *http.Request
 	var err error
 
-	url = fmt.Sprintf("%s/%s/%s", client.config.ManagementURL, client.publishSettings.SubscriptionID, url)
 	if data != nil {
 		body := bytes.NewBuffer(data)
 		request, err = http.NewRequest(requestType, url, body)

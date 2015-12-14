@@ -128,7 +128,7 @@ func TestNewLinuxVmPlatformImage(t *testing.T) {
 
 func TestNewVmFromVMImage(t *testing.T) {
 	role := NewVMConfiguration("restoredbackup", "Standard_D1")
-	ConfigureDeploymentFromVMImage(&role, "myvm-backup-20150209",
+	ConfigureDeploymentFromPublishedVMImage(&role, "myvm-backup-20150209",
 		"http://mystorageacct.blob.core.windows.net/vhds/myoldnewvm.vhd", false)
 
 	bytes, err := xml.MarshalIndent(role, "", "  ")

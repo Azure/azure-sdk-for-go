@@ -371,7 +371,8 @@ func serviceErrFromXML(body []byte, statusCode int, requestID string) (AzureStor
 }
 
 func (e AzureStorageServiceError) Error() string {
-	return fmt.Sprintf("storage: service returned error: StatusCode=%d, ErrorCode=%s, ErrorMessage=%s, RequestId=%s", e.StatusCode, e.Code, e.Message, e.RequestID)
+	return fmt.Sprintf("storage: service returned error: StatusCode=%d, ErrorCode=%s, ErrorMessage=%s, RequestId=%s, QueryParameterName=%s, QueryParameterValue=%s", 
+        e.StatusCode, e.Code, e.Message, e.RequestID, e.QueryParameterName, e.QueryParameterValue)
 }
 
 // checkRespCode returns UnexpectedStatusError if the given response code is not

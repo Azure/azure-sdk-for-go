@@ -50,9 +50,9 @@ func ConfigureDeploymentFromPlatformImage(
 	return nil
 }
 
-// ConfigureDeploymentFromVMImage configures VM Role to deploy from a previously
-// captured VM image.
-func ConfigureDeploymentFromVMImage(
+// ConfigureDeploymentFromPublishedVMImage configures VM Role to deploy from
+// a published (public) VM image.
+func ConfigureDeploymentFromPublishedVMImage(
 	role *vm.Role,
 	vmImageName string,
 	mediaLocation string,
@@ -64,6 +64,19 @@ func ConfigureDeploymentFromVMImage(
 	role.VMImageName = vmImageName
 	role.MediaLocation = mediaLocation
 	role.ProvisionGuestAgent = provisionGuestAgent
+	return nil
+}
+
+// ConfigureDeploymentFromUserVMImage configures VM Role to deploy from a previously
+// captured (user generated) VM image.
+func ConfigureDeploymentFromUserVMImage(
+	role *vm.Role,
+	vmImageName string) error {
+	if role == nil {
+		return fmt.Errorf(errParamNotSpecified, "role")
+	}
+
+	role.VMImageName = vmImageName
 	return nil
 }
 

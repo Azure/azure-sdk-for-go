@@ -649,7 +649,14 @@ func (b BlobStorageClient) CreateBlockBlobFromReader(container, name string, siz
 //
 // See https://msdn.microsoft.com/en-us/library/azure/dd135726.aspx
 func (b BlobStorageClient) PutBlock(container, name, blockID string, chunk []byte) error {
-	return b.PutBlockWithLength(container, name, blockID, uint64(len(chunk)), bytes.NewReader(chunk))
+	return b.PutBlockWithLength(container, name, blockID, uint64(len(chunk)), bytes.NewReader(chunk), nil)
+}
+
+func (b BlobStorageClient) PutBlockWithContentType(container, name, blockID string, chunk []byte, contentType string) error {
+	m := make(map[string]string)
+	m["Content-Type"] = contentType
+
+	return b.PutBlockWithLength(container, name, blockID, uint64(len(chunk)), bytes.NewReader(chunk), m)
 }
 
 // PutBlockWithLength saves the given data stream of exactly specified size to
@@ -660,11 +667,15 @@ func (b BlobStorageClient) PutBlock(container, name, blockID string, chunk []byt
 // checked by the SDK).
 //
 // See https://msdn.microsoft.com/en-us/library/azure/dd135726.aspx
-func (b BlobStorageClient) PutBlockWithLength(container, name, blockID string, size uint64, blob io.Reader) error {
+func (b BlobStorageClient) PutBlockWithLength(container, name, blockID string, size uint64, blob io.Reader, extraHeaders map[string]string) error {
 	uri := b.client.getEndpoint(blobServiceName, pathForBlob(container, name), url.Values{"comp": {"block"}, "blockid": {blockID}})
 	headers := b.client.getStandardHeaders()
 	headers["x-ms-blob-type"] = string(BlobTypeBlock)
 	headers["Content-Length"] = fmt.Sprintf("%v", size)
+
+	for k, v := range extraHeaders {
+		headers[k] = v
+	}
 
 	resp, err := b.client.exec("PUT", uri, headers, blob)
 	if err != nil {

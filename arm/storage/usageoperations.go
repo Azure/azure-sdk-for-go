@@ -43,29 +43,28 @@ func NewUsageOperationsClientWithBaseURI(baseURI string, subscriptionID string) 
 
 // List gets the current usage count and the limit for the resources under the
 // subscription.
-//
-func (client UsageOperationsClient) List(apiVersion string) (result UsageListResult, ae error) {
-	req, err := client.ListPreparer(apiVersion)
+func (client UsageOperationsClient) List() (result UsageListResult, ae error) {
+	req, err := client.ListPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "storage/UsageOperationsClient", "List", "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "storage/UsageOperationsClient", "List", autorest.UndefinedStatusCode, "Failure preparing request")
 	}
 
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "storage/UsageOperationsClient", "List", "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "storage/UsageOperationsClient", "List", resp.StatusCode, "Failure sending request")
 	}
 
 	result, err = client.ListResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "storage/UsageOperationsClient", "List", "Failure responding to request")
+		ae = autorest.NewErrorWithError(err, "storage/UsageOperationsClient", "List", resp.StatusCode, "Failure responding to request")
 	}
 
 	return
 }
 
 // ListPreparer prepares the List request.
-func (client UsageOperationsClient) ListPreparer(apiVersion string) (*http.Request, error) {
+func (client UsageOperationsClient) ListPreparer() (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"subscriptionId": url.QueryEscape(client.SubscriptionID),
 	}

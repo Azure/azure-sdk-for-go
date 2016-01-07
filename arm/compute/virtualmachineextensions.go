@@ -51,18 +51,18 @@ func NewVirtualMachineExtensionsClientWithBaseURI(baseURI string, subscriptionID
 func (client VirtualMachineExtensionsClient) CreateOrUpdate(resourceGroupName string, vmName string, vmExtensionName string, extensionParameters VirtualMachineExtension) (result VirtualMachineExtension, ae error) {
 	req, err := client.CreateOrUpdatePreparer(resourceGroupName, vmName, vmExtensionName, extensionParameters)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "compute/VirtualMachineExtensionsClient", "CreateOrUpdate", "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "compute/VirtualMachineExtensionsClient", "CreateOrUpdate", autorest.UndefinedStatusCode, "Failure preparing request")
 	}
 
 	resp, err := client.CreateOrUpdateSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "compute/VirtualMachineExtensionsClient", "CreateOrUpdate", "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "compute/VirtualMachineExtensionsClient", "CreateOrUpdate", resp.StatusCode, "Failure sending request")
 	}
 
 	result, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "compute/VirtualMachineExtensionsClient", "CreateOrUpdate", "Failure responding to request")
+		ae = autorest.NewErrorWithError(err, "compute/VirtualMachineExtensionsClient", "CreateOrUpdate", resp.StatusCode, "Failure responding to request")
 	}
 
 	return
@@ -118,18 +118,18 @@ func (client VirtualMachineExtensionsClient) CreateOrUpdateResponder(resp *http.
 func (client VirtualMachineExtensionsClient) Delete(resourceGroupName string, vmName string, vmExtensionName string) (result autorest.Response, ae error) {
 	req, err := client.DeletePreparer(resourceGroupName, vmName, vmExtensionName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "compute/VirtualMachineExtensionsClient", "Delete", "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "compute/VirtualMachineExtensionsClient", "Delete", autorest.UndefinedStatusCode, "Failure preparing request")
 	}
 
 	resp, err := client.DeleteSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "compute/VirtualMachineExtensionsClient", "Delete", "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "compute/VirtualMachineExtensionsClient", "Delete", resp.StatusCode, "Failure sending request")
 	}
 
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "compute/VirtualMachineExtensionsClient", "Delete", "Failure responding to request")
+		ae = autorest.NewErrorWithError(err, "compute/VirtualMachineExtensionsClient", "Delete", resp.StatusCode, "Failure responding to request")
 	}
 
 	return
@@ -184,18 +184,18 @@ func (client VirtualMachineExtensionsClient) DeleteResponder(resp *http.Response
 func (client VirtualMachineExtensionsClient) Get(resourceGroupName string, vmName string, vmExtensionName string, expand string) (result VirtualMachineExtension, ae error) {
 	req, err := client.GetPreparer(resourceGroupName, vmName, vmExtensionName, expand)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "compute/VirtualMachineExtensionsClient", "Get", "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "compute/VirtualMachineExtensionsClient", "Get", autorest.UndefinedStatusCode, "Failure preparing request")
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "compute/VirtualMachineExtensionsClient", "Get", "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "compute/VirtualMachineExtensionsClient", "Get", resp.StatusCode, "Failure sending request")
 	}
 
 	result, err = client.GetResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "compute/VirtualMachineExtensionsClient", "Get", "Failure responding to request")
+		ae = autorest.NewErrorWithError(err, "compute/VirtualMachineExtensionsClient", "Get", resp.StatusCode, "Failure responding to request")
 	}
 
 	return

@@ -53,18 +53,18 @@ func NewDomainsClientWithBaseURI(baseURI string, subscriptionID string) DomainsC
 func (client DomainsClient) CreateOrUpdateDomain(resourceGroupName string, domainName string, domain Domain) (result Domain, ae error) {
 	req, err := client.CreateOrUpdateDomainPreparer(resourceGroupName, domainName, domain)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web/DomainsClient", "CreateOrUpdateDomain", "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "web/DomainsClient", "CreateOrUpdateDomain", autorest.UndefinedStatusCode, "Failure preparing request")
 	}
 
 	resp, err := client.CreateOrUpdateDomainSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web/DomainsClient", "CreateOrUpdateDomain", "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "web/DomainsClient", "CreateOrUpdateDomain", resp.StatusCode, "Failure sending request")
 	}
 
 	result, err = client.CreateOrUpdateDomainResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "web/DomainsClient", "CreateOrUpdateDomain", "Failure responding to request")
+		ae = autorest.NewErrorWithError(err, "web/DomainsClient", "CreateOrUpdateDomain", resp.StatusCode, "Failure responding to request")
 	}
 
 	return
@@ -119,18 +119,18 @@ func (client DomainsClient) CreateOrUpdateDomainResponder(resp *http.Response) (
 func (client DomainsClient) DeleteDomain(resourceGroupName string, domainName string, forceHardDeleteDomain *bool) (result ObjectSet, ae error) {
 	req, err := client.DeleteDomainPreparer(resourceGroupName, domainName, forceHardDeleteDomain)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web/DomainsClient", "DeleteDomain", "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "web/DomainsClient", "DeleteDomain", autorest.UndefinedStatusCode, "Failure preparing request")
 	}
 
 	resp, err := client.DeleteDomainSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web/DomainsClient", "DeleteDomain", "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "web/DomainsClient", "DeleteDomain", resp.StatusCode, "Failure sending request")
 	}
 
 	result, err = client.DeleteDomainResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "web/DomainsClient", "DeleteDomain", "Failure responding to request")
+		ae = autorest.NewErrorWithError(err, "web/DomainsClient", "DeleteDomain", resp.StatusCode, "Failure responding to request")
 	}
 
 	return
@@ -186,18 +186,18 @@ func (client DomainsClient) DeleteDomainResponder(resp *http.Response) (result O
 func (client DomainsClient) GetDomain(resourceGroupName string, domainName string) (result Domain, ae error) {
 	req, err := client.GetDomainPreparer(resourceGroupName, domainName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web/DomainsClient", "GetDomain", "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "web/DomainsClient", "GetDomain", autorest.UndefinedStatusCode, "Failure preparing request")
 	}
 
 	resp, err := client.GetDomainSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web/DomainsClient", "GetDomain", "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "web/DomainsClient", "GetDomain", resp.StatusCode, "Failure sending request")
 	}
 
 	result, err = client.GetDomainResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "web/DomainsClient", "GetDomain", "Failure responding to request")
+		ae = autorest.NewErrorWithError(err, "web/DomainsClient", "GetDomain", resp.StatusCode, "Failure responding to request")
 	}
 
 	return
@@ -250,18 +250,18 @@ func (client DomainsClient) GetDomainResponder(resp *http.Response) (result Doma
 func (client DomainsClient) GetDomainOperation(resourceGroupName string, domainName string, operationID string) (result Domain, ae error) {
 	req, err := client.GetDomainOperationPreparer(resourceGroupName, domainName, operationID)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web/DomainsClient", "GetDomainOperation", "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "web/DomainsClient", "GetDomainOperation", autorest.UndefinedStatusCode, "Failure preparing request")
 	}
 
 	resp, err := client.GetDomainOperationSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web/DomainsClient", "GetDomainOperation", "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "web/DomainsClient", "GetDomainOperation", resp.StatusCode, "Failure sending request")
 	}
 
 	result, err = client.GetDomainOperationResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "web/DomainsClient", "GetDomainOperation", "Failure responding to request")
+		ae = autorest.NewErrorWithError(err, "web/DomainsClient", "GetDomainOperation", resp.StatusCode, "Failure responding to request")
 	}
 
 	return
@@ -314,18 +314,18 @@ func (client DomainsClient) GetDomainOperationResponder(resp *http.Response) (re
 func (client DomainsClient) GetDomains(resourceGroupName string) (result DomainCollection, ae error) {
 	req, err := client.GetDomainsPreparer(resourceGroupName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web/DomainsClient", "GetDomains", "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "web/DomainsClient", "GetDomains", autorest.UndefinedStatusCode, "Failure preparing request")
 	}
 
 	resp, err := client.GetDomainsSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web/DomainsClient", "GetDomains", "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "web/DomainsClient", "GetDomains", resp.StatusCode, "Failure sending request")
 	}
 
 	result, err = client.GetDomainsResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "web/DomainsClient", "GetDomains", "Failure responding to request")
+		ae = autorest.NewErrorWithError(err, "web/DomainsClient", "GetDomains", resp.StatusCode, "Failure responding to request")
 	}
 
 	return
@@ -377,18 +377,18 @@ func (client DomainsClient) GetDomainsResponder(resp *http.Response) (result Dom
 func (client DomainsClient) UpdateDomain(resourceGroupName string, domainName string, domain Domain) (result Domain, ae error) {
 	req, err := client.UpdateDomainPreparer(resourceGroupName, domainName, domain)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web/DomainsClient", "UpdateDomain", "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "web/DomainsClient", "UpdateDomain", autorest.UndefinedStatusCode, "Failure preparing request")
 	}
 
 	resp, err := client.UpdateDomainSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web/DomainsClient", "UpdateDomain", "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "web/DomainsClient", "UpdateDomain", resp.StatusCode, "Failure sending request")
 	}
 
 	result, err = client.UpdateDomainResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "web/DomainsClient", "UpdateDomain", "Failure responding to request")
+		ae = autorest.NewErrorWithError(err, "web/DomainsClient", "UpdateDomain", resp.StatusCode, "Failure responding to request")
 	}
 
 	return

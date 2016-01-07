@@ -47,18 +47,18 @@ func NewVirtualMachineSizesClientWithBaseURI(baseURI string, subscriptionID stri
 func (client VirtualMachineSizesClient) List(location string) (result VirtualMachineSizeListResult, ae error) {
 	req, err := client.ListPreparer(location)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "compute/VirtualMachineSizesClient", "List", "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "compute/VirtualMachineSizesClient", "List", autorest.UndefinedStatusCode, "Failure preparing request")
 	}
 
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "compute/VirtualMachineSizesClient", "List", "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "compute/VirtualMachineSizesClient", "List", resp.StatusCode, "Failure sending request")
 	}
 
 	result, err = client.ListResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "compute/VirtualMachineSizesClient", "List", "Failure responding to request")
+		ae = autorest.NewErrorWithError(err, "compute/VirtualMachineSizesClient", "List", resp.StatusCode, "Failure responding to request")
 	}
 
 	return
@@ -100,5 +100,29 @@ func (client VirtualMachineSizesClient) ListResponder(resp *http.Response) (resu
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// ListNextResults retrieves the next set of results, if any.
+func (client VirtualMachineSizesClient) ListNextResults(lastResults VirtualMachineSizeListResult) (result VirtualMachineSizeListResult, ae error) {
+	req, err := lastResults.VirtualMachineSizeListResultPreparer()
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "compute/VirtualMachineSizesClient", "List", autorest.UndefinedStatusCode, "Failure preparing next results request request")
+	}
+	if req == nil {
+		return
+	}
+
+	resp, err := client.ListSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "compute/VirtualMachineSizesClient", "List", resp.StatusCode, "Failure sending next results request request")
+	}
+
+	result, err = client.ListResponder(resp)
+	if err != nil {
+		ae = autorest.NewErrorWithError(err, "compute/VirtualMachineSizesClient", "List", resp.StatusCode, "Failure responding to next results request request")
+	}
+
 	return
 }

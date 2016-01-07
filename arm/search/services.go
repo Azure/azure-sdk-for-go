@@ -52,18 +52,18 @@ func NewServicesClientWithBaseURI(baseURI string, subscriptionID string) Service
 func (client ServicesClient) CreateOrUpdate(resourceGroupName string, serviceName string, parameters ServiceCreateOrUpdateParameters) (result ServiceResource, ae error) {
 	req, err := client.CreateOrUpdatePreparer(resourceGroupName, serviceName, parameters)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "search/ServicesClient", "CreateOrUpdate", "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "search/ServicesClient", "CreateOrUpdate", autorest.UndefinedStatusCode, "Failure preparing request")
 	}
 
 	resp, err := client.CreateOrUpdateSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "search/ServicesClient", "CreateOrUpdate", "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "search/ServicesClient", "CreateOrUpdate", resp.StatusCode, "Failure sending request")
 	}
 
 	result, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "search/ServicesClient", "CreateOrUpdate", "Failure responding to request")
+		ae = autorest.NewErrorWithError(err, "search/ServicesClient", "CreateOrUpdate", resp.StatusCode, "Failure responding to request")
 	}
 
 	return
@@ -118,18 +118,18 @@ func (client ServicesClient) CreateOrUpdateResponder(resp *http.Response) (resul
 func (client ServicesClient) Delete(resourceGroupName string, serviceName string) (result autorest.Response, ae error) {
 	req, err := client.DeletePreparer(resourceGroupName, serviceName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "search/ServicesClient", "Delete", "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "search/ServicesClient", "Delete", autorest.UndefinedStatusCode, "Failure preparing request")
 	}
 
 	resp, err := client.DeleteSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "search/ServicesClient", "Delete", "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "search/ServicesClient", "Delete", resp.StatusCode, "Failure sending request")
 	}
 
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "search/ServicesClient", "Delete", "Failure responding to request")
+		ae = autorest.NewErrorWithError(err, "search/ServicesClient", "Delete", resp.StatusCode, "Failure responding to request")
 	}
 
 	return
@@ -181,18 +181,18 @@ func (client ServicesClient) DeleteResponder(resp *http.Response) (result autore
 func (client ServicesClient) List(resourceGroupName string) (result ServiceListResult, ae error) {
 	req, err := client.ListPreparer(resourceGroupName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "search/ServicesClient", "List", "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "search/ServicesClient", "List", autorest.UndefinedStatusCode, "Failure preparing request")
 	}
 
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "search/ServicesClient", "List", "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "search/ServicesClient", "List", resp.StatusCode, "Failure sending request")
 	}
 
 	result, err = client.ListResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "search/ServicesClient", "List", "Failure responding to request")
+		ae = autorest.NewErrorWithError(err, "search/ServicesClient", "List", resp.StatusCode, "Failure responding to request")
 	}
 
 	return

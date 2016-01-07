@@ -63,18 +63,18 @@ func NewWithBaseURI(baseURI string, subscriptionID string) ManagementClient {
 func (client ManagementClient) CreateOrUpdate(resourceGroupName string, name string, parameters CreateOrUpdateParameters) (result ResourceWithAccessKey, ae error) {
 	req, err := client.CreateOrUpdatePreparer(resourceGroupName, name, parameters)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "redis/ManagementClient", "CreateOrUpdate", "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "redis/ManagementClient", "CreateOrUpdate", autorest.UndefinedStatusCode, "Failure preparing request")
 	}
 
 	resp, err := client.CreateOrUpdateSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "redis/ManagementClient", "CreateOrUpdate", "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "redis/ManagementClient", "CreateOrUpdate", resp.StatusCode, "Failure sending request")
 	}
 
 	result, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "redis/ManagementClient", "CreateOrUpdate", "Failure responding to request")
+		ae = autorest.NewErrorWithError(err, "redis/ManagementClient", "CreateOrUpdate", resp.StatusCode, "Failure responding to request")
 	}
 
 	return
@@ -128,18 +128,18 @@ func (client ManagementClient) CreateOrUpdateResponder(resp *http.Response) (res
 func (client ManagementClient) Delete(resourceGroupName string, name string) (result autorest.Response, ae error) {
 	req, err := client.DeletePreparer(resourceGroupName, name)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "redis/ManagementClient", "Delete", "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "redis/ManagementClient", "Delete", autorest.UndefinedStatusCode, "Failure preparing request")
 	}
 
 	resp, err := client.DeleteSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "redis/ManagementClient", "Delete", "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "redis/ManagementClient", "Delete", resp.StatusCode, "Failure sending request")
 	}
 
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "redis/ManagementClient", "Delete", "Failure responding to request")
+		ae = autorest.NewErrorWithError(err, "redis/ManagementClient", "Delete", resp.StatusCode, "Failure responding to request")
 	}
 
 	return
@@ -191,18 +191,18 @@ func (client ManagementClient) DeleteResponder(resp *http.Response) (result auto
 func (client ManagementClient) Get(resourceGroupName string, name string) (result ResourceType, ae error) {
 	req, err := client.GetPreparer(resourceGroupName, name)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "redis/ManagementClient", "Get", "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "redis/ManagementClient", "Get", autorest.UndefinedStatusCode, "Failure preparing request")
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "redis/ManagementClient", "Get", "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "redis/ManagementClient", "Get", resp.StatusCode, "Failure sending request")
 	}
 
 	result, err = client.GetResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "redis/ManagementClient", "Get", "Failure responding to request")
+		ae = autorest.NewErrorWithError(err, "redis/ManagementClient", "Get", resp.StatusCode, "Failure responding to request")
 	}
 
 	return
@@ -252,18 +252,18 @@ func (client ManagementClient) GetResponder(resp *http.Response) (result Resourc
 func (client ManagementClient) List() (result ListResult, ae error) {
 	req, err := client.ListPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "redis/ManagementClient", "List", "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "redis/ManagementClient", "List", autorest.UndefinedStatusCode, "Failure preparing request")
 	}
 
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "redis/ManagementClient", "List", "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "redis/ManagementClient", "List", resp.StatusCode, "Failure sending request")
 	}
 
 	result, err = client.ListResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "redis/ManagementClient", "List", "Failure responding to request")
+		ae = autorest.NewErrorWithError(err, "redis/ManagementClient", "List", resp.StatusCode, "Failure responding to request")
 	}
 
 	return
@@ -311,7 +311,7 @@ func (client ManagementClient) ListResponder(resp *http.Response) (result ListRe
 func (client ManagementClient) ListNextResults(lastResults ListResult) (result ListResult, ae error) {
 	req, err := lastResults.ListResultPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "redis/ManagementClient", "List", "Failure preparing next results request request")
+		return result, autorest.NewErrorWithError(err, "redis/ManagementClient", "List", autorest.UndefinedStatusCode, "Failure preparing next results request request")
 	}
 	if req == nil {
 		return
@@ -320,12 +320,12 @@ func (client ManagementClient) ListNextResults(lastResults ListResult) (result L
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "redis/ManagementClient", "List", "Failure sending next results request request")
+		return result, autorest.NewErrorWithError(err, "redis/ManagementClient", "List", resp.StatusCode, "Failure sending next results request request")
 	}
 
 	result, err = client.ListResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "redis/ManagementClient", "List", "Failure responding to next results request request")
+		ae = autorest.NewErrorWithError(err, "redis/ManagementClient", "List", resp.StatusCode, "Failure responding to next results request request")
 	}
 
 	return
@@ -337,18 +337,18 @@ func (client ManagementClient) ListNextResults(lastResults ListResult) (result L
 func (client ManagementClient) ListByResourceGroup(resourceGroupName string) (result ListResult, ae error) {
 	req, err := client.ListByResourceGroupPreparer(resourceGroupName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "redis/ManagementClient", "ListByResourceGroup", "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "redis/ManagementClient", "ListByResourceGroup", autorest.UndefinedStatusCode, "Failure preparing request")
 	}
 
 	resp, err := client.ListByResourceGroupSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "redis/ManagementClient", "ListByResourceGroup", "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "redis/ManagementClient", "ListByResourceGroup", resp.StatusCode, "Failure sending request")
 	}
 
 	result, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "redis/ManagementClient", "ListByResourceGroup", "Failure responding to request")
+		ae = autorest.NewErrorWithError(err, "redis/ManagementClient", "ListByResourceGroup", resp.StatusCode, "Failure responding to request")
 	}
 
 	return
@@ -397,7 +397,7 @@ func (client ManagementClient) ListByResourceGroupResponder(resp *http.Response)
 func (client ManagementClient) ListByResourceGroupNextResults(lastResults ListResult) (result ListResult, ae error) {
 	req, err := lastResults.ListResultPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "redis/ManagementClient", "ListByResourceGroup", "Failure preparing next results request request")
+		return result, autorest.NewErrorWithError(err, "redis/ManagementClient", "ListByResourceGroup", autorest.UndefinedStatusCode, "Failure preparing next results request request")
 	}
 	if req == nil {
 		return
@@ -406,12 +406,12 @@ func (client ManagementClient) ListByResourceGroupNextResults(lastResults ListRe
 	resp, err := client.ListByResourceGroupSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "redis/ManagementClient", "ListByResourceGroup", "Failure sending next results request request")
+		return result, autorest.NewErrorWithError(err, "redis/ManagementClient", "ListByResourceGroup", resp.StatusCode, "Failure sending next results request request")
 	}
 
 	result, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "redis/ManagementClient", "ListByResourceGroup", "Failure responding to next results request request")
+		ae = autorest.NewErrorWithError(err, "redis/ManagementClient", "ListByResourceGroup", resp.StatusCode, "Failure responding to next results request request")
 	}
 
 	return
@@ -425,18 +425,18 @@ func (client ManagementClient) ListByResourceGroupNextResults(lastResults ListRe
 func (client ManagementClient) ListKeys(resourceGroupName string, name string) (result ListKeysResult, ae error) {
 	req, err := client.ListKeysPreparer(resourceGroupName, name)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "redis/ManagementClient", "ListKeys", "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "redis/ManagementClient", "ListKeys", autorest.UndefinedStatusCode, "Failure preparing request")
 	}
 
 	resp, err := client.ListKeysSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "redis/ManagementClient", "ListKeys", "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "redis/ManagementClient", "ListKeys", resp.StatusCode, "Failure sending request")
 	}
 
 	result, err = client.ListKeysResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "redis/ManagementClient", "ListKeys", "Failure responding to request")
+		ae = autorest.NewErrorWithError(err, "redis/ManagementClient", "ListKeys", resp.StatusCode, "Failure responding to request")
 	}
 
 	return
@@ -490,18 +490,18 @@ func (client ManagementClient) ListKeysResponder(resp *http.Response) (result Li
 func (client ManagementClient) RegenerateKey(resourceGroupName string, name string, parameters RegenerateKeyParameters) (result ListKeysResult, ae error) {
 	req, err := client.RegenerateKeyPreparer(resourceGroupName, name, parameters)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "redis/ManagementClient", "RegenerateKey", "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "redis/ManagementClient", "RegenerateKey", autorest.UndefinedStatusCode, "Failure preparing request")
 	}
 
 	resp, err := client.RegenerateKeySender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "redis/ManagementClient", "RegenerateKey", "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "redis/ManagementClient", "RegenerateKey", resp.StatusCode, "Failure sending request")
 	}
 
 	result, err = client.RegenerateKeyResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "redis/ManagementClient", "RegenerateKey", "Failure responding to request")
+		ae = autorest.NewErrorWithError(err, "redis/ManagementClient", "RegenerateKey", resp.StatusCode, "Failure responding to request")
 	}
 
 	return

@@ -160,6 +160,6 @@ func (c *Sender) SetResponse(resp *http.Response) {
 
 // T is a simple testing struct.
 type T struct {
-	Name string `json:"name"`
-	Age  int    `json:"age"`
+	Name string `json:"name" xml:"Name"`
+	Age  int    `json:"age" xml:"Age"`
 }

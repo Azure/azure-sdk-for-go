@@ -26,16 +26,16 @@ import (
 
 const (
 	// APIVersion is the version of the Network
-	APIVersion = "2015-05-01-preview"
+	APIVersion = "2015-06-15"
 
 	// DefaultBaseURI is the default URI used for the service Network
 	DefaultBaseURI = "https://management.azure.com"
 )
 
-// ManagementClient is the the Windows Azure Network management API provides a
-// RESTful set of web services that interact with Windows Azure Networks
+// ManagementClient is the the Microsoft Azure Network management API provides
+// a RESTful set of web services that interact with Microsoft Azure Networks
 // service to manage your network resrources. The API has entities that
-// capture the relationship between an end user and the Windows Azure
+// capture the relationship between an end user and the Microsoft Azure
 // Networks service.
 type ManagementClient struct {
 	autorest.Client
@@ -66,18 +66,18 @@ func NewWithBaseURI(baseURI string, subscriptionID string) ManagementClient {
 func (client ManagementClient) CheckDNSNameAvailability(location string, domainNameLabel string) (result DNSNameAvailabilityResult, ae error) {
 	req, err := client.CheckDNSNameAvailabilityPreparer(location, domainNameLabel)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "network/ManagementClient", "CheckDNSNameAvailability", "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "network/ManagementClient", "CheckDNSNameAvailability", autorest.UndefinedStatusCode, "Failure preparing request")
 	}
 
 	resp, err := client.CheckDNSNameAvailabilitySender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "network/ManagementClient", "CheckDNSNameAvailability", "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "network/ManagementClient", "CheckDNSNameAvailability", resp.StatusCode, "Failure sending request")
 	}
 
 	result, err = client.CheckDNSNameAvailabilityResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "network/ManagementClient", "CheckDNSNameAvailability", "Failure responding to request")
+		ae = autorest.NewErrorWithError(err, "network/ManagementClient", "CheckDNSNameAvailability", resp.StatusCode, "Failure responding to request")
 	}
 
 	return

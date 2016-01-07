@@ -53,18 +53,18 @@ func NewGlobalResourceGroupsClientWithBaseURI(baseURI string, subscriptionID str
 func (client GlobalResourceGroupsClient) MoveResources(resourceGroupName string, moveResourceEnvelope CsmMoveResourceEnvelope) (result autorest.Response, ae error) {
 	req, err := client.MoveResourcesPreparer(resourceGroupName, moveResourceEnvelope)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web/GlobalResourceGroupsClient", "MoveResources", "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "web/GlobalResourceGroupsClient", "MoveResources", autorest.UndefinedStatusCode, "Failure preparing request")
 	}
 
 	resp, err := client.MoveResourcesSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "web/GlobalResourceGroupsClient", "MoveResources", "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "web/GlobalResourceGroupsClient", "MoveResources", resp.StatusCode, "Failure sending request")
 	}
 
 	result, err = client.MoveResourcesResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "web/GlobalResourceGroupsClient", "MoveResources", "Failure responding to request")
+		ae = autorest.NewErrorWithError(err, "web/GlobalResourceGroupsClient", "MoveResources", resp.StatusCode, "Failure responding to request")
 	}
 
 	return

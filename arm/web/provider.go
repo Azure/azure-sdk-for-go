@@ -51,18 +51,18 @@ func NewProviderClientWithBaseURI(baseURI string, subscriptionID string) Provide
 func (client ProviderClient) GetPublishingUser() (result User, ae error) {
 	req, err := client.GetPublishingUserPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web/ProviderClient", "GetPublishingUser", "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "web/ProviderClient", "GetPublishingUser", autorest.UndefinedStatusCode, "Failure preparing request")
 	}
 
 	resp, err := client.GetPublishingUserSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web/ProviderClient", "GetPublishingUser", "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "web/ProviderClient", "GetPublishingUser", resp.StatusCode, "Failure sending request")
 	}
 
 	result, err = client.GetPublishingUserResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "web/ProviderClient", "GetPublishingUser", "Failure responding to request")
+		ae = autorest.NewErrorWithError(err, "web/ProviderClient", "GetPublishingUser", resp.StatusCode, "Failure responding to request")
 	}
 
 	return
@@ -107,18 +107,18 @@ func (client ProviderClient) GetPublishingUserResponder(resp *http.Response) (re
 func (client ProviderClient) GetSourceControl(sourceControlType string) (result SourceControl, ae error) {
 	req, err := client.GetSourceControlPreparer(sourceControlType)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web/ProviderClient", "GetSourceControl", "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "web/ProviderClient", "GetSourceControl", autorest.UndefinedStatusCode, "Failure preparing request")
 	}
 
 	resp, err := client.GetSourceControlSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web/ProviderClient", "GetSourceControl", "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "web/ProviderClient", "GetSourceControl", resp.StatusCode, "Failure sending request")
 	}
 
 	result, err = client.GetSourceControlResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "web/ProviderClient", "GetSourceControl", "Failure responding to request")
+		ae = autorest.NewErrorWithError(err, "web/ProviderClient", "GetSourceControl", resp.StatusCode, "Failure responding to request")
 	}
 
 	return
@@ -166,18 +166,18 @@ func (client ProviderClient) GetSourceControlResponder(resp *http.Response) (res
 func (client ProviderClient) GetSourceControls() (result SourceControlCollection, ae error) {
 	req, err := client.GetSourceControlsPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web/ProviderClient", "GetSourceControls", "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "web/ProviderClient", "GetSourceControls", autorest.UndefinedStatusCode, "Failure preparing request")
 	}
 
 	resp, err := client.GetSourceControlsSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web/ProviderClient", "GetSourceControls", "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "web/ProviderClient", "GetSourceControls", resp.StatusCode, "Failure sending request")
 	}
 
 	result, err = client.GetSourceControlsResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "web/ProviderClient", "GetSourceControls", "Failure responding to request")
+		ae = autorest.NewErrorWithError(err, "web/ProviderClient", "GetSourceControls", resp.StatusCode, "Failure responding to request")
 	}
 
 	return
@@ -222,18 +222,18 @@ func (client ProviderClient) GetSourceControlsResponder(resp *http.Response) (re
 func (client ProviderClient) UpdatePublishingUser(requestMessage User) (result User, ae error) {
 	req, err := client.UpdatePublishingUserPreparer(requestMessage)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web/ProviderClient", "UpdatePublishingUser", "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "web/ProviderClient", "UpdatePublishingUser", autorest.UndefinedStatusCode, "Failure preparing request")
 	}
 
 	resp, err := client.UpdatePublishingUserSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web/ProviderClient", "UpdatePublishingUser", "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "web/ProviderClient", "UpdatePublishingUser", resp.StatusCode, "Failure sending request")
 	}
 
 	result, err = client.UpdatePublishingUserResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "web/ProviderClient", "UpdatePublishingUser", "Failure responding to request")
+		ae = autorest.NewErrorWithError(err, "web/ProviderClient", "UpdatePublishingUser", resp.StatusCode, "Failure responding to request")
 	}
 
 	return
@@ -280,18 +280,18 @@ func (client ProviderClient) UpdatePublishingUserResponder(resp *http.Response) 
 func (client ProviderClient) UpdateSourceControl(sourceControlType string, requestMessage SourceControl) (result SourceControl, ae error) {
 	req, err := client.UpdateSourceControlPreparer(sourceControlType, requestMessage)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web/ProviderClient", "UpdateSourceControl", "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "web/ProviderClient", "UpdateSourceControl", autorest.UndefinedStatusCode, "Failure preparing request")
 	}
 
 	resp, err := client.UpdateSourceControlSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web/ProviderClient", "UpdateSourceControl", "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "web/ProviderClient", "UpdateSourceControl", resp.StatusCode, "Failure sending request")
 	}
 
 	result, err = client.UpdateSourceControlResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "web/ProviderClient", "UpdateSourceControl", "Failure responding to request")
+		ae = autorest.NewErrorWithError(err, "web/ProviderClient", "UpdateSourceControl", resp.StatusCode, "Failure responding to request")
 	}
 
 	return

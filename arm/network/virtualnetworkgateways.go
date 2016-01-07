@@ -24,11 +24,11 @@ import (
 	"net/url"
 )
 
-// VirtualNetworkGatewaysClient is the the Windows Azure Network management
-// API provides a RESTful set of web services that interact with Windows
+// VirtualNetworkGatewaysClient is the the Microsoft Azure Network management
+// API provides a RESTful set of web services that interact with Microsoft
 // Azure Networks service to manage your network resrources. The API has
-// entities that capture the relationship between an end user and the Windows
-// Azure Networks service.
+// entities that capture the relationship between an end user and the
+// Microsoft Azure Networks service.
 type VirtualNetworkGatewaysClient struct {
 	ManagementClient
 }
@@ -56,18 +56,18 @@ func NewVirtualNetworkGatewaysClientWithBaseURI(baseURI string, subscriptionID s
 func (client VirtualNetworkGatewaysClient) CreateOrUpdate(resourceGroupName string, virtualNetworkGatewayName string, parameters VirtualNetworkGateway) (result VirtualNetworkGateway, ae error) {
 	req, err := client.CreateOrUpdatePreparer(resourceGroupName, virtualNetworkGatewayName, parameters)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "network/VirtualNetworkGatewaysClient", "CreateOrUpdate", "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "network/VirtualNetworkGatewaysClient", "CreateOrUpdate", autorest.UndefinedStatusCode, "Failure preparing request")
 	}
 
 	resp, err := client.CreateOrUpdateSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "network/VirtualNetworkGatewaysClient", "CreateOrUpdate", "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "network/VirtualNetworkGatewaysClient", "CreateOrUpdate", resp.StatusCode, "Failure sending request")
 	}
 
 	result, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "network/VirtualNetworkGatewaysClient", "CreateOrUpdate", "Failure responding to request")
+		ae = autorest.NewErrorWithError(err, "network/VirtualNetworkGatewaysClient", "CreateOrUpdate", resp.StatusCode, "Failure responding to request")
 	}
 
 	return
@@ -98,7 +98,7 @@ func (client VirtualNetworkGatewaysClient) CreateOrUpdatePreparer(resourceGroupN
 // CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
 // http.Response Body if it receives an error.
 func (client VirtualNetworkGatewaysClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req, http.StatusCreated, http.StatusOK)
+	return client.Send(req, http.StatusOK, http.StatusCreated)
 }
 
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
@@ -107,7 +107,7 @@ func (client VirtualNetworkGatewaysClient) CreateOrUpdateResponder(resp *http.Re
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		autorest.WithErrorUnlessStatusCode(http.StatusCreated, http.StatusOK),
+		autorest.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
@@ -122,18 +122,18 @@ func (client VirtualNetworkGatewaysClient) CreateOrUpdateResponder(resp *http.Re
 func (client VirtualNetworkGatewaysClient) Delete(resourceGroupName string, virtualNetworkGatewayName string) (result autorest.Response, ae error) {
 	req, err := client.DeletePreparer(resourceGroupName, virtualNetworkGatewayName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "network/VirtualNetworkGatewaysClient", "Delete", "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "network/VirtualNetworkGatewaysClient", "Delete", autorest.UndefinedStatusCode, "Failure preparing request")
 	}
 
 	resp, err := client.DeleteSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "network/VirtualNetworkGatewaysClient", "Delete", "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "network/VirtualNetworkGatewaysClient", "Delete", resp.StatusCode, "Failure sending request")
 	}
 
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "network/VirtualNetworkGatewaysClient", "Delete", "Failure responding to request")
+		ae = autorest.NewErrorWithError(err, "network/VirtualNetworkGatewaysClient", "Delete", resp.StatusCode, "Failure responding to request")
 	}
 
 	return
@@ -178,6 +178,75 @@ func (client VirtualNetworkGatewaysClient) DeleteResponder(resp *http.Response) 
 	return
 }
 
+// Generatevpnclientpackage the Generatevpnclientpackage operation generates
+// Vpn client package for P2S client of the virtual network gateway in the
+// specified resource group through Network resource provider.
+//
+// resourceGroupName is the name of the resource group.
+// virtualNetworkGatewayName is the name of the virtual network gateway.
+// parameters is parameters supplied to the Begin Generating  Virtual Network
+// Gateway Vpn client package operation through Network resource provider.
+func (client VirtualNetworkGatewaysClient) Generatevpnclientpackage(resourceGroupName string, virtualNetworkGatewayName string, parameters VpnClientParameters) (result String, ae error) {
+	req, err := client.GeneratevpnclientpackagePreparer(resourceGroupName, virtualNetworkGatewayName, parameters)
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "network/VirtualNetworkGatewaysClient", "Generatevpnclientpackage", autorest.UndefinedStatusCode, "Failure preparing request")
+	}
+
+	resp, err := client.GeneratevpnclientpackageSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "network/VirtualNetworkGatewaysClient", "Generatevpnclientpackage", resp.StatusCode, "Failure sending request")
+	}
+
+	result, err = client.GeneratevpnclientpackageResponder(resp)
+	if err != nil {
+		ae = autorest.NewErrorWithError(err, "network/VirtualNetworkGatewaysClient", "Generatevpnclientpackage", resp.StatusCode, "Failure responding to request")
+	}
+
+	return
+}
+
+// GeneratevpnclientpackagePreparer prepares the Generatevpnclientpackage request.
+func (client VirtualNetworkGatewaysClient) GeneratevpnclientpackagePreparer(resourceGroupName string, virtualNetworkGatewayName string, parameters VpnClientParameters) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"resourceGroupName":         url.QueryEscape(resourceGroupName),
+		"subscriptionId":            url.QueryEscape(client.SubscriptionID),
+		"virtualNetworkGatewayName": url.QueryEscape(virtualNetworkGatewayName),
+	}
+
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsPost(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPath("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualnetworkgateways/{virtualNetworkGatewayName}/generatevpnclientpackage"),
+		autorest.WithJSON(parameters),
+		autorest.WithPathParameters(pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+}
+
+// GeneratevpnclientpackageSender sends the Generatevpnclientpackage request. The method will close the
+// http.Response Body if it receives an error.
+func (client VirtualNetworkGatewaysClient) GeneratevpnclientpackageSender(req *http.Request) (*http.Response, error) {
+	return client.Send(req, http.StatusOK, http.StatusAccepted)
+}
+
+// GeneratevpnclientpackageResponder handles the response to the Generatevpnclientpackage request. The method always
+// closes the http.Response Body.
+func (client VirtualNetworkGatewaysClient) GeneratevpnclientpackageResponder(resp *http.Response) (result String, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		autorest.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
+		autorest.ByUnmarshallingJSON(&result.Value),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
 // Get the Get VirtualNetworkGateway operation retrieves information about the
 // specified virtual network gateway through Network resource provider.
 //
@@ -186,18 +255,18 @@ func (client VirtualNetworkGatewaysClient) DeleteResponder(resp *http.Response) 
 func (client VirtualNetworkGatewaysClient) Get(resourceGroupName string, virtualNetworkGatewayName string) (result VirtualNetworkGateway, ae error) {
 	req, err := client.GetPreparer(resourceGroupName, virtualNetworkGatewayName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "network/VirtualNetworkGatewaysClient", "Get", "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "network/VirtualNetworkGatewaysClient", "Get", autorest.UndefinedStatusCode, "Failure preparing request")
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "network/VirtualNetworkGatewaysClient", "Get", "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "network/VirtualNetworkGatewaysClient", "Get", resp.StatusCode, "Failure sending request")
 	}
 
 	result, err = client.GetResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "network/VirtualNetworkGatewaysClient", "Get", "Failure responding to request")
+		ae = autorest.NewErrorWithError(err, "network/VirtualNetworkGatewaysClient", "Get", resp.StatusCode, "Failure responding to request")
 	}
 
 	return
@@ -250,18 +319,18 @@ func (client VirtualNetworkGatewaysClient) GetResponder(resp *http.Response) (re
 func (client VirtualNetworkGatewaysClient) List(resourceGroupName string) (result VirtualNetworkGatewayListResult, ae error) {
 	req, err := client.ListPreparer(resourceGroupName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "network/VirtualNetworkGatewaysClient", "List", "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "network/VirtualNetworkGatewaysClient", "List", autorest.UndefinedStatusCode, "Failure preparing request")
 	}
 
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "network/VirtualNetworkGatewaysClient", "List", "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "network/VirtualNetworkGatewaysClient", "List", resp.StatusCode, "Failure sending request")
 	}
 
 	result, err = client.ListResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "network/VirtualNetworkGatewaysClient", "List", "Failure responding to request")
+		ae = autorest.NewErrorWithError(err, "network/VirtualNetworkGatewaysClient", "List", resp.StatusCode, "Failure responding to request")
 	}
 
 	return
@@ -310,7 +379,7 @@ func (client VirtualNetworkGatewaysClient) ListResponder(resp *http.Response) (r
 func (client VirtualNetworkGatewaysClient) ListNextResults(lastResults VirtualNetworkGatewayListResult) (result VirtualNetworkGatewayListResult, ae error) {
 	req, err := lastResults.VirtualNetworkGatewayListResultPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "network/VirtualNetworkGatewaysClient", "List", "Failure preparing next results request request")
+		return result, autorest.NewErrorWithError(err, "network/VirtualNetworkGatewaysClient", "List", autorest.UndefinedStatusCode, "Failure preparing next results request request")
 	}
 	if req == nil {
 		return
@@ -319,19 +388,19 @@ func (client VirtualNetworkGatewaysClient) ListNextResults(lastResults VirtualNe
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "network/VirtualNetworkGatewaysClient", "List", "Failure sending next results request request")
+		return result, autorest.NewErrorWithError(err, "network/VirtualNetworkGatewaysClient", "List", resp.StatusCode, "Failure sending next results request request")
 	}
 
 	result, err = client.ListResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "network/VirtualNetworkGatewaysClient", "List", "Failure responding to next results request request")
+		ae = autorest.NewErrorWithError(err, "network/VirtualNetworkGatewaysClient", "List", resp.StatusCode, "Failure responding to next results request request")
 	}
 
 	return
 }
 
 // Reset the Reset VirtualNetworkGateway operation resets the primary of the
-// virtual network gatewayin the specified resource group through Network
+// virtual network gateway in the specified resource group through Network
 // resource provider.
 //
 // resourceGroupName is the name of the resource group.
@@ -341,18 +410,18 @@ func (client VirtualNetworkGatewaysClient) ListNextResults(lastResults VirtualNe
 func (client VirtualNetworkGatewaysClient) Reset(resourceGroupName string, virtualNetworkGatewayName string, parameters VirtualNetworkGateway) (result VirtualNetworkGateway, ae error) {
 	req, err := client.ResetPreparer(resourceGroupName, virtualNetworkGatewayName, parameters)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "network/VirtualNetworkGatewaysClient", "Reset", "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "network/VirtualNetworkGatewaysClient", "Reset", autorest.UndefinedStatusCode, "Failure preparing request")
 	}
 
 	resp, err := client.ResetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "network/VirtualNetworkGatewaysClient", "Reset", "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "network/VirtualNetworkGatewaysClient", "Reset", resp.StatusCode, "Failure sending request")
 	}
 
 	result, err = client.ResetResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "network/VirtualNetworkGatewaysClient", "Reset", "Failure responding to request")
+		ae = autorest.NewErrorWithError(err, "network/VirtualNetworkGatewaysClient", "Reset", resp.StatusCode, "Failure responding to request")
 	}
 
 	return

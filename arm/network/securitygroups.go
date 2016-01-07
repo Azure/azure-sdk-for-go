@@ -24,10 +24,10 @@ import (
 	"net/url"
 )
 
-// SecurityGroupsClient is the the Windows Azure Network management API
-// provides a RESTful set of web services that interact with Windows Azure
+// SecurityGroupsClient is the the Microsoft Azure Network management API
+// provides a RESTful set of web services that interact with Microsoft Azure
 // Networks service to manage your network resrources. The API has entities
-// that capture the relationship between an end user and the Windows Azure
+// that capture the relationship between an end user and the Microsoft Azure
 // Networks service.
 type SecurityGroupsClient struct {
 	ManagementClient
@@ -55,18 +55,18 @@ func NewSecurityGroupsClientWithBaseURI(baseURI string, subscriptionID string) S
 func (client SecurityGroupsClient) CreateOrUpdate(resourceGroupName string, networkSecurityGroupName string, parameters SecurityGroup) (result SecurityGroup, ae error) {
 	req, err := client.CreateOrUpdatePreparer(resourceGroupName, networkSecurityGroupName, parameters)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "network/SecurityGroupsClient", "CreateOrUpdate", "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "network/SecurityGroupsClient", "CreateOrUpdate", autorest.UndefinedStatusCode, "Failure preparing request")
 	}
 
 	resp, err := client.CreateOrUpdateSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "network/SecurityGroupsClient", "CreateOrUpdate", "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "network/SecurityGroupsClient", "CreateOrUpdate", resp.StatusCode, "Failure sending request")
 	}
 
 	result, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "network/SecurityGroupsClient", "CreateOrUpdate", "Failure responding to request")
+		ae = autorest.NewErrorWithError(err, "network/SecurityGroupsClient", "CreateOrUpdate", resp.StatusCode, "Failure responding to request")
 	}
 
 	return
@@ -121,18 +121,18 @@ func (client SecurityGroupsClient) CreateOrUpdateResponder(resp *http.Response) 
 func (client SecurityGroupsClient) Delete(resourceGroupName string, networkSecurityGroupName string) (result autorest.Response, ae error) {
 	req, err := client.DeletePreparer(resourceGroupName, networkSecurityGroupName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "network/SecurityGroupsClient", "Delete", "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "network/SecurityGroupsClient", "Delete", autorest.UndefinedStatusCode, "Failure preparing request")
 	}
 
 	resp, err := client.DeleteSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "network/SecurityGroupsClient", "Delete", "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "network/SecurityGroupsClient", "Delete", resp.StatusCode, "Failure sending request")
 	}
 
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "network/SecurityGroupsClient", "Delete", "Failure responding to request")
+		ae = autorest.NewErrorWithError(err, "network/SecurityGroupsClient", "Delete", resp.StatusCode, "Failure responding to request")
 	}
 
 	return
@@ -162,7 +162,7 @@ func (client SecurityGroupsClient) DeletePreparer(resourceGroupName string, netw
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
 func (client SecurityGroupsClient) DeleteSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req, http.StatusNoContent, http.StatusAccepted, http.StatusOK)
+	return client.Send(req, http.StatusAccepted, http.StatusOK, http.StatusNoContent)
 }
 
 // DeleteResponder handles the response to the Delete request. The method always
@@ -171,7 +171,7 @@ func (client SecurityGroupsClient) DeleteResponder(resp *http.Response) (result 
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		autorest.WithErrorUnlessStatusCode(http.StatusNoContent, http.StatusAccepted, http.StatusOK),
+		autorest.WithErrorUnlessStatusCode(http.StatusAccepted, http.StatusOK, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
 	return
@@ -181,29 +181,30 @@ func (client SecurityGroupsClient) DeleteResponder(resp *http.Response) (result 
 // specified network security group.
 //
 // resourceGroupName is the name of the resource group.
-// networkSecurityGroupName is the name of the network security group.
-func (client SecurityGroupsClient) Get(resourceGroupName string, networkSecurityGroupName string) (result SecurityGroup, ae error) {
-	req, err := client.GetPreparer(resourceGroupName, networkSecurityGroupName)
+// networkSecurityGroupName is the name of the network security group. expand
+// is expand references resources.
+func (client SecurityGroupsClient) Get(resourceGroupName string, networkSecurityGroupName string, expand string) (result SecurityGroup, ae error) {
+	req, err := client.GetPreparer(resourceGroupName, networkSecurityGroupName, expand)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "network/SecurityGroupsClient", "Get", "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "network/SecurityGroupsClient", "Get", autorest.UndefinedStatusCode, "Failure preparing request")
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "network/SecurityGroupsClient", "Get", "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "network/SecurityGroupsClient", "Get", resp.StatusCode, "Failure sending request")
 	}
 
 	result, err = client.GetResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "network/SecurityGroupsClient", "Get", "Failure responding to request")
+		ae = autorest.NewErrorWithError(err, "network/SecurityGroupsClient", "Get", resp.StatusCode, "Failure responding to request")
 	}
 
 	return
 }
 
 // GetPreparer prepares the Get request.
-func (client SecurityGroupsClient) GetPreparer(resourceGroupName string, networkSecurityGroupName string) (*http.Request, error) {
+func (client SecurityGroupsClient) GetPreparer(resourceGroupName string, networkSecurityGroupName string, expand string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"networkSecurityGroupName": url.QueryEscape(networkSecurityGroupName),
 		"resourceGroupName":        url.QueryEscape(resourceGroupName),
@@ -212,6 +213,9 @@ func (client SecurityGroupsClient) GetPreparer(resourceGroupName string, network
 
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
+	}
+	if len(expand) > 0 {
+		queryParameters["$expand"] = expand
 	}
 
 	return autorest.Prepare(&http.Request{},
@@ -249,18 +253,18 @@ func (client SecurityGroupsClient) GetResponder(resp *http.Response) (result Sec
 func (client SecurityGroupsClient) List(resourceGroupName string) (result SecurityGroupListResult, ae error) {
 	req, err := client.ListPreparer(resourceGroupName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "network/SecurityGroupsClient", "List", "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "network/SecurityGroupsClient", "List", autorest.UndefinedStatusCode, "Failure preparing request")
 	}
 
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "network/SecurityGroupsClient", "List", "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "network/SecurityGroupsClient", "List", resp.StatusCode, "Failure sending request")
 	}
 
 	result, err = client.ListResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "network/SecurityGroupsClient", "List", "Failure responding to request")
+		ae = autorest.NewErrorWithError(err, "network/SecurityGroupsClient", "List", resp.StatusCode, "Failure responding to request")
 	}
 
 	return
@@ -309,7 +313,7 @@ func (client SecurityGroupsClient) ListResponder(resp *http.Response) (result Se
 func (client SecurityGroupsClient) ListNextResults(lastResults SecurityGroupListResult) (result SecurityGroupListResult, ae error) {
 	req, err := lastResults.SecurityGroupListResultPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "network/SecurityGroupsClient", "List", "Failure preparing next results request request")
+		return result, autorest.NewErrorWithError(err, "network/SecurityGroupsClient", "List", autorest.UndefinedStatusCode, "Failure preparing next results request request")
 	}
 	if req == nil {
 		return
@@ -318,12 +322,12 @@ func (client SecurityGroupsClient) ListNextResults(lastResults SecurityGroupList
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "network/SecurityGroupsClient", "List", "Failure sending next results request request")
+		return result, autorest.NewErrorWithError(err, "network/SecurityGroupsClient", "List", resp.StatusCode, "Failure sending next results request request")
 	}
 
 	result, err = client.ListResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "network/SecurityGroupsClient", "List", "Failure responding to next results request request")
+		ae = autorest.NewErrorWithError(err, "network/SecurityGroupsClient", "List", resp.StatusCode, "Failure responding to next results request request")
 	}
 
 	return
@@ -334,18 +338,18 @@ func (client SecurityGroupsClient) ListNextResults(lastResults SecurityGroupList
 func (client SecurityGroupsClient) ListAll() (result SecurityGroupListResult, ae error) {
 	req, err := client.ListAllPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "network/SecurityGroupsClient", "ListAll", "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "network/SecurityGroupsClient", "ListAll", autorest.UndefinedStatusCode, "Failure preparing request")
 	}
 
 	resp, err := client.ListAllSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "network/SecurityGroupsClient", "ListAll", "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "network/SecurityGroupsClient", "ListAll", resp.StatusCode, "Failure sending request")
 	}
 
 	result, err = client.ListAllResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "network/SecurityGroupsClient", "ListAll", "Failure responding to request")
+		ae = autorest.NewErrorWithError(err, "network/SecurityGroupsClient", "ListAll", resp.StatusCode, "Failure responding to request")
 	}
 
 	return
@@ -393,7 +397,7 @@ func (client SecurityGroupsClient) ListAllResponder(resp *http.Response) (result
 func (client SecurityGroupsClient) ListAllNextResults(lastResults SecurityGroupListResult) (result SecurityGroupListResult, ae error) {
 	req, err := lastResults.SecurityGroupListResultPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "network/SecurityGroupsClient", "ListAll", "Failure preparing next results request request")
+		return result, autorest.NewErrorWithError(err, "network/SecurityGroupsClient", "ListAll", autorest.UndefinedStatusCode, "Failure preparing next results request request")
 	}
 	if req == nil {
 		return
@@ -402,12 +406,12 @@ func (client SecurityGroupsClient) ListAllNextResults(lastResults SecurityGroupL
 	resp, err := client.ListAllSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "network/SecurityGroupsClient", "ListAll", "Failure sending next results request request")
+		return result, autorest.NewErrorWithError(err, "network/SecurityGroupsClient", "ListAll", resp.StatusCode, "Failure sending next results request request")
 	}
 
 	result, err = client.ListAllResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "network/SecurityGroupsClient", "ListAll", "Failure responding to next results request request")
+		ae = autorest.NewErrorWithError(err, "network/SecurityGroupsClient", "ListAll", resp.StatusCode, "Failure responding to next results request request")
 	}
 
 	return

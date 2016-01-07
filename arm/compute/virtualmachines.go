@@ -50,18 +50,18 @@ func NewVirtualMachinesClientWithBaseURI(baseURI string, subscriptionID string) 
 func (client VirtualMachinesClient) Capture(resourceGroupName string, vmName string, parameters VirtualMachineCaptureParameters) (result VirtualMachineCaptureResult, ae error) {
 	req, err := client.CapturePreparer(resourceGroupName, vmName, parameters)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "compute/VirtualMachinesClient", "Capture", "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "compute/VirtualMachinesClient", "Capture", autorest.UndefinedStatusCode, "Failure preparing request")
 	}
 
 	resp, err := client.CaptureSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "compute/VirtualMachinesClient", "Capture", "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "compute/VirtualMachinesClient", "Capture", resp.StatusCode, "Failure sending request")
 	}
 
 	result, err = client.CaptureResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "compute/VirtualMachinesClient", "Capture", "Failure responding to request")
+		ae = autorest.NewErrorWithError(err, "compute/VirtualMachinesClient", "Capture", resp.StatusCode, "Failure responding to request")
 	}
 
 	return
@@ -116,18 +116,18 @@ func (client VirtualMachinesClient) CaptureResponder(resp *http.Response) (resul
 func (client VirtualMachinesClient) CreateOrUpdate(resourceGroupName string, vmName string, parameters VirtualMachine) (result VirtualMachine, ae error) {
 	req, err := client.CreateOrUpdatePreparer(resourceGroupName, vmName, parameters)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "compute/VirtualMachinesClient", "CreateOrUpdate", "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "compute/VirtualMachinesClient", "CreateOrUpdate", autorest.UndefinedStatusCode, "Failure preparing request")
 	}
 
 	resp, err := client.CreateOrUpdateSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "compute/VirtualMachinesClient", "CreateOrUpdate", "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "compute/VirtualMachinesClient", "CreateOrUpdate", resp.StatusCode, "Failure sending request")
 	}
 
 	result, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "compute/VirtualMachinesClient", "CreateOrUpdate", "Failure responding to request")
+		ae = autorest.NewErrorWithError(err, "compute/VirtualMachinesClient", "CreateOrUpdate", resp.StatusCode, "Failure responding to request")
 	}
 
 	return
@@ -183,18 +183,18 @@ func (client VirtualMachinesClient) CreateOrUpdateResponder(resp *http.Response)
 func (client VirtualMachinesClient) Deallocate(resourceGroupName string, vmName string) (result autorest.Response, ae error) {
 	req, err := client.DeallocatePreparer(resourceGroupName, vmName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "compute/VirtualMachinesClient", "Deallocate", "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "compute/VirtualMachinesClient", "Deallocate", autorest.UndefinedStatusCode, "Failure preparing request")
 	}
 
 	resp, err := client.DeallocateSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "compute/VirtualMachinesClient", "Deallocate", "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "compute/VirtualMachinesClient", "Deallocate", resp.StatusCode, "Failure sending request")
 	}
 
 	result, err = client.DeallocateResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "compute/VirtualMachinesClient", "Deallocate", "Failure responding to request")
+		ae = autorest.NewErrorWithError(err, "compute/VirtualMachinesClient", "Deallocate", resp.StatusCode, "Failure responding to request")
 	}
 
 	return
@@ -246,18 +246,18 @@ func (client VirtualMachinesClient) DeallocateResponder(resp *http.Response) (re
 func (client VirtualMachinesClient) Delete(resourceGroupName string, vmName string) (result autorest.Response, ae error) {
 	req, err := client.DeletePreparer(resourceGroupName, vmName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "compute/VirtualMachinesClient", "Delete", "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "compute/VirtualMachinesClient", "Delete", autorest.UndefinedStatusCode, "Failure preparing request")
 	}
 
 	resp, err := client.DeleteSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "compute/VirtualMachinesClient", "Delete", "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "compute/VirtualMachinesClient", "Delete", resp.StatusCode, "Failure sending request")
 	}
 
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "compute/VirtualMachinesClient", "Delete", "Failure responding to request")
+		ae = autorest.NewErrorWithError(err, "compute/VirtualMachinesClient", "Delete", resp.StatusCode, "Failure responding to request")
 	}
 
 	return
@@ -309,18 +309,18 @@ func (client VirtualMachinesClient) DeleteResponder(resp *http.Response) (result
 func (client VirtualMachinesClient) Generalize(resourceGroupName string, vmName string) (result autorest.Response, ae error) {
 	req, err := client.GeneralizePreparer(resourceGroupName, vmName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "compute/VirtualMachinesClient", "Generalize", "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "compute/VirtualMachinesClient", "Generalize", autorest.UndefinedStatusCode, "Failure preparing request")
 	}
 
 	resp, err := client.GeneralizeSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "compute/VirtualMachinesClient", "Generalize", "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "compute/VirtualMachinesClient", "Generalize", resp.StatusCode, "Failure sending request")
 	}
 
 	result, err = client.GeneralizeResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "compute/VirtualMachinesClient", "Generalize", "Failure responding to request")
+		ae = autorest.NewErrorWithError(err, "compute/VirtualMachinesClient", "Generalize", resp.StatusCode, "Failure responding to request")
 	}
 
 	return
@@ -373,18 +373,18 @@ func (client VirtualMachinesClient) GeneralizeResponder(resp *http.Response) (re
 func (client VirtualMachinesClient) Get(resourceGroupName string, vmName string, expand string) (result VirtualMachine, ae error) {
 	req, err := client.GetPreparer(resourceGroupName, vmName, expand)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "compute/VirtualMachinesClient", "Get", "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "compute/VirtualMachinesClient", "Get", autorest.UndefinedStatusCode, "Failure preparing request")
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "compute/VirtualMachinesClient", "Get", "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "compute/VirtualMachinesClient", "Get", resp.StatusCode, "Failure sending request")
 	}
 
 	result, err = client.GetResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "compute/VirtualMachinesClient", "Get", "Failure responding to request")
+		ae = autorest.NewErrorWithError(err, "compute/VirtualMachinesClient", "Get", resp.StatusCode, "Failure responding to request")
 	}
 
 	return
@@ -439,18 +439,18 @@ func (client VirtualMachinesClient) GetResponder(resp *http.Response) (result Vi
 func (client VirtualMachinesClient) List(resourceGroupName string) (result VirtualMachineListResult, ae error) {
 	req, err := client.ListPreparer(resourceGroupName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "compute/VirtualMachinesClient", "List", "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "compute/VirtualMachinesClient", "List", autorest.UndefinedStatusCode, "Failure preparing request")
 	}
 
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "compute/VirtualMachinesClient", "List", "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "compute/VirtualMachinesClient", "List", resp.StatusCode, "Failure sending request")
 	}
 
 	result, err = client.ListResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "compute/VirtualMachinesClient", "List", "Failure responding to request")
+		ae = autorest.NewErrorWithError(err, "compute/VirtualMachinesClient", "List", resp.StatusCode, "Failure responding to request")
 	}
 
 	return
@@ -499,7 +499,7 @@ func (client VirtualMachinesClient) ListResponder(resp *http.Response) (result V
 func (client VirtualMachinesClient) ListNextResults(lastResults VirtualMachineListResult) (result VirtualMachineListResult, ae error) {
 	req, err := lastResults.VirtualMachineListResultPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "compute/VirtualMachinesClient", "List", "Failure preparing next results request request")
+		return result, autorest.NewErrorWithError(err, "compute/VirtualMachinesClient", "List", autorest.UndefinedStatusCode, "Failure preparing next results request request")
 	}
 	if req == nil {
 		return
@@ -508,12 +508,12 @@ func (client VirtualMachinesClient) ListNextResults(lastResults VirtualMachineLi
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "compute/VirtualMachinesClient", "List", "Failure sending next results request request")
+		return result, autorest.NewErrorWithError(err, "compute/VirtualMachinesClient", "List", resp.StatusCode, "Failure sending next results request request")
 	}
 
 	result, err = client.ListResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "compute/VirtualMachinesClient", "List", "Failure responding to next results request request")
+		ae = autorest.NewErrorWithError(err, "compute/VirtualMachinesClient", "List", resp.StatusCode, "Failure responding to next results request request")
 	}
 
 	return
@@ -525,18 +525,18 @@ func (client VirtualMachinesClient) ListNextResults(lastResults VirtualMachineLi
 func (client VirtualMachinesClient) ListAll() (result VirtualMachineListResult, ae error) {
 	req, err := client.ListAllPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "compute/VirtualMachinesClient", "ListAll", "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "compute/VirtualMachinesClient", "ListAll", autorest.UndefinedStatusCode, "Failure preparing request")
 	}
 
 	resp, err := client.ListAllSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "compute/VirtualMachinesClient", "ListAll", "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "compute/VirtualMachinesClient", "ListAll", resp.StatusCode, "Failure sending request")
 	}
 
 	result, err = client.ListAllResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "compute/VirtualMachinesClient", "ListAll", "Failure responding to request")
+		ae = autorest.NewErrorWithError(err, "compute/VirtualMachinesClient", "ListAll", resp.StatusCode, "Failure responding to request")
 	}
 
 	return
@@ -584,7 +584,7 @@ func (client VirtualMachinesClient) ListAllResponder(resp *http.Response) (resul
 func (client VirtualMachinesClient) ListAllNextResults(lastResults VirtualMachineListResult) (result VirtualMachineListResult, ae error) {
 	req, err := lastResults.VirtualMachineListResultPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "compute/VirtualMachinesClient", "ListAll", "Failure preparing next results request request")
+		return result, autorest.NewErrorWithError(err, "compute/VirtualMachinesClient", "ListAll", autorest.UndefinedStatusCode, "Failure preparing next results request request")
 	}
 	if req == nil {
 		return
@@ -593,12 +593,12 @@ func (client VirtualMachinesClient) ListAllNextResults(lastResults VirtualMachin
 	resp, err := client.ListAllSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "compute/VirtualMachinesClient", "ListAll", "Failure sending next results request request")
+		return result, autorest.NewErrorWithError(err, "compute/VirtualMachinesClient", "ListAll", resp.StatusCode, "Failure sending next results request request")
 	}
 
 	result, err = client.ListAllResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "compute/VirtualMachinesClient", "ListAll", "Failure responding to next results request request")
+		ae = autorest.NewErrorWithError(err, "compute/VirtualMachinesClient", "ListAll", resp.StatusCode, "Failure responding to next results request request")
 	}
 
 	return
@@ -612,18 +612,18 @@ func (client VirtualMachinesClient) ListAllNextResults(lastResults VirtualMachin
 func (client VirtualMachinesClient) ListAvailableSizes(resourceGroupName string, vmName string) (result VirtualMachineSizeListResult, ae error) {
 	req, err := client.ListAvailableSizesPreparer(resourceGroupName, vmName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "compute/VirtualMachinesClient", "ListAvailableSizes", "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "compute/VirtualMachinesClient", "ListAvailableSizes", autorest.UndefinedStatusCode, "Failure preparing request")
 	}
 
 	resp, err := client.ListAvailableSizesSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "compute/VirtualMachinesClient", "ListAvailableSizes", "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "compute/VirtualMachinesClient", "ListAvailableSizes", resp.StatusCode, "Failure sending request")
 	}
 
 	result, err = client.ListAvailableSizesResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "compute/VirtualMachinesClient", "ListAvailableSizes", "Failure responding to request")
+		ae = autorest.NewErrorWithError(err, "compute/VirtualMachinesClient", "ListAvailableSizes", resp.StatusCode, "Failure responding to request")
 	}
 
 	return
@@ -669,6 +669,30 @@ func (client VirtualMachinesClient) ListAvailableSizesResponder(resp *http.Respo
 	return
 }
 
+// ListAvailableSizesNextResults retrieves the next set of results, if any.
+func (client VirtualMachinesClient) ListAvailableSizesNextResults(lastResults VirtualMachineSizeListResult) (result VirtualMachineSizeListResult, ae error) {
+	req, err := lastResults.VirtualMachineSizeListResultPreparer()
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "compute/VirtualMachinesClient", "ListAvailableSizes", autorest.UndefinedStatusCode, "Failure preparing next results request request")
+	}
+	if req == nil {
+		return
+	}
+
+	resp, err := client.ListAvailableSizesSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "compute/VirtualMachinesClient", "ListAvailableSizes", resp.StatusCode, "Failure sending next results request request")
+	}
+
+	result, err = client.ListAvailableSizesResponder(resp)
+	if err != nil {
+		ae = autorest.NewErrorWithError(err, "compute/VirtualMachinesClient", "ListAvailableSizes", resp.StatusCode, "Failure responding to next results request request")
+	}
+
+	return
+}
+
 // PowerOff the operation to power off (stop) a virtual machine.
 //
 // resourceGroupName is the name of the resource group. vmName is the name of
@@ -676,18 +700,18 @@ func (client VirtualMachinesClient) ListAvailableSizesResponder(resp *http.Respo
 func (client VirtualMachinesClient) PowerOff(resourceGroupName string, vmName string) (result autorest.Response, ae error) {
 	req, err := client.PowerOffPreparer(resourceGroupName, vmName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "compute/VirtualMachinesClient", "PowerOff", "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "compute/VirtualMachinesClient", "PowerOff", autorest.UndefinedStatusCode, "Failure preparing request")
 	}
 
 	resp, err := client.PowerOffSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "compute/VirtualMachinesClient", "PowerOff", "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "compute/VirtualMachinesClient", "PowerOff", resp.StatusCode, "Failure sending request")
 	}
 
 	result, err = client.PowerOffResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "compute/VirtualMachinesClient", "PowerOff", "Failure responding to request")
+		ae = autorest.NewErrorWithError(err, "compute/VirtualMachinesClient", "PowerOff", resp.StatusCode, "Failure responding to request")
 	}
 
 	return
@@ -739,18 +763,18 @@ func (client VirtualMachinesClient) PowerOffResponder(resp *http.Response) (resu
 func (client VirtualMachinesClient) Restart(resourceGroupName string, vmName string) (result autorest.Response, ae error) {
 	req, err := client.RestartPreparer(resourceGroupName, vmName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "compute/VirtualMachinesClient", "Restart", "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "compute/VirtualMachinesClient", "Restart", autorest.UndefinedStatusCode, "Failure preparing request")
 	}
 
 	resp, err := client.RestartSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "compute/VirtualMachinesClient", "Restart", "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "compute/VirtualMachinesClient", "Restart", resp.StatusCode, "Failure sending request")
 	}
 
 	result, err = client.RestartResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "compute/VirtualMachinesClient", "Restart", "Failure responding to request")
+		ae = autorest.NewErrorWithError(err, "compute/VirtualMachinesClient", "Restart", resp.StatusCode, "Failure responding to request")
 	}
 
 	return
@@ -802,18 +826,18 @@ func (client VirtualMachinesClient) RestartResponder(resp *http.Response) (resul
 func (client VirtualMachinesClient) Start(resourceGroupName string, vmName string) (result autorest.Response, ae error) {
 	req, err := client.StartPreparer(resourceGroupName, vmName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "compute/VirtualMachinesClient", "Start", "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "compute/VirtualMachinesClient", "Start", autorest.UndefinedStatusCode, "Failure preparing request")
 	}
 
 	resp, err := client.StartSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "compute/VirtualMachinesClient", "Start", "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "compute/VirtualMachinesClient", "Start", resp.StatusCode, "Failure sending request")
 	}
 
 	result, err = client.StartResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "compute/VirtualMachinesClient", "Start", "Failure responding to request")
+		ae = autorest.NewErrorWithError(err, "compute/VirtualMachinesClient", "Start", resp.StatusCode, "Failure responding to request")
 	}
 
 	return

@@ -236,7 +236,7 @@ func (spt *ServicePrincipalToken) Refresh() error {
 	resp, err := autorest.SendWithSender(spt.sender, req)
 	if err != nil {
 		return autorest.NewErrorWithError(err,
-			"azure.ServicePrincipalToken", "Refresh", "Failure sending request for Service Principal %s",
+			"azure.ServicePrincipalToken", "Refresh", resp.StatusCode, "Failure sending request for Service Principal %s",
 			spt.clientID)
 	}
 
@@ -248,7 +248,7 @@ func (spt *ServicePrincipalToken) Refresh() error {
 		autorest.ByClosing())
 	if err != nil {
 		return autorest.NewErrorWithError(err,
-			"azure.ServicePrincipalToken", "Refresh", "Failure handling response to Service Principal %s request",
+			"azure.ServicePrincipalToken", "Refresh", resp.StatusCode, "Failure handling response to Service Principal %s request",
 			spt.clientID)
 	}
 
@@ -288,7 +288,7 @@ func (spt *ServicePrincipalToken) WithAuthorization() autorest.PrepareDecorator 
 				err := spt.EnsureFresh()
 				if err != nil {
 					return r, autorest.NewErrorWithError(err,
-						"azure.ServicePrincipalToken", "WithAuthorization", "Failed to refresh Service Principal Token for request to %s",
+						"azure.ServicePrincipalToken", "WithAuthorization", autorest.UndefinedStatusCode, "Failed to refresh Service Principal Token for request to %s",
 						r.URL)
 				}
 			}

@@ -49,18 +49,18 @@ func NewAvailabilitySetsClientWithBaseURI(baseURI string, subscriptionID string)
 func (client AvailabilitySetsClient) CreateOrUpdate(resourceGroupName string, name string, parameters AvailabilitySet) (result AvailabilitySet, ae error) {
 	req, err := client.CreateOrUpdatePreparer(resourceGroupName, name, parameters)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "compute/AvailabilitySetsClient", "CreateOrUpdate", "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "compute/AvailabilitySetsClient", "CreateOrUpdate", autorest.UndefinedStatusCode, "Failure preparing request")
 	}
 
 	resp, err := client.CreateOrUpdateSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "compute/AvailabilitySetsClient", "CreateOrUpdate", "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "compute/AvailabilitySetsClient", "CreateOrUpdate", resp.StatusCode, "Failure sending request")
 	}
 
 	result, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "compute/AvailabilitySetsClient", "CreateOrUpdate", "Failure responding to request")
+		ae = autorest.NewErrorWithError(err, "compute/AvailabilitySetsClient", "CreateOrUpdate", resp.StatusCode, "Failure responding to request")
 	}
 
 	return
@@ -114,18 +114,18 @@ func (client AvailabilitySetsClient) CreateOrUpdateResponder(resp *http.Response
 func (client AvailabilitySetsClient) Delete(resourceGroupName string, availabilitySetName string) (result autorest.Response, ae error) {
 	req, err := client.DeletePreparer(resourceGroupName, availabilitySetName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "compute/AvailabilitySetsClient", "Delete", "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "compute/AvailabilitySetsClient", "Delete", autorest.UndefinedStatusCode, "Failure preparing request")
 	}
 
 	resp, err := client.DeleteSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "compute/AvailabilitySetsClient", "Delete", "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "compute/AvailabilitySetsClient", "Delete", resp.StatusCode, "Failure sending request")
 	}
 
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "compute/AvailabilitySetsClient", "Delete", "Failure responding to request")
+		ae = autorest.NewErrorWithError(err, "compute/AvailabilitySetsClient", "Delete", resp.StatusCode, "Failure responding to request")
 	}
 
 	return
@@ -177,18 +177,18 @@ func (client AvailabilitySetsClient) DeleteResponder(resp *http.Response) (resul
 func (client AvailabilitySetsClient) Get(resourceGroupName string, availabilitySetName string) (result AvailabilitySet, ae error) {
 	req, err := client.GetPreparer(resourceGroupName, availabilitySetName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "compute/AvailabilitySetsClient", "Get", "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "compute/AvailabilitySetsClient", "Get", autorest.UndefinedStatusCode, "Failure preparing request")
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "compute/AvailabilitySetsClient", "Get", "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "compute/AvailabilitySetsClient", "Get", resp.StatusCode, "Failure sending request")
 	}
 
 	result, err = client.GetResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "compute/AvailabilitySetsClient", "Get", "Failure responding to request")
+		ae = autorest.NewErrorWithError(err, "compute/AvailabilitySetsClient", "Get", resp.StatusCode, "Failure responding to request")
 	}
 
 	return
@@ -240,18 +240,18 @@ func (client AvailabilitySetsClient) GetResponder(resp *http.Response) (result A
 func (client AvailabilitySetsClient) List(resourceGroupName string) (result AvailabilitySetListResult, ae error) {
 	req, err := client.ListPreparer(resourceGroupName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "compute/AvailabilitySetsClient", "List", "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "compute/AvailabilitySetsClient", "List", autorest.UndefinedStatusCode, "Failure preparing request")
 	}
 
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "compute/AvailabilitySetsClient", "List", "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "compute/AvailabilitySetsClient", "List", resp.StatusCode, "Failure sending request")
 	}
 
 	result, err = client.ListResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "compute/AvailabilitySetsClient", "List", "Failure responding to request")
+		ae = autorest.NewErrorWithError(err, "compute/AvailabilitySetsClient", "List", resp.StatusCode, "Failure responding to request")
 	}
 
 	return
@@ -296,6 +296,30 @@ func (client AvailabilitySetsClient) ListResponder(resp *http.Response) (result 
 	return
 }
 
+// ListNextResults retrieves the next set of results, if any.
+func (client AvailabilitySetsClient) ListNextResults(lastResults AvailabilitySetListResult) (result AvailabilitySetListResult, ae error) {
+	req, err := lastResults.AvailabilitySetListResultPreparer()
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "compute/AvailabilitySetsClient", "List", autorest.UndefinedStatusCode, "Failure preparing next results request request")
+	}
+	if req == nil {
+		return
+	}
+
+	resp, err := client.ListSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "compute/AvailabilitySetsClient", "List", resp.StatusCode, "Failure sending next results request request")
+	}
+
+	result, err = client.ListResponder(resp)
+	if err != nil {
+		ae = autorest.NewErrorWithError(err, "compute/AvailabilitySetsClient", "List", resp.StatusCode, "Failure responding to next results request request")
+	}
+
+	return
+}
+
 // ListAvailableSizes lists virtual-machine-sizes available to be used for an
 // availability set.
 //
@@ -304,18 +328,18 @@ func (client AvailabilitySetsClient) ListResponder(resp *http.Response) (result 
 func (client AvailabilitySetsClient) ListAvailableSizes(resourceGroupName string, availabilitySetName string) (result VirtualMachineSizeListResult, ae error) {
 	req, err := client.ListAvailableSizesPreparer(resourceGroupName, availabilitySetName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "compute/AvailabilitySetsClient", "ListAvailableSizes", "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "compute/AvailabilitySetsClient", "ListAvailableSizes", autorest.UndefinedStatusCode, "Failure preparing request")
 	}
 
 	resp, err := client.ListAvailableSizesSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "compute/AvailabilitySetsClient", "ListAvailableSizes", "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "compute/AvailabilitySetsClient", "ListAvailableSizes", resp.StatusCode, "Failure sending request")
 	}
 
 	result, err = client.ListAvailableSizesResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "compute/AvailabilitySetsClient", "ListAvailableSizes", "Failure responding to request")
+		ae = autorest.NewErrorWithError(err, "compute/AvailabilitySetsClient", "ListAvailableSizes", resp.StatusCode, "Failure responding to request")
 	}
 
 	return
@@ -358,5 +382,29 @@ func (client AvailabilitySetsClient) ListAvailableSizesResponder(resp *http.Resp
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// ListAvailableSizesNextResults retrieves the next set of results, if any.
+func (client AvailabilitySetsClient) ListAvailableSizesNextResults(lastResults VirtualMachineSizeListResult) (result VirtualMachineSizeListResult, ae error) {
+	req, err := lastResults.VirtualMachineSizeListResultPreparer()
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "compute/AvailabilitySetsClient", "ListAvailableSizes", autorest.UndefinedStatusCode, "Failure preparing next results request request")
+	}
+	if req == nil {
+		return
+	}
+
+	resp, err := client.ListAvailableSizesSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "compute/AvailabilitySetsClient", "ListAvailableSizes", resp.StatusCode, "Failure sending next results request request")
+	}
+
+	result, err = client.ListAvailableSizesResponder(resp)
+	if err != nil {
+		ae = autorest.NewErrorWithError(err, "compute/AvailabilitySetsClient", "ListAvailableSizes", resp.StatusCode, "Failure responding to next results request request")
+	}
+
 	return
 }

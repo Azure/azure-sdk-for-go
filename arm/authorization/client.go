@@ -24,7 +24,7 @@ import (
 
 const (
 	// APIVersion is the version of the Authorization
-	APIVersion = "2015-01-01"
+	APIVersion = "2015-07-01"
 
 	// DefaultBaseURI is the default URI used for the service Authorization
 	DefaultBaseURI = "https://management.azure.com"

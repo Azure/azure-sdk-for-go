@@ -98,11 +98,6 @@ const (
 type JobExecutionStatus string
 
 const (
-	// CallbackNotFound specifies the callback not found state for job
-	// execution status.
-	CallbackNotFound JobExecutionStatus = "CallbackNotFound"
-	// Cancelled specifies the cancelled state for job execution status.
-	Cancelled JobExecutionStatus = "Cancelled"
 	// Completed specifies the completed state for job execution status.
 	Completed JobExecutionStatus = "Completed"
 	// Failed specifies the failed state for job execution status.
@@ -256,11 +251,11 @@ type HTTPAuthentication struct {
 
 // HTTPRequest is
 type HTTPRequest struct {
-	HTTPAuthentication *HTTPAuthentication `json:"httpAuthentication,omitempty"`
-	URI                *string             `json:"uri,omitempty"`
-	Method             *string             `json:"method,omitempty"`
-	Body               *string             `json:"body,omitempty"`
-	Headers            *map[string]*string `json:"headers,omitempty"`
+	Authentication *HTTPAuthentication `json:"authentication,omitempty"`
+	URI            *string             `json:"uri,omitempty"`
+	Method         *string             `json:"method,omitempty"`
+	Body           *string             `json:"body,omitempty"`
+	Headers        *map[string]*string `json:"headers,omitempty"`
 }
 
 // JobAction is
@@ -357,6 +352,11 @@ type JobHistoryDefinitionProperties struct {
 	RepeatCount           *int                 `json:"repeatCount,omitempty"`
 }
 
+// JobHistoryFilter is
+type JobHistoryFilter struct {
+	Status JobExecutionStatus `json:"status,omitempty"`
+}
+
 // JobHistoryListResult is
 type JobHistoryListResult struct {
 	autorest.Response `json:"-"`
@@ -432,6 +432,11 @@ type JobRecurrenceSchedule struct {
 type JobRecurrenceScheduleMonthlyOccurrence struct {
 	Day        JobScheduleDay `json:"day,omitempty"`
 	Occurrence *int           `json:"Occurrence,omitempty"`
+}
+
+// JobStateFilter is
+type JobStateFilter struct {
+	State JobState `json:"state,omitempty"`
 }
 
 // JobStatus is

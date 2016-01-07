@@ -20,6 +20,8 @@ package dns
 
 import (
 	"github.com/Azure/azure-sdk-for-go/Godeps/_workspace/src/github.com/Azure/go-autorest/autorest"
+	"github.com/Azure/azure-sdk-for-go/Godeps/_workspace/src/github.com/Azure/go-autorest/autorest/to"
+	"net/http"
 )
 
 // RecordType enumerates the values for record type.
@@ -103,6 +105,18 @@ type RecordSetListResult struct {
 	NextLink          *string      `json:"nextLink,omitempty"`
 }
 
+// RecordSetListResultPreparer prepares a request to retrieve the next set of results. It returns
+// nil if no more results exist.
+func (client RecordSetListResult) RecordSetListResultPreparer() (*http.Request, error) {
+	if client.NextLink == nil || len(to.String(client.NextLink)) <= 0 {
+		return nil, nil
+	}
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(client.NextLink)))
+}
+
 // RecordSetProperties is represents the properties of the records in the
 // RecordSet.
 type RecordSetProperties struct {
@@ -178,6 +192,18 @@ type ZoneListResult struct {
 	autorest.Response `json:"-"`
 	Value             *[]Zone `json:"value,omitempty"`
 	NextLink          *string `json:"nextLink,omitempty"`
+}
+
+// ZoneListResultPreparer prepares a request to retrieve the next set of results. It returns
+// nil if no more results exist.
+func (client ZoneListResult) ZoneListResultPreparer() (*http.Request, error) {
+	if client.NextLink == nil || len(to.String(client.NextLink)) <= 0 {
+		return nil, nil
+	}
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(client.NextLink)))
 }
 
 // ZoneProperties is represents the properties of the zone.

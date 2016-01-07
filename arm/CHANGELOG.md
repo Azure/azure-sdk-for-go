@@ -2,6 +2,44 @@
 
 -----
 
+## 'v0.4.0-beta'
+
+This release brings the Go SDK ARM packages up-to-date with Azure ARM Swagger files for most
+services. Since the underlying [Swagger files](https://github.com/Azure/azure-rest-api-specs)
+continue to change substantially, the ARM packages are still in *beta* status.
+
+The ARM packages now align with the following API versions (*highlighted* packages are new or
+updated in this release):
+
+- *arm/authorization 2015-07-01*
+- *arm/cdn 2015-06-01*
+- arm/compute 2015-06-15
+- arm/dns 2015-05-04-preview
+- *arm/intune 2015-01-14-preview*
+- arm/logic 2015-02-01-preview
+- *arm/network 2015-06-15*
+- *arm/notificationhubs 2014-09-01*
+- arm/redis 2015-08-01
+- *arm/resources/authorization 2015-01-01*
+- *arm/resources/features 2014-08-01-preview*
+- *arm/resources/resources 2014-04-01-preview*
+- *arm/resources/subscriptions 2014-04-01-preview*
+- *arm/scheduler 2016-01-01*
+- arm/storage 2015-06-15
+- arm/web 2015-08-01
+
+### Changes
+
+- Moved the arm/authorization, arm/features, arm/resources, and arm/subscriptions packages under a new, resources, package (to reflect the corresponding Swagger structure)
+- Added a new arm/authoriation (2015-07-01) package
+- Added a new arm/cdn (2015-06-01) package
+- Added a new arm/intune (2015-01-14-preview) package
+- Udated arm/network (2015-06-01)
+- Added a new arm/notificationhubs (2014-09-01) package
+- Updated arm/scheduler (2016-01-01) package
+
+-----
+
 ## `v0.3.0-beta`
 
 - Corrected unintentional struct field renaming and client renaming in v0.2.0-beta

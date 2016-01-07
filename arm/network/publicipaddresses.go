@@ -24,10 +24,10 @@ import (
 	"net/url"
 )
 
-// PublicIPAddressesClient is the the Windows Azure Network management API
-// provides a RESTful set of web services that interact with Windows Azure
+// PublicIPAddressesClient is the the Microsoft Azure Network management API
+// provides a RESTful set of web services that interact with Microsoft Azure
 // Networks service to manage your network resrources. The API has entities
-// that capture the relationship between an end user and the Windows Azure
+// that capture the relationship between an end user and the Microsoft Azure
 // Networks service.
 type PublicIPAddressesClient struct {
 	ManagementClient
@@ -54,18 +54,18 @@ func NewPublicIPAddressesClientWithBaseURI(baseURI string, subscriptionID string
 func (client PublicIPAddressesClient) CreateOrUpdate(resourceGroupName string, publicIPAddressName string, parameters PublicIPAddress) (result PublicIPAddress, ae error) {
 	req, err := client.CreateOrUpdatePreparer(resourceGroupName, publicIPAddressName, parameters)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "network/PublicIPAddressesClient", "CreateOrUpdate", "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "network/PublicIPAddressesClient", "CreateOrUpdate", autorest.UndefinedStatusCode, "Failure preparing request")
 	}
 
 	resp, err := client.CreateOrUpdateSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "network/PublicIPAddressesClient", "CreateOrUpdate", "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "network/PublicIPAddressesClient", "CreateOrUpdate", resp.StatusCode, "Failure sending request")
 	}
 
 	result, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "network/PublicIPAddressesClient", "CreateOrUpdate", "Failure responding to request")
+		ae = autorest.NewErrorWithError(err, "network/PublicIPAddressesClient", "CreateOrUpdate", resp.StatusCode, "Failure responding to request")
 	}
 
 	return
@@ -120,18 +120,18 @@ func (client PublicIPAddressesClient) CreateOrUpdateResponder(resp *http.Respons
 func (client PublicIPAddressesClient) Delete(resourceGroupName string, publicIPAddressName string) (result autorest.Response, ae error) {
 	req, err := client.DeletePreparer(resourceGroupName, publicIPAddressName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "network/PublicIPAddressesClient", "Delete", "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "network/PublicIPAddressesClient", "Delete", autorest.UndefinedStatusCode, "Failure preparing request")
 	}
 
 	resp, err := client.DeleteSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "network/PublicIPAddressesClient", "Delete", "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "network/PublicIPAddressesClient", "Delete", resp.StatusCode, "Failure sending request")
 	}
 
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "network/PublicIPAddressesClient", "Delete", "Failure responding to request")
+		ae = autorest.NewErrorWithError(err, "network/PublicIPAddressesClient", "Delete", resp.StatusCode, "Failure responding to request")
 	}
 
 	return
@@ -180,29 +180,29 @@ func (client PublicIPAddressesClient) DeleteResponder(resp *http.Response) (resu
 // specified pubicIpAddress
 //
 // resourceGroupName is the name of the resource group. publicIPAddressName is
-// the name of the subnet.
-func (client PublicIPAddressesClient) Get(resourceGroupName string, publicIPAddressName string) (result PublicIPAddress, ae error) {
-	req, err := client.GetPreparer(resourceGroupName, publicIPAddressName)
+// the name of the subnet. expand is expand references resources.
+func (client PublicIPAddressesClient) Get(resourceGroupName string, publicIPAddressName string, expand string) (result PublicIPAddress, ae error) {
+	req, err := client.GetPreparer(resourceGroupName, publicIPAddressName, expand)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "network/PublicIPAddressesClient", "Get", "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "network/PublicIPAddressesClient", "Get", autorest.UndefinedStatusCode, "Failure preparing request")
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "network/PublicIPAddressesClient", "Get", "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "network/PublicIPAddressesClient", "Get", resp.StatusCode, "Failure sending request")
 	}
 
 	result, err = client.GetResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "network/PublicIPAddressesClient", "Get", "Failure responding to request")
+		ae = autorest.NewErrorWithError(err, "network/PublicIPAddressesClient", "Get", resp.StatusCode, "Failure responding to request")
 	}
 
 	return
 }
 
 // GetPreparer prepares the Get request.
-func (client PublicIPAddressesClient) GetPreparer(resourceGroupName string, publicIPAddressName string) (*http.Request, error) {
+func (client PublicIPAddressesClient) GetPreparer(resourceGroupName string, publicIPAddressName string, expand string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"publicIpAddressName": url.QueryEscape(publicIPAddressName),
 		"resourceGroupName":   url.QueryEscape(resourceGroupName),
@@ -211,6 +211,9 @@ func (client PublicIPAddressesClient) GetPreparer(resourceGroupName string, publ
 
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
+	}
+	if len(expand) > 0 {
+		queryParameters["$expand"] = expand
 	}
 
 	return autorest.Prepare(&http.Request{},
@@ -248,18 +251,18 @@ func (client PublicIPAddressesClient) GetResponder(resp *http.Response) (result 
 func (client PublicIPAddressesClient) List(resourceGroupName string) (result PublicIPAddressListResult, ae error) {
 	req, err := client.ListPreparer(resourceGroupName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "network/PublicIPAddressesClient", "List", "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "network/PublicIPAddressesClient", "List", autorest.UndefinedStatusCode, "Failure preparing request")
 	}
 
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "network/PublicIPAddressesClient", "List", "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "network/PublicIPAddressesClient", "List", resp.StatusCode, "Failure sending request")
 	}
 
 	result, err = client.ListResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "network/PublicIPAddressesClient", "List", "Failure responding to request")
+		ae = autorest.NewErrorWithError(err, "network/PublicIPAddressesClient", "List", resp.StatusCode, "Failure responding to request")
 	}
 
 	return
@@ -308,7 +311,7 @@ func (client PublicIPAddressesClient) ListResponder(resp *http.Response) (result
 func (client PublicIPAddressesClient) ListNextResults(lastResults PublicIPAddressListResult) (result PublicIPAddressListResult, ae error) {
 	req, err := lastResults.PublicIPAddressListResultPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "network/PublicIPAddressesClient", "List", "Failure preparing next results request request")
+		return result, autorest.NewErrorWithError(err, "network/PublicIPAddressesClient", "List", autorest.UndefinedStatusCode, "Failure preparing next results request request")
 	}
 	if req == nil {
 		return
@@ -317,12 +320,12 @@ func (client PublicIPAddressesClient) ListNextResults(lastResults PublicIPAddres
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "network/PublicIPAddressesClient", "List", "Failure sending next results request request")
+		return result, autorest.NewErrorWithError(err, "network/PublicIPAddressesClient", "List", resp.StatusCode, "Failure sending next results request request")
 	}
 
 	result, err = client.ListResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "network/PublicIPAddressesClient", "List", "Failure responding to next results request request")
+		ae = autorest.NewErrorWithError(err, "network/PublicIPAddressesClient", "List", resp.StatusCode, "Failure responding to next results request request")
 	}
 
 	return
@@ -333,18 +336,18 @@ func (client PublicIPAddressesClient) ListNextResults(lastResults PublicIPAddres
 func (client PublicIPAddressesClient) ListAll() (result PublicIPAddressListResult, ae error) {
 	req, err := client.ListAllPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "network/PublicIPAddressesClient", "ListAll", "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "network/PublicIPAddressesClient", "ListAll", autorest.UndefinedStatusCode, "Failure preparing request")
 	}
 
 	resp, err := client.ListAllSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "network/PublicIPAddressesClient", "ListAll", "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "network/PublicIPAddressesClient", "ListAll", resp.StatusCode, "Failure sending request")
 	}
 
 	result, err = client.ListAllResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "network/PublicIPAddressesClient", "ListAll", "Failure responding to request")
+		ae = autorest.NewErrorWithError(err, "network/PublicIPAddressesClient", "ListAll", resp.StatusCode, "Failure responding to request")
 	}
 
 	return
@@ -392,7 +395,7 @@ func (client PublicIPAddressesClient) ListAllResponder(resp *http.Response) (res
 func (client PublicIPAddressesClient) ListAllNextResults(lastResults PublicIPAddressListResult) (result PublicIPAddressListResult, ae error) {
 	req, err := lastResults.PublicIPAddressListResultPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "network/PublicIPAddressesClient", "ListAll", "Failure preparing next results request request")
+		return result, autorest.NewErrorWithError(err, "network/PublicIPAddressesClient", "ListAll", autorest.UndefinedStatusCode, "Failure preparing next results request request")
 	}
 	if req == nil {
 		return
@@ -401,12 +404,12 @@ func (client PublicIPAddressesClient) ListAllNextResults(lastResults PublicIPAdd
 	resp, err := client.ListAllSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "network/PublicIPAddressesClient", "ListAll", "Failure sending next results request request")
+		return result, autorest.NewErrorWithError(err, "network/PublicIPAddressesClient", "ListAll", resp.StatusCode, "Failure sending next results request request")
 	}
 
 	result, err = client.ListAllResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "network/PublicIPAddressesClient", "ListAll", "Failure responding to next results request request")
+		ae = autorest.NewErrorWithError(err, "network/PublicIPAddressesClient", "ListAll", resp.StatusCode, "Failure responding to next results request request")
 	}
 
 	return

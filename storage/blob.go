@@ -652,13 +652,6 @@ func (b BlobStorageClient) PutBlock(container, name, blockID string, chunk []byt
 	return b.PutBlockWithLength(container, name, blockID, uint64(len(chunk)), bytes.NewReader(chunk), nil)
 }
 
-func (b BlobStorageClient) PutBlockWithContentType(container, name, blockID string, chunk []byte, contentType string) error {
-	m := make(map[string]string)
-	m["Content-Type"] = contentType
-
-	return b.PutBlockWithLength(container, name, blockID, uint64(len(chunk)), bytes.NewReader(chunk), m)
-}
-
 // PutBlockWithLength saves the given data stream of exactly specified size to
 // the block blob with given ID. It is an alternative to PutBlocks where data
 // comes as stream but the length is known in advance.
@@ -681,6 +674,7 @@ func (b BlobStorageClient) PutBlockWithLength(container, name, blockID string, s
 	if err != nil {
 		return err
 	}
+
 	defer resp.body.Close()
 	return checkRespCode(resp.statusCode, []int{http.StatusCreated})
 }
@@ -727,13 +721,17 @@ func (b BlobStorageClient) GetBlockList(container, name string, blockType BlockL
 // be created using this method before writing pages.
 //
 // See https://msdn.microsoft.com/en-us/library/azure/dd179451.aspx
-func (b BlobStorageClient) PutPageBlob(container, name string, size int64) error {
+func (b BlobStorageClient) PutPageBlob(container, name string, size int64, extraHeaders map[string]string) error {
 	path := fmt.Sprintf("%s/%s", container, name)
 	uri := b.client.getEndpoint(blobServiceName, path, url.Values{})
 	headers := b.client.getStandardHeaders()
 	headers["x-ms-blob-type"] = string(BlobTypePage)
 	headers["x-ms-blob-content-length"] = fmt.Sprintf("%v", size)
 	headers["Content-Length"] = fmt.Sprintf("%v", 0)
+
+	for k, v := range extraHeaders {
+		headers[k] = v
+	}
 
 	resp, err := b.client.exec("PUT", uri, headers, nil)
 	if err != nil {

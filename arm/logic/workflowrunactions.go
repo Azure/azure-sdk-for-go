@@ -50,18 +50,18 @@ func NewWorkflowRunActionsClientWithBaseURI(baseURI string, subscriptionID strin
 func (client WorkflowRunActionsClient) Get(resourceGroupName string, workflowName string, runName string, actionName string) (result WorkflowRunAction, ae error) {
 	req, err := client.GetPreparer(resourceGroupName, workflowName, runName, actionName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "logic/WorkflowRunActionsClient", "Get", "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "logic/WorkflowRunActionsClient", "Get", autorest.UndefinedStatusCode, "Failure preparing request")
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "logic/WorkflowRunActionsClient", "Get", "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "logic/WorkflowRunActionsClient", "Get", resp.StatusCode, "Failure sending request")
 	}
 
 	result, err = client.GetResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "logic/WorkflowRunActionsClient", "Get", "Failure responding to request")
+		ae = autorest.NewErrorWithError(err, "logic/WorkflowRunActionsClient", "Get", resp.StatusCode, "Failure responding to request")
 	}
 
 	return
@@ -117,18 +117,18 @@ func (client WorkflowRunActionsClient) GetResponder(resp *http.Response) (result
 func (client WorkflowRunActionsClient) List(resourceGroupName string, workflowName string, runName string, top *int, filter string) (result WorkflowRunActionListResult, ae error) {
 	req, err := client.ListPreparer(resourceGroupName, workflowName, runName, top, filter)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "logic/WorkflowRunActionsClient", "List", "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "logic/WorkflowRunActionsClient", "List", autorest.UndefinedStatusCode, "Failure preparing request")
 	}
 
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "logic/WorkflowRunActionsClient", "List", "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "logic/WorkflowRunActionsClient", "List", resp.StatusCode, "Failure sending request")
 	}
 
 	result, err = client.ListResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "logic/WorkflowRunActionsClient", "List", "Failure responding to request")
+		ae = autorest.NewErrorWithError(err, "logic/WorkflowRunActionsClient", "List", resp.StatusCode, "Failure responding to request")
 	}
 
 	return
@@ -185,7 +185,7 @@ func (client WorkflowRunActionsClient) ListResponder(resp *http.Response) (resul
 func (client WorkflowRunActionsClient) ListNextResults(lastResults WorkflowRunActionListResult) (result WorkflowRunActionListResult, ae error) {
 	req, err := lastResults.WorkflowRunActionListResultPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "logic/WorkflowRunActionsClient", "List", "Failure preparing next results request request")
+		return result, autorest.NewErrorWithError(err, "logic/WorkflowRunActionsClient", "List", autorest.UndefinedStatusCode, "Failure preparing next results request request")
 	}
 	if req == nil {
 		return
@@ -194,12 +194,12 @@ func (client WorkflowRunActionsClient) ListNextResults(lastResults WorkflowRunAc
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "logic/WorkflowRunActionsClient", "List", "Failure sending next results request request")
+		return result, autorest.NewErrorWithError(err, "logic/WorkflowRunActionsClient", "List", resp.StatusCode, "Failure sending next results request request")
 	}
 
 	result, err = client.ListResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "logic/WorkflowRunActionsClient", "List", "Failure responding to next results request request")
+		ae = autorest.NewErrorWithError(err, "logic/WorkflowRunActionsClient", "List", resp.StatusCode, "Failure responding to next results request request")
 	}
 
 	return

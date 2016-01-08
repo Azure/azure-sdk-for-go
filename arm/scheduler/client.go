@@ -24,7 +24,7 @@ import (
 
 const (
 	// APIVersion is the version of the Scheduler
-	APIVersion = "2014-08-01-preview"
+	APIVersion = "2016-01-01"
 
 	// DefaultBaseURI is the default URI used for the service Scheduler
 	DefaultBaseURI = "https://management.azure.com"

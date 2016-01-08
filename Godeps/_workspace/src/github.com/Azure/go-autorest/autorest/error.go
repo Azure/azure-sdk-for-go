@@ -4,6 +4,10 @@ import (
 	"fmt"
 )
 
+const (
+	UndefinedStatusCode = 0
+)
+
 // Error describes the methods implemented by autorest errors.
 type Error interface {
 	error
@@ -15,6 +19,9 @@ type Error interface {
 
 	// Method should return the name of the method raising the error.
 	Method() string
+
+	// StatusCode returns the HTTP Response StatusCode (if non-zero) that led to the error.
+	StatusCode() int
 
 	// Message should return the error message.
 	Message() string
@@ -30,6 +37,7 @@ type Error interface {
 type baseError struct {
 	packageType string
 	method      string
+	statusCode  int
 	message     string
 
 	original error
@@ -38,19 +46,26 @@ type baseError struct {
 // NewError creates a new Error conforming object from the passed packageType, method, and
 // message. message is treated as a format string to which the optional args apply.
 func NewError(packageType string, method string, message string, args ...interface{}) Error {
-	return NewErrorWithError(nil, packageType, method, message, args...)
+	return NewErrorWithError(nil, packageType, method, UndefinedStatusCode, message, args...)
+}
+
+// NewErrorWithStatusCode creates a new Error conforming object from the passed packageType, method,
+// statusCode, and message. message is treated as a format string to which the optional args apply.
+func NewErrorWithStatusCode(packageType string, method string, statusCode int, message string, args ...interface{}) Error {
+	return NewErrorWithError(nil, packageType, method, statusCode, message, args...)
 }
 
 // NewErrorWithError creates a new Error conforming object from the passed packageType, method,
-// message, and original error. message is treated as a format string to which the optional args
-// apply.
-func NewErrorWithError(original error, packageType string, method string, message string, args ...interface{}) Error {
+// statusCode, message, and original error. message is treated as a format string to which the
+// optional args apply.
+func NewErrorWithError(original error, packageType string, method string, statusCode int, message string, args ...interface{}) Error {
 	if _, ok := original.(Error); ok {
 		return original.(Error)
 	}
 	return baseError{
 		packageType: packageType,
 		method:      method,
+		statusCode:  statusCode,
 		message:     fmt.Sprintf(message, args...),
 		original:    original,
 	}
@@ -66,6 +81,11 @@ func (be baseError) PackageType() string {
 // Method returns the name of the method raising the error.
 func (be baseError) Method() string {
 	return be.method
+}
+
+// StatusCode returns the HTTP Response StatusCode (if non-zero) that led to the error.
+func (be baseError) StatusCode() int {
+	return be.statusCode
 }
 
 // Message is the error message.
@@ -84,10 +104,10 @@ func (be baseError) Error() string {
 }
 
 // String returns a formatted containing all available details (i.e., PackageType, Method,
-// Message, and original error (if any)).
+// StatusCode, Message, and original error (if any)).
 func (be baseError) String() string {
 	if be.original == nil {
-		return fmt.Sprintf("%s:%s %s", be.packageType, be.method, be.message)
+		return fmt.Sprintf("%s:%s %v %s", be.packageType, be.method, be.statusCode, be.message)
 	}
-	return fmt.Sprintf("%s:%s %s -- Original Error: %v", be.packageType, be.method, be.message, be.original)
+	return fmt.Sprintf("%s:%s %v %s -- Original Error: %v", be.packageType, be.method, be.statusCode, be.message, be.original)
 }

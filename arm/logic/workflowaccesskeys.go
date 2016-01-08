@@ -50,18 +50,18 @@ func NewWorkflowAccessKeysClientWithBaseURI(baseURI string, subscriptionID strin
 func (client WorkflowAccessKeysClient) CreateOrUpdate(resourceGroupName string, workflowName string, accessKeyName string, workflowAccesskey WorkflowAccessKey) (result WorkflowAccessKey, ae error) {
 	req, err := client.CreateOrUpdatePreparer(resourceGroupName, workflowName, accessKeyName, workflowAccesskey)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "logic/WorkflowAccessKeysClient", "CreateOrUpdate", "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "logic/WorkflowAccessKeysClient", "CreateOrUpdate", autorest.UndefinedStatusCode, "Failure preparing request")
 	}
 
 	resp, err := client.CreateOrUpdateSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "logic/WorkflowAccessKeysClient", "CreateOrUpdate", "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "logic/WorkflowAccessKeysClient", "CreateOrUpdate", resp.StatusCode, "Failure sending request")
 	}
 
 	result, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "logic/WorkflowAccessKeysClient", "CreateOrUpdate", "Failure responding to request")
+		ae = autorest.NewErrorWithError(err, "logic/WorkflowAccessKeysClient", "CreateOrUpdate", resp.StatusCode, "Failure responding to request")
 	}
 
 	return
@@ -116,18 +116,18 @@ func (client WorkflowAccessKeysClient) CreateOrUpdateResponder(resp *http.Respon
 func (client WorkflowAccessKeysClient) Delete(resourceGroupName string, workflowName string, accessKeyName string) (result autorest.Response, ae error) {
 	req, err := client.DeletePreparer(resourceGroupName, workflowName, accessKeyName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "logic/WorkflowAccessKeysClient", "Delete", "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "logic/WorkflowAccessKeysClient", "Delete", autorest.UndefinedStatusCode, "Failure preparing request")
 	}
 
 	resp, err := client.DeleteSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "logic/WorkflowAccessKeysClient", "Delete", "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "logic/WorkflowAccessKeysClient", "Delete", resp.StatusCode, "Failure sending request")
 	}
 
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "logic/WorkflowAccessKeysClient", "Delete", "Failure responding to request")
+		ae = autorest.NewErrorWithError(err, "logic/WorkflowAccessKeysClient", "Delete", resp.StatusCode, "Failure responding to request")
 	}
 
 	return
@@ -180,18 +180,18 @@ func (client WorkflowAccessKeysClient) DeleteResponder(resp *http.Response) (res
 func (client WorkflowAccessKeysClient) Get(resourceGroupName string, workflowName string, accessKeyName string) (result WorkflowAccessKey, ae error) {
 	req, err := client.GetPreparer(resourceGroupName, workflowName, accessKeyName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "logic/WorkflowAccessKeysClient", "Get", "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "logic/WorkflowAccessKeysClient", "Get", autorest.UndefinedStatusCode, "Failure preparing request")
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "logic/WorkflowAccessKeysClient", "Get", "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "logic/WorkflowAccessKeysClient", "Get", resp.StatusCode, "Failure sending request")
 	}
 
 	result, err = client.GetResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "logic/WorkflowAccessKeysClient", "Get", "Failure responding to request")
+		ae = autorest.NewErrorWithError(err, "logic/WorkflowAccessKeysClient", "Get", resp.StatusCode, "Failure responding to request")
 	}
 
 	return
@@ -245,18 +245,18 @@ func (client WorkflowAccessKeysClient) GetResponder(resp *http.Response) (result
 func (client WorkflowAccessKeysClient) List(resourceGroupName string, workflowName string, top *int) (result WorkflowAccessKeyListResult, ae error) {
 	req, err := client.ListPreparer(resourceGroupName, workflowName, top)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "logic/WorkflowAccessKeysClient", "List", "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "logic/WorkflowAccessKeysClient", "List", autorest.UndefinedStatusCode, "Failure preparing request")
 	}
 
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "logic/WorkflowAccessKeysClient", "List", "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "logic/WorkflowAccessKeysClient", "List", resp.StatusCode, "Failure sending request")
 	}
 
 	result, err = client.ListResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "logic/WorkflowAccessKeysClient", "List", "Failure responding to request")
+		ae = autorest.NewErrorWithError(err, "logic/WorkflowAccessKeysClient", "List", resp.StatusCode, "Failure responding to request")
 	}
 
 	return
@@ -309,7 +309,7 @@ func (client WorkflowAccessKeysClient) ListResponder(resp *http.Response) (resul
 func (client WorkflowAccessKeysClient) ListNextResults(lastResults WorkflowAccessKeyListResult) (result WorkflowAccessKeyListResult, ae error) {
 	req, err := lastResults.WorkflowAccessKeyListResultPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "logic/WorkflowAccessKeysClient", "List", "Failure preparing next results request request")
+		return result, autorest.NewErrorWithError(err, "logic/WorkflowAccessKeysClient", "List", autorest.UndefinedStatusCode, "Failure preparing next results request request")
 	}
 	if req == nil {
 		return
@@ -318,12 +318,12 @@ func (client WorkflowAccessKeysClient) ListNextResults(lastResults WorkflowAcces
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "logic/WorkflowAccessKeysClient", "List", "Failure sending next results request request")
+		return result, autorest.NewErrorWithError(err, "logic/WorkflowAccessKeysClient", "List", resp.StatusCode, "Failure sending next results request request")
 	}
 
 	result, err = client.ListResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "logic/WorkflowAccessKeysClient", "List", "Failure responding to next results request request")
+		ae = autorest.NewErrorWithError(err, "logic/WorkflowAccessKeysClient", "List", resp.StatusCode, "Failure responding to next results request request")
 	}
 
 	return
@@ -336,18 +336,18 @@ func (client WorkflowAccessKeysClient) ListNextResults(lastResults WorkflowAcces
 func (client WorkflowAccessKeysClient) ListSecretKeys(resourceGroupName string, workflowName string, accessKeyName string) (result WorkflowSecretKeys, ae error) {
 	req, err := client.ListSecretKeysPreparer(resourceGroupName, workflowName, accessKeyName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "logic/WorkflowAccessKeysClient", "ListSecretKeys", "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "logic/WorkflowAccessKeysClient", "ListSecretKeys", autorest.UndefinedStatusCode, "Failure preparing request")
 	}
 
 	resp, err := client.ListSecretKeysSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "logic/WorkflowAccessKeysClient", "ListSecretKeys", "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "logic/WorkflowAccessKeysClient", "ListSecretKeys", resp.StatusCode, "Failure sending request")
 	}
 
 	result, err = client.ListSecretKeysResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "logic/WorkflowAccessKeysClient", "ListSecretKeys", "Failure responding to request")
+		ae = autorest.NewErrorWithError(err, "logic/WorkflowAccessKeysClient", "ListSecretKeys", resp.StatusCode, "Failure responding to request")
 	}
 
 	return
@@ -402,18 +402,18 @@ func (client WorkflowAccessKeysClient) ListSecretKeysResponder(resp *http.Respon
 func (client WorkflowAccessKeysClient) RegenerateSecretKey(resourceGroupName string, workflowName string, accessKeyName string, parameters RegenerateSecretKeyParameters) (result WorkflowSecretKeys, ae error) {
 	req, err := client.RegenerateSecretKeyPreparer(resourceGroupName, workflowName, accessKeyName, parameters)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "logic/WorkflowAccessKeysClient", "RegenerateSecretKey", "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "logic/WorkflowAccessKeysClient", "RegenerateSecretKey", autorest.UndefinedStatusCode, "Failure preparing request")
 	}
 
 	resp, err := client.RegenerateSecretKeySender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "logic/WorkflowAccessKeysClient", "RegenerateSecretKey", "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "logic/WorkflowAccessKeysClient", "RegenerateSecretKey", resp.StatusCode, "Failure sending request")
 	}
 
 	result, err = client.RegenerateSecretKeyResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "logic/WorkflowAccessKeysClient", "RegenerateSecretKey", "Failure responding to request")
+		ae = autorest.NewErrorWithError(err, "logic/WorkflowAccessKeysClient", "RegenerateSecretKey", resp.StatusCode, "Failure responding to request")
 	}
 
 	return

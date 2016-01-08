@@ -55,18 +55,18 @@ func NewCertificatesClientWithBaseURI(baseURI string, subscriptionID string) Cer
 func (client CertificatesClient) CreateOrUpdateCertificate(resourceGroupName string, name string, certificateEnvelope Certificate) (result Certificate, ae error) {
 	req, err := client.CreateOrUpdateCertificatePreparer(resourceGroupName, name, certificateEnvelope)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web/CertificatesClient", "CreateOrUpdateCertificate", "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "web/CertificatesClient", "CreateOrUpdateCertificate", autorest.UndefinedStatusCode, "Failure preparing request")
 	}
 
 	resp, err := client.CreateOrUpdateCertificateSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web/CertificatesClient", "CreateOrUpdateCertificate", "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "web/CertificatesClient", "CreateOrUpdateCertificate", resp.StatusCode, "Failure sending request")
 	}
 
 	result, err = client.CreateOrUpdateCertificateResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "web/CertificatesClient", "CreateOrUpdateCertificate", "Failure responding to request")
+		ae = autorest.NewErrorWithError(err, "web/CertificatesClient", "CreateOrUpdateCertificate", resp.StatusCode, "Failure responding to request")
 	}
 
 	return
@@ -121,18 +121,18 @@ func (client CertificatesClient) CreateOrUpdateCertificateResponder(resp *http.R
 func (client CertificatesClient) CreateOrUpdateCsr(resourceGroupName string, name string, csrEnvelope Csr) (result Csr, ae error) {
 	req, err := client.CreateOrUpdateCsrPreparer(resourceGroupName, name, csrEnvelope)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web/CertificatesClient", "CreateOrUpdateCsr", "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "web/CertificatesClient", "CreateOrUpdateCsr", autorest.UndefinedStatusCode, "Failure preparing request")
 	}
 
 	resp, err := client.CreateOrUpdateCsrSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web/CertificatesClient", "CreateOrUpdateCsr", "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "web/CertificatesClient", "CreateOrUpdateCsr", resp.StatusCode, "Failure sending request")
 	}
 
 	result, err = client.CreateOrUpdateCsrResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "web/CertificatesClient", "CreateOrUpdateCsr", "Failure responding to request")
+		ae = autorest.NewErrorWithError(err, "web/CertificatesClient", "CreateOrUpdateCsr", resp.StatusCode, "Failure responding to request")
 	}
 
 	return
@@ -186,18 +186,18 @@ func (client CertificatesClient) CreateOrUpdateCsrResponder(resp *http.Response)
 func (client CertificatesClient) DeleteCertificate(resourceGroupName string, name string) (result ObjectSet, ae error) {
 	req, err := client.DeleteCertificatePreparer(resourceGroupName, name)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web/CertificatesClient", "DeleteCertificate", "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "web/CertificatesClient", "DeleteCertificate", autorest.UndefinedStatusCode, "Failure preparing request")
 	}
 
 	resp, err := client.DeleteCertificateSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web/CertificatesClient", "DeleteCertificate", "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "web/CertificatesClient", "DeleteCertificate", resp.StatusCode, "Failure sending request")
 	}
 
 	result, err = client.DeleteCertificateResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "web/CertificatesClient", "DeleteCertificate", "Failure responding to request")
+		ae = autorest.NewErrorWithError(err, "web/CertificatesClient", "DeleteCertificate", resp.StatusCode, "Failure responding to request")
 	}
 
 	return
@@ -250,18 +250,18 @@ func (client CertificatesClient) DeleteCertificateResponder(resp *http.Response)
 func (client CertificatesClient) DeleteCsr(resourceGroupName string, name string) (result ObjectSet, ae error) {
 	req, err := client.DeleteCsrPreparer(resourceGroupName, name)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web/CertificatesClient", "DeleteCsr", "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "web/CertificatesClient", "DeleteCsr", autorest.UndefinedStatusCode, "Failure preparing request")
 	}
 
 	resp, err := client.DeleteCsrSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web/CertificatesClient", "DeleteCsr", "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "web/CertificatesClient", "DeleteCsr", resp.StatusCode, "Failure sending request")
 	}
 
 	result, err = client.DeleteCsrResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "web/CertificatesClient", "DeleteCsr", "Failure responding to request")
+		ae = autorest.NewErrorWithError(err, "web/CertificatesClient", "DeleteCsr", resp.StatusCode, "Failure responding to request")
 	}
 
 	return
@@ -314,18 +314,18 @@ func (client CertificatesClient) DeleteCsrResponder(resp *http.Response) (result
 func (client CertificatesClient) GetCertificate(resourceGroupName string, name string) (result Certificate, ae error) {
 	req, err := client.GetCertificatePreparer(resourceGroupName, name)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web/CertificatesClient", "GetCertificate", "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "web/CertificatesClient", "GetCertificate", autorest.UndefinedStatusCode, "Failure preparing request")
 	}
 
 	resp, err := client.GetCertificateSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web/CertificatesClient", "GetCertificate", "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "web/CertificatesClient", "GetCertificate", resp.StatusCode, "Failure sending request")
 	}
 
 	result, err = client.GetCertificateResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "web/CertificatesClient", "GetCertificate", "Failure responding to request")
+		ae = autorest.NewErrorWithError(err, "web/CertificatesClient", "GetCertificate", resp.StatusCode, "Failure responding to request")
 	}
 
 	return
@@ -377,18 +377,18 @@ func (client CertificatesClient) GetCertificateResponder(resp *http.Response) (r
 func (client CertificatesClient) GetCertificates(resourceGroupName string) (result CertificateCollection, ae error) {
 	req, err := client.GetCertificatesPreparer(resourceGroupName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web/CertificatesClient", "GetCertificates", "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "web/CertificatesClient", "GetCertificates", autorest.UndefinedStatusCode, "Failure preparing request")
 	}
 
 	resp, err := client.GetCertificatesSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web/CertificatesClient", "GetCertificates", "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "web/CertificatesClient", "GetCertificates", resp.StatusCode, "Failure sending request")
 	}
 
 	result, err = client.GetCertificatesResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "web/CertificatesClient", "GetCertificates", "Failure responding to request")
+		ae = autorest.NewErrorWithError(err, "web/CertificatesClient", "GetCertificates", resp.StatusCode, "Failure responding to request")
 	}
 
 	return
@@ -440,18 +440,18 @@ func (client CertificatesClient) GetCertificatesResponder(resp *http.Response) (
 func (client CertificatesClient) GetCsr(resourceGroupName string, name string) (result Csr, ae error) {
 	req, err := client.GetCsrPreparer(resourceGroupName, name)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web/CertificatesClient", "GetCsr", "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "web/CertificatesClient", "GetCsr", autorest.UndefinedStatusCode, "Failure preparing request")
 	}
 
 	resp, err := client.GetCsrSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web/CertificatesClient", "GetCsr", "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "web/CertificatesClient", "GetCsr", resp.StatusCode, "Failure sending request")
 	}
 
 	result, err = client.GetCsrResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "web/CertificatesClient", "GetCsr", "Failure responding to request")
+		ae = autorest.NewErrorWithError(err, "web/CertificatesClient", "GetCsr", resp.StatusCode, "Failure responding to request")
 	}
 
 	return
@@ -503,18 +503,18 @@ func (client CertificatesClient) GetCsrResponder(resp *http.Response) (result Cs
 func (client CertificatesClient) GetCsrs(resourceGroupName string) (result CsrList, ae error) {
 	req, err := client.GetCsrsPreparer(resourceGroupName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web/CertificatesClient", "GetCsrs", "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "web/CertificatesClient", "GetCsrs", autorest.UndefinedStatusCode, "Failure preparing request")
 	}
 
 	resp, err := client.GetCsrsSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web/CertificatesClient", "GetCsrs", "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "web/CertificatesClient", "GetCsrs", resp.StatusCode, "Failure sending request")
 	}
 
 	result, err = client.GetCsrsResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "web/CertificatesClient", "GetCsrs", "Failure responding to request")
+		ae = autorest.NewErrorWithError(err, "web/CertificatesClient", "GetCsrs", resp.StatusCode, "Failure responding to request")
 	}
 
 	return
@@ -567,18 +567,18 @@ func (client CertificatesClient) GetCsrsResponder(resp *http.Response) (result C
 func (client CertificatesClient) UpdateCertificate(resourceGroupName string, name string, certificateEnvelope Certificate) (result Certificate, ae error) {
 	req, err := client.UpdateCertificatePreparer(resourceGroupName, name, certificateEnvelope)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web/CertificatesClient", "UpdateCertificate", "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "web/CertificatesClient", "UpdateCertificate", autorest.UndefinedStatusCode, "Failure preparing request")
 	}
 
 	resp, err := client.UpdateCertificateSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web/CertificatesClient", "UpdateCertificate", "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "web/CertificatesClient", "UpdateCertificate", resp.StatusCode, "Failure sending request")
 	}
 
 	result, err = client.UpdateCertificateResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "web/CertificatesClient", "UpdateCertificate", "Failure responding to request")
+		ae = autorest.NewErrorWithError(err, "web/CertificatesClient", "UpdateCertificate", resp.StatusCode, "Failure responding to request")
 	}
 
 	return
@@ -633,18 +633,18 @@ func (client CertificatesClient) UpdateCertificateResponder(resp *http.Response)
 func (client CertificatesClient) UpdateCsr(resourceGroupName string, name string, csrEnvelope Csr) (result Csr, ae error) {
 	req, err := client.UpdateCsrPreparer(resourceGroupName, name, csrEnvelope)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web/CertificatesClient", "UpdateCsr", "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "web/CertificatesClient", "UpdateCsr", autorest.UndefinedStatusCode, "Failure preparing request")
 	}
 
 	resp, err := client.UpdateCsrSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web/CertificatesClient", "UpdateCsr", "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "web/CertificatesClient", "UpdateCsr", resp.StatusCode, "Failure sending request")
 	}
 
 	result, err = client.UpdateCsrResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "web/CertificatesClient", "UpdateCsr", "Failure responding to request")
+		ae = autorest.NewErrorWithError(err, "web/CertificatesClient", "UpdateCsr", resp.StatusCode, "Failure responding to request")
 	}
 
 	return

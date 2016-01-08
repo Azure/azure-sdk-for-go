@@ -52,18 +52,18 @@ func NewTopLevelDomainsClientWithBaseURI(baseURI string, subscriptionID string) 
 func (client TopLevelDomainsClient) GetGetTopLevelDomains() (result TopLevelDomainCollection, ae error) {
 	req, err := client.GetGetTopLevelDomainsPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web/TopLevelDomainsClient", "GetGetTopLevelDomains", "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "web/TopLevelDomainsClient", "GetGetTopLevelDomains", autorest.UndefinedStatusCode, "Failure preparing request")
 	}
 
 	resp, err := client.GetGetTopLevelDomainsSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web/TopLevelDomainsClient", "GetGetTopLevelDomains", "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "web/TopLevelDomainsClient", "GetGetTopLevelDomains", resp.StatusCode, "Failure sending request")
 	}
 
 	result, err = client.GetGetTopLevelDomainsResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "web/TopLevelDomainsClient", "GetGetTopLevelDomains", "Failure responding to request")
+		ae = autorest.NewErrorWithError(err, "web/TopLevelDomainsClient", "GetGetTopLevelDomains", resp.StatusCode, "Failure responding to request")
 	}
 
 	return
@@ -113,18 +113,18 @@ func (client TopLevelDomainsClient) GetGetTopLevelDomainsResponder(resp *http.Re
 func (client TopLevelDomainsClient) GetTopLevelDomain(name string) (result TopLevelDomain, ae error) {
 	req, err := client.GetTopLevelDomainPreparer(name)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web/TopLevelDomainsClient", "GetTopLevelDomain", "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "web/TopLevelDomainsClient", "GetTopLevelDomain", autorest.UndefinedStatusCode, "Failure preparing request")
 	}
 
 	resp, err := client.GetTopLevelDomainSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web/TopLevelDomainsClient", "GetTopLevelDomain", "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "web/TopLevelDomainsClient", "GetTopLevelDomain", resp.StatusCode, "Failure sending request")
 	}
 
 	result, err = client.GetTopLevelDomainResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "web/TopLevelDomainsClient", "GetTopLevelDomain", "Failure responding to request")
+		ae = autorest.NewErrorWithError(err, "web/TopLevelDomainsClient", "GetTopLevelDomain", resp.StatusCode, "Failure responding to request")
 	}
 
 	return
@@ -177,18 +177,18 @@ func (client TopLevelDomainsClient) GetTopLevelDomainResponder(resp *http.Respon
 func (client TopLevelDomainsClient) ListTopLevelDomainAgreements(name string, agreementOption TopLevelDomainAgreementOption) (result TldLegalAgreementCollection, ae error) {
 	req, err := client.ListTopLevelDomainAgreementsPreparer(name, agreementOption)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web/TopLevelDomainsClient", "ListTopLevelDomainAgreements", "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "web/TopLevelDomainsClient", "ListTopLevelDomainAgreements", autorest.UndefinedStatusCode, "Failure preparing request")
 	}
 
 	resp, err := client.ListTopLevelDomainAgreementsSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web/TopLevelDomainsClient", "ListTopLevelDomainAgreements", "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "web/TopLevelDomainsClient", "ListTopLevelDomainAgreements", resp.StatusCode, "Failure sending request")
 	}
 
 	result, err = client.ListTopLevelDomainAgreementsResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "web/TopLevelDomainsClient", "ListTopLevelDomainAgreements", "Failure responding to request")
+		ae = autorest.NewErrorWithError(err, "web/TopLevelDomainsClient", "ListTopLevelDomainAgreements", resp.StatusCode, "Failure responding to request")
 	}
 
 	return

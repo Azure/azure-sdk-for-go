@@ -108,9 +108,6 @@ type AccountCheckNameAvailabilityParameters struct {
 
 // AccountCreateParameters is the parameters to provide for the account.
 type AccountCreateParameters struct {
-	ID         *string                            `json:"id,omitempty"`
-	Name       *string                            `json:"name,omitempty"`
-	Type       *string                            `json:"type,omitempty"`
 	Location   *string                            `json:"location,omitempty"`
 	Tags       *map[string]*string                `json:"tags,omitempty"`
 	Properties *AccountPropertiesCreateParameters `json:"properties,omitempty"`
@@ -162,10 +159,6 @@ type AccountRegenerateKeyParameters struct {
 
 // AccountUpdateParameters is the parameters to update on the account.
 type AccountUpdateParameters struct {
-	ID         *string                            `json:"id,omitempty"`
-	Name       *string                            `json:"name,omitempty"`
-	Type       *string                            `json:"type,omitempty"`
-	Location   *string                            `json:"location,omitempty"`
 	Tags       *map[string]*string                `json:"tags,omitempty"`
 	Properties *AccountPropertiesUpdateParameters `json:"properties,omitempty"`
 }
@@ -201,11 +194,6 @@ type Resource struct {
 	Type     *string             `json:"type,omitempty"`
 	Location *string             `json:"location,omitempty"`
 	Tags     *map[string]*string `json:"tags,omitempty"`
-}
-
-// SubResource is
-type SubResource struct {
-	ID *string `json:"id,omitempty"`
 }
 
 // Usage is describes Storage Resource Usage.

@@ -54,18 +54,18 @@ func NewClassicMobileServicesClientWithBaseURI(baseURI string, subscriptionID st
 func (client ClassicMobileServicesClient) DeleteClassicMobileService(resourceGroupName string, name string) (result ObjectSet, ae error) {
 	req, err := client.DeleteClassicMobileServicePreparer(resourceGroupName, name)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web/ClassicMobileServicesClient", "DeleteClassicMobileService", "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "web/ClassicMobileServicesClient", "DeleteClassicMobileService", autorest.UndefinedStatusCode, "Failure preparing request")
 	}
 
 	resp, err := client.DeleteClassicMobileServiceSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web/ClassicMobileServicesClient", "DeleteClassicMobileService", "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "web/ClassicMobileServicesClient", "DeleteClassicMobileService", resp.StatusCode, "Failure sending request")
 	}
 
 	result, err = client.DeleteClassicMobileServiceResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "web/ClassicMobileServicesClient", "DeleteClassicMobileService", "Failure responding to request")
+		ae = autorest.NewErrorWithError(err, "web/ClassicMobileServicesClient", "DeleteClassicMobileService", resp.StatusCode, "Failure responding to request")
 	}
 
 	return
@@ -117,18 +117,18 @@ func (client ClassicMobileServicesClient) DeleteClassicMobileServiceResponder(re
 func (client ClassicMobileServicesClient) GetClassicMobileService(resourceGroupName string, name string) (result ClassicMobileService, ae error) {
 	req, err := client.GetClassicMobileServicePreparer(resourceGroupName, name)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web/ClassicMobileServicesClient", "GetClassicMobileService", "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "web/ClassicMobileServicesClient", "GetClassicMobileService", autorest.UndefinedStatusCode, "Failure preparing request")
 	}
 
 	resp, err := client.GetClassicMobileServiceSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web/ClassicMobileServicesClient", "GetClassicMobileService", "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "web/ClassicMobileServicesClient", "GetClassicMobileService", resp.StatusCode, "Failure sending request")
 	}
 
 	result, err = client.GetClassicMobileServiceResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "web/ClassicMobileServicesClient", "GetClassicMobileService", "Failure responding to request")
+		ae = autorest.NewErrorWithError(err, "web/ClassicMobileServicesClient", "GetClassicMobileService", resp.StatusCode, "Failure responding to request")
 	}
 
 	return
@@ -180,18 +180,18 @@ func (client ClassicMobileServicesClient) GetClassicMobileServiceResponder(resp 
 func (client ClassicMobileServicesClient) GetClassicMobileServices(resourceGroupName string) (result ClassicMobileServiceCollection, ae error) {
 	req, err := client.GetClassicMobileServicesPreparer(resourceGroupName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web/ClassicMobileServicesClient", "GetClassicMobileServices", "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "web/ClassicMobileServicesClient", "GetClassicMobileServices", autorest.UndefinedStatusCode, "Failure preparing request")
 	}
 
 	resp, err := client.GetClassicMobileServicesSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web/ClassicMobileServicesClient", "GetClassicMobileServices", "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "web/ClassicMobileServicesClient", "GetClassicMobileServices", resp.StatusCode, "Failure sending request")
 	}
 
 	result, err = client.GetClassicMobileServicesResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "web/ClassicMobileServicesClient", "GetClassicMobileServices", "Failure responding to request")
+		ae = autorest.NewErrorWithError(err, "web/ClassicMobileServicesClient", "GetClassicMobileServices", resp.StatusCode, "Failure responding to request")
 	}
 
 	return

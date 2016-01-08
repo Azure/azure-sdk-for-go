@@ -49,18 +49,18 @@ func NewZonesClientWithBaseURI(baseURI string, subscriptionID string) ZonesClien
 func (client ZonesClient) CreateOrUpdate(resourceGroupName string, zoneName string, parameters ZoneCreateOrUpdateParameters, ifMatch string, ifNoneMatch string) (result Zone, ae error) {
 	req, err := client.CreateOrUpdatePreparer(resourceGroupName, zoneName, parameters, ifMatch, ifNoneMatch)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "dns/ZonesClient", "CreateOrUpdate", "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "dns/ZonesClient", "CreateOrUpdate", autorest.UndefinedStatusCode, "Failure preparing request")
 	}
 
 	resp, err := client.CreateOrUpdateSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "dns/ZonesClient", "CreateOrUpdate", "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "dns/ZonesClient", "CreateOrUpdate", resp.StatusCode, "Failure sending request")
 	}
 
 	result, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "dns/ZonesClient", "CreateOrUpdate", "Failure responding to request")
+		ae = autorest.NewErrorWithError(err, "dns/ZonesClient", "CreateOrUpdate", resp.StatusCode, "Failure responding to request")
 	}
 
 	return
@@ -116,18 +116,18 @@ func (client ZonesClient) CreateOrUpdateResponder(resp *http.Response) (result Z
 func (client ZonesClient) Delete(resourceGroupName string, zoneName string, ifMatch string) (result autorest.Response, ae error) {
 	req, err := client.DeletePreparer(resourceGroupName, zoneName, ifMatch)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "dns/ZonesClient", "Delete", "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "dns/ZonesClient", "Delete", autorest.UndefinedStatusCode, "Failure preparing request")
 	}
 
 	resp, err := client.DeleteSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "dns/ZonesClient", "Delete", "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "dns/ZonesClient", "Delete", resp.StatusCode, "Failure sending request")
 	}
 
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "dns/ZonesClient", "Delete", "Failure responding to request")
+		ae = autorest.NewErrorWithError(err, "dns/ZonesClient", "Delete", resp.StatusCode, "Failure responding to request")
 	}
 
 	return
@@ -179,18 +179,18 @@ func (client ZonesClient) DeleteResponder(resp *http.Response) (result autorest.
 func (client ZonesClient) Get(resourceGroupName string, zoneName string) (result Zone, ae error) {
 	req, err := client.GetPreparer(resourceGroupName, zoneName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "dns/ZonesClient", "Get", "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "dns/ZonesClient", "Get", autorest.UndefinedStatusCode, "Failure preparing request")
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "dns/ZonesClient", "Get", "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "dns/ZonesClient", "Get", resp.StatusCode, "Failure sending request")
 	}
 
 	result, err = client.GetResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "dns/ZonesClient", "Get", "Failure responding to request")
+		ae = autorest.NewErrorWithError(err, "dns/ZonesClient", "Get", resp.StatusCode, "Failure responding to request")
 	}
 
 	return
@@ -244,18 +244,18 @@ func (client ZonesClient) GetResponder(resp *http.Response) (result Zone, err er
 func (client ZonesClient) ListZonesInResourceGroup(resourceGroupName string, top string, filter string) (result ZoneListResult, ae error) {
 	req, err := client.ListZonesInResourceGroupPreparer(resourceGroupName, top, filter)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "dns/ZonesClient", "ListZonesInResourceGroup", "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "dns/ZonesClient", "ListZonesInResourceGroup", autorest.UndefinedStatusCode, "Failure preparing request")
 	}
 
 	resp, err := client.ListZonesInResourceGroupSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "dns/ZonesClient", "ListZonesInResourceGroup", "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "dns/ZonesClient", "ListZonesInResourceGroup", resp.StatusCode, "Failure sending request")
 	}
 
 	result, err = client.ListZonesInResourceGroupResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "dns/ZonesClient", "ListZonesInResourceGroup", "Failure responding to request")
+		ae = autorest.NewErrorWithError(err, "dns/ZonesClient", "ListZonesInResourceGroup", resp.StatusCode, "Failure responding to request")
 	}
 
 	return
@@ -306,6 +306,30 @@ func (client ZonesClient) ListZonesInResourceGroupResponder(resp *http.Response)
 	return
 }
 
+// ListZonesInResourceGroupNextResults retrieves the next set of results, if any.
+func (client ZonesClient) ListZonesInResourceGroupNextResults(lastResults ZoneListResult) (result ZoneListResult, ae error) {
+	req, err := lastResults.ZoneListResultPreparer()
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "dns/ZonesClient", "ListZonesInResourceGroup", autorest.UndefinedStatusCode, "Failure preparing next results request request")
+	}
+	if req == nil {
+		return
+	}
+
+	resp, err := client.ListZonesInResourceGroupSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "dns/ZonesClient", "ListZonesInResourceGroup", resp.StatusCode, "Failure sending next results request request")
+	}
+
+	result, err = client.ListZonesInResourceGroupResponder(resp)
+	if err != nil {
+		ae = autorest.NewErrorWithError(err, "dns/ZonesClient", "ListZonesInResourceGroup", resp.StatusCode, "Failure responding to next results request request")
+	}
+
+	return
+}
+
 // ListZonesInSubscription lists the DNS zones within a resource group.
 //
 // top is query parameters. If null is passed returns the default number of
@@ -313,18 +337,18 @@ func (client ZonesClient) ListZonesInResourceGroupResponder(resp *http.Response)
 func (client ZonesClient) ListZonesInSubscription(top string, filter string) (result ZoneListResult, ae error) {
 	req, err := client.ListZonesInSubscriptionPreparer(top, filter)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "dns/ZonesClient", "ListZonesInSubscription", "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "dns/ZonesClient", "ListZonesInSubscription", autorest.UndefinedStatusCode, "Failure preparing request")
 	}
 
 	resp, err := client.ListZonesInSubscriptionSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "dns/ZonesClient", "ListZonesInSubscription", "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "dns/ZonesClient", "ListZonesInSubscription", resp.StatusCode, "Failure sending request")
 	}
 
 	result, err = client.ListZonesInSubscriptionResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "dns/ZonesClient", "ListZonesInSubscription", "Failure responding to request")
+		ae = autorest.NewErrorWithError(err, "dns/ZonesClient", "ListZonesInSubscription", resp.StatusCode, "Failure responding to request")
 	}
 
 	return
@@ -371,5 +395,29 @@ func (client ZonesClient) ListZonesInSubscriptionResponder(resp *http.Response) 
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// ListZonesInSubscriptionNextResults retrieves the next set of results, if any.
+func (client ZonesClient) ListZonesInSubscriptionNextResults(lastResults ZoneListResult) (result ZoneListResult, ae error) {
+	req, err := lastResults.ZoneListResultPreparer()
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "dns/ZonesClient", "ListZonesInSubscription", autorest.UndefinedStatusCode, "Failure preparing next results request request")
+	}
+	if req == nil {
+		return
+	}
+
+	resp, err := client.ListZonesInSubscriptionSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "dns/ZonesClient", "ListZonesInSubscription", resp.StatusCode, "Failure sending next results request request")
+	}
+
+	result, err = client.ListZonesInSubscriptionResponder(resp)
+	if err != nil {
+		ae = autorest.NewErrorWithError(err, "dns/ZonesClient", "ListZonesInSubscription", resp.StatusCode, "Failure responding to next results request request")
+	}
+
 	return
 }

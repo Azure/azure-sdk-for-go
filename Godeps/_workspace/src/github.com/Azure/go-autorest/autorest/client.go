@@ -141,7 +141,7 @@ func NewClientWithUserAgent(ua string) Client {
 // requires it, otherwise it returns nil.
 func (c Client) IsPollingAllowed(resp *http.Response, codes ...int) error {
 	if c.DoNotPoll() && ResponseRequiresPolling(resp, codes...) {
-		return NewError("autorest/Client", "IsPollingAllowed", "Response to %s requires polling but polling is disabled",
+		return NewErrorWithStatusCode("autorest/Client", "IsPollingAllowed", resp.StatusCode, "Response to %s requires polling but polling is disabled",
 			resp.Request.URL)
 	}
 	return nil
@@ -154,13 +154,13 @@ func (c Client) PollAsNeeded(resp *http.Response, codes ...int) (*http.Response,
 	}
 
 	if c.DoNotPoll() {
-		return resp, NewError("autorest/Client", "PollAsNeeded", "Polling for %s is required, but polling is disabled",
+		return resp, NewErrorWithStatusCode("autorest/Client", "PollAsNeeded", resp.StatusCode, "Polling for %s is required, but polling is disabled",
 			resp.Request.URL)
 	}
 
 	req, err := NewPollingRequest(resp, c)
 	if err != nil {
-		return resp, NewErrorWithError(err, "autorest/Client", "PollAsNeeded", "Unable to create polling request for response to %s",
+		return resp, NewErrorWithError(err, "autorest/Client", "PollAsNeeded", resp.StatusCode, "Unable to create polling request for response to %s",
 			resp.Request.URL)
 	}
 
@@ -200,7 +200,7 @@ func (c Client) Send(req *http.Request, codes ...int) (*http.Response, error) {
 		c.WithAuthorization(),
 		c.WithInspection())
 	if err != nil {
-		return nil, NewErrorWithError(err, "autorest/Client", "Send", "Preparing request failed")
+		return nil, NewErrorWithError(err, "autorest/Client", "Send", UndefinedStatusCode, "Preparing request failed")
 	}
 
 	resp, err := SendWithSender(c, req,

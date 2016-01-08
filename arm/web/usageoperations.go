@@ -56,18 +56,18 @@ func NewUsageOperationsClientWithBaseURI(baseURI string, subscriptionID string) 
 func (client UsageOperationsClient) GetUsage(resourceGroupName string, environmentName string, lastID string, batchSize int) (result ObjectSet, ae error) {
 	req, err := client.GetUsagePreparer(resourceGroupName, environmentName, lastID, batchSize)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web/UsageOperationsClient", "GetUsage", "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "web/UsageOperationsClient", "GetUsage", autorest.UndefinedStatusCode, "Failure preparing request")
 	}
 
 	resp, err := client.GetUsageSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web/UsageOperationsClient", "GetUsage", "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "web/UsageOperationsClient", "GetUsage", resp.StatusCode, "Failure sending request")
 	}
 
 	result, err = client.GetUsageResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "web/UsageOperationsClient", "GetUsage", "Failure responding to request")
+		ae = autorest.NewErrorWithError(err, "web/UsageOperationsClient", "GetUsage", resp.StatusCode, "Failure responding to request")
 	}
 
 	return

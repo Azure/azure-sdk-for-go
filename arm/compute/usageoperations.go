@@ -47,18 +47,18 @@ func NewUsageOperationsClientWithBaseURI(baseURI string, subscriptionID string) 
 func (client UsageOperationsClient) List(location string) (result ListUsagesResult, ae error) {
 	req, err := client.ListPreparer(location)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "compute/UsageOperationsClient", "List", "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "compute/UsageOperationsClient", "List", autorest.UndefinedStatusCode, "Failure preparing request")
 	}
 
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "compute/UsageOperationsClient", "List", "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "compute/UsageOperationsClient", "List", resp.StatusCode, "Failure sending request")
 	}
 
 	result, err = client.ListResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "compute/UsageOperationsClient", "List", "Failure responding to request")
+		ae = autorest.NewErrorWithError(err, "compute/UsageOperationsClient", "List", resp.StatusCode, "Failure responding to request")
 	}
 
 	return
@@ -100,5 +100,29 @@ func (client UsageOperationsClient) ListResponder(resp *http.Response) (result L
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// ListNextResults retrieves the next set of results, if any.
+func (client UsageOperationsClient) ListNextResults(lastResults ListUsagesResult) (result ListUsagesResult, ae error) {
+	req, err := lastResults.ListUsagesResultPreparer()
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "compute/UsageOperationsClient", "List", autorest.UndefinedStatusCode, "Failure preparing next results request request")
+	}
+	if req == nil {
+		return
+	}
+
+	resp, err := client.ListSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "compute/UsageOperationsClient", "List", resp.StatusCode, "Failure sending next results request request")
+	}
+
+	result, err = client.ListResponder(resp)
+	if err != nil {
+		ae = autorest.NewErrorWithError(err, "compute/UsageOperationsClient", "List", resp.StatusCode, "Failure responding to next results request request")
+	}
+
 	return
 }

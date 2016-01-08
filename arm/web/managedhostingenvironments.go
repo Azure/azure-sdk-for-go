@@ -57,18 +57,18 @@ func NewManagedHostingEnvironmentsClientWithBaseURI(baseURI string, subscription
 func (client ManagedHostingEnvironmentsClient) CreateOrUpdateManagedHostingEnvironment(resourceGroupName string, name string, managedHostingEnvironmentEnvelope HostingEnvironment) (result HostingEnvironment, ae error) {
 	req, err := client.CreateOrUpdateManagedHostingEnvironmentPreparer(resourceGroupName, name, managedHostingEnvironmentEnvelope)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web/ManagedHostingEnvironmentsClient", "CreateOrUpdateManagedHostingEnvironment", "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "web/ManagedHostingEnvironmentsClient", "CreateOrUpdateManagedHostingEnvironment", autorest.UndefinedStatusCode, "Failure preparing request")
 	}
 
 	resp, err := client.CreateOrUpdateManagedHostingEnvironmentSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web/ManagedHostingEnvironmentsClient", "CreateOrUpdateManagedHostingEnvironment", "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "web/ManagedHostingEnvironmentsClient", "CreateOrUpdateManagedHostingEnvironment", resp.StatusCode, "Failure sending request")
 	}
 
 	result, err = client.CreateOrUpdateManagedHostingEnvironmentResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "web/ManagedHostingEnvironmentsClient", "CreateOrUpdateManagedHostingEnvironment", "Failure responding to request")
+		ae = autorest.NewErrorWithError(err, "web/ManagedHostingEnvironmentsClient", "CreateOrUpdateManagedHostingEnvironment", resp.StatusCode, "Failure responding to request")
 	}
 
 	return
@@ -124,18 +124,18 @@ func (client ManagedHostingEnvironmentsClient) CreateOrUpdateManagedHostingEnvir
 func (client ManagedHostingEnvironmentsClient) DeleteManagedHostingEnvironment(resourceGroupName string, name string, forceDelete *bool) (result ObjectSet, ae error) {
 	req, err := client.DeleteManagedHostingEnvironmentPreparer(resourceGroupName, name, forceDelete)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web/ManagedHostingEnvironmentsClient", "DeleteManagedHostingEnvironment", "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "web/ManagedHostingEnvironmentsClient", "DeleteManagedHostingEnvironment", autorest.UndefinedStatusCode, "Failure preparing request")
 	}
 
 	resp, err := client.DeleteManagedHostingEnvironmentSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web/ManagedHostingEnvironmentsClient", "DeleteManagedHostingEnvironment", "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "web/ManagedHostingEnvironmentsClient", "DeleteManagedHostingEnvironment", resp.StatusCode, "Failure sending request")
 	}
 
 	result, err = client.DeleteManagedHostingEnvironmentResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "web/ManagedHostingEnvironmentsClient", "DeleteManagedHostingEnvironment", "Failure responding to request")
+		ae = autorest.NewErrorWithError(err, "web/ManagedHostingEnvironmentsClient", "DeleteManagedHostingEnvironment", resp.StatusCode, "Failure responding to request")
 	}
 
 	return
@@ -192,18 +192,18 @@ func (client ManagedHostingEnvironmentsClient) DeleteManagedHostingEnvironmentRe
 func (client ManagedHostingEnvironmentsClient) GetManagedHostingEnvironment(resourceGroupName string, name string) (result ManagedHostingEnvironment, ae error) {
 	req, err := client.GetManagedHostingEnvironmentPreparer(resourceGroupName, name)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web/ManagedHostingEnvironmentsClient", "GetManagedHostingEnvironment", "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "web/ManagedHostingEnvironmentsClient", "GetManagedHostingEnvironment", autorest.UndefinedStatusCode, "Failure preparing request")
 	}
 
 	resp, err := client.GetManagedHostingEnvironmentSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web/ManagedHostingEnvironmentsClient", "GetManagedHostingEnvironment", "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "web/ManagedHostingEnvironmentsClient", "GetManagedHostingEnvironment", resp.StatusCode, "Failure sending request")
 	}
 
 	result, err = client.GetManagedHostingEnvironmentResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "web/ManagedHostingEnvironmentsClient", "GetManagedHostingEnvironment", "Failure responding to request")
+		ae = autorest.NewErrorWithError(err, "web/ManagedHostingEnvironmentsClient", "GetManagedHostingEnvironment", resp.StatusCode, "Failure responding to request")
 	}
 
 	return
@@ -257,18 +257,18 @@ func (client ManagedHostingEnvironmentsClient) GetManagedHostingEnvironmentRespo
 func (client ManagedHostingEnvironmentsClient) GetManagedHostingEnvironmentOperation(resourceGroupName string, name string, operationID string) (result ObjectSet, ae error) {
 	req, err := client.GetManagedHostingEnvironmentOperationPreparer(resourceGroupName, name, operationID)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web/ManagedHostingEnvironmentsClient", "GetManagedHostingEnvironmentOperation", "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "web/ManagedHostingEnvironmentsClient", "GetManagedHostingEnvironmentOperation", autorest.UndefinedStatusCode, "Failure preparing request")
 	}
 
 	resp, err := client.GetManagedHostingEnvironmentOperationSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web/ManagedHostingEnvironmentsClient", "GetManagedHostingEnvironmentOperation", "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "web/ManagedHostingEnvironmentsClient", "GetManagedHostingEnvironmentOperation", resp.StatusCode, "Failure sending request")
 	}
 
 	result, err = client.GetManagedHostingEnvironmentOperationResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "web/ManagedHostingEnvironmentsClient", "GetManagedHostingEnvironmentOperation", "Failure responding to request")
+		ae = autorest.NewErrorWithError(err, "web/ManagedHostingEnvironmentsClient", "GetManagedHostingEnvironmentOperation", resp.StatusCode, "Failure responding to request")
 	}
 
 	return
@@ -322,18 +322,18 @@ func (client ManagedHostingEnvironmentsClient) GetManagedHostingEnvironmentOpera
 func (client ManagedHostingEnvironmentsClient) GetManagedHostingEnvironments(resourceGroupName string) (result HostingEnvironmentCollection, ae error) {
 	req, err := client.GetManagedHostingEnvironmentsPreparer(resourceGroupName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web/ManagedHostingEnvironmentsClient", "GetManagedHostingEnvironments", "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "web/ManagedHostingEnvironmentsClient", "GetManagedHostingEnvironments", autorest.UndefinedStatusCode, "Failure preparing request")
 	}
 
 	resp, err := client.GetManagedHostingEnvironmentsSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web/ManagedHostingEnvironmentsClient", "GetManagedHostingEnvironments", "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "web/ManagedHostingEnvironmentsClient", "GetManagedHostingEnvironments", resp.StatusCode, "Failure sending request")
 	}
 
 	result, err = client.GetManagedHostingEnvironmentsResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "web/ManagedHostingEnvironmentsClient", "GetManagedHostingEnvironments", "Failure responding to request")
+		ae = autorest.NewErrorWithError(err, "web/ManagedHostingEnvironmentsClient", "GetManagedHostingEnvironments", resp.StatusCode, "Failure responding to request")
 	}
 
 	return
@@ -386,18 +386,18 @@ func (client ManagedHostingEnvironmentsClient) GetManagedHostingEnvironmentsResp
 func (client ManagedHostingEnvironmentsClient) GetManagedHostingEnvironmentServerFarms(resourceGroupName string, name string) (result ServerFarmCollection, ae error) {
 	req, err := client.GetManagedHostingEnvironmentServerFarmsPreparer(resourceGroupName, name)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web/ManagedHostingEnvironmentsClient", "GetManagedHostingEnvironmentServerFarms", "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "web/ManagedHostingEnvironmentsClient", "GetManagedHostingEnvironmentServerFarms", autorest.UndefinedStatusCode, "Failure preparing request")
 	}
 
 	resp, err := client.GetManagedHostingEnvironmentServerFarmsSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web/ManagedHostingEnvironmentsClient", "GetManagedHostingEnvironmentServerFarms", "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "web/ManagedHostingEnvironmentsClient", "GetManagedHostingEnvironmentServerFarms", resp.StatusCode, "Failure sending request")
 	}
 
 	result, err = client.GetManagedHostingEnvironmentServerFarmsResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "web/ManagedHostingEnvironmentsClient", "GetManagedHostingEnvironmentServerFarms", "Failure responding to request")
+		ae = autorest.NewErrorWithError(err, "web/ManagedHostingEnvironmentsClient", "GetManagedHostingEnvironmentServerFarms", resp.StatusCode, "Failure responding to request")
 	}
 
 	return
@@ -452,18 +452,18 @@ func (client ManagedHostingEnvironmentsClient) GetManagedHostingEnvironmentServe
 func (client ManagedHostingEnvironmentsClient) GetManagedHostingEnvironmentSites(resourceGroupName string, name string, propertiesToInclude string) (result SiteCollection, ae error) {
 	req, err := client.GetManagedHostingEnvironmentSitesPreparer(resourceGroupName, name, propertiesToInclude)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web/ManagedHostingEnvironmentsClient", "GetManagedHostingEnvironmentSites", "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "web/ManagedHostingEnvironmentsClient", "GetManagedHostingEnvironmentSites", autorest.UndefinedStatusCode, "Failure preparing request")
 	}
 
 	resp, err := client.GetManagedHostingEnvironmentSitesSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web/ManagedHostingEnvironmentsClient", "GetManagedHostingEnvironmentSites", "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "web/ManagedHostingEnvironmentsClient", "GetManagedHostingEnvironmentSites", resp.StatusCode, "Failure sending request")
 	}
 
 	result, err = client.GetManagedHostingEnvironmentSitesResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "web/ManagedHostingEnvironmentsClient", "GetManagedHostingEnvironmentSites", "Failure responding to request")
+		ae = autorest.NewErrorWithError(err, "web/ManagedHostingEnvironmentsClient", "GetManagedHostingEnvironmentSites", resp.StatusCode, "Failure responding to request")
 	}
 
 	return
@@ -520,18 +520,18 @@ func (client ManagedHostingEnvironmentsClient) GetManagedHostingEnvironmentSites
 func (client ManagedHostingEnvironmentsClient) GetManagedHostingEnvironmentVips(resourceGroupName string, name string) (result AddressResponse, ae error) {
 	req, err := client.GetManagedHostingEnvironmentVipsPreparer(resourceGroupName, name)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web/ManagedHostingEnvironmentsClient", "GetManagedHostingEnvironmentVips", "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "web/ManagedHostingEnvironmentsClient", "GetManagedHostingEnvironmentVips", autorest.UndefinedStatusCode, "Failure preparing request")
 	}
 
 	resp, err := client.GetManagedHostingEnvironmentVipsSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web/ManagedHostingEnvironmentsClient", "GetManagedHostingEnvironmentVips", "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "web/ManagedHostingEnvironmentsClient", "GetManagedHostingEnvironmentVips", resp.StatusCode, "Failure sending request")
 	}
 
 	result, err = client.GetManagedHostingEnvironmentVipsResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "web/ManagedHostingEnvironmentsClient", "GetManagedHostingEnvironmentVips", "Failure responding to request")
+		ae = autorest.NewErrorWithError(err, "web/ManagedHostingEnvironmentsClient", "GetManagedHostingEnvironmentVips", resp.StatusCode, "Failure responding to request")
 	}
 
 	return
@@ -585,18 +585,18 @@ func (client ManagedHostingEnvironmentsClient) GetManagedHostingEnvironmentVipsR
 func (client ManagedHostingEnvironmentsClient) GetManagedHostingEnvironmentWebHostingPlans(resourceGroupName string, name string) (result ServerFarmCollection, ae error) {
 	req, err := client.GetManagedHostingEnvironmentWebHostingPlansPreparer(resourceGroupName, name)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web/ManagedHostingEnvironmentsClient", "GetManagedHostingEnvironmentWebHostingPlans", "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "web/ManagedHostingEnvironmentsClient", "GetManagedHostingEnvironmentWebHostingPlans", autorest.UndefinedStatusCode, "Failure preparing request")
 	}
 
 	resp, err := client.GetManagedHostingEnvironmentWebHostingPlansSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web/ManagedHostingEnvironmentsClient", "GetManagedHostingEnvironmentWebHostingPlans", "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "web/ManagedHostingEnvironmentsClient", "GetManagedHostingEnvironmentWebHostingPlans", resp.StatusCode, "Failure sending request")
 	}
 
 	result, err = client.GetManagedHostingEnvironmentWebHostingPlansResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "web/ManagedHostingEnvironmentsClient", "GetManagedHostingEnvironmentWebHostingPlans", "Failure responding to request")
+		ae = autorest.NewErrorWithError(err, "web/ManagedHostingEnvironmentsClient", "GetManagedHostingEnvironmentWebHostingPlans", resp.StatusCode, "Failure responding to request")
 	}
 
 	return

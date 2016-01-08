@@ -24,10 +24,10 @@ import (
 	"net/url"
 )
 
-// RouteTablesClient is the the Windows Azure Network management API provides
-// a RESTful set of web services that interact with Windows Azure Networks
-// service to manage your network resrources. The API has entities that
-// capture the relationship between an end user and the Windows Azure
+// RouteTablesClient is the the Microsoft Azure Network management API
+// provides a RESTful set of web services that interact with Microsoft Azure
+// Networks service to manage your network resrources. The API has entities
+// that capture the relationship between an end user and the Microsoft Azure
 // Networks service.
 type RouteTablesClient struct {
 	ManagementClient
@@ -53,18 +53,18 @@ func NewRouteTablesClientWithBaseURI(baseURI string, subscriptionID string) Rout
 func (client RouteTablesClient) CreateOrUpdate(resourceGroupName string, routeTableName string, parameters RouteTable) (result RouteTable, ae error) {
 	req, err := client.CreateOrUpdatePreparer(resourceGroupName, routeTableName, parameters)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "network/RouteTablesClient", "CreateOrUpdate", "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "network/RouteTablesClient", "CreateOrUpdate", autorest.UndefinedStatusCode, "Failure preparing request")
 	}
 
 	resp, err := client.CreateOrUpdateSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "network/RouteTablesClient", "CreateOrUpdate", "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "network/RouteTablesClient", "CreateOrUpdate", resp.StatusCode, "Failure sending request")
 	}
 
 	result, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "network/RouteTablesClient", "CreateOrUpdate", "Failure responding to request")
+		ae = autorest.NewErrorWithError(err, "network/RouteTablesClient", "CreateOrUpdate", resp.StatusCode, "Failure responding to request")
 	}
 
 	return
@@ -95,7 +95,7 @@ func (client RouteTablesClient) CreateOrUpdatePreparer(resourceGroupName string,
 // CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
 // http.Response Body if it receives an error.
 func (client RouteTablesClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req, http.StatusCreated, http.StatusOK)
+	return client.Send(req, http.StatusOK, http.StatusCreated)
 }
 
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
@@ -104,7 +104,7 @@ func (client RouteTablesClient) CreateOrUpdateResponder(resp *http.Response) (re
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		autorest.WithErrorUnlessStatusCode(http.StatusCreated, http.StatusOK),
+		autorest.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
@@ -118,18 +118,18 @@ func (client RouteTablesClient) CreateOrUpdateResponder(resp *http.Response) (re
 func (client RouteTablesClient) Delete(resourceGroupName string, routeTableName string) (result autorest.Response, ae error) {
 	req, err := client.DeletePreparer(resourceGroupName, routeTableName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "network/RouteTablesClient", "Delete", "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "network/RouteTablesClient", "Delete", autorest.UndefinedStatusCode, "Failure preparing request")
 	}
 
 	resp, err := client.DeleteSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "network/RouteTablesClient", "Delete", "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "network/RouteTablesClient", "Delete", resp.StatusCode, "Failure sending request")
 	}
 
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "network/RouteTablesClient", "Delete", "Failure responding to request")
+		ae = autorest.NewErrorWithError(err, "network/RouteTablesClient", "Delete", resp.StatusCode, "Failure responding to request")
 	}
 
 	return
@@ -159,7 +159,7 @@ func (client RouteTablesClient) DeletePreparer(resourceGroupName string, routeTa
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
 func (client RouteTablesClient) DeleteSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req, http.StatusNoContent, http.StatusAccepted, http.StatusOK)
+	return client.Send(req, http.StatusNoContent, http.StatusOK, http.StatusAccepted)
 }
 
 // DeleteResponder handles the response to the Delete request. The method always
@@ -168,7 +168,7 @@ func (client RouteTablesClient) DeleteResponder(resp *http.Response) (result aut
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		autorest.WithErrorUnlessStatusCode(http.StatusNoContent, http.StatusAccepted, http.StatusOK),
+		autorest.WithErrorUnlessStatusCode(http.StatusNoContent, http.StatusOK, http.StatusAccepted),
 		autorest.ByClosing())
 	result.Response = resp
 	return
@@ -178,29 +178,29 @@ func (client RouteTablesClient) DeleteResponder(resp *http.Response) (result aut
 // route table.
 //
 // resourceGroupName is the name of the resource group. routeTableName is the
-// name of the route table.
-func (client RouteTablesClient) Get(resourceGroupName string, routeTableName string) (result RouteTable, ae error) {
-	req, err := client.GetPreparer(resourceGroupName, routeTableName)
+// name of the route table. expand is expand references resources.
+func (client RouteTablesClient) Get(resourceGroupName string, routeTableName string, expand string) (result RouteTable, ae error) {
+	req, err := client.GetPreparer(resourceGroupName, routeTableName, expand)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "network/RouteTablesClient", "Get", "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "network/RouteTablesClient", "Get", autorest.UndefinedStatusCode, "Failure preparing request")
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "network/RouteTablesClient", "Get", "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "network/RouteTablesClient", "Get", resp.StatusCode, "Failure sending request")
 	}
 
 	result, err = client.GetResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "network/RouteTablesClient", "Get", "Failure responding to request")
+		ae = autorest.NewErrorWithError(err, "network/RouteTablesClient", "Get", resp.StatusCode, "Failure responding to request")
 	}
 
 	return
 }
 
 // GetPreparer prepares the Get request.
-func (client RouteTablesClient) GetPreparer(resourceGroupName string, routeTableName string) (*http.Request, error) {
+func (client RouteTablesClient) GetPreparer(resourceGroupName string, routeTableName string, expand string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName": url.QueryEscape(resourceGroupName),
 		"routeTableName":    url.QueryEscape(routeTableName),
@@ -209,6 +209,9 @@ func (client RouteTablesClient) GetPreparer(resourceGroupName string, routeTable
 
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
+	}
+	if len(expand) > 0 {
+		queryParameters["$expand"] = expand
 	}
 
 	return autorest.Prepare(&http.Request{},
@@ -245,18 +248,18 @@ func (client RouteTablesClient) GetResponder(resp *http.Response) (result RouteT
 func (client RouteTablesClient) List(resourceGroupName string) (result RouteTableListResult, ae error) {
 	req, err := client.ListPreparer(resourceGroupName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "network/RouteTablesClient", "List", "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "network/RouteTablesClient", "List", autorest.UndefinedStatusCode, "Failure preparing request")
 	}
 
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "network/RouteTablesClient", "List", "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "network/RouteTablesClient", "List", resp.StatusCode, "Failure sending request")
 	}
 
 	result, err = client.ListResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "network/RouteTablesClient", "List", "Failure responding to request")
+		ae = autorest.NewErrorWithError(err, "network/RouteTablesClient", "List", resp.StatusCode, "Failure responding to request")
 	}
 
 	return
@@ -305,7 +308,7 @@ func (client RouteTablesClient) ListResponder(resp *http.Response) (result Route
 func (client RouteTablesClient) ListNextResults(lastResults RouteTableListResult) (result RouteTableListResult, ae error) {
 	req, err := lastResults.RouteTableListResultPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "network/RouteTablesClient", "List", "Failure preparing next results request request")
+		return result, autorest.NewErrorWithError(err, "network/RouteTablesClient", "List", autorest.UndefinedStatusCode, "Failure preparing next results request request")
 	}
 	if req == nil {
 		return
@@ -314,12 +317,12 @@ func (client RouteTablesClient) ListNextResults(lastResults RouteTableListResult
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "network/RouteTablesClient", "List", "Failure sending next results request request")
+		return result, autorest.NewErrorWithError(err, "network/RouteTablesClient", "List", resp.StatusCode, "Failure sending next results request request")
 	}
 
 	result, err = client.ListResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "network/RouteTablesClient", "List", "Failure responding to next results request request")
+		ae = autorest.NewErrorWithError(err, "network/RouteTablesClient", "List", resp.StatusCode, "Failure responding to next results request request")
 	}
 
 	return
@@ -329,18 +332,18 @@ func (client RouteTablesClient) ListNextResults(lastResults RouteTableListResult
 func (client RouteTablesClient) ListAll() (result RouteTableListResult, ae error) {
 	req, err := client.ListAllPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "network/RouteTablesClient", "ListAll", "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "network/RouteTablesClient", "ListAll", autorest.UndefinedStatusCode, "Failure preparing request")
 	}
 
 	resp, err := client.ListAllSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "network/RouteTablesClient", "ListAll", "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "network/RouteTablesClient", "ListAll", resp.StatusCode, "Failure sending request")
 	}
 
 	result, err = client.ListAllResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "network/RouteTablesClient", "ListAll", "Failure responding to request")
+		ae = autorest.NewErrorWithError(err, "network/RouteTablesClient", "ListAll", resp.StatusCode, "Failure responding to request")
 	}
 
 	return
@@ -388,7 +391,7 @@ func (client RouteTablesClient) ListAllResponder(resp *http.Response) (result Ro
 func (client RouteTablesClient) ListAllNextResults(lastResults RouteTableListResult) (result RouteTableListResult, ae error) {
 	req, err := lastResults.RouteTableListResultPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "network/RouteTablesClient", "ListAll", "Failure preparing next results request request")
+		return result, autorest.NewErrorWithError(err, "network/RouteTablesClient", "ListAll", autorest.UndefinedStatusCode, "Failure preparing next results request request")
 	}
 	if req == nil {
 		return
@@ -397,12 +400,12 @@ func (client RouteTablesClient) ListAllNextResults(lastResults RouteTableListRes
 	resp, err := client.ListAllSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "network/RouteTablesClient", "ListAll", "Failure sending next results request request")
+		return result, autorest.NewErrorWithError(err, "network/RouteTablesClient", "ListAll", resp.StatusCode, "Failure sending next results request request")
 	}
 
 	result, err = client.ListAllResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "network/RouteTablesClient", "ListAll", "Failure responding to next results request request")
+		ae = autorest.NewErrorWithError(err, "network/RouteTablesClient", "ListAll", resp.StatusCode, "Failure responding to next results request request")
 	}
 
 	return

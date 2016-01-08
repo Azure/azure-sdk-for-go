@@ -24,10 +24,10 @@ import (
 	"net/url"
 )
 
-// SubnetsClient is the the Windows Azure Network management API provides a
-// RESTful set of web services that interact with Windows Azure Networks
+// SubnetsClient is the the Microsoft Azure Network management API provides a
+// RESTful set of web services that interact with Microsoft Azure Networks
 // service to manage your network resrources. The API has entities that
-// capture the relationship between an end user and the Windows Azure
+// capture the relationship between an end user and the Microsoft Azure
 // Networks service.
 type SubnetsClient struct {
 	ManagementClient
@@ -53,18 +53,18 @@ func NewSubnetsClientWithBaseURI(baseURI string, subscriptionID string) SubnetsC
 func (client SubnetsClient) CreateOrUpdate(resourceGroupName string, virtualNetworkName string, subnetName string, subnetParameters Subnet) (result Subnet, ae error) {
 	req, err := client.CreateOrUpdatePreparer(resourceGroupName, virtualNetworkName, subnetName, subnetParameters)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "network/SubnetsClient", "CreateOrUpdate", "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "network/SubnetsClient", "CreateOrUpdate", autorest.UndefinedStatusCode, "Failure preparing request")
 	}
 
 	resp, err := client.CreateOrUpdateSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "network/SubnetsClient", "CreateOrUpdate", "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "network/SubnetsClient", "CreateOrUpdate", resp.StatusCode, "Failure sending request")
 	}
 
 	result, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "network/SubnetsClient", "CreateOrUpdate", "Failure responding to request")
+		ae = autorest.NewErrorWithError(err, "network/SubnetsClient", "CreateOrUpdate", resp.StatusCode, "Failure responding to request")
 	}
 
 	return
@@ -96,7 +96,7 @@ func (client SubnetsClient) CreateOrUpdatePreparer(resourceGroupName string, vir
 // CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
 // http.Response Body if it receives an error.
 func (client SubnetsClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req, http.StatusCreated, http.StatusOK)
+	return client.Send(req, http.StatusOK, http.StatusCreated)
 }
 
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
@@ -105,7 +105,7 @@ func (client SubnetsClient) CreateOrUpdateResponder(resp *http.Response) (result
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		autorest.WithErrorUnlessStatusCode(http.StatusCreated, http.StatusOK),
+		autorest.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
@@ -119,18 +119,18 @@ func (client SubnetsClient) CreateOrUpdateResponder(resp *http.Response) (result
 func (client SubnetsClient) Delete(resourceGroupName string, virtualNetworkName string, subnetName string) (result autorest.Response, ae error) {
 	req, err := client.DeletePreparer(resourceGroupName, virtualNetworkName, subnetName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "network/SubnetsClient", "Delete", "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "network/SubnetsClient", "Delete", autorest.UndefinedStatusCode, "Failure preparing request")
 	}
 
 	resp, err := client.DeleteSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "network/SubnetsClient", "Delete", "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "network/SubnetsClient", "Delete", resp.StatusCode, "Failure sending request")
 	}
 
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "network/SubnetsClient", "Delete", "Failure responding to request")
+		ae = autorest.NewErrorWithError(err, "network/SubnetsClient", "Delete", resp.StatusCode, "Failure responding to request")
 	}
 
 	return
@@ -161,7 +161,7 @@ func (client SubnetsClient) DeletePreparer(resourceGroupName string, virtualNetw
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
 func (client SubnetsClient) DeleteSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req, http.StatusNoContent, http.StatusAccepted, http.StatusOK)
+	return client.Send(req, http.StatusOK, http.StatusNoContent, http.StatusAccepted)
 }
 
 // DeleteResponder handles the response to the Delete request. The method always
@@ -170,7 +170,7 @@ func (client SubnetsClient) DeleteResponder(resp *http.Response) (result autores
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		autorest.WithErrorUnlessStatusCode(http.StatusNoContent, http.StatusAccepted, http.StatusOK),
+		autorest.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent, http.StatusAccepted),
 		autorest.ByClosing())
 	result.Response = resp
 	return
@@ -181,28 +181,29 @@ func (client SubnetsClient) DeleteResponder(resp *http.Response) (result autores
 //
 // resourceGroupName is the name of the resource group. virtualNetworkName is
 // the name of the virtual network. subnetName is the name of the subnet.
-func (client SubnetsClient) Get(resourceGroupName string, virtualNetworkName string, subnetName string) (result Subnet, ae error) {
-	req, err := client.GetPreparer(resourceGroupName, virtualNetworkName, subnetName)
+// expand is expand references resources.
+func (client SubnetsClient) Get(resourceGroupName string, virtualNetworkName string, subnetName string, expand string) (result Subnet, ae error) {
+	req, err := client.GetPreparer(resourceGroupName, virtualNetworkName, subnetName, expand)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "network/SubnetsClient", "Get", "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "network/SubnetsClient", "Get", autorest.UndefinedStatusCode, "Failure preparing request")
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "network/SubnetsClient", "Get", "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "network/SubnetsClient", "Get", resp.StatusCode, "Failure sending request")
 	}
 
 	result, err = client.GetResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "network/SubnetsClient", "Get", "Failure responding to request")
+		ae = autorest.NewErrorWithError(err, "network/SubnetsClient", "Get", resp.StatusCode, "Failure responding to request")
 	}
 
 	return
 }
 
 // GetPreparer prepares the Get request.
-func (client SubnetsClient) GetPreparer(resourceGroupName string, virtualNetworkName string, subnetName string) (*http.Request, error) {
+func (client SubnetsClient) GetPreparer(resourceGroupName string, virtualNetworkName string, subnetName string, expand string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName":  url.QueryEscape(resourceGroupName),
 		"subnetName":         url.QueryEscape(subnetName),
@@ -212,6 +213,9 @@ func (client SubnetsClient) GetPreparer(resourceGroupName string, virtualNetwork
 
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
+	}
+	if len(expand) > 0 {
+		queryParameters["$expand"] = expand
 	}
 
 	return autorest.Prepare(&http.Request{},
@@ -250,18 +254,18 @@ func (client SubnetsClient) GetResponder(resp *http.Response) (result Subnet, er
 func (client SubnetsClient) List(resourceGroupName string, virtualNetworkName string) (result SubnetListResult, ae error) {
 	req, err := client.ListPreparer(resourceGroupName, virtualNetworkName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "network/SubnetsClient", "List", "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "network/SubnetsClient", "List", autorest.UndefinedStatusCode, "Failure preparing request")
 	}
 
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "network/SubnetsClient", "List", "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "network/SubnetsClient", "List", resp.StatusCode, "Failure sending request")
 	}
 
 	result, err = client.ListResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "network/SubnetsClient", "List", "Failure responding to request")
+		ae = autorest.NewErrorWithError(err, "network/SubnetsClient", "List", resp.StatusCode, "Failure responding to request")
 	}
 
 	return
@@ -311,7 +315,7 @@ func (client SubnetsClient) ListResponder(resp *http.Response) (result SubnetLis
 func (client SubnetsClient) ListNextResults(lastResults SubnetListResult) (result SubnetListResult, ae error) {
 	req, err := lastResults.SubnetListResultPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "network/SubnetsClient", "List", "Failure preparing next results request request")
+		return result, autorest.NewErrorWithError(err, "network/SubnetsClient", "List", autorest.UndefinedStatusCode, "Failure preparing next results request request")
 	}
 	if req == nil {
 		return
@@ -320,12 +324,12 @@ func (client SubnetsClient) ListNextResults(lastResults SubnetListResult) (resul
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "network/SubnetsClient", "List", "Failure sending next results request request")
+		return result, autorest.NewErrorWithError(err, "network/SubnetsClient", "List", resp.StatusCode, "Failure sending next results request request")
 	}
 
 	result, err = client.ListResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "network/SubnetsClient", "List", "Failure responding to next results request request")
+		ae = autorest.NewErrorWithError(err, "network/SubnetsClient", "List", resp.StatusCode, "Failure responding to next results request request")
 	}
 
 	return

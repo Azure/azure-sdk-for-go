@@ -377,6 +377,19 @@ type AvailabilitySet struct {
 type AvailabilitySetListResult struct {
 	autorest.Response `json:"-"`
 	Value             *[]AvailabilitySet `json:"value,omitempty"`
+	NextLink          *string            `json:",omitempty"`
+}
+
+// AvailabilitySetListResultPreparer prepares a request to retrieve the next set of results. It returns
+// nil if no more results exist.
+func (client AvailabilitySetListResult) AvailabilitySetListResultPreparer() (*http.Request, error) {
+	if client.NextLink == nil || len(to.String(client.NextLink)) <= 0 {
+		return nil, nil
+	}
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(client.NextLink)))
 }
 
 // AvailabilitySetProperties is the instance view of a resource.
@@ -492,6 +505,19 @@ type LinuxConfiguration struct {
 type ListUsagesResult struct {
 	autorest.Response `json:"-"`
 	Value             *[]Usage `json:"value,omitempty"`
+	NextLink          *string  `json:",omitempty"`
+}
+
+// ListUsagesResultPreparer prepares a request to retrieve the next set of results. It returns
+// nil if no more results exist.
+func (client ListUsagesResult) ListUsagesResultPreparer() (*http.Request, error) {
+	if client.NextLink == nil || len(to.String(client.NextLink)) <= 0 {
+		return nil, nil
+	}
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(client.NextLink)))
 }
 
 // LongRunningOperationProperties is compute-specific operation properties,
@@ -782,7 +808,7 @@ type VirtualMachineImageResource struct {
 // VirtualMachineImageResourceList is
 type VirtualMachineImageResourceList struct {
 	autorest.Response `json:"-"`
-	Value             *[]VirtualMachineImageResource `json:"value,omitempty"`
+	Value             *VirtualMachineImageResource `json:"value,omitempty"`
 }
 
 // VirtualMachineInstanceView is the instance view of a virtual machine.
@@ -901,6 +927,19 @@ type VirtualMachineScaleSetIPConfigurationProperties struct {
 type VirtualMachineScaleSetListResult struct {
 	autorest.Response `json:"-"`
 	Value             *[]VirtualMachineScaleSet `json:"value,omitempty"`
+	NextLink          *string                   `json:",omitempty"`
+}
+
+// VirtualMachineScaleSetListResultPreparer prepares a request to retrieve the next set of results. It returns
+// nil if no more results exist.
+func (client VirtualMachineScaleSetListResult) VirtualMachineScaleSetListResultPreparer() (*http.Request, error) {
+	if client.NextLink == nil || len(to.String(client.NextLink)) <= 0 {
+		return nil, nil
+	}
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(client.NextLink)))
 }
 
 // VirtualMachineScaleSetListSkusResult is the Virtual Machine Scale Set List
@@ -908,6 +947,19 @@ type VirtualMachineScaleSetListResult struct {
 type VirtualMachineScaleSetListSkusResult struct {
 	autorest.Response `json:"-"`
 	Value             *[]VirtualMachineScaleSetSku `json:"value,omitempty"`
+	NextLink          *string                      `json:",omitempty"`
+}
+
+// VirtualMachineScaleSetListSkusResultPreparer prepares a request to retrieve the next set of results. It returns
+// nil if no more results exist.
+func (client VirtualMachineScaleSetListSkusResult) VirtualMachineScaleSetListSkusResultPreparer() (*http.Request, error) {
+	if client.NextLink == nil || len(to.String(client.NextLink)) <= 0 {
+		return nil, nil
+	}
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(client.NextLink)))
 }
 
 // VirtualMachineScaleSetListWithLinkResult is the List Virtual Machine
@@ -1059,6 +1111,19 @@ type VirtualMachineScaleSetVMInstanceView struct {
 type VirtualMachineScaleSetVMListResult struct {
 	autorest.Response `json:"-"`
 	Value             *[]VirtualMachineScaleSetVM `json:"value,omitempty"`
+	NextLink          *string                     `json:",omitempty"`
+}
+
+// VirtualMachineScaleSetVMListResultPreparer prepares a request to retrieve the next set of results. It returns
+// nil if no more results exist.
+func (client VirtualMachineScaleSetVMListResult) VirtualMachineScaleSetVMListResultPreparer() (*http.Request, error) {
+	if client.NextLink == nil || len(to.String(client.NextLink)) <= 0 {
+		return nil, nil
+	}
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(client.NextLink)))
 }
 
 // VirtualMachineScaleSetVMProfile is describes a virtual machine scale set
@@ -1098,6 +1163,19 @@ type VirtualMachineSize struct {
 type VirtualMachineSizeListResult struct {
 	autorest.Response `json:"-"`
 	Value             *[]VirtualMachineSize `json:"value,omitempty"`
+	NextLink          *string               `json:",omitempty"`
+}
+
+// VirtualMachineSizeListResultPreparer prepares a request to retrieve the next set of results. It returns
+// nil if no more results exist.
+func (client VirtualMachineSizeListResult) VirtualMachineSizeListResultPreparer() (*http.Request, error) {
+	if client.NextLink == nil || len(to.String(client.NextLink)) <= 0 {
+		return nil, nil
+	}
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(client.NextLink)))
 }
 
 // VirtualMachineStatusCodeCount is the status code and count of the virtual

@@ -24,10 +24,10 @@ import (
 	"net/url"
 )
 
-// UsagesClient is the the Windows Azure Network management API provides a
-// RESTful set of web services that interact with Windows Azure Networks
+// UsagesClient is the the Microsoft Azure Network management API provides a
+// RESTful set of web services that interact with Microsoft Azure Networks
 // service to manage your network resrources. The API has entities that
-// capture the relationship between an end user and the Windows Azure
+// capture the relationship between an end user and the Microsoft Azure
 // Networks service.
 type UsagesClient struct {
 	ManagementClient
@@ -49,18 +49,18 @@ func NewUsagesClientWithBaseURI(baseURI string, subscriptionID string) UsagesCli
 func (client UsagesClient) List(location string) (result UsagesListResult, ae error) {
 	req, err := client.ListPreparer(location)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "network/UsagesClient", "List", "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "network/UsagesClient", "List", autorest.UndefinedStatusCode, "Failure preparing request")
 	}
 
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "network/UsagesClient", "List", "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "network/UsagesClient", "List", resp.StatusCode, "Failure sending request")
 	}
 
 	result, err = client.ListResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "network/UsagesClient", "List", "Failure responding to request")
+		ae = autorest.NewErrorWithError(err, "network/UsagesClient", "List", resp.StatusCode, "Failure responding to request")
 	}
 
 	return
@@ -102,5 +102,29 @@ func (client UsagesClient) ListResponder(resp *http.Response) (result UsagesList
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// ListNextResults retrieves the next set of results, if any.
+func (client UsagesClient) ListNextResults(lastResults UsagesListResult) (result UsagesListResult, ae error) {
+	req, err := lastResults.UsagesListResultPreparer()
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "network/UsagesClient", "List", autorest.UndefinedStatusCode, "Failure preparing next results request request")
+	}
+	if req == nil {
+		return
+	}
+
+	resp, err := client.ListSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "network/UsagesClient", "List", resp.StatusCode, "Failure sending next results request request")
+	}
+
+	result, err = client.ListResponder(resp)
+	if err != nil {
+		ae = autorest.NewErrorWithError(err, "network/UsagesClient", "List", resp.StatusCode, "Failure responding to next results request request")
+	}
+
 	return
 }

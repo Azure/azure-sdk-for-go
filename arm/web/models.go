@@ -22,6 +22,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/Godeps/_workspace/src/github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/azure-sdk-for-go/Godeps/_workspace/src/github.com/Azure/go-autorest/autorest/date"
 	"github.com/Azure/azure-sdk-for-go/Godeps/_workspace/src/github.com/Azure/go-autorest/autorest/to"
+	"io"
 	"net/http"
 )
 
@@ -121,58 +122,6 @@ const (
 	// Twitter specifies the twitter state for built in authentication
 	// provider.
 	Twitter BuiltInAuthenticationProvider = "Twitter"
-)
-
-// CertificateAction enumerates the values for certificate action.
-type CertificateAction string
-
-const (
-	// Rekey specifies the rekey state for certificate action.
-	Rekey CertificateAction = "Rekey"
-	// Renew specifies the renew state for certificate action.
-	Renew CertificateAction = "Renew"
-)
-
-// CertificateOrderStatus enumerates the values for certificate order status.
-type CertificateOrderStatus string
-
-const (
-	// Canceled specifies the canceled state for certificate order status.
-	Canceled CertificateOrderStatus = "Canceled"
-	// Denied specifies the denied state for certificate order status.
-	Denied CertificateOrderStatus = "Denied"
-	// Expired specifies the expired state for certificate order status.
-	Expired CertificateOrderStatus = "Expired"
-	// Issued specifies the issued state for certificate order status.
-	Issued CertificateOrderStatus = "Issued"
-	// NotSubmitted specifies the not submitted state for certificate order
-	// status.
-	NotSubmitted CertificateOrderStatus = "NotSubmitted"
-	// Pendingissuance specifies the pendingissuance state for certificate
-	// order status.
-	Pendingissuance CertificateOrderStatus = "Pendingissuance"
-	// PendingRekey specifies the pending rekey state for certificate order
-	// status.
-	PendingRekey CertificateOrderStatus = "PendingRekey"
-	// Pendingrevocation specifies the pendingrevocation state for certificate
-	// order status.
-	Pendingrevocation CertificateOrderStatus = "Pendingrevocation"
-	// Revoked specifies the revoked state for certificate order status.
-	Revoked CertificateOrderStatus = "Revoked"
-	// Unused specifies the unused state for certificate order status.
-	Unused CertificateOrderStatus = "Unused"
-)
-
-// CertificateProductType enumerates the values for certificate product type.
-type CertificateProductType string
-
-const (
-	// StandardDomainValidatedSsl specifies the standard domain validated ssl
-	// state for certificate product type.
-	StandardDomainValidatedSsl CertificateProductType = "StandardDomainValidatedSsl"
-	// StandardDomainValidatedWildCardSsl specifies the standard domain
-	// validated wild card ssl state for certificate product type.
-	StandardDomainValidatedWildCardSsl CertificateProductType = "StandardDomainValidatedWildCardSsl"
 )
 
 // ComputeModeOptions enumerates the values for compute mode options.
@@ -338,47 +287,6 @@ const (
 	Web InternalLoadBalancingMode = "Web"
 )
 
-// KeyVaultSecretStatus enumerates the values for key vault secret status.
-type KeyVaultSecretStatus string
-
-const (
-	// KeyVaultSecretStatusAzureServiceUnauthorizedToAccessKeyVault specifies
-	// the key vault secret status azure service unauthorized to access key
-	// vault state for key vault secret status.
-	KeyVaultSecretStatusAzureServiceUnauthorizedToAccessKeyVault KeyVaultSecretStatus = "AzureServiceUnauthorizedToAccessKeyVault"
-	// KeyVaultSecretStatusCertificateOrderFailed specifies the key vault
-	// secret status certificate order failed state for key vault secret
-	// status.
-	KeyVaultSecretStatusCertificateOrderFailed KeyVaultSecretStatus = "CertificateOrderFailed"
-	// KeyVaultSecretStatusInitialized specifies the key vault secret status
-	// initialized state for key vault secret status.
-	KeyVaultSecretStatusInitialized KeyVaultSecretStatus = "Initialized"
-	// KeyVaultSecretStatusKeyVaultDoesNotExist specifies the key vault secret
-	// status key vault does not exist state for key vault secret status.
-	KeyVaultSecretStatusKeyVaultDoesNotExist KeyVaultSecretStatus = "KeyVaultDoesNotExist"
-	// KeyVaultSecretStatusKeyVaultSecretDoesNotExist specifies the key vault
-	// secret status key vault secret does not exist state for key vault
-	// secret status.
-	KeyVaultSecretStatusKeyVaultSecretDoesNotExist KeyVaultSecretStatus = "KeyVaultSecretDoesNotExist"
-	// KeyVaultSecretStatusOperationNotPermittedOnKeyVault specifies the key
-	// vault secret status operation not permitted on key vault state for key
-	// vault secret status.
-	KeyVaultSecretStatusOperationNotPermittedOnKeyVault KeyVaultSecretStatus = "OperationNotPermittedOnKeyVault"
-	// KeyVaultSecretStatusSucceeded specifies the key vault secret status
-	// succeeded state for key vault secret status.
-	KeyVaultSecretStatusSucceeded KeyVaultSecretStatus = "Succeeded"
-	// KeyVaultSecretStatusUnknown specifies the key vault secret status
-	// unknown state for key vault secret status.
-	KeyVaultSecretStatusUnknown KeyVaultSecretStatus = "Unknown"
-	// KeyVaultSecretStatusUnknownError specifies the key vault secret status
-	// unknown error state for key vault secret status.
-	KeyVaultSecretStatusUnknownError KeyVaultSecretStatus = "UnknownError"
-	// KeyVaultSecretStatusWaitingOnCertificateOrder specifies the key vault
-	// secret status waiting on certificate order state for key vault secret
-	// status.
-	KeyVaultSecretStatusWaitingOnCertificateOrder KeyVaultSecretStatus = "WaitingOnCertificateOrder"
-)
-
 // LogLevel enumerates the values for log level.
 type LogLevel string
 
@@ -421,6 +329,24 @@ const (
 	Classic ManagedPipelineMode = "Classic"
 	// Integrated specifies the integrated state for managed pipeline mode.
 	Integrated ManagedPipelineMode = "Integrated"
+)
+
+// ProvisioningState enumerates the values for provisioning state.
+type ProvisioningState string
+
+const (
+	// ProvisioningStateCanceled specifies the provisioning state canceled
+	// state for provisioning state.
+	ProvisioningStateCanceled ProvisioningState = "Canceled"
+	// ProvisioningStateFailed specifies the provisioning state failed state
+	// for provisioning state.
+	ProvisioningStateFailed ProvisioningState = "Failed"
+	// ProvisioningStateInProgress specifies the provisioning state in
+	// progress state for provisioning state.
+	ProvisioningStateInProgress ProvisioningState = "InProgress"
+	// ProvisioningStateSucceeded specifies the provisioning state succeeded
+	// state for provisioning state.
+	ProvisioningStateSucceeded ProvisioningState = "Succeeded"
 )
 
 // SiteAvailabilityState enumerates the values for site availability state.
@@ -535,6 +461,12 @@ type AddressResponse struct {
 	VipMappings         *[]VirtualIPMapping `json:"vipMappings,omitempty"`
 }
 
+// APIDefinitionInfo is information about the formal API definition for the
+// web app.
+type APIDefinitionInfo struct {
+	URL *string `json:"url,omitempty"`
+}
+
 // ApplicationLogsConfig is application logs configuration
 type ApplicationLogsConfig struct {
 	FileSystem        *FileSystemApplicationLogsConfig        `json:"fileSystem,omitempty"`
@@ -554,8 +486,9 @@ type ArmPlan struct {
 // AutoHealActions is autoHealActions - Describes the actions which can be
 // taken by the auto-heal module when a rule is triggered.
 type AutoHealActions struct {
-	ActionType   AutoHealActionType    `json:"actionType,omitempty"`
-	CustomAction *AutoHealCustomAction `json:"customAction,omitempty"`
+	ActionType              AutoHealActionType    `json:"actionType,omitempty"`
+	CustomAction            *AutoHealCustomAction `json:"customAction,omitempty"`
+	MinProcessExecutionTime *string               `json:"minProcessExecutionTime,omitempty"`
 }
 
 // AutoHealCustomAction is autoHealCustomAction - Describes the custom action
@@ -689,71 +622,6 @@ type CertificateCollection struct {
 	NextLink          *string        `json:"nextLink,omitempty"`
 }
 
-// CertificateOrder is certificate purchase order
-type CertificateOrder struct {
-	autorest.Response `json:"-"`
-	ID                *string                     `json:"id,omitempty"`
-	Name              *string                     `json:"name,omitempty"`
-	Location          *string                     `json:"location,omitempty"`
-	Type              *string                     `json:"type,omitempty"`
-	Tags              *map[string]*string         `json:"tags,omitempty"`
-	Properties        *CertificateOrderProperties `json:"properties,omitempty"`
-}
-
-// CertificateOrderCertificate is class representing the Key Vault container
-// for certificate purchased through Azure
-type CertificateOrderCertificate struct {
-	autorest.Response `json:"-"`
-	ID                *string                                `json:"id,omitempty"`
-	Name              *string                                `json:"name,omitempty"`
-	Location          *string                                `json:"location,omitempty"`
-	Type              *string                                `json:"type,omitempty"`
-	Tags              *map[string]*string                    `json:"tags,omitempty"`
-	Properties        *CertificateOrderCertificateProperties `json:"properties,omitempty"`
-}
-
-// CertificateOrderCertificateCollection is collection of ceritificateorder
-// certificates
-type CertificateOrderCertificateCollection struct {
-	autorest.Response `json:"-"`
-	Value             *[]CertificateOrderCertificate `json:"value,omitempty"`
-	NextLink          *string                        `json:"nextLink,omitempty"`
-}
-
-// CertificateOrderCertificateProperties is
-type CertificateOrderCertificateProperties struct {
-	KeyVaultCsmID      *string              `json:"keyVaultCsmId,omitempty"`
-	KeyVaultSecretName *string              `json:"keyVaultSecretName,omitempty"`
-	ProvisioningState  KeyVaultSecretStatus `json:"provisioningState,omitempty"`
-	Thumbprint         *string              `json:"thumbprint,omitempty"`
-}
-
-// CertificateOrderCollection is collection of ceritificate orders
-type CertificateOrderCollection struct {
-	autorest.Response `json:"-"`
-	Value             *[]CertificateOrder `json:"value,omitempty"`
-	NextLink          *string             `json:"nextLink,omitempty"`
-}
-
-// CertificateOrderProperties is
-type CertificateOrderProperties struct {
-	Certificates               *map[string]*CertificateOrderCertificate `json:"certificates,omitempty"`
-	DistinguishedName          *string                                  `json:"distinguishedName,omitempty"`
-	DomainVerificationToken    *string                                  `json:"domainVerificationToken,omitempty"`
-	ValidityInYears            *int                                     `json:"validityInYears,omitempty"`
-	KeySize                    *int                                     `json:"keySize,omitempty"`
-	ProductType                CertificateProductType                   `json:"productType,omitempty"`
-	Status                     CertificateOrderStatus                   `json:"status,omitempty"`
-	SignedCertificate          *string                                  `json:"signedCertificate,omitempty"`
-	Csr                        *string                                  `json:"csr,omitempty"`
-	Intermediate               *string                                  `json:"intermediate,omitempty"`
-	Root                       *string                                  `json:"root,omitempty"`
-	SerialNumber               *string                                  `json:"serialNumber,omitempty"`
-	Action                     CertificateAction                        `json:"action,omitempty"`
-	KeyVaultCsmID              *string                                  `json:"keyVaultCsmId,omitempty"`
-	DelayExistingRevokeInHours *int                                     `json:"delayExistingRevokeInHours,omitempty"`
-}
-
 // CertificateProperties is
 type CertificateProperties struct {
 	FriendlyName              *string                    `json:"friendlyName,omitempty"`
@@ -771,8 +639,6 @@ type CertificateProperties struct {
 	CerBlob                   *string                    `json:"cerBlob,omitempty"`
 	PublicKeyHash             *string                    `json:"publicKeyHash,omitempty"`
 	HostingEnvironmentProfile *HostingEnvironmentProfile `json:"hostingEnvironmentProfile,omitempty"`
-	KeyVaultCsmID             *string                    `json:"keyVaultCsmId,omitempty"`
-	KeyVaultSecretName        *string                    `json:"keyVaultSecretName,omitempty"`
 }
 
 // ClassicMobileService is a mobile service
@@ -851,6 +717,12 @@ type Contact struct {
 	Phone          *string  `json:"phone,omitempty"`
 }
 
+// CorsSettings is cross-Origin Resource Sharing (CORS) settings for the web
+// app.
+type CorsSettings struct {
+	AllowedOrigins *[]string `json:"allowedOrigins,omitempty"`
+}
+
 // CsmMoveResourceEnvelope is class containing a list of the resources that
 // need to be moved and the resource group they should be moved to
 type CsmMoveResourceEnvelope struct {
@@ -907,7 +779,7 @@ type Csr struct {
 // CsrList is
 type CsrList struct {
 	autorest.Response `json:"-"`
-	Value             *[]Csr `json:"value,omitempty"`
+	Value             *Csr `json:"value,omitempty"`
 }
 
 // CsrProperties is
@@ -974,8 +846,41 @@ type DeletedSiteProperties struct {
 	GatewaySiteName           *string                    `json:"gatewaySiteName,omitempty"`
 	ClientAffinityEnabled     *bool                      `json:"clientAffinityEnabled,omitempty"`
 	ClientCertEnabled         *bool                      `json:"clientCertEnabled,omitempty"`
+	HostNamesDisabled         *bool                      `json:"hostNamesDisabled,omitempty"`
 	OutboundIPAddresses       *string                    `json:"outboundIpAddresses,omitempty"`
 	CloningInfo               *CloningInfo               `json:"cloningInfo,omitempty"`
+}
+
+// Deployment is represents user crendentials used for publishing activity
+type Deployment struct {
+	autorest.Response `json:"-"`
+	ID                *string               `json:"id,omitempty"`
+	Name              *string               `json:"name,omitempty"`
+	Location          *string               `json:"location,omitempty"`
+	Type              *string               `json:"type,omitempty"`
+	Tags              *map[string]*string   `json:"tags,omitempty"`
+	Properties        *DeploymentProperties `json:"properties,omitempty"`
+}
+
+// DeploymentCollection is collection of app deployments
+type DeploymentCollection struct {
+	autorest.Response `json:"-"`
+	Value             *[]Deployment `json:"value,omitempty"`
+	NextLink          *string       `json:"nextLink,omitempty"`
+}
+
+// DeploymentProperties is
+type DeploymentProperties struct {
+	ID          *string    `json:"id,omitempty"`
+	Status      *int       `json:"status,omitempty"`
+	Message     *string    `json:"message,omitempty"`
+	Author      *string    `json:"author,omitempty"`
+	Deployer    *string    `json:"deployer,omitempty"`
+	AuthorEmail *string    `json:"author_email,omitempty"`
+	StartTime   *date.Time `json:"start_time,omitempty"`
+	EndTime     *date.Time `json:"end_time,omitempty"`
+	Active      *bool      `json:"active,omitempty"`
+	Details     *string    `json:"details,omitempty"`
 }
 
 // Domain is represents a domain
@@ -1020,6 +925,7 @@ type DomainProperties struct {
 	ContactRegistrant           *Contact               `json:"contactRegistrant,omitempty"`
 	ContactTech                 *Contact               `json:"contactTech,omitempty"`
 	RegistrationStatus          DomainStatus           `json:"registrationStatus,omitempty"`
+	ProvisioningState           ProvisioningState      `json:"provisioningState,omitempty"`
 	NameServers                 *[]string              `json:"nameServers,omitempty"`
 	Privacy                     *bool                  `json:"privacy,omitempty"`
 	CreatedTime                 *date.Time             `json:"createdTime,omitempty"`
@@ -1064,6 +970,7 @@ type DomainRegistrationInputProperties struct {
 	ContactRegistrant           *Contact               `json:"contactRegistrant,omitempty"`
 	ContactTech                 *Contact               `json:"contactTech,omitempty"`
 	RegistrationStatus          DomainStatus           `json:"registrationStatus,omitempty"`
+	ProvisioningState           ProvisioningState      `json:"provisioningState,omitempty"`
 	NameServers                 *[]string              `json:"nameServers,omitempty"`
 	Privacy                     *bool                  `json:"privacy,omitempty"`
 	CreatedTime                 *date.Time             `json:"createdTime,omitempty"`
@@ -1163,7 +1070,7 @@ type HostingEnvironmentDiagnostics struct {
 // HostingEnvironmentDiagnosticsList is
 type HostingEnvironmentDiagnosticsList struct {
 	autorest.Response `json:"-"`
-	Value             *[]HostingEnvironmentDiagnostics `json:"value,omitempty"`
+	Value             *HostingEnvironmentDiagnostics `json:"value,omitempty"`
 }
 
 // HostingEnvironmentProfile is specification for a hostingEnvironment (App
@@ -1249,12 +1156,11 @@ type HostNameBindingProperties struct {
 
 // HostNameSslState is object that represents a SSL-enabled host name.
 type HostNameSslState struct {
-	Name               *string  `json:"name,omitempty"`
-	SslState           SslState `json:"sslState,omitempty"`
-	VirtualIP          *string  `json:"virtualIP,omitempty"`
-	Thumbprint         *string  `json:"thumbprint,omitempty"`
-	ToUpdate           *bool    `json:"toUpdate,omitempty"`
-	ToUpdateIPBasedSsl *bool    `json:"toUpdateIpBasedSsl,omitempty"`
+	Name       *string  `json:"name,omitempty"`
+	SslState   SslState `json:"sslState,omitempty"`
+	VirtualIP  *string  `json:"virtualIP,omitempty"`
+	Thumbprint *string  `json:"thumbprint,omitempty"`
+	ToUpdate   *bool    `json:"toUpdate,omitempty"`
 }
 
 // HTTPLogsConfig is http logs configuration
@@ -1308,6 +1214,7 @@ type ManagedHostingEnvironmentProperties struct {
 	EnvironmentIsHealthy *bool                           `json:"environmentIsHealthy,omitempty"`
 	EnvironmentStatus    *string                         `json:"environmentStatus,omitempty"`
 	Suspended            *bool                           `json:"suspended,omitempty"`
+	APIManagementAccount *string                         `json:"apiManagementAccount,omitempty"`
 }
 
 // MetricAvailabilily is class repesenting metrics availability and retention
@@ -1392,7 +1299,7 @@ type NetworkFeaturesProperties struct {
 // ObjectSet is
 type ObjectSet struct {
 	autorest.Response `json:"-"`
-	Value             *map[string]interface{} `json:"value,omitempty"`
+	Value             *interface{} `json:"value,omitempty"`
 }
 
 // PremierAddOnRequest is
@@ -1416,6 +1323,12 @@ type RampUpRule struct {
 	MaxReroutePercentage      *float64 `json:"maxReroutePercentage,omitempty"`
 	ChangeDecisionCallbackURL *string  `json:"changeDecisionCallbackUrl,omitempty"`
 	Name                      *string  `json:"name,omitempty"`
+}
+
+// ReadCloser is
+type ReadCloser struct {
+	autorest.Response `json:"-"`
+	Value             *io.ReadCloser `json:"value,omitempty"`
 }
 
 // RelayServiceConnectionEntity is class that represents a Biztalk Hybrid
@@ -1692,6 +1605,8 @@ type SiteConfigProperties struct {
 	AutoHealRules                *AutoHealRules        `json:"autoHealRules,omitempty"`
 	TracingOptions               *string               `json:"tracingOptions,omitempty"`
 	VnetName                     *string               `json:"vnetName,omitempty"`
+	Cors                         *CorsSettings         `json:"cors,omitempty"`
+	APIDefinition                *APIDefinitionInfo    `json:"apiDefinition,omitempty"`
 	AutoSwapSlotName             *string               `json:"autoSwapSlotName,omitempty"`
 }
 
@@ -1766,6 +1681,7 @@ type SiteProperties struct {
 	GatewaySiteName           *string                    `json:"gatewaySiteName,omitempty"`
 	ClientAffinityEnabled     *bool                      `json:"clientAffinityEnabled,omitempty"`
 	ClientCertEnabled         *bool                      `json:"clientCertEnabled,omitempty"`
+	HostNamesDisabled         *bool                      `json:"hostNamesDisabled,omitempty"`
 	OutboundIPAddresses       *string                    `json:"outboundIpAddresses,omitempty"`
 	CloningInfo               *CloningInfo               `json:"cloningInfo,omitempty"`
 }
@@ -2046,13 +1962,9 @@ type User struct {
 
 // UserProperties is
 type UserProperties struct {
-	Name               *string    `json:"name,omitempty"`
-	PublishingUserName *string    `json:"publishingUserName,omitempty"`
-	PublishingPassword *string    `json:"publishingPassword,omitempty"`
-	LastUpdatedTime    *date.Time `json:"lastUpdatedTime,omitempty"`
-	Metadata           *string    `json:"metadata,omitempty"`
-	IsDeleted          *bool      `json:"isDeleted,omitempty"`
-	ScmURI             *string    `json:"scmUri,omitempty"`
+	Name               *string `json:"name,omitempty"`
+	PublishingUserName *string `json:"publishingUserName,omitempty"`
+	PublishingPassword *string `json:"publishingPassword,omitempty"`
 }
 
 // VirtualApplication is
@@ -2118,7 +2030,7 @@ type VnetInfo struct {
 // VnetInfoList is
 type VnetInfoList struct {
 	autorest.Response `json:"-"`
-	Value             *[]VnetInfo `json:"value,omitempty"`
+	Value             *VnetInfo `json:"value,omitempty"`
 }
 
 // VnetInfoProperties is
@@ -2143,7 +2055,7 @@ type VnetRoute struct {
 // VnetRouteList is
 type VnetRouteList struct {
 	autorest.Response `json:"-"`
-	Value             *[]VnetRoute `json:"value,omitempty"`
+	Value             *VnetRoute `json:"value,omitempty"`
 }
 
 // VnetRouteProperties is

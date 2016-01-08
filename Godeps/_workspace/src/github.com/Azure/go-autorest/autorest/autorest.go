@@ -93,7 +93,7 @@ func ResponseRequiresPolling(resp *http.Response, codes ...int) bool {
 func NewPollingRequest(resp *http.Response, authorizer Authorizer) (*http.Request, error) {
 	location := GetPollingLocation(resp)
 	if location == "" {
-		return nil, NewError("autorest", "NewPollingRequest", "Location header missing from response that requires polling")
+		return nil, NewErrorWithStatusCode("autorest", "NewPollingRequest", resp.StatusCode, "Location header missing from response that requires polling")
 	}
 
 	req, err := Prepare(&http.Request{},
@@ -101,7 +101,7 @@ func NewPollingRequest(resp *http.Response, authorizer Authorizer) (*http.Reques
 		WithBaseURL(location),
 		authorizer.WithAuthorization())
 	if err != nil {
-		return nil, NewErrorWithError(err, "autorest", "NewPollingRequest", "Failure creating poll request to %s", location)
+		return nil, NewErrorWithError(err, "autorest", "NewPollingRequest", UndefinedStatusCode, "Failure creating poll request to %s", location)
 	}
 
 	Respond(resp,

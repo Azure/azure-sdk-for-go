@@ -549,7 +549,7 @@ func (s *StorageBlobSuite) TestPutPageBlob(c *chk.C) {
 
 	blob := randString(20)
 	size := int64(10 * 1024 * 1024)
-	c.Assert(cli.PutPageBlob(cnt, blob, size), chk.IsNil)
+	c.Assert(cli.PutPageBlob(cnt, blob, size, nil), chk.IsNil)
 
 	// Verify
 	props, err := cli.GetBlobProperties(cnt, blob)
@@ -566,7 +566,7 @@ func (s *StorageBlobSuite) TestPutPagesUpdate(c *chk.C) {
 
 	blob := randString(20)
 	size := int64(10 * 1024 * 1024) // larger than we'll use
-	c.Assert(cli.PutPageBlob(cnt, blob, size), chk.IsNil)
+	c.Assert(cli.PutPageBlob(cnt, blob, size, nil), chk.IsNil)
 
 	chunk1 := []byte(randString(1024))
 	chunk2 := []byte(randString(512))
@@ -605,7 +605,7 @@ func (s *StorageBlobSuite) TestPutPagesClear(c *chk.C) {
 
 	blob := randString(20)
 	size := int64(10 * 1024 * 1024) // larger than we'll use
-	c.Assert(cli.PutPageBlob(cnt, blob, size), chk.IsNil)
+	c.Assert(cli.PutPageBlob(cnt, blob, size, nil), chk.IsNil)
 
 	// Put 0-2047
 	chunk := []byte(randString(2048))
@@ -631,7 +631,7 @@ func (s *StorageBlobSuite) TestGetPageRanges(c *chk.C) {
 
 	blob := randString(20)
 	size := int64(10 * 1024 * 1024) // larger than we'll use
-	c.Assert(cli.PutPageBlob(cnt, blob, size), chk.IsNil)
+	c.Assert(cli.PutPageBlob(cnt, blob, size, nil), chk.IsNil)
 
 	// Get page ranges on empty blob
 	out, err := cli.GetPageRanges(cnt, blob)

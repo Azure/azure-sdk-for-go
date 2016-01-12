@@ -614,7 +614,7 @@ func (b BlobStorageClient) GetBlobMetadata(container, name string) (map[string]s
 //
 // See https://msdn.microsoft.com/en-us/library/azure/dd179451.aspx
 func (b BlobStorageClient) CreateBlockBlob(container, name string) error {
-	return b.CreateBlockBlobFromReader(container, name, 0, nil)
+	return b.CreateBlockBlobFromReader(container, name, 0, nil, nil)
 }
 
 // CreateBlockBlobFromReader initializes a block blob using data from
@@ -626,12 +626,16 @@ func (b BlobStorageClient) CreateBlockBlob(container, name string) error {
 // PutBlock, and PutBlockList.
 //
 // See https://msdn.microsoft.com/en-us/library/azure/dd179451.aspx
-func (b BlobStorageClient) CreateBlockBlobFromReader(container, name string, size uint64, blob io.Reader) error {
+func (b BlobStorageClient) CreateBlockBlobFromReader(container, name string, size uint64, blob io.Reader, extraHeaders map[string]string) error {
 	path := fmt.Sprintf("%s/%s", container, name)
 	uri := b.client.getEndpoint(blobServiceName, path, url.Values{})
 	headers := b.client.getStandardHeaders()
 	headers["x-ms-blob-type"] = string(BlobTypeBlock)
 	headers["Content-Length"] = fmt.Sprintf("%d", size)
+
+	for k, v := range extraHeaders {
+		headers[k] = v
+	}
 
 	resp, err := b.client.exec("PUT", uri, headers, blob)
 	if err != nil {

@@ -444,7 +444,7 @@ func (s *StorageBlobSuite) TestCreateBlockBlobFromReader(c *chk.C) {
 
 	name := randString(20)
 	data := randBytes(8888)
-	c.Assert(cli.CreateBlockBlobFromReader(cnt, name, uint64(len(data)), bytes.NewReader(data)), chk.IsNil)
+	c.Assert(cli.CreateBlockBlobFromReader(cnt, name, uint64(len(data)), bytes.NewReader(data)), chk.IsNil, nil)
 
 	body, err := cli.GetBlob(cnt, name)
 	c.Assert(err, chk.IsNil)
@@ -463,7 +463,7 @@ func (s *StorageBlobSuite) TestCreateBlockBlobFromReaderWithShortData(c *chk.C) 
 
 	name := randString(20)
 	data := randBytes(8888)
-	err := cli.CreateBlockBlobFromReader(cnt, name, 9999, bytes.NewReader(data))
+	err := cli.CreateBlockBlobFromReader(cnt, name, 9999, bytes.NewReader(data), nil)
 	c.Assert(err, chk.Not(chk.IsNil))
 
 	_, err = cli.GetBlob(cnt, name)

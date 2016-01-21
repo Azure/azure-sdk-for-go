@@ -1,11 +1,7 @@
 package autorest
 
 import (
-	"bytes"
-	"encoding/json"
-	"encoding/xml"
 	"fmt"
-	"io"
 	"net/http"
 )
 
@@ -28,11 +24,6 @@ func (rf ResponderFunc) Respond(r *http.Response) error {
 // RespondDecorator takes and possibly decorates, by wrapping, a Responder. Decorators may react to
 // the http.Response and pass it along or, first, pass the http.Response along then react.
 type RespondDecorator func(Responder) Responder
-
-// decoder is a common $interface for xml.Decoder and json.Decoder.
-type decoder interface {
-	Decode(v interface{}) error
-}
 
 // CreateResponder creates, decorates, and returns a Responder. Without decorators, the returned
 // Responder returns the passed http.Response unmodified. Responders may or may not be safe to share
@@ -109,25 +100,23 @@ func ByClosingIfError() RespondDecorator {
 // ByUnmarshallingJSON returns a RespondDecorator that decodes a JSON document returned in the
 // response Body into the value pointed to by v.
 func ByUnmarshallingJSON(v interface{}) RespondDecorator {
-	return byUnmarshalling(v, "JSON", func(r io.Reader) decoder { return json.NewDecoder(r) })
+	return byUnmarshallingAs(EncodedAsJSON, v)
 }
 
 // ByUnmarshallingXML returns a RespondDecorator that decodes a XML document returned in the
 // response Body into the value pointed to by v.
 func ByUnmarshallingXML(v interface{}) RespondDecorator {
-	return byUnmarshalling(v, "XML", func(r io.Reader) decoder { return xml.NewDecoder(r) })
+	return byUnmarshallingAs(EncodedAsXML, v)
 }
 
-func byUnmarshalling(v interface{}, format string, df func(io.Reader) decoder) RespondDecorator {
+func byUnmarshallingAs(encodedAs EncodedAs, v interface{}) RespondDecorator {
 	return func(r Responder) Responder {
 		return ResponderFunc(func(resp *http.Response) error {
 			err := r.Respond(resp)
 			if err == nil {
-				b := bytes.Buffer{}
-				d := df(io.TeeReader(resp.Body, &b))
-				err = d.Decode(v)
-				if err != nil {
-					err = fmt.Errorf("Error (%v) occurred decoding %s (\"%s\")", err, format, b.String())
+				b, errDecode := CopyAndDecode(encodedAs, resp.Body, v)
+				if errDecode != nil {
+					err = fmt.Errorf("Error (%v) occurred decoding %s (\"%s\")", errDecode, encodedAs, b.String())
 				}
 			}
 			return err

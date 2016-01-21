@@ -17,6 +17,20 @@ func StringPtr(s string) *string {
 	return &s
 }
 
+// StringSlice returns a string slice value for the passed string slice pointer. It returns a nil
+// slice if the pointer is nil.
+func StringSlice(s *[]string) []string {
+	if s != nil {
+		return *s
+	}
+	return nil
+}
+
+// StringSlicePtr returns a pointer to the passed string slice.
+func StringSlicePtr(s []string) *[]string {
+	return &s
+}
+
 // StringMap returns a map of strings built from the map of string pointers. The empty string is
 // used for nil pointers.
 func StringMap(msp map[string]*string) map[string]string {

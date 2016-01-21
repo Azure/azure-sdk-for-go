@@ -233,7 +233,7 @@ func (c Client) Do(r *http.Request) (*http.Response, error) {
 // sender returns the Sender to which to send requests.
 func (c Client) sender() Sender {
 	if c.Sender == nil {
-		return &http.Client{}
+		return http.DefaultClient
 	}
 	return c.Sender
 }

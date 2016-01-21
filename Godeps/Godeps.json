@@ -1,14 +1,14 @@
 {
 	"ImportPath": "github.com/Azure/azure-sdk-for-go",
-	"GoVersion": "go1.5.1",
+	"GoVersion": "go1.5.2",
 	"Packages": [
 		"./..."
 	],
 	"Deps": [
 		{
 			"ImportPath": "github.com/Azure/go-autorest/autorest",
-			"Comment": "v2.1.0-2-gbdba0a8",
-			"Rev": "bdba0a8422e534e5b680cbd3453840a49f7736c6"
+			"Comment": "v2.1.0-10-g20a00a4",
+			"Rev": "20a00a4f1f2a2abdfb98e6beb1126f1d36d7063a"
 		},
 		{
 			"ImportPath": "github.com/dgrijalva/jwt-go",

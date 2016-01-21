@@ -5,6 +5,7 @@ import (
 )
 
 const (
+	// UndefinedStatusCode is used when HTTP status code is not available for an error.
 	UndefinedStatusCode = 0
 )
 

@@ -300,6 +300,7 @@ func (c Client) exec(verb, url string, headers map[string]string, body io.Reader
 	if err != nil {
 		return nil, errors.New("azure/storage: error creating request: " + err.Error())
 	}
+
 	if clstr, ok := headers["Content-Length"]; ok {
 		// content length header is being signed, but completely ignored by golang.
 		// instead we have to use the ContentLength property on the request struct

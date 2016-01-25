@@ -444,7 +444,7 @@ func (s *StorageBlobSuite) TestCreateBlockBlobFromReader(c *chk.C) {
 
 	name := randString(20)
 	data := randBytes(8888)
-	c.Assert(cli.CreateBlockBlobFromReader(cnt, name, uint64(len(data)), bytes.NewReader(data)), chk.IsNil, nil)
+	c.Assert(cli.CreateBlockBlobFromReader(cnt, name, uint64(len(data)), bytes.NewReader(data), nil), chk.IsNil)
 
 	body, err := cli.GetBlob(cnt, name)
 	c.Assert(err, chk.IsNil)

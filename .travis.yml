@@ -1,3 +1,6 @@
+env:
+  secure: "FFgOmjPVglBgZPUeDjPXWs0HTjNOSjLDuTjrOS156z49oa/JtY28eSDZTtUwTW/Mw9pTGkVc0BtaMdDRI+MTZh30rOOEtFJrjF1y5HhCkw6+s0L2SAOZEoUviJTD/+wqtE7ZNYGRnMJ9svu437IXQTtsxmQjMcwmVOmQBNwP+0c="
+
 sudo: false
 
 language: go

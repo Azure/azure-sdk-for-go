@@ -19,7 +19,7 @@ package cdn
 // regenerated.
 
 import (
-	"github.com/Azure/azure-sdk-for-go/Godeps/_workspace/src/github.com/Azure/go-autorest/autorest"
+	"github.com/Azure/go-autorest/autorest"
 )
 
 // CustomDomainResourceState enumerates the values for custom domain resource

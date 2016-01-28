@@ -2,9 +2,12 @@ sudo: false
 
 language: go
 
-before_script:
+install:
   - go get -u golang.org/x/tools/cmd/vet
   - go get -u github.com/golang/lint/golint
+  - go get -u github.com/Masterminds/glide
+  - export GO15VENDOREXPERIMENT=1
+  - glide install
 
 go: tip
 script:

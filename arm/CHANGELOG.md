@@ -2,7 +2,7 @@
 
 -----
 
-## 'v0.5.0-beta'
+## `v0.5.0-beta`
 
 Updated following packages to new API versions:
 - arm/resources/features 2015-12-01
@@ -12,11 +12,11 @@ Updated following packages to new API versions:
 
 ### Changes 
 
- - Updated arm packages for autorest changes (PR: https://github.com/Azure/azure-sdk-for-go/pull/271).
+ - SDK now uses go-autorest v3.0.0.
 
 
 
-## 'v0.4.0-beta'
+## `v0.4.0-beta`
 
 This release brings the Go SDK ARM packages up-to-date with Azure ARM Swagger files for most
 services. Since the underlying [Swagger files](https://github.com/Azure/azure-rest-api-specs)

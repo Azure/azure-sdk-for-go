@@ -10,10 +10,10 @@ Updated following packages to new API versions:
 - arm/resources/subscriptions 2015-11-01
 
 
-- Updated arm for following autorest changes (PR: https://github.com/Azure/azure-sdk-for-go/pull/271) :
-	- client.Send(req, codes..int) -> client.Send(req)
-	- autorest.WithErrorUnless… -> azure.WithErrorUnless..
-	- NewErrorWithError(resonse.statusCode) -> autorest.NewErrorWithError(response)
+### Changes 
+
+ - Updated arm packages for autorest changes (PR: https://github.com/Azure/azure-sdk-for-go/pull/271).
+
 
 
 ## 'v0.4.0-beta'

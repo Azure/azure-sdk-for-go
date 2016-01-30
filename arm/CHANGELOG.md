@@ -2,6 +2,20 @@
 
 -----
 
+## 'v0.5.0-beta'
+
+Updated following packages to new API versions:
+- arm/resources/features 2015-12-01
+- arm/resources/resources 2015-11-01
+- arm/resources/subscriptions 2015-11-01
+
+
+- Updated arm for following autorest changes (PR: https://github.com/Azure/azure-sdk-for-go/pull/271) :
+	- client.Send(req, codes..int) -> client.Send(req)
+	- autorest.WithErrorUnless… -> azure.WithErrorUnless..
+	- NewErrorWithError(resonse.statusCode) -> autorest.NewErrorWithError(response)
+
+
 ## 'v0.4.0-beta'
 
 This release brings the Go SDK ARM packages up-to-date with Azure ARM Swagger files for most
@@ -21,9 +35,9 @@ updated in this release):
 - *arm/notificationhubs 2014-09-01*
 - arm/redis 2015-08-01
 - *arm/resources/authorization 2015-01-01*
-- *arm/resources/features 2015-12-01*
-- *arm/resources/resources 2015-11-01*
-- *arm/resources/subscriptions 2015-11-01*
+- *arm/resources/features 2014-08-01-preview*
+- *arm/resources/resources 2014-04-01-preview*
+- *arm/resources/subscriptions 2014-04-01-preview*
 - *arm/scheduler 2016-01-01*
 - arm/storage 2015-06-15
 - arm/web 2015-08-01
@@ -37,7 +51,7 @@ updated in this release):
 - Udated arm/network (2015-06-01)
 - Added a new arm/notificationhubs (2014-09-01) package
 - Updated arm/scheduler (2016-01-01) package
-- Updated arm for autorest changes. (PR: https://github.com/Azure/azure-sdk-for-go/pull/271)
+
 
 -----
 

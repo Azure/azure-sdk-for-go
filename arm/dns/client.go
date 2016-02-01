@@ -24,7 +24,7 @@ import (
 
 const (
 	// APIVersion is the version of the Dns
-	APIVersion = "2015-11-01"
+	APIVersion = "2015-05-04-preview"
 
 	// DefaultBaseURI is the default URI used for the service Dns
 	DefaultBaseURI = "https://management.azure.com"

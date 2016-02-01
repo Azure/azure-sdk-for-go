@@ -2,7 +2,21 @@
 
 -----
 
-## 'v0.4.0-beta'
+## `v0.5.0-beta`
+
+Updated following packages to new API versions:
+- arm/resources/features 2015-12-01
+- arm/resources/resources 2015-11-01
+- arm/resources/subscriptions 2015-11-01
+
+
+### Changes 
+
+ - SDK now uses go-autorest v3.0.0.
+
+
+
+## `v0.4.0-beta`
 
 This release brings the Go SDK ARM packages up-to-date with Azure ARM Swagger files for most
 services. Since the underlying [Swagger files](https://github.com/Azure/azure-rest-api-specs)
@@ -37,6 +51,7 @@ updated in this release):
 - Udated arm/network (2015-06-01)
 - Added a new arm/notificationhubs (2014-09-01) package
 - Updated arm/scheduler (2016-01-01) package
+
 
 -----
 

@@ -1,3 +1,6 @@
+// Package storage implements the Azure ARM Storage service API version
+// 2015-06-15.
+// the Storage Management Client.
 package storage
 
 // Copyright (c) Microsoft and contributors.  All rights reserved.
@@ -30,7 +33,7 @@ const (
 	DefaultBaseURI = "https://management.azure.com"
 )
 
-// ManagementClient is the the Storage Management Client.
+// ManagementClient is the base client for Storage.
 type ManagementClient struct {
 	autorest.Client
 	BaseURI        string

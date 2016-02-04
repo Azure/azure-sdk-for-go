@@ -1,3 +1,6 @@
+// Package search implements the Azure ARM Search service API version
+// 2015-02-28.
+// client that can be used to manage Azure Search services and API keys.
 package search
 
 // Copyright (c) Microsoft and contributors.  All rights reserved.
@@ -25,8 +28,8 @@ import (
 	"net/url"
 )
 
-// QueryKeysClient is the client that can be used to manage Azure Search
-// services and API keys.
+// QueryKeysClient is the client for the QueryKeys methods of the Search
+// service.
 type QueryKeysClient struct {
 	ManagementClient
 }

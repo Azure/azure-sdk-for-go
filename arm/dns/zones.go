@@ -1,3 +1,6 @@
+// Package dns implements the Azure ARM Dns service API version
+// 2015-05-04-preview.
+// client for managing DNS zones and record.
 package dns
 
 // Copyright (c) Microsoft and contributors.  All rights reserved.
@@ -25,7 +28,7 @@ import (
 	"net/url"
 )
 
-// ZonesClient is the client for managing DNS zones and record.
+// ZonesClient is the client for the Zones methods of the Dns service.
 type ZonesClient struct {
 	ManagementClient
 }

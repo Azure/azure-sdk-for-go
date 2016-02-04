@@ -1,3 +1,9 @@
+// Package network implements the Azure ARM Network service API version
+// 2015-06-15.
+// the Microsoft Azure Network management API provides a RESTful set of web
+// services that interact with Microsoft Azure Networks service to manage
+// your network resrources. The API has entities that capture the
+// relationship between an end user and the Microsoft Azure Networks service.
 package network
 
 // Copyright (c) Microsoft and contributors.  All rights reserved.
@@ -25,11 +31,8 @@ import (
 	"net/url"
 )
 
-// LocalNetworkGatewaysClient is the the Microsoft Azure Network management
-// API provides a RESTful set of web services that interact with Microsoft
-// Azure Networks service to manage your network resrources. The API has
-// entities that capture the relationship between an end user and the
-// Microsoft Azure Networks service.
+// LocalNetworkGatewaysClient is the client for the LocalNetworkGateways
+// methods of the Network service.
 type LocalNetworkGatewaysClient struct {
 	ManagementClient
 }

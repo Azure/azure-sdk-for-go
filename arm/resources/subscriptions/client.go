@@ -1,3 +1,5 @@
+// Package subscriptions implements the Azure ARM Subscriptions service API
+// version 2015-11-01.
 package subscriptions
 
 // Copyright (c) Microsoft and contributors.  All rights reserved.

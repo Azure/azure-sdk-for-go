@@ -403,7 +403,7 @@ type Sku struct {
 // SsoURI is sso uri required to login to third party web portal
 type SsoURI struct {
 	autorest.Response `json:"-"`
-	SsoURIProperty    *string `json:"ssoUri,omitempty"`
+	SsoURIValue       *string `json:"ssoUriValue,omitempty"`
 }
 
 // TrackedResource is aRM tracked resource

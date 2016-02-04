@@ -1,3 +1,6 @@
+// Package search implements the Azure ARM Search service API version
+// 2015-02-28.
+// client that can be used to manage Azure Search services and API keys.
 package search
 
 // Copyright (c) Microsoft and contributors.  All rights reserved.
@@ -30,8 +33,7 @@ const (
 	DefaultBaseURI = "https://management.azure.com"
 )
 
-// ManagementClient is the client that can be used to manage Azure Search
-// services and API keys.
+// ManagementClient is the base client for Search.
 type ManagementClient struct {
 	autorest.Client
 	BaseURI        string

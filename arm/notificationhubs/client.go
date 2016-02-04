@@ -1,3 +1,6 @@
+// Package notificationhubs implements the Azure ARM Notificationhubs service
+// API version 2014-09-01.
+// .Net client wrapper for the REST API for Azure NotificationHub Service
 package notificationhubs
 
 // Copyright (c) Microsoft and contributors.  All rights reserved.
@@ -33,8 +36,7 @@ const (
 	DefaultBaseURI = "https://management.azure.com"
 )
 
-// ManagementClient is the .Net client wrapper for the REST API for Azure
-// NotificationHub Service
+// ManagementClient is the base client for Notificationhubs.
 type ManagementClient struct {
 	autorest.Client
 	BaseURI        string

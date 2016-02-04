@@ -1,3 +1,6 @@
+// Package redis implements the Azure ARM Redis service API version 2015-08-01.
+// .Net client wrapper for the REST API for Azure Redis Cache Management
+// Service
 package redis
 
 // Copyright (c) Microsoft and contributors.  All rights reserved.
@@ -25,8 +28,7 @@ import (
 	"net/url"
 )
 
-// Client is the .Net client wrapper for the REST API for Azure Redis Cache
-// Management Service
+// Client is the client for the Redis methods of the Redis service.
 type Client struct {
 	ManagementClient
 }

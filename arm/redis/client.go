@@ -1,3 +1,6 @@
+// Package redis implements the Azure ARM Redis service API version 2015-08-01.
+// .Net client wrapper for the REST API for Azure Redis Cache Management
+// Service
 package redis
 
 // Copyright (c) Microsoft and contributors.  All rights reserved.
@@ -33,8 +36,7 @@ const (
 	DefaultBaseURI = "https://management.azure.com"
 )
 
-// ManagementClient is the .Net client wrapper for the REST API for Azure
-// Redis Cache Management Service
+// ManagementClient is the base client for Redis.
 type ManagementClient struct {
 	autorest.Client
 	BaseURI        string

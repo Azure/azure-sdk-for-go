@@ -1,3 +1,5 @@
+// Package logic implements the Azure ARM Logic service API version
+// 2015-02-01-preview.
 package logic
 
 // Copyright (c) Microsoft and contributors.  All rights reserved.

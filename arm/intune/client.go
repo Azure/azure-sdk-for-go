@@ -1,3 +1,7 @@
+// Package intune implements the Azure ARM Intune service API version
+// 2015-01-14-preview.
+// microsoft.Intune Resource provider Api features in the swagger-2.0
+// specification
 package intune
 
 // Copyright (c) Microsoft and contributors.  All rights reserved.
@@ -33,8 +37,7 @@ const (
 	DefaultBaseURI = "https://management.azure.com"
 )
 
-// ManagementClient is the microsoft.Intune Resource provider Api features in
-// the swagger-2.0 specification
+// ManagementClient is the base client for Intune.
 type ManagementClient struct {
 	autorest.Client
 	BaseURI        string

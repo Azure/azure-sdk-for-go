@@ -1,3 +1,6 @@
+// Package features implements the Azure ARM features service API version
+// 2015-12-01.
+//
 package features
 
 // Copyright (c) Microsoft and contributors.  All rights reserved.

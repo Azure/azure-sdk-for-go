@@ -1,3 +1,7 @@
+// Package notificationhubs implements the Azure ARM notificationhubs service
+// API version 2014-09-01.
+//
+// .Net client wrapper for the REST API for Azure NotificationHub Service.
 package notificationhubs
 
 // Copyright (c) Microsoft and contributors.  All rights reserved.

@@ -1,6 +1,7 @@
 // Package compute implements the Azure ARM Compute service API version
 // 2015-06-15.
-// the Compute Management Client.
+//
+// the Compute Management Client..
 package compute
 
 // Copyright (c) Microsoft and contributors.  All rights reserved.

@@ -1,7 +1,3 @@
-// Package compute implements the Azure ARM Compute service API version
-// 2015-06-15.
-//
-// the Compute Management Client..
 package compute
 
 // Copyright (c) Microsoft and contributors.  All rights reserved.
@@ -29,8 +25,7 @@ import (
 	"net/url"
 )
 
-// AvailabilitySetsClient is the client for the AvailabilitySets methods of
-// the Compute service.
+// AvailabilitySetsClient is the the Compute Management Client.
 type AvailabilitySetsClient struct {
 	ManagementClient
 }

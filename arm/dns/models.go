@@ -1,7 +1,3 @@
-// Package dns implements the Azure ARM dns service API version
-// 2015-05-04-preview.
-//
-// client for managing DNS zones and record..
 package dns
 
 // Copyright (c) Microsoft and contributors.  All rights reserved.

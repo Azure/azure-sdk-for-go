@@ -1,7 +1,3 @@
-// Package storage implements the Azure ARM Storage service API version
-// 2015-06-15.
-//
-// the Storage Management Client..
 package storage
 
 // Copyright (c) Microsoft and contributors.  All rights reserved.
@@ -29,8 +25,7 @@ import (
 	"net/url"
 )
 
-// AccountsClient is the client for the Accounts methods of the Storage
-// service.
+// AccountsClient is the the Storage Management Client.
 type AccountsClient struct {
 	ManagementClient
 }

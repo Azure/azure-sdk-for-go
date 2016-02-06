@@ -1,7 +1,3 @@
-// Package compute implements the Azure ARM Compute service API version
-// 2015-06-15.
-//
-// the Compute Management Client..
 package compute
 
 // Copyright (c) Microsoft and contributors.  All rights reserved.
@@ -29,8 +25,7 @@ import (
 	"net/url"
 )
 
-// VirtualMachineSizesClient is the client for the VirtualMachineSizes methods
-// of the Compute service.
+// VirtualMachineSizesClient is the the Compute Management Client.
 type VirtualMachineSizesClient struct {
 	ManagementClient
 }

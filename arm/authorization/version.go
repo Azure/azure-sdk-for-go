@@ -1,6 +1,3 @@
-// Package authorization implements the Azure ARM authorization service API
-// version 2015-07-01.
-//
 package authorization
 
 // Copyright (c) Microsoft and contributors.  All rights reserved.

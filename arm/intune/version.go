@@ -1,8 +1,3 @@
-// Package intune implements the Azure ARM intune service API version
-// 2015-01-14-preview.
-//
-// microsoft.Intune Resource provider Api features in the swagger-2.0
-// specification.
 package intune
 
 // Copyright (c) Microsoft and contributors.  All rights reserved.

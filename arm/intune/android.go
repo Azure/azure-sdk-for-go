@@ -1,8 +1,3 @@
-// Package intune implements the Azure ARM Intune service API version
-// 2015-01-14-preview.
-//
-// microsoft.Intune Resource provider Api features in the swagger-2.0
-// specification.
 package intune
 
 // Copyright (c) Microsoft and contributors.  All rights reserved.
@@ -30,7 +25,8 @@ import (
 	"net/url"
 )
 
-// AndroidClient is the client for the Android methods of the Intune service.
+// AndroidClient is the microsoft.Intune Resource provider Api features in the
+// swagger-2.0 specification
 type AndroidClient struct {
 	ManagementClient
 }

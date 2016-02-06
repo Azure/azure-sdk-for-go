@@ -1,7 +1,3 @@
-// Package notificationhubs implements the Azure ARM Notificationhubs service
-// API version 2014-09-01.
-//
-// .Net client wrapper for the REST API for Azure NotificationHub Service.
 package notificationhubs
 
 // Copyright (c) Microsoft and contributors.  All rights reserved.
@@ -29,8 +25,8 @@ import (
 	"net/url"
 )
 
-// NamespacesClient is the client for the Namespaces methods of the
-// Notificationhubs service.
+// NamespacesClient is the .Net client wrapper for the REST API for Azure
+// NotificationHub Service
 type NamespacesClient struct {
 	ManagementClient
 }

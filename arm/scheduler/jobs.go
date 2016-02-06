@@ -1,6 +1,3 @@
-// Package scheduler implements the Azure ARM Scheduler service API version
-// 2016-01-01.
-//
 package scheduler
 
 // Copyright (c) Microsoft and contributors.  All rights reserved.

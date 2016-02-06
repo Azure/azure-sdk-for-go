@@ -1,7 +1,3 @@
-// Package redis implements the Azure ARM redis service API version 2015-08-01.
-//
-// .Net client wrapper for the REST API for Azure Redis Cache Management
-// Service.
 package redis
 
 // Copyright (c) Microsoft and contributors.  All rights reserved.

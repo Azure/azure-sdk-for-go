@@ -653,6 +653,59 @@ func (s *StorageBlobSuite) TestGetPageRanges(c *chk.C) {
 	c.Assert(len(out.PageList), chk.Equals, 2)
 }
 
+func (s *StorageBlobSuite) TestPutAppendBlob(c *chk.C) {
+	cli := getBlobClient(c)
+	cnt := randContainer()
+	c.Assert(cli.CreateContainer(cnt, ContainerAccessTypePrivate), chk.IsNil)
+	defer cli.deleteContainer(cnt)
+
+	blob := randString(20)
+	c.Assert(cli.PutAppendBlob(cnt, blob, nil), chk.IsNil)
+
+	// Verify
+	props, err := cli.GetBlobProperties(cnt, blob)
+	c.Assert(err, chk.IsNil)
+	c.Assert(props.ContentLength, chk.Equals, int64(0))
+	c.Assert(props.BlobType, chk.Equals, BlobTypeAppend)
+}
+
+func (s *StorageBlobSuite) TestPutAppendBlobAppendBlocks(c *chk.C) {
+	cli := getBlobClient(c)
+	cnt := randContainer()
+	c.Assert(cli.CreateContainer(cnt, ContainerAccessTypePrivate), chk.IsNil)
+	defer cli.deleteContainer(cnt)
+
+	blob := randString(20)
+	c.Assert(cli.PutAppendBlob(cnt, blob, nil), chk.IsNil)
+
+	chunk1 := []byte(randString(1024))
+	chunk2 := []byte(randString(512))
+
+	// Append first block
+	c.Assert(cli.AppendBlock(cnt, blob, chunk1), chk.IsNil)
+
+	// Verify contents
+	out, err := cli.GetBlobRange(cnt, blob, fmt.Sprintf("%v-%v", 0, len(chunk1)-1))
+	c.Assert(err, chk.IsNil)
+	defer out.Close()
+	blobContents, err := ioutil.ReadAll(out)
+	c.Assert(err, chk.IsNil)
+	c.Assert(blobContents, chk.DeepEquals, chunk1)
+	out.Close()
+
+	// Append second block
+	c.Assert(cli.AppendBlock(cnt, blob, chunk2), chk.IsNil)
+
+	// Verify contents
+	out, err = cli.GetBlobRange(cnt, blob, fmt.Sprintf("%v-%v", 0, len(chunk1)+len(chunk2)-1))
+	c.Assert(err, chk.IsNil)
+	defer out.Close()
+	blobContents, err = ioutil.ReadAll(out)
+	c.Assert(err, chk.IsNil)
+	c.Assert(blobContents, chk.DeepEquals, append(chunk1, chunk2...))
+	out.Close()
+}
+
 func deleteTestContainers(cli BlobStorageClient) error {
 	for {
 		resp, err := cli.ListContainers(ListContainersParameters{Prefix: testContainerPrefix})

@@ -1,3 +1,7 @@
+// Package compute implements the Azure ARM Compute service API version
+// 2015-06-15.
+//
+// The Compute Management Client..
 package compute
 
 // Copyright (c) Microsoft and contributors.  All rights reserved.
@@ -30,7 +34,7 @@ const (
 	DefaultBaseURI = "https://management.azure.com"
 )
 
-// ManagementClient is the the Compute Management Client.
+// ManagementClient is the base client for Compute.
 type ManagementClient struct {
 	autorest.Client
 	BaseURI        string

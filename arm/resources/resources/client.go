@@ -1,3 +1,6 @@
+// Package resources implements the Azure ARM Resources service API version
+// 2015-11-01.
+//
 package resources
 
 // Copyright (c) Microsoft and contributors.  All rights reserved.

@@ -1,3 +1,7 @@
+// Package dns implements the Azure ARM Dns service API version
+// 2015-05-04-preview.
+//
+// Client for managing DNS zones and record..
 package dns
 
 // Copyright (c) Microsoft and contributors.  All rights reserved.
@@ -30,7 +34,7 @@ const (
 	DefaultBaseURI = "https://management.azure.com"
 )
 
-// ManagementClient is the client for managing DNS zones and record.
+// ManagementClient is the base client for Dns.
 type ManagementClient struct {
 	autorest.Client
 	BaseURI        string

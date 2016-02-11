@@ -116,7 +116,7 @@ func (client AccountsClient) CheckNameAvailabilityResponder(resp *http.Response)
 // specified resource group. Storage account names must be between 3 and 24
 // characters in length and use numbers and lower-case letters only.
 // parameters is the parameters to provide for the created account.
-func (client AccountsClient) Create(resourceGroupName string, accountName string, parameters AccountCreateParameters) (result Account, ae error) {
+func (client AccountsClient) Create(resourceGroupName string, accountName string, parameters AccountCreateParameters) (result autorest.Response, ae error) {
 	req, err := client.CreatePreparer(resourceGroupName, accountName, parameters)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "storage/AccountsClient", "Create", nil, "Failure preparing request")
@@ -124,7 +124,7 @@ func (client AccountsClient) Create(resourceGroupName string, accountName string
 
 	resp, err := client.CreateSender(req)
 	if err != nil {
-		result.Response = autorest.Response{Response: resp}
+		result = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "storage/AccountsClient", "Create", resp, "Failure sending request")
 	}
 
@@ -161,19 +161,27 @@ func (client AccountsClient) CreatePreparer(resourceGroupName string, accountNam
 // CreateSender sends the Create request. The method will close the
 // http.Response Body if it receives an error.
 func (client AccountsClient) CreateSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	resp, err := client.Send(req)
+	if err == nil && azure.ResponseIsLongRunning(resp) {
+		req, err := azure.NewAsyncPollingRequest(resp, client.Client)
+		if err == nil {
+			resp, err = autorest.SendWithSender(client, req,
+				azure.WithAsyncPolling(autorest.DefaultPollingDelay))
+		}
+	}
+	return resp, err
 }
 
 // CreateResponder handles the response to the Create request. The method always
 // closes the http.Response Body.
-func (client AccountsClient) CreateResponder(resp *http.Response) (result Account, err error) {
+func (client AccountsClient) CreateResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
+	result = autorest.Response{Response: resp}
 	return
 }
 
@@ -236,8 +244,7 @@ func (client AccountsClient) DeleteResponder(resp *http.Response) (result autore
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
-		autorest.ByClosing())
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent))
 	result.Response = resp
 	return
 }

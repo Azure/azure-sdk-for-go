@@ -162,8 +162,7 @@ func (client PolicyDefinitionsClient) DeleteResponder(resp *http.Response) (resu
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByClosing())
+		azure.WithErrorUnlessStatusCode(http.StatusOK))
 	result.Response = resp
 	return
 }

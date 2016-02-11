@@ -164,8 +164,7 @@ func (client JobsClient) DeleteResponder(resp *http.Response) (result autorest.R
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByClosing())
+		azure.WithErrorUnlessStatusCode(http.StatusOK))
 	result.Response = resp
 	return
 }
@@ -560,8 +559,7 @@ func (client JobsClient) RunResponder(resp *http.Response) (result autorest.Resp
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByClosing())
+		azure.WithErrorUnlessStatusCode(http.StatusOK))
 	result.Response = resp
 	return
 }

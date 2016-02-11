@@ -51,7 +51,7 @@ func NewEndpointsClientWithBaseURI(baseURI string, subscriptionID string) Endpoi
 // endpointProperties is endpoint properties profileName is name of the CDN
 // profile within the resource group resourceGroupName is name of the
 // resource group within the Azure subscription
-func (client EndpointsClient) Create(endpointName string, endpointProperties EndpointCreateParameters, profileName string, resourceGroupName string) (result Endpoint, ae error) {
+func (client EndpointsClient) Create(endpointName string, endpointProperties EndpointCreateParameters, profileName string, resourceGroupName string) (result autorest.Response, ae error) {
 	req, err := client.CreatePreparer(endpointName, endpointProperties, profileName, resourceGroupName)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "cdn/EndpointsClient", "Create", nil, "Failure preparing request")
@@ -59,7 +59,7 @@ func (client EndpointsClient) Create(endpointName string, endpointProperties End
 
 	resp, err := client.CreateSender(req)
 	if err != nil {
-		result.Response = autorest.Response{Response: resp}
+		result = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "cdn/EndpointsClient", "Create", resp, "Failure sending request")
 	}
 
@@ -97,19 +97,27 @@ func (client EndpointsClient) CreatePreparer(endpointName string, endpointProper
 // CreateSender sends the Create request. The method will close the
 // http.Response Body if it receives an error.
 func (client EndpointsClient) CreateSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	resp, err := client.Send(req)
+	if err == nil && azure.ResponseIsLongRunning(resp) {
+		req, err := azure.NewAsyncPollingRequest(resp, client.Client)
+		if err == nil {
+			resp, err = autorest.SendWithSender(client, req,
+				azure.WithAsyncPolling(autorest.DefaultPollingDelay))
+		}
+	}
+	return resp, err
 }
 
 // CreateResponder handles the response to the Create request. The method always
 // closes the http.Response Body.
-func (client EndpointsClient) CreateResponder(resp *http.Response) (result Endpoint, err error) {
+func (client EndpointsClient) CreateResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated, http.StatusAccepted),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
+	result = autorest.Response{Response: resp}
 	return
 }
 
@@ -126,7 +134,7 @@ func (client EndpointsClient) DeleteIfExists(endpointName string, profileName st
 
 	resp, err := client.DeleteIfExistsSender(req)
 	if err != nil {
-		result.Response = resp
+		result = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "cdn/EndpointsClient", "DeleteIfExists", resp, "Failure sending request")
 	}
 
@@ -163,7 +171,15 @@ func (client EndpointsClient) DeleteIfExistsPreparer(endpointName string, profil
 // DeleteIfExistsSender sends the DeleteIfExists request. The method will close the
 // http.Response Body if it receives an error.
 func (client EndpointsClient) DeleteIfExistsSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	resp, err := client.Send(req)
+	if err == nil && azure.ResponseIsLongRunning(resp) {
+		req, err := azure.NewAsyncPollingRequest(resp, client.Client)
+		if err == nil {
+			resp, err = autorest.SendWithSender(client, req,
+				azure.WithAsyncPolling(autorest.DefaultPollingDelay))
+		}
+	}
+	return resp, err
 }
 
 // DeleteIfExistsResponder handles the response to the DeleteIfExists request. The method always
@@ -173,8 +189,9 @@ func (client EndpointsClient) DeleteIfExistsResponder(resp *http.Response) (resu
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = resp
+	result = autorest.Response{Response: resp}
 	return
 }
 
@@ -324,7 +341,7 @@ func (client EndpointsClient) LoadContent(endpointName string, contentFilePaths 
 
 	resp, err := client.LoadContentSender(req)
 	if err != nil {
-		result.Response = resp
+		result = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "cdn/EndpointsClient", "LoadContent", resp, "Failure sending request")
 	}
 
@@ -362,7 +379,15 @@ func (client EndpointsClient) LoadContentPreparer(endpointName string, contentFi
 // LoadContentSender sends the LoadContent request. The method will close the
 // http.Response Body if it receives an error.
 func (client EndpointsClient) LoadContentSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	resp, err := client.Send(req)
+	if err == nil && azure.ResponseIsLongRunning(resp) {
+		req, err := azure.NewAsyncPollingRequest(resp, client.Client)
+		if err == nil {
+			resp, err = autorest.SendWithSender(client, req,
+				azure.WithAsyncPolling(autorest.DefaultPollingDelay))
+		}
+	}
+	return resp, err
 }
 
 // LoadContentResponder handles the response to the LoadContent request. The method always
@@ -372,8 +397,9 @@ func (client EndpointsClient) LoadContentResponder(resp *http.Response) (result 
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = resp
+	result = autorest.Response{Response: resp}
 	return
 }
 
@@ -392,7 +418,7 @@ func (client EndpointsClient) PurgeContent(endpointName string, contentFilePaths
 
 	resp, err := client.PurgeContentSender(req)
 	if err != nil {
-		result.Response = resp
+		result = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "cdn/EndpointsClient", "PurgeContent", resp, "Failure sending request")
 	}
 
@@ -430,7 +456,15 @@ func (client EndpointsClient) PurgeContentPreparer(endpointName string, contentF
 // PurgeContentSender sends the PurgeContent request. The method will close the
 // http.Response Body if it receives an error.
 func (client EndpointsClient) PurgeContentSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	resp, err := client.Send(req)
+	if err == nil && azure.ResponseIsLongRunning(resp) {
+		req, err := azure.NewAsyncPollingRequest(resp, client.Client)
+		if err == nil {
+			resp, err = autorest.SendWithSender(client, req,
+				azure.WithAsyncPolling(autorest.DefaultPollingDelay))
+		}
+	}
+	return resp, err
 }
 
 // PurgeContentResponder handles the response to the PurgeContent request. The method always
@@ -440,8 +474,9 @@ func (client EndpointsClient) PurgeContentResponder(resp *http.Response) (result
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = resp
+	result = autorest.Response{Response: resp}
 	return
 }
 
@@ -458,7 +493,7 @@ func (client EndpointsClient) Start(endpointName string, profileName string, res
 
 	resp, err := client.StartSender(req)
 	if err != nil {
-		result.Response = resp
+		result = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "cdn/EndpointsClient", "Start", resp, "Failure sending request")
 	}
 
@@ -495,7 +530,15 @@ func (client EndpointsClient) StartPreparer(endpointName string, profileName str
 // StartSender sends the Start request. The method will close the
 // http.Response Body if it receives an error.
 func (client EndpointsClient) StartSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	resp, err := client.Send(req)
+	if err == nil && azure.ResponseIsLongRunning(resp) {
+		req, err := azure.NewAsyncPollingRequest(resp, client.Client)
+		if err == nil {
+			resp, err = autorest.SendWithSender(client, req,
+				azure.WithAsyncPolling(autorest.DefaultPollingDelay))
+		}
+	}
+	return resp, err
 }
 
 // StartResponder handles the response to the Start request. The method always
@@ -505,8 +548,9 @@ func (client EndpointsClient) StartResponder(resp *http.Response) (result autore
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = resp
+	result = autorest.Response{Response: resp}
 	return
 }
 
@@ -523,7 +567,7 @@ func (client EndpointsClient) Stop(endpointName string, profileName string, reso
 
 	resp, err := client.StopSender(req)
 	if err != nil {
-		result.Response = resp
+		result = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "cdn/EndpointsClient", "Stop", resp, "Failure sending request")
 	}
 
@@ -560,7 +604,15 @@ func (client EndpointsClient) StopPreparer(endpointName string, profileName stri
 // StopSender sends the Stop request. The method will close the
 // http.Response Body if it receives an error.
 func (client EndpointsClient) StopSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	resp, err := client.Send(req)
+	if err == nil && azure.ResponseIsLongRunning(resp) {
+		req, err := azure.NewAsyncPollingRequest(resp, client.Client)
+		if err == nil {
+			resp, err = autorest.SendWithSender(client, req,
+				azure.WithAsyncPolling(autorest.DefaultPollingDelay))
+		}
+	}
+	return resp, err
 }
 
 // StopResponder handles the response to the Stop request. The method always
@@ -570,8 +622,9 @@ func (client EndpointsClient) StopResponder(resp *http.Response) (result autores
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = resp
+	result = autorest.Response{Response: resp}
 	return
 }
 

@@ -54,7 +54,7 @@ func NewLocalNetworkGatewaysClientWithBaseURI(baseURI string, subscriptionID str
 // localNetworkGatewayName is the name of the local network gateway.
 // parameters is parameters supplied to the Begin Create or update Local
 // Network Gateway operation through Network resource provider.
-func (client LocalNetworkGatewaysClient) CreateOrUpdate(resourceGroupName string, localNetworkGatewayName string, parameters LocalNetworkGateway) (result LocalNetworkGateway, ae error) {
+func (client LocalNetworkGatewaysClient) CreateOrUpdate(resourceGroupName string, localNetworkGatewayName string, parameters LocalNetworkGateway) (result autorest.Response, ae error) {
 	req, err := client.CreateOrUpdatePreparer(resourceGroupName, localNetworkGatewayName, parameters)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "network/LocalNetworkGatewaysClient", "CreateOrUpdate", nil, "Failure preparing request")
@@ -62,7 +62,7 @@ func (client LocalNetworkGatewaysClient) CreateOrUpdate(resourceGroupName string
 
 	resp, err := client.CreateOrUpdateSender(req)
 	if err != nil {
-		result.Response = autorest.Response{Response: resp}
+		result = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "network/LocalNetworkGatewaysClient", "CreateOrUpdate", resp, "Failure sending request")
 	}
 
@@ -99,19 +99,27 @@ func (client LocalNetworkGatewaysClient) CreateOrUpdatePreparer(resourceGroupNam
 // CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
 // http.Response Body if it receives an error.
 func (client LocalNetworkGatewaysClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	resp, err := client.Send(req)
+	if err == nil && azure.ResponseIsLongRunning(resp) {
+		req, err := azure.NewAsyncPollingRequest(resp, client.Client)
+		if err == nil {
+			resp, err = autorest.SendWithSender(client, req,
+				azure.WithAsyncPolling(autorest.DefaultPollingDelay))
+		}
+	}
+	return resp, err
 }
 
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
 // closes the http.Response Body.
-func (client LocalNetworkGatewaysClient) CreateOrUpdateResponder(resp *http.Response) (result LocalNetworkGateway, err error) {
+func (client LocalNetworkGatewaysClient) CreateOrUpdateResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusCreated, http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
+	result = autorest.Response{Response: resp}
 	return
 }
 
@@ -128,7 +136,7 @@ func (client LocalNetworkGatewaysClient) Delete(resourceGroupName string, localN
 
 	resp, err := client.DeleteSender(req)
 	if err != nil {
-		result.Response = resp
+		result = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "network/LocalNetworkGatewaysClient", "Delete", resp, "Failure sending request")
 	}
 
@@ -164,7 +172,15 @@ func (client LocalNetworkGatewaysClient) DeletePreparer(resourceGroupName string
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
 func (client LocalNetworkGatewaysClient) DeleteSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	resp, err := client.Send(req)
+	if err == nil && azure.ResponseIsLongRunning(resp) {
+		req, err := azure.NewAsyncPollingRequest(resp, client.Client)
+		if err == nil {
+			resp, err = autorest.SendWithSender(client, req,
+				azure.WithAsyncPolling(autorest.DefaultPollingDelay))
+		}
+	}
+	return resp, err
 }
 
 // DeleteResponder handles the response to the Delete request. The method always
@@ -174,8 +190,9 @@ func (client LocalNetworkGatewaysClient) DeleteResponder(resp *http.Response) (r
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusNoContent, http.StatusOK, http.StatusAccepted),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = resp
+	result = autorest.Response{Response: resp}
 	return
 }
 

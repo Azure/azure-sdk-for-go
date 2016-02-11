@@ -167,8 +167,7 @@ func (client ZonesClient) DeleteResponder(resp *http.Response) (result autorest.
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByClosing())
+		azure.WithErrorUnlessStatusCode(http.StatusOK))
 	result.Response = resp
 	return
 }

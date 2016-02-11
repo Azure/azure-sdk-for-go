@@ -53,7 +53,7 @@ func NewServerFarmsClientWithBaseURI(baseURI string, subscriptionID string) Serv
 // resourceGroupName is name of resource group name is name of App Service
 // Plan serverFarmEnvelope is details of App Service Plan allowPendingState
 // is oBSOLETE: If true, allow pending state for App Service Plan
-func (client ServerFarmsClient) CreateOrUpdateServerFarm(resourceGroupName string, name string, serverFarmEnvelope ServerFarmWithRichSku, allowPendingState *bool) (result ServerFarmWithRichSku, ae error) {
+func (client ServerFarmsClient) CreateOrUpdateServerFarm(resourceGroupName string, name string, serverFarmEnvelope ServerFarmWithRichSku, allowPendingState *bool) (result autorest.Response, ae error) {
 	req, err := client.CreateOrUpdateServerFarmPreparer(resourceGroupName, name, serverFarmEnvelope, allowPendingState)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web/ServerFarmsClient", "CreateOrUpdateServerFarm", nil, "Failure preparing request")
@@ -61,7 +61,7 @@ func (client ServerFarmsClient) CreateOrUpdateServerFarm(resourceGroupName strin
 
 	resp, err := client.CreateOrUpdateServerFarmSender(req)
 	if err != nil {
-		result.Response = autorest.Response{Response: resp}
+		result = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "web/ServerFarmsClient", "CreateOrUpdateServerFarm", resp, "Failure sending request")
 	}
 
@@ -101,19 +101,27 @@ func (client ServerFarmsClient) CreateOrUpdateServerFarmPreparer(resourceGroupNa
 // CreateOrUpdateServerFarmSender sends the CreateOrUpdateServerFarm request. The method will close the
 // http.Response Body if it receives an error.
 func (client ServerFarmsClient) CreateOrUpdateServerFarmSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	resp, err := client.Send(req)
+	if err == nil && azure.ResponseIsLongRunning(resp) {
+		req, err := azure.NewAsyncPollingRequest(resp, client.Client)
+		if err == nil {
+			resp, err = autorest.SendWithSender(client, req,
+				azure.WithAsyncPolling(autorest.DefaultPollingDelay))
+		}
+	}
+	return resp, err
 }
 
 // CreateOrUpdateServerFarmResponder handles the response to the CreateOrUpdateServerFarm request. The method always
 // closes the http.Response Body.
-func (client ServerFarmsClient) CreateOrUpdateServerFarmResponder(resp *http.Response) (result ServerFarmWithRichSku, err error) {
+func (client ServerFarmsClient) CreateOrUpdateServerFarmResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
+	result = autorest.Response{Response: resp}
 	return
 }
 

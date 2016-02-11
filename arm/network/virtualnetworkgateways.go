@@ -54,7 +54,7 @@ func NewVirtualNetworkGatewaysClientWithBaseURI(baseURI string, subscriptionID s
 // virtualNetworkGatewayName is the name of the virtual network gateway.
 // parameters is parameters supplied to the Begin Create or update Virtual
 // Network Gateway operation through Network resource provider.
-func (client VirtualNetworkGatewaysClient) CreateOrUpdate(resourceGroupName string, virtualNetworkGatewayName string, parameters VirtualNetworkGateway) (result VirtualNetworkGateway, ae error) {
+func (client VirtualNetworkGatewaysClient) CreateOrUpdate(resourceGroupName string, virtualNetworkGatewayName string, parameters VirtualNetworkGateway) (result autorest.Response, ae error) {
 	req, err := client.CreateOrUpdatePreparer(resourceGroupName, virtualNetworkGatewayName, parameters)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "network/VirtualNetworkGatewaysClient", "CreateOrUpdate", nil, "Failure preparing request")
@@ -62,7 +62,7 @@ func (client VirtualNetworkGatewaysClient) CreateOrUpdate(resourceGroupName stri
 
 	resp, err := client.CreateOrUpdateSender(req)
 	if err != nil {
-		result.Response = autorest.Response{Response: resp}
+		result = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "network/VirtualNetworkGatewaysClient", "CreateOrUpdate", resp, "Failure sending request")
 	}
 
@@ -99,19 +99,27 @@ func (client VirtualNetworkGatewaysClient) CreateOrUpdatePreparer(resourceGroupN
 // CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
 // http.Response Body if it receives an error.
 func (client VirtualNetworkGatewaysClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	resp, err := client.Send(req)
+	if err == nil && azure.ResponseIsLongRunning(resp) {
+		req, err := azure.NewAsyncPollingRequest(resp, client.Client)
+		if err == nil {
+			resp, err = autorest.SendWithSender(client, req,
+				azure.WithAsyncPolling(autorest.DefaultPollingDelay))
+		}
+	}
+	return resp, err
 }
 
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
 // closes the http.Response Body.
-func (client VirtualNetworkGatewaysClient) CreateOrUpdateResponder(resp *http.Response) (result VirtualNetworkGateway, err error) {
+func (client VirtualNetworkGatewaysClient) CreateOrUpdateResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
+	result = autorest.Response{Response: resp}
 	return
 }
 
@@ -128,7 +136,7 @@ func (client VirtualNetworkGatewaysClient) Delete(resourceGroupName string, virt
 
 	resp, err := client.DeleteSender(req)
 	if err != nil {
-		result.Response = resp
+		result = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "network/VirtualNetworkGatewaysClient", "Delete", resp, "Failure sending request")
 	}
 
@@ -164,7 +172,15 @@ func (client VirtualNetworkGatewaysClient) DeletePreparer(resourceGroupName stri
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
 func (client VirtualNetworkGatewaysClient) DeleteSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	resp, err := client.Send(req)
+	if err == nil && azure.ResponseIsLongRunning(resp) {
+		req, err := azure.NewAsyncPollingRequest(resp, client.Client)
+		if err == nil {
+			resp, err = autorest.SendWithSender(client, req,
+				azure.WithAsyncPolling(autorest.DefaultPollingDelay))
+		}
+	}
+	return resp, err
 }
 
 // DeleteResponder handles the response to the Delete request. The method always
@@ -174,8 +190,9 @@ func (client VirtualNetworkGatewaysClient) DeleteResponder(resp *http.Response) 
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusNoContent, http.StatusAccepted, http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = resp
+	result = autorest.Response{Response: resp}
 	return
 }
 
@@ -408,7 +425,7 @@ func (client VirtualNetworkGatewaysClient) ListNextResults(lastResults VirtualNe
 // virtualNetworkGatewayName is the name of the virtual network gateway.
 // parameters is parameters supplied to the Begin Reset Virtual Network
 // Gateway operation through Network resource provider.
-func (client VirtualNetworkGatewaysClient) Reset(resourceGroupName string, virtualNetworkGatewayName string, parameters VirtualNetworkGateway) (result VirtualNetworkGateway, ae error) {
+func (client VirtualNetworkGatewaysClient) Reset(resourceGroupName string, virtualNetworkGatewayName string, parameters VirtualNetworkGateway) (result autorest.Response, ae error) {
 	req, err := client.ResetPreparer(resourceGroupName, virtualNetworkGatewayName, parameters)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "network/VirtualNetworkGatewaysClient", "Reset", nil, "Failure preparing request")
@@ -416,7 +433,7 @@ func (client VirtualNetworkGatewaysClient) Reset(resourceGroupName string, virtu
 
 	resp, err := client.ResetSender(req)
 	if err != nil {
-		result.Response = autorest.Response{Response: resp}
+		result = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "network/VirtualNetworkGatewaysClient", "Reset", resp, "Failure sending request")
 	}
 
@@ -453,18 +470,26 @@ func (client VirtualNetworkGatewaysClient) ResetPreparer(resourceGroupName strin
 // ResetSender sends the Reset request. The method will close the
 // http.Response Body if it receives an error.
 func (client VirtualNetworkGatewaysClient) ResetSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	resp, err := client.Send(req)
+	if err == nil && azure.ResponseIsLongRunning(resp) {
+		req, err := azure.NewAsyncPollingRequest(resp, client.Client)
+		if err == nil {
+			resp, err = autorest.SendWithSender(client, req,
+				azure.WithAsyncPolling(autorest.DefaultPollingDelay))
+		}
+	}
+	return resp, err
 }
 
 // ResetResponder handles the response to the Reset request. The method always
 // closes the http.Response Body.
-func (client VirtualNetworkGatewaysClient) ResetResponder(resp *http.Response) (result VirtualNetworkGateway, err error) {
+func (client VirtualNetworkGatewaysClient) ResetResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusAccepted, http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
+	result = autorest.Response{Response: resp}
 	return
 }

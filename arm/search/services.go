@@ -169,8 +169,7 @@ func (client ServicesClient) DeleteResponder(resp *http.Response) (result autore
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNotFound, http.StatusNoContent),
-		autorest.ByClosing())
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNotFound, http.StatusNoContent))
 	result.Response = resp
 	return
 }

@@ -119,8 +119,7 @@ func (client ManagementClient) CheckExistenceResponder(resp *http.Response) (res
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent, http.StatusNotFound),
-		autorest.ByClosing())
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent, http.StatusNotFound))
 	result.Response = resp
 	return
 }
@@ -258,8 +257,7 @@ func (client ManagementClient) DeleteResponder(resp *http.Response) (result auto
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent, http.StatusAccepted),
-		autorest.ByClosing())
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent, http.StatusAccepted))
 	result.Response = resp
 	return
 }
@@ -438,7 +436,7 @@ func (client ManagementClient) MoveResources(sourceResourceGroupName string, par
 
 	resp, err := client.MoveResourcesSender(req)
 	if err != nil {
-		result.Response = resp
+		result = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "resources/ManagementClient", "MoveResources", resp, "Failure sending request")
 	}
 
@@ -474,7 +472,15 @@ func (client ManagementClient) MoveResourcesPreparer(sourceResourceGroupName str
 // MoveResourcesSender sends the MoveResources request. The method will close the
 // http.Response Body if it receives an error.
 func (client ManagementClient) MoveResourcesSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	resp, err := client.Send(req)
+	if err == nil && azure.ResponseIsLongRunning(resp) {
+		req, err := azure.NewAsyncPollingRequest(resp, client.Client)
+		if err == nil {
+			resp, err = autorest.SendWithSender(client, req,
+				azure.WithAsyncPolling(autorest.DefaultPollingDelay))
+		}
+	}
+	return resp, err
 }
 
 // MoveResourcesResponder handles the response to the MoveResources request. The method always
@@ -484,7 +490,8 @@ func (client ManagementClient) MoveResourcesResponder(resp *http.Response) (resu
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = resp
+	result = autorest.Response{Response: resp}
 	return
 }

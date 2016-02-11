@@ -52,7 +52,7 @@ func NewApplicationGatewaysClientWithBaseURI(baseURI string, subscriptionID stri
 // resourceGroupName is the name of the resource group. applicationGatewayName
 // is the name of the ApplicationGateway. parameters is parameters supplied
 // to the create/delete ApplicationGateway operation
-func (client ApplicationGatewaysClient) CreateOrUpdate(resourceGroupName string, applicationGatewayName string, parameters ApplicationGateway) (result ApplicationGateway, ae error) {
+func (client ApplicationGatewaysClient) CreateOrUpdate(resourceGroupName string, applicationGatewayName string, parameters ApplicationGateway) (result autorest.Response, ae error) {
 	req, err := client.CreateOrUpdatePreparer(resourceGroupName, applicationGatewayName, parameters)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "network/ApplicationGatewaysClient", "CreateOrUpdate", nil, "Failure preparing request")
@@ -60,7 +60,7 @@ func (client ApplicationGatewaysClient) CreateOrUpdate(resourceGroupName string,
 
 	resp, err := client.CreateOrUpdateSender(req)
 	if err != nil {
-		result.Response = autorest.Response{Response: resp}
+		result = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "network/ApplicationGatewaysClient", "CreateOrUpdate", resp, "Failure sending request")
 	}
 
@@ -97,19 +97,27 @@ func (client ApplicationGatewaysClient) CreateOrUpdatePreparer(resourceGroupName
 // CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
 // http.Response Body if it receives an error.
 func (client ApplicationGatewaysClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	resp, err := client.Send(req)
+	if err == nil && azure.ResponseIsLongRunning(resp) {
+		req, err := azure.NewAsyncPollingRequest(resp, client.Client)
+		if err == nil {
+			resp, err = autorest.SendWithSender(client, req,
+				azure.WithAsyncPolling(autorest.DefaultPollingDelay))
+		}
+	}
+	return resp, err
 }
 
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
 // closes the http.Response Body.
-func (client ApplicationGatewaysClient) CreateOrUpdateResponder(resp *http.Response) (result ApplicationGateway, err error) {
+func (client ApplicationGatewaysClient) CreateOrUpdateResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusCreated, http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
+	result = autorest.Response{Response: resp}
 	return
 }
 
@@ -126,7 +134,7 @@ func (client ApplicationGatewaysClient) Delete(resourceGroupName string, applica
 
 	resp, err := client.DeleteSender(req)
 	if err != nil {
-		result.Response = resp
+		result = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "network/ApplicationGatewaysClient", "Delete", resp, "Failure sending request")
 	}
 
@@ -162,7 +170,15 @@ func (client ApplicationGatewaysClient) DeletePreparer(resourceGroupName string,
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
 func (client ApplicationGatewaysClient) DeleteSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	resp, err := client.Send(req)
+	if err == nil && azure.ResponseIsLongRunning(resp) {
+		req, err := azure.NewAsyncPollingRequest(resp, client.Client)
+		if err == nil {
+			resp, err = autorest.SendWithSender(client, req,
+				azure.WithAsyncPolling(autorest.DefaultPollingDelay))
+		}
+	}
+	return resp, err
 }
 
 // DeleteResponder handles the response to the Delete request. The method always
@@ -172,8 +188,9 @@ func (client ApplicationGatewaysClient) DeleteResponder(resp *http.Response) (re
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusAccepted, http.StatusNoContent, http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = resp
+	result = autorest.Response{Response: resp}
 	return
 }
 
@@ -426,7 +443,7 @@ func (client ApplicationGatewaysClient) Start(resourceGroupName string, applicat
 
 	resp, err := client.StartSender(req)
 	if err != nil {
-		result.Response = resp
+		result = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "network/ApplicationGatewaysClient", "Start", resp, "Failure sending request")
 	}
 
@@ -462,7 +479,15 @@ func (client ApplicationGatewaysClient) StartPreparer(resourceGroupName string, 
 // StartSender sends the Start request. The method will close the
 // http.Response Body if it receives an error.
 func (client ApplicationGatewaysClient) StartSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	resp, err := client.Send(req)
+	if err == nil && azure.ResponseIsLongRunning(resp) {
+		req, err := azure.NewAsyncPollingRequest(resp, client.Client)
+		if err == nil {
+			resp, err = autorest.SendWithSender(client, req,
+				azure.WithAsyncPolling(autorest.DefaultPollingDelay))
+		}
+	}
+	return resp, err
 }
 
 // StartResponder handles the response to the Start request. The method always
@@ -472,8 +497,9 @@ func (client ApplicationGatewaysClient) StartResponder(resp *http.Response) (res
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = resp
+	result = autorest.Response{Response: resp}
 	return
 }
 
@@ -490,7 +516,7 @@ func (client ApplicationGatewaysClient) Stop(resourceGroupName string, applicati
 
 	resp, err := client.StopSender(req)
 	if err != nil {
-		result.Response = resp
+		result = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "network/ApplicationGatewaysClient", "Stop", resp, "Failure sending request")
 	}
 
@@ -526,7 +552,15 @@ func (client ApplicationGatewaysClient) StopPreparer(resourceGroupName string, a
 // StopSender sends the Stop request. The method will close the
 // http.Response Body if it receives an error.
 func (client ApplicationGatewaysClient) StopSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	resp, err := client.Send(req)
+	if err == nil && azure.ResponseIsLongRunning(resp) {
+		req, err := azure.NewAsyncPollingRequest(resp, client.Client)
+		if err == nil {
+			resp, err = autorest.SendWithSender(client, req,
+				azure.WithAsyncPolling(autorest.DefaultPollingDelay))
+		}
+	}
+	return resp, err
 }
 
 // StopResponder handles the response to the Stop request. The method always
@@ -536,7 +570,8 @@ func (client ApplicationGatewaysClient) StopResponder(resp *http.Response) (resu
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = resp
+	result = autorest.Response{Response: resp}
 	return
 }

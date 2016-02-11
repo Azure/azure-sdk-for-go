@@ -2,7 +2,7 @@
 // 2015-01-14-preview.
 //
 // Microsoft.Intune Resource provider Api features in the swagger-2.0
-// specification.
+// specification
 package intune
 
 // Copyright (c) Microsoft and contributors.  All rights reserved.

@@ -2,6 +2,11 @@
 
 -----
 
+## `v0.6.0-beta`
+
+- Uses go-autorest v4.0.0 (Long-running operations support added).
+
+ 
 ## `v0.5.0-beta`
 
 Updated following packages to new API versions:

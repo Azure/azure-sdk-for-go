@@ -860,7 +860,7 @@ func (client SitesClient) CreateInstanceDeploymentSlotResponder(resp *http.Respo
 // not verified. forceDNSRegistration is if true, web app hostname is force
 // registered with DNS ttlInSeconds is time to live in seconds for web app's
 // default domain name
-func (client SitesClient) CreateOrUpdateSite(resourceGroupName string, name string, siteEnvelope Site, skipDNSRegistration string, skipCustomDomainVerification string, forceDNSRegistration string, ttlInSeconds string) (result Site, ae error) {
+func (client SitesClient) CreateOrUpdateSite(resourceGroupName string, name string, siteEnvelope Site, skipDNSRegistration string, skipCustomDomainVerification string, forceDNSRegistration string, ttlInSeconds string) (result autorest.Response, ae error) {
 	req, err := client.CreateOrUpdateSitePreparer(resourceGroupName, name, siteEnvelope, skipDNSRegistration, skipCustomDomainVerification, forceDNSRegistration, ttlInSeconds)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web/SitesClient", "CreateOrUpdateSite", nil, "Failure preparing request")
@@ -868,7 +868,7 @@ func (client SitesClient) CreateOrUpdateSite(resourceGroupName string, name stri
 
 	resp, err := client.CreateOrUpdateSiteSender(req)
 	if err != nil {
-		result.Response = autorest.Response{Response: resp}
+		result = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "web/SitesClient", "CreateOrUpdateSite", resp, "Failure sending request")
 	}
 
@@ -917,19 +917,27 @@ func (client SitesClient) CreateOrUpdateSitePreparer(resourceGroupName string, n
 // CreateOrUpdateSiteSender sends the CreateOrUpdateSite request. The method will close the
 // http.Response Body if it receives an error.
 func (client SitesClient) CreateOrUpdateSiteSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	resp, err := client.Send(req)
+	if err == nil && azure.ResponseIsLongRunning(resp) {
+		req, err := azure.NewAsyncPollingRequest(resp, client.Client)
+		if err == nil {
+			resp, err = autorest.SendWithSender(client, req,
+				azure.WithAsyncPolling(autorest.DefaultPollingDelay))
+		}
+	}
+	return resp, err
 }
 
 // CreateOrUpdateSiteResponder handles the response to the CreateOrUpdateSite request. The method always
 // closes the http.Response Body.
-func (client SitesClient) CreateOrUpdateSiteResponder(resp *http.Response) (result Site, err error) {
+func (client SitesClient) CreateOrUpdateSiteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
+	result = autorest.Response{Response: resp}
 	return
 }
 
@@ -1355,7 +1363,7 @@ func (client SitesClient) CreateOrUpdateSiteRelayServiceConnectionSlotResponder(
 // not verified. forceDNSRegistration is if true, web app hostname is force
 // registered with DNS ttlInSeconds is time to live in seconds for web app's
 // default domain name
-func (client SitesClient) CreateOrUpdateSiteSlot(resourceGroupName string, name string, siteEnvelope Site, slot string, skipDNSRegistration string, skipCustomDomainVerification string, forceDNSRegistration string, ttlInSeconds string) (result Site, ae error) {
+func (client SitesClient) CreateOrUpdateSiteSlot(resourceGroupName string, name string, siteEnvelope Site, slot string, skipDNSRegistration string, skipCustomDomainVerification string, forceDNSRegistration string, ttlInSeconds string) (result autorest.Response, ae error) {
 	req, err := client.CreateOrUpdateSiteSlotPreparer(resourceGroupName, name, siteEnvelope, slot, skipDNSRegistration, skipCustomDomainVerification, forceDNSRegistration, ttlInSeconds)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web/SitesClient", "CreateOrUpdateSiteSlot", nil, "Failure preparing request")
@@ -1363,7 +1371,7 @@ func (client SitesClient) CreateOrUpdateSiteSlot(resourceGroupName string, name 
 
 	resp, err := client.CreateOrUpdateSiteSlotSender(req)
 	if err != nil {
-		result.Response = autorest.Response{Response: resp}
+		result = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "web/SitesClient", "CreateOrUpdateSiteSlot", resp, "Failure sending request")
 	}
 
@@ -1413,19 +1421,27 @@ func (client SitesClient) CreateOrUpdateSiteSlotPreparer(resourceGroupName strin
 // CreateOrUpdateSiteSlotSender sends the CreateOrUpdateSiteSlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client SitesClient) CreateOrUpdateSiteSlotSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	resp, err := client.Send(req)
+	if err == nil && azure.ResponseIsLongRunning(resp) {
+		req, err := azure.NewAsyncPollingRequest(resp, client.Client)
+		if err == nil {
+			resp, err = autorest.SendWithSender(client, req,
+				azure.WithAsyncPolling(autorest.DefaultPollingDelay))
+		}
+	}
+	return resp, err
 }
 
 // CreateOrUpdateSiteSlotResponder handles the response to the CreateOrUpdateSiteSlot request. The method always
 // closes the http.Response Body.
-func (client SitesClient) CreateOrUpdateSiteSlotResponder(resp *http.Response) (result Site, err error) {
+func (client SitesClient) CreateOrUpdateSiteSlotResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
+	result = autorest.Response{Response: resp}
 	return
 }
 
@@ -8490,7 +8506,7 @@ func (client SitesClient) ListSitePremierAddOnsSlotResponder(resp *http.Response
 // request.
 //
 // resourceGroupName is name of resource group name is name of web app
-func (client SitesClient) ListSitePublishingCredentials(resourceGroupName string, name string) (result User, ae error) {
+func (client SitesClient) ListSitePublishingCredentials(resourceGroupName string, name string) (result autorest.Response, ae error) {
 	req, err := client.ListSitePublishingCredentialsPreparer(resourceGroupName, name)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web/SitesClient", "ListSitePublishingCredentials", nil, "Failure preparing request")
@@ -8498,7 +8514,7 @@ func (client SitesClient) ListSitePublishingCredentials(resourceGroupName string
 
 	resp, err := client.ListSitePublishingCredentialsSender(req)
 	if err != nil {
-		result.Response = autorest.Response{Response: resp}
+		result = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "web/SitesClient", "ListSitePublishingCredentials", resp, "Failure sending request")
 	}
 
@@ -8534,19 +8550,27 @@ func (client SitesClient) ListSitePublishingCredentialsPreparer(resourceGroupNam
 // ListSitePublishingCredentialsSender sends the ListSitePublishingCredentials request. The method will close the
 // http.Response Body if it receives an error.
 func (client SitesClient) ListSitePublishingCredentialsSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	resp, err := client.Send(req)
+	if err == nil && azure.ResponseIsLongRunning(resp) {
+		req, err := azure.NewAsyncPollingRequest(resp, client.Client)
+		if err == nil {
+			resp, err = autorest.SendWithSender(client, req,
+				azure.WithAsyncPolling(autorest.DefaultPollingDelay))
+		}
+	}
+	return resp, err
 }
 
 // ListSitePublishingCredentialsResponder handles the response to the ListSitePublishingCredentials request. The method always
 // closes the http.Response Body.
-func (client SitesClient) ListSitePublishingCredentialsResponder(resp *http.Response) (result User, err error) {
+func (client SitesClient) ListSitePublishingCredentialsResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
+	result = autorest.Response{Response: resp}
 	return
 }
 
@@ -8556,7 +8580,7 @@ func (client SitesClient) ListSitePublishingCredentialsResponder(resp *http.Resp
 // resourceGroupName is name of resource group name is name of web app slot is
 // name of web app slot. If not specified then will default to production
 // slot.
-func (client SitesClient) ListSitePublishingCredentialsSlot(resourceGroupName string, name string, slot string) (result User, ae error) {
+func (client SitesClient) ListSitePublishingCredentialsSlot(resourceGroupName string, name string, slot string) (result autorest.Response, ae error) {
 	req, err := client.ListSitePublishingCredentialsSlotPreparer(resourceGroupName, name, slot)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web/SitesClient", "ListSitePublishingCredentialsSlot", nil, "Failure preparing request")
@@ -8564,7 +8588,7 @@ func (client SitesClient) ListSitePublishingCredentialsSlot(resourceGroupName st
 
 	resp, err := client.ListSitePublishingCredentialsSlotSender(req)
 	if err != nil {
-		result.Response = autorest.Response{Response: resp}
+		result = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "web/SitesClient", "ListSitePublishingCredentialsSlot", resp, "Failure sending request")
 	}
 
@@ -8601,19 +8625,27 @@ func (client SitesClient) ListSitePublishingCredentialsSlotPreparer(resourceGrou
 // ListSitePublishingCredentialsSlotSender sends the ListSitePublishingCredentialsSlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client SitesClient) ListSitePublishingCredentialsSlotSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	resp, err := client.Send(req)
+	if err == nil && azure.ResponseIsLongRunning(resp) {
+		req, err := azure.NewAsyncPollingRequest(resp, client.Client)
+		if err == nil {
+			resp, err = autorest.SendWithSender(client, req,
+				azure.WithAsyncPolling(autorest.DefaultPollingDelay))
+		}
+	}
+	return resp, err
 }
 
 // ListSitePublishingCredentialsSlotResponder handles the response to the ListSitePublishingCredentialsSlot request. The method always
 // closes the http.Response Body.
-func (client SitesClient) ListSitePublishingCredentialsSlotResponder(resp *http.Response) (result User, err error) {
+func (client SitesClient) ListSitePublishingCredentialsSlotResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
+	result = autorest.Response{Response: resp}
 	return
 }
 

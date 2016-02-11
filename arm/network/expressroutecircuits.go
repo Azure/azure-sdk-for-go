@@ -52,7 +52,7 @@ func NewExpressRouteCircuitsClientWithBaseURI(baseURI string, subscriptionID str
 // resourceGroupName is the name of the resource group. circuitName is the
 // name of the circuit. parameters is parameters supplied to the
 // create/delete ExpressRouteCircuit operation
-func (client ExpressRouteCircuitsClient) CreateOrUpdate(resourceGroupName string, circuitName string, parameters ExpressRouteCircuit) (result ExpressRouteCircuit, ae error) {
+func (client ExpressRouteCircuitsClient) CreateOrUpdate(resourceGroupName string, circuitName string, parameters ExpressRouteCircuit) (result autorest.Response, ae error) {
 	req, err := client.CreateOrUpdatePreparer(resourceGroupName, circuitName, parameters)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "network/ExpressRouteCircuitsClient", "CreateOrUpdate", nil, "Failure preparing request")
@@ -60,7 +60,7 @@ func (client ExpressRouteCircuitsClient) CreateOrUpdate(resourceGroupName string
 
 	resp, err := client.CreateOrUpdateSender(req)
 	if err != nil {
-		result.Response = autorest.Response{Response: resp}
+		result = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "network/ExpressRouteCircuitsClient", "CreateOrUpdate", resp, "Failure sending request")
 	}
 
@@ -97,19 +97,27 @@ func (client ExpressRouteCircuitsClient) CreateOrUpdatePreparer(resourceGroupNam
 // CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
 // http.Response Body if it receives an error.
 func (client ExpressRouteCircuitsClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	resp, err := client.Send(req)
+	if err == nil && azure.ResponseIsLongRunning(resp) {
+		req, err := azure.NewAsyncPollingRequest(resp, client.Client)
+		if err == nil {
+			resp, err = autorest.SendWithSender(client, req,
+				azure.WithAsyncPolling(autorest.DefaultPollingDelay))
+		}
+	}
+	return resp, err
 }
 
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
 // closes the http.Response Body.
-func (client ExpressRouteCircuitsClient) CreateOrUpdateResponder(resp *http.Response) (result ExpressRouteCircuit, err error) {
+func (client ExpressRouteCircuitsClient) CreateOrUpdateResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusCreated, http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
+	result = autorest.Response{Response: resp}
 	return
 }
 
@@ -126,7 +134,7 @@ func (client ExpressRouteCircuitsClient) Delete(resourceGroupName string, circui
 
 	resp, err := client.DeleteSender(req)
 	if err != nil {
-		result.Response = resp
+		result = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "network/ExpressRouteCircuitsClient", "Delete", resp, "Failure sending request")
 	}
 
@@ -162,7 +170,15 @@ func (client ExpressRouteCircuitsClient) DeletePreparer(resourceGroupName string
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
 func (client ExpressRouteCircuitsClient) DeleteSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	resp, err := client.Send(req)
+	if err == nil && azure.ResponseIsLongRunning(resp) {
+		req, err := azure.NewAsyncPollingRequest(resp, client.Client)
+		if err == nil {
+			resp, err = autorest.SendWithSender(client, req,
+				azure.WithAsyncPolling(autorest.DefaultPollingDelay))
+		}
+	}
+	return resp, err
 }
 
 // DeleteResponder handles the response to the Delete request. The method always
@@ -172,8 +188,9 @@ func (client ExpressRouteCircuitsClient) DeleteResponder(resp *http.Response) (r
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusNoContent, http.StatusAccepted, http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = resp
+	result = autorest.Response{Response: resp}
 	return
 }
 

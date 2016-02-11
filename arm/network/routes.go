@@ -50,7 +50,7 @@ func NewRoutesClientWithBaseURI(baseURI string, subscriptionID string) RoutesCli
 // resourceGroupName is the name of the resource group. routeTableName is the
 // name of the route table. routeName is the name of the route.
 // routeParameters is parameters supplied to the create/update routeoperation
-func (client RoutesClient) CreateOrUpdate(resourceGroupName string, routeTableName string, routeName string, routeParameters Route) (result Route, ae error) {
+func (client RoutesClient) CreateOrUpdate(resourceGroupName string, routeTableName string, routeName string, routeParameters Route) (result autorest.Response, ae error) {
 	req, err := client.CreateOrUpdatePreparer(resourceGroupName, routeTableName, routeName, routeParameters)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "network/RoutesClient", "CreateOrUpdate", nil, "Failure preparing request")
@@ -58,7 +58,7 @@ func (client RoutesClient) CreateOrUpdate(resourceGroupName string, routeTableNa
 
 	resp, err := client.CreateOrUpdateSender(req)
 	if err != nil {
-		result.Response = autorest.Response{Response: resp}
+		result = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "network/RoutesClient", "CreateOrUpdate", resp, "Failure sending request")
 	}
 
@@ -96,19 +96,27 @@ func (client RoutesClient) CreateOrUpdatePreparer(resourceGroupName string, rout
 // CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
 // http.Response Body if it receives an error.
 func (client RoutesClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	resp, err := client.Send(req)
+	if err == nil && azure.ResponseIsLongRunning(resp) {
+		req, err := azure.NewAsyncPollingRequest(resp, client.Client)
+		if err == nil {
+			resp, err = autorest.SendWithSender(client, req,
+				azure.WithAsyncPolling(autorest.DefaultPollingDelay))
+		}
+	}
+	return resp, err
 }
 
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
 // closes the http.Response Body.
-func (client RoutesClient) CreateOrUpdateResponder(resp *http.Response) (result Route, err error) {
+func (client RoutesClient) CreateOrUpdateResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
+	result = autorest.Response{Response: resp}
 	return
 }
 
@@ -125,7 +133,7 @@ func (client RoutesClient) Delete(resourceGroupName string, routeTableName strin
 
 	resp, err := client.DeleteSender(req)
 	if err != nil {
-		result.Response = resp
+		result = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "network/RoutesClient", "Delete", resp, "Failure sending request")
 	}
 
@@ -162,7 +170,15 @@ func (client RoutesClient) DeletePreparer(resourceGroupName string, routeTableNa
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
 func (client RoutesClient) DeleteSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	resp, err := client.Send(req)
+	if err == nil && azure.ResponseIsLongRunning(resp) {
+		req, err := azure.NewAsyncPollingRequest(resp, client.Client)
+		if err == nil {
+			resp, err = autorest.SendWithSender(client, req,
+				azure.WithAsyncPolling(autorest.DefaultPollingDelay))
+		}
+	}
+	return resp, err
 }
 
 // DeleteResponder handles the response to the Delete request. The method always
@@ -172,8 +188,9 @@ func (client RoutesClient) DeleteResponder(resp *http.Response) (result autorest
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusAccepted, http.StatusOK, http.StatusNoContent),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = resp
+	result = autorest.Response{Response: resp}
 	return
 }
 

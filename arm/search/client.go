@@ -1,7 +1,7 @@
 // Package search implements the Azure ARM Search service API version
 // 2015-02-28.
 //
-// Client that can be used to manage Azure Search services and API keys..
+// Client that can be used to manage Azure Search services and API keys.
 package search
 
 // Copyright (c) Microsoft and contributors.  All rights reserved.

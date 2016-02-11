@@ -52,7 +52,7 @@ func NewPublicIPAddressesClientWithBaseURI(baseURI string, subscriptionID string
 // resourceGroupName is the name of the resource group. publicIPAddressName is
 // the name of the publicIpAddress. parameters is parameters supplied to the
 // create/update PublicIPAddress operation
-func (client PublicIPAddressesClient) CreateOrUpdate(resourceGroupName string, publicIPAddressName string, parameters PublicIPAddress) (result PublicIPAddress, ae error) {
+func (client PublicIPAddressesClient) CreateOrUpdate(resourceGroupName string, publicIPAddressName string, parameters PublicIPAddress) (result autorest.Response, ae error) {
 	req, err := client.CreateOrUpdatePreparer(resourceGroupName, publicIPAddressName, parameters)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "network/PublicIPAddressesClient", "CreateOrUpdate", nil, "Failure preparing request")
@@ -60,7 +60,7 @@ func (client PublicIPAddressesClient) CreateOrUpdate(resourceGroupName string, p
 
 	resp, err := client.CreateOrUpdateSender(req)
 	if err != nil {
-		result.Response = autorest.Response{Response: resp}
+		result = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "network/PublicIPAddressesClient", "CreateOrUpdate", resp, "Failure sending request")
 	}
 
@@ -97,19 +97,27 @@ func (client PublicIPAddressesClient) CreateOrUpdatePreparer(resourceGroupName s
 // CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
 // http.Response Body if it receives an error.
 func (client PublicIPAddressesClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	resp, err := client.Send(req)
+	if err == nil && azure.ResponseIsLongRunning(resp) {
+		req, err := azure.NewAsyncPollingRequest(resp, client.Client)
+		if err == nil {
+			resp, err = autorest.SendWithSender(client, req,
+				azure.WithAsyncPolling(autorest.DefaultPollingDelay))
+		}
+	}
+	return resp, err
 }
 
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
 // closes the http.Response Body.
-func (client PublicIPAddressesClient) CreateOrUpdateResponder(resp *http.Response) (result PublicIPAddress, err error) {
+func (client PublicIPAddressesClient) CreateOrUpdateResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusCreated, http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
+	result = autorest.Response{Response: resp}
 	return
 }
 
@@ -126,7 +134,7 @@ func (client PublicIPAddressesClient) Delete(resourceGroupName string, publicIPA
 
 	resp, err := client.DeleteSender(req)
 	if err != nil {
-		result.Response = resp
+		result = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "network/PublicIPAddressesClient", "Delete", resp, "Failure sending request")
 	}
 
@@ -162,7 +170,15 @@ func (client PublicIPAddressesClient) DeletePreparer(resourceGroupName string, p
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
 func (client PublicIPAddressesClient) DeleteSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	resp, err := client.Send(req)
+	if err == nil && azure.ResponseIsLongRunning(resp) {
+		req, err := azure.NewAsyncPollingRequest(resp, client.Client)
+		if err == nil {
+			resp, err = autorest.SendWithSender(client, req,
+				azure.WithAsyncPolling(autorest.DefaultPollingDelay))
+		}
+	}
+	return resp, err
 }
 
 // DeleteResponder handles the response to the Delete request. The method always
@@ -172,8 +188,9 @@ func (client PublicIPAddressesClient) DeleteResponder(resp *http.Response) (resu
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusNoContent, http.StatusAccepted, http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = resp
+	result = autorest.Response{Response: resp}
 	return
 }
 

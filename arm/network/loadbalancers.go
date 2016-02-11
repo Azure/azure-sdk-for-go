@@ -51,7 +51,7 @@ func NewLoadBalancersClientWithBaseURI(baseURI string, subscriptionID string) Lo
 // resourceGroupName is the name of the resource group. loadBalancerName is
 // the name of the loadBalancer. parameters is parameters supplied to the
 // create/delete LoadBalancer operation
-func (client LoadBalancersClient) CreateOrUpdate(resourceGroupName string, loadBalancerName string, parameters LoadBalancer) (result LoadBalancer, ae error) {
+func (client LoadBalancersClient) CreateOrUpdate(resourceGroupName string, loadBalancerName string, parameters LoadBalancer) (result autorest.Response, ae error) {
 	req, err := client.CreateOrUpdatePreparer(resourceGroupName, loadBalancerName, parameters)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "network/LoadBalancersClient", "CreateOrUpdate", nil, "Failure preparing request")
@@ -59,7 +59,7 @@ func (client LoadBalancersClient) CreateOrUpdate(resourceGroupName string, loadB
 
 	resp, err := client.CreateOrUpdateSender(req)
 	if err != nil {
-		result.Response = autorest.Response{Response: resp}
+		result = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "network/LoadBalancersClient", "CreateOrUpdate", resp, "Failure sending request")
 	}
 
@@ -96,19 +96,27 @@ func (client LoadBalancersClient) CreateOrUpdatePreparer(resourceGroupName strin
 // CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
 // http.Response Body if it receives an error.
 func (client LoadBalancersClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	resp, err := client.Send(req)
+	if err == nil && azure.ResponseIsLongRunning(resp) {
+		req, err := azure.NewAsyncPollingRequest(resp, client.Client)
+		if err == nil {
+			resp, err = autorest.SendWithSender(client, req,
+				azure.WithAsyncPolling(autorest.DefaultPollingDelay))
+		}
+	}
+	return resp, err
 }
 
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
 // closes the http.Response Body.
-func (client LoadBalancersClient) CreateOrUpdateResponder(resp *http.Response) (result LoadBalancer, err error) {
+func (client LoadBalancersClient) CreateOrUpdateResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusCreated, http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
+	result = autorest.Response{Response: resp}
 	return
 }
 
@@ -124,7 +132,7 @@ func (client LoadBalancersClient) Delete(resourceGroupName string, loadBalancerN
 
 	resp, err := client.DeleteSender(req)
 	if err != nil {
-		result.Response = resp
+		result = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "network/LoadBalancersClient", "Delete", resp, "Failure sending request")
 	}
 
@@ -160,7 +168,15 @@ func (client LoadBalancersClient) DeletePreparer(resourceGroupName string, loadB
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
 func (client LoadBalancersClient) DeleteSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	resp, err := client.Send(req)
+	if err == nil && azure.ResponseIsLongRunning(resp) {
+		req, err := azure.NewAsyncPollingRequest(resp, client.Client)
+		if err == nil {
+			resp, err = autorest.SendWithSender(client, req,
+				azure.WithAsyncPolling(autorest.DefaultPollingDelay))
+		}
+	}
+	return resp, err
 }
 
 // DeleteResponder handles the response to the Delete request. The method always
@@ -170,8 +186,9 @@ func (client LoadBalancersClient) DeleteResponder(resp *http.Response) (result a
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusNoContent, http.StatusAccepted, http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = resp
+	result = autorest.Response{Response: resp}
 	return
 }
 

@@ -48,7 +48,7 @@ func NewVirtualMachineScaleSetsClientWithBaseURI(baseURI string, subscriptionID 
 // resourceGroupName is the name of the resource group. name is parameters
 // supplied to the Create Virtual Machine Scale Set operation. parameters is
 // parameters supplied to the Create Virtual Machine Scale Set operation.
-func (client VirtualMachineScaleSetsClient) CreateOrUpdate(resourceGroupName string, name string, parameters VirtualMachineScaleSet) (result VirtualMachineScaleSet, ae error) {
+func (client VirtualMachineScaleSetsClient) CreateOrUpdate(resourceGroupName string, name string, parameters VirtualMachineScaleSet) (result autorest.Response, ae error) {
 	req, err := client.CreateOrUpdatePreparer(resourceGroupName, name, parameters)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "compute/VirtualMachineScaleSetsClient", "CreateOrUpdate", nil, "Failure preparing request")
@@ -56,7 +56,7 @@ func (client VirtualMachineScaleSetsClient) CreateOrUpdate(resourceGroupName str
 
 	resp, err := client.CreateOrUpdateSender(req)
 	if err != nil {
-		result.Response = autorest.Response{Response: resp}
+		result = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "compute/VirtualMachineScaleSetsClient", "CreateOrUpdate", resp, "Failure sending request")
 	}
 
@@ -93,19 +93,27 @@ func (client VirtualMachineScaleSetsClient) CreateOrUpdatePreparer(resourceGroup
 // CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
 // http.Response Body if it receives an error.
 func (client VirtualMachineScaleSetsClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	resp, err := client.Send(req)
+	if err == nil && azure.ResponseIsLongRunning(resp) {
+		req, err := azure.NewAsyncPollingRequest(resp, client.Client)
+		if err == nil {
+			resp, err = autorest.SendWithSender(client, req,
+				azure.WithAsyncPolling(autorest.DefaultPollingDelay))
+		}
+	}
+	return resp, err
 }
 
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
 // closes the http.Response Body.
-func (client VirtualMachineScaleSetsClient) CreateOrUpdateResponder(resp *http.Response) (result VirtualMachineScaleSet, err error) {
+func (client VirtualMachineScaleSetsClient) CreateOrUpdateResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusCreated, http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
+	result = autorest.Response{Response: resp}
 	return
 }
 
@@ -123,7 +131,7 @@ func (client VirtualMachineScaleSetsClient) Deallocate(resourceGroupName string,
 
 	resp, err := client.DeallocateSender(req)
 	if err != nil {
-		result.Response = resp
+		result = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "compute/VirtualMachineScaleSetsClient", "Deallocate", resp, "Failure sending request")
 	}
 
@@ -164,7 +172,15 @@ func (client VirtualMachineScaleSetsClient) DeallocatePreparer(resourceGroupName
 // DeallocateSender sends the Deallocate request. The method will close the
 // http.Response Body if it receives an error.
 func (client VirtualMachineScaleSetsClient) DeallocateSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	resp, err := client.Send(req)
+	if err == nil && azure.ResponseIsLongRunning(resp) {
+		req, err := azure.NewAsyncPollingRequest(resp, client.Client)
+		if err == nil {
+			resp, err = autorest.SendWithSender(client, req,
+				azure.WithAsyncPolling(autorest.DefaultPollingDelay))
+		}
+	}
+	return resp, err
 }
 
 // DeallocateResponder handles the response to the Deallocate request. The method always
@@ -174,8 +190,9 @@ func (client VirtualMachineScaleSetsClient) DeallocateResponder(resp *http.Respo
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = resp
+	result = autorest.Response{Response: resp}
 	return
 }
 
@@ -191,7 +208,7 @@ func (client VirtualMachineScaleSetsClient) Delete(resourceGroupName string, vmS
 
 	resp, err := client.DeleteSender(req)
 	if err != nil {
-		result.Response = resp
+		result = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "compute/VirtualMachineScaleSetsClient", "Delete", resp, "Failure sending request")
 	}
 
@@ -227,7 +244,15 @@ func (client VirtualMachineScaleSetsClient) DeletePreparer(resourceGroupName str
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
 func (client VirtualMachineScaleSetsClient) DeleteSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	resp, err := client.Send(req)
+	if err == nil && azure.ResponseIsLongRunning(resp) {
+		req, err := azure.NewAsyncPollingRequest(resp, client.Client)
+		if err == nil {
+			resp, err = autorest.SendWithSender(client, req,
+				azure.WithAsyncPolling(autorest.DefaultPollingDelay))
+		}
+	}
+	return resp, err
 }
 
 // DeleteResponder handles the response to the Delete request. The method always
@@ -237,8 +262,9 @@ func (client VirtualMachineScaleSetsClient) DeleteResponder(resp *http.Response)
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusAccepted, http.StatusOK, http.StatusNoContent),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = resp
+	result = autorest.Response{Response: resp}
 	return
 }
 
@@ -256,7 +282,7 @@ func (client VirtualMachineScaleSetsClient) DeleteInstances(resourceGroupName st
 
 	resp, err := client.DeleteInstancesSender(req)
 	if err != nil {
-		result.Response = resp
+		result = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "compute/VirtualMachineScaleSetsClient", "DeleteInstances", resp, "Failure sending request")
 	}
 
@@ -293,7 +319,15 @@ func (client VirtualMachineScaleSetsClient) DeleteInstancesPreparer(resourceGrou
 // DeleteInstancesSender sends the DeleteInstances request. The method will close the
 // http.Response Body if it receives an error.
 func (client VirtualMachineScaleSetsClient) DeleteInstancesSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	resp, err := client.Send(req)
+	if err == nil && azure.ResponseIsLongRunning(resp) {
+		req, err := azure.NewAsyncPollingRequest(resp, client.Client)
+		if err == nil {
+			resp, err = autorest.SendWithSender(client, req,
+				azure.WithAsyncPolling(autorest.DefaultPollingDelay))
+		}
+	}
+	return resp, err
 }
 
 // DeleteInstancesResponder handles the response to the DeleteInstances request. The method always
@@ -303,8 +337,9 @@ func (client VirtualMachineScaleSetsClient) DeleteInstancesResponder(resp *http.
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = resp
+	result = autorest.Response{Response: resp}
 	return
 }
 
@@ -713,7 +748,7 @@ func (client VirtualMachineScaleSetsClient) PowerOff(resourceGroupName string, v
 
 	resp, err := client.PowerOffSender(req)
 	if err != nil {
-		result.Response = resp
+		result = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "compute/VirtualMachineScaleSetsClient", "PowerOff", resp, "Failure sending request")
 	}
 
@@ -754,7 +789,15 @@ func (client VirtualMachineScaleSetsClient) PowerOffPreparer(resourceGroupName s
 // PowerOffSender sends the PowerOff request. The method will close the
 // http.Response Body if it receives an error.
 func (client VirtualMachineScaleSetsClient) PowerOffSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	resp, err := client.Send(req)
+	if err == nil && azure.ResponseIsLongRunning(resp) {
+		req, err := azure.NewAsyncPollingRequest(resp, client.Client)
+		if err == nil {
+			resp, err = autorest.SendWithSender(client, req,
+				azure.WithAsyncPolling(autorest.DefaultPollingDelay))
+		}
+	}
+	return resp, err
 }
 
 // PowerOffResponder handles the response to the PowerOff request. The method always
@@ -764,8 +807,9 @@ func (client VirtualMachineScaleSetsClient) PowerOffResponder(resp *http.Respons
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = resp
+	result = autorest.Response{Response: resp}
 	return
 }
 
@@ -783,7 +827,7 @@ func (client VirtualMachineScaleSetsClient) Restart(resourceGroupName string, vm
 
 	resp, err := client.RestartSender(req)
 	if err != nil {
-		result.Response = resp
+		result = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "compute/VirtualMachineScaleSetsClient", "Restart", resp, "Failure sending request")
 	}
 
@@ -824,7 +868,15 @@ func (client VirtualMachineScaleSetsClient) RestartPreparer(resourceGroupName st
 // RestartSender sends the Restart request. The method will close the
 // http.Response Body if it receives an error.
 func (client VirtualMachineScaleSetsClient) RestartSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	resp, err := client.Send(req)
+	if err == nil && azure.ResponseIsLongRunning(resp) {
+		req, err := azure.NewAsyncPollingRequest(resp, client.Client)
+		if err == nil {
+			resp, err = autorest.SendWithSender(client, req,
+				azure.WithAsyncPolling(autorest.DefaultPollingDelay))
+		}
+	}
+	return resp, err
 }
 
 // RestartResponder handles the response to the Restart request. The method always
@@ -834,8 +886,9 @@ func (client VirtualMachineScaleSetsClient) RestartResponder(resp *http.Response
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = resp
+	result = autorest.Response{Response: resp}
 	return
 }
 
@@ -853,7 +906,7 @@ func (client VirtualMachineScaleSetsClient) Start(resourceGroupName string, vmSc
 
 	resp, err := client.StartSender(req)
 	if err != nil {
-		result.Response = resp
+		result = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "compute/VirtualMachineScaleSetsClient", "Start", resp, "Failure sending request")
 	}
 
@@ -894,7 +947,15 @@ func (client VirtualMachineScaleSetsClient) StartPreparer(resourceGroupName stri
 // StartSender sends the Start request. The method will close the
 // http.Response Body if it receives an error.
 func (client VirtualMachineScaleSetsClient) StartSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	resp, err := client.Send(req)
+	if err == nil && azure.ResponseIsLongRunning(resp) {
+		req, err := azure.NewAsyncPollingRequest(resp, client.Client)
+		if err == nil {
+			resp, err = autorest.SendWithSender(client, req,
+				azure.WithAsyncPolling(autorest.DefaultPollingDelay))
+		}
+	}
+	return resp, err
 }
 
 // StartResponder handles the response to the Start request. The method always
@@ -904,8 +965,9 @@ func (client VirtualMachineScaleSetsClient) StartResponder(resp *http.Response) 
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = resp
+	result = autorest.Response{Response: resp}
 	return
 }
 
@@ -923,7 +985,7 @@ func (client VirtualMachineScaleSetsClient) UpdateInstances(resourceGroupName st
 
 	resp, err := client.UpdateInstancesSender(req)
 	if err != nil {
-		result.Response = resp
+		result = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "compute/VirtualMachineScaleSetsClient", "UpdateInstances", resp, "Failure sending request")
 	}
 
@@ -960,7 +1022,15 @@ func (client VirtualMachineScaleSetsClient) UpdateInstancesPreparer(resourceGrou
 // UpdateInstancesSender sends the UpdateInstances request. The method will close the
 // http.Response Body if it receives an error.
 func (client VirtualMachineScaleSetsClient) UpdateInstancesSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	resp, err := client.Send(req)
+	if err == nil && azure.ResponseIsLongRunning(resp) {
+		req, err := azure.NewAsyncPollingRequest(resp, client.Client)
+		if err == nil {
+			resp, err = autorest.SendWithSender(client, req,
+				azure.WithAsyncPolling(autorest.DefaultPollingDelay))
+		}
+	}
+	return resp, err
 }
 
 // UpdateInstancesResponder handles the response to the UpdateInstances request. The method always
@@ -970,7 +1040,8 @@ func (client VirtualMachineScaleSetsClient) UpdateInstancesResponder(resp *http.
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = resp
+	result = autorest.Response{Response: resp}
 	return
 }

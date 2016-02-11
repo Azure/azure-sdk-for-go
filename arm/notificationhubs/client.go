@@ -1,7 +1,7 @@
 // Package notificationhubs implements the Azure ARM Notificationhubs service
 // API version 2014-09-01.
 //
-// .Net client wrapper for the REST API for Azure NotificationHub Service.
+// .Net client wrapper for the REST API for Azure NotificationHub Service
 package notificationhubs
 
 // Copyright (c) Microsoft and contributors.  All rights reserved.
@@ -319,8 +319,7 @@ func (client ManagementClient) DeleteResponder(resp *http.Response) (result auto
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByClosing())
+		azure.WithErrorUnlessStatusCode(http.StatusOK))
 	result.Response = resp
 	return
 }
@@ -386,8 +385,7 @@ func (client ManagementClient) DeleteAuthorizationRuleResponder(resp *http.Respo
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusNoContent, http.StatusOK),
-		autorest.ByClosing())
+		azure.WithErrorUnlessStatusCode(http.StatusNoContent, http.StatusOK))
 	result.Response = resp
 	return
 }

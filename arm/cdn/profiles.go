@@ -51,7 +51,7 @@ func NewProfilesClientWithBaseURI(baseURI string, subscriptionID string) Profile
 // profileProperties is profile properties needed for creation
 // resourceGroupName is name of the resource group within the Azure
 // subscription
-func (client ProfilesClient) Create(profileName string, profileProperties ProfileCreateParameters, resourceGroupName string) (result Profile, ae error) {
+func (client ProfilesClient) Create(profileName string, profileProperties ProfileCreateParameters, resourceGroupName string) (result autorest.Response, ae error) {
 	req, err := client.CreatePreparer(profileName, profileProperties, resourceGroupName)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "cdn/ProfilesClient", "Create", nil, "Failure preparing request")
@@ -59,7 +59,7 @@ func (client ProfilesClient) Create(profileName string, profileProperties Profil
 
 	resp, err := client.CreateSender(req)
 	if err != nil {
-		result.Response = autorest.Response{Response: resp}
+		result = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "cdn/ProfilesClient", "Create", resp, "Failure sending request")
 	}
 
@@ -96,19 +96,27 @@ func (client ProfilesClient) CreatePreparer(profileName string, profilePropertie
 // CreateSender sends the Create request. The method will close the
 // http.Response Body if it receives an error.
 func (client ProfilesClient) CreateSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	resp, err := client.Send(req)
+	if err == nil && azure.ResponseIsLongRunning(resp) {
+		req, err := azure.NewAsyncPollingRequest(resp, client.Client)
+		if err == nil {
+			resp, err = autorest.SendWithSender(client, req,
+				azure.WithAsyncPolling(autorest.DefaultPollingDelay))
+		}
+	}
+	return resp, err
 }
 
 // CreateResponder handles the response to the Create request. The method always
 // closes the http.Response Body.
-func (client ProfilesClient) CreateResponder(resp *http.Response) (result Profile, err error) {
+func (client ProfilesClient) CreateResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated, http.StatusAccepted),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
+	result = autorest.Response{Response: resp}
 	return
 }
 
@@ -125,7 +133,7 @@ func (client ProfilesClient) DeleteIfExists(profileName string, resourceGroupNam
 
 	resp, err := client.DeleteIfExistsSender(req)
 	if err != nil {
-		result.Response = resp
+		result = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "cdn/ProfilesClient", "DeleteIfExists", resp, "Failure sending request")
 	}
 
@@ -161,7 +169,15 @@ func (client ProfilesClient) DeleteIfExistsPreparer(profileName string, resource
 // DeleteIfExistsSender sends the DeleteIfExists request. The method will close the
 // http.Response Body if it receives an error.
 func (client ProfilesClient) DeleteIfExistsSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	resp, err := client.Send(req)
+	if err == nil && azure.ResponseIsLongRunning(resp) {
+		req, err := azure.NewAsyncPollingRequest(resp, client.Client)
+		if err == nil {
+			resp, err = autorest.SendWithSender(client, req,
+				azure.WithAsyncPolling(autorest.DefaultPollingDelay))
+		}
+	}
+	return resp, err
 }
 
 // DeleteIfExistsResponder handles the response to the DeleteIfExists request. The method always
@@ -171,8 +187,9 @@ func (client ProfilesClient) DeleteIfExistsResponder(resp *http.Response) (resul
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = resp
+	result = autorest.Response{Response: resp}
 	return
 }
 

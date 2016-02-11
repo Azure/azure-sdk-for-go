@@ -220,8 +220,7 @@ func (client TagsClient) DeleteResponder(resp *http.Response) (result autorest.R
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
-		autorest.ByClosing())
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent))
 	result.Response = resp
 	return
 }
@@ -282,8 +281,7 @@ func (client TagsClient) DeleteValueResponder(resp *http.Response) (result autor
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
-		autorest.ByClosing())
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent))
 	result.Response = resp
 	return
 }

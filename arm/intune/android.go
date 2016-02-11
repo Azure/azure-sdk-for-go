@@ -100,8 +100,7 @@ func (client AndroidClient) AddAppForMAMPolicyResponder(resp *http.Response) (re
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
-		autorest.ByClosing())
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent))
 	result.Response = resp
 	return
 }
@@ -165,8 +164,7 @@ func (client AndroidClient) AddGroupForMAMPolicyResponder(resp *http.Response) (
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
-		autorest.ByClosing())
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent))
 	result.Response = resp
 	return
 }
@@ -293,8 +291,7 @@ func (client AndroidClient) DeleteAppForMAMPolicyResponder(resp *http.Response) 
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
-		autorest.ByClosing())
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent))
 	result.Response = resp
 	return
 }
@@ -356,8 +353,7 @@ func (client AndroidClient) DeleteGroupForMAMPolicyResponder(resp *http.Response
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
-		autorest.ByClosing())
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent))
 	result.Response = resp
 	return
 }
@@ -418,8 +414,7 @@ func (client AndroidClient) DeleteMAMPolicyResponder(resp *http.Response) (resul
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
-		autorest.ByClosing())
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent))
 	result.Response = resp
 	return
 }

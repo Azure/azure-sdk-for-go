@@ -1,7 +1,7 @@
 // Package redis implements the Azure ARM Redis service API version 2015-08-01.
 //
 // .Net client wrapper for the REST API for Azure Redis Cache Management
-// Service.
+// Service
 package redis
 
 // Copyright (c) Microsoft and contributors.  All rights reserved.
@@ -182,8 +182,7 @@ func (client ManagementClient) DeleteResponder(resp *http.Response) (result auto
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNotFound),
-		autorest.ByClosing())
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNotFound))
 	result.Response = resp
 	return
 }

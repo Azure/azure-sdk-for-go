@@ -99,8 +99,7 @@ func (client DeploymentsClient) CancelResponder(resp *http.Response) (result aut
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
-		autorest.ByClosing())
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent))
 	result.Response = resp
 	return
 }
@@ -162,8 +161,7 @@ func (client DeploymentsClient) CheckExistenceResponder(resp *http.Response) (re
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent, http.StatusNotFound),
-		autorest.ByClosing())
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent, http.StatusNotFound))
 	result.Response = resp
 	return
 }
@@ -173,7 +171,7 @@ func (client DeploymentsClient) CheckExistenceResponder(resp *http.Response) (re
 // resourceGroupName is the name of the resource group. The name is case
 // insensitive. deploymentName is the name of the deployment. parameters is
 // additional parameters supplied to the operation.
-func (client DeploymentsClient) CreateOrUpdate(resourceGroupName string, deploymentName string, parameters Deployment) (result DeploymentExtended, ae error) {
+func (client DeploymentsClient) CreateOrUpdate(resourceGroupName string, deploymentName string, parameters Deployment) (result autorest.Response, ae error) {
 	req, err := client.CreateOrUpdatePreparer(resourceGroupName, deploymentName, parameters)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "resources/DeploymentsClient", "CreateOrUpdate", nil, "Failure preparing request")
@@ -181,7 +179,7 @@ func (client DeploymentsClient) CreateOrUpdate(resourceGroupName string, deploym
 
 	resp, err := client.CreateOrUpdateSender(req)
 	if err != nil {
-		result.Response = autorest.Response{Response: resp}
+		result = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "resources/DeploymentsClient", "CreateOrUpdate", resp, "Failure sending request")
 	}
 
@@ -218,19 +216,27 @@ func (client DeploymentsClient) CreateOrUpdatePreparer(resourceGroupName string,
 // CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
 // http.Response Body if it receives an error.
 func (client DeploymentsClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	resp, err := client.Send(req)
+	if err == nil && azure.ResponseIsLongRunning(resp) {
+		req, err := azure.NewAsyncPollingRequest(resp, client.Client)
+		if err == nil {
+			resp, err = autorest.SendWithSender(client, req,
+				azure.WithAsyncPolling(autorest.DefaultPollingDelay))
+		}
+	}
+	return resp, err
 }
 
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
 // closes the http.Response Body.
-func (client DeploymentsClient) CreateOrUpdateResponder(resp *http.Response) (result DeploymentExtended, err error) {
+func (client DeploymentsClient) CreateOrUpdateResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
+	result = autorest.Response{Response: resp}
 	return
 }
 
@@ -247,7 +253,7 @@ func (client DeploymentsClient) Delete(resourceGroupName string, deploymentName 
 
 	resp, err := client.DeleteSender(req)
 	if err != nil {
-		result.Response = resp
+		result = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "resources/DeploymentsClient", "Delete", resp, "Failure sending request")
 	}
 
@@ -283,7 +289,15 @@ func (client DeploymentsClient) DeletePreparer(resourceGroupName string, deploym
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
 func (client DeploymentsClient) DeleteSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	resp, err := client.Send(req)
+	if err == nil && azure.ResponseIsLongRunning(resp) {
+		req, err := azure.NewAsyncPollingRequest(resp, client.Client)
+		if err == nil {
+			resp, err = autorest.SendWithSender(client, req,
+				azure.WithAsyncPolling(autorest.DefaultPollingDelay))
+		}
+	}
+	return resp, err
 }
 
 // DeleteResponder handles the response to the Delete request. The method always
@@ -293,8 +307,9 @@ func (client DeploymentsClient) DeleteResponder(resp *http.Response) (result aut
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = resp
+	result = autorest.Response{Response: resp}
 	return
 }
 

@@ -55,7 +55,7 @@ func NewVirtualNetworkGatewayConnectionsClientWithBaseURI(baseURI string, subscr
 // gateway conenction. parameters is parameters supplied to the Begin Create
 // or update Virtual Network Gateway connection operation through Network
 // resource provider.
-func (client VirtualNetworkGatewayConnectionsClient) CreateOrUpdate(resourceGroupName string, virtualNetworkGatewayConnectionName string, parameters VirtualNetworkGatewayConnection) (result VirtualNetworkGatewayConnection, ae error) {
+func (client VirtualNetworkGatewayConnectionsClient) CreateOrUpdate(resourceGroupName string, virtualNetworkGatewayConnectionName string, parameters VirtualNetworkGatewayConnection) (result autorest.Response, ae error) {
 	req, err := client.CreateOrUpdatePreparer(resourceGroupName, virtualNetworkGatewayConnectionName, parameters)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "network/VirtualNetworkGatewayConnectionsClient", "CreateOrUpdate", nil, "Failure preparing request")
@@ -63,7 +63,7 @@ func (client VirtualNetworkGatewayConnectionsClient) CreateOrUpdate(resourceGrou
 
 	resp, err := client.CreateOrUpdateSender(req)
 	if err != nil {
-		result.Response = autorest.Response{Response: resp}
+		result = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "network/VirtualNetworkGatewayConnectionsClient", "CreateOrUpdate", resp, "Failure sending request")
 	}
 
@@ -100,19 +100,27 @@ func (client VirtualNetworkGatewayConnectionsClient) CreateOrUpdatePreparer(reso
 // CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
 // http.Response Body if it receives an error.
 func (client VirtualNetworkGatewayConnectionsClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	resp, err := client.Send(req)
+	if err == nil && azure.ResponseIsLongRunning(resp) {
+		req, err := azure.NewAsyncPollingRequest(resp, client.Client)
+		if err == nil {
+			resp, err = autorest.SendWithSender(client, req,
+				azure.WithAsyncPolling(autorest.DefaultPollingDelay))
+		}
+	}
+	return resp, err
 }
 
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
 // closes the http.Response Body.
-func (client VirtualNetworkGatewayConnectionsClient) CreateOrUpdateResponder(resp *http.Response) (result VirtualNetworkGatewayConnection, err error) {
+func (client VirtualNetworkGatewayConnectionsClient) CreateOrUpdateResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
+	result = autorest.Response{Response: resp}
 	return
 }
 
@@ -131,7 +139,7 @@ func (client VirtualNetworkGatewayConnectionsClient) Delete(resourceGroupName st
 
 	resp, err := client.DeleteSender(req)
 	if err != nil {
-		result.Response = resp
+		result = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "network/VirtualNetworkGatewayConnectionsClient", "Delete", resp, "Failure sending request")
 	}
 
@@ -167,7 +175,15 @@ func (client VirtualNetworkGatewayConnectionsClient) DeletePreparer(resourceGrou
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
 func (client VirtualNetworkGatewayConnectionsClient) DeleteSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	resp, err := client.Send(req)
+	if err == nil && azure.ResponseIsLongRunning(resp) {
+		req, err := azure.NewAsyncPollingRequest(resp, client.Client)
+		if err == nil {
+			resp, err = autorest.SendWithSender(client, req,
+				azure.WithAsyncPolling(autorest.DefaultPollingDelay))
+		}
+	}
+	return resp, err
 }
 
 // DeleteResponder handles the response to the Delete request. The method always
@@ -177,8 +193,9 @@ func (client VirtualNetworkGatewayConnectionsClient) DeleteResponder(resp *http.
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = resp
+	result = autorest.Response{Response: resp}
 	return
 }
 
@@ -413,7 +430,7 @@ func (client VirtualNetworkGatewayConnectionsClient) ListNextResults(lastResults
 // connection reset shared key Name. parameters is parameters supplied to the
 // Begin Reset Virtual Network Gateway connection shared key operation
 // through Network resource provider.
-func (client VirtualNetworkGatewayConnectionsClient) ResetSharedKey(resourceGroupName string, virtualNetworkGatewayConnectionName string, parameters ConnectionResetSharedKey) (result ConnectionResetSharedKey, ae error) {
+func (client VirtualNetworkGatewayConnectionsClient) ResetSharedKey(resourceGroupName string, virtualNetworkGatewayConnectionName string, parameters ConnectionResetSharedKey) (result autorest.Response, ae error) {
 	req, err := client.ResetSharedKeyPreparer(resourceGroupName, virtualNetworkGatewayConnectionName, parameters)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "network/VirtualNetworkGatewayConnectionsClient", "ResetSharedKey", nil, "Failure preparing request")
@@ -421,7 +438,7 @@ func (client VirtualNetworkGatewayConnectionsClient) ResetSharedKey(resourceGrou
 
 	resp, err := client.ResetSharedKeySender(req)
 	if err != nil {
-		result.Response = autorest.Response{Response: resp}
+		result = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "network/VirtualNetworkGatewayConnectionsClient", "ResetSharedKey", resp, "Failure sending request")
 	}
 
@@ -458,19 +475,27 @@ func (client VirtualNetworkGatewayConnectionsClient) ResetSharedKeyPreparer(reso
 // ResetSharedKeySender sends the ResetSharedKey request. The method will close the
 // http.Response Body if it receives an error.
 func (client VirtualNetworkGatewayConnectionsClient) ResetSharedKeySender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	resp, err := client.Send(req)
+	if err == nil && azure.ResponseIsLongRunning(resp) {
+		req, err := azure.NewAsyncPollingRequest(resp, client.Client)
+		if err == nil {
+			resp, err = autorest.SendWithSender(client, req,
+				azure.WithAsyncPolling(autorest.DefaultPollingDelay))
+		}
+	}
+	return resp, err
 }
 
 // ResetSharedKeyResponder handles the response to the ResetSharedKey request. The method always
 // closes the http.Response Body.
-func (client VirtualNetworkGatewayConnectionsClient) ResetSharedKeyResponder(resp *http.Response) (result ConnectionResetSharedKey, err error) {
+func (client VirtualNetworkGatewayConnectionsClient) ResetSharedKeyResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
+	result = autorest.Response{Response: resp}
 	return
 }
 
@@ -484,7 +509,7 @@ func (client VirtualNetworkGatewayConnectionsClient) ResetSharedKeyResponder(res
 // connection name. parameters is parameters supplied to the Begin Set
 // Virtual Network Gateway conection Shared key operation throughNetwork
 // resource provider.
-func (client VirtualNetworkGatewayConnectionsClient) SetSharedKey(resourceGroupName string, virtualNetworkGatewayConnectionName string, parameters ConnectionSharedKey) (result ConnectionSharedKey, ae error) {
+func (client VirtualNetworkGatewayConnectionsClient) SetSharedKey(resourceGroupName string, virtualNetworkGatewayConnectionName string, parameters ConnectionSharedKey) (result autorest.Response, ae error) {
 	req, err := client.SetSharedKeyPreparer(resourceGroupName, virtualNetworkGatewayConnectionName, parameters)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "network/VirtualNetworkGatewayConnectionsClient", "SetSharedKey", nil, "Failure preparing request")
@@ -492,7 +517,7 @@ func (client VirtualNetworkGatewayConnectionsClient) SetSharedKey(resourceGroupN
 
 	resp, err := client.SetSharedKeySender(req)
 	if err != nil {
-		result.Response = autorest.Response{Response: resp}
+		result = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "network/VirtualNetworkGatewayConnectionsClient", "SetSharedKey", resp, "Failure sending request")
 	}
 
@@ -529,18 +554,26 @@ func (client VirtualNetworkGatewayConnectionsClient) SetSharedKeyPreparer(resour
 // SetSharedKeySender sends the SetSharedKey request. The method will close the
 // http.Response Body if it receives an error.
 func (client VirtualNetworkGatewayConnectionsClient) SetSharedKeySender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	resp, err := client.Send(req)
+	if err == nil && azure.ResponseIsLongRunning(resp) {
+		req, err := azure.NewAsyncPollingRequest(resp, client.Client)
+		if err == nil {
+			resp, err = autorest.SendWithSender(client, req,
+				azure.WithAsyncPolling(autorest.DefaultPollingDelay))
+		}
+	}
+	return resp, err
 }
 
 // SetSharedKeyResponder handles the response to the SetSharedKey request. The method always
 // closes the http.Response Body.
-func (client VirtualNetworkGatewayConnectionsClient) SetSharedKeyResponder(resp *http.Response) (result ConnectionSharedKey, err error) {
+func (client VirtualNetworkGatewayConnectionsClient) SetSharedKeyResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusCreated, http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
+	result = autorest.Response{Response: resp}
 	return
 }

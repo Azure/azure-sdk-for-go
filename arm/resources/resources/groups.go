@@ -96,8 +96,7 @@ func (client GroupsClient) CheckExistenceResponder(resp *http.Response) (result 
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent, http.StatusNotFound),
-		autorest.ByClosing())
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent, http.StatusNotFound))
 	result.Response = resp
 	return
 }
@@ -180,7 +179,7 @@ func (client GroupsClient) Delete(resourceGroupName string) (result autorest.Res
 
 	resp, err := client.DeleteSender(req)
 	if err != nil {
-		result.Response = resp
+		result = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "resources/GroupsClient", "Delete", resp, "Failure sending request")
 	}
 
@@ -215,7 +214,15 @@ func (client GroupsClient) DeletePreparer(resourceGroupName string) (*http.Reque
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
 func (client GroupsClient) DeleteSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	resp, err := client.Send(req)
+	if err == nil && azure.ResponseIsLongRunning(resp) {
+		req, err := azure.NewAsyncPollingRequest(resp, client.Client)
+		if err == nil {
+			resp, err = autorest.SendWithSender(client, req,
+				azure.WithAsyncPolling(autorest.DefaultPollingDelay))
+		}
+	}
+	return resp, err
 }
 
 // DeleteResponder handles the response to the Delete request. The method always
@@ -225,8 +232,9 @@ func (client GroupsClient) DeleteResponder(resp *http.Response) (result autorest
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusAccepted, http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = resp
+	result = autorest.Response{Response: resp}
 	return
 }
 

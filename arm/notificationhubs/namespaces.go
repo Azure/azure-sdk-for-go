@@ -255,7 +255,7 @@ func (client NamespacesClient) Delete(resourceGroupName string, namespaceName st
 
 	resp, err := client.DeleteSender(req)
 	if err != nil {
-		result.Response = resp
+		result = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "notificationhubs/NamespacesClient", "Delete", resp, "Failure sending request")
 	}
 
@@ -291,7 +291,15 @@ func (client NamespacesClient) DeletePreparer(resourceGroupName string, namespac
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
 func (client NamespacesClient) DeleteSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	resp, err := client.Send(req)
+	if err == nil && azure.ResponseIsLongRunning(resp) {
+		req, err := azure.NewAsyncPollingRequest(resp, client.Client)
+		if err == nil {
+			resp, err = autorest.SendWithSender(client, req,
+				azure.WithAsyncPolling(autorest.DefaultPollingDelay))
+		}
+	}
+	return resp, err
 }
 
 // DeleteResponder handles the response to the Delete request. The method always
@@ -301,8 +309,9 @@ func (client NamespacesClient) DeleteResponder(resp *http.Response) (result auto
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusNoContent, http.StatusOK, http.StatusAccepted),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = resp
+	result = autorest.Response{Response: resp}
 	return
 }
 
@@ -365,8 +374,7 @@ func (client NamespacesClient) DeleteAuthorizationRuleResponder(resp *http.Respo
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusNoContent, http.StatusOK),
-		autorest.ByClosing())
+		azure.WithErrorUnlessStatusCode(http.StatusNoContent, http.StatusOK))
 	result.Response = resp
 	return
 }
@@ -555,8 +563,7 @@ func (client NamespacesClient) GetLongRunningOperationStatusResponder(resp *http
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusNotFound, http.StatusAccepted, http.StatusOK),
-		autorest.ByClosing())
+		azure.WithErrorUnlessStatusCode(http.StatusNotFound, http.StatusAccepted, http.StatusOK))
 	result.Response = resp
 	return
 }

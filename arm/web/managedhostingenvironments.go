@@ -55,7 +55,7 @@ func NewManagedHostingEnvironmentsClientWithBaseURI(baseURI string, subscription
 // resourceGroupName is name of resource group name is name of managed hosting
 // environment managedHostingEnvironmentEnvelope is properties of managed
 // hosting environment
-func (client ManagedHostingEnvironmentsClient) CreateOrUpdateManagedHostingEnvironment(resourceGroupName string, name string, managedHostingEnvironmentEnvelope HostingEnvironment) (result HostingEnvironment, ae error) {
+func (client ManagedHostingEnvironmentsClient) CreateOrUpdateManagedHostingEnvironment(resourceGroupName string, name string, managedHostingEnvironmentEnvelope HostingEnvironment) (result autorest.Response, ae error) {
 	req, err := client.CreateOrUpdateManagedHostingEnvironmentPreparer(resourceGroupName, name, managedHostingEnvironmentEnvelope)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web/ManagedHostingEnvironmentsClient", "CreateOrUpdateManagedHostingEnvironment", nil, "Failure preparing request")
@@ -63,7 +63,7 @@ func (client ManagedHostingEnvironmentsClient) CreateOrUpdateManagedHostingEnvir
 
 	resp, err := client.CreateOrUpdateManagedHostingEnvironmentSender(req)
 	if err != nil {
-		result.Response = autorest.Response{Response: resp}
+		result = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "web/ManagedHostingEnvironmentsClient", "CreateOrUpdateManagedHostingEnvironment", resp, "Failure sending request")
 	}
 
@@ -100,19 +100,27 @@ func (client ManagedHostingEnvironmentsClient) CreateOrUpdateManagedHostingEnvir
 // CreateOrUpdateManagedHostingEnvironmentSender sends the CreateOrUpdateManagedHostingEnvironment request. The method will close the
 // http.Response Body if it receives an error.
 func (client ManagedHostingEnvironmentsClient) CreateOrUpdateManagedHostingEnvironmentSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	resp, err := client.Send(req)
+	if err == nil && azure.ResponseIsLongRunning(resp) {
+		req, err := azure.NewAsyncPollingRequest(resp, client.Client)
+		if err == nil {
+			resp, err = autorest.SendWithSender(client, req,
+				azure.WithAsyncPolling(autorest.DefaultPollingDelay))
+		}
+	}
+	return resp, err
 }
 
 // CreateOrUpdateManagedHostingEnvironmentResponder handles the response to the CreateOrUpdateManagedHostingEnvironment request. The method always
 // closes the http.Response Body.
-func (client ManagedHostingEnvironmentsClient) CreateOrUpdateManagedHostingEnvironmentResponder(resp *http.Response) (result HostingEnvironment, err error) {
+func (client ManagedHostingEnvironmentsClient) CreateOrUpdateManagedHostingEnvironmentResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusBadRequest, http.StatusNotFound, http.StatusConflict),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
+	result = autorest.Response{Response: resp}
 	return
 }
 
@@ -122,7 +130,7 @@ func (client ManagedHostingEnvironmentsClient) CreateOrUpdateManagedHostingEnvir
 // resourceGroupName is name of resource group name is name of managed hosting
 // environment forceDelete is delete even if the managed hosting environment
 // contains resources
-func (client ManagedHostingEnvironmentsClient) DeleteManagedHostingEnvironment(resourceGroupName string, name string, forceDelete *bool) (result ObjectSet, ae error) {
+func (client ManagedHostingEnvironmentsClient) DeleteManagedHostingEnvironment(resourceGroupName string, name string, forceDelete *bool) (result autorest.Response, ae error) {
 	req, err := client.DeleteManagedHostingEnvironmentPreparer(resourceGroupName, name, forceDelete)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web/ManagedHostingEnvironmentsClient", "DeleteManagedHostingEnvironment", nil, "Failure preparing request")
@@ -130,7 +138,7 @@ func (client ManagedHostingEnvironmentsClient) DeleteManagedHostingEnvironment(r
 
 	resp, err := client.DeleteManagedHostingEnvironmentSender(req)
 	if err != nil {
-		result.Response = autorest.Response{Response: resp}
+		result = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "web/ManagedHostingEnvironmentsClient", "DeleteManagedHostingEnvironment", resp, "Failure sending request")
 	}
 
@@ -169,19 +177,27 @@ func (client ManagedHostingEnvironmentsClient) DeleteManagedHostingEnvironmentPr
 // DeleteManagedHostingEnvironmentSender sends the DeleteManagedHostingEnvironment request. The method will close the
 // http.Response Body if it receives an error.
 func (client ManagedHostingEnvironmentsClient) DeleteManagedHostingEnvironmentSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	resp, err := client.Send(req)
+	if err == nil && azure.ResponseIsLongRunning(resp) {
+		req, err := azure.NewAsyncPollingRequest(resp, client.Client)
+		if err == nil {
+			resp, err = autorest.SendWithSender(client, req,
+				azure.WithAsyncPolling(autorest.DefaultPollingDelay))
+		}
+	}
+	return resp, err
 }
 
 // DeleteManagedHostingEnvironmentResponder handles the response to the DeleteManagedHostingEnvironment request. The method always
 // closes the http.Response Body.
-func (client ManagedHostingEnvironmentsClient) DeleteManagedHostingEnvironmentResponder(resp *http.Response) (result ObjectSet, err error) {
+func (client ManagedHostingEnvironmentsClient) DeleteManagedHostingEnvironmentResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusBadRequest, http.StatusNotFound, http.StatusConflict),
-		autorest.ByUnmarshallingJSON(&result.Value),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
+	result = autorest.Response{Response: resp}
 	return
 }
 

@@ -53,7 +53,7 @@ func NewExpressRouteCircuitAuthorizationsClientWithBaseURI(baseURI string, subsc
 // name of the express route circuit. authorizationName is the name of the
 // authorization. authorizationParameters is parameters supplied to the
 // create/update ExpressRouteCircuitAuthorization operation
-func (client ExpressRouteCircuitAuthorizationsClient) CreateOrUpdate(resourceGroupName string, circuitName string, authorizationName string, authorizationParameters ExpressRouteCircuitAuthorization) (result ExpressRouteCircuitAuthorization, ae error) {
+func (client ExpressRouteCircuitAuthorizationsClient) CreateOrUpdate(resourceGroupName string, circuitName string, authorizationName string, authorizationParameters ExpressRouteCircuitAuthorization) (result autorest.Response, ae error) {
 	req, err := client.CreateOrUpdatePreparer(resourceGroupName, circuitName, authorizationName, authorizationParameters)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "network/ExpressRouteCircuitAuthorizationsClient", "CreateOrUpdate", nil, "Failure preparing request")
@@ -61,7 +61,7 @@ func (client ExpressRouteCircuitAuthorizationsClient) CreateOrUpdate(resourceGro
 
 	resp, err := client.CreateOrUpdateSender(req)
 	if err != nil {
-		result.Response = autorest.Response{Response: resp}
+		result = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "network/ExpressRouteCircuitAuthorizationsClient", "CreateOrUpdate", resp, "Failure sending request")
 	}
 
@@ -99,19 +99,27 @@ func (client ExpressRouteCircuitAuthorizationsClient) CreateOrUpdatePreparer(res
 // CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
 // http.Response Body if it receives an error.
 func (client ExpressRouteCircuitAuthorizationsClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	resp, err := client.Send(req)
+	if err == nil && azure.ResponseIsLongRunning(resp) {
+		req, err := azure.NewAsyncPollingRequest(resp, client.Client)
+		if err == nil {
+			resp, err = autorest.SendWithSender(client, req,
+				azure.WithAsyncPolling(autorest.DefaultPollingDelay))
+		}
+	}
+	return resp, err
 }
 
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
 // closes the http.Response Body.
-func (client ExpressRouteCircuitAuthorizationsClient) CreateOrUpdateResponder(resp *http.Response) (result ExpressRouteCircuitAuthorization, err error) {
+func (client ExpressRouteCircuitAuthorizationsClient) CreateOrUpdateResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusCreated, http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
+	result = autorest.Response{Response: resp}
 	return
 }
 
@@ -129,7 +137,7 @@ func (client ExpressRouteCircuitAuthorizationsClient) Delete(resourceGroupName s
 
 	resp, err := client.DeleteSender(req)
 	if err != nil {
-		result.Response = resp
+		result = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "network/ExpressRouteCircuitAuthorizationsClient", "Delete", resp, "Failure sending request")
 	}
 
@@ -166,7 +174,15 @@ func (client ExpressRouteCircuitAuthorizationsClient) DeletePreparer(resourceGro
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
 func (client ExpressRouteCircuitAuthorizationsClient) DeleteSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	resp, err := client.Send(req)
+	if err == nil && azure.ResponseIsLongRunning(resp) {
+		req, err := azure.NewAsyncPollingRequest(resp, client.Client)
+		if err == nil {
+			resp, err = autorest.SendWithSender(client, req,
+				azure.WithAsyncPolling(autorest.DefaultPollingDelay))
+		}
+	}
+	return resp, err
 }
 
 // DeleteResponder handles the response to the Delete request. The method always
@@ -176,8 +192,9 @@ func (client ExpressRouteCircuitAuthorizationsClient) DeleteResponder(resp *http
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusAccepted, http.StatusOK, http.StatusNoContent),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = resp
+	result = autorest.Response{Response: resp}
 	return
 }
 

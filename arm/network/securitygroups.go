@@ -53,7 +53,7 @@ func NewSecurityGroupsClientWithBaseURI(baseURI string, subscriptionID string) S
 // networkSecurityGroupName is the name of the network security group.
 // parameters is parameters supplied to the create/update Network Security
 // Group operation
-func (client SecurityGroupsClient) CreateOrUpdate(resourceGroupName string, networkSecurityGroupName string, parameters SecurityGroup) (result SecurityGroup, ae error) {
+func (client SecurityGroupsClient) CreateOrUpdate(resourceGroupName string, networkSecurityGroupName string, parameters SecurityGroup) (result autorest.Response, ae error) {
 	req, err := client.CreateOrUpdatePreparer(resourceGroupName, networkSecurityGroupName, parameters)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "network/SecurityGroupsClient", "CreateOrUpdate", nil, "Failure preparing request")
@@ -61,7 +61,7 @@ func (client SecurityGroupsClient) CreateOrUpdate(resourceGroupName string, netw
 
 	resp, err := client.CreateOrUpdateSender(req)
 	if err != nil {
-		result.Response = autorest.Response{Response: resp}
+		result = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "network/SecurityGroupsClient", "CreateOrUpdate", resp, "Failure sending request")
 	}
 
@@ -98,19 +98,27 @@ func (client SecurityGroupsClient) CreateOrUpdatePreparer(resourceGroupName stri
 // CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
 // http.Response Body if it receives an error.
 func (client SecurityGroupsClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	resp, err := client.Send(req)
+	if err == nil && azure.ResponseIsLongRunning(resp) {
+		req, err := azure.NewAsyncPollingRequest(resp, client.Client)
+		if err == nil {
+			resp, err = autorest.SendWithSender(client, req,
+				azure.WithAsyncPolling(autorest.DefaultPollingDelay))
+		}
+	}
+	return resp, err
 }
 
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
 // closes the http.Response Body.
-func (client SecurityGroupsClient) CreateOrUpdateResponder(resp *http.Response) (result SecurityGroup, err error) {
+func (client SecurityGroupsClient) CreateOrUpdateResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusCreated, http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
+	result = autorest.Response{Response: resp}
 	return
 }
 
@@ -127,7 +135,7 @@ func (client SecurityGroupsClient) Delete(resourceGroupName string, networkSecur
 
 	resp, err := client.DeleteSender(req)
 	if err != nil {
-		result.Response = resp
+		result = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "network/SecurityGroupsClient", "Delete", resp, "Failure sending request")
 	}
 
@@ -163,7 +171,15 @@ func (client SecurityGroupsClient) DeletePreparer(resourceGroupName string, netw
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
 func (client SecurityGroupsClient) DeleteSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	resp, err := client.Send(req)
+	if err == nil && azure.ResponseIsLongRunning(resp) {
+		req, err := azure.NewAsyncPollingRequest(resp, client.Client)
+		if err == nil {
+			resp, err = autorest.SendWithSender(client, req,
+				azure.WithAsyncPolling(autorest.DefaultPollingDelay))
+		}
+	}
+	return resp, err
 }
 
 // DeleteResponder handles the response to the Delete request. The method always
@@ -173,8 +189,9 @@ func (client SecurityGroupsClient) DeleteResponder(resp *http.Response) (result 
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusAccepted, http.StatusOK, http.StatusNoContent),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = resp
+	result = autorest.Response{Response: resp}
 	return
 }
 

@@ -51,7 +51,7 @@ func NewOriginsClientWithBaseURI(baseURI string, subscriptionID string) OriginsC
 // is name of the endpoint within the CDN profile profileName is name of the
 // CDN profile within the resource group resourceGroupName is name of the
 // resource group within the Azure subscription
-func (client OriginsClient) Create(originName string, originProperties OriginParameters, endpointName string, profileName string, resourceGroupName string) (result Origin, ae error) {
+func (client OriginsClient) Create(originName string, originProperties OriginParameters, endpointName string, profileName string, resourceGroupName string) (result autorest.Response, ae error) {
 	req, err := client.CreatePreparer(originName, originProperties, endpointName, profileName, resourceGroupName)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "cdn/OriginsClient", "Create", nil, "Failure preparing request")
@@ -59,7 +59,7 @@ func (client OriginsClient) Create(originName string, originProperties OriginPar
 
 	resp, err := client.CreateSender(req)
 	if err != nil {
-		result.Response = autorest.Response{Response: resp}
+		result = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "cdn/OriginsClient", "Create", resp, "Failure sending request")
 	}
 
@@ -98,19 +98,27 @@ func (client OriginsClient) CreatePreparer(originName string, originProperties O
 // CreateSender sends the Create request. The method will close the
 // http.Response Body if it receives an error.
 func (client OriginsClient) CreateSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	resp, err := client.Send(req)
+	if err == nil && azure.ResponseIsLongRunning(resp) {
+		req, err := azure.NewAsyncPollingRequest(resp, client.Client)
+		if err == nil {
+			resp, err = autorest.SendWithSender(client, req,
+				azure.WithAsyncPolling(autorest.DefaultPollingDelay))
+		}
+	}
+	return resp, err
 }
 
 // CreateResponder handles the response to the Create request. The method always
 // closes the http.Response Body.
-func (client OriginsClient) CreateResponder(resp *http.Response) (result Origin, err error) {
+func (client OriginsClient) CreateResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated, http.StatusAccepted),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
+	result = autorest.Response{Response: resp}
 	return
 }
 
@@ -121,7 +129,7 @@ func (client OriginsClient) CreateResponder(resp *http.Response) (result Origin,
 // profile profileName is name of the CDN profile within the resource group
 // resourceGroupName is name of the resource group within the Azure
 // subscription
-func (client OriginsClient) DeleteIfExists(originName string, endpointName string, profileName string, resourceGroupName string) (result Origin, ae error) {
+func (client OriginsClient) DeleteIfExists(originName string, endpointName string, profileName string, resourceGroupName string) (result autorest.Response, ae error) {
 	req, err := client.DeleteIfExistsPreparer(originName, endpointName, profileName, resourceGroupName)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "cdn/OriginsClient", "DeleteIfExists", nil, "Failure preparing request")
@@ -129,7 +137,7 @@ func (client OriginsClient) DeleteIfExists(originName string, endpointName strin
 
 	resp, err := client.DeleteIfExistsSender(req)
 	if err != nil {
-		result.Response = autorest.Response{Response: resp}
+		result = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "cdn/OriginsClient", "DeleteIfExists", resp, "Failure sending request")
 	}
 
@@ -167,19 +175,27 @@ func (client OriginsClient) DeleteIfExistsPreparer(originName string, endpointNa
 // DeleteIfExistsSender sends the DeleteIfExists request. The method will close the
 // http.Response Body if it receives an error.
 func (client OriginsClient) DeleteIfExistsSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	resp, err := client.Send(req)
+	if err == nil && azure.ResponseIsLongRunning(resp) {
+		req, err := azure.NewAsyncPollingRequest(resp, client.Client)
+		if err == nil {
+			resp, err = autorest.SendWithSender(client, req,
+				azure.WithAsyncPolling(autorest.DefaultPollingDelay))
+		}
+	}
+	return resp, err
 }
 
 // DeleteIfExistsResponder handles the response to the DeleteIfExists request. The method always
 // closes the http.Response Body.
-func (client OriginsClient) DeleteIfExistsResponder(resp *http.Response) (result Origin, err error) {
+func (client OriginsClient) DeleteIfExistsResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
+	result = autorest.Response{Response: resp}
 	return
 }
 

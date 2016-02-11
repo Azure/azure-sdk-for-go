@@ -53,7 +53,7 @@ func NewExpressRouteCircuitPeeringsClientWithBaseURI(baseURI string, subscriptio
 // name of the express route circuit. peeringName is the name of the peering.
 // peeringParameters is parameters supplied to the create/update
 // ExpressRouteCircuit Peering operation
-func (client ExpressRouteCircuitPeeringsClient) CreateOrUpdate(resourceGroupName string, circuitName string, peeringName string, peeringParameters ExpressRouteCircuitPeering) (result ExpressRouteCircuitPeering, ae error) {
+func (client ExpressRouteCircuitPeeringsClient) CreateOrUpdate(resourceGroupName string, circuitName string, peeringName string, peeringParameters ExpressRouteCircuitPeering) (result autorest.Response, ae error) {
 	req, err := client.CreateOrUpdatePreparer(resourceGroupName, circuitName, peeringName, peeringParameters)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "network/ExpressRouteCircuitPeeringsClient", "CreateOrUpdate", nil, "Failure preparing request")
@@ -61,7 +61,7 @@ func (client ExpressRouteCircuitPeeringsClient) CreateOrUpdate(resourceGroupName
 
 	resp, err := client.CreateOrUpdateSender(req)
 	if err != nil {
-		result.Response = autorest.Response{Response: resp}
+		result = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "network/ExpressRouteCircuitPeeringsClient", "CreateOrUpdate", resp, "Failure sending request")
 	}
 
@@ -99,19 +99,27 @@ func (client ExpressRouteCircuitPeeringsClient) CreateOrUpdatePreparer(resourceG
 // CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
 // http.Response Body if it receives an error.
 func (client ExpressRouteCircuitPeeringsClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	resp, err := client.Send(req)
+	if err == nil && azure.ResponseIsLongRunning(resp) {
+		req, err := azure.NewAsyncPollingRequest(resp, client.Client)
+		if err == nil {
+			resp, err = autorest.SendWithSender(client, req,
+				azure.WithAsyncPolling(autorest.DefaultPollingDelay))
+		}
+	}
+	return resp, err
 }
 
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
 // closes the http.Response Body.
-func (client ExpressRouteCircuitPeeringsClient) CreateOrUpdateResponder(resp *http.Response) (result ExpressRouteCircuitPeering, err error) {
+func (client ExpressRouteCircuitPeeringsClient) CreateOrUpdateResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
+	result = autorest.Response{Response: resp}
 	return
 }
 
@@ -128,7 +136,7 @@ func (client ExpressRouteCircuitPeeringsClient) Delete(resourceGroupName string,
 
 	resp, err := client.DeleteSender(req)
 	if err != nil {
-		result.Response = resp
+		result = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "network/ExpressRouteCircuitPeeringsClient", "Delete", resp, "Failure sending request")
 	}
 
@@ -165,7 +173,15 @@ func (client ExpressRouteCircuitPeeringsClient) DeletePreparer(resourceGroupName
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
 func (client ExpressRouteCircuitPeeringsClient) DeleteSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	resp, err := client.Send(req)
+	if err == nil && azure.ResponseIsLongRunning(resp) {
+		req, err := azure.NewAsyncPollingRequest(resp, client.Client)
+		if err == nil {
+			resp, err = autorest.SendWithSender(client, req,
+				azure.WithAsyncPolling(autorest.DefaultPollingDelay))
+		}
+	}
+	return resp, err
 }
 
 // DeleteResponder handles the response to the Delete request. The method always
@@ -175,8 +191,9 @@ func (client ExpressRouteCircuitPeeringsClient) DeleteResponder(resp *http.Respo
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = resp
+	result = autorest.Response{Response: resp}
 	return
 }
 

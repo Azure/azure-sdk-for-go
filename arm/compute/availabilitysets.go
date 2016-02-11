@@ -165,8 +165,7 @@ func (client AvailabilitySetsClient) DeleteResponder(resp *http.Response) (resul
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusNoContent, http.StatusOK),
-		autorest.ByClosing())
+		azure.WithErrorUnlessStatusCode(http.StatusNoContent, http.StatusOK))
 	result.Response = resp
 	return
 }

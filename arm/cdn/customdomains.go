@@ -53,7 +53,7 @@ func NewCustomDomainsClientWithBaseURI(baseURI string, subscriptionID string) Cu
 // endpointName is name of the endpoint within the CDN profile profileName is
 // name of the CDN profile within the resource group resourceGroupName is
 // name of the resource group within the Azure subscription
-func (client CustomDomainsClient) Create(customDomainName string, customDomainProperties CustomDomainParameters, endpointName string, profileName string, resourceGroupName string) (result CustomDomain, ae error) {
+func (client CustomDomainsClient) Create(customDomainName string, customDomainProperties CustomDomainParameters, endpointName string, profileName string, resourceGroupName string) (result autorest.Response, ae error) {
 	req, err := client.CreatePreparer(customDomainName, customDomainProperties, endpointName, profileName, resourceGroupName)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "cdn/CustomDomainsClient", "Create", nil, "Failure preparing request")
@@ -61,7 +61,7 @@ func (client CustomDomainsClient) Create(customDomainName string, customDomainPr
 
 	resp, err := client.CreateSender(req)
 	if err != nil {
-		result.Response = autorest.Response{Response: resp}
+		result = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "cdn/CustomDomainsClient", "Create", resp, "Failure sending request")
 	}
 
@@ -100,19 +100,27 @@ func (client CustomDomainsClient) CreatePreparer(customDomainName string, custom
 // CreateSender sends the Create request. The method will close the
 // http.Response Body if it receives an error.
 func (client CustomDomainsClient) CreateSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	resp, err := client.Send(req)
+	if err == nil && azure.ResponseIsLongRunning(resp) {
+		req, err := azure.NewAsyncPollingRequest(resp, client.Client)
+		if err == nil {
+			resp, err = autorest.SendWithSender(client, req,
+				azure.WithAsyncPolling(autorest.DefaultPollingDelay))
+		}
+	}
+	return resp, err
 }
 
 // CreateResponder handles the response to the Create request. The method always
 // closes the http.Response Body.
-func (client CustomDomainsClient) CreateResponder(resp *http.Response) (result CustomDomain, err error) {
+func (client CustomDomainsClient) CreateResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated, http.StatusAccepted),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
+	result = autorest.Response{Response: resp}
 	return
 }
 
@@ -122,7 +130,7 @@ func (client CustomDomainsClient) CreateResponder(resp *http.Response) (result C
 // endpointName is name of the endpoint within the CDN profile profileName is
 // name of the CDN profile within the resource group resourceGroupName is
 // name of the resource group within the Azure subscription
-func (client CustomDomainsClient) DeleteIfExists(customDomainName string, endpointName string, profileName string, resourceGroupName string) (result CustomDomain, ae error) {
+func (client CustomDomainsClient) DeleteIfExists(customDomainName string, endpointName string, profileName string, resourceGroupName string) (result autorest.Response, ae error) {
 	req, err := client.DeleteIfExistsPreparer(customDomainName, endpointName, profileName, resourceGroupName)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "cdn/CustomDomainsClient", "DeleteIfExists", nil, "Failure preparing request")
@@ -130,7 +138,7 @@ func (client CustomDomainsClient) DeleteIfExists(customDomainName string, endpoi
 
 	resp, err := client.DeleteIfExistsSender(req)
 	if err != nil {
-		result.Response = autorest.Response{Response: resp}
+		result = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "cdn/CustomDomainsClient", "DeleteIfExists", resp, "Failure sending request")
 	}
 
@@ -168,19 +176,27 @@ func (client CustomDomainsClient) DeleteIfExistsPreparer(customDomainName string
 // DeleteIfExistsSender sends the DeleteIfExists request. The method will close the
 // http.Response Body if it receives an error.
 func (client CustomDomainsClient) DeleteIfExistsSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	resp, err := client.Send(req)
+	if err == nil && azure.ResponseIsLongRunning(resp) {
+		req, err := azure.NewAsyncPollingRequest(resp, client.Client)
+		if err == nil {
+			resp, err = autorest.SendWithSender(client, req,
+				azure.WithAsyncPolling(autorest.DefaultPollingDelay))
+		}
+	}
+	return resp, err
 }
 
 // DeleteIfExistsResponder handles the response to the DeleteIfExists request. The method always
 // closes the http.Response Body.
-func (client CustomDomainsClient) DeleteIfExistsResponder(resp *http.Response) (result CustomDomain, err error) {
+func (client CustomDomainsClient) DeleteIfExistsResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
+	result = autorest.Response{Response: resp}
 	return
 }
 

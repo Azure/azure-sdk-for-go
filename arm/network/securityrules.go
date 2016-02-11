@@ -54,7 +54,7 @@ func NewSecurityRulesClientWithBaseURI(baseURI string, subscriptionID string) Se
 // securityRuleName is the name of the security rule. securityRuleParameters
 // is parameters supplied to the create/update network security rule
 // operation
-func (client SecurityRulesClient) CreateOrUpdate(resourceGroupName string, networkSecurityGroupName string, securityRuleName string, securityRuleParameters SecurityRule) (result SecurityRule, ae error) {
+func (client SecurityRulesClient) CreateOrUpdate(resourceGroupName string, networkSecurityGroupName string, securityRuleName string, securityRuleParameters SecurityRule) (result autorest.Response, ae error) {
 	req, err := client.CreateOrUpdatePreparer(resourceGroupName, networkSecurityGroupName, securityRuleName, securityRuleParameters)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "network/SecurityRulesClient", "CreateOrUpdate", nil, "Failure preparing request")
@@ -62,7 +62,7 @@ func (client SecurityRulesClient) CreateOrUpdate(resourceGroupName string, netwo
 
 	resp, err := client.CreateOrUpdateSender(req)
 	if err != nil {
-		result.Response = autorest.Response{Response: resp}
+		result = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "network/SecurityRulesClient", "CreateOrUpdate", resp, "Failure sending request")
 	}
 
@@ -100,19 +100,27 @@ func (client SecurityRulesClient) CreateOrUpdatePreparer(resourceGroupName strin
 // CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
 // http.Response Body if it receives an error.
 func (client SecurityRulesClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	resp, err := client.Send(req)
+	if err == nil && azure.ResponseIsLongRunning(resp) {
+		req, err := azure.NewAsyncPollingRequest(resp, client.Client)
+		if err == nil {
+			resp, err = autorest.SendWithSender(client, req,
+				azure.WithAsyncPolling(autorest.DefaultPollingDelay))
+		}
+	}
+	return resp, err
 }
 
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
 // closes the http.Response Body.
-func (client SecurityRulesClient) CreateOrUpdateResponder(resp *http.Response) (result SecurityRule, err error) {
+func (client SecurityRulesClient) CreateOrUpdateResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
+	result = autorest.Response{Response: resp}
 	return
 }
 
@@ -130,7 +138,7 @@ func (client SecurityRulesClient) Delete(resourceGroupName string, networkSecuri
 
 	resp, err := client.DeleteSender(req)
 	if err != nil {
-		result.Response = resp
+		result = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "network/SecurityRulesClient", "Delete", resp, "Failure sending request")
 	}
 
@@ -167,7 +175,15 @@ func (client SecurityRulesClient) DeletePreparer(resourceGroupName string, netwo
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
 func (client SecurityRulesClient) DeleteSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	resp, err := client.Send(req)
+	if err == nil && azure.ResponseIsLongRunning(resp) {
+		req, err := azure.NewAsyncPollingRequest(resp, client.Client)
+		if err == nil {
+			resp, err = autorest.SendWithSender(client, req,
+				azure.WithAsyncPolling(autorest.DefaultPollingDelay))
+		}
+	}
+	return resp, err
 }
 
 // DeleteResponder handles the response to the Delete request. The method always
@@ -177,8 +193,9 @@ func (client SecurityRulesClient) DeleteResponder(resp *http.Response) (result a
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusNoContent, http.StatusAccepted, http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = resp
+	result = autorest.Response{Response: resp}
 	return
 }
 

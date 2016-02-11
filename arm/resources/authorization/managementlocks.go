@@ -302,8 +302,7 @@ func (client ManagementLocksClient) DeleteAtResourceGroupLevelResponder(resp *ht
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusNoContent, http.StatusOK, http.StatusAccepted),
-		autorest.ByClosing())
+		azure.WithErrorUnlessStatusCode(http.StatusNoContent, http.StatusOK, http.StatusAccepted))
 	result.Response = resp
 	return
 }
@@ -372,8 +371,7 @@ func (client ManagementLocksClient) DeleteAtResourceLevelResponder(resp *http.Re
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusNoContent, http.StatusOK, http.StatusAccepted),
-		autorest.ByClosing())
+		azure.WithErrorUnlessStatusCode(http.StatusNoContent, http.StatusOK, http.StatusAccepted))
 	result.Response = resp
 	return
 }
@@ -433,8 +431,7 @@ func (client ManagementLocksClient) DeleteAtSubscriptionLevelResponder(resp *htt
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusNoContent, http.StatusOK, http.StatusAccepted),
-		autorest.ByClosing())
+		azure.WithErrorUnlessStatusCode(http.StatusNoContent, http.StatusOK, http.StatusAccepted))
 	result.Response = resp
 	return
 }

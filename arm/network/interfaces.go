@@ -51,7 +51,7 @@ func NewInterfacesClientWithBaseURI(baseURI string, subscriptionID string) Inter
 // resourceGroupName is the name of the resource group. networkInterfaceName
 // is the name of the network interface. parameters is parameters supplied to
 // the create/update NetworkInterface operation
-func (client InterfacesClient) CreateOrUpdate(resourceGroupName string, networkInterfaceName string, parameters Interface) (result Interface, ae error) {
+func (client InterfacesClient) CreateOrUpdate(resourceGroupName string, networkInterfaceName string, parameters Interface) (result autorest.Response, ae error) {
 	req, err := client.CreateOrUpdatePreparer(resourceGroupName, networkInterfaceName, parameters)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "network/InterfacesClient", "CreateOrUpdate", nil, "Failure preparing request")
@@ -59,7 +59,7 @@ func (client InterfacesClient) CreateOrUpdate(resourceGroupName string, networkI
 
 	resp, err := client.CreateOrUpdateSender(req)
 	if err != nil {
-		result.Response = autorest.Response{Response: resp}
+		result = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "network/InterfacesClient", "CreateOrUpdate", resp, "Failure sending request")
 	}
 
@@ -96,19 +96,27 @@ func (client InterfacesClient) CreateOrUpdatePreparer(resourceGroupName string, 
 // CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
 // http.Response Body if it receives an error.
 func (client InterfacesClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	resp, err := client.Send(req)
+	if err == nil && azure.ResponseIsLongRunning(resp) {
+		req, err := azure.NewAsyncPollingRequest(resp, client.Client)
+		if err == nil {
+			resp, err = autorest.SendWithSender(client, req,
+				azure.WithAsyncPolling(autorest.DefaultPollingDelay))
+		}
+	}
+	return resp, err
 }
 
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
 // closes the http.Response Body.
-func (client InterfacesClient) CreateOrUpdateResponder(resp *http.Response) (result Interface, err error) {
+func (client InterfacesClient) CreateOrUpdateResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusCreated, http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
+	result = autorest.Response{Response: resp}
 	return
 }
 
@@ -125,7 +133,7 @@ func (client InterfacesClient) Delete(resourceGroupName string, networkInterface
 
 	resp, err := client.DeleteSender(req)
 	if err != nil {
-		result.Response = resp
+		result = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "network/InterfacesClient", "Delete", resp, "Failure sending request")
 	}
 
@@ -161,7 +169,15 @@ func (client InterfacesClient) DeletePreparer(resourceGroupName string, networkI
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
 func (client InterfacesClient) DeleteSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	resp, err := client.Send(req)
+	if err == nil && azure.ResponseIsLongRunning(resp) {
+		req, err := azure.NewAsyncPollingRequest(resp, client.Client)
+		if err == nil {
+			resp, err = autorest.SendWithSender(client, req,
+				azure.WithAsyncPolling(autorest.DefaultPollingDelay))
+		}
+	}
+	return resp, err
 }
 
 // DeleteResponder handles the response to the Delete request. The method always
@@ -171,8 +187,9 @@ func (client InterfacesClient) DeleteResponder(resp *http.Response) (result auto
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusNoContent, http.StatusAccepted, http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = resp
+	result = autorest.Response{Response: resp}
 	return
 }
 

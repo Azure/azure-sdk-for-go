@@ -55,7 +55,7 @@ func NewHostingEnvironmentsClientWithBaseURI(baseURI string, subscriptionID stri
 // resourceGroupName is name of resource group name is name of
 // hostingEnvironment (App Service Environment) hostingEnvironmentEnvelope is
 // properties of hostingEnvironment (App Service Environment)
-func (client HostingEnvironmentsClient) CreateOrUpdateHostingEnvironment(resourceGroupName string, name string, hostingEnvironmentEnvelope HostingEnvironment) (result HostingEnvironment, ae error) {
+func (client HostingEnvironmentsClient) CreateOrUpdateHostingEnvironment(resourceGroupName string, name string, hostingEnvironmentEnvelope HostingEnvironment) (result autorest.Response, ae error) {
 	req, err := client.CreateOrUpdateHostingEnvironmentPreparer(resourceGroupName, name, hostingEnvironmentEnvelope)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "CreateOrUpdateHostingEnvironment", nil, "Failure preparing request")
@@ -63,7 +63,7 @@ func (client HostingEnvironmentsClient) CreateOrUpdateHostingEnvironment(resourc
 
 	resp, err := client.CreateOrUpdateHostingEnvironmentSender(req)
 	if err != nil {
-		result.Response = autorest.Response{Response: resp}
+		result = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "CreateOrUpdateHostingEnvironment", resp, "Failure sending request")
 	}
 
@@ -100,19 +100,27 @@ func (client HostingEnvironmentsClient) CreateOrUpdateHostingEnvironmentPreparer
 // CreateOrUpdateHostingEnvironmentSender sends the CreateOrUpdateHostingEnvironment request. The method will close the
 // http.Response Body if it receives an error.
 func (client HostingEnvironmentsClient) CreateOrUpdateHostingEnvironmentSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	resp, err := client.Send(req)
+	if err == nil && azure.ResponseIsLongRunning(resp) {
+		req, err := azure.NewAsyncPollingRequest(resp, client.Client)
+		if err == nil {
+			resp, err = autorest.SendWithSender(client, req,
+				azure.WithAsyncPolling(autorest.DefaultPollingDelay))
+		}
+	}
+	return resp, err
 }
 
 // CreateOrUpdateHostingEnvironmentResponder handles the response to the CreateOrUpdateHostingEnvironment request. The method always
 // closes the http.Response Body.
-func (client HostingEnvironmentsClient) CreateOrUpdateHostingEnvironmentResponder(resp *http.Response) (result HostingEnvironment, err error) {
+func (client HostingEnvironmentsClient) CreateOrUpdateHostingEnvironmentResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusBadRequest, http.StatusNotFound, http.StatusConflict),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
+	result = autorest.Response{Response: resp}
 	return
 }
 
@@ -122,7 +130,7 @@ func (client HostingEnvironmentsClient) CreateOrUpdateHostingEnvironmentResponde
 // resourceGroupName is name of resource group name is name of
 // hostingEnvironment (App Service Environment) multiRolePoolEnvelope is
 // properties of multiRole pool
-func (client HostingEnvironmentsClient) CreateOrUpdateMultiRolePool(resourceGroupName string, name string, multiRolePoolEnvelope WorkerPool) (result WorkerPool, ae error) {
+func (client HostingEnvironmentsClient) CreateOrUpdateMultiRolePool(resourceGroupName string, name string, multiRolePoolEnvelope WorkerPool) (result autorest.Response, ae error) {
 	req, err := client.CreateOrUpdateMultiRolePoolPreparer(resourceGroupName, name, multiRolePoolEnvelope)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "CreateOrUpdateMultiRolePool", nil, "Failure preparing request")
@@ -130,7 +138,7 @@ func (client HostingEnvironmentsClient) CreateOrUpdateMultiRolePool(resourceGrou
 
 	resp, err := client.CreateOrUpdateMultiRolePoolSender(req)
 	if err != nil {
-		result.Response = autorest.Response{Response: resp}
+		result = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "CreateOrUpdateMultiRolePool", resp, "Failure sending request")
 	}
 
@@ -167,19 +175,27 @@ func (client HostingEnvironmentsClient) CreateOrUpdateMultiRolePoolPreparer(reso
 // CreateOrUpdateMultiRolePoolSender sends the CreateOrUpdateMultiRolePool request. The method will close the
 // http.Response Body if it receives an error.
 func (client HostingEnvironmentsClient) CreateOrUpdateMultiRolePoolSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	resp, err := client.Send(req)
+	if err == nil && azure.ResponseIsLongRunning(resp) {
+		req, err := azure.NewAsyncPollingRequest(resp, client.Client)
+		if err == nil {
+			resp, err = autorest.SendWithSender(client, req,
+				azure.WithAsyncPolling(autorest.DefaultPollingDelay))
+		}
+	}
+	return resp, err
 }
 
 // CreateOrUpdateMultiRolePoolResponder handles the response to the CreateOrUpdateMultiRolePool request. The method always
 // closes the http.Response Body.
-func (client HostingEnvironmentsClient) CreateOrUpdateMultiRolePoolResponder(resp *http.Response) (result WorkerPool, err error) {
+func (client HostingEnvironmentsClient) CreateOrUpdateMultiRolePoolResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusBadRequest, http.StatusNotFound, http.StatusConflict),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
+	result = autorest.Response{Response: resp}
 	return
 }
 
@@ -188,7 +204,7 @@ func (client HostingEnvironmentsClient) CreateOrUpdateMultiRolePoolResponder(res
 // resourceGroupName is name of resource group name is name of
 // hostingEnvironment (App Service Environment) workerPoolName is name of
 // worker pool workerPoolEnvelope is properties of worker pool
-func (client HostingEnvironmentsClient) CreateOrUpdateWorkerPool(resourceGroupName string, name string, workerPoolName string, workerPoolEnvelope WorkerPool) (result WorkerPool, ae error) {
+func (client HostingEnvironmentsClient) CreateOrUpdateWorkerPool(resourceGroupName string, name string, workerPoolName string, workerPoolEnvelope WorkerPool) (result autorest.Response, ae error) {
 	req, err := client.CreateOrUpdateWorkerPoolPreparer(resourceGroupName, name, workerPoolName, workerPoolEnvelope)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "CreateOrUpdateWorkerPool", nil, "Failure preparing request")
@@ -196,7 +212,7 @@ func (client HostingEnvironmentsClient) CreateOrUpdateWorkerPool(resourceGroupNa
 
 	resp, err := client.CreateOrUpdateWorkerPoolSender(req)
 	if err != nil {
-		result.Response = autorest.Response{Response: resp}
+		result = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "CreateOrUpdateWorkerPool", resp, "Failure sending request")
 	}
 
@@ -234,19 +250,27 @@ func (client HostingEnvironmentsClient) CreateOrUpdateWorkerPoolPreparer(resourc
 // CreateOrUpdateWorkerPoolSender sends the CreateOrUpdateWorkerPool request. The method will close the
 // http.Response Body if it receives an error.
 func (client HostingEnvironmentsClient) CreateOrUpdateWorkerPoolSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	resp, err := client.Send(req)
+	if err == nil && azure.ResponseIsLongRunning(resp) {
+		req, err := azure.NewAsyncPollingRequest(resp, client.Client)
+		if err == nil {
+			resp, err = autorest.SendWithSender(client, req,
+				azure.WithAsyncPolling(autorest.DefaultPollingDelay))
+		}
+	}
+	return resp, err
 }
 
 // CreateOrUpdateWorkerPoolResponder handles the response to the CreateOrUpdateWorkerPool request. The method always
 // closes the http.Response Body.
-func (client HostingEnvironmentsClient) CreateOrUpdateWorkerPoolResponder(resp *http.Response) (result WorkerPool, err error) {
+func (client HostingEnvironmentsClient) CreateOrUpdateWorkerPoolResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusBadRequest, http.StatusNotFound, http.StatusConflict),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
+	result = autorest.Response{Response: resp}
 	return
 }
 
@@ -255,7 +279,7 @@ func (client HostingEnvironmentsClient) CreateOrUpdateWorkerPoolResponder(resp *
 // resourceGroupName is name of resource group name is name of
 // hostingEnvironment (App Service Environment) forceDelete is delete even if
 // the hostingEnvironment (App Service Environment) contains resources
-func (client HostingEnvironmentsClient) DeleteHostingEnvironment(resourceGroupName string, name string, forceDelete *bool) (result ObjectSet, ae error) {
+func (client HostingEnvironmentsClient) DeleteHostingEnvironment(resourceGroupName string, name string, forceDelete *bool) (result autorest.Response, ae error) {
 	req, err := client.DeleteHostingEnvironmentPreparer(resourceGroupName, name, forceDelete)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "DeleteHostingEnvironment", nil, "Failure preparing request")
@@ -263,7 +287,7 @@ func (client HostingEnvironmentsClient) DeleteHostingEnvironment(resourceGroupNa
 
 	resp, err := client.DeleteHostingEnvironmentSender(req)
 	if err != nil {
-		result.Response = autorest.Response{Response: resp}
+		result = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "DeleteHostingEnvironment", resp, "Failure sending request")
 	}
 
@@ -302,19 +326,27 @@ func (client HostingEnvironmentsClient) DeleteHostingEnvironmentPreparer(resourc
 // DeleteHostingEnvironmentSender sends the DeleteHostingEnvironment request. The method will close the
 // http.Response Body if it receives an error.
 func (client HostingEnvironmentsClient) DeleteHostingEnvironmentSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	resp, err := client.Send(req)
+	if err == nil && azure.ResponseIsLongRunning(resp) {
+		req, err := azure.NewAsyncPollingRequest(resp, client.Client)
+		if err == nil {
+			resp, err = autorest.SendWithSender(client, req,
+				azure.WithAsyncPolling(autorest.DefaultPollingDelay))
+		}
+	}
+	return resp, err
 }
 
 // DeleteHostingEnvironmentResponder handles the response to the DeleteHostingEnvironment request. The method always
 // closes the http.Response Body.
-func (client HostingEnvironmentsClient) DeleteHostingEnvironmentResponder(resp *http.Response) (result ObjectSet, err error) {
+func (client HostingEnvironmentsClient) DeleteHostingEnvironmentResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusBadRequest, http.StatusNotFound, http.StatusConflict),
-		autorest.ByUnmarshallingJSON(&result.Value),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
+	result = autorest.Response{Response: resp}
 	return
 }
 
@@ -2415,7 +2447,7 @@ func (client HostingEnvironmentsClient) RebootHostingEnvironmentResponder(resp *
 //
 // resourceGroupName is name of resource group name is name of
 // hostingEnvironment (App Service Environment)
-func (client HostingEnvironmentsClient) ResumeHostingEnvironment(resourceGroupName string, name string) (result SiteCollection, ae error) {
+func (client HostingEnvironmentsClient) ResumeHostingEnvironment(resourceGroupName string, name string) (result autorest.Response, ae error) {
 	req, err := client.ResumeHostingEnvironmentPreparer(resourceGroupName, name)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "ResumeHostingEnvironment", nil, "Failure preparing request")
@@ -2423,7 +2455,7 @@ func (client HostingEnvironmentsClient) ResumeHostingEnvironment(resourceGroupNa
 
 	resp, err := client.ResumeHostingEnvironmentSender(req)
 	if err != nil {
-		result.Response = autorest.Response{Response: resp}
+		result = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "ResumeHostingEnvironment", resp, "Failure sending request")
 	}
 
@@ -2459,19 +2491,27 @@ func (client HostingEnvironmentsClient) ResumeHostingEnvironmentPreparer(resourc
 // ResumeHostingEnvironmentSender sends the ResumeHostingEnvironment request. The method will close the
 // http.Response Body if it receives an error.
 func (client HostingEnvironmentsClient) ResumeHostingEnvironmentSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	resp, err := client.Send(req)
+	if err == nil && azure.ResponseIsLongRunning(resp) {
+		req, err := azure.NewAsyncPollingRequest(resp, client.Client)
+		if err == nil {
+			resp, err = autorest.SendWithSender(client, req,
+				azure.WithAsyncPolling(autorest.DefaultPollingDelay))
+		}
+	}
+	return resp, err
 }
 
 // ResumeHostingEnvironmentResponder handles the response to the ResumeHostingEnvironment request. The method always
 // closes the http.Response Body.
-func (client HostingEnvironmentsClient) ResumeHostingEnvironmentResponder(resp *http.Response) (result SiteCollection, err error) {
+func (client HostingEnvironmentsClient) ResumeHostingEnvironmentResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
+	result = autorest.Response{Response: resp}
 	return
 }
 
@@ -2479,7 +2519,7 @@ func (client HostingEnvironmentsClient) ResumeHostingEnvironmentResponder(resp *
 //
 // resourceGroupName is name of resource group name is name of
 // hostingEnvironment (App Service Environment)
-func (client HostingEnvironmentsClient) SuspendHostingEnvironment(resourceGroupName string, name string) (result SiteCollection, ae error) {
+func (client HostingEnvironmentsClient) SuspendHostingEnvironment(resourceGroupName string, name string) (result autorest.Response, ae error) {
 	req, err := client.SuspendHostingEnvironmentPreparer(resourceGroupName, name)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "SuspendHostingEnvironment", nil, "Failure preparing request")
@@ -2487,7 +2527,7 @@ func (client HostingEnvironmentsClient) SuspendHostingEnvironment(resourceGroupN
 
 	resp, err := client.SuspendHostingEnvironmentSender(req)
 	if err != nil {
-		result.Response = autorest.Response{Response: resp}
+		result = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "SuspendHostingEnvironment", resp, "Failure sending request")
 	}
 
@@ -2523,18 +2563,26 @@ func (client HostingEnvironmentsClient) SuspendHostingEnvironmentPreparer(resour
 // SuspendHostingEnvironmentSender sends the SuspendHostingEnvironment request. The method will close the
 // http.Response Body if it receives an error.
 func (client HostingEnvironmentsClient) SuspendHostingEnvironmentSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	resp, err := client.Send(req)
+	if err == nil && azure.ResponseIsLongRunning(resp) {
+		req, err := azure.NewAsyncPollingRequest(resp, client.Client)
+		if err == nil {
+			resp, err = autorest.SendWithSender(client, req,
+				azure.WithAsyncPolling(autorest.DefaultPollingDelay))
+		}
+	}
+	return resp, err
 }
 
 // SuspendHostingEnvironmentResponder handles the response to the SuspendHostingEnvironment request. The method always
 // closes the http.Response Body.
-func (client HostingEnvironmentsClient) SuspendHostingEnvironmentResponder(resp *http.Response) (result SiteCollection, err error) {
+func (client HostingEnvironmentsClient) SuspendHostingEnvironmentResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
+	result = autorest.Response{Response: resp}
 	return
 }

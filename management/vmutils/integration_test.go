@@ -92,7 +92,7 @@ func TestDeployPlatformOSImageCaptureRedeploy(t *testing.T) {
 
 	t.Logf("Shutting down VM: %s", vmname)
 	if err := Await(client, func() (management.OperationID, error) {
-		return vmc.ShutdownRole(vmname, vmname, vmname)
+		return vmc.ShutdownRole(vmname, vmname, vmname, vm.PostShutdownActionStopped)
 	}); err != nil {
 		t.Error(err)
 	}
@@ -162,7 +162,7 @@ func TestDeployPlatformVMImageCaptureRedeploy(t *testing.T) {
 
 	t.Logf("Shutting down VM: %s", vmname)
 	if err := Await(client, func() (management.OperationID, error) {
-		return vmc.ShutdownRole(vmname, vmname, vmname)
+		return vmc.ShutdownRole(vmname, vmname, vmname, vm.PostShutdownActionStopped)
 	}); err != nil {
 		t.Error(err)
 	}
@@ -235,7 +235,7 @@ func TestRoleStateOperations(t *testing.T) {
 
 	vmc := vm.NewClient(client)
 	if err := Await(client, func() (management.OperationID, error) {
-		return vmc.ShutdownRole(vmname, vmname, vmname)
+		return vmc.ShutdownRole(vmname, vmname, vmname, vm.PostShutdownActionStopped)
 	}); err != nil {
 		t.Error(err)
 	}

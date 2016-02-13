@@ -59,7 +59,7 @@ func (client SubnetsClient) CreateOrUpdate(resourceGroupName string, virtualNetw
 
 	resp, err := client.CreateOrUpdateSender(req)
 	if err != nil {
-		result = autorest.Response{Response: resp}
+		result.Response = resp
 		return result, autorest.NewErrorWithError(err, "network/SubnetsClient", "CreateOrUpdate", resp, "Failure sending request")
 	}
 
@@ -110,14 +110,13 @@ func (client SubnetsClient) CreateOrUpdateSender(req *http.Request) (*http.Respo
 
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
 // closes the http.Response Body.
-func (client SubnetsClient) CreateOrUpdateResponder(resp *http.Response) (result autorest.Response, err error) {
-	err = autorest.Respond(
+func (client SubnetsClient) CreateOrUpdateResponder(resp *http.Response) (result autorest.Response, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
-		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result = autorest.Response{Response: resp}
+	result.Response = resp
 	return
 }
 
@@ -133,7 +132,7 @@ func (client SubnetsClient) Delete(resourceGroupName string, virtualNetworkName 
 
 	resp, err := client.DeleteSender(req)
 	if err != nil {
-		result = autorest.Response{Response: resp}
+		result.Response = resp
 		return result, autorest.NewErrorWithError(err, "network/SubnetsClient", "Delete", resp, "Failure sending request")
 	}
 
@@ -183,14 +182,13 @@ func (client SubnetsClient) DeleteSender(req *http.Request) (*http.Response, err
 
 // DeleteResponder handles the response to the Delete request. The method always
 // closes the http.Response Body.
-func (client SubnetsClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
-	err = autorest.Respond(
+func (client SubnetsClient) DeleteResponder(resp *http.Response) (result autorest.Response, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent, http.StatusAccepted),
-		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result = autorest.Response{Response: resp}
+	result.Response = resp
 	return
 }
 
@@ -253,8 +251,8 @@ func (client SubnetsClient) GetSender(req *http.Request) (*http.Response, error)
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
-func (client SubnetsClient) GetResponder(resp *http.Response) (result Subnet, err error) {
-	err = autorest.Respond(
+func (client SubnetsClient) GetResponder(resp *http.Response) (result Subnet, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -318,8 +316,8 @@ func (client SubnetsClient) ListSender(req *http.Request) (*http.Response, error
 
 // ListResponder handles the response to the List request. The method always
 // closes the http.Response Body.
-func (client SubnetsClient) ListResponder(resp *http.Response) (result SubnetListResult, err error) {
-	err = autorest.Respond(
+func (client SubnetsClient) ListResponder(resp *http.Response) (result SubnetListResult, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),

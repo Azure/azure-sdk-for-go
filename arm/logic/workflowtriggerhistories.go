@@ -99,8 +99,8 @@ func (client WorkflowTriggerHistoriesClient) GetSender(req *http.Request) (*http
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
-func (client WorkflowTriggerHistoriesClient) GetResponder(resp *http.Response) (result WorkflowTriggerHistory, err error) {
-	err = autorest.Respond(
+func (client WorkflowTriggerHistoriesClient) GetResponder(resp *http.Response) (result WorkflowTriggerHistory, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -168,8 +168,8 @@ func (client WorkflowTriggerHistoriesClient) ListSender(req *http.Request) (*htt
 
 // ListResponder handles the response to the List request. The method always
 // closes the http.Response Body.
-func (client WorkflowTriggerHistoriesClient) ListResponder(resp *http.Response) (result WorkflowTriggerHistoryListResult, err error) {
-	err = autorest.Respond(
+func (client WorkflowTriggerHistoriesClient) ListResponder(resp *http.Response) (result WorkflowTriggerHistoryListResult, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),

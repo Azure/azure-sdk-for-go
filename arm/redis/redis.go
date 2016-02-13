@@ -97,8 +97,8 @@ func (client Client) CreateOrUpdateSender(req *http.Request) (*http.Response, er
 
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
 // closes the http.Response Body.
-func (client Client) CreateOrUpdateResponder(resp *http.Response) (result ResourceWithAccessKey, err error) {
-	err = autorest.Respond(
+func (client Client) CreateOrUpdateResponder(resp *http.Response) (result ResourceWithAccessKey, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusCreated, http.StatusOK),
@@ -161,11 +161,12 @@ func (client Client) DeleteSender(req *http.Request) (*http.Response, error) {
 
 // DeleteResponder handles the response to the Delete request. The method always
 // closes the http.Response Body.
-func (client Client) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
-	err = autorest.Respond(
+func (client Client) DeleteResponder(resp *http.Response) (result autorest.Response, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNotFound))
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNotFound),
+		autorest.ByClosing())
 	result.Response = resp
 	return
 }
@@ -223,8 +224,8 @@ func (client Client) GetSender(req *http.Request) (*http.Response, error) {
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
-func (client Client) GetResponder(resp *http.Response) (result ResourceType, err error) {
-	err = autorest.Respond(
+func (client Client) GetResponder(resp *http.Response) (result ResourceType, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -282,8 +283,8 @@ func (client Client) ListSender(req *http.Request) (*http.Response, error) {
 
 // ListResponder handles the response to the List request. The method always
 // closes the http.Response Body.
-func (client Client) ListResponder(resp *http.Response) (result ListResult, err error) {
-	err = autorest.Respond(
+func (client Client) ListResponder(resp *http.Response) (result ListResult, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -368,8 +369,8 @@ func (client Client) ListByResourceGroupSender(req *http.Request) (*http.Respons
 
 // ListByResourceGroupResponder handles the response to the ListByResourceGroup request. The method always
 // closes the http.Response Body.
-func (client Client) ListByResourceGroupResponder(resp *http.Response) (result ListResult, err error) {
-	err = autorest.Respond(
+func (client Client) ListByResourceGroupResponder(resp *http.Response) (result ListResult, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -457,8 +458,8 @@ func (client Client) ListKeysSender(req *http.Request) (*http.Response, error) {
 
 // ListKeysResponder handles the response to the ListKeys request. The method always
 // closes the http.Response Body.
-func (client Client) ListKeysResponder(resp *http.Response) (result ListKeysResult, err error) {
-	err = autorest.Respond(
+func (client Client) ListKeysResponder(resp *http.Response) (result ListKeysResult, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -523,8 +524,8 @@ func (client Client) RegenerateKeySender(req *http.Request) (*http.Response, err
 
 // RegenerateKeyResponder handles the response to the RegenerateKey request. The method always
 // closes the http.Response Body.
-func (client Client) RegenerateKeyResponder(resp *http.Response) (result ListKeysResult, err error) {
-	err = autorest.Respond(
+func (client Client) RegenerateKeyResponder(resp *http.Response) (result ListKeysResult, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),

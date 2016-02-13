@@ -60,7 +60,7 @@ func (client ApplicationGatewaysClient) CreateOrUpdate(resourceGroupName string,
 
 	resp, err := client.CreateOrUpdateSender(req)
 	if err != nil {
-		result = autorest.Response{Response: resp}
+		result.Response = resp
 		return result, autorest.NewErrorWithError(err, "network/ApplicationGatewaysClient", "CreateOrUpdate", resp, "Failure sending request")
 	}
 
@@ -110,14 +110,13 @@ func (client ApplicationGatewaysClient) CreateOrUpdateSender(req *http.Request) 
 
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
 // closes the http.Response Body.
-func (client ApplicationGatewaysClient) CreateOrUpdateResponder(resp *http.Response) (result autorest.Response, err error) {
-	err = autorest.Respond(
+func (client ApplicationGatewaysClient) CreateOrUpdateResponder(resp *http.Response) (result autorest.Response, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusCreated, http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result = autorest.Response{Response: resp}
+	result.Response = resp
 	return
 }
 
@@ -134,7 +133,7 @@ func (client ApplicationGatewaysClient) Delete(resourceGroupName string, applica
 
 	resp, err := client.DeleteSender(req)
 	if err != nil {
-		result = autorest.Response{Response: resp}
+		result.Response = resp
 		return result, autorest.NewErrorWithError(err, "network/ApplicationGatewaysClient", "Delete", resp, "Failure sending request")
 	}
 
@@ -183,14 +182,13 @@ func (client ApplicationGatewaysClient) DeleteSender(req *http.Request) (*http.R
 
 // DeleteResponder handles the response to the Delete request. The method always
 // closes the http.Response Body.
-func (client ApplicationGatewaysClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
-	err = autorest.Respond(
+func (client ApplicationGatewaysClient) DeleteResponder(resp *http.Response) (result autorest.Response, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusAccepted, http.StatusNoContent, http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result = autorest.Response{Response: resp}
+	result.Response = resp
 	return
 }
 
@@ -248,8 +246,8 @@ func (client ApplicationGatewaysClient) GetSender(req *http.Request) (*http.Resp
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
-func (client ApplicationGatewaysClient) GetResponder(resp *http.Response) (result ApplicationGateway, err error) {
-	err = autorest.Respond(
+func (client ApplicationGatewaysClient) GetResponder(resp *http.Response) (result ApplicationGateway, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -311,8 +309,8 @@ func (client ApplicationGatewaysClient) ListSender(req *http.Request) (*http.Res
 
 // ListResponder handles the response to the List request. The method always
 // closes the http.Response Body.
-func (client ApplicationGatewaysClient) ListResponder(resp *http.Response) (result ApplicationGatewayListResult, err error) {
-	err = autorest.Respond(
+func (client ApplicationGatewaysClient) ListResponder(resp *http.Response) (result ApplicationGatewayListResult, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -395,8 +393,8 @@ func (client ApplicationGatewaysClient) ListAllSender(req *http.Request) (*http.
 
 // ListAllResponder handles the response to the ListAll request. The method always
 // closes the http.Response Body.
-func (client ApplicationGatewaysClient) ListAllResponder(resp *http.Response) (result ApplicationGatewayListResult, err error) {
-	err = autorest.Respond(
+func (client ApplicationGatewaysClient) ListAllResponder(resp *http.Response) (result ApplicationGatewayListResult, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -443,7 +441,7 @@ func (client ApplicationGatewaysClient) Start(resourceGroupName string, applicat
 
 	resp, err := client.StartSender(req)
 	if err != nil {
-		result = autorest.Response{Response: resp}
+		result.Response = resp
 		return result, autorest.NewErrorWithError(err, "network/ApplicationGatewaysClient", "Start", resp, "Failure sending request")
 	}
 
@@ -492,14 +490,13 @@ func (client ApplicationGatewaysClient) StartSender(req *http.Request) (*http.Re
 
 // StartResponder handles the response to the Start request. The method always
 // closes the http.Response Body.
-func (client ApplicationGatewaysClient) StartResponder(resp *http.Response) (result autorest.Response, err error) {
-	err = autorest.Respond(
+func (client ApplicationGatewaysClient) StartResponder(resp *http.Response) (result autorest.Response, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
-		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result = autorest.Response{Response: resp}
+	result.Response = resp
 	return
 }
 
@@ -516,7 +513,7 @@ func (client ApplicationGatewaysClient) Stop(resourceGroupName string, applicati
 
 	resp, err := client.StopSender(req)
 	if err != nil {
-		result = autorest.Response{Response: resp}
+		result.Response = resp
 		return result, autorest.NewErrorWithError(err, "network/ApplicationGatewaysClient", "Stop", resp, "Failure sending request")
 	}
 
@@ -565,13 +562,12 @@ func (client ApplicationGatewaysClient) StopSender(req *http.Request) (*http.Res
 
 // StopResponder handles the response to the Stop request. The method always
 // closes the http.Response Body.
-func (client ApplicationGatewaysClient) StopResponder(resp *http.Response) (result autorest.Response, err error) {
-	err = autorest.Respond(
+func (client ApplicationGatewaysClient) StopResponder(resp *http.Response) (result autorest.Response, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
-		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result = autorest.Response{Response: resp}
+	result.Response = resp
 	return
 }

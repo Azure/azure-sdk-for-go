@@ -61,7 +61,7 @@ func (client SecurityGroupsClient) CreateOrUpdate(resourceGroupName string, netw
 
 	resp, err := client.CreateOrUpdateSender(req)
 	if err != nil {
-		result = autorest.Response{Response: resp}
+		result.Response = resp
 		return result, autorest.NewErrorWithError(err, "network/SecurityGroupsClient", "CreateOrUpdate", resp, "Failure sending request")
 	}
 
@@ -111,14 +111,13 @@ func (client SecurityGroupsClient) CreateOrUpdateSender(req *http.Request) (*htt
 
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
 // closes the http.Response Body.
-func (client SecurityGroupsClient) CreateOrUpdateResponder(resp *http.Response) (result autorest.Response, err error) {
-	err = autorest.Respond(
+func (client SecurityGroupsClient) CreateOrUpdateResponder(resp *http.Response) (result autorest.Response, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusCreated, http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result = autorest.Response{Response: resp}
+	result.Response = resp
 	return
 }
 
@@ -135,7 +134,7 @@ func (client SecurityGroupsClient) Delete(resourceGroupName string, networkSecur
 
 	resp, err := client.DeleteSender(req)
 	if err != nil {
-		result = autorest.Response{Response: resp}
+		result.Response = resp
 		return result, autorest.NewErrorWithError(err, "network/SecurityGroupsClient", "Delete", resp, "Failure sending request")
 	}
 
@@ -184,14 +183,13 @@ func (client SecurityGroupsClient) DeleteSender(req *http.Request) (*http.Respon
 
 // DeleteResponder handles the response to the Delete request. The method always
 // closes the http.Response Body.
-func (client SecurityGroupsClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
-	err = autorest.Respond(
+func (client SecurityGroupsClient) DeleteResponder(resp *http.Response) (result autorest.Response, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusAccepted, http.StatusOK, http.StatusNoContent),
-		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result = autorest.Response{Response: resp}
+	result.Response = resp
 	return
 }
 
@@ -253,8 +251,8 @@ func (client SecurityGroupsClient) GetSender(req *http.Request) (*http.Response,
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
-func (client SecurityGroupsClient) GetResponder(resp *http.Response) (result SecurityGroup, err error) {
-	err = autorest.Respond(
+func (client SecurityGroupsClient) GetResponder(resp *http.Response) (result SecurityGroup, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -316,8 +314,8 @@ func (client SecurityGroupsClient) ListSender(req *http.Request) (*http.Response
 
 // ListResponder handles the response to the List request. The method always
 // closes the http.Response Body.
-func (client SecurityGroupsClient) ListResponder(resp *http.Response) (result SecurityGroupListResult, err error) {
-	err = autorest.Respond(
+func (client SecurityGroupsClient) ListResponder(resp *http.Response) (result SecurityGroupListResult, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -400,8 +398,8 @@ func (client SecurityGroupsClient) ListAllSender(req *http.Request) (*http.Respo
 
 // ListAllResponder handles the response to the ListAll request. The method always
 // closes the http.Response Body.
-func (client SecurityGroupsClient) ListAllResponder(resp *http.Response) (result SecurityGroupListResult, err error) {
-	err = autorest.Respond(
+func (client SecurityGroupsClient) ListAllResponder(resp *http.Response) (result SecurityGroupListResult, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),

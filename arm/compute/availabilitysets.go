@@ -97,8 +97,8 @@ func (client AvailabilitySetsClient) CreateOrUpdateSender(req *http.Request) (*h
 
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
 // closes the http.Response Body.
-func (client AvailabilitySetsClient) CreateOrUpdateResponder(resp *http.Response) (result AvailabilitySet, err error) {
-	err = autorest.Respond(
+func (client AvailabilitySetsClient) CreateOrUpdateResponder(resp *http.Response) (result AvailabilitySet, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -161,11 +161,12 @@ func (client AvailabilitySetsClient) DeleteSender(req *http.Request) (*http.Resp
 
 // DeleteResponder handles the response to the Delete request. The method always
 // closes the http.Response Body.
-func (client AvailabilitySetsClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
-	err = autorest.Respond(
+func (client AvailabilitySetsClient) DeleteResponder(resp *http.Response) (result autorest.Response, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusNoContent, http.StatusOK))
+		azure.WithErrorUnlessStatusCode(http.StatusNoContent, http.StatusOK),
+		autorest.ByClosing())
 	result.Response = resp
 	return
 }
@@ -223,8 +224,8 @@ func (client AvailabilitySetsClient) GetSender(req *http.Request) (*http.Respons
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
-func (client AvailabilitySetsClient) GetResponder(resp *http.Response) (result AvailabilitySet, err error) {
-	err = autorest.Respond(
+func (client AvailabilitySetsClient) GetResponder(resp *http.Response) (result AvailabilitySet, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -285,8 +286,8 @@ func (client AvailabilitySetsClient) ListSender(req *http.Request) (*http.Respon
 
 // ListResponder handles the response to the List request. The method always
 // closes the http.Response Body.
-func (client AvailabilitySetsClient) ListResponder(resp *http.Response) (result AvailabilitySetListResult, err error) {
-	err = autorest.Respond(
+func (client AvailabilitySetsClient) ListResponder(resp *http.Response) (result AvailabilitySetListResult, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -374,8 +375,8 @@ func (client AvailabilitySetsClient) ListAvailableSizesSender(req *http.Request)
 
 // ListAvailableSizesResponder handles the response to the ListAvailableSizes request. The method always
 // closes the http.Response Body.
-func (client AvailabilitySetsClient) ListAvailableSizesResponder(resp *http.Response) (result VirtualMachineSizeListResult, err error) {
-	err = autorest.Respond(
+func (client AvailabilitySetsClient) ListAvailableSizesResponder(resp *http.Response) (result VirtualMachineSizeListResult, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),

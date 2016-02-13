@@ -62,7 +62,7 @@ func (client SecurityRulesClient) CreateOrUpdate(resourceGroupName string, netwo
 
 	resp, err := client.CreateOrUpdateSender(req)
 	if err != nil {
-		result = autorest.Response{Response: resp}
+		result.Response = resp
 		return result, autorest.NewErrorWithError(err, "network/SecurityRulesClient", "CreateOrUpdate", resp, "Failure sending request")
 	}
 
@@ -113,14 +113,13 @@ func (client SecurityRulesClient) CreateOrUpdateSender(req *http.Request) (*http
 
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
 // closes the http.Response Body.
-func (client SecurityRulesClient) CreateOrUpdateResponder(resp *http.Response) (result autorest.Response, err error) {
-	err = autorest.Respond(
+func (client SecurityRulesClient) CreateOrUpdateResponder(resp *http.Response) (result autorest.Response, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
-		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result = autorest.Response{Response: resp}
+	result.Response = resp
 	return
 }
 
@@ -138,7 +137,7 @@ func (client SecurityRulesClient) Delete(resourceGroupName string, networkSecuri
 
 	resp, err := client.DeleteSender(req)
 	if err != nil {
-		result = autorest.Response{Response: resp}
+		result.Response = resp
 		return result, autorest.NewErrorWithError(err, "network/SecurityRulesClient", "Delete", resp, "Failure sending request")
 	}
 
@@ -188,14 +187,13 @@ func (client SecurityRulesClient) DeleteSender(req *http.Request) (*http.Respons
 
 // DeleteResponder handles the response to the Delete request. The method always
 // closes the http.Response Body.
-func (client SecurityRulesClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
-	err = autorest.Respond(
+func (client SecurityRulesClient) DeleteResponder(resp *http.Response) (result autorest.Response, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusNoContent, http.StatusAccepted, http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result = autorest.Response{Response: resp}
+	result.Response = resp
 	return
 }
 
@@ -255,8 +253,8 @@ func (client SecurityRulesClient) GetSender(req *http.Request) (*http.Response, 
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
-func (client SecurityRulesClient) GetResponder(resp *http.Response) (result SecurityRule, err error) {
-	err = autorest.Respond(
+func (client SecurityRulesClient) GetResponder(resp *http.Response) (result SecurityRule, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -320,8 +318,8 @@ func (client SecurityRulesClient) ListSender(req *http.Request) (*http.Response,
 
 // ListResponder handles the response to the List request. The method always
 // closes the http.Response Body.
-func (client SecurityRulesClient) ListResponder(resp *http.Response) (result SecurityRuleListResult, err error) {
-	err = autorest.Respond(
+func (client SecurityRulesClient) ListResponder(resp *http.Response) (result SecurityRuleListResult, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),

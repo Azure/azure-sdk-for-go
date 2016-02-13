@@ -59,7 +59,7 @@ func (client LoadBalancersClient) CreateOrUpdate(resourceGroupName string, loadB
 
 	resp, err := client.CreateOrUpdateSender(req)
 	if err != nil {
-		result = autorest.Response{Response: resp}
+		result.Response = resp
 		return result, autorest.NewErrorWithError(err, "network/LoadBalancersClient", "CreateOrUpdate", resp, "Failure sending request")
 	}
 
@@ -109,14 +109,13 @@ func (client LoadBalancersClient) CreateOrUpdateSender(req *http.Request) (*http
 
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
 // closes the http.Response Body.
-func (client LoadBalancersClient) CreateOrUpdateResponder(resp *http.Response) (result autorest.Response, err error) {
-	err = autorest.Respond(
+func (client LoadBalancersClient) CreateOrUpdateResponder(resp *http.Response) (result autorest.Response, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusCreated, http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result = autorest.Response{Response: resp}
+	result.Response = resp
 	return
 }
 
@@ -132,7 +131,7 @@ func (client LoadBalancersClient) Delete(resourceGroupName string, loadBalancerN
 
 	resp, err := client.DeleteSender(req)
 	if err != nil {
-		result = autorest.Response{Response: resp}
+		result.Response = resp
 		return result, autorest.NewErrorWithError(err, "network/LoadBalancersClient", "Delete", resp, "Failure sending request")
 	}
 
@@ -181,14 +180,13 @@ func (client LoadBalancersClient) DeleteSender(req *http.Request) (*http.Respons
 
 // DeleteResponder handles the response to the Delete request. The method always
 // closes the http.Response Body.
-func (client LoadBalancersClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
-	err = autorest.Respond(
+func (client LoadBalancersClient) DeleteResponder(resp *http.Response) (result autorest.Response, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusNoContent, http.StatusAccepted, http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result = autorest.Response{Response: resp}
+	result.Response = resp
 	return
 }
 
@@ -249,8 +247,8 @@ func (client LoadBalancersClient) GetSender(req *http.Request) (*http.Response, 
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
-func (client LoadBalancersClient) GetResponder(resp *http.Response) (result LoadBalancer, err error) {
-	err = autorest.Respond(
+func (client LoadBalancersClient) GetResponder(resp *http.Response) (result LoadBalancer, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -312,8 +310,8 @@ func (client LoadBalancersClient) ListSender(req *http.Request) (*http.Response,
 
 // ListResponder handles the response to the List request. The method always
 // closes the http.Response Body.
-func (client LoadBalancersClient) ListResponder(resp *http.Response) (result LoadBalancerListResult, err error) {
-	err = autorest.Respond(
+func (client LoadBalancersClient) ListResponder(resp *http.Response) (result LoadBalancerListResult, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -396,8 +394,8 @@ func (client LoadBalancersClient) ListAllSender(req *http.Request) (*http.Respon
 
 // ListAllResponder handles the response to the ListAll request. The method always
 // closes the http.Response Body.
-func (client LoadBalancersClient) ListAllResponder(resp *http.Response) (result LoadBalancerListResult, err error) {
-	err = autorest.Respond(
+func (client LoadBalancersClient) ListAllResponder(resp *http.Response) (result LoadBalancerListResult, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),

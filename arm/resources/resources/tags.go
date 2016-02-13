@@ -91,8 +91,8 @@ func (client TagsClient) CreateOrUpdateSender(req *http.Request) (*http.Response
 
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
 // closes the http.Response Body.
-func (client TagsClient) CreateOrUpdateResponder(resp *http.Response) (result TagDetails, err error) {
-	err = autorest.Respond(
+func (client TagsClient) CreateOrUpdateResponder(resp *http.Response) (result TagDetails, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
@@ -154,8 +154,8 @@ func (client TagsClient) CreateOrUpdateValueSender(req *http.Request) (*http.Res
 
 // CreateOrUpdateValueResponder handles the response to the CreateOrUpdateValue request. The method always
 // closes the http.Response Body.
-func (client TagsClient) CreateOrUpdateValueResponder(resp *http.Response) (result TagValue, err error) {
-	err = autorest.Respond(
+func (client TagsClient) CreateOrUpdateValueResponder(resp *http.Response) (result TagValue, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
@@ -216,11 +216,12 @@ func (client TagsClient) DeleteSender(req *http.Request) (*http.Response, error)
 
 // DeleteResponder handles the response to the Delete request. The method always
 // closes the http.Response Body.
-func (client TagsClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
-	err = autorest.Respond(
+func (client TagsClient) DeleteResponder(resp *http.Response) (result autorest.Response, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent))
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
+		autorest.ByClosing())
 	result.Response = resp
 	return
 }
@@ -277,11 +278,12 @@ func (client TagsClient) DeleteValueSender(req *http.Request) (*http.Response, e
 
 // DeleteValueResponder handles the response to the DeleteValue request. The method always
 // closes the http.Response Body.
-func (client TagsClient) DeleteValueResponder(resp *http.Response) (result autorest.Response, err error) {
-	err = autorest.Respond(
+func (client TagsClient) DeleteValueResponder(resp *http.Response) (result autorest.Response, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent))
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
+		autorest.ByClosing())
 	result.Response = resp
 	return
 }
@@ -334,8 +336,8 @@ func (client TagsClient) ListSender(req *http.Request) (*http.Response, error) {
 
 // ListResponder handles the response to the List request. The method always
 // closes the http.Response Body.
-func (client TagsClient) ListResponder(resp *http.Response) (result TagsListResult, err error) {
-	err = autorest.Respond(
+func (client TagsClient) ListResponder(resp *http.Response) (result TagsListResult, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),

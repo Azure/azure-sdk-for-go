@@ -100,11 +100,12 @@ func (client GlobalResourceGroupsClient) MoveResourcesSender(req *http.Request) 
 
 // MoveResourcesResponder handles the response to the MoveResources request. The method always
 // closes the http.Response Body.
-func (client GlobalResourceGroupsClient) MoveResourcesResponder(resp *http.Response) (result autorest.Response, err error) {
-	err = autorest.Respond(
+func (client GlobalResourceGroupsClient) MoveResourcesResponder(resp *http.Response) (result autorest.Response, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent))
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
+		autorest.ByClosing())
 	result.Response = resp
 	return
 }

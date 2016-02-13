@@ -96,8 +96,8 @@ func (client WorkflowsClient) CreateOrUpdateSender(req *http.Request) (*http.Res
 
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
 // closes the http.Response Body.
-func (client WorkflowsClient) CreateOrUpdateResponder(resp *http.Response) (result Workflow, err error) {
-	err = autorest.Respond(
+func (client WorkflowsClient) CreateOrUpdateResponder(resp *http.Response) (result Workflow, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
@@ -160,11 +160,12 @@ func (client WorkflowsClient) DeleteSender(req *http.Request) (*http.Response, e
 
 // DeleteResponder handles the response to the Delete request. The method always
 // closes the http.Response Body.
-func (client WorkflowsClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
-	err = autorest.Respond(
+func (client WorkflowsClient) DeleteResponder(resp *http.Response) (result autorest.Response, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent))
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
+		autorest.ByClosing())
 	result.Response = resp
 	return
 }
@@ -222,11 +223,12 @@ func (client WorkflowsClient) DisableSender(req *http.Request) (*http.Response, 
 
 // DisableResponder handles the response to the Disable request. The method always
 // closes the http.Response Body.
-func (client WorkflowsClient) DisableResponder(resp *http.Response) (result autorest.Response, err error) {
-	err = autorest.Respond(
+func (client WorkflowsClient) DisableResponder(resp *http.Response) (result autorest.Response, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK))
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByClosing())
 	result.Response = resp
 	return
 }
@@ -284,11 +286,12 @@ func (client WorkflowsClient) EnableSender(req *http.Request) (*http.Response, e
 
 // EnableResponder handles the response to the Enable request. The method always
 // closes the http.Response Body.
-func (client WorkflowsClient) EnableResponder(resp *http.Response) (result autorest.Response, err error) {
-	err = autorest.Respond(
+func (client WorkflowsClient) EnableResponder(resp *http.Response) (result autorest.Response, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK))
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByClosing())
 	result.Response = resp
 	return
 }
@@ -346,8 +349,8 @@ func (client WorkflowsClient) GetSender(req *http.Request) (*http.Response, erro
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
-func (client WorkflowsClient) GetResponder(resp *http.Response) (result Workflow, err error) {
-	err = autorest.Respond(
+func (client WorkflowsClient) GetResponder(resp *http.Response) (result Workflow, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -415,8 +418,8 @@ func (client WorkflowsClient) ListByResourceGroupSender(req *http.Request) (*htt
 
 // ListByResourceGroupResponder handles the response to the ListByResourceGroup request. The method always
 // closes the http.Response Body.
-func (client WorkflowsClient) ListByResourceGroupResponder(resp *http.Response) (result WorkflowListResult, err error) {
-	err = autorest.Respond(
+func (client WorkflowsClient) ListByResourceGroupResponder(resp *http.Response) (result WorkflowListResult, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -507,8 +510,8 @@ func (client WorkflowsClient) ListBySubscriptionSender(req *http.Request) (*http
 
 // ListBySubscriptionResponder handles the response to the ListBySubscription request. The method always
 // closes the http.Response Body.
-func (client WorkflowsClient) ListBySubscriptionResponder(resp *http.Response) (result WorkflowListResult, err error) {
-	err = autorest.Respond(
+func (client WorkflowsClient) ListBySubscriptionResponder(resp *http.Response) (result WorkflowListResult, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -554,7 +557,7 @@ func (client WorkflowsClient) Run(resourceGroupName string, workflowName string,
 
 	resp, err := client.RunSender(req)
 	if err != nil {
-		result = autorest.Response{Response: resp}
+		result.Response = resp
 		return result, autorest.NewErrorWithError(err, "logic/WorkflowsClient", "Run", resp, "Failure sending request")
 	}
 
@@ -604,14 +607,13 @@ func (client WorkflowsClient) RunSender(req *http.Request) (*http.Response, erro
 
 // RunResponder handles the response to the Run request. The method always
 // closes the http.Response Body.
-func (client WorkflowsClient) RunResponder(resp *http.Response) (result autorest.Response, err error) {
-	err = autorest.Respond(
+func (client WorkflowsClient) RunResponder(resp *http.Response) (result autorest.Response, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
-		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result = autorest.Response{Response: resp}
+	result.Response = resp
 	return
 }
 
@@ -669,8 +671,8 @@ func (client WorkflowsClient) UpdateSender(req *http.Request) (*http.Response, e
 
 // UpdateResponder handles the response to the Update request. The method always
 // closes the http.Response Body.
-func (client WorkflowsClient) UpdateResponder(resp *http.Response) (result Workflow, err error) {
-	err = autorest.Respond(
+func (client WorkflowsClient) UpdateResponder(resp *http.Response) (result Workflow, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -734,11 +736,12 @@ func (client WorkflowsClient) ValidateSender(req *http.Request) (*http.Response,
 
 // ValidateResponder handles the response to the Validate request. The method always
 // closes the http.Response Body.
-func (client WorkflowsClient) ValidateResponder(resp *http.Response) (result autorest.Response, err error) {
-	err = autorest.Respond(
+func (client WorkflowsClient) ValidateResponder(resp *http.Response) (result autorest.Response, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK))
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByClosing())
 	result.Response = resp
 	return
 }

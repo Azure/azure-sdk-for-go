@@ -98,11 +98,12 @@ func (client Client) CheckExistenceSender(req *http.Request) (*http.Response, er
 
 // CheckExistenceResponder handles the response to the CheckExistence request. The method always
 // closes the http.Response Body.
-func (client Client) CheckExistenceResponder(resp *http.Response) (result autorest.Response, err error) {
-	err = autorest.Respond(
+func (client Client) CheckExistenceResponder(resp *http.Response) (result autorest.Response, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent, http.StatusNotFound))
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent, http.StatusNotFound),
+		autorest.ByClosing())
 	result.Response = resp
 	return
 }
@@ -167,8 +168,8 @@ func (client Client) CreateOrUpdateSender(req *http.Request) (*http.Response, er
 
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
 // closes the http.Response Body.
-func (client Client) CreateOrUpdateResponder(resp *http.Response) (result GenericResource, err error) {
-	err = autorest.Respond(
+func (client Client) CreateOrUpdateResponder(resp *http.Response) (result GenericResource, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusCreated, http.StatusOK),
@@ -236,11 +237,12 @@ func (client Client) DeleteSender(req *http.Request) (*http.Response, error) {
 
 // DeleteResponder handles the response to the Delete request. The method always
 // closes the http.Response Body.
-func (client Client) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
-	err = autorest.Respond(
+func (client Client) DeleteResponder(resp *http.Response) (result autorest.Response, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent, http.StatusAccepted))
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent, http.StatusAccepted),
+		autorest.ByClosing())
 	result.Response = resp
 	return
 }
@@ -303,8 +305,8 @@ func (client Client) GetSender(req *http.Request) (*http.Response, error) {
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
-func (client Client) GetResponder(resp *http.Response) (result GenericResource, err error) {
-	err = autorest.Respond(
+func (client Client) GetResponder(resp *http.Response) (result GenericResource, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
@@ -371,8 +373,8 @@ func (client Client) ListSender(req *http.Request) (*http.Response, error) {
 
 // ListResponder handles the response to the List request. The method always
 // closes the http.Response Body.
-func (client Client) ListResponder(resp *http.Response) (result ResourceListResult, err error) {
-	err = autorest.Respond(
+func (client Client) ListResponder(resp *http.Response) (result ResourceListResult, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -419,7 +421,7 @@ func (client Client) MoveResources(sourceResourceGroupName string, parameters Mo
 
 	resp, err := client.MoveResourcesSender(req)
 	if err != nil {
-		result = autorest.Response{Response: resp}
+		result.Response = resp
 		return result, autorest.NewErrorWithError(err, "resources/Client", "MoveResources", resp, "Failure sending request")
 	}
 
@@ -468,13 +470,12 @@ func (client Client) MoveResourcesSender(req *http.Request) (*http.Response, err
 
 // MoveResourcesResponder handles the response to the MoveResources request. The method always
 // closes the http.Response Body.
-func (client Client) MoveResourcesResponder(resp *http.Response) (result autorest.Response, err error) {
-	err = autorest.Respond(
+func (client Client) MoveResourcesResponder(resp *http.Response) (result autorest.Response, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
-		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result = autorest.Response{Response: resp}
+	result.Response = resp
 	return
 }

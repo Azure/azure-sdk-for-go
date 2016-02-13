@@ -59,7 +59,7 @@ func (client RouteTablesClient) CreateOrUpdate(resourceGroupName string, routeTa
 
 	resp, err := client.CreateOrUpdateSender(req)
 	if err != nil {
-		result = autorest.Response{Response: resp}
+		result.Response = resp
 		return result, autorest.NewErrorWithError(err, "network/RouteTablesClient", "CreateOrUpdate", resp, "Failure sending request")
 	}
 
@@ -109,14 +109,13 @@ func (client RouteTablesClient) CreateOrUpdateSender(req *http.Request) (*http.R
 
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
 // closes the http.Response Body.
-func (client RouteTablesClient) CreateOrUpdateResponder(resp *http.Response) (result autorest.Response, err error) {
-	err = autorest.Respond(
+func (client RouteTablesClient) CreateOrUpdateResponder(resp *http.Response) (result autorest.Response, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
-		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result = autorest.Response{Response: resp}
+	result.Response = resp
 	return
 }
 
@@ -132,7 +131,7 @@ func (client RouteTablesClient) Delete(resourceGroupName string, routeTableName 
 
 	resp, err := client.DeleteSender(req)
 	if err != nil {
-		result = autorest.Response{Response: resp}
+		result.Response = resp
 		return result, autorest.NewErrorWithError(err, "network/RouteTablesClient", "Delete", resp, "Failure sending request")
 	}
 
@@ -181,14 +180,13 @@ func (client RouteTablesClient) DeleteSender(req *http.Request) (*http.Response,
 
 // DeleteResponder handles the response to the Delete request. The method always
 // closes the http.Response Body.
-func (client RouteTablesClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
-	err = autorest.Respond(
+func (client RouteTablesClient) DeleteResponder(resp *http.Response) (result autorest.Response, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusNoContent, http.StatusOK, http.StatusAccepted),
-		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result = autorest.Response{Response: resp}
+	result.Response = resp
 	return
 }
 
@@ -249,8 +247,8 @@ func (client RouteTablesClient) GetSender(req *http.Request) (*http.Response, er
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
-func (client RouteTablesClient) GetResponder(resp *http.Response) (result RouteTable, err error) {
-	err = autorest.Respond(
+func (client RouteTablesClient) GetResponder(resp *http.Response) (result RouteTable, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -311,8 +309,8 @@ func (client RouteTablesClient) ListSender(req *http.Request) (*http.Response, e
 
 // ListResponder handles the response to the List request. The method always
 // closes the http.Response Body.
-func (client RouteTablesClient) ListResponder(resp *http.Response) (result RouteTableListResult, err error) {
-	err = autorest.Respond(
+func (client RouteTablesClient) ListResponder(resp *http.Response) (result RouteTableListResult, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -394,8 +392,8 @@ func (client RouteTablesClient) ListAllSender(req *http.Request) (*http.Response
 
 // ListAllResponder handles the response to the ListAll request. The method always
 // closes the http.Response Body.
-func (client RouteTablesClient) ListAllResponder(resp *http.Response) (result RouteTableListResult, err error) {
-	err = autorest.Respond(
+func (client RouteTablesClient) ListAllResponder(resp *http.Response) (result RouteTableListResult, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),

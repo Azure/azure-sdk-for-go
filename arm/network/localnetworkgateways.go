@@ -62,7 +62,7 @@ func (client LocalNetworkGatewaysClient) CreateOrUpdate(resourceGroupName string
 
 	resp, err := client.CreateOrUpdateSender(req)
 	if err != nil {
-		result = autorest.Response{Response: resp}
+		result.Response = resp
 		return result, autorest.NewErrorWithError(err, "network/LocalNetworkGatewaysClient", "CreateOrUpdate", resp, "Failure sending request")
 	}
 
@@ -112,14 +112,13 @@ func (client LocalNetworkGatewaysClient) CreateOrUpdateSender(req *http.Request)
 
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
 // closes the http.Response Body.
-func (client LocalNetworkGatewaysClient) CreateOrUpdateResponder(resp *http.Response) (result autorest.Response, err error) {
-	err = autorest.Respond(
+func (client LocalNetworkGatewaysClient) CreateOrUpdateResponder(resp *http.Response) (result autorest.Response, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusCreated, http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result = autorest.Response{Response: resp}
+	result.Response = resp
 	return
 }
 
@@ -136,7 +135,7 @@ func (client LocalNetworkGatewaysClient) Delete(resourceGroupName string, localN
 
 	resp, err := client.DeleteSender(req)
 	if err != nil {
-		result = autorest.Response{Response: resp}
+		result.Response = resp
 		return result, autorest.NewErrorWithError(err, "network/LocalNetworkGatewaysClient", "Delete", resp, "Failure sending request")
 	}
 
@@ -185,14 +184,13 @@ func (client LocalNetworkGatewaysClient) DeleteSender(req *http.Request) (*http.
 
 // DeleteResponder handles the response to the Delete request. The method always
 // closes the http.Response Body.
-func (client LocalNetworkGatewaysClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
-	err = autorest.Respond(
+func (client LocalNetworkGatewaysClient) DeleteResponder(resp *http.Response) (result autorest.Response, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusNoContent, http.StatusOK, http.StatusAccepted),
-		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result = autorest.Response{Response: resp}
+	result.Response = resp
 	return
 }
 
@@ -250,8 +248,8 @@ func (client LocalNetworkGatewaysClient) GetSender(req *http.Request) (*http.Res
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
-func (client LocalNetworkGatewaysClient) GetResponder(resp *http.Response) (result LocalNetworkGateway, err error) {
-	err = autorest.Respond(
+func (client LocalNetworkGatewaysClient) GetResponder(resp *http.Response) (result LocalNetworkGateway, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -313,8 +311,8 @@ func (client LocalNetworkGatewaysClient) ListSender(req *http.Request) (*http.Re
 
 // ListResponder handles the response to the List request. The method always
 // closes the http.Response Body.
-func (client LocalNetworkGatewaysClient) ListResponder(resp *http.Response) (result LocalNetworkGatewayListResult, err error) {
-	err = autorest.Respond(
+func (client LocalNetworkGatewaysClient) ListResponder(resp *http.Response) (result LocalNetworkGatewayListResult, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),

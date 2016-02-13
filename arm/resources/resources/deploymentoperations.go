@@ -98,8 +98,8 @@ func (client DeploymentOperationsClient) GetSender(req *http.Request) (*http.Res
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
-func (client DeploymentOperationsClient) GetResponder(resp *http.Response) (result DeploymentOperation, err error) {
-	err = autorest.Respond(
+func (client DeploymentOperationsClient) GetResponder(resp *http.Response) (result DeploymentOperation, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -166,8 +166,8 @@ func (client DeploymentOperationsClient) ListSender(req *http.Request) (*http.Re
 
 // ListResponder handles the response to the List request. The method always
 // closes the http.Response Body.
-func (client DeploymentOperationsClient) ListResponder(resp *http.Response) (result DeploymentOperationsListResult, err error) {
-	err = autorest.Respond(
+func (client DeploymentOperationsClient) ListResponder(resp *http.Response) (result DeploymentOperationsListResult, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),

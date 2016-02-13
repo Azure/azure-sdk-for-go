@@ -103,8 +103,8 @@ func (client RecordSetsClient) CreateOrUpdateSender(req *http.Request) (*http.Re
 
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
 // closes the http.Response Body.
-func (client RecordSetsClient) CreateOrUpdateResponder(resp *http.Response) (result RecordSet, err error) {
-	err = autorest.Respond(
+func (client RecordSetsClient) CreateOrUpdateResponder(resp *http.Response) (result RecordSet, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
@@ -174,11 +174,12 @@ func (client RecordSetsClient) DeleteSender(req *http.Request) (*http.Response, 
 
 // DeleteResponder handles the response to the Delete request. The method always
 // closes the http.Response Body.
-func (client RecordSetsClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
-	err = autorest.Respond(
+func (client RecordSetsClient) DeleteResponder(resp *http.Response) (result autorest.Response, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK))
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByClosing())
 	result.Response = resp
 	return
 }
@@ -241,8 +242,8 @@ func (client RecordSetsClient) GetSender(req *http.Request) (*http.Response, err
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
-func (client RecordSetsClient) GetResponder(resp *http.Response) (result RecordSet, err error) {
-	err = autorest.Respond(
+func (client RecordSetsClient) GetResponder(resp *http.Response) (result RecordSet, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -316,8 +317,8 @@ func (client RecordSetsClient) ListSender(req *http.Request) (*http.Response, er
 
 // ListResponder handles the response to the List request. The method always
 // closes the http.Response Body.
-func (client RecordSetsClient) ListResponder(resp *http.Response) (result RecordSetListResult, err error) {
-	err = autorest.Respond(
+func (client RecordSetsClient) ListResponder(resp *http.Response) (result RecordSetListResult, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -412,8 +413,8 @@ func (client RecordSetsClient) ListAllSender(req *http.Request) (*http.Response,
 
 // ListAllResponder handles the response to the ListAll request. The method always
 // closes the http.Response Body.
-func (client RecordSetsClient) ListAllResponder(resp *http.Response) (result RecordSetListResult, err error) {
-	err = autorest.Respond(
+func (client RecordSetsClient) ListAllResponder(resp *http.Response) (result RecordSetListResult, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),

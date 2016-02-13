@@ -61,7 +61,7 @@ func (client ServerFarmsClient) CreateOrUpdateServerFarm(resourceGroupName strin
 
 	resp, err := client.CreateOrUpdateServerFarmSender(req)
 	if err != nil {
-		result = autorest.Response{Response: resp}
+		result.Response = resp
 		return result, autorest.NewErrorWithError(err, "web/ServerFarmsClient", "CreateOrUpdateServerFarm", resp, "Failure sending request")
 	}
 
@@ -114,14 +114,13 @@ func (client ServerFarmsClient) CreateOrUpdateServerFarmSender(req *http.Request
 
 // CreateOrUpdateServerFarmResponder handles the response to the CreateOrUpdateServerFarm request. The method always
 // closes the http.Response Body.
-func (client ServerFarmsClient) CreateOrUpdateServerFarmResponder(resp *http.Response) (result autorest.Response, err error) {
-	err = autorest.Respond(
+func (client ServerFarmsClient) CreateOrUpdateServerFarmResponder(resp *http.Response) (result autorest.Response, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
-		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result = autorest.Response{Response: resp}
+	result.Response = resp
 	return
 }
 
@@ -182,8 +181,8 @@ func (client ServerFarmsClient) CreateOrUpdateVnetRouteSender(req *http.Request)
 
 // CreateOrUpdateVnetRouteResponder handles the response to the CreateOrUpdateVnetRoute request. The method always
 // closes the http.Response Body.
-func (client ServerFarmsClient) CreateOrUpdateVnetRouteResponder(resp *http.Response) (result VnetRoute, err error) {
-	err = autorest.Respond(
+func (client ServerFarmsClient) CreateOrUpdateVnetRouteResponder(resp *http.Response) (result VnetRoute, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusBadRequest, http.StatusNotFound),
@@ -246,8 +245,8 @@ func (client ServerFarmsClient) DeleteServerFarmSender(req *http.Request) (*http
 
 // DeleteServerFarmResponder handles the response to the DeleteServerFarm request. The method always
 // closes the http.Response Body.
-func (client ServerFarmsClient) DeleteServerFarmResponder(resp *http.Response) (result ObjectSet, err error) {
-	err = autorest.Respond(
+func (client ServerFarmsClient) DeleteServerFarmResponder(resp *http.Response) (result ObjectSet, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -313,8 +312,8 @@ func (client ServerFarmsClient) DeleteVnetRouteSender(req *http.Request) (*http.
 
 // DeleteVnetRouteResponder handles the response to the DeleteVnetRoute request. The method always
 // closes the http.Response Body.
-func (client ServerFarmsClient) DeleteVnetRouteResponder(resp *http.Response) (result ObjectSet, err error) {
-	err = autorest.Respond(
+func (client ServerFarmsClient) DeleteVnetRouteResponder(resp *http.Response) (result ObjectSet, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNotFound),
@@ -380,8 +379,8 @@ func (client ServerFarmsClient) GetRouteForVnetSender(req *http.Request) (*http.
 
 // GetRouteForVnetResponder handles the response to the GetRouteForVnet request. The method always
 // closes the http.Response Body.
-func (client ServerFarmsClient) GetRouteForVnetResponder(resp *http.Response) (result VnetRouteList, err error) {
-	err = autorest.Respond(
+func (client ServerFarmsClient) GetRouteForVnetResponder(resp *http.Response) (result VnetRouteList, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNotFound),
@@ -445,8 +444,8 @@ func (client ServerFarmsClient) GetRoutesForVnetSender(req *http.Request) (*http
 
 // GetRoutesForVnetResponder handles the response to the GetRoutesForVnet request. The method always
 // closes the http.Response Body.
-func (client ServerFarmsClient) GetRoutesForVnetResponder(resp *http.Response) (result VnetRouteList, err error) {
-	err = autorest.Respond(
+func (client ServerFarmsClient) GetRoutesForVnetResponder(resp *http.Response) (result VnetRouteList, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -509,8 +508,8 @@ func (client ServerFarmsClient) GetServerFarmSender(req *http.Request) (*http.Re
 
 // GetServerFarmResponder handles the response to the GetServerFarm request. The method always
 // closes the http.Response Body.
-func (client ServerFarmsClient) GetServerFarmResponder(resp *http.Response) (result ServerFarmWithRichSku, err error) {
-	err = autorest.Respond(
+func (client ServerFarmsClient) GetServerFarmResponder(resp *http.Response) (result ServerFarmWithRichSku, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -574,8 +573,8 @@ func (client ServerFarmsClient) GetServerFarmMetricDefintionsSender(req *http.Re
 
 // GetServerFarmMetricDefintionsResponder handles the response to the GetServerFarmMetricDefintions request. The method always
 // closes the http.Response Body.
-func (client ServerFarmsClient) GetServerFarmMetricDefintionsResponder(resp *http.Response) (result MetricDefinitionCollection, err error) {
-	err = autorest.Respond(
+func (client ServerFarmsClient) GetServerFarmMetricDefintionsResponder(resp *http.Response) (result MetricDefinitionCollection, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -649,8 +648,8 @@ func (client ServerFarmsClient) GetServerFarmMetricsSender(req *http.Request) (*
 
 // GetServerFarmMetricsResponder handles the response to the GetServerFarmMetrics request. The method always
 // closes the http.Response Body.
-func (client ServerFarmsClient) GetServerFarmMetricsResponder(resp *http.Response) (result ResourceMetricCollection, err error) {
-	err = autorest.Respond(
+func (client ServerFarmsClient) GetServerFarmMetricsResponder(resp *http.Response) (result ResourceMetricCollection, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -714,8 +713,8 @@ func (client ServerFarmsClient) GetServerFarmOperationSender(req *http.Request) 
 
 // GetServerFarmOperationResponder handles the response to the GetServerFarmOperation request. The method always
 // closes the http.Response Body.
-func (client ServerFarmsClient) GetServerFarmOperationResponder(resp *http.Response) (result ServerFarmWithRichSku, err error) {
-	err = autorest.Respond(
+func (client ServerFarmsClient) GetServerFarmOperationResponder(resp *http.Response) (result ServerFarmWithRichSku, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -776,8 +775,8 @@ func (client ServerFarmsClient) GetServerFarmsSender(req *http.Request) (*http.R
 
 // GetServerFarmsResponder handles the response to the GetServerFarms request. The method always
 // closes the http.Response Body.
-func (client ServerFarmsClient) GetServerFarmsResponder(resp *http.Response) (result ServerFarmCollection, err error) {
-	err = autorest.Respond(
+func (client ServerFarmsClient) GetServerFarmsResponder(resp *http.Response) (result ServerFarmCollection, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -854,8 +853,8 @@ func (client ServerFarmsClient) GetServerFarmSitesSender(req *http.Request) (*ht
 
 // GetServerFarmSitesResponder handles the response to the GetServerFarmSites request. The method always
 // closes the http.Response Body.
-func (client ServerFarmsClient) GetServerFarmSitesResponder(resp *http.Response) (result SiteCollection, err error) {
-	err = autorest.Respond(
+func (client ServerFarmsClient) GetServerFarmSitesResponder(resp *http.Response) (result SiteCollection, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -945,8 +944,8 @@ func (client ServerFarmsClient) GetServerFarmVnetGatewaySender(req *http.Request
 
 // GetServerFarmVnetGatewayResponder handles the response to the GetServerFarmVnetGateway request. The method always
 // closes the http.Response Body.
-func (client ServerFarmsClient) GetServerFarmVnetGatewayResponder(resp *http.Response) (result VnetGateway, err error) {
-	err = autorest.Respond(
+func (client ServerFarmsClient) GetServerFarmVnetGatewayResponder(resp *http.Response) (result VnetGateway, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -1010,8 +1009,8 @@ func (client ServerFarmsClient) GetVnetFromServerFarmSender(req *http.Request) (
 
 // GetVnetFromServerFarmResponder handles the response to the GetVnetFromServerFarm request. The method always
 // closes the http.Response Body.
-func (client ServerFarmsClient) GetVnetFromServerFarmResponder(resp *http.Response) (result VnetInfo, err error) {
-	err = autorest.Respond(
+func (client ServerFarmsClient) GetVnetFromServerFarmResponder(resp *http.Response) (result VnetInfo, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNotFound),
@@ -1074,8 +1073,8 @@ func (client ServerFarmsClient) GetVnetsForServerFarmSender(req *http.Request) (
 
 // GetVnetsForServerFarmResponder handles the response to the GetVnetsForServerFarm request. The method always
 // closes the http.Response Body.
-func (client ServerFarmsClient) GetVnetsForServerFarmResponder(resp *http.Response) (result VnetInfoList, err error) {
-	err = autorest.Respond(
+func (client ServerFarmsClient) GetVnetsForServerFarmResponder(resp *http.Response) (result VnetInfoList, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -1139,8 +1138,8 @@ func (client ServerFarmsClient) RebootWorkerForServerFarmSender(req *http.Reques
 
 // RebootWorkerForServerFarmResponder handles the response to the RebootWorkerForServerFarm request. The method always
 // closes the http.Response Body.
-func (client ServerFarmsClient) RebootWorkerForServerFarmResponder(resp *http.Response) (result ObjectSet, err error) {
-	err = autorest.Respond(
+func (client ServerFarmsClient) RebootWorkerForServerFarmResponder(resp *http.Response) (result ObjectSet, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -1208,8 +1207,8 @@ func (client ServerFarmsClient) RestartSitesForServerFarmSender(req *http.Reques
 
 // RestartSitesForServerFarmResponder handles the response to the RestartSitesForServerFarm request. The method always
 // closes the http.Response Body.
-func (client ServerFarmsClient) RestartSitesForServerFarmResponder(resp *http.Response) (result ObjectSet, err error) {
-	err = autorest.Respond(
+func (client ServerFarmsClient) RestartSitesForServerFarmResponder(resp *http.Response) (result ObjectSet, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -1278,8 +1277,8 @@ func (client ServerFarmsClient) UpdateServerFarmVnetGatewaySender(req *http.Requ
 
 // UpdateServerFarmVnetGatewayResponder handles the response to the UpdateServerFarmVnetGateway request. The method always
 // closes the http.Response Body.
-func (client ServerFarmsClient) UpdateServerFarmVnetGatewayResponder(resp *http.Response) (result VnetGateway, err error) {
-	err = autorest.Respond(
+func (client ServerFarmsClient) UpdateServerFarmVnetGatewayResponder(resp *http.Response) (result VnetGateway, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -1346,8 +1345,8 @@ func (client ServerFarmsClient) UpdateVnetRouteSender(req *http.Request) (*http.
 
 // UpdateVnetRouteResponder handles the response to the UpdateVnetRoute request. The method always
 // closes the http.Response Body.
-func (client ServerFarmsClient) UpdateVnetRouteResponder(resp *http.Response) (result VnetRoute, err error) {
-	err = autorest.Respond(
+func (client ServerFarmsClient) UpdateVnetRouteResponder(resp *http.Response) (result VnetRoute, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusBadRequest, http.StatusNotFound),

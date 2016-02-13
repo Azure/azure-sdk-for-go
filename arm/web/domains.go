@@ -101,8 +101,8 @@ func (client DomainsClient) CreateOrUpdateDomainSender(req *http.Request) (*http
 
 // CreateOrUpdateDomainResponder handles the response to the CreateOrUpdateDomain request. The method always
 // closes the http.Response Body.
-func (client DomainsClient) CreateOrUpdateDomainResponder(resp *http.Response) (result Domain, err error) {
-	err = autorest.Respond(
+func (client DomainsClient) CreateOrUpdateDomainResponder(resp *http.Response) (result Domain, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusAccepted, http.StatusOK),
@@ -169,8 +169,8 @@ func (client DomainsClient) DeleteDomainSender(req *http.Request) (*http.Respons
 
 // DeleteDomainResponder handles the response to the DeleteDomain request. The method always
 // closes the http.Response Body.
-func (client DomainsClient) DeleteDomainResponder(resp *http.Response) (result ObjectSet, err error) {
-	err = autorest.Respond(
+func (client DomainsClient) DeleteDomainResponder(resp *http.Response) (result ObjectSet, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
@@ -233,8 +233,8 @@ func (client DomainsClient) GetDomainSender(req *http.Request) (*http.Response, 
 
 // GetDomainResponder handles the response to the GetDomain request. The method always
 // closes the http.Response Body.
-func (client DomainsClient) GetDomainResponder(resp *http.Response) (result Domain, err error) {
-	err = autorest.Respond(
+func (client DomainsClient) GetDomainResponder(resp *http.Response) (result Domain, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -298,8 +298,8 @@ func (client DomainsClient) GetDomainOperationSender(req *http.Request) (*http.R
 
 // GetDomainOperationResponder handles the response to the GetDomainOperation request. The method always
 // closes the http.Response Body.
-func (client DomainsClient) GetDomainOperationResponder(resp *http.Response) (result Domain, err error) {
-	err = autorest.Respond(
+func (client DomainsClient) GetDomainOperationResponder(resp *http.Response) (result Domain, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusAccepted, http.StatusOK, http.StatusInternalServerError),
@@ -360,8 +360,8 @@ func (client DomainsClient) GetDomainsSender(req *http.Request) (*http.Response,
 
 // GetDomainsResponder handles the response to the GetDomains request. The method always
 // closes the http.Response Body.
-func (client DomainsClient) GetDomainsResponder(resp *http.Response) (result DomainCollection, err error) {
-	err = autorest.Respond(
+func (client DomainsClient) GetDomainsResponder(resp *http.Response) (result DomainCollection, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -425,8 +425,8 @@ func (client DomainsClient) UpdateDomainSender(req *http.Request) (*http.Respons
 
 // UpdateDomainResponder handles the response to the UpdateDomain request. The method always
 // closes the http.Response Body.
-func (client DomainsClient) UpdateDomainResponder(resp *http.Response) (result Domain, err error) {
-	err = autorest.Respond(
+func (client DomainsClient) UpdateDomainResponder(resp *http.Response) (result Domain, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusAccepted, http.StatusOK),

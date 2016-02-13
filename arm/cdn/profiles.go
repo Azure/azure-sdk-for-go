@@ -59,7 +59,7 @@ func (client ProfilesClient) Create(profileName string, profileProperties Profil
 
 	resp, err := client.CreateSender(req)
 	if err != nil {
-		result = autorest.Response{Response: resp}
+		result.Response = resp
 		return result, autorest.NewErrorWithError(err, "cdn/ProfilesClient", "Create", resp, "Failure sending request")
 	}
 
@@ -109,14 +109,13 @@ func (client ProfilesClient) CreateSender(req *http.Request) (*http.Response, er
 
 // CreateResponder handles the response to the Create request. The method always
 // closes the http.Response Body.
-func (client ProfilesClient) CreateResponder(resp *http.Response) (result autorest.Response, err error) {
-	err = autorest.Respond(
+func (client ProfilesClient) CreateResponder(resp *http.Response) (result autorest.Response, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated, http.StatusAccepted),
-		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result = autorest.Response{Response: resp}
+	result.Response = resp
 	return
 }
 
@@ -133,7 +132,7 @@ func (client ProfilesClient) DeleteIfExists(profileName string, resourceGroupNam
 
 	resp, err := client.DeleteIfExistsSender(req)
 	if err != nil {
-		result = autorest.Response{Response: resp}
+		result.Response = resp
 		return result, autorest.NewErrorWithError(err, "cdn/ProfilesClient", "DeleteIfExists", resp, "Failure sending request")
 	}
 
@@ -182,14 +181,13 @@ func (client ProfilesClient) DeleteIfExistsSender(req *http.Request) (*http.Resp
 
 // DeleteIfExistsResponder handles the response to the DeleteIfExists request. The method always
 // closes the http.Response Body.
-func (client ProfilesClient) DeleteIfExistsResponder(resp *http.Response) (result autorest.Response, err error) {
-	err = autorest.Respond(
+func (client ProfilesClient) DeleteIfExistsResponder(resp *http.Response) (result autorest.Response, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
-		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result = autorest.Response{Response: resp}
+	result.Response = resp
 	return
 }
 
@@ -247,8 +245,8 @@ func (client ProfilesClient) GenerateSsoURISender(req *http.Request) (*http.Resp
 
 // GenerateSsoURIResponder handles the response to the GenerateSsoURI request. The method always
 // closes the http.Response Body.
-func (client ProfilesClient) GenerateSsoURIResponder(resp *http.Response) (result SsoURI, err error) {
-	err = autorest.Respond(
+func (client ProfilesClient) GenerateSsoURIResponder(resp *http.Response) (result SsoURI, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -312,8 +310,8 @@ func (client ProfilesClient) GetSender(req *http.Request) (*http.Response, error
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
-func (client ProfilesClient) GetResponder(resp *http.Response) (result Profile, err error) {
-	err = autorest.Respond(
+func (client ProfilesClient) GetResponder(resp *http.Response) (result Profile, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -375,8 +373,8 @@ func (client ProfilesClient) ListByResourceGroupSender(req *http.Request) (*http
 
 // ListByResourceGroupResponder handles the response to the ListByResourceGroup request. The method always
 // closes the http.Response Body.
-func (client ProfilesClient) ListByResourceGroupResponder(resp *http.Response) (result ProfileListResult, err error) {
-	err = autorest.Respond(
+func (client ProfilesClient) ListByResourceGroupResponder(resp *http.Response) (result ProfileListResult, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -434,8 +432,8 @@ func (client ProfilesClient) ListBySubscriptionIDSender(req *http.Request) (*htt
 
 // ListBySubscriptionIDResponder handles the response to the ListBySubscriptionID request. The method always
 // closes the http.Response Body.
-func (client ProfilesClient) ListBySubscriptionIDResponder(resp *http.Response) (result ProfileListResult, err error) {
-	err = autorest.Respond(
+func (client ProfilesClient) ListBySubscriptionIDResponder(resp *http.Response) (result ProfileListResult, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -501,8 +499,8 @@ func (client ProfilesClient) UpdateSender(req *http.Request) (*http.Response, er
 
 // UpdateResponder handles the response to the Update request. The method always
 // closes the http.Response Body.
-func (client ProfilesClient) UpdateResponder(resp *http.Response) (result Profile, err error) {
-	err = autorest.Respond(
+func (client ProfilesClient) UpdateResponder(resp *http.Response) (result Profile, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),

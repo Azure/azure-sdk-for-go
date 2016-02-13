@@ -95,8 +95,8 @@ func (client VirtualMachineExtensionImagesClient) GetSender(req *http.Request) (
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
-func (client VirtualMachineExtensionImagesClient) GetResponder(resp *http.Response) (result VirtualMachineExtensionImage, err error) {
-	err = autorest.Respond(
+func (client VirtualMachineExtensionImagesClient) GetResponder(resp *http.Response) (result VirtualMachineExtensionImage, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -157,8 +157,8 @@ func (client VirtualMachineExtensionImagesClient) ListTypesSender(req *http.Requ
 
 // ListTypesResponder handles the response to the ListTypes request. The method always
 // closes the http.Response Body.
-func (client VirtualMachineExtensionImagesClient) ListTypesResponder(resp *http.Response) (result VirtualMachineImageResourceList, err error) {
-	err = autorest.Respond(
+func (client VirtualMachineExtensionImagesClient) ListTypesResponder(resp *http.Response) (result VirtualMachineImageResourceList, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -230,8 +230,8 @@ func (client VirtualMachineExtensionImagesClient) ListVersionsSender(req *http.R
 
 // ListVersionsResponder handles the response to the ListVersions request. The method always
 // closes the http.Response Body.
-func (client VirtualMachineExtensionImagesClient) ListVersionsResponder(resp *http.Response) (result VirtualMachineImageResourceList, err error) {
-	err = autorest.Respond(
+func (client VirtualMachineExtensionImagesClient) ListVersionsResponder(resp *http.Response) (result VirtualMachineImageResourceList, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),

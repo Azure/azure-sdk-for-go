@@ -99,8 +99,8 @@ func (client WorkflowRunActionsClient) GetSender(req *http.Request) (*http.Respo
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
-func (client WorkflowRunActionsClient) GetResponder(resp *http.Response) (result WorkflowRunAction, err error) {
-	err = autorest.Respond(
+func (client WorkflowRunActionsClient) GetResponder(resp *http.Response) (result WorkflowRunAction, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -171,8 +171,8 @@ func (client WorkflowRunActionsClient) ListSender(req *http.Request) (*http.Resp
 
 // ListResponder handles the response to the List request. The method always
 // closes the http.Response Body.
-func (client WorkflowRunActionsClient) ListResponder(resp *http.Response) (result WorkflowRunActionListResult, err error) {
-	err = autorest.Respond(
+func (client WorkflowRunActionsClient) ListResponder(resp *http.Response) (result WorkflowRunActionListResult, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),

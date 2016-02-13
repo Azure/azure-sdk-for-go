@@ -97,8 +97,8 @@ func (client WorkflowVersionsClient) GetSender(req *http.Request) (*http.Respons
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
-func (client WorkflowVersionsClient) GetResponder(resp *http.Response) (result WorkflowVersion, err error) {
-	err = autorest.Respond(
+func (client WorkflowVersionsClient) GetResponder(resp *http.Response) (result WorkflowVersion, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),

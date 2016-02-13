@@ -93,8 +93,8 @@ func (client VirtualMachineSizesClient) ListSender(req *http.Request) (*http.Res
 
 // ListResponder handles the response to the List request. The method always
 // closes the http.Response Body.
-func (client VirtualMachineSizesClient) ListResponder(resp *http.Response) (result VirtualMachineSizeListResult, err error) {
-	err = autorest.Respond(
+func (client VirtualMachineSizesClient) ListResponder(resp *http.Response) (result VirtualMachineSizeListResult, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),

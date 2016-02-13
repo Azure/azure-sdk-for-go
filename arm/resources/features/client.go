@@ -110,8 +110,8 @@ func (client ManagementClient) GetSender(req *http.Request) (*http.Response, err
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
-func (client ManagementClient) GetResponder(resp *http.Response) (result FeatureResult, err error) {
-	err = autorest.Respond(
+func (client ManagementClient) GetResponder(resp *http.Response) (result FeatureResult, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -172,8 +172,8 @@ func (client ManagementClient) ListSender(req *http.Request) (*http.Response, er
 
 // ListResponder handles the response to the List request. The method always
 // closes the http.Response Body.
-func (client ManagementClient) ListResponder(resp *http.Response) (result FeatureOperationsListResult, err error) {
-	err = autorest.Respond(
+func (client ManagementClient) ListResponder(resp *http.Response) (result FeatureOperationsListResult, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -256,8 +256,8 @@ func (client ManagementClient) ListAllSender(req *http.Request) (*http.Response,
 
 // ListAllResponder handles the response to the ListAll request. The method always
 // closes the http.Response Body.
-func (client ManagementClient) ListAllResponder(resp *http.Response) (result FeatureOperationsListResult, err error) {
-	err = autorest.Respond(
+func (client ManagementClient) ListAllResponder(resp *http.Response) (result FeatureOperationsListResult, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -344,8 +344,8 @@ func (client ManagementClient) RegisterSender(req *http.Request) (*http.Response
 
 // RegisterResponder handles the response to the Register request. The method always
 // closes the http.Response Body.
-func (client ManagementClient) RegisterResponder(resp *http.Response) (result FeatureResult, err error) {
-	err = autorest.Respond(
+func (client ManagementClient) RegisterResponder(resp *http.Response) (result FeatureResult, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),

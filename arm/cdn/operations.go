@@ -87,8 +87,8 @@ func (client OperationsClient) ListSender(req *http.Request) (*http.Response, er
 
 // ListResponder handles the response to the List request. The method always
 // closes the http.Response Body.
-func (client OperationsClient) ListResponder(resp *http.Response) (result OperationListResult, err error) {
-	err = autorest.Respond(
+func (client OperationsClient) ListResponder(resp *http.Response) (result OperationListResult, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),

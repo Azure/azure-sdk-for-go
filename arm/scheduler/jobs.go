@@ -95,8 +95,8 @@ func (client JobsClient) CreateOrUpdateSender(req *http.Request) (*http.Response
 
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
 // closes the http.Response Body.
-func (client JobsClient) CreateOrUpdateResponder(resp *http.Response) (result JobDefinition, err error) {
-	err = autorest.Respond(
+func (client JobsClient) CreateOrUpdateResponder(resp *http.Response) (result JobDefinition, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
@@ -160,11 +160,12 @@ func (client JobsClient) DeleteSender(req *http.Request) (*http.Response, error)
 
 // DeleteResponder handles the response to the Delete request. The method always
 // closes the http.Response Body.
-func (client JobsClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
-	err = autorest.Respond(
+func (client JobsClient) DeleteResponder(resp *http.Response) (result autorest.Response, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK))
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByClosing())
 	result.Response = resp
 	return
 }
@@ -223,8 +224,8 @@ func (client JobsClient) GetSender(req *http.Request) (*http.Response, error) {
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
-func (client JobsClient) GetResponder(resp *http.Response) (result JobDefinition, err error) {
-	err = autorest.Respond(
+func (client JobsClient) GetResponder(resp *http.Response) (result JobDefinition, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -299,8 +300,8 @@ func (client JobsClient) ListSender(req *http.Request) (*http.Response, error) {
 
 // ListResponder handles the response to the List request. The method always
 // closes the http.Response Body.
-func (client JobsClient) ListResponder(resp *http.Response) (result JobListResult, err error) {
-	err = autorest.Respond(
+func (client JobsClient) ListResponder(resp *http.Response) (result JobListResult, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -400,8 +401,8 @@ func (client JobsClient) ListJobHistorySender(req *http.Request) (*http.Response
 
 // ListJobHistoryResponder handles the response to the ListJobHistory request. The method always
 // closes the http.Response Body.
-func (client JobsClient) ListJobHistoryResponder(resp *http.Response) (result JobHistoryListResult, err error) {
-	err = autorest.Respond(
+func (client JobsClient) ListJobHistoryResponder(resp *http.Response) (result JobHistoryListResult, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -490,8 +491,8 @@ func (client JobsClient) PatchSender(req *http.Request) (*http.Response, error) 
 
 // PatchResponder handles the response to the Patch request. The method always
 // closes the http.Response Body.
-func (client JobsClient) PatchResponder(resp *http.Response) (result JobDefinition, err error) {
-	err = autorest.Respond(
+func (client JobsClient) PatchResponder(resp *http.Response) (result JobDefinition, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -555,11 +556,12 @@ func (client JobsClient) RunSender(req *http.Request) (*http.Response, error) {
 
 // RunResponder handles the response to the Run request. The method always
 // closes the http.Response Body.
-func (client JobsClient) RunResponder(resp *http.Response) (result autorest.Response, err error) {
-	err = autorest.Respond(
+func (client JobsClient) RunResponder(resp *http.Response) (result autorest.Response, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK))
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByClosing())
 	result.Response = resp
 	return
 }

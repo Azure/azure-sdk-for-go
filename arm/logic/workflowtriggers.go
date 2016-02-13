@@ -97,8 +97,8 @@ func (client WorkflowTriggersClient) GetSender(req *http.Request) (*http.Respons
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
-func (client WorkflowTriggersClient) GetResponder(resp *http.Response) (result WorkflowTrigger, err error) {
-	err = autorest.Respond(
+func (client WorkflowTriggersClient) GetResponder(resp *http.Response) (result WorkflowTrigger, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -168,8 +168,8 @@ func (client WorkflowTriggersClient) ListSender(req *http.Request) (*http.Respon
 
 // ListResponder handles the response to the List request. The method always
 // closes the http.Response Body.
-func (client WorkflowTriggersClient) ListResponder(resp *http.Response) (result WorkflowTriggerListResult, err error) {
-	err = autorest.Respond(
+func (client WorkflowTriggersClient) ListResponder(resp *http.Response) (result WorkflowTriggerListResult, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -257,11 +257,12 @@ func (client WorkflowTriggersClient) RunSender(req *http.Request) (*http.Respons
 
 // RunResponder handles the response to the Run request. The method always
 // closes the http.Response Body.
-func (client WorkflowTriggersClient) RunResponder(resp *http.Response) (result autorest.Response, err error) {
-	err = autorest.Respond(
+func (client WorkflowTriggersClient) RunResponder(resp *http.Response) (result autorest.Response, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK))
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByClosing())
 	result.Response = resp
 	return
 }

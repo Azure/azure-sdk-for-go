@@ -95,8 +95,8 @@ func (client ExpressRouteServiceProvidersClient) ListSender(req *http.Request) (
 
 // ListResponder handles the response to the List request. The method always
 // closes the http.Response Body.
-func (client ExpressRouteServiceProvidersClient) ListResponder(resp *http.Response) (result ExpressRouteServiceProviderListResult, err error) {
-	err = autorest.Respond(
+func (client ExpressRouteServiceProvidersClient) ListResponder(resp *http.Response) (result ExpressRouteServiceProviderListResult, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),

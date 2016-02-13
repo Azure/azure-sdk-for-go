@@ -97,8 +97,8 @@ func (client PolicyAssignmentsClient) CreateSender(req *http.Request) (*http.Res
 
 // CreateResponder handles the response to the Create request. The method always
 // closes the http.Response Body.
-func (client PolicyAssignmentsClient) CreateResponder(resp *http.Response) (result PolicyAssignment, err error) {
-	err = autorest.Respond(
+func (client PolicyAssignmentsClient) CreateResponder(resp *http.Response) (result PolicyAssignment, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
@@ -160,8 +160,8 @@ func (client PolicyAssignmentsClient) CreateByIDSender(req *http.Request) (*http
 
 // CreateByIDResponder handles the response to the CreateByID request. The method always
 // closes the http.Response Body.
-func (client PolicyAssignmentsClient) CreateByIDResponder(resp *http.Response) (result PolicyAssignment, err error) {
-	err = autorest.Respond(
+func (client PolicyAssignmentsClient) CreateByIDResponder(resp *http.Response) (result PolicyAssignment, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
@@ -223,8 +223,8 @@ func (client PolicyAssignmentsClient) DeleteSender(req *http.Request) (*http.Res
 
 // DeleteResponder handles the response to the Delete request. The method always
 // closes the http.Response Body.
-func (client PolicyAssignmentsClient) DeleteResponder(resp *http.Response) (result PolicyAssignment, err error) {
-	err = autorest.Respond(
+func (client PolicyAssignmentsClient) DeleteResponder(resp *http.Response) (result PolicyAssignment, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -285,8 +285,8 @@ func (client PolicyAssignmentsClient) DeleteByIDSender(req *http.Request) (*http
 
 // DeleteByIDResponder handles the response to the DeleteByID request. The method always
 // closes the http.Response Body.
-func (client PolicyAssignmentsClient) DeleteByIDResponder(resp *http.Response) (result PolicyAssignment, err error) {
-	err = autorest.Respond(
+func (client PolicyAssignmentsClient) DeleteByIDResponder(resp *http.Response) (result PolicyAssignment, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -348,8 +348,8 @@ func (client PolicyAssignmentsClient) GetSender(req *http.Request) (*http.Respon
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
-func (client PolicyAssignmentsClient) GetResponder(resp *http.Response) (result PolicyAssignment, err error) {
-	err = autorest.Respond(
+func (client PolicyAssignmentsClient) GetResponder(resp *http.Response) (result PolicyAssignment, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -410,8 +410,8 @@ func (client PolicyAssignmentsClient) GetByIDSender(req *http.Request) (*http.Re
 
 // GetByIDResponder handles the response to the GetByID request. The method always
 // closes the http.Response Body.
-func (client PolicyAssignmentsClient) GetByIDResponder(resp *http.Response) (result PolicyAssignment, err error) {
-	err = autorest.Respond(
+func (client PolicyAssignmentsClient) GetByIDResponder(resp *http.Response) (result PolicyAssignment, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -474,8 +474,8 @@ func (client PolicyAssignmentsClient) ListSender(req *http.Request) (*http.Respo
 
 // ListResponder handles the response to the List request. The method always
 // closes the http.Response Body.
-func (client PolicyAssignmentsClient) ListResponder(resp *http.Response) (result PolicyAssignmentListResult, err error) {
-	err = autorest.Respond(
+func (client PolicyAssignmentsClient) ListResponder(resp *http.Response) (result PolicyAssignmentListResult, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -571,8 +571,8 @@ func (client PolicyAssignmentsClient) ListForResourceSender(req *http.Request) (
 
 // ListForResourceResponder handles the response to the ListForResource request. The method always
 // closes the http.Response Body.
-func (client PolicyAssignmentsClient) ListForResourceResponder(resp *http.Response) (result PolicyAssignmentListResult, err error) {
-	err = autorest.Respond(
+func (client PolicyAssignmentsClient) ListForResourceResponder(resp *http.Response) (result PolicyAssignmentListResult, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -661,8 +661,8 @@ func (client PolicyAssignmentsClient) ListForResourceGroupSender(req *http.Reque
 
 // ListForResourceGroupResponder handles the response to the ListForResourceGroup request. The method always
 // closes the http.Response Body.
-func (client PolicyAssignmentsClient) ListForResourceGroupResponder(resp *http.Response) (result PolicyAssignmentListResult, err error) {
-	err = autorest.Respond(
+func (client PolicyAssignmentsClient) ListForResourceGroupResponder(resp *http.Response) (result PolicyAssignmentListResult, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -750,8 +750,8 @@ func (client PolicyAssignmentsClient) ListForScopeSender(req *http.Request) (*ht
 
 // ListForScopeResponder handles the response to the ListForScope request. The method always
 // closes the http.Response Body.
-func (client PolicyAssignmentsClient) ListForScopeResponder(resp *http.Response) (result PolicyAssignmentListResult, err error) {
-	err = autorest.Respond(
+func (client PolicyAssignmentsClient) ListForScopeResponder(resp *http.Response) (result PolicyAssignmentListResult, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),

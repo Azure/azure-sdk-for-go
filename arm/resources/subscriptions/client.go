@@ -107,8 +107,8 @@ func (client ManagementClient) GetSender(req *http.Request) (*http.Response, err
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
-func (client ManagementClient) GetResponder(resp *http.Response) (result Subscription, err error) {
-	err = autorest.Respond(
+func (client ManagementClient) GetResponder(resp *http.Response) (result Subscription, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -161,8 +161,8 @@ func (client ManagementClient) ListSender(req *http.Request) (*http.Response, er
 
 // ListResponder handles the response to the List request. The method always
 // closes the http.Response Body.
-func (client ManagementClient) ListResponder(resp *http.Response) (result SubscriptionListResult, err error) {
-	err = autorest.Respond(
+func (client ManagementClient) ListResponder(resp *http.Response) (result SubscriptionListResult, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -246,8 +246,8 @@ func (client ManagementClient) ListLocationsSender(req *http.Request) (*http.Res
 
 // ListLocationsResponder handles the response to the ListLocations request. The method always
 // closes the http.Response Body.
-func (client ManagementClient) ListLocationsResponder(resp *http.Response) (result LocationListResult, err error) {
-	err = autorest.Respond(
+func (client ManagementClient) ListLocationsResponder(resp *http.Response) (result LocationListResult, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),

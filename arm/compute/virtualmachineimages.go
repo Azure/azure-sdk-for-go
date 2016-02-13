@@ -96,8 +96,8 @@ func (client VirtualMachineImagesClient) GetSender(req *http.Request) (*http.Res
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
-func (client VirtualMachineImagesClient) GetResponder(resp *http.Response) (result VirtualMachineImage, err error) {
-	err = autorest.Respond(
+func (client VirtualMachineImagesClient) GetResponder(resp *http.Response) (result VirtualMachineImage, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -170,8 +170,8 @@ func (client VirtualMachineImagesClient) ListSender(req *http.Request) (*http.Re
 
 // ListResponder handles the response to the List request. The method always
 // closes the http.Response Body.
-func (client VirtualMachineImagesClient) ListResponder(resp *http.Response) (result VirtualMachineImageResourceList, err error) {
-	err = autorest.Respond(
+func (client VirtualMachineImagesClient) ListResponder(resp *http.Response) (result VirtualMachineImageResourceList, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -232,8 +232,8 @@ func (client VirtualMachineImagesClient) ListOffersSender(req *http.Request) (*h
 
 // ListOffersResponder handles the response to the ListOffers request. The method always
 // closes the http.Response Body.
-func (client VirtualMachineImagesClient) ListOffersResponder(resp *http.Response) (result VirtualMachineImageResourceList, err error) {
-	err = autorest.Respond(
+func (client VirtualMachineImagesClient) ListOffersResponder(resp *http.Response) (result VirtualMachineImageResourceList, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -293,8 +293,8 @@ func (client VirtualMachineImagesClient) ListPublishersSender(req *http.Request)
 
 // ListPublishersResponder handles the response to the ListPublishers request. The method always
 // closes the http.Response Body.
-func (client VirtualMachineImagesClient) ListPublishersResponder(resp *http.Response) (result VirtualMachineImageResourceList, err error) {
-	err = autorest.Respond(
+func (client VirtualMachineImagesClient) ListPublishersResponder(resp *http.Response) (result VirtualMachineImageResourceList, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -356,8 +356,8 @@ func (client VirtualMachineImagesClient) ListSkusSender(req *http.Request) (*htt
 
 // ListSkusResponder handles the response to the ListSkus request. The method always
 // closes the http.Response Body.
-func (client VirtualMachineImagesClient) ListSkusResponder(resp *http.Response) (result VirtualMachineImageResourceList, err error) {
-	err = autorest.Respond(
+func (client VirtualMachineImagesClient) ListSkusResponder(resp *http.Response) (result VirtualMachineImageResourceList, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),

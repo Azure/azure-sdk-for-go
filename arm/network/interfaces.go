@@ -59,7 +59,7 @@ func (client InterfacesClient) CreateOrUpdate(resourceGroupName string, networkI
 
 	resp, err := client.CreateOrUpdateSender(req)
 	if err != nil {
-		result = autorest.Response{Response: resp}
+		result.Response = resp
 		return result, autorest.NewErrorWithError(err, "network/InterfacesClient", "CreateOrUpdate", resp, "Failure sending request")
 	}
 
@@ -109,14 +109,13 @@ func (client InterfacesClient) CreateOrUpdateSender(req *http.Request) (*http.Re
 
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
 // closes the http.Response Body.
-func (client InterfacesClient) CreateOrUpdateResponder(resp *http.Response) (result autorest.Response, err error) {
-	err = autorest.Respond(
+func (client InterfacesClient) CreateOrUpdateResponder(resp *http.Response) (result autorest.Response, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusCreated, http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result = autorest.Response{Response: resp}
+	result.Response = resp
 	return
 }
 
@@ -133,7 +132,7 @@ func (client InterfacesClient) Delete(resourceGroupName string, networkInterface
 
 	resp, err := client.DeleteSender(req)
 	if err != nil {
-		result = autorest.Response{Response: resp}
+		result.Response = resp
 		return result, autorest.NewErrorWithError(err, "network/InterfacesClient", "Delete", resp, "Failure sending request")
 	}
 
@@ -182,14 +181,13 @@ func (client InterfacesClient) DeleteSender(req *http.Request) (*http.Response, 
 
 // DeleteResponder handles the response to the Delete request. The method always
 // closes the http.Response Body.
-func (client InterfacesClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
-	err = autorest.Respond(
+func (client InterfacesClient) DeleteResponder(resp *http.Response) (result autorest.Response, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusNoContent, http.StatusAccepted, http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result = autorest.Response{Response: resp}
+	result.Response = resp
 	return
 }
 
@@ -251,8 +249,8 @@ func (client InterfacesClient) GetSender(req *http.Request) (*http.Response, err
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
-func (client InterfacesClient) GetResponder(resp *http.Response) (result Interface, err error) {
-	err = autorest.Respond(
+func (client InterfacesClient) GetResponder(resp *http.Response) (result Interface, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -324,8 +322,8 @@ func (client InterfacesClient) GetVirtualMachineScaleSetNetworkInterfaceSender(r
 
 // GetVirtualMachineScaleSetNetworkInterfaceResponder handles the response to the GetVirtualMachineScaleSetNetworkInterface request. The method always
 // closes the http.Response Body.
-func (client InterfacesClient) GetVirtualMachineScaleSetNetworkInterfaceResponder(resp *http.Response) (result Interface, err error) {
-	err = autorest.Respond(
+func (client InterfacesClient) GetVirtualMachineScaleSetNetworkInterfaceResponder(resp *http.Response) (result Interface, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -387,8 +385,8 @@ func (client InterfacesClient) ListSender(req *http.Request) (*http.Response, er
 
 // ListResponder handles the response to the List request. The method always
 // closes the http.Response Body.
-func (client InterfacesClient) ListResponder(resp *http.Response) (result InterfaceListResult, err error) {
-	err = autorest.Respond(
+func (client InterfacesClient) ListResponder(resp *http.Response) (result InterfaceListResult, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -471,8 +469,8 @@ func (client InterfacesClient) ListAllSender(req *http.Request) (*http.Response,
 
 // ListAllResponder handles the response to the ListAll request. The method always
 // closes the http.Response Body.
-func (client InterfacesClient) ListAllResponder(resp *http.Response) (result InterfaceListResult, err error) {
-	err = autorest.Respond(
+func (client InterfacesClient) ListAllResponder(resp *http.Response) (result InterfaceListResult, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -561,8 +559,8 @@ func (client InterfacesClient) ListVirtualMachineScaleSetNetworkInterfacesSender
 
 // ListVirtualMachineScaleSetNetworkInterfacesResponder handles the response to the ListVirtualMachineScaleSetNetworkInterfaces request. The method always
 // closes the http.Response Body.
-func (client InterfacesClient) ListVirtualMachineScaleSetNetworkInterfacesResponder(resp *http.Response) (result InterfaceListResult, err error) {
-	err = autorest.Respond(
+func (client InterfacesClient) ListVirtualMachineScaleSetNetworkInterfacesResponder(resp *http.Response) (result InterfaceListResult, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -653,8 +651,8 @@ func (client InterfacesClient) ListVirtualMachineScaleSetVMNetworkInterfacesSend
 
 // ListVirtualMachineScaleSetVMNetworkInterfacesResponder handles the response to the ListVirtualMachineScaleSetVMNetworkInterfaces request. The method always
 // closes the http.Response Body.
-func (client InterfacesClient) ListVirtualMachineScaleSetVMNetworkInterfacesResponder(resp *http.Response) (result InterfaceListResult, err error) {
-	err = autorest.Respond(
+func (client InterfacesClient) ListVirtualMachineScaleSetVMNetworkInterfacesResponder(resp *http.Response) (result InterfaceListResult, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),

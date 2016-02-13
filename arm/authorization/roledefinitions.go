@@ -97,8 +97,8 @@ func (client RoleDefinitionsClient) CreateOrUpdateSender(req *http.Request) (*ht
 
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
 // closes the http.Response Body.
-func (client RoleDefinitionsClient) CreateOrUpdateResponder(resp *http.Response) (result RoleDefinition, err error) {
-	err = autorest.Respond(
+func (client RoleDefinitionsClient) CreateOrUpdateResponder(resp *http.Response) (result RoleDefinition, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
@@ -160,8 +160,8 @@ func (client RoleDefinitionsClient) DeleteSender(req *http.Request) (*http.Respo
 
 // DeleteResponder handles the response to the Delete request. The method always
 // closes the http.Response Body.
-func (client RoleDefinitionsClient) DeleteResponder(resp *http.Response) (result RoleDefinition, err error) {
-	err = autorest.Respond(
+func (client RoleDefinitionsClient) DeleteResponder(resp *http.Response) (result RoleDefinition, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -223,8 +223,8 @@ func (client RoleDefinitionsClient) GetSender(req *http.Request) (*http.Response
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
-func (client RoleDefinitionsClient) GetResponder(resp *http.Response) (result RoleDefinition, err error) {
-	err = autorest.Respond(
+func (client RoleDefinitionsClient) GetResponder(resp *http.Response) (result RoleDefinition, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -285,8 +285,8 @@ func (client RoleDefinitionsClient) GetByIDSender(req *http.Request) (*http.Resp
 
 // GetByIDResponder handles the response to the GetByID request. The method always
 // closes the http.Response Body.
-func (client RoleDefinitionsClient) GetByIDResponder(resp *http.Response) (result RoleDefinition, err error) {
-	err = autorest.Respond(
+func (client RoleDefinitionsClient) GetByIDResponder(resp *http.Response) (result RoleDefinition, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -351,8 +351,8 @@ func (client RoleDefinitionsClient) ListSender(req *http.Request) (*http.Respons
 
 // ListResponder handles the response to the List request. The method always
 // closes the http.Response Body.
-func (client RoleDefinitionsClient) ListResponder(resp *http.Response) (result RoleDefinitionListResult, err error) {
-	err = autorest.Respond(
+func (client RoleDefinitionsClient) ListResponder(resp *http.Response) (result RoleDefinitionListResult, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),

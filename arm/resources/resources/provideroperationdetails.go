@@ -94,8 +94,8 @@ func (client ProviderOperationDetailsClient) ListSender(req *http.Request) (*htt
 
 // ListResponder handles the response to the List request. The method always
 // closes the http.Response Body.
-func (client ProviderOperationDetailsClient) ListResponder(resp *http.Response) (result ResourceProviderOperationDetailListResult, err error) {
-	err = autorest.Respond(
+func (client ProviderOperationDetailsClient) ListResponder(resp *http.Response) (result ResourceProviderOperationDetailListResult, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),

@@ -95,11 +95,12 @@ func (client DeploymentsClient) CancelSender(req *http.Request) (*http.Response,
 
 // CancelResponder handles the response to the Cancel request. The method always
 // closes the http.Response Body.
-func (client DeploymentsClient) CancelResponder(resp *http.Response) (result autorest.Response, err error) {
-	err = autorest.Respond(
+func (client DeploymentsClient) CancelResponder(resp *http.Response) (result autorest.Response, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent))
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
+		autorest.ByClosing())
 	result.Response = resp
 	return
 }
@@ -157,11 +158,12 @@ func (client DeploymentsClient) CheckExistenceSender(req *http.Request) (*http.R
 
 // CheckExistenceResponder handles the response to the CheckExistence request. The method always
 // closes the http.Response Body.
-func (client DeploymentsClient) CheckExistenceResponder(resp *http.Response) (result autorest.Response, err error) {
-	err = autorest.Respond(
+func (client DeploymentsClient) CheckExistenceResponder(resp *http.Response) (result autorest.Response, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent, http.StatusNotFound))
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent, http.StatusNotFound),
+		autorest.ByClosing())
 	result.Response = resp
 	return
 }
@@ -179,7 +181,7 @@ func (client DeploymentsClient) CreateOrUpdate(resourceGroupName string, deploym
 
 	resp, err := client.CreateOrUpdateSender(req)
 	if err != nil {
-		result = autorest.Response{Response: resp}
+		result.Response = resp
 		return result, autorest.NewErrorWithError(err, "resources/DeploymentsClient", "CreateOrUpdate", resp, "Failure sending request")
 	}
 
@@ -229,14 +231,13 @@ func (client DeploymentsClient) CreateOrUpdateSender(req *http.Request) (*http.R
 
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
 // closes the http.Response Body.
-func (client DeploymentsClient) CreateOrUpdateResponder(resp *http.Response) (result autorest.Response, err error) {
-	err = autorest.Respond(
+func (client DeploymentsClient) CreateOrUpdateResponder(resp *http.Response) (result autorest.Response, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
-		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result = autorest.Response{Response: resp}
+	result.Response = resp
 	return
 }
 
@@ -253,7 +254,7 @@ func (client DeploymentsClient) Delete(resourceGroupName string, deploymentName 
 
 	resp, err := client.DeleteSender(req)
 	if err != nil {
-		result = autorest.Response{Response: resp}
+		result.Response = resp
 		return result, autorest.NewErrorWithError(err, "resources/DeploymentsClient", "Delete", resp, "Failure sending request")
 	}
 
@@ -302,14 +303,13 @@ func (client DeploymentsClient) DeleteSender(req *http.Request) (*http.Response,
 
 // DeleteResponder handles the response to the Delete request. The method always
 // closes the http.Response Body.
-func (client DeploymentsClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
-	err = autorest.Respond(
+func (client DeploymentsClient) DeleteResponder(resp *http.Response) (result autorest.Response, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
-		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result = autorest.Response{Response: resp}
+	result.Response = resp
 	return
 }
 
@@ -366,8 +366,8 @@ func (client DeploymentsClient) GetSender(req *http.Request) (*http.Response, er
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
-func (client DeploymentsClient) GetResponder(resp *http.Response) (result DeploymentExtended, err error) {
-	err = autorest.Respond(
+func (client DeploymentsClient) GetResponder(resp *http.Response) (result DeploymentExtended, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -436,8 +436,8 @@ func (client DeploymentsClient) ListSender(req *http.Request) (*http.Response, e
 
 // ListResponder handles the response to the List request. The method always
 // closes the http.Response Body.
-func (client DeploymentsClient) ListResponder(resp *http.Response) (result DeploymentListResult, err error) {
-	err = autorest.Respond(
+func (client DeploymentsClient) ListResponder(resp *http.Response) (result DeploymentListResult, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -526,8 +526,8 @@ func (client DeploymentsClient) ValidateSender(req *http.Request) (*http.Respons
 
 // ValidateResponder handles the response to the Validate request. The method always
 // closes the http.Response Body.
-func (client DeploymentsClient) ValidateResponder(resp *http.Response) (result DeploymentValidateResult, err error) {
-	err = autorest.Respond(
+func (client DeploymentsClient) ValidateResponder(resp *http.Response) (result DeploymentValidateResult, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusBadRequest),

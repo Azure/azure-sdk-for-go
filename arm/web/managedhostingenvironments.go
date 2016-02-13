@@ -63,7 +63,7 @@ func (client ManagedHostingEnvironmentsClient) CreateOrUpdateManagedHostingEnvir
 
 	resp, err := client.CreateOrUpdateManagedHostingEnvironmentSender(req)
 	if err != nil {
-		result = autorest.Response{Response: resp}
+		result.Response = resp
 		return result, autorest.NewErrorWithError(err, "web/ManagedHostingEnvironmentsClient", "CreateOrUpdateManagedHostingEnvironment", resp, "Failure sending request")
 	}
 
@@ -113,14 +113,13 @@ func (client ManagedHostingEnvironmentsClient) CreateOrUpdateManagedHostingEnvir
 
 // CreateOrUpdateManagedHostingEnvironmentResponder handles the response to the CreateOrUpdateManagedHostingEnvironment request. The method always
 // closes the http.Response Body.
-func (client ManagedHostingEnvironmentsClient) CreateOrUpdateManagedHostingEnvironmentResponder(resp *http.Response) (result autorest.Response, err error) {
-	err = autorest.Respond(
+func (client ManagedHostingEnvironmentsClient) CreateOrUpdateManagedHostingEnvironmentResponder(resp *http.Response) (result autorest.Response, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusBadRequest, http.StatusNotFound, http.StatusConflict),
-		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result = autorest.Response{Response: resp}
+	result.Response = resp
 	return
 }
 
@@ -138,7 +137,7 @@ func (client ManagedHostingEnvironmentsClient) DeleteManagedHostingEnvironment(r
 
 	resp, err := client.DeleteManagedHostingEnvironmentSender(req)
 	if err != nil {
-		result = autorest.Response{Response: resp}
+		result.Response = resp
 		return result, autorest.NewErrorWithError(err, "web/ManagedHostingEnvironmentsClient", "DeleteManagedHostingEnvironment", resp, "Failure sending request")
 	}
 
@@ -190,14 +189,13 @@ func (client ManagedHostingEnvironmentsClient) DeleteManagedHostingEnvironmentSe
 
 // DeleteManagedHostingEnvironmentResponder handles the response to the DeleteManagedHostingEnvironment request. The method always
 // closes the http.Response Body.
-func (client ManagedHostingEnvironmentsClient) DeleteManagedHostingEnvironmentResponder(resp *http.Response) (result autorest.Response, err error) {
-	err = autorest.Respond(
+func (client ManagedHostingEnvironmentsClient) DeleteManagedHostingEnvironmentResponder(resp *http.Response) (result autorest.Response, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusBadRequest, http.StatusNotFound, http.StatusConflict),
-		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result = autorest.Response{Response: resp}
+	result.Response = resp
 	return
 }
 
@@ -255,8 +253,8 @@ func (client ManagedHostingEnvironmentsClient) GetManagedHostingEnvironmentSende
 
 // GetManagedHostingEnvironmentResponder handles the response to the GetManagedHostingEnvironment request. The method always
 // closes the http.Response Body.
-func (client ManagedHostingEnvironmentsClient) GetManagedHostingEnvironmentResponder(resp *http.Response) (result ManagedHostingEnvironment, err error) {
-	err = autorest.Respond(
+func (client ManagedHostingEnvironmentsClient) GetManagedHostingEnvironmentResponder(resp *http.Response) (result ManagedHostingEnvironment, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -321,8 +319,8 @@ func (client ManagedHostingEnvironmentsClient) GetManagedHostingEnvironmentOpera
 
 // GetManagedHostingEnvironmentOperationResponder handles the response to the GetManagedHostingEnvironmentOperation request. The method always
 // closes the http.Response Body.
-func (client ManagedHostingEnvironmentsClient) GetManagedHostingEnvironmentOperationResponder(resp *http.Response) (result ObjectSet, err error) {
-	err = autorest.Respond(
+func (client ManagedHostingEnvironmentsClient) GetManagedHostingEnvironmentOperationResponder(resp *http.Response) (result ObjectSet, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNotFound, http.StatusInternalServerError),
@@ -384,8 +382,8 @@ func (client ManagedHostingEnvironmentsClient) GetManagedHostingEnvironmentsSend
 
 // GetManagedHostingEnvironmentsResponder handles the response to the GetManagedHostingEnvironments request. The method always
 // closes the http.Response Body.
-func (client ManagedHostingEnvironmentsClient) GetManagedHostingEnvironmentsResponder(resp *http.Response) (result HostingEnvironmentCollection, err error) {
-	err = autorest.Respond(
+func (client ManagedHostingEnvironmentsClient) GetManagedHostingEnvironmentsResponder(resp *http.Response) (result HostingEnvironmentCollection, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -449,8 +447,8 @@ func (client ManagedHostingEnvironmentsClient) GetManagedHostingEnvironmentServe
 
 // GetManagedHostingEnvironmentServerFarmsResponder handles the response to the GetManagedHostingEnvironmentServerFarms request. The method always
 // closes the http.Response Body.
-func (client ManagedHostingEnvironmentsClient) GetManagedHostingEnvironmentServerFarmsResponder(resp *http.Response) (result ServerFarmCollection, err error) {
-	err = autorest.Respond(
+func (client ManagedHostingEnvironmentsClient) GetManagedHostingEnvironmentServerFarmsResponder(resp *http.Response) (result ServerFarmCollection, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -518,8 +516,8 @@ func (client ManagedHostingEnvironmentsClient) GetManagedHostingEnvironmentSites
 
 // GetManagedHostingEnvironmentSitesResponder handles the response to the GetManagedHostingEnvironmentSites request. The method always
 // closes the http.Response Body.
-func (client ManagedHostingEnvironmentsClient) GetManagedHostingEnvironmentSitesResponder(resp *http.Response) (result SiteCollection, err error) {
-	err = autorest.Respond(
+func (client ManagedHostingEnvironmentsClient) GetManagedHostingEnvironmentSitesResponder(resp *http.Response) (result SiteCollection, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -583,8 +581,8 @@ func (client ManagedHostingEnvironmentsClient) GetManagedHostingEnvironmentVipsS
 
 // GetManagedHostingEnvironmentVipsResponder handles the response to the GetManagedHostingEnvironmentVips request. The method always
 // closes the http.Response Body.
-func (client ManagedHostingEnvironmentsClient) GetManagedHostingEnvironmentVipsResponder(resp *http.Response) (result AddressResponse, err error) {
-	err = autorest.Respond(
+func (client ManagedHostingEnvironmentsClient) GetManagedHostingEnvironmentVipsResponder(resp *http.Response) (result AddressResponse, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -648,8 +646,8 @@ func (client ManagedHostingEnvironmentsClient) GetManagedHostingEnvironmentWebHo
 
 // GetManagedHostingEnvironmentWebHostingPlansResponder handles the response to the GetManagedHostingEnvironmentWebHostingPlans request. The method always
 // closes the http.Response Body.
-func (client ManagedHostingEnvironmentsClient) GetManagedHostingEnvironmentWebHostingPlansResponder(resp *http.Response) (result ServerFarmCollection, err error) {
-	err = autorest.Respond(
+func (client ManagedHostingEnvironmentsClient) GetManagedHostingEnvironmentWebHostingPlansResponder(resp *http.Response) (result ServerFarmCollection, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),

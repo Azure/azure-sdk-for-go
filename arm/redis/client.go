@@ -114,8 +114,8 @@ func (client ManagementClient) CreateOrUpdateSender(req *http.Request) (*http.Re
 
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
 // closes the http.Response Body.
-func (client ManagementClient) CreateOrUpdateResponder(resp *http.Response) (result ResourceWithAccessKey, err error) {
-	err = autorest.Respond(
+func (client ManagementClient) CreateOrUpdateResponder(resp *http.Response) (result ResourceWithAccessKey, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusCreated, http.StatusOK),
@@ -178,11 +178,12 @@ func (client ManagementClient) DeleteSender(req *http.Request) (*http.Response, 
 
 // DeleteResponder handles the response to the Delete request. The method always
 // closes the http.Response Body.
-func (client ManagementClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
-	err = autorest.Respond(
+func (client ManagementClient) DeleteResponder(resp *http.Response) (result autorest.Response, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNotFound))
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNotFound),
+		autorest.ByClosing())
 	result.Response = resp
 	return
 }
@@ -240,8 +241,8 @@ func (client ManagementClient) GetSender(req *http.Request) (*http.Response, err
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
-func (client ManagementClient) GetResponder(resp *http.Response) (result ResourceType, err error) {
-	err = autorest.Respond(
+func (client ManagementClient) GetResponder(resp *http.Response) (result ResourceType, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -299,8 +300,8 @@ func (client ManagementClient) ListSender(req *http.Request) (*http.Response, er
 
 // ListResponder handles the response to the List request. The method always
 // closes the http.Response Body.
-func (client ManagementClient) ListResponder(resp *http.Response) (result ListResult, err error) {
-	err = autorest.Respond(
+func (client ManagementClient) ListResponder(resp *http.Response) (result ListResult, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -385,8 +386,8 @@ func (client ManagementClient) ListByResourceGroupSender(req *http.Request) (*ht
 
 // ListByResourceGroupResponder handles the response to the ListByResourceGroup request. The method always
 // closes the http.Response Body.
-func (client ManagementClient) ListByResourceGroupResponder(resp *http.Response) (result ListResult, err error) {
-	err = autorest.Respond(
+func (client ManagementClient) ListByResourceGroupResponder(resp *http.Response) (result ListResult, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -474,8 +475,8 @@ func (client ManagementClient) ListKeysSender(req *http.Request) (*http.Response
 
 // ListKeysResponder handles the response to the ListKeys request. The method always
 // closes the http.Response Body.
-func (client ManagementClient) ListKeysResponder(resp *http.Response) (result ListKeysResult, err error) {
-	err = autorest.Respond(
+func (client ManagementClient) ListKeysResponder(resp *http.Response) (result ListKeysResult, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -540,8 +541,8 @@ func (client ManagementClient) RegenerateKeySender(req *http.Request) (*http.Res
 
 // RegenerateKeyResponder handles the response to the RegenerateKey request. The method always
 // closes the http.Response Body.
-func (client ManagementClient) RegenerateKeyResponder(resp *http.Response) (result ListKeysResult, err error) {
-	err = autorest.Respond(
+func (client ManagementClient) RegenerateKeyResponder(resp *http.Response) (result ListKeysResult, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),

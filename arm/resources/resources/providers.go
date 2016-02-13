@@ -93,8 +93,8 @@ func (client ProvidersClient) GetSender(req *http.Request) (*http.Response, erro
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
-func (client ProvidersClient) GetResponder(resp *http.Response) (result Provider, err error) {
-	err = autorest.Respond(
+func (client ProvidersClient) GetResponder(resp *http.Response) (result Provider, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -157,8 +157,8 @@ func (client ProvidersClient) ListSender(req *http.Request) (*http.Response, err
 
 // ListResponder handles the response to the List request. The method always
 // closes the http.Response Body.
-func (client ProvidersClient) ListResponder(resp *http.Response) (result ProviderListResult, err error) {
-	err = autorest.Respond(
+func (client ProvidersClient) ListResponder(resp *http.Response) (result ProviderListResult, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -243,8 +243,8 @@ func (client ProvidersClient) RegisterSender(req *http.Request) (*http.Response,
 
 // RegisterResponder handles the response to the Register request. The method always
 // closes the http.Response Body.
-func (client ProvidersClient) RegisterResponder(resp *http.Response) (result Provider, err error) {
-	err = autorest.Respond(
+func (client ProvidersClient) RegisterResponder(resp *http.Response) (result Provider, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -305,8 +305,8 @@ func (client ProvidersClient) UnregisterSender(req *http.Request) (*http.Respons
 
 // UnregisterResponder handles the response to the Unregister request. The method always
 // closes the http.Response Body.
-func (client ProvidersClient) UnregisterResponder(resp *http.Response) (result Provider, err error) {
-	err = autorest.Respond(
+func (client ProvidersClient) UnregisterResponder(resp *http.Response) (result Provider, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),

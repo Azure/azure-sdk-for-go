@@ -100,8 +100,8 @@ func (client ServicesClient) CreateOrUpdateSender(req *http.Request) (*http.Resp
 
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
 // closes the http.Response Body.
-func (client ServicesClient) CreateOrUpdateResponder(resp *http.Response) (result ServiceResource, err error) {
-	err = autorest.Respond(
+func (client ServicesClient) CreateOrUpdateResponder(resp *http.Response) (result ServiceResource, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
@@ -165,11 +165,12 @@ func (client ServicesClient) DeleteSender(req *http.Request) (*http.Response, er
 
 // DeleteResponder handles the response to the Delete request. The method always
 // closes the http.Response Body.
-func (client ServicesClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
-	err = autorest.Respond(
+func (client ServicesClient) DeleteResponder(resp *http.Response) (result autorest.Response, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNotFound, http.StatusNoContent))
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNotFound, http.StatusNoContent),
+		autorest.ByClosing())
 	result.Response = resp
 	return
 }
@@ -226,8 +227,8 @@ func (client ServicesClient) ListSender(req *http.Request) (*http.Response, erro
 
 // ListResponder handles the response to the List request. The method always
 // closes the http.Response Body.
-func (client ServicesClient) ListResponder(resp *http.Response) (result ServiceListResult, err error) {
-	err = autorest.Respond(
+func (client ServicesClient) ListResponder(resp *http.Response) (result ServiceListResult, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),

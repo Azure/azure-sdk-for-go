@@ -56,7 +56,7 @@ func (client VirtualMachinesClient) Capture(resourceGroupName string, vmName str
 
 	resp, err := client.CaptureSender(req)
 	if err != nil {
-		result = autorest.Response{Response: resp}
+		result.Response = resp
 		return result, autorest.NewErrorWithError(err, "compute/VirtualMachinesClient", "Capture", resp, "Failure sending request")
 	}
 
@@ -106,14 +106,13 @@ func (client VirtualMachinesClient) CaptureSender(req *http.Request) (*http.Resp
 
 // CaptureResponder handles the response to the Capture request. The method always
 // closes the http.Response Body.
-func (client VirtualMachinesClient) CaptureResponder(resp *http.Response) (result autorest.Response, err error) {
-	err = autorest.Respond(
+func (client VirtualMachinesClient) CaptureResponder(resp *http.Response) (result autorest.Response, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
-		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result = autorest.Response{Response: resp}
+	result.Response = resp
 	return
 }
 
@@ -130,7 +129,7 @@ func (client VirtualMachinesClient) CreateOrUpdate(resourceGroupName string, vmN
 
 	resp, err := client.CreateOrUpdateSender(req)
 	if err != nil {
-		result = autorest.Response{Response: resp}
+		result.Response = resp
 		return result, autorest.NewErrorWithError(err, "compute/VirtualMachinesClient", "CreateOrUpdate", resp, "Failure sending request")
 	}
 
@@ -180,14 +179,13 @@ func (client VirtualMachinesClient) CreateOrUpdateSender(req *http.Request) (*ht
 
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
 // closes the http.Response Body.
-func (client VirtualMachinesClient) CreateOrUpdateResponder(resp *http.Response) (result autorest.Response, err error) {
-	err = autorest.Respond(
+func (client VirtualMachinesClient) CreateOrUpdateResponder(resp *http.Response) (result autorest.Response, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusCreated, http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result = autorest.Response{Response: resp}
+	result.Response = resp
 	return
 }
 
@@ -205,7 +203,7 @@ func (client VirtualMachinesClient) Deallocate(resourceGroupName string, vmName 
 
 	resp, err := client.DeallocateSender(req)
 	if err != nil {
-		result = autorest.Response{Response: resp}
+		result.Response = resp
 		return result, autorest.NewErrorWithError(err, "compute/VirtualMachinesClient", "Deallocate", resp, "Failure sending request")
 	}
 
@@ -254,14 +252,13 @@ func (client VirtualMachinesClient) DeallocateSender(req *http.Request) (*http.R
 
 // DeallocateResponder handles the response to the Deallocate request. The method always
 // closes the http.Response Body.
-func (client VirtualMachinesClient) DeallocateResponder(resp *http.Response) (result autorest.Response, err error) {
-	err = autorest.Respond(
+func (client VirtualMachinesClient) DeallocateResponder(resp *http.Response) (result autorest.Response, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
-		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result = autorest.Response{Response: resp}
+	result.Response = resp
 	return
 }
 
@@ -277,7 +274,7 @@ func (client VirtualMachinesClient) Delete(resourceGroupName string, vmName stri
 
 	resp, err := client.DeleteSender(req)
 	if err != nil {
-		result = autorest.Response{Response: resp}
+		result.Response = resp
 		return result, autorest.NewErrorWithError(err, "compute/VirtualMachinesClient", "Delete", resp, "Failure sending request")
 	}
 
@@ -326,14 +323,13 @@ func (client VirtualMachinesClient) DeleteSender(req *http.Request) (*http.Respo
 
 // DeleteResponder handles the response to the Delete request. The method always
 // closes the http.Response Body.
-func (client VirtualMachinesClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
-	err = autorest.Respond(
+func (client VirtualMachinesClient) DeleteResponder(resp *http.Response) (result autorest.Response, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
-		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result = autorest.Response{Response: resp}
+	result.Response = resp
 	return
 }
 
@@ -390,11 +386,12 @@ func (client VirtualMachinesClient) GeneralizeSender(req *http.Request) (*http.R
 
 // GeneralizeResponder handles the response to the Generalize request. The method always
 // closes the http.Response Body.
-func (client VirtualMachinesClient) GeneralizeResponder(resp *http.Response) (result autorest.Response, err error) {
-	err = autorest.Respond(
+func (client VirtualMachinesClient) GeneralizeResponder(resp *http.Response) (result autorest.Response, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK))
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByClosing())
 	result.Response = resp
 	return
 }
@@ -456,8 +453,8 @@ func (client VirtualMachinesClient) GetSender(req *http.Request) (*http.Response
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
-func (client VirtualMachinesClient) GetResponder(resp *http.Response) (result VirtualMachine, err error) {
-	err = autorest.Respond(
+func (client VirtualMachinesClient) GetResponder(resp *http.Response) (result VirtualMachine, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -518,8 +515,8 @@ func (client VirtualMachinesClient) ListSender(req *http.Request) (*http.Respons
 
 // ListResponder handles the response to the List request. The method always
 // closes the http.Response Body.
-func (client VirtualMachinesClient) ListResponder(resp *http.Response) (result VirtualMachineListResult, err error) {
-	err = autorest.Respond(
+func (client VirtualMachinesClient) ListResponder(resp *http.Response) (result VirtualMachineListResult, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -603,8 +600,8 @@ func (client VirtualMachinesClient) ListAllSender(req *http.Request) (*http.Resp
 
 // ListAllResponder handles the response to the ListAll request. The method always
 // closes the http.Response Body.
-func (client VirtualMachinesClient) ListAllResponder(resp *http.Response) (result VirtualMachineListResult, err error) {
-	err = autorest.Respond(
+func (client VirtualMachinesClient) ListAllResponder(resp *http.Response) (result VirtualMachineListResult, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -692,8 +689,8 @@ func (client VirtualMachinesClient) ListAvailableSizesSender(req *http.Request) 
 
 // ListAvailableSizesResponder handles the response to the ListAvailableSizes request. The method always
 // closes the http.Response Body.
-func (client VirtualMachinesClient) ListAvailableSizesResponder(resp *http.Response) (result VirtualMachineSizeListResult, err error) {
-	err = autorest.Respond(
+func (client VirtualMachinesClient) ListAvailableSizesResponder(resp *http.Response) (result VirtualMachineSizeListResult, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -739,7 +736,7 @@ func (client VirtualMachinesClient) PowerOff(resourceGroupName string, vmName st
 
 	resp, err := client.PowerOffSender(req)
 	if err != nil {
-		result = autorest.Response{Response: resp}
+		result.Response = resp
 		return result, autorest.NewErrorWithError(err, "compute/VirtualMachinesClient", "PowerOff", resp, "Failure sending request")
 	}
 
@@ -788,14 +785,13 @@ func (client VirtualMachinesClient) PowerOffSender(req *http.Request) (*http.Res
 
 // PowerOffResponder handles the response to the PowerOff request. The method always
 // closes the http.Response Body.
-func (client VirtualMachinesClient) PowerOffResponder(resp *http.Response) (result autorest.Response, err error) {
-	err = autorest.Respond(
+func (client VirtualMachinesClient) PowerOffResponder(resp *http.Response) (result autorest.Response, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
-		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result = autorest.Response{Response: resp}
+	result.Response = resp
 	return
 }
 
@@ -811,7 +807,7 @@ func (client VirtualMachinesClient) Restart(resourceGroupName string, vmName str
 
 	resp, err := client.RestartSender(req)
 	if err != nil {
-		result = autorest.Response{Response: resp}
+		result.Response = resp
 		return result, autorest.NewErrorWithError(err, "compute/VirtualMachinesClient", "Restart", resp, "Failure sending request")
 	}
 
@@ -860,14 +856,13 @@ func (client VirtualMachinesClient) RestartSender(req *http.Request) (*http.Resp
 
 // RestartResponder handles the response to the Restart request. The method always
 // closes the http.Response Body.
-func (client VirtualMachinesClient) RestartResponder(resp *http.Response) (result autorest.Response, err error) {
-	err = autorest.Respond(
+func (client VirtualMachinesClient) RestartResponder(resp *http.Response) (result autorest.Response, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
-		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result = autorest.Response{Response: resp}
+	result.Response = resp
 	return
 }
 
@@ -883,7 +878,7 @@ func (client VirtualMachinesClient) Start(resourceGroupName string, vmName strin
 
 	resp, err := client.StartSender(req)
 	if err != nil {
-		result = autorest.Response{Response: resp}
+		result.Response = resp
 		return result, autorest.NewErrorWithError(err, "compute/VirtualMachinesClient", "Start", resp, "Failure sending request")
 	}
 
@@ -932,13 +927,12 @@ func (client VirtualMachinesClient) StartSender(req *http.Request) (*http.Respon
 
 // StartResponder handles the response to the Start request. The method always
 // closes the http.Response Body.
-func (client VirtualMachinesClient) StartResponder(resp *http.Response) (result autorest.Response, err error) {
-	err = autorest.Respond(
+func (client VirtualMachinesClient) StartResponder(resp *http.Response) (result autorest.Response, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
-		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result = autorest.Response{Response: resp}
+	result.Response = resp
 	return
 }

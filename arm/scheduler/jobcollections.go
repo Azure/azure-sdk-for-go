@@ -98,8 +98,8 @@ func (client JobCollectionsClient) CreateOrUpdateSender(req *http.Request) (*htt
 
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
 // closes the http.Response Body.
-func (client JobCollectionsClient) CreateOrUpdateResponder(resp *http.Response) (result JobCollectionDefinition, err error) {
-	err = autorest.Respond(
+func (client JobCollectionsClient) CreateOrUpdateResponder(resp *http.Response) (result JobCollectionDefinition, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
@@ -162,11 +162,12 @@ func (client JobCollectionsClient) DeleteSender(req *http.Request) (*http.Respon
 
 // DeleteResponder handles the response to the Delete request. The method always
 // closes the http.Response Body.
-func (client JobCollectionsClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
-	err = autorest.Respond(
+func (client JobCollectionsClient) DeleteResponder(resp *http.Response) (result autorest.Response, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK))
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByClosing())
 	result.Response = resp
 	return
 }
@@ -224,11 +225,12 @@ func (client JobCollectionsClient) DisableSender(req *http.Request) (*http.Respo
 
 // DisableResponder handles the response to the Disable request. The method always
 // closes the http.Response Body.
-func (client JobCollectionsClient) DisableResponder(resp *http.Response) (result autorest.Response, err error) {
-	err = autorest.Respond(
+func (client JobCollectionsClient) DisableResponder(resp *http.Response) (result autorest.Response, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK))
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByClosing())
 	result.Response = resp
 	return
 }
@@ -286,11 +288,12 @@ func (client JobCollectionsClient) EnableSender(req *http.Request) (*http.Respon
 
 // EnableResponder handles the response to the Enable request. The method always
 // closes the http.Response Body.
-func (client JobCollectionsClient) EnableResponder(resp *http.Response) (result autorest.Response, err error) {
-	err = autorest.Respond(
+func (client JobCollectionsClient) EnableResponder(resp *http.Response) (result autorest.Response, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK))
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByClosing())
 	result.Response = resp
 	return
 }
@@ -348,8 +351,8 @@ func (client JobCollectionsClient) GetSender(req *http.Request) (*http.Response,
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
-func (client JobCollectionsClient) GetResponder(resp *http.Response) (result JobCollectionDefinition, err error) {
-	err = autorest.Respond(
+func (client JobCollectionsClient) GetResponder(resp *http.Response) (result JobCollectionDefinition, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -410,8 +413,8 @@ func (client JobCollectionsClient) ListByResourceGroupSender(req *http.Request) 
 
 // ListByResourceGroupResponder handles the response to the ListByResourceGroup request. The method always
 // closes the http.Response Body.
-func (client JobCollectionsClient) ListByResourceGroupResponder(resp *http.Response) (result JobCollectionListResult, err error) {
-	err = autorest.Respond(
+func (client JobCollectionsClient) ListByResourceGroupResponder(resp *http.Response) (result JobCollectionListResult, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -493,8 +496,8 @@ func (client JobCollectionsClient) ListBySubscriptionSender(req *http.Request) (
 
 // ListBySubscriptionResponder handles the response to the ListBySubscription request. The method always
 // closes the http.Response Body.
-func (client JobCollectionsClient) ListBySubscriptionResponder(resp *http.Response) (result JobCollectionListResult, err error) {
-	err = autorest.Respond(
+func (client JobCollectionsClient) ListBySubscriptionResponder(resp *http.Response) (result JobCollectionListResult, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -582,8 +585,8 @@ func (client JobCollectionsClient) PatchSender(req *http.Request) (*http.Respons
 
 // PatchResponder handles the response to the Patch request. The method always
 // closes the http.Response Body.
-func (client JobCollectionsClient) PatchResponder(resp *http.Response) (result JobCollectionDefinition, err error) {
-	err = autorest.Respond(
+func (client JobCollectionsClient) PatchResponder(resp *http.Response) (result JobCollectionDefinition, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),

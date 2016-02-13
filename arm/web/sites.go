@@ -100,8 +100,8 @@ func (client SitesClient) AddSitePremierAddOnSender(req *http.Request) (*http.Re
 
 // AddSitePremierAddOnResponder handles the response to the AddSitePremierAddOn request. The method always
 // closes the http.Response Body.
-func (client SitesClient) AddSitePremierAddOnResponder(resp *http.Response) (result ObjectSet, err error) {
-	err = autorest.Respond(
+func (client SitesClient) AddSitePremierAddOnResponder(resp *http.Response) (result ObjectSet, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -165,8 +165,8 @@ func (client SitesClient) AddSitePremierAddOnSlotSender(req *http.Request) (*htt
 
 // AddSitePremierAddOnSlotResponder handles the response to the AddSitePremierAddOnSlot request. The method always
 // closes the http.Response Body.
-func (client SitesClient) AddSitePremierAddOnSlotResponder(resp *http.Response) (result ObjectSet, err error) {
-	err = autorest.Respond(
+func (client SitesClient) AddSitePremierAddOnSlotResponder(resp *http.Response) (result ObjectSet, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -234,8 +234,8 @@ func (client SitesClient) ApplySlotConfigSlotSender(req *http.Request) (*http.Re
 
 // ApplySlotConfigSlotResponder handles the response to the ApplySlotConfigSlot request. The method always
 // closes the http.Response Body.
-func (client SitesClient) ApplySlotConfigSlotResponder(resp *http.Response) (result ObjectSet, err error) {
-	err = autorest.Respond(
+func (client SitesClient) ApplySlotConfigSlotResponder(resp *http.Response) (result ObjectSet, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -301,8 +301,8 @@ func (client SitesClient) ApplySlotConfigToProductionSender(req *http.Request) (
 
 // ApplySlotConfigToProductionResponder handles the response to the ApplySlotConfigToProduction request. The method always
 // closes the http.Response Body.
-func (client SitesClient) ApplySlotConfigToProductionResponder(resp *http.Response) (result ObjectSet, err error) {
-	err = autorest.Respond(
+func (client SitesClient) ApplySlotConfigToProductionResponder(resp *http.Response) (result ObjectSet, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -366,8 +366,8 @@ func (client SitesClient) BackupSiteSender(req *http.Request) (*http.Response, e
 
 // BackupSiteResponder handles the response to the BackupSite request. The method always
 // closes the http.Response Body.
-func (client SitesClient) BackupSiteResponder(resp *http.Response) (result BackupItem, err error) {
-	err = autorest.Respond(
+func (client SitesClient) BackupSiteResponder(resp *http.Response) (result BackupItem, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -431,8 +431,8 @@ func (client SitesClient) BackupSiteDeprecatedSender(req *http.Request) (*http.R
 
 // BackupSiteDeprecatedResponder handles the response to the BackupSiteDeprecated request. The method always
 // closes the http.Response Body.
-func (client SitesClient) BackupSiteDeprecatedResponder(resp *http.Response) (result BackupItem, err error) {
-	err = autorest.Respond(
+func (client SitesClient) BackupSiteDeprecatedResponder(resp *http.Response) (result BackupItem, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -498,8 +498,8 @@ func (client SitesClient) BackupSiteDeprecatedSlotSender(req *http.Request) (*ht
 
 // BackupSiteDeprecatedSlotResponder handles the response to the BackupSiteDeprecatedSlot request. The method always
 // closes the http.Response Body.
-func (client SitesClient) BackupSiteDeprecatedSlotResponder(resp *http.Response) (result BackupItem, err error) {
-	err = autorest.Respond(
+func (client SitesClient) BackupSiteDeprecatedSlotResponder(resp *http.Response) (result BackupItem, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -565,8 +565,8 @@ func (client SitesClient) BackupSiteSlotSender(req *http.Request) (*http.Respons
 
 // BackupSiteSlotResponder handles the response to the BackupSiteSlot request. The method always
 // closes the http.Response Body.
-func (client SitesClient) BackupSiteSlotResponder(resp *http.Response) (result BackupItem, err error) {
-	err = autorest.Respond(
+func (client SitesClient) BackupSiteSlotResponder(resp *http.Response) (result BackupItem, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -631,8 +631,8 @@ func (client SitesClient) CreateDeploymentSender(req *http.Request) (*http.Respo
 
 // CreateDeploymentResponder handles the response to the CreateDeployment request. The method always
 // closes the http.Response Body.
-func (client SitesClient) CreateDeploymentResponder(resp *http.Response) (result Deployment, err error) {
-	err = autorest.Respond(
+func (client SitesClient) CreateDeploymentResponder(resp *http.Response) (result Deployment, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -699,8 +699,8 @@ func (client SitesClient) CreateDeploymentSlotSender(req *http.Request) (*http.R
 
 // CreateDeploymentSlotResponder handles the response to the CreateDeploymentSlot request. The method always
 // closes the http.Response Body.
-func (client SitesClient) CreateDeploymentSlotResponder(resp *http.Response) (result Deployment, err error) {
-	err = autorest.Respond(
+func (client SitesClient) CreateDeploymentSlotResponder(resp *http.Response) (result Deployment, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -767,8 +767,8 @@ func (client SitesClient) CreateInstanceDeploymentSender(req *http.Request) (*ht
 
 // CreateInstanceDeploymentResponder handles the response to the CreateInstanceDeployment request. The method always
 // closes the http.Response Body.
-func (client SitesClient) CreateInstanceDeploymentResponder(resp *http.Response) (result Deployment, err error) {
-	err = autorest.Respond(
+func (client SitesClient) CreateInstanceDeploymentResponder(resp *http.Response) (result Deployment, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -838,8 +838,8 @@ func (client SitesClient) CreateInstanceDeploymentSlotSender(req *http.Request) 
 
 // CreateInstanceDeploymentSlotResponder handles the response to the CreateInstanceDeploymentSlot request. The method always
 // closes the http.Response Body.
-func (client SitesClient) CreateInstanceDeploymentSlotResponder(resp *http.Response) (result Deployment, err error) {
-	err = autorest.Respond(
+func (client SitesClient) CreateInstanceDeploymentSlotResponder(resp *http.Response) (result Deployment, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -868,7 +868,7 @@ func (client SitesClient) CreateOrUpdateSite(resourceGroupName string, name stri
 
 	resp, err := client.CreateOrUpdateSiteSender(req)
 	if err != nil {
-		result = autorest.Response{Response: resp}
+		result.Response = resp
 		return result, autorest.NewErrorWithError(err, "web/SitesClient", "CreateOrUpdateSite", resp, "Failure sending request")
 	}
 
@@ -930,14 +930,13 @@ func (client SitesClient) CreateOrUpdateSiteSender(req *http.Request) (*http.Res
 
 // CreateOrUpdateSiteResponder handles the response to the CreateOrUpdateSite request. The method always
 // closes the http.Response Body.
-func (client SitesClient) CreateOrUpdateSiteResponder(resp *http.Response) (result autorest.Response, err error) {
-	err = autorest.Respond(
+func (client SitesClient) CreateOrUpdateSiteResponder(resp *http.Response) (result autorest.Response, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
-		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result = autorest.Response{Response: resp}
+	result.Response = resp
 	return
 }
 
@@ -996,8 +995,8 @@ func (client SitesClient) CreateOrUpdateSiteConfigSender(req *http.Request) (*ht
 
 // CreateOrUpdateSiteConfigResponder handles the response to the CreateOrUpdateSiteConfig request. The method always
 // closes the http.Response Body.
-func (client SitesClient) CreateOrUpdateSiteConfigResponder(resp *http.Response) (result SiteConfig, err error) {
-	err = autorest.Respond(
+func (client SitesClient) CreateOrUpdateSiteConfigResponder(resp *http.Response) (result SiteConfig, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -1065,8 +1064,8 @@ func (client SitesClient) CreateOrUpdateSiteConfigSlotSender(req *http.Request) 
 
 // CreateOrUpdateSiteConfigSlotResponder handles the response to the CreateOrUpdateSiteConfigSlot request. The method always
 // closes the http.Response Body.
-func (client SitesClient) CreateOrUpdateSiteConfigSlotResponder(resp *http.Response) (result SiteConfig, err error) {
-	err = autorest.Respond(
+func (client SitesClient) CreateOrUpdateSiteConfigSlotResponder(resp *http.Response) (result SiteConfig, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -1132,8 +1131,8 @@ func (client SitesClient) CreateOrUpdateSiteHostNameBindingSender(req *http.Requ
 
 // CreateOrUpdateSiteHostNameBindingResponder handles the response to the CreateOrUpdateSiteHostNameBinding request. The method always
 // closes the http.Response Body.
-func (client SitesClient) CreateOrUpdateSiteHostNameBindingResponder(resp *http.Response) (result HostNameBinding, err error) {
-	err = autorest.Respond(
+func (client SitesClient) CreateOrUpdateSiteHostNameBindingResponder(resp *http.Response) (result HostNameBinding, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -1202,8 +1201,8 @@ func (client SitesClient) CreateOrUpdateSiteHostNameBindingSlotSender(req *http.
 
 // CreateOrUpdateSiteHostNameBindingSlotResponder handles the response to the CreateOrUpdateSiteHostNameBindingSlot request. The method always
 // closes the http.Response Body.
-func (client SitesClient) CreateOrUpdateSiteHostNameBindingSlotResponder(resp *http.Response) (result HostNameBinding, err error) {
-	err = autorest.Respond(
+func (client SitesClient) CreateOrUpdateSiteHostNameBindingSlotResponder(resp *http.Response) (result HostNameBinding, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -1270,8 +1269,8 @@ func (client SitesClient) CreateOrUpdateSiteRelayServiceConnectionSender(req *ht
 
 // CreateOrUpdateSiteRelayServiceConnectionResponder handles the response to the CreateOrUpdateSiteRelayServiceConnection request. The method always
 // closes the http.Response Body.
-func (client SitesClient) CreateOrUpdateSiteRelayServiceConnectionResponder(resp *http.Response) (result RelayServiceConnectionEntity, err error) {
-	err = autorest.Respond(
+func (client SitesClient) CreateOrUpdateSiteRelayServiceConnectionResponder(resp *http.Response) (result RelayServiceConnectionEntity, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -1340,8 +1339,8 @@ func (client SitesClient) CreateOrUpdateSiteRelayServiceConnectionSlotSender(req
 
 // CreateOrUpdateSiteRelayServiceConnectionSlotResponder handles the response to the CreateOrUpdateSiteRelayServiceConnectionSlot request. The method always
 // closes the http.Response Body.
-func (client SitesClient) CreateOrUpdateSiteRelayServiceConnectionSlotResponder(resp *http.Response) (result RelayServiceConnectionEntity, err error) {
-	err = autorest.Respond(
+func (client SitesClient) CreateOrUpdateSiteRelayServiceConnectionSlotResponder(resp *http.Response) (result RelayServiceConnectionEntity, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -1371,7 +1370,7 @@ func (client SitesClient) CreateOrUpdateSiteSlot(resourceGroupName string, name 
 
 	resp, err := client.CreateOrUpdateSiteSlotSender(req)
 	if err != nil {
-		result = autorest.Response{Response: resp}
+		result.Response = resp
 		return result, autorest.NewErrorWithError(err, "web/SitesClient", "CreateOrUpdateSiteSlot", resp, "Failure sending request")
 	}
 
@@ -1434,14 +1433,13 @@ func (client SitesClient) CreateOrUpdateSiteSlotSender(req *http.Request) (*http
 
 // CreateOrUpdateSiteSlotResponder handles the response to the CreateOrUpdateSiteSlot request. The method always
 // closes the http.Response Body.
-func (client SitesClient) CreateOrUpdateSiteSlotResponder(resp *http.Response) (result autorest.Response, err error) {
-	err = autorest.Respond(
+func (client SitesClient) CreateOrUpdateSiteSlotResponder(resp *http.Response) (result autorest.Response, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
-		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result = autorest.Response{Response: resp}
+	result.Response = resp
 	return
 }
 
@@ -1501,8 +1499,8 @@ func (client SitesClient) CreateOrUpdateSiteSourceControlSender(req *http.Reques
 
 // CreateOrUpdateSiteSourceControlResponder handles the response to the CreateOrUpdateSiteSourceControl request. The method always
 // closes the http.Response Body.
-func (client SitesClient) CreateOrUpdateSiteSourceControlResponder(resp *http.Response) (result SiteSourceControl, err error) {
-	err = autorest.Respond(
+func (client SitesClient) CreateOrUpdateSiteSourceControlResponder(resp *http.Response) (result SiteSourceControl, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -1570,8 +1568,8 @@ func (client SitesClient) CreateOrUpdateSiteSourceControlSlotSender(req *http.Re
 
 // CreateOrUpdateSiteSourceControlSlotResponder handles the response to the CreateOrUpdateSiteSourceControlSlot request. The method always
 // closes the http.Response Body.
-func (client SitesClient) CreateOrUpdateSiteSourceControlSlotResponder(resp *http.Response) (result SiteSourceControl, err error) {
-	err = autorest.Respond(
+func (client SitesClient) CreateOrUpdateSiteSourceControlSlotResponder(resp *http.Response) (result SiteSourceControl, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -1638,8 +1636,8 @@ func (client SitesClient) CreateOrUpdateSiteVNETConnectionSender(req *http.Reque
 
 // CreateOrUpdateSiteVNETConnectionResponder handles the response to the CreateOrUpdateSiteVNETConnection request. The method always
 // closes the http.Response Body.
-func (client SitesClient) CreateOrUpdateSiteVNETConnectionResponder(resp *http.Response) (result VnetInfo, err error) {
-	err = autorest.Respond(
+func (client SitesClient) CreateOrUpdateSiteVNETConnectionResponder(resp *http.Response) (result VnetInfo, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -1708,8 +1706,8 @@ func (client SitesClient) CreateOrUpdateSiteVNETConnectionGatewaySender(req *htt
 
 // CreateOrUpdateSiteVNETConnectionGatewayResponder handles the response to the CreateOrUpdateSiteVNETConnectionGateway request. The method always
 // closes the http.Response Body.
-func (client SitesClient) CreateOrUpdateSiteVNETConnectionGatewayResponder(resp *http.Response) (result VnetGateway, err error) {
-	err = autorest.Respond(
+func (client SitesClient) CreateOrUpdateSiteVNETConnectionGatewayResponder(resp *http.Response) (result VnetGateway, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -1780,8 +1778,8 @@ func (client SitesClient) CreateOrUpdateSiteVNETConnectionGatewaySlotSender(req 
 
 // CreateOrUpdateSiteVNETConnectionGatewaySlotResponder handles the response to the CreateOrUpdateSiteVNETConnectionGatewaySlot request. The method always
 // closes the http.Response Body.
-func (client SitesClient) CreateOrUpdateSiteVNETConnectionGatewaySlotResponder(resp *http.Response) (result VnetGateway, err error) {
-	err = autorest.Respond(
+func (client SitesClient) CreateOrUpdateSiteVNETConnectionGatewaySlotResponder(resp *http.Response) (result VnetGateway, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -1850,8 +1848,8 @@ func (client SitesClient) CreateOrUpdateSiteVNETConnectionSlotSender(req *http.R
 
 // CreateOrUpdateSiteVNETConnectionSlotResponder handles the response to the CreateOrUpdateSiteVNETConnectionSlot request. The method always
 // closes the http.Response Body.
-func (client SitesClient) CreateOrUpdateSiteVNETConnectionSlotResponder(resp *http.Response) (result VnetInfo, err error) {
-	err = autorest.Respond(
+func (client SitesClient) CreateOrUpdateSiteVNETConnectionSlotResponder(resp *http.Response) (result VnetInfo, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -1915,8 +1913,8 @@ func (client SitesClient) DeleteBackupSender(req *http.Request) (*http.Response,
 
 // DeleteBackupResponder handles the response to the DeleteBackup request. The method always
 // closes the http.Response Body.
-func (client SitesClient) DeleteBackupResponder(resp *http.Response) (result BackupItem, err error) {
-	err = autorest.Respond(
+func (client SitesClient) DeleteBackupResponder(resp *http.Response) (result BackupItem, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -1982,8 +1980,8 @@ func (client SitesClient) DeleteBackupSlotSender(req *http.Request) (*http.Respo
 
 // DeleteBackupSlotResponder handles the response to the DeleteBackupSlot request. The method always
 // closes the http.Response Body.
-func (client SitesClient) DeleteBackupSlotResponder(resp *http.Response) (result BackupItem, err error) {
-	err = autorest.Respond(
+func (client SitesClient) DeleteBackupSlotResponder(resp *http.Response) (result BackupItem, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -2047,8 +2045,8 @@ func (client SitesClient) DeleteDeploymentSender(req *http.Request) (*http.Respo
 
 // DeleteDeploymentResponder handles the response to the DeleteDeployment request. The method always
 // closes the http.Response Body.
-func (client SitesClient) DeleteDeploymentResponder(resp *http.Response) (result ObjectSet, err error) {
-	err = autorest.Respond(
+func (client SitesClient) DeleteDeploymentResponder(resp *http.Response) (result ObjectSet, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -2114,8 +2112,8 @@ func (client SitesClient) DeleteDeploymentSlotSender(req *http.Request) (*http.R
 
 // DeleteDeploymentSlotResponder handles the response to the DeleteDeploymentSlot request. The method always
 // closes the http.Response Body.
-func (client SitesClient) DeleteDeploymentSlotResponder(resp *http.Response) (result ObjectSet, err error) {
-	err = autorest.Respond(
+func (client SitesClient) DeleteDeploymentSlotResponder(resp *http.Response) (result ObjectSet, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -2180,8 +2178,8 @@ func (client SitesClient) DeleteInstanceDeploymentSender(req *http.Request) (*ht
 
 // DeleteInstanceDeploymentResponder handles the response to the DeleteInstanceDeployment request. The method always
 // closes the http.Response Body.
-func (client SitesClient) DeleteInstanceDeploymentResponder(resp *http.Response) (result ObjectSet, err error) {
-	err = autorest.Respond(
+func (client SitesClient) DeleteInstanceDeploymentResponder(resp *http.Response) (result ObjectSet, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -2249,8 +2247,8 @@ func (client SitesClient) DeleteInstanceDeploymentSlotSender(req *http.Request) 
 
 // DeleteInstanceDeploymentSlotResponder handles the response to the DeleteInstanceDeploymentSlot request. The method always
 // closes the http.Response Body.
-func (client SitesClient) DeleteInstanceDeploymentSlotResponder(resp *http.Response) (result ObjectSet, err error) {
-	err = autorest.Respond(
+func (client SitesClient) DeleteInstanceDeploymentSlotResponder(resp *http.Response) (result ObjectSet, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -2329,8 +2327,8 @@ func (client SitesClient) DeleteSiteSender(req *http.Request) (*http.Response, e
 
 // DeleteSiteResponder handles the response to the DeleteSite request. The method always
 // closes the http.Response Body.
-func (client SitesClient) DeleteSiteResponder(resp *http.Response) (result ObjectSet, err error) {
-	err = autorest.Respond(
+func (client SitesClient) DeleteSiteResponder(resp *http.Response) (result ObjectSet, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -2394,8 +2392,8 @@ func (client SitesClient) DeleteSiteHostNameBindingSender(req *http.Request) (*h
 
 // DeleteSiteHostNameBindingResponder handles the response to the DeleteSiteHostNameBinding request. The method always
 // closes the http.Response Body.
-func (client SitesClient) DeleteSiteHostNameBindingResponder(resp *http.Response) (result ObjectSet, err error) {
-	err = autorest.Respond(
+func (client SitesClient) DeleteSiteHostNameBindingResponder(resp *http.Response) (result ObjectSet, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -2462,8 +2460,8 @@ func (client SitesClient) DeleteSiteHostNameBindingSlotSender(req *http.Request)
 
 // DeleteSiteHostNameBindingSlotResponder handles the response to the DeleteSiteHostNameBindingSlot request. The method always
 // closes the http.Response Body.
-func (client SitesClient) DeleteSiteHostNameBindingSlotResponder(resp *http.Response) (result ObjectSet, err error) {
-	err = autorest.Respond(
+func (client SitesClient) DeleteSiteHostNameBindingSlotResponder(resp *http.Response) (result ObjectSet, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -2525,8 +2523,8 @@ func (client SitesClient) DeleteSitePremierAddOnSender(req *http.Request) (*http
 
 // DeleteSitePremierAddOnResponder handles the response to the DeleteSitePremierAddOn request. The method always
 // closes the http.Response Body.
-func (client SitesClient) DeleteSitePremierAddOnResponder(resp *http.Response) (result ObjectSet, err error) {
-	err = autorest.Respond(
+func (client SitesClient) DeleteSitePremierAddOnResponder(resp *http.Response) (result ObjectSet, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -2590,8 +2588,8 @@ func (client SitesClient) DeleteSitePremierAddOnSlotSender(req *http.Request) (*
 
 // DeleteSitePremierAddOnSlotResponder handles the response to the DeleteSitePremierAddOnSlot request. The method always
 // closes the http.Response Body.
-func (client SitesClient) DeleteSitePremierAddOnSlotResponder(resp *http.Response) (result ObjectSet, err error) {
-	err = autorest.Respond(
+func (client SitesClient) DeleteSitePremierAddOnSlotResponder(resp *http.Response) (result ObjectSet, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -2656,8 +2654,8 @@ func (client SitesClient) DeleteSiteRelayServiceConnectionSender(req *http.Reque
 
 // DeleteSiteRelayServiceConnectionResponder handles the response to the DeleteSiteRelayServiceConnection request. The method always
 // closes the http.Response Body.
-func (client SitesClient) DeleteSiteRelayServiceConnectionResponder(resp *http.Response) (result ObjectSet, err error) {
-	err = autorest.Respond(
+func (client SitesClient) DeleteSiteRelayServiceConnectionResponder(resp *http.Response) (result ObjectSet, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -2724,8 +2722,8 @@ func (client SitesClient) DeleteSiteRelayServiceConnectionSlotSender(req *http.R
 
 // DeleteSiteRelayServiceConnectionSlotResponder handles the response to the DeleteSiteRelayServiceConnectionSlot request. The method always
 // closes the http.Response Body.
-func (client SitesClient) DeleteSiteRelayServiceConnectionSlotResponder(resp *http.Response) (result ObjectSet, err error) {
-	err = autorest.Respond(
+func (client SitesClient) DeleteSiteRelayServiceConnectionSlotResponder(resp *http.Response) (result ObjectSet, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -2806,8 +2804,8 @@ func (client SitesClient) DeleteSiteSlotSender(req *http.Request) (*http.Respons
 
 // DeleteSiteSlotResponder handles the response to the DeleteSiteSlot request. The method always
 // closes the http.Response Body.
-func (client SitesClient) DeleteSiteSlotResponder(resp *http.Response) (result ObjectSet, err error) {
-	err = autorest.Respond(
+func (client SitesClient) DeleteSiteSlotResponder(resp *http.Response) (result ObjectSet, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -2869,8 +2867,8 @@ func (client SitesClient) DeleteSiteSourceControlSender(req *http.Request) (*htt
 
 // DeleteSiteSourceControlResponder handles the response to the DeleteSiteSourceControl request. The method always
 // closes the http.Response Body.
-func (client SitesClient) DeleteSiteSourceControlResponder(resp *http.Response) (result ObjectSet, err error) {
-	err = autorest.Respond(
+func (client SitesClient) DeleteSiteSourceControlResponder(resp *http.Response) (result ObjectSet, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -2936,8 +2934,8 @@ func (client SitesClient) DeleteSiteSourceControlSlotSender(req *http.Request) (
 
 // DeleteSiteSourceControlSlotResponder handles the response to the DeleteSiteSourceControlSlot request. The method always
 // closes the http.Response Body.
-func (client SitesClient) DeleteSiteSourceControlSlotResponder(resp *http.Response) (result ObjectSet, err error) {
-	err = autorest.Respond(
+func (client SitesClient) DeleteSiteSourceControlSlotResponder(resp *http.Response) (result ObjectSet, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -3001,8 +2999,8 @@ func (client SitesClient) DeleteSiteVNETConnectionSender(req *http.Request) (*ht
 
 // DeleteSiteVNETConnectionResponder handles the response to the DeleteSiteVNETConnection request. The method always
 // closes the http.Response Body.
-func (client SitesClient) DeleteSiteVNETConnectionResponder(resp *http.Response) (result ObjectSet, err error) {
-	err = autorest.Respond(
+func (client SitesClient) DeleteSiteVNETConnectionResponder(resp *http.Response) (result ObjectSet, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -3069,8 +3067,8 @@ func (client SitesClient) DeleteSiteVNETConnectionSlotSender(req *http.Request) 
 
 // DeleteSiteVNETConnectionSlotResponder handles the response to the DeleteSiteVNETConnectionSlot request. The method always
 // closes the http.Response Body.
-func (client SitesClient) DeleteSiteVNETConnectionSlotResponder(resp *http.Response) (result ObjectSet, err error) {
-	err = autorest.Respond(
+func (client SitesClient) DeleteSiteVNETConnectionSlotResponder(resp *http.Response) (result ObjectSet, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -3134,8 +3132,8 @@ func (client SitesClient) DiscoverSiteRestoreSender(req *http.Request) (*http.Re
 
 // DiscoverSiteRestoreResponder handles the response to the DiscoverSiteRestore request. The method always
 // closes the http.Response Body.
-func (client SitesClient) DiscoverSiteRestoreResponder(resp *http.Response) (result RestoreRequest, err error) {
-	err = autorest.Respond(
+func (client SitesClient) DiscoverSiteRestoreResponder(resp *http.Response) (result RestoreRequest, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -3200,8 +3198,8 @@ func (client SitesClient) DiscoverSiteRestoreDeprecatedSender(req *http.Request)
 
 // DiscoverSiteRestoreDeprecatedResponder handles the response to the DiscoverSiteRestoreDeprecated request. The method always
 // closes the http.Response Body.
-func (client SitesClient) DiscoverSiteRestoreDeprecatedResponder(resp *http.Response) (result RestoreRequest, err error) {
-	err = autorest.Respond(
+func (client SitesClient) DiscoverSiteRestoreDeprecatedResponder(resp *http.Response) (result RestoreRequest, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -3268,8 +3266,8 @@ func (client SitesClient) DiscoverSiteRestoreDeprecatedSlotSender(req *http.Requ
 
 // DiscoverSiteRestoreDeprecatedSlotResponder handles the response to the DiscoverSiteRestoreDeprecatedSlot request. The method always
 // closes the http.Response Body.
-func (client SitesClient) DiscoverSiteRestoreDeprecatedSlotResponder(resp *http.Response) (result RestoreRequest, err error) {
-	err = autorest.Respond(
+func (client SitesClient) DiscoverSiteRestoreDeprecatedSlotResponder(resp *http.Response) (result RestoreRequest, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -3335,8 +3333,8 @@ func (client SitesClient) DiscoverSiteRestoreSlotSender(req *http.Request) (*htt
 
 // DiscoverSiteRestoreSlotResponder handles the response to the DiscoverSiteRestoreSlot request. The method always
 // closes the http.Response Body.
-func (client SitesClient) DiscoverSiteRestoreSlotResponder(resp *http.Response) (result RestoreRequest, err error) {
-	err = autorest.Respond(
+func (client SitesClient) DiscoverSiteRestoreSlotResponder(resp *http.Response) (result RestoreRequest, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -3399,8 +3397,8 @@ func (client SitesClient) GenerateNewSitePublishingPasswordSender(req *http.Requ
 
 // GenerateNewSitePublishingPasswordResponder handles the response to the GenerateNewSitePublishingPassword request. The method always
 // closes the http.Response Body.
-func (client SitesClient) GenerateNewSitePublishingPasswordResponder(resp *http.Response) (result ObjectSet, err error) {
-	err = autorest.Respond(
+func (client SitesClient) GenerateNewSitePublishingPasswordResponder(resp *http.Response) (result ObjectSet, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -3466,8 +3464,8 @@ func (client SitesClient) GenerateNewSitePublishingPasswordSlotSender(req *http.
 
 // GenerateNewSitePublishingPasswordSlotResponder handles the response to the GenerateNewSitePublishingPasswordSlot request. The method always
 // closes the http.Response Body.
-func (client SitesClient) GenerateNewSitePublishingPasswordSlotResponder(resp *http.Response) (result ObjectSet, err error) {
-	err = autorest.Respond(
+func (client SitesClient) GenerateNewSitePublishingPasswordSlotResponder(resp *http.Response) (result ObjectSet, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -3536,8 +3534,8 @@ func (client SitesClient) GetDeletedSitesSender(req *http.Request) (*http.Respon
 
 // GetDeletedSitesResponder handles the response to the GetDeletedSites request. The method always
 // closes the http.Response Body.
-func (client SitesClient) GetDeletedSitesResponder(resp *http.Response) (result DeletedSiteCollection, err error) {
-	err = autorest.Respond(
+func (client SitesClient) GetDeletedSitesResponder(resp *http.Response) (result DeletedSiteCollection, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -3601,8 +3599,8 @@ func (client SitesClient) GetDeploymentSender(req *http.Request) (*http.Response
 
 // GetDeploymentResponder handles the response to the GetDeployment request. The method always
 // closes the http.Response Body.
-func (client SitesClient) GetDeploymentResponder(resp *http.Response) (result Deployment, err error) {
-	err = autorest.Respond(
+func (client SitesClient) GetDeploymentResponder(resp *http.Response) (result Deployment, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -3664,8 +3662,8 @@ func (client SitesClient) GetDeploymentsSender(req *http.Request) (*http.Respons
 
 // GetDeploymentsResponder handles the response to the GetDeployments request. The method always
 // closes the http.Response Body.
-func (client SitesClient) GetDeploymentsResponder(resp *http.Response) (result DeploymentCollection, err error) {
-	err = autorest.Respond(
+func (client SitesClient) GetDeploymentsResponder(resp *http.Response) (result DeploymentCollection, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -3731,8 +3729,8 @@ func (client SitesClient) GetDeploymentSlotSender(req *http.Request) (*http.Resp
 
 // GetDeploymentSlotResponder handles the response to the GetDeploymentSlot request. The method always
 // closes the http.Response Body.
-func (client SitesClient) GetDeploymentSlotResponder(resp *http.Response) (result Deployment, err error) {
-	err = autorest.Respond(
+func (client SitesClient) GetDeploymentSlotResponder(resp *http.Response) (result Deployment, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -3797,8 +3795,8 @@ func (client SitesClient) GetDeploymentsSlotSender(req *http.Request) (*http.Res
 
 // GetDeploymentsSlotResponder handles the response to the GetDeploymentsSlot request. The method always
 // closes the http.Response Body.
-func (client SitesClient) GetDeploymentsSlotResponder(resp *http.Response) (result DeploymentCollection, err error) {
-	err = autorest.Respond(
+func (client SitesClient) GetDeploymentsSlotResponder(resp *http.Response) (result DeploymentCollection, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -3863,8 +3861,8 @@ func (client SitesClient) GetInstanceDeploymentSender(req *http.Request) (*http.
 
 // GetInstanceDeploymentResponder handles the response to the GetInstanceDeployment request. The method always
 // closes the http.Response Body.
-func (client SitesClient) GetInstanceDeploymentResponder(resp *http.Response) (result Deployment, err error) {
-	err = autorest.Respond(
+func (client SitesClient) GetInstanceDeploymentResponder(resp *http.Response) (result Deployment, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -3928,8 +3926,8 @@ func (client SitesClient) GetInstanceDeploymentsSender(req *http.Request) (*http
 
 // GetInstanceDeploymentsResponder handles the response to the GetInstanceDeployments request. The method always
 // closes the http.Response Body.
-func (client SitesClient) GetInstanceDeploymentsResponder(resp *http.Response) (result DeploymentCollection, err error) {
-	err = autorest.Respond(
+func (client SitesClient) GetInstanceDeploymentsResponder(resp *http.Response) (result DeploymentCollection, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -3996,8 +3994,8 @@ func (client SitesClient) GetInstanceDeploymentSlotSender(req *http.Request) (*h
 
 // GetInstanceDeploymentSlotResponder handles the response to the GetInstanceDeploymentSlot request. The method always
 // closes the http.Response Body.
-func (client SitesClient) GetInstanceDeploymentSlotResponder(resp *http.Response) (result Deployment, err error) {
-	err = autorest.Respond(
+func (client SitesClient) GetInstanceDeploymentSlotResponder(resp *http.Response) (result Deployment, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -4063,8 +4061,8 @@ func (client SitesClient) GetInstanceDeploymentsSlotSender(req *http.Request) (*
 
 // GetInstanceDeploymentsSlotResponder handles the response to the GetInstanceDeploymentsSlot request. The method always
 // closes the http.Response Body.
-func (client SitesClient) GetInstanceDeploymentsSlotResponder(resp *http.Response) (result DeploymentCollection, err error) {
-	err = autorest.Respond(
+func (client SitesClient) GetInstanceDeploymentsSlotResponder(resp *http.Response) (result DeploymentCollection, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -4131,8 +4129,8 @@ func (client SitesClient) GetSiteSender(req *http.Request) (*http.Response, erro
 
 // GetSiteResponder handles the response to the GetSite request. The method always
 // closes the http.Response Body.
-func (client SitesClient) GetSiteResponder(resp *http.Response) (result Site, err error) {
-	err = autorest.Respond(
+func (client SitesClient) GetSiteResponder(resp *http.Response) (result Site, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -4194,8 +4192,8 @@ func (client SitesClient) GetSiteBackupConfigurationSender(req *http.Request) (*
 
 // GetSiteBackupConfigurationResponder handles the response to the GetSiteBackupConfiguration request. The method always
 // closes the http.Response Body.
-func (client SitesClient) GetSiteBackupConfigurationResponder(resp *http.Response) (result BackupRequest, err error) {
-	err = autorest.Respond(
+func (client SitesClient) GetSiteBackupConfigurationResponder(resp *http.Response) (result BackupRequest, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -4258,8 +4256,8 @@ func (client SitesClient) GetSiteBackupConfigurationDeprecatedSender(req *http.R
 
 // GetSiteBackupConfigurationDeprecatedResponder handles the response to the GetSiteBackupConfigurationDeprecated request. The method always
 // closes the http.Response Body.
-func (client SitesClient) GetSiteBackupConfigurationDeprecatedResponder(resp *http.Response) (result BackupRequest, err error) {
-	err = autorest.Respond(
+func (client SitesClient) GetSiteBackupConfigurationDeprecatedResponder(resp *http.Response) (result BackupRequest, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -4325,8 +4323,8 @@ func (client SitesClient) GetSiteBackupConfigurationDeprecatedSlotSender(req *ht
 
 // GetSiteBackupConfigurationDeprecatedSlotResponder handles the response to the GetSiteBackupConfigurationDeprecatedSlot request. The method always
 // closes the http.Response Body.
-func (client SitesClient) GetSiteBackupConfigurationDeprecatedSlotResponder(resp *http.Response) (result BackupRequest, err error) {
-	err = autorest.Respond(
+func (client SitesClient) GetSiteBackupConfigurationDeprecatedSlotResponder(resp *http.Response) (result BackupRequest, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -4392,8 +4390,8 @@ func (client SitesClient) GetSiteBackupConfigurationSlotSender(req *http.Request
 
 // GetSiteBackupConfigurationSlotResponder handles the response to the GetSiteBackupConfigurationSlot request. The method always
 // closes the http.Response Body.
-func (client SitesClient) GetSiteBackupConfigurationSlotResponder(resp *http.Response) (result BackupRequest, err error) {
-	err = autorest.Respond(
+func (client SitesClient) GetSiteBackupConfigurationSlotResponder(resp *http.Response) (result BackupRequest, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -4457,8 +4455,8 @@ func (client SitesClient) GetSiteBackupStatusSender(req *http.Request) (*http.Re
 
 // GetSiteBackupStatusResponder handles the response to the GetSiteBackupStatus request. The method always
 // closes the http.Response Body.
-func (client SitesClient) GetSiteBackupStatusResponder(resp *http.Response) (result BackupItem, err error) {
-	err = autorest.Respond(
+func (client SitesClient) GetSiteBackupStatusResponder(resp *http.Response) (result BackupItem, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -4523,8 +4521,8 @@ func (client SitesClient) GetSiteBackupStatusSecretsSender(req *http.Request) (*
 
 // GetSiteBackupStatusSecretsResponder handles the response to the GetSiteBackupStatusSecrets request. The method always
 // closes the http.Response Body.
-func (client SitesClient) GetSiteBackupStatusSecretsResponder(resp *http.Response) (result BackupItem, err error) {
-	err = autorest.Respond(
+func (client SitesClient) GetSiteBackupStatusSecretsResponder(resp *http.Response) (result BackupItem, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -4593,8 +4591,8 @@ func (client SitesClient) GetSiteBackupStatusSecretsSlotSender(req *http.Request
 
 // GetSiteBackupStatusSecretsSlotResponder handles the response to the GetSiteBackupStatusSecretsSlot request. The method always
 // closes the http.Response Body.
-func (client SitesClient) GetSiteBackupStatusSecretsSlotResponder(resp *http.Response) (result BackupItem, err error) {
-	err = autorest.Respond(
+func (client SitesClient) GetSiteBackupStatusSecretsSlotResponder(resp *http.Response) (result BackupItem, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -4660,8 +4658,8 @@ func (client SitesClient) GetSiteBackupStatusSlotSender(req *http.Request) (*htt
 
 // GetSiteBackupStatusSlotResponder handles the response to the GetSiteBackupStatusSlot request. The method always
 // closes the http.Response Body.
-func (client SitesClient) GetSiteBackupStatusSlotResponder(resp *http.Response) (result BackupItem, err error) {
-	err = autorest.Respond(
+func (client SitesClient) GetSiteBackupStatusSlotResponder(resp *http.Response) (result BackupItem, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -4723,8 +4721,8 @@ func (client SitesClient) GetSiteConfigSender(req *http.Request) (*http.Response
 
 // GetSiteConfigResponder handles the response to the GetSiteConfig request. The method always
 // closes the http.Response Body.
-func (client SitesClient) GetSiteConfigResponder(resp *http.Response) (result SiteConfig, err error) {
-	err = autorest.Respond(
+func (client SitesClient) GetSiteConfigResponder(resp *http.Response) (result SiteConfig, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -4789,8 +4787,8 @@ func (client SitesClient) GetSiteConfigSlotSender(req *http.Request) (*http.Resp
 
 // GetSiteConfigSlotResponder handles the response to the GetSiteConfigSlot request. The method always
 // closes the http.Response Body.
-func (client SitesClient) GetSiteConfigSlotResponder(resp *http.Response) (result SiteConfig, err error) {
-	err = autorest.Respond(
+func (client SitesClient) GetSiteConfigSlotResponder(resp *http.Response) (result SiteConfig, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -4854,8 +4852,8 @@ func (client SitesClient) GetSiteHostNameBindingSender(req *http.Request) (*http
 
 // GetSiteHostNameBindingResponder handles the response to the GetSiteHostNameBinding request. The method always
 // closes the http.Response Body.
-func (client SitesClient) GetSiteHostNameBindingResponder(resp *http.Response) (result HostNameBinding, err error) {
-	err = autorest.Respond(
+func (client SitesClient) GetSiteHostNameBindingResponder(resp *http.Response) (result HostNameBinding, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -4917,8 +4915,8 @@ func (client SitesClient) GetSiteHostNameBindingsSender(req *http.Request) (*htt
 
 // GetSiteHostNameBindingsResponder handles the response to the GetSiteHostNameBindings request. The method always
 // closes the http.Response Body.
-func (client SitesClient) GetSiteHostNameBindingsResponder(resp *http.Response) (result HostNameBindingCollection, err error) {
-	err = autorest.Respond(
+func (client SitesClient) GetSiteHostNameBindingsResponder(resp *http.Response) (result HostNameBindingCollection, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -4985,8 +4983,8 @@ func (client SitesClient) GetSiteHostNameBindingSlotSender(req *http.Request) (*
 
 // GetSiteHostNameBindingSlotResponder handles the response to the GetSiteHostNameBindingSlot request. The method always
 // closes the http.Response Body.
-func (client SitesClient) GetSiteHostNameBindingSlotResponder(resp *http.Response) (result HostNameBinding, err error) {
-	err = autorest.Respond(
+func (client SitesClient) GetSiteHostNameBindingSlotResponder(resp *http.Response) (result HostNameBinding, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -5052,8 +5050,8 @@ func (client SitesClient) GetSiteHostNameBindingsSlotSender(req *http.Request) (
 
 // GetSiteHostNameBindingsSlotResponder handles the response to the GetSiteHostNameBindingsSlot request. The method always
 // closes the http.Response Body.
-func (client SitesClient) GetSiteHostNameBindingsSlotResponder(resp *http.Response) (result HostNameBindingCollection, err error) {
-	err = autorest.Respond(
+func (client SitesClient) GetSiteHostNameBindingsSlotResponder(resp *http.Response) (result HostNameBindingCollection, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -5115,8 +5113,8 @@ func (client SitesClient) GetSiteInstanceIdentifiersSender(req *http.Request) (*
 
 // GetSiteInstanceIdentifiersResponder handles the response to the GetSiteInstanceIdentifiers request. The method always
 // closes the http.Response Body.
-func (client SitesClient) GetSiteInstanceIdentifiersResponder(resp *http.Response) (result SiteInstanceCollection, err error) {
-	err = autorest.Respond(
+func (client SitesClient) GetSiteInstanceIdentifiersResponder(resp *http.Response) (result SiteInstanceCollection, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -5182,8 +5180,8 @@ func (client SitesClient) GetSiteInstanceIdentifiersSlotSender(req *http.Request
 
 // GetSiteInstanceIdentifiersSlotResponder handles the response to the GetSiteInstanceIdentifiersSlot request. The method always
 // closes the http.Response Body.
-func (client SitesClient) GetSiteInstanceIdentifiersSlotResponder(resp *http.Response) (result SiteInstanceCollection, err error) {
-	err = autorest.Respond(
+func (client SitesClient) GetSiteInstanceIdentifiersSlotResponder(resp *http.Response) (result SiteInstanceCollection, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -5245,8 +5243,8 @@ func (client SitesClient) GetSiteLogsConfigSender(req *http.Request) (*http.Resp
 
 // GetSiteLogsConfigResponder handles the response to the GetSiteLogsConfig request. The method always
 // closes the http.Response Body.
-func (client SitesClient) GetSiteLogsConfigResponder(resp *http.Response) (result SiteLogsConfig, err error) {
-	err = autorest.Respond(
+func (client SitesClient) GetSiteLogsConfigResponder(resp *http.Response) (result SiteLogsConfig, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -5311,8 +5309,8 @@ func (client SitesClient) GetSiteLogsConfigSlotSender(req *http.Request) (*http.
 
 // GetSiteLogsConfigSlotResponder handles the response to the GetSiteLogsConfigSlot request. The method always
 // closes the http.Response Body.
-func (client SitesClient) GetSiteLogsConfigSlotResponder(resp *http.Response) (result SiteLogsConfig, err error) {
-	err = autorest.Respond(
+func (client SitesClient) GetSiteLogsConfigSlotResponder(resp *http.Response) (result SiteLogsConfig, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -5374,8 +5372,8 @@ func (client SitesClient) GetSiteMetricDefinitionsSender(req *http.Request) (*ht
 
 // GetSiteMetricDefinitionsResponder handles the response to the GetSiteMetricDefinitions request. The method always
 // closes the http.Response Body.
-func (client SitesClient) GetSiteMetricDefinitionsResponder(resp *http.Response) (result MetricDefinitionCollection, err error) {
-	err = autorest.Respond(
+func (client SitesClient) GetSiteMetricDefinitionsResponder(resp *http.Response) (result MetricDefinitionCollection, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -5441,8 +5439,8 @@ func (client SitesClient) GetSiteMetricDefinitionsSlotSender(req *http.Request) 
 
 // GetSiteMetricDefinitionsSlotResponder handles the response to the GetSiteMetricDefinitionsSlot request. The method always
 // closes the http.Response Body.
-func (client SitesClient) GetSiteMetricDefinitionsSlotResponder(resp *http.Response) (result MetricDefinitionCollection, err error) {
-	err = autorest.Respond(
+func (client SitesClient) GetSiteMetricDefinitionsSlotResponder(resp *http.Response) (result MetricDefinitionCollection, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -5515,8 +5513,8 @@ func (client SitesClient) GetSiteMetricsSender(req *http.Request) (*http.Respons
 
 // GetSiteMetricsResponder handles the response to the GetSiteMetrics request. The method always
 // closes the http.Response Body.
-func (client SitesClient) GetSiteMetricsResponder(resp *http.Response) (result ResourceMetricCollection, err error) {
-	err = autorest.Respond(
+func (client SitesClient) GetSiteMetricsResponder(resp *http.Response) (result ResourceMetricCollection, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -5591,8 +5589,8 @@ func (client SitesClient) GetSiteMetricsSlotSender(req *http.Request) (*http.Res
 
 // GetSiteMetricsSlotResponder handles the response to the GetSiteMetricsSlot request. The method always
 // closes the http.Response Body.
-func (client SitesClient) GetSiteMetricsSlotResponder(resp *http.Response) (result ResourceMetricCollection, err error) {
-	err = autorest.Respond(
+func (client SitesClient) GetSiteMetricsSlotResponder(resp *http.Response) (result ResourceMetricCollection, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -5656,8 +5654,8 @@ func (client SitesClient) GetSiteNetworkFeaturesSender(req *http.Request) (*http
 
 // GetSiteNetworkFeaturesResponder handles the response to the GetSiteNetworkFeatures request. The method always
 // closes the http.Response Body.
-func (client SitesClient) GetSiteNetworkFeaturesResponder(resp *http.Response) (result NetworkFeatures, err error) {
-	err = autorest.Respond(
+func (client SitesClient) GetSiteNetworkFeaturesResponder(resp *http.Response) (result NetworkFeatures, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNotFound),
@@ -5723,8 +5721,8 @@ func (client SitesClient) GetSiteNetworkFeaturesSlotSender(req *http.Request) (*
 
 // GetSiteNetworkFeaturesSlotResponder handles the response to the GetSiteNetworkFeaturesSlot request. The method always
 // closes the http.Response Body.
-func (client SitesClient) GetSiteNetworkFeaturesSlotResponder(resp *http.Response) (result NetworkFeatures, err error) {
-	err = autorest.Respond(
+func (client SitesClient) GetSiteNetworkFeaturesSlotResponder(resp *http.Response) (result NetworkFeatures, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNotFound),
@@ -5788,8 +5786,8 @@ func (client SitesClient) GetSiteOperationSender(req *http.Request) (*http.Respo
 
 // GetSiteOperationResponder handles the response to the GetSiteOperation request. The method always
 // closes the http.Response Body.
-func (client SitesClient) GetSiteOperationResponder(resp *http.Response) (result ObjectSet, err error) {
-	err = autorest.Respond(
+func (client SitesClient) GetSiteOperationResponder(resp *http.Response) (result ObjectSet, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -5855,8 +5853,8 @@ func (client SitesClient) GetSiteOperationSlotSender(req *http.Request) (*http.R
 
 // GetSiteOperationSlotResponder handles the response to the GetSiteOperationSlot request. The method always
 // closes the http.Response Body.
-func (client SitesClient) GetSiteOperationSlotResponder(resp *http.Response) (result ObjectSet, err error) {
-	err = autorest.Respond(
+func (client SitesClient) GetSiteOperationSlotResponder(resp *http.Response) (result ObjectSet, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -5918,8 +5916,8 @@ func (client SitesClient) GetSitePremierAddOnSender(req *http.Request) (*http.Re
 
 // GetSitePremierAddOnResponder handles the response to the GetSitePremierAddOn request. The method always
 // closes the http.Response Body.
-func (client SitesClient) GetSitePremierAddOnResponder(resp *http.Response) (result ObjectSet, err error) {
-	err = autorest.Respond(
+func (client SitesClient) GetSitePremierAddOnResponder(resp *http.Response) (result ObjectSet, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -5982,8 +5980,8 @@ func (client SitesClient) GetSitePremierAddOnSlotSender(req *http.Request) (*htt
 
 // GetSitePremierAddOnSlotResponder handles the response to the GetSitePremierAddOnSlot request. The method always
 // closes the http.Response Body.
-func (client SitesClient) GetSitePremierAddOnSlotResponder(resp *http.Response) (result ObjectSet, err error) {
-	err = autorest.Respond(
+func (client SitesClient) GetSitePremierAddOnSlotResponder(resp *http.Response) (result ObjectSet, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -6048,8 +6046,8 @@ func (client SitesClient) GetSiteRelayServiceConnectionSender(req *http.Request)
 
 // GetSiteRelayServiceConnectionResponder handles the response to the GetSiteRelayServiceConnection request. The method always
 // closes the http.Response Body.
-func (client SitesClient) GetSiteRelayServiceConnectionResponder(resp *http.Response) (result RelayServiceConnectionEntity, err error) {
-	err = autorest.Respond(
+func (client SitesClient) GetSiteRelayServiceConnectionResponder(resp *http.Response) (result RelayServiceConnectionEntity, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -6116,8 +6114,8 @@ func (client SitesClient) GetSiteRelayServiceConnectionSlotSender(req *http.Requ
 
 // GetSiteRelayServiceConnectionSlotResponder handles the response to the GetSiteRelayServiceConnectionSlot request. The method always
 // closes the http.Response Body.
-func (client SitesClient) GetSiteRelayServiceConnectionSlotResponder(resp *http.Response) (result RelayServiceConnectionEntity, err error) {
-	err = autorest.Respond(
+func (client SitesClient) GetSiteRelayServiceConnectionSlotResponder(resp *http.Response) (result RelayServiceConnectionEntity, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -6190,8 +6188,8 @@ func (client SitesClient) GetSitesSender(req *http.Request) (*http.Response, err
 
 // GetSitesResponder handles the response to the GetSites request. The method always
 // closes the http.Response Body.
-func (client SitesClient) GetSitesResponder(resp *http.Response) (result SiteCollection, err error) {
-	err = autorest.Respond(
+func (client SitesClient) GetSitesResponder(resp *http.Response) (result SiteCollection, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -6260,8 +6258,8 @@ func (client SitesClient) GetSiteSlotSender(req *http.Request) (*http.Response, 
 
 // GetSiteSlotResponder handles the response to the GetSiteSlot request. The method always
 // closes the http.Response Body.
-func (client SitesClient) GetSiteSlotResponder(resp *http.Response) (result Site, err error) {
-	err = autorest.Respond(
+func (client SitesClient) GetSiteSlotResponder(resp *http.Response) (result Site, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -6327,8 +6325,8 @@ func (client SitesClient) GetSiteSlotsSender(req *http.Request) (*http.Response,
 
 // GetSiteSlotsResponder handles the response to the GetSiteSlots request. The method always
 // closes the http.Response Body.
-func (client SitesClient) GetSiteSlotsResponder(resp *http.Response) (result SiteCollection, err error) {
-	err = autorest.Respond(
+func (client SitesClient) GetSiteSlotsResponder(resp *http.Response) (result SiteCollection, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -6393,8 +6391,8 @@ func (client SitesClient) GetSiteSnapshotsSender(req *http.Request) (*http.Respo
 
 // GetSiteSnapshotsResponder handles the response to the GetSiteSnapshots request. The method always
 // closes the http.Response Body.
-func (client SitesClient) GetSiteSnapshotsResponder(resp *http.Response) (result ObjectSet, err error) {
-	err = autorest.Respond(
+func (client SitesClient) GetSiteSnapshotsResponder(resp *http.Response) (result ObjectSet, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -6459,8 +6457,8 @@ func (client SitesClient) GetSiteSnapshotsOnSkuSender(req *http.Request) (*http.
 
 // GetSiteSnapshotsOnSkuResponder handles the response to the GetSiteSnapshotsOnSku request. The method always
 // closes the http.Response Body.
-func (client SitesClient) GetSiteSnapshotsOnSkuResponder(resp *http.Response) (result ObjectSet, err error) {
-	err = autorest.Respond(
+func (client SitesClient) GetSiteSnapshotsOnSkuResponder(resp *http.Response) (result ObjectSet, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -6526,8 +6524,8 @@ func (client SitesClient) GetSiteSnapshotsOnSkuSlotSender(req *http.Request) (*h
 
 // GetSiteSnapshotsOnSkuSlotResponder handles the response to the GetSiteSnapshotsOnSkuSlot request. The method always
 // closes the http.Response Body.
-func (client SitesClient) GetSiteSnapshotsOnSkuSlotResponder(resp *http.Response) (result ObjectSet, err error) {
-	err = autorest.Respond(
+func (client SitesClient) GetSiteSnapshotsOnSkuSlotResponder(resp *http.Response) (result ObjectSet, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -6593,8 +6591,8 @@ func (client SitesClient) GetSiteSnapshotsSlotSender(req *http.Request) (*http.R
 
 // GetSiteSnapshotsSlotResponder handles the response to the GetSiteSnapshotsSlot request. The method always
 // closes the http.Response Body.
-func (client SitesClient) GetSiteSnapshotsSlotResponder(resp *http.Response) (result ObjectSet, err error) {
-	err = autorest.Respond(
+func (client SitesClient) GetSiteSnapshotsSlotResponder(resp *http.Response) (result ObjectSet, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -6656,8 +6654,8 @@ func (client SitesClient) GetSiteSourceControlSender(req *http.Request) (*http.R
 
 // GetSiteSourceControlResponder handles the response to the GetSiteSourceControl request. The method always
 // closes the http.Response Body.
-func (client SitesClient) GetSiteSourceControlResponder(resp *http.Response) (result SiteSourceControl, err error) {
-	err = autorest.Respond(
+func (client SitesClient) GetSiteSourceControlResponder(resp *http.Response) (result SiteSourceControl, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -6722,8 +6720,8 @@ func (client SitesClient) GetSiteSourceControlSlotSender(req *http.Request) (*ht
 
 // GetSiteSourceControlSlotResponder handles the response to the GetSiteSourceControlSlot request. The method always
 // closes the http.Response Body.
-func (client SitesClient) GetSiteSourceControlSlotResponder(resp *http.Response) (result SiteSourceControl, err error) {
-	err = autorest.Respond(
+func (client SitesClient) GetSiteSourceControlSlotResponder(resp *http.Response) (result SiteSourceControl, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -6793,8 +6791,8 @@ func (client SitesClient) GetSiteUsagesSender(req *http.Request) (*http.Response
 
 // GetSiteUsagesResponder handles the response to the GetSiteUsages request. The method always
 // closes the http.Response Body.
-func (client SitesClient) GetSiteUsagesResponder(resp *http.Response) (result CsmUsageQuotaCollection, err error) {
-	err = autorest.Respond(
+func (client SitesClient) GetSiteUsagesResponder(resp *http.Response) (result CsmUsageQuotaCollection, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -6866,8 +6864,8 @@ func (client SitesClient) GetSiteUsagesSlotSender(req *http.Request) (*http.Resp
 
 // GetSiteUsagesSlotResponder handles the response to the GetSiteUsagesSlot request. The method always
 // closes the http.Response Body.
-func (client SitesClient) GetSiteUsagesSlotResponder(resp *http.Response) (result CsmUsageQuotaCollection, err error) {
-	err = autorest.Respond(
+func (client SitesClient) GetSiteUsagesSlotResponder(resp *http.Response) (result CsmUsageQuotaCollection, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -6931,8 +6929,8 @@ func (client SitesClient) GetSiteVNETConnectionSender(req *http.Request) (*http.
 
 // GetSiteVNETConnectionResponder handles the response to the GetSiteVNETConnection request. The method always
 // closes the http.Response Body.
-func (client SitesClient) GetSiteVNETConnectionResponder(resp *http.Response) (result VnetInfo, err error) {
-	err = autorest.Respond(
+func (client SitesClient) GetSiteVNETConnectionResponder(resp *http.Response) (result VnetInfo, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -6995,8 +6993,8 @@ func (client SitesClient) GetSiteVNETConnectionsSender(req *http.Request) (*http
 
 // GetSiteVNETConnectionsResponder handles the response to the GetSiteVNETConnections request. The method always
 // closes the http.Response Body.
-func (client SitesClient) GetSiteVNETConnectionsResponder(resp *http.Response) (result VnetInfoList, err error) {
-	err = autorest.Respond(
+func (client SitesClient) GetSiteVNETConnectionsResponder(resp *http.Response) (result VnetInfoList, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -7062,8 +7060,8 @@ func (client SitesClient) GetSiteVNETConnectionSlotSender(req *http.Request) (*h
 
 // GetSiteVNETConnectionSlotResponder handles the response to the GetSiteVNETConnectionSlot request. The method always
 // closes the http.Response Body.
-func (client SitesClient) GetSiteVNETConnectionSlotResponder(resp *http.Response) (result VnetInfo, err error) {
-	err = autorest.Respond(
+func (client SitesClient) GetSiteVNETConnectionSlotResponder(resp *http.Response) (result VnetInfo, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -7127,8 +7125,8 @@ func (client SitesClient) GetSiteVNETConnectionsSlotSender(req *http.Request) (*
 
 // GetSiteVNETConnectionsSlotResponder handles the response to the GetSiteVNETConnectionsSlot request. The method always
 // closes the http.Response Body.
-func (client SitesClient) GetSiteVNETConnectionsSlotResponder(resp *http.Response) (result VnetInfoList, err error) {
-	err = autorest.Respond(
+func (client SitesClient) GetSiteVNETConnectionsSlotResponder(resp *http.Response) (result VnetInfoList, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -7194,8 +7192,8 @@ func (client SitesClient) GetSiteVnetGatewaySender(req *http.Request) (*http.Res
 
 // GetSiteVnetGatewayResponder handles the response to the GetSiteVnetGateway request. The method always
 // closes the http.Response Body.
-func (client SitesClient) GetSiteVnetGatewayResponder(resp *http.Response) (result ObjectSet, err error) {
-	err = autorest.Respond(
+func (client SitesClient) GetSiteVnetGatewayResponder(resp *http.Response) (result ObjectSet, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNotFound),
@@ -7263,8 +7261,8 @@ func (client SitesClient) GetSiteVnetGatewaySlotSender(req *http.Request) (*http
 
 // GetSiteVnetGatewaySlotResponder handles the response to the GetSiteVnetGatewaySlot request. The method always
 // closes the http.Response Body.
-func (client SitesClient) GetSiteVnetGatewaySlotResponder(resp *http.Response) (result ObjectSet, err error) {
-	err = autorest.Respond(
+func (client SitesClient) GetSiteVnetGatewaySlotResponder(resp *http.Response) (result ObjectSet, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNotFound),
@@ -7326,8 +7324,8 @@ func (client SitesClient) GetSlotConfigNamesSender(req *http.Request) (*http.Res
 
 // GetSlotConfigNamesResponder handles the response to the GetSlotConfigNames request. The method always
 // closes the http.Response Body.
-func (client SitesClient) GetSlotConfigNamesResponder(resp *http.Response) (result SlotConfigNamesResource, err error) {
-	err = autorest.Respond(
+func (client SitesClient) GetSlotConfigNamesResponder(resp *http.Response) (result SlotConfigNamesResource, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -7392,8 +7390,8 @@ func (client SitesClient) GetSlotsDifferencesFromProductionSender(req *http.Requ
 
 // GetSlotsDifferencesFromProductionResponder handles the response to the GetSlotsDifferencesFromProduction request. The method always
 // closes the http.Response Body.
-func (client SitesClient) GetSlotsDifferencesFromProductionResponder(resp *http.Response) (result SlotDifferenceCollection, err error) {
-	err = autorest.Respond(
+func (client SitesClient) GetSlotsDifferencesFromProductionResponder(resp *http.Response) (result SlotDifferenceCollection, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -7459,8 +7457,8 @@ func (client SitesClient) GetSlotsDifferencesSlotSender(req *http.Request) (*htt
 
 // GetSlotsDifferencesSlotResponder handles the response to the GetSlotsDifferencesSlot request. The method always
 // closes the http.Response Body.
-func (client SitesClient) GetSlotsDifferencesSlotResponder(resp *http.Response) (result SlotDifferenceCollection, err error) {
-	err = autorest.Respond(
+func (client SitesClient) GetSlotsDifferencesSlotResponder(resp *http.Response) (result SlotDifferenceCollection, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -7522,8 +7520,8 @@ func (client SitesClient) ListSiteAppSettingsSender(req *http.Request) (*http.Re
 
 // ListSiteAppSettingsResponder handles the response to the ListSiteAppSettings request. The method always
 // closes the http.Response Body.
-func (client SitesClient) ListSiteAppSettingsResponder(resp *http.Response) (result StringDictionary, err error) {
-	err = autorest.Respond(
+func (client SitesClient) ListSiteAppSettingsResponder(resp *http.Response) (result StringDictionary, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -7588,8 +7586,8 @@ func (client SitesClient) ListSiteAppSettingsSlotSender(req *http.Request) (*htt
 
 // ListSiteAppSettingsSlotResponder handles the response to the ListSiteAppSettingsSlot request. The method always
 // closes the http.Response Body.
-func (client SitesClient) ListSiteAppSettingsSlotResponder(resp *http.Response) (result StringDictionary, err error) {
-	err = autorest.Respond(
+func (client SitesClient) ListSiteAppSettingsSlotResponder(resp *http.Response) (result StringDictionary, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -7651,8 +7649,8 @@ func (client SitesClient) ListSiteAuthSettingsSender(req *http.Request) (*http.R
 
 // ListSiteAuthSettingsResponder handles the response to the ListSiteAuthSettings request. The method always
 // closes the http.Response Body.
-func (client SitesClient) ListSiteAuthSettingsResponder(resp *http.Response) (result SiteAuthSettings, err error) {
-	err = autorest.Respond(
+func (client SitesClient) ListSiteAuthSettingsResponder(resp *http.Response) (result SiteAuthSettings, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -7717,8 +7715,8 @@ func (client SitesClient) ListSiteAuthSettingsSlotSender(req *http.Request) (*ht
 
 // ListSiteAuthSettingsSlotResponder handles the response to the ListSiteAuthSettingsSlot request. The method always
 // closes the http.Response Body.
-func (client SitesClient) ListSiteAuthSettingsSlotResponder(resp *http.Response) (result SiteAuthSettings, err error) {
-	err = autorest.Respond(
+func (client SitesClient) ListSiteAuthSettingsSlotResponder(resp *http.Response) (result SiteAuthSettings, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -7781,8 +7779,8 @@ func (client SitesClient) ListSiteBackupConfigurationDeprecatedSender(req *http.
 
 // ListSiteBackupConfigurationDeprecatedResponder handles the response to the ListSiteBackupConfigurationDeprecated request. The method always
 // closes the http.Response Body.
-func (client SitesClient) ListSiteBackupConfigurationDeprecatedResponder(resp *http.Response) (result BackupRequest, err error) {
-	err = autorest.Respond(
+func (client SitesClient) ListSiteBackupConfigurationDeprecatedResponder(resp *http.Response) (result BackupRequest, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -7848,8 +7846,8 @@ func (client SitesClient) ListSiteBackupConfigurationDeprecatedSlotSender(req *h
 
 // ListSiteBackupConfigurationDeprecatedSlotResponder handles the response to the ListSiteBackupConfigurationDeprecatedSlot request. The method always
 // closes the http.Response Body.
-func (client SitesClient) ListSiteBackupConfigurationDeprecatedSlotResponder(resp *http.Response) (result BackupRequest, err error) {
-	err = autorest.Respond(
+func (client SitesClient) ListSiteBackupConfigurationDeprecatedSlotResponder(resp *http.Response) (result BackupRequest, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -7911,8 +7909,8 @@ func (client SitesClient) ListSiteBackupsSender(req *http.Request) (*http.Respon
 
 // ListSiteBackupsResponder handles the response to the ListSiteBackups request. The method always
 // closes the http.Response Body.
-func (client SitesClient) ListSiteBackupsResponder(resp *http.Response) (result BackupItemCollection, err error) {
-	err = autorest.Respond(
+func (client SitesClient) ListSiteBackupsResponder(resp *http.Response) (result BackupItemCollection, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -7974,8 +7972,8 @@ func (client SitesClient) ListSiteBackupsDeprecatedSender(req *http.Request) (*h
 
 // ListSiteBackupsDeprecatedResponder handles the response to the ListSiteBackupsDeprecated request. The method always
 // closes the http.Response Body.
-func (client SitesClient) ListSiteBackupsDeprecatedResponder(resp *http.Response) (result BackupItemCollection, err error) {
-	err = autorest.Respond(
+func (client SitesClient) ListSiteBackupsDeprecatedResponder(resp *http.Response) (result BackupItemCollection, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -8041,8 +8039,8 @@ func (client SitesClient) ListSiteBackupsDeprecatedSlotSender(req *http.Request)
 
 // ListSiteBackupsDeprecatedSlotResponder handles the response to the ListSiteBackupsDeprecatedSlot request. The method always
 // closes the http.Response Body.
-func (client SitesClient) ListSiteBackupsDeprecatedSlotResponder(resp *http.Response) (result BackupItemCollection, err error) {
-	err = autorest.Respond(
+func (client SitesClient) ListSiteBackupsDeprecatedSlotResponder(resp *http.Response) (result BackupItemCollection, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -8107,8 +8105,8 @@ func (client SitesClient) ListSiteBackupsSlotSender(req *http.Request) (*http.Re
 
 // ListSiteBackupsSlotResponder handles the response to the ListSiteBackupsSlot request. The method always
 // closes the http.Response Body.
-func (client SitesClient) ListSiteBackupsSlotResponder(resp *http.Response) (result BackupItemCollection, err error) {
-	err = autorest.Respond(
+func (client SitesClient) ListSiteBackupsSlotResponder(resp *http.Response) (result BackupItemCollection, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -8170,8 +8168,8 @@ func (client SitesClient) ListSiteConnectionStringsSender(req *http.Request) (*h
 
 // ListSiteConnectionStringsResponder handles the response to the ListSiteConnectionStrings request. The method always
 // closes the http.Response Body.
-func (client SitesClient) ListSiteConnectionStringsResponder(resp *http.Response) (result ConnectionStringDictionary, err error) {
-	err = autorest.Respond(
+func (client SitesClient) ListSiteConnectionStringsResponder(resp *http.Response) (result ConnectionStringDictionary, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -8237,8 +8235,8 @@ func (client SitesClient) ListSiteConnectionStringsSlotSender(req *http.Request)
 
 // ListSiteConnectionStringsSlotResponder handles the response to the ListSiteConnectionStringsSlot request. The method always
 // closes the http.Response Body.
-func (client SitesClient) ListSiteConnectionStringsSlotResponder(resp *http.Response) (result ConnectionStringDictionary, err error) {
-	err = autorest.Respond(
+func (client SitesClient) ListSiteConnectionStringsSlotResponder(resp *http.Response) (result ConnectionStringDictionary, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -8300,8 +8298,8 @@ func (client SitesClient) ListSiteMetadataSender(req *http.Request) (*http.Respo
 
 // ListSiteMetadataResponder handles the response to the ListSiteMetadata request. The method always
 // closes the http.Response Body.
-func (client SitesClient) ListSiteMetadataResponder(resp *http.Response) (result StringDictionary, err error) {
-	err = autorest.Respond(
+func (client SitesClient) ListSiteMetadataResponder(resp *http.Response) (result StringDictionary, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -8366,8 +8364,8 @@ func (client SitesClient) ListSiteMetadataSlotSender(req *http.Request) (*http.R
 
 // ListSiteMetadataSlotResponder handles the response to the ListSiteMetadataSlot request. The method always
 // closes the http.Response Body.
-func (client SitesClient) ListSiteMetadataSlotResponder(resp *http.Response) (result StringDictionary, err error) {
-	err = autorest.Respond(
+func (client SitesClient) ListSiteMetadataSlotResponder(resp *http.Response) (result StringDictionary, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -8428,8 +8426,8 @@ func (client SitesClient) ListSitePremierAddOnsSender(req *http.Request) (*http.
 
 // ListSitePremierAddOnsResponder handles the response to the ListSitePremierAddOns request. The method always
 // closes the http.Response Body.
-func (client SitesClient) ListSitePremierAddOnsResponder(resp *http.Response) (result ObjectSet, err error) {
-	err = autorest.Respond(
+func (client SitesClient) ListSitePremierAddOnsResponder(resp *http.Response) (result ObjectSet, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -8491,8 +8489,8 @@ func (client SitesClient) ListSitePremierAddOnsSlotSender(req *http.Request) (*h
 
 // ListSitePremierAddOnsSlotResponder handles the response to the ListSitePremierAddOnsSlot request. The method always
 // closes the http.Response Body.
-func (client SitesClient) ListSitePremierAddOnsSlotResponder(resp *http.Response) (result ObjectSet, err error) {
-	err = autorest.Respond(
+func (client SitesClient) ListSitePremierAddOnsSlotResponder(resp *http.Response) (result ObjectSet, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -8514,7 +8512,7 @@ func (client SitesClient) ListSitePublishingCredentials(resourceGroupName string
 
 	resp, err := client.ListSitePublishingCredentialsSender(req)
 	if err != nil {
-		result = autorest.Response{Response: resp}
+		result.Response = resp
 		return result, autorest.NewErrorWithError(err, "web/SitesClient", "ListSitePublishingCredentials", resp, "Failure sending request")
 	}
 
@@ -8563,14 +8561,13 @@ func (client SitesClient) ListSitePublishingCredentialsSender(req *http.Request)
 
 // ListSitePublishingCredentialsResponder handles the response to the ListSitePublishingCredentials request. The method always
 // closes the http.Response Body.
-func (client SitesClient) ListSitePublishingCredentialsResponder(resp *http.Response) (result autorest.Response, err error) {
-	err = autorest.Respond(
+func (client SitesClient) ListSitePublishingCredentialsResponder(resp *http.Response) (result autorest.Response, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result = autorest.Response{Response: resp}
+	result.Response = resp
 	return
 }
 
@@ -8588,7 +8585,7 @@ func (client SitesClient) ListSitePublishingCredentialsSlot(resourceGroupName st
 
 	resp, err := client.ListSitePublishingCredentialsSlotSender(req)
 	if err != nil {
-		result = autorest.Response{Response: resp}
+		result.Response = resp
 		return result, autorest.NewErrorWithError(err, "web/SitesClient", "ListSitePublishingCredentialsSlot", resp, "Failure sending request")
 	}
 
@@ -8638,14 +8635,13 @@ func (client SitesClient) ListSitePublishingCredentialsSlotSender(req *http.Requ
 
 // ListSitePublishingCredentialsSlotResponder handles the response to the ListSitePublishingCredentialsSlot request. The method always
 // closes the http.Response Body.
-func (client SitesClient) ListSitePublishingCredentialsSlotResponder(resp *http.Response) (result autorest.Response, err error) {
-	err = autorest.Respond(
+func (client SitesClient) ListSitePublishingCredentialsSlotResponder(resp *http.Response) (result autorest.Response, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result = autorest.Response{Response: resp}
+	result.Response = resp
 	return
 }
 
@@ -8705,8 +8701,8 @@ func (client SitesClient) ListSitePublishingProfileXMLSender(req *http.Request) 
 
 // ListSitePublishingProfileXMLResponder handles the response to the ListSitePublishingProfileXML request. The method always
 // closes the http.Response Body.
-func (client SitesClient) ListSitePublishingProfileXMLResponder(resp *http.Response) (result ReadCloser, err error) {
-	err = autorest.Respond(
+func (client SitesClient) ListSitePublishingProfileXMLResponder(resp *http.Response) (result ReadCloser, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -8775,8 +8771,8 @@ func (client SitesClient) ListSitePublishingProfileXMLSlotSender(req *http.Reque
 
 // ListSitePublishingProfileXMLSlotResponder handles the response to the ListSitePublishingProfileXMLSlot request. The method always
 // closes the http.Response Body.
-func (client SitesClient) ListSitePublishingProfileXMLSlotResponder(resp *http.Response) (result ReadCloser, err error) {
-	err = autorest.Respond(
+func (client SitesClient) ListSitePublishingProfileXMLSlotResponder(resp *http.Response) (result ReadCloser, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -8840,8 +8836,8 @@ func (client SitesClient) ListSiteRelayServiceConnectionsSender(req *http.Reques
 
 // ListSiteRelayServiceConnectionsResponder handles the response to the ListSiteRelayServiceConnections request. The method always
 // closes the http.Response Body.
-func (client SitesClient) ListSiteRelayServiceConnectionsResponder(resp *http.Response) (result RelayServiceConnectionEntity, err error) {
-	err = autorest.Respond(
+func (client SitesClient) ListSiteRelayServiceConnectionsResponder(resp *http.Response) (result RelayServiceConnectionEntity, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -8906,8 +8902,8 @@ func (client SitesClient) ListSiteRelayServiceConnectionsSlotSender(req *http.Re
 
 // ListSiteRelayServiceConnectionsSlotResponder handles the response to the ListSiteRelayServiceConnectionsSlot request. The method always
 // closes the http.Response Body.
-func (client SitesClient) ListSiteRelayServiceConnectionsSlotResponder(resp *http.Response) (result RelayServiceConnectionEntity, err error) {
-	err = autorest.Respond(
+func (client SitesClient) ListSiteRelayServiceConnectionsSlotResponder(resp *http.Response) (result RelayServiceConnectionEntity, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -8972,8 +8968,8 @@ func (client SitesClient) RecoverSiteSender(req *http.Request) (*http.Response, 
 
 // RecoverSiteResponder handles the response to the RecoverSite request. The method always
 // closes the http.Response Body.
-func (client SitesClient) RecoverSiteResponder(resp *http.Response) (result ObjectSet, err error) {
-	err = autorest.Respond(
+func (client SitesClient) RecoverSiteResponder(resp *http.Response) (result ObjectSet, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -9040,8 +9036,8 @@ func (client SitesClient) RecoverSiteSlotSender(req *http.Request) (*http.Respon
 
 // RecoverSiteSlotResponder handles the response to the RecoverSiteSlot request. The method always
 // closes the http.Response Body.
-func (client SitesClient) RecoverSiteSlotResponder(resp *http.Response) (result ObjectSet, err error) {
-	err = autorest.Respond(
+func (client SitesClient) RecoverSiteSlotResponder(resp *http.Response) (result ObjectSet, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -9103,8 +9099,8 @@ func (client SitesClient) ResetProductionSlotConfigSender(req *http.Request) (*h
 
 // ResetProductionSlotConfigResponder handles the response to the ResetProductionSlotConfig request. The method always
 // closes the http.Response Body.
-func (client SitesClient) ResetProductionSlotConfigResponder(resp *http.Response) (result ObjectSet, err error) {
-	err = autorest.Respond(
+func (client SitesClient) ResetProductionSlotConfigResponder(resp *http.Response) (result ObjectSet, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -9169,8 +9165,8 @@ func (client SitesClient) ResetSlotConfigSlotSender(req *http.Request) (*http.Re
 
 // ResetSlotConfigSlotResponder handles the response to the ResetSlotConfigSlot request. The method always
 // closes the http.Response Body.
-func (client SitesClient) ResetSlotConfigSlotResponder(resp *http.Response) (result ObjectSet, err error) {
-	err = autorest.Respond(
+func (client SitesClient) ResetSlotConfigSlotResponder(resp *http.Response) (result ObjectSet, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -9242,8 +9238,8 @@ func (client SitesClient) RestartSiteSender(req *http.Request) (*http.Response, 
 
 // RestartSiteResponder handles the response to the RestartSite request. The method always
 // closes the http.Response Body.
-func (client SitesClient) RestartSiteResponder(resp *http.Response) (result ObjectSet, err error) {
-	err = autorest.Respond(
+func (client SitesClient) RestartSiteResponder(resp *http.Response) (result ObjectSet, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -9317,8 +9313,8 @@ func (client SitesClient) RestartSiteSlotSender(req *http.Request) (*http.Respon
 
 // RestartSiteSlotResponder handles the response to the RestartSiteSlot request. The method always
 // closes the http.Response Body.
-func (client SitesClient) RestartSiteSlotResponder(resp *http.Response) (result ObjectSet, err error) {
-	err = autorest.Respond(
+func (client SitesClient) RestartSiteSlotResponder(resp *http.Response) (result ObjectSet, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -9384,8 +9380,8 @@ func (client SitesClient) RestoreSiteSender(req *http.Request) (*http.Response, 
 
 // RestoreSiteResponder handles the response to the RestoreSite request. The method always
 // closes the http.Response Body.
-func (client SitesClient) RestoreSiteResponder(resp *http.Response) (result RestoreResponse, err error) {
-	err = autorest.Respond(
+func (client SitesClient) RestoreSiteResponder(resp *http.Response) (result RestoreResponse, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -9453,8 +9449,8 @@ func (client SitesClient) RestoreSiteSlotSender(req *http.Request) (*http.Respon
 
 // RestoreSiteSlotResponder handles the response to the RestoreSiteSlot request. The method always
 // closes the http.Response Body.
-func (client SitesClient) RestoreSiteSlotResponder(resp *http.Response) (result RestoreResponse, err error) {
-	err = autorest.Respond(
+func (client SitesClient) RestoreSiteSlotResponder(resp *http.Response) (result RestoreResponse, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -9516,8 +9512,8 @@ func (client SitesClient) StartSiteSender(req *http.Request) (*http.Response, er
 
 // StartSiteResponder handles the response to the StartSite request. The method always
 // closes the http.Response Body.
-func (client SitesClient) StartSiteResponder(resp *http.Response) (result ObjectSet, err error) {
-	err = autorest.Respond(
+func (client SitesClient) StartSiteResponder(resp *http.Response) (result ObjectSet, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -9582,8 +9578,8 @@ func (client SitesClient) StartSiteSlotSender(req *http.Request) (*http.Response
 
 // StartSiteSlotResponder handles the response to the StartSiteSlot request. The method always
 // closes the http.Response Body.
-func (client SitesClient) StartSiteSlotResponder(resp *http.Response) (result ObjectSet, err error) {
-	err = autorest.Respond(
+func (client SitesClient) StartSiteSlotResponder(resp *http.Response) (result ObjectSet, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -9645,8 +9641,8 @@ func (client SitesClient) StopSiteSender(req *http.Request) (*http.Response, err
 
 // StopSiteResponder handles the response to the StopSite request. The method always
 // closes the http.Response Body.
-func (client SitesClient) StopSiteResponder(resp *http.Response) (result ObjectSet, err error) {
-	err = autorest.Respond(
+func (client SitesClient) StopSiteResponder(resp *http.Response) (result ObjectSet, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -9711,8 +9707,8 @@ func (client SitesClient) StopSiteSlotSender(req *http.Request) (*http.Response,
 
 // StopSiteSlotResponder handles the response to the StopSiteSlot request. The method always
 // closes the http.Response Body.
-func (client SitesClient) StopSiteSlotResponder(resp *http.Response) (result ObjectSet, err error) {
-	err = autorest.Respond(
+func (client SitesClient) StopSiteSlotResponder(resp *http.Response) (result ObjectSet, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -9778,8 +9774,8 @@ func (client SitesClient) SwapSlotsSlotSender(req *http.Request) (*http.Response
 
 // SwapSlotsSlotResponder handles the response to the SwapSlotsSlot request. The method always
 // closes the http.Response Body.
-func (client SitesClient) SwapSlotsSlotResponder(resp *http.Response) (result ObjectSet, err error) {
-	err = autorest.Respond(
+func (client SitesClient) SwapSlotsSlotResponder(resp *http.Response) (result ObjectSet, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
@@ -9843,8 +9839,8 @@ func (client SitesClient) SwapSlotWithProductionSender(req *http.Request) (*http
 
 // SwapSlotWithProductionResponder handles the response to the SwapSlotWithProduction request. The method always
 // closes the http.Response Body.
-func (client SitesClient) SwapSlotWithProductionResponder(resp *http.Response) (result ObjectSet, err error) {
-	err = autorest.Respond(
+func (client SitesClient) SwapSlotWithProductionResponder(resp *http.Response) (result ObjectSet, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
@@ -9905,8 +9901,8 @@ func (client SitesClient) SyncSiteRepositorySender(req *http.Request) (*http.Res
 
 // SyncSiteRepositoryResponder handles the response to the SyncSiteRepository request. The method always
 // closes the http.Response Body.
-func (client SitesClient) SyncSiteRepositoryResponder(resp *http.Response) (result ObjectSet, err error) {
-	err = autorest.Respond(
+func (client SitesClient) SyncSiteRepositoryResponder(resp *http.Response) (result ObjectSet, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -9968,8 +9964,8 @@ func (client SitesClient) SyncSiteRepositorySlotSender(req *http.Request) (*http
 
 // SyncSiteRepositorySlotResponder handles the response to the SyncSiteRepositorySlot request. The method always
 // closes the http.Response Body.
-func (client SitesClient) SyncSiteRepositorySlotResponder(resp *http.Response) (result ObjectSet, err error) {
-	err = autorest.Respond(
+func (client SitesClient) SyncSiteRepositorySlotResponder(resp *http.Response) (result ObjectSet, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -10033,8 +10029,8 @@ func (client SitesClient) UpdateSiteAppSettingsSender(req *http.Request) (*http.
 
 // UpdateSiteAppSettingsResponder handles the response to the UpdateSiteAppSettings request. The method always
 // closes the http.Response Body.
-func (client SitesClient) UpdateSiteAppSettingsResponder(resp *http.Response) (result StringDictionary, err error) {
-	err = autorest.Respond(
+func (client SitesClient) UpdateSiteAppSettingsResponder(resp *http.Response) (result StringDictionary, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -10100,8 +10096,8 @@ func (client SitesClient) UpdateSiteAppSettingsSlotSender(req *http.Request) (*h
 
 // UpdateSiteAppSettingsSlotResponder handles the response to the UpdateSiteAppSettingsSlot request. The method always
 // closes the http.Response Body.
-func (client SitesClient) UpdateSiteAppSettingsSlotResponder(resp *http.Response) (result StringDictionary, err error) {
-	err = autorest.Respond(
+func (client SitesClient) UpdateSiteAppSettingsSlotResponder(resp *http.Response) (result StringDictionary, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -10165,8 +10161,8 @@ func (client SitesClient) UpdateSiteAuthSettingsSender(req *http.Request) (*http
 
 // UpdateSiteAuthSettingsResponder handles the response to the UpdateSiteAuthSettings request. The method always
 // closes the http.Response Body.
-func (client SitesClient) UpdateSiteAuthSettingsResponder(resp *http.Response) (result SiteAuthSettings, err error) {
-	err = autorest.Respond(
+func (client SitesClient) UpdateSiteAuthSettingsResponder(resp *http.Response) (result SiteAuthSettings, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -10232,8 +10228,8 @@ func (client SitesClient) UpdateSiteAuthSettingsSlotSender(req *http.Request) (*
 
 // UpdateSiteAuthSettingsSlotResponder handles the response to the UpdateSiteAuthSettingsSlot request. The method always
 // closes the http.Response Body.
-func (client SitesClient) UpdateSiteAuthSettingsSlotResponder(resp *http.Response) (result SiteAuthSettings, err error) {
-	err = autorest.Respond(
+func (client SitesClient) UpdateSiteAuthSettingsSlotResponder(resp *http.Response) (result SiteAuthSettings, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -10298,8 +10294,8 @@ func (client SitesClient) UpdateSiteBackupConfigurationSender(req *http.Request)
 
 // UpdateSiteBackupConfigurationResponder handles the response to the UpdateSiteBackupConfiguration request. The method always
 // closes the http.Response Body.
-func (client SitesClient) UpdateSiteBackupConfigurationResponder(resp *http.Response) (result BackupRequest, err error) {
-	err = autorest.Respond(
+func (client SitesClient) UpdateSiteBackupConfigurationResponder(resp *http.Response) (result BackupRequest, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -10364,8 +10360,8 @@ func (client SitesClient) UpdateSiteBackupConfigurationDeprecatedSender(req *htt
 
 // UpdateSiteBackupConfigurationDeprecatedResponder handles the response to the UpdateSiteBackupConfigurationDeprecated request. The method always
 // closes the http.Response Body.
-func (client SitesClient) UpdateSiteBackupConfigurationDeprecatedResponder(resp *http.Response) (result BackupRequest, err error) {
-	err = autorest.Respond(
+func (client SitesClient) UpdateSiteBackupConfigurationDeprecatedResponder(resp *http.Response) (result BackupRequest, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -10432,8 +10428,8 @@ func (client SitesClient) UpdateSiteBackupConfigurationDeprecatedSlotSender(req 
 
 // UpdateSiteBackupConfigurationDeprecatedSlotResponder handles the response to the UpdateSiteBackupConfigurationDeprecatedSlot request. The method always
 // closes the http.Response Body.
-func (client SitesClient) UpdateSiteBackupConfigurationDeprecatedSlotResponder(resp *http.Response) (result BackupRequest, err error) {
-	err = autorest.Respond(
+func (client SitesClient) UpdateSiteBackupConfigurationDeprecatedSlotResponder(resp *http.Response) (result BackupRequest, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -10500,8 +10496,8 @@ func (client SitesClient) UpdateSiteBackupConfigurationSlotSender(req *http.Requ
 
 // UpdateSiteBackupConfigurationSlotResponder handles the response to the UpdateSiteBackupConfigurationSlot request. The method always
 // closes the http.Response Body.
-func (client SitesClient) UpdateSiteBackupConfigurationSlotResponder(resp *http.Response) (result BackupRequest, err error) {
-	err = autorest.Respond(
+func (client SitesClient) UpdateSiteBackupConfigurationSlotResponder(resp *http.Response) (result BackupRequest, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -10566,8 +10562,8 @@ func (client SitesClient) UpdateSiteConfigSender(req *http.Request) (*http.Respo
 
 // UpdateSiteConfigResponder handles the response to the UpdateSiteConfig request. The method always
 // closes the http.Response Body.
-func (client SitesClient) UpdateSiteConfigResponder(resp *http.Response) (result SiteConfig, err error) {
-	err = autorest.Respond(
+func (client SitesClient) UpdateSiteConfigResponder(resp *http.Response) (result SiteConfig, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -10634,8 +10630,8 @@ func (client SitesClient) UpdateSiteConfigSlotSender(req *http.Request) (*http.R
 
 // UpdateSiteConfigSlotResponder handles the response to the UpdateSiteConfigSlot request. The method always
 // closes the http.Response Body.
-func (client SitesClient) UpdateSiteConfigSlotResponder(resp *http.Response) (result SiteConfig, err error) {
-	err = autorest.Respond(
+func (client SitesClient) UpdateSiteConfigSlotResponder(resp *http.Response) (result SiteConfig, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -10700,8 +10696,8 @@ func (client SitesClient) UpdateSiteConnectionStringsSender(req *http.Request) (
 
 // UpdateSiteConnectionStringsResponder handles the response to the UpdateSiteConnectionStrings request. The method always
 // closes the http.Response Body.
-func (client SitesClient) UpdateSiteConnectionStringsResponder(resp *http.Response) (result ConnectionStringDictionary, err error) {
-	err = autorest.Respond(
+func (client SitesClient) UpdateSiteConnectionStringsResponder(resp *http.Response) (result ConnectionStringDictionary, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -10769,8 +10765,8 @@ func (client SitesClient) UpdateSiteConnectionStringsSlotSender(req *http.Reques
 
 // UpdateSiteConnectionStringsSlotResponder handles the response to the UpdateSiteConnectionStringsSlot request. The method always
 // closes the http.Response Body.
-func (client SitesClient) UpdateSiteConnectionStringsSlotResponder(resp *http.Response) (result ConnectionStringDictionary, err error) {
-	err = autorest.Respond(
+func (client SitesClient) UpdateSiteConnectionStringsSlotResponder(resp *http.Response) (result ConnectionStringDictionary, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -10834,8 +10830,8 @@ func (client SitesClient) UpdateSiteLogsConfigSender(req *http.Request) (*http.R
 
 // UpdateSiteLogsConfigResponder handles the response to the UpdateSiteLogsConfig request. The method always
 // closes the http.Response Body.
-func (client SitesClient) UpdateSiteLogsConfigResponder(resp *http.Response) (result SiteLogsConfig, err error) {
-	err = autorest.Respond(
+func (client SitesClient) UpdateSiteLogsConfigResponder(resp *http.Response) (result SiteLogsConfig, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -10901,8 +10897,8 @@ func (client SitesClient) UpdateSiteLogsConfigSlotSender(req *http.Request) (*ht
 
 // UpdateSiteLogsConfigSlotResponder handles the response to the UpdateSiteLogsConfigSlot request. The method always
 // closes the http.Response Body.
-func (client SitesClient) UpdateSiteLogsConfigSlotResponder(resp *http.Response) (result SiteLogsConfig, err error) {
-	err = autorest.Respond(
+func (client SitesClient) UpdateSiteLogsConfigSlotResponder(resp *http.Response) (result SiteLogsConfig, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -10966,8 +10962,8 @@ func (client SitesClient) UpdateSiteMetadataSender(req *http.Request) (*http.Res
 
 // UpdateSiteMetadataResponder handles the response to the UpdateSiteMetadata request. The method always
 // closes the http.Response Body.
-func (client SitesClient) UpdateSiteMetadataResponder(resp *http.Response) (result StringDictionary, err error) {
-	err = autorest.Respond(
+func (client SitesClient) UpdateSiteMetadataResponder(resp *http.Response) (result StringDictionary, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -11033,8 +11029,8 @@ func (client SitesClient) UpdateSiteMetadataSlotSender(req *http.Request) (*http
 
 // UpdateSiteMetadataSlotResponder handles the response to the UpdateSiteMetadataSlot request. The method always
 // closes the http.Response Body.
-func (client SitesClient) UpdateSiteMetadataSlotResponder(resp *http.Response) (result StringDictionary, err error) {
-	err = autorest.Respond(
+func (client SitesClient) UpdateSiteMetadataSlotResponder(resp *http.Response) (result StringDictionary, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -11101,8 +11097,8 @@ func (client SitesClient) UpdateSiteRelayServiceConnectionSender(req *http.Reque
 
 // UpdateSiteRelayServiceConnectionResponder handles the response to the UpdateSiteRelayServiceConnection request. The method always
 // closes the http.Response Body.
-func (client SitesClient) UpdateSiteRelayServiceConnectionResponder(resp *http.Response) (result RelayServiceConnectionEntity, err error) {
-	err = autorest.Respond(
+func (client SitesClient) UpdateSiteRelayServiceConnectionResponder(resp *http.Response) (result RelayServiceConnectionEntity, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -11171,8 +11167,8 @@ func (client SitesClient) UpdateSiteRelayServiceConnectionSlotSender(req *http.R
 
 // UpdateSiteRelayServiceConnectionSlotResponder handles the response to the UpdateSiteRelayServiceConnectionSlot request. The method always
 // closes the http.Response Body.
-func (client SitesClient) UpdateSiteRelayServiceConnectionSlotResponder(resp *http.Response) (result RelayServiceConnectionEntity, err error) {
-	err = autorest.Respond(
+func (client SitesClient) UpdateSiteRelayServiceConnectionSlotResponder(resp *http.Response) (result RelayServiceConnectionEntity, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -11237,8 +11233,8 @@ func (client SitesClient) UpdateSiteSourceControlSender(req *http.Request) (*htt
 
 // UpdateSiteSourceControlResponder handles the response to the UpdateSiteSourceControl request. The method always
 // closes the http.Response Body.
-func (client SitesClient) UpdateSiteSourceControlResponder(resp *http.Response) (result SiteSourceControl, err error) {
-	err = autorest.Respond(
+func (client SitesClient) UpdateSiteSourceControlResponder(resp *http.Response) (result SiteSourceControl, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -11306,8 +11302,8 @@ func (client SitesClient) UpdateSiteSourceControlSlotSender(req *http.Request) (
 
 // UpdateSiteSourceControlSlotResponder handles the response to the UpdateSiteSourceControlSlot request. The method always
 // closes the http.Response Body.
-func (client SitesClient) UpdateSiteSourceControlSlotResponder(resp *http.Response) (result SiteSourceControl, err error) {
-	err = autorest.Respond(
+func (client SitesClient) UpdateSiteSourceControlSlotResponder(resp *http.Response) (result SiteSourceControl, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -11373,8 +11369,8 @@ func (client SitesClient) UpdateSiteVNETConnectionSender(req *http.Request) (*ht
 
 // UpdateSiteVNETConnectionResponder handles the response to the UpdateSiteVNETConnection request. The method always
 // closes the http.Response Body.
-func (client SitesClient) UpdateSiteVNETConnectionResponder(resp *http.Response) (result VnetInfo, err error) {
-	err = autorest.Respond(
+func (client SitesClient) UpdateSiteVNETConnectionResponder(resp *http.Response) (result VnetInfo, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -11443,8 +11439,8 @@ func (client SitesClient) UpdateSiteVNETConnectionGatewaySender(req *http.Reques
 
 // UpdateSiteVNETConnectionGatewayResponder handles the response to the UpdateSiteVNETConnectionGateway request. The method always
 // closes the http.Response Body.
-func (client SitesClient) UpdateSiteVNETConnectionGatewayResponder(resp *http.Response) (result VnetGateway, err error) {
-	err = autorest.Respond(
+func (client SitesClient) UpdateSiteVNETConnectionGatewayResponder(resp *http.Response) (result VnetGateway, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -11515,8 +11511,8 @@ func (client SitesClient) UpdateSiteVNETConnectionGatewaySlotSender(req *http.Re
 
 // UpdateSiteVNETConnectionGatewaySlotResponder handles the response to the UpdateSiteVNETConnectionGatewaySlot request. The method always
 // closes the http.Response Body.
-func (client SitesClient) UpdateSiteVNETConnectionGatewaySlotResponder(resp *http.Response) (result VnetGateway, err error) {
-	err = autorest.Respond(
+func (client SitesClient) UpdateSiteVNETConnectionGatewaySlotResponder(resp *http.Response) (result VnetGateway, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -11585,8 +11581,8 @@ func (client SitesClient) UpdateSiteVNETConnectionSlotSender(req *http.Request) 
 
 // UpdateSiteVNETConnectionSlotResponder handles the response to the UpdateSiteVNETConnectionSlot request. The method always
 // closes the http.Response Body.
-func (client SitesClient) UpdateSiteVNETConnectionSlotResponder(resp *http.Response) (result VnetInfo, err error) {
-	err = autorest.Respond(
+func (client SitesClient) UpdateSiteVNETConnectionSlotResponder(resp *http.Response) (result VnetInfo, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -11651,8 +11647,8 @@ func (client SitesClient) UpdateSlotConfigNamesSender(req *http.Request) (*http.
 
 // UpdateSlotConfigNamesResponder handles the response to the UpdateSlotConfigNames request. The method always
 // closes the http.Response Body.
-func (client SitesClient) UpdateSlotConfigNamesResponder(resp *http.Response) (result SlotConfigNamesResource, err error) {
-	err = autorest.Respond(
+func (client SitesClient) UpdateSlotConfigNamesResponder(resp *http.Response) (result SlotConfigNamesResource, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),

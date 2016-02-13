@@ -95,8 +95,8 @@ func (client NamespacesClient) CheckAvailabilitySender(req *http.Request) (*http
 
 // CheckAvailabilityResponder handles the response to the CheckAvailability request. The method always
 // closes the http.Response Body.
-func (client NamespacesClient) CheckAvailabilityResponder(resp *http.Response) (result CheckAvailabilityResource, err error) {
-	err = autorest.Respond(
+func (client NamespacesClient) CheckAvailabilityResponder(resp *http.Response) (result CheckAvailabilityResource, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -162,8 +162,8 @@ func (client NamespacesClient) CreateOrUpdateSender(req *http.Request) (*http.Re
 
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
 // closes the http.Response Body.
-func (client NamespacesClient) CreateOrUpdateResponder(resp *http.Response) (result NamespaceResource, err error) {
-	err = autorest.Respond(
+func (client NamespacesClient) CreateOrUpdateResponder(resp *http.Response) (result NamespaceResource, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusCreated, http.StatusOK),
@@ -231,8 +231,8 @@ func (client NamespacesClient) CreateOrUpdateAuthorizationRuleSender(req *http.R
 
 // CreateOrUpdateAuthorizationRuleResponder handles the response to the CreateOrUpdateAuthorizationRule request. The method always
 // closes the http.Response Body.
-func (client NamespacesClient) CreateOrUpdateAuthorizationRuleResponder(resp *http.Response) (result SharedAccessAuthorizationRuleResource, err error) {
-	err = autorest.Respond(
+func (client NamespacesClient) CreateOrUpdateAuthorizationRuleResponder(resp *http.Response) (result SharedAccessAuthorizationRuleResource, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -255,7 +255,7 @@ func (client NamespacesClient) Delete(resourceGroupName string, namespaceName st
 
 	resp, err := client.DeleteSender(req)
 	if err != nil {
-		result = autorest.Response{Response: resp}
+		result.Response = resp
 		return result, autorest.NewErrorWithError(err, "notificationhubs/NamespacesClient", "Delete", resp, "Failure sending request")
 	}
 
@@ -304,14 +304,13 @@ func (client NamespacesClient) DeleteSender(req *http.Request) (*http.Response, 
 
 // DeleteResponder handles the response to the Delete request. The method always
 // closes the http.Response Body.
-func (client NamespacesClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
-	err = autorest.Respond(
+func (client NamespacesClient) DeleteResponder(resp *http.Response) (result autorest.Response, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusNoContent, http.StatusOK, http.StatusAccepted),
-		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result = autorest.Response{Response: resp}
+	result.Response = resp
 	return
 }
 
@@ -370,11 +369,12 @@ func (client NamespacesClient) DeleteAuthorizationRuleSender(req *http.Request) 
 
 // DeleteAuthorizationRuleResponder handles the response to the DeleteAuthorizationRule request. The method always
 // closes the http.Response Body.
-func (client NamespacesClient) DeleteAuthorizationRuleResponder(resp *http.Response) (result autorest.Response, err error) {
-	err = autorest.Respond(
+func (client NamespacesClient) DeleteAuthorizationRuleResponder(resp *http.Response) (result autorest.Response, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusNoContent, http.StatusOK))
+		azure.WithErrorUnlessStatusCode(http.StatusNoContent, http.StatusOK),
+		autorest.ByClosing())
 	result.Response = resp
 	return
 }
@@ -432,8 +432,8 @@ func (client NamespacesClient) GetSender(req *http.Request) (*http.Response, err
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
-func (client NamespacesClient) GetResponder(resp *http.Response) (result NamespaceResource, err error) {
-	err = autorest.Respond(
+func (client NamespacesClient) GetResponder(resp *http.Response) (result NamespaceResource, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -499,8 +499,8 @@ func (client NamespacesClient) GetAuthorizationRuleSender(req *http.Request) (*h
 
 // GetAuthorizationRuleResponder handles the response to the GetAuthorizationRule request. The method always
 // closes the http.Response Body.
-func (client NamespacesClient) GetAuthorizationRuleResponder(resp *http.Response) (result SharedAccessAuthorizationRuleResource, err error) {
-	err = autorest.Respond(
+func (client NamespacesClient) GetAuthorizationRuleResponder(resp *http.Response) (result SharedAccessAuthorizationRuleResource, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -559,11 +559,12 @@ func (client NamespacesClient) GetLongRunningOperationStatusSender(req *http.Req
 
 // GetLongRunningOperationStatusResponder handles the response to the GetLongRunningOperationStatus request. The method always
 // closes the http.Response Body.
-func (client NamespacesClient) GetLongRunningOperationStatusResponder(resp *http.Response) (result autorest.Response, err error) {
-	err = autorest.Respond(
+func (client NamespacesClient) GetLongRunningOperationStatusResponder(resp *http.Response) (result autorest.Response, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusNotFound, http.StatusAccepted, http.StatusOK))
+		azure.WithErrorUnlessStatusCode(http.StatusNotFound, http.StatusAccepted, http.StatusOK),
+		autorest.ByClosing())
 	result.Response = resp
 	return
 }
@@ -620,8 +621,8 @@ func (client NamespacesClient) ListSender(req *http.Request) (*http.Response, er
 
 // ListResponder handles the response to the List request. The method always
 // closes the http.Response Body.
-func (client NamespacesClient) ListResponder(resp *http.Response) (result NamespaceListResult, err error) {
-	err = autorest.Respond(
+func (client NamespacesClient) ListResponder(resp *http.Response) (result NamespaceListResult, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -704,8 +705,8 @@ func (client NamespacesClient) ListAllSender(req *http.Request) (*http.Response,
 
 // ListAllResponder handles the response to the ListAll request. The method always
 // closes the http.Response Body.
-func (client NamespacesClient) ListAllResponder(resp *http.Response) (result NamespaceListResult, err error) {
-	err = autorest.Respond(
+func (client NamespacesClient) ListAllResponder(resp *http.Response) (result NamespaceListResult, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -793,8 +794,8 @@ func (client NamespacesClient) ListAuthorizationRulesSender(req *http.Request) (
 
 // ListAuthorizationRulesResponder handles the response to the ListAuthorizationRules request. The method always
 // closes the http.Response Body.
-func (client NamespacesClient) ListAuthorizationRulesResponder(resp *http.Response) (result SharedAccessAuthorizationRuleListResult, err error) {
-	err = autorest.Respond(
+func (client NamespacesClient) ListAuthorizationRulesResponder(resp *http.Response) (result SharedAccessAuthorizationRuleListResult, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -883,8 +884,8 @@ func (client NamespacesClient) ListKeysSender(req *http.Request) (*http.Response
 
 // ListKeysResponder handles the response to the ListKeys request. The method always
 // closes the http.Response Body.
-func (client NamespacesClient) ListKeysResponder(resp *http.Response) (result ResourceListKeys, err error) {
-	err = autorest.Respond(
+func (client NamespacesClient) ListKeysResponder(resp *http.Response) (result ResourceListKeys, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),

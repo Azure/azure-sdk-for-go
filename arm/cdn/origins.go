@@ -59,7 +59,7 @@ func (client OriginsClient) Create(originName string, originProperties OriginPar
 
 	resp, err := client.CreateSender(req)
 	if err != nil {
-		result = autorest.Response{Response: resp}
+		result.Response = resp
 		return result, autorest.NewErrorWithError(err, "cdn/OriginsClient", "Create", resp, "Failure sending request")
 	}
 
@@ -111,14 +111,13 @@ func (client OriginsClient) CreateSender(req *http.Request) (*http.Response, err
 
 // CreateResponder handles the response to the Create request. The method always
 // closes the http.Response Body.
-func (client OriginsClient) CreateResponder(resp *http.Response) (result autorest.Response, err error) {
-	err = autorest.Respond(
+func (client OriginsClient) CreateResponder(resp *http.Response) (result autorest.Response, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated, http.StatusAccepted),
-		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result = autorest.Response{Response: resp}
+	result.Response = resp
 	return
 }
 
@@ -137,7 +136,7 @@ func (client OriginsClient) DeleteIfExists(originName string, endpointName strin
 
 	resp, err := client.DeleteIfExistsSender(req)
 	if err != nil {
-		result = autorest.Response{Response: resp}
+		result.Response = resp
 		return result, autorest.NewErrorWithError(err, "cdn/OriginsClient", "DeleteIfExists", resp, "Failure sending request")
 	}
 
@@ -188,14 +187,13 @@ func (client OriginsClient) DeleteIfExistsSender(req *http.Request) (*http.Respo
 
 // DeleteIfExistsResponder handles the response to the DeleteIfExists request. The method always
 // closes the http.Response Body.
-func (client OriginsClient) DeleteIfExistsResponder(resp *http.Response) (result autorest.Response, err error) {
-	err = autorest.Respond(
+func (client OriginsClient) DeleteIfExistsResponder(resp *http.Response) (result autorest.Response, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
-		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result = autorest.Response{Response: resp}
+	result.Response = resp
 	return
 }
 
@@ -257,8 +255,8 @@ func (client OriginsClient) GetSender(req *http.Request) (*http.Response, error)
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
-func (client OriginsClient) GetResponder(resp *http.Response) (result Origin, err error) {
-	err = autorest.Respond(
+func (client OriginsClient) GetResponder(resp *http.Response) (result Origin, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -323,8 +321,8 @@ func (client OriginsClient) ListByEndpointSender(req *http.Request) (*http.Respo
 
 // ListByEndpointResponder handles the response to the ListByEndpoint request. The method always
 // closes the http.Response Body.
-func (client OriginsClient) ListByEndpointResponder(resp *http.Response) (result OriginListResult, err error) {
-	err = autorest.Respond(
+func (client OriginsClient) ListByEndpointResponder(resp *http.Response) (result OriginListResult, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -393,8 +391,8 @@ func (client OriginsClient) UpdateSender(req *http.Request) (*http.Response, err
 
 // UpdateResponder handles the response to the Update request. The method always
 // closes the http.Response Body.
-func (client OriginsClient) UpdateResponder(resp *http.Response) (result Origin, err error) {
-	err = autorest.Respond(
+func (client OriginsClient) UpdateResponder(resp *http.Response) (result Origin, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),

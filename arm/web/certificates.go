@@ -103,8 +103,8 @@ func (client CertificatesClient) CreateOrUpdateCertificateSender(req *http.Reque
 
 // CreateOrUpdateCertificateResponder handles the response to the CreateOrUpdateCertificate request. The method always
 // closes the http.Response Body.
-func (client CertificatesClient) CreateOrUpdateCertificateResponder(resp *http.Response) (result Certificate, err error) {
-	err = autorest.Respond(
+func (client CertificatesClient) CreateOrUpdateCertificateResponder(resp *http.Response) (result Certificate, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -169,8 +169,8 @@ func (client CertificatesClient) CreateOrUpdateCsrSender(req *http.Request) (*ht
 
 // CreateOrUpdateCsrResponder handles the response to the CreateOrUpdateCsr request. The method always
 // closes the http.Response Body.
-func (client CertificatesClient) CreateOrUpdateCsrResponder(resp *http.Response) (result Csr, err error) {
-	err = autorest.Respond(
+func (client CertificatesClient) CreateOrUpdateCsrResponder(resp *http.Response) (result Csr, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -233,8 +233,8 @@ func (client CertificatesClient) DeleteCertificateSender(req *http.Request) (*ht
 
 // DeleteCertificateResponder handles the response to the DeleteCertificate request. The method always
 // closes the http.Response Body.
-func (client CertificatesClient) DeleteCertificateResponder(resp *http.Response) (result ObjectSet, err error) {
-	err = autorest.Respond(
+func (client CertificatesClient) DeleteCertificateResponder(resp *http.Response) (result ObjectSet, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -297,8 +297,8 @@ func (client CertificatesClient) DeleteCsrSender(req *http.Request) (*http.Respo
 
 // DeleteCsrResponder handles the response to the DeleteCsr request. The method always
 // closes the http.Response Body.
-func (client CertificatesClient) DeleteCsrResponder(resp *http.Response) (result ObjectSet, err error) {
-	err = autorest.Respond(
+func (client CertificatesClient) DeleteCsrResponder(resp *http.Response) (result ObjectSet, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -361,8 +361,8 @@ func (client CertificatesClient) GetCertificateSender(req *http.Request) (*http.
 
 // GetCertificateResponder handles the response to the GetCertificate request. The method always
 // closes the http.Response Body.
-func (client CertificatesClient) GetCertificateResponder(resp *http.Response) (result Certificate, err error) {
-	err = autorest.Respond(
+func (client CertificatesClient) GetCertificateResponder(resp *http.Response) (result Certificate, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -423,8 +423,8 @@ func (client CertificatesClient) GetCertificatesSender(req *http.Request) (*http
 
 // GetCertificatesResponder handles the response to the GetCertificates request. The method always
 // closes the http.Response Body.
-func (client CertificatesClient) GetCertificatesResponder(resp *http.Response) (result CertificateCollection, err error) {
-	err = autorest.Respond(
+func (client CertificatesClient) GetCertificatesResponder(resp *http.Response) (result CertificateCollection, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -487,8 +487,8 @@ func (client CertificatesClient) GetCsrSender(req *http.Request) (*http.Response
 
 // GetCsrResponder handles the response to the GetCsr request. The method always
 // closes the http.Response Body.
-func (client CertificatesClient) GetCsrResponder(resp *http.Response) (result Csr, err error) {
-	err = autorest.Respond(
+func (client CertificatesClient) GetCsrResponder(resp *http.Response) (result Csr, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -549,8 +549,8 @@ func (client CertificatesClient) GetCsrsSender(req *http.Request) (*http.Respons
 
 // GetCsrsResponder handles the response to the GetCsrs request. The method always
 // closes the http.Response Body.
-func (client CertificatesClient) GetCsrsResponder(resp *http.Response) (result CsrList, err error) {
-	err = autorest.Respond(
+func (client CertificatesClient) GetCsrsResponder(resp *http.Response) (result CsrList, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -615,8 +615,8 @@ func (client CertificatesClient) UpdateCertificateSender(req *http.Request) (*ht
 
 // UpdateCertificateResponder handles the response to the UpdateCertificate request. The method always
 // closes the http.Response Body.
-func (client CertificatesClient) UpdateCertificateResponder(resp *http.Response) (result Certificate, err error) {
-	err = autorest.Respond(
+func (client CertificatesClient) UpdateCertificateResponder(resp *http.Response) (result Certificate, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -681,8 +681,8 @@ func (client CertificatesClient) UpdateCsrSender(req *http.Request) (*http.Respo
 
 // UpdateCsrResponder handles the response to the UpdateCsr request. The method always
 // closes the http.Response Body.
-func (client CertificatesClient) UpdateCsrResponder(resp *http.Response) (result Csr, err error) {
-	err = autorest.Respond(
+func (client CertificatesClient) UpdateCsrResponder(resp *http.Response) (result Csr, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),

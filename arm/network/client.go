@@ -118,8 +118,8 @@ func (client ManagementClient) CheckDNSNameAvailabilitySender(req *http.Request)
 
 // CheckDNSNameAvailabilityResponder handles the response to the CheckDNSNameAvailability request. The method always
 // closes the http.Response Body.
-func (client ManagementClient) CheckDNSNameAvailabilityResponder(resp *http.Response) (result DNSNameAvailabilityResult, err error) {
-	err = autorest.Respond(
+func (client ManagementClient) CheckDNSNameAvailabilityResponder(resp *http.Response) (result DNSNameAvailabilityResult, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),

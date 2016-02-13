@@ -97,8 +97,8 @@ func (client AdminKeysClient) ListSender(req *http.Request) (*http.Response, err
 
 // ListResponder handles the response to the List request. The method always
 // closes the http.Response Body.
-func (client AdminKeysClient) ListResponder(resp *http.Response) (result AdminKeyResult, err error) {
-	err = autorest.Respond(
+func (client AdminKeysClient) ListResponder(resp *http.Response) (result AdminKeyResult, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),

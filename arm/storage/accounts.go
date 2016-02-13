@@ -94,8 +94,8 @@ func (client AccountsClient) CheckNameAvailabilitySender(req *http.Request) (*ht
 
 // CheckNameAvailabilityResponder handles the response to the CheckNameAvailability request. The method always
 // closes the http.Response Body.
-func (client AccountsClient) CheckNameAvailabilityResponder(resp *http.Response) (result CheckNameAvailabilityResult, err error) {
-	err = autorest.Respond(
+func (client AccountsClient) CheckNameAvailabilityResponder(resp *http.Response) (result CheckNameAvailabilityResult, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -124,7 +124,7 @@ func (client AccountsClient) Create(resourceGroupName string, accountName string
 
 	resp, err := client.CreateSender(req)
 	if err != nil {
-		result = autorest.Response{Response: resp}
+		result.Response = resp
 		return result, autorest.NewErrorWithError(err, "storage/AccountsClient", "Create", resp, "Failure sending request")
 	}
 
@@ -174,14 +174,13 @@ func (client AccountsClient) CreateSender(req *http.Request) (*http.Response, er
 
 // CreateResponder handles the response to the Create request. The method always
 // closes the http.Response Body.
-func (client AccountsClient) CreateResponder(resp *http.Response) (result autorest.Response, err error) {
-	err = autorest.Respond(
+func (client AccountsClient) CreateResponder(resp *http.Response) (result autorest.Response, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
-		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result = autorest.Response{Response: resp}
+	result.Response = resp
 	return
 }
 
@@ -240,11 +239,12 @@ func (client AccountsClient) DeleteSender(req *http.Request) (*http.Response, er
 
 // DeleteResponder handles the response to the Delete request. The method always
 // closes the http.Response Body.
-func (client AccountsClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
-	err = autorest.Respond(
+func (client AccountsClient) DeleteResponder(resp *http.Response) (result autorest.Response, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent))
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
+		autorest.ByClosing())
 	result.Response = resp
 	return
 }
@@ -306,8 +306,8 @@ func (client AccountsClient) GetPropertiesSender(req *http.Request) (*http.Respo
 
 // GetPropertiesResponder handles the response to the GetProperties request. The method always
 // closes the http.Response Body.
-func (client AccountsClient) GetPropertiesResponder(resp *http.Response) (result Account, err error) {
-	err = autorest.Respond(
+func (client AccountsClient) GetPropertiesResponder(resp *http.Response) (result Account, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -366,8 +366,8 @@ func (client AccountsClient) ListSender(req *http.Request) (*http.Response, erro
 
 // ListResponder handles the response to the List request. The method always
 // closes the http.Response Body.
-func (client AccountsClient) ListResponder(resp *http.Response) (result AccountListResult, err error) {
-	err = autorest.Respond(
+func (client AccountsClient) ListResponder(resp *http.Response) (result AccountListResult, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -431,8 +431,8 @@ func (client AccountsClient) ListByResourceGroupSender(req *http.Request) (*http
 
 // ListByResourceGroupResponder handles the response to the ListByResourceGroup request. The method always
 // closes the http.Response Body.
-func (client AccountsClient) ListByResourceGroupResponder(resp *http.Response) (result AccountListResult, err error) {
-	err = autorest.Respond(
+func (client AccountsClient) ListByResourceGroupResponder(resp *http.Response) (result AccountListResult, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -495,8 +495,8 @@ func (client AccountsClient) ListKeysSender(req *http.Request) (*http.Response, 
 
 // ListKeysResponder handles the response to the ListKeys request. The method always
 // closes the http.Response Body.
-func (client AccountsClient) ListKeysResponder(resp *http.Response) (result AccountKeys, err error) {
-	err = autorest.Respond(
+func (client AccountsClient) ListKeysResponder(resp *http.Response) (result AccountKeys, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -564,8 +564,8 @@ func (client AccountsClient) RegenerateKeySender(req *http.Request) (*http.Respo
 
 // RegenerateKeyResponder handles the response to the RegenerateKey request. The method always
 // closes the http.Response Body.
-func (client AccountsClient) RegenerateKeyResponder(resp *http.Response) (result AccountKeys, err error) {
-	err = autorest.Respond(
+func (client AccountsClient) RegenerateKeyResponder(resp *http.Response) (result AccountKeys, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -644,8 +644,8 @@ func (client AccountsClient) UpdateSender(req *http.Request) (*http.Response, er
 
 // UpdateResponder handles the response to the Update request. The method always
 // closes the http.Response Body.
-func (client AccountsClient) UpdateResponder(resp *http.Response) (result Account, err error) {
-	err = autorest.Respond(
+func (client AccountsClient) UpdateResponder(resp *http.Response) (result Account, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),

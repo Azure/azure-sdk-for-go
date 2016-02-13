@@ -63,7 +63,7 @@ func (client HostingEnvironmentsClient) CreateOrUpdateHostingEnvironment(resourc
 
 	resp, err := client.CreateOrUpdateHostingEnvironmentSender(req)
 	if err != nil {
-		result = autorest.Response{Response: resp}
+		result.Response = resp
 		return result, autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "CreateOrUpdateHostingEnvironment", resp, "Failure sending request")
 	}
 
@@ -113,14 +113,13 @@ func (client HostingEnvironmentsClient) CreateOrUpdateHostingEnvironmentSender(r
 
 // CreateOrUpdateHostingEnvironmentResponder handles the response to the CreateOrUpdateHostingEnvironment request. The method always
 // closes the http.Response Body.
-func (client HostingEnvironmentsClient) CreateOrUpdateHostingEnvironmentResponder(resp *http.Response) (result autorest.Response, err error) {
-	err = autorest.Respond(
+func (client HostingEnvironmentsClient) CreateOrUpdateHostingEnvironmentResponder(resp *http.Response) (result autorest.Response, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusBadRequest, http.StatusNotFound, http.StatusConflict),
-		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result = autorest.Response{Response: resp}
+	result.Response = resp
 	return
 }
 
@@ -138,7 +137,7 @@ func (client HostingEnvironmentsClient) CreateOrUpdateMultiRolePool(resourceGrou
 
 	resp, err := client.CreateOrUpdateMultiRolePoolSender(req)
 	if err != nil {
-		result = autorest.Response{Response: resp}
+		result.Response = resp
 		return result, autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "CreateOrUpdateMultiRolePool", resp, "Failure sending request")
 	}
 
@@ -188,14 +187,13 @@ func (client HostingEnvironmentsClient) CreateOrUpdateMultiRolePoolSender(req *h
 
 // CreateOrUpdateMultiRolePoolResponder handles the response to the CreateOrUpdateMultiRolePool request. The method always
 // closes the http.Response Body.
-func (client HostingEnvironmentsClient) CreateOrUpdateMultiRolePoolResponder(resp *http.Response) (result autorest.Response, err error) {
-	err = autorest.Respond(
+func (client HostingEnvironmentsClient) CreateOrUpdateMultiRolePoolResponder(resp *http.Response) (result autorest.Response, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusBadRequest, http.StatusNotFound, http.StatusConflict),
-		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result = autorest.Response{Response: resp}
+	result.Response = resp
 	return
 }
 
@@ -212,7 +210,7 @@ func (client HostingEnvironmentsClient) CreateOrUpdateWorkerPool(resourceGroupNa
 
 	resp, err := client.CreateOrUpdateWorkerPoolSender(req)
 	if err != nil {
-		result = autorest.Response{Response: resp}
+		result.Response = resp
 		return result, autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "CreateOrUpdateWorkerPool", resp, "Failure sending request")
 	}
 
@@ -263,14 +261,13 @@ func (client HostingEnvironmentsClient) CreateOrUpdateWorkerPoolSender(req *http
 
 // CreateOrUpdateWorkerPoolResponder handles the response to the CreateOrUpdateWorkerPool request. The method always
 // closes the http.Response Body.
-func (client HostingEnvironmentsClient) CreateOrUpdateWorkerPoolResponder(resp *http.Response) (result autorest.Response, err error) {
-	err = autorest.Respond(
+func (client HostingEnvironmentsClient) CreateOrUpdateWorkerPoolResponder(resp *http.Response) (result autorest.Response, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusBadRequest, http.StatusNotFound, http.StatusConflict),
-		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result = autorest.Response{Response: resp}
+	result.Response = resp
 	return
 }
 
@@ -287,7 +284,7 @@ func (client HostingEnvironmentsClient) DeleteHostingEnvironment(resourceGroupNa
 
 	resp, err := client.DeleteHostingEnvironmentSender(req)
 	if err != nil {
-		result = autorest.Response{Response: resp}
+		result.Response = resp
 		return result, autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "DeleteHostingEnvironment", resp, "Failure sending request")
 	}
 
@@ -339,14 +336,13 @@ func (client HostingEnvironmentsClient) DeleteHostingEnvironmentSender(req *http
 
 // DeleteHostingEnvironmentResponder handles the response to the DeleteHostingEnvironment request. The method always
 // closes the http.Response Body.
-func (client HostingEnvironmentsClient) DeleteHostingEnvironmentResponder(resp *http.Response) (result autorest.Response, err error) {
-	err = autorest.Respond(
+func (client HostingEnvironmentsClient) DeleteHostingEnvironmentResponder(resp *http.Response) (result autorest.Response, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusBadRequest, http.StatusNotFound, http.StatusConflict),
-		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result = autorest.Response{Response: resp}
+	result.Response = resp
 	return
 }
 
@@ -403,8 +399,8 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentSender(req *http.Re
 
 // GetHostingEnvironmentResponder handles the response to the GetHostingEnvironment request. The method always
 // closes the http.Response Body.
-func (client HostingEnvironmentsClient) GetHostingEnvironmentResponder(resp *http.Response) (result HostingEnvironment, err error) {
-	err = autorest.Respond(
+func (client HostingEnvironmentsClient) GetHostingEnvironmentResponder(resp *http.Response) (result HostingEnvironment, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -468,8 +464,8 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentCapacitiesSender(re
 
 // GetHostingEnvironmentCapacitiesResponder handles the response to the GetHostingEnvironmentCapacities request. The method always
 // closes the http.Response Body.
-func (client HostingEnvironmentsClient) GetHostingEnvironmentCapacitiesResponder(resp *http.Response) (result StampCapacityCollection, err error) {
-	err = autorest.Respond(
+func (client HostingEnvironmentsClient) GetHostingEnvironmentCapacitiesResponder(resp *http.Response) (result StampCapacityCollection, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -533,8 +529,8 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentDiagnosticsSender(r
 
 // GetHostingEnvironmentDiagnosticsResponder handles the response to the GetHostingEnvironmentDiagnostics request. The method always
 // closes the http.Response Body.
-func (client HostingEnvironmentsClient) GetHostingEnvironmentDiagnosticsResponder(resp *http.Response) (result HostingEnvironmentDiagnosticsList, err error) {
-	err = autorest.Respond(
+func (client HostingEnvironmentsClient) GetHostingEnvironmentDiagnosticsResponder(resp *http.Response) (result HostingEnvironmentDiagnosticsList, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -600,8 +596,8 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentDiagnosticsItemSend
 
 // GetHostingEnvironmentDiagnosticsItemResponder handles the response to the GetHostingEnvironmentDiagnosticsItem request. The method always
 // closes the http.Response Body.
-func (client HostingEnvironmentsClient) GetHostingEnvironmentDiagnosticsItemResponder(resp *http.Response) (result HostingEnvironmentDiagnostics, err error) {
-	err = autorest.Respond(
+func (client HostingEnvironmentsClient) GetHostingEnvironmentDiagnosticsItemResponder(resp *http.Response) (result HostingEnvironmentDiagnostics, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -665,8 +661,8 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentMetricDefinitionsSe
 
 // GetHostingEnvironmentMetricDefinitionsResponder handles the response to the GetHostingEnvironmentMetricDefinitions request. The method always
 // closes the http.Response Body.
-func (client HostingEnvironmentsClient) GetHostingEnvironmentMetricDefinitionsResponder(resp *http.Response) (result MetricDefinition, err error) {
-	err = autorest.Respond(
+func (client HostingEnvironmentsClient) GetHostingEnvironmentMetricDefinitionsResponder(resp *http.Response) (result MetricDefinition, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -741,8 +737,8 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentMetricsSender(req *
 
 // GetHostingEnvironmentMetricsResponder handles the response to the GetHostingEnvironmentMetrics request. The method always
 // closes the http.Response Body.
-func (client HostingEnvironmentsClient) GetHostingEnvironmentMetricsResponder(resp *http.Response) (result ResourceMetricCollection, err error) {
-	err = autorest.Respond(
+func (client HostingEnvironmentsClient) GetHostingEnvironmentMetricsResponder(resp *http.Response) (result ResourceMetricCollection, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -806,8 +802,8 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentMultiRoleMetricDefi
 
 // GetHostingEnvironmentMultiRoleMetricDefinitionsResponder handles the response to the GetHostingEnvironmentMultiRoleMetricDefinitions request. The method always
 // closes the http.Response Body.
-func (client HostingEnvironmentsClient) GetHostingEnvironmentMultiRoleMetricDefinitionsResponder(resp *http.Response) (result MetricDefinitionCollection, err error) {
-	err = autorest.Respond(
+func (client HostingEnvironmentsClient) GetHostingEnvironmentMultiRoleMetricDefinitionsResponder(resp *http.Response) (result MetricDefinitionCollection, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -892,8 +888,8 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentMultiRoleMetricsSen
 
 // GetHostingEnvironmentMultiRoleMetricsResponder handles the response to the GetHostingEnvironmentMultiRoleMetrics request. The method always
 // closes the http.Response Body.
-func (client HostingEnvironmentsClient) GetHostingEnvironmentMultiRoleMetricsResponder(resp *http.Response) (result ResourceMetricCollection, err error) {
-	err = autorest.Respond(
+func (client HostingEnvironmentsClient) GetHostingEnvironmentMultiRoleMetricsResponder(resp *http.Response) (result ResourceMetricCollection, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -957,8 +953,8 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentMultiRoleUsagesSend
 
 // GetHostingEnvironmentMultiRoleUsagesResponder handles the response to the GetHostingEnvironmentMultiRoleUsages request. The method always
 // closes the http.Response Body.
-func (client HostingEnvironmentsClient) GetHostingEnvironmentMultiRoleUsagesResponder(resp *http.Response) (result UsageCollection, err error) {
-	err = autorest.Respond(
+func (client HostingEnvironmentsClient) GetHostingEnvironmentMultiRoleUsagesResponder(resp *http.Response) (result UsageCollection, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -1024,8 +1020,8 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentOperationSender(req
 
 // GetHostingEnvironmentOperationResponder handles the response to the GetHostingEnvironmentOperation request. The method always
 // closes the http.Response Body.
-func (client HostingEnvironmentsClient) GetHostingEnvironmentOperationResponder(resp *http.Response) (result ObjectSet, err error) {
-	err = autorest.Respond(
+func (client HostingEnvironmentsClient) GetHostingEnvironmentOperationResponder(resp *http.Response) (result ObjectSet, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNotFound, http.StatusInternalServerError),
@@ -1089,8 +1085,8 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentOperationsSender(re
 
 // GetHostingEnvironmentOperationsResponder handles the response to the GetHostingEnvironmentOperations request. The method always
 // closes the http.Response Body.
-func (client HostingEnvironmentsClient) GetHostingEnvironmentOperationsResponder(resp *http.Response) (result ObjectSet, err error) {
-	err = autorest.Respond(
+func (client HostingEnvironmentsClient) GetHostingEnvironmentOperationsResponder(resp *http.Response) (result ObjectSet, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -1151,8 +1147,8 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentsSender(req *http.R
 
 // GetHostingEnvironmentsResponder handles the response to the GetHostingEnvironments request. The method always
 // closes the http.Response Body.
-func (client HostingEnvironmentsClient) GetHostingEnvironmentsResponder(resp *http.Response) (result HostingEnvironmentCollection, err error) {
-	err = autorest.Respond(
+func (client HostingEnvironmentsClient) GetHostingEnvironmentsResponder(resp *http.Response) (result HostingEnvironmentCollection, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -1216,8 +1212,8 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentServerFarmsSender(r
 
 // GetHostingEnvironmentServerFarmsResponder handles the response to the GetHostingEnvironmentServerFarms request. The method always
 // closes the http.Response Body.
-func (client HostingEnvironmentsClient) GetHostingEnvironmentServerFarmsResponder(resp *http.Response) (result ServerFarmCollection, err error) {
-	err = autorest.Respond(
+func (client HostingEnvironmentsClient) GetHostingEnvironmentServerFarmsResponder(resp *http.Response) (result ServerFarmCollection, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -1284,8 +1280,8 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentSitesSender(req *ht
 
 // GetHostingEnvironmentSitesResponder handles the response to the GetHostingEnvironmentSites request. The method always
 // closes the http.Response Body.
-func (client HostingEnvironmentsClient) GetHostingEnvironmentSitesResponder(resp *http.Response) (result SiteCollection, err error) {
-	err = autorest.Respond(
+func (client HostingEnvironmentsClient) GetHostingEnvironmentSitesResponder(resp *http.Response) (result SiteCollection, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -1356,8 +1352,8 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentUsagesSender(req *h
 
 // GetHostingEnvironmentUsagesResponder handles the response to the GetHostingEnvironmentUsages request. The method always
 // closes the http.Response Body.
-func (client HostingEnvironmentsClient) GetHostingEnvironmentUsagesResponder(resp *http.Response) (result CsmUsageQuotaCollection, err error) {
-	err = autorest.Respond(
+func (client HostingEnvironmentsClient) GetHostingEnvironmentUsagesResponder(resp *http.Response) (result CsmUsageQuotaCollection, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -1420,8 +1416,8 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentVipsSender(req *htt
 
 // GetHostingEnvironmentVipsResponder handles the response to the GetHostingEnvironmentVips request. The method always
 // closes the http.Response Body.
-func (client HostingEnvironmentsClient) GetHostingEnvironmentVipsResponder(resp *http.Response) (result AddressResponse, err error) {
-	err = autorest.Respond(
+func (client HostingEnvironmentsClient) GetHostingEnvironmentVipsResponder(resp *http.Response) (result AddressResponse, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -1485,8 +1481,8 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentWebHostingPlansSend
 
 // GetHostingEnvironmentWebHostingPlansResponder handles the response to the GetHostingEnvironmentWebHostingPlans request. The method always
 // closes the http.Response Body.
-func (client HostingEnvironmentsClient) GetHostingEnvironmentWebHostingPlansResponder(resp *http.Response) (result ServerFarmCollection, err error) {
-	err = autorest.Respond(
+func (client HostingEnvironmentsClient) GetHostingEnvironmentWebHostingPlansResponder(resp *http.Response) (result ServerFarmCollection, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -1552,8 +1548,8 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentWebWorkerMetricDefi
 
 // GetHostingEnvironmentWebWorkerMetricDefinitionsResponder handles the response to the GetHostingEnvironmentWebWorkerMetricDefinitions request. The method always
 // closes the http.Response Body.
-func (client HostingEnvironmentsClient) GetHostingEnvironmentWebWorkerMetricDefinitionsResponder(resp *http.Response) (result MetricDefinitionCollection, err error) {
-	err = autorest.Respond(
+func (client HostingEnvironmentsClient) GetHostingEnvironmentWebWorkerMetricDefinitionsResponder(resp *http.Response) (result MetricDefinitionCollection, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -1629,8 +1625,8 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentWebWorkerMetricsSen
 
 // GetHostingEnvironmentWebWorkerMetricsResponder handles the response to the GetHostingEnvironmentWebWorkerMetrics request. The method always
 // closes the http.Response Body.
-func (client HostingEnvironmentsClient) GetHostingEnvironmentWebWorkerMetricsResponder(resp *http.Response) (result ResourceMetricCollection, err error) {
-	err = autorest.Respond(
+func (client HostingEnvironmentsClient) GetHostingEnvironmentWebWorkerMetricsResponder(resp *http.Response) (result ResourceMetricCollection, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -1696,8 +1692,8 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentWebWorkerUsagesSend
 
 // GetHostingEnvironmentWebWorkerUsagesResponder handles the response to the GetHostingEnvironmentWebWorkerUsages request. The method always
 // closes the http.Response Body.
-func (client HostingEnvironmentsClient) GetHostingEnvironmentWebWorkerUsagesResponder(resp *http.Response) (result UsageCollection, err error) {
-	err = autorest.Respond(
+func (client HostingEnvironmentsClient) GetHostingEnvironmentWebWorkerUsagesResponder(resp *http.Response) (result UsageCollection, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -1760,8 +1756,8 @@ func (client HostingEnvironmentsClient) GetMultiRolePoolSender(req *http.Request
 
 // GetMultiRolePoolResponder handles the response to the GetMultiRolePool request. The method always
 // closes the http.Response Body.
-func (client HostingEnvironmentsClient) GetMultiRolePoolResponder(resp *http.Response) (result WorkerPool, err error) {
-	err = autorest.Respond(
+func (client HostingEnvironmentsClient) GetMultiRolePoolResponder(resp *http.Response) (result WorkerPool, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -1827,8 +1823,8 @@ func (client HostingEnvironmentsClient) GetMultiRolePoolInstanceMetricDefinition
 
 // GetMultiRolePoolInstanceMetricDefinitionsResponder handles the response to the GetMultiRolePoolInstanceMetricDefinitions request. The method always
 // closes the http.Response Body.
-func (client HostingEnvironmentsClient) GetMultiRolePoolInstanceMetricDefinitionsResponder(resp *http.Response) (result ObjectSet, err error) {
-	err = autorest.Respond(
+func (client HostingEnvironmentsClient) GetMultiRolePoolInstanceMetricDefinitionsResponder(resp *http.Response) (result ObjectSet, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -1897,8 +1893,8 @@ func (client HostingEnvironmentsClient) GetMultiRolePoolInstanceMetricsSender(re
 
 // GetMultiRolePoolInstanceMetricsResponder handles the response to the GetMultiRolePoolInstanceMetrics request. The method always
 // closes the http.Response Body.
-func (client HostingEnvironmentsClient) GetMultiRolePoolInstanceMetricsResponder(resp *http.Response) (result ObjectSet, err error) {
-	err = autorest.Respond(
+func (client HostingEnvironmentsClient) GetMultiRolePoolInstanceMetricsResponder(resp *http.Response) (result ObjectSet, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -1961,8 +1957,8 @@ func (client HostingEnvironmentsClient) GetMultiRolePoolsSender(req *http.Reques
 
 // GetMultiRolePoolsResponder handles the response to the GetMultiRolePools request. The method always
 // closes the http.Response Body.
-func (client HostingEnvironmentsClient) GetMultiRolePoolsResponder(resp *http.Response) (result WorkerPoolCollection, err error) {
-	err = autorest.Respond(
+func (client HostingEnvironmentsClient) GetMultiRolePoolsResponder(resp *http.Response) (result WorkerPoolCollection, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -2025,8 +2021,8 @@ func (client HostingEnvironmentsClient) GetMultiRolePoolSkusSender(req *http.Req
 
 // GetMultiRolePoolSkusResponder handles the response to the GetMultiRolePoolSkus request. The method always
 // closes the http.Response Body.
-func (client HostingEnvironmentsClient) GetMultiRolePoolSkusResponder(resp *http.Response) (result SkuInfoCollection, err error) {
-	err = autorest.Respond(
+func (client HostingEnvironmentsClient) GetMultiRolePoolSkusResponder(resp *http.Response) (result SkuInfoCollection, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -2091,8 +2087,8 @@ func (client HostingEnvironmentsClient) GetWorkerPoolSender(req *http.Request) (
 
 // GetWorkerPoolResponder handles the response to the GetWorkerPool request. The method always
 // closes the http.Response Body.
-func (client HostingEnvironmentsClient) GetWorkerPoolResponder(resp *http.Response) (result WorkerPool, err error) {
-	err = autorest.Respond(
+func (client HostingEnvironmentsClient) GetWorkerPoolResponder(resp *http.Response) (result WorkerPool, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -2159,8 +2155,8 @@ func (client HostingEnvironmentsClient) GetWorkerPoolInstanceMetricDefinitionsSe
 
 // GetWorkerPoolInstanceMetricDefinitionsResponder handles the response to the GetWorkerPoolInstanceMetricDefinitions request. The method always
 // closes the http.Response Body.
-func (client HostingEnvironmentsClient) GetWorkerPoolInstanceMetricDefinitionsResponder(resp *http.Response) (result ObjectSet, err error) {
-	err = autorest.Respond(
+func (client HostingEnvironmentsClient) GetWorkerPoolInstanceMetricDefinitionsResponder(resp *http.Response) (result ObjectSet, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -2238,8 +2234,8 @@ func (client HostingEnvironmentsClient) GetWorkerPoolInstanceMetricsSender(req *
 
 // GetWorkerPoolInstanceMetricsResponder handles the response to the GetWorkerPoolInstanceMetrics request. The method always
 // closes the http.Response Body.
-func (client HostingEnvironmentsClient) GetWorkerPoolInstanceMetricsResponder(resp *http.Response) (result ObjectSet, err error) {
-	err = autorest.Respond(
+func (client HostingEnvironmentsClient) GetWorkerPoolInstanceMetricsResponder(resp *http.Response) (result ObjectSet, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -2302,8 +2298,8 @@ func (client HostingEnvironmentsClient) GetWorkerPoolsSender(req *http.Request) 
 
 // GetWorkerPoolsResponder handles the response to the GetWorkerPools request. The method always
 // closes the http.Response Body.
-func (client HostingEnvironmentsClient) GetWorkerPoolsResponder(resp *http.Response) (result WorkerPoolCollection, err error) {
-	err = autorest.Respond(
+func (client HostingEnvironmentsClient) GetWorkerPoolsResponder(resp *http.Response) (result WorkerPoolCollection, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -2368,8 +2364,8 @@ func (client HostingEnvironmentsClient) GetWorkerPoolSkusSender(req *http.Reques
 
 // GetWorkerPoolSkusResponder handles the response to the GetWorkerPoolSkus request. The method always
 // closes the http.Response Body.
-func (client HostingEnvironmentsClient) GetWorkerPoolSkusResponder(resp *http.Response) (result SkuInfoCollection, err error) {
-	err = autorest.Respond(
+func (client HostingEnvironmentsClient) GetWorkerPoolSkusResponder(resp *http.Response) (result SkuInfoCollection, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -2432,8 +2428,8 @@ func (client HostingEnvironmentsClient) RebootHostingEnvironmentSender(req *http
 
 // RebootHostingEnvironmentResponder handles the response to the RebootHostingEnvironment request. The method always
 // closes the http.Response Body.
-func (client HostingEnvironmentsClient) RebootHostingEnvironmentResponder(resp *http.Response) (result ObjectSet, err error) {
-	err = autorest.Respond(
+func (client HostingEnvironmentsClient) RebootHostingEnvironmentResponder(resp *http.Response) (result ObjectSet, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusBadRequest, http.StatusNotFound, http.StatusConflict),
@@ -2455,7 +2451,7 @@ func (client HostingEnvironmentsClient) ResumeHostingEnvironment(resourceGroupNa
 
 	resp, err := client.ResumeHostingEnvironmentSender(req)
 	if err != nil {
-		result = autorest.Response{Response: resp}
+		result.Response = resp
 		return result, autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "ResumeHostingEnvironment", resp, "Failure sending request")
 	}
 
@@ -2504,14 +2500,13 @@ func (client HostingEnvironmentsClient) ResumeHostingEnvironmentSender(req *http
 
 // ResumeHostingEnvironmentResponder handles the response to the ResumeHostingEnvironment request. The method always
 // closes the http.Response Body.
-func (client HostingEnvironmentsClient) ResumeHostingEnvironmentResponder(resp *http.Response) (result autorest.Response, err error) {
-	err = autorest.Respond(
+func (client HostingEnvironmentsClient) ResumeHostingEnvironmentResponder(resp *http.Response) (result autorest.Response, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
-		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result = autorest.Response{Response: resp}
+	result.Response = resp
 	return
 }
 
@@ -2527,7 +2522,7 @@ func (client HostingEnvironmentsClient) SuspendHostingEnvironment(resourceGroupN
 
 	resp, err := client.SuspendHostingEnvironmentSender(req)
 	if err != nil {
-		result = autorest.Response{Response: resp}
+		result.Response = resp
 		return result, autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "SuspendHostingEnvironment", resp, "Failure sending request")
 	}
 
@@ -2576,13 +2571,12 @@ func (client HostingEnvironmentsClient) SuspendHostingEnvironmentSender(req *htt
 
 // SuspendHostingEnvironmentResponder handles the response to the SuspendHostingEnvironment request. The method always
 // closes the http.Response Body.
-func (client HostingEnvironmentsClient) SuspendHostingEnvironmentResponder(resp *http.Response) (result autorest.Response, err error) {
-	err = autorest.Respond(
+func (client HostingEnvironmentsClient) SuspendHostingEnvironmentResponder(resp *http.Response) (result autorest.Response, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
-		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result = autorest.Response{Response: resp}
+	result.Response = resp
 	return
 }

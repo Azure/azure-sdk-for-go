@@ -113,8 +113,8 @@ func (client ManagementClient) CheckAvailabilitySender(req *http.Request) (*http
 
 // CheckAvailabilityResponder handles the response to the CheckAvailability request. The method always
 // closes the http.Response Body.
-func (client ManagementClient) CheckAvailabilityResponder(resp *http.Response) (result CheckAvailabilityResource, err error) {
-	err = autorest.Respond(
+func (client ManagementClient) CheckAvailabilityResponder(resp *http.Response) (result CheckAvailabilityResource, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -180,8 +180,8 @@ func (client ManagementClient) CreateSender(req *http.Request) (*http.Response, 
 
 // CreateResponder handles the response to the Create request. The method always
 // closes the http.Response Body.
-func (client ManagementClient) CreateResponder(resp *http.Response) (result NotificationHubResource, err error) {
-	err = autorest.Respond(
+func (client ManagementClient) CreateResponder(resp *http.Response) (result NotificationHubResource, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
@@ -250,8 +250,8 @@ func (client ManagementClient) CreateOrUpdateAuthorizationRuleSender(req *http.R
 
 // CreateOrUpdateAuthorizationRuleResponder handles the response to the CreateOrUpdateAuthorizationRule request. The method always
 // closes the http.Response Body.
-func (client ManagementClient) CreateOrUpdateAuthorizationRuleResponder(resp *http.Response) (result SharedAccessAuthorizationRuleResource, err error) {
-	err = autorest.Respond(
+func (client ManagementClient) CreateOrUpdateAuthorizationRuleResponder(resp *http.Response) (result SharedAccessAuthorizationRuleResource, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -315,11 +315,12 @@ func (client ManagementClient) DeleteSender(req *http.Request) (*http.Response, 
 
 // DeleteResponder handles the response to the Delete request. The method always
 // closes the http.Response Body.
-func (client ManagementClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
-	err = autorest.Respond(
+func (client ManagementClient) DeleteResponder(resp *http.Response) (result autorest.Response, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK))
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByClosing())
 	result.Response = resp
 	return
 }
@@ -381,11 +382,12 @@ func (client ManagementClient) DeleteAuthorizationRuleSender(req *http.Request) 
 
 // DeleteAuthorizationRuleResponder handles the response to the DeleteAuthorizationRule request. The method always
 // closes the http.Response Body.
-func (client ManagementClient) DeleteAuthorizationRuleResponder(resp *http.Response) (result autorest.Response, err error) {
-	err = autorest.Respond(
+func (client ManagementClient) DeleteAuthorizationRuleResponder(resp *http.Response) (result autorest.Response, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusNoContent, http.StatusOK))
+		azure.WithErrorUnlessStatusCode(http.StatusNoContent, http.StatusOK),
+		autorest.ByClosing())
 	result.Response = resp
 	return
 }
@@ -444,8 +446,8 @@ func (client ManagementClient) GetSender(req *http.Request) (*http.Response, err
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
-func (client ManagementClient) GetResponder(resp *http.Response) (result NotificationHubResource, err error) {
-	err = autorest.Respond(
+func (client ManagementClient) GetResponder(resp *http.Response) (result NotificationHubResource, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -513,8 +515,8 @@ func (client ManagementClient) GetAuthorizationRuleSender(req *http.Request) (*h
 
 // GetAuthorizationRuleResponder handles the response to the GetAuthorizationRule request. The method always
 // closes the http.Response Body.
-func (client ManagementClient) GetAuthorizationRuleResponder(resp *http.Response) (result SharedAccessAuthorizationRuleResource, err error) {
-	err = autorest.Respond(
+func (client ManagementClient) GetAuthorizationRuleResponder(resp *http.Response) (result SharedAccessAuthorizationRuleResource, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -579,8 +581,8 @@ func (client ManagementClient) GetPnsCredentialsSender(req *http.Request) (*http
 
 // GetPnsCredentialsResponder handles the response to the GetPnsCredentials request. The method always
 // closes the http.Response Body.
-func (client ManagementClient) GetPnsCredentialsResponder(resp *http.Response) (result NotificationHubResource, err error) {
-	err = autorest.Respond(
+func (client ManagementClient) GetPnsCredentialsResponder(resp *http.Response) (result NotificationHubResource, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -643,8 +645,8 @@ func (client ManagementClient) ListSender(req *http.Request) (*http.Response, er
 
 // ListResponder handles the response to the List request. The method always
 // closes the http.Response Body.
-func (client ManagementClient) ListResponder(resp *http.Response) (result NotificationHubListResult, err error) {
-	err = autorest.Respond(
+func (client ManagementClient) ListResponder(resp *http.Response) (result NotificationHubListResult, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -734,8 +736,8 @@ func (client ManagementClient) ListAuthorizationRulesSender(req *http.Request) (
 
 // ListAuthorizationRulesResponder handles the response to the ListAuthorizationRules request. The method always
 // closes the http.Response Body.
-func (client ManagementClient) ListAuthorizationRulesResponder(resp *http.Response) (result SharedAccessAuthorizationRuleListResult, err error) {
-	err = autorest.Respond(
+func (client ManagementClient) ListAuthorizationRulesResponder(resp *http.Response) (result SharedAccessAuthorizationRuleListResult, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -827,8 +829,8 @@ func (client ManagementClient) ListKeysSender(req *http.Request) (*http.Response
 
 // ListKeysResponder handles the response to the ListKeys request. The method always
 // closes the http.Response Body.
-func (client ManagementClient) ListKeysResponder(resp *http.Response) (result ResourceListKeys, err error) {
-	err = autorest.Respond(
+func (client ManagementClient) ListKeysResponder(resp *http.Response) (result ResourceListKeys, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),

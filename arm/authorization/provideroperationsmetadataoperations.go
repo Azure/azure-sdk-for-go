@@ -97,8 +97,8 @@ func (client ProviderOperationsMetadataOperationsClient) GetSender(req *http.Req
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
-func (client ProviderOperationsMetadataOperationsClient) GetResponder(resp *http.Response) (result ProviderOperationsMetadata, err error) {
-	err = autorest.Respond(
+func (client ProviderOperationsMetadataOperationsClient) GetResponder(resp *http.Response) (result ProviderOperationsMetadata, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -160,8 +160,8 @@ func (client ProviderOperationsMetadataOperationsClient) ListSender(req *http.Re
 
 // ListResponder handles the response to the List request. The method always
 // closes the http.Response Body.
-func (client ProviderOperationsMetadataOperationsClient) ListResponder(resp *http.Response) (result ProviderOperationsMetadataListResult, err error) {
-	err = autorest.Respond(
+func (client ProviderOperationsMetadataOperationsClient) ListResponder(resp *http.Response) (result ProviderOperationsMetadataListResult, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),

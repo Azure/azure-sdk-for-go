@@ -98,8 +98,8 @@ func (client GlobalClient) CheckNameAvailabilitySender(req *http.Request) (*http
 
 // CheckNameAvailabilityResponder handles the response to the CheckNameAvailability request. The method always
 // closes the http.Response Body.
-func (client GlobalClient) CheckNameAvailabilityResponder(resp *http.Response) (result ResourceNameAvailability, err error) {
-	err = autorest.Respond(
+func (client GlobalClient) CheckNameAvailabilityResponder(resp *http.Response) (result ResourceNameAvailability, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -157,8 +157,8 @@ func (client GlobalClient) GetAllCertificatesSender(req *http.Request) (*http.Re
 
 // GetAllCertificatesResponder handles the response to the GetAllCertificates request. The method always
 // closes the http.Response Body.
-func (client GlobalClient) GetAllCertificatesResponder(resp *http.Response) (result CertificateCollection, err error) {
-	err = autorest.Respond(
+func (client GlobalClient) GetAllCertificatesResponder(resp *http.Response) (result CertificateCollection, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -217,8 +217,8 @@ func (client GlobalClient) GetAllClassicMobileServicesSender(req *http.Request) 
 
 // GetAllClassicMobileServicesResponder handles the response to the GetAllClassicMobileServices request. The method always
 // closes the http.Response Body.
-func (client GlobalClient) GetAllClassicMobileServicesResponder(resp *http.Response) (result ClassicMobileServiceCollection, err error) {
-	err = autorest.Respond(
+func (client GlobalClient) GetAllClassicMobileServicesResponder(resp *http.Response) (result ClassicMobileServiceCollection, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -276,8 +276,8 @@ func (client GlobalClient) GetAllHostingEnvironmentsSender(req *http.Request) (*
 
 // GetAllHostingEnvironmentsResponder handles the response to the GetAllHostingEnvironments request. The method always
 // closes the http.Response Body.
-func (client GlobalClient) GetAllHostingEnvironmentsResponder(resp *http.Response) (result HostingEnvironmentCollection, err error) {
-	err = autorest.Respond(
+func (client GlobalClient) GetAllHostingEnvironmentsResponder(resp *http.Response) (result HostingEnvironmentCollection, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -336,8 +336,8 @@ func (client GlobalClient) GetAllManagedHostingEnvironmentsSender(req *http.Requ
 
 // GetAllManagedHostingEnvironmentsResponder handles the response to the GetAllManagedHostingEnvironments request. The method always
 // closes the http.Response Body.
-func (client GlobalClient) GetAllManagedHostingEnvironmentsResponder(resp *http.Response) (result ManagedHostingEnvironmentCollection, err error) {
-	err = autorest.Respond(
+func (client GlobalClient) GetAllManagedHostingEnvironmentsResponder(resp *http.Response) (result ManagedHostingEnvironmentCollection, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -402,8 +402,8 @@ func (client GlobalClient) GetAllServerFarmsSender(req *http.Request) (*http.Res
 
 // GetAllServerFarmsResponder handles the response to the GetAllServerFarms request. The method always
 // closes the http.Response Body.
-func (client GlobalClient) GetAllServerFarmsResponder(resp *http.Response) (result ServerFarmCollection, err error) {
-	err = autorest.Respond(
+func (client GlobalClient) GetAllServerFarmsResponder(resp *http.Response) (result ServerFarmCollection, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -461,8 +461,8 @@ func (client GlobalClient) GetAllSitesSender(req *http.Request) (*http.Response,
 
 // GetAllSitesResponder handles the response to the GetAllSites request. The method always
 // closes the http.Response Body.
-func (client GlobalClient) GetAllSitesResponder(resp *http.Response) (result SiteCollection, err error) {
-	err = autorest.Respond(
+func (client GlobalClient) GetAllSitesResponder(resp *http.Response) (result SiteCollection, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -520,8 +520,8 @@ func (client GlobalClient) GetSubscriptionGeoRegionsSender(req *http.Request) (*
 
 // GetSubscriptionGeoRegionsResponder handles the response to the GetSubscriptionGeoRegions request. The method always
 // closes the http.Response Body.
-func (client GlobalClient) GetSubscriptionGeoRegionsResponder(resp *http.Response) (result GeoRegionCollection, err error) {
-	err = autorest.Respond(
+func (client GlobalClient) GetSubscriptionGeoRegionsResponder(resp *http.Response) (result GeoRegionCollection, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -580,8 +580,8 @@ func (client GlobalClient) GetSubscriptionPublishingCredentialsSender(req *http.
 
 // GetSubscriptionPublishingCredentialsResponder handles the response to the GetSubscriptionPublishingCredentials request. The method always
 // closes the http.Response Body.
-func (client GlobalClient) GetSubscriptionPublishingCredentialsResponder(resp *http.Response) (result User, err error) {
-	err = autorest.Respond(
+func (client GlobalClient) GetSubscriptionPublishingCredentialsResponder(resp *http.Response) (result User, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -643,8 +643,8 @@ func (client GlobalClient) IsHostingEnvironmentNameAvailableSender(req *http.Req
 
 // IsHostingEnvironmentNameAvailableResponder handles the response to the IsHostingEnvironmentNameAvailable request. The method always
 // closes the http.Response Body.
-func (client GlobalClient) IsHostingEnvironmentNameAvailableResponder(resp *http.Response) (result ObjectSet, err error) {
-	err = autorest.Respond(
+func (client GlobalClient) IsHostingEnvironmentNameAvailableResponder(resp *http.Response) (result ObjectSet, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -706,8 +706,8 @@ func (client GlobalClient) IsHostingEnvironmentWithLegacyNameAvailableSender(req
 
 // IsHostingEnvironmentWithLegacyNameAvailableResponder handles the response to the IsHostingEnvironmentWithLegacyNameAvailable request. The method always
 // closes the http.Response Body.
-func (client GlobalClient) IsHostingEnvironmentWithLegacyNameAvailableResponder(resp *http.Response) (result ObjectSet, err error) {
-	err = autorest.Respond(
+func (client GlobalClient) IsHostingEnvironmentWithLegacyNameAvailableResponder(resp *http.Response) (result ObjectSet, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -765,8 +765,8 @@ func (client GlobalClient) ListPremierAddOnOffersSender(req *http.Request) (*htt
 
 // ListPremierAddOnOffersResponder handles the response to the ListPremierAddOnOffers request. The method always
 // closes the http.Response Body.
-func (client GlobalClient) ListPremierAddOnOffersResponder(resp *http.Response) (result ObjectSet, err error) {
-	err = autorest.Respond(
+func (client GlobalClient) ListPremierAddOnOffersResponder(resp *http.Response) (result ObjectSet, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -828,8 +828,8 @@ func (client GlobalClient) UpdateSubscriptionPublishingCredentialsSender(req *ht
 
 // UpdateSubscriptionPublishingCredentialsResponder handles the response to the UpdateSubscriptionPublishingCredentials request. The method always
 // closes the http.Response Body.
-func (client GlobalClient) UpdateSubscriptionPublishingCredentialsResponder(resp *http.Response) (result User, err error) {
-	err = autorest.Respond(
+func (client GlobalClient) UpdateSubscriptionPublishingCredentialsResponder(resp *http.Response) (result User, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),

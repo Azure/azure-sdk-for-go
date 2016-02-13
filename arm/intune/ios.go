@@ -96,11 +96,12 @@ func (client IosClient) AddAppForMAMPolicySender(req *http.Request) (*http.Respo
 
 // AddAppForMAMPolicyResponder handles the response to the AddAppForMAMPolicy request. The method always
 // closes the http.Response Body.
-func (client IosClient) AddAppForMAMPolicyResponder(resp *http.Response) (result autorest.Response, err error) {
-	err = autorest.Respond(
+func (client IosClient) AddAppForMAMPolicyResponder(resp *http.Response) (result autorest.Response, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent))
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
+		autorest.ByClosing())
 	result.Response = resp
 	return
 }
@@ -160,11 +161,12 @@ func (client IosClient) AddGroupForMAMPolicySender(req *http.Request) (*http.Res
 
 // AddGroupForMAMPolicyResponder handles the response to the AddGroupForMAMPolicy request. The method always
 // closes the http.Response Body.
-func (client IosClient) AddGroupForMAMPolicyResponder(resp *http.Response) (result autorest.Response, err error) {
-	err = autorest.Respond(
+func (client IosClient) AddGroupForMAMPolicyResponder(resp *http.Response) (result autorest.Response, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent))
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
+		autorest.ByClosing())
 	result.Response = resp
 	return
 }
@@ -223,8 +225,8 @@ func (client IosClient) CreateOrUpdateMAMPolicySender(req *http.Request) (*http.
 
 // CreateOrUpdateMAMPolicyResponder handles the response to the CreateOrUpdateMAMPolicy request. The method always
 // closes the http.Response Body.
-func (client IosClient) CreateOrUpdateMAMPolicyResponder(resp *http.Response) (result IOSMAMPolicy, err error) {
-	err = autorest.Respond(
+func (client IosClient) CreateOrUpdateMAMPolicyResponder(resp *http.Response) (result IOSMAMPolicy, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -287,11 +289,12 @@ func (client IosClient) DeleteAppForMAMPolicySender(req *http.Request) (*http.Re
 
 // DeleteAppForMAMPolicyResponder handles the response to the DeleteAppForMAMPolicy request. The method always
 // closes the http.Response Body.
-func (client IosClient) DeleteAppForMAMPolicyResponder(resp *http.Response) (result autorest.Response, err error) {
-	err = autorest.Respond(
+func (client IosClient) DeleteAppForMAMPolicyResponder(resp *http.Response) (result autorest.Response, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent))
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
+		autorest.ByClosing())
 	result.Response = resp
 	return
 }
@@ -349,11 +352,12 @@ func (client IosClient) DeleteGroupForMAMPolicySender(req *http.Request) (*http.
 
 // DeleteGroupForMAMPolicyResponder handles the response to the DeleteGroupForMAMPolicy request. The method always
 // closes the http.Response Body.
-func (client IosClient) DeleteGroupForMAMPolicyResponder(resp *http.Response) (result autorest.Response, err error) {
-	err = autorest.Respond(
+func (client IosClient) DeleteGroupForMAMPolicyResponder(resp *http.Response) (result autorest.Response, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent))
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
+		autorest.ByClosing())
 	result.Response = resp
 	return
 }
@@ -410,11 +414,12 @@ func (client IosClient) DeleteMAMPolicySender(req *http.Request) (*http.Response
 
 // DeleteMAMPolicyResponder handles the response to the DeleteMAMPolicy request. The method always
 // closes the http.Response Body.
-func (client IosClient) DeleteMAMPolicyResponder(resp *http.Response) (result autorest.Response, err error) {
-	err = autorest.Respond(
+func (client IosClient) DeleteMAMPolicyResponder(resp *http.Response) (result autorest.Response, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent))
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
+		autorest.ByClosing())
 	result.Response = resp
 	return
 }
@@ -481,8 +486,8 @@ func (client IosClient) GetAppForMAMPolicySender(req *http.Request) (*http.Respo
 
 // GetAppForMAMPolicyResponder handles the response to the GetAppForMAMPolicy request. The method always
 // closes the http.Response Body.
-func (client IosClient) GetAppForMAMPolicyResponder(resp *http.Response) (result ApplicationCollection, err error) {
-	err = autorest.Respond(
+func (client IosClient) GetAppForMAMPolicyResponder(resp *http.Response) (result ApplicationCollection, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -568,8 +573,8 @@ func (client IosClient) GetGroupsForMAMPolicySender(req *http.Request) (*http.Re
 
 // GetGroupsForMAMPolicyResponder handles the response to the GetGroupsForMAMPolicy request. The method always
 // closes the http.Response Body.
-func (client IosClient) GetGroupsForMAMPolicyResponder(resp *http.Response) (result GroupsCollection, err error) {
-	err = autorest.Respond(
+func (client IosClient) GetGroupsForMAMPolicyResponder(resp *http.Response) (result GroupsCollection, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -663,8 +668,8 @@ func (client IosClient) GetMAMPoliciesSender(req *http.Request) (*http.Response,
 
 // GetMAMPoliciesResponder handles the response to the GetMAMPolicies request. The method always
 // closes the http.Response Body.
-func (client IosClient) GetMAMPoliciesResponder(resp *http.Response) (result IOSMAMPolicyCollection, err error) {
-	err = autorest.Respond(
+func (client IosClient) GetMAMPoliciesResponder(resp *http.Response) (result IOSMAMPolicyCollection, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -753,8 +758,8 @@ func (client IosClient) GetMAMPolicyByNameSender(req *http.Request) (*http.Respo
 
 // GetMAMPolicyByNameResponder handles the response to the GetMAMPolicyByName request. The method always
 // closes the http.Response Body.
-func (client IosClient) GetMAMPolicyByNameResponder(resp *http.Response) (result IOSMAMPolicy, err error) {
-	err = autorest.Respond(
+func (client IosClient) GetMAMPolicyByNameResponder(resp *http.Response) (result IOSMAMPolicy, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -818,8 +823,8 @@ func (client IosClient) PatchMAMPolicySender(req *http.Request) (*http.Response,
 
 // PatchMAMPolicyResponder handles the response to the PatchMAMPolicy request. The method always
 // closes the http.Response Body.
-func (client IosClient) PatchMAMPolicyResponder(resp *http.Response) (result IOSMAMPolicy, err error) {
-	err = autorest.Respond(
+func (client IosClient) PatchMAMPolicyResponder(resp *http.Response) (result IOSMAMPolicy, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),

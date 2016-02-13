@@ -97,8 +97,8 @@ func (client ZonesClient) CreateOrUpdateSender(req *http.Request) (*http.Respons
 
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
 // closes the http.Response Body.
-func (client ZonesClient) CreateOrUpdateResponder(resp *http.Response) (result Zone, err error) {
-	err = autorest.Respond(
+func (client ZonesClient) CreateOrUpdateResponder(resp *http.Response) (result Zone, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
@@ -163,11 +163,12 @@ func (client ZonesClient) DeleteSender(req *http.Request) (*http.Response, error
 
 // DeleteResponder handles the response to the Delete request. The method always
 // closes the http.Response Body.
-func (client ZonesClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
-	err = autorest.Respond(
+func (client ZonesClient) DeleteResponder(resp *http.Response) (result autorest.Response, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK))
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByClosing())
 	result.Response = resp
 	return
 }
@@ -225,8 +226,8 @@ func (client ZonesClient) GetSender(req *http.Request) (*http.Response, error) {
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
-func (client ZonesClient) GetResponder(resp *http.Response) (result Zone, err error) {
-	err = autorest.Respond(
+func (client ZonesClient) GetResponder(resp *http.Response) (result Zone, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -295,8 +296,8 @@ func (client ZonesClient) ListZonesInResourceGroupSender(req *http.Request) (*ht
 
 // ListZonesInResourceGroupResponder handles the response to the ListZonesInResourceGroup request. The method always
 // closes the http.Response Body.
-func (client ZonesClient) ListZonesInResourceGroupResponder(resp *http.Response) (result ZoneListResult, err error) {
-	err = autorest.Respond(
+func (client ZonesClient) ListZonesInResourceGroupResponder(resp *http.Response) (result ZoneListResult, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -387,8 +388,8 @@ func (client ZonesClient) ListZonesInSubscriptionSender(req *http.Request) (*htt
 
 // ListZonesInSubscriptionResponder handles the response to the ListZonesInSubscription request. The method always
 // closes the http.Response Body.
-func (client ZonesClient) ListZonesInSubscriptionResponder(resp *http.Response) (result ZoneListResult, err error) {
-	err = autorest.Respond(
+func (client ZonesClient) ListZonesInSubscriptionResponder(resp *http.Response) (result ZoneListResult, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),

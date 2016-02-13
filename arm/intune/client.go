@@ -119,8 +119,8 @@ func (client ManagementClient) GetAppsSender(req *http.Request) (*http.Response,
 
 // GetAppsResponder handles the response to the GetApps request. The method always
 // closes the http.Response Body.
-func (client ManagementClient) GetAppsResponder(resp *http.Response) (result ApplicationCollection, err error) {
-	err = autorest.Respond(
+func (client ManagementClient) GetAppsResponder(resp *http.Response) (result ApplicationCollection, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -197,8 +197,8 @@ func (client ManagementClient) GetLocationByHostNameSender(req *http.Request) (*
 
 // GetLocationByHostNameResponder handles the response to the GetLocationByHostName request. The method always
 // closes the http.Response Body.
-func (client ManagementClient) GetLocationByHostNameResponder(resp *http.Response) (result Location, err error) {
-	err = autorest.Respond(
+func (client ManagementClient) GetLocationByHostNameResponder(resp *http.Response) (result Location, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -251,8 +251,8 @@ func (client ManagementClient) GetLocationsSender(req *http.Request) (*http.Resp
 
 // GetLocationsResponder handles the response to the GetLocations request. The method always
 // closes the http.Response Body.
-func (client ManagementClient) GetLocationsResponder(resp *http.Response) (result LocationCollection, err error) {
-	err = autorest.Respond(
+func (client ManagementClient) GetLocationsResponder(resp *http.Response) (result LocationCollection, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -341,8 +341,8 @@ func (client ManagementClient) GetMAMFlaggedUserByNameSender(req *http.Request) 
 
 // GetMAMFlaggedUserByNameResponder handles the response to the GetMAMFlaggedUserByName request. The method always
 // closes the http.Response Body.
-func (client ManagementClient) GetMAMFlaggedUserByNameResponder(resp *http.Response) (result FlaggedUser, err error) {
-	err = autorest.Respond(
+func (client ManagementClient) GetMAMFlaggedUserByNameResponder(resp *http.Response) (result FlaggedUser, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -412,8 +412,8 @@ func (client ManagementClient) GetMAMFlaggedUsersSender(req *http.Request) (*htt
 
 // GetMAMFlaggedUsersResponder handles the response to the GetMAMFlaggedUsers request. The method always
 // closes the http.Response Body.
-func (client ManagementClient) GetMAMFlaggedUsersResponder(resp *http.Response) (result FlaggedUserCollection, err error) {
-	err = autorest.Respond(
+func (client ManagementClient) GetMAMFlaggedUsersResponder(resp *http.Response) (result FlaggedUserCollection, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -497,8 +497,8 @@ func (client ManagementClient) GetMAMStatusesSender(req *http.Request) (*http.Re
 
 // GetMAMStatusesResponder handles the response to the GetMAMStatuses request. The method always
 // closes the http.Response Body.
-func (client ManagementClient) GetMAMStatusesResponder(resp *http.Response) (result StatusesDefault, err error) {
-	err = autorest.Respond(
+func (client ManagementClient) GetMAMStatusesResponder(resp *http.Response) (result StatusesDefault, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -589,8 +589,8 @@ func (client ManagementClient) GetMAMUserDeviceByDeviceNameSender(req *http.Requ
 
 // GetMAMUserDeviceByDeviceNameResponder handles the response to the GetMAMUserDeviceByDeviceName request. The method always
 // closes the http.Response Body.
-func (client ManagementClient) GetMAMUserDeviceByDeviceNameResponder(resp *http.Response) (result Device, err error) {
-	err = autorest.Respond(
+func (client ManagementClient) GetMAMUserDeviceByDeviceNameResponder(resp *http.Response) (result Device, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -662,8 +662,8 @@ func (client ManagementClient) GetMAMUserDevicesSender(req *http.Request) (*http
 
 // GetMAMUserDevicesResponder handles the response to the GetMAMUserDevices request. The method always
 // closes the http.Response Body.
-func (client ManagementClient) GetMAMUserDevicesResponder(resp *http.Response) (result DeviceCollection, err error) {
-	err = autorest.Respond(
+func (client ManagementClient) GetMAMUserDevicesResponder(resp *http.Response) (result DeviceCollection, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -760,8 +760,8 @@ func (client ManagementClient) GetMAMUserFlaggedEnrolledAppsSender(req *http.Req
 
 // GetMAMUserFlaggedEnrolledAppsResponder handles the response to the GetMAMUserFlaggedEnrolledApps request. The method always
 // closes the http.Response Body.
-func (client ManagementClient) GetMAMUserFlaggedEnrolledAppsResponder(resp *http.Response) (result FlaggedEnrolledAppCollection, err error) {
-	err = autorest.Respond(
+func (client ManagementClient) GetMAMUserFlaggedEnrolledAppsResponder(resp *http.Response) (result FlaggedEnrolledAppCollection, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -855,8 +855,8 @@ func (client ManagementClient) GetOperationResultsSender(req *http.Request) (*ht
 
 // GetOperationResultsResponder handles the response to the GetOperationResults request. The method always
 // closes the http.Response Body.
-func (client ManagementClient) GetOperationResultsResponder(resp *http.Response) (result OperationResultCollection, err error) {
-	err = autorest.Respond(
+func (client ManagementClient) GetOperationResultsResponder(resp *http.Response) (result OperationResultCollection, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -943,8 +943,8 @@ func (client ManagementClient) WipeMAMUserDeviceSender(req *http.Request) (*http
 
 // WipeMAMUserDeviceResponder handles the response to the WipeMAMUserDevice request. The method always
 // closes the http.Response Body.
-func (client ManagementClient) WipeMAMUserDeviceResponder(resp *http.Response) (result WipeDeviceOperationResult, err error) {
-	err = autorest.Respond(
+func (client ManagementClient) WipeMAMUserDeviceResponder(resp *http.Response) (result WipeDeviceOperationResult, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),

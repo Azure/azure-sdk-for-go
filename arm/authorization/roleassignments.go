@@ -97,8 +97,8 @@ func (client RoleAssignmentsClient) CreateSender(req *http.Request) (*http.Respo
 
 // CreateResponder handles the response to the Create request. The method always
 // closes the http.Response Body.
-func (client RoleAssignmentsClient) CreateResponder(resp *http.Response) (result RoleAssignment, err error) {
-	err = autorest.Respond(
+func (client RoleAssignmentsClient) CreateResponder(resp *http.Response) (result RoleAssignment, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
@@ -160,8 +160,8 @@ func (client RoleAssignmentsClient) CreateByIDSender(req *http.Request) (*http.R
 
 // CreateByIDResponder handles the response to the CreateByID request. The method always
 // closes the http.Response Body.
-func (client RoleAssignmentsClient) CreateByIDResponder(resp *http.Response) (result RoleAssignment, err error) {
-	err = autorest.Respond(
+func (client RoleAssignmentsClient) CreateByIDResponder(resp *http.Response) (result RoleAssignment, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
@@ -223,8 +223,8 @@ func (client RoleAssignmentsClient) DeleteSender(req *http.Request) (*http.Respo
 
 // DeleteResponder handles the response to the Delete request. The method always
 // closes the http.Response Body.
-func (client RoleAssignmentsClient) DeleteResponder(resp *http.Response) (result RoleAssignment, err error) {
-	err = autorest.Respond(
+func (client RoleAssignmentsClient) DeleteResponder(resp *http.Response) (result RoleAssignment, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -285,8 +285,8 @@ func (client RoleAssignmentsClient) DeleteByIDSender(req *http.Request) (*http.R
 
 // DeleteByIDResponder handles the response to the DeleteByID request. The method always
 // closes the http.Response Body.
-func (client RoleAssignmentsClient) DeleteByIDResponder(resp *http.Response) (result RoleAssignment, err error) {
-	err = autorest.Respond(
+func (client RoleAssignmentsClient) DeleteByIDResponder(resp *http.Response) (result RoleAssignment, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -348,8 +348,8 @@ func (client RoleAssignmentsClient) GetSender(req *http.Request) (*http.Response
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
-func (client RoleAssignmentsClient) GetResponder(resp *http.Response) (result RoleAssignment, err error) {
-	err = autorest.Respond(
+func (client RoleAssignmentsClient) GetResponder(resp *http.Response) (result RoleAssignment, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -410,8 +410,8 @@ func (client RoleAssignmentsClient) GetByIDSender(req *http.Request) (*http.Resp
 
 // GetByIDResponder handles the response to the GetByID request. The method always
 // closes the http.Response Body.
-func (client RoleAssignmentsClient) GetByIDResponder(resp *http.Response) (result RoleAssignment, err error) {
-	err = autorest.Respond(
+func (client RoleAssignmentsClient) GetByIDResponder(resp *http.Response) (result RoleAssignment, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -474,8 +474,8 @@ func (client RoleAssignmentsClient) ListSender(req *http.Request) (*http.Respons
 
 // ListResponder handles the response to the List request. The method always
 // closes the http.Response Body.
-func (client RoleAssignmentsClient) ListResponder(resp *http.Response) (result RoleAssignmentListResult, err error) {
-	err = autorest.Respond(
+func (client RoleAssignmentsClient) ListResponder(resp *http.Response) (result RoleAssignmentListResult, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -570,8 +570,8 @@ func (client RoleAssignmentsClient) ListForResourceSender(req *http.Request) (*h
 
 // ListForResourceResponder handles the response to the ListForResource request. The method always
 // closes the http.Response Body.
-func (client RoleAssignmentsClient) ListForResourceResponder(resp *http.Response) (result RoleAssignmentListResult, err error) {
-	err = autorest.Respond(
+func (client RoleAssignmentsClient) ListForResourceResponder(resp *http.Response) (result RoleAssignmentListResult, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -660,8 +660,8 @@ func (client RoleAssignmentsClient) ListForResourceGroupSender(req *http.Request
 
 // ListForResourceGroupResponder handles the response to the ListForResourceGroup request. The method always
 // closes the http.Response Body.
-func (client RoleAssignmentsClient) ListForResourceGroupResponder(resp *http.Response) (result RoleAssignmentListResult, err error) {
-	err = autorest.Respond(
+func (client RoleAssignmentsClient) ListForResourceGroupResponder(resp *http.Response) (result RoleAssignmentListResult, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -749,8 +749,8 @@ func (client RoleAssignmentsClient) ListForScopeSender(req *http.Request) (*http
 
 // ListForScopeResponder handles the response to the ListForScope request. The method always
 // closes the http.Response Body.
-func (client RoleAssignmentsClient) ListForScopeResponder(resp *http.Response) (result RoleAssignmentListResult, err error) {
-	err = autorest.Respond(
+func (client RoleAssignmentsClient) ListForScopeResponder(resp *http.Response) (result RoleAssignmentListResult, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),

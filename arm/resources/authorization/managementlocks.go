@@ -98,8 +98,8 @@ func (client ManagementLocksClient) CreateOrUpdateAtResourceGroupLevelSender(req
 
 // CreateOrUpdateAtResourceGroupLevelResponder handles the response to the CreateOrUpdateAtResourceGroupLevel request. The method always
 // closes the http.Response Body.
-func (client ManagementLocksClient) CreateOrUpdateAtResourceGroupLevelResponder(resp *http.Response) (result ManagementLockObject, err error) {
-	err = autorest.Respond(
+func (client ManagementLocksClient) CreateOrUpdateAtResourceGroupLevelResponder(resp *http.Response) (result ManagementLockObject, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
@@ -171,8 +171,8 @@ func (client ManagementLocksClient) CreateOrUpdateAtResourceLevelSender(req *htt
 
 // CreateOrUpdateAtResourceLevelResponder handles the response to the CreateOrUpdateAtResourceLevel request. The method always
 // closes the http.Response Body.
-func (client ManagementLocksClient) CreateOrUpdateAtResourceLevelResponder(resp *http.Response) (result ManagementLockObject, err error) {
-	err = autorest.Respond(
+func (client ManagementLocksClient) CreateOrUpdateAtResourceLevelResponder(resp *http.Response) (result ManagementLockObject, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
@@ -235,8 +235,8 @@ func (client ManagementLocksClient) CreateOrUpdateAtSubscriptionLevelSender(req 
 
 // CreateOrUpdateAtSubscriptionLevelResponder handles the response to the CreateOrUpdateAtSubscriptionLevel request. The method always
 // closes the http.Response Body.
-func (client ManagementLocksClient) CreateOrUpdateAtSubscriptionLevelResponder(resp *http.Response) (result ManagementLockObject, err error) {
-	err = autorest.Respond(
+func (client ManagementLocksClient) CreateOrUpdateAtSubscriptionLevelResponder(resp *http.Response) (result ManagementLockObject, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusCreated, http.StatusOK),
@@ -298,11 +298,12 @@ func (client ManagementLocksClient) DeleteAtResourceGroupLevelSender(req *http.R
 
 // DeleteAtResourceGroupLevelResponder handles the response to the DeleteAtResourceGroupLevel request. The method always
 // closes the http.Response Body.
-func (client ManagementLocksClient) DeleteAtResourceGroupLevelResponder(resp *http.Response) (result autorest.Response, err error) {
-	err = autorest.Respond(
+func (client ManagementLocksClient) DeleteAtResourceGroupLevelResponder(resp *http.Response) (result autorest.Response, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusNoContent, http.StatusOK, http.StatusAccepted))
+		azure.WithErrorUnlessStatusCode(http.StatusNoContent, http.StatusOK, http.StatusAccepted),
+		autorest.ByClosing())
 	result.Response = resp
 	return
 }
@@ -367,11 +368,12 @@ func (client ManagementLocksClient) DeleteAtResourceLevelSender(req *http.Reques
 
 // DeleteAtResourceLevelResponder handles the response to the DeleteAtResourceLevel request. The method always
 // closes the http.Response Body.
-func (client ManagementLocksClient) DeleteAtResourceLevelResponder(resp *http.Response) (result autorest.Response, err error) {
-	err = autorest.Respond(
+func (client ManagementLocksClient) DeleteAtResourceLevelResponder(resp *http.Response) (result autorest.Response, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusNoContent, http.StatusOK, http.StatusAccepted))
+		azure.WithErrorUnlessStatusCode(http.StatusNoContent, http.StatusOK, http.StatusAccepted),
+		autorest.ByClosing())
 	result.Response = resp
 	return
 }
@@ -427,11 +429,12 @@ func (client ManagementLocksClient) DeleteAtSubscriptionLevelSender(req *http.Re
 
 // DeleteAtSubscriptionLevelResponder handles the response to the DeleteAtSubscriptionLevel request. The method always
 // closes the http.Response Body.
-func (client ManagementLocksClient) DeleteAtSubscriptionLevelResponder(resp *http.Response) (result autorest.Response, err error) {
-	err = autorest.Respond(
+func (client ManagementLocksClient) DeleteAtSubscriptionLevelResponder(resp *http.Response) (result autorest.Response, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusNoContent, http.StatusOK, http.StatusAccepted))
+		azure.WithErrorUnlessStatusCode(http.StatusNoContent, http.StatusOK, http.StatusAccepted),
+		autorest.ByClosing())
 	result.Response = resp
 	return
 }
@@ -487,8 +490,8 @@ func (client ManagementLocksClient) GetSender(req *http.Request) (*http.Response
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
-func (client ManagementLocksClient) GetResponder(resp *http.Response) (result ManagementLockObject, err error) {
-	err = autorest.Respond(
+func (client ManagementLocksClient) GetResponder(resp *http.Response) (result ManagementLockObject, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
@@ -553,8 +556,8 @@ func (client ManagementLocksClient) ListAtResourceGroupLevelSender(req *http.Req
 
 // ListAtResourceGroupLevelResponder handles the response to the ListAtResourceGroupLevel request. The method always
 // closes the http.Response Body.
-func (client ManagementLocksClient) ListAtResourceGroupLevelResponder(resp *http.Response) (result ManagementLockListResult, err error) {
-	err = autorest.Respond(
+func (client ManagementLocksClient) ListAtResourceGroupLevelResponder(resp *http.Response) (result ManagementLockListResult, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -651,8 +654,8 @@ func (client ManagementLocksClient) ListAtResourceLevelSender(req *http.Request)
 
 // ListAtResourceLevelResponder handles the response to the ListAtResourceLevel request. The method always
 // closes the http.Response Body.
-func (client ManagementLocksClient) ListAtResourceLevelResponder(resp *http.Response) (result ManagementLockListResult, err error) {
-	err = autorest.Respond(
+func (client ManagementLocksClient) ListAtResourceLevelResponder(resp *http.Response) (result ManagementLockListResult, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -739,8 +742,8 @@ func (client ManagementLocksClient) ListAtSubscriptionLevelSender(req *http.Requ
 
 // ListAtSubscriptionLevelResponder handles the response to the ListAtSubscriptionLevel request. The method always
 // closes the http.Response Body.
-func (client ManagementLocksClient) ListAtSubscriptionLevelResponder(resp *http.Response) (result ManagementLockListResult, err error) {
-	err = autorest.Respond(
+func (client ManagementLocksClient) ListAtSubscriptionLevelResponder(resp *http.Response) (result ManagementLockListResult, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -820,8 +823,8 @@ func (client ManagementLocksClient) ListNextSender(req *http.Request) (*http.Res
 
 // ListNextResponder handles the response to the ListNext request. The method always
 // closes the http.Response Body.
-func (client ManagementLocksClient) ListNextResponder(resp *http.Response) (result ManagementLockListResult, err error) {
-	err = autorest.Respond(
+func (client ManagementLocksClient) ListNextResponder(resp *http.Response) (result ManagementLockListResult, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),

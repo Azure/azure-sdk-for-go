@@ -100,8 +100,8 @@ func (client GlobalDomainRegistrationClient) CheckDomainAvailabilitySender(req *
 
 // CheckDomainAvailabilityResponder handles the response to the CheckDomainAvailability request. The method always
 // closes the http.Response Body.
-func (client GlobalDomainRegistrationClient) CheckDomainAvailabilityResponder(resp *http.Response) (result DomainAvailablilityCheckResult, err error) {
-	err = autorest.Respond(
+func (client GlobalDomainRegistrationClient) CheckDomainAvailabilityResponder(resp *http.Response) (result DomainAvailablilityCheckResult, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -159,8 +159,8 @@ func (client GlobalDomainRegistrationClient) GetAllDomainsSender(req *http.Reque
 
 // GetAllDomainsResponder handles the response to the GetAllDomains request. The method always
 // closes the http.Response Body.
-func (client GlobalDomainRegistrationClient) GetAllDomainsResponder(resp *http.Response) (result DomainCollection, err error) {
-	err = autorest.Respond(
+func (client GlobalDomainRegistrationClient) GetAllDomainsResponder(resp *http.Response) (result DomainCollection, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -219,8 +219,8 @@ func (client GlobalDomainRegistrationClient) GetDomainControlCenterSsoRequestSen
 
 // GetDomainControlCenterSsoRequestResponder handles the response to the GetDomainControlCenterSsoRequest request. The method always
 // closes the http.Response Body.
-func (client GlobalDomainRegistrationClient) GetDomainControlCenterSsoRequestResponder(resp *http.Response) (result DomainControlCenterSsoRequest, err error) {
-	err = autorest.Respond(
+func (client GlobalDomainRegistrationClient) GetDomainControlCenterSsoRequestResponder(resp *http.Response) (result DomainControlCenterSsoRequest, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -281,8 +281,8 @@ func (client GlobalDomainRegistrationClient) ListDomainRecommendationsSender(req
 
 // ListDomainRecommendationsResponder handles the response to the ListDomainRecommendations request. The method always
 // closes the http.Response Body.
-func (client GlobalDomainRegistrationClient) ListDomainRecommendationsResponder(resp *http.Response) (result NameIdentifierCollection, err error) {
-	err = autorest.Respond(
+func (client GlobalDomainRegistrationClient) ListDomainRecommendationsResponder(resp *http.Response) (result NameIdentifierCollection, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -344,8 +344,8 @@ func (client GlobalDomainRegistrationClient) ValidateDomainPurchaseInformationSe
 
 // ValidateDomainPurchaseInformationResponder handles the response to the ValidateDomainPurchaseInformation request. The method always
 // closes the http.Response Body.
-func (client GlobalDomainRegistrationClient) ValidateDomainPurchaseInformationResponder(resp *http.Response) (result ObjectSet, err error) {
-	err = autorest.Respond(
+func (client GlobalDomainRegistrationClient) ValidateDomainPurchaseInformationResponder(resp *http.Response) (result ObjectSet, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),

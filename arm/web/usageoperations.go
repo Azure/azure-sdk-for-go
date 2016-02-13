@@ -105,8 +105,8 @@ func (client UsageOperationsClient) GetUsageSender(req *http.Request) (*http.Res
 
 // GetUsageResponder handles the response to the GetUsage request. The method always
 // closes the http.Response Body.
-func (client UsageOperationsClient) GetUsageResponder(resp *http.Response) (result ObjectSet, err error) {
-	err = autorest.Respond(
+func (client UsageOperationsClient) GetUsageResponder(resp *http.Response) (result ObjectSet, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),

@@ -92,8 +92,8 @@ func (client ClassicAdministratorsClient) ListSender(req *http.Request) (*http.R
 
 // ListResponder handles the response to the List request. The method always
 // closes the http.Response Body.
-func (client ClassicAdministratorsClient) ListResponder(resp *http.Response) (result ClassicAdministratorListResult, err error) {
-	err = autorest.Respond(
+func (client ClassicAdministratorsClient) ListResponder(resp *http.Response) (result ClassicAdministratorListResult, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),

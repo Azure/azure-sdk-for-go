@@ -63,7 +63,7 @@ func (client VirtualNetworkGatewayConnectionsClient) CreateOrUpdate(resourceGrou
 
 	resp, err := client.CreateOrUpdateSender(req)
 	if err != nil {
-		result = autorest.Response{Response: resp}
+		result.Response = resp
 		return result, autorest.NewErrorWithError(err, "network/VirtualNetworkGatewayConnectionsClient", "CreateOrUpdate", resp, "Failure sending request")
 	}
 
@@ -113,14 +113,13 @@ func (client VirtualNetworkGatewayConnectionsClient) CreateOrUpdateSender(req *h
 
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
 // closes the http.Response Body.
-func (client VirtualNetworkGatewayConnectionsClient) CreateOrUpdateResponder(resp *http.Response) (result autorest.Response, err error) {
-	err = autorest.Respond(
+func (client VirtualNetworkGatewayConnectionsClient) CreateOrUpdateResponder(resp *http.Response) (result autorest.Response, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
-		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result = autorest.Response{Response: resp}
+	result.Response = resp
 	return
 }
 
@@ -139,7 +138,7 @@ func (client VirtualNetworkGatewayConnectionsClient) Delete(resourceGroupName st
 
 	resp, err := client.DeleteSender(req)
 	if err != nil {
-		result = autorest.Response{Response: resp}
+		result.Response = resp
 		return result, autorest.NewErrorWithError(err, "network/VirtualNetworkGatewayConnectionsClient", "Delete", resp, "Failure sending request")
 	}
 
@@ -188,14 +187,13 @@ func (client VirtualNetworkGatewayConnectionsClient) DeleteSender(req *http.Requ
 
 // DeleteResponder handles the response to the Delete request. The method always
 // closes the http.Response Body.
-func (client VirtualNetworkGatewayConnectionsClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
-	err = autorest.Respond(
+func (client VirtualNetworkGatewayConnectionsClient) DeleteResponder(resp *http.Response) (result autorest.Response, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
-		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result = autorest.Response{Response: resp}
+	result.Response = resp
 	return
 }
 
@@ -255,8 +253,8 @@ func (client VirtualNetworkGatewayConnectionsClient) GetSender(req *http.Request
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
-func (client VirtualNetworkGatewayConnectionsClient) GetResponder(resp *http.Response) (result VirtualNetworkGatewayConnection, err error) {
-	err = autorest.Respond(
+func (client VirtualNetworkGatewayConnectionsClient) GetResponder(resp *http.Response) (result VirtualNetworkGatewayConnection, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -322,8 +320,8 @@ func (client VirtualNetworkGatewayConnectionsClient) GetSharedKeySender(req *htt
 
 // GetSharedKeyResponder handles the response to the GetSharedKey request. The method always
 // closes the http.Response Body.
-func (client VirtualNetworkGatewayConnectionsClient) GetSharedKeyResponder(resp *http.Response) (result ConnectionSharedKeyResult, err error) {
-	err = autorest.Respond(
+func (client VirtualNetworkGatewayConnectionsClient) GetSharedKeyResponder(resp *http.Response) (result ConnectionSharedKeyResult, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -385,8 +383,8 @@ func (client VirtualNetworkGatewayConnectionsClient) ListSender(req *http.Reques
 
 // ListResponder handles the response to the List request. The method always
 // closes the http.Response Body.
-func (client VirtualNetworkGatewayConnectionsClient) ListResponder(resp *http.Response) (result VirtualNetworkGatewayConnectionListResult, err error) {
-	err = autorest.Respond(
+func (client VirtualNetworkGatewayConnectionsClient) ListResponder(resp *http.Response) (result VirtualNetworkGatewayConnectionListResult, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -438,7 +436,7 @@ func (client VirtualNetworkGatewayConnectionsClient) ResetSharedKey(resourceGrou
 
 	resp, err := client.ResetSharedKeySender(req)
 	if err != nil {
-		result = autorest.Response{Response: resp}
+		result.Response = resp
 		return result, autorest.NewErrorWithError(err, "network/VirtualNetworkGatewayConnectionsClient", "ResetSharedKey", resp, "Failure sending request")
 	}
 
@@ -488,14 +486,13 @@ func (client VirtualNetworkGatewayConnectionsClient) ResetSharedKeySender(req *h
 
 // ResetSharedKeyResponder handles the response to the ResetSharedKey request. The method always
 // closes the http.Response Body.
-func (client VirtualNetworkGatewayConnectionsClient) ResetSharedKeyResponder(resp *http.Response) (result autorest.Response, err error) {
-	err = autorest.Respond(
+func (client VirtualNetworkGatewayConnectionsClient) ResetSharedKeyResponder(resp *http.Response) (result autorest.Response, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
-		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result = autorest.Response{Response: resp}
+	result.Response = resp
 	return
 }
 
@@ -517,7 +514,7 @@ func (client VirtualNetworkGatewayConnectionsClient) SetSharedKey(resourceGroupN
 
 	resp, err := client.SetSharedKeySender(req)
 	if err != nil {
-		result = autorest.Response{Response: resp}
+		result.Response = resp
 		return result, autorest.NewErrorWithError(err, "network/VirtualNetworkGatewayConnectionsClient", "SetSharedKey", resp, "Failure sending request")
 	}
 
@@ -567,13 +564,12 @@ func (client VirtualNetworkGatewayConnectionsClient) SetSharedKeySender(req *htt
 
 // SetSharedKeyResponder handles the response to the SetSharedKey request. The method always
 // closes the http.Response Body.
-func (client VirtualNetworkGatewayConnectionsClient) SetSharedKeyResponder(resp *http.Response) (result autorest.Response, err error) {
-	err = autorest.Respond(
+func (client VirtualNetworkGatewayConnectionsClient) SetSharedKeyResponder(resp *http.Response) (result autorest.Response, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusCreated, http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result = autorest.Response{Response: resp}
+	result.Response = resp
 	return
 }

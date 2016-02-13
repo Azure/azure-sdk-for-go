@@ -59,7 +59,7 @@ func (client EndpointsClient) Create(endpointName string, endpointProperties End
 
 	resp, err := client.CreateSender(req)
 	if err != nil {
-		result = autorest.Response{Response: resp}
+		result.Response = resp
 		return result, autorest.NewErrorWithError(err, "cdn/EndpointsClient", "Create", resp, "Failure sending request")
 	}
 
@@ -110,14 +110,13 @@ func (client EndpointsClient) CreateSender(req *http.Request) (*http.Response, e
 
 // CreateResponder handles the response to the Create request. The method always
 // closes the http.Response Body.
-func (client EndpointsClient) CreateResponder(resp *http.Response) (result autorest.Response, err error) {
-	err = autorest.Respond(
+func (client EndpointsClient) CreateResponder(resp *http.Response) (result autorest.Response, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated, http.StatusAccepted),
-		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result = autorest.Response{Response: resp}
+	result.Response = resp
 	return
 }
 
@@ -134,7 +133,7 @@ func (client EndpointsClient) DeleteIfExists(endpointName string, profileName st
 
 	resp, err := client.DeleteIfExistsSender(req)
 	if err != nil {
-		result = autorest.Response{Response: resp}
+		result.Response = resp
 		return result, autorest.NewErrorWithError(err, "cdn/EndpointsClient", "DeleteIfExists", resp, "Failure sending request")
 	}
 
@@ -184,14 +183,13 @@ func (client EndpointsClient) DeleteIfExistsSender(req *http.Request) (*http.Res
 
 // DeleteIfExistsResponder handles the response to the DeleteIfExists request. The method always
 // closes the http.Response Body.
-func (client EndpointsClient) DeleteIfExistsResponder(resp *http.Response) (result autorest.Response, err error) {
-	err = autorest.Respond(
+func (client EndpointsClient) DeleteIfExistsResponder(resp *http.Response) (result autorest.Response, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
-		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result = autorest.Response{Response: resp}
+	result.Response = resp
 	return
 }
 
@@ -250,8 +248,8 @@ func (client EndpointsClient) GetSender(req *http.Request) (*http.Response, erro
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
-func (client EndpointsClient) GetResponder(resp *http.Response) (result Endpoint, err error) {
-	err = autorest.Respond(
+func (client EndpointsClient) GetResponder(resp *http.Response) (result Endpoint, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -315,8 +313,8 @@ func (client EndpointsClient) ListByProfileSender(req *http.Request) (*http.Resp
 
 // ListByProfileResponder handles the response to the ListByProfile request. The method always
 // closes the http.Response Body.
-func (client EndpointsClient) ListByProfileResponder(resp *http.Response) (result EndpointListResult, err error) {
-	err = autorest.Respond(
+func (client EndpointsClient) ListByProfileResponder(resp *http.Response) (result EndpointListResult, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -341,7 +339,7 @@ func (client EndpointsClient) LoadContent(endpointName string, contentFilePaths 
 
 	resp, err := client.LoadContentSender(req)
 	if err != nil {
-		result = autorest.Response{Response: resp}
+		result.Response = resp
 		return result, autorest.NewErrorWithError(err, "cdn/EndpointsClient", "LoadContent", resp, "Failure sending request")
 	}
 
@@ -392,14 +390,13 @@ func (client EndpointsClient) LoadContentSender(req *http.Request) (*http.Respon
 
 // LoadContentResponder handles the response to the LoadContent request. The method always
 // closes the http.Response Body.
-func (client EndpointsClient) LoadContentResponder(resp *http.Response) (result autorest.Response, err error) {
-	err = autorest.Respond(
+func (client EndpointsClient) LoadContentResponder(resp *http.Response) (result autorest.Response, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
-		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result = autorest.Response{Response: resp}
+	result.Response = resp
 	return
 }
 
@@ -418,7 +415,7 @@ func (client EndpointsClient) PurgeContent(endpointName string, contentFilePaths
 
 	resp, err := client.PurgeContentSender(req)
 	if err != nil {
-		result = autorest.Response{Response: resp}
+		result.Response = resp
 		return result, autorest.NewErrorWithError(err, "cdn/EndpointsClient", "PurgeContent", resp, "Failure sending request")
 	}
 
@@ -469,14 +466,13 @@ func (client EndpointsClient) PurgeContentSender(req *http.Request) (*http.Respo
 
 // PurgeContentResponder handles the response to the PurgeContent request. The method always
 // closes the http.Response Body.
-func (client EndpointsClient) PurgeContentResponder(resp *http.Response) (result autorest.Response, err error) {
-	err = autorest.Respond(
+func (client EndpointsClient) PurgeContentResponder(resp *http.Response) (result autorest.Response, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
-		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result = autorest.Response{Response: resp}
+	result.Response = resp
 	return
 }
 
@@ -493,7 +489,7 @@ func (client EndpointsClient) Start(endpointName string, profileName string, res
 
 	resp, err := client.StartSender(req)
 	if err != nil {
-		result = autorest.Response{Response: resp}
+		result.Response = resp
 		return result, autorest.NewErrorWithError(err, "cdn/EndpointsClient", "Start", resp, "Failure sending request")
 	}
 
@@ -543,14 +539,13 @@ func (client EndpointsClient) StartSender(req *http.Request) (*http.Response, er
 
 // StartResponder handles the response to the Start request. The method always
 // closes the http.Response Body.
-func (client EndpointsClient) StartResponder(resp *http.Response) (result autorest.Response, err error) {
-	err = autorest.Respond(
+func (client EndpointsClient) StartResponder(resp *http.Response) (result autorest.Response, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
-		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result = autorest.Response{Response: resp}
+	result.Response = resp
 	return
 }
 
@@ -567,7 +562,7 @@ func (client EndpointsClient) Stop(endpointName string, profileName string, reso
 
 	resp, err := client.StopSender(req)
 	if err != nil {
-		result = autorest.Response{Response: resp}
+		result.Response = resp
 		return result, autorest.NewErrorWithError(err, "cdn/EndpointsClient", "Stop", resp, "Failure sending request")
 	}
 
@@ -617,14 +612,13 @@ func (client EndpointsClient) StopSender(req *http.Request) (*http.Response, err
 
 // StopResponder handles the response to the Stop request. The method always
 // closes the http.Response Body.
-func (client EndpointsClient) StopResponder(resp *http.Response) (result autorest.Response, err error) {
-	err = autorest.Respond(
+func (client EndpointsClient) StopResponder(resp *http.Response) (result autorest.Response, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
-		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result = autorest.Response{Response: resp}
+	result.Response = resp
 	return
 }
 
@@ -685,8 +679,8 @@ func (client EndpointsClient) UpdateSender(req *http.Request) (*http.Response, e
 
 // UpdateResponder handles the response to the Update request. The method always
 // closes the http.Response Body.
-func (client EndpointsClient) UpdateResponder(resp *http.Response) (result Endpoint, err error) {
-	err = autorest.Respond(
+func (client EndpointsClient) UpdateResponder(resp *http.Response) (result Endpoint, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
@@ -753,8 +747,8 @@ func (client EndpointsClient) ValidateCustomDomainSender(req *http.Request) (*ht
 
 // ValidateCustomDomainResponder handles the response to the ValidateCustomDomain request. The method always
 // closes the http.Response Body.
-func (client EndpointsClient) ValidateCustomDomainResponder(resp *http.Response) (result ValidateCustomDomainOutput, err error) {
-	err = autorest.Respond(
+func (client EndpointsClient) ValidateCustomDomainResponder(resp *http.Response) (result ValidateCustomDomainOutput, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),

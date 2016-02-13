@@ -91,8 +91,8 @@ func (client NameAvailabilityClient) CheckNameAvailabilitySender(req *http.Reque
 
 // CheckNameAvailabilityResponder handles the response to the CheckNameAvailability request. The method always
 // closes the http.Response Body.
-func (client NameAvailabilityClient) CheckNameAvailabilityResponder(resp *http.Response) (result CheckNameAvailabilityOutput, err error) {
-	err = autorest.Respond(
+func (client NameAvailabilityClient) CheckNameAvailabilityResponder(resp *http.Response) (result CheckNameAvailabilityOutput, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),

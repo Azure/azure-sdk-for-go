@@ -97,8 +97,8 @@ func (client TopLevelDomainsClient) GetGetTopLevelDomainsSender(req *http.Reques
 
 // GetGetTopLevelDomainsResponder handles the response to the GetGetTopLevelDomains request. The method always
 // closes the http.Response Body.
-func (client TopLevelDomainsClient) GetGetTopLevelDomainsResponder(resp *http.Response) (result TopLevelDomainCollection, err error) {
-	err = autorest.Respond(
+func (client TopLevelDomainsClient) GetGetTopLevelDomainsResponder(resp *http.Response) (result TopLevelDomainCollection, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -159,8 +159,8 @@ func (client TopLevelDomainsClient) GetTopLevelDomainSender(req *http.Request) (
 
 // GetTopLevelDomainResponder handles the response to the GetTopLevelDomain request. The method always
 // closes the http.Response Body.
-func (client TopLevelDomainsClient) GetTopLevelDomainResponder(resp *http.Response) (result TopLevelDomain, err error) {
-	err = autorest.Respond(
+func (client TopLevelDomainsClient) GetTopLevelDomainResponder(resp *http.Response) (result TopLevelDomain, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -224,8 +224,8 @@ func (client TopLevelDomainsClient) ListTopLevelDomainAgreementsSender(req *http
 
 // ListTopLevelDomainAgreementsResponder handles the response to the ListTopLevelDomainAgreements request. The method always
 // closes the http.Response Body.
-func (client TopLevelDomainsClient) ListTopLevelDomainAgreementsResponder(resp *http.Response) (result TldLegalAgreementCollection, err error) {
-	err = autorest.Respond(
+func (client TopLevelDomainsClient) ListTopLevelDomainAgreementsResponder(resp *http.Response) (result TldLegalAgreementCollection, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),

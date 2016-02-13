@@ -60,7 +60,7 @@ func (client VirtualNetworksClient) CreateOrUpdate(resourceGroupName string, vir
 
 	resp, err := client.CreateOrUpdateSender(req)
 	if err != nil {
-		result = autorest.Response{Response: resp}
+		result.Response = resp
 		return result, autorest.NewErrorWithError(err, "network/VirtualNetworksClient", "CreateOrUpdate", resp, "Failure sending request")
 	}
 
@@ -110,14 +110,13 @@ func (client VirtualNetworksClient) CreateOrUpdateSender(req *http.Request) (*ht
 
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
 // closes the http.Response Body.
-func (client VirtualNetworksClient) CreateOrUpdateResponder(resp *http.Response) (result autorest.Response, err error) {
-	err = autorest.Respond(
+func (client VirtualNetworksClient) CreateOrUpdateResponder(resp *http.Response) (result autorest.Response, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
-		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result = autorest.Response{Response: resp}
+	result.Response = resp
 	return
 }
 
@@ -134,7 +133,7 @@ func (client VirtualNetworksClient) Delete(resourceGroupName string, virtualNetw
 
 	resp, err := client.DeleteSender(req)
 	if err != nil {
-		result = autorest.Response{Response: resp}
+		result.Response = resp
 		return result, autorest.NewErrorWithError(err, "network/VirtualNetworksClient", "Delete", resp, "Failure sending request")
 	}
 
@@ -183,14 +182,13 @@ func (client VirtualNetworksClient) DeleteSender(req *http.Request) (*http.Respo
 
 // DeleteResponder handles the response to the Delete request. The method always
 // closes the http.Response Body.
-func (client VirtualNetworksClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
-	err = autorest.Respond(
+func (client VirtualNetworksClient) DeleteResponder(resp *http.Response) (result autorest.Response, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusAccepted, http.StatusNoContent, http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result = autorest.Response{Response: resp}
+	result.Response = resp
 	return
 }
 
@@ -251,8 +249,8 @@ func (client VirtualNetworksClient) GetSender(req *http.Request) (*http.Response
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
-func (client VirtualNetworksClient) GetResponder(resp *http.Response) (result VirtualNetwork, err error) {
-	err = autorest.Respond(
+func (client VirtualNetworksClient) GetResponder(resp *http.Response) (result VirtualNetwork, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -314,8 +312,8 @@ func (client VirtualNetworksClient) ListSender(req *http.Request) (*http.Respons
 
 // ListResponder handles the response to the List request. The method always
 // closes the http.Response Body.
-func (client VirtualNetworksClient) ListResponder(resp *http.Response) (result VirtualNetworkListResult, err error) {
-	err = autorest.Respond(
+func (client VirtualNetworksClient) ListResponder(resp *http.Response) (result VirtualNetworkListResult, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -398,8 +396,8 @@ func (client VirtualNetworksClient) ListAllSender(req *http.Request) (*http.Resp
 
 // ListAllResponder handles the response to the ListAll request. The method always
 // closes the http.Response Body.
-func (client VirtualNetworksClient) ListAllResponder(resp *http.Response) (result VirtualNetworkListResult, err error) {
-	err = autorest.Respond(
+func (client VirtualNetworksClient) ListAllResponder(resp *http.Response) (result VirtualNetworkListResult, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),

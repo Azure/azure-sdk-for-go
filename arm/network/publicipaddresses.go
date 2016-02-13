@@ -60,7 +60,7 @@ func (client PublicIPAddressesClient) CreateOrUpdate(resourceGroupName string, p
 
 	resp, err := client.CreateOrUpdateSender(req)
 	if err != nil {
-		result = autorest.Response{Response: resp}
+		result.Response = resp
 		return result, autorest.NewErrorWithError(err, "network/PublicIPAddressesClient", "CreateOrUpdate", resp, "Failure sending request")
 	}
 
@@ -110,14 +110,13 @@ func (client PublicIPAddressesClient) CreateOrUpdateSender(req *http.Request) (*
 
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
 // closes the http.Response Body.
-func (client PublicIPAddressesClient) CreateOrUpdateResponder(resp *http.Response) (result autorest.Response, err error) {
-	err = autorest.Respond(
+func (client PublicIPAddressesClient) CreateOrUpdateResponder(resp *http.Response) (result autorest.Response, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusCreated, http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result = autorest.Response{Response: resp}
+	result.Response = resp
 	return
 }
 
@@ -134,7 +133,7 @@ func (client PublicIPAddressesClient) Delete(resourceGroupName string, publicIPA
 
 	resp, err := client.DeleteSender(req)
 	if err != nil {
-		result = autorest.Response{Response: resp}
+		result.Response = resp
 		return result, autorest.NewErrorWithError(err, "network/PublicIPAddressesClient", "Delete", resp, "Failure sending request")
 	}
 
@@ -183,14 +182,13 @@ func (client PublicIPAddressesClient) DeleteSender(req *http.Request) (*http.Res
 
 // DeleteResponder handles the response to the Delete request. The method always
 // closes the http.Response Body.
-func (client PublicIPAddressesClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
-	err = autorest.Respond(
+func (client PublicIPAddressesClient) DeleteResponder(resp *http.Response) (result autorest.Response, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusNoContent, http.StatusAccepted, http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result = autorest.Response{Response: resp}
+	result.Response = resp
 	return
 }
 
@@ -251,8 +249,8 @@ func (client PublicIPAddressesClient) GetSender(req *http.Request) (*http.Respon
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
-func (client PublicIPAddressesClient) GetResponder(resp *http.Response) (result PublicIPAddress, err error) {
-	err = autorest.Respond(
+func (client PublicIPAddressesClient) GetResponder(resp *http.Response) (result PublicIPAddress, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -314,8 +312,8 @@ func (client PublicIPAddressesClient) ListSender(req *http.Request) (*http.Respo
 
 // ListResponder handles the response to the List request. The method always
 // closes the http.Response Body.
-func (client PublicIPAddressesClient) ListResponder(resp *http.Response) (result PublicIPAddressListResult, err error) {
-	err = autorest.Respond(
+func (client PublicIPAddressesClient) ListResponder(resp *http.Response) (result PublicIPAddressListResult, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -398,8 +396,8 @@ func (client PublicIPAddressesClient) ListAllSender(req *http.Request) (*http.Re
 
 // ListAllResponder handles the response to the ListAll request. The method always
 // closes the http.Response Body.
-func (client PublicIPAddressesClient) ListAllResponder(resp *http.Response) (result PublicIPAddressListResult, err error) {
-	err = autorest.Respond(
+func (client PublicIPAddressesClient) ListAllResponder(resp *http.Response) (result PublicIPAddressListResult, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),

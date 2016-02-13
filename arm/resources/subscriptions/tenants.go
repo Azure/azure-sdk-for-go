@@ -83,8 +83,8 @@ func (client TenantsClient) ListSender(req *http.Request) (*http.Response, error
 
 // ListResponder handles the response to the List request. The method always
 // closes the http.Response Body.
-func (client TenantsClient) ListResponder(resp *http.Response) (result TenantListResult, err error) {
-	err = autorest.Respond(
+func (client TenantsClient) ListResponder(resp *http.Response) (result TenantListResult, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),

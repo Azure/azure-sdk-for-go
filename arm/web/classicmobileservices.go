@@ -101,8 +101,8 @@ func (client ClassicMobileServicesClient) DeleteClassicMobileServiceSender(req *
 
 // DeleteClassicMobileServiceResponder handles the response to the DeleteClassicMobileService request. The method always
 // closes the http.Response Body.
-func (client ClassicMobileServicesClient) DeleteClassicMobileServiceResponder(resp *http.Response) (result ObjectSet, err error) {
-	err = autorest.Respond(
+func (client ClassicMobileServicesClient) DeleteClassicMobileServiceResponder(resp *http.Response) (result ObjectSet, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -164,8 +164,8 @@ func (client ClassicMobileServicesClient) GetClassicMobileServiceSender(req *htt
 
 // GetClassicMobileServiceResponder handles the response to the GetClassicMobileService request. The method always
 // closes the http.Response Body.
-func (client ClassicMobileServicesClient) GetClassicMobileServiceResponder(resp *http.Response) (result ClassicMobileService, err error) {
-	err = autorest.Respond(
+func (client ClassicMobileServicesClient) GetClassicMobileServiceResponder(resp *http.Response) (result ClassicMobileService, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -226,8 +226,8 @@ func (client ClassicMobileServicesClient) GetClassicMobileServicesSender(req *ht
 
 // GetClassicMobileServicesResponder handles the response to the GetClassicMobileServices request. The method always
 // closes the http.Response Body.
-func (client ClassicMobileServicesClient) GetClassicMobileServicesResponder(resp *http.Response) (result ClassicMobileServiceCollection, err error) {
-	err = autorest.Respond(
+func (client ClassicMobileServicesClient) GetClassicMobileServicesResponder(resp *http.Response) (result ClassicMobileServiceCollection, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),

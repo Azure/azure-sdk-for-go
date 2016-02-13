@@ -96,11 +96,12 @@ func (client WorkflowRunsClient) CancelSender(req *http.Request) (*http.Response
 
 // CancelResponder handles the response to the Cancel request. The method always
 // closes the http.Response Body.
-func (client WorkflowRunsClient) CancelResponder(resp *http.Response) (result autorest.Response, err error) {
-	err = autorest.Respond(
+func (client WorkflowRunsClient) CancelResponder(resp *http.Response) (result autorest.Response, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK))
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByClosing())
 	result.Response = resp
 	return
 }
@@ -159,8 +160,8 @@ func (client WorkflowRunsClient) GetSender(req *http.Request) (*http.Response, e
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
-func (client WorkflowRunsClient) GetResponder(resp *http.Response) (result WorkflowRun, err error) {
-	err = autorest.Respond(
+func (client WorkflowRunsClient) GetResponder(resp *http.Response) (result WorkflowRun, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -230,8 +231,8 @@ func (client WorkflowRunsClient) ListSender(req *http.Request) (*http.Response, 
 
 // ListResponder handles the response to the List request. The method always
 // closes the http.Response Body.
-func (client WorkflowRunsClient) ListResponder(resp *http.Response) (result WorkflowRunListResult, err error) {
-	err = autorest.Respond(
+func (client WorkflowRunsClient) ListResponder(resp *http.Response) (result WorkflowRunListResult, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),

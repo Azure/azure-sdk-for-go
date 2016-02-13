@@ -99,8 +99,8 @@ func (client PermissionsClient) ListForResourceSender(req *http.Request) (*http.
 
 // ListForResourceResponder handles the response to the ListForResource request. The method always
 // closes the http.Response Body.
-func (client PermissionsClient) ListForResourceResponder(resp *http.Response) (result PermissionGetResult, err error) {
-	err = autorest.Respond(
+func (client PermissionsClient) ListForResourceResponder(resp *http.Response) (result PermissionGetResult, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -186,8 +186,8 @@ func (client PermissionsClient) ListForResourceGroupSender(req *http.Request) (*
 
 // ListForResourceGroupResponder handles the response to the ListForResourceGroup request. The method always
 // closes the http.Response Body.
-func (client PermissionsClient) ListForResourceGroupResponder(resp *http.Response) (result PermissionGetResult, err error) {
-	err = autorest.Respond(
+func (client PermissionsClient) ListForResourceGroupResponder(resp *http.Response) (result PermissionGetResult, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),

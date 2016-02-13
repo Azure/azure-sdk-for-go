@@ -60,7 +60,7 @@ func (client ExpressRouteCircuitsClient) CreateOrUpdate(resourceGroupName string
 
 	resp, err := client.CreateOrUpdateSender(req)
 	if err != nil {
-		result = autorest.Response{Response: resp}
+		result.Response = resp
 		return result, autorest.NewErrorWithError(err, "network/ExpressRouteCircuitsClient", "CreateOrUpdate", resp, "Failure sending request")
 	}
 
@@ -110,14 +110,13 @@ func (client ExpressRouteCircuitsClient) CreateOrUpdateSender(req *http.Request)
 
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
 // closes the http.Response Body.
-func (client ExpressRouteCircuitsClient) CreateOrUpdateResponder(resp *http.Response) (result autorest.Response, err error) {
-	err = autorest.Respond(
+func (client ExpressRouteCircuitsClient) CreateOrUpdateResponder(resp *http.Response) (result autorest.Response, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusCreated, http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result = autorest.Response{Response: resp}
+	result.Response = resp
 	return
 }
 
@@ -134,7 +133,7 @@ func (client ExpressRouteCircuitsClient) Delete(resourceGroupName string, circui
 
 	resp, err := client.DeleteSender(req)
 	if err != nil {
-		result = autorest.Response{Response: resp}
+		result.Response = resp
 		return result, autorest.NewErrorWithError(err, "network/ExpressRouteCircuitsClient", "Delete", resp, "Failure sending request")
 	}
 
@@ -183,14 +182,13 @@ func (client ExpressRouteCircuitsClient) DeleteSender(req *http.Request) (*http.
 
 // DeleteResponder handles the response to the Delete request. The method always
 // closes the http.Response Body.
-func (client ExpressRouteCircuitsClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
-	err = autorest.Respond(
+func (client ExpressRouteCircuitsClient) DeleteResponder(resp *http.Response) (result autorest.Response, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusNoContent, http.StatusAccepted, http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result = autorest.Response{Response: resp}
+	result.Response = resp
 	return
 }
 
@@ -248,8 +246,8 @@ func (client ExpressRouteCircuitsClient) GetSender(req *http.Request) (*http.Res
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
-func (client ExpressRouteCircuitsClient) GetResponder(resp *http.Response) (result ExpressRouteCircuit, err error) {
-	err = autorest.Respond(
+func (client ExpressRouteCircuitsClient) GetResponder(resp *http.Response) (result ExpressRouteCircuit, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -311,8 +309,8 @@ func (client ExpressRouteCircuitsClient) ListSender(req *http.Request) (*http.Re
 
 // ListResponder handles the response to the List request. The method always
 // closes the http.Response Body.
-func (client ExpressRouteCircuitsClient) ListResponder(resp *http.Response) (result ExpressRouteCircuitListResult, err error) {
-	err = autorest.Respond(
+func (client ExpressRouteCircuitsClient) ListResponder(resp *http.Response) (result ExpressRouteCircuitListResult, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -395,8 +393,8 @@ func (client ExpressRouteCircuitsClient) ListAllSender(req *http.Request) (*http
 
 // ListAllResponder handles the response to the ListAll request. The method always
 // closes the http.Response Body.
-func (client ExpressRouteCircuitsClient) ListAllResponder(resp *http.Response) (result ExpressRouteCircuitListResult, err error) {
-	err = autorest.Respond(
+func (client ExpressRouteCircuitsClient) ListAllResponder(resp *http.Response) (result ExpressRouteCircuitListResult, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -485,8 +483,8 @@ func (client ExpressRouteCircuitsClient) ListArpTableSender(req *http.Request) (
 
 // ListArpTableResponder handles the response to the ListArpTable request. The method always
 // closes the http.Response Body.
-func (client ExpressRouteCircuitsClient) ListArpTableResponder(resp *http.Response) (result ExpressRouteCircuitsArpTableListResult, err error) {
-	err = autorest.Respond(
+func (client ExpressRouteCircuitsClient) ListArpTableResponder(resp *http.Response) (result ExpressRouteCircuitsArpTableListResult, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -575,8 +573,8 @@ func (client ExpressRouteCircuitsClient) ListRoutesTableSender(req *http.Request
 
 // ListRoutesTableResponder handles the response to the ListRoutesTable request. The method always
 // closes the http.Response Body.
-func (client ExpressRouteCircuitsClient) ListRoutesTableResponder(resp *http.Response) (result ExpressRouteCircuitsRoutesTableListResult, err error) {
-	err = autorest.Respond(
+func (client ExpressRouteCircuitsClient) ListRoutesTableResponder(resp *http.Response) (result ExpressRouteCircuitsRoutesTableListResult, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -664,8 +662,8 @@ func (client ExpressRouteCircuitsClient) ListStatsSender(req *http.Request) (*ht
 
 // ListStatsResponder handles the response to the ListStats request. The method always
 // closes the http.Response Body.
-func (client ExpressRouteCircuitsClient) ListStatsResponder(resp *http.Response) (result ExpressRouteCircuitsStatsListResult, err error) {
-	err = autorest.Respond(
+func (client ExpressRouteCircuitsClient) ListStatsResponder(resp *http.Response) (result ExpressRouteCircuitsStatsListResult, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),

@@ -91,8 +91,8 @@ func (client ProviderClient) GetPublishingUserSender(req *http.Request) (*http.R
 
 // GetPublishingUserResponder handles the response to the GetPublishingUser request. The method always
 // closes the http.Response Body.
-func (client ProviderClient) GetPublishingUserResponder(resp *http.Response) (result User, err error) {
-	err = autorest.Respond(
+func (client ProviderClient) GetPublishingUserResponder(resp *http.Response) (result User, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -152,8 +152,8 @@ func (client ProviderClient) GetSourceControlSender(req *http.Request) (*http.Re
 
 // GetSourceControlResponder handles the response to the GetSourceControl request. The method always
 // closes the http.Response Body.
-func (client ProviderClient) GetSourceControlResponder(resp *http.Response) (result SourceControl, err error) {
-	err = autorest.Respond(
+func (client ProviderClient) GetSourceControlResponder(resp *http.Response) (result SourceControl, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -206,8 +206,8 @@ func (client ProviderClient) GetSourceControlsSender(req *http.Request) (*http.R
 
 // GetSourceControlsResponder handles the response to the GetSourceControls request. The method always
 // closes the http.Response Body.
-func (client ProviderClient) GetSourceControlsResponder(resp *http.Response) (result SourceControlCollection, err error) {
-	err = autorest.Respond(
+func (client ProviderClient) GetSourceControlsResponder(resp *http.Response) (result SourceControlCollection, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -263,8 +263,8 @@ func (client ProviderClient) UpdatePublishingUserSender(req *http.Request) (*htt
 
 // UpdatePublishingUserResponder handles the response to the UpdatePublishingUser request. The method always
 // closes the http.Response Body.
-func (client ProviderClient) UpdatePublishingUserResponder(resp *http.Response) (result User, err error) {
-	err = autorest.Respond(
+func (client ProviderClient) UpdatePublishingUserResponder(resp *http.Response) (result User, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -326,8 +326,8 @@ func (client ProviderClient) UpdateSourceControlSender(req *http.Request) (*http
 
 // UpdateSourceControlResponder handles the response to the UpdateSourceControl request. The method always
 // closes the http.Response Body.
-func (client ProviderClient) UpdateSourceControlResponder(resp *http.Response) (result SourceControl, err error) {
-	err = autorest.Respond(
+func (client ProviderClient) UpdateSourceControlResponder(resp *http.Response) (result SourceControl, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),

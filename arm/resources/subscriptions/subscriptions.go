@@ -91,8 +91,8 @@ func (client Client) GetSender(req *http.Request) (*http.Response, error) {
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
-func (client Client) GetResponder(resp *http.Response) (result Subscription, err error) {
-	err = autorest.Respond(
+func (client Client) GetResponder(resp *http.Response) (result Subscription, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -145,8 +145,8 @@ func (client Client) ListSender(req *http.Request) (*http.Response, error) {
 
 // ListResponder handles the response to the List request. The method always
 // closes the http.Response Body.
-func (client Client) ListResponder(resp *http.Response) (result SubscriptionListResult, err error) {
-	err = autorest.Respond(
+func (client Client) ListResponder(resp *http.Response) (result SubscriptionListResult, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -230,8 +230,8 @@ func (client Client) ListLocationsSender(req *http.Request) (*http.Response, err
 
 // ListLocationsResponder handles the response to the ListLocations request. The method always
 // closes the http.Response Body.
-func (client Client) ListLocationsResponder(resp *http.Response) (result LocationListResult, err error) {
-	err = autorest.Respond(
+func (client Client) ListLocationsResponder(resp *http.Response) (result LocationListResult, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),

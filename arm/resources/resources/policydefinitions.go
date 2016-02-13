@@ -96,8 +96,8 @@ func (client PolicyDefinitionsClient) CreateOrUpdateSender(req *http.Request) (*
 
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
 // closes the http.Response Body.
-func (client PolicyDefinitionsClient) CreateOrUpdateResponder(resp *http.Response) (result PolicyDefinition, err error) {
-	err = autorest.Respond(
+func (client PolicyDefinitionsClient) CreateOrUpdateResponder(resp *http.Response) (result PolicyDefinition, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
@@ -158,11 +158,12 @@ func (client PolicyDefinitionsClient) DeleteSender(req *http.Request) (*http.Res
 
 // DeleteResponder handles the response to the Delete request. The method always
 // closes the http.Response Body.
-func (client PolicyDefinitionsClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
-	err = autorest.Respond(
+func (client PolicyDefinitionsClient) DeleteResponder(resp *http.Response) (result autorest.Response, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK))
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByClosing())
 	result.Response = resp
 	return
 }
@@ -218,8 +219,8 @@ func (client PolicyDefinitionsClient) GetSender(req *http.Request) (*http.Respon
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
-func (client PolicyDefinitionsClient) GetResponder(resp *http.Response) (result PolicyDefinition, err error) {
-	err = autorest.Respond(
+func (client PolicyDefinitionsClient) GetResponder(resp *http.Response) (result PolicyDefinition, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),

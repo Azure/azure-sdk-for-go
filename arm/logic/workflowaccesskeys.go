@@ -99,8 +99,8 @@ func (client WorkflowAccessKeysClient) CreateOrUpdateSender(req *http.Request) (
 
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
 // closes the http.Response Body.
-func (client WorkflowAccessKeysClient) CreateOrUpdateResponder(resp *http.Response) (result WorkflowAccessKey, err error) {
-	err = autorest.Respond(
+func (client WorkflowAccessKeysClient) CreateOrUpdateResponder(resp *http.Response) (result WorkflowAccessKey, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
@@ -164,11 +164,12 @@ func (client WorkflowAccessKeysClient) DeleteSender(req *http.Request) (*http.Re
 
 // DeleteResponder handles the response to the Delete request. The method always
 // closes the http.Response Body.
-func (client WorkflowAccessKeysClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
-	err = autorest.Respond(
+func (client WorkflowAccessKeysClient) DeleteResponder(resp *http.Response) (result autorest.Response, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent))
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
+		autorest.ByClosing())
 	result.Response = resp
 	return
 }
@@ -227,8 +228,8 @@ func (client WorkflowAccessKeysClient) GetSender(req *http.Request) (*http.Respo
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
-func (client WorkflowAccessKeysClient) GetResponder(resp *http.Response) (result WorkflowAccessKey, err error) {
-	err = autorest.Respond(
+func (client WorkflowAccessKeysClient) GetResponder(resp *http.Response) (result WorkflowAccessKey, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -294,8 +295,8 @@ func (client WorkflowAccessKeysClient) ListSender(req *http.Request) (*http.Resp
 
 // ListResponder handles the response to the List request. The method always
 // closes the http.Response Body.
-func (client WorkflowAccessKeysClient) ListResponder(resp *http.Response) (result WorkflowAccessKeyListResult, err error) {
-	err = autorest.Respond(
+func (client WorkflowAccessKeysClient) ListResponder(resp *http.Response) (result WorkflowAccessKeyListResult, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -383,8 +384,8 @@ func (client WorkflowAccessKeysClient) ListSecretKeysSender(req *http.Request) (
 
 // ListSecretKeysResponder handles the response to the ListSecretKeys request. The method always
 // closes the http.Response Body.
-func (client WorkflowAccessKeysClient) ListSecretKeysResponder(resp *http.Response) (result WorkflowSecretKeys, err error) {
-	err = autorest.Respond(
+func (client WorkflowAccessKeysClient) ListSecretKeysResponder(resp *http.Response) (result WorkflowSecretKeys, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -450,8 +451,8 @@ func (client WorkflowAccessKeysClient) RegenerateSecretKeySender(req *http.Reque
 
 // RegenerateSecretKeyResponder handles the response to the RegenerateSecretKey request. The method always
 // closes the http.Response Body.
-func (client WorkflowAccessKeysClient) RegenerateSecretKeyResponder(resp *http.Response) (result WorkflowSecretKeys, err error) {
-	err = autorest.Respond(
+func (client WorkflowAccessKeysClient) RegenerateSecretKeyResponder(resp *http.Response) (result WorkflowSecretKeys, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),

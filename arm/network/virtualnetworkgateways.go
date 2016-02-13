@@ -62,7 +62,7 @@ func (client VirtualNetworkGatewaysClient) CreateOrUpdate(resourceGroupName stri
 
 	resp, err := client.CreateOrUpdateSender(req)
 	if err != nil {
-		result = autorest.Response{Response: resp}
+		result.Response = resp
 		return result, autorest.NewErrorWithError(err, "network/VirtualNetworkGatewaysClient", "CreateOrUpdate", resp, "Failure sending request")
 	}
 
@@ -112,14 +112,13 @@ func (client VirtualNetworkGatewaysClient) CreateOrUpdateSender(req *http.Reques
 
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
 // closes the http.Response Body.
-func (client VirtualNetworkGatewaysClient) CreateOrUpdateResponder(resp *http.Response) (result autorest.Response, err error) {
-	err = autorest.Respond(
+func (client VirtualNetworkGatewaysClient) CreateOrUpdateResponder(resp *http.Response) (result autorest.Response, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
-		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result = autorest.Response{Response: resp}
+	result.Response = resp
 	return
 }
 
@@ -136,7 +135,7 @@ func (client VirtualNetworkGatewaysClient) Delete(resourceGroupName string, virt
 
 	resp, err := client.DeleteSender(req)
 	if err != nil {
-		result = autorest.Response{Response: resp}
+		result.Response = resp
 		return result, autorest.NewErrorWithError(err, "network/VirtualNetworkGatewaysClient", "Delete", resp, "Failure sending request")
 	}
 
@@ -185,14 +184,13 @@ func (client VirtualNetworkGatewaysClient) DeleteSender(req *http.Request) (*htt
 
 // DeleteResponder handles the response to the Delete request. The method always
 // closes the http.Response Body.
-func (client VirtualNetworkGatewaysClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
-	err = autorest.Respond(
+func (client VirtualNetworkGatewaysClient) DeleteResponder(resp *http.Response) (result autorest.Response, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusNoContent, http.StatusAccepted, http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result = autorest.Response{Response: resp}
+	result.Response = resp
 	return
 }
 
@@ -254,8 +252,8 @@ func (client VirtualNetworkGatewaysClient) GeneratevpnclientpackageSender(req *h
 
 // GeneratevpnclientpackageResponder handles the response to the Generatevpnclientpackage request. The method always
 // closes the http.Response Body.
-func (client VirtualNetworkGatewaysClient) GeneratevpnclientpackageResponder(resp *http.Response) (result String, err error) {
-	err = autorest.Respond(
+func (client VirtualNetworkGatewaysClient) GeneratevpnclientpackageResponder(resp *http.Response) (result String, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
@@ -319,8 +317,8 @@ func (client VirtualNetworkGatewaysClient) GetSender(req *http.Request) (*http.R
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
-func (client VirtualNetworkGatewaysClient) GetResponder(resp *http.Response) (result VirtualNetworkGateway, err error) {
-	err = autorest.Respond(
+func (client VirtualNetworkGatewaysClient) GetResponder(resp *http.Response) (result VirtualNetworkGateway, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -382,8 +380,8 @@ func (client VirtualNetworkGatewaysClient) ListSender(req *http.Request) (*http.
 
 // ListResponder handles the response to the List request. The method always
 // closes the http.Response Body.
-func (client VirtualNetworkGatewaysClient) ListResponder(resp *http.Response) (result VirtualNetworkGatewayListResult, err error) {
-	err = autorest.Respond(
+func (client VirtualNetworkGatewaysClient) ListResponder(resp *http.Response) (result VirtualNetworkGatewayListResult, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -433,7 +431,7 @@ func (client VirtualNetworkGatewaysClient) Reset(resourceGroupName string, virtu
 
 	resp, err := client.ResetSender(req)
 	if err != nil {
-		result = autorest.Response{Response: resp}
+		result.Response = resp
 		return result, autorest.NewErrorWithError(err, "network/VirtualNetworkGatewaysClient", "Reset", resp, "Failure sending request")
 	}
 
@@ -483,13 +481,12 @@ func (client VirtualNetworkGatewaysClient) ResetSender(req *http.Request) (*http
 
 // ResetResponder handles the response to the Reset request. The method always
 // closes the http.Response Body.
-func (client VirtualNetworkGatewaysClient) ResetResponder(resp *http.Response) (result autorest.Response, err error) {
-	err = autorest.Respond(
+func (client VirtualNetworkGatewaysClient) ResetResponder(resp *http.Response) (result autorest.Response, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusAccepted, http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result = autorest.Response{Response: resp}
+	result.Response = resp
 	return
 }

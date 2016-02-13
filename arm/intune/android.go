@@ -96,11 +96,12 @@ func (client AndroidClient) AddAppForMAMPolicySender(req *http.Request) (*http.R
 
 // AddAppForMAMPolicyResponder handles the response to the AddAppForMAMPolicy request. The method always
 // closes the http.Response Body.
-func (client AndroidClient) AddAppForMAMPolicyResponder(resp *http.Response) (result autorest.Response, err error) {
-	err = autorest.Respond(
+func (client AndroidClient) AddAppForMAMPolicyResponder(resp *http.Response) (result autorest.Response, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent))
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
+		autorest.ByClosing())
 	result.Response = resp
 	return
 }
@@ -160,11 +161,12 @@ func (client AndroidClient) AddGroupForMAMPolicySender(req *http.Request) (*http
 
 // AddGroupForMAMPolicyResponder handles the response to the AddGroupForMAMPolicy request. The method always
 // closes the http.Response Body.
-func (client AndroidClient) AddGroupForMAMPolicyResponder(resp *http.Response) (result autorest.Response, err error) {
-	err = autorest.Respond(
+func (client AndroidClient) AddGroupForMAMPolicyResponder(resp *http.Response) (result autorest.Response, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent))
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
+		autorest.ByClosing())
 	result.Response = resp
 	return
 }
@@ -223,8 +225,8 @@ func (client AndroidClient) CreateOrUpdateMAMPolicySender(req *http.Request) (*h
 
 // CreateOrUpdateMAMPolicyResponder handles the response to the CreateOrUpdateMAMPolicy request. The method always
 // closes the http.Response Body.
-func (client AndroidClient) CreateOrUpdateMAMPolicyResponder(resp *http.Response) (result AndroidMAMPolicy, err error) {
-	err = autorest.Respond(
+func (client AndroidClient) CreateOrUpdateMAMPolicyResponder(resp *http.Response) (result AndroidMAMPolicy, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -287,11 +289,12 @@ func (client AndroidClient) DeleteAppForMAMPolicySender(req *http.Request) (*htt
 
 // DeleteAppForMAMPolicyResponder handles the response to the DeleteAppForMAMPolicy request. The method always
 // closes the http.Response Body.
-func (client AndroidClient) DeleteAppForMAMPolicyResponder(resp *http.Response) (result autorest.Response, err error) {
-	err = autorest.Respond(
+func (client AndroidClient) DeleteAppForMAMPolicyResponder(resp *http.Response) (result autorest.Response, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent))
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
+		autorest.ByClosing())
 	result.Response = resp
 	return
 }
@@ -349,11 +352,12 @@ func (client AndroidClient) DeleteGroupForMAMPolicySender(req *http.Request) (*h
 
 // DeleteGroupForMAMPolicyResponder handles the response to the DeleteGroupForMAMPolicy request. The method always
 // closes the http.Response Body.
-func (client AndroidClient) DeleteGroupForMAMPolicyResponder(resp *http.Response) (result autorest.Response, err error) {
-	err = autorest.Respond(
+func (client AndroidClient) DeleteGroupForMAMPolicyResponder(resp *http.Response) (result autorest.Response, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent))
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
+		autorest.ByClosing())
 	result.Response = resp
 	return
 }
@@ -410,11 +414,12 @@ func (client AndroidClient) DeleteMAMPolicySender(req *http.Request) (*http.Resp
 
 // DeleteMAMPolicyResponder handles the response to the DeleteMAMPolicy request. The method always
 // closes the http.Response Body.
-func (client AndroidClient) DeleteMAMPolicyResponder(resp *http.Response) (result autorest.Response, err error) {
-	err = autorest.Respond(
+func (client AndroidClient) DeleteMAMPolicyResponder(resp *http.Response) (result autorest.Response, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent))
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
+		autorest.ByClosing())
 	result.Response = resp
 	return
 }
@@ -481,8 +486,8 @@ func (client AndroidClient) GetAppForMAMPolicySender(req *http.Request) (*http.R
 
 // GetAppForMAMPolicyResponder handles the response to the GetAppForMAMPolicy request. The method always
 // closes the http.Response Body.
-func (client AndroidClient) GetAppForMAMPolicyResponder(resp *http.Response) (result ApplicationCollection, err error) {
-	err = autorest.Respond(
+func (client AndroidClient) GetAppForMAMPolicyResponder(resp *http.Response) (result ApplicationCollection, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -568,8 +573,8 @@ func (client AndroidClient) GetGroupsForMAMPolicySender(req *http.Request) (*htt
 
 // GetGroupsForMAMPolicyResponder handles the response to the GetGroupsForMAMPolicy request. The method always
 // closes the http.Response Body.
-func (client AndroidClient) GetGroupsForMAMPolicyResponder(resp *http.Response) (result GroupsCollection, err error) {
-	err = autorest.Respond(
+func (client AndroidClient) GetGroupsForMAMPolicyResponder(resp *http.Response) (result GroupsCollection, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -663,8 +668,8 @@ func (client AndroidClient) GetMAMPoliciesSender(req *http.Request) (*http.Respo
 
 // GetMAMPoliciesResponder handles the response to the GetMAMPolicies request. The method always
 // closes the http.Response Body.
-func (client AndroidClient) GetMAMPoliciesResponder(resp *http.Response) (result AndroidMAMPolicyCollection, err error) {
-	err = autorest.Respond(
+func (client AndroidClient) GetMAMPoliciesResponder(resp *http.Response) (result AndroidMAMPolicyCollection, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -753,8 +758,8 @@ func (client AndroidClient) GetMAMPolicyByNameSender(req *http.Request) (*http.R
 
 // GetMAMPolicyByNameResponder handles the response to the GetMAMPolicyByName request. The method always
 // closes the http.Response Body.
-func (client AndroidClient) GetMAMPolicyByNameResponder(resp *http.Response) (result AndroidMAMPolicy, err error) {
-	err = autorest.Respond(
+func (client AndroidClient) GetMAMPolicyByNameResponder(resp *http.Response) (result AndroidMAMPolicy, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -818,8 +823,8 @@ func (client AndroidClient) PatchMAMPolicySender(req *http.Request) (*http.Respo
 
 // PatchMAMPolicyResponder handles the response to the PatchMAMPolicy request. The method always
 // closes the http.Response Body.
-func (client AndroidClient) PatchMAMPolicyResponder(resp *http.Response) (result AndroidMAMPolicy, err error) {
-	err = autorest.Respond(
+func (client AndroidClient) PatchMAMPolicyResponder(resp *http.Response) (result AndroidMAMPolicy, ae error) {
+	ae = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),

@@ -48,7 +48,7 @@ func NewWorkflowTriggerHistoriesClientWithBaseURI(baseURI string, subscriptionID
 // resourceGroupName is the resource group name. workflowName is the workflow
 // name. triggerName is the workflow trigger name. historyName is the
 // workflow trigger history name.
-func (client WorkflowTriggerHistoriesClient) Get(resourceGroupName string, workflowName string, triggerName string, historyName string) (result WorkflowTriggerHistory, ae error) {
+func (client WorkflowTriggerHistoriesClient) Get(resourceGroupName string, workflowName string, triggerName string, historyName string) (result WorkflowTriggerHistory, err error) {
 	req, err := client.GetPreparer(resourceGroupName, workflowName, triggerName, historyName)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "logic/WorkflowTriggerHistoriesClient", "Get", nil, "Failure preparing request")
@@ -62,7 +62,7 @@ func (client WorkflowTriggerHistoriesClient) Get(resourceGroupName string, workf
 
 	result, err = client.GetResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "logic/WorkflowTriggerHistoriesClient", "Get", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "logic/WorkflowTriggerHistoriesClient", "Get", resp, "Failure responding to request")
 	}
 
 	return
@@ -94,13 +94,13 @@ func (client WorkflowTriggerHistoriesClient) GetPreparer(resourceGroupName strin
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client WorkflowTriggerHistoriesClient) GetSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
-func (client WorkflowTriggerHistoriesClient) GetResponder(resp *http.Response) (result WorkflowTriggerHistory, ae error) {
-	ae = autorest.Respond(
+func (client WorkflowTriggerHistoriesClient) GetResponder(resp *http.Response) (result WorkflowTriggerHistory, err error) {
+	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -115,7 +115,7 @@ func (client WorkflowTriggerHistoriesClient) GetResponder(resp *http.Response) (
 // resourceGroupName is the resource group name. workflowName is the workflow
 // name. triggerName is the workflow trigger name. top is the number of items
 // to be included in the result.
-func (client WorkflowTriggerHistoriesClient) List(resourceGroupName string, workflowName string, triggerName string, top *int) (result WorkflowTriggerHistoryListResult, ae error) {
+func (client WorkflowTriggerHistoriesClient) List(resourceGroupName string, workflowName string, triggerName string, top *int32) (result WorkflowTriggerHistoryListResult, err error) {
 	req, err := client.ListPreparer(resourceGroupName, workflowName, triggerName, top)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "logic/WorkflowTriggerHistoriesClient", "List", nil, "Failure preparing request")
@@ -129,14 +129,14 @@ func (client WorkflowTriggerHistoriesClient) List(resourceGroupName string, work
 
 	result, err = client.ListResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "logic/WorkflowTriggerHistoriesClient", "List", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "logic/WorkflowTriggerHistoriesClient", "List", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // ListPreparer prepares the List request.
-func (client WorkflowTriggerHistoriesClient) ListPreparer(resourceGroupName string, workflowName string, triggerName string, top *int) (*http.Request, error) {
+func (client WorkflowTriggerHistoriesClient) ListPreparer(resourceGroupName string, workflowName string, triggerName string, top *int32) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName": url.QueryEscape(resourceGroupName),
 		"subscriptionId":    url.QueryEscape(client.SubscriptionID),
@@ -163,13 +163,13 @@ func (client WorkflowTriggerHistoriesClient) ListPreparer(resourceGroupName stri
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
 func (client WorkflowTriggerHistoriesClient) ListSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // ListResponder handles the response to the List request. The method always
 // closes the http.Response Body.
-func (client WorkflowTriggerHistoriesClient) ListResponder(resp *http.Response) (result WorkflowTriggerHistoryListResult, ae error) {
-	ae = autorest.Respond(
+func (client WorkflowTriggerHistoriesClient) ListResponder(resp *http.Response) (result WorkflowTriggerHistoryListResult, err error) {
+	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -180,7 +180,7 @@ func (client WorkflowTriggerHistoriesClient) ListResponder(resp *http.Response) 
 }
 
 // ListNextResults retrieves the next set of results, if any.
-func (client WorkflowTriggerHistoriesClient) ListNextResults(lastResults WorkflowTriggerHistoryListResult) (result WorkflowTriggerHistoryListResult, ae error) {
+func (client WorkflowTriggerHistoriesClient) ListNextResults(lastResults WorkflowTriggerHistoryListResult) (result WorkflowTriggerHistoryListResult, err error) {
 	req, err := lastResults.WorkflowTriggerHistoryListResultPreparer()
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "logic/WorkflowTriggerHistoriesClient", "List", nil, "Failure preparing next results request request")
@@ -197,7 +197,7 @@ func (client WorkflowTriggerHistoriesClient) ListNextResults(lastResults Workflo
 
 	result, err = client.ListResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "logic/WorkflowTriggerHistoriesClient", "List", resp, "Failure responding to next results request request")
+		err = autorest.NewErrorWithError(err, "logic/WorkflowTriggerHistoriesClient", "List", resp, "Failure responding to next results request request")
 	}
 
 	return

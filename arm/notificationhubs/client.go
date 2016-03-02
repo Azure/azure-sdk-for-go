@@ -63,7 +63,7 @@ func NewWithBaseURI(baseURI string, subscriptionID string) ManagementClient {
 //
 // resourceGroupName is the name of the resource group. namespaceName is the
 // namespace name. parameters is the notificationHub name.
-func (client ManagementClient) CheckAvailability(resourceGroupName string, namespaceName string, parameters CheckAvailabilityParameters) (result CheckAvailabilityResource, ae error) {
+func (client ManagementClient) CheckAvailability(resourceGroupName string, namespaceName string, parameters CheckAvailabilityParameters) (result CheckAvailabilityResource, err error) {
 	req, err := client.CheckAvailabilityPreparer(resourceGroupName, namespaceName, parameters)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "notificationhubs/ManagementClient", "CheckAvailability", nil, "Failure preparing request")
@@ -77,7 +77,7 @@ func (client ManagementClient) CheckAvailability(resourceGroupName string, names
 
 	result, err = client.CheckAvailabilityResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "notificationhubs/ManagementClient", "CheckAvailability", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "notificationhubs/ManagementClient", "CheckAvailability", resp, "Failure responding to request")
 	}
 
 	return
@@ -108,13 +108,13 @@ func (client ManagementClient) CheckAvailabilityPreparer(resourceGroupName strin
 // CheckAvailabilitySender sends the CheckAvailability request. The method will close the
 // http.Response Body if it receives an error.
 func (client ManagementClient) CheckAvailabilitySender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // CheckAvailabilityResponder handles the response to the CheckAvailability request. The method always
 // closes the http.Response Body.
-func (client ManagementClient) CheckAvailabilityResponder(resp *http.Response) (result CheckAvailabilityResource, ae error) {
-	ae = autorest.Respond(
+func (client ManagementClient) CheckAvailabilityResponder(resp *http.Response) (result CheckAvailabilityResource, err error) {
+	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -129,7 +129,7 @@ func (client ManagementClient) CheckAvailabilityResponder(resp *http.Response) (
 // resourceGroupName is the name of the resource group. namespaceName is the
 // namespace name. notificationHubName is the notification hub name.
 // parameters is parameters supplied to the create a Namespace Resource.
-func (client ManagementClient) Create(resourceGroupName string, namespaceName string, notificationHubName string, parameters NotificationHubCreateOrUpdateParameters) (result NotificationHubResource, ae error) {
+func (client ManagementClient) Create(resourceGroupName string, namespaceName string, notificationHubName string, parameters NotificationHubCreateOrUpdateParameters) (result NotificationHubResource, err error) {
 	req, err := client.CreatePreparer(resourceGroupName, namespaceName, notificationHubName, parameters)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "notificationhubs/ManagementClient", "Create", nil, "Failure preparing request")
@@ -143,7 +143,7 @@ func (client ManagementClient) Create(resourceGroupName string, namespaceName st
 
 	result, err = client.CreateResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "notificationhubs/ManagementClient", "Create", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "notificationhubs/ManagementClient", "Create", resp, "Failure responding to request")
 	}
 
 	return
@@ -175,13 +175,13 @@ func (client ManagementClient) CreatePreparer(resourceGroupName string, namespac
 // CreateSender sends the Create request. The method will close the
 // http.Response Body if it receives an error.
 func (client ManagementClient) CreateSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // CreateResponder handles the response to the Create request. The method always
 // closes the http.Response Body.
-func (client ManagementClient) CreateResponder(resp *http.Response) (result NotificationHubResource, ae error) {
-	ae = autorest.Respond(
+func (client ManagementClient) CreateResponder(resp *http.Response) (result NotificationHubResource, err error) {
+	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
@@ -198,7 +198,7 @@ func (client ManagementClient) CreateResponder(resp *http.Response) (result Noti
 // namespace name. notificationHubName is the notification hub name.
 // authorizationRuleName is the namespace authorizationRuleName name.
 // parameters is the shared access authorization rule.
-func (client ManagementClient) CreateOrUpdateAuthorizationRule(resourceGroupName string, namespaceName string, notificationHubName string, authorizationRuleName string, parameters SharedAccessAuthorizationRuleCreateOrUpdateParameters) (result SharedAccessAuthorizationRuleResource, ae error) {
+func (client ManagementClient) CreateOrUpdateAuthorizationRule(resourceGroupName string, namespaceName string, notificationHubName string, authorizationRuleName string, parameters SharedAccessAuthorizationRuleCreateOrUpdateParameters) (result SharedAccessAuthorizationRuleResource, err error) {
 	req, err := client.CreateOrUpdateAuthorizationRulePreparer(resourceGroupName, namespaceName, notificationHubName, authorizationRuleName, parameters)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "notificationhubs/ManagementClient", "CreateOrUpdateAuthorizationRule", nil, "Failure preparing request")
@@ -212,7 +212,7 @@ func (client ManagementClient) CreateOrUpdateAuthorizationRule(resourceGroupName
 
 	result, err = client.CreateOrUpdateAuthorizationRuleResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "notificationhubs/ManagementClient", "CreateOrUpdateAuthorizationRule", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "notificationhubs/ManagementClient", "CreateOrUpdateAuthorizationRule", resp, "Failure responding to request")
 	}
 
 	return
@@ -245,13 +245,13 @@ func (client ManagementClient) CreateOrUpdateAuthorizationRulePreparer(resourceG
 // CreateOrUpdateAuthorizationRuleSender sends the CreateOrUpdateAuthorizationRule request. The method will close the
 // http.Response Body if it receives an error.
 func (client ManagementClient) CreateOrUpdateAuthorizationRuleSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // CreateOrUpdateAuthorizationRuleResponder handles the response to the CreateOrUpdateAuthorizationRule request. The method always
 // closes the http.Response Body.
-func (client ManagementClient) CreateOrUpdateAuthorizationRuleResponder(resp *http.Response) (result SharedAccessAuthorizationRuleResource, ae error) {
-	ae = autorest.Respond(
+func (client ManagementClient) CreateOrUpdateAuthorizationRuleResponder(resp *http.Response) (result SharedAccessAuthorizationRuleResource, err error) {
+	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -265,7 +265,7 @@ func (client ManagementClient) CreateOrUpdateAuthorizationRuleResponder(resp *ht
 //
 // resourceGroupName is the name of the resource group. namespaceName is the
 // namespace name. notificationHubName is the notification hub name.
-func (client ManagementClient) Delete(resourceGroupName string, namespaceName string, notificationHubName string) (result autorest.Response, ae error) {
+func (client ManagementClient) Delete(resourceGroupName string, namespaceName string, notificationHubName string) (result autorest.Response, err error) {
 	req, err := client.DeletePreparer(resourceGroupName, namespaceName, notificationHubName)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "notificationhubs/ManagementClient", "Delete", nil, "Failure preparing request")
@@ -279,7 +279,7 @@ func (client ManagementClient) Delete(resourceGroupName string, namespaceName st
 
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "notificationhubs/ManagementClient", "Delete", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "notificationhubs/ManagementClient", "Delete", resp, "Failure responding to request")
 	}
 
 	return
@@ -310,13 +310,13 @@ func (client ManagementClient) DeletePreparer(resourceGroupName string, namespac
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
 func (client ManagementClient) DeleteSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // DeleteResponder handles the response to the Delete request. The method always
 // closes the http.Response Body.
-func (client ManagementClient) DeleteResponder(resp *http.Response) (result autorest.Response, ae error) {
-	ae = autorest.Respond(
+func (client ManagementClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
+	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -331,7 +331,7 @@ func (client ManagementClient) DeleteResponder(resp *http.Response) (result auto
 // resourceGroupName is the name of the resource group. namespaceName is the
 // namespace name. notificationHubName is the notification hub name.
 // authorizationRuleName is the namespace authorizationRuleName name.
-func (client ManagementClient) DeleteAuthorizationRule(resourceGroupName string, namespaceName string, notificationHubName string, authorizationRuleName string) (result autorest.Response, ae error) {
+func (client ManagementClient) DeleteAuthorizationRule(resourceGroupName string, namespaceName string, notificationHubName string, authorizationRuleName string) (result autorest.Response, err error) {
 	req, err := client.DeleteAuthorizationRulePreparer(resourceGroupName, namespaceName, notificationHubName, authorizationRuleName)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "notificationhubs/ManagementClient", "DeleteAuthorizationRule", nil, "Failure preparing request")
@@ -345,7 +345,7 @@ func (client ManagementClient) DeleteAuthorizationRule(resourceGroupName string,
 
 	result, err = client.DeleteAuthorizationRuleResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "notificationhubs/ManagementClient", "DeleteAuthorizationRule", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "notificationhubs/ManagementClient", "DeleteAuthorizationRule", resp, "Failure responding to request")
 	}
 
 	return
@@ -377,13 +377,13 @@ func (client ManagementClient) DeleteAuthorizationRulePreparer(resourceGroupName
 // DeleteAuthorizationRuleSender sends the DeleteAuthorizationRule request. The method will close the
 // http.Response Body if it receives an error.
 func (client ManagementClient) DeleteAuthorizationRuleSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // DeleteAuthorizationRuleResponder handles the response to the DeleteAuthorizationRule request. The method always
 // closes the http.Response Body.
-func (client ManagementClient) DeleteAuthorizationRuleResponder(resp *http.Response) (result autorest.Response, ae error) {
-	ae = autorest.Respond(
+func (client ManagementClient) DeleteAuthorizationRuleResponder(resp *http.Response) (result autorest.Response, err error) {
+	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusNoContent, http.StatusOK),
@@ -396,7 +396,7 @@ func (client ManagementClient) DeleteAuthorizationRuleResponder(resp *http.Respo
 //
 // resourceGroupName is the name of the resource group. namespaceName is the
 // namespace name. notificationHubName is the notification hub name.
-func (client ManagementClient) Get(resourceGroupName string, namespaceName string, notificationHubName string) (result NotificationHubResource, ae error) {
+func (client ManagementClient) Get(resourceGroupName string, namespaceName string, notificationHubName string) (result NotificationHubResource, err error) {
 	req, err := client.GetPreparer(resourceGroupName, namespaceName, notificationHubName)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "notificationhubs/ManagementClient", "Get", nil, "Failure preparing request")
@@ -410,7 +410,7 @@ func (client ManagementClient) Get(resourceGroupName string, namespaceName strin
 
 	result, err = client.GetResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "notificationhubs/ManagementClient", "Get", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "notificationhubs/ManagementClient", "Get", resp, "Failure responding to request")
 	}
 
 	return
@@ -441,13 +441,13 @@ func (client ManagementClient) GetPreparer(resourceGroupName string, namespaceNa
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client ManagementClient) GetSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
-func (client ManagementClient) GetResponder(resp *http.Response) (result NotificationHubResource, ae error) {
-	ae = autorest.Respond(
+func (client ManagementClient) GetResponder(resp *http.Response) (result NotificationHubResource, err error) {
+	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -464,7 +464,7 @@ func (client ManagementClient) GetResponder(resp *http.Response) (result Notific
 // namespace to get the authorization rule for. notificationHubName is the
 // notification hub name. authorizationRuleName is the entity name to get the
 // authorization rule for.
-func (client ManagementClient) GetAuthorizationRule(resourceGroupName string, namespaceName string, notificationHubName string, authorizationRuleName string) (result SharedAccessAuthorizationRuleResource, ae error) {
+func (client ManagementClient) GetAuthorizationRule(resourceGroupName string, namespaceName string, notificationHubName string, authorizationRuleName string) (result SharedAccessAuthorizationRuleResource, err error) {
 	req, err := client.GetAuthorizationRulePreparer(resourceGroupName, namespaceName, notificationHubName, authorizationRuleName)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "notificationhubs/ManagementClient", "GetAuthorizationRule", nil, "Failure preparing request")
@@ -478,7 +478,7 @@ func (client ManagementClient) GetAuthorizationRule(resourceGroupName string, na
 
 	result, err = client.GetAuthorizationRuleResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "notificationhubs/ManagementClient", "GetAuthorizationRule", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "notificationhubs/ManagementClient", "GetAuthorizationRule", resp, "Failure responding to request")
 	}
 
 	return
@@ -510,13 +510,13 @@ func (client ManagementClient) GetAuthorizationRulePreparer(resourceGroupName st
 // GetAuthorizationRuleSender sends the GetAuthorizationRule request. The method will close the
 // http.Response Body if it receives an error.
 func (client ManagementClient) GetAuthorizationRuleSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // GetAuthorizationRuleResponder handles the response to the GetAuthorizationRule request. The method always
 // closes the http.Response Body.
-func (client ManagementClient) GetAuthorizationRuleResponder(resp *http.Response) (result SharedAccessAuthorizationRuleResource, ae error) {
-	ae = autorest.Respond(
+func (client ManagementClient) GetAuthorizationRuleResponder(resp *http.Response) (result SharedAccessAuthorizationRuleResource, err error) {
+	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -531,7 +531,7 @@ func (client ManagementClient) GetAuthorizationRuleResponder(resp *http.Response
 //
 // resourceGroupName is the name of the resource group. namespaceName is the
 // namespace name. notificationHubName is the notification hub name.
-func (client ManagementClient) GetPnsCredentials(resourceGroupName string, namespaceName string, notificationHubName string) (result NotificationHubResource, ae error) {
+func (client ManagementClient) GetPnsCredentials(resourceGroupName string, namespaceName string, notificationHubName string) (result NotificationHubResource, err error) {
 	req, err := client.GetPnsCredentialsPreparer(resourceGroupName, namespaceName, notificationHubName)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "notificationhubs/ManagementClient", "GetPnsCredentials", nil, "Failure preparing request")
@@ -545,7 +545,7 @@ func (client ManagementClient) GetPnsCredentials(resourceGroupName string, names
 
 	result, err = client.GetPnsCredentialsResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "notificationhubs/ManagementClient", "GetPnsCredentials", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "notificationhubs/ManagementClient", "GetPnsCredentials", resp, "Failure responding to request")
 	}
 
 	return
@@ -576,13 +576,13 @@ func (client ManagementClient) GetPnsCredentialsPreparer(resourceGroupName strin
 // GetPnsCredentialsSender sends the GetPnsCredentials request. The method will close the
 // http.Response Body if it receives an error.
 func (client ManagementClient) GetPnsCredentialsSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // GetPnsCredentialsResponder handles the response to the GetPnsCredentials request. The method always
 // closes the http.Response Body.
-func (client ManagementClient) GetPnsCredentialsResponder(resp *http.Response) (result NotificationHubResource, ae error) {
-	ae = autorest.Respond(
+func (client ManagementClient) GetPnsCredentialsResponder(resp *http.Response) (result NotificationHubResource, err error) {
+	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -596,7 +596,7 @@ func (client ManagementClient) GetPnsCredentialsResponder(resp *http.Response) (
 //
 // resourceGroupName is the name of the resource group. namespaceName is the
 // namespace name.
-func (client ManagementClient) List(resourceGroupName string, namespaceName string) (result NotificationHubListResult, ae error) {
+func (client ManagementClient) List(resourceGroupName string, namespaceName string) (result NotificationHubListResult, err error) {
 	req, err := client.ListPreparer(resourceGroupName, namespaceName)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "notificationhubs/ManagementClient", "List", nil, "Failure preparing request")
@@ -610,7 +610,7 @@ func (client ManagementClient) List(resourceGroupName string, namespaceName stri
 
 	result, err = client.ListResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "notificationhubs/ManagementClient", "List", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "notificationhubs/ManagementClient", "List", resp, "Failure responding to request")
 	}
 
 	return
@@ -640,13 +640,13 @@ func (client ManagementClient) ListPreparer(resourceGroupName string, namespaceN
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
 func (client ManagementClient) ListSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // ListResponder handles the response to the List request. The method always
 // closes the http.Response Body.
-func (client ManagementClient) ListResponder(resp *http.Response) (result NotificationHubListResult, ae error) {
-	ae = autorest.Respond(
+func (client ManagementClient) ListResponder(resp *http.Response) (result NotificationHubListResult, err error) {
+	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -657,7 +657,7 @@ func (client ManagementClient) ListResponder(resp *http.Response) (result Notifi
 }
 
 // ListNextResults retrieves the next set of results, if any.
-func (client ManagementClient) ListNextResults(lastResults NotificationHubListResult) (result NotificationHubListResult, ae error) {
+func (client ManagementClient) ListNextResults(lastResults NotificationHubListResult) (result NotificationHubListResult, err error) {
 	req, err := lastResults.NotificationHubListResultPreparer()
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "notificationhubs/ManagementClient", "List", nil, "Failure preparing next results request request")
@@ -674,7 +674,7 @@ func (client ManagementClient) ListNextResults(lastResults NotificationHubListRe
 
 	result, err = client.ListResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "notificationhubs/ManagementClient", "List", resp, "Failure responding to next results request request")
+		err = autorest.NewErrorWithError(err, "notificationhubs/ManagementClient", "List", resp, "Failure responding to next results request request")
 	}
 
 	return
@@ -686,7 +686,7 @@ func (client ManagementClient) ListNextResults(lastResults NotificationHubListRe
 // resourceGroupName is the name of the resource group. namespaceName is the
 // NotificationHub to get the authorization rule for. notificationHubName is
 // the notification hub name.
-func (client ManagementClient) ListAuthorizationRules(resourceGroupName string, namespaceName string, notificationHubName string) (result SharedAccessAuthorizationRuleListResult, ae error) {
+func (client ManagementClient) ListAuthorizationRules(resourceGroupName string, namespaceName string, notificationHubName string) (result SharedAccessAuthorizationRuleListResult, err error) {
 	req, err := client.ListAuthorizationRulesPreparer(resourceGroupName, namespaceName, notificationHubName)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "notificationhubs/ManagementClient", "ListAuthorizationRules", nil, "Failure preparing request")
@@ -700,7 +700,7 @@ func (client ManagementClient) ListAuthorizationRules(resourceGroupName string, 
 
 	result, err = client.ListAuthorizationRulesResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "notificationhubs/ManagementClient", "ListAuthorizationRules", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "notificationhubs/ManagementClient", "ListAuthorizationRules", resp, "Failure responding to request")
 	}
 
 	return
@@ -731,13 +731,13 @@ func (client ManagementClient) ListAuthorizationRulesPreparer(resourceGroupName 
 // ListAuthorizationRulesSender sends the ListAuthorizationRules request. The method will close the
 // http.Response Body if it receives an error.
 func (client ManagementClient) ListAuthorizationRulesSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // ListAuthorizationRulesResponder handles the response to the ListAuthorizationRules request. The method always
 // closes the http.Response Body.
-func (client ManagementClient) ListAuthorizationRulesResponder(resp *http.Response) (result SharedAccessAuthorizationRuleListResult, ae error) {
-	ae = autorest.Respond(
+func (client ManagementClient) ListAuthorizationRulesResponder(resp *http.Response) (result SharedAccessAuthorizationRuleListResult, err error) {
+	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -748,7 +748,7 @@ func (client ManagementClient) ListAuthorizationRulesResponder(resp *http.Respon
 }
 
 // ListAuthorizationRulesNextResults retrieves the next set of results, if any.
-func (client ManagementClient) ListAuthorizationRulesNextResults(lastResults SharedAccessAuthorizationRuleListResult) (result SharedAccessAuthorizationRuleListResult, ae error) {
+func (client ManagementClient) ListAuthorizationRulesNextResults(lastResults SharedAccessAuthorizationRuleListResult) (result SharedAccessAuthorizationRuleListResult, err error) {
 	req, err := lastResults.SharedAccessAuthorizationRuleListResultPreparer()
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "notificationhubs/ManagementClient", "ListAuthorizationRules", nil, "Failure preparing next results request request")
@@ -765,7 +765,7 @@ func (client ManagementClient) ListAuthorizationRulesNextResults(lastResults Sha
 
 	result, err = client.ListAuthorizationRulesResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "notificationhubs/ManagementClient", "ListAuthorizationRules", resp, "Failure responding to next results request request")
+		err = autorest.NewErrorWithError(err, "notificationhubs/ManagementClient", "ListAuthorizationRules", resp, "Failure responding to next results request request")
 	}
 
 	return
@@ -778,7 +778,7 @@ func (client ManagementClient) ListAuthorizationRulesNextResults(lastResults Sha
 // namespace name. notificationHubName is the notification hub name.
 // authorizationRuleName is the connection string of the NotificationHub for
 // the specified authorizationRule.
-func (client ManagementClient) ListKeys(resourceGroupName string, namespaceName string, notificationHubName string, authorizationRuleName string) (result ResourceListKeys, ae error) {
+func (client ManagementClient) ListKeys(resourceGroupName string, namespaceName string, notificationHubName string, authorizationRuleName string) (result ResourceListKeys, err error) {
 	req, err := client.ListKeysPreparer(resourceGroupName, namespaceName, notificationHubName, authorizationRuleName)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "notificationhubs/ManagementClient", "ListKeys", nil, "Failure preparing request")
@@ -792,7 +792,7 @@ func (client ManagementClient) ListKeys(resourceGroupName string, namespaceName 
 
 	result, err = client.ListKeysResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "notificationhubs/ManagementClient", "ListKeys", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "notificationhubs/ManagementClient", "ListKeys", resp, "Failure responding to request")
 	}
 
 	return
@@ -824,13 +824,13 @@ func (client ManagementClient) ListKeysPreparer(resourceGroupName string, namesp
 // ListKeysSender sends the ListKeys request. The method will close the
 // http.Response Body if it receives an error.
 func (client ManagementClient) ListKeysSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // ListKeysResponder handles the response to the ListKeys request. The method always
 // closes the http.Response Body.
-func (client ManagementClient) ListKeysResponder(resp *http.Response) (result ResourceListKeys, ae error) {
-	ae = autorest.Respond(
+func (client ManagementClient) ListKeysResponder(resp *http.Response) (result ResourceListKeys, err error) {
+	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),

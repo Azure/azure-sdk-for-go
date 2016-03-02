@@ -44,7 +44,7 @@ func NewVirtualMachineExtensionImagesClientWithBaseURI(baseURI string, subscript
 
 // Get gets a virtual machine extension image.
 //
-func (client VirtualMachineExtensionImagesClient) Get(location string, publisherName string, typeParameter string, version string) (result VirtualMachineExtensionImage, ae error) {
+func (client VirtualMachineExtensionImagesClient) Get(location string, publisherName string, typeParameter string, version string) (result VirtualMachineExtensionImage, err error) {
 	req, err := client.GetPreparer(location, publisherName, typeParameter, version)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "compute/VirtualMachineExtensionImagesClient", "Get", nil, "Failure preparing request")
@@ -58,7 +58,7 @@ func (client VirtualMachineExtensionImagesClient) Get(location string, publisher
 
 	result, err = client.GetResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "compute/VirtualMachineExtensionImagesClient", "Get", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "compute/VirtualMachineExtensionImagesClient", "Get", resp, "Failure responding to request")
 	}
 
 	return
@@ -90,13 +90,13 @@ func (client VirtualMachineExtensionImagesClient) GetPreparer(location string, p
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client VirtualMachineExtensionImagesClient) GetSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
-func (client VirtualMachineExtensionImagesClient) GetResponder(resp *http.Response) (result VirtualMachineExtensionImage, ae error) {
-	ae = autorest.Respond(
+func (client VirtualMachineExtensionImagesClient) GetResponder(resp *http.Response) (result VirtualMachineExtensionImage, err error) {
+	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -108,7 +108,7 @@ func (client VirtualMachineExtensionImagesClient) GetResponder(resp *http.Respon
 
 // ListTypes gets a list of virtual machine extension image types.
 //
-func (client VirtualMachineExtensionImagesClient) ListTypes(location string, publisherName string) (result VirtualMachineImageResourceList, ae error) {
+func (client VirtualMachineExtensionImagesClient) ListTypes(location string, publisherName string) (result VirtualMachineImageResourceList, err error) {
 	req, err := client.ListTypesPreparer(location, publisherName)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "compute/VirtualMachineExtensionImagesClient", "ListTypes", nil, "Failure preparing request")
@@ -122,7 +122,7 @@ func (client VirtualMachineExtensionImagesClient) ListTypes(location string, pub
 
 	result, err = client.ListTypesResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "compute/VirtualMachineExtensionImagesClient", "ListTypes", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "compute/VirtualMachineExtensionImagesClient", "ListTypes", resp, "Failure responding to request")
 	}
 
 	return
@@ -152,13 +152,13 @@ func (client VirtualMachineExtensionImagesClient) ListTypesPreparer(location str
 // ListTypesSender sends the ListTypes request. The method will close the
 // http.Response Body if it receives an error.
 func (client VirtualMachineExtensionImagesClient) ListTypesSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // ListTypesResponder handles the response to the ListTypes request. The method always
 // closes the http.Response Body.
-func (client VirtualMachineExtensionImagesClient) ListTypesResponder(resp *http.Response) (result VirtualMachineImageResourceList, ae error) {
-	ae = autorest.Respond(
+func (client VirtualMachineExtensionImagesClient) ListTypesResponder(resp *http.Response) (result VirtualMachineImageResourceList, err error) {
+	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -171,7 +171,7 @@ func (client VirtualMachineExtensionImagesClient) ListTypesResponder(resp *http.
 // ListVersions gets a list of virtual machine extension image versions.
 //
 // filter is the filter to apply on the operation.
-func (client VirtualMachineExtensionImagesClient) ListVersions(location string, publisherName string, typeParameter string, filter string, top *int, orderBy string) (result VirtualMachineImageResourceList, ae error) {
+func (client VirtualMachineExtensionImagesClient) ListVersions(location string, publisherName string, typeParameter string, filter string, top *int32, orderBy string) (result VirtualMachineImageResourceList, err error) {
 	req, err := client.ListVersionsPreparer(location, publisherName, typeParameter, filter, top, orderBy)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "compute/VirtualMachineExtensionImagesClient", "ListVersions", nil, "Failure preparing request")
@@ -185,14 +185,14 @@ func (client VirtualMachineExtensionImagesClient) ListVersions(location string, 
 
 	result, err = client.ListVersionsResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "compute/VirtualMachineExtensionImagesClient", "ListVersions", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "compute/VirtualMachineExtensionImagesClient", "ListVersions", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // ListVersionsPreparer prepares the ListVersions request.
-func (client VirtualMachineExtensionImagesClient) ListVersionsPreparer(location string, publisherName string, typeParameter string, filter string, top *int, orderBy string) (*http.Request, error) {
+func (client VirtualMachineExtensionImagesClient) ListVersionsPreparer(location string, publisherName string, typeParameter string, filter string, top *int32, orderBy string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"location":       url.QueryEscape(location),
 		"publisherName":  url.QueryEscape(publisherName),
@@ -225,13 +225,13 @@ func (client VirtualMachineExtensionImagesClient) ListVersionsPreparer(location 
 // ListVersionsSender sends the ListVersions request. The method will close the
 // http.Response Body if it receives an error.
 func (client VirtualMachineExtensionImagesClient) ListVersionsSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // ListVersionsResponder handles the response to the ListVersions request. The method always
 // closes the http.Response Body.
-func (client VirtualMachineExtensionImagesClient) ListVersionsResponder(resp *http.Response) (result VirtualMachineImageResourceList, ae error) {
-	ae = autorest.Respond(
+func (client VirtualMachineExtensionImagesClient) ListVersionsResponder(resp *http.Response) (result VirtualMachineImageResourceList, err error) {
+	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),

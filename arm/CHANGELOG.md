@@ -4,7 +4,7 @@
 
 ## `v0.6.0-beta`
 
-- Uses go-autorest v4.0.0 (Long-running operations support added).
+- Uses go-autorest v6.0.0 (Polling and Asynchronous requests related changes).
 
  
 ## `v0.5.0-beta`

@@ -55,7 +55,7 @@ func NewHostingEnvironmentsClientWithBaseURI(baseURI string, subscriptionID stri
 // resourceGroupName is name of resource group name is name of
 // hostingEnvironment (App Service Environment) hostingEnvironmentEnvelope is
 // properties of hostingEnvironment (App Service Environment)
-func (client HostingEnvironmentsClient) CreateOrUpdateHostingEnvironment(resourceGroupName string, name string, hostingEnvironmentEnvelope HostingEnvironment) (result autorest.Response, ae error) {
+func (client HostingEnvironmentsClient) CreateOrUpdateHostingEnvironment(resourceGroupName string, name string, hostingEnvironmentEnvelope HostingEnvironment) (result autorest.Response, err error) {
 	req, err := client.CreateOrUpdateHostingEnvironmentPreparer(resourceGroupName, name, hostingEnvironmentEnvelope)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "CreateOrUpdateHostingEnvironment", nil, "Failure preparing request")
@@ -69,7 +69,7 @@ func (client HostingEnvironmentsClient) CreateOrUpdateHostingEnvironment(resourc
 
 	result, err = client.CreateOrUpdateHostingEnvironmentResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "CreateOrUpdateHostingEnvironment", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "CreateOrUpdateHostingEnvironment", resp, "Failure responding to request")
 	}
 
 	return
@@ -100,21 +100,16 @@ func (client HostingEnvironmentsClient) CreateOrUpdateHostingEnvironmentPreparer
 // CreateOrUpdateHostingEnvironmentSender sends the CreateOrUpdateHostingEnvironment request. The method will close the
 // http.Response Body if it receives an error.
 func (client HostingEnvironmentsClient) CreateOrUpdateHostingEnvironmentSender(req *http.Request) (*http.Response, error) {
-	resp, err := client.Send(req)
-	if err == nil && azure.ResponseIsLongRunning(resp) {
-		req, err := azure.NewAsyncPollingRequest(resp, client.Client)
-		if err == nil {
-			resp, err = autorest.SendWithSender(client, req,
-				azure.WithAsyncPolling(autorest.DefaultPollingDelay))
-		}
-	}
-	return resp, err
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoPollForAsynchronous(autorest.DefaultPollingDuration,
+			autorest.DefaultPollingDelay))
 }
 
 // CreateOrUpdateHostingEnvironmentResponder handles the response to the CreateOrUpdateHostingEnvironment request. The method always
 // closes the http.Response Body.
-func (client HostingEnvironmentsClient) CreateOrUpdateHostingEnvironmentResponder(resp *http.Response) (result autorest.Response, ae error) {
-	ae = autorest.Respond(
+func (client HostingEnvironmentsClient) CreateOrUpdateHostingEnvironmentResponder(resp *http.Response) (result autorest.Response, err error) {
+	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusBadRequest, http.StatusNotFound, http.StatusConflict),
@@ -129,7 +124,7 @@ func (client HostingEnvironmentsClient) CreateOrUpdateHostingEnvironmentResponde
 // resourceGroupName is name of resource group name is name of
 // hostingEnvironment (App Service Environment) multiRolePoolEnvelope is
 // properties of multiRole pool
-func (client HostingEnvironmentsClient) CreateOrUpdateMultiRolePool(resourceGroupName string, name string, multiRolePoolEnvelope WorkerPool) (result autorest.Response, ae error) {
+func (client HostingEnvironmentsClient) CreateOrUpdateMultiRolePool(resourceGroupName string, name string, multiRolePoolEnvelope WorkerPool) (result autorest.Response, err error) {
 	req, err := client.CreateOrUpdateMultiRolePoolPreparer(resourceGroupName, name, multiRolePoolEnvelope)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "CreateOrUpdateMultiRolePool", nil, "Failure preparing request")
@@ -143,7 +138,7 @@ func (client HostingEnvironmentsClient) CreateOrUpdateMultiRolePool(resourceGrou
 
 	result, err = client.CreateOrUpdateMultiRolePoolResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "CreateOrUpdateMultiRolePool", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "CreateOrUpdateMultiRolePool", resp, "Failure responding to request")
 	}
 
 	return
@@ -174,21 +169,16 @@ func (client HostingEnvironmentsClient) CreateOrUpdateMultiRolePoolPreparer(reso
 // CreateOrUpdateMultiRolePoolSender sends the CreateOrUpdateMultiRolePool request. The method will close the
 // http.Response Body if it receives an error.
 func (client HostingEnvironmentsClient) CreateOrUpdateMultiRolePoolSender(req *http.Request) (*http.Response, error) {
-	resp, err := client.Send(req)
-	if err == nil && azure.ResponseIsLongRunning(resp) {
-		req, err := azure.NewAsyncPollingRequest(resp, client.Client)
-		if err == nil {
-			resp, err = autorest.SendWithSender(client, req,
-				azure.WithAsyncPolling(autorest.DefaultPollingDelay))
-		}
-	}
-	return resp, err
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoPollForAsynchronous(autorest.DefaultPollingDuration,
+			autorest.DefaultPollingDelay))
 }
 
 // CreateOrUpdateMultiRolePoolResponder handles the response to the CreateOrUpdateMultiRolePool request. The method always
 // closes the http.Response Body.
-func (client HostingEnvironmentsClient) CreateOrUpdateMultiRolePoolResponder(resp *http.Response) (result autorest.Response, ae error) {
-	ae = autorest.Respond(
+func (client HostingEnvironmentsClient) CreateOrUpdateMultiRolePoolResponder(resp *http.Response) (result autorest.Response, err error) {
+	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusBadRequest, http.StatusNotFound, http.StatusConflict),
@@ -202,7 +192,7 @@ func (client HostingEnvironmentsClient) CreateOrUpdateMultiRolePoolResponder(res
 // resourceGroupName is name of resource group name is name of
 // hostingEnvironment (App Service Environment) workerPoolName is name of
 // worker pool workerPoolEnvelope is properties of worker pool
-func (client HostingEnvironmentsClient) CreateOrUpdateWorkerPool(resourceGroupName string, name string, workerPoolName string, workerPoolEnvelope WorkerPool) (result autorest.Response, ae error) {
+func (client HostingEnvironmentsClient) CreateOrUpdateWorkerPool(resourceGroupName string, name string, workerPoolName string, workerPoolEnvelope WorkerPool) (result autorest.Response, err error) {
 	req, err := client.CreateOrUpdateWorkerPoolPreparer(resourceGroupName, name, workerPoolName, workerPoolEnvelope)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "CreateOrUpdateWorkerPool", nil, "Failure preparing request")
@@ -216,7 +206,7 @@ func (client HostingEnvironmentsClient) CreateOrUpdateWorkerPool(resourceGroupNa
 
 	result, err = client.CreateOrUpdateWorkerPoolResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "CreateOrUpdateWorkerPool", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "CreateOrUpdateWorkerPool", resp, "Failure responding to request")
 	}
 
 	return
@@ -248,21 +238,16 @@ func (client HostingEnvironmentsClient) CreateOrUpdateWorkerPoolPreparer(resourc
 // CreateOrUpdateWorkerPoolSender sends the CreateOrUpdateWorkerPool request. The method will close the
 // http.Response Body if it receives an error.
 func (client HostingEnvironmentsClient) CreateOrUpdateWorkerPoolSender(req *http.Request) (*http.Response, error) {
-	resp, err := client.Send(req)
-	if err == nil && azure.ResponseIsLongRunning(resp) {
-		req, err := azure.NewAsyncPollingRequest(resp, client.Client)
-		if err == nil {
-			resp, err = autorest.SendWithSender(client, req,
-				azure.WithAsyncPolling(autorest.DefaultPollingDelay))
-		}
-	}
-	return resp, err
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoPollForAsynchronous(autorest.DefaultPollingDuration,
+			autorest.DefaultPollingDelay))
 }
 
 // CreateOrUpdateWorkerPoolResponder handles the response to the CreateOrUpdateWorkerPool request. The method always
 // closes the http.Response Body.
-func (client HostingEnvironmentsClient) CreateOrUpdateWorkerPoolResponder(resp *http.Response) (result autorest.Response, ae error) {
-	ae = autorest.Respond(
+func (client HostingEnvironmentsClient) CreateOrUpdateWorkerPoolResponder(resp *http.Response) (result autorest.Response, err error) {
+	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusBadRequest, http.StatusNotFound, http.StatusConflict),
@@ -276,7 +261,7 @@ func (client HostingEnvironmentsClient) CreateOrUpdateWorkerPoolResponder(resp *
 // resourceGroupName is name of resource group name is name of
 // hostingEnvironment (App Service Environment) forceDelete is delete even if
 // the hostingEnvironment (App Service Environment) contains resources
-func (client HostingEnvironmentsClient) DeleteHostingEnvironment(resourceGroupName string, name string, forceDelete *bool) (result autorest.Response, ae error) {
+func (client HostingEnvironmentsClient) DeleteHostingEnvironment(resourceGroupName string, name string, forceDelete *bool) (result autorest.Response, err error) {
 	req, err := client.DeleteHostingEnvironmentPreparer(resourceGroupName, name, forceDelete)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "DeleteHostingEnvironment", nil, "Failure preparing request")
@@ -290,7 +275,7 @@ func (client HostingEnvironmentsClient) DeleteHostingEnvironment(resourceGroupNa
 
 	result, err = client.DeleteHostingEnvironmentResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "DeleteHostingEnvironment", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "DeleteHostingEnvironment", resp, "Failure responding to request")
 	}
 
 	return
@@ -323,21 +308,16 @@ func (client HostingEnvironmentsClient) DeleteHostingEnvironmentPreparer(resourc
 // DeleteHostingEnvironmentSender sends the DeleteHostingEnvironment request. The method will close the
 // http.Response Body if it receives an error.
 func (client HostingEnvironmentsClient) DeleteHostingEnvironmentSender(req *http.Request) (*http.Response, error) {
-	resp, err := client.Send(req)
-	if err == nil && azure.ResponseIsLongRunning(resp) {
-		req, err := azure.NewAsyncPollingRequest(resp, client.Client)
-		if err == nil {
-			resp, err = autorest.SendWithSender(client, req,
-				azure.WithAsyncPolling(autorest.DefaultPollingDelay))
-		}
-	}
-	return resp, err
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoPollForAsynchronous(autorest.DefaultPollingDuration,
+			autorest.DefaultPollingDelay))
 }
 
 // DeleteHostingEnvironmentResponder handles the response to the DeleteHostingEnvironment request. The method always
 // closes the http.Response Body.
-func (client HostingEnvironmentsClient) DeleteHostingEnvironmentResponder(resp *http.Response) (result autorest.Response, ae error) {
-	ae = autorest.Respond(
+func (client HostingEnvironmentsClient) DeleteHostingEnvironmentResponder(resp *http.Response) (result autorest.Response, err error) {
+	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusBadRequest, http.StatusNotFound, http.StatusConflict),
@@ -350,7 +330,7 @@ func (client HostingEnvironmentsClient) DeleteHostingEnvironmentResponder(resp *
 //
 // resourceGroupName is name of resource group name is name of
 // hostingEnvironment (App Service Environment)
-func (client HostingEnvironmentsClient) GetHostingEnvironment(resourceGroupName string, name string) (result HostingEnvironment, ae error) {
+func (client HostingEnvironmentsClient) GetHostingEnvironment(resourceGroupName string, name string) (result HostingEnvironment, err error) {
 	req, err := client.GetHostingEnvironmentPreparer(resourceGroupName, name)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "GetHostingEnvironment", nil, "Failure preparing request")
@@ -364,7 +344,7 @@ func (client HostingEnvironmentsClient) GetHostingEnvironment(resourceGroupName 
 
 	result, err = client.GetHostingEnvironmentResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "GetHostingEnvironment", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "GetHostingEnvironment", resp, "Failure responding to request")
 	}
 
 	return
@@ -394,13 +374,13 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentPreparer(resourceGr
 // GetHostingEnvironmentSender sends the GetHostingEnvironment request. The method will close the
 // http.Response Body if it receives an error.
 func (client HostingEnvironmentsClient) GetHostingEnvironmentSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // GetHostingEnvironmentResponder handles the response to the GetHostingEnvironment request. The method always
 // closes the http.Response Body.
-func (client HostingEnvironmentsClient) GetHostingEnvironmentResponder(resp *http.Response) (result HostingEnvironment, ae error) {
-	ae = autorest.Respond(
+func (client HostingEnvironmentsClient) GetHostingEnvironmentResponder(resp *http.Response) (result HostingEnvironment, err error) {
+	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -415,7 +395,7 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentResponder(resp *htt
 //
 // resourceGroupName is name of resource group name is name of
 // hostingEnvironment (App Service Environment)
-func (client HostingEnvironmentsClient) GetHostingEnvironmentCapacities(resourceGroupName string, name string) (result StampCapacityCollection, ae error) {
+func (client HostingEnvironmentsClient) GetHostingEnvironmentCapacities(resourceGroupName string, name string) (result StampCapacityCollection, err error) {
 	req, err := client.GetHostingEnvironmentCapacitiesPreparer(resourceGroupName, name)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "GetHostingEnvironmentCapacities", nil, "Failure preparing request")
@@ -429,7 +409,7 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentCapacities(resource
 
 	result, err = client.GetHostingEnvironmentCapacitiesResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "GetHostingEnvironmentCapacities", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "GetHostingEnvironmentCapacities", resp, "Failure responding to request")
 	}
 
 	return
@@ -459,13 +439,13 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentCapacitiesPreparer(
 // GetHostingEnvironmentCapacitiesSender sends the GetHostingEnvironmentCapacities request. The method will close the
 // http.Response Body if it receives an error.
 func (client HostingEnvironmentsClient) GetHostingEnvironmentCapacitiesSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // GetHostingEnvironmentCapacitiesResponder handles the response to the GetHostingEnvironmentCapacities request. The method always
 // closes the http.Response Body.
-func (client HostingEnvironmentsClient) GetHostingEnvironmentCapacitiesResponder(resp *http.Response) (result StampCapacityCollection, ae error) {
-	ae = autorest.Respond(
+func (client HostingEnvironmentsClient) GetHostingEnvironmentCapacitiesResponder(resp *http.Response) (result StampCapacityCollection, err error) {
+	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -480,7 +460,7 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentCapacitiesResponder
 //
 // resourceGroupName is name of resource group name is name of
 // hostingEnvironment (App Service Environment)
-func (client HostingEnvironmentsClient) GetHostingEnvironmentDiagnostics(resourceGroupName string, name string) (result HostingEnvironmentDiagnosticsList, ae error) {
+func (client HostingEnvironmentsClient) GetHostingEnvironmentDiagnostics(resourceGroupName string, name string) (result HostingEnvironmentDiagnosticsList, err error) {
 	req, err := client.GetHostingEnvironmentDiagnosticsPreparer(resourceGroupName, name)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "GetHostingEnvironmentDiagnostics", nil, "Failure preparing request")
@@ -494,7 +474,7 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentDiagnostics(resourc
 
 	result, err = client.GetHostingEnvironmentDiagnosticsResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "GetHostingEnvironmentDiagnostics", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "GetHostingEnvironmentDiagnostics", resp, "Failure responding to request")
 	}
 
 	return
@@ -524,13 +504,13 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentDiagnosticsPreparer
 // GetHostingEnvironmentDiagnosticsSender sends the GetHostingEnvironmentDiagnostics request. The method will close the
 // http.Response Body if it receives an error.
 func (client HostingEnvironmentsClient) GetHostingEnvironmentDiagnosticsSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // GetHostingEnvironmentDiagnosticsResponder handles the response to the GetHostingEnvironmentDiagnostics request. The method always
 // closes the http.Response Body.
-func (client HostingEnvironmentsClient) GetHostingEnvironmentDiagnosticsResponder(resp *http.Response) (result HostingEnvironmentDiagnosticsList, ae error) {
-	ae = autorest.Respond(
+func (client HostingEnvironmentsClient) GetHostingEnvironmentDiagnosticsResponder(resp *http.Response) (result HostingEnvironmentDiagnosticsList, err error) {
+	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -546,7 +526,7 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentDiagnosticsResponde
 // resourceGroupName is name of resource group name is name of
 // hostingEnvironment (App Service Environment) diagnosticsName is name of
 // the diagnostics
-func (client HostingEnvironmentsClient) GetHostingEnvironmentDiagnosticsItem(resourceGroupName string, name string, diagnosticsName string) (result HostingEnvironmentDiagnostics, ae error) {
+func (client HostingEnvironmentsClient) GetHostingEnvironmentDiagnosticsItem(resourceGroupName string, name string, diagnosticsName string) (result HostingEnvironmentDiagnostics, err error) {
 	req, err := client.GetHostingEnvironmentDiagnosticsItemPreparer(resourceGroupName, name, diagnosticsName)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "GetHostingEnvironmentDiagnosticsItem", nil, "Failure preparing request")
@@ -560,7 +540,7 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentDiagnosticsItem(res
 
 	result, err = client.GetHostingEnvironmentDiagnosticsItemResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "GetHostingEnvironmentDiagnosticsItem", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "GetHostingEnvironmentDiagnosticsItem", resp, "Failure responding to request")
 	}
 
 	return
@@ -591,13 +571,13 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentDiagnosticsItemPrep
 // GetHostingEnvironmentDiagnosticsItemSender sends the GetHostingEnvironmentDiagnosticsItem request. The method will close the
 // http.Response Body if it receives an error.
 func (client HostingEnvironmentsClient) GetHostingEnvironmentDiagnosticsItemSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // GetHostingEnvironmentDiagnosticsItemResponder handles the response to the GetHostingEnvironmentDiagnosticsItem request. The method always
 // closes the http.Response Body.
-func (client HostingEnvironmentsClient) GetHostingEnvironmentDiagnosticsItemResponder(resp *http.Response) (result HostingEnvironmentDiagnostics, ae error) {
-	ae = autorest.Respond(
+func (client HostingEnvironmentsClient) GetHostingEnvironmentDiagnosticsItemResponder(resp *http.Response) (result HostingEnvironmentDiagnostics, err error) {
+	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -612,7 +592,7 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentDiagnosticsItemResp
 //
 // resourceGroupName is name of resource group name is name of
 // hostingEnvironment (App Service Environment)
-func (client HostingEnvironmentsClient) GetHostingEnvironmentMetricDefinitions(resourceGroupName string, name string) (result MetricDefinition, ae error) {
+func (client HostingEnvironmentsClient) GetHostingEnvironmentMetricDefinitions(resourceGroupName string, name string) (result MetricDefinition, err error) {
 	req, err := client.GetHostingEnvironmentMetricDefinitionsPreparer(resourceGroupName, name)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "GetHostingEnvironmentMetricDefinitions", nil, "Failure preparing request")
@@ -626,7 +606,7 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentMetricDefinitions(r
 
 	result, err = client.GetHostingEnvironmentMetricDefinitionsResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "GetHostingEnvironmentMetricDefinitions", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "GetHostingEnvironmentMetricDefinitions", resp, "Failure responding to request")
 	}
 
 	return
@@ -656,13 +636,13 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentMetricDefinitionsPr
 // GetHostingEnvironmentMetricDefinitionsSender sends the GetHostingEnvironmentMetricDefinitions request. The method will close the
 // http.Response Body if it receives an error.
 func (client HostingEnvironmentsClient) GetHostingEnvironmentMetricDefinitionsSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // GetHostingEnvironmentMetricDefinitionsResponder handles the response to the GetHostingEnvironmentMetricDefinitions request. The method always
 // closes the http.Response Body.
-func (client HostingEnvironmentsClient) GetHostingEnvironmentMetricDefinitionsResponder(resp *http.Response) (result MetricDefinition, ae error) {
-	ae = autorest.Respond(
+func (client HostingEnvironmentsClient) GetHostingEnvironmentMetricDefinitionsResponder(resp *http.Response) (result MetricDefinition, err error) {
+	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -682,7 +662,7 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentMetricDefinitionsRe
 // or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and
 // endTime eq '2014-12-31T23:59:59Z' and timeGrain eq
 // duration'[Hour|Minute|Day]'.
-func (client HostingEnvironmentsClient) GetHostingEnvironmentMetrics(resourceGroupName string, name string, details *bool, filter string) (result ResourceMetricCollection, ae error) {
+func (client HostingEnvironmentsClient) GetHostingEnvironmentMetrics(resourceGroupName string, name string, details *bool, filter string) (result ResourceMetricCollection, err error) {
 	req, err := client.GetHostingEnvironmentMetricsPreparer(resourceGroupName, name, details, filter)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "GetHostingEnvironmentMetrics", nil, "Failure preparing request")
@@ -696,7 +676,7 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentMetrics(resourceGro
 
 	result, err = client.GetHostingEnvironmentMetricsResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "GetHostingEnvironmentMetrics", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "GetHostingEnvironmentMetrics", resp, "Failure responding to request")
 	}
 
 	return
@@ -732,13 +712,13 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentMetricsPreparer(res
 // GetHostingEnvironmentMetricsSender sends the GetHostingEnvironmentMetrics request. The method will close the
 // http.Response Body if it receives an error.
 func (client HostingEnvironmentsClient) GetHostingEnvironmentMetricsSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // GetHostingEnvironmentMetricsResponder handles the response to the GetHostingEnvironmentMetrics request. The method always
 // closes the http.Response Body.
-func (client HostingEnvironmentsClient) GetHostingEnvironmentMetricsResponder(resp *http.Response) (result ResourceMetricCollection, ae error) {
-	ae = autorest.Respond(
+func (client HostingEnvironmentsClient) GetHostingEnvironmentMetricsResponder(resp *http.Response) (result ResourceMetricCollection, err error) {
+	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -753,7 +733,7 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentMetricsResponder(re
 //
 // resourceGroupName is name of resource group name is name of
 // hostingEnvironment (App Service Environment)
-func (client HostingEnvironmentsClient) GetHostingEnvironmentMultiRoleMetricDefinitions(resourceGroupName string, name string) (result MetricDefinitionCollection, ae error) {
+func (client HostingEnvironmentsClient) GetHostingEnvironmentMultiRoleMetricDefinitions(resourceGroupName string, name string) (result MetricDefinitionCollection, err error) {
 	req, err := client.GetHostingEnvironmentMultiRoleMetricDefinitionsPreparer(resourceGroupName, name)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "GetHostingEnvironmentMultiRoleMetricDefinitions", nil, "Failure preparing request")
@@ -767,7 +747,7 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentMultiRoleMetricDefi
 
 	result, err = client.GetHostingEnvironmentMultiRoleMetricDefinitionsResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "GetHostingEnvironmentMultiRoleMetricDefinitions", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "GetHostingEnvironmentMultiRoleMetricDefinitions", resp, "Failure responding to request")
 	}
 
 	return
@@ -797,13 +777,13 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentMultiRoleMetricDefi
 // GetHostingEnvironmentMultiRoleMetricDefinitionsSender sends the GetHostingEnvironmentMultiRoleMetricDefinitions request. The method will close the
 // http.Response Body if it receives an error.
 func (client HostingEnvironmentsClient) GetHostingEnvironmentMultiRoleMetricDefinitionsSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // GetHostingEnvironmentMultiRoleMetricDefinitionsResponder handles the response to the GetHostingEnvironmentMultiRoleMetricDefinitions request. The method always
 // closes the http.Response Body.
-func (client HostingEnvironmentsClient) GetHostingEnvironmentMultiRoleMetricDefinitionsResponder(resp *http.Response) (result MetricDefinitionCollection, ae error) {
-	ae = autorest.Respond(
+func (client HostingEnvironmentsClient) GetHostingEnvironmentMultiRoleMetricDefinitionsResponder(resp *http.Response) (result MetricDefinitionCollection, err error) {
+	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -824,7 +804,7 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentMultiRoleMetricDefi
 // odata syntax. Example: $filter=(name.value eq 'Metric1' or name.value eq
 // 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and endTime eq
 // '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
-func (client HostingEnvironmentsClient) GetHostingEnvironmentMultiRoleMetrics(resourceGroupName string, name string, startTime string, endTime string, timeGrain string, details *bool, filter string) (result ResourceMetricCollection, ae error) {
+func (client HostingEnvironmentsClient) GetHostingEnvironmentMultiRoleMetrics(resourceGroupName string, name string, startTime string, endTime string, timeGrain string, details *bool, filter string) (result ResourceMetricCollection, err error) {
 	req, err := client.GetHostingEnvironmentMultiRoleMetricsPreparer(resourceGroupName, name, startTime, endTime, timeGrain, details, filter)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "GetHostingEnvironmentMultiRoleMetrics", nil, "Failure preparing request")
@@ -838,7 +818,7 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentMultiRoleMetrics(re
 
 	result, err = client.GetHostingEnvironmentMultiRoleMetricsResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "GetHostingEnvironmentMultiRoleMetrics", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "GetHostingEnvironmentMultiRoleMetrics", resp, "Failure responding to request")
 	}
 
 	return
@@ -883,13 +863,13 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentMultiRoleMetricsPre
 // GetHostingEnvironmentMultiRoleMetricsSender sends the GetHostingEnvironmentMultiRoleMetrics request. The method will close the
 // http.Response Body if it receives an error.
 func (client HostingEnvironmentsClient) GetHostingEnvironmentMultiRoleMetricsSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // GetHostingEnvironmentMultiRoleMetricsResponder handles the response to the GetHostingEnvironmentMultiRoleMetrics request. The method always
 // closes the http.Response Body.
-func (client HostingEnvironmentsClient) GetHostingEnvironmentMultiRoleMetricsResponder(resp *http.Response) (result ResourceMetricCollection, ae error) {
-	ae = autorest.Respond(
+func (client HostingEnvironmentsClient) GetHostingEnvironmentMultiRoleMetricsResponder(resp *http.Response) (result ResourceMetricCollection, err error) {
+	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -904,7 +884,7 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentMultiRoleMetricsRes
 //
 // resourceGroupName is name of resource group name is name of
 // hostingEnvironment (App Service Environment)
-func (client HostingEnvironmentsClient) GetHostingEnvironmentMultiRoleUsages(resourceGroupName string, name string) (result UsageCollection, ae error) {
+func (client HostingEnvironmentsClient) GetHostingEnvironmentMultiRoleUsages(resourceGroupName string, name string) (result UsageCollection, err error) {
 	req, err := client.GetHostingEnvironmentMultiRoleUsagesPreparer(resourceGroupName, name)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "GetHostingEnvironmentMultiRoleUsages", nil, "Failure preparing request")
@@ -918,7 +898,7 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentMultiRoleUsages(res
 
 	result, err = client.GetHostingEnvironmentMultiRoleUsagesResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "GetHostingEnvironmentMultiRoleUsages", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "GetHostingEnvironmentMultiRoleUsages", resp, "Failure responding to request")
 	}
 
 	return
@@ -948,13 +928,13 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentMultiRoleUsagesPrep
 // GetHostingEnvironmentMultiRoleUsagesSender sends the GetHostingEnvironmentMultiRoleUsages request. The method will close the
 // http.Response Body if it receives an error.
 func (client HostingEnvironmentsClient) GetHostingEnvironmentMultiRoleUsagesSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // GetHostingEnvironmentMultiRoleUsagesResponder handles the response to the GetHostingEnvironmentMultiRoleUsages request. The method always
 // closes the http.Response Body.
-func (client HostingEnvironmentsClient) GetHostingEnvironmentMultiRoleUsagesResponder(resp *http.Response) (result UsageCollection, ae error) {
-	ae = autorest.Respond(
+func (client HostingEnvironmentsClient) GetHostingEnvironmentMultiRoleUsagesResponder(resp *http.Response) (result UsageCollection, err error) {
+	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -970,7 +950,7 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentMultiRoleUsagesResp
 // resourceGroupName is name of resource group name is name of
 // hostingEnvironment (App Service Environment) operationID is operation
 // identifier GUID
-func (client HostingEnvironmentsClient) GetHostingEnvironmentOperation(resourceGroupName string, name string, operationID string) (result ObjectSet, ae error) {
+func (client HostingEnvironmentsClient) GetHostingEnvironmentOperation(resourceGroupName string, name string, operationID string) (result ObjectSet, err error) {
 	req, err := client.GetHostingEnvironmentOperationPreparer(resourceGroupName, name, operationID)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "GetHostingEnvironmentOperation", nil, "Failure preparing request")
@@ -984,7 +964,7 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentOperation(resourceG
 
 	result, err = client.GetHostingEnvironmentOperationResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "GetHostingEnvironmentOperation", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "GetHostingEnvironmentOperation", resp, "Failure responding to request")
 	}
 
 	return
@@ -1015,13 +995,13 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentOperationPreparer(r
 // GetHostingEnvironmentOperationSender sends the GetHostingEnvironmentOperation request. The method will close the
 // http.Response Body if it receives an error.
 func (client HostingEnvironmentsClient) GetHostingEnvironmentOperationSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // GetHostingEnvironmentOperationResponder handles the response to the GetHostingEnvironmentOperation request. The method always
 // closes the http.Response Body.
-func (client HostingEnvironmentsClient) GetHostingEnvironmentOperationResponder(resp *http.Response) (result ObjectSet, ae error) {
-	ae = autorest.Respond(
+func (client HostingEnvironmentsClient) GetHostingEnvironmentOperationResponder(resp *http.Response) (result ObjectSet, err error) {
+	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNotFound, http.StatusInternalServerError),
@@ -1036,7 +1016,7 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentOperationResponder(
 //
 // resourceGroupName is name of resource group name is name of
 // hostingEnvironment (App Service Environment)
-func (client HostingEnvironmentsClient) GetHostingEnvironmentOperations(resourceGroupName string, name string) (result ObjectSet, ae error) {
+func (client HostingEnvironmentsClient) GetHostingEnvironmentOperations(resourceGroupName string, name string) (result ObjectSet, err error) {
 	req, err := client.GetHostingEnvironmentOperationsPreparer(resourceGroupName, name)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "GetHostingEnvironmentOperations", nil, "Failure preparing request")
@@ -1050,7 +1030,7 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentOperations(resource
 
 	result, err = client.GetHostingEnvironmentOperationsResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "GetHostingEnvironmentOperations", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "GetHostingEnvironmentOperations", resp, "Failure responding to request")
 	}
 
 	return
@@ -1080,13 +1060,13 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentOperationsPreparer(
 // GetHostingEnvironmentOperationsSender sends the GetHostingEnvironmentOperations request. The method will close the
 // http.Response Body if it receives an error.
 func (client HostingEnvironmentsClient) GetHostingEnvironmentOperationsSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // GetHostingEnvironmentOperationsResponder handles the response to the GetHostingEnvironmentOperations request. The method always
 // closes the http.Response Body.
-func (client HostingEnvironmentsClient) GetHostingEnvironmentOperationsResponder(resp *http.Response) (result ObjectSet, ae error) {
-	ae = autorest.Respond(
+func (client HostingEnvironmentsClient) GetHostingEnvironmentOperationsResponder(resp *http.Response) (result ObjectSet, err error) {
+	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -1099,7 +1079,7 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentOperationsResponder
 // GetHostingEnvironments sends the get hosting environments request.
 //
 // resourceGroupName is name of resource group
-func (client HostingEnvironmentsClient) GetHostingEnvironments(resourceGroupName string) (result HostingEnvironmentCollection, ae error) {
+func (client HostingEnvironmentsClient) GetHostingEnvironments(resourceGroupName string) (result HostingEnvironmentCollection, err error) {
 	req, err := client.GetHostingEnvironmentsPreparer(resourceGroupName)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "GetHostingEnvironments", nil, "Failure preparing request")
@@ -1113,7 +1093,7 @@ func (client HostingEnvironmentsClient) GetHostingEnvironments(resourceGroupName
 
 	result, err = client.GetHostingEnvironmentsResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "GetHostingEnvironments", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "GetHostingEnvironments", resp, "Failure responding to request")
 	}
 
 	return
@@ -1142,13 +1122,13 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentsPreparer(resourceG
 // GetHostingEnvironmentsSender sends the GetHostingEnvironments request. The method will close the
 // http.Response Body if it receives an error.
 func (client HostingEnvironmentsClient) GetHostingEnvironmentsSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // GetHostingEnvironmentsResponder handles the response to the GetHostingEnvironments request. The method always
 // closes the http.Response Body.
-func (client HostingEnvironmentsClient) GetHostingEnvironmentsResponder(resp *http.Response) (result HostingEnvironmentCollection, ae error) {
-	ae = autorest.Respond(
+func (client HostingEnvironmentsClient) GetHostingEnvironmentsResponder(resp *http.Response) (result HostingEnvironmentCollection, err error) {
+	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -1163,7 +1143,7 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentsResponder(resp *ht
 //
 // resourceGroupName is name of resource group name is name of
 // hostingEnvironment (App Service Environment)
-func (client HostingEnvironmentsClient) GetHostingEnvironmentServerFarms(resourceGroupName string, name string) (result ServerFarmCollection, ae error) {
+func (client HostingEnvironmentsClient) GetHostingEnvironmentServerFarms(resourceGroupName string, name string) (result ServerFarmCollection, err error) {
 	req, err := client.GetHostingEnvironmentServerFarmsPreparer(resourceGroupName, name)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "GetHostingEnvironmentServerFarms", nil, "Failure preparing request")
@@ -1177,7 +1157,7 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentServerFarms(resourc
 
 	result, err = client.GetHostingEnvironmentServerFarmsResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "GetHostingEnvironmentServerFarms", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "GetHostingEnvironmentServerFarms", resp, "Failure responding to request")
 	}
 
 	return
@@ -1207,13 +1187,13 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentServerFarmsPreparer
 // GetHostingEnvironmentServerFarmsSender sends the GetHostingEnvironmentServerFarms request. The method will close the
 // http.Response Body if it receives an error.
 func (client HostingEnvironmentsClient) GetHostingEnvironmentServerFarmsSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // GetHostingEnvironmentServerFarmsResponder handles the response to the GetHostingEnvironmentServerFarms request. The method always
 // closes the http.Response Body.
-func (client HostingEnvironmentsClient) GetHostingEnvironmentServerFarmsResponder(resp *http.Response) (result ServerFarmCollection, ae error) {
-	ae = autorest.Respond(
+func (client HostingEnvironmentsClient) GetHostingEnvironmentServerFarmsResponder(resp *http.Response) (result ServerFarmCollection, err error) {
+	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -1228,7 +1208,7 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentServerFarmsResponde
 // resourceGroupName is name of resource group name is name of
 // hostingEnvironment (App Service Environment) propertiesToInclude is comma
 // separated list of site properties to include
-func (client HostingEnvironmentsClient) GetHostingEnvironmentSites(resourceGroupName string, name string, propertiesToInclude string) (result SiteCollection, ae error) {
+func (client HostingEnvironmentsClient) GetHostingEnvironmentSites(resourceGroupName string, name string, propertiesToInclude string) (result SiteCollection, err error) {
 	req, err := client.GetHostingEnvironmentSitesPreparer(resourceGroupName, name, propertiesToInclude)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "GetHostingEnvironmentSites", nil, "Failure preparing request")
@@ -1242,7 +1222,7 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentSites(resourceGroup
 
 	result, err = client.GetHostingEnvironmentSitesResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "GetHostingEnvironmentSites", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "GetHostingEnvironmentSites", resp, "Failure responding to request")
 	}
 
 	return
@@ -1275,13 +1255,13 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentSitesPreparer(resou
 // GetHostingEnvironmentSitesSender sends the GetHostingEnvironmentSites request. The method will close the
 // http.Response Body if it receives an error.
 func (client HostingEnvironmentsClient) GetHostingEnvironmentSitesSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // GetHostingEnvironmentSitesResponder handles the response to the GetHostingEnvironmentSites request. The method always
 // closes the http.Response Body.
-func (client HostingEnvironmentsClient) GetHostingEnvironmentSitesResponder(resp *http.Response) (result SiteCollection, ae error) {
-	ae = autorest.Respond(
+func (client HostingEnvironmentsClient) GetHostingEnvironmentSitesResponder(resp *http.Response) (result SiteCollection, err error) {
+	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -1300,7 +1280,7 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentSitesResponder(resp
 // Example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and
 // startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z'
 // and timeGrain eq duration'[Hour|Minute|Day]'.
-func (client HostingEnvironmentsClient) GetHostingEnvironmentUsages(resourceGroupName string, name string, filter string) (result CsmUsageQuotaCollection, ae error) {
+func (client HostingEnvironmentsClient) GetHostingEnvironmentUsages(resourceGroupName string, name string, filter string) (result CsmUsageQuotaCollection, err error) {
 	req, err := client.GetHostingEnvironmentUsagesPreparer(resourceGroupName, name, filter)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "GetHostingEnvironmentUsages", nil, "Failure preparing request")
@@ -1314,7 +1294,7 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentUsages(resourceGrou
 
 	result, err = client.GetHostingEnvironmentUsagesResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "GetHostingEnvironmentUsages", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "GetHostingEnvironmentUsages", resp, "Failure responding to request")
 	}
 
 	return
@@ -1347,13 +1327,13 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentUsagesPreparer(reso
 // GetHostingEnvironmentUsagesSender sends the GetHostingEnvironmentUsages request. The method will close the
 // http.Response Body if it receives an error.
 func (client HostingEnvironmentsClient) GetHostingEnvironmentUsagesSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // GetHostingEnvironmentUsagesResponder handles the response to the GetHostingEnvironmentUsages request. The method always
 // closes the http.Response Body.
-func (client HostingEnvironmentsClient) GetHostingEnvironmentUsagesResponder(resp *http.Response) (result CsmUsageQuotaCollection, ae error) {
-	ae = autorest.Respond(
+func (client HostingEnvironmentsClient) GetHostingEnvironmentUsagesResponder(resp *http.Response) (result CsmUsageQuotaCollection, err error) {
+	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -1367,7 +1347,7 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentUsagesResponder(res
 //
 // resourceGroupName is name of resource group name is name of
 // hostingEnvironment (App Service Environment)
-func (client HostingEnvironmentsClient) GetHostingEnvironmentVips(resourceGroupName string, name string) (result AddressResponse, ae error) {
+func (client HostingEnvironmentsClient) GetHostingEnvironmentVips(resourceGroupName string, name string) (result AddressResponse, err error) {
 	req, err := client.GetHostingEnvironmentVipsPreparer(resourceGroupName, name)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "GetHostingEnvironmentVips", nil, "Failure preparing request")
@@ -1381,7 +1361,7 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentVips(resourceGroupN
 
 	result, err = client.GetHostingEnvironmentVipsResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "GetHostingEnvironmentVips", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "GetHostingEnvironmentVips", resp, "Failure responding to request")
 	}
 
 	return
@@ -1411,13 +1391,13 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentVipsPreparer(resour
 // GetHostingEnvironmentVipsSender sends the GetHostingEnvironmentVips request. The method will close the
 // http.Response Body if it receives an error.
 func (client HostingEnvironmentsClient) GetHostingEnvironmentVipsSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // GetHostingEnvironmentVipsResponder handles the response to the GetHostingEnvironmentVips request. The method always
 // closes the http.Response Body.
-func (client HostingEnvironmentsClient) GetHostingEnvironmentVipsResponder(resp *http.Response) (result AddressResponse, ae error) {
-	ae = autorest.Respond(
+func (client HostingEnvironmentsClient) GetHostingEnvironmentVipsResponder(resp *http.Response) (result AddressResponse, err error) {
+	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -1432,7 +1412,7 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentVipsResponder(resp 
 //
 // resourceGroupName is name of resource group name is name of
 // hostingEnvironment (App Service Environment)
-func (client HostingEnvironmentsClient) GetHostingEnvironmentWebHostingPlans(resourceGroupName string, name string) (result ServerFarmCollection, ae error) {
+func (client HostingEnvironmentsClient) GetHostingEnvironmentWebHostingPlans(resourceGroupName string, name string) (result ServerFarmCollection, err error) {
 	req, err := client.GetHostingEnvironmentWebHostingPlansPreparer(resourceGroupName, name)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "GetHostingEnvironmentWebHostingPlans", nil, "Failure preparing request")
@@ -1446,7 +1426,7 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentWebHostingPlans(res
 
 	result, err = client.GetHostingEnvironmentWebHostingPlansResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "GetHostingEnvironmentWebHostingPlans", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "GetHostingEnvironmentWebHostingPlans", resp, "Failure responding to request")
 	}
 
 	return
@@ -1476,13 +1456,13 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentWebHostingPlansPrep
 // GetHostingEnvironmentWebHostingPlansSender sends the GetHostingEnvironmentWebHostingPlans request. The method will close the
 // http.Response Body if it receives an error.
 func (client HostingEnvironmentsClient) GetHostingEnvironmentWebHostingPlansSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // GetHostingEnvironmentWebHostingPlansResponder handles the response to the GetHostingEnvironmentWebHostingPlans request. The method always
 // closes the http.Response Body.
-func (client HostingEnvironmentsClient) GetHostingEnvironmentWebHostingPlansResponder(resp *http.Response) (result ServerFarmCollection, ae error) {
-	ae = autorest.Respond(
+func (client HostingEnvironmentsClient) GetHostingEnvironmentWebHostingPlansResponder(resp *http.Response) (result ServerFarmCollection, err error) {
+	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -1498,7 +1478,7 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentWebHostingPlansResp
 // resourceGroupName is name of resource group name is name of
 // hostingEnvironment (App Service Environment) workerPoolName is name of
 // worker pool
-func (client HostingEnvironmentsClient) GetHostingEnvironmentWebWorkerMetricDefinitions(resourceGroupName string, name string, workerPoolName string) (result MetricDefinitionCollection, ae error) {
+func (client HostingEnvironmentsClient) GetHostingEnvironmentWebWorkerMetricDefinitions(resourceGroupName string, name string, workerPoolName string) (result MetricDefinitionCollection, err error) {
 	req, err := client.GetHostingEnvironmentWebWorkerMetricDefinitionsPreparer(resourceGroupName, name, workerPoolName)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "GetHostingEnvironmentWebWorkerMetricDefinitions", nil, "Failure preparing request")
@@ -1512,7 +1492,7 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentWebWorkerMetricDefi
 
 	result, err = client.GetHostingEnvironmentWebWorkerMetricDefinitionsResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "GetHostingEnvironmentWebWorkerMetricDefinitions", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "GetHostingEnvironmentWebWorkerMetricDefinitions", resp, "Failure responding to request")
 	}
 
 	return
@@ -1543,13 +1523,13 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentWebWorkerMetricDefi
 // GetHostingEnvironmentWebWorkerMetricDefinitionsSender sends the GetHostingEnvironmentWebWorkerMetricDefinitions request. The method will close the
 // http.Response Body if it receives an error.
 func (client HostingEnvironmentsClient) GetHostingEnvironmentWebWorkerMetricDefinitionsSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // GetHostingEnvironmentWebWorkerMetricDefinitionsResponder handles the response to the GetHostingEnvironmentWebWorkerMetricDefinitions request. The method always
 // closes the http.Response Body.
-func (client HostingEnvironmentsClient) GetHostingEnvironmentWebWorkerMetricDefinitionsResponder(resp *http.Response) (result MetricDefinitionCollection, ae error) {
-	ae = autorest.Respond(
+func (client HostingEnvironmentsClient) GetHostingEnvironmentWebWorkerMetricDefinitionsResponder(resp *http.Response) (result MetricDefinitionCollection, err error) {
+	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -1569,7 +1549,7 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentWebWorkerMetricDefi
 // Example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and
 // startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z'
 // and timeGrain eq duration'[Hour|Minute|Day]'.
-func (client HostingEnvironmentsClient) GetHostingEnvironmentWebWorkerMetrics(resourceGroupName string, name string, workerPoolName string, details *bool, filter string) (result ResourceMetricCollection, ae error) {
+func (client HostingEnvironmentsClient) GetHostingEnvironmentWebWorkerMetrics(resourceGroupName string, name string, workerPoolName string, details *bool, filter string) (result ResourceMetricCollection, err error) {
 	req, err := client.GetHostingEnvironmentWebWorkerMetricsPreparer(resourceGroupName, name, workerPoolName, details, filter)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "GetHostingEnvironmentWebWorkerMetrics", nil, "Failure preparing request")
@@ -1583,7 +1563,7 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentWebWorkerMetrics(re
 
 	result, err = client.GetHostingEnvironmentWebWorkerMetricsResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "GetHostingEnvironmentWebWorkerMetrics", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "GetHostingEnvironmentWebWorkerMetrics", resp, "Failure responding to request")
 	}
 
 	return
@@ -1620,13 +1600,13 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentWebWorkerMetricsPre
 // GetHostingEnvironmentWebWorkerMetricsSender sends the GetHostingEnvironmentWebWorkerMetrics request. The method will close the
 // http.Response Body if it receives an error.
 func (client HostingEnvironmentsClient) GetHostingEnvironmentWebWorkerMetricsSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // GetHostingEnvironmentWebWorkerMetricsResponder handles the response to the GetHostingEnvironmentWebWorkerMetrics request. The method always
 // closes the http.Response Body.
-func (client HostingEnvironmentsClient) GetHostingEnvironmentWebWorkerMetricsResponder(resp *http.Response) (result ResourceMetricCollection, ae error) {
-	ae = autorest.Respond(
+func (client HostingEnvironmentsClient) GetHostingEnvironmentWebWorkerMetricsResponder(resp *http.Response) (result ResourceMetricCollection, err error) {
+	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -1642,7 +1622,7 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentWebWorkerMetricsRes
 // resourceGroupName is name of resource group name is name of
 // hostingEnvironment (App Service Environment) workerPoolName is name of
 // worker pool
-func (client HostingEnvironmentsClient) GetHostingEnvironmentWebWorkerUsages(resourceGroupName string, name string, workerPoolName string) (result UsageCollection, ae error) {
+func (client HostingEnvironmentsClient) GetHostingEnvironmentWebWorkerUsages(resourceGroupName string, name string, workerPoolName string) (result UsageCollection, err error) {
 	req, err := client.GetHostingEnvironmentWebWorkerUsagesPreparer(resourceGroupName, name, workerPoolName)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "GetHostingEnvironmentWebWorkerUsages", nil, "Failure preparing request")
@@ -1656,7 +1636,7 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentWebWorkerUsages(res
 
 	result, err = client.GetHostingEnvironmentWebWorkerUsagesResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "GetHostingEnvironmentWebWorkerUsages", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "GetHostingEnvironmentWebWorkerUsages", resp, "Failure responding to request")
 	}
 
 	return
@@ -1687,13 +1667,13 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentWebWorkerUsagesPrep
 // GetHostingEnvironmentWebWorkerUsagesSender sends the GetHostingEnvironmentWebWorkerUsages request. The method will close the
 // http.Response Body if it receives an error.
 func (client HostingEnvironmentsClient) GetHostingEnvironmentWebWorkerUsagesSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // GetHostingEnvironmentWebWorkerUsagesResponder handles the response to the GetHostingEnvironmentWebWorkerUsages request. The method always
 // closes the http.Response Body.
-func (client HostingEnvironmentsClient) GetHostingEnvironmentWebWorkerUsagesResponder(resp *http.Response) (result UsageCollection, ae error) {
-	ae = autorest.Respond(
+func (client HostingEnvironmentsClient) GetHostingEnvironmentWebWorkerUsagesResponder(resp *http.Response) (result UsageCollection, err error) {
+	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -1707,7 +1687,7 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentWebWorkerUsagesResp
 //
 // resourceGroupName is name of resource group name is name of
 // hostingEnvironment (App Service Environment)
-func (client HostingEnvironmentsClient) GetMultiRolePool(resourceGroupName string, name string) (result WorkerPool, ae error) {
+func (client HostingEnvironmentsClient) GetMultiRolePool(resourceGroupName string, name string) (result WorkerPool, err error) {
 	req, err := client.GetMultiRolePoolPreparer(resourceGroupName, name)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "GetMultiRolePool", nil, "Failure preparing request")
@@ -1721,7 +1701,7 @@ func (client HostingEnvironmentsClient) GetMultiRolePool(resourceGroupName strin
 
 	result, err = client.GetMultiRolePoolResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "GetMultiRolePool", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "GetMultiRolePool", resp, "Failure responding to request")
 	}
 
 	return
@@ -1751,13 +1731,13 @@ func (client HostingEnvironmentsClient) GetMultiRolePoolPreparer(resourceGroupNa
 // GetMultiRolePoolSender sends the GetMultiRolePool request. The method will close the
 // http.Response Body if it receives an error.
 func (client HostingEnvironmentsClient) GetMultiRolePoolSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // GetMultiRolePoolResponder handles the response to the GetMultiRolePool request. The method always
 // closes the http.Response Body.
-func (client HostingEnvironmentsClient) GetMultiRolePoolResponder(resp *http.Response) (result WorkerPool, ae error) {
-	ae = autorest.Respond(
+func (client HostingEnvironmentsClient) GetMultiRolePoolResponder(resp *http.Response) (result WorkerPool, err error) {
+	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -1773,7 +1753,7 @@ func (client HostingEnvironmentsClient) GetMultiRolePoolResponder(resp *http.Res
 // resourceGroupName is name of resource group name is name of
 // hostingEnvironment (App Service Environment) instance is name of instance
 // in the multiRole pool&gt;
-func (client HostingEnvironmentsClient) GetMultiRolePoolInstanceMetricDefinitions(resourceGroupName string, name string, instance string) (result ObjectSet, ae error) {
+func (client HostingEnvironmentsClient) GetMultiRolePoolInstanceMetricDefinitions(resourceGroupName string, name string, instance string) (result ObjectSet, err error) {
 	req, err := client.GetMultiRolePoolInstanceMetricDefinitionsPreparer(resourceGroupName, name, instance)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "GetMultiRolePoolInstanceMetricDefinitions", nil, "Failure preparing request")
@@ -1787,7 +1767,7 @@ func (client HostingEnvironmentsClient) GetMultiRolePoolInstanceMetricDefinition
 
 	result, err = client.GetMultiRolePoolInstanceMetricDefinitionsResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "GetMultiRolePoolInstanceMetricDefinitions", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "GetMultiRolePoolInstanceMetricDefinitions", resp, "Failure responding to request")
 	}
 
 	return
@@ -1818,13 +1798,13 @@ func (client HostingEnvironmentsClient) GetMultiRolePoolInstanceMetricDefinition
 // GetMultiRolePoolInstanceMetricDefinitionsSender sends the GetMultiRolePoolInstanceMetricDefinitions request. The method will close the
 // http.Response Body if it receives an error.
 func (client HostingEnvironmentsClient) GetMultiRolePoolInstanceMetricDefinitionsSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // GetMultiRolePoolInstanceMetricDefinitionsResponder handles the response to the GetMultiRolePoolInstanceMetricDefinitions request. The method always
 // closes the http.Response Body.
-func (client HostingEnvironmentsClient) GetMultiRolePoolInstanceMetricDefinitionsResponder(resp *http.Response) (result ObjectSet, ae error) {
-	ae = autorest.Respond(
+func (client HostingEnvironmentsClient) GetMultiRolePoolInstanceMetricDefinitionsResponder(resp *http.Response) (result ObjectSet, err error) {
+	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -1840,7 +1820,7 @@ func (client HostingEnvironmentsClient) GetMultiRolePoolInstanceMetricDefinition
 // resourceGroupName is name of resource group name is name of
 // hostingEnvironment (App Service Environment) instance is name of instance
 // in the multiRole pool details is include instance details
-func (client HostingEnvironmentsClient) GetMultiRolePoolInstanceMetrics(resourceGroupName string, name string, instance string, details *bool) (result ObjectSet, ae error) {
+func (client HostingEnvironmentsClient) GetMultiRolePoolInstanceMetrics(resourceGroupName string, name string, instance string, details *bool) (result ObjectSet, err error) {
 	req, err := client.GetMultiRolePoolInstanceMetricsPreparer(resourceGroupName, name, instance, details)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "GetMultiRolePoolInstanceMetrics", nil, "Failure preparing request")
@@ -1854,7 +1834,7 @@ func (client HostingEnvironmentsClient) GetMultiRolePoolInstanceMetrics(resource
 
 	result, err = client.GetMultiRolePoolInstanceMetricsResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "GetMultiRolePoolInstanceMetrics", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "GetMultiRolePoolInstanceMetrics", resp, "Failure responding to request")
 	}
 
 	return
@@ -1888,13 +1868,13 @@ func (client HostingEnvironmentsClient) GetMultiRolePoolInstanceMetricsPreparer(
 // GetMultiRolePoolInstanceMetricsSender sends the GetMultiRolePoolInstanceMetrics request. The method will close the
 // http.Response Body if it receives an error.
 func (client HostingEnvironmentsClient) GetMultiRolePoolInstanceMetricsSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // GetMultiRolePoolInstanceMetricsResponder handles the response to the GetMultiRolePoolInstanceMetrics request. The method always
 // closes the http.Response Body.
-func (client HostingEnvironmentsClient) GetMultiRolePoolInstanceMetricsResponder(resp *http.Response) (result ObjectSet, ae error) {
-	ae = autorest.Respond(
+func (client HostingEnvironmentsClient) GetMultiRolePoolInstanceMetricsResponder(resp *http.Response) (result ObjectSet, err error) {
+	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -1908,7 +1888,7 @@ func (client HostingEnvironmentsClient) GetMultiRolePoolInstanceMetricsResponder
 //
 // resourceGroupName is name of resource group name is name of
 // hostingEnvironment (App Service Environment)
-func (client HostingEnvironmentsClient) GetMultiRolePools(resourceGroupName string, name string) (result WorkerPoolCollection, ae error) {
+func (client HostingEnvironmentsClient) GetMultiRolePools(resourceGroupName string, name string) (result WorkerPoolCollection, err error) {
 	req, err := client.GetMultiRolePoolsPreparer(resourceGroupName, name)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "GetMultiRolePools", nil, "Failure preparing request")
@@ -1922,7 +1902,7 @@ func (client HostingEnvironmentsClient) GetMultiRolePools(resourceGroupName stri
 
 	result, err = client.GetMultiRolePoolsResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "GetMultiRolePools", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "GetMultiRolePools", resp, "Failure responding to request")
 	}
 
 	return
@@ -1952,13 +1932,13 @@ func (client HostingEnvironmentsClient) GetMultiRolePoolsPreparer(resourceGroupN
 // GetMultiRolePoolsSender sends the GetMultiRolePools request. The method will close the
 // http.Response Body if it receives an error.
 func (client HostingEnvironmentsClient) GetMultiRolePoolsSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // GetMultiRolePoolsResponder handles the response to the GetMultiRolePools request. The method always
 // closes the http.Response Body.
-func (client HostingEnvironmentsClient) GetMultiRolePoolsResponder(resp *http.Response) (result WorkerPoolCollection, ae error) {
-	ae = autorest.Respond(
+func (client HostingEnvironmentsClient) GetMultiRolePoolsResponder(resp *http.Response) (result WorkerPoolCollection, err error) {
+	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -1972,7 +1952,7 @@ func (client HostingEnvironmentsClient) GetMultiRolePoolsResponder(resp *http.Re
 //
 // resourceGroupName is name of resource group name is name of
 // hostingEnvironment (App Service Environment)
-func (client HostingEnvironmentsClient) GetMultiRolePoolSkus(resourceGroupName string, name string) (result SkuInfoCollection, ae error) {
+func (client HostingEnvironmentsClient) GetMultiRolePoolSkus(resourceGroupName string, name string) (result SkuInfoCollection, err error) {
 	req, err := client.GetMultiRolePoolSkusPreparer(resourceGroupName, name)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "GetMultiRolePoolSkus", nil, "Failure preparing request")
@@ -1986,7 +1966,7 @@ func (client HostingEnvironmentsClient) GetMultiRolePoolSkus(resourceGroupName s
 
 	result, err = client.GetMultiRolePoolSkusResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "GetMultiRolePoolSkus", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "GetMultiRolePoolSkus", resp, "Failure responding to request")
 	}
 
 	return
@@ -2016,13 +1996,13 @@ func (client HostingEnvironmentsClient) GetMultiRolePoolSkusPreparer(resourceGro
 // GetMultiRolePoolSkusSender sends the GetMultiRolePoolSkus request. The method will close the
 // http.Response Body if it receives an error.
 func (client HostingEnvironmentsClient) GetMultiRolePoolSkusSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // GetMultiRolePoolSkusResponder handles the response to the GetMultiRolePoolSkus request. The method always
 // closes the http.Response Body.
-func (client HostingEnvironmentsClient) GetMultiRolePoolSkusResponder(resp *http.Response) (result SkuInfoCollection, ae error) {
-	ae = autorest.Respond(
+func (client HostingEnvironmentsClient) GetMultiRolePoolSkusResponder(resp *http.Response) (result SkuInfoCollection, err error) {
+	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -2037,7 +2017,7 @@ func (client HostingEnvironmentsClient) GetMultiRolePoolSkusResponder(resp *http
 // resourceGroupName is name of resource group name is name of
 // hostingEnvironment (App Service Environment) workerPoolName is name of
 // worker pool
-func (client HostingEnvironmentsClient) GetWorkerPool(resourceGroupName string, name string, workerPoolName string) (result WorkerPool, ae error) {
+func (client HostingEnvironmentsClient) GetWorkerPool(resourceGroupName string, name string, workerPoolName string) (result WorkerPool, err error) {
 	req, err := client.GetWorkerPoolPreparer(resourceGroupName, name, workerPoolName)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "GetWorkerPool", nil, "Failure preparing request")
@@ -2051,7 +2031,7 @@ func (client HostingEnvironmentsClient) GetWorkerPool(resourceGroupName string, 
 
 	result, err = client.GetWorkerPoolResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "GetWorkerPool", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "GetWorkerPool", resp, "Failure responding to request")
 	}
 
 	return
@@ -2082,13 +2062,13 @@ func (client HostingEnvironmentsClient) GetWorkerPoolPreparer(resourceGroupName 
 // GetWorkerPoolSender sends the GetWorkerPool request. The method will close the
 // http.Response Body if it receives an error.
 func (client HostingEnvironmentsClient) GetWorkerPoolSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // GetWorkerPoolResponder handles the response to the GetWorkerPool request. The method always
 // closes the http.Response Body.
-func (client HostingEnvironmentsClient) GetWorkerPoolResponder(resp *http.Response) (result WorkerPool, ae error) {
-	ae = autorest.Respond(
+func (client HostingEnvironmentsClient) GetWorkerPoolResponder(resp *http.Response) (result WorkerPool, err error) {
+	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -2104,7 +2084,7 @@ func (client HostingEnvironmentsClient) GetWorkerPoolResponder(resp *http.Respon
 // resourceGroupName is name of resource group name is name of
 // hostingEnvironment (App Service Environment) workerPoolName is name of
 // worker pool instance is name of instance in the worker pool
-func (client HostingEnvironmentsClient) GetWorkerPoolInstanceMetricDefinitions(resourceGroupName string, name string, workerPoolName string, instance string) (result ObjectSet, ae error) {
+func (client HostingEnvironmentsClient) GetWorkerPoolInstanceMetricDefinitions(resourceGroupName string, name string, workerPoolName string, instance string) (result ObjectSet, err error) {
 	req, err := client.GetWorkerPoolInstanceMetricDefinitionsPreparer(resourceGroupName, name, workerPoolName, instance)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "GetWorkerPoolInstanceMetricDefinitions", nil, "Failure preparing request")
@@ -2118,7 +2098,7 @@ func (client HostingEnvironmentsClient) GetWorkerPoolInstanceMetricDefinitions(r
 
 	result, err = client.GetWorkerPoolInstanceMetricDefinitionsResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "GetWorkerPoolInstanceMetricDefinitions", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "GetWorkerPoolInstanceMetricDefinitions", resp, "Failure responding to request")
 	}
 
 	return
@@ -2150,13 +2130,13 @@ func (client HostingEnvironmentsClient) GetWorkerPoolInstanceMetricDefinitionsPr
 // GetWorkerPoolInstanceMetricDefinitionsSender sends the GetWorkerPoolInstanceMetricDefinitions request. The method will close the
 // http.Response Body if it receives an error.
 func (client HostingEnvironmentsClient) GetWorkerPoolInstanceMetricDefinitionsSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // GetWorkerPoolInstanceMetricDefinitionsResponder handles the response to the GetWorkerPoolInstanceMetricDefinitions request. The method always
 // closes the http.Response Body.
-func (client HostingEnvironmentsClient) GetWorkerPoolInstanceMetricDefinitionsResponder(resp *http.Response) (result ObjectSet, ae error) {
-	ae = autorest.Respond(
+func (client HostingEnvironmentsClient) GetWorkerPoolInstanceMetricDefinitionsResponder(resp *http.Response) (result ObjectSet, err error) {
+	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -2177,7 +2157,7 @@ func (client HostingEnvironmentsClient) GetWorkerPoolInstanceMetricDefinitionsRe
 // eq 'Metric1' or name.value eq 'Metric2') and startTime eq
 // '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain
 // eq duration'[Hour|Minute|Day]'.
-func (client HostingEnvironmentsClient) GetWorkerPoolInstanceMetrics(resourceGroupName string, name string, workerPoolName string, instance string, details *bool, filter string) (result ObjectSet, ae error) {
+func (client HostingEnvironmentsClient) GetWorkerPoolInstanceMetrics(resourceGroupName string, name string, workerPoolName string, instance string, details *bool, filter string) (result ObjectSet, err error) {
 	req, err := client.GetWorkerPoolInstanceMetricsPreparer(resourceGroupName, name, workerPoolName, instance, details, filter)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "GetWorkerPoolInstanceMetrics", nil, "Failure preparing request")
@@ -2191,7 +2171,7 @@ func (client HostingEnvironmentsClient) GetWorkerPoolInstanceMetrics(resourceGro
 
 	result, err = client.GetWorkerPoolInstanceMetricsResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "GetWorkerPoolInstanceMetrics", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "GetWorkerPoolInstanceMetrics", resp, "Failure responding to request")
 	}
 
 	return
@@ -2229,13 +2209,13 @@ func (client HostingEnvironmentsClient) GetWorkerPoolInstanceMetricsPreparer(res
 // GetWorkerPoolInstanceMetricsSender sends the GetWorkerPoolInstanceMetrics request. The method will close the
 // http.Response Body if it receives an error.
 func (client HostingEnvironmentsClient) GetWorkerPoolInstanceMetricsSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // GetWorkerPoolInstanceMetricsResponder handles the response to the GetWorkerPoolInstanceMetrics request. The method always
 // closes the http.Response Body.
-func (client HostingEnvironmentsClient) GetWorkerPoolInstanceMetricsResponder(resp *http.Response) (result ObjectSet, ae error) {
-	ae = autorest.Respond(
+func (client HostingEnvironmentsClient) GetWorkerPoolInstanceMetricsResponder(resp *http.Response) (result ObjectSet, err error) {
+	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -2249,7 +2229,7 @@ func (client HostingEnvironmentsClient) GetWorkerPoolInstanceMetricsResponder(re
 //
 // resourceGroupName is name of resource group name is name of
 // hostingEnvironment (App Service Environment)
-func (client HostingEnvironmentsClient) GetWorkerPools(resourceGroupName string, name string) (result WorkerPoolCollection, ae error) {
+func (client HostingEnvironmentsClient) GetWorkerPools(resourceGroupName string, name string) (result WorkerPoolCollection, err error) {
 	req, err := client.GetWorkerPoolsPreparer(resourceGroupName, name)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "GetWorkerPools", nil, "Failure preparing request")
@@ -2263,7 +2243,7 @@ func (client HostingEnvironmentsClient) GetWorkerPools(resourceGroupName string,
 
 	result, err = client.GetWorkerPoolsResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "GetWorkerPools", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "GetWorkerPools", resp, "Failure responding to request")
 	}
 
 	return
@@ -2293,13 +2273,13 @@ func (client HostingEnvironmentsClient) GetWorkerPoolsPreparer(resourceGroupName
 // GetWorkerPoolsSender sends the GetWorkerPools request. The method will close the
 // http.Response Body if it receives an error.
 func (client HostingEnvironmentsClient) GetWorkerPoolsSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // GetWorkerPoolsResponder handles the response to the GetWorkerPools request. The method always
 // closes the http.Response Body.
-func (client HostingEnvironmentsClient) GetWorkerPoolsResponder(resp *http.Response) (result WorkerPoolCollection, ae error) {
-	ae = autorest.Respond(
+func (client HostingEnvironmentsClient) GetWorkerPoolsResponder(resp *http.Response) (result WorkerPoolCollection, err error) {
+	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -2314,7 +2294,7 @@ func (client HostingEnvironmentsClient) GetWorkerPoolsResponder(resp *http.Respo
 // resourceGroupName is name of resource group name is name of
 // hostingEnvironment (App Service Environment) workerPoolName is name of
 // worker pool
-func (client HostingEnvironmentsClient) GetWorkerPoolSkus(resourceGroupName string, name string, workerPoolName string) (result SkuInfoCollection, ae error) {
+func (client HostingEnvironmentsClient) GetWorkerPoolSkus(resourceGroupName string, name string, workerPoolName string) (result SkuInfoCollection, err error) {
 	req, err := client.GetWorkerPoolSkusPreparer(resourceGroupName, name, workerPoolName)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "GetWorkerPoolSkus", nil, "Failure preparing request")
@@ -2328,7 +2308,7 @@ func (client HostingEnvironmentsClient) GetWorkerPoolSkus(resourceGroupName stri
 
 	result, err = client.GetWorkerPoolSkusResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "GetWorkerPoolSkus", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "GetWorkerPoolSkus", resp, "Failure responding to request")
 	}
 
 	return
@@ -2359,13 +2339,13 @@ func (client HostingEnvironmentsClient) GetWorkerPoolSkusPreparer(resourceGroupN
 // GetWorkerPoolSkusSender sends the GetWorkerPoolSkus request. The method will close the
 // http.Response Body if it receives an error.
 func (client HostingEnvironmentsClient) GetWorkerPoolSkusSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // GetWorkerPoolSkusResponder handles the response to the GetWorkerPoolSkus request. The method always
 // closes the http.Response Body.
-func (client HostingEnvironmentsClient) GetWorkerPoolSkusResponder(resp *http.Response) (result SkuInfoCollection, ae error) {
-	ae = autorest.Respond(
+func (client HostingEnvironmentsClient) GetWorkerPoolSkusResponder(resp *http.Response) (result SkuInfoCollection, err error) {
+	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -2379,7 +2359,7 @@ func (client HostingEnvironmentsClient) GetWorkerPoolSkusResponder(resp *http.Re
 //
 // resourceGroupName is name of resource group name is name of
 // hostingEnvironment (App Service Environment)
-func (client HostingEnvironmentsClient) RebootHostingEnvironment(resourceGroupName string, name string) (result ObjectSet, ae error) {
+func (client HostingEnvironmentsClient) RebootHostingEnvironment(resourceGroupName string, name string) (result ObjectSet, err error) {
 	req, err := client.RebootHostingEnvironmentPreparer(resourceGroupName, name)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "RebootHostingEnvironment", nil, "Failure preparing request")
@@ -2393,7 +2373,7 @@ func (client HostingEnvironmentsClient) RebootHostingEnvironment(resourceGroupNa
 
 	result, err = client.RebootHostingEnvironmentResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "RebootHostingEnvironment", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "RebootHostingEnvironment", resp, "Failure responding to request")
 	}
 
 	return
@@ -2423,13 +2403,13 @@ func (client HostingEnvironmentsClient) RebootHostingEnvironmentPreparer(resourc
 // RebootHostingEnvironmentSender sends the RebootHostingEnvironment request. The method will close the
 // http.Response Body if it receives an error.
 func (client HostingEnvironmentsClient) RebootHostingEnvironmentSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // RebootHostingEnvironmentResponder handles the response to the RebootHostingEnvironment request. The method always
 // closes the http.Response Body.
-func (client HostingEnvironmentsClient) RebootHostingEnvironmentResponder(resp *http.Response) (result ObjectSet, ae error) {
-	ae = autorest.Respond(
+func (client HostingEnvironmentsClient) RebootHostingEnvironmentResponder(resp *http.Response) (result ObjectSet, err error) {
+	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusBadRequest, http.StatusNotFound, http.StatusConflict),
@@ -2443,7 +2423,7 @@ func (client HostingEnvironmentsClient) RebootHostingEnvironmentResponder(resp *
 //
 // resourceGroupName is name of resource group name is name of
 // hostingEnvironment (App Service Environment)
-func (client HostingEnvironmentsClient) ResumeHostingEnvironment(resourceGroupName string, name string) (result autorest.Response, ae error) {
+func (client HostingEnvironmentsClient) ResumeHostingEnvironment(resourceGroupName string, name string) (result autorest.Response, err error) {
 	req, err := client.ResumeHostingEnvironmentPreparer(resourceGroupName, name)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "ResumeHostingEnvironment", nil, "Failure preparing request")
@@ -2457,7 +2437,7 @@ func (client HostingEnvironmentsClient) ResumeHostingEnvironment(resourceGroupNa
 
 	result, err = client.ResumeHostingEnvironmentResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "ResumeHostingEnvironment", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "ResumeHostingEnvironment", resp, "Failure responding to request")
 	}
 
 	return
@@ -2487,21 +2467,16 @@ func (client HostingEnvironmentsClient) ResumeHostingEnvironmentPreparer(resourc
 // ResumeHostingEnvironmentSender sends the ResumeHostingEnvironment request. The method will close the
 // http.Response Body if it receives an error.
 func (client HostingEnvironmentsClient) ResumeHostingEnvironmentSender(req *http.Request) (*http.Response, error) {
-	resp, err := client.Send(req)
-	if err == nil && azure.ResponseIsLongRunning(resp) {
-		req, err := azure.NewAsyncPollingRequest(resp, client.Client)
-		if err == nil {
-			resp, err = autorest.SendWithSender(client, req,
-				azure.WithAsyncPolling(autorest.DefaultPollingDelay))
-		}
-	}
-	return resp, err
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoPollForAsynchronous(autorest.DefaultPollingDuration,
+			autorest.DefaultPollingDelay))
 }
 
 // ResumeHostingEnvironmentResponder handles the response to the ResumeHostingEnvironment request. The method always
 // closes the http.Response Body.
-func (client HostingEnvironmentsClient) ResumeHostingEnvironmentResponder(resp *http.Response) (result autorest.Response, ae error) {
-	ae = autorest.Respond(
+func (client HostingEnvironmentsClient) ResumeHostingEnvironmentResponder(resp *http.Response) (result autorest.Response, err error) {
+	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
@@ -2514,7 +2489,7 @@ func (client HostingEnvironmentsClient) ResumeHostingEnvironmentResponder(resp *
 //
 // resourceGroupName is name of resource group name is name of
 // hostingEnvironment (App Service Environment)
-func (client HostingEnvironmentsClient) SuspendHostingEnvironment(resourceGroupName string, name string) (result autorest.Response, ae error) {
+func (client HostingEnvironmentsClient) SuspendHostingEnvironment(resourceGroupName string, name string) (result autorest.Response, err error) {
 	req, err := client.SuspendHostingEnvironmentPreparer(resourceGroupName, name)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "SuspendHostingEnvironment", nil, "Failure preparing request")
@@ -2528,7 +2503,7 @@ func (client HostingEnvironmentsClient) SuspendHostingEnvironment(resourceGroupN
 
 	result, err = client.SuspendHostingEnvironmentResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "SuspendHostingEnvironment", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "SuspendHostingEnvironment", resp, "Failure responding to request")
 	}
 
 	return
@@ -2558,21 +2533,16 @@ func (client HostingEnvironmentsClient) SuspendHostingEnvironmentPreparer(resour
 // SuspendHostingEnvironmentSender sends the SuspendHostingEnvironment request. The method will close the
 // http.Response Body if it receives an error.
 func (client HostingEnvironmentsClient) SuspendHostingEnvironmentSender(req *http.Request) (*http.Response, error) {
-	resp, err := client.Send(req)
-	if err == nil && azure.ResponseIsLongRunning(resp) {
-		req, err := azure.NewAsyncPollingRequest(resp, client.Client)
-		if err == nil {
-			resp, err = autorest.SendWithSender(client, req,
-				azure.WithAsyncPolling(autorest.DefaultPollingDelay))
-		}
-	}
-	return resp, err
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoPollForAsynchronous(autorest.DefaultPollingDuration,
+			autorest.DefaultPollingDelay))
 }
 
 // SuspendHostingEnvironmentResponder handles the response to the SuspendHostingEnvironment request. The method always
 // closes the http.Response Body.
-func (client HostingEnvironmentsClient) SuspendHostingEnvironmentResponder(resp *http.Response) (result autorest.Response, ae error) {
-	ae = autorest.Respond(
+func (client HostingEnvironmentsClient) SuspendHostingEnvironmentResponder(resp *http.Response) (result autorest.Response, err error) {
+	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),

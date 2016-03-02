@@ -48,7 +48,7 @@ func NewAdminKeysClientWithBaseURI(baseURI string, subscriptionID string) AdminK
 // resourceGroupName is the name of the resource group within the current
 // subscription. serviceName is the name of the Search service for which to
 // list admin keys.
-func (client AdminKeysClient) List(resourceGroupName string, serviceName string) (result AdminKeyResult, ae error) {
+func (client AdminKeysClient) List(resourceGroupName string, serviceName string) (result AdminKeyResult, err error) {
 	req, err := client.ListPreparer(resourceGroupName, serviceName)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "search/AdminKeysClient", "List", nil, "Failure preparing request")
@@ -62,7 +62,7 @@ func (client AdminKeysClient) List(resourceGroupName string, serviceName string)
 
 	result, err = client.ListResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "search/AdminKeysClient", "List", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "search/AdminKeysClient", "List", resp, "Failure responding to request")
 	}
 
 	return
@@ -92,13 +92,13 @@ func (client AdminKeysClient) ListPreparer(resourceGroupName string, serviceName
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
 func (client AdminKeysClient) ListSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // ListResponder handles the response to the List request. The method always
 // closes the http.Response Body.
-func (client AdminKeysClient) ListResponder(resp *http.Response) (result AdminKeyResult, ae error) {
-	ae = autorest.Respond(
+func (client AdminKeysClient) ListResponder(resp *http.Response) (result AdminKeyResult, err error) {
+	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),

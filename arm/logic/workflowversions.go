@@ -47,7 +47,7 @@ func NewWorkflowVersionsClientWithBaseURI(baseURI string, subscriptionID string)
 //
 // resourceGroupName is the resource group name. workflowName is the workflow
 // name. versionID is the workflow versionId.
-func (client WorkflowVersionsClient) Get(resourceGroupName string, workflowName string, versionID string) (result WorkflowVersion, ae error) {
+func (client WorkflowVersionsClient) Get(resourceGroupName string, workflowName string, versionID string) (result WorkflowVersion, err error) {
 	req, err := client.GetPreparer(resourceGroupName, workflowName, versionID)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "logic/WorkflowVersionsClient", "Get", nil, "Failure preparing request")
@@ -61,7 +61,7 @@ func (client WorkflowVersionsClient) Get(resourceGroupName string, workflowName 
 
 	result, err = client.GetResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "logic/WorkflowVersionsClient", "Get", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "logic/WorkflowVersionsClient", "Get", resp, "Failure responding to request")
 	}
 
 	return
@@ -92,13 +92,13 @@ func (client WorkflowVersionsClient) GetPreparer(resourceGroupName string, workf
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client WorkflowVersionsClient) GetSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
-func (client WorkflowVersionsClient) GetResponder(resp *http.Response) (result WorkflowVersion, ae error) {
-	ae = autorest.Respond(
+func (client WorkflowVersionsClient) GetResponder(resp *http.Response) (result WorkflowVersion, err error) {
+	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),

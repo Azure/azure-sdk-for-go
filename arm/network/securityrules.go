@@ -54,7 +54,7 @@ func NewSecurityRulesClientWithBaseURI(baseURI string, subscriptionID string) Se
 // securityRuleName is the name of the security rule. securityRuleParameters
 // is parameters supplied to the create/update network security rule
 // operation
-func (client SecurityRulesClient) CreateOrUpdate(resourceGroupName string, networkSecurityGroupName string, securityRuleName string, securityRuleParameters SecurityRule) (result autorest.Response, ae error) {
+func (client SecurityRulesClient) CreateOrUpdate(resourceGroupName string, networkSecurityGroupName string, securityRuleName string, securityRuleParameters SecurityRule) (result autorest.Response, err error) {
 	req, err := client.CreateOrUpdatePreparer(resourceGroupName, networkSecurityGroupName, securityRuleName, securityRuleParameters)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "network/SecurityRulesClient", "CreateOrUpdate", nil, "Failure preparing request")
@@ -68,7 +68,7 @@ func (client SecurityRulesClient) CreateOrUpdate(resourceGroupName string, netwo
 
 	result, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "network/SecurityRulesClient", "CreateOrUpdate", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "network/SecurityRulesClient", "CreateOrUpdate", resp, "Failure responding to request")
 	}
 
 	return
@@ -100,21 +100,16 @@ func (client SecurityRulesClient) CreateOrUpdatePreparer(resourceGroupName strin
 // CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
 // http.Response Body if it receives an error.
 func (client SecurityRulesClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
-	resp, err := client.Send(req)
-	if err == nil && azure.ResponseIsLongRunning(resp) {
-		req, err := azure.NewAsyncPollingRequest(resp, client.Client)
-		if err == nil {
-			resp, err = autorest.SendWithSender(client, req,
-				azure.WithAsyncPolling(autorest.DefaultPollingDelay))
-		}
-	}
-	return resp, err
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoPollForAsynchronous(autorest.DefaultPollingDuration,
+			autorest.DefaultPollingDelay))
 }
 
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
 // closes the http.Response Body.
-func (client SecurityRulesClient) CreateOrUpdateResponder(resp *http.Response) (result autorest.Response, ae error) {
-	ae = autorest.Respond(
+func (client SecurityRulesClient) CreateOrUpdateResponder(resp *http.Response) (result autorest.Response, err error) {
+	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
@@ -129,7 +124,7 @@ func (client SecurityRulesClient) CreateOrUpdateResponder(resp *http.Response) (
 // resourceGroupName is the name of the resource group.
 // networkSecurityGroupName is the name of the network security group.
 // securityRuleName is the name of the security rule.
-func (client SecurityRulesClient) Delete(resourceGroupName string, networkSecurityGroupName string, securityRuleName string) (result autorest.Response, ae error) {
+func (client SecurityRulesClient) Delete(resourceGroupName string, networkSecurityGroupName string, securityRuleName string) (result autorest.Response, err error) {
 	req, err := client.DeletePreparer(resourceGroupName, networkSecurityGroupName, securityRuleName)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "network/SecurityRulesClient", "Delete", nil, "Failure preparing request")
@@ -143,7 +138,7 @@ func (client SecurityRulesClient) Delete(resourceGroupName string, networkSecuri
 
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "network/SecurityRulesClient", "Delete", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "network/SecurityRulesClient", "Delete", resp, "Failure responding to request")
 	}
 
 	return
@@ -174,21 +169,16 @@ func (client SecurityRulesClient) DeletePreparer(resourceGroupName string, netwo
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
 func (client SecurityRulesClient) DeleteSender(req *http.Request) (*http.Response, error) {
-	resp, err := client.Send(req)
-	if err == nil && azure.ResponseIsLongRunning(resp) {
-		req, err := azure.NewAsyncPollingRequest(resp, client.Client)
-		if err == nil {
-			resp, err = autorest.SendWithSender(client, req,
-				azure.WithAsyncPolling(autorest.DefaultPollingDelay))
-		}
-	}
-	return resp, err
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoPollForAsynchronous(autorest.DefaultPollingDuration,
+			autorest.DefaultPollingDelay))
 }
 
 // DeleteResponder handles the response to the Delete request. The method always
 // closes the http.Response Body.
-func (client SecurityRulesClient) DeleteResponder(resp *http.Response) (result autorest.Response, ae error) {
-	ae = autorest.Respond(
+func (client SecurityRulesClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
+	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusNoContent, http.StatusAccepted, http.StatusOK),
@@ -203,7 +193,7 @@ func (client SecurityRulesClient) DeleteResponder(resp *http.Response) (result a
 // resourceGroupName is the name of the resource group.
 // networkSecurityGroupName is the name of the network security group.
 // securityRuleName is the name of the security rule.
-func (client SecurityRulesClient) Get(resourceGroupName string, networkSecurityGroupName string, securityRuleName string) (result SecurityRule, ae error) {
+func (client SecurityRulesClient) Get(resourceGroupName string, networkSecurityGroupName string, securityRuleName string) (result SecurityRule, err error) {
 	req, err := client.GetPreparer(resourceGroupName, networkSecurityGroupName, securityRuleName)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "network/SecurityRulesClient", "Get", nil, "Failure preparing request")
@@ -217,7 +207,7 @@ func (client SecurityRulesClient) Get(resourceGroupName string, networkSecurityG
 
 	result, err = client.GetResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "network/SecurityRulesClient", "Get", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "network/SecurityRulesClient", "Get", resp, "Failure responding to request")
 	}
 
 	return
@@ -248,13 +238,13 @@ func (client SecurityRulesClient) GetPreparer(resourceGroupName string, networkS
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client SecurityRulesClient) GetSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
-func (client SecurityRulesClient) GetResponder(resp *http.Response) (result SecurityRule, ae error) {
-	ae = autorest.Respond(
+func (client SecurityRulesClient) GetResponder(resp *http.Response) (result SecurityRule, err error) {
+	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -269,7 +259,7 @@ func (client SecurityRulesClient) GetResponder(resp *http.Response) (result Secu
 //
 // resourceGroupName is the name of the resource group.
 // networkSecurityGroupName is the name of the network security group.
-func (client SecurityRulesClient) List(resourceGroupName string, networkSecurityGroupName string) (result SecurityRuleListResult, ae error) {
+func (client SecurityRulesClient) List(resourceGroupName string, networkSecurityGroupName string) (result SecurityRuleListResult, err error) {
 	req, err := client.ListPreparer(resourceGroupName, networkSecurityGroupName)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "network/SecurityRulesClient", "List", nil, "Failure preparing request")
@@ -283,7 +273,7 @@ func (client SecurityRulesClient) List(resourceGroupName string, networkSecurity
 
 	result, err = client.ListResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "network/SecurityRulesClient", "List", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "network/SecurityRulesClient", "List", resp, "Failure responding to request")
 	}
 
 	return
@@ -313,13 +303,13 @@ func (client SecurityRulesClient) ListPreparer(resourceGroupName string, network
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
 func (client SecurityRulesClient) ListSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // ListResponder handles the response to the List request. The method always
 // closes the http.Response Body.
-func (client SecurityRulesClient) ListResponder(resp *http.Response) (result SecurityRuleListResult, ae error) {
-	ae = autorest.Respond(
+func (client SecurityRulesClient) ListResponder(resp *http.Response) (result SecurityRuleListResult, err error) {
+	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -330,7 +320,7 @@ func (client SecurityRulesClient) ListResponder(resp *http.Response) (result Sec
 }
 
 // ListNextResults retrieves the next set of results, if any.
-func (client SecurityRulesClient) ListNextResults(lastResults SecurityRuleListResult) (result SecurityRuleListResult, ae error) {
+func (client SecurityRulesClient) ListNextResults(lastResults SecurityRuleListResult) (result SecurityRuleListResult, err error) {
 	req, err := lastResults.SecurityRuleListResultPreparer()
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "network/SecurityRulesClient", "List", nil, "Failure preparing next results request request")
@@ -347,7 +337,7 @@ func (client SecurityRulesClient) ListNextResults(lastResults SecurityRuleListRe
 
 	result, err = client.ListResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "network/SecurityRulesClient", "List", resp, "Failure responding to next results request request")
+		err = autorest.NewErrorWithError(err, "network/SecurityRulesClient", "List", resp, "Failure responding to next results request request")
 	}
 
 	return

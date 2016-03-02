@@ -212,7 +212,7 @@ type ContentHash struct {
 type ContentLink struct {
 	URI            *string                 `json:"uri,omitempty"`
 	ContentVersion *string                 `json:"contentVersion,omitempty"`
-	ContentSize    *int32                  `json:"contentSize,omitempty"`
+	ContentSize    *int64                  `json:"contentSize,omitempty"`
 	ContentHash    *ContentHash            `json:"contentHash,omitempty"`
 	Metadata       *map[string]interface{} `json:"metadata,omitempty"`
 }
@@ -558,7 +558,7 @@ type WorkflowTriggerProperties struct {
 // WorkflowTriggerRecurrence is
 type WorkflowTriggerRecurrence struct {
 	Frequency RecurrenceFrequency `json:"frequency,omitempty"`
-	Interval  *int                `json:"interval,omitempty"`
+	Interval  *int32              `json:"interval,omitempty"`
 	StartTime *date.Time          `json:"startTime,omitempty"`
 	TimeZone  *string             `json:"timeZone,omitempty"`
 }

@@ -47,7 +47,7 @@ func NewPolicyAssignmentsClientWithBaseURI(baseURI string, subscriptionID string
 //
 // scope is scope. policyAssignmentName is policy assignment name. parameters
 // is policy assignment.
-func (client PolicyAssignmentsClient) Create(scope string, policyAssignmentName string, parameters PolicyAssignment) (result PolicyAssignment, ae error) {
+func (client PolicyAssignmentsClient) Create(scope string, policyAssignmentName string, parameters PolicyAssignment) (result PolicyAssignment, err error) {
 	req, err := client.CreatePreparer(scope, policyAssignmentName, parameters)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "resources/PolicyAssignmentsClient", "Create", nil, "Failure preparing request")
@@ -61,7 +61,7 @@ func (client PolicyAssignmentsClient) Create(scope string, policyAssignmentName 
 
 	result, err = client.CreateResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "resources/PolicyAssignmentsClient", "Create", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "resources/PolicyAssignmentsClient", "Create", resp, "Failure responding to request")
 	}
 
 	return
@@ -92,13 +92,13 @@ func (client PolicyAssignmentsClient) CreatePreparer(scope string, policyAssignm
 // CreateSender sends the Create request. The method will close the
 // http.Response Body if it receives an error.
 func (client PolicyAssignmentsClient) CreateSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // CreateResponder handles the response to the Create request. The method always
 // closes the http.Response Body.
-func (client PolicyAssignmentsClient) CreateResponder(resp *http.Response) (result PolicyAssignment, ae error) {
-	ae = autorest.Respond(
+func (client PolicyAssignmentsClient) CreateResponder(resp *http.Response) (result PolicyAssignment, err error) {
+	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
@@ -111,7 +111,7 @@ func (client PolicyAssignmentsClient) CreateResponder(resp *http.Response) (resu
 // CreateByID create policy assignment by Id.
 //
 // policyAssignmentID is policy assignment Id parameters is policy assignment.
-func (client PolicyAssignmentsClient) CreateByID(policyAssignmentID string, parameters PolicyAssignment) (result PolicyAssignment, ae error) {
+func (client PolicyAssignmentsClient) CreateByID(policyAssignmentID string, parameters PolicyAssignment) (result PolicyAssignment, err error) {
 	req, err := client.CreateByIDPreparer(policyAssignmentID, parameters)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "resources/PolicyAssignmentsClient", "CreateByID", nil, "Failure preparing request")
@@ -125,7 +125,7 @@ func (client PolicyAssignmentsClient) CreateByID(policyAssignmentID string, para
 
 	result, err = client.CreateByIDResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "resources/PolicyAssignmentsClient", "CreateByID", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "resources/PolicyAssignmentsClient", "CreateByID", resp, "Failure responding to request")
 	}
 
 	return
@@ -155,13 +155,13 @@ func (client PolicyAssignmentsClient) CreateByIDPreparer(policyAssignmentID stri
 // CreateByIDSender sends the CreateByID request. The method will close the
 // http.Response Body if it receives an error.
 func (client PolicyAssignmentsClient) CreateByIDSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // CreateByIDResponder handles the response to the CreateByID request. The method always
 // closes the http.Response Body.
-func (client PolicyAssignmentsClient) CreateByIDResponder(resp *http.Response) (result PolicyAssignment, ae error) {
-	ae = autorest.Respond(
+func (client PolicyAssignmentsClient) CreateByIDResponder(resp *http.Response) (result PolicyAssignment, err error) {
+	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
@@ -174,7 +174,7 @@ func (client PolicyAssignmentsClient) CreateByIDResponder(resp *http.Response) (
 // Delete delete policy assignment.
 //
 // scope is scope. policyAssignmentName is policy assignment name.
-func (client PolicyAssignmentsClient) Delete(scope string, policyAssignmentName string) (result PolicyAssignment, ae error) {
+func (client PolicyAssignmentsClient) Delete(scope string, policyAssignmentName string) (result PolicyAssignment, err error) {
 	req, err := client.DeletePreparer(scope, policyAssignmentName)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "resources/PolicyAssignmentsClient", "Delete", nil, "Failure preparing request")
@@ -188,7 +188,7 @@ func (client PolicyAssignmentsClient) Delete(scope string, policyAssignmentName 
 
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "resources/PolicyAssignmentsClient", "Delete", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "resources/PolicyAssignmentsClient", "Delete", resp, "Failure responding to request")
 	}
 
 	return
@@ -218,13 +218,13 @@ func (client PolicyAssignmentsClient) DeletePreparer(scope string, policyAssignm
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
 func (client PolicyAssignmentsClient) DeleteSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // DeleteResponder handles the response to the Delete request. The method always
 // closes the http.Response Body.
-func (client PolicyAssignmentsClient) DeleteResponder(resp *http.Response) (result PolicyAssignment, ae error) {
-	ae = autorest.Respond(
+func (client PolicyAssignmentsClient) DeleteResponder(resp *http.Response) (result PolicyAssignment, err error) {
+	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -237,7 +237,7 @@ func (client PolicyAssignmentsClient) DeleteResponder(resp *http.Response) (resu
 // DeleteByID delete policy assignment.
 //
 // policyAssignmentID is policy assignment Id
-func (client PolicyAssignmentsClient) DeleteByID(policyAssignmentID string) (result PolicyAssignment, ae error) {
+func (client PolicyAssignmentsClient) DeleteByID(policyAssignmentID string) (result PolicyAssignment, err error) {
 	req, err := client.DeleteByIDPreparer(policyAssignmentID)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "resources/PolicyAssignmentsClient", "DeleteByID", nil, "Failure preparing request")
@@ -251,7 +251,7 @@ func (client PolicyAssignmentsClient) DeleteByID(policyAssignmentID string) (res
 
 	result, err = client.DeleteByIDResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "resources/PolicyAssignmentsClient", "DeleteByID", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "resources/PolicyAssignmentsClient", "DeleteByID", resp, "Failure responding to request")
 	}
 
 	return
@@ -280,13 +280,13 @@ func (client PolicyAssignmentsClient) DeleteByIDPreparer(policyAssignmentID stri
 // DeleteByIDSender sends the DeleteByID request. The method will close the
 // http.Response Body if it receives an error.
 func (client PolicyAssignmentsClient) DeleteByIDSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // DeleteByIDResponder handles the response to the DeleteByID request. The method always
 // closes the http.Response Body.
-func (client PolicyAssignmentsClient) DeleteByIDResponder(resp *http.Response) (result PolicyAssignment, ae error) {
-	ae = autorest.Respond(
+func (client PolicyAssignmentsClient) DeleteByIDResponder(resp *http.Response) (result PolicyAssignment, err error) {
+	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -299,7 +299,7 @@ func (client PolicyAssignmentsClient) DeleteByIDResponder(resp *http.Response) (
 // Get get single policy assignment.
 //
 // scope is scope. policyAssignmentName is policy assignment name.
-func (client PolicyAssignmentsClient) Get(scope string, policyAssignmentName string) (result PolicyAssignment, ae error) {
+func (client PolicyAssignmentsClient) Get(scope string, policyAssignmentName string) (result PolicyAssignment, err error) {
 	req, err := client.GetPreparer(scope, policyAssignmentName)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "resources/PolicyAssignmentsClient", "Get", nil, "Failure preparing request")
@@ -313,7 +313,7 @@ func (client PolicyAssignmentsClient) Get(scope string, policyAssignmentName str
 
 	result, err = client.GetResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "resources/PolicyAssignmentsClient", "Get", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "resources/PolicyAssignmentsClient", "Get", resp, "Failure responding to request")
 	}
 
 	return
@@ -343,13 +343,13 @@ func (client PolicyAssignmentsClient) GetPreparer(scope string, policyAssignment
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client PolicyAssignmentsClient) GetSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
-func (client PolicyAssignmentsClient) GetResponder(resp *http.Response) (result PolicyAssignment, ae error) {
-	ae = autorest.Respond(
+func (client PolicyAssignmentsClient) GetResponder(resp *http.Response) (result PolicyAssignment, err error) {
+	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -362,7 +362,7 @@ func (client PolicyAssignmentsClient) GetResponder(resp *http.Response) (result 
 // GetByID get single policy assignment.
 //
 // policyAssignmentID is policy assignment Id
-func (client PolicyAssignmentsClient) GetByID(policyAssignmentID string) (result PolicyAssignment, ae error) {
+func (client PolicyAssignmentsClient) GetByID(policyAssignmentID string) (result PolicyAssignment, err error) {
 	req, err := client.GetByIDPreparer(policyAssignmentID)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "resources/PolicyAssignmentsClient", "GetByID", nil, "Failure preparing request")
@@ -376,7 +376,7 @@ func (client PolicyAssignmentsClient) GetByID(policyAssignmentID string) (result
 
 	result, err = client.GetByIDResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "resources/PolicyAssignmentsClient", "GetByID", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "resources/PolicyAssignmentsClient", "GetByID", resp, "Failure responding to request")
 	}
 
 	return
@@ -405,13 +405,13 @@ func (client PolicyAssignmentsClient) GetByIDPreparer(policyAssignmentID string)
 // GetByIDSender sends the GetByID request. The method will close the
 // http.Response Body if it receives an error.
 func (client PolicyAssignmentsClient) GetByIDSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // GetByIDResponder handles the response to the GetByID request. The method always
 // closes the http.Response Body.
-func (client PolicyAssignmentsClient) GetByIDResponder(resp *http.Response) (result PolicyAssignment, ae error) {
-	ae = autorest.Respond(
+func (client PolicyAssignmentsClient) GetByIDResponder(resp *http.Response) (result PolicyAssignment, err error) {
+	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -424,7 +424,7 @@ func (client PolicyAssignmentsClient) GetByIDResponder(resp *http.Response) (res
 // List gets policy assignments of the subscription.
 //
 // filter is the filter to apply on the operation.
-func (client PolicyAssignmentsClient) List(filter string) (result PolicyAssignmentListResult, ae error) {
+func (client PolicyAssignmentsClient) List(filter string) (result PolicyAssignmentListResult, err error) {
 	req, err := client.ListPreparer(filter)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "resources/PolicyAssignmentsClient", "List", nil, "Failure preparing request")
@@ -438,7 +438,7 @@ func (client PolicyAssignmentsClient) List(filter string) (result PolicyAssignme
 
 	result, err = client.ListResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "resources/PolicyAssignmentsClient", "List", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "resources/PolicyAssignmentsClient", "List", resp, "Failure responding to request")
 	}
 
 	return
@@ -469,13 +469,13 @@ func (client PolicyAssignmentsClient) ListPreparer(filter string) (*http.Request
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
 func (client PolicyAssignmentsClient) ListSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // ListResponder handles the response to the List request. The method always
 // closes the http.Response Body.
-func (client PolicyAssignmentsClient) ListResponder(resp *http.Response) (result PolicyAssignmentListResult, ae error) {
-	ae = autorest.Respond(
+func (client PolicyAssignmentsClient) ListResponder(resp *http.Response) (result PolicyAssignmentListResult, err error) {
+	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -486,7 +486,7 @@ func (client PolicyAssignmentsClient) ListResponder(resp *http.Response) (result
 }
 
 // ListNextResults retrieves the next set of results, if any.
-func (client PolicyAssignmentsClient) ListNextResults(lastResults PolicyAssignmentListResult) (result PolicyAssignmentListResult, ae error) {
+func (client PolicyAssignmentsClient) ListNextResults(lastResults PolicyAssignmentListResult) (result PolicyAssignmentListResult, err error) {
 	req, err := lastResults.PolicyAssignmentListResultPreparer()
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "resources/PolicyAssignmentsClient", "List", nil, "Failure preparing next results request request")
@@ -503,7 +503,7 @@ func (client PolicyAssignmentsClient) ListNextResults(lastResults PolicyAssignme
 
 	result, err = client.ListResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "resources/PolicyAssignmentsClient", "List", resp, "Failure responding to next results request request")
+		err = autorest.NewErrorWithError(err, "resources/PolicyAssignmentsClient", "List", resp, "Failure responding to next results request request")
 	}
 
 	return
@@ -516,7 +516,7 @@ func (client PolicyAssignmentsClient) ListNextResults(lastResults PolicyAssignme
 // parentResourcePath is the parent resource path. resourceType is the
 // resource type. resourceName is the resource name. filter is the filter to
 // apply on the operation.
-func (client PolicyAssignmentsClient) ListForResource(resourceGroupName string, resourceProviderNamespace string, parentResourcePath string, resourceType string, resourceName string, filter string) (result PolicyAssignmentListResult, ae error) {
+func (client PolicyAssignmentsClient) ListForResource(resourceGroupName string, resourceProviderNamespace string, parentResourcePath string, resourceType string, resourceName string, filter string) (result PolicyAssignmentListResult, err error) {
 	req, err := client.ListForResourcePreparer(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, filter)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "resources/PolicyAssignmentsClient", "ListForResource", nil, "Failure preparing request")
@@ -530,7 +530,7 @@ func (client PolicyAssignmentsClient) ListForResource(resourceGroupName string, 
 
 	result, err = client.ListForResourceResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "resources/PolicyAssignmentsClient", "ListForResource", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "resources/PolicyAssignmentsClient", "ListForResource", resp, "Failure responding to request")
 	}
 
 	return
@@ -566,13 +566,13 @@ func (client PolicyAssignmentsClient) ListForResourcePreparer(resourceGroupName 
 // ListForResourceSender sends the ListForResource request. The method will close the
 // http.Response Body if it receives an error.
 func (client PolicyAssignmentsClient) ListForResourceSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // ListForResourceResponder handles the response to the ListForResource request. The method always
 // closes the http.Response Body.
-func (client PolicyAssignmentsClient) ListForResourceResponder(resp *http.Response) (result PolicyAssignmentListResult, ae error) {
-	ae = autorest.Respond(
+func (client PolicyAssignmentsClient) ListForResourceResponder(resp *http.Response) (result PolicyAssignmentListResult, err error) {
+	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -583,7 +583,7 @@ func (client PolicyAssignmentsClient) ListForResourceResponder(resp *http.Respon
 }
 
 // ListForResourceNextResults retrieves the next set of results, if any.
-func (client PolicyAssignmentsClient) ListForResourceNextResults(lastResults PolicyAssignmentListResult) (result PolicyAssignmentListResult, ae error) {
+func (client PolicyAssignmentsClient) ListForResourceNextResults(lastResults PolicyAssignmentListResult) (result PolicyAssignmentListResult, err error) {
 	req, err := lastResults.PolicyAssignmentListResultPreparer()
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "resources/PolicyAssignmentsClient", "ListForResource", nil, "Failure preparing next results request request")
@@ -600,7 +600,7 @@ func (client PolicyAssignmentsClient) ListForResourceNextResults(lastResults Pol
 
 	result, err = client.ListForResourceResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "resources/PolicyAssignmentsClient", "ListForResource", resp, "Failure responding to next results request request")
+		err = autorest.NewErrorWithError(err, "resources/PolicyAssignmentsClient", "ListForResource", resp, "Failure responding to next results request request")
 	}
 
 	return
@@ -610,7 +610,7 @@ func (client PolicyAssignmentsClient) ListForResourceNextResults(lastResults Pol
 //
 // resourceGroupName is resource group name. filter is the filter to apply on
 // the operation.
-func (client PolicyAssignmentsClient) ListForResourceGroup(resourceGroupName string, filter string) (result PolicyAssignmentListResult, ae error) {
+func (client PolicyAssignmentsClient) ListForResourceGroup(resourceGroupName string, filter string) (result PolicyAssignmentListResult, err error) {
 	req, err := client.ListForResourceGroupPreparer(resourceGroupName, filter)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "resources/PolicyAssignmentsClient", "ListForResourceGroup", nil, "Failure preparing request")
@@ -624,7 +624,7 @@ func (client PolicyAssignmentsClient) ListForResourceGroup(resourceGroupName str
 
 	result, err = client.ListForResourceGroupResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "resources/PolicyAssignmentsClient", "ListForResourceGroup", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "resources/PolicyAssignmentsClient", "ListForResourceGroup", resp, "Failure responding to request")
 	}
 
 	return
@@ -656,13 +656,13 @@ func (client PolicyAssignmentsClient) ListForResourceGroupPreparer(resourceGroup
 // ListForResourceGroupSender sends the ListForResourceGroup request. The method will close the
 // http.Response Body if it receives an error.
 func (client PolicyAssignmentsClient) ListForResourceGroupSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // ListForResourceGroupResponder handles the response to the ListForResourceGroup request. The method always
 // closes the http.Response Body.
-func (client PolicyAssignmentsClient) ListForResourceGroupResponder(resp *http.Response) (result PolicyAssignmentListResult, ae error) {
-	ae = autorest.Respond(
+func (client PolicyAssignmentsClient) ListForResourceGroupResponder(resp *http.Response) (result PolicyAssignmentListResult, err error) {
+	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -673,7 +673,7 @@ func (client PolicyAssignmentsClient) ListForResourceGroupResponder(resp *http.R
 }
 
 // ListForResourceGroupNextResults retrieves the next set of results, if any.
-func (client PolicyAssignmentsClient) ListForResourceGroupNextResults(lastResults PolicyAssignmentListResult) (result PolicyAssignmentListResult, ae error) {
+func (client PolicyAssignmentsClient) ListForResourceGroupNextResults(lastResults PolicyAssignmentListResult) (result PolicyAssignmentListResult, err error) {
 	req, err := lastResults.PolicyAssignmentListResultPreparer()
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "resources/PolicyAssignmentsClient", "ListForResourceGroup", nil, "Failure preparing next results request request")
@@ -690,7 +690,7 @@ func (client PolicyAssignmentsClient) ListForResourceGroupNextResults(lastResult
 
 	result, err = client.ListForResourceGroupResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "resources/PolicyAssignmentsClient", "ListForResourceGroup", resp, "Failure responding to next results request request")
+		err = autorest.NewErrorWithError(err, "resources/PolicyAssignmentsClient", "ListForResourceGroup", resp, "Failure responding to next results request request")
 	}
 
 	return
@@ -699,7 +699,7 @@ func (client PolicyAssignmentsClient) ListForResourceGroupNextResults(lastResult
 // ListForScope gets policy assignments of the scope.
 //
 // scope is scope. filter is the filter to apply on the operation.
-func (client PolicyAssignmentsClient) ListForScope(scope string, filter string) (result PolicyAssignmentListResult, ae error) {
+func (client PolicyAssignmentsClient) ListForScope(scope string, filter string) (result PolicyAssignmentListResult, err error) {
 	req, err := client.ListForScopePreparer(scope, filter)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "resources/PolicyAssignmentsClient", "ListForScope", nil, "Failure preparing request")
@@ -713,7 +713,7 @@ func (client PolicyAssignmentsClient) ListForScope(scope string, filter string) 
 
 	result, err = client.ListForScopeResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "resources/PolicyAssignmentsClient", "ListForScope", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "resources/PolicyAssignmentsClient", "ListForScope", resp, "Failure responding to request")
 	}
 
 	return
@@ -745,13 +745,13 @@ func (client PolicyAssignmentsClient) ListForScopePreparer(scope string, filter 
 // ListForScopeSender sends the ListForScope request. The method will close the
 // http.Response Body if it receives an error.
 func (client PolicyAssignmentsClient) ListForScopeSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // ListForScopeResponder handles the response to the ListForScope request. The method always
 // closes the http.Response Body.
-func (client PolicyAssignmentsClient) ListForScopeResponder(resp *http.Response) (result PolicyAssignmentListResult, ae error) {
-	ae = autorest.Respond(
+func (client PolicyAssignmentsClient) ListForScopeResponder(resp *http.Response) (result PolicyAssignmentListResult, err error) {
+	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -762,7 +762,7 @@ func (client PolicyAssignmentsClient) ListForScopeResponder(resp *http.Response)
 }
 
 // ListForScopeNextResults retrieves the next set of results, if any.
-func (client PolicyAssignmentsClient) ListForScopeNextResults(lastResults PolicyAssignmentListResult) (result PolicyAssignmentListResult, ae error) {
+func (client PolicyAssignmentsClient) ListForScopeNextResults(lastResults PolicyAssignmentListResult) (result PolicyAssignmentListResult, err error) {
 	req, err := lastResults.PolicyAssignmentListResultPreparer()
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "resources/PolicyAssignmentsClient", "ListForScope", nil, "Failure preparing next results request request")
@@ -779,7 +779,7 @@ func (client PolicyAssignmentsClient) ListForScopeNextResults(lastResults Policy
 
 	result, err = client.ListForScopeResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "resources/PolicyAssignmentsClient", "ListForScope", resp, "Failure responding to next results request request")
+		err = autorest.NewErrorWithError(err, "resources/PolicyAssignmentsClient", "ListForScope", resp, "Failure responding to next results request request")
 	}
 
 	return

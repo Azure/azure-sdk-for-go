@@ -51,7 +51,7 @@ func NewEndpointsClientWithBaseURI(baseURI string, subscriptionID string) Endpoi
 // endpointProperties is endpoint properties profileName is name of the CDN
 // profile within the resource group resourceGroupName is name of the
 // resource group within the Azure subscription
-func (client EndpointsClient) Create(endpointName string, endpointProperties EndpointCreateParameters, profileName string, resourceGroupName string) (result autorest.Response, ae error) {
+func (client EndpointsClient) Create(endpointName string, endpointProperties EndpointCreateParameters, profileName string, resourceGroupName string) (result autorest.Response, err error) {
 	req, err := client.CreatePreparer(endpointName, endpointProperties, profileName, resourceGroupName)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "cdn/EndpointsClient", "Create", nil, "Failure preparing request")
@@ -65,7 +65,7 @@ func (client EndpointsClient) Create(endpointName string, endpointProperties End
 
 	result, err = client.CreateResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "cdn/EndpointsClient", "Create", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "cdn/EndpointsClient", "Create", resp, "Failure responding to request")
 	}
 
 	return
@@ -97,21 +97,16 @@ func (client EndpointsClient) CreatePreparer(endpointName string, endpointProper
 // CreateSender sends the Create request. The method will close the
 // http.Response Body if it receives an error.
 func (client EndpointsClient) CreateSender(req *http.Request) (*http.Response, error) {
-	resp, err := client.Send(req)
-	if err == nil && azure.ResponseIsLongRunning(resp) {
-		req, err := azure.NewAsyncPollingRequest(resp, client.Client)
-		if err == nil {
-			resp, err = autorest.SendWithSender(client, req,
-				azure.WithAsyncPolling(autorest.DefaultPollingDelay))
-		}
-	}
-	return resp, err
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoPollForAsynchronous(autorest.DefaultPollingDuration,
+			autorest.DefaultPollingDelay))
 }
 
 // CreateResponder handles the response to the Create request. The method always
 // closes the http.Response Body.
-func (client EndpointsClient) CreateResponder(resp *http.Response) (result autorest.Response, ae error) {
-	ae = autorest.Respond(
+func (client EndpointsClient) CreateResponder(resp *http.Response) (result autorest.Response, err error) {
+	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated, http.StatusAccepted),
@@ -125,7 +120,7 @@ func (client EndpointsClient) CreateResponder(resp *http.Response) (result autor
 // endpointName is name of the endpoint within the CDN profile profileName is
 // name of the CDN profile within the resource group resourceGroupName is
 // name of the resource group within the Azure subscription
-func (client EndpointsClient) DeleteIfExists(endpointName string, profileName string, resourceGroupName string) (result autorest.Response, ae error) {
+func (client EndpointsClient) DeleteIfExists(endpointName string, profileName string, resourceGroupName string) (result autorest.Response, err error) {
 	req, err := client.DeleteIfExistsPreparer(endpointName, profileName, resourceGroupName)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "cdn/EndpointsClient", "DeleteIfExists", nil, "Failure preparing request")
@@ -139,7 +134,7 @@ func (client EndpointsClient) DeleteIfExists(endpointName string, profileName st
 
 	result, err = client.DeleteIfExistsResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "cdn/EndpointsClient", "DeleteIfExists", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "cdn/EndpointsClient", "DeleteIfExists", resp, "Failure responding to request")
 	}
 
 	return
@@ -170,21 +165,16 @@ func (client EndpointsClient) DeleteIfExistsPreparer(endpointName string, profil
 // DeleteIfExistsSender sends the DeleteIfExists request. The method will close the
 // http.Response Body if it receives an error.
 func (client EndpointsClient) DeleteIfExistsSender(req *http.Request) (*http.Response, error) {
-	resp, err := client.Send(req)
-	if err == nil && azure.ResponseIsLongRunning(resp) {
-		req, err := azure.NewAsyncPollingRequest(resp, client.Client)
-		if err == nil {
-			resp, err = autorest.SendWithSender(client, req,
-				azure.WithAsyncPolling(autorest.DefaultPollingDelay))
-		}
-	}
-	return resp, err
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoPollForAsynchronous(autorest.DefaultPollingDuration,
+			autorest.DefaultPollingDelay))
 }
 
 // DeleteIfExistsResponder handles the response to the DeleteIfExists request. The method always
 // closes the http.Response Body.
-func (client EndpointsClient) DeleteIfExistsResponder(resp *http.Response) (result autorest.Response, ae error) {
-	ae = autorest.Respond(
+func (client EndpointsClient) DeleteIfExistsResponder(resp *http.Response) (result autorest.Response, err error) {
+	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
@@ -198,7 +188,7 @@ func (client EndpointsClient) DeleteIfExistsResponder(resp *http.Response) (resu
 // endpointName is name of the endpoint within the CDN profile profileName is
 // name of the CDN profile within the resource group resourceGroupName is
 // name of the resource group within the Azure subscription
-func (client EndpointsClient) Get(endpointName string, profileName string, resourceGroupName string) (result Endpoint, ae error) {
+func (client EndpointsClient) Get(endpointName string, profileName string, resourceGroupName string) (result Endpoint, err error) {
 	req, err := client.GetPreparer(endpointName, profileName, resourceGroupName)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "cdn/EndpointsClient", "Get", nil, "Failure preparing request")
@@ -212,7 +202,7 @@ func (client EndpointsClient) Get(endpointName string, profileName string, resou
 
 	result, err = client.GetResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "cdn/EndpointsClient", "Get", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "cdn/EndpointsClient", "Get", resp, "Failure responding to request")
 	}
 
 	return
@@ -243,13 +233,13 @@ func (client EndpointsClient) GetPreparer(endpointName string, profileName strin
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client EndpointsClient) GetSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
-func (client EndpointsClient) GetResponder(resp *http.Response) (result Endpoint, ae error) {
-	ae = autorest.Respond(
+func (client EndpointsClient) GetResponder(resp *http.Response) (result Endpoint, err error) {
+	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -264,7 +254,7 @@ func (client EndpointsClient) GetResponder(resp *http.Response) (result Endpoint
 // profileName is name of the CDN profile within the resource group
 // resourceGroupName is name of the resource group within the Azure
 // subscription
-func (client EndpointsClient) ListByProfile(profileName string, resourceGroupName string) (result EndpointListResult, ae error) {
+func (client EndpointsClient) ListByProfile(profileName string, resourceGroupName string) (result EndpointListResult, err error) {
 	req, err := client.ListByProfilePreparer(profileName, resourceGroupName)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "cdn/EndpointsClient", "ListByProfile", nil, "Failure preparing request")
@@ -278,7 +268,7 @@ func (client EndpointsClient) ListByProfile(profileName string, resourceGroupNam
 
 	result, err = client.ListByProfileResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "cdn/EndpointsClient", "ListByProfile", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "cdn/EndpointsClient", "ListByProfile", resp, "Failure responding to request")
 	}
 
 	return
@@ -308,13 +298,13 @@ func (client EndpointsClient) ListByProfilePreparer(profileName string, resource
 // ListByProfileSender sends the ListByProfile request. The method will close the
 // http.Response Body if it receives an error.
 func (client EndpointsClient) ListByProfileSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // ListByProfileResponder handles the response to the ListByProfile request. The method always
 // closes the http.Response Body.
-func (client EndpointsClient) ListByProfileResponder(resp *http.Response) (result EndpointListResult, ae error) {
-	ae = autorest.Respond(
+func (client EndpointsClient) ListByProfileResponder(resp *http.Response) (result EndpointListResult, err error) {
+	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -331,7 +321,7 @@ func (client EndpointsClient) ListByProfileResponder(resp *http.Response) (resul
 // describe a file. profileName is name of the CDN profile within the
 // resource group resourceGroupName is name of the resource group within the
 // Azure subscription
-func (client EndpointsClient) LoadContent(endpointName string, contentFilePaths LoadParameters, profileName string, resourceGroupName string) (result autorest.Response, ae error) {
+func (client EndpointsClient) LoadContent(endpointName string, contentFilePaths LoadParameters, profileName string, resourceGroupName string) (result autorest.Response, err error) {
 	req, err := client.LoadContentPreparer(endpointName, contentFilePaths, profileName, resourceGroupName)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "cdn/EndpointsClient", "LoadContent", nil, "Failure preparing request")
@@ -345,7 +335,7 @@ func (client EndpointsClient) LoadContent(endpointName string, contentFilePaths 
 
 	result, err = client.LoadContentResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "cdn/EndpointsClient", "LoadContent", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "cdn/EndpointsClient", "LoadContent", resp, "Failure responding to request")
 	}
 
 	return
@@ -377,21 +367,16 @@ func (client EndpointsClient) LoadContentPreparer(endpointName string, contentFi
 // LoadContentSender sends the LoadContent request. The method will close the
 // http.Response Body if it receives an error.
 func (client EndpointsClient) LoadContentSender(req *http.Request) (*http.Response, error) {
-	resp, err := client.Send(req)
-	if err == nil && azure.ResponseIsLongRunning(resp) {
-		req, err := azure.NewAsyncPollingRequest(resp, client.Client)
-		if err == nil {
-			resp, err = autorest.SendWithSender(client, req,
-				azure.WithAsyncPolling(autorest.DefaultPollingDelay))
-		}
-	}
-	return resp, err
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoPollForAsynchronous(autorest.DefaultPollingDuration,
+			autorest.DefaultPollingDelay))
 }
 
 // LoadContentResponder handles the response to the LoadContent request. The method always
 // closes the http.Response Body.
-func (client EndpointsClient) LoadContentResponder(resp *http.Response) (result autorest.Response, ae error) {
-	ae = autorest.Respond(
+func (client EndpointsClient) LoadContentResponder(resp *http.Response) (result autorest.Response, err error) {
+	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
@@ -407,7 +392,7 @@ func (client EndpointsClient) LoadContentResponder(resp *http.Response) (result 
 // describe a file or directory. profileName is name of the CDN profile
 // within the resource group resourceGroupName is name of the resource group
 // within the Azure subscription
-func (client EndpointsClient) PurgeContent(endpointName string, contentFilePaths PurgeParameters, profileName string, resourceGroupName string) (result autorest.Response, ae error) {
+func (client EndpointsClient) PurgeContent(endpointName string, contentFilePaths PurgeParameters, profileName string, resourceGroupName string) (result autorest.Response, err error) {
 	req, err := client.PurgeContentPreparer(endpointName, contentFilePaths, profileName, resourceGroupName)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "cdn/EndpointsClient", "PurgeContent", nil, "Failure preparing request")
@@ -421,7 +406,7 @@ func (client EndpointsClient) PurgeContent(endpointName string, contentFilePaths
 
 	result, err = client.PurgeContentResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "cdn/EndpointsClient", "PurgeContent", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "cdn/EndpointsClient", "PurgeContent", resp, "Failure responding to request")
 	}
 
 	return
@@ -453,21 +438,16 @@ func (client EndpointsClient) PurgeContentPreparer(endpointName string, contentF
 // PurgeContentSender sends the PurgeContent request. The method will close the
 // http.Response Body if it receives an error.
 func (client EndpointsClient) PurgeContentSender(req *http.Request) (*http.Response, error) {
-	resp, err := client.Send(req)
-	if err == nil && azure.ResponseIsLongRunning(resp) {
-		req, err := azure.NewAsyncPollingRequest(resp, client.Client)
-		if err == nil {
-			resp, err = autorest.SendWithSender(client, req,
-				azure.WithAsyncPolling(autorest.DefaultPollingDelay))
-		}
-	}
-	return resp, err
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoPollForAsynchronous(autorest.DefaultPollingDuration,
+			autorest.DefaultPollingDelay))
 }
 
 // PurgeContentResponder handles the response to the PurgeContent request. The method always
 // closes the http.Response Body.
-func (client EndpointsClient) PurgeContentResponder(resp *http.Response) (result autorest.Response, ae error) {
-	ae = autorest.Respond(
+func (client EndpointsClient) PurgeContentResponder(resp *http.Response) (result autorest.Response, err error) {
+	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
@@ -481,7 +461,7 @@ func (client EndpointsClient) PurgeContentResponder(resp *http.Response) (result
 // endpointName is name of the endpoint within the CDN profile profileName is
 // name of the CDN profile within the resource group resourceGroupName is
 // name of the resource group within the Azure subscription
-func (client EndpointsClient) Start(endpointName string, profileName string, resourceGroupName string) (result autorest.Response, ae error) {
+func (client EndpointsClient) Start(endpointName string, profileName string, resourceGroupName string) (result autorest.Response, err error) {
 	req, err := client.StartPreparer(endpointName, profileName, resourceGroupName)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "cdn/EndpointsClient", "Start", nil, "Failure preparing request")
@@ -495,7 +475,7 @@ func (client EndpointsClient) Start(endpointName string, profileName string, res
 
 	result, err = client.StartResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "cdn/EndpointsClient", "Start", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "cdn/EndpointsClient", "Start", resp, "Failure responding to request")
 	}
 
 	return
@@ -526,21 +506,16 @@ func (client EndpointsClient) StartPreparer(endpointName string, profileName str
 // StartSender sends the Start request. The method will close the
 // http.Response Body if it receives an error.
 func (client EndpointsClient) StartSender(req *http.Request) (*http.Response, error) {
-	resp, err := client.Send(req)
-	if err == nil && azure.ResponseIsLongRunning(resp) {
-		req, err := azure.NewAsyncPollingRequest(resp, client.Client)
-		if err == nil {
-			resp, err = autorest.SendWithSender(client, req,
-				azure.WithAsyncPolling(autorest.DefaultPollingDelay))
-		}
-	}
-	return resp, err
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoPollForAsynchronous(autorest.DefaultPollingDuration,
+			autorest.DefaultPollingDelay))
 }
 
 // StartResponder handles the response to the Start request. The method always
 // closes the http.Response Body.
-func (client EndpointsClient) StartResponder(resp *http.Response) (result autorest.Response, ae error) {
-	ae = autorest.Respond(
+func (client EndpointsClient) StartResponder(resp *http.Response) (result autorest.Response, err error) {
+	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
@@ -554,7 +529,7 @@ func (client EndpointsClient) StartResponder(resp *http.Response) (result autore
 // endpointName is name of the endpoint within the CDN profile profileName is
 // name of the CDN profile within the resource group resourceGroupName is
 // name of the resource group within the Azure subscription
-func (client EndpointsClient) Stop(endpointName string, profileName string, resourceGroupName string) (result autorest.Response, ae error) {
+func (client EndpointsClient) Stop(endpointName string, profileName string, resourceGroupName string) (result autorest.Response, err error) {
 	req, err := client.StopPreparer(endpointName, profileName, resourceGroupName)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "cdn/EndpointsClient", "Stop", nil, "Failure preparing request")
@@ -568,7 +543,7 @@ func (client EndpointsClient) Stop(endpointName string, profileName string, reso
 
 	result, err = client.StopResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "cdn/EndpointsClient", "Stop", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "cdn/EndpointsClient", "Stop", resp, "Failure responding to request")
 	}
 
 	return
@@ -599,21 +574,16 @@ func (client EndpointsClient) StopPreparer(endpointName string, profileName stri
 // StopSender sends the Stop request. The method will close the
 // http.Response Body if it receives an error.
 func (client EndpointsClient) StopSender(req *http.Request) (*http.Response, error) {
-	resp, err := client.Send(req)
-	if err == nil && azure.ResponseIsLongRunning(resp) {
-		req, err := azure.NewAsyncPollingRequest(resp, client.Client)
-		if err == nil {
-			resp, err = autorest.SendWithSender(client, req,
-				azure.WithAsyncPolling(autorest.DefaultPollingDelay))
-		}
-	}
-	return resp, err
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoPollForAsynchronous(autorest.DefaultPollingDuration,
+			autorest.DefaultPollingDelay))
 }
 
 // StopResponder handles the response to the Stop request. The method always
 // closes the http.Response Body.
-func (client EndpointsClient) StopResponder(resp *http.Response) (result autorest.Response, ae error) {
-	ae = autorest.Respond(
+func (client EndpointsClient) StopResponder(resp *http.Response) (result autorest.Response, err error) {
+	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
@@ -628,7 +598,7 @@ func (client EndpointsClient) StopResponder(resp *http.Response) (result autores
 // endpointProperties is endpoint properties profileName is name of the CDN
 // profile within the resource group resourceGroupName is name of the
 // resource group within the Azure subscription
-func (client EndpointsClient) Update(endpointName string, endpointProperties EndpointUpdateParameters, profileName string, resourceGroupName string) (result Endpoint, ae error) {
+func (client EndpointsClient) Update(endpointName string, endpointProperties EndpointUpdateParameters, profileName string, resourceGroupName string) (result Endpoint, err error) {
 	req, err := client.UpdatePreparer(endpointName, endpointProperties, profileName, resourceGroupName)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "cdn/EndpointsClient", "Update", nil, "Failure preparing request")
@@ -642,7 +612,7 @@ func (client EndpointsClient) Update(endpointName string, endpointProperties End
 
 	result, err = client.UpdateResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "cdn/EndpointsClient", "Update", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "cdn/EndpointsClient", "Update", resp, "Failure responding to request")
 	}
 
 	return
@@ -674,13 +644,13 @@ func (client EndpointsClient) UpdatePreparer(endpointName string, endpointProper
 // UpdateSender sends the Update request. The method will close the
 // http.Response Body if it receives an error.
 func (client EndpointsClient) UpdateSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // UpdateResponder handles the response to the Update request. The method always
 // closes the http.Response Body.
-func (client EndpointsClient) UpdateResponder(resp *http.Response) (result Endpoint, ae error) {
-	ae = autorest.Respond(
+func (client EndpointsClient) UpdateResponder(resp *http.Response) (result Endpoint, err error) {
+	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
@@ -696,7 +666,7 @@ func (client EndpointsClient) UpdateResponder(resp *http.Response) (result Endpo
 // customDomainProperties is custom domain to validate profileName is name of
 // the CDN profile within the resource group resourceGroupName is name of the
 // resource group within the Azure subscription
-func (client EndpointsClient) ValidateCustomDomain(endpointName string, customDomainProperties ValidateCustomDomainInput, profileName string, resourceGroupName string) (result ValidateCustomDomainOutput, ae error) {
+func (client EndpointsClient) ValidateCustomDomain(endpointName string, customDomainProperties ValidateCustomDomainInput, profileName string, resourceGroupName string) (result ValidateCustomDomainOutput, err error) {
 	req, err := client.ValidateCustomDomainPreparer(endpointName, customDomainProperties, profileName, resourceGroupName)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "cdn/EndpointsClient", "ValidateCustomDomain", nil, "Failure preparing request")
@@ -710,7 +680,7 @@ func (client EndpointsClient) ValidateCustomDomain(endpointName string, customDo
 
 	result, err = client.ValidateCustomDomainResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "cdn/EndpointsClient", "ValidateCustomDomain", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "cdn/EndpointsClient", "ValidateCustomDomain", resp, "Failure responding to request")
 	}
 
 	return
@@ -742,13 +712,13 @@ func (client EndpointsClient) ValidateCustomDomainPreparer(endpointName string, 
 // ValidateCustomDomainSender sends the ValidateCustomDomain request. The method will close the
 // http.Response Body if it receives an error.
 func (client EndpointsClient) ValidateCustomDomainSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // ValidateCustomDomainResponder handles the response to the ValidateCustomDomain request. The method always
 // closes the http.Response Body.
-func (client EndpointsClient) ValidateCustomDomainResponder(resp *http.Response) (result ValidateCustomDomainOutput, ae error) {
-	ae = autorest.Respond(
+func (client EndpointsClient) ValidateCustomDomainResponder(resp *http.Response) (result ValidateCustomDomainOutput, err error) {
+	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),

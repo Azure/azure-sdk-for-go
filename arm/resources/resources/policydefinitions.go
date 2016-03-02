@@ -47,7 +47,7 @@ func NewPolicyDefinitionsClientWithBaseURI(baseURI string, subscriptionID string
 //
 // policyDefinitionName is the policy definition name. parameters is the
 // policy definition properties
-func (client PolicyDefinitionsClient) CreateOrUpdate(policyDefinitionName string, parameters PolicyDefinition) (result PolicyDefinition, ae error) {
+func (client PolicyDefinitionsClient) CreateOrUpdate(policyDefinitionName string, parameters PolicyDefinition) (result PolicyDefinition, err error) {
 	req, err := client.CreateOrUpdatePreparer(policyDefinitionName, parameters)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "resources/PolicyDefinitionsClient", "CreateOrUpdate", nil, "Failure preparing request")
@@ -61,7 +61,7 @@ func (client PolicyDefinitionsClient) CreateOrUpdate(policyDefinitionName string
 
 	result, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "resources/PolicyDefinitionsClient", "CreateOrUpdate", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "resources/PolicyDefinitionsClient", "CreateOrUpdate", resp, "Failure responding to request")
 	}
 
 	return
@@ -91,13 +91,13 @@ func (client PolicyDefinitionsClient) CreateOrUpdatePreparer(policyDefinitionNam
 // CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
 // http.Response Body if it receives an error.
 func (client PolicyDefinitionsClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
 // closes the http.Response Body.
-func (client PolicyDefinitionsClient) CreateOrUpdateResponder(resp *http.Response) (result PolicyDefinition, ae error) {
-	ae = autorest.Respond(
+func (client PolicyDefinitionsClient) CreateOrUpdateResponder(resp *http.Response) (result PolicyDefinition, err error) {
+	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
@@ -110,7 +110,7 @@ func (client PolicyDefinitionsClient) CreateOrUpdateResponder(resp *http.Respons
 // Delete deletes policy definition.
 //
 // policyDefinitionName is the policy definition name.
-func (client PolicyDefinitionsClient) Delete(policyDefinitionName string) (result autorest.Response, ae error) {
+func (client PolicyDefinitionsClient) Delete(policyDefinitionName string) (result autorest.Response, err error) {
 	req, err := client.DeletePreparer(policyDefinitionName)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "resources/PolicyDefinitionsClient", "Delete", nil, "Failure preparing request")
@@ -124,7 +124,7 @@ func (client PolicyDefinitionsClient) Delete(policyDefinitionName string) (resul
 
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "resources/PolicyDefinitionsClient", "Delete", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "resources/PolicyDefinitionsClient", "Delete", resp, "Failure responding to request")
 	}
 
 	return
@@ -153,13 +153,13 @@ func (client PolicyDefinitionsClient) DeletePreparer(policyDefinitionName string
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
 func (client PolicyDefinitionsClient) DeleteSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // DeleteResponder handles the response to the Delete request. The method always
 // closes the http.Response Body.
-func (client PolicyDefinitionsClient) DeleteResponder(resp *http.Response) (result autorest.Response, ae error) {
-	ae = autorest.Respond(
+func (client PolicyDefinitionsClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
+	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -171,7 +171,7 @@ func (client PolicyDefinitionsClient) DeleteResponder(resp *http.Response) (resu
 // Get gets policy definition.
 //
 // policyDefinitionName is the policy definition name.
-func (client PolicyDefinitionsClient) Get(policyDefinitionName string) (result PolicyDefinition, ae error) {
+func (client PolicyDefinitionsClient) Get(policyDefinitionName string) (result PolicyDefinition, err error) {
 	req, err := client.GetPreparer(policyDefinitionName)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "resources/PolicyDefinitionsClient", "Get", nil, "Failure preparing request")
@@ -185,7 +185,7 @@ func (client PolicyDefinitionsClient) Get(policyDefinitionName string) (result P
 
 	result, err = client.GetResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "resources/PolicyDefinitionsClient", "Get", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "resources/PolicyDefinitionsClient", "Get", resp, "Failure responding to request")
 	}
 
 	return
@@ -214,13 +214,13 @@ func (client PolicyDefinitionsClient) GetPreparer(policyDefinitionName string) (
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client PolicyDefinitionsClient) GetSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
-func (client PolicyDefinitionsClient) GetResponder(resp *http.Response) (result PolicyDefinition, ae error) {
-	ae = autorest.Respond(
+func (client PolicyDefinitionsClient) GetResponder(resp *http.Response) (result PolicyDefinition, err error) {
+	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),

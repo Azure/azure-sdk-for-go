@@ -46,7 +46,7 @@ func NewDeploymentsClientWithBaseURI(baseURI string, subscriptionID string) Depl
 //
 // resourceGroupName is the name of the resource group. The name is case
 // insensitive. deploymentName is the name of the deployment.
-func (client DeploymentsClient) Cancel(resourceGroupName string, deploymentName string) (result autorest.Response, ae error) {
+func (client DeploymentsClient) Cancel(resourceGroupName string, deploymentName string) (result autorest.Response, err error) {
 	req, err := client.CancelPreparer(resourceGroupName, deploymentName)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "resources/DeploymentsClient", "Cancel", nil, "Failure preparing request")
@@ -60,7 +60,7 @@ func (client DeploymentsClient) Cancel(resourceGroupName string, deploymentName 
 
 	result, err = client.CancelResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "resources/DeploymentsClient", "Cancel", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "resources/DeploymentsClient", "Cancel", resp, "Failure responding to request")
 	}
 
 	return
@@ -90,13 +90,13 @@ func (client DeploymentsClient) CancelPreparer(resourceGroupName string, deploym
 // CancelSender sends the Cancel request. The method will close the
 // http.Response Body if it receives an error.
 func (client DeploymentsClient) CancelSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // CancelResponder handles the response to the Cancel request. The method always
 // closes the http.Response Body.
-func (client DeploymentsClient) CancelResponder(resp *http.Response) (result autorest.Response, ae error) {
-	ae = autorest.Respond(
+func (client DeploymentsClient) CancelResponder(resp *http.Response) (result autorest.Response, err error) {
+	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
@@ -109,7 +109,7 @@ func (client DeploymentsClient) CancelResponder(resp *http.Response) (result aut
 //
 // resourceGroupName is the name of the resource group to check. The name is
 // case insensitive. deploymentName is the name of the deployment.
-func (client DeploymentsClient) CheckExistence(resourceGroupName string, deploymentName string) (result autorest.Response, ae error) {
+func (client DeploymentsClient) CheckExistence(resourceGroupName string, deploymentName string) (result autorest.Response, err error) {
 	req, err := client.CheckExistencePreparer(resourceGroupName, deploymentName)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "resources/DeploymentsClient", "CheckExistence", nil, "Failure preparing request")
@@ -123,7 +123,7 @@ func (client DeploymentsClient) CheckExistence(resourceGroupName string, deploym
 
 	result, err = client.CheckExistenceResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "resources/DeploymentsClient", "CheckExistence", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "resources/DeploymentsClient", "CheckExistence", resp, "Failure responding to request")
 	}
 
 	return
@@ -153,13 +153,13 @@ func (client DeploymentsClient) CheckExistencePreparer(resourceGroupName string,
 // CheckExistenceSender sends the CheckExistence request. The method will close the
 // http.Response Body if it receives an error.
 func (client DeploymentsClient) CheckExistenceSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // CheckExistenceResponder handles the response to the CheckExistence request. The method always
 // closes the http.Response Body.
-func (client DeploymentsClient) CheckExistenceResponder(resp *http.Response) (result autorest.Response, ae error) {
-	ae = autorest.Respond(
+func (client DeploymentsClient) CheckExistenceResponder(resp *http.Response) (result autorest.Response, err error) {
+	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent, http.StatusNotFound),
@@ -173,7 +173,7 @@ func (client DeploymentsClient) CheckExistenceResponder(resp *http.Response) (re
 // resourceGroupName is the name of the resource group. The name is case
 // insensitive. deploymentName is the name of the deployment. parameters is
 // additional parameters supplied to the operation.
-func (client DeploymentsClient) CreateOrUpdate(resourceGroupName string, deploymentName string, parameters Deployment) (result autorest.Response, ae error) {
+func (client DeploymentsClient) CreateOrUpdate(resourceGroupName string, deploymentName string, parameters Deployment) (result autorest.Response, err error) {
 	req, err := client.CreateOrUpdatePreparer(resourceGroupName, deploymentName, parameters)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "resources/DeploymentsClient", "CreateOrUpdate", nil, "Failure preparing request")
@@ -187,7 +187,7 @@ func (client DeploymentsClient) CreateOrUpdate(resourceGroupName string, deploym
 
 	result, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "resources/DeploymentsClient", "CreateOrUpdate", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "resources/DeploymentsClient", "CreateOrUpdate", resp, "Failure responding to request")
 	}
 
 	return
@@ -218,21 +218,16 @@ func (client DeploymentsClient) CreateOrUpdatePreparer(resourceGroupName string,
 // CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
 // http.Response Body if it receives an error.
 func (client DeploymentsClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
-	resp, err := client.Send(req)
-	if err == nil && azure.ResponseIsLongRunning(resp) {
-		req, err := azure.NewAsyncPollingRequest(resp, client.Client)
-		if err == nil {
-			resp, err = autorest.SendWithSender(client, req,
-				azure.WithAsyncPolling(autorest.DefaultPollingDelay))
-		}
-	}
-	return resp, err
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoPollForAsynchronous(autorest.DefaultPollingDuration,
+			autorest.DefaultPollingDelay))
 }
 
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
 // closes the http.Response Body.
-func (client DeploymentsClient) CreateOrUpdateResponder(resp *http.Response) (result autorest.Response, ae error) {
-	ae = autorest.Respond(
+func (client DeploymentsClient) CreateOrUpdateResponder(resp *http.Response) (result autorest.Response, err error) {
+	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
@@ -246,7 +241,7 @@ func (client DeploymentsClient) CreateOrUpdateResponder(resp *http.Response) (re
 //
 // resourceGroupName is the name of the resource group. The name is case
 // insensitive. deploymentName is the name of the deployment to be deleted.
-func (client DeploymentsClient) Delete(resourceGroupName string, deploymentName string) (result autorest.Response, ae error) {
+func (client DeploymentsClient) Delete(resourceGroupName string, deploymentName string) (result autorest.Response, err error) {
 	req, err := client.DeletePreparer(resourceGroupName, deploymentName)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "resources/DeploymentsClient", "Delete", nil, "Failure preparing request")
@@ -260,7 +255,7 @@ func (client DeploymentsClient) Delete(resourceGroupName string, deploymentName 
 
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "resources/DeploymentsClient", "Delete", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "resources/DeploymentsClient", "Delete", resp, "Failure responding to request")
 	}
 
 	return
@@ -290,21 +285,16 @@ func (client DeploymentsClient) DeletePreparer(resourceGroupName string, deploym
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
 func (client DeploymentsClient) DeleteSender(req *http.Request) (*http.Response, error) {
-	resp, err := client.Send(req)
-	if err == nil && azure.ResponseIsLongRunning(resp) {
-		req, err := azure.NewAsyncPollingRequest(resp, client.Client)
-		if err == nil {
-			resp, err = autorest.SendWithSender(client, req,
-				azure.WithAsyncPolling(autorest.DefaultPollingDelay))
-		}
-	}
-	return resp, err
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoPollForAsynchronous(autorest.DefaultPollingDuration,
+			autorest.DefaultPollingDelay))
 }
 
 // DeleteResponder handles the response to the Delete request. The method always
 // closes the http.Response Body.
-func (client DeploymentsClient) DeleteResponder(resp *http.Response) (result autorest.Response, ae error) {
-	ae = autorest.Respond(
+func (client DeploymentsClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
+	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
@@ -317,7 +307,7 @@ func (client DeploymentsClient) DeleteResponder(resp *http.Response) (result aut
 //
 // resourceGroupName is the name of the resource group to get. The name is
 // case insensitive. deploymentName is the name of the deployment.
-func (client DeploymentsClient) Get(resourceGroupName string, deploymentName string) (result DeploymentExtended, ae error) {
+func (client DeploymentsClient) Get(resourceGroupName string, deploymentName string) (result DeploymentExtended, err error) {
 	req, err := client.GetPreparer(resourceGroupName, deploymentName)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "resources/DeploymentsClient", "Get", nil, "Failure preparing request")
@@ -331,7 +321,7 @@ func (client DeploymentsClient) Get(resourceGroupName string, deploymentName str
 
 	result, err = client.GetResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "resources/DeploymentsClient", "Get", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "resources/DeploymentsClient", "Get", resp, "Failure responding to request")
 	}
 
 	return
@@ -361,13 +351,13 @@ func (client DeploymentsClient) GetPreparer(resourceGroupName string, deployment
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client DeploymentsClient) GetSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
-func (client DeploymentsClient) GetResponder(resp *http.Response) (result DeploymentExtended, ae error) {
-	ae = autorest.Respond(
+func (client DeploymentsClient) GetResponder(resp *http.Response) (result DeploymentExtended, err error) {
+	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -382,7 +372,7 @@ func (client DeploymentsClient) GetResponder(resp *http.Response) (result Deploy
 // resourceGroupName is the name of the resource group to filter by. The name
 // is case insensitive. filter is the filter to apply on the operation. top
 // is query parameters. If null is passed returns all deployments.
-func (client DeploymentsClient) List(resourceGroupName string, filter string, top *int) (result DeploymentListResult, ae error) {
+func (client DeploymentsClient) List(resourceGroupName string, filter string, top *int32) (result DeploymentListResult, err error) {
 	req, err := client.ListPreparer(resourceGroupName, filter, top)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "resources/DeploymentsClient", "List", nil, "Failure preparing request")
@@ -396,14 +386,14 @@ func (client DeploymentsClient) List(resourceGroupName string, filter string, to
 
 	result, err = client.ListResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "resources/DeploymentsClient", "List", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "resources/DeploymentsClient", "List", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // ListPreparer prepares the List request.
-func (client DeploymentsClient) ListPreparer(resourceGroupName string, filter string, top *int) (*http.Request, error) {
+func (client DeploymentsClient) ListPreparer(resourceGroupName string, filter string, top *int32) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName": url.QueryEscape(resourceGroupName),
 		"subscriptionId":    url.QueryEscape(client.SubscriptionID),
@@ -431,13 +421,13 @@ func (client DeploymentsClient) ListPreparer(resourceGroupName string, filter st
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
 func (client DeploymentsClient) ListSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // ListResponder handles the response to the List request. The method always
 // closes the http.Response Body.
-func (client DeploymentsClient) ListResponder(resp *http.Response) (result DeploymentListResult, ae error) {
-	ae = autorest.Respond(
+func (client DeploymentsClient) ListResponder(resp *http.Response) (result DeploymentListResult, err error) {
+	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -448,7 +438,7 @@ func (client DeploymentsClient) ListResponder(resp *http.Response) (result Deplo
 }
 
 // ListNextResults retrieves the next set of results, if any.
-func (client DeploymentsClient) ListNextResults(lastResults DeploymentListResult) (result DeploymentListResult, ae error) {
+func (client DeploymentsClient) ListNextResults(lastResults DeploymentListResult) (result DeploymentListResult, err error) {
 	req, err := lastResults.DeploymentListResultPreparer()
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "resources/DeploymentsClient", "List", nil, "Failure preparing next results request request")
@@ -465,7 +455,7 @@ func (client DeploymentsClient) ListNextResults(lastResults DeploymentListResult
 
 	result, err = client.ListResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "resources/DeploymentsClient", "List", resp, "Failure responding to next results request request")
+		err = autorest.NewErrorWithError(err, "resources/DeploymentsClient", "List", resp, "Failure responding to next results request request")
 	}
 
 	return
@@ -476,7 +466,7 @@ func (client DeploymentsClient) ListNextResults(lastResults DeploymentListResult
 // resourceGroupName is the name of the resource group. The name is case
 // insensitive. deploymentName is the name of the deployment. parameters is
 // deployment to validate.
-func (client DeploymentsClient) Validate(resourceGroupName string, deploymentName string, parameters Deployment) (result DeploymentValidateResult, ae error) {
+func (client DeploymentsClient) Validate(resourceGroupName string, deploymentName string, parameters Deployment) (result DeploymentValidateResult, err error) {
 	req, err := client.ValidatePreparer(resourceGroupName, deploymentName, parameters)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "resources/DeploymentsClient", "Validate", nil, "Failure preparing request")
@@ -490,7 +480,7 @@ func (client DeploymentsClient) Validate(resourceGroupName string, deploymentNam
 
 	result, err = client.ValidateResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "resources/DeploymentsClient", "Validate", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "resources/DeploymentsClient", "Validate", resp, "Failure responding to request")
 	}
 
 	return
@@ -521,13 +511,13 @@ func (client DeploymentsClient) ValidatePreparer(resourceGroupName string, deplo
 // ValidateSender sends the Validate request. The method will close the
 // http.Response Body if it receives an error.
 func (client DeploymentsClient) ValidateSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // ValidateResponder handles the response to the Validate request. The method always
 // closes the http.Response Body.
-func (client DeploymentsClient) ValidateResponder(resp *http.Response) (result DeploymentValidateResult, ae error) {
-	ae = autorest.Respond(
+func (client DeploymentsClient) ValidateResponder(resp *http.Response) (result DeploymentValidateResult, err error) {
+	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusBadRequest),

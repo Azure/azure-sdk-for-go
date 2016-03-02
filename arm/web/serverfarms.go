@@ -53,7 +53,7 @@ func NewServerFarmsClientWithBaseURI(baseURI string, subscriptionID string) Serv
 // resourceGroupName is name of resource group name is name of App Service
 // Plan serverFarmEnvelope is details of App Service Plan allowPendingState
 // is oBSOLETE: If true, allow pending state for App Service Plan
-func (client ServerFarmsClient) CreateOrUpdateServerFarm(resourceGroupName string, name string, serverFarmEnvelope ServerFarmWithRichSku, allowPendingState *bool) (result autorest.Response, ae error) {
+func (client ServerFarmsClient) CreateOrUpdateServerFarm(resourceGroupName string, name string, serverFarmEnvelope ServerFarmWithRichSku, allowPendingState *bool) (result autorest.Response, err error) {
 	req, err := client.CreateOrUpdateServerFarmPreparer(resourceGroupName, name, serverFarmEnvelope, allowPendingState)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web/ServerFarmsClient", "CreateOrUpdateServerFarm", nil, "Failure preparing request")
@@ -67,7 +67,7 @@ func (client ServerFarmsClient) CreateOrUpdateServerFarm(resourceGroupName strin
 
 	result, err = client.CreateOrUpdateServerFarmResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "web/ServerFarmsClient", "CreateOrUpdateServerFarm", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "web/ServerFarmsClient", "CreateOrUpdateServerFarm", resp, "Failure responding to request")
 	}
 
 	return
@@ -101,21 +101,16 @@ func (client ServerFarmsClient) CreateOrUpdateServerFarmPreparer(resourceGroupNa
 // CreateOrUpdateServerFarmSender sends the CreateOrUpdateServerFarm request. The method will close the
 // http.Response Body if it receives an error.
 func (client ServerFarmsClient) CreateOrUpdateServerFarmSender(req *http.Request) (*http.Response, error) {
-	resp, err := client.Send(req)
-	if err == nil && azure.ResponseIsLongRunning(resp) {
-		req, err := azure.NewAsyncPollingRequest(resp, client.Client)
-		if err == nil {
-			resp, err = autorest.SendWithSender(client, req,
-				azure.WithAsyncPolling(autorest.DefaultPollingDelay))
-		}
-	}
-	return resp, err
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoPollForAsynchronous(autorest.DefaultPollingDuration,
+			autorest.DefaultPollingDelay))
 }
 
 // CreateOrUpdateServerFarmResponder handles the response to the CreateOrUpdateServerFarm request. The method always
 // closes the http.Response Body.
-func (client ServerFarmsClient) CreateOrUpdateServerFarmResponder(resp *http.Response) (result autorest.Response, ae error) {
-	ae = autorest.Respond(
+func (client ServerFarmsClient) CreateOrUpdateServerFarmResponder(resp *http.Response) (result autorest.Response, err error) {
+	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
@@ -129,7 +124,7 @@ func (client ServerFarmsClient) CreateOrUpdateServerFarmResponder(resp *http.Res
 // resourceGroupName is name of resource group name is name of App Service
 // Plan vnetName is name of virtual network routeName is name of the virtual
 // network route route is the route object
-func (client ServerFarmsClient) CreateOrUpdateVnetRoute(resourceGroupName string, name string, vnetName string, routeName string, route VnetRoute) (result VnetRoute, ae error) {
+func (client ServerFarmsClient) CreateOrUpdateVnetRoute(resourceGroupName string, name string, vnetName string, routeName string, route VnetRoute) (result VnetRoute, err error) {
 	req, err := client.CreateOrUpdateVnetRoutePreparer(resourceGroupName, name, vnetName, routeName, route)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web/ServerFarmsClient", "CreateOrUpdateVnetRoute", nil, "Failure preparing request")
@@ -143,7 +138,7 @@ func (client ServerFarmsClient) CreateOrUpdateVnetRoute(resourceGroupName string
 
 	result, err = client.CreateOrUpdateVnetRouteResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "web/ServerFarmsClient", "CreateOrUpdateVnetRoute", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "web/ServerFarmsClient", "CreateOrUpdateVnetRoute", resp, "Failure responding to request")
 	}
 
 	return
@@ -176,13 +171,13 @@ func (client ServerFarmsClient) CreateOrUpdateVnetRoutePreparer(resourceGroupNam
 // CreateOrUpdateVnetRouteSender sends the CreateOrUpdateVnetRoute request. The method will close the
 // http.Response Body if it receives an error.
 func (client ServerFarmsClient) CreateOrUpdateVnetRouteSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // CreateOrUpdateVnetRouteResponder handles the response to the CreateOrUpdateVnetRoute request. The method always
 // closes the http.Response Body.
-func (client ServerFarmsClient) CreateOrUpdateVnetRouteResponder(resp *http.Response) (result VnetRoute, ae error) {
-	ae = autorest.Respond(
+func (client ServerFarmsClient) CreateOrUpdateVnetRouteResponder(resp *http.Response) (result VnetRoute, err error) {
+	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusBadRequest, http.StatusNotFound),
@@ -196,7 +191,7 @@ func (client ServerFarmsClient) CreateOrUpdateVnetRouteResponder(resp *http.Resp
 //
 // resourceGroupName is name of resource group name is name of App Service
 // Plan
-func (client ServerFarmsClient) DeleteServerFarm(resourceGroupName string, name string) (result ObjectSet, ae error) {
+func (client ServerFarmsClient) DeleteServerFarm(resourceGroupName string, name string) (result ObjectSet, err error) {
 	req, err := client.DeleteServerFarmPreparer(resourceGroupName, name)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web/ServerFarmsClient", "DeleteServerFarm", nil, "Failure preparing request")
@@ -210,7 +205,7 @@ func (client ServerFarmsClient) DeleteServerFarm(resourceGroupName string, name 
 
 	result, err = client.DeleteServerFarmResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "web/ServerFarmsClient", "DeleteServerFarm", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "web/ServerFarmsClient", "DeleteServerFarm", resp, "Failure responding to request")
 	}
 
 	return
@@ -240,13 +235,13 @@ func (client ServerFarmsClient) DeleteServerFarmPreparer(resourceGroupName strin
 // DeleteServerFarmSender sends the DeleteServerFarm request. The method will close the
 // http.Response Body if it receives an error.
 func (client ServerFarmsClient) DeleteServerFarmSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // DeleteServerFarmResponder handles the response to the DeleteServerFarm request. The method always
 // closes the http.Response Body.
-func (client ServerFarmsClient) DeleteServerFarmResponder(resp *http.Response) (result ObjectSet, ae error) {
-	ae = autorest.Respond(
+func (client ServerFarmsClient) DeleteServerFarmResponder(resp *http.Response) (result ObjectSet, err error) {
+	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -261,7 +256,7 @@ func (client ServerFarmsClient) DeleteServerFarmResponder(resp *http.Response) (
 // resourceGroupName is name of resource group name is name of App Service
 // Plan vnetName is name of virtual network routeName is name of the virtual
 // network route
-func (client ServerFarmsClient) DeleteVnetRoute(resourceGroupName string, name string, vnetName string, routeName string) (result ObjectSet, ae error) {
+func (client ServerFarmsClient) DeleteVnetRoute(resourceGroupName string, name string, vnetName string, routeName string) (result ObjectSet, err error) {
 	req, err := client.DeleteVnetRoutePreparer(resourceGroupName, name, vnetName, routeName)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web/ServerFarmsClient", "DeleteVnetRoute", nil, "Failure preparing request")
@@ -275,7 +270,7 @@ func (client ServerFarmsClient) DeleteVnetRoute(resourceGroupName string, name s
 
 	result, err = client.DeleteVnetRouteResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "web/ServerFarmsClient", "DeleteVnetRoute", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "web/ServerFarmsClient", "DeleteVnetRoute", resp, "Failure responding to request")
 	}
 
 	return
@@ -307,13 +302,13 @@ func (client ServerFarmsClient) DeleteVnetRoutePreparer(resourceGroupName string
 // DeleteVnetRouteSender sends the DeleteVnetRoute request. The method will close the
 // http.Response Body if it receives an error.
 func (client ServerFarmsClient) DeleteVnetRouteSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // DeleteVnetRouteResponder handles the response to the DeleteVnetRoute request. The method always
 // closes the http.Response Body.
-func (client ServerFarmsClient) DeleteVnetRouteResponder(resp *http.Response) (result ObjectSet, ae error) {
-	ae = autorest.Respond(
+func (client ServerFarmsClient) DeleteVnetRouteResponder(resp *http.Response) (result ObjectSet, err error) {
+	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNotFound),
@@ -328,7 +323,7 @@ func (client ServerFarmsClient) DeleteVnetRouteResponder(resp *http.Response) (r
 // resourceGroupName is name of resource group name is name of App Service
 // Plan vnetName is name of virtual network routeName is name of the virtual
 // network route
-func (client ServerFarmsClient) GetRouteForVnet(resourceGroupName string, name string, vnetName string, routeName string) (result VnetRouteList, ae error) {
+func (client ServerFarmsClient) GetRouteForVnet(resourceGroupName string, name string, vnetName string, routeName string) (result VnetRouteList, err error) {
 	req, err := client.GetRouteForVnetPreparer(resourceGroupName, name, vnetName, routeName)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web/ServerFarmsClient", "GetRouteForVnet", nil, "Failure preparing request")
@@ -342,7 +337,7 @@ func (client ServerFarmsClient) GetRouteForVnet(resourceGroupName string, name s
 
 	result, err = client.GetRouteForVnetResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "web/ServerFarmsClient", "GetRouteForVnet", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "web/ServerFarmsClient", "GetRouteForVnet", resp, "Failure responding to request")
 	}
 
 	return
@@ -374,13 +369,13 @@ func (client ServerFarmsClient) GetRouteForVnetPreparer(resourceGroupName string
 // GetRouteForVnetSender sends the GetRouteForVnet request. The method will close the
 // http.Response Body if it receives an error.
 func (client ServerFarmsClient) GetRouteForVnetSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // GetRouteForVnetResponder handles the response to the GetRouteForVnet request. The method always
 // closes the http.Response Body.
-func (client ServerFarmsClient) GetRouteForVnetResponder(resp *http.Response) (result VnetRouteList, ae error) {
-	ae = autorest.Respond(
+func (client ServerFarmsClient) GetRouteForVnetResponder(resp *http.Response) (result VnetRouteList, err error) {
+	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNotFound),
@@ -394,7 +389,7 @@ func (client ServerFarmsClient) GetRouteForVnetResponder(resp *http.Response) (r
 //
 // resourceGroupName is name of resource group name is name of App Service
 // Plan vnetName is name of virtual network
-func (client ServerFarmsClient) GetRoutesForVnet(resourceGroupName string, name string, vnetName string) (result VnetRouteList, ae error) {
+func (client ServerFarmsClient) GetRoutesForVnet(resourceGroupName string, name string, vnetName string) (result VnetRouteList, err error) {
 	req, err := client.GetRoutesForVnetPreparer(resourceGroupName, name, vnetName)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web/ServerFarmsClient", "GetRoutesForVnet", nil, "Failure preparing request")
@@ -408,7 +403,7 @@ func (client ServerFarmsClient) GetRoutesForVnet(resourceGroupName string, name 
 
 	result, err = client.GetRoutesForVnetResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "web/ServerFarmsClient", "GetRoutesForVnet", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "web/ServerFarmsClient", "GetRoutesForVnet", resp, "Failure responding to request")
 	}
 
 	return
@@ -439,13 +434,13 @@ func (client ServerFarmsClient) GetRoutesForVnetPreparer(resourceGroupName strin
 // GetRoutesForVnetSender sends the GetRoutesForVnet request. The method will close the
 // http.Response Body if it receives an error.
 func (client ServerFarmsClient) GetRoutesForVnetSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // GetRoutesForVnetResponder handles the response to the GetRoutesForVnet request. The method always
 // closes the http.Response Body.
-func (client ServerFarmsClient) GetRoutesForVnetResponder(resp *http.Response) (result VnetRouteList, ae error) {
-	ae = autorest.Respond(
+func (client ServerFarmsClient) GetRoutesForVnetResponder(resp *http.Response) (result VnetRouteList, err error) {
+	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -459,7 +454,7 @@ func (client ServerFarmsClient) GetRoutesForVnetResponder(resp *http.Response) (
 //
 // resourceGroupName is name of resource group name is name of App Service
 // Plan
-func (client ServerFarmsClient) GetServerFarm(resourceGroupName string, name string) (result ServerFarmWithRichSku, ae error) {
+func (client ServerFarmsClient) GetServerFarm(resourceGroupName string, name string) (result ServerFarmWithRichSku, err error) {
 	req, err := client.GetServerFarmPreparer(resourceGroupName, name)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web/ServerFarmsClient", "GetServerFarm", nil, "Failure preparing request")
@@ -473,7 +468,7 @@ func (client ServerFarmsClient) GetServerFarm(resourceGroupName string, name str
 
 	result, err = client.GetServerFarmResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "web/ServerFarmsClient", "GetServerFarm", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "web/ServerFarmsClient", "GetServerFarm", resp, "Failure responding to request")
 	}
 
 	return
@@ -503,13 +498,13 @@ func (client ServerFarmsClient) GetServerFarmPreparer(resourceGroupName string, 
 // GetServerFarmSender sends the GetServerFarm request. The method will close the
 // http.Response Body if it receives an error.
 func (client ServerFarmsClient) GetServerFarmSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // GetServerFarmResponder handles the response to the GetServerFarm request. The method always
 // closes the http.Response Body.
-func (client ServerFarmsClient) GetServerFarmResponder(resp *http.Response) (result ServerFarmWithRichSku, ae error) {
-	ae = autorest.Respond(
+func (client ServerFarmsClient) GetServerFarmResponder(resp *http.Response) (result ServerFarmWithRichSku, err error) {
+	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -524,7 +519,7 @@ func (client ServerFarmsClient) GetServerFarmResponder(resp *http.Response) (res
 //
 // resourceGroupName is name of resource group name is name of App Service
 // Plan
-func (client ServerFarmsClient) GetServerFarmMetricDefintions(resourceGroupName string, name string) (result MetricDefinitionCollection, ae error) {
+func (client ServerFarmsClient) GetServerFarmMetricDefintions(resourceGroupName string, name string) (result MetricDefinitionCollection, err error) {
 	req, err := client.GetServerFarmMetricDefintionsPreparer(resourceGroupName, name)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web/ServerFarmsClient", "GetServerFarmMetricDefintions", nil, "Failure preparing request")
@@ -538,7 +533,7 @@ func (client ServerFarmsClient) GetServerFarmMetricDefintions(resourceGroupName 
 
 	result, err = client.GetServerFarmMetricDefintionsResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "web/ServerFarmsClient", "GetServerFarmMetricDefintions", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "web/ServerFarmsClient", "GetServerFarmMetricDefintions", resp, "Failure responding to request")
 	}
 
 	return
@@ -568,13 +563,13 @@ func (client ServerFarmsClient) GetServerFarmMetricDefintionsPreparer(resourceGr
 // GetServerFarmMetricDefintionsSender sends the GetServerFarmMetricDefintions request. The method will close the
 // http.Response Body if it receives an error.
 func (client ServerFarmsClient) GetServerFarmMetricDefintionsSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // GetServerFarmMetricDefintionsResponder handles the response to the GetServerFarmMetricDefintions request. The method always
 // closes the http.Response Body.
-func (client ServerFarmsClient) GetServerFarmMetricDefintionsResponder(resp *http.Response) (result MetricDefinitionCollection, ae error) {
-	ae = autorest.Respond(
+func (client ServerFarmsClient) GetServerFarmMetricDefintionsResponder(resp *http.Response) (result MetricDefinitionCollection, err error) {
+	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -593,7 +588,7 @@ func (client ServerFarmsClient) GetServerFarmMetricDefintionsResponder(resp *htt
 // or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and
 // endTime eq '2014-12-31T23:59:59Z' and timeGrain eq
 // duration'[Hour|Minute|Day]'.
-func (client ServerFarmsClient) GetServerFarmMetrics(resourceGroupName string, name string, details *bool, filter string) (result ResourceMetricCollection, ae error) {
+func (client ServerFarmsClient) GetServerFarmMetrics(resourceGroupName string, name string, details *bool, filter string) (result ResourceMetricCollection, err error) {
 	req, err := client.GetServerFarmMetricsPreparer(resourceGroupName, name, details, filter)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web/ServerFarmsClient", "GetServerFarmMetrics", nil, "Failure preparing request")
@@ -607,7 +602,7 @@ func (client ServerFarmsClient) GetServerFarmMetrics(resourceGroupName string, n
 
 	result, err = client.GetServerFarmMetricsResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "web/ServerFarmsClient", "GetServerFarmMetrics", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "web/ServerFarmsClient", "GetServerFarmMetrics", resp, "Failure responding to request")
 	}
 
 	return
@@ -643,13 +638,13 @@ func (client ServerFarmsClient) GetServerFarmMetricsPreparer(resourceGroupName s
 // GetServerFarmMetricsSender sends the GetServerFarmMetrics request. The method will close the
 // http.Response Body if it receives an error.
 func (client ServerFarmsClient) GetServerFarmMetricsSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // GetServerFarmMetricsResponder handles the response to the GetServerFarmMetrics request. The method always
 // closes the http.Response Body.
-func (client ServerFarmsClient) GetServerFarmMetricsResponder(resp *http.Response) (result ResourceMetricCollection, ae error) {
-	ae = autorest.Respond(
+func (client ServerFarmsClient) GetServerFarmMetricsResponder(resp *http.Response) (result ResourceMetricCollection, err error) {
+	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -663,7 +658,7 @@ func (client ServerFarmsClient) GetServerFarmMetricsResponder(resp *http.Respons
 //
 // resourceGroupName is name of resource group name is name of server farm
 // operationID is id of Server farm operation"&gt;
-func (client ServerFarmsClient) GetServerFarmOperation(resourceGroupName string, name string, operationID string) (result ServerFarmWithRichSku, ae error) {
+func (client ServerFarmsClient) GetServerFarmOperation(resourceGroupName string, name string, operationID string) (result ServerFarmWithRichSku, err error) {
 	req, err := client.GetServerFarmOperationPreparer(resourceGroupName, name, operationID)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web/ServerFarmsClient", "GetServerFarmOperation", nil, "Failure preparing request")
@@ -677,7 +672,7 @@ func (client ServerFarmsClient) GetServerFarmOperation(resourceGroupName string,
 
 	result, err = client.GetServerFarmOperationResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "web/ServerFarmsClient", "GetServerFarmOperation", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "web/ServerFarmsClient", "GetServerFarmOperation", resp, "Failure responding to request")
 	}
 
 	return
@@ -708,13 +703,13 @@ func (client ServerFarmsClient) GetServerFarmOperationPreparer(resourceGroupName
 // GetServerFarmOperationSender sends the GetServerFarmOperation request. The method will close the
 // http.Response Body if it receives an error.
 func (client ServerFarmsClient) GetServerFarmOperationSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // GetServerFarmOperationResponder handles the response to the GetServerFarmOperation request. The method always
 // closes the http.Response Body.
-func (client ServerFarmsClient) GetServerFarmOperationResponder(resp *http.Response) (result ServerFarmWithRichSku, ae error) {
-	ae = autorest.Respond(
+func (client ServerFarmsClient) GetServerFarmOperationResponder(resp *http.Response) (result ServerFarmWithRichSku, err error) {
+	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -727,7 +722,7 @@ func (client ServerFarmsClient) GetServerFarmOperationResponder(resp *http.Respo
 // GetServerFarms sends the get server farms request.
 //
 // resourceGroupName is name of resource group
-func (client ServerFarmsClient) GetServerFarms(resourceGroupName string) (result ServerFarmCollection, ae error) {
+func (client ServerFarmsClient) GetServerFarms(resourceGroupName string) (result ServerFarmCollection, err error) {
 	req, err := client.GetServerFarmsPreparer(resourceGroupName)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web/ServerFarmsClient", "GetServerFarms", nil, "Failure preparing request")
@@ -741,7 +736,7 @@ func (client ServerFarmsClient) GetServerFarms(resourceGroupName string) (result
 
 	result, err = client.GetServerFarmsResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "web/ServerFarmsClient", "GetServerFarms", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "web/ServerFarmsClient", "GetServerFarms", resp, "Failure responding to request")
 	}
 
 	return
@@ -770,13 +765,13 @@ func (client ServerFarmsClient) GetServerFarmsPreparer(resourceGroupName string)
 // GetServerFarmsSender sends the GetServerFarms request. The method will close the
 // http.Response Body if it receives an error.
 func (client ServerFarmsClient) GetServerFarmsSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // GetServerFarmsResponder handles the response to the GetServerFarms request. The method always
 // closes the http.Response Body.
-func (client ServerFarmsClient) GetServerFarmsResponder(resp *http.Response) (result ServerFarmCollection, ae error) {
-	ae = autorest.Respond(
+func (client ServerFarmsClient) GetServerFarmsResponder(resp *http.Response) (result ServerFarmCollection, err error) {
+	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -795,7 +790,7 @@ func (client ServerFarmsClient) GetServerFarmsResponder(resp *http.Response) (re
 // the list filter is supported filter: $filter=state eq running. Returns
 // only web apps that are currently running top is list page size. If
 // specified, results are paged.
-func (client ServerFarmsClient) GetServerFarmSites(resourceGroupName string, name string, skipToken string, filter string, top string) (result SiteCollection, ae error) {
+func (client ServerFarmsClient) GetServerFarmSites(resourceGroupName string, name string, skipToken string, filter string, top string) (result SiteCollection, err error) {
 	req, err := client.GetServerFarmSitesPreparer(resourceGroupName, name, skipToken, filter, top)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web/ServerFarmsClient", "GetServerFarmSites", nil, "Failure preparing request")
@@ -809,7 +804,7 @@ func (client ServerFarmsClient) GetServerFarmSites(resourceGroupName string, nam
 
 	result, err = client.GetServerFarmSitesResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "web/ServerFarmsClient", "GetServerFarmSites", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "web/ServerFarmsClient", "GetServerFarmSites", resp, "Failure responding to request")
 	}
 
 	return
@@ -848,13 +843,13 @@ func (client ServerFarmsClient) GetServerFarmSitesPreparer(resourceGroupName str
 // GetServerFarmSitesSender sends the GetServerFarmSites request. The method will close the
 // http.Response Body if it receives an error.
 func (client ServerFarmsClient) GetServerFarmSitesSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // GetServerFarmSitesResponder handles the response to the GetServerFarmSites request. The method always
 // closes the http.Response Body.
-func (client ServerFarmsClient) GetServerFarmSitesResponder(resp *http.Response) (result SiteCollection, ae error) {
-	ae = autorest.Respond(
+func (client ServerFarmsClient) GetServerFarmSitesResponder(resp *http.Response) (result SiteCollection, err error) {
+	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -865,7 +860,7 @@ func (client ServerFarmsClient) GetServerFarmSitesResponder(resp *http.Response)
 }
 
 // GetServerFarmSitesNextResults retrieves the next set of results, if any.
-func (client ServerFarmsClient) GetServerFarmSitesNextResults(lastResults SiteCollection) (result SiteCollection, ae error) {
+func (client ServerFarmsClient) GetServerFarmSitesNextResults(lastResults SiteCollection) (result SiteCollection, err error) {
 	req, err := lastResults.SiteCollectionPreparer()
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web/ServerFarmsClient", "GetServerFarmSites", nil, "Failure preparing next results request request")
@@ -882,7 +877,7 @@ func (client ServerFarmsClient) GetServerFarmSitesNextResults(lastResults SiteCo
 
 	result, err = client.GetServerFarmSitesResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "web/ServerFarmsClient", "GetServerFarmSites", resp, "Failure responding to next results request request")
+		err = autorest.NewErrorWithError(err, "web/ServerFarmsClient", "GetServerFarmSites", resp, "Failure responding to next results request request")
 	}
 
 	return
@@ -893,7 +888,7 @@ func (client ServerFarmsClient) GetServerFarmSitesNextResults(lastResults SiteCo
 // resourceGroupName is name of resource group name is name of the App Service
 // Plan vnetName is name of the virtual network gatewayName is name of the
 // gateway. Only the 'primary' gateway is supported.
-func (client ServerFarmsClient) GetServerFarmVnetGateway(resourceGroupName string, name string, vnetName string, gatewayName string) (result VnetGateway, ae error) {
+func (client ServerFarmsClient) GetServerFarmVnetGateway(resourceGroupName string, name string, vnetName string, gatewayName string) (result VnetGateway, err error) {
 	req, err := client.GetServerFarmVnetGatewayPreparer(resourceGroupName, name, vnetName, gatewayName)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web/ServerFarmsClient", "GetServerFarmVnetGateway", nil, "Failure preparing request")
@@ -907,7 +902,7 @@ func (client ServerFarmsClient) GetServerFarmVnetGateway(resourceGroupName strin
 
 	result, err = client.GetServerFarmVnetGatewayResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "web/ServerFarmsClient", "GetServerFarmVnetGateway", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "web/ServerFarmsClient", "GetServerFarmVnetGateway", resp, "Failure responding to request")
 	}
 
 	return
@@ -939,13 +934,13 @@ func (client ServerFarmsClient) GetServerFarmVnetGatewayPreparer(resourceGroupNa
 // GetServerFarmVnetGatewaySender sends the GetServerFarmVnetGateway request. The method will close the
 // http.Response Body if it receives an error.
 func (client ServerFarmsClient) GetServerFarmVnetGatewaySender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // GetServerFarmVnetGatewayResponder handles the response to the GetServerFarmVnetGateway request. The method always
 // closes the http.Response Body.
-func (client ServerFarmsClient) GetServerFarmVnetGatewayResponder(resp *http.Response) (result VnetGateway, ae error) {
-	ae = autorest.Respond(
+func (client ServerFarmsClient) GetServerFarmVnetGatewayResponder(resp *http.Response) (result VnetGateway, err error) {
+	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -959,7 +954,7 @@ func (client ServerFarmsClient) GetServerFarmVnetGatewayResponder(resp *http.Res
 //
 // resourceGroupName is name of resource group name is name of App Service
 // Plan vnetName is name of virtual network
-func (client ServerFarmsClient) GetVnetFromServerFarm(resourceGroupName string, name string, vnetName string) (result VnetInfo, ae error) {
+func (client ServerFarmsClient) GetVnetFromServerFarm(resourceGroupName string, name string, vnetName string) (result VnetInfo, err error) {
 	req, err := client.GetVnetFromServerFarmPreparer(resourceGroupName, name, vnetName)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web/ServerFarmsClient", "GetVnetFromServerFarm", nil, "Failure preparing request")
@@ -973,7 +968,7 @@ func (client ServerFarmsClient) GetVnetFromServerFarm(resourceGroupName string, 
 
 	result, err = client.GetVnetFromServerFarmResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "web/ServerFarmsClient", "GetVnetFromServerFarm", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "web/ServerFarmsClient", "GetVnetFromServerFarm", resp, "Failure responding to request")
 	}
 
 	return
@@ -1004,13 +999,13 @@ func (client ServerFarmsClient) GetVnetFromServerFarmPreparer(resourceGroupName 
 // GetVnetFromServerFarmSender sends the GetVnetFromServerFarm request. The method will close the
 // http.Response Body if it receives an error.
 func (client ServerFarmsClient) GetVnetFromServerFarmSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // GetVnetFromServerFarmResponder handles the response to the GetVnetFromServerFarm request. The method always
 // closes the http.Response Body.
-func (client ServerFarmsClient) GetVnetFromServerFarmResponder(resp *http.Response) (result VnetInfo, ae error) {
-	ae = autorest.Respond(
+func (client ServerFarmsClient) GetVnetFromServerFarmResponder(resp *http.Response) (result VnetInfo, err error) {
+	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNotFound),
@@ -1024,7 +1019,7 @@ func (client ServerFarmsClient) GetVnetFromServerFarmResponder(resp *http.Respon
 //
 // resourceGroupName is name of resource group name is name of App Service
 // Plan
-func (client ServerFarmsClient) GetVnetsForServerFarm(resourceGroupName string, name string) (result VnetInfoList, ae error) {
+func (client ServerFarmsClient) GetVnetsForServerFarm(resourceGroupName string, name string) (result VnetInfoList, err error) {
 	req, err := client.GetVnetsForServerFarmPreparer(resourceGroupName, name)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web/ServerFarmsClient", "GetVnetsForServerFarm", nil, "Failure preparing request")
@@ -1038,7 +1033,7 @@ func (client ServerFarmsClient) GetVnetsForServerFarm(resourceGroupName string, 
 
 	result, err = client.GetVnetsForServerFarmResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "web/ServerFarmsClient", "GetVnetsForServerFarm", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "web/ServerFarmsClient", "GetVnetsForServerFarm", resp, "Failure responding to request")
 	}
 
 	return
@@ -1068,13 +1063,13 @@ func (client ServerFarmsClient) GetVnetsForServerFarmPreparer(resourceGroupName 
 // GetVnetsForServerFarmSender sends the GetVnetsForServerFarm request. The method will close the
 // http.Response Body if it receives an error.
 func (client ServerFarmsClient) GetVnetsForServerFarmSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // GetVnetsForServerFarmResponder handles the response to the GetVnetsForServerFarm request. The method always
 // closes the http.Response Body.
-func (client ServerFarmsClient) GetVnetsForServerFarmResponder(resp *http.Response) (result VnetInfoList, ae error) {
-	ae = autorest.Respond(
+func (client ServerFarmsClient) GetVnetsForServerFarmResponder(resp *http.Response) (result VnetInfoList, err error) {
+	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -1088,7 +1083,7 @@ func (client ServerFarmsClient) GetVnetsForServerFarmResponder(resp *http.Respon
 //
 // resourceGroupName is name of resource group name is name of server farm
 // workerName is name of worker machine, typically IP address
-func (client ServerFarmsClient) RebootWorkerForServerFarm(resourceGroupName string, name string, workerName string) (result ObjectSet, ae error) {
+func (client ServerFarmsClient) RebootWorkerForServerFarm(resourceGroupName string, name string, workerName string) (result ObjectSet, err error) {
 	req, err := client.RebootWorkerForServerFarmPreparer(resourceGroupName, name, workerName)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web/ServerFarmsClient", "RebootWorkerForServerFarm", nil, "Failure preparing request")
@@ -1102,7 +1097,7 @@ func (client ServerFarmsClient) RebootWorkerForServerFarm(resourceGroupName stri
 
 	result, err = client.RebootWorkerForServerFarmResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "web/ServerFarmsClient", "RebootWorkerForServerFarm", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "web/ServerFarmsClient", "RebootWorkerForServerFarm", resp, "Failure responding to request")
 	}
 
 	return
@@ -1133,13 +1128,13 @@ func (client ServerFarmsClient) RebootWorkerForServerFarmPreparer(resourceGroupN
 // RebootWorkerForServerFarmSender sends the RebootWorkerForServerFarm request. The method will close the
 // http.Response Body if it receives an error.
 func (client ServerFarmsClient) RebootWorkerForServerFarmSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // RebootWorkerForServerFarmResponder handles the response to the RebootWorkerForServerFarm request. The method always
 // closes the http.Response Body.
-func (client ServerFarmsClient) RebootWorkerForServerFarmResponder(resp *http.Response) (result ObjectSet, ae error) {
-	ae = autorest.Respond(
+func (client ServerFarmsClient) RebootWorkerForServerFarmResponder(resp *http.Response) (result ObjectSet, err error) {
+	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -1155,7 +1150,7 @@ func (client ServerFarmsClient) RebootWorkerForServerFarmResponder(resp *http.Re
 // Plan softRestart is soft restart applies the configuration settings and
 // restarts the apps if necessary. Hard restart always restarts and
 // reprovisions the apps
-func (client ServerFarmsClient) RestartSitesForServerFarm(resourceGroupName string, name string, softRestart *bool) (result ObjectSet, ae error) {
+func (client ServerFarmsClient) RestartSitesForServerFarm(resourceGroupName string, name string, softRestart *bool) (result ObjectSet, err error) {
 	req, err := client.RestartSitesForServerFarmPreparer(resourceGroupName, name, softRestart)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web/ServerFarmsClient", "RestartSitesForServerFarm", nil, "Failure preparing request")
@@ -1169,7 +1164,7 @@ func (client ServerFarmsClient) RestartSitesForServerFarm(resourceGroupName stri
 
 	result, err = client.RestartSitesForServerFarmResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "web/ServerFarmsClient", "RestartSitesForServerFarm", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "web/ServerFarmsClient", "RestartSitesForServerFarm", resp, "Failure responding to request")
 	}
 
 	return
@@ -1202,13 +1197,13 @@ func (client ServerFarmsClient) RestartSitesForServerFarmPreparer(resourceGroupN
 // RestartSitesForServerFarmSender sends the RestartSitesForServerFarm request. The method will close the
 // http.Response Body if it receives an error.
 func (client ServerFarmsClient) RestartSitesForServerFarmSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // RestartSitesForServerFarmResponder handles the response to the RestartSitesForServerFarm request. The method always
 // closes the http.Response Body.
-func (client ServerFarmsClient) RestartSitesForServerFarmResponder(resp *http.Response) (result ObjectSet, ae error) {
-	ae = autorest.Respond(
+func (client ServerFarmsClient) RestartSitesForServerFarmResponder(resp *http.Response) (result ObjectSet, err error) {
+	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -1225,7 +1220,7 @@ func (client ServerFarmsClient) RestartSitesForServerFarmResponder(resp *http.Re
 // Plan vnetName is the name of the virtual network gatewayName is the name
 // of the gateway. Only 'primary' is supported. connectionEnvelope is the
 // gateway entity.
-func (client ServerFarmsClient) UpdateServerFarmVnetGateway(resourceGroupName string, name string, vnetName string, gatewayName string, connectionEnvelope VnetGateway) (result VnetGateway, ae error) {
+func (client ServerFarmsClient) UpdateServerFarmVnetGateway(resourceGroupName string, name string, vnetName string, gatewayName string, connectionEnvelope VnetGateway) (result VnetGateway, err error) {
 	req, err := client.UpdateServerFarmVnetGatewayPreparer(resourceGroupName, name, vnetName, gatewayName, connectionEnvelope)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web/ServerFarmsClient", "UpdateServerFarmVnetGateway", nil, "Failure preparing request")
@@ -1239,7 +1234,7 @@ func (client ServerFarmsClient) UpdateServerFarmVnetGateway(resourceGroupName st
 
 	result, err = client.UpdateServerFarmVnetGatewayResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "web/ServerFarmsClient", "UpdateServerFarmVnetGateway", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "web/ServerFarmsClient", "UpdateServerFarmVnetGateway", resp, "Failure responding to request")
 	}
 
 	return
@@ -1272,13 +1267,13 @@ func (client ServerFarmsClient) UpdateServerFarmVnetGatewayPreparer(resourceGrou
 // UpdateServerFarmVnetGatewaySender sends the UpdateServerFarmVnetGateway request. The method will close the
 // http.Response Body if it receives an error.
 func (client ServerFarmsClient) UpdateServerFarmVnetGatewaySender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // UpdateServerFarmVnetGatewayResponder handles the response to the UpdateServerFarmVnetGateway request. The method always
 // closes the http.Response Body.
-func (client ServerFarmsClient) UpdateServerFarmVnetGatewayResponder(resp *http.Response) (result VnetGateway, ae error) {
-	ae = autorest.Respond(
+func (client ServerFarmsClient) UpdateServerFarmVnetGatewayResponder(resp *http.Response) (result VnetGateway, err error) {
+	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -1293,7 +1288,7 @@ func (client ServerFarmsClient) UpdateServerFarmVnetGatewayResponder(resp *http.
 // resourceGroupName is name of resource group name is name of App Service
 // Plan vnetName is name of virtual network routeName is name of the virtual
 // network route route is the route object
-func (client ServerFarmsClient) UpdateVnetRoute(resourceGroupName string, name string, vnetName string, routeName string, route VnetRoute) (result VnetRoute, ae error) {
+func (client ServerFarmsClient) UpdateVnetRoute(resourceGroupName string, name string, vnetName string, routeName string, route VnetRoute) (result VnetRoute, err error) {
 	req, err := client.UpdateVnetRoutePreparer(resourceGroupName, name, vnetName, routeName, route)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web/ServerFarmsClient", "UpdateVnetRoute", nil, "Failure preparing request")
@@ -1307,7 +1302,7 @@ func (client ServerFarmsClient) UpdateVnetRoute(resourceGroupName string, name s
 
 	result, err = client.UpdateVnetRouteResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "web/ServerFarmsClient", "UpdateVnetRoute", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "web/ServerFarmsClient", "UpdateVnetRoute", resp, "Failure responding to request")
 	}
 
 	return
@@ -1340,13 +1335,13 @@ func (client ServerFarmsClient) UpdateVnetRoutePreparer(resourceGroupName string
 // UpdateVnetRouteSender sends the UpdateVnetRoute request. The method will close the
 // http.Response Body if it receives an error.
 func (client ServerFarmsClient) UpdateVnetRouteSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // UpdateVnetRouteResponder handles the response to the UpdateVnetRoute request. The method always
 // closes the http.Response Body.
-func (client ServerFarmsClient) UpdateVnetRouteResponder(resp *http.Response) (result VnetRoute, ae error) {
-	ae = autorest.Respond(
+func (client ServerFarmsClient) UpdateVnetRouteResponder(resp *http.Response) (result VnetRoute, err error) {
+	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusBadRequest, http.StatusNotFound),

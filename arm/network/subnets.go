@@ -51,7 +51,7 @@ func NewSubnetsClientWithBaseURI(baseURI string, subscriptionID string) SubnetsC
 // the name of the virtual network. subnetName is the name of the subnet.
 // subnetParameters is parameters supplied to the create/update Subnet
 // operation
-func (client SubnetsClient) CreateOrUpdate(resourceGroupName string, virtualNetworkName string, subnetName string, subnetParameters Subnet) (result autorest.Response, ae error) {
+func (client SubnetsClient) CreateOrUpdate(resourceGroupName string, virtualNetworkName string, subnetName string, subnetParameters Subnet) (result autorest.Response, err error) {
 	req, err := client.CreateOrUpdatePreparer(resourceGroupName, virtualNetworkName, subnetName, subnetParameters)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "network/SubnetsClient", "CreateOrUpdate", nil, "Failure preparing request")
@@ -65,7 +65,7 @@ func (client SubnetsClient) CreateOrUpdate(resourceGroupName string, virtualNetw
 
 	result, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "network/SubnetsClient", "CreateOrUpdate", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "network/SubnetsClient", "CreateOrUpdate", resp, "Failure responding to request")
 	}
 
 	return
@@ -97,21 +97,16 @@ func (client SubnetsClient) CreateOrUpdatePreparer(resourceGroupName string, vir
 // CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
 // http.Response Body if it receives an error.
 func (client SubnetsClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
-	resp, err := client.Send(req)
-	if err == nil && azure.ResponseIsLongRunning(resp) {
-		req, err := azure.NewAsyncPollingRequest(resp, client.Client)
-		if err == nil {
-			resp, err = autorest.SendWithSender(client, req,
-				azure.WithAsyncPolling(autorest.DefaultPollingDelay))
-		}
-	}
-	return resp, err
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoPollForAsynchronous(autorest.DefaultPollingDuration,
+			autorest.DefaultPollingDelay))
 }
 
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
 // closes the http.Response Body.
-func (client SubnetsClient) CreateOrUpdateResponder(resp *http.Response) (result autorest.Response, ae error) {
-	ae = autorest.Respond(
+func (client SubnetsClient) CreateOrUpdateResponder(resp *http.Response) (result autorest.Response, err error) {
+	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
@@ -124,7 +119,7 @@ func (client SubnetsClient) CreateOrUpdateResponder(resp *http.Response) (result
 //
 // resourceGroupName is the name of the resource group. virtualNetworkName is
 // the name of the virtual network. subnetName is the name of the subnet.
-func (client SubnetsClient) Delete(resourceGroupName string, virtualNetworkName string, subnetName string) (result autorest.Response, ae error) {
+func (client SubnetsClient) Delete(resourceGroupName string, virtualNetworkName string, subnetName string) (result autorest.Response, err error) {
 	req, err := client.DeletePreparer(resourceGroupName, virtualNetworkName, subnetName)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "network/SubnetsClient", "Delete", nil, "Failure preparing request")
@@ -138,7 +133,7 @@ func (client SubnetsClient) Delete(resourceGroupName string, virtualNetworkName 
 
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "network/SubnetsClient", "Delete", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "network/SubnetsClient", "Delete", resp, "Failure responding to request")
 	}
 
 	return
@@ -169,21 +164,16 @@ func (client SubnetsClient) DeletePreparer(resourceGroupName string, virtualNetw
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
 func (client SubnetsClient) DeleteSender(req *http.Request) (*http.Response, error) {
-	resp, err := client.Send(req)
-	if err == nil && azure.ResponseIsLongRunning(resp) {
-		req, err := azure.NewAsyncPollingRequest(resp, client.Client)
-		if err == nil {
-			resp, err = autorest.SendWithSender(client, req,
-				azure.WithAsyncPolling(autorest.DefaultPollingDelay))
-		}
-	}
-	return resp, err
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoPollForAsynchronous(autorest.DefaultPollingDuration,
+			autorest.DefaultPollingDelay))
 }
 
 // DeleteResponder handles the response to the Delete request. The method always
 // closes the http.Response Body.
-func (client SubnetsClient) DeleteResponder(resp *http.Response) (result autorest.Response, ae error) {
-	ae = autorest.Respond(
+func (client SubnetsClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
+	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent, http.StatusAccepted),
@@ -198,7 +188,7 @@ func (client SubnetsClient) DeleteResponder(resp *http.Response) (result autores
 // resourceGroupName is the name of the resource group. virtualNetworkName is
 // the name of the virtual network. subnetName is the name of the subnet.
 // expand is expand references resources.
-func (client SubnetsClient) Get(resourceGroupName string, virtualNetworkName string, subnetName string, expand string) (result Subnet, ae error) {
+func (client SubnetsClient) Get(resourceGroupName string, virtualNetworkName string, subnetName string, expand string) (result Subnet, err error) {
 	req, err := client.GetPreparer(resourceGroupName, virtualNetworkName, subnetName, expand)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "network/SubnetsClient", "Get", nil, "Failure preparing request")
@@ -212,7 +202,7 @@ func (client SubnetsClient) Get(resourceGroupName string, virtualNetworkName str
 
 	result, err = client.GetResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "network/SubnetsClient", "Get", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "network/SubnetsClient", "Get", resp, "Failure responding to request")
 	}
 
 	return
@@ -246,13 +236,13 @@ func (client SubnetsClient) GetPreparer(resourceGroupName string, virtualNetwork
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client SubnetsClient) GetSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
-func (client SubnetsClient) GetResponder(resp *http.Response) (result Subnet, ae error) {
-	ae = autorest.Respond(
+func (client SubnetsClient) GetResponder(resp *http.Response) (result Subnet, err error) {
+	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -267,7 +257,7 @@ func (client SubnetsClient) GetResponder(resp *http.Response) (result Subnet, ae
 //
 // resourceGroupName is the name of the resource group. virtualNetworkName is
 // the name of the virtual network.
-func (client SubnetsClient) List(resourceGroupName string, virtualNetworkName string) (result SubnetListResult, ae error) {
+func (client SubnetsClient) List(resourceGroupName string, virtualNetworkName string) (result SubnetListResult, err error) {
 	req, err := client.ListPreparer(resourceGroupName, virtualNetworkName)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "network/SubnetsClient", "List", nil, "Failure preparing request")
@@ -281,7 +271,7 @@ func (client SubnetsClient) List(resourceGroupName string, virtualNetworkName st
 
 	result, err = client.ListResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "network/SubnetsClient", "List", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "network/SubnetsClient", "List", resp, "Failure responding to request")
 	}
 
 	return
@@ -311,13 +301,13 @@ func (client SubnetsClient) ListPreparer(resourceGroupName string, virtualNetwor
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
 func (client SubnetsClient) ListSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // ListResponder handles the response to the List request. The method always
 // closes the http.Response Body.
-func (client SubnetsClient) ListResponder(resp *http.Response) (result SubnetListResult, ae error) {
-	ae = autorest.Respond(
+func (client SubnetsClient) ListResponder(resp *http.Response) (result SubnetListResult, err error) {
+	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -328,7 +318,7 @@ func (client SubnetsClient) ListResponder(resp *http.Response) (result SubnetLis
 }
 
 // ListNextResults retrieves the next set of results, if any.
-func (client SubnetsClient) ListNextResults(lastResults SubnetListResult) (result SubnetListResult, ae error) {
+func (client SubnetsClient) ListNextResults(lastResults SubnetListResult) (result SubnetListResult, err error) {
 	req, err := lastResults.SubnetListResultPreparer()
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "network/SubnetsClient", "List", nil, "Failure preparing next results request request")
@@ -345,7 +335,7 @@ func (client SubnetsClient) ListNextResults(lastResults SubnetListResult) (resul
 
 	result, err = client.ListResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "network/SubnetsClient", "List", resp, "Failure responding to next results request request")
+		err = autorest.NewErrorWithError(err, "network/SubnetsClient", "List", resp, "Failure responding to next results request request")
 	}
 
 	return

@@ -51,7 +51,7 @@ func NewRecordSetsClientWithBaseURI(baseURI string, subscriptionID string) Recor
 // parameters supplied to the CreateOrUpdate operation. ifMatch is the etag
 // of RecordSet. ifNoneMatch is defines the If-None-Match condition. Set to
 // '*' to force Create-If-Not-Exist. Other values will be ignored.
-func (client RecordSetsClient) CreateOrUpdate(resourceGroupName string, zoneName string, recordType RecordType, relativeRecordSetName string, parameters RecordSet, ifMatch string, ifNoneMatch string) (result RecordSet, ae error) {
+func (client RecordSetsClient) CreateOrUpdate(resourceGroupName string, zoneName string, recordType RecordType, relativeRecordSetName string, parameters RecordSet, ifMatch string, ifNoneMatch string) (result RecordSet, err error) {
 	req, err := client.CreateOrUpdatePreparer(resourceGroupName, zoneName, recordType, relativeRecordSetName, parameters, ifMatch, ifNoneMatch)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "dns/RecordSetsClient", "CreateOrUpdate", nil, "Failure preparing request")
@@ -65,7 +65,7 @@ func (client RecordSetsClient) CreateOrUpdate(resourceGroupName string, zoneName
 
 	result, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "dns/RecordSetsClient", "CreateOrUpdate", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "dns/RecordSetsClient", "CreateOrUpdate", resp, "Failure responding to request")
 	}
 
 	return
@@ -98,13 +98,13 @@ func (client RecordSetsClient) CreateOrUpdatePreparer(resourceGroupName string, 
 // CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
 // http.Response Body if it receives an error.
 func (client RecordSetsClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
 // closes the http.Response Body.
-func (client RecordSetsClient) CreateOrUpdateResponder(resp *http.Response) (result RecordSet, ae error) {
-	ae = autorest.Respond(
+func (client RecordSetsClient) CreateOrUpdateResponder(resp *http.Response) (result RecordSet, err error) {
+	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
@@ -123,7 +123,7 @@ func (client RecordSetsClient) CreateOrUpdateResponder(resp *http.Response) (res
 // of the RecordSet, relative to the name of the zone. ifMatch is defines the
 // If-Match condition. The delete operation will be performed only if the
 // ETag of the zone on the server matches this value.
-func (client RecordSetsClient) Delete(resourceGroupName string, zoneName string, recordType RecordType, relativeRecordSetName string, ifMatch string) (result autorest.Response, ae error) {
+func (client RecordSetsClient) Delete(resourceGroupName string, zoneName string, recordType RecordType, relativeRecordSetName string, ifMatch string) (result autorest.Response, err error) {
 	req, err := client.DeletePreparer(resourceGroupName, zoneName, recordType, relativeRecordSetName, ifMatch)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "dns/RecordSetsClient", "Delete", nil, "Failure preparing request")
@@ -137,7 +137,7 @@ func (client RecordSetsClient) Delete(resourceGroupName string, zoneName string,
 
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "dns/RecordSetsClient", "Delete", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "dns/RecordSetsClient", "Delete", resp, "Failure responding to request")
 	}
 
 	return
@@ -169,13 +169,13 @@ func (client RecordSetsClient) DeletePreparer(resourceGroupName string, zoneName
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
 func (client RecordSetsClient) DeleteSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // DeleteResponder handles the response to the Delete request. The method always
 // closes the http.Response Body.
-func (client RecordSetsClient) DeleteResponder(resp *http.Response) (result autorest.Response, ae error) {
-	ae = autorest.Respond(
+func (client RecordSetsClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
+	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -191,7 +191,7 @@ func (client RecordSetsClient) DeleteResponder(resp *http.Response) (result auto
 // record. Possible values for this parameter include: 'A', 'AAAA', 'CNAME',
 // 'MX', 'NS', 'PTR', 'SOA', 'SRV', 'TXT' relativeRecordSetName is the name
 // of the RecordSet, relative to the name of the zone.
-func (client RecordSetsClient) Get(resourceGroupName string, zoneName string, recordType RecordType, relativeRecordSetName string) (result RecordSet, ae error) {
+func (client RecordSetsClient) Get(resourceGroupName string, zoneName string, recordType RecordType, relativeRecordSetName string) (result RecordSet, err error) {
 	req, err := client.GetPreparer(resourceGroupName, zoneName, recordType, relativeRecordSetName)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "dns/RecordSetsClient", "Get", nil, "Failure preparing request")
@@ -205,7 +205,7 @@ func (client RecordSetsClient) Get(resourceGroupName string, zoneName string, re
 
 	result, err = client.GetResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "dns/RecordSetsClient", "Get", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "dns/RecordSetsClient", "Get", resp, "Failure responding to request")
 	}
 
 	return
@@ -237,13 +237,13 @@ func (client RecordSetsClient) GetPreparer(resourceGroupName string, zoneName st
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client RecordSetsClient) GetSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
-func (client RecordSetsClient) GetResponder(resp *http.Response) (result RecordSet, ae error) {
-	ae = autorest.Respond(
+func (client RecordSetsClient) GetResponder(resp *http.Response) (result RecordSet, err error) {
+	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -261,7 +261,7 @@ func (client RecordSetsClient) GetResponder(resp *http.Response) (result RecordS
 // this parameter include: 'A', 'AAAA', 'CNAME', 'MX', 'NS', 'PTR', 'SOA',
 // 'SRV', 'TXT' top is query parameters. If null is passed returns the
 // default number of zones. filter is the filter to apply on the operation.
-func (client RecordSetsClient) List(resourceGroupName string, zoneName string, recordType RecordType, top string, filter string) (result RecordSetListResult, ae error) {
+func (client RecordSetsClient) List(resourceGroupName string, zoneName string, recordType RecordType, top string, filter string) (result RecordSetListResult, err error) {
 	req, err := client.ListPreparer(resourceGroupName, zoneName, recordType, top, filter)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "dns/RecordSetsClient", "List", nil, "Failure preparing request")
@@ -275,7 +275,7 @@ func (client RecordSetsClient) List(resourceGroupName string, zoneName string, r
 
 	result, err = client.ListResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "dns/RecordSetsClient", "List", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "dns/RecordSetsClient", "List", resp, "Failure responding to request")
 	}
 
 	return
@@ -312,13 +312,13 @@ func (client RecordSetsClient) ListPreparer(resourceGroupName string, zoneName s
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
 func (client RecordSetsClient) ListSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // ListResponder handles the response to the List request. The method always
 // closes the http.Response Body.
-func (client RecordSetsClient) ListResponder(resp *http.Response) (result RecordSetListResult, ae error) {
-	ae = autorest.Respond(
+func (client RecordSetsClient) ListResponder(resp *http.Response) (result RecordSetListResult, err error) {
+	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -329,7 +329,7 @@ func (client RecordSetsClient) ListResponder(resp *http.Response) (result Record
 }
 
 // ListNextResults retrieves the next set of results, if any.
-func (client RecordSetsClient) ListNextResults(lastResults RecordSetListResult) (result RecordSetListResult, ae error) {
+func (client RecordSetsClient) ListNextResults(lastResults RecordSetListResult) (result RecordSetListResult, err error) {
 	req, err := lastResults.RecordSetListResultPreparer()
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "dns/RecordSetsClient", "List", nil, "Failure preparing next results request request")
@@ -346,7 +346,7 @@ func (client RecordSetsClient) ListNextResults(lastResults RecordSetListResult) 
 
 	result, err = client.ListResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "dns/RecordSetsClient", "List", resp, "Failure responding to next results request request")
+		err = autorest.NewErrorWithError(err, "dns/RecordSetsClient", "List", resp, "Failure responding to next results request request")
 	}
 
 	return
@@ -358,7 +358,7 @@ func (client RecordSetsClient) ListNextResults(lastResults RecordSetListResult) 
 // zoneName is the name of the zone from which to enumerate RecordSets. top
 // is query parameters. If null is passed returns the default number of
 // zones. filter is the filter to apply on the operation.
-func (client RecordSetsClient) ListAll(resourceGroupName string, zoneName string, top string, filter string) (result RecordSetListResult, ae error) {
+func (client RecordSetsClient) ListAll(resourceGroupName string, zoneName string, top string, filter string) (result RecordSetListResult, err error) {
 	req, err := client.ListAllPreparer(resourceGroupName, zoneName, top, filter)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "dns/RecordSetsClient", "ListAll", nil, "Failure preparing request")
@@ -372,7 +372,7 @@ func (client RecordSetsClient) ListAll(resourceGroupName string, zoneName string
 
 	result, err = client.ListAllResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "dns/RecordSetsClient", "ListAll", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "dns/RecordSetsClient", "ListAll", resp, "Failure responding to request")
 	}
 
 	return
@@ -408,13 +408,13 @@ func (client RecordSetsClient) ListAllPreparer(resourceGroupName string, zoneNam
 // ListAllSender sends the ListAll request. The method will close the
 // http.Response Body if it receives an error.
 func (client RecordSetsClient) ListAllSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // ListAllResponder handles the response to the ListAll request. The method always
 // closes the http.Response Body.
-func (client RecordSetsClient) ListAllResponder(resp *http.Response) (result RecordSetListResult, ae error) {
-	ae = autorest.Respond(
+func (client RecordSetsClient) ListAllResponder(resp *http.Response) (result RecordSetListResult, err error) {
+	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -425,7 +425,7 @@ func (client RecordSetsClient) ListAllResponder(resp *http.Response) (result Rec
 }
 
 // ListAllNextResults retrieves the next set of results, if any.
-func (client RecordSetsClient) ListAllNextResults(lastResults RecordSetListResult) (result RecordSetListResult, ae error) {
+func (client RecordSetsClient) ListAllNextResults(lastResults RecordSetListResult) (result RecordSetListResult, err error) {
 	req, err := lastResults.RecordSetListResultPreparer()
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "dns/RecordSetsClient", "ListAll", nil, "Failure preparing next results request request")
@@ -442,7 +442,7 @@ func (client RecordSetsClient) ListAllNextResults(lastResults RecordSetListResul
 
 	result, err = client.ListAllResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "dns/RecordSetsClient", "ListAll", resp, "Failure responding to next results request request")
+		err = autorest.NewErrorWithError(err, "dns/RecordSetsClient", "ListAll", resp, "Failure responding to next results request request")
 	}
 
 	return

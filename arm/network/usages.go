@@ -47,7 +47,7 @@ func NewUsagesClientWithBaseURI(baseURI string, subscriptionID string) UsagesCli
 // List lists compute usages for a subscription.
 //
 // location is the location upon which resource usage is queried.
-func (client UsagesClient) List(location string) (result UsagesListResult, ae error) {
+func (client UsagesClient) List(location string) (result UsagesListResult, err error) {
 	req, err := client.ListPreparer(location)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "network/UsagesClient", "List", nil, "Failure preparing request")
@@ -61,7 +61,7 @@ func (client UsagesClient) List(location string) (result UsagesListResult, ae er
 
 	result, err = client.ListResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "network/UsagesClient", "List", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "network/UsagesClient", "List", resp, "Failure responding to request")
 	}
 
 	return
@@ -90,13 +90,13 @@ func (client UsagesClient) ListPreparer(location string) (*http.Request, error) 
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
 func (client UsagesClient) ListSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // ListResponder handles the response to the List request. The method always
 // closes the http.Response Body.
-func (client UsagesClient) ListResponder(resp *http.Response) (result UsagesListResult, ae error) {
-	ae = autorest.Respond(
+func (client UsagesClient) ListResponder(resp *http.Response) (result UsagesListResult, err error) {
+	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -107,7 +107,7 @@ func (client UsagesClient) ListResponder(resp *http.Response) (result UsagesList
 }
 
 // ListNextResults retrieves the next set of results, if any.
-func (client UsagesClient) ListNextResults(lastResults UsagesListResult) (result UsagesListResult, ae error) {
+func (client UsagesClient) ListNextResults(lastResults UsagesListResult) (result UsagesListResult, err error) {
 	req, err := lastResults.UsagesListResultPreparer()
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "network/UsagesClient", "List", nil, "Failure preparing next results request request")
@@ -124,7 +124,7 @@ func (client UsagesClient) ListNextResults(lastResults UsagesListResult) (result
 
 	result, err = client.ListResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "network/UsagesClient", "List", resp, "Failure responding to next results request request")
+		err = autorest.NewErrorWithError(err, "network/UsagesClient", "List", resp, "Failure responding to next results request request")
 	}
 
 	return

@@ -106,7 +106,7 @@ type Properties struct {
 	RedisConfiguration *map[string]*string `json:"redisConfiguration,omitempty"`
 	EnableNonSslPort   *bool               `json:"enableNonSslPort,omitempty"`
 	TenantSettings     *map[string]*string `json:"tenantSettings,omitempty"`
-	ShardCount         *int                `json:"shardCount,omitempty"`
+	ShardCount         *int32              `json:"shardCount,omitempty"`
 	VirtualNetwork     *string             `json:"virtualNetwork,omitempty"`
 	Subnet             *string             `json:"subnet,omitempty"`
 	StaticIP           *string             `json:"staticIP,omitempty"`
@@ -116,14 +116,14 @@ type Properties struct {
 type ReadableProperties struct {
 	ProvisioningState  *string             `json:"provisioningState,omitempty"`
 	HostName           *string             `json:"hostName,omitempty"`
-	Port               *int                `json:"port,omitempty"`
-	SslPort            *int                `json:"sslPort,omitempty"`
+	Port               *int32              `json:"port,omitempty"`
+	SslPort            *int32              `json:"sslPort,omitempty"`
 	RedisVersion       *string             `json:"redisVersion,omitempty"`
 	Sku                *Sku                `json:"sku,omitempty"`
 	RedisConfiguration *map[string]*string `json:"redisConfiguration,omitempty"`
 	EnableNonSslPort   *bool               `json:"enableNonSslPort,omitempty"`
 	TenantSettings     *map[string]*string `json:"tenantSettings,omitempty"`
-	ShardCount         *int                `json:"shardCount,omitempty"`
+	ShardCount         *int32              `json:"shardCount,omitempty"`
 	VirtualNetwork     *string             `json:"virtualNetwork,omitempty"`
 	Subnet             *string             `json:"subnet,omitempty"`
 	StaticIP           *string             `json:"staticIP,omitempty"`
@@ -135,14 +135,14 @@ type ReadablePropertiesWithAccessKey struct {
 	AccessKeys         *AccessKeys         `json:"accessKeys,omitempty"`
 	ProvisioningState  *string             `json:"provisioningState,omitempty"`
 	HostName           *string             `json:"hostName,omitempty"`
-	Port               *int                `json:"port,omitempty"`
-	SslPort            *int                `json:"sslPort,omitempty"`
+	Port               *int32              `json:"port,omitempty"`
+	SslPort            *int32              `json:"sslPort,omitempty"`
 	RedisVersion       *string             `json:"redisVersion,omitempty"`
 	Sku                *Sku                `json:"sku,omitempty"`
 	RedisConfiguration *map[string]*string `json:"redisConfiguration,omitempty"`
 	EnableNonSslPort   *bool               `json:"enableNonSslPort,omitempty"`
 	TenantSettings     *map[string]*string `json:"tenantSettings,omitempty"`
-	ShardCount         *int                `json:"shardCount,omitempty"`
+	ShardCount         *int32              `json:"shardCount,omitempty"`
 	VirtualNetwork     *string             `json:"virtualNetwork,omitempty"`
 	Subnet             *string             `json:"subnet,omitempty"`
 	StaticIP           *string             `json:"staticIP,omitempty"`
@@ -188,7 +188,7 @@ type ResourceWithAccessKey struct {
 type Sku struct {
 	Name     SkuName   `json:"name,omitempty"`
 	Family   SkuFamily `json:"family,omitempty"`
-	Capacity *int      `json:"capacity,omitempty"`
+	Capacity *int32    `json:"capacity,omitempty"`
 }
 
 // SubResource is

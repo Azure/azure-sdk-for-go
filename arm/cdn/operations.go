@@ -45,7 +45,7 @@ func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) Opera
 }
 
 // List sends the list request.
-func (client OperationsClient) List() (result OperationListResult, ae error) {
+func (client OperationsClient) List() (result OperationListResult, err error) {
 	req, err := client.ListPreparer()
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "cdn/OperationsClient", "List", nil, "Failure preparing request")
@@ -59,7 +59,7 @@ func (client OperationsClient) List() (result OperationListResult, ae error) {
 
 	result, err = client.ListResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "cdn/OperationsClient", "List", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "cdn/OperationsClient", "List", resp, "Failure responding to request")
 	}
 
 	return
@@ -82,13 +82,13 @@ func (client OperationsClient) ListPreparer() (*http.Request, error) {
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
 func (client OperationsClient) ListSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // ListResponder handles the response to the List request. The method always
 // closes the http.Response Body.
-func (client OperationsClient) ListResponder(resp *http.Response) (result OperationListResult, ae error) {
-	ae = autorest.Respond(
+func (client OperationsClient) ListResponder(resp *http.Response) (result OperationListResult, err error) {
+	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),

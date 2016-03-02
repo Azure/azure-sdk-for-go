@@ -51,7 +51,7 @@ func NewGlobalResourceGroupsClientWithBaseURI(baseURI string, subscriptionID str
 
 // MoveResources sends the move resources request.
 //
-func (client GlobalResourceGroupsClient) MoveResources(resourceGroupName string, moveResourceEnvelope CsmMoveResourceEnvelope) (result autorest.Response, ae error) {
+func (client GlobalResourceGroupsClient) MoveResources(resourceGroupName string, moveResourceEnvelope CsmMoveResourceEnvelope) (result autorest.Response, err error) {
 	req, err := client.MoveResourcesPreparer(resourceGroupName, moveResourceEnvelope)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web/GlobalResourceGroupsClient", "MoveResources", nil, "Failure preparing request")
@@ -65,7 +65,7 @@ func (client GlobalResourceGroupsClient) MoveResources(resourceGroupName string,
 
 	result, err = client.MoveResourcesResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "web/GlobalResourceGroupsClient", "MoveResources", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "web/GlobalResourceGroupsClient", "MoveResources", resp, "Failure responding to request")
 	}
 
 	return
@@ -95,13 +95,13 @@ func (client GlobalResourceGroupsClient) MoveResourcesPreparer(resourceGroupName
 // MoveResourcesSender sends the MoveResources request. The method will close the
 // http.Response Body if it receives an error.
 func (client GlobalResourceGroupsClient) MoveResourcesSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // MoveResourcesResponder handles the response to the MoveResources request. The method always
 // closes the http.Response Body.
-func (client GlobalResourceGroupsClient) MoveResourcesResponder(resp *http.Response) (result autorest.Response, ae error) {
-	ae = autorest.Respond(
+func (client GlobalResourceGroupsClient) MoveResourcesResponder(resp *http.Response) (result autorest.Response, err error) {
+	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),

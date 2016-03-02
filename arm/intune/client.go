@@ -63,7 +63,7 @@ func NewWithBaseURI(baseURI string, subscriptionID string) ManagementClient {
 //
 // hostName is location hostName for the tenant filter is the filter to apply
 // on the operation. selectParameter is select specific fields in entity.
-func (client ManagementClient) GetApps(hostName string, filter string, top *int, selectParameter string) (result ApplicationCollection, ae error) {
+func (client ManagementClient) GetApps(hostName string, filter string, top *int32, selectParameter string) (result ApplicationCollection, err error) {
 	req, err := client.GetAppsPreparer(hostName, filter, top, selectParameter)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "intune/ManagementClient", "GetApps", nil, "Failure preparing request")
@@ -77,14 +77,14 @@ func (client ManagementClient) GetApps(hostName string, filter string, top *int,
 
 	result, err = client.GetAppsResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "intune/ManagementClient", "GetApps", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "intune/ManagementClient", "GetApps", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // GetAppsPreparer prepares the GetApps request.
-func (client ManagementClient) GetAppsPreparer(hostName string, filter string, top *int, selectParameter string) (*http.Request, error) {
+func (client ManagementClient) GetAppsPreparer(hostName string, filter string, top *int32, selectParameter string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"hostName": url.QueryEscape(hostName),
 	}
@@ -114,13 +114,13 @@ func (client ManagementClient) GetAppsPreparer(hostName string, filter string, t
 // GetAppsSender sends the GetApps request. The method will close the
 // http.Response Body if it receives an error.
 func (client ManagementClient) GetAppsSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // GetAppsResponder handles the response to the GetApps request. The method always
 // closes the http.Response Body.
-func (client ManagementClient) GetAppsResponder(resp *http.Response) (result ApplicationCollection, ae error) {
-	ae = autorest.Respond(
+func (client ManagementClient) GetAppsResponder(resp *http.Response) (result ApplicationCollection, err error) {
+	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -131,7 +131,7 @@ func (client ManagementClient) GetAppsResponder(resp *http.Response) (result App
 }
 
 // GetAppsNextResults retrieves the next set of results, if any.
-func (client ManagementClient) GetAppsNextResults(lastResults ApplicationCollection) (result ApplicationCollection, ae error) {
+func (client ManagementClient) GetAppsNextResults(lastResults ApplicationCollection) (result ApplicationCollection, err error) {
 	req, err := lastResults.ApplicationCollectionPreparer()
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "intune/ManagementClient", "GetApps", nil, "Failure preparing next results request request")
@@ -148,14 +148,14 @@ func (client ManagementClient) GetAppsNextResults(lastResults ApplicationCollect
 
 	result, err = client.GetAppsResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "intune/ManagementClient", "GetApps", resp, "Failure responding to next results request request")
+		err = autorest.NewErrorWithError(err, "intune/ManagementClient", "GetApps", resp, "Failure responding to next results request request")
 	}
 
 	return
 }
 
 // GetLocationByHostName returns location for given tenant.
-func (client ManagementClient) GetLocationByHostName() (result Location, ae error) {
+func (client ManagementClient) GetLocationByHostName() (result Location, err error) {
 	req, err := client.GetLocationByHostNamePreparer()
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "intune/ManagementClient", "GetLocationByHostName", nil, "Failure preparing request")
@@ -169,7 +169,7 @@ func (client ManagementClient) GetLocationByHostName() (result Location, ae erro
 
 	result, err = client.GetLocationByHostNameResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "intune/ManagementClient", "GetLocationByHostName", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "intune/ManagementClient", "GetLocationByHostName", resp, "Failure responding to request")
 	}
 
 	return
@@ -192,13 +192,13 @@ func (client ManagementClient) GetLocationByHostNamePreparer() (*http.Request, e
 // GetLocationByHostNameSender sends the GetLocationByHostName request. The method will close the
 // http.Response Body if it receives an error.
 func (client ManagementClient) GetLocationByHostNameSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // GetLocationByHostNameResponder handles the response to the GetLocationByHostName request. The method always
 // closes the http.Response Body.
-func (client ManagementClient) GetLocationByHostNameResponder(resp *http.Response) (result Location, ae error) {
-	ae = autorest.Respond(
+func (client ManagementClient) GetLocationByHostNameResponder(resp *http.Response) (result Location, err error) {
+	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -209,7 +209,7 @@ func (client ManagementClient) GetLocationByHostNameResponder(resp *http.Respons
 }
 
 // GetLocations returns location for user tenant.
-func (client ManagementClient) GetLocations() (result LocationCollection, ae error) {
+func (client ManagementClient) GetLocations() (result LocationCollection, err error) {
 	req, err := client.GetLocationsPreparer()
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "intune/ManagementClient", "GetLocations", nil, "Failure preparing request")
@@ -223,7 +223,7 @@ func (client ManagementClient) GetLocations() (result LocationCollection, ae err
 
 	result, err = client.GetLocationsResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "intune/ManagementClient", "GetLocations", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "intune/ManagementClient", "GetLocations", resp, "Failure responding to request")
 	}
 
 	return
@@ -246,13 +246,13 @@ func (client ManagementClient) GetLocationsPreparer() (*http.Request, error) {
 // GetLocationsSender sends the GetLocations request. The method will close the
 // http.Response Body if it receives an error.
 func (client ManagementClient) GetLocationsSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // GetLocationsResponder handles the response to the GetLocations request. The method always
 // closes the http.Response Body.
-func (client ManagementClient) GetLocationsResponder(resp *http.Response) (result LocationCollection, ae error) {
-	ae = autorest.Respond(
+func (client ManagementClient) GetLocationsResponder(resp *http.Response) (result LocationCollection, err error) {
+	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -263,7 +263,7 @@ func (client ManagementClient) GetLocationsResponder(resp *http.Response) (resul
 }
 
 // GetLocationsNextResults retrieves the next set of results, if any.
-func (client ManagementClient) GetLocationsNextResults(lastResults LocationCollection) (result LocationCollection, ae error) {
+func (client ManagementClient) GetLocationsNextResults(lastResults LocationCollection) (result LocationCollection, err error) {
 	req, err := lastResults.LocationCollectionPreparer()
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "intune/ManagementClient", "GetLocations", nil, "Failure preparing next results request request")
@@ -280,7 +280,7 @@ func (client ManagementClient) GetLocationsNextResults(lastResults LocationColle
 
 	result, err = client.GetLocationsResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "intune/ManagementClient", "GetLocations", resp, "Failure responding to next results request request")
+		err = autorest.NewErrorWithError(err, "intune/ManagementClient", "GetLocations", resp, "Failure responding to next results request request")
 	}
 
 	return
@@ -290,7 +290,7 @@ func (client ManagementClient) GetLocationsNextResults(lastResults LocationColle
 //
 // hostName is location hostName for the tenant userName is flagged userName
 // selectParameter is select specific fields in entity.
-func (client ManagementClient) GetMAMFlaggedUserByName(hostName string, userName string, selectParameter string) (result FlaggedUser, ae error) {
+func (client ManagementClient) GetMAMFlaggedUserByName(hostName string, userName string, selectParameter string) (result FlaggedUser, err error) {
 	req, err := client.GetMAMFlaggedUserByNamePreparer(hostName, userName, selectParameter)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "intune/ManagementClient", "GetMAMFlaggedUserByName", nil, "Failure preparing request")
@@ -304,7 +304,7 @@ func (client ManagementClient) GetMAMFlaggedUserByName(hostName string, userName
 
 	result, err = client.GetMAMFlaggedUserByNameResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "intune/ManagementClient", "GetMAMFlaggedUserByName", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "intune/ManagementClient", "GetMAMFlaggedUserByName", resp, "Failure responding to request")
 	}
 
 	return
@@ -336,13 +336,13 @@ func (client ManagementClient) GetMAMFlaggedUserByNamePreparer(hostName string, 
 // GetMAMFlaggedUserByNameSender sends the GetMAMFlaggedUserByName request. The method will close the
 // http.Response Body if it receives an error.
 func (client ManagementClient) GetMAMFlaggedUserByNameSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // GetMAMFlaggedUserByNameResponder handles the response to the GetMAMFlaggedUserByName request. The method always
 // closes the http.Response Body.
-func (client ManagementClient) GetMAMFlaggedUserByNameResponder(resp *http.Response) (result FlaggedUser, ae error) {
-	ae = autorest.Respond(
+func (client ManagementClient) GetMAMFlaggedUserByNameResponder(resp *http.Response) (result FlaggedUser, err error) {
+	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -356,7 +356,7 @@ func (client ManagementClient) GetMAMFlaggedUserByNameResponder(resp *http.Respo
 //
 // hostName is location hostName for the tenant filter is the filter to apply
 // on the operation. selectParameter is select specific fields in entity.
-func (client ManagementClient) GetMAMFlaggedUsers(hostName string, filter string, top *int, selectParameter string) (result FlaggedUserCollection, ae error) {
+func (client ManagementClient) GetMAMFlaggedUsers(hostName string, filter string, top *int32, selectParameter string) (result FlaggedUserCollection, err error) {
 	req, err := client.GetMAMFlaggedUsersPreparer(hostName, filter, top, selectParameter)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "intune/ManagementClient", "GetMAMFlaggedUsers", nil, "Failure preparing request")
@@ -370,14 +370,14 @@ func (client ManagementClient) GetMAMFlaggedUsers(hostName string, filter string
 
 	result, err = client.GetMAMFlaggedUsersResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "intune/ManagementClient", "GetMAMFlaggedUsers", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "intune/ManagementClient", "GetMAMFlaggedUsers", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // GetMAMFlaggedUsersPreparer prepares the GetMAMFlaggedUsers request.
-func (client ManagementClient) GetMAMFlaggedUsersPreparer(hostName string, filter string, top *int, selectParameter string) (*http.Request, error) {
+func (client ManagementClient) GetMAMFlaggedUsersPreparer(hostName string, filter string, top *int32, selectParameter string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"hostName": url.QueryEscape(hostName),
 	}
@@ -407,13 +407,13 @@ func (client ManagementClient) GetMAMFlaggedUsersPreparer(hostName string, filte
 // GetMAMFlaggedUsersSender sends the GetMAMFlaggedUsers request. The method will close the
 // http.Response Body if it receives an error.
 func (client ManagementClient) GetMAMFlaggedUsersSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // GetMAMFlaggedUsersResponder handles the response to the GetMAMFlaggedUsers request. The method always
 // closes the http.Response Body.
-func (client ManagementClient) GetMAMFlaggedUsersResponder(resp *http.Response) (result FlaggedUserCollection, ae error) {
-	ae = autorest.Respond(
+func (client ManagementClient) GetMAMFlaggedUsersResponder(resp *http.Response) (result FlaggedUserCollection, err error) {
+	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -424,7 +424,7 @@ func (client ManagementClient) GetMAMFlaggedUsersResponder(resp *http.Response) 
 }
 
 // GetMAMFlaggedUsersNextResults retrieves the next set of results, if any.
-func (client ManagementClient) GetMAMFlaggedUsersNextResults(lastResults FlaggedUserCollection) (result FlaggedUserCollection, ae error) {
+func (client ManagementClient) GetMAMFlaggedUsersNextResults(lastResults FlaggedUserCollection) (result FlaggedUserCollection, err error) {
 	req, err := lastResults.FlaggedUserCollectionPreparer()
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "intune/ManagementClient", "GetMAMFlaggedUsers", nil, "Failure preparing next results request request")
@@ -441,7 +441,7 @@ func (client ManagementClient) GetMAMFlaggedUsersNextResults(lastResults Flagged
 
 	result, err = client.GetMAMFlaggedUsersResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "intune/ManagementClient", "GetMAMFlaggedUsers", resp, "Failure responding to next results request request")
+		err = autorest.NewErrorWithError(err, "intune/ManagementClient", "GetMAMFlaggedUsers", resp, "Failure responding to next results request request")
 	}
 
 	return
@@ -450,7 +450,7 @@ func (client ManagementClient) GetMAMFlaggedUsersNextResults(lastResults Flagged
 // GetMAMStatuses returns Intune Tenant level statuses.
 //
 // hostName is location hostName for the tenant
-func (client ManagementClient) GetMAMStatuses(hostName string) (result StatusesDefault, ae error) {
+func (client ManagementClient) GetMAMStatuses(hostName string) (result StatusesDefault, err error) {
 	req, err := client.GetMAMStatusesPreparer(hostName)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "intune/ManagementClient", "GetMAMStatuses", nil, "Failure preparing request")
@@ -464,7 +464,7 @@ func (client ManagementClient) GetMAMStatuses(hostName string) (result StatusesD
 
 	result, err = client.GetMAMStatusesResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "intune/ManagementClient", "GetMAMStatuses", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "intune/ManagementClient", "GetMAMStatuses", resp, "Failure responding to request")
 	}
 
 	return
@@ -492,13 +492,13 @@ func (client ManagementClient) GetMAMStatusesPreparer(hostName string) (*http.Re
 // GetMAMStatusesSender sends the GetMAMStatuses request. The method will close the
 // http.Response Body if it receives an error.
 func (client ManagementClient) GetMAMStatusesSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // GetMAMStatusesResponder handles the response to the GetMAMStatuses request. The method always
 // closes the http.Response Body.
-func (client ManagementClient) GetMAMStatusesResponder(resp *http.Response) (result StatusesDefault, ae error) {
-	ae = autorest.Respond(
+func (client ManagementClient) GetMAMStatusesResponder(resp *http.Response) (result StatusesDefault, err error) {
+	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -509,7 +509,7 @@ func (client ManagementClient) GetMAMStatusesResponder(resp *http.Response) (res
 }
 
 // GetMAMStatusesNextResults retrieves the next set of results, if any.
-func (client ManagementClient) GetMAMStatusesNextResults(lastResults StatusesDefault) (result StatusesDefault, ae error) {
+func (client ManagementClient) GetMAMStatusesNextResults(lastResults StatusesDefault) (result StatusesDefault, err error) {
 	req, err := lastResults.StatusesDefaultPreparer()
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "intune/ManagementClient", "GetMAMStatuses", nil, "Failure preparing next results request request")
@@ -526,7 +526,7 @@ func (client ManagementClient) GetMAMStatusesNextResults(lastResults StatusesDef
 
 	result, err = client.GetMAMStatusesResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "intune/ManagementClient", "GetMAMStatuses", resp, "Failure responding to next results request request")
+		err = autorest.NewErrorWithError(err, "intune/ManagementClient", "GetMAMStatuses", resp, "Failure responding to next results request request")
 	}
 
 	return
@@ -537,7 +537,7 @@ func (client ManagementClient) GetMAMStatusesNextResults(lastResults StatusesDef
 // hostName is location hostName for the tenant userName is unique user name
 // deviceName is device name selectParameter is select specific fields in
 // entity.
-func (client ManagementClient) GetMAMUserDeviceByDeviceName(hostName string, userName string, deviceName string, selectParameter string) (result Device, ae error) {
+func (client ManagementClient) GetMAMUserDeviceByDeviceName(hostName string, userName string, deviceName string, selectParameter string) (result Device, err error) {
 	req, err := client.GetMAMUserDeviceByDeviceNamePreparer(hostName, userName, deviceName, selectParameter)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "intune/ManagementClient", "GetMAMUserDeviceByDeviceName", nil, "Failure preparing request")
@@ -551,7 +551,7 @@ func (client ManagementClient) GetMAMUserDeviceByDeviceName(hostName string, use
 
 	result, err = client.GetMAMUserDeviceByDeviceNameResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "intune/ManagementClient", "GetMAMUserDeviceByDeviceName", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "intune/ManagementClient", "GetMAMUserDeviceByDeviceName", resp, "Failure responding to request")
 	}
 
 	return
@@ -584,13 +584,13 @@ func (client ManagementClient) GetMAMUserDeviceByDeviceNamePreparer(hostName str
 // GetMAMUserDeviceByDeviceNameSender sends the GetMAMUserDeviceByDeviceName request. The method will close the
 // http.Response Body if it receives an error.
 func (client ManagementClient) GetMAMUserDeviceByDeviceNameSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // GetMAMUserDeviceByDeviceNameResponder handles the response to the GetMAMUserDeviceByDeviceName request. The method always
 // closes the http.Response Body.
-func (client ManagementClient) GetMAMUserDeviceByDeviceNameResponder(resp *http.Response) (result Device, ae error) {
-	ae = autorest.Respond(
+func (client ManagementClient) GetMAMUserDeviceByDeviceNameResponder(resp *http.Response) (result Device, err error) {
+	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -605,7 +605,7 @@ func (client ManagementClient) GetMAMUserDeviceByDeviceNameResponder(resp *http.
 // hostName is location hostName for the tenant userName is user unique Name
 // filter is the filter to apply on the operation. selectParameter is select
 // specific fields in entity.
-func (client ManagementClient) GetMAMUserDevices(hostName string, userName string, filter string, top *int, selectParameter string) (result DeviceCollection, ae error) {
+func (client ManagementClient) GetMAMUserDevices(hostName string, userName string, filter string, top *int32, selectParameter string) (result DeviceCollection, err error) {
 	req, err := client.GetMAMUserDevicesPreparer(hostName, userName, filter, top, selectParameter)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "intune/ManagementClient", "GetMAMUserDevices", nil, "Failure preparing request")
@@ -619,14 +619,14 @@ func (client ManagementClient) GetMAMUserDevices(hostName string, userName strin
 
 	result, err = client.GetMAMUserDevicesResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "intune/ManagementClient", "GetMAMUserDevices", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "intune/ManagementClient", "GetMAMUserDevices", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // GetMAMUserDevicesPreparer prepares the GetMAMUserDevices request.
-func (client ManagementClient) GetMAMUserDevicesPreparer(hostName string, userName string, filter string, top *int, selectParameter string) (*http.Request, error) {
+func (client ManagementClient) GetMAMUserDevicesPreparer(hostName string, userName string, filter string, top *int32, selectParameter string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"hostName": url.QueryEscape(hostName),
 		"userName": url.QueryEscape(userName),
@@ -657,13 +657,13 @@ func (client ManagementClient) GetMAMUserDevicesPreparer(hostName string, userNa
 // GetMAMUserDevicesSender sends the GetMAMUserDevices request. The method will close the
 // http.Response Body if it receives an error.
 func (client ManagementClient) GetMAMUserDevicesSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // GetMAMUserDevicesResponder handles the response to the GetMAMUserDevices request. The method always
 // closes the http.Response Body.
-func (client ManagementClient) GetMAMUserDevicesResponder(resp *http.Response) (result DeviceCollection, ae error) {
-	ae = autorest.Respond(
+func (client ManagementClient) GetMAMUserDevicesResponder(resp *http.Response) (result DeviceCollection, err error) {
+	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -674,7 +674,7 @@ func (client ManagementClient) GetMAMUserDevicesResponder(resp *http.Response) (
 }
 
 // GetMAMUserDevicesNextResults retrieves the next set of results, if any.
-func (client ManagementClient) GetMAMUserDevicesNextResults(lastResults DeviceCollection) (result DeviceCollection, ae error) {
+func (client ManagementClient) GetMAMUserDevicesNextResults(lastResults DeviceCollection) (result DeviceCollection, err error) {
 	req, err := lastResults.DeviceCollectionPreparer()
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "intune/ManagementClient", "GetMAMUserDevices", nil, "Failure preparing next results request request")
@@ -691,7 +691,7 @@ func (client ManagementClient) GetMAMUserDevicesNextResults(lastResults DeviceCo
 
 	result, err = client.GetMAMUserDevicesResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "intune/ManagementClient", "GetMAMUserDevices", resp, "Failure responding to next results request request")
+		err = autorest.NewErrorWithError(err, "intune/ManagementClient", "GetMAMUserDevices", resp, "Failure responding to next results request request")
 	}
 
 	return
@@ -703,7 +703,7 @@ func (client ManagementClient) GetMAMUserDevicesNextResults(lastResults DeviceCo
 // hostName is location hostName for the tenant userName is user name for the
 // tenant filter is the filter to apply on the operation. selectParameter is
 // select specific fields in entity.
-func (client ManagementClient) GetMAMUserFlaggedEnrolledApps(hostName string, userName string, filter string, top *int, selectParameter string) (result FlaggedEnrolledAppCollection, ae error) {
+func (client ManagementClient) GetMAMUserFlaggedEnrolledApps(hostName string, userName string, filter string, top *int32, selectParameter string) (result FlaggedEnrolledAppCollection, err error) {
 	req, err := client.GetMAMUserFlaggedEnrolledAppsPreparer(hostName, userName, filter, top, selectParameter)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "intune/ManagementClient", "GetMAMUserFlaggedEnrolledApps", nil, "Failure preparing request")
@@ -717,14 +717,14 @@ func (client ManagementClient) GetMAMUserFlaggedEnrolledApps(hostName string, us
 
 	result, err = client.GetMAMUserFlaggedEnrolledAppsResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "intune/ManagementClient", "GetMAMUserFlaggedEnrolledApps", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "intune/ManagementClient", "GetMAMUserFlaggedEnrolledApps", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // GetMAMUserFlaggedEnrolledAppsPreparer prepares the GetMAMUserFlaggedEnrolledApps request.
-func (client ManagementClient) GetMAMUserFlaggedEnrolledAppsPreparer(hostName string, userName string, filter string, top *int, selectParameter string) (*http.Request, error) {
+func (client ManagementClient) GetMAMUserFlaggedEnrolledAppsPreparer(hostName string, userName string, filter string, top *int32, selectParameter string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"hostName": url.QueryEscape(hostName),
 		"userName": url.QueryEscape(userName),
@@ -755,13 +755,13 @@ func (client ManagementClient) GetMAMUserFlaggedEnrolledAppsPreparer(hostName st
 // GetMAMUserFlaggedEnrolledAppsSender sends the GetMAMUserFlaggedEnrolledApps request. The method will close the
 // http.Response Body if it receives an error.
 func (client ManagementClient) GetMAMUserFlaggedEnrolledAppsSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // GetMAMUserFlaggedEnrolledAppsResponder handles the response to the GetMAMUserFlaggedEnrolledApps request. The method always
 // closes the http.Response Body.
-func (client ManagementClient) GetMAMUserFlaggedEnrolledAppsResponder(resp *http.Response) (result FlaggedEnrolledAppCollection, ae error) {
-	ae = autorest.Respond(
+func (client ManagementClient) GetMAMUserFlaggedEnrolledAppsResponder(resp *http.Response) (result FlaggedEnrolledAppCollection, err error) {
+	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -772,7 +772,7 @@ func (client ManagementClient) GetMAMUserFlaggedEnrolledAppsResponder(resp *http
 }
 
 // GetMAMUserFlaggedEnrolledAppsNextResults retrieves the next set of results, if any.
-func (client ManagementClient) GetMAMUserFlaggedEnrolledAppsNextResults(lastResults FlaggedEnrolledAppCollection) (result FlaggedEnrolledAppCollection, ae error) {
+func (client ManagementClient) GetMAMUserFlaggedEnrolledAppsNextResults(lastResults FlaggedEnrolledAppCollection) (result FlaggedEnrolledAppCollection, err error) {
 	req, err := lastResults.FlaggedEnrolledAppCollectionPreparer()
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "intune/ManagementClient", "GetMAMUserFlaggedEnrolledApps", nil, "Failure preparing next results request request")
@@ -789,7 +789,7 @@ func (client ManagementClient) GetMAMUserFlaggedEnrolledAppsNextResults(lastResu
 
 	result, err = client.GetMAMUserFlaggedEnrolledAppsResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "intune/ManagementClient", "GetMAMUserFlaggedEnrolledApps", resp, "Failure responding to next results request request")
+		err = autorest.NewErrorWithError(err, "intune/ManagementClient", "GetMAMUserFlaggedEnrolledApps", resp, "Failure responding to next results request request")
 	}
 
 	return
@@ -799,7 +799,7 @@ func (client ManagementClient) GetMAMUserFlaggedEnrolledAppsNextResults(lastResu
 //
 // hostName is location hostName for the tenant filter is the filter to apply
 // on the operation. selectParameter is select specific fields in entity.
-func (client ManagementClient) GetOperationResults(hostName string, filter string, top *int, selectParameter string) (result OperationResultCollection, ae error) {
+func (client ManagementClient) GetOperationResults(hostName string, filter string, top *int32, selectParameter string) (result OperationResultCollection, err error) {
 	req, err := client.GetOperationResultsPreparer(hostName, filter, top, selectParameter)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "intune/ManagementClient", "GetOperationResults", nil, "Failure preparing request")
@@ -813,14 +813,14 @@ func (client ManagementClient) GetOperationResults(hostName string, filter strin
 
 	result, err = client.GetOperationResultsResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "intune/ManagementClient", "GetOperationResults", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "intune/ManagementClient", "GetOperationResults", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // GetOperationResultsPreparer prepares the GetOperationResults request.
-func (client ManagementClient) GetOperationResultsPreparer(hostName string, filter string, top *int, selectParameter string) (*http.Request, error) {
+func (client ManagementClient) GetOperationResultsPreparer(hostName string, filter string, top *int32, selectParameter string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"hostName": url.QueryEscape(hostName),
 	}
@@ -850,13 +850,13 @@ func (client ManagementClient) GetOperationResultsPreparer(hostName string, filt
 // GetOperationResultsSender sends the GetOperationResults request. The method will close the
 // http.Response Body if it receives an error.
 func (client ManagementClient) GetOperationResultsSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // GetOperationResultsResponder handles the response to the GetOperationResults request. The method always
 // closes the http.Response Body.
-func (client ManagementClient) GetOperationResultsResponder(resp *http.Response) (result OperationResultCollection, ae error) {
-	ae = autorest.Respond(
+func (client ManagementClient) GetOperationResultsResponder(resp *http.Response) (result OperationResultCollection, err error) {
+	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -867,7 +867,7 @@ func (client ManagementClient) GetOperationResultsResponder(resp *http.Response)
 }
 
 // GetOperationResultsNextResults retrieves the next set of results, if any.
-func (client ManagementClient) GetOperationResultsNextResults(lastResults OperationResultCollection) (result OperationResultCollection, ae error) {
+func (client ManagementClient) GetOperationResultsNextResults(lastResults OperationResultCollection) (result OperationResultCollection, err error) {
 	req, err := lastResults.OperationResultCollectionPreparer()
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "intune/ManagementClient", "GetOperationResults", nil, "Failure preparing next results request request")
@@ -884,7 +884,7 @@ func (client ManagementClient) GetOperationResultsNextResults(lastResults Operat
 
 	result, err = client.GetOperationResultsResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "intune/ManagementClient", "GetOperationResults", resp, "Failure responding to next results request request")
+		err = autorest.NewErrorWithError(err, "intune/ManagementClient", "GetOperationResults", resp, "Failure responding to next results request request")
 	}
 
 	return
@@ -894,7 +894,7 @@ func (client ManagementClient) GetOperationResultsNextResults(lastResults Operat
 //
 // hostName is location hostName for the tenant userName is unique user name
 // deviceName is device name
-func (client ManagementClient) WipeMAMUserDevice(hostName string, userName string, deviceName string) (result WipeDeviceOperationResult, ae error) {
+func (client ManagementClient) WipeMAMUserDevice(hostName string, userName string, deviceName string) (result WipeDeviceOperationResult, err error) {
 	req, err := client.WipeMAMUserDevicePreparer(hostName, userName, deviceName)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "intune/ManagementClient", "WipeMAMUserDevice", nil, "Failure preparing request")
@@ -908,7 +908,7 @@ func (client ManagementClient) WipeMAMUserDevice(hostName string, userName strin
 
 	result, err = client.WipeMAMUserDeviceResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "intune/ManagementClient", "WipeMAMUserDevice", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "intune/ManagementClient", "WipeMAMUserDevice", resp, "Failure responding to request")
 	}
 
 	return
@@ -938,13 +938,13 @@ func (client ManagementClient) WipeMAMUserDevicePreparer(hostName string, userNa
 // WipeMAMUserDeviceSender sends the WipeMAMUserDevice request. The method will close the
 // http.Response Body if it receives an error.
 func (client ManagementClient) WipeMAMUserDeviceSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // WipeMAMUserDeviceResponder handles the response to the WipeMAMUserDevice request. The method always
 // closes the http.Response Body.
-func (client ManagementClient) WipeMAMUserDeviceResponder(resp *http.Response) (result WipeDeviceOperationResult, ae error) {
-	ae = autorest.Respond(
+func (client ManagementClient) WipeMAMUserDeviceResponder(resp *http.Response) (result WipeDeviceOperationResult, err error) {
+	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),

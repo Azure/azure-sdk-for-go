@@ -46,7 +46,7 @@ func NewProviderOperationsMetadataOperationsClientWithBaseURI(baseURI string, su
 // Get gets provider operations metadata
 //
 // resourceProviderNamespace is namespace of the resource provider.
-func (client ProviderOperationsMetadataOperationsClient) Get(resourceProviderNamespace string, apiVersion string, expand string) (result ProviderOperationsMetadata, ae error) {
+func (client ProviderOperationsMetadataOperationsClient) Get(resourceProviderNamespace string, apiVersion string, expand string) (result ProviderOperationsMetadata, err error) {
 	req, err := client.GetPreparer(resourceProviderNamespace, apiVersion, expand)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "authorization/ProviderOperationsMetadataOperationsClient", "Get", nil, "Failure preparing request")
@@ -60,7 +60,7 @@ func (client ProviderOperationsMetadataOperationsClient) Get(resourceProviderNam
 
 	result, err = client.GetResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "authorization/ProviderOperationsMetadataOperationsClient", "Get", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "authorization/ProviderOperationsMetadataOperationsClient", "Get", resp, "Failure responding to request")
 	}
 
 	return
@@ -92,13 +92,13 @@ func (client ProviderOperationsMetadataOperationsClient) GetPreparer(resourcePro
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client ProviderOperationsMetadataOperationsClient) GetSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
-func (client ProviderOperationsMetadataOperationsClient) GetResponder(resp *http.Response) (result ProviderOperationsMetadata, ae error) {
-	ae = autorest.Respond(
+func (client ProviderOperationsMetadataOperationsClient) GetResponder(resp *http.Response) (result ProviderOperationsMetadata, err error) {
+	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -110,7 +110,7 @@ func (client ProviderOperationsMetadataOperationsClient) GetResponder(resp *http
 
 // List gets provider operations metadata list
 //
-func (client ProviderOperationsMetadataOperationsClient) List(apiVersion string, expand string) (result ProviderOperationsMetadataListResult, ae error) {
+func (client ProviderOperationsMetadataOperationsClient) List(apiVersion string, expand string) (result ProviderOperationsMetadataListResult, err error) {
 	req, err := client.ListPreparer(apiVersion, expand)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "authorization/ProviderOperationsMetadataOperationsClient", "List", nil, "Failure preparing request")
@@ -124,7 +124,7 @@ func (client ProviderOperationsMetadataOperationsClient) List(apiVersion string,
 
 	result, err = client.ListResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "authorization/ProviderOperationsMetadataOperationsClient", "List", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "authorization/ProviderOperationsMetadataOperationsClient", "List", resp, "Failure responding to request")
 	}
 
 	return
@@ -155,13 +155,13 @@ func (client ProviderOperationsMetadataOperationsClient) ListPreparer(apiVersion
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
 func (client ProviderOperationsMetadataOperationsClient) ListSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // ListResponder handles the response to the List request. The method always
 // closes the http.Response Body.
-func (client ProviderOperationsMetadataOperationsClient) ListResponder(resp *http.Response) (result ProviderOperationsMetadataListResult, ae error) {
-	ae = autorest.Respond(
+func (client ProviderOperationsMetadataOperationsClient) ListResponder(resp *http.Response) (result ProviderOperationsMetadataListResult, err error) {
+	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -172,7 +172,7 @@ func (client ProviderOperationsMetadataOperationsClient) ListResponder(resp *htt
 }
 
 // ListNextResults retrieves the next set of results, if any.
-func (client ProviderOperationsMetadataOperationsClient) ListNextResults(lastResults ProviderOperationsMetadataListResult) (result ProviderOperationsMetadataListResult, ae error) {
+func (client ProviderOperationsMetadataOperationsClient) ListNextResults(lastResults ProviderOperationsMetadataListResult) (result ProviderOperationsMetadataListResult, err error) {
 	req, err := lastResults.ProviderOperationsMetadataListResultPreparer()
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "authorization/ProviderOperationsMetadataOperationsClient", "List", nil, "Failure preparing next results request request")
@@ -189,7 +189,7 @@ func (client ProviderOperationsMetadataOperationsClient) ListNextResults(lastRes
 
 	result, err = client.ListResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "authorization/ProviderOperationsMetadataOperationsClient", "List", resp, "Failure responding to next results request request")
+		err = autorest.NewErrorWithError(err, "authorization/ProviderOperationsMetadataOperationsClient", "List", resp, "Failure responding to next results request request")
 	}
 
 	return

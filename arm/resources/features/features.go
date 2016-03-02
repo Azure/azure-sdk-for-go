@@ -44,7 +44,7 @@ func NewClientWithBaseURI(baseURI string, subscriptionID string) Client {
 //
 // resourceProviderNamespace is namespace of the resource provider.
 // featureName is previewed feature name in the resource provider.
-func (client Client) Get(resourceProviderNamespace string, featureName string) (result FeatureResult, ae error) {
+func (client Client) Get(resourceProviderNamespace string, featureName string) (result FeatureResult, err error) {
 	req, err := client.GetPreparer(resourceProviderNamespace, featureName)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "features/Client", "Get", nil, "Failure preparing request")
@@ -58,7 +58,7 @@ func (client Client) Get(resourceProviderNamespace string, featureName string) (
 
 	result, err = client.GetResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "features/Client", "Get", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "features/Client", "Get", resp, "Failure responding to request")
 	}
 
 	return
@@ -88,13 +88,13 @@ func (client Client) GetPreparer(resourceProviderNamespace string, featureName s
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client Client) GetSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
-func (client Client) GetResponder(resp *http.Response) (result FeatureResult, ae error) {
-	ae = autorest.Respond(
+func (client Client) GetResponder(resp *http.Response) (result FeatureResult, err error) {
+	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -107,7 +107,7 @@ func (client Client) GetResponder(resp *http.Response) (result FeatureResult, ae
 // List gets a list of previewed features of a resource provider.
 //
 // resourceProviderNamespace is the namespace of the resource provider.
-func (client Client) List(resourceProviderNamespace string) (result FeatureOperationsListResult, ae error) {
+func (client Client) List(resourceProviderNamespace string) (result FeatureOperationsListResult, err error) {
 	req, err := client.ListPreparer(resourceProviderNamespace)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "features/Client", "List", nil, "Failure preparing request")
@@ -121,7 +121,7 @@ func (client Client) List(resourceProviderNamespace string) (result FeatureOpera
 
 	result, err = client.ListResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "features/Client", "List", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "features/Client", "List", resp, "Failure responding to request")
 	}
 
 	return
@@ -150,13 +150,13 @@ func (client Client) ListPreparer(resourceProviderNamespace string) (*http.Reque
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
 func (client Client) ListSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // ListResponder handles the response to the List request. The method always
 // closes the http.Response Body.
-func (client Client) ListResponder(resp *http.Response) (result FeatureOperationsListResult, ae error) {
-	ae = autorest.Respond(
+func (client Client) ListResponder(resp *http.Response) (result FeatureOperationsListResult, err error) {
+	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -167,7 +167,7 @@ func (client Client) ListResponder(resp *http.Response) (result FeatureOperation
 }
 
 // ListNextResults retrieves the next set of results, if any.
-func (client Client) ListNextResults(lastResults FeatureOperationsListResult) (result FeatureOperationsListResult, ae error) {
+func (client Client) ListNextResults(lastResults FeatureOperationsListResult) (result FeatureOperationsListResult, err error) {
 	req, err := lastResults.FeatureOperationsListResultPreparer()
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "features/Client", "List", nil, "Failure preparing next results request request")
@@ -184,7 +184,7 @@ func (client Client) ListNextResults(lastResults FeatureOperationsListResult) (r
 
 	result, err = client.ListResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "features/Client", "List", resp, "Failure responding to next results request request")
+		err = autorest.NewErrorWithError(err, "features/Client", "List", resp, "Failure responding to next results request request")
 	}
 
 	return
@@ -192,7 +192,7 @@ func (client Client) ListNextResults(lastResults FeatureOperationsListResult) (r
 
 // ListAll gets a list of previewed features for all the providers in the
 // current subscription.
-func (client Client) ListAll() (result FeatureOperationsListResult, ae error) {
+func (client Client) ListAll() (result FeatureOperationsListResult, err error) {
 	req, err := client.ListAllPreparer()
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "features/Client", "ListAll", nil, "Failure preparing request")
@@ -206,7 +206,7 @@ func (client Client) ListAll() (result FeatureOperationsListResult, ae error) {
 
 	result, err = client.ListAllResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "features/Client", "ListAll", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "features/Client", "ListAll", resp, "Failure responding to request")
 	}
 
 	return
@@ -234,13 +234,13 @@ func (client Client) ListAllPreparer() (*http.Request, error) {
 // ListAllSender sends the ListAll request. The method will close the
 // http.Response Body if it receives an error.
 func (client Client) ListAllSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // ListAllResponder handles the response to the ListAll request. The method always
 // closes the http.Response Body.
-func (client Client) ListAllResponder(resp *http.Response) (result FeatureOperationsListResult, ae error) {
-	ae = autorest.Respond(
+func (client Client) ListAllResponder(resp *http.Response) (result FeatureOperationsListResult, err error) {
+	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -251,7 +251,7 @@ func (client Client) ListAllResponder(resp *http.Response) (result FeatureOperat
 }
 
 // ListAllNextResults retrieves the next set of results, if any.
-func (client Client) ListAllNextResults(lastResults FeatureOperationsListResult) (result FeatureOperationsListResult, ae error) {
+func (client Client) ListAllNextResults(lastResults FeatureOperationsListResult) (result FeatureOperationsListResult, err error) {
 	req, err := lastResults.FeatureOperationsListResultPreparer()
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "features/Client", "ListAll", nil, "Failure preparing next results request request")
@@ -268,7 +268,7 @@ func (client Client) ListAllNextResults(lastResults FeatureOperationsListResult)
 
 	result, err = client.ListAllResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "features/Client", "ListAll", resp, "Failure responding to next results request request")
+		err = autorest.NewErrorWithError(err, "features/Client", "ListAll", resp, "Failure responding to next results request request")
 	}
 
 	return
@@ -278,7 +278,7 @@ func (client Client) ListAllNextResults(lastResults FeatureOperationsListResult)
 //
 // resourceProviderNamespace is namespace of the resource provider.
 // featureName is previewed feature name in the resource provider.
-func (client Client) Register(resourceProviderNamespace string, featureName string) (result FeatureResult, ae error) {
+func (client Client) Register(resourceProviderNamespace string, featureName string) (result FeatureResult, err error) {
 	req, err := client.RegisterPreparer(resourceProviderNamespace, featureName)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "features/Client", "Register", nil, "Failure preparing request")
@@ -292,7 +292,7 @@ func (client Client) Register(resourceProviderNamespace string, featureName stri
 
 	result, err = client.RegisterResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "features/Client", "Register", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "features/Client", "Register", resp, "Failure responding to request")
 	}
 
 	return
@@ -322,13 +322,13 @@ func (client Client) RegisterPreparer(resourceProviderNamespace string, featureN
 // RegisterSender sends the Register request. The method will close the
 // http.Response Body if it receives an error.
 func (client Client) RegisterSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // RegisterResponder handles the response to the Register request. The method always
 // closes the http.Response Body.
-func (client Client) RegisterResponder(resp *http.Response) (result FeatureResult, ae error) {
-	ae = autorest.Respond(
+func (client Client) RegisterResponder(resp *http.Response) (result FeatureResult, err error) {
+	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),

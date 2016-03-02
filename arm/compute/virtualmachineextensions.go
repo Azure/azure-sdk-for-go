@@ -49,7 +49,7 @@ func NewVirtualMachineExtensionsClientWithBaseURI(baseURI string, subscriptionID
 // vmExtensionName is the name of the virtual machine extension.
 // extensionParameters is parameters supplied to the Create Virtual Machine
 // Extension operation.
-func (client VirtualMachineExtensionsClient) CreateOrUpdate(resourceGroupName string, vmName string, vmExtensionName string, extensionParameters VirtualMachineExtension) (result autorest.Response, ae error) {
+func (client VirtualMachineExtensionsClient) CreateOrUpdate(resourceGroupName string, vmName string, vmExtensionName string, extensionParameters VirtualMachineExtension) (result autorest.Response, err error) {
 	req, err := client.CreateOrUpdatePreparer(resourceGroupName, vmName, vmExtensionName, extensionParameters)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "compute/VirtualMachineExtensionsClient", "CreateOrUpdate", nil, "Failure preparing request")
@@ -63,7 +63,7 @@ func (client VirtualMachineExtensionsClient) CreateOrUpdate(resourceGroupName st
 
 	result, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "compute/VirtualMachineExtensionsClient", "CreateOrUpdate", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "compute/VirtualMachineExtensionsClient", "CreateOrUpdate", resp, "Failure responding to request")
 	}
 
 	return
@@ -95,21 +95,16 @@ func (client VirtualMachineExtensionsClient) CreateOrUpdatePreparer(resourceGrou
 // CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
 // http.Response Body if it receives an error.
 func (client VirtualMachineExtensionsClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
-	resp, err := client.Send(req)
-	if err == nil && azure.ResponseIsLongRunning(resp) {
-		req, err := azure.NewAsyncPollingRequest(resp, client.Client)
-		if err == nil {
-			resp, err = autorest.SendWithSender(client, req,
-				azure.WithAsyncPolling(autorest.DefaultPollingDelay))
-		}
-	}
-	return resp, err
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoPollForAsynchronous(autorest.DefaultPollingDuration,
+			autorest.DefaultPollingDelay))
 }
 
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
 // closes the http.Response Body.
-func (client VirtualMachineExtensionsClient) CreateOrUpdateResponder(resp *http.Response) (result autorest.Response, ae error) {
-	ae = autorest.Respond(
+func (client VirtualMachineExtensionsClient) CreateOrUpdateResponder(resp *http.Response) (result autorest.Response, err error) {
+	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusCreated, http.StatusOK),
@@ -123,7 +118,7 @@ func (client VirtualMachineExtensionsClient) CreateOrUpdateResponder(resp *http.
 // resourceGroupName is the name of the resource group. vmName is the name of
 // the virtual machine where the extension should be deleted. vmExtensionName
 // is the name of the virtual machine extension.
-func (client VirtualMachineExtensionsClient) Delete(resourceGroupName string, vmName string, vmExtensionName string) (result autorest.Response, ae error) {
+func (client VirtualMachineExtensionsClient) Delete(resourceGroupName string, vmName string, vmExtensionName string) (result autorest.Response, err error) {
 	req, err := client.DeletePreparer(resourceGroupName, vmName, vmExtensionName)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "compute/VirtualMachineExtensionsClient", "Delete", nil, "Failure preparing request")
@@ -137,7 +132,7 @@ func (client VirtualMachineExtensionsClient) Delete(resourceGroupName string, vm
 
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "compute/VirtualMachineExtensionsClient", "Delete", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "compute/VirtualMachineExtensionsClient", "Delete", resp, "Failure responding to request")
 	}
 
 	return
@@ -168,21 +163,16 @@ func (client VirtualMachineExtensionsClient) DeletePreparer(resourceGroupName st
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
 func (client VirtualMachineExtensionsClient) DeleteSender(req *http.Request) (*http.Response, error) {
-	resp, err := client.Send(req)
-	if err == nil && azure.ResponseIsLongRunning(resp) {
-		req, err := azure.NewAsyncPollingRequest(resp, client.Client)
-		if err == nil {
-			resp, err = autorest.SendWithSender(client, req,
-				azure.WithAsyncPolling(autorest.DefaultPollingDelay))
-		}
-	}
-	return resp, err
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoPollForAsynchronous(autorest.DefaultPollingDuration,
+			autorest.DefaultPollingDelay))
 }
 
 // DeleteResponder handles the response to the Delete request. The method always
 // closes the http.Response Body.
-func (client VirtualMachineExtensionsClient) DeleteResponder(resp *http.Response) (result autorest.Response, ae error) {
-	ae = autorest.Respond(
+func (client VirtualMachineExtensionsClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
+	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusAccepted, http.StatusNoContent, http.StatusOK),
@@ -197,7 +187,7 @@ func (client VirtualMachineExtensionsClient) DeleteResponder(resp *http.Response
 // the virtual machine containing the extension. vmExtensionName is the name
 // of the virtual machine extension. expand is the expand expression to apply
 // on the operation.
-func (client VirtualMachineExtensionsClient) Get(resourceGroupName string, vmName string, vmExtensionName string, expand string) (result VirtualMachineExtension, ae error) {
+func (client VirtualMachineExtensionsClient) Get(resourceGroupName string, vmName string, vmExtensionName string, expand string) (result VirtualMachineExtension, err error) {
 	req, err := client.GetPreparer(resourceGroupName, vmName, vmExtensionName, expand)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "compute/VirtualMachineExtensionsClient", "Get", nil, "Failure preparing request")
@@ -211,7 +201,7 @@ func (client VirtualMachineExtensionsClient) Get(resourceGroupName string, vmNam
 
 	result, err = client.GetResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "compute/VirtualMachineExtensionsClient", "Get", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "compute/VirtualMachineExtensionsClient", "Get", resp, "Failure responding to request")
 	}
 
 	return
@@ -245,13 +235,13 @@ func (client VirtualMachineExtensionsClient) GetPreparer(resourceGroupName strin
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client VirtualMachineExtensionsClient) GetSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
-func (client VirtualMachineExtensionsClient) GetResponder(resp *http.Response) (result VirtualMachineExtension, ae error) {
-	ae = autorest.Respond(
+func (client VirtualMachineExtensionsClient) GetResponder(resp *http.Response) (result VirtualMachineExtension, err error) {
+	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),

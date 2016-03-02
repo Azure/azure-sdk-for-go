@@ -43,7 +43,7 @@ func NewTagsClientWithBaseURI(baseURI string, subscriptionID string) TagsClient 
 // CreateOrUpdate create a subscription resource tag.
 //
 // tagName is the name of the tag.
-func (client TagsClient) CreateOrUpdate(tagName string) (result TagDetails, ae error) {
+func (client TagsClient) CreateOrUpdate(tagName string) (result TagDetails, err error) {
 	req, err := client.CreateOrUpdatePreparer(tagName)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "resources/TagsClient", "CreateOrUpdate", nil, "Failure preparing request")
@@ -57,7 +57,7 @@ func (client TagsClient) CreateOrUpdate(tagName string) (result TagDetails, ae e
 
 	result, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "resources/TagsClient", "CreateOrUpdate", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "resources/TagsClient", "CreateOrUpdate", resp, "Failure responding to request")
 	}
 
 	return
@@ -86,13 +86,13 @@ func (client TagsClient) CreateOrUpdatePreparer(tagName string) (*http.Request, 
 // CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
 // http.Response Body if it receives an error.
 func (client TagsClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
 // closes the http.Response Body.
-func (client TagsClient) CreateOrUpdateResponder(resp *http.Response) (result TagDetails, ae error) {
-	ae = autorest.Respond(
+func (client TagsClient) CreateOrUpdateResponder(resp *http.Response) (result TagDetails, err error) {
+	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
@@ -105,7 +105,7 @@ func (client TagsClient) CreateOrUpdateResponder(resp *http.Response) (result Ta
 // CreateOrUpdateValue create a subscription resource tag value.
 //
 // tagName is the name of the tag. tagValue is the value of the tag.
-func (client TagsClient) CreateOrUpdateValue(tagName string, tagValue string) (result TagValue, ae error) {
+func (client TagsClient) CreateOrUpdateValue(tagName string, tagValue string) (result TagValue, err error) {
 	req, err := client.CreateOrUpdateValuePreparer(tagName, tagValue)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "resources/TagsClient", "CreateOrUpdateValue", nil, "Failure preparing request")
@@ -119,7 +119,7 @@ func (client TagsClient) CreateOrUpdateValue(tagName string, tagValue string) (r
 
 	result, err = client.CreateOrUpdateValueResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "resources/TagsClient", "CreateOrUpdateValue", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "resources/TagsClient", "CreateOrUpdateValue", resp, "Failure responding to request")
 	}
 
 	return
@@ -149,13 +149,13 @@ func (client TagsClient) CreateOrUpdateValuePreparer(tagName string, tagValue st
 // CreateOrUpdateValueSender sends the CreateOrUpdateValue request. The method will close the
 // http.Response Body if it receives an error.
 func (client TagsClient) CreateOrUpdateValueSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // CreateOrUpdateValueResponder handles the response to the CreateOrUpdateValue request. The method always
 // closes the http.Response Body.
-func (client TagsClient) CreateOrUpdateValueResponder(resp *http.Response) (result TagValue, ae error) {
-	ae = autorest.Respond(
+func (client TagsClient) CreateOrUpdateValueResponder(resp *http.Response) (result TagValue, err error) {
+	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
@@ -168,7 +168,7 @@ func (client TagsClient) CreateOrUpdateValueResponder(resp *http.Response) (resu
 // Delete delete a subscription resource tag.
 //
 // tagName is the name of the tag.
-func (client TagsClient) Delete(tagName string) (result autorest.Response, ae error) {
+func (client TagsClient) Delete(tagName string) (result autorest.Response, err error) {
 	req, err := client.DeletePreparer(tagName)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "resources/TagsClient", "Delete", nil, "Failure preparing request")
@@ -182,7 +182,7 @@ func (client TagsClient) Delete(tagName string) (result autorest.Response, ae er
 
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "resources/TagsClient", "Delete", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "resources/TagsClient", "Delete", resp, "Failure responding to request")
 	}
 
 	return
@@ -211,13 +211,13 @@ func (client TagsClient) DeletePreparer(tagName string) (*http.Request, error) {
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
 func (client TagsClient) DeleteSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // DeleteResponder handles the response to the Delete request. The method always
 // closes the http.Response Body.
-func (client TagsClient) DeleteResponder(resp *http.Response) (result autorest.Response, ae error) {
-	ae = autorest.Respond(
+func (client TagsClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
+	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
@@ -229,7 +229,7 @@ func (client TagsClient) DeleteResponder(resp *http.Response) (result autorest.R
 // DeleteValue delete a subscription resource tag value.
 //
 // tagName is the name of the tag. tagValue is the value of the tag.
-func (client TagsClient) DeleteValue(tagName string, tagValue string) (result autorest.Response, ae error) {
+func (client TagsClient) DeleteValue(tagName string, tagValue string) (result autorest.Response, err error) {
 	req, err := client.DeleteValuePreparer(tagName, tagValue)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "resources/TagsClient", "DeleteValue", nil, "Failure preparing request")
@@ -243,7 +243,7 @@ func (client TagsClient) DeleteValue(tagName string, tagValue string) (result au
 
 	result, err = client.DeleteValueResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "resources/TagsClient", "DeleteValue", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "resources/TagsClient", "DeleteValue", resp, "Failure responding to request")
 	}
 
 	return
@@ -273,13 +273,13 @@ func (client TagsClient) DeleteValuePreparer(tagName string, tagValue string) (*
 // DeleteValueSender sends the DeleteValue request. The method will close the
 // http.Response Body if it receives an error.
 func (client TagsClient) DeleteValueSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // DeleteValueResponder handles the response to the DeleteValue request. The method always
 // closes the http.Response Body.
-func (client TagsClient) DeleteValueResponder(resp *http.Response) (result autorest.Response, ae error) {
-	ae = autorest.Respond(
+func (client TagsClient) DeleteValueResponder(resp *http.Response) (result autorest.Response, err error) {
+	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
@@ -289,7 +289,7 @@ func (client TagsClient) DeleteValueResponder(resp *http.Response) (result autor
 }
 
 // List get a list of subscription resource tags.
-func (client TagsClient) List() (result TagsListResult, ae error) {
+func (client TagsClient) List() (result TagsListResult, err error) {
 	req, err := client.ListPreparer()
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "resources/TagsClient", "List", nil, "Failure preparing request")
@@ -303,7 +303,7 @@ func (client TagsClient) List() (result TagsListResult, ae error) {
 
 	result, err = client.ListResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "resources/TagsClient", "List", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "resources/TagsClient", "List", resp, "Failure responding to request")
 	}
 
 	return
@@ -331,13 +331,13 @@ func (client TagsClient) ListPreparer() (*http.Request, error) {
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
 func (client TagsClient) ListSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // ListResponder handles the response to the List request. The method always
 // closes the http.Response Body.
-func (client TagsClient) ListResponder(resp *http.Response) (result TagsListResult, ae error) {
-	ae = autorest.Respond(
+func (client TagsClient) ListResponder(resp *http.Response) (result TagsListResult, err error) {
+	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -348,7 +348,7 @@ func (client TagsClient) ListResponder(resp *http.Response) (result TagsListResu
 }
 
 // ListNextResults retrieves the next set of results, if any.
-func (client TagsClient) ListNextResults(lastResults TagsListResult) (result TagsListResult, ae error) {
+func (client TagsClient) ListNextResults(lastResults TagsListResult) (result TagsListResult, err error) {
 	req, err := lastResults.TagsListResultPreparer()
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "resources/TagsClient", "List", nil, "Failure preparing next results request request")
@@ -365,7 +365,7 @@ func (client TagsClient) ListNextResults(lastResults TagsListResult) (result Tag
 
 	result, err = client.ListResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "resources/TagsClient", "List", resp, "Failure responding to next results request request")
+		err = autorest.NewErrorWithError(err, "resources/TagsClient", "List", resp, "Failure responding to next results request request")
 	}
 
 	return

@@ -203,8 +203,8 @@ type DeepCreatedOrigin struct {
 // endpoint
 type DeepCreatedOriginProperties struct {
 	HostName  *string `json:"hostName,omitempty"`
-	HTTPPort  *int    `json:"httpPort,omitempty"`
-	HTTPSPort *int    `json:"httpsPort,omitempty"`
+	HTTPPort  *int32  `json:"httpPort,omitempty"`
+	HTTPSPort *int32  `json:"httpsPort,omitempty"`
 }
 
 // Endpoint is cDN Endpoint is the entity within a CDN Profile containing
@@ -326,8 +326,8 @@ type OriginParameters struct {
 // OriginProperties is
 type OriginProperties struct {
 	HostName          *string             `json:"hostName,omitempty"`
-	HTTPPort          *int                `json:"httpPort,omitempty"`
-	HTTPSPort         *int                `json:"httpsPort,omitempty"`
+	HTTPPort          *int32              `json:"httpPort,omitempty"`
+	HTTPSPort         *int32              `json:"httpsPort,omitempty"`
 	ResourceState     OriginResourceState `json:"resourceState,omitempty"`
 	ProvisioningState ProvisioningState   `json:"provisioningState,omitempty"`
 }
@@ -335,8 +335,8 @@ type OriginProperties struct {
 // OriginPropertiesParameters is
 type OriginPropertiesParameters struct {
 	HostName  *string `json:"hostName,omitempty"`
-	HTTPPort  *int    `json:"httpPort,omitempty"`
-	HTTPSPort *int    `json:"httpsPort,omitempty"`
+	HTTPPort  *int32  `json:"httpPort,omitempty"`
+	HTTPSPort *int32  `json:"httpsPort,omitempty"`
 }
 
 // Profile is cDN profile represents the top level resource and the entry

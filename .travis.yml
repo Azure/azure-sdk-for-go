@@ -2,6 +2,8 @@ sudo: false
 
 language: go
 
+go: 1.6
+
 install:
   - go get -u golang.org/x/tools/cmd/vet
   - go get -u github.com/golang/lint/golint
@@ -9,7 +11,6 @@ install:
   - export GO15VENDOREXPERIMENT=1
   - glide install
 
-go: tip
 script:
   - test -z "$(gofmt -s -l $(find ./arm/* -type d -print) | tee /dev/stderr)"
   - test -z "$(gofmt -s -l -w management | tee /dev/stderr)"

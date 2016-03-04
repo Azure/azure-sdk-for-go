@@ -15,7 +15,7 @@ script:
   - test -z "$(gofmt -s -l -w management | tee /dev/stderr)"
   - test -z "$(gofmt -s -l -w storage | tee /dev/stderr)"
   - go build -v ./...
-  - test -z "$(go vet $(find ./arm/* -type d -print) | tee /dev/stderr)"
+  - test -z "$(go vet $(find ./arm/* -type d -print | grep -v '^./arm/resources$') | tee /dev/stderr)"
   - test -z "$(golint ./arm/... | tee /dev/stderr)"
   - go test -v ./storage/... -check.v
   - test -z "$(golint ./storage/... | tee /dev/stderr)"

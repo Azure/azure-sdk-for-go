@@ -39,7 +39,7 @@ func checkName(name string) {
 
 	ac := storage.NewAccountsClient(c["subscriptionID"])
 
-	spt, err := helpers.NewServicePrincipalTokenFromCredentials(c, azure.AzureResourceManagerScope)
+	spt, err := helpers.NewServicePrincipalTokenFromCredentials(c, azure.PublicCloud.ResourceManagerEndpoint)
 	if err != nil {
 		log.Fatalf("Error: %v", err)
 	}
@@ -50,7 +50,6 @@ func checkName(name string) {
 
 	ac.RequestInspector = withInspection()
 	ac.ResponseInspector = byInspecting()
-
 	cna, err := ac.CheckNameAvailability(
 		storage.AccountCheckNameAvailabilityParameters{
 			Name: to.StringPtr(name),

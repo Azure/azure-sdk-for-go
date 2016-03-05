@@ -26,7 +26,7 @@ func ToJSON(v interface{}) string {
 func NewServicePrincipalTokenFromCredentials(c map[string]string, scope string) (*azure.ServicePrincipalToken, error) {
 	oauthConfig, err := azure.PublicCloud.OAuthConfigForTenant(c["tenantID"])
 	if err != nil {
- 		panic(err)
+		panic(err)
 	}
 	return azure.NewServicePrincipalToken(*oauthConfig, c["clientID"], c["clientSecret"], scope)
 }

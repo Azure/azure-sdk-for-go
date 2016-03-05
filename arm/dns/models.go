@@ -65,7 +65,7 @@ type CnameRecord struct {
 
 // MxRecord is an MX record.
 type MxRecord struct {
-	Preference *int    `json:"preference,omitempty"`
+	Preference *int32  `json:"preference,omitempty"`
 	Exchange   *string `json:"exchange,omitempty"`
 }
 
@@ -114,7 +114,7 @@ func (client RecordSetListResult) RecordSetListResultPreparer() (*http.Request, 
 // RecordSetProperties is represents the properties of the records in the
 // RecordSet.
 type RecordSetProperties struct {
-	TTL         *int32        `json:"TTL,omitempty"`
+	TTL         *int64        `json:"TTL,omitempty"`
 	ARecords    *[]ARecord    `json:"ARecords,omitempty"`
 	AAAARecords *[]AaaaRecord `json:"AAAARecords,omitempty"`
 	MXRecords   *[]MxRecord   `json:"MXRecords,omitempty"`
@@ -139,18 +139,18 @@ type Resource struct {
 type SoaRecord struct {
 	Host         *string `json:"host,omitempty"`
 	Email        *string `json:"email,omitempty"`
-	SerialNumber *int32  `json:"serialNumber,omitempty"`
-	RefreshTime  *int32  `json:"refreshTime,omitempty"`
-	RetryTime    *int32  `json:"retryTime,omitempty"`
-	ExpireTime   *int32  `json:"expireTime,omitempty"`
-	MinimumTTL   *int32  `json:"minimumTTL,omitempty"`
+	SerialNumber *int64  `json:"serialNumber,omitempty"`
+	RefreshTime  *int64  `json:"refreshTime,omitempty"`
+	RetryTime    *int64  `json:"retryTime,omitempty"`
+	ExpireTime   *int64  `json:"expireTime,omitempty"`
+	MinimumTTL   *int64  `json:"minimumTTL,omitempty"`
 }
 
 // SrvRecord is an SRV record.
 type SrvRecord struct {
-	Priority *int    `json:"priority,omitempty"`
-	Weight   *int    `json:"weight,omitempty"`
-	Port     *int    `json:"port,omitempty"`
+	Priority *int32  `json:"priority,omitempty"`
+	Weight   *int32  `json:"weight,omitempty"`
+	Port     *int32  `json:"port,omitempty"`
 	Target   *string `json:"target,omitempty"`
 }
 
@@ -197,6 +197,6 @@ func (client ZoneListResult) ZoneListResultPreparer() (*http.Request, error) {
 
 // ZoneProperties is represents the properties of the zone.
 type ZoneProperties struct {
-	MaxNumberOfRecordSets *int32 `json:"maxNumberOfRecordSets,omitempty"`
-	NumberOfRecordSets    *int32 `json:"numberOfRecordSets,omitempty"`
+	MaxNumberOfRecordSets *int64 `json:"maxNumberOfRecordSets,omitempty"`
+	NumberOfRecordSets    *int64 `json:"numberOfRecordSets,omitempty"`
 }

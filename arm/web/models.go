@@ -509,7 +509,7 @@ type AutoHealRules struct {
 // AutoHealTriggers is autoHealTriggers - describes the triggers for auto-heal.
 type AutoHealTriggers struct {
 	Requests         *RequestsBasedTrigger      `json:"requests,omitempty"`
-	PrivateBytesInKB *int                       `json:"privateBytesInKB,omitempty"`
+	PrivateBytesInKB *int32                     `json:"privateBytesInKB,omitempty"`
 	StatusCodes      *[]StatusCodesBasedTrigger `json:"statusCodes,omitempty"`
 	SlowRequests     *SlowRequestsBasedTrigger  `json:"slowRequests,omitempty"`
 }
@@ -519,14 +519,14 @@ type AutoHealTriggers struct {
 type AzureBlobStorageApplicationLogsConfig struct {
 	Level           LogLevel `json:"level,omitempty"`
 	SasURL          *string  `json:"sasUrl,omitempty"`
-	RetentionInDays *int     `json:"retentionInDays,omitempty"`
+	RetentionInDays *int32   `json:"retentionInDays,omitempty"`
 }
 
 // AzureBlobStorageHTTPLogsConfig is http logs to azure blob storage
 // configuration
 type AzureBlobStorageHTTPLogsConfig struct {
 	SasURL          *string `json:"sasUrl,omitempty"`
-	RetentionInDays *int    `json:"retentionInDays,omitempty"`
+	RetentionInDays *int32  `json:"retentionInDays,omitempty"`
 	Enabled         *bool   `json:"enabled,omitempty"`
 }
 
@@ -561,7 +561,7 @@ type BackupItemProperties struct {
 	BlobName             *string                  `json:"blobName,omitempty"`
 	Name                 *string                  `json:"name,omitempty"`
 	Status               BackupItemStatus         `json:"status,omitempty"`
-	SizeInBytes          *int32                   `json:"sizeInBytes,omitempty"`
+	SizeInBytes          *int64                   `json:"sizeInBytes,omitempty"`
 	Created              *date.Time               `json:"created,omitempty"`
 	Log                  *string                  `json:"log,omitempty"`
 	Databases            *[]DatabaseBackupSetting `json:"databases,omitempty"`
@@ -569,7 +569,7 @@ type BackupItemProperties struct {
 	LastRestoreTimeStamp *date.Time               `json:"lastRestoreTimeStamp,omitempty"`
 	FinishedTimeStamp    *date.Time               `json:"finishedTimeStamp,omitempty"`
 	CorrelationID        *string                  `json:"correlationId,omitempty"`
-	WebsiteSizeInBytes   *int32                   `json:"websiteSizeInBytes,omitempty"`
+	WebsiteSizeInBytes   *int64                   `json:"websiteSizeInBytes,omitempty"`
 }
 
 // BackupRequest is description of a backup which will be performed
@@ -596,10 +596,10 @@ type BackupRequestProperties struct {
 // BackupSchedule is description of a backup schedule. Describes how often
 // should be the backup performed and what should be the retention policy.
 type BackupSchedule struct {
-	FrequencyInterval     *int          `json:"frequencyInterval,omitempty"`
+	FrequencyInterval     *int32        `json:"frequencyInterval,omitempty"`
 	FrequencyUnit         FrequencyUnit `json:"frequencyUnit,omitempty"`
 	KeepAtLeastOneBackup  *bool         `json:"keepAtLeastOneBackup,omitempty"`
-	RetentionPeriodInDays *int          `json:"retentionPeriodInDays,omitempty"`
+	RetentionPeriodInDays *int32        `json:"retentionPeriodInDays,omitempty"`
 	StartTime             *date.Time    `json:"startTime,omitempty"`
 	LastExecutionTime     *date.Time    `json:"lastExecutionTime,omitempty"`
 }
@@ -753,8 +753,8 @@ type CsmSlotEntity struct {
 type CsmUsageQuota struct {
 	Unit          *string            `json:"unit,omitempty"`
 	NextResetTime *date.Time         `json:"nextResetTime,omitempty"`
-	CurrentValue  *int32             `json:"currentValue,omitempty"`
-	Limit         *int32             `json:"limit,omitempty"`
+	CurrentValue  *int64             `json:"currentValue,omitempty"`
+	Limit         *int64             `json:"limit,omitempty"`
 	Name          *LocalizableString `json:"name,omitempty"`
 }
 
@@ -872,7 +872,7 @@ type DeploymentCollection struct {
 // DeploymentProperties is
 type DeploymentProperties struct {
 	ID          *string    `json:"id,omitempty"`
-	Status      *int       `json:"status,omitempty"`
+	Status      *int32     `json:"status,omitempty"`
 	Message     *string    `json:"message,omitempty"`
 	Author      *string    `json:"author,omitempty"`
 	Deployer    *string    `json:"deployer,omitempty"`
@@ -949,7 +949,7 @@ type DomainPurchaseConsent struct {
 // parameters
 type DomainRecommendationSearchParameters struct {
 	Keywords                 *string `json:"keywords,omitempty"`
-	MaxDomainRecommendations *int    `json:"maxDomainRecommendations,omitempty"`
+	MaxDomainRecommendations *int32  `json:"maxDomainRecommendations,omitempty"`
 }
 
 // DomainRegistrationInput is domain registration input for validation Api
@@ -1000,9 +1000,9 @@ type FileSystemApplicationLogsConfig struct {
 
 // FileSystemHTTPLogsConfig is http logs to file system configuration
 type FileSystemHTTPLogsConfig struct {
-	RetentionInMb   *int  `json:"retentionInMb,omitempty"`
-	RetentionInDays *int  `json:"retentionInDays,omitempty"`
-	Enabled         *bool `json:"enabled,omitempty"`
+	RetentionInMb   *int32 `json:"retentionInMb,omitempty"`
+	RetentionInDays *int32 `json:"retentionInDays,omitempty"`
+	Enabled         *bool  `json:"enabled,omitempty"`
 }
 
 // GeoRegion is geographical region
@@ -1092,19 +1092,19 @@ type HostingEnvironmentProperties struct {
 	VirtualNetwork            *VirtualNetworkProfile       `json:"virtualNetwork,omitempty"`
 	InternalLoadBalancingMode InternalLoadBalancingMode    `json:"internalLoadBalancingMode,omitempty"`
 	MultiSize                 *string                      `json:"multiSize,omitempty"`
-	MultiRoleCount            *int                         `json:"multiRoleCount,omitempty"`
+	MultiRoleCount            *int32                       `json:"multiRoleCount,omitempty"`
 	WorkerPools               *[]WorkerPool                `json:"workerPools,omitempty"`
-	IpsslAddressCount         *int                         `json:"ipsslAddressCount,omitempty"`
+	IpsslAddressCount         *int32                       `json:"ipsslAddressCount,omitempty"`
 	DatabaseEdition           *string                      `json:"databaseEdition,omitempty"`
 	DatabaseServiceObjective  *string                      `json:"databaseServiceObjective,omitempty"`
-	UpgradeDomains            *int                         `json:"upgradeDomains,omitempty"`
+	UpgradeDomains            *int32                       `json:"upgradeDomains,omitempty"`
 	SubscriptionID            *string                      `json:"subscriptionId,omitempty"`
 	DNSSuffix                 *string                      `json:"dnsSuffix,omitempty"`
 	LastAction                *string                      `json:"lastAction,omitempty"`
 	LastActionResult          *string                      `json:"lastActionResult,omitempty"`
 	AllowedMultiSizes         *string                      `json:"allowedMultiSizes,omitempty"`
 	AllowedWorkerSizes        *string                      `json:"allowedWorkerSizes,omitempty"`
-	MaximumNumberOfMachines   *int                         `json:"maximumNumberOfMachines,omitempty"`
+	MaximumNumberOfMachines   *int32                       `json:"maximumNumberOfMachines,omitempty"`
 	VipMappings               *[]VirtualIPMapping          `json:"vipMappings,omitempty"`
 	EnvironmentCapacities     *[]StampCapacity             `json:"environmentCapacities,omitempty"`
 	NetworkAccessControlList  *[]NetworkAccessControlEntry `json:"networkAccessControlList,omitempty"`
@@ -1207,7 +1207,7 @@ type ManagedHostingEnvironmentProperties struct {
 	Location             *string                         `json:"location,omitempty"`
 	Status               ManagedHostingEnvironmentStatus `json:"status,omitempty"`
 	VirtualNetwork       *VirtualNetworkProfile          `json:"virtualNetwork,omitempty"`
-	IpsslAddressCount    *int                            `json:"ipsslAddressCount,omitempty"`
+	IpsslAddressCount    *int32                          `json:"ipsslAddressCount,omitempty"`
 	DNSSuffix            *string                         `json:"dnsSuffix,omitempty"`
 	SubscriptionID       *string                         `json:"subscriptionId,omitempty"`
 	ResourceGroup        *string                         `json:"resourceGroup,omitempty"`
@@ -1272,7 +1272,7 @@ type NameValuePair struct {
 type NetworkAccessControlEntry struct {
 	Action       AccessControlEntryAction `json:"action,omitempty"`
 	Description  *string                  `json:"description,omitempty"`
-	Order        *int                     `json:"order,omitempty"`
+	Order        *int32                   `json:"order,omitempty"`
 	RemoteSubnet *string                  `json:"remoteSubnet,omitempty"`
 }
 
@@ -1318,7 +1318,7 @@ type RampUpRule struct {
 	ActionHostName            *string  `json:"actionHostName,omitempty"`
 	ReroutePercentage         *float64 `json:"reroutePercentage,omitempty"`
 	ChangeStep                *float64 `json:"changeStep,omitempty"`
-	ChangeIntervalInMinutes   *int     `json:"changeIntervalInMinutes,omitempty"`
+	ChangeIntervalInMinutes   *int32   `json:"changeIntervalInMinutes,omitempty"`
 	MinReroutePercentage      *float64 `json:"minReroutePercentage,omitempty"`
 	MaxReroutePercentage      *float64 `json:"maxReroutePercentage,omitempty"`
 	ChangeDecisionCallbackURL *string  `json:"changeDecisionCallbackUrl,omitempty"`
@@ -1350,13 +1350,13 @@ type RelayServiceConnectionEntityProperties struct {
 	ResourceType             *string `json:"resourceType,omitempty"`
 	ResourceConnectionString *string `json:"resourceConnectionString,omitempty"`
 	Hostname                 *string `json:"hostname,omitempty"`
-	Port                     *int    `json:"port,omitempty"`
+	Port                     *int32  `json:"port,omitempty"`
 	BiztalkURI               *string `json:"biztalkUri,omitempty"`
 }
 
 // RequestsBasedTrigger is requestsBasedTrigger
 type RequestsBasedTrigger struct {
-	Count        *int    `json:"count,omitempty"`
+	Count        *int32  `json:"count,omitempty"`
 	TimeInterval *string `json:"timeInterval,omitempty"`
 }
 
@@ -1491,10 +1491,10 @@ type ServerFarmWithRichSkuProperties struct {
 	Subscription              *string                    `json:"subscription,omitempty"`
 	AdminSiteName             *string                    `json:"adminSiteName,omitempty"`
 	HostingEnvironmentProfile *HostingEnvironmentProfile `json:"hostingEnvironmentProfile,omitempty"`
-	MaximumNumberOfWorkers    *int                       `json:"maximumNumberOfWorkers,omitempty"`
+	MaximumNumberOfWorkers    *int32                     `json:"maximumNumberOfWorkers,omitempty"`
 	GeoRegion                 *string                    `json:"geoRegion,omitempty"`
 	PerSiteScaling            *bool                      `json:"perSiteScaling,omitempty"`
-	NumberOfSites             *int                       `json:"numberOfSites,omitempty"`
+	NumberOfSites             *int32                     `json:"numberOfSites,omitempty"`
 	ResourceGroup             *string                    `json:"resourceGroup,omitempty"`
 }
 
@@ -1570,7 +1570,7 @@ type SiteConfig struct {
 
 // SiteConfigProperties is
 type SiteConfigProperties struct {
-	NumberOfWorkers              *int                  `json:"numberOfWorkers,omitempty"`
+	NumberOfWorkers              *int32                `json:"numberOfWorkers,omitempty"`
 	DefaultDocuments             *[]string             `json:"defaultDocuments,omitempty"`
 	NetFrameworkVersion          *string               `json:"netFrameworkVersion,omitempty"`
 	PhpVersion                   *string               `json:"phpVersion,omitempty"`
@@ -1580,7 +1580,7 @@ type SiteConfigProperties struct {
 	RemoteDebuggingEnabled       *bool                 `json:"remoteDebuggingEnabled,omitempty"`
 	RemoteDebuggingVersion       *string               `json:"remoteDebuggingVersion,omitempty"`
 	HTTPLoggingEnabled           *bool                 `json:"httpLoggingEnabled,omitempty"`
-	LogsDirectorySizeLimit       *int                  `json:"logsDirectorySizeLimit,omitempty"`
+	LogsDirectorySizeLimit       *int32                `json:"logsDirectorySizeLimit,omitempty"`
 	DetailedErrorLoggingEnabled  *bool                 `json:"detailedErrorLoggingEnabled,omitempty"`
 	PublishingUsername           *string               `json:"publishingUsername,omitempty"`
 	PublishingPassword           *string               `json:"publishingPassword,omitempty"`
@@ -1635,8 +1635,8 @@ type SiteInstanceProperties struct {
 // SiteLimits is represents metric limits set on a web app.
 type SiteLimits struct {
 	MaxPercentageCPU *float64 `json:"maxPercentageCpu,omitempty"`
-	MaxMemoryInMb    *int32   `json:"maxMemoryInMb,omitempty"`
-	MaxDiskSizeInMb  *int32   `json:"maxDiskSizeInMb,omitempty"`
+	MaxMemoryInMb    *int64   `json:"maxMemoryInMb,omitempty"`
+	MaxDiskSizeInMb  *int64   `json:"maxDiskSizeInMb,omitempty"`
 }
 
 // SiteLogsConfig is configuration of Azure web site
@@ -1715,9 +1715,9 @@ type SiteSourceControlProperties struct {
 
 // SkuCapacity is description of the App Service Plan scale options
 type SkuCapacity struct {
-	Minimum   *int    `json:"minimum,omitempty"`
-	Maximum   *int    `json:"maximum,omitempty"`
-	Default   *int    `json:"default,omitempty"`
+	Minimum   *int32  `json:"minimum,omitempty"`
+	Maximum   *int32  `json:"maximum,omitempty"`
+	Default   *int32  `json:"default,omitempty"`
 	ScaleType *string `json:"scaleType,omitempty"`
 }
 
@@ -1727,7 +1727,7 @@ type SkuDescription struct {
 	Tier     *string `json:"tier,omitempty"`
 	Size     *string `json:"size,omitempty"`
 	Family   *string `json:"family,omitempty"`
-	Capacity *int    `json:"capacity,omitempty"`
+	Capacity *int32  `json:"capacity,omitempty"`
 }
 
 // SkuInfo is sku discovery information
@@ -1802,7 +1802,7 @@ type SlotDifferenceProperties struct {
 // SlowRequestsBasedTrigger is slowRequestsBasedTrigger
 type SlowRequestsBasedTrigger struct {
 	TimeTaken    *string `json:"timeTaken,omitempty"`
-	Count        *int    `json:"count,omitempty"`
+	Count        *int32  `json:"count,omitempty"`
 	TimeInterval *string `json:"timeInterval,omitempty"`
 }
 
@@ -1836,12 +1836,12 @@ type SourceControlProperties struct {
 // StampCapacity is class containing stamp capacity information
 type StampCapacity struct {
 	Name                           *string            `json:"name,omitempty"`
-	AvailableCapacity              *int32             `json:"availableCapacity,omitempty"`
-	TotalCapacity                  *int32             `json:"totalCapacity,omitempty"`
+	AvailableCapacity              *int64             `json:"availableCapacity,omitempty"`
+	TotalCapacity                  *int64             `json:"totalCapacity,omitempty"`
 	Unit                           *string            `json:"unit,omitempty"`
 	ComputeMode                    ComputeModeOptions `json:"computeMode,omitempty"`
 	WorkerSize                     WorkerSizeOptions  `json:"workerSize,omitempty"`
-	WorkerSizeID                   *int               `json:"workerSizeId,omitempty"`
+	WorkerSizeID                   *int32             `json:"workerSizeId,omitempty"`
 	ExcludeFromCapacityAllocation  *bool              `json:"excludeFromCapacityAllocation,omitempty"`
 	IsApplicableForAllComputeModes *bool              `json:"isApplicableForAllComputeModes,omitempty"`
 	SiteMode                       *string            `json:"siteMode,omitempty"`
@@ -1856,10 +1856,10 @@ type StampCapacityCollection struct {
 
 // StatusCodesBasedTrigger is statusCodeBasedTrigger
 type StatusCodesBasedTrigger struct {
-	Status       *int    `json:"status,omitempty"`
-	SubStatus    *int    `json:"subStatus,omitempty"`
-	Win32Status  *int    `json:"win32Status,omitempty"`
-	Count        *int    `json:"count,omitempty"`
+	Status       *int32  `json:"status,omitempty"`
+	SubStatus    *int32  `json:"subStatus,omitempty"`
+	Win32Status  *int32  `json:"win32Status,omitempty"`
+	Count        *int32  `json:"count,omitempty"`
 	TimeInterval *string `json:"timeInterval,omitempty"`
 }
 
@@ -1942,8 +1942,8 @@ type UsageProperties struct {
 	Name          *string            `json:"name,omitempty"`
 	ResourceName  *string            `json:"resourceName,omitempty"`
 	Unit          *string            `json:"unit,omitempty"`
-	CurrentValue  *int32             `json:"currentValue,omitempty"`
-	Limit         *int32             `json:"limit,omitempty"`
+	CurrentValue  *int64             `json:"currentValue,omitempty"`
+	Limit         *int64             `json:"limit,omitempty"`
 	NextResetTime *date.Time         `json:"nextResetTime,omitempty"`
 	ComputeMode   ComputeModeOptions `json:"computeMode,omitempty"`
 	SiteMode      *string            `json:"siteMode,omitempty"`
@@ -1984,8 +1984,8 @@ type VirtualDirectory struct {
 // VirtualIPMapping is class that represents a VIP mapping
 type VirtualIPMapping struct {
 	VirtualIP         *string `json:"virtualIP,omitempty"`
-	InternalHTTPPort  *int    `json:"internalHttpPort,omitempty"`
-	InternalHTTPSPort *int    `json:"internalHttpsPort,omitempty"`
+	InternalHTTPPort  *int32  `json:"internalHttpPort,omitempty"`
+	InternalHTTPSPort *int32  `json:"internalHttpsPort,omitempty"`
 	InUse             *bool   `json:"inUse,omitempty"`
 }
 
@@ -2087,9 +2087,9 @@ type WorkerPoolCollection struct {
 
 // WorkerPoolProperties is
 type WorkerPoolProperties struct {
-	WorkerSizeID  *int               `json:"workerSizeId,omitempty"`
+	WorkerSizeID  *int32             `json:"workerSizeId,omitempty"`
 	ComputeMode   ComputeModeOptions `json:"computeMode,omitempty"`
 	WorkerSize    *string            `json:"workerSize,omitempty"`
-	WorkerCount   *int               `json:"workerCount,omitempty"`
+	WorkerCount   *int32             `json:"workerCount,omitempty"`
 	InstanceNames *[]string          `json:"instanceNames,omitempty"`
 }

@@ -47,7 +47,7 @@ func NewZonesClientWithBaseURI(baseURI string, subscriptionID string) ZonesClien
 // to the CreateOrUpdate operation. ifMatch is the etag of Zone. ifNoneMatch
 // is defines the If-None-Match condition. Set to '*' to force
 // Create-If-Not-Exist. Other values will be ignored.
-func (client ZonesClient) CreateOrUpdate(resourceGroupName string, zoneName string, parameters Zone, ifMatch string, ifNoneMatch string) (result Zone, ae error) {
+func (client ZonesClient) CreateOrUpdate(resourceGroupName string, zoneName string, parameters Zone, ifMatch string, ifNoneMatch string) (result Zone, err error) {
 	req, err := client.CreateOrUpdatePreparer(resourceGroupName, zoneName, parameters, ifMatch, ifNoneMatch)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "dns/ZonesClient", "CreateOrUpdate", nil, "Failure preparing request")
@@ -61,7 +61,7 @@ func (client ZonesClient) CreateOrUpdate(resourceGroupName string, zoneName stri
 
 	result, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "dns/ZonesClient", "CreateOrUpdate", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "dns/ZonesClient", "CreateOrUpdate", resp, "Failure responding to request")
 	}
 
 	return
@@ -92,7 +92,7 @@ func (client ZonesClient) CreateOrUpdatePreparer(resourceGroupName string, zoneN
 // CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
 // http.Response Body if it receives an error.
 func (client ZonesClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
@@ -114,7 +114,7 @@ func (client ZonesClient) CreateOrUpdateResponder(resp *http.Response) (result Z
 // of the zone without a terminating dot. ifMatch is defines the If-Match
 // condition. The delete operation will be performed only if the ETag of the
 // zone on the server matches this value.
-func (client ZonesClient) Delete(resourceGroupName string, zoneName string, ifMatch string) (result autorest.Response, ae error) {
+func (client ZonesClient) Delete(resourceGroupName string, zoneName string, ifMatch string) (result autorest.Response, err error) {
 	req, err := client.DeletePreparer(resourceGroupName, zoneName, ifMatch)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "dns/ZonesClient", "Delete", nil, "Failure preparing request")
@@ -128,7 +128,7 @@ func (client ZonesClient) Delete(resourceGroupName string, zoneName string, ifMa
 
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "dns/ZonesClient", "Delete", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "dns/ZonesClient", "Delete", resp, "Failure responding to request")
 	}
 
 	return
@@ -158,7 +158,7 @@ func (client ZonesClient) DeletePreparer(resourceGroupName string, zoneName stri
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
 func (client ZonesClient) DeleteSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // DeleteResponder handles the response to the Delete request. The method always
@@ -177,7 +177,7 @@ func (client ZonesClient) DeleteResponder(resp *http.Response) (result autorest.
 //
 // resourceGroupName is the name of the resource group. zoneName is the name
 // of the zone without a terminating dot.
-func (client ZonesClient) Get(resourceGroupName string, zoneName string) (result Zone, ae error) {
+func (client ZonesClient) Get(resourceGroupName string, zoneName string) (result Zone, err error) {
 	req, err := client.GetPreparer(resourceGroupName, zoneName)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "dns/ZonesClient", "Get", nil, "Failure preparing request")
@@ -191,7 +191,7 @@ func (client ZonesClient) Get(resourceGroupName string, zoneName string) (result
 
 	result, err = client.GetResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "dns/ZonesClient", "Get", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "dns/ZonesClient", "Get", resp, "Failure responding to request")
 	}
 
 	return
@@ -221,7 +221,7 @@ func (client ZonesClient) GetPreparer(resourceGroupName string, zoneName string)
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client ZonesClient) GetSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // GetResponder handles the response to the Get request. The method always
@@ -242,7 +242,7 @@ func (client ZonesClient) GetResponder(resp *http.Response) (result Zone, err er
 // resourceGroupName is the name of the resource group. top is query
 // parameters. If null is passed returns the default number of zones. filter
 // is the filter to apply on the operation.
-func (client ZonesClient) ListZonesInResourceGroup(resourceGroupName string, top string, filter string) (result ZoneListResult, ae error) {
+func (client ZonesClient) ListZonesInResourceGroup(resourceGroupName string, top string, filter string) (result ZoneListResult, err error) {
 	req, err := client.ListZonesInResourceGroupPreparer(resourceGroupName, top, filter)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "dns/ZonesClient", "ListZonesInResourceGroup", nil, "Failure preparing request")
@@ -256,7 +256,7 @@ func (client ZonesClient) ListZonesInResourceGroup(resourceGroupName string, top
 
 	result, err = client.ListZonesInResourceGroupResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "dns/ZonesClient", "ListZonesInResourceGroup", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "dns/ZonesClient", "ListZonesInResourceGroup", resp, "Failure responding to request")
 	}
 
 	return
@@ -291,7 +291,7 @@ func (client ZonesClient) ListZonesInResourceGroupPreparer(resourceGroupName str
 // ListZonesInResourceGroupSender sends the ListZonesInResourceGroup request. The method will close the
 // http.Response Body if it receives an error.
 func (client ZonesClient) ListZonesInResourceGroupSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // ListZonesInResourceGroupResponder handles the response to the ListZonesInResourceGroup request. The method always
@@ -308,7 +308,7 @@ func (client ZonesClient) ListZonesInResourceGroupResponder(resp *http.Response)
 }
 
 // ListZonesInResourceGroupNextResults retrieves the next set of results, if any.
-func (client ZonesClient) ListZonesInResourceGroupNextResults(lastResults ZoneListResult) (result ZoneListResult, ae error) {
+func (client ZonesClient) ListZonesInResourceGroupNextResults(lastResults ZoneListResult) (result ZoneListResult, err error) {
 	req, err := lastResults.ZoneListResultPreparer()
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "dns/ZonesClient", "ListZonesInResourceGroup", nil, "Failure preparing next results request request")
@@ -325,7 +325,7 @@ func (client ZonesClient) ListZonesInResourceGroupNextResults(lastResults ZoneLi
 
 	result, err = client.ListZonesInResourceGroupResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "dns/ZonesClient", "ListZonesInResourceGroup", resp, "Failure responding to next results request request")
+		err = autorest.NewErrorWithError(err, "dns/ZonesClient", "ListZonesInResourceGroup", resp, "Failure responding to next results request request")
 	}
 
 	return
@@ -335,7 +335,7 @@ func (client ZonesClient) ListZonesInResourceGroupNextResults(lastResults ZoneLi
 //
 // top is query parameters. If null is passed returns the default number of
 // zones. filter is the filter to apply on the operation.
-func (client ZonesClient) ListZonesInSubscription(top string, filter string) (result ZoneListResult, ae error) {
+func (client ZonesClient) ListZonesInSubscription(top string, filter string) (result ZoneListResult, err error) {
 	req, err := client.ListZonesInSubscriptionPreparer(top, filter)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "dns/ZonesClient", "ListZonesInSubscription", nil, "Failure preparing request")
@@ -349,7 +349,7 @@ func (client ZonesClient) ListZonesInSubscription(top string, filter string) (re
 
 	result, err = client.ListZonesInSubscriptionResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "dns/ZonesClient", "ListZonesInSubscription", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "dns/ZonesClient", "ListZonesInSubscription", resp, "Failure responding to request")
 	}
 
 	return
@@ -383,7 +383,7 @@ func (client ZonesClient) ListZonesInSubscriptionPreparer(top string, filter str
 // ListZonesInSubscriptionSender sends the ListZonesInSubscription request. The method will close the
 // http.Response Body if it receives an error.
 func (client ZonesClient) ListZonesInSubscriptionSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // ListZonesInSubscriptionResponder handles the response to the ListZonesInSubscription request. The method always
@@ -400,7 +400,7 @@ func (client ZonesClient) ListZonesInSubscriptionResponder(resp *http.Response) 
 }
 
 // ListZonesInSubscriptionNextResults retrieves the next set of results, if any.
-func (client ZonesClient) ListZonesInSubscriptionNextResults(lastResults ZoneListResult) (result ZoneListResult, ae error) {
+func (client ZonesClient) ListZonesInSubscriptionNextResults(lastResults ZoneListResult) (result ZoneListResult, err error) {
 	req, err := lastResults.ZoneListResultPreparer()
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "dns/ZonesClient", "ListZonesInSubscription", nil, "Failure preparing next results request request")
@@ -417,7 +417,7 @@ func (client ZonesClient) ListZonesInSubscriptionNextResults(lastResults ZoneLis
 
 	result, err = client.ListZonesInSubscriptionResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "dns/ZonesClient", "ListZonesInSubscription", resp, "Failure responding to next results request request")
+		err = autorest.NewErrorWithError(err, "dns/ZonesClient", "ListZonesInSubscription", resp, "Failure responding to next results request request")
 	}
 
 	return

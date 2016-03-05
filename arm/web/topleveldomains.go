@@ -50,7 +50,7 @@ func NewTopLevelDomainsClientWithBaseURI(baseURI string, subscriptionID string) 
 }
 
 // GetGetTopLevelDomains sends the get get top level domains request.
-func (client TopLevelDomainsClient) GetGetTopLevelDomains() (result TopLevelDomainCollection, ae error) {
+func (client TopLevelDomainsClient) GetGetTopLevelDomains() (result TopLevelDomainCollection, err error) {
 	req, err := client.GetGetTopLevelDomainsPreparer()
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web/TopLevelDomainsClient", "GetGetTopLevelDomains", nil, "Failure preparing request")
@@ -64,7 +64,7 @@ func (client TopLevelDomainsClient) GetGetTopLevelDomains() (result TopLevelDoma
 
 	result, err = client.GetGetTopLevelDomainsResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "web/TopLevelDomainsClient", "GetGetTopLevelDomains", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "web/TopLevelDomainsClient", "GetGetTopLevelDomains", resp, "Failure responding to request")
 	}
 
 	return
@@ -92,7 +92,7 @@ func (client TopLevelDomainsClient) GetGetTopLevelDomainsPreparer() (*http.Reque
 // GetGetTopLevelDomainsSender sends the GetGetTopLevelDomains request. The method will close the
 // http.Response Body if it receives an error.
 func (client TopLevelDomainsClient) GetGetTopLevelDomainsSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // GetGetTopLevelDomainsResponder handles the response to the GetGetTopLevelDomains request. The method always
@@ -111,7 +111,7 @@ func (client TopLevelDomainsClient) GetGetTopLevelDomainsResponder(resp *http.Re
 // GetTopLevelDomain sends the get top level domain request.
 //
 // name is name of the top level domain
-func (client TopLevelDomainsClient) GetTopLevelDomain(name string) (result TopLevelDomain, ae error) {
+func (client TopLevelDomainsClient) GetTopLevelDomain(name string) (result TopLevelDomain, err error) {
 	req, err := client.GetTopLevelDomainPreparer(name)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web/TopLevelDomainsClient", "GetTopLevelDomain", nil, "Failure preparing request")
@@ -125,7 +125,7 @@ func (client TopLevelDomainsClient) GetTopLevelDomain(name string) (result TopLe
 
 	result, err = client.GetTopLevelDomainResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "web/TopLevelDomainsClient", "GetTopLevelDomain", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "web/TopLevelDomainsClient", "GetTopLevelDomain", resp, "Failure responding to request")
 	}
 
 	return
@@ -154,7 +154,7 @@ func (client TopLevelDomainsClient) GetTopLevelDomainPreparer(name string) (*htt
 // GetTopLevelDomainSender sends the GetTopLevelDomain request. The method will close the
 // http.Response Body if it receives an error.
 func (client TopLevelDomainsClient) GetTopLevelDomainSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // GetTopLevelDomainResponder handles the response to the GetTopLevelDomain request. The method always
@@ -175,7 +175,7 @@ func (client TopLevelDomainsClient) GetTopLevelDomainResponder(resp *http.Respon
 //
 // name is name of the top level domain agreementOption is domain agreement
 // options
-func (client TopLevelDomainsClient) ListTopLevelDomainAgreements(name string, agreementOption TopLevelDomainAgreementOption) (result TldLegalAgreementCollection, ae error) {
+func (client TopLevelDomainsClient) ListTopLevelDomainAgreements(name string, agreementOption TopLevelDomainAgreementOption) (result TldLegalAgreementCollection, err error) {
 	req, err := client.ListTopLevelDomainAgreementsPreparer(name, agreementOption)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web/TopLevelDomainsClient", "ListTopLevelDomainAgreements", nil, "Failure preparing request")
@@ -189,7 +189,7 @@ func (client TopLevelDomainsClient) ListTopLevelDomainAgreements(name string, ag
 
 	result, err = client.ListTopLevelDomainAgreementsResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "web/TopLevelDomainsClient", "ListTopLevelDomainAgreements", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "web/TopLevelDomainsClient", "ListTopLevelDomainAgreements", resp, "Failure responding to request")
 	}
 
 	return
@@ -219,7 +219,7 @@ func (client TopLevelDomainsClient) ListTopLevelDomainAgreementsPreparer(name st
 // ListTopLevelDomainAgreementsSender sends the ListTopLevelDomainAgreements request. The method will close the
 // http.Response Body if it receives an error.
 func (client TopLevelDomainsClient) ListTopLevelDomainAgreementsSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // ListTopLevelDomainAgreementsResponder handles the response to the ListTopLevelDomainAgreements request. The method always

@@ -52,7 +52,7 @@ func NewClassicMobileServicesClientWithBaseURI(baseURI string, subscriptionID st
 // DeleteClassicMobileService sends the delete classic mobile service request.
 //
 // resourceGroupName is name of resource group name is name of mobile service
-func (client ClassicMobileServicesClient) DeleteClassicMobileService(resourceGroupName string, name string) (result ObjectSet, ae error) {
+func (client ClassicMobileServicesClient) DeleteClassicMobileService(resourceGroupName string, name string) (result ObjectSet, err error) {
 	req, err := client.DeleteClassicMobileServicePreparer(resourceGroupName, name)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web/ClassicMobileServicesClient", "DeleteClassicMobileService", nil, "Failure preparing request")
@@ -66,7 +66,7 @@ func (client ClassicMobileServicesClient) DeleteClassicMobileService(resourceGro
 
 	result, err = client.DeleteClassicMobileServiceResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "web/ClassicMobileServicesClient", "DeleteClassicMobileService", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "web/ClassicMobileServicesClient", "DeleteClassicMobileService", resp, "Failure responding to request")
 	}
 
 	return
@@ -96,7 +96,7 @@ func (client ClassicMobileServicesClient) DeleteClassicMobileServicePreparer(res
 // DeleteClassicMobileServiceSender sends the DeleteClassicMobileService request. The method will close the
 // http.Response Body if it receives an error.
 func (client ClassicMobileServicesClient) DeleteClassicMobileServiceSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // DeleteClassicMobileServiceResponder handles the response to the DeleteClassicMobileService request. The method always
@@ -115,7 +115,7 @@ func (client ClassicMobileServicesClient) DeleteClassicMobileServiceResponder(re
 // GetClassicMobileService sends the get classic mobile service request.
 //
 // resourceGroupName is name of resource group name is name of mobile service
-func (client ClassicMobileServicesClient) GetClassicMobileService(resourceGroupName string, name string) (result ClassicMobileService, ae error) {
+func (client ClassicMobileServicesClient) GetClassicMobileService(resourceGroupName string, name string) (result ClassicMobileService, err error) {
 	req, err := client.GetClassicMobileServicePreparer(resourceGroupName, name)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web/ClassicMobileServicesClient", "GetClassicMobileService", nil, "Failure preparing request")
@@ -129,7 +129,7 @@ func (client ClassicMobileServicesClient) GetClassicMobileService(resourceGroupN
 
 	result, err = client.GetClassicMobileServiceResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "web/ClassicMobileServicesClient", "GetClassicMobileService", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "web/ClassicMobileServicesClient", "GetClassicMobileService", resp, "Failure responding to request")
 	}
 
 	return
@@ -159,7 +159,7 @@ func (client ClassicMobileServicesClient) GetClassicMobileServicePreparer(resour
 // GetClassicMobileServiceSender sends the GetClassicMobileService request. The method will close the
 // http.Response Body if it receives an error.
 func (client ClassicMobileServicesClient) GetClassicMobileServiceSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // GetClassicMobileServiceResponder handles the response to the GetClassicMobileService request. The method always
@@ -178,7 +178,7 @@ func (client ClassicMobileServicesClient) GetClassicMobileServiceResponder(resp 
 // GetClassicMobileServices sends the get classic mobile services request.
 //
 // resourceGroupName is name of resource group
-func (client ClassicMobileServicesClient) GetClassicMobileServices(resourceGroupName string) (result ClassicMobileServiceCollection, ae error) {
+func (client ClassicMobileServicesClient) GetClassicMobileServices(resourceGroupName string) (result ClassicMobileServiceCollection, err error) {
 	req, err := client.GetClassicMobileServicesPreparer(resourceGroupName)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web/ClassicMobileServicesClient", "GetClassicMobileServices", nil, "Failure preparing request")
@@ -192,7 +192,7 @@ func (client ClassicMobileServicesClient) GetClassicMobileServices(resourceGroup
 
 	result, err = client.GetClassicMobileServicesResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "web/ClassicMobileServicesClient", "GetClassicMobileServices", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "web/ClassicMobileServicesClient", "GetClassicMobileServices", resp, "Failure responding to request")
 	}
 
 	return
@@ -221,7 +221,7 @@ func (client ClassicMobileServicesClient) GetClassicMobileServicesPreparer(resou
 // GetClassicMobileServicesSender sends the GetClassicMobileServices request. The method will close the
 // http.Response Body if it receives an error.
 func (client ClassicMobileServicesClient) GetClassicMobileServicesSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // GetClassicMobileServicesResponder handles the response to the GetClassicMobileServices request. The method always

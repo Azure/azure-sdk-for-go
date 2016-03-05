@@ -251,13 +251,13 @@ type AndroidMAMPolicyProperties struct {
 	DataBackup                  DataBackup            `json:"dataBackup,omitempty"`
 	FileSharingSaveAs           FileSharingSaveAs     `json:"fileSharingSaveAs,omitempty"`
 	Pin                         Pin                   `json:"pin,omitempty"`
-	PinNumRetry                 *int                  `json:"pinNumRetry,omitempty"`
+	PinNumRetry                 *int32                `json:"pinNumRetry,omitempty"`
 	DeviceCompliance            DeviceCompliance      `json:"deviceCompliance,omitempty"`
 	ManagedBrowser              ManagedBrowser        `json:"managedBrowser,omitempty"`
 	AccessRecheckOfflineTimeout *string               `json:"accessRecheckOfflineTimeout,omitempty"`
 	AccessRecheckOnlineTimeout  *string               `json:"accessRecheckOnlineTimeout,omitempty"`
 	OfflineWipeTimeout          *string               `json:"offlineWipeTimeout,omitempty"`
-	NumOfApps                   *int                  `json:"numOfApps,omitempty"`
+	NumOfApps                   *int32                `json:"numOfApps,omitempty"`
 	GroupStatus                 GroupStatus           `json:"groupStatus,omitempty"`
 	LastModifiedTime            *date.Time            `json:"lastModifiedTime,omitempty"`
 	ScreenCapture               ScreenCapture         `json:"screenCapture,omitempty"`
@@ -422,7 +422,7 @@ func (client FlaggedUserCollection) FlaggedUserCollectionPreparer() (*http.Reque
 
 // FlaggedUserProperties is
 type FlaggedUserProperties struct {
-	ErrorCount   *int    `json:"errorCount,omitempty"`
+	ErrorCount   *int32  `json:"errorCount,omitempty"`
 	FriendlyName *string `json:"friendlyName,omitempty"`
 }
 
@@ -501,13 +501,13 @@ type IOSMAMPolicyProperties struct {
 	DataBackup                  DataBackup            `json:"dataBackup,omitempty"`
 	FileSharingSaveAs           FileSharingSaveAs     `json:"fileSharingSaveAs,omitempty"`
 	Pin                         Pin                   `json:"pin,omitempty"`
-	PinNumRetry                 *int                  `json:"pinNumRetry,omitempty"`
+	PinNumRetry                 *int32                `json:"pinNumRetry,omitempty"`
 	DeviceCompliance            DeviceCompliance      `json:"deviceCompliance,omitempty"`
 	ManagedBrowser              ManagedBrowser        `json:"managedBrowser,omitempty"`
 	AccessRecheckOfflineTimeout *string               `json:"accessRecheckOfflineTimeout,omitempty"`
 	AccessRecheckOnlineTimeout  *string               `json:"accessRecheckOnlineTimeout,omitempty"`
 	OfflineWipeTimeout          *string               `json:"offlineWipeTimeout,omitempty"`
-	NumOfApps                   *int                  `json:"numOfApps,omitempty"`
+	NumOfApps                   *int32                `json:"numOfApps,omitempty"`
 	GroupStatus                 GroupStatus           `json:"groupStatus,omitempty"`
 	LastModifiedTime            *date.Time            `json:"lastModifiedTime,omitempty"`
 	FileEncryptionLevel         FileEncryptionLevel   `json:"fileEncryptionLevel,omitempty"`
@@ -572,13 +572,13 @@ type MAMPolicyProperties struct {
 	DataBackup                  DataBackup            `json:"dataBackup,omitempty"`
 	FileSharingSaveAs           FileSharingSaveAs     `json:"fileSharingSaveAs,omitempty"`
 	Pin                         Pin                   `json:"pin,omitempty"`
-	PinNumRetry                 *int                  `json:"pinNumRetry,omitempty"`
+	PinNumRetry                 *int32                `json:"pinNumRetry,omitempty"`
 	DeviceCompliance            DeviceCompliance      `json:"deviceCompliance,omitempty"`
 	ManagedBrowser              ManagedBrowser        `json:"managedBrowser,omitempty"`
 	AccessRecheckOfflineTimeout *string               `json:"accessRecheckOfflineTimeout,omitempty"`
 	AccessRecheckOnlineTimeout  *string               `json:"accessRecheckOnlineTimeout,omitempty"`
 	OfflineWipeTimeout          *string               `json:"offlineWipeTimeout,omitempty"`
-	NumOfApps                   *int                  `json:"numOfApps,omitempty"`
+	NumOfApps                   *int32                `json:"numOfApps,omitempty"`
 	GroupStatus                 GroupStatus           `json:"groupStatus,omitempty"`
 	LastModifiedTime            *date.Time            `json:"lastModifiedTime,omitempty"`
 }
@@ -662,15 +662,15 @@ func (client StatusesDefault) StatusesDefaultPreparer() (*http.Request, error) {
 
 // StatusesProperties is
 type StatusesProperties struct {
-	DeployedPolicies   *int       `json:"deployedPolicies,omitempty"`
-	EnrolledUsers      *int       `json:"enrolledUsers,omitempty"`
-	FlaggedUsers       *int       `json:"flaggedUsers,omitempty"`
+	DeployedPolicies   *int32     `json:"deployedPolicies,omitempty"`
+	EnrolledUsers      *int32     `json:"enrolledUsers,omitempty"`
+	FlaggedUsers       *int32     `json:"flaggedUsers,omitempty"`
 	LastModifiedTime   *date.Time `json:"lastModifiedTime,omitempty"`
-	PolicyAppliedUsers *int       `json:"policyAppliedUsers,omitempty"`
+	PolicyAppliedUsers *int32     `json:"policyAppliedUsers,omitempty"`
 	Status             *string    `json:"status,omitempty"`
-	WipeFailedApps     *int       `json:"wipeFailedApps,omitempty"`
-	WipePendingApps    *int       `json:"wipePendingApps,omitempty"`
-	WipeSucceededApps  *int       `json:"wipeSucceededApps,omitempty"`
+	WipeFailedApps     *int32     `json:"wipeFailedApps,omitempty"`
+	WipePendingApps    *int32     `json:"wipePendingApps,omitempty"`
+	WipeSucceededApps  *int32     `json:"wipeSucceededApps,omitempty"`
 }
 
 // WipeDeviceOperationResult is device entity for Intune.

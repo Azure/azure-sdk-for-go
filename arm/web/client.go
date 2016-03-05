@@ -5,7 +5,8 @@
 // specification and each operation returns an x-ms-request-id header that
 // can be used to obtain information about the request. You must make sure
 // that requests made to these resources are secure. For more information,
-// see https://msdn.microsoft.com/en-us/library/azure/dn790557.aspx.
+// see Authenticating Azure Resource Manager requests
+// (https://msdn.microsoft.com/en-us/library/azure/dn790557.aspx).
 package web
 
 // Copyright (c) Microsoft and contributors.  All rights reserved.

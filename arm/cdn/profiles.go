@@ -51,7 +51,7 @@ func NewProfilesClientWithBaseURI(baseURI string, subscriptionID string) Profile
 // profileProperties is profile properties needed for creation
 // resourceGroupName is name of the resource group within the Azure
 // subscription
-func (client ProfilesClient) Create(profileName string, profileProperties ProfileCreateParameters, resourceGroupName string) (result Profile, ae error) {
+func (client ProfilesClient) Create(profileName string, profileProperties ProfileCreateParameters, resourceGroupName string) (result autorest.Response, err error) {
 	req, err := client.CreatePreparer(profileName, profileProperties, resourceGroupName)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "cdn/ProfilesClient", "Create", nil, "Failure preparing request")
@@ -59,13 +59,13 @@ func (client ProfilesClient) Create(profileName string, profileProperties Profil
 
 	resp, err := client.CreateSender(req)
 	if err != nil {
-		result.Response = autorest.Response{Response: resp}
+		result.Response = resp
 		return result, autorest.NewErrorWithError(err, "cdn/ProfilesClient", "Create", resp, "Failure sending request")
 	}
 
 	result, err = client.CreateResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "cdn/ProfilesClient", "Create", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "cdn/ProfilesClient", "Create", resp, "Failure responding to request")
 	}
 
 	return
@@ -96,19 +96,21 @@ func (client ProfilesClient) CreatePreparer(profileName string, profilePropertie
 // CreateSender sends the Create request. The method will close the
 // http.Response Body if it receives an error.
 func (client ProfilesClient) CreateSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoPollForAsynchronous(autorest.DefaultPollingDuration,
+			autorest.DefaultPollingDelay))
 }
 
 // CreateResponder handles the response to the Create request. The method always
 // closes the http.Response Body.
-func (client ProfilesClient) CreateResponder(resp *http.Response) (result Profile, err error) {
+func (client ProfilesClient) CreateResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated, http.StatusAccepted),
-		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
+	result.Response = resp
 	return
 }
 
@@ -117,7 +119,7 @@ func (client ProfilesClient) CreateResponder(resp *http.Response) (result Profil
 // profileName is name of the CDN profile within the resource group
 // resourceGroupName is name of the resource group within the Azure
 // subscription
-func (client ProfilesClient) DeleteIfExists(profileName string, resourceGroupName string) (result autorest.Response, ae error) {
+func (client ProfilesClient) DeleteIfExists(profileName string, resourceGroupName string) (result autorest.Response, err error) {
 	req, err := client.DeleteIfExistsPreparer(profileName, resourceGroupName)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "cdn/ProfilesClient", "DeleteIfExists", nil, "Failure preparing request")
@@ -131,7 +133,7 @@ func (client ProfilesClient) DeleteIfExists(profileName string, resourceGroupNam
 
 	result, err = client.DeleteIfExistsResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "cdn/ProfilesClient", "DeleteIfExists", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "cdn/ProfilesClient", "DeleteIfExists", resp, "Failure responding to request")
 	}
 
 	return
@@ -161,7 +163,10 @@ func (client ProfilesClient) DeleteIfExistsPreparer(profileName string, resource
 // DeleteIfExistsSender sends the DeleteIfExists request. The method will close the
 // http.Response Body if it receives an error.
 func (client ProfilesClient) DeleteIfExistsSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoPollForAsynchronous(autorest.DefaultPollingDuration,
+			autorest.DefaultPollingDelay))
 }
 
 // DeleteIfExistsResponder handles the response to the DeleteIfExists request. The method always
@@ -181,7 +186,7 @@ func (client ProfilesClient) DeleteIfExistsResponder(resp *http.Response) (resul
 // profileName is name of the CDN profile within the resource group
 // resourceGroupName is name of the resource group within the Azure
 // subscription
-func (client ProfilesClient) GenerateSsoURI(profileName string, resourceGroupName string) (result SsoURI, ae error) {
+func (client ProfilesClient) GenerateSsoURI(profileName string, resourceGroupName string) (result SsoURI, err error) {
 	req, err := client.GenerateSsoURIPreparer(profileName, resourceGroupName)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "cdn/ProfilesClient", "GenerateSsoURI", nil, "Failure preparing request")
@@ -195,7 +200,7 @@ func (client ProfilesClient) GenerateSsoURI(profileName string, resourceGroupNam
 
 	result, err = client.GenerateSsoURIResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "cdn/ProfilesClient", "GenerateSsoURI", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "cdn/ProfilesClient", "GenerateSsoURI", resp, "Failure responding to request")
 	}
 
 	return
@@ -225,7 +230,7 @@ func (client ProfilesClient) GenerateSsoURIPreparer(profileName string, resource
 // GenerateSsoURISender sends the GenerateSsoURI request. The method will close the
 // http.Response Body if it receives an error.
 func (client ProfilesClient) GenerateSsoURISender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // GenerateSsoURIResponder handles the response to the GenerateSsoURI request. The method always
@@ -246,7 +251,7 @@ func (client ProfilesClient) GenerateSsoURIResponder(resp *http.Response) (resul
 // profileName is name of the CDN profile within the resource group
 // resourceGroupName is name of the resource group within the Azure
 // subscription
-func (client ProfilesClient) Get(profileName string, resourceGroupName string) (result Profile, ae error) {
+func (client ProfilesClient) Get(profileName string, resourceGroupName string) (result Profile, err error) {
 	req, err := client.GetPreparer(profileName, resourceGroupName)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "cdn/ProfilesClient", "Get", nil, "Failure preparing request")
@@ -260,7 +265,7 @@ func (client ProfilesClient) Get(profileName string, resourceGroupName string) (
 
 	result, err = client.GetResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "cdn/ProfilesClient", "Get", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "cdn/ProfilesClient", "Get", resp, "Failure responding to request")
 	}
 
 	return
@@ -290,7 +295,7 @@ func (client ProfilesClient) GetPreparer(profileName string, resourceGroupName s
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client ProfilesClient) GetSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // GetResponder handles the response to the Get request. The method always
@@ -310,7 +315,7 @@ func (client ProfilesClient) GetResponder(resp *http.Response) (result Profile, 
 //
 // resourceGroupName is name of the resource group within the Azure
 // subscription
-func (client ProfilesClient) ListByResourceGroup(resourceGroupName string) (result ProfileListResult, ae error) {
+func (client ProfilesClient) ListByResourceGroup(resourceGroupName string) (result ProfileListResult, err error) {
 	req, err := client.ListByResourceGroupPreparer(resourceGroupName)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "cdn/ProfilesClient", "ListByResourceGroup", nil, "Failure preparing request")
@@ -324,7 +329,7 @@ func (client ProfilesClient) ListByResourceGroup(resourceGroupName string) (resu
 
 	result, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "cdn/ProfilesClient", "ListByResourceGroup", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "cdn/ProfilesClient", "ListByResourceGroup", resp, "Failure responding to request")
 	}
 
 	return
@@ -353,7 +358,7 @@ func (client ProfilesClient) ListByResourceGroupPreparer(resourceGroupName strin
 // ListByResourceGroupSender sends the ListByResourceGroup request. The method will close the
 // http.Response Body if it receives an error.
 func (client ProfilesClient) ListByResourceGroupSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // ListByResourceGroupResponder handles the response to the ListByResourceGroup request. The method always
@@ -370,7 +375,7 @@ func (client ProfilesClient) ListByResourceGroupResponder(resp *http.Response) (
 }
 
 // ListBySubscriptionID sends the list by subscription id request.
-func (client ProfilesClient) ListBySubscriptionID() (result ProfileListResult, ae error) {
+func (client ProfilesClient) ListBySubscriptionID() (result ProfileListResult, err error) {
 	req, err := client.ListBySubscriptionIDPreparer()
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "cdn/ProfilesClient", "ListBySubscriptionID", nil, "Failure preparing request")
@@ -384,7 +389,7 @@ func (client ProfilesClient) ListBySubscriptionID() (result ProfileListResult, a
 
 	result, err = client.ListBySubscriptionIDResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "cdn/ProfilesClient", "ListBySubscriptionID", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "cdn/ProfilesClient", "ListBySubscriptionID", resp, "Failure responding to request")
 	}
 
 	return
@@ -412,7 +417,7 @@ func (client ProfilesClient) ListBySubscriptionIDPreparer() (*http.Request, erro
 // ListBySubscriptionIDSender sends the ListBySubscriptionID request. The method will close the
 // http.Response Body if it receives an error.
 func (client ProfilesClient) ListBySubscriptionIDSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // ListBySubscriptionIDResponder handles the response to the ListBySubscriptionID request. The method always
@@ -434,7 +439,7 @@ func (client ProfilesClient) ListBySubscriptionIDResponder(resp *http.Response) 
 // profileProperties is profile properties needed for update
 // resourceGroupName is name of the resource group within the Azure
 // subscription
-func (client ProfilesClient) Update(profileName string, profileProperties ProfileUpdateParameters, resourceGroupName string) (result Profile, ae error) {
+func (client ProfilesClient) Update(profileName string, profileProperties ProfileUpdateParameters, resourceGroupName string) (result Profile, err error) {
 	req, err := client.UpdatePreparer(profileName, profileProperties, resourceGroupName)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "cdn/ProfilesClient", "Update", nil, "Failure preparing request")
@@ -448,7 +453,7 @@ func (client ProfilesClient) Update(profileName string, profileProperties Profil
 
 	result, err = client.UpdateResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "cdn/ProfilesClient", "Update", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "cdn/ProfilesClient", "Update", resp, "Failure responding to request")
 	}
 
 	return
@@ -479,7 +484,7 @@ func (client ProfilesClient) UpdatePreparer(profileName string, profilePropertie
 // UpdateSender sends the Update request. The method will close the
 // http.Response Body if it receives an error.
 func (client ProfilesClient) UpdateSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // UpdateResponder handles the response to the Update request. The method always

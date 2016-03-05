@@ -48,7 +48,7 @@ func NewJobCollectionsClientWithBaseURI(baseURI string, subscriptionID string) J
 //
 // resourceGroupName is the resource group name. jobCollectionName is the job
 // collection name. jobCollection is the job collection definition.
-func (client JobCollectionsClient) CreateOrUpdate(resourceGroupName string, jobCollectionName string, jobCollection JobCollectionDefinition) (result JobCollectionDefinition, ae error) {
+func (client JobCollectionsClient) CreateOrUpdate(resourceGroupName string, jobCollectionName string, jobCollection JobCollectionDefinition) (result JobCollectionDefinition, err error) {
 	req, err := client.CreateOrUpdatePreparer(resourceGroupName, jobCollectionName, jobCollection)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "scheduler/JobCollectionsClient", "CreateOrUpdate", nil, "Failure preparing request")
@@ -62,7 +62,7 @@ func (client JobCollectionsClient) CreateOrUpdate(resourceGroupName string, jobC
 
 	result, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "scheduler/JobCollectionsClient", "CreateOrUpdate", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "scheduler/JobCollectionsClient", "CreateOrUpdate", resp, "Failure responding to request")
 	}
 
 	return
@@ -93,7 +93,7 @@ func (client JobCollectionsClient) CreateOrUpdatePreparer(resourceGroupName stri
 // CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
 // http.Response Body if it receives an error.
 func (client JobCollectionsClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
@@ -113,7 +113,7 @@ func (client JobCollectionsClient) CreateOrUpdateResponder(resp *http.Response) 
 //
 // resourceGroupName is the resource group name. jobCollectionName is the job
 // collection name.
-func (client JobCollectionsClient) Delete(resourceGroupName string, jobCollectionName string) (result autorest.Response, ae error) {
+func (client JobCollectionsClient) Delete(resourceGroupName string, jobCollectionName string) (result autorest.Response, err error) {
 	req, err := client.DeletePreparer(resourceGroupName, jobCollectionName)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "scheduler/JobCollectionsClient", "Delete", nil, "Failure preparing request")
@@ -127,7 +127,7 @@ func (client JobCollectionsClient) Delete(resourceGroupName string, jobCollectio
 
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "scheduler/JobCollectionsClient", "Delete", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "scheduler/JobCollectionsClient", "Delete", resp, "Failure responding to request")
 	}
 
 	return
@@ -157,7 +157,7 @@ func (client JobCollectionsClient) DeletePreparer(resourceGroupName string, jobC
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
 func (client JobCollectionsClient) DeleteSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // DeleteResponder handles the response to the Delete request. The method always
@@ -176,7 +176,7 @@ func (client JobCollectionsClient) DeleteResponder(resp *http.Response) (result 
 //
 // resourceGroupName is the resource group name. jobCollectionName is the job
 // collection name.
-func (client JobCollectionsClient) Disable(resourceGroupName string, jobCollectionName string) (result autorest.Response, ae error) {
+func (client JobCollectionsClient) Disable(resourceGroupName string, jobCollectionName string) (result autorest.Response, err error) {
 	req, err := client.DisablePreparer(resourceGroupName, jobCollectionName)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "scheduler/JobCollectionsClient", "Disable", nil, "Failure preparing request")
@@ -190,7 +190,7 @@ func (client JobCollectionsClient) Disable(resourceGroupName string, jobCollecti
 
 	result, err = client.DisableResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "scheduler/JobCollectionsClient", "Disable", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "scheduler/JobCollectionsClient", "Disable", resp, "Failure responding to request")
 	}
 
 	return
@@ -220,7 +220,7 @@ func (client JobCollectionsClient) DisablePreparer(resourceGroupName string, job
 // DisableSender sends the Disable request. The method will close the
 // http.Response Body if it receives an error.
 func (client JobCollectionsClient) DisableSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // DisableResponder handles the response to the Disable request. The method always
@@ -239,7 +239,7 @@ func (client JobCollectionsClient) DisableResponder(resp *http.Response) (result
 //
 // resourceGroupName is the resource group name. jobCollectionName is the job
 // collection name.
-func (client JobCollectionsClient) Enable(resourceGroupName string, jobCollectionName string) (result autorest.Response, ae error) {
+func (client JobCollectionsClient) Enable(resourceGroupName string, jobCollectionName string) (result autorest.Response, err error) {
 	req, err := client.EnablePreparer(resourceGroupName, jobCollectionName)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "scheduler/JobCollectionsClient", "Enable", nil, "Failure preparing request")
@@ -253,7 +253,7 @@ func (client JobCollectionsClient) Enable(resourceGroupName string, jobCollectio
 
 	result, err = client.EnableResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "scheduler/JobCollectionsClient", "Enable", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "scheduler/JobCollectionsClient", "Enable", resp, "Failure responding to request")
 	}
 
 	return
@@ -283,7 +283,7 @@ func (client JobCollectionsClient) EnablePreparer(resourceGroupName string, jobC
 // EnableSender sends the Enable request. The method will close the
 // http.Response Body if it receives an error.
 func (client JobCollectionsClient) EnableSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // EnableResponder handles the response to the Enable request. The method always
@@ -302,7 +302,7 @@ func (client JobCollectionsClient) EnableResponder(resp *http.Response) (result 
 //
 // resourceGroupName is the resource group name. jobCollectionName is the job
 // collection name.
-func (client JobCollectionsClient) Get(resourceGroupName string, jobCollectionName string) (result JobCollectionDefinition, ae error) {
+func (client JobCollectionsClient) Get(resourceGroupName string, jobCollectionName string) (result JobCollectionDefinition, err error) {
 	req, err := client.GetPreparer(resourceGroupName, jobCollectionName)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "scheduler/JobCollectionsClient", "Get", nil, "Failure preparing request")
@@ -316,7 +316,7 @@ func (client JobCollectionsClient) Get(resourceGroupName string, jobCollectionNa
 
 	result, err = client.GetResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "scheduler/JobCollectionsClient", "Get", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "scheduler/JobCollectionsClient", "Get", resp, "Failure responding to request")
 	}
 
 	return
@@ -346,7 +346,7 @@ func (client JobCollectionsClient) GetPreparer(resourceGroupName string, jobColl
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client JobCollectionsClient) GetSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // GetResponder handles the response to the Get request. The method always
@@ -365,7 +365,7 @@ func (client JobCollectionsClient) GetResponder(resp *http.Response) (result Job
 // ListByResourceGroup gets all job collections under specified resource group.
 //
 // resourceGroupName is the resource group name.
-func (client JobCollectionsClient) ListByResourceGroup(resourceGroupName string) (result JobCollectionListResult, ae error) {
+func (client JobCollectionsClient) ListByResourceGroup(resourceGroupName string) (result JobCollectionListResult, err error) {
 	req, err := client.ListByResourceGroupPreparer(resourceGroupName)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "scheduler/JobCollectionsClient", "ListByResourceGroup", nil, "Failure preparing request")
@@ -379,7 +379,7 @@ func (client JobCollectionsClient) ListByResourceGroup(resourceGroupName string)
 
 	result, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "scheduler/JobCollectionsClient", "ListByResourceGroup", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "scheduler/JobCollectionsClient", "ListByResourceGroup", resp, "Failure responding to request")
 	}
 
 	return
@@ -408,7 +408,7 @@ func (client JobCollectionsClient) ListByResourceGroupPreparer(resourceGroupName
 // ListByResourceGroupSender sends the ListByResourceGroup request. The method will close the
 // http.Response Body if it receives an error.
 func (client JobCollectionsClient) ListByResourceGroupSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // ListByResourceGroupResponder handles the response to the ListByResourceGroup request. The method always
@@ -425,7 +425,7 @@ func (client JobCollectionsClient) ListByResourceGroupResponder(resp *http.Respo
 }
 
 // ListByResourceGroupNextResults retrieves the next set of results, if any.
-func (client JobCollectionsClient) ListByResourceGroupNextResults(lastResults JobCollectionListResult) (result JobCollectionListResult, ae error) {
+func (client JobCollectionsClient) ListByResourceGroupNextResults(lastResults JobCollectionListResult) (result JobCollectionListResult, err error) {
 	req, err := lastResults.JobCollectionListResultPreparer()
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "scheduler/JobCollectionsClient", "ListByResourceGroup", nil, "Failure preparing next results request request")
@@ -442,14 +442,14 @@ func (client JobCollectionsClient) ListByResourceGroupNextResults(lastResults Jo
 
 	result, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "scheduler/JobCollectionsClient", "ListByResourceGroup", resp, "Failure responding to next results request request")
+		err = autorest.NewErrorWithError(err, "scheduler/JobCollectionsClient", "ListByResourceGroup", resp, "Failure responding to next results request request")
 	}
 
 	return
 }
 
 // ListBySubscription gets all job collections under specified subscription.
-func (client JobCollectionsClient) ListBySubscription() (result JobCollectionListResult, ae error) {
+func (client JobCollectionsClient) ListBySubscription() (result JobCollectionListResult, err error) {
 	req, err := client.ListBySubscriptionPreparer()
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "scheduler/JobCollectionsClient", "ListBySubscription", nil, "Failure preparing request")
@@ -463,7 +463,7 @@ func (client JobCollectionsClient) ListBySubscription() (result JobCollectionLis
 
 	result, err = client.ListBySubscriptionResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "scheduler/JobCollectionsClient", "ListBySubscription", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "scheduler/JobCollectionsClient", "ListBySubscription", resp, "Failure responding to request")
 	}
 
 	return
@@ -491,7 +491,7 @@ func (client JobCollectionsClient) ListBySubscriptionPreparer() (*http.Request, 
 // ListBySubscriptionSender sends the ListBySubscription request. The method will close the
 // http.Response Body if it receives an error.
 func (client JobCollectionsClient) ListBySubscriptionSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // ListBySubscriptionResponder handles the response to the ListBySubscription request. The method always
@@ -508,7 +508,7 @@ func (client JobCollectionsClient) ListBySubscriptionResponder(resp *http.Respon
 }
 
 // ListBySubscriptionNextResults retrieves the next set of results, if any.
-func (client JobCollectionsClient) ListBySubscriptionNextResults(lastResults JobCollectionListResult) (result JobCollectionListResult, ae error) {
+func (client JobCollectionsClient) ListBySubscriptionNextResults(lastResults JobCollectionListResult) (result JobCollectionListResult, err error) {
 	req, err := lastResults.JobCollectionListResultPreparer()
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "scheduler/JobCollectionsClient", "ListBySubscription", nil, "Failure preparing next results request request")
@@ -525,7 +525,7 @@ func (client JobCollectionsClient) ListBySubscriptionNextResults(lastResults Job
 
 	result, err = client.ListBySubscriptionResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "scheduler/JobCollectionsClient", "ListBySubscription", resp, "Failure responding to next results request request")
+		err = autorest.NewErrorWithError(err, "scheduler/JobCollectionsClient", "ListBySubscription", resp, "Failure responding to next results request request")
 	}
 
 	return
@@ -535,7 +535,7 @@ func (client JobCollectionsClient) ListBySubscriptionNextResults(lastResults Job
 //
 // resourceGroupName is the resource group name. jobCollectionName is the job
 // collection name. jobCollection is the job collection definition.
-func (client JobCollectionsClient) Patch(resourceGroupName string, jobCollectionName string, jobCollection JobCollectionDefinition) (result JobCollectionDefinition, ae error) {
+func (client JobCollectionsClient) Patch(resourceGroupName string, jobCollectionName string, jobCollection JobCollectionDefinition) (result JobCollectionDefinition, err error) {
 	req, err := client.PatchPreparer(resourceGroupName, jobCollectionName, jobCollection)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "scheduler/JobCollectionsClient", "Patch", nil, "Failure preparing request")
@@ -549,7 +549,7 @@ func (client JobCollectionsClient) Patch(resourceGroupName string, jobCollection
 
 	result, err = client.PatchResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "scheduler/JobCollectionsClient", "Patch", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "scheduler/JobCollectionsClient", "Patch", resp, "Failure responding to request")
 	}
 
 	return
@@ -580,7 +580,7 @@ func (client JobCollectionsClient) PatchPreparer(resourceGroupName string, jobCo
 // PatchSender sends the Patch request. The method will close the
 // http.Response Body if it receives an error.
 func (client JobCollectionsClient) PatchSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // PatchResponder handles the response to the Patch request. The method always

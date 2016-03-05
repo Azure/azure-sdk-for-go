@@ -47,7 +47,7 @@ func NewWorkflowTriggersClientWithBaseURI(baseURI string, subscriptionID string)
 //
 // resourceGroupName is the resource group name. workflowName is the workflow
 // name. triggerName is the workflow trigger name.
-func (client WorkflowTriggersClient) Get(resourceGroupName string, workflowName string, triggerName string) (result WorkflowTrigger, ae error) {
+func (client WorkflowTriggersClient) Get(resourceGroupName string, workflowName string, triggerName string) (result WorkflowTrigger, err error) {
 	req, err := client.GetPreparer(resourceGroupName, workflowName, triggerName)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "logic/WorkflowTriggersClient", "Get", nil, "Failure preparing request")
@@ -61,7 +61,7 @@ func (client WorkflowTriggersClient) Get(resourceGroupName string, workflowName 
 
 	result, err = client.GetResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "logic/WorkflowTriggersClient", "Get", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "logic/WorkflowTriggersClient", "Get", resp, "Failure responding to request")
 	}
 
 	return
@@ -92,7 +92,7 @@ func (client WorkflowTriggersClient) GetPreparer(resourceGroupName string, workf
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client WorkflowTriggersClient) GetSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // GetResponder handles the response to the Get request. The method always
@@ -113,7 +113,7 @@ func (client WorkflowTriggersClient) GetResponder(resp *http.Response) (result W
 // resourceGroupName is the resource group name. workflowName is the workflow
 // name. top is the number of items to be included in the result. filter is
 // the filter to apply on the operation.
-func (client WorkflowTriggersClient) List(resourceGroupName string, workflowName string, top *int, filter string) (result WorkflowTriggerListResult, ae error) {
+func (client WorkflowTriggersClient) List(resourceGroupName string, workflowName string, top *int32, filter string) (result WorkflowTriggerListResult, err error) {
 	req, err := client.ListPreparer(resourceGroupName, workflowName, top, filter)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "logic/WorkflowTriggersClient", "List", nil, "Failure preparing request")
@@ -127,14 +127,14 @@ func (client WorkflowTriggersClient) List(resourceGroupName string, workflowName
 
 	result, err = client.ListResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "logic/WorkflowTriggersClient", "List", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "logic/WorkflowTriggersClient", "List", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // ListPreparer prepares the List request.
-func (client WorkflowTriggersClient) ListPreparer(resourceGroupName string, workflowName string, top *int, filter string) (*http.Request, error) {
+func (client WorkflowTriggersClient) ListPreparer(resourceGroupName string, workflowName string, top *int32, filter string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName": url.QueryEscape(resourceGroupName),
 		"subscriptionId":    url.QueryEscape(client.SubscriptionID),
@@ -163,7 +163,7 @@ func (client WorkflowTriggersClient) ListPreparer(resourceGroupName string, work
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
 func (client WorkflowTriggersClient) ListSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // ListResponder handles the response to the List request. The method always
@@ -180,7 +180,7 @@ func (client WorkflowTriggersClient) ListResponder(resp *http.Response) (result 
 }
 
 // ListNextResults retrieves the next set of results, if any.
-func (client WorkflowTriggersClient) ListNextResults(lastResults WorkflowTriggerListResult) (result WorkflowTriggerListResult, ae error) {
+func (client WorkflowTriggersClient) ListNextResults(lastResults WorkflowTriggerListResult) (result WorkflowTriggerListResult, err error) {
 	req, err := lastResults.WorkflowTriggerListResultPreparer()
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "logic/WorkflowTriggersClient", "List", nil, "Failure preparing next results request request")
@@ -197,7 +197,7 @@ func (client WorkflowTriggersClient) ListNextResults(lastResults WorkflowTrigger
 
 	result, err = client.ListResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "logic/WorkflowTriggersClient", "List", resp, "Failure responding to next results request request")
+		err = autorest.NewErrorWithError(err, "logic/WorkflowTriggersClient", "List", resp, "Failure responding to next results request request")
 	}
 
 	return
@@ -207,7 +207,7 @@ func (client WorkflowTriggersClient) ListNextResults(lastResults WorkflowTrigger
 //
 // resourceGroupName is the resource group name. workflowName is the workflow
 // name. triggerName is the workflow trigger name.
-func (client WorkflowTriggersClient) Run(resourceGroupName string, workflowName string, triggerName string) (result autorest.Response, ae error) {
+func (client WorkflowTriggersClient) Run(resourceGroupName string, workflowName string, triggerName string) (result autorest.Response, err error) {
 	req, err := client.RunPreparer(resourceGroupName, workflowName, triggerName)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "logic/WorkflowTriggersClient", "Run", nil, "Failure preparing request")
@@ -221,7 +221,7 @@ func (client WorkflowTriggersClient) Run(resourceGroupName string, workflowName 
 
 	result, err = client.RunResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "logic/WorkflowTriggersClient", "Run", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "logic/WorkflowTriggersClient", "Run", resp, "Failure responding to request")
 	}
 
 	return
@@ -252,7 +252,7 @@ func (client WorkflowTriggersClient) RunPreparer(resourceGroupName string, workf
 // RunSender sends the Run request. The method will close the
 // http.Response Body if it receives an error.
 func (client WorkflowTriggersClient) RunSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // RunResponder handles the response to the Run request. The method always

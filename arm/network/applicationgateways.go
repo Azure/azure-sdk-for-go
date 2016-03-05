@@ -52,7 +52,7 @@ func NewApplicationGatewaysClientWithBaseURI(baseURI string, subscriptionID stri
 // resourceGroupName is the name of the resource group. applicationGatewayName
 // is the name of the ApplicationGateway. parameters is parameters supplied
 // to the create/delete ApplicationGateway operation
-func (client ApplicationGatewaysClient) CreateOrUpdate(resourceGroupName string, applicationGatewayName string, parameters ApplicationGateway) (result ApplicationGateway, ae error) {
+func (client ApplicationGatewaysClient) CreateOrUpdate(resourceGroupName string, applicationGatewayName string, parameters ApplicationGateway) (result autorest.Response, err error) {
 	req, err := client.CreateOrUpdatePreparer(resourceGroupName, applicationGatewayName, parameters)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "network/ApplicationGatewaysClient", "CreateOrUpdate", nil, "Failure preparing request")
@@ -60,13 +60,13 @@ func (client ApplicationGatewaysClient) CreateOrUpdate(resourceGroupName string,
 
 	resp, err := client.CreateOrUpdateSender(req)
 	if err != nil {
-		result.Response = autorest.Response{Response: resp}
+		result.Response = resp
 		return result, autorest.NewErrorWithError(err, "network/ApplicationGatewaysClient", "CreateOrUpdate", resp, "Failure sending request")
 	}
 
 	result, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "network/ApplicationGatewaysClient", "CreateOrUpdate", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "network/ApplicationGatewaysClient", "CreateOrUpdate", resp, "Failure responding to request")
 	}
 
 	return
@@ -97,19 +97,21 @@ func (client ApplicationGatewaysClient) CreateOrUpdatePreparer(resourceGroupName
 // CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
 // http.Response Body if it receives an error.
 func (client ApplicationGatewaysClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoPollForAsynchronous(autorest.DefaultPollingDuration,
+			autorest.DefaultPollingDelay))
 }
 
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
 // closes the http.Response Body.
-func (client ApplicationGatewaysClient) CreateOrUpdateResponder(resp *http.Response) (result ApplicationGateway, err error) {
+func (client ApplicationGatewaysClient) CreateOrUpdateResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusCreated, http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
+	result.Response = resp
 	return
 }
 
@@ -118,7 +120,7 @@ func (client ApplicationGatewaysClient) CreateOrUpdateResponder(resp *http.Respo
 //
 // resourceGroupName is the name of the resource group. applicationGatewayName
 // is the name of the applicationgateway.
-func (client ApplicationGatewaysClient) Delete(resourceGroupName string, applicationGatewayName string) (result autorest.Response, ae error) {
+func (client ApplicationGatewaysClient) Delete(resourceGroupName string, applicationGatewayName string) (result autorest.Response, err error) {
 	req, err := client.DeletePreparer(resourceGroupName, applicationGatewayName)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "network/ApplicationGatewaysClient", "Delete", nil, "Failure preparing request")
@@ -132,7 +134,7 @@ func (client ApplicationGatewaysClient) Delete(resourceGroupName string, applica
 
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "network/ApplicationGatewaysClient", "Delete", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "network/ApplicationGatewaysClient", "Delete", resp, "Failure responding to request")
 	}
 
 	return
@@ -162,7 +164,10 @@ func (client ApplicationGatewaysClient) DeletePreparer(resourceGroupName string,
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
 func (client ApplicationGatewaysClient) DeleteSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoPollForAsynchronous(autorest.DefaultPollingDuration,
+			autorest.DefaultPollingDelay))
 }
 
 // DeleteResponder handles the response to the Delete request. The method always
@@ -182,7 +187,7 @@ func (client ApplicationGatewaysClient) DeleteResponder(resp *http.Response) (re
 //
 // resourceGroupName is the name of the resource group. applicationGatewayName
 // is the name of the applicationgateway.
-func (client ApplicationGatewaysClient) Get(resourceGroupName string, applicationGatewayName string) (result ApplicationGateway, ae error) {
+func (client ApplicationGatewaysClient) Get(resourceGroupName string, applicationGatewayName string) (result ApplicationGateway, err error) {
 	req, err := client.GetPreparer(resourceGroupName, applicationGatewayName)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "network/ApplicationGatewaysClient", "Get", nil, "Failure preparing request")
@@ -196,7 +201,7 @@ func (client ApplicationGatewaysClient) Get(resourceGroupName string, applicatio
 
 	result, err = client.GetResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "network/ApplicationGatewaysClient", "Get", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "network/ApplicationGatewaysClient", "Get", resp, "Failure responding to request")
 	}
 
 	return
@@ -226,7 +231,7 @@ func (client ApplicationGatewaysClient) GetPreparer(resourceGroupName string, ap
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client ApplicationGatewaysClient) GetSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // GetResponder handles the response to the Get request. The method always
@@ -246,7 +251,7 @@ func (client ApplicationGatewaysClient) GetResponder(resp *http.Response) (resul
 // applicationgateways in a resource group.
 //
 // resourceGroupName is the name of the resource group.
-func (client ApplicationGatewaysClient) List(resourceGroupName string) (result ApplicationGatewayListResult, ae error) {
+func (client ApplicationGatewaysClient) List(resourceGroupName string) (result ApplicationGatewayListResult, err error) {
 	req, err := client.ListPreparer(resourceGroupName)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "network/ApplicationGatewaysClient", "List", nil, "Failure preparing request")
@@ -260,7 +265,7 @@ func (client ApplicationGatewaysClient) List(resourceGroupName string) (result A
 
 	result, err = client.ListResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "network/ApplicationGatewaysClient", "List", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "network/ApplicationGatewaysClient", "List", resp, "Failure responding to request")
 	}
 
 	return
@@ -289,7 +294,7 @@ func (client ApplicationGatewaysClient) ListPreparer(resourceGroupName string) (
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
 func (client ApplicationGatewaysClient) ListSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // ListResponder handles the response to the List request. The method always
@@ -306,7 +311,7 @@ func (client ApplicationGatewaysClient) ListResponder(resp *http.Response) (resu
 }
 
 // ListNextResults retrieves the next set of results, if any.
-func (client ApplicationGatewaysClient) ListNextResults(lastResults ApplicationGatewayListResult) (result ApplicationGatewayListResult, ae error) {
+func (client ApplicationGatewaysClient) ListNextResults(lastResults ApplicationGatewayListResult) (result ApplicationGatewayListResult, err error) {
 	req, err := lastResults.ApplicationGatewayListResultPreparer()
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "network/ApplicationGatewaysClient", "List", nil, "Failure preparing next results request request")
@@ -323,7 +328,7 @@ func (client ApplicationGatewaysClient) ListNextResults(lastResults ApplicationG
 
 	result, err = client.ListResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "network/ApplicationGatewaysClient", "List", resp, "Failure responding to next results request request")
+		err = autorest.NewErrorWithError(err, "network/ApplicationGatewaysClient", "List", resp, "Failure responding to next results request request")
 	}
 
 	return
@@ -331,7 +336,7 @@ func (client ApplicationGatewaysClient) ListNextResults(lastResults ApplicationG
 
 // ListAll the List applicationgateway opertion retrieves all the
 // applicationgateways in a subscription.
-func (client ApplicationGatewaysClient) ListAll() (result ApplicationGatewayListResult, ae error) {
+func (client ApplicationGatewaysClient) ListAll() (result ApplicationGatewayListResult, err error) {
 	req, err := client.ListAllPreparer()
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "network/ApplicationGatewaysClient", "ListAll", nil, "Failure preparing request")
@@ -345,7 +350,7 @@ func (client ApplicationGatewaysClient) ListAll() (result ApplicationGatewayList
 
 	result, err = client.ListAllResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "network/ApplicationGatewaysClient", "ListAll", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "network/ApplicationGatewaysClient", "ListAll", resp, "Failure responding to request")
 	}
 
 	return
@@ -373,7 +378,7 @@ func (client ApplicationGatewaysClient) ListAllPreparer() (*http.Request, error)
 // ListAllSender sends the ListAll request. The method will close the
 // http.Response Body if it receives an error.
 func (client ApplicationGatewaysClient) ListAllSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // ListAllResponder handles the response to the ListAll request. The method always
@@ -390,7 +395,7 @@ func (client ApplicationGatewaysClient) ListAllResponder(resp *http.Response) (r
 }
 
 // ListAllNextResults retrieves the next set of results, if any.
-func (client ApplicationGatewaysClient) ListAllNextResults(lastResults ApplicationGatewayListResult) (result ApplicationGatewayListResult, ae error) {
+func (client ApplicationGatewaysClient) ListAllNextResults(lastResults ApplicationGatewayListResult) (result ApplicationGatewayListResult, err error) {
 	req, err := lastResults.ApplicationGatewayListResultPreparer()
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "network/ApplicationGatewaysClient", "ListAll", nil, "Failure preparing next results request request")
@@ -407,7 +412,7 @@ func (client ApplicationGatewaysClient) ListAllNextResults(lastResults Applicati
 
 	result, err = client.ListAllResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "network/ApplicationGatewaysClient", "ListAll", resp, "Failure responding to next results request request")
+		err = autorest.NewErrorWithError(err, "network/ApplicationGatewaysClient", "ListAll", resp, "Failure responding to next results request request")
 	}
 
 	return
@@ -418,7 +423,7 @@ func (client ApplicationGatewaysClient) ListAllNextResults(lastResults Applicati
 //
 // resourceGroupName is the name of the resource group. applicationGatewayName
 // is the name of the application gateway.
-func (client ApplicationGatewaysClient) Start(resourceGroupName string, applicationGatewayName string) (result autorest.Response, ae error) {
+func (client ApplicationGatewaysClient) Start(resourceGroupName string, applicationGatewayName string) (result autorest.Response, err error) {
 	req, err := client.StartPreparer(resourceGroupName, applicationGatewayName)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "network/ApplicationGatewaysClient", "Start", nil, "Failure preparing request")
@@ -432,7 +437,7 @@ func (client ApplicationGatewaysClient) Start(resourceGroupName string, applicat
 
 	result, err = client.StartResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "network/ApplicationGatewaysClient", "Start", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "network/ApplicationGatewaysClient", "Start", resp, "Failure responding to request")
 	}
 
 	return
@@ -462,7 +467,10 @@ func (client ApplicationGatewaysClient) StartPreparer(resourceGroupName string, 
 // StartSender sends the Start request. The method will close the
 // http.Response Body if it receives an error.
 func (client ApplicationGatewaysClient) StartSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoPollForAsynchronous(autorest.DefaultPollingDuration,
+			autorest.DefaultPollingDelay))
 }
 
 // StartResponder handles the response to the Start request. The method always
@@ -482,7 +490,7 @@ func (client ApplicationGatewaysClient) StartResponder(resp *http.Response) (res
 //
 // resourceGroupName is the name of the resource group. applicationGatewayName
 // is the name of the application gateway.
-func (client ApplicationGatewaysClient) Stop(resourceGroupName string, applicationGatewayName string) (result autorest.Response, ae error) {
+func (client ApplicationGatewaysClient) Stop(resourceGroupName string, applicationGatewayName string) (result autorest.Response, err error) {
 	req, err := client.StopPreparer(resourceGroupName, applicationGatewayName)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "network/ApplicationGatewaysClient", "Stop", nil, "Failure preparing request")
@@ -496,7 +504,7 @@ func (client ApplicationGatewaysClient) Stop(resourceGroupName string, applicati
 
 	result, err = client.StopResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "network/ApplicationGatewaysClient", "Stop", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "network/ApplicationGatewaysClient", "Stop", resp, "Failure responding to request")
 	}
 
 	return
@@ -526,7 +534,10 @@ func (client ApplicationGatewaysClient) StopPreparer(resourceGroupName string, a
 // StopSender sends the Stop request. The method will close the
 // http.Response Body if it receives an error.
 func (client ApplicationGatewaysClient) StopSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoPollForAsynchronous(autorest.DefaultPollingDuration,
+			autorest.DefaultPollingDelay))
 }
 
 // StopResponder handles the response to the Stop request. The method always

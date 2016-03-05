@@ -44,7 +44,7 @@ func NewClientWithBaseURI(baseURI string, subscriptionID string) Client {
 // Get gets details about particular subscription.
 //
 // subscriptionID is id of the subscription.
-func (client Client) Get(subscriptionID string) (result Subscription, ae error) {
+func (client Client) Get(subscriptionID string) (result Subscription, err error) {
 	req, err := client.GetPreparer(subscriptionID)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "subscriptions/Client", "Get", nil, "Failure preparing request")
@@ -58,7 +58,7 @@ func (client Client) Get(subscriptionID string) (result Subscription, ae error) 
 
 	result, err = client.GetResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "subscriptions/Client", "Get", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "subscriptions/Client", "Get", resp, "Failure responding to request")
 	}
 
 	return
@@ -86,7 +86,7 @@ func (client Client) GetPreparer(subscriptionID string) (*http.Request, error) {
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client Client) GetSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // GetResponder handles the response to the Get request. The method always
@@ -103,7 +103,7 @@ func (client Client) GetResponder(resp *http.Response) (result Subscription, err
 }
 
 // List gets a list of the subscriptionIds.
-func (client Client) List() (result SubscriptionListResult, ae error) {
+func (client Client) List() (result SubscriptionListResult, err error) {
 	req, err := client.ListPreparer()
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "subscriptions/Client", "List", nil, "Failure preparing request")
@@ -117,7 +117,7 @@ func (client Client) List() (result SubscriptionListResult, ae error) {
 
 	result, err = client.ListResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "subscriptions/Client", "List", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "subscriptions/Client", "List", resp, "Failure responding to request")
 	}
 
 	return
@@ -140,7 +140,7 @@ func (client Client) ListPreparer() (*http.Request, error) {
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
 func (client Client) ListSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // ListResponder handles the response to the List request. The method always
@@ -157,7 +157,7 @@ func (client Client) ListResponder(resp *http.Response) (result SubscriptionList
 }
 
 // ListNextResults retrieves the next set of results, if any.
-func (client Client) ListNextResults(lastResults SubscriptionListResult) (result SubscriptionListResult, ae error) {
+func (client Client) ListNextResults(lastResults SubscriptionListResult) (result SubscriptionListResult, err error) {
 	req, err := lastResults.SubscriptionListResultPreparer()
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "subscriptions/Client", "List", nil, "Failure preparing next results request request")
@@ -174,7 +174,7 @@ func (client Client) ListNextResults(lastResults SubscriptionListResult) (result
 
 	result, err = client.ListResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "subscriptions/Client", "List", resp, "Failure responding to next results request request")
+		err = autorest.NewErrorWithError(err, "subscriptions/Client", "List", resp, "Failure responding to next results request request")
 	}
 
 	return
@@ -183,7 +183,7 @@ func (client Client) ListNextResults(lastResults SubscriptionListResult) (result
 // ListLocations gets a list of the subscription locations.
 //
 // subscriptionID is id of the subscription
-func (client Client) ListLocations(subscriptionID string) (result LocationListResult, ae error) {
+func (client Client) ListLocations(subscriptionID string) (result LocationListResult, err error) {
 	req, err := client.ListLocationsPreparer(subscriptionID)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "subscriptions/Client", "ListLocations", nil, "Failure preparing request")
@@ -197,7 +197,7 @@ func (client Client) ListLocations(subscriptionID string) (result LocationListRe
 
 	result, err = client.ListLocationsResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "subscriptions/Client", "ListLocations", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "subscriptions/Client", "ListLocations", resp, "Failure responding to request")
 	}
 
 	return
@@ -225,7 +225,7 @@ func (client Client) ListLocationsPreparer(subscriptionID string) (*http.Request
 // ListLocationsSender sends the ListLocations request. The method will close the
 // http.Response Body if it receives an error.
 func (client Client) ListLocationsSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // ListLocationsResponder handles the response to the ListLocations request. The method always
@@ -242,7 +242,7 @@ func (client Client) ListLocationsResponder(resp *http.Response) (result Locatio
 }
 
 // ListLocationsNextResults retrieves the next set of results, if any.
-func (client Client) ListLocationsNextResults(lastResults LocationListResult) (result LocationListResult, ae error) {
+func (client Client) ListLocationsNextResults(lastResults LocationListResult) (result LocationListResult, err error) {
 	req, err := lastResults.LocationListResultPreparer()
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "subscriptions/Client", "ListLocations", nil, "Failure preparing next results request request")
@@ -259,7 +259,7 @@ func (client Client) ListLocationsNextResults(lastResults LocationListResult) (r
 
 	result, err = client.ListLocationsResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "subscriptions/Client", "ListLocations", resp, "Failure responding to next results request request")
+		err = autorest.NewErrorWithError(err, "subscriptions/Client", "ListLocations", resp, "Failure responding to next results request request")
 	}
 
 	return

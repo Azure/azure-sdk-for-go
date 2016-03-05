@@ -46,7 +46,7 @@ func NewClientWithBaseURI(baseURI string, subscriptionID string) Client {
 // insensitive. resourceProviderNamespace is resource identity.
 // parentResourcePath is resource identity. resourceType is resource
 // identity. resourceName is resource identity.
-func (client Client) CheckExistence(resourceGroupName string, resourceProviderNamespace string, parentResourcePath string, resourceType string, resourceName string, apiVersion string) (result autorest.Response, ae error) {
+func (client Client) CheckExistence(resourceGroupName string, resourceProviderNamespace string, parentResourcePath string, resourceType string, resourceName string, apiVersion string) (result autorest.Response, err error) {
 	req, err := client.CheckExistencePreparer(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, apiVersion)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "resources/Client", "CheckExistence", nil, "Failure preparing request")
@@ -60,7 +60,7 @@ func (client Client) CheckExistence(resourceGroupName string, resourceProviderNa
 
 	result, err = client.CheckExistenceResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "resources/Client", "CheckExistence", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "resources/Client", "CheckExistence", resp, "Failure responding to request")
 	}
 
 	return
@@ -93,7 +93,7 @@ func (client Client) CheckExistencePreparer(resourceGroupName string, resourcePr
 // CheckExistenceSender sends the CheckExistence request. The method will close the
 // http.Response Body if it receives an error.
 func (client Client) CheckExistenceSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // CheckExistenceResponder handles the response to the CheckExistence request. The method always
@@ -115,7 +115,7 @@ func (client Client) CheckExistenceResponder(resp *http.Response) (result autore
 // parentResourcePath is resource identity. resourceType is resource
 // identity. resourceName is resource identity. parameters is create or
 // update resource parameters.
-func (client Client) CreateOrUpdate(resourceGroupName string, resourceProviderNamespace string, parentResourcePath string, resourceType string, resourceName string, apiVersion string, parameters GenericResource) (result GenericResource, ae error) {
+func (client Client) CreateOrUpdate(resourceGroupName string, resourceProviderNamespace string, parentResourcePath string, resourceType string, resourceName string, apiVersion string, parameters GenericResource) (result GenericResource, err error) {
 	req, err := client.CreateOrUpdatePreparer(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, apiVersion, parameters)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "resources/Client", "CreateOrUpdate", nil, "Failure preparing request")
@@ -129,7 +129,7 @@ func (client Client) CreateOrUpdate(resourceGroupName string, resourceProviderNa
 
 	result, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "resources/Client", "CreateOrUpdate", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "resources/Client", "CreateOrUpdate", resp, "Failure responding to request")
 	}
 
 	return
@@ -163,7 +163,7 @@ func (client Client) CreateOrUpdatePreparer(resourceGroupName string, resourcePr
 // CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
 // http.Response Body if it receives an error.
 func (client Client) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
@@ -185,7 +185,7 @@ func (client Client) CreateOrUpdateResponder(resp *http.Response) (result Generi
 // insensitive. resourceProviderNamespace is resource identity.
 // parentResourcePath is resource identity. resourceType is resource
 // identity. resourceName is resource identity.
-func (client Client) Delete(resourceGroupName string, resourceProviderNamespace string, parentResourcePath string, resourceType string, resourceName string, apiVersion string) (result autorest.Response, ae error) {
+func (client Client) Delete(resourceGroupName string, resourceProviderNamespace string, parentResourcePath string, resourceType string, resourceName string, apiVersion string) (result autorest.Response, err error) {
 	req, err := client.DeletePreparer(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, apiVersion)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "resources/Client", "Delete", nil, "Failure preparing request")
@@ -199,7 +199,7 @@ func (client Client) Delete(resourceGroupName string, resourceProviderNamespace 
 
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "resources/Client", "Delete", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "resources/Client", "Delete", resp, "Failure responding to request")
 	}
 
 	return
@@ -232,7 +232,7 @@ func (client Client) DeletePreparer(resourceGroupName string, resourceProviderNa
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
 func (client Client) DeleteSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // DeleteResponder handles the response to the Delete request. The method always
@@ -253,7 +253,7 @@ func (client Client) DeleteResponder(resp *http.Response) (result autorest.Respo
 // insensitive. resourceProviderNamespace is resource identity.
 // parentResourcePath is resource identity. resourceType is resource
 // identity. resourceName is resource identity.
-func (client Client) Get(resourceGroupName string, resourceProviderNamespace string, parentResourcePath string, resourceType string, resourceName string, apiVersion string) (result GenericResource, ae error) {
+func (client Client) Get(resourceGroupName string, resourceProviderNamespace string, parentResourcePath string, resourceType string, resourceName string, apiVersion string) (result GenericResource, err error) {
 	req, err := client.GetPreparer(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, apiVersion)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "resources/Client", "Get", nil, "Failure preparing request")
@@ -267,7 +267,7 @@ func (client Client) Get(resourceGroupName string, resourceProviderNamespace str
 
 	result, err = client.GetResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "resources/Client", "Get", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "resources/Client", "Get", resp, "Failure responding to request")
 	}
 
 	return
@@ -300,7 +300,7 @@ func (client Client) GetPreparer(resourceGroupName string, resourceProviderNames
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client Client) GetSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // GetResponder handles the response to the Get request. The method always
@@ -320,7 +320,7 @@ func (client Client) GetResponder(resp *http.Response) (result GenericResource, 
 //
 // filter is the filter to apply on the operation. top is query parameters. If
 // null is passed returns all resource groups.
-func (client Client) List(filter string, top *int) (result ResourceListResult, ae error) {
+func (client Client) List(filter string, top *int32) (result ResourceListResult, err error) {
 	req, err := client.ListPreparer(filter, top)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "resources/Client", "List", nil, "Failure preparing request")
@@ -334,14 +334,14 @@ func (client Client) List(filter string, top *int) (result ResourceListResult, a
 
 	result, err = client.ListResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "resources/Client", "List", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "resources/Client", "List", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // ListPreparer prepares the List request.
-func (client Client) ListPreparer(filter string, top *int) (*http.Request, error) {
+func (client Client) ListPreparer(filter string, top *int32) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"subscriptionId": url.QueryEscape(client.SubscriptionID),
 	}
@@ -368,7 +368,7 @@ func (client Client) ListPreparer(filter string, top *int) (*http.Request, error
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
 func (client Client) ListSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // ListResponder handles the response to the List request. The method always
@@ -385,7 +385,7 @@ func (client Client) ListResponder(resp *http.Response) (result ResourceListResu
 }
 
 // ListNextResults retrieves the next set of results, if any.
-func (client Client) ListNextResults(lastResults ResourceListResult) (result ResourceListResult, ae error) {
+func (client Client) ListNextResults(lastResults ResourceListResult) (result ResourceListResult, err error) {
 	req, err := lastResults.ResourceListResultPreparer()
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "resources/Client", "List", nil, "Failure preparing next results request request")
@@ -402,7 +402,7 @@ func (client Client) ListNextResults(lastResults ResourceListResult) (result Res
 
 	result, err = client.ListResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "resources/Client", "List", resp, "Failure responding to next results request request")
+		err = autorest.NewErrorWithError(err, "resources/Client", "List", resp, "Failure responding to next results request request")
 	}
 
 	return
@@ -413,7 +413,7 @@ func (client Client) ListNextResults(lastResults ResourceListResult) (result Res
 //
 // sourceResourceGroupName is source resource group name. parameters is move
 // resources' parameters.
-func (client Client) MoveResources(sourceResourceGroupName string, parameters MoveInfo) (result autorest.Response, ae error) {
+func (client Client) MoveResources(sourceResourceGroupName string, parameters MoveInfo) (result autorest.Response, err error) {
 	req, err := client.MoveResourcesPreparer(sourceResourceGroupName, parameters)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "resources/Client", "MoveResources", nil, "Failure preparing request")
@@ -427,7 +427,7 @@ func (client Client) MoveResources(sourceResourceGroupName string, parameters Mo
 
 	result, err = client.MoveResourcesResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "resources/Client", "MoveResources", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "resources/Client", "MoveResources", resp, "Failure responding to request")
 	}
 
 	return
@@ -457,7 +457,10 @@ func (client Client) MoveResourcesPreparer(sourceResourceGroupName string, param
 // MoveResourcesSender sends the MoveResources request. The method will close the
 // http.Response Body if it receives an error.
 func (client Client) MoveResourcesSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoPollForAsynchronous(autorest.DefaultPollingDuration,
+			autorest.DefaultPollingDelay))
 }
 
 // MoveResourcesResponder handles the response to the MoveResources request. The method always

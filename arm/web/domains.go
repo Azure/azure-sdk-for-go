@@ -51,7 +51,7 @@ func NewDomainsClientWithBaseURI(baseURI string, subscriptionID string) DomainsC
 //
 // resourceGroupName is &gt;Name of the resource group domainName is name of
 // the domain domain is domain registration information
-func (client DomainsClient) CreateOrUpdateDomain(resourceGroupName string, domainName string, domain Domain) (result Domain, ae error) {
+func (client DomainsClient) CreateOrUpdateDomain(resourceGroupName string, domainName string, domain Domain) (result Domain, err error) {
 	req, err := client.CreateOrUpdateDomainPreparer(resourceGroupName, domainName, domain)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web/DomainsClient", "CreateOrUpdateDomain", nil, "Failure preparing request")
@@ -65,7 +65,7 @@ func (client DomainsClient) CreateOrUpdateDomain(resourceGroupName string, domai
 
 	result, err = client.CreateOrUpdateDomainResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "web/DomainsClient", "CreateOrUpdateDomain", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "web/DomainsClient", "CreateOrUpdateDomain", resp, "Failure responding to request")
 	}
 
 	return
@@ -96,7 +96,7 @@ func (client DomainsClient) CreateOrUpdateDomainPreparer(resourceGroupName strin
 // CreateOrUpdateDomainSender sends the CreateOrUpdateDomain request. The method will close the
 // http.Response Body if it receives an error.
 func (client DomainsClient) CreateOrUpdateDomainSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // CreateOrUpdateDomainResponder handles the response to the CreateOrUpdateDomain request. The method always
@@ -117,7 +117,7 @@ func (client DomainsClient) CreateOrUpdateDomainResponder(resp *http.Response) (
 // resourceGroupName is name of the resource group domainName is name of the
 // domain forceHardDeleteDomain is if true then the domain will be deleted
 // immediately instead of after 24 hours
-func (client DomainsClient) DeleteDomain(resourceGroupName string, domainName string, forceHardDeleteDomain *bool) (result ObjectSet, ae error) {
+func (client DomainsClient) DeleteDomain(resourceGroupName string, domainName string, forceHardDeleteDomain *bool) (result ObjectSet, err error) {
 	req, err := client.DeleteDomainPreparer(resourceGroupName, domainName, forceHardDeleteDomain)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web/DomainsClient", "DeleteDomain", nil, "Failure preparing request")
@@ -131,7 +131,7 @@ func (client DomainsClient) DeleteDomain(resourceGroupName string, domainName st
 
 	result, err = client.DeleteDomainResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "web/DomainsClient", "DeleteDomain", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "web/DomainsClient", "DeleteDomain", resp, "Failure responding to request")
 	}
 
 	return
@@ -164,7 +164,7 @@ func (client DomainsClient) DeleteDomainPreparer(resourceGroupName string, domai
 // DeleteDomainSender sends the DeleteDomain request. The method will close the
 // http.Response Body if it receives an error.
 func (client DomainsClient) DeleteDomainSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // DeleteDomainResponder handles the response to the DeleteDomain request. The method always
@@ -184,7 +184,7 @@ func (client DomainsClient) DeleteDomainResponder(resp *http.Response) (result O
 //
 // resourceGroupName is name of the resource group domainName is name of the
 // domain
-func (client DomainsClient) GetDomain(resourceGroupName string, domainName string) (result Domain, ae error) {
+func (client DomainsClient) GetDomain(resourceGroupName string, domainName string) (result Domain, err error) {
 	req, err := client.GetDomainPreparer(resourceGroupName, domainName)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web/DomainsClient", "GetDomain", nil, "Failure preparing request")
@@ -198,7 +198,7 @@ func (client DomainsClient) GetDomain(resourceGroupName string, domainName strin
 
 	result, err = client.GetDomainResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "web/DomainsClient", "GetDomain", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "web/DomainsClient", "GetDomain", resp, "Failure responding to request")
 	}
 
 	return
@@ -228,7 +228,7 @@ func (client DomainsClient) GetDomainPreparer(resourceGroupName string, domainNa
 // GetDomainSender sends the GetDomain request. The method will close the
 // http.Response Body if it receives an error.
 func (client DomainsClient) GetDomainSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // GetDomainResponder handles the response to the GetDomain request. The method always
@@ -248,7 +248,7 @@ func (client DomainsClient) GetDomainResponder(resp *http.Response) (result Doma
 //
 // resourceGroupName is name of the resource group domainName is name of the
 // domain operationID is domain purchase operation Id
-func (client DomainsClient) GetDomainOperation(resourceGroupName string, domainName string, operationID string) (result Domain, ae error) {
+func (client DomainsClient) GetDomainOperation(resourceGroupName string, domainName string, operationID string) (result Domain, err error) {
 	req, err := client.GetDomainOperationPreparer(resourceGroupName, domainName, operationID)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web/DomainsClient", "GetDomainOperation", nil, "Failure preparing request")
@@ -262,7 +262,7 @@ func (client DomainsClient) GetDomainOperation(resourceGroupName string, domainN
 
 	result, err = client.GetDomainOperationResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "web/DomainsClient", "GetDomainOperation", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "web/DomainsClient", "GetDomainOperation", resp, "Failure responding to request")
 	}
 
 	return
@@ -293,7 +293,7 @@ func (client DomainsClient) GetDomainOperationPreparer(resourceGroupName string,
 // GetDomainOperationSender sends the GetDomainOperation request. The method will close the
 // http.Response Body if it receives an error.
 func (client DomainsClient) GetDomainOperationSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // GetDomainOperationResponder handles the response to the GetDomainOperation request. The method always
@@ -312,7 +312,7 @@ func (client DomainsClient) GetDomainOperationResponder(resp *http.Response) (re
 // GetDomains sends the get domains request.
 //
 // resourceGroupName is name of the resource group
-func (client DomainsClient) GetDomains(resourceGroupName string) (result DomainCollection, ae error) {
+func (client DomainsClient) GetDomains(resourceGroupName string) (result DomainCollection, err error) {
 	req, err := client.GetDomainsPreparer(resourceGroupName)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web/DomainsClient", "GetDomains", nil, "Failure preparing request")
@@ -326,7 +326,7 @@ func (client DomainsClient) GetDomains(resourceGroupName string) (result DomainC
 
 	result, err = client.GetDomainsResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "web/DomainsClient", "GetDomains", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "web/DomainsClient", "GetDomains", resp, "Failure responding to request")
 	}
 
 	return
@@ -355,7 +355,7 @@ func (client DomainsClient) GetDomainsPreparer(resourceGroupName string) (*http.
 // GetDomainsSender sends the GetDomains request. The method will close the
 // http.Response Body if it receives an error.
 func (client DomainsClient) GetDomainsSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // GetDomainsResponder handles the response to the GetDomains request. The method always
@@ -375,7 +375,7 @@ func (client DomainsClient) GetDomainsResponder(resp *http.Response) (result Dom
 //
 // resourceGroupName is &gt;Name of the resource group domainName is name of
 // the domain domain is domain registration information
-func (client DomainsClient) UpdateDomain(resourceGroupName string, domainName string, domain Domain) (result Domain, ae error) {
+func (client DomainsClient) UpdateDomain(resourceGroupName string, domainName string, domain Domain) (result Domain, err error) {
 	req, err := client.UpdateDomainPreparer(resourceGroupName, domainName, domain)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web/DomainsClient", "UpdateDomain", nil, "Failure preparing request")
@@ -389,7 +389,7 @@ func (client DomainsClient) UpdateDomain(resourceGroupName string, domainName st
 
 	result, err = client.UpdateDomainResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "web/DomainsClient", "UpdateDomain", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "web/DomainsClient", "UpdateDomain", resp, "Failure responding to request")
 	}
 
 	return
@@ -420,7 +420,7 @@ func (client DomainsClient) UpdateDomainPreparer(resourceGroupName string, domai
 // UpdateDomainSender sends the UpdateDomain request. The method will close the
 // http.Response Body if it receives an error.
 func (client DomainsClient) UpdateDomainSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // UpdateDomainResponder handles the response to the UpdateDomain request. The method always

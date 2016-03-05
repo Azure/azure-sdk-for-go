@@ -48,7 +48,7 @@ func NewNameAvailabilityClientWithBaseURI(baseURI string, subscriptionID string)
 // CheckNameAvailability sends the check name availability request.
 //
 // checkNameAvailabilityInput is input to check
-func (client NameAvailabilityClient) CheckNameAvailability(checkNameAvailabilityInput CheckNameAvailabilityInput) (result CheckNameAvailabilityOutput, ae error) {
+func (client NameAvailabilityClient) CheckNameAvailability(checkNameAvailabilityInput CheckNameAvailabilityInput) (result CheckNameAvailabilityOutput, err error) {
 	req, err := client.CheckNameAvailabilityPreparer(checkNameAvailabilityInput)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "cdn/NameAvailabilityClient", "CheckNameAvailability", nil, "Failure preparing request")
@@ -62,7 +62,7 @@ func (client NameAvailabilityClient) CheckNameAvailability(checkNameAvailability
 
 	result, err = client.CheckNameAvailabilityResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "cdn/NameAvailabilityClient", "CheckNameAvailability", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "cdn/NameAvailabilityClient", "CheckNameAvailability", resp, "Failure responding to request")
 	}
 
 	return
@@ -86,7 +86,7 @@ func (client NameAvailabilityClient) CheckNameAvailabilityPreparer(checkNameAvai
 // CheckNameAvailabilitySender sends the CheckNameAvailability request. The method will close the
 // http.Response Body if it receives an error.
 func (client NameAvailabilityClient) CheckNameAvailabilitySender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // CheckNameAvailabilityResponder handles the response to the CheckNameAvailability request. The method always

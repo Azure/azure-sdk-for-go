@@ -52,7 +52,7 @@ func NewGlobalDomainRegistrationClientWithBaseURI(baseURI string, subscriptionID
 // CheckDomainAvailability sends the check domain availability request.
 //
 // identifier is name of the domain
-func (client GlobalDomainRegistrationClient) CheckDomainAvailability(identifier NameIdentifier) (result DomainAvailablilityCheckResult, ae error) {
+func (client GlobalDomainRegistrationClient) CheckDomainAvailability(identifier NameIdentifier) (result DomainAvailablilityCheckResult, err error) {
 	req, err := client.CheckDomainAvailabilityPreparer(identifier)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web/GlobalDomainRegistrationClient", "CheckDomainAvailability", nil, "Failure preparing request")
@@ -66,7 +66,7 @@ func (client GlobalDomainRegistrationClient) CheckDomainAvailability(identifier 
 
 	result, err = client.CheckDomainAvailabilityResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "web/GlobalDomainRegistrationClient", "CheckDomainAvailability", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "web/GlobalDomainRegistrationClient", "CheckDomainAvailability", resp, "Failure responding to request")
 	}
 
 	return
@@ -95,7 +95,7 @@ func (client GlobalDomainRegistrationClient) CheckDomainAvailabilityPreparer(ide
 // CheckDomainAvailabilitySender sends the CheckDomainAvailability request. The method will close the
 // http.Response Body if it receives an error.
 func (client GlobalDomainRegistrationClient) CheckDomainAvailabilitySender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // CheckDomainAvailabilityResponder handles the response to the CheckDomainAvailability request. The method always
@@ -112,7 +112,7 @@ func (client GlobalDomainRegistrationClient) CheckDomainAvailabilityResponder(re
 }
 
 // GetAllDomains sends the get all domains request.
-func (client GlobalDomainRegistrationClient) GetAllDomains() (result DomainCollection, ae error) {
+func (client GlobalDomainRegistrationClient) GetAllDomains() (result DomainCollection, err error) {
 	req, err := client.GetAllDomainsPreparer()
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web/GlobalDomainRegistrationClient", "GetAllDomains", nil, "Failure preparing request")
@@ -126,7 +126,7 @@ func (client GlobalDomainRegistrationClient) GetAllDomains() (result DomainColle
 
 	result, err = client.GetAllDomainsResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "web/GlobalDomainRegistrationClient", "GetAllDomains", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "web/GlobalDomainRegistrationClient", "GetAllDomains", resp, "Failure responding to request")
 	}
 
 	return
@@ -154,7 +154,7 @@ func (client GlobalDomainRegistrationClient) GetAllDomainsPreparer() (*http.Requ
 // GetAllDomainsSender sends the GetAllDomains request. The method will close the
 // http.Response Body if it receives an error.
 func (client GlobalDomainRegistrationClient) GetAllDomainsSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // GetAllDomainsResponder handles the response to the GetAllDomains request. The method always
@@ -172,7 +172,7 @@ func (client GlobalDomainRegistrationClient) GetAllDomainsResponder(resp *http.R
 
 // GetDomainControlCenterSsoRequest sends the get domain control center sso
 // request request.
-func (client GlobalDomainRegistrationClient) GetDomainControlCenterSsoRequest() (result DomainControlCenterSsoRequest, ae error) {
+func (client GlobalDomainRegistrationClient) GetDomainControlCenterSsoRequest() (result DomainControlCenterSsoRequest, err error) {
 	req, err := client.GetDomainControlCenterSsoRequestPreparer()
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web/GlobalDomainRegistrationClient", "GetDomainControlCenterSsoRequest", nil, "Failure preparing request")
@@ -186,7 +186,7 @@ func (client GlobalDomainRegistrationClient) GetDomainControlCenterSsoRequest() 
 
 	result, err = client.GetDomainControlCenterSsoRequestResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "web/GlobalDomainRegistrationClient", "GetDomainControlCenterSsoRequest", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "web/GlobalDomainRegistrationClient", "GetDomainControlCenterSsoRequest", resp, "Failure responding to request")
 	}
 
 	return
@@ -214,7 +214,7 @@ func (client GlobalDomainRegistrationClient) GetDomainControlCenterSsoRequestPre
 // GetDomainControlCenterSsoRequestSender sends the GetDomainControlCenterSsoRequest request. The method will close the
 // http.Response Body if it receives an error.
 func (client GlobalDomainRegistrationClient) GetDomainControlCenterSsoRequestSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // GetDomainControlCenterSsoRequestResponder handles the response to the GetDomainControlCenterSsoRequest request. The method always
@@ -233,7 +233,7 @@ func (client GlobalDomainRegistrationClient) GetDomainControlCenterSsoRequestRes
 // ListDomainRecommendations sends the list domain recommendations request.
 //
 // parameters is domain recommendation search parameters
-func (client GlobalDomainRegistrationClient) ListDomainRecommendations(parameters DomainRecommendationSearchParameters) (result NameIdentifierCollection, ae error) {
+func (client GlobalDomainRegistrationClient) ListDomainRecommendations(parameters DomainRecommendationSearchParameters) (result NameIdentifierCollection, err error) {
 	req, err := client.ListDomainRecommendationsPreparer(parameters)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web/GlobalDomainRegistrationClient", "ListDomainRecommendations", nil, "Failure preparing request")
@@ -247,7 +247,7 @@ func (client GlobalDomainRegistrationClient) ListDomainRecommendations(parameter
 
 	result, err = client.ListDomainRecommendationsResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "web/GlobalDomainRegistrationClient", "ListDomainRecommendations", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "web/GlobalDomainRegistrationClient", "ListDomainRecommendations", resp, "Failure responding to request")
 	}
 
 	return
@@ -276,7 +276,7 @@ func (client GlobalDomainRegistrationClient) ListDomainRecommendationsPreparer(p
 // ListDomainRecommendationsSender sends the ListDomainRecommendations request. The method will close the
 // http.Response Body if it receives an error.
 func (client GlobalDomainRegistrationClient) ListDomainRecommendationsSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // ListDomainRecommendationsResponder handles the response to the ListDomainRecommendations request. The method always
@@ -296,7 +296,7 @@ func (client GlobalDomainRegistrationClient) ListDomainRecommendationsResponder(
 // information request.
 //
 // domainRegistrationInput is domain registration information
-func (client GlobalDomainRegistrationClient) ValidateDomainPurchaseInformation(domainRegistrationInput DomainRegistrationInput) (result ObjectSet, ae error) {
+func (client GlobalDomainRegistrationClient) ValidateDomainPurchaseInformation(domainRegistrationInput DomainRegistrationInput) (result ObjectSet, err error) {
 	req, err := client.ValidateDomainPurchaseInformationPreparer(domainRegistrationInput)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web/GlobalDomainRegistrationClient", "ValidateDomainPurchaseInformation", nil, "Failure preparing request")
@@ -310,7 +310,7 @@ func (client GlobalDomainRegistrationClient) ValidateDomainPurchaseInformation(d
 
 	result, err = client.ValidateDomainPurchaseInformationResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "web/GlobalDomainRegistrationClient", "ValidateDomainPurchaseInformation", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "web/GlobalDomainRegistrationClient", "ValidateDomainPurchaseInformation", resp, "Failure responding to request")
 	}
 
 	return
@@ -339,7 +339,7 @@ func (client GlobalDomainRegistrationClient) ValidateDomainPurchaseInformationPr
 // ValidateDomainPurchaseInformationSender sends the ValidateDomainPurchaseInformation request. The method will close the
 // http.Response Body if it receives an error.
 func (client GlobalDomainRegistrationClient) ValidateDomainPurchaseInformationSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // ValidateDomainPurchaseInformationResponder handles the response to the ValidateDomainPurchaseInformation request. The method always

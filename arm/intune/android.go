@@ -46,7 +46,7 @@ func NewAndroidClientWithBaseURI(baseURI string, subscriptionID string) AndroidC
 // hostName is location hostName for the tenant policyName is unique name for
 // the policy appName is application unique Name parameters is parameters
 // supplied to the Create or update app to an android policy operation.
-func (client AndroidClient) AddAppForMAMPolicy(hostName string, policyName string, appName string, parameters MAMPolicyAppIDOrGroupIDPayload) (result autorest.Response, ae error) {
+func (client AndroidClient) AddAppForMAMPolicy(hostName string, policyName string, appName string, parameters MAMPolicyAppIDOrGroupIDPayload) (result autorest.Response, err error) {
 	req, err := client.AddAppForMAMPolicyPreparer(hostName, policyName, appName, parameters)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "intune/AndroidClient", "AddAppForMAMPolicy", nil, "Failure preparing request")
@@ -60,7 +60,7 @@ func (client AndroidClient) AddAppForMAMPolicy(hostName string, policyName strin
 
 	result, err = client.AddAppForMAMPolicyResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "intune/AndroidClient", "AddAppForMAMPolicy", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "intune/AndroidClient", "AddAppForMAMPolicy", resp, "Failure responding to request")
 	}
 
 	return
@@ -91,7 +91,7 @@ func (client AndroidClient) AddAppForMAMPolicyPreparer(hostName string, policyNa
 // AddAppForMAMPolicySender sends the AddAppForMAMPolicy request. The method will close the
 // http.Response Body if it receives an error.
 func (client AndroidClient) AddAppForMAMPolicySender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // AddAppForMAMPolicyResponder handles the response to the AddAppForMAMPolicy request. The method always
@@ -111,7 +111,7 @@ func (client AndroidClient) AddAppForMAMPolicyResponder(resp *http.Response) (re
 // hostName is location hostName for the tenant policyName is unique name for
 // the policy groupID is group Id parameters is parameters supplied to the
 // Create or update app to an android policy operation.
-func (client AndroidClient) AddGroupForMAMPolicy(hostName string, policyName string, groupID string, parameters MAMPolicyAppIDOrGroupIDPayload) (result autorest.Response, ae error) {
+func (client AndroidClient) AddGroupForMAMPolicy(hostName string, policyName string, groupID string, parameters MAMPolicyAppIDOrGroupIDPayload) (result autorest.Response, err error) {
 	req, err := client.AddGroupForMAMPolicyPreparer(hostName, policyName, groupID, parameters)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "intune/AndroidClient", "AddGroupForMAMPolicy", nil, "Failure preparing request")
@@ -125,7 +125,7 @@ func (client AndroidClient) AddGroupForMAMPolicy(hostName string, policyName str
 
 	result, err = client.AddGroupForMAMPolicyResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "intune/AndroidClient", "AddGroupForMAMPolicy", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "intune/AndroidClient", "AddGroupForMAMPolicy", resp, "Failure responding to request")
 	}
 
 	return
@@ -156,7 +156,7 @@ func (client AndroidClient) AddGroupForMAMPolicyPreparer(hostName string, policy
 // AddGroupForMAMPolicySender sends the AddGroupForMAMPolicy request. The method will close the
 // http.Response Body if it receives an error.
 func (client AndroidClient) AddGroupForMAMPolicySender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // AddGroupForMAMPolicyResponder handles the response to the AddGroupForMAMPolicy request. The method always
@@ -176,7 +176,7 @@ func (client AndroidClient) AddGroupForMAMPolicyResponder(resp *http.Response) (
 // hostName is location hostName for the tenant policyName is unique name for
 // the policy parameters is parameters supplied to the Create or update an
 // android policy operation.
-func (client AndroidClient) CreateOrUpdateMAMPolicy(hostName string, policyName string, parameters AndroidMAMPolicy) (result AndroidMAMPolicy, ae error) {
+func (client AndroidClient) CreateOrUpdateMAMPolicy(hostName string, policyName string, parameters AndroidMAMPolicy) (result AndroidMAMPolicy, err error) {
 	req, err := client.CreateOrUpdateMAMPolicyPreparer(hostName, policyName, parameters)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "intune/AndroidClient", "CreateOrUpdateMAMPolicy", nil, "Failure preparing request")
@@ -190,7 +190,7 @@ func (client AndroidClient) CreateOrUpdateMAMPolicy(hostName string, policyName 
 
 	result, err = client.CreateOrUpdateMAMPolicyResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "intune/AndroidClient", "CreateOrUpdateMAMPolicy", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "intune/AndroidClient", "CreateOrUpdateMAMPolicy", resp, "Failure responding to request")
 	}
 
 	return
@@ -220,7 +220,7 @@ func (client AndroidClient) CreateOrUpdateMAMPolicyPreparer(hostName string, pol
 // CreateOrUpdateMAMPolicySender sends the CreateOrUpdateMAMPolicy request. The method will close the
 // http.Response Body if it receives an error.
 func (client AndroidClient) CreateOrUpdateMAMPolicySender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // CreateOrUpdateMAMPolicyResponder handles the response to the CreateOrUpdateMAMPolicy request. The method always
@@ -240,7 +240,7 @@ func (client AndroidClient) CreateOrUpdateMAMPolicyResponder(resp *http.Response
 //
 // hostName is location hostName for the tenant policyName is unique name for
 // the policy appName is application unique Name
-func (client AndroidClient) DeleteAppForMAMPolicy(hostName string, policyName string, appName string) (result autorest.Response, ae error) {
+func (client AndroidClient) DeleteAppForMAMPolicy(hostName string, policyName string, appName string) (result autorest.Response, err error) {
 	req, err := client.DeleteAppForMAMPolicyPreparer(hostName, policyName, appName)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "intune/AndroidClient", "DeleteAppForMAMPolicy", nil, "Failure preparing request")
@@ -254,7 +254,7 @@ func (client AndroidClient) DeleteAppForMAMPolicy(hostName string, policyName st
 
 	result, err = client.DeleteAppForMAMPolicyResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "intune/AndroidClient", "DeleteAppForMAMPolicy", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "intune/AndroidClient", "DeleteAppForMAMPolicy", resp, "Failure responding to request")
 	}
 
 	return
@@ -284,7 +284,7 @@ func (client AndroidClient) DeleteAppForMAMPolicyPreparer(hostName string, polic
 // DeleteAppForMAMPolicySender sends the DeleteAppForMAMPolicy request. The method will close the
 // http.Response Body if it receives an error.
 func (client AndroidClient) DeleteAppForMAMPolicySender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // DeleteAppForMAMPolicyResponder handles the response to the DeleteAppForMAMPolicy request. The method always
@@ -303,7 +303,7 @@ func (client AndroidClient) DeleteAppForMAMPolicyResponder(resp *http.Response) 
 //
 // hostName is location hostName for the tenant policyName is unique name for
 // the policy groupID is application unique Name
-func (client AndroidClient) DeleteGroupForMAMPolicy(hostName string, policyName string, groupID string) (result autorest.Response, ae error) {
+func (client AndroidClient) DeleteGroupForMAMPolicy(hostName string, policyName string, groupID string) (result autorest.Response, err error) {
 	req, err := client.DeleteGroupForMAMPolicyPreparer(hostName, policyName, groupID)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "intune/AndroidClient", "DeleteGroupForMAMPolicy", nil, "Failure preparing request")
@@ -317,7 +317,7 @@ func (client AndroidClient) DeleteGroupForMAMPolicy(hostName string, policyName 
 
 	result, err = client.DeleteGroupForMAMPolicyResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "intune/AndroidClient", "DeleteGroupForMAMPolicy", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "intune/AndroidClient", "DeleteGroupForMAMPolicy", resp, "Failure responding to request")
 	}
 
 	return
@@ -347,7 +347,7 @@ func (client AndroidClient) DeleteGroupForMAMPolicyPreparer(hostName string, pol
 // DeleteGroupForMAMPolicySender sends the DeleteGroupForMAMPolicy request. The method will close the
 // http.Response Body if it receives an error.
 func (client AndroidClient) DeleteGroupForMAMPolicySender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // DeleteGroupForMAMPolicyResponder handles the response to the DeleteGroupForMAMPolicy request. The method always
@@ -366,7 +366,7 @@ func (client AndroidClient) DeleteGroupForMAMPolicyResponder(resp *http.Response
 //
 // hostName is location hostName for the tenant policyName is unique name for
 // the policy
-func (client AndroidClient) DeleteMAMPolicy(hostName string, policyName string) (result autorest.Response, ae error) {
+func (client AndroidClient) DeleteMAMPolicy(hostName string, policyName string) (result autorest.Response, err error) {
 	req, err := client.DeleteMAMPolicyPreparer(hostName, policyName)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "intune/AndroidClient", "DeleteMAMPolicy", nil, "Failure preparing request")
@@ -380,7 +380,7 @@ func (client AndroidClient) DeleteMAMPolicy(hostName string, policyName string) 
 
 	result, err = client.DeleteMAMPolicyResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "intune/AndroidClient", "DeleteMAMPolicy", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "intune/AndroidClient", "DeleteMAMPolicy", resp, "Failure responding to request")
 	}
 
 	return
@@ -409,7 +409,7 @@ func (client AndroidClient) DeleteMAMPolicyPreparer(hostName string, policyName 
 // DeleteMAMPolicySender sends the DeleteMAMPolicy request. The method will close the
 // http.Response Body if it receives an error.
 func (client AndroidClient) DeleteMAMPolicySender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // DeleteMAMPolicyResponder handles the response to the DeleteMAMPolicy request. The method always
@@ -429,7 +429,7 @@ func (client AndroidClient) DeleteMAMPolicyResponder(resp *http.Response) (resul
 // hostName is location hostName for the tenant policyName is unique name for
 // the policy filter is the filter to apply on the operation. selectParameter
 // is select specific fields in entity.
-func (client AndroidClient) GetAppForMAMPolicy(hostName string, policyName string, filter string, top *int, selectParameter string) (result ApplicationCollection, ae error) {
+func (client AndroidClient) GetAppForMAMPolicy(hostName string, policyName string, filter string, top *int32, selectParameter string) (result ApplicationCollection, err error) {
 	req, err := client.GetAppForMAMPolicyPreparer(hostName, policyName, filter, top, selectParameter)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "intune/AndroidClient", "GetAppForMAMPolicy", nil, "Failure preparing request")
@@ -443,14 +443,14 @@ func (client AndroidClient) GetAppForMAMPolicy(hostName string, policyName strin
 
 	result, err = client.GetAppForMAMPolicyResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "intune/AndroidClient", "GetAppForMAMPolicy", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "intune/AndroidClient", "GetAppForMAMPolicy", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // GetAppForMAMPolicyPreparer prepares the GetAppForMAMPolicy request.
-func (client AndroidClient) GetAppForMAMPolicyPreparer(hostName string, policyName string, filter string, top *int, selectParameter string) (*http.Request, error) {
+func (client AndroidClient) GetAppForMAMPolicyPreparer(hostName string, policyName string, filter string, top *int32, selectParameter string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"hostName":   url.QueryEscape(hostName),
 		"policyName": url.QueryEscape(policyName),
@@ -481,7 +481,7 @@ func (client AndroidClient) GetAppForMAMPolicyPreparer(hostName string, policyNa
 // GetAppForMAMPolicySender sends the GetAppForMAMPolicy request. The method will close the
 // http.Response Body if it receives an error.
 func (client AndroidClient) GetAppForMAMPolicySender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // GetAppForMAMPolicyResponder handles the response to the GetAppForMAMPolicy request. The method always
@@ -498,7 +498,7 @@ func (client AndroidClient) GetAppForMAMPolicyResponder(resp *http.Response) (re
 }
 
 // GetAppForMAMPolicyNextResults retrieves the next set of results, if any.
-func (client AndroidClient) GetAppForMAMPolicyNextResults(lastResults ApplicationCollection) (result ApplicationCollection, ae error) {
+func (client AndroidClient) GetAppForMAMPolicyNextResults(lastResults ApplicationCollection) (result ApplicationCollection, err error) {
 	req, err := lastResults.ApplicationCollectionPreparer()
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "intune/AndroidClient", "GetAppForMAMPolicy", nil, "Failure preparing next results request request")
@@ -515,7 +515,7 @@ func (client AndroidClient) GetAppForMAMPolicyNextResults(lastResults Applicatio
 
 	result, err = client.GetAppForMAMPolicyResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "intune/AndroidClient", "GetAppForMAMPolicy", resp, "Failure responding to next results request request")
+		err = autorest.NewErrorWithError(err, "intune/AndroidClient", "GetAppForMAMPolicy", resp, "Failure responding to next results request request")
 	}
 
 	return
@@ -525,7 +525,7 @@ func (client AndroidClient) GetAppForMAMPolicyNextResults(lastResults Applicatio
 //
 // hostName is location hostName for the tenant policyName is policy name for
 // the tenant
-func (client AndroidClient) GetGroupsForMAMPolicy(hostName string, policyName string) (result GroupsCollection, ae error) {
+func (client AndroidClient) GetGroupsForMAMPolicy(hostName string, policyName string) (result GroupsCollection, err error) {
 	req, err := client.GetGroupsForMAMPolicyPreparer(hostName, policyName)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "intune/AndroidClient", "GetGroupsForMAMPolicy", nil, "Failure preparing request")
@@ -539,7 +539,7 @@ func (client AndroidClient) GetGroupsForMAMPolicy(hostName string, policyName st
 
 	result, err = client.GetGroupsForMAMPolicyResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "intune/AndroidClient", "GetGroupsForMAMPolicy", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "intune/AndroidClient", "GetGroupsForMAMPolicy", resp, "Failure responding to request")
 	}
 
 	return
@@ -568,7 +568,7 @@ func (client AndroidClient) GetGroupsForMAMPolicyPreparer(hostName string, polic
 // GetGroupsForMAMPolicySender sends the GetGroupsForMAMPolicy request. The method will close the
 // http.Response Body if it receives an error.
 func (client AndroidClient) GetGroupsForMAMPolicySender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // GetGroupsForMAMPolicyResponder handles the response to the GetGroupsForMAMPolicy request. The method always
@@ -585,7 +585,7 @@ func (client AndroidClient) GetGroupsForMAMPolicyResponder(resp *http.Response) 
 }
 
 // GetGroupsForMAMPolicyNextResults retrieves the next set of results, if any.
-func (client AndroidClient) GetGroupsForMAMPolicyNextResults(lastResults GroupsCollection) (result GroupsCollection, ae error) {
+func (client AndroidClient) GetGroupsForMAMPolicyNextResults(lastResults GroupsCollection) (result GroupsCollection, err error) {
 	req, err := lastResults.GroupsCollectionPreparer()
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "intune/AndroidClient", "GetGroupsForMAMPolicy", nil, "Failure preparing next results request request")
@@ -602,7 +602,7 @@ func (client AndroidClient) GetGroupsForMAMPolicyNextResults(lastResults GroupsC
 
 	result, err = client.GetGroupsForMAMPolicyResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "intune/AndroidClient", "GetGroupsForMAMPolicy", resp, "Failure responding to next results request request")
+		err = autorest.NewErrorWithError(err, "intune/AndroidClient", "GetGroupsForMAMPolicy", resp, "Failure responding to next results request request")
 	}
 
 	return
@@ -612,7 +612,7 @@ func (client AndroidClient) GetGroupsForMAMPolicyNextResults(lastResults GroupsC
 //
 // hostName is location hostName for the tenant filter is the filter to apply
 // on the operation. selectParameter is select specific fields in entity.
-func (client AndroidClient) GetMAMPolicies(hostName string, filter string, top *int, selectParameter string) (result AndroidMAMPolicyCollection, ae error) {
+func (client AndroidClient) GetMAMPolicies(hostName string, filter string, top *int32, selectParameter string) (result AndroidMAMPolicyCollection, err error) {
 	req, err := client.GetMAMPoliciesPreparer(hostName, filter, top, selectParameter)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "intune/AndroidClient", "GetMAMPolicies", nil, "Failure preparing request")
@@ -626,14 +626,14 @@ func (client AndroidClient) GetMAMPolicies(hostName string, filter string, top *
 
 	result, err = client.GetMAMPoliciesResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "intune/AndroidClient", "GetMAMPolicies", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "intune/AndroidClient", "GetMAMPolicies", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // GetMAMPoliciesPreparer prepares the GetMAMPolicies request.
-func (client AndroidClient) GetMAMPoliciesPreparer(hostName string, filter string, top *int, selectParameter string) (*http.Request, error) {
+func (client AndroidClient) GetMAMPoliciesPreparer(hostName string, filter string, top *int32, selectParameter string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"hostName": url.QueryEscape(hostName),
 	}
@@ -663,7 +663,7 @@ func (client AndroidClient) GetMAMPoliciesPreparer(hostName string, filter strin
 // GetMAMPoliciesSender sends the GetMAMPolicies request. The method will close the
 // http.Response Body if it receives an error.
 func (client AndroidClient) GetMAMPoliciesSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // GetMAMPoliciesResponder handles the response to the GetMAMPolicies request. The method always
@@ -680,7 +680,7 @@ func (client AndroidClient) GetMAMPoliciesResponder(resp *http.Response) (result
 }
 
 // GetMAMPoliciesNextResults retrieves the next set of results, if any.
-func (client AndroidClient) GetMAMPoliciesNextResults(lastResults AndroidMAMPolicyCollection) (result AndroidMAMPolicyCollection, ae error) {
+func (client AndroidClient) GetMAMPoliciesNextResults(lastResults AndroidMAMPolicyCollection) (result AndroidMAMPolicyCollection, err error) {
 	req, err := lastResults.AndroidMAMPolicyCollectionPreparer()
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "intune/AndroidClient", "GetMAMPolicies", nil, "Failure preparing next results request request")
@@ -697,7 +697,7 @@ func (client AndroidClient) GetMAMPoliciesNextResults(lastResults AndroidMAMPoli
 
 	result, err = client.GetMAMPoliciesResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "intune/AndroidClient", "GetMAMPolicies", resp, "Failure responding to next results request request")
+		err = autorest.NewErrorWithError(err, "intune/AndroidClient", "GetMAMPolicies", resp, "Failure responding to next results request request")
 	}
 
 	return
@@ -707,7 +707,7 @@ func (client AndroidClient) GetMAMPoliciesNextResults(lastResults AndroidMAMPoli
 //
 // hostName is location hostName for the tenant policyName is unique name for
 // the policy selectParameter is select specific fields in entity.
-func (client AndroidClient) GetMAMPolicyByName(hostName string, policyName string, selectParameter string) (result AndroidMAMPolicy, ae error) {
+func (client AndroidClient) GetMAMPolicyByName(hostName string, policyName string, selectParameter string) (result AndroidMAMPolicy, err error) {
 	req, err := client.GetMAMPolicyByNamePreparer(hostName, policyName, selectParameter)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "intune/AndroidClient", "GetMAMPolicyByName", nil, "Failure preparing request")
@@ -721,7 +721,7 @@ func (client AndroidClient) GetMAMPolicyByName(hostName string, policyName strin
 
 	result, err = client.GetMAMPolicyByNameResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "intune/AndroidClient", "GetMAMPolicyByName", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "intune/AndroidClient", "GetMAMPolicyByName", resp, "Failure responding to request")
 	}
 
 	return
@@ -753,7 +753,7 @@ func (client AndroidClient) GetMAMPolicyByNamePreparer(hostName string, policyNa
 // GetMAMPolicyByNameSender sends the GetMAMPolicyByName request. The method will close the
 // http.Response Body if it receives an error.
 func (client AndroidClient) GetMAMPolicyByNameSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // GetMAMPolicyByNameResponder handles the response to the GetMAMPolicyByName request. The method always
@@ -774,7 +774,7 @@ func (client AndroidClient) GetMAMPolicyByNameResponder(resp *http.Response) (re
 // hostName is location hostName for the tenant policyName is unique name for
 // the policy parameters is parameters supplied to the Create or update an
 // android policy operation.
-func (client AndroidClient) PatchMAMPolicy(hostName string, policyName string, parameters AndroidMAMPolicy) (result AndroidMAMPolicy, ae error) {
+func (client AndroidClient) PatchMAMPolicy(hostName string, policyName string, parameters AndroidMAMPolicy) (result AndroidMAMPolicy, err error) {
 	req, err := client.PatchMAMPolicyPreparer(hostName, policyName, parameters)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "intune/AndroidClient", "PatchMAMPolicy", nil, "Failure preparing request")
@@ -788,7 +788,7 @@ func (client AndroidClient) PatchMAMPolicy(hostName string, policyName string, p
 
 	result, err = client.PatchMAMPolicyResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "intune/AndroidClient", "PatchMAMPolicy", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "intune/AndroidClient", "PatchMAMPolicy", resp, "Failure responding to request")
 	}
 
 	return
@@ -818,7 +818,7 @@ func (client AndroidClient) PatchMAMPolicyPreparer(hostName string, policyName s
 // PatchMAMPolicySender sends the PatchMAMPolicy request. The method will close the
 // http.Response Body if it receives an error.
 func (client AndroidClient) PatchMAMPolicySender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // PatchMAMPolicyResponder handles the response to the PatchMAMPolicy request. The method always

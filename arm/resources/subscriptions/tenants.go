@@ -41,7 +41,7 @@ func NewTenantsClientWithBaseURI(baseURI string, subscriptionID string) TenantsC
 }
 
 // List gets a list of the tenantIds.
-func (client TenantsClient) List() (result TenantListResult, ae error) {
+func (client TenantsClient) List() (result TenantListResult, err error) {
 	req, err := client.ListPreparer()
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "subscriptions/TenantsClient", "List", nil, "Failure preparing request")
@@ -55,7 +55,7 @@ func (client TenantsClient) List() (result TenantListResult, ae error) {
 
 	result, err = client.ListResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "subscriptions/TenantsClient", "List", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "subscriptions/TenantsClient", "List", resp, "Failure responding to request")
 	}
 
 	return
@@ -78,7 +78,7 @@ func (client TenantsClient) ListPreparer() (*http.Request, error) {
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
 func (client TenantsClient) ListSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // ListResponder handles the response to the List request. The method always
@@ -95,7 +95,7 @@ func (client TenantsClient) ListResponder(resp *http.Response) (result TenantLis
 }
 
 // ListNextResults retrieves the next set of results, if any.
-func (client TenantsClient) ListNextResults(lastResults TenantListResult) (result TenantListResult, ae error) {
+func (client TenantsClient) ListNextResults(lastResults TenantListResult) (result TenantListResult, err error) {
 	req, err := lastResults.TenantListResultPreparer()
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "subscriptions/TenantsClient", "List", nil, "Failure preparing next results request request")
@@ -112,7 +112,7 @@ func (client TenantsClient) ListNextResults(lastResults TenantListResult) (resul
 
 	result, err = client.ListResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "subscriptions/TenantsClient", "List", resp, "Failure responding to next results request request")
+		err = autorest.NewErrorWithError(err, "subscriptions/TenantsClient", "List", resp, "Failure responding to next results request request")
 	}
 
 	return

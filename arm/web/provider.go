@@ -49,7 +49,7 @@ func NewProviderClientWithBaseURI(baseURI string, subscriptionID string) Provide
 }
 
 // GetPublishingUser sends the get publishing user request.
-func (client ProviderClient) GetPublishingUser() (result User, ae error) {
+func (client ProviderClient) GetPublishingUser() (result User, err error) {
 	req, err := client.GetPublishingUserPreparer()
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web/ProviderClient", "GetPublishingUser", nil, "Failure preparing request")
@@ -63,7 +63,7 @@ func (client ProviderClient) GetPublishingUser() (result User, ae error) {
 
 	result, err = client.GetPublishingUserResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "web/ProviderClient", "GetPublishingUser", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "web/ProviderClient", "GetPublishingUser", resp, "Failure responding to request")
 	}
 
 	return
@@ -86,7 +86,7 @@ func (client ProviderClient) GetPublishingUserPreparer() (*http.Request, error) 
 // GetPublishingUserSender sends the GetPublishingUser request. The method will close the
 // http.Response Body if it receives an error.
 func (client ProviderClient) GetPublishingUserSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // GetPublishingUserResponder handles the response to the GetPublishingUser request. The method always
@@ -105,7 +105,7 @@ func (client ProviderClient) GetPublishingUserResponder(resp *http.Response) (re
 // GetSourceControl sends the get source control request.
 //
 // sourceControlType is type of source control
-func (client ProviderClient) GetSourceControl(sourceControlType string) (result SourceControl, ae error) {
+func (client ProviderClient) GetSourceControl(sourceControlType string) (result SourceControl, err error) {
 	req, err := client.GetSourceControlPreparer(sourceControlType)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web/ProviderClient", "GetSourceControl", nil, "Failure preparing request")
@@ -119,7 +119,7 @@ func (client ProviderClient) GetSourceControl(sourceControlType string) (result 
 
 	result, err = client.GetSourceControlResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "web/ProviderClient", "GetSourceControl", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "web/ProviderClient", "GetSourceControl", resp, "Failure responding to request")
 	}
 
 	return
@@ -147,7 +147,7 @@ func (client ProviderClient) GetSourceControlPreparer(sourceControlType string) 
 // GetSourceControlSender sends the GetSourceControl request. The method will close the
 // http.Response Body if it receives an error.
 func (client ProviderClient) GetSourceControlSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // GetSourceControlResponder handles the response to the GetSourceControl request. The method always
@@ -164,7 +164,7 @@ func (client ProviderClient) GetSourceControlResponder(resp *http.Response) (res
 }
 
 // GetSourceControls sends the get source controls request.
-func (client ProviderClient) GetSourceControls() (result SourceControlCollection, ae error) {
+func (client ProviderClient) GetSourceControls() (result SourceControlCollection, err error) {
 	req, err := client.GetSourceControlsPreparer()
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web/ProviderClient", "GetSourceControls", nil, "Failure preparing request")
@@ -178,7 +178,7 @@ func (client ProviderClient) GetSourceControls() (result SourceControlCollection
 
 	result, err = client.GetSourceControlsResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "web/ProviderClient", "GetSourceControls", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "web/ProviderClient", "GetSourceControls", resp, "Failure responding to request")
 	}
 
 	return
@@ -201,7 +201,7 @@ func (client ProviderClient) GetSourceControlsPreparer() (*http.Request, error) 
 // GetSourceControlsSender sends the GetSourceControls request. The method will close the
 // http.Response Body if it receives an error.
 func (client ProviderClient) GetSourceControlsSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // GetSourceControlsResponder handles the response to the GetSourceControls request. The method always
@@ -220,7 +220,7 @@ func (client ProviderClient) GetSourceControlsResponder(resp *http.Response) (re
 // UpdatePublishingUser sends the update publishing user request.
 //
 // requestMessage is details of publishing user
-func (client ProviderClient) UpdatePublishingUser(requestMessage User) (result User, ae error) {
+func (client ProviderClient) UpdatePublishingUser(requestMessage User) (result User, err error) {
 	req, err := client.UpdatePublishingUserPreparer(requestMessage)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web/ProviderClient", "UpdatePublishingUser", nil, "Failure preparing request")
@@ -234,7 +234,7 @@ func (client ProviderClient) UpdatePublishingUser(requestMessage User) (result U
 
 	result, err = client.UpdatePublishingUserResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "web/ProviderClient", "UpdatePublishingUser", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "web/ProviderClient", "UpdatePublishingUser", resp, "Failure responding to request")
 	}
 
 	return
@@ -258,7 +258,7 @@ func (client ProviderClient) UpdatePublishingUserPreparer(requestMessage User) (
 // UpdatePublishingUserSender sends the UpdatePublishingUser request. The method will close the
 // http.Response Body if it receives an error.
 func (client ProviderClient) UpdatePublishingUserSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // UpdatePublishingUserResponder handles the response to the UpdatePublishingUser request. The method always
@@ -278,7 +278,7 @@ func (client ProviderClient) UpdatePublishingUserResponder(resp *http.Response) 
 //
 // sourceControlType is type of source control requestMessage is source
 // control token information
-func (client ProviderClient) UpdateSourceControl(sourceControlType string, requestMessage SourceControl) (result SourceControl, ae error) {
+func (client ProviderClient) UpdateSourceControl(sourceControlType string, requestMessage SourceControl) (result SourceControl, err error) {
 	req, err := client.UpdateSourceControlPreparer(sourceControlType, requestMessage)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web/ProviderClient", "UpdateSourceControl", nil, "Failure preparing request")
@@ -292,7 +292,7 @@ func (client ProviderClient) UpdateSourceControl(sourceControlType string, reque
 
 	result, err = client.UpdateSourceControlResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "web/ProviderClient", "UpdateSourceControl", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "web/ProviderClient", "UpdateSourceControl", resp, "Failure responding to request")
 	}
 
 	return
@@ -321,7 +321,7 @@ func (client ProviderClient) UpdateSourceControlPreparer(sourceControlType strin
 // UpdateSourceControlSender sends the UpdateSourceControl request. The method will close the
 // http.Response Body if it receives an error.
 func (client ProviderClient) UpdateSourceControlSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // UpdateSourceControlResponder handles the response to the UpdateSourceControl request. The method always

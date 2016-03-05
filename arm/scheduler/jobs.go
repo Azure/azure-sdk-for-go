@@ -44,7 +44,7 @@ func NewJobsClientWithBaseURI(baseURI string, subscriptionID string) JobsClient 
 //
 // resourceGroupName is the resource group name. jobCollectionName is the job
 // collection name. jobName is the job name. job is the job definition.
-func (client JobsClient) CreateOrUpdate(resourceGroupName string, jobCollectionName string, jobName string, job JobDefinition) (result JobDefinition, ae error) {
+func (client JobsClient) CreateOrUpdate(resourceGroupName string, jobCollectionName string, jobName string, job JobDefinition) (result JobDefinition, err error) {
 	req, err := client.CreateOrUpdatePreparer(resourceGroupName, jobCollectionName, jobName, job)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "scheduler/JobsClient", "CreateOrUpdate", nil, "Failure preparing request")
@@ -58,7 +58,7 @@ func (client JobsClient) CreateOrUpdate(resourceGroupName string, jobCollectionN
 
 	result, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "scheduler/JobsClient", "CreateOrUpdate", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "scheduler/JobsClient", "CreateOrUpdate", resp, "Failure responding to request")
 	}
 
 	return
@@ -90,7 +90,7 @@ func (client JobsClient) CreateOrUpdatePreparer(resourceGroupName string, jobCol
 // CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
 // http.Response Body if it receives an error.
 func (client JobsClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
@@ -110,7 +110,7 @@ func (client JobsClient) CreateOrUpdateResponder(resp *http.Response) (result Jo
 //
 // resourceGroupName is the resource group name. jobCollectionName is the job
 // collection name. jobName is the job name.
-func (client JobsClient) Delete(resourceGroupName string, jobCollectionName string, jobName string) (result autorest.Response, ae error) {
+func (client JobsClient) Delete(resourceGroupName string, jobCollectionName string, jobName string) (result autorest.Response, err error) {
 	req, err := client.DeletePreparer(resourceGroupName, jobCollectionName, jobName)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "scheduler/JobsClient", "Delete", nil, "Failure preparing request")
@@ -124,7 +124,7 @@ func (client JobsClient) Delete(resourceGroupName string, jobCollectionName stri
 
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "scheduler/JobsClient", "Delete", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "scheduler/JobsClient", "Delete", resp, "Failure responding to request")
 	}
 
 	return
@@ -155,7 +155,7 @@ func (client JobsClient) DeletePreparer(resourceGroupName string, jobCollectionN
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
 func (client JobsClient) DeleteSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // DeleteResponder handles the response to the Delete request. The method always
@@ -174,7 +174,7 @@ func (client JobsClient) DeleteResponder(resp *http.Response) (result autorest.R
 //
 // resourceGroupName is the resource group name. jobCollectionName is the job
 // collection name. jobName is the job name.
-func (client JobsClient) Get(resourceGroupName string, jobCollectionName string, jobName string) (result JobDefinition, ae error) {
+func (client JobsClient) Get(resourceGroupName string, jobCollectionName string, jobName string) (result JobDefinition, err error) {
 	req, err := client.GetPreparer(resourceGroupName, jobCollectionName, jobName)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "scheduler/JobsClient", "Get", nil, "Failure preparing request")
@@ -188,7 +188,7 @@ func (client JobsClient) Get(resourceGroupName string, jobCollectionName string,
 
 	result, err = client.GetResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "scheduler/JobsClient", "Get", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "scheduler/JobsClient", "Get", resp, "Failure responding to request")
 	}
 
 	return
@@ -219,7 +219,7 @@ func (client JobsClient) GetPreparer(resourceGroupName string, jobCollectionName
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client JobsClient) GetSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // GetResponder handles the response to the Get request. The method always
@@ -242,7 +242,7 @@ func (client JobsClient) GetResponder(resp *http.Response) (result JobDefinition
 // [1..100]. skip is the (0-based) index of the job history list from which
 // to begin requesting entries. filter is the filter to apply on the job
 // state.
-func (client JobsClient) List(resourceGroupName string, jobCollectionName string, top *int, skip *int, filter string) (result JobListResult, ae error) {
+func (client JobsClient) List(resourceGroupName string, jobCollectionName string, top *int32, skip *int32, filter string) (result JobListResult, err error) {
 	req, err := client.ListPreparer(resourceGroupName, jobCollectionName, top, skip, filter)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "scheduler/JobsClient", "List", nil, "Failure preparing request")
@@ -256,14 +256,14 @@ func (client JobsClient) List(resourceGroupName string, jobCollectionName string
 
 	result, err = client.ListResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "scheduler/JobsClient", "List", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "scheduler/JobsClient", "List", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // ListPreparer prepares the List request.
-func (client JobsClient) ListPreparer(resourceGroupName string, jobCollectionName string, top *int, skip *int, filter string) (*http.Request, error) {
+func (client JobsClient) ListPreparer(resourceGroupName string, jobCollectionName string, top *int32, skip *int32, filter string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"jobCollectionName": url.QueryEscape(jobCollectionName),
 		"resourceGroupName": url.QueryEscape(resourceGroupName),
@@ -295,7 +295,7 @@ func (client JobsClient) ListPreparer(resourceGroupName string, jobCollectionNam
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
 func (client JobsClient) ListSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // ListResponder handles the response to the List request. The method always
@@ -312,7 +312,7 @@ func (client JobsClient) ListResponder(resp *http.Response) (result JobListResul
 }
 
 // ListNextResults retrieves the next set of results, if any.
-func (client JobsClient) ListNextResults(lastResults JobListResult) (result JobListResult, ae error) {
+func (client JobsClient) ListNextResults(lastResults JobListResult) (result JobListResult, err error) {
 	req, err := lastResults.JobListResultPreparer()
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "scheduler/JobsClient", "List", nil, "Failure preparing next results request request")
@@ -329,7 +329,7 @@ func (client JobsClient) ListNextResults(lastResults JobListResult) (result JobL
 
 	result, err = client.ListResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "scheduler/JobsClient", "List", resp, "Failure responding to next results request request")
+		err = autorest.NewErrorWithError(err, "scheduler/JobsClient", "List", resp, "Failure responding to next results request request")
 	}
 
 	return
@@ -342,7 +342,7 @@ func (client JobsClient) ListNextResults(lastResults JobListResult) (result JobL
 // to request, in the of range [1..100]. skip is the (0-based) index of the
 // job history list from which to begin requesting entries. filter is the
 // filter to apply on the job state.
-func (client JobsClient) ListJobHistory(resourceGroupName string, jobCollectionName string, jobName string, top *int, skip *int, filter string) (result JobHistoryListResult, ae error) {
+func (client JobsClient) ListJobHistory(resourceGroupName string, jobCollectionName string, jobName string, top *int32, skip *int32, filter string) (result JobHistoryListResult, err error) {
 	req, err := client.ListJobHistoryPreparer(resourceGroupName, jobCollectionName, jobName, top, skip, filter)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "scheduler/JobsClient", "ListJobHistory", nil, "Failure preparing request")
@@ -356,14 +356,14 @@ func (client JobsClient) ListJobHistory(resourceGroupName string, jobCollectionN
 
 	result, err = client.ListJobHistoryResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "scheduler/JobsClient", "ListJobHistory", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "scheduler/JobsClient", "ListJobHistory", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // ListJobHistoryPreparer prepares the ListJobHistory request.
-func (client JobsClient) ListJobHistoryPreparer(resourceGroupName string, jobCollectionName string, jobName string, top *int, skip *int, filter string) (*http.Request, error) {
+func (client JobsClient) ListJobHistoryPreparer(resourceGroupName string, jobCollectionName string, jobName string, top *int32, skip *int32, filter string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"jobCollectionName": url.QueryEscape(jobCollectionName),
 		"jobName":           url.QueryEscape(jobName),
@@ -396,7 +396,7 @@ func (client JobsClient) ListJobHistoryPreparer(resourceGroupName string, jobCol
 // ListJobHistorySender sends the ListJobHistory request. The method will close the
 // http.Response Body if it receives an error.
 func (client JobsClient) ListJobHistorySender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // ListJobHistoryResponder handles the response to the ListJobHistory request. The method always
@@ -413,7 +413,7 @@ func (client JobsClient) ListJobHistoryResponder(resp *http.Response) (result Jo
 }
 
 // ListJobHistoryNextResults retrieves the next set of results, if any.
-func (client JobsClient) ListJobHistoryNextResults(lastResults JobHistoryListResult) (result JobHistoryListResult, ae error) {
+func (client JobsClient) ListJobHistoryNextResults(lastResults JobHistoryListResult) (result JobHistoryListResult, err error) {
 	req, err := lastResults.JobHistoryListResultPreparer()
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "scheduler/JobsClient", "ListJobHistory", nil, "Failure preparing next results request request")
@@ -430,7 +430,7 @@ func (client JobsClient) ListJobHistoryNextResults(lastResults JobHistoryListRes
 
 	result, err = client.ListJobHistoryResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "scheduler/JobsClient", "ListJobHistory", resp, "Failure responding to next results request request")
+		err = autorest.NewErrorWithError(err, "scheduler/JobsClient", "ListJobHistory", resp, "Failure responding to next results request request")
 	}
 
 	return
@@ -440,7 +440,7 @@ func (client JobsClient) ListJobHistoryNextResults(lastResults JobHistoryListRes
 //
 // resourceGroupName is the resource group name. jobCollectionName is the job
 // collection name. jobName is the job name. job is the job definition.
-func (client JobsClient) Patch(resourceGroupName string, jobCollectionName string, jobName string, job JobDefinition) (result JobDefinition, ae error) {
+func (client JobsClient) Patch(resourceGroupName string, jobCollectionName string, jobName string, job JobDefinition) (result JobDefinition, err error) {
 	req, err := client.PatchPreparer(resourceGroupName, jobCollectionName, jobName, job)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "scheduler/JobsClient", "Patch", nil, "Failure preparing request")
@@ -454,7 +454,7 @@ func (client JobsClient) Patch(resourceGroupName string, jobCollectionName strin
 
 	result, err = client.PatchResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "scheduler/JobsClient", "Patch", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "scheduler/JobsClient", "Patch", resp, "Failure responding to request")
 	}
 
 	return
@@ -486,7 +486,7 @@ func (client JobsClient) PatchPreparer(resourceGroupName string, jobCollectionNa
 // PatchSender sends the Patch request. The method will close the
 // http.Response Body if it receives an error.
 func (client JobsClient) PatchSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // PatchResponder handles the response to the Patch request. The method always
@@ -506,7 +506,7 @@ func (client JobsClient) PatchResponder(resp *http.Response) (result JobDefiniti
 //
 // resourceGroupName is the resource group name. jobCollectionName is the job
 // collection name. jobName is the job name.
-func (client JobsClient) Run(resourceGroupName string, jobCollectionName string, jobName string) (result autorest.Response, ae error) {
+func (client JobsClient) Run(resourceGroupName string, jobCollectionName string, jobName string) (result autorest.Response, err error) {
 	req, err := client.RunPreparer(resourceGroupName, jobCollectionName, jobName)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "scheduler/JobsClient", "Run", nil, "Failure preparing request")
@@ -520,7 +520,7 @@ func (client JobsClient) Run(resourceGroupName string, jobCollectionName string,
 
 	result, err = client.RunResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "scheduler/JobsClient", "Run", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "scheduler/JobsClient", "Run", resp, "Failure responding to request")
 	}
 
 	return
@@ -551,7 +551,7 @@ func (client JobsClient) RunPreparer(resourceGroupName string, jobCollectionName
 // RunSender sends the Run request. The method will close the
 // http.Response Body if it receives an error.
 func (client JobsClient) RunSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // RunResponder handles the response to the Run request. The method always

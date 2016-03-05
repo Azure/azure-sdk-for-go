@@ -47,7 +47,7 @@ func NewRoleDefinitionsClientWithBaseURI(baseURI string, subscriptionID string) 
 //
 // scope is scope roleDefinitionID is role definition id. roleDefinition is
 // role definition.
-func (client RoleDefinitionsClient) CreateOrUpdate(scope string, roleDefinitionID string, roleDefinition RoleDefinition) (result RoleDefinition, ae error) {
+func (client RoleDefinitionsClient) CreateOrUpdate(scope string, roleDefinitionID string, roleDefinition RoleDefinition) (result RoleDefinition, err error) {
 	req, err := client.CreateOrUpdatePreparer(scope, roleDefinitionID, roleDefinition)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "authorization/RoleDefinitionsClient", "CreateOrUpdate", nil, "Failure preparing request")
@@ -61,7 +61,7 @@ func (client RoleDefinitionsClient) CreateOrUpdate(scope string, roleDefinitionI
 
 	result, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "authorization/RoleDefinitionsClient", "CreateOrUpdate", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "authorization/RoleDefinitionsClient", "CreateOrUpdate", resp, "Failure responding to request")
 	}
 
 	return
@@ -92,7 +92,7 @@ func (client RoleDefinitionsClient) CreateOrUpdatePreparer(scope string, roleDef
 // CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
 // http.Response Body if it receives an error.
 func (client RoleDefinitionsClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
@@ -111,7 +111,7 @@ func (client RoleDefinitionsClient) CreateOrUpdateResponder(resp *http.Response)
 // Delete deletes the role definition.
 //
 // scope is scope roleDefinitionID is role definition id.
-func (client RoleDefinitionsClient) Delete(scope string, roleDefinitionID string) (result RoleDefinition, ae error) {
+func (client RoleDefinitionsClient) Delete(scope string, roleDefinitionID string) (result RoleDefinition, err error) {
 	req, err := client.DeletePreparer(scope, roleDefinitionID)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "authorization/RoleDefinitionsClient", "Delete", nil, "Failure preparing request")
@@ -125,7 +125,7 @@ func (client RoleDefinitionsClient) Delete(scope string, roleDefinitionID string
 
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "authorization/RoleDefinitionsClient", "Delete", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "authorization/RoleDefinitionsClient", "Delete", resp, "Failure responding to request")
 	}
 
 	return
@@ -155,7 +155,7 @@ func (client RoleDefinitionsClient) DeletePreparer(scope string, roleDefinitionI
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
 func (client RoleDefinitionsClient) DeleteSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // DeleteResponder handles the response to the Delete request. The method always
@@ -174,7 +174,7 @@ func (client RoleDefinitionsClient) DeleteResponder(resp *http.Response) (result
 // Get get role definition by name (GUID).
 //
 // scope is scope roleDefinitionID is role definition Id
-func (client RoleDefinitionsClient) Get(scope string, roleDefinitionID string) (result RoleDefinition, ae error) {
+func (client RoleDefinitionsClient) Get(scope string, roleDefinitionID string) (result RoleDefinition, err error) {
 	req, err := client.GetPreparer(scope, roleDefinitionID)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "authorization/RoleDefinitionsClient", "Get", nil, "Failure preparing request")
@@ -188,7 +188,7 @@ func (client RoleDefinitionsClient) Get(scope string, roleDefinitionID string) (
 
 	result, err = client.GetResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "authorization/RoleDefinitionsClient", "Get", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "authorization/RoleDefinitionsClient", "Get", resp, "Failure responding to request")
 	}
 
 	return
@@ -218,7 +218,7 @@ func (client RoleDefinitionsClient) GetPreparer(scope string, roleDefinitionID s
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client RoleDefinitionsClient) GetSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // GetResponder handles the response to the Get request. The method always
@@ -237,7 +237,7 @@ func (client RoleDefinitionsClient) GetResponder(resp *http.Response) (result Ro
 // GetByID get role definition by name (GUID).
 //
 // roleDefinitionID is fully qualified role definition Id
-func (client RoleDefinitionsClient) GetByID(roleDefinitionID string) (result RoleDefinition, ae error) {
+func (client RoleDefinitionsClient) GetByID(roleDefinitionID string) (result RoleDefinition, err error) {
 	req, err := client.GetByIDPreparer(roleDefinitionID)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "authorization/RoleDefinitionsClient", "GetByID", nil, "Failure preparing request")
@@ -251,7 +251,7 @@ func (client RoleDefinitionsClient) GetByID(roleDefinitionID string) (result Rol
 
 	result, err = client.GetByIDResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "authorization/RoleDefinitionsClient", "GetByID", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "authorization/RoleDefinitionsClient", "GetByID", resp, "Failure responding to request")
 	}
 
 	return
@@ -280,7 +280,7 @@ func (client RoleDefinitionsClient) GetByIDPreparer(roleDefinitionID string) (*h
 // GetByIDSender sends the GetByID request. The method will close the
 // http.Response Body if it receives an error.
 func (client RoleDefinitionsClient) GetByIDSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // GetByIDResponder handles the response to the GetByID request. The method always
@@ -300,7 +300,7 @@ func (client RoleDefinitionsClient) GetByIDResponder(resp *http.Response) (resul
 // atScopeAndBelow filter to search below the given scope as well
 //
 // scope is scope filter is the filter to apply on the operation.
-func (client RoleDefinitionsClient) List(scope string, filter string) (result RoleDefinitionListResult, ae error) {
+func (client RoleDefinitionsClient) List(scope string, filter string) (result RoleDefinitionListResult, err error) {
 	req, err := client.ListPreparer(scope, filter)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "authorization/RoleDefinitionsClient", "List", nil, "Failure preparing request")
@@ -314,7 +314,7 @@ func (client RoleDefinitionsClient) List(scope string, filter string) (result Ro
 
 	result, err = client.ListResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "authorization/RoleDefinitionsClient", "List", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "authorization/RoleDefinitionsClient", "List", resp, "Failure responding to request")
 	}
 
 	return
@@ -346,7 +346,7 @@ func (client RoleDefinitionsClient) ListPreparer(scope string, filter string) (*
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
 func (client RoleDefinitionsClient) ListSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // ListResponder handles the response to the List request. The method always
@@ -363,7 +363,7 @@ func (client RoleDefinitionsClient) ListResponder(resp *http.Response) (result R
 }
 
 // ListNextResults retrieves the next set of results, if any.
-func (client RoleDefinitionsClient) ListNextResults(lastResults RoleDefinitionListResult) (result RoleDefinitionListResult, ae error) {
+func (client RoleDefinitionsClient) ListNextResults(lastResults RoleDefinitionListResult) (result RoleDefinitionListResult, err error) {
 	req, err := lastResults.RoleDefinitionListResultPreparer()
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "authorization/RoleDefinitionsClient", "List", nil, "Failure preparing next results request request")
@@ -380,7 +380,7 @@ func (client RoleDefinitionsClient) ListNextResults(lastResults RoleDefinitionLi
 
 	result, err = client.ListResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "authorization/RoleDefinitionsClient", "List", resp, "Failure responding to next results request request")
+		err = autorest.NewErrorWithError(err, "authorization/RoleDefinitionsClient", "List", resp, "Failure responding to next results request request")
 	}
 
 	return

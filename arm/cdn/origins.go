@@ -51,7 +51,7 @@ func NewOriginsClientWithBaseURI(baseURI string, subscriptionID string) OriginsC
 // is name of the endpoint within the CDN profile profileName is name of the
 // CDN profile within the resource group resourceGroupName is name of the
 // resource group within the Azure subscription
-func (client OriginsClient) Create(originName string, originProperties OriginParameters, endpointName string, profileName string, resourceGroupName string) (result Origin, ae error) {
+func (client OriginsClient) Create(originName string, originProperties OriginParameters, endpointName string, profileName string, resourceGroupName string) (result autorest.Response, err error) {
 	req, err := client.CreatePreparer(originName, originProperties, endpointName, profileName, resourceGroupName)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "cdn/OriginsClient", "Create", nil, "Failure preparing request")
@@ -59,13 +59,13 @@ func (client OriginsClient) Create(originName string, originProperties OriginPar
 
 	resp, err := client.CreateSender(req)
 	if err != nil {
-		result.Response = autorest.Response{Response: resp}
+		result.Response = resp
 		return result, autorest.NewErrorWithError(err, "cdn/OriginsClient", "Create", resp, "Failure sending request")
 	}
 
 	result, err = client.CreateResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "cdn/OriginsClient", "Create", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "cdn/OriginsClient", "Create", resp, "Failure responding to request")
 	}
 
 	return
@@ -98,19 +98,21 @@ func (client OriginsClient) CreatePreparer(originName string, originProperties O
 // CreateSender sends the Create request. The method will close the
 // http.Response Body if it receives an error.
 func (client OriginsClient) CreateSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoPollForAsynchronous(autorest.DefaultPollingDuration,
+			autorest.DefaultPollingDelay))
 }
 
 // CreateResponder handles the response to the Create request. The method always
 // closes the http.Response Body.
-func (client OriginsClient) CreateResponder(resp *http.Response) (result Origin, err error) {
+func (client OriginsClient) CreateResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated, http.StatusAccepted),
-		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
+	result.Response = resp
 	return
 }
 
@@ -121,7 +123,7 @@ func (client OriginsClient) CreateResponder(resp *http.Response) (result Origin,
 // profile profileName is name of the CDN profile within the resource group
 // resourceGroupName is name of the resource group within the Azure
 // subscription
-func (client OriginsClient) DeleteIfExists(originName string, endpointName string, profileName string, resourceGroupName string) (result Origin, ae error) {
+func (client OriginsClient) DeleteIfExists(originName string, endpointName string, profileName string, resourceGroupName string) (result autorest.Response, err error) {
 	req, err := client.DeleteIfExistsPreparer(originName, endpointName, profileName, resourceGroupName)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "cdn/OriginsClient", "DeleteIfExists", nil, "Failure preparing request")
@@ -129,13 +131,13 @@ func (client OriginsClient) DeleteIfExists(originName string, endpointName strin
 
 	resp, err := client.DeleteIfExistsSender(req)
 	if err != nil {
-		result.Response = autorest.Response{Response: resp}
+		result.Response = resp
 		return result, autorest.NewErrorWithError(err, "cdn/OriginsClient", "DeleteIfExists", resp, "Failure sending request")
 	}
 
 	result, err = client.DeleteIfExistsResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "cdn/OriginsClient", "DeleteIfExists", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "cdn/OriginsClient", "DeleteIfExists", resp, "Failure responding to request")
 	}
 
 	return
@@ -167,19 +169,21 @@ func (client OriginsClient) DeleteIfExistsPreparer(originName string, endpointNa
 // DeleteIfExistsSender sends the DeleteIfExists request. The method will close the
 // http.Response Body if it receives an error.
 func (client OriginsClient) DeleteIfExistsSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoPollForAsynchronous(autorest.DefaultPollingDuration,
+			autorest.DefaultPollingDelay))
 }
 
 // DeleteIfExistsResponder handles the response to the DeleteIfExists request. The method always
 // closes the http.Response Body.
-func (client OriginsClient) DeleteIfExistsResponder(resp *http.Response) (result Origin, err error) {
+func (client OriginsClient) DeleteIfExistsResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
-		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
+	result.Response = resp
 	return
 }
 
@@ -190,7 +194,7 @@ func (client OriginsClient) DeleteIfExistsResponder(resp *http.Response) (result
 // profile profileName is name of the CDN profile within the resource group
 // resourceGroupName is name of the resource group within the Azure
 // subscription
-func (client OriginsClient) Get(originName string, endpointName string, profileName string, resourceGroupName string) (result Origin, ae error) {
+func (client OriginsClient) Get(originName string, endpointName string, profileName string, resourceGroupName string) (result Origin, err error) {
 	req, err := client.GetPreparer(originName, endpointName, profileName, resourceGroupName)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "cdn/OriginsClient", "Get", nil, "Failure preparing request")
@@ -204,7 +208,7 @@ func (client OriginsClient) Get(originName string, endpointName string, profileN
 
 	result, err = client.GetResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "cdn/OriginsClient", "Get", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "cdn/OriginsClient", "Get", resp, "Failure responding to request")
 	}
 
 	return
@@ -236,7 +240,7 @@ func (client OriginsClient) GetPreparer(originName string, endpointName string, 
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client OriginsClient) GetSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // GetResponder handles the response to the Get request. The method always
@@ -257,7 +261,7 @@ func (client OriginsClient) GetResponder(resp *http.Response) (result Origin, er
 // endpointName is name of the endpoint within the CDN profile profileName is
 // name of the CDN profile within the resource group resourceGroupName is
 // name of the resource group within the Azure subscription
-func (client OriginsClient) ListByEndpoint(endpointName string, profileName string, resourceGroupName string) (result OriginListResult, ae error) {
+func (client OriginsClient) ListByEndpoint(endpointName string, profileName string, resourceGroupName string) (result OriginListResult, err error) {
 	req, err := client.ListByEndpointPreparer(endpointName, profileName, resourceGroupName)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "cdn/OriginsClient", "ListByEndpoint", nil, "Failure preparing request")
@@ -271,7 +275,7 @@ func (client OriginsClient) ListByEndpoint(endpointName string, profileName stri
 
 	result, err = client.ListByEndpointResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "cdn/OriginsClient", "ListByEndpoint", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "cdn/OriginsClient", "ListByEndpoint", resp, "Failure responding to request")
 	}
 
 	return
@@ -302,7 +306,7 @@ func (client OriginsClient) ListByEndpointPreparer(endpointName string, profileN
 // ListByEndpointSender sends the ListByEndpoint request. The method will close the
 // http.Response Body if it receives an error.
 func (client OriginsClient) ListByEndpointSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // ListByEndpointResponder handles the response to the ListByEndpoint request. The method always
@@ -325,7 +329,7 @@ func (client OriginsClient) ListByEndpointResponder(resp *http.Response) (result
 // is name of the endpoint within the CDN profile profileName is name of the
 // CDN profile within the resource group resourceGroupName is name of the
 // resource group within the Azure subscription
-func (client OriginsClient) Update(originName string, originProperties OriginParameters, endpointName string, profileName string, resourceGroupName string) (result Origin, ae error) {
+func (client OriginsClient) Update(originName string, originProperties OriginParameters, endpointName string, profileName string, resourceGroupName string) (result Origin, err error) {
 	req, err := client.UpdatePreparer(originName, originProperties, endpointName, profileName, resourceGroupName)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "cdn/OriginsClient", "Update", nil, "Failure preparing request")
@@ -339,7 +343,7 @@ func (client OriginsClient) Update(originName string, originProperties OriginPar
 
 	result, err = client.UpdateResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "cdn/OriginsClient", "Update", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "cdn/OriginsClient", "Update", resp, "Failure responding to request")
 	}
 
 	return
@@ -372,7 +376,7 @@ func (client OriginsClient) UpdatePreparer(originName string, originProperties O
 // UpdateSender sends the Update request. The method will close the
 // http.Response Body if it receives an error.
 func (client OriginsClient) UpdateSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // UpdateResponder handles the response to the Update request. The method always

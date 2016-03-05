@@ -54,7 +54,7 @@ func NewUsageOperationsClientWithBaseURI(baseURI string, subscriptionID string) 
 // resourceGroupName is name of resource group environmentName is environment
 // name lastID is last marker that was returned from the batch batchSize is
 // size of the batch to be returned.
-func (client UsageOperationsClient) GetUsage(resourceGroupName string, environmentName string, lastID string, batchSize int) (result ObjectSet, ae error) {
+func (client UsageOperationsClient) GetUsage(resourceGroupName string, environmentName string, lastID string, batchSize int32) (result ObjectSet, err error) {
 	req, err := client.GetUsagePreparer(resourceGroupName, environmentName, lastID, batchSize)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web/UsageOperationsClient", "GetUsage", nil, "Failure preparing request")
@@ -68,14 +68,14 @@ func (client UsageOperationsClient) GetUsage(resourceGroupName string, environme
 
 	result, err = client.GetUsageResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "web/UsageOperationsClient", "GetUsage", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "web/UsageOperationsClient", "GetUsage", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // GetUsagePreparer prepares the GetUsage request.
-func (client UsageOperationsClient) GetUsagePreparer(resourceGroupName string, environmentName string, lastID string, batchSize int) (*http.Request, error) {
+func (client UsageOperationsClient) GetUsagePreparer(resourceGroupName string, environmentName string, lastID string, batchSize int32) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"environmentName":   url.QueryEscape(environmentName),
 		"resourceGroupName": url.QueryEscape(resourceGroupName),
@@ -100,7 +100,7 @@ func (client UsageOperationsClient) GetUsagePreparer(resourceGroupName string, e
 // GetUsageSender sends the GetUsage request. The method will close the
 // http.Response Body if it receives an error.
 func (client UsageOperationsClient) GetUsageSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // GetUsageResponder handles the response to the GetUsage request. The method always

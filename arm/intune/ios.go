@@ -46,7 +46,7 @@ func NewIosClientWithBaseURI(baseURI string, subscriptionID string) IosClient {
 // hostName is location hostName for the tenant policyName is unique name for
 // the policy appName is application unique Name parameters is parameters
 // supplied to add an app to an ios policy.
-func (client IosClient) AddAppForMAMPolicy(hostName string, policyName string, appName string, parameters MAMPolicyAppIDOrGroupIDPayload) (result autorest.Response, ae error) {
+func (client IosClient) AddAppForMAMPolicy(hostName string, policyName string, appName string, parameters MAMPolicyAppIDOrGroupIDPayload) (result autorest.Response, err error) {
 	req, err := client.AddAppForMAMPolicyPreparer(hostName, policyName, appName, parameters)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "intune/IosClient", "AddAppForMAMPolicy", nil, "Failure preparing request")
@@ -60,7 +60,7 @@ func (client IosClient) AddAppForMAMPolicy(hostName string, policyName string, a
 
 	result, err = client.AddAppForMAMPolicyResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "intune/IosClient", "AddAppForMAMPolicy", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "intune/IosClient", "AddAppForMAMPolicy", resp, "Failure responding to request")
 	}
 
 	return
@@ -91,7 +91,7 @@ func (client IosClient) AddAppForMAMPolicyPreparer(hostName string, policyName s
 // AddAppForMAMPolicySender sends the AddAppForMAMPolicy request. The method will close the
 // http.Response Body if it receives an error.
 func (client IosClient) AddAppForMAMPolicySender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // AddAppForMAMPolicyResponder handles the response to the AddAppForMAMPolicy request. The method always
@@ -111,7 +111,7 @@ func (client IosClient) AddAppForMAMPolicyResponder(resp *http.Response) (result
 // hostName is location hostName for the tenant policyName is unique name for
 // the policy groupID is group Id parameters is parameters supplied to the
 // Create or update app to an android policy operation.
-func (client IosClient) AddGroupForMAMPolicy(hostName string, policyName string, groupID string, parameters MAMPolicyAppIDOrGroupIDPayload) (result autorest.Response, ae error) {
+func (client IosClient) AddGroupForMAMPolicy(hostName string, policyName string, groupID string, parameters MAMPolicyAppIDOrGroupIDPayload) (result autorest.Response, err error) {
 	req, err := client.AddGroupForMAMPolicyPreparer(hostName, policyName, groupID, parameters)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "intune/IosClient", "AddGroupForMAMPolicy", nil, "Failure preparing request")
@@ -125,7 +125,7 @@ func (client IosClient) AddGroupForMAMPolicy(hostName string, policyName string,
 
 	result, err = client.AddGroupForMAMPolicyResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "intune/IosClient", "AddGroupForMAMPolicy", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "intune/IosClient", "AddGroupForMAMPolicy", resp, "Failure responding to request")
 	}
 
 	return
@@ -156,7 +156,7 @@ func (client IosClient) AddGroupForMAMPolicyPreparer(hostName string, policyName
 // AddGroupForMAMPolicySender sends the AddGroupForMAMPolicy request. The method will close the
 // http.Response Body if it receives an error.
 func (client IosClient) AddGroupForMAMPolicySender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // AddGroupForMAMPolicyResponder handles the response to the AddGroupForMAMPolicy request. The method always
@@ -176,7 +176,7 @@ func (client IosClient) AddGroupForMAMPolicyResponder(resp *http.Response) (resu
 // hostName is location hostName for the tenant policyName is unique name for
 // the policy parameters is parameters supplied to the Create or update an
 // android policy operation.
-func (client IosClient) CreateOrUpdateMAMPolicy(hostName string, policyName string, parameters IOSMAMPolicy) (result IOSMAMPolicy, ae error) {
+func (client IosClient) CreateOrUpdateMAMPolicy(hostName string, policyName string, parameters IOSMAMPolicy) (result IOSMAMPolicy, err error) {
 	req, err := client.CreateOrUpdateMAMPolicyPreparer(hostName, policyName, parameters)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "intune/IosClient", "CreateOrUpdateMAMPolicy", nil, "Failure preparing request")
@@ -190,7 +190,7 @@ func (client IosClient) CreateOrUpdateMAMPolicy(hostName string, policyName stri
 
 	result, err = client.CreateOrUpdateMAMPolicyResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "intune/IosClient", "CreateOrUpdateMAMPolicy", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "intune/IosClient", "CreateOrUpdateMAMPolicy", resp, "Failure responding to request")
 	}
 
 	return
@@ -220,7 +220,7 @@ func (client IosClient) CreateOrUpdateMAMPolicyPreparer(hostName string, policyN
 // CreateOrUpdateMAMPolicySender sends the CreateOrUpdateMAMPolicy request. The method will close the
 // http.Response Body if it receives an error.
 func (client IosClient) CreateOrUpdateMAMPolicySender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // CreateOrUpdateMAMPolicyResponder handles the response to the CreateOrUpdateMAMPolicy request. The method always
@@ -240,7 +240,7 @@ func (client IosClient) CreateOrUpdateMAMPolicyResponder(resp *http.Response) (r
 //
 // hostName is location hostName for the tenant policyName is unique name for
 // the policy appName is application unique Name
-func (client IosClient) DeleteAppForMAMPolicy(hostName string, policyName string, appName string) (result autorest.Response, ae error) {
+func (client IosClient) DeleteAppForMAMPolicy(hostName string, policyName string, appName string) (result autorest.Response, err error) {
 	req, err := client.DeleteAppForMAMPolicyPreparer(hostName, policyName, appName)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "intune/IosClient", "DeleteAppForMAMPolicy", nil, "Failure preparing request")
@@ -254,7 +254,7 @@ func (client IosClient) DeleteAppForMAMPolicy(hostName string, policyName string
 
 	result, err = client.DeleteAppForMAMPolicyResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "intune/IosClient", "DeleteAppForMAMPolicy", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "intune/IosClient", "DeleteAppForMAMPolicy", resp, "Failure responding to request")
 	}
 
 	return
@@ -284,7 +284,7 @@ func (client IosClient) DeleteAppForMAMPolicyPreparer(hostName string, policyNam
 // DeleteAppForMAMPolicySender sends the DeleteAppForMAMPolicy request. The method will close the
 // http.Response Body if it receives an error.
 func (client IosClient) DeleteAppForMAMPolicySender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // DeleteAppForMAMPolicyResponder handles the response to the DeleteAppForMAMPolicy request. The method always
@@ -303,7 +303,7 @@ func (client IosClient) DeleteAppForMAMPolicyResponder(resp *http.Response) (res
 //
 // hostName is location hostName for the tenant policyName is unique name for
 // the policy groupID is application unique Name
-func (client IosClient) DeleteGroupForMAMPolicy(hostName string, policyName string, groupID string) (result autorest.Response, ae error) {
+func (client IosClient) DeleteGroupForMAMPolicy(hostName string, policyName string, groupID string) (result autorest.Response, err error) {
 	req, err := client.DeleteGroupForMAMPolicyPreparer(hostName, policyName, groupID)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "intune/IosClient", "DeleteGroupForMAMPolicy", nil, "Failure preparing request")
@@ -317,7 +317,7 @@ func (client IosClient) DeleteGroupForMAMPolicy(hostName string, policyName stri
 
 	result, err = client.DeleteGroupForMAMPolicyResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "intune/IosClient", "DeleteGroupForMAMPolicy", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "intune/IosClient", "DeleteGroupForMAMPolicy", resp, "Failure responding to request")
 	}
 
 	return
@@ -347,7 +347,7 @@ func (client IosClient) DeleteGroupForMAMPolicyPreparer(hostName string, policyN
 // DeleteGroupForMAMPolicySender sends the DeleteGroupForMAMPolicy request. The method will close the
 // http.Response Body if it receives an error.
 func (client IosClient) DeleteGroupForMAMPolicySender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // DeleteGroupForMAMPolicyResponder handles the response to the DeleteGroupForMAMPolicy request. The method always
@@ -366,7 +366,7 @@ func (client IosClient) DeleteGroupForMAMPolicyResponder(resp *http.Response) (r
 //
 // hostName is location hostName for the tenant policyName is unique name for
 // the policy
-func (client IosClient) DeleteMAMPolicy(hostName string, policyName string) (result autorest.Response, ae error) {
+func (client IosClient) DeleteMAMPolicy(hostName string, policyName string) (result autorest.Response, err error) {
 	req, err := client.DeleteMAMPolicyPreparer(hostName, policyName)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "intune/IosClient", "DeleteMAMPolicy", nil, "Failure preparing request")
@@ -380,7 +380,7 @@ func (client IosClient) DeleteMAMPolicy(hostName string, policyName string) (res
 
 	result, err = client.DeleteMAMPolicyResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "intune/IosClient", "DeleteMAMPolicy", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "intune/IosClient", "DeleteMAMPolicy", resp, "Failure responding to request")
 	}
 
 	return
@@ -409,7 +409,7 @@ func (client IosClient) DeleteMAMPolicyPreparer(hostName string, policyName stri
 // DeleteMAMPolicySender sends the DeleteMAMPolicy request. The method will close the
 // http.Response Body if it receives an error.
 func (client IosClient) DeleteMAMPolicySender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // DeleteMAMPolicyResponder handles the response to the DeleteMAMPolicy request. The method always
@@ -429,7 +429,7 @@ func (client IosClient) DeleteMAMPolicyResponder(resp *http.Response) (result au
 // hostName is location hostName for the tenant policyName is unique name for
 // the policy filter is the filter to apply on the operation. selectParameter
 // is select specific fields in entity.
-func (client IosClient) GetAppForMAMPolicy(hostName string, policyName string, filter string, top *int, selectParameter string) (result ApplicationCollection, ae error) {
+func (client IosClient) GetAppForMAMPolicy(hostName string, policyName string, filter string, top *int32, selectParameter string) (result ApplicationCollection, err error) {
 	req, err := client.GetAppForMAMPolicyPreparer(hostName, policyName, filter, top, selectParameter)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "intune/IosClient", "GetAppForMAMPolicy", nil, "Failure preparing request")
@@ -443,14 +443,14 @@ func (client IosClient) GetAppForMAMPolicy(hostName string, policyName string, f
 
 	result, err = client.GetAppForMAMPolicyResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "intune/IosClient", "GetAppForMAMPolicy", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "intune/IosClient", "GetAppForMAMPolicy", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // GetAppForMAMPolicyPreparer prepares the GetAppForMAMPolicy request.
-func (client IosClient) GetAppForMAMPolicyPreparer(hostName string, policyName string, filter string, top *int, selectParameter string) (*http.Request, error) {
+func (client IosClient) GetAppForMAMPolicyPreparer(hostName string, policyName string, filter string, top *int32, selectParameter string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"hostName":   url.QueryEscape(hostName),
 		"policyName": url.QueryEscape(policyName),
@@ -481,7 +481,7 @@ func (client IosClient) GetAppForMAMPolicyPreparer(hostName string, policyName s
 // GetAppForMAMPolicySender sends the GetAppForMAMPolicy request. The method will close the
 // http.Response Body if it receives an error.
 func (client IosClient) GetAppForMAMPolicySender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // GetAppForMAMPolicyResponder handles the response to the GetAppForMAMPolicy request. The method always
@@ -498,7 +498,7 @@ func (client IosClient) GetAppForMAMPolicyResponder(resp *http.Response) (result
 }
 
 // GetAppForMAMPolicyNextResults retrieves the next set of results, if any.
-func (client IosClient) GetAppForMAMPolicyNextResults(lastResults ApplicationCollection) (result ApplicationCollection, ae error) {
+func (client IosClient) GetAppForMAMPolicyNextResults(lastResults ApplicationCollection) (result ApplicationCollection, err error) {
 	req, err := lastResults.ApplicationCollectionPreparer()
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "intune/IosClient", "GetAppForMAMPolicy", nil, "Failure preparing next results request request")
@@ -515,7 +515,7 @@ func (client IosClient) GetAppForMAMPolicyNextResults(lastResults ApplicationCol
 
 	result, err = client.GetAppForMAMPolicyResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "intune/IosClient", "GetAppForMAMPolicy", resp, "Failure responding to next results request request")
+		err = autorest.NewErrorWithError(err, "intune/IosClient", "GetAppForMAMPolicy", resp, "Failure responding to next results request request")
 	}
 
 	return
@@ -525,7 +525,7 @@ func (client IosClient) GetAppForMAMPolicyNextResults(lastResults ApplicationCol
 //
 // hostName is location hostName for the tenant policyName is policy name for
 // the tenant
-func (client IosClient) GetGroupsForMAMPolicy(hostName string, policyName string) (result GroupsCollection, ae error) {
+func (client IosClient) GetGroupsForMAMPolicy(hostName string, policyName string) (result GroupsCollection, err error) {
 	req, err := client.GetGroupsForMAMPolicyPreparer(hostName, policyName)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "intune/IosClient", "GetGroupsForMAMPolicy", nil, "Failure preparing request")
@@ -539,7 +539,7 @@ func (client IosClient) GetGroupsForMAMPolicy(hostName string, policyName string
 
 	result, err = client.GetGroupsForMAMPolicyResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "intune/IosClient", "GetGroupsForMAMPolicy", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "intune/IosClient", "GetGroupsForMAMPolicy", resp, "Failure responding to request")
 	}
 
 	return
@@ -568,7 +568,7 @@ func (client IosClient) GetGroupsForMAMPolicyPreparer(hostName string, policyNam
 // GetGroupsForMAMPolicySender sends the GetGroupsForMAMPolicy request. The method will close the
 // http.Response Body if it receives an error.
 func (client IosClient) GetGroupsForMAMPolicySender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // GetGroupsForMAMPolicyResponder handles the response to the GetGroupsForMAMPolicy request. The method always
@@ -585,7 +585,7 @@ func (client IosClient) GetGroupsForMAMPolicyResponder(resp *http.Response) (res
 }
 
 // GetGroupsForMAMPolicyNextResults retrieves the next set of results, if any.
-func (client IosClient) GetGroupsForMAMPolicyNextResults(lastResults GroupsCollection) (result GroupsCollection, ae error) {
+func (client IosClient) GetGroupsForMAMPolicyNextResults(lastResults GroupsCollection) (result GroupsCollection, err error) {
 	req, err := lastResults.GroupsCollectionPreparer()
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "intune/IosClient", "GetGroupsForMAMPolicy", nil, "Failure preparing next results request request")
@@ -602,7 +602,7 @@ func (client IosClient) GetGroupsForMAMPolicyNextResults(lastResults GroupsColle
 
 	result, err = client.GetGroupsForMAMPolicyResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "intune/IosClient", "GetGroupsForMAMPolicy", resp, "Failure responding to next results request request")
+		err = autorest.NewErrorWithError(err, "intune/IosClient", "GetGroupsForMAMPolicy", resp, "Failure responding to next results request request")
 	}
 
 	return
@@ -612,7 +612,7 @@ func (client IosClient) GetGroupsForMAMPolicyNextResults(lastResults GroupsColle
 //
 // hostName is location hostName for the tenant filter is the filter to apply
 // on the operation. selectParameter is select specific fields in entity.
-func (client IosClient) GetMAMPolicies(hostName string, filter string, top *int, selectParameter string) (result IOSMAMPolicyCollection, ae error) {
+func (client IosClient) GetMAMPolicies(hostName string, filter string, top *int32, selectParameter string) (result IOSMAMPolicyCollection, err error) {
 	req, err := client.GetMAMPoliciesPreparer(hostName, filter, top, selectParameter)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "intune/IosClient", "GetMAMPolicies", nil, "Failure preparing request")
@@ -626,14 +626,14 @@ func (client IosClient) GetMAMPolicies(hostName string, filter string, top *int,
 
 	result, err = client.GetMAMPoliciesResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "intune/IosClient", "GetMAMPolicies", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "intune/IosClient", "GetMAMPolicies", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // GetMAMPoliciesPreparer prepares the GetMAMPolicies request.
-func (client IosClient) GetMAMPoliciesPreparer(hostName string, filter string, top *int, selectParameter string) (*http.Request, error) {
+func (client IosClient) GetMAMPoliciesPreparer(hostName string, filter string, top *int32, selectParameter string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"hostName": url.QueryEscape(hostName),
 	}
@@ -663,7 +663,7 @@ func (client IosClient) GetMAMPoliciesPreparer(hostName string, filter string, t
 // GetMAMPoliciesSender sends the GetMAMPolicies request. The method will close the
 // http.Response Body if it receives an error.
 func (client IosClient) GetMAMPoliciesSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // GetMAMPoliciesResponder handles the response to the GetMAMPolicies request. The method always
@@ -680,7 +680,7 @@ func (client IosClient) GetMAMPoliciesResponder(resp *http.Response) (result IOS
 }
 
 // GetMAMPoliciesNextResults retrieves the next set of results, if any.
-func (client IosClient) GetMAMPoliciesNextResults(lastResults IOSMAMPolicyCollection) (result IOSMAMPolicyCollection, ae error) {
+func (client IosClient) GetMAMPoliciesNextResults(lastResults IOSMAMPolicyCollection) (result IOSMAMPolicyCollection, err error) {
 	req, err := lastResults.IOSMAMPolicyCollectionPreparer()
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "intune/IosClient", "GetMAMPolicies", nil, "Failure preparing next results request request")
@@ -697,7 +697,7 @@ func (client IosClient) GetMAMPoliciesNextResults(lastResults IOSMAMPolicyCollec
 
 	result, err = client.GetMAMPoliciesResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "intune/IosClient", "GetMAMPolicies", resp, "Failure responding to next results request request")
+		err = autorest.NewErrorWithError(err, "intune/IosClient", "GetMAMPolicies", resp, "Failure responding to next results request request")
 	}
 
 	return
@@ -707,7 +707,7 @@ func (client IosClient) GetMAMPoliciesNextResults(lastResults IOSMAMPolicyCollec
 //
 // hostName is location hostName for the tenant policyName is unique name for
 // the policy selectParameter is select specific fields in entity.
-func (client IosClient) GetMAMPolicyByName(hostName string, policyName string, selectParameter string) (result IOSMAMPolicy, ae error) {
+func (client IosClient) GetMAMPolicyByName(hostName string, policyName string, selectParameter string) (result IOSMAMPolicy, err error) {
 	req, err := client.GetMAMPolicyByNamePreparer(hostName, policyName, selectParameter)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "intune/IosClient", "GetMAMPolicyByName", nil, "Failure preparing request")
@@ -721,7 +721,7 @@ func (client IosClient) GetMAMPolicyByName(hostName string, policyName string, s
 
 	result, err = client.GetMAMPolicyByNameResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "intune/IosClient", "GetMAMPolicyByName", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "intune/IosClient", "GetMAMPolicyByName", resp, "Failure responding to request")
 	}
 
 	return
@@ -753,7 +753,7 @@ func (client IosClient) GetMAMPolicyByNamePreparer(hostName string, policyName s
 // GetMAMPolicyByNameSender sends the GetMAMPolicyByName request. The method will close the
 // http.Response Body if it receives an error.
 func (client IosClient) GetMAMPolicyByNameSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // GetMAMPolicyByNameResponder handles the response to the GetMAMPolicyByName request. The method always
@@ -774,7 +774,7 @@ func (client IosClient) GetMAMPolicyByNameResponder(resp *http.Response) (result
 // hostName is location hostName for the tenant policyName is unique name for
 // the policy parameters is parameters supplied to the Create or update an
 // android policy operation.
-func (client IosClient) PatchMAMPolicy(hostName string, policyName string, parameters IOSMAMPolicy) (result IOSMAMPolicy, ae error) {
+func (client IosClient) PatchMAMPolicy(hostName string, policyName string, parameters IOSMAMPolicy) (result IOSMAMPolicy, err error) {
 	req, err := client.PatchMAMPolicyPreparer(hostName, policyName, parameters)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "intune/IosClient", "PatchMAMPolicy", nil, "Failure preparing request")
@@ -788,7 +788,7 @@ func (client IosClient) PatchMAMPolicy(hostName string, policyName string, param
 
 	result, err = client.PatchMAMPolicyResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "intune/IosClient", "PatchMAMPolicy", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "intune/IosClient", "PatchMAMPolicy", resp, "Failure responding to request")
 	}
 
 	return
@@ -818,7 +818,7 @@ func (client IosClient) PatchMAMPolicyPreparer(hostName string, policyName strin
 // PatchMAMPolicySender sends the PatchMAMPolicy request. The method will close the
 // http.Response Body if it receives an error.
 func (client IosClient) PatchMAMPolicySender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // PatchMAMPolicyResponder handles the response to the PatchMAMPolicy request. The method always

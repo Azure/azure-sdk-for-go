@@ -47,7 +47,7 @@ func NewQueryKeysClientWithBaseURI(baseURI string, subscriptionID string) QueryK
 // resourceGroupName is the name of the resource group within the current
 // subscription. serviceName is the name of the Search service for which to
 // list query keys.
-func (client QueryKeysClient) List(resourceGroupName string, serviceName string) (result ListQueryKeysResult, ae error) {
+func (client QueryKeysClient) List(resourceGroupName string, serviceName string) (result ListQueryKeysResult, err error) {
 	req, err := client.ListPreparer(resourceGroupName, serviceName)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "search/QueryKeysClient", "List", nil, "Failure preparing request")
@@ -61,7 +61,7 @@ func (client QueryKeysClient) List(resourceGroupName string, serviceName string)
 
 	result, err = client.ListResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "search/QueryKeysClient", "List", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "search/QueryKeysClient", "List", resp, "Failure responding to request")
 	}
 
 	return
@@ -91,7 +91,7 @@ func (client QueryKeysClient) ListPreparer(resourceGroupName string, serviceName
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
 func (client QueryKeysClient) ListSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // ListResponder handles the response to the List request. The method always

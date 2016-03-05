@@ -53,7 +53,7 @@ func NewCertificatesClientWithBaseURI(baseURI string, subscriptionID string) Cer
 // resourceGroupName is name of the resource group name is name of the
 // certificate. certificateEnvelope is details of certificate if it exists
 // already.
-func (client CertificatesClient) CreateOrUpdateCertificate(resourceGroupName string, name string, certificateEnvelope Certificate) (result Certificate, ae error) {
+func (client CertificatesClient) CreateOrUpdateCertificate(resourceGroupName string, name string, certificateEnvelope Certificate) (result Certificate, err error) {
 	req, err := client.CreateOrUpdateCertificatePreparer(resourceGroupName, name, certificateEnvelope)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web/CertificatesClient", "CreateOrUpdateCertificate", nil, "Failure preparing request")
@@ -67,7 +67,7 @@ func (client CertificatesClient) CreateOrUpdateCertificate(resourceGroupName str
 
 	result, err = client.CreateOrUpdateCertificateResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "web/CertificatesClient", "CreateOrUpdateCertificate", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "web/CertificatesClient", "CreateOrUpdateCertificate", resp, "Failure responding to request")
 	}
 
 	return
@@ -98,7 +98,7 @@ func (client CertificatesClient) CreateOrUpdateCertificatePreparer(resourceGroup
 // CreateOrUpdateCertificateSender sends the CreateOrUpdateCertificate request. The method will close the
 // http.Response Body if it receives an error.
 func (client CertificatesClient) CreateOrUpdateCertificateSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // CreateOrUpdateCertificateResponder handles the response to the CreateOrUpdateCertificate request. The method always
@@ -119,7 +119,7 @@ func (client CertificatesClient) CreateOrUpdateCertificateResponder(resp *http.R
 // resourceGroupName is name of the resource group name is name of the
 // certificate. csrEnvelope is details of certificate signing request if it
 // exists already.
-func (client CertificatesClient) CreateOrUpdateCsr(resourceGroupName string, name string, csrEnvelope Csr) (result Csr, ae error) {
+func (client CertificatesClient) CreateOrUpdateCsr(resourceGroupName string, name string, csrEnvelope Csr) (result Csr, err error) {
 	req, err := client.CreateOrUpdateCsrPreparer(resourceGroupName, name, csrEnvelope)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web/CertificatesClient", "CreateOrUpdateCsr", nil, "Failure preparing request")
@@ -133,7 +133,7 @@ func (client CertificatesClient) CreateOrUpdateCsr(resourceGroupName string, nam
 
 	result, err = client.CreateOrUpdateCsrResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "web/CertificatesClient", "CreateOrUpdateCsr", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "web/CertificatesClient", "CreateOrUpdateCsr", resp, "Failure responding to request")
 	}
 
 	return
@@ -164,7 +164,7 @@ func (client CertificatesClient) CreateOrUpdateCsrPreparer(resourceGroupName str
 // CreateOrUpdateCsrSender sends the CreateOrUpdateCsr request. The method will close the
 // http.Response Body if it receives an error.
 func (client CertificatesClient) CreateOrUpdateCsrSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // CreateOrUpdateCsrResponder handles the response to the CreateOrUpdateCsr request. The method always
@@ -184,7 +184,7 @@ func (client CertificatesClient) CreateOrUpdateCsrResponder(resp *http.Response)
 //
 // resourceGroupName is name of the resource group name is name of the
 // certificate to be deleted.
-func (client CertificatesClient) DeleteCertificate(resourceGroupName string, name string) (result ObjectSet, ae error) {
+func (client CertificatesClient) DeleteCertificate(resourceGroupName string, name string) (result ObjectSet, err error) {
 	req, err := client.DeleteCertificatePreparer(resourceGroupName, name)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web/CertificatesClient", "DeleteCertificate", nil, "Failure preparing request")
@@ -198,7 +198,7 @@ func (client CertificatesClient) DeleteCertificate(resourceGroupName string, nam
 
 	result, err = client.DeleteCertificateResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "web/CertificatesClient", "DeleteCertificate", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "web/CertificatesClient", "DeleteCertificate", resp, "Failure responding to request")
 	}
 
 	return
@@ -228,7 +228,7 @@ func (client CertificatesClient) DeleteCertificatePreparer(resourceGroupName str
 // DeleteCertificateSender sends the DeleteCertificate request. The method will close the
 // http.Response Body if it receives an error.
 func (client CertificatesClient) DeleteCertificateSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // DeleteCertificateResponder handles the response to the DeleteCertificate request. The method always
@@ -248,7 +248,7 @@ func (client CertificatesClient) DeleteCertificateResponder(resp *http.Response)
 //
 // resourceGroupName is name of the resource group name is name of the
 // certificate signing request.
-func (client CertificatesClient) DeleteCsr(resourceGroupName string, name string) (result ObjectSet, ae error) {
+func (client CertificatesClient) DeleteCsr(resourceGroupName string, name string) (result ObjectSet, err error) {
 	req, err := client.DeleteCsrPreparer(resourceGroupName, name)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web/CertificatesClient", "DeleteCsr", nil, "Failure preparing request")
@@ -262,7 +262,7 @@ func (client CertificatesClient) DeleteCsr(resourceGroupName string, name string
 
 	result, err = client.DeleteCsrResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "web/CertificatesClient", "DeleteCsr", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "web/CertificatesClient", "DeleteCsr", resp, "Failure responding to request")
 	}
 
 	return
@@ -292,7 +292,7 @@ func (client CertificatesClient) DeleteCsrPreparer(resourceGroupName string, nam
 // DeleteCsrSender sends the DeleteCsr request. The method will close the
 // http.Response Body if it receives an error.
 func (client CertificatesClient) DeleteCsrSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // DeleteCsrResponder handles the response to the DeleteCsr request. The method always
@@ -312,7 +312,7 @@ func (client CertificatesClient) DeleteCsrResponder(resp *http.Response) (result
 //
 // resourceGroupName is name of the resource group name is name of the
 // certificate.
-func (client CertificatesClient) GetCertificate(resourceGroupName string, name string) (result Certificate, ae error) {
+func (client CertificatesClient) GetCertificate(resourceGroupName string, name string) (result Certificate, err error) {
 	req, err := client.GetCertificatePreparer(resourceGroupName, name)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web/CertificatesClient", "GetCertificate", nil, "Failure preparing request")
@@ -326,7 +326,7 @@ func (client CertificatesClient) GetCertificate(resourceGroupName string, name s
 
 	result, err = client.GetCertificateResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "web/CertificatesClient", "GetCertificate", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "web/CertificatesClient", "GetCertificate", resp, "Failure responding to request")
 	}
 
 	return
@@ -356,7 +356,7 @@ func (client CertificatesClient) GetCertificatePreparer(resourceGroupName string
 // GetCertificateSender sends the GetCertificate request. The method will close the
 // http.Response Body if it receives an error.
 func (client CertificatesClient) GetCertificateSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // GetCertificateResponder handles the response to the GetCertificate request. The method always
@@ -375,7 +375,7 @@ func (client CertificatesClient) GetCertificateResponder(resp *http.Response) (r
 // GetCertificates sends the get certificates request.
 //
 // resourceGroupName is name of the resource group
-func (client CertificatesClient) GetCertificates(resourceGroupName string) (result CertificateCollection, ae error) {
+func (client CertificatesClient) GetCertificates(resourceGroupName string) (result CertificateCollection, err error) {
 	req, err := client.GetCertificatesPreparer(resourceGroupName)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web/CertificatesClient", "GetCertificates", nil, "Failure preparing request")
@@ -389,7 +389,7 @@ func (client CertificatesClient) GetCertificates(resourceGroupName string) (resu
 
 	result, err = client.GetCertificatesResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "web/CertificatesClient", "GetCertificates", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "web/CertificatesClient", "GetCertificates", resp, "Failure responding to request")
 	}
 
 	return
@@ -418,7 +418,7 @@ func (client CertificatesClient) GetCertificatesPreparer(resourceGroupName strin
 // GetCertificatesSender sends the GetCertificates request. The method will close the
 // http.Response Body if it receives an error.
 func (client CertificatesClient) GetCertificatesSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // GetCertificatesResponder handles the response to the GetCertificates request. The method always
@@ -438,7 +438,7 @@ func (client CertificatesClient) GetCertificatesResponder(resp *http.Response) (
 //
 // resourceGroupName is name of the resource group name is name of the
 // certificate.
-func (client CertificatesClient) GetCsr(resourceGroupName string, name string) (result Csr, ae error) {
+func (client CertificatesClient) GetCsr(resourceGroupName string, name string) (result Csr, err error) {
 	req, err := client.GetCsrPreparer(resourceGroupName, name)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web/CertificatesClient", "GetCsr", nil, "Failure preparing request")
@@ -452,7 +452,7 @@ func (client CertificatesClient) GetCsr(resourceGroupName string, name string) (
 
 	result, err = client.GetCsrResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "web/CertificatesClient", "GetCsr", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "web/CertificatesClient", "GetCsr", resp, "Failure responding to request")
 	}
 
 	return
@@ -482,7 +482,7 @@ func (client CertificatesClient) GetCsrPreparer(resourceGroupName string, name s
 // GetCsrSender sends the GetCsr request. The method will close the
 // http.Response Body if it receives an error.
 func (client CertificatesClient) GetCsrSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // GetCsrResponder handles the response to the GetCsr request. The method always
@@ -501,7 +501,7 @@ func (client CertificatesClient) GetCsrResponder(resp *http.Response) (result Cs
 // GetCsrs sends the get csrs request.
 //
 // resourceGroupName is name of the resource group
-func (client CertificatesClient) GetCsrs(resourceGroupName string) (result CsrList, ae error) {
+func (client CertificatesClient) GetCsrs(resourceGroupName string) (result CsrList, err error) {
 	req, err := client.GetCsrsPreparer(resourceGroupName)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web/CertificatesClient", "GetCsrs", nil, "Failure preparing request")
@@ -515,7 +515,7 @@ func (client CertificatesClient) GetCsrs(resourceGroupName string) (result CsrLi
 
 	result, err = client.GetCsrsResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "web/CertificatesClient", "GetCsrs", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "web/CertificatesClient", "GetCsrs", resp, "Failure responding to request")
 	}
 
 	return
@@ -544,7 +544,7 @@ func (client CertificatesClient) GetCsrsPreparer(resourceGroupName string) (*htt
 // GetCsrsSender sends the GetCsrs request. The method will close the
 // http.Response Body if it receives an error.
 func (client CertificatesClient) GetCsrsSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // GetCsrsResponder handles the response to the GetCsrs request. The method always
@@ -565,7 +565,7 @@ func (client CertificatesClient) GetCsrsResponder(resp *http.Response) (result C
 // resourceGroupName is name of the resource group name is name of the
 // certificate. certificateEnvelope is details of certificate if it exists
 // already.
-func (client CertificatesClient) UpdateCertificate(resourceGroupName string, name string, certificateEnvelope Certificate) (result Certificate, ae error) {
+func (client CertificatesClient) UpdateCertificate(resourceGroupName string, name string, certificateEnvelope Certificate) (result Certificate, err error) {
 	req, err := client.UpdateCertificatePreparer(resourceGroupName, name, certificateEnvelope)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web/CertificatesClient", "UpdateCertificate", nil, "Failure preparing request")
@@ -579,7 +579,7 @@ func (client CertificatesClient) UpdateCertificate(resourceGroupName string, nam
 
 	result, err = client.UpdateCertificateResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "web/CertificatesClient", "UpdateCertificate", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "web/CertificatesClient", "UpdateCertificate", resp, "Failure responding to request")
 	}
 
 	return
@@ -610,7 +610,7 @@ func (client CertificatesClient) UpdateCertificatePreparer(resourceGroupName str
 // UpdateCertificateSender sends the UpdateCertificate request. The method will close the
 // http.Response Body if it receives an error.
 func (client CertificatesClient) UpdateCertificateSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // UpdateCertificateResponder handles the response to the UpdateCertificate request. The method always
@@ -631,7 +631,7 @@ func (client CertificatesClient) UpdateCertificateResponder(resp *http.Response)
 // resourceGroupName is name of the resource group name is name of the
 // certificate. csrEnvelope is details of certificate signing request if it
 // exists already.
-func (client CertificatesClient) UpdateCsr(resourceGroupName string, name string, csrEnvelope Csr) (result Csr, ae error) {
+func (client CertificatesClient) UpdateCsr(resourceGroupName string, name string, csrEnvelope Csr) (result Csr, err error) {
 	req, err := client.UpdateCsrPreparer(resourceGroupName, name, csrEnvelope)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web/CertificatesClient", "UpdateCsr", nil, "Failure preparing request")
@@ -645,7 +645,7 @@ func (client CertificatesClient) UpdateCsr(resourceGroupName string, name string
 
 	result, err = client.UpdateCsrResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "web/CertificatesClient", "UpdateCsr", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "web/CertificatesClient", "UpdateCsr", resp, "Failure responding to request")
 	}
 
 	return
@@ -676,7 +676,7 @@ func (client CertificatesClient) UpdateCsrPreparer(resourceGroupName string, nam
 // UpdateCsrSender sends the UpdateCsr request. The method will close the
 // http.Response Body if it receives an error.
 func (client CertificatesClient) UpdateCsrSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // UpdateCsrResponder handles the response to the UpdateCsr request. The method always

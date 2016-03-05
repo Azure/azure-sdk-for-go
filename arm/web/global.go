@@ -50,7 +50,7 @@ func NewGlobalClientWithBaseURI(baseURI string, subscriptionID string) GlobalCli
 // CheckNameAvailability sends the check name availability request.
 //
 // request is name availability request
-func (client GlobalClient) CheckNameAvailability(request ResourceNameAvailabilityRequest) (result ResourceNameAvailability, ae error) {
+func (client GlobalClient) CheckNameAvailability(request ResourceNameAvailabilityRequest) (result ResourceNameAvailability, err error) {
 	req, err := client.CheckNameAvailabilityPreparer(request)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web/GlobalClient", "CheckNameAvailability", nil, "Failure preparing request")
@@ -64,7 +64,7 @@ func (client GlobalClient) CheckNameAvailability(request ResourceNameAvailabilit
 
 	result, err = client.CheckNameAvailabilityResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "web/GlobalClient", "CheckNameAvailability", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "web/GlobalClient", "CheckNameAvailability", resp, "Failure responding to request")
 	}
 
 	return
@@ -93,7 +93,7 @@ func (client GlobalClient) CheckNameAvailabilityPreparer(request ResourceNameAva
 // CheckNameAvailabilitySender sends the CheckNameAvailability request. The method will close the
 // http.Response Body if it receives an error.
 func (client GlobalClient) CheckNameAvailabilitySender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // CheckNameAvailabilityResponder handles the response to the CheckNameAvailability request. The method always
@@ -110,7 +110,7 @@ func (client GlobalClient) CheckNameAvailabilityResponder(resp *http.Response) (
 }
 
 // GetAllCertificates sends the get all certificates request.
-func (client GlobalClient) GetAllCertificates() (result CertificateCollection, ae error) {
+func (client GlobalClient) GetAllCertificates() (result CertificateCollection, err error) {
 	req, err := client.GetAllCertificatesPreparer()
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web/GlobalClient", "GetAllCertificates", nil, "Failure preparing request")
@@ -124,7 +124,7 @@ func (client GlobalClient) GetAllCertificates() (result CertificateCollection, a
 
 	result, err = client.GetAllCertificatesResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "web/GlobalClient", "GetAllCertificates", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "web/GlobalClient", "GetAllCertificates", resp, "Failure responding to request")
 	}
 
 	return
@@ -152,7 +152,7 @@ func (client GlobalClient) GetAllCertificatesPreparer() (*http.Request, error) {
 // GetAllCertificatesSender sends the GetAllCertificates request. The method will close the
 // http.Response Body if it receives an error.
 func (client GlobalClient) GetAllCertificatesSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // GetAllCertificatesResponder handles the response to the GetAllCertificates request. The method always
@@ -170,7 +170,7 @@ func (client GlobalClient) GetAllCertificatesResponder(resp *http.Response) (res
 
 // GetAllClassicMobileServices sends the get all classic mobile services
 // request.
-func (client GlobalClient) GetAllClassicMobileServices() (result ClassicMobileServiceCollection, ae error) {
+func (client GlobalClient) GetAllClassicMobileServices() (result ClassicMobileServiceCollection, err error) {
 	req, err := client.GetAllClassicMobileServicesPreparer()
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web/GlobalClient", "GetAllClassicMobileServices", nil, "Failure preparing request")
@@ -184,7 +184,7 @@ func (client GlobalClient) GetAllClassicMobileServices() (result ClassicMobileSe
 
 	result, err = client.GetAllClassicMobileServicesResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "web/GlobalClient", "GetAllClassicMobileServices", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "web/GlobalClient", "GetAllClassicMobileServices", resp, "Failure responding to request")
 	}
 
 	return
@@ -212,7 +212,7 @@ func (client GlobalClient) GetAllClassicMobileServicesPreparer() (*http.Request,
 // GetAllClassicMobileServicesSender sends the GetAllClassicMobileServices request. The method will close the
 // http.Response Body if it receives an error.
 func (client GlobalClient) GetAllClassicMobileServicesSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // GetAllClassicMobileServicesResponder handles the response to the GetAllClassicMobileServices request. The method always
@@ -229,7 +229,7 @@ func (client GlobalClient) GetAllClassicMobileServicesResponder(resp *http.Respo
 }
 
 // GetAllHostingEnvironments sends the get all hosting environments request.
-func (client GlobalClient) GetAllHostingEnvironments() (result HostingEnvironmentCollection, ae error) {
+func (client GlobalClient) GetAllHostingEnvironments() (result HostingEnvironmentCollection, err error) {
 	req, err := client.GetAllHostingEnvironmentsPreparer()
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web/GlobalClient", "GetAllHostingEnvironments", nil, "Failure preparing request")
@@ -243,7 +243,7 @@ func (client GlobalClient) GetAllHostingEnvironments() (result HostingEnvironmen
 
 	result, err = client.GetAllHostingEnvironmentsResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "web/GlobalClient", "GetAllHostingEnvironments", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "web/GlobalClient", "GetAllHostingEnvironments", resp, "Failure responding to request")
 	}
 
 	return
@@ -271,7 +271,7 @@ func (client GlobalClient) GetAllHostingEnvironmentsPreparer() (*http.Request, e
 // GetAllHostingEnvironmentsSender sends the GetAllHostingEnvironments request. The method will close the
 // http.Response Body if it receives an error.
 func (client GlobalClient) GetAllHostingEnvironmentsSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // GetAllHostingEnvironmentsResponder handles the response to the GetAllHostingEnvironments request. The method always
@@ -289,7 +289,7 @@ func (client GlobalClient) GetAllHostingEnvironmentsResponder(resp *http.Respons
 
 // GetAllManagedHostingEnvironments sends the get all managed hosting
 // environments request.
-func (client GlobalClient) GetAllManagedHostingEnvironments() (result ManagedHostingEnvironmentCollection, ae error) {
+func (client GlobalClient) GetAllManagedHostingEnvironments() (result ManagedHostingEnvironmentCollection, err error) {
 	req, err := client.GetAllManagedHostingEnvironmentsPreparer()
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web/GlobalClient", "GetAllManagedHostingEnvironments", nil, "Failure preparing request")
@@ -303,7 +303,7 @@ func (client GlobalClient) GetAllManagedHostingEnvironments() (result ManagedHos
 
 	result, err = client.GetAllManagedHostingEnvironmentsResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "web/GlobalClient", "GetAllManagedHostingEnvironments", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "web/GlobalClient", "GetAllManagedHostingEnvironments", resp, "Failure responding to request")
 	}
 
 	return
@@ -331,7 +331,7 @@ func (client GlobalClient) GetAllManagedHostingEnvironmentsPreparer() (*http.Req
 // GetAllManagedHostingEnvironmentsSender sends the GetAllManagedHostingEnvironments request. The method will close the
 // http.Response Body if it receives an error.
 func (client GlobalClient) GetAllManagedHostingEnvironmentsSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // GetAllManagedHostingEnvironmentsResponder handles the response to the GetAllManagedHostingEnvironments request. The method always
@@ -352,7 +352,7 @@ func (client GlobalClient) GetAllManagedHostingEnvironmentsResponder(resp *http.
 // detailed is false to return a subset of App Service Plan properties, true
 // to return all of the properties.
 // Retrieval of all properties may increase the API latency.
-func (client GlobalClient) GetAllServerFarms(detailed *bool) (result ServerFarmCollection, ae error) {
+func (client GlobalClient) GetAllServerFarms(detailed *bool) (result ServerFarmCollection, err error) {
 	req, err := client.GetAllServerFarmsPreparer(detailed)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web/GlobalClient", "GetAllServerFarms", nil, "Failure preparing request")
@@ -366,7 +366,7 @@ func (client GlobalClient) GetAllServerFarms(detailed *bool) (result ServerFarmC
 
 	result, err = client.GetAllServerFarmsResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "web/GlobalClient", "GetAllServerFarms", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "web/GlobalClient", "GetAllServerFarms", resp, "Failure responding to request")
 	}
 
 	return
@@ -397,7 +397,7 @@ func (client GlobalClient) GetAllServerFarmsPreparer(detailed *bool) (*http.Requ
 // GetAllServerFarmsSender sends the GetAllServerFarms request. The method will close the
 // http.Response Body if it receives an error.
 func (client GlobalClient) GetAllServerFarmsSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // GetAllServerFarmsResponder handles the response to the GetAllServerFarms request. The method always
@@ -414,7 +414,7 @@ func (client GlobalClient) GetAllServerFarmsResponder(resp *http.Response) (resu
 }
 
 // GetAllSites sends the get all sites request.
-func (client GlobalClient) GetAllSites() (result SiteCollection, ae error) {
+func (client GlobalClient) GetAllSites() (result SiteCollection, err error) {
 	req, err := client.GetAllSitesPreparer()
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web/GlobalClient", "GetAllSites", nil, "Failure preparing request")
@@ -428,7 +428,7 @@ func (client GlobalClient) GetAllSites() (result SiteCollection, ae error) {
 
 	result, err = client.GetAllSitesResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "web/GlobalClient", "GetAllSites", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "web/GlobalClient", "GetAllSites", resp, "Failure responding to request")
 	}
 
 	return
@@ -456,7 +456,7 @@ func (client GlobalClient) GetAllSitesPreparer() (*http.Request, error) {
 // GetAllSitesSender sends the GetAllSites request. The method will close the
 // http.Response Body if it receives an error.
 func (client GlobalClient) GetAllSitesSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // GetAllSitesResponder handles the response to the GetAllSites request. The method always
@@ -473,7 +473,7 @@ func (client GlobalClient) GetAllSitesResponder(resp *http.Response) (result Sit
 }
 
 // GetSubscriptionGeoRegions sends the get subscription geo regions request.
-func (client GlobalClient) GetSubscriptionGeoRegions() (result GeoRegionCollection, ae error) {
+func (client GlobalClient) GetSubscriptionGeoRegions() (result GeoRegionCollection, err error) {
 	req, err := client.GetSubscriptionGeoRegionsPreparer()
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web/GlobalClient", "GetSubscriptionGeoRegions", nil, "Failure preparing request")
@@ -487,7 +487,7 @@ func (client GlobalClient) GetSubscriptionGeoRegions() (result GeoRegionCollecti
 
 	result, err = client.GetSubscriptionGeoRegionsResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "web/GlobalClient", "GetSubscriptionGeoRegions", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "web/GlobalClient", "GetSubscriptionGeoRegions", resp, "Failure responding to request")
 	}
 
 	return
@@ -515,7 +515,7 @@ func (client GlobalClient) GetSubscriptionGeoRegionsPreparer() (*http.Request, e
 // GetSubscriptionGeoRegionsSender sends the GetSubscriptionGeoRegions request. The method will close the
 // http.Response Body if it receives an error.
 func (client GlobalClient) GetSubscriptionGeoRegionsSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // GetSubscriptionGeoRegionsResponder handles the response to the GetSubscriptionGeoRegions request. The method always
@@ -533,7 +533,7 @@ func (client GlobalClient) GetSubscriptionGeoRegionsResponder(resp *http.Respons
 
 // GetSubscriptionPublishingCredentials sends the get subscription publishing
 // credentials request.
-func (client GlobalClient) GetSubscriptionPublishingCredentials() (result User, ae error) {
+func (client GlobalClient) GetSubscriptionPublishingCredentials() (result User, err error) {
 	req, err := client.GetSubscriptionPublishingCredentialsPreparer()
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web/GlobalClient", "GetSubscriptionPublishingCredentials", nil, "Failure preparing request")
@@ -547,7 +547,7 @@ func (client GlobalClient) GetSubscriptionPublishingCredentials() (result User, 
 
 	result, err = client.GetSubscriptionPublishingCredentialsResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "web/GlobalClient", "GetSubscriptionPublishingCredentials", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "web/GlobalClient", "GetSubscriptionPublishingCredentials", resp, "Failure responding to request")
 	}
 
 	return
@@ -575,7 +575,7 @@ func (client GlobalClient) GetSubscriptionPublishingCredentialsPreparer() (*http
 // GetSubscriptionPublishingCredentialsSender sends the GetSubscriptionPublishingCredentials request. The method will close the
 // http.Response Body if it receives an error.
 func (client GlobalClient) GetSubscriptionPublishingCredentialsSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // GetSubscriptionPublishingCredentialsResponder handles the response to the GetSubscriptionPublishingCredentials request. The method always
@@ -595,7 +595,7 @@ func (client GlobalClient) GetSubscriptionPublishingCredentialsResponder(resp *h
 // available request.
 //
 // name is hosting environment name
-func (client GlobalClient) IsHostingEnvironmentNameAvailable(name string) (result ObjectSet, ae error) {
+func (client GlobalClient) IsHostingEnvironmentNameAvailable(name string) (result ObjectSet, err error) {
 	req, err := client.IsHostingEnvironmentNameAvailablePreparer(name)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web/GlobalClient", "IsHostingEnvironmentNameAvailable", nil, "Failure preparing request")
@@ -609,7 +609,7 @@ func (client GlobalClient) IsHostingEnvironmentNameAvailable(name string) (resul
 
 	result, err = client.IsHostingEnvironmentNameAvailableResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "web/GlobalClient", "IsHostingEnvironmentNameAvailable", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "web/GlobalClient", "IsHostingEnvironmentNameAvailable", resp, "Failure responding to request")
 	}
 
 	return
@@ -638,7 +638,7 @@ func (client GlobalClient) IsHostingEnvironmentNameAvailablePreparer(name string
 // IsHostingEnvironmentNameAvailableSender sends the IsHostingEnvironmentNameAvailable request. The method will close the
 // http.Response Body if it receives an error.
 func (client GlobalClient) IsHostingEnvironmentNameAvailableSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // IsHostingEnvironmentNameAvailableResponder handles the response to the IsHostingEnvironmentNameAvailable request. The method always
@@ -658,7 +658,7 @@ func (client GlobalClient) IsHostingEnvironmentNameAvailableResponder(resp *http
 // environment with legacy name available request.
 //
 // name is hosting environment name
-func (client GlobalClient) IsHostingEnvironmentWithLegacyNameAvailable(name string) (result ObjectSet, ae error) {
+func (client GlobalClient) IsHostingEnvironmentWithLegacyNameAvailable(name string) (result ObjectSet, err error) {
 	req, err := client.IsHostingEnvironmentWithLegacyNameAvailablePreparer(name)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web/GlobalClient", "IsHostingEnvironmentWithLegacyNameAvailable", nil, "Failure preparing request")
@@ -672,7 +672,7 @@ func (client GlobalClient) IsHostingEnvironmentWithLegacyNameAvailable(name stri
 
 	result, err = client.IsHostingEnvironmentWithLegacyNameAvailableResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "web/GlobalClient", "IsHostingEnvironmentWithLegacyNameAvailable", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "web/GlobalClient", "IsHostingEnvironmentWithLegacyNameAvailable", resp, "Failure responding to request")
 	}
 
 	return
@@ -701,7 +701,7 @@ func (client GlobalClient) IsHostingEnvironmentWithLegacyNameAvailablePreparer(n
 // IsHostingEnvironmentWithLegacyNameAvailableSender sends the IsHostingEnvironmentWithLegacyNameAvailable request. The method will close the
 // http.Response Body if it receives an error.
 func (client GlobalClient) IsHostingEnvironmentWithLegacyNameAvailableSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // IsHostingEnvironmentWithLegacyNameAvailableResponder handles the response to the IsHostingEnvironmentWithLegacyNameAvailable request. The method always
@@ -718,7 +718,7 @@ func (client GlobalClient) IsHostingEnvironmentWithLegacyNameAvailableResponder(
 }
 
 // ListPremierAddOnOffers sends the list premier add on offers request.
-func (client GlobalClient) ListPremierAddOnOffers() (result ObjectSet, ae error) {
+func (client GlobalClient) ListPremierAddOnOffers() (result ObjectSet, err error) {
 	req, err := client.ListPremierAddOnOffersPreparer()
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web/GlobalClient", "ListPremierAddOnOffers", nil, "Failure preparing request")
@@ -732,7 +732,7 @@ func (client GlobalClient) ListPremierAddOnOffers() (result ObjectSet, ae error)
 
 	result, err = client.ListPremierAddOnOffersResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "web/GlobalClient", "ListPremierAddOnOffers", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "web/GlobalClient", "ListPremierAddOnOffers", resp, "Failure responding to request")
 	}
 
 	return
@@ -760,7 +760,7 @@ func (client GlobalClient) ListPremierAddOnOffersPreparer() (*http.Request, erro
 // ListPremierAddOnOffersSender sends the ListPremierAddOnOffers request. The method will close the
 // http.Response Body if it receives an error.
 func (client GlobalClient) ListPremierAddOnOffersSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // ListPremierAddOnOffersResponder handles the response to the ListPremierAddOnOffers request. The method always
@@ -780,7 +780,7 @@ func (client GlobalClient) ListPremierAddOnOffersResponder(resp *http.Response) 
 // publishing credentials request.
 //
 // requestMessage is requestMessage with new publishing credentials
-func (client GlobalClient) UpdateSubscriptionPublishingCredentials(requestMessage User) (result User, ae error) {
+func (client GlobalClient) UpdateSubscriptionPublishingCredentials(requestMessage User) (result User, err error) {
 	req, err := client.UpdateSubscriptionPublishingCredentialsPreparer(requestMessage)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web/GlobalClient", "UpdateSubscriptionPublishingCredentials", nil, "Failure preparing request")
@@ -794,7 +794,7 @@ func (client GlobalClient) UpdateSubscriptionPublishingCredentials(requestMessag
 
 	result, err = client.UpdateSubscriptionPublishingCredentialsResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "web/GlobalClient", "UpdateSubscriptionPublishingCredentials", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "web/GlobalClient", "UpdateSubscriptionPublishingCredentials", resp, "Failure responding to request")
 	}
 
 	return
@@ -823,7 +823,7 @@ func (client GlobalClient) UpdateSubscriptionPublishingCredentialsPreparer(reque
 // UpdateSubscriptionPublishingCredentialsSender sends the UpdateSubscriptionPublishingCredentials request. The method will close the
 // http.Response Body if it receives an error.
 func (client GlobalClient) UpdateSubscriptionPublishingCredentialsSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // UpdateSubscriptionPublishingCredentialsResponder handles the response to the UpdateSubscriptionPublishingCredentials request. The method always

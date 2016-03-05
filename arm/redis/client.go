@@ -1,7 +1,7 @@
 // Package redis implements the Azure ARM Redis service API version 2015-08-01.
 //
 // .Net client wrapper for the REST API for Azure Redis Cache Management
-// Service.
+// Service
 package redis
 
 // Copyright (c) Microsoft and contributors.  All rights reserved.
@@ -64,7 +64,7 @@ func NewWithBaseURI(baseURI string, subscriptionID string) ManagementClient {
 // resourceGroupName is the name of the resource group. name is the name of
 // the redis cache. parameters is parameters supplied to the CreateOrUpdate
 // redis operation.
-func (client ManagementClient) CreateOrUpdate(resourceGroupName string, name string, parameters CreateOrUpdateParameters) (result ResourceWithAccessKey, ae error) {
+func (client ManagementClient) CreateOrUpdate(resourceGroupName string, name string, parameters CreateOrUpdateParameters) (result ResourceWithAccessKey, err error) {
 	req, err := client.CreateOrUpdatePreparer(resourceGroupName, name, parameters)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "redis/ManagementClient", "CreateOrUpdate", nil, "Failure preparing request")
@@ -78,7 +78,7 @@ func (client ManagementClient) CreateOrUpdate(resourceGroupName string, name str
 
 	result, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "redis/ManagementClient", "CreateOrUpdate", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "redis/ManagementClient", "CreateOrUpdate", resp, "Failure responding to request")
 	}
 
 	return
@@ -109,7 +109,7 @@ func (client ManagementClient) CreateOrUpdatePreparer(resourceGroupName string, 
 // CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
 // http.Response Body if it receives an error.
 func (client ManagementClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
@@ -129,7 +129,7 @@ func (client ManagementClient) CreateOrUpdateResponder(resp *http.Response) (res
 //
 // resourceGroupName is the name of the resource group. name is the name of
 // the redis cache.
-func (client ManagementClient) Delete(resourceGroupName string, name string) (result autorest.Response, ae error) {
+func (client ManagementClient) Delete(resourceGroupName string, name string) (result autorest.Response, err error) {
 	req, err := client.DeletePreparer(resourceGroupName, name)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "redis/ManagementClient", "Delete", nil, "Failure preparing request")
@@ -143,7 +143,7 @@ func (client ManagementClient) Delete(resourceGroupName string, name string) (re
 
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "redis/ManagementClient", "Delete", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "redis/ManagementClient", "Delete", resp, "Failure responding to request")
 	}
 
 	return
@@ -173,7 +173,7 @@ func (client ManagementClient) DeletePreparer(resourceGroupName string, name str
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
 func (client ManagementClient) DeleteSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // DeleteResponder handles the response to the Delete request. The method always
@@ -192,7 +192,7 @@ func (client ManagementClient) DeleteResponder(resp *http.Response) (result auto
 //
 // resourceGroupName is the name of the resource group. name is the name of
 // the redis cache.
-func (client ManagementClient) Get(resourceGroupName string, name string) (result ResourceType, ae error) {
+func (client ManagementClient) Get(resourceGroupName string, name string) (result ResourceType, err error) {
 	req, err := client.GetPreparer(resourceGroupName, name)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "redis/ManagementClient", "Get", nil, "Failure preparing request")
@@ -206,7 +206,7 @@ func (client ManagementClient) Get(resourceGroupName string, name string) (resul
 
 	result, err = client.GetResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "redis/ManagementClient", "Get", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "redis/ManagementClient", "Get", resp, "Failure responding to request")
 	}
 
 	return
@@ -236,7 +236,7 @@ func (client ManagementClient) GetPreparer(resourceGroupName string, name string
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client ManagementClient) GetSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // GetResponder handles the response to the Get request. The method always
@@ -253,7 +253,7 @@ func (client ManagementClient) GetResponder(resp *http.Response) (result Resourc
 }
 
 // List gets all redis caches in the specified subscription.
-func (client ManagementClient) List() (result ListResult, ae error) {
+func (client ManagementClient) List() (result ListResult, err error) {
 	req, err := client.ListPreparer()
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "redis/ManagementClient", "List", nil, "Failure preparing request")
@@ -267,7 +267,7 @@ func (client ManagementClient) List() (result ListResult, ae error) {
 
 	result, err = client.ListResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "redis/ManagementClient", "List", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "redis/ManagementClient", "List", resp, "Failure responding to request")
 	}
 
 	return
@@ -295,7 +295,7 @@ func (client ManagementClient) ListPreparer() (*http.Request, error) {
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
 func (client ManagementClient) ListSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // ListResponder handles the response to the List request. The method always
@@ -312,7 +312,7 @@ func (client ManagementClient) ListResponder(resp *http.Response) (result ListRe
 }
 
 // ListNextResults retrieves the next set of results, if any.
-func (client ManagementClient) ListNextResults(lastResults ListResult) (result ListResult, ae error) {
+func (client ManagementClient) ListNextResults(lastResults ListResult) (result ListResult, err error) {
 	req, err := lastResults.ListResultPreparer()
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "redis/ManagementClient", "List", nil, "Failure preparing next results request request")
@@ -329,7 +329,7 @@ func (client ManagementClient) ListNextResults(lastResults ListResult) (result L
 
 	result, err = client.ListResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "redis/ManagementClient", "List", resp, "Failure responding to next results request request")
+		err = autorest.NewErrorWithError(err, "redis/ManagementClient", "List", resp, "Failure responding to next results request request")
 	}
 
 	return
@@ -338,7 +338,7 @@ func (client ManagementClient) ListNextResults(lastResults ListResult) (result L
 // ListByResourceGroup gets all redis caches in a resource group.
 //
 // resourceGroupName is the name of the resource group.
-func (client ManagementClient) ListByResourceGroup(resourceGroupName string) (result ListResult, ae error) {
+func (client ManagementClient) ListByResourceGroup(resourceGroupName string) (result ListResult, err error) {
 	req, err := client.ListByResourceGroupPreparer(resourceGroupName)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "redis/ManagementClient", "ListByResourceGroup", nil, "Failure preparing request")
@@ -352,7 +352,7 @@ func (client ManagementClient) ListByResourceGroup(resourceGroupName string) (re
 
 	result, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "redis/ManagementClient", "ListByResourceGroup", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "redis/ManagementClient", "ListByResourceGroup", resp, "Failure responding to request")
 	}
 
 	return
@@ -381,7 +381,7 @@ func (client ManagementClient) ListByResourceGroupPreparer(resourceGroupName str
 // ListByResourceGroupSender sends the ListByResourceGroup request. The method will close the
 // http.Response Body if it receives an error.
 func (client ManagementClient) ListByResourceGroupSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // ListByResourceGroupResponder handles the response to the ListByResourceGroup request. The method always
@@ -398,7 +398,7 @@ func (client ManagementClient) ListByResourceGroupResponder(resp *http.Response)
 }
 
 // ListByResourceGroupNextResults retrieves the next set of results, if any.
-func (client ManagementClient) ListByResourceGroupNextResults(lastResults ListResult) (result ListResult, ae error) {
+func (client ManagementClient) ListByResourceGroupNextResults(lastResults ListResult) (result ListResult, err error) {
 	req, err := lastResults.ListResultPreparer()
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "redis/ManagementClient", "ListByResourceGroup", nil, "Failure preparing next results request request")
@@ -415,7 +415,7 @@ func (client ManagementClient) ListByResourceGroupNextResults(lastResults ListRe
 
 	result, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "redis/ManagementClient", "ListByResourceGroup", resp, "Failure responding to next results request request")
+		err = autorest.NewErrorWithError(err, "redis/ManagementClient", "ListByResourceGroup", resp, "Failure responding to next results request request")
 	}
 
 	return
@@ -426,7 +426,7 @@ func (client ManagementClient) ListByResourceGroupNextResults(lastResults ListRe
 //
 // resourceGroupName is the name of the resource group. name is the name of
 // the redis cache.
-func (client ManagementClient) ListKeys(resourceGroupName string, name string) (result ListKeysResult, ae error) {
+func (client ManagementClient) ListKeys(resourceGroupName string, name string) (result ListKeysResult, err error) {
 	req, err := client.ListKeysPreparer(resourceGroupName, name)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "redis/ManagementClient", "ListKeys", nil, "Failure preparing request")
@@ -440,7 +440,7 @@ func (client ManagementClient) ListKeys(resourceGroupName string, name string) (
 
 	result, err = client.ListKeysResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "redis/ManagementClient", "ListKeys", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "redis/ManagementClient", "ListKeys", resp, "Failure responding to request")
 	}
 
 	return
@@ -470,7 +470,7 @@ func (client ManagementClient) ListKeysPreparer(resourceGroupName string, name s
 // ListKeysSender sends the ListKeys request. The method will close the
 // http.Response Body if it receives an error.
 func (client ManagementClient) ListKeysSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // ListKeysResponder handles the response to the ListKeys request. The method always
@@ -491,7 +491,7 @@ func (client ManagementClient) ListKeysResponder(resp *http.Response) (result Li
 //
 // resourceGroupName is the name of the resource group. name is the name of
 // the redis cache. parameters is specifies which key to reset.
-func (client ManagementClient) RegenerateKey(resourceGroupName string, name string, parameters RegenerateKeyParameters) (result ListKeysResult, ae error) {
+func (client ManagementClient) RegenerateKey(resourceGroupName string, name string, parameters RegenerateKeyParameters) (result ListKeysResult, err error) {
 	req, err := client.RegenerateKeyPreparer(resourceGroupName, name, parameters)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "redis/ManagementClient", "RegenerateKey", nil, "Failure preparing request")
@@ -505,7 +505,7 @@ func (client ManagementClient) RegenerateKey(resourceGroupName string, name stri
 
 	result, err = client.RegenerateKeyResponder(resp)
 	if err != nil {
-		ae = autorest.NewErrorWithError(err, "redis/ManagementClient", "RegenerateKey", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "redis/ManagementClient", "RegenerateKey", resp, "Failure responding to request")
 	}
 
 	return
@@ -536,7 +536,7 @@ func (client ManagementClient) RegenerateKeyPreparer(resourceGroupName string, n
 // RegenerateKeySender sends the RegenerateKey request. The method will close the
 // http.Response Body if it receives an error.
 func (client ManagementClient) RegenerateKeySender(req *http.Request) (*http.Response, error) {
-	return client.Send(req)
+	return autorest.SendWithSender(client, req)
 }
 
 // RegenerateKeyResponder handles the response to the RegenerateKey request. The method always

@@ -288,7 +288,7 @@ type SharedAccessAuthorizationRuleProperties struct {
 	Rights       *[]AccessRights `json:"rights,omitempty"`
 	CreatedTime  *date.Time      `json:"createdTime,omitempty"`
 	ModifiedTime *date.Time      `json:"modifiedTime,omitempty"`
-	Revision     *int            `json:"revision,omitempty"`
+	Revision     *int32          `json:"revision,omitempty"`
 }
 
 // SharedAccessAuthorizationRuleResource is description of a Namespace

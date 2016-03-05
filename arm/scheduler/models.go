@@ -308,8 +308,8 @@ type JobCollectionProperties struct {
 
 // JobCollectionQuota is
 type JobCollectionQuota struct {
-	MaxJobCount      *int              `json:"maxJobCount,omitempty"`
-	MaxJobOccurrence *int              `json:"maxJobOccurrence,omitempty"`
+	MaxJobCount      *int32            `json:"maxJobCount,omitempty"`
+	MaxJobOccurrence *int32            `json:"maxJobOccurrence,omitempty"`
 	MaxRecurrence    *JobMaxRecurrence `json:"maxRecurrence,omitempty"`
 }
 
@@ -348,8 +348,8 @@ type JobHistoryDefinitionProperties struct {
 	ActionName            JobHistoryActionName `json:"actionName,omitempty"`
 	Status                JobExecutionStatus   `json:"status,omitempty"`
 	Message               *string              `json:"message,omitempty"`
-	RetryCount            *int                 `json:"retryCount,omitempty"`
-	RepeatCount           *int                 `json:"repeatCount,omitempty"`
+	RetryCount            *int32               `json:"retryCount,omitempty"`
+	RepeatCount           *int32               `json:"repeatCount,omitempty"`
 }
 
 // JobHistoryFilter is
@@ -398,7 +398,7 @@ func (client JobListResult) JobListResultPreparer() (*http.Request, error) {
 // JobMaxRecurrence is
 type JobMaxRecurrence struct {
 	Frequency RecurrenceFrequency `json:"frequency,omitempty"`
-	Interval  *int                `json:"interval,omitempty"`
+	Interval  *int32              `json:"interval,omitempty"`
 }
 
 // JobProperties is
@@ -413,8 +413,8 @@ type JobProperties struct {
 // JobRecurrence is
 type JobRecurrence struct {
 	Frequency RecurrenceFrequency    `json:"frequency,omitempty"`
-	Interval  *int                   `json:"interval,omitempty"`
-	Count     *int                   `json:"count,omitempty"`
+	Interval  *int32                 `json:"interval,omitempty"`
+	Count     *int32                 `json:"count,omitempty"`
 	EndTime   *date.Time             `json:"endTime,omitempty"`
 	Schedule  *JobRecurrenceSchedule `json:"schedule,omitempty"`
 }
@@ -422,16 +422,16 @@ type JobRecurrence struct {
 // JobRecurrenceSchedule is
 type JobRecurrenceSchedule struct {
 	WeekDays           *[]DayOfWeek                              `json:"weekDays,omitempty"`
-	Hours              *[]int                                    `json:"hours,omitempty"`
-	Minutes            *[]int                                    `json:"minutes,omitempty"`
-	MonthDays          *[]int                                    `json:"monthDays,omitempty"`
+	Hours              *[]int32                                  `json:"hours,omitempty"`
+	Minutes            *[]int32                                  `json:"minutes,omitempty"`
+	MonthDays          *[]int32                                  `json:"monthDays,omitempty"`
 	MonthlyOccurrences *[]JobRecurrenceScheduleMonthlyOccurrence `json:"monthlyOccurrences,omitempty"`
 }
 
 // JobRecurrenceScheduleMonthlyOccurrence is
 type JobRecurrenceScheduleMonthlyOccurrence struct {
 	Day        JobScheduleDay `json:"day,omitempty"`
-	Occurrence *int           `json:"Occurrence,omitempty"`
+	Occurrence *int32         `json:"Occurrence,omitempty"`
 }
 
 // JobStateFilter is
@@ -441,9 +441,9 @@ type JobStateFilter struct {
 
 // JobStatus is
 type JobStatus struct {
-	ExecutionCount    *int       `json:"executionCount,omitempty"`
-	FailureCount      *int       `json:"failureCount,omitempty"`
-	FaultedCount      *int       `json:"faultedCount,omitempty"`
+	ExecutionCount    *int32     `json:"executionCount,omitempty"`
+	FailureCount      *int32     `json:"failureCount,omitempty"`
+	FaultedCount      *int32     `json:"faultedCount,omitempty"`
 	LastExecutionTime *date.Time `json:"lastExecutionTime,omitempty"`
 	NextExecutionTime *date.Time `json:"nextExecutionTime,omitempty"`
 }
@@ -461,7 +461,7 @@ type OAuthAuthentication struct {
 type RetryPolicy struct {
 	RetryType     RetryType `json:"retryType,omitempty"`
 	RetryInterval *string   `json:"retryInterval,omitempty"`
-	RetryCount    *int      `json:"retryCount,omitempty"`
+	RetryCount    *int32    `json:"retryCount,omitempty"`
 }
 
 // ServiceBusAuthentication is

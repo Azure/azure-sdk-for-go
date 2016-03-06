@@ -825,13 +825,17 @@ func (b BlobStorageClient) PutAppendBlob(container, name string, extraHeaders ma
 // AppendBlock appends a block to an append blob.
 //
 // See https://msdn.microsoft.com/en-us/library/azure/mt427365.aspx
-func (b BlobStorageClient) AppendBlock(container, name string, chunk []byte) error {
+func (b BlobStorageClient) AppendBlock(container, name string, chunk []byte, extraHeaders map[string]string) error {
 	path := fmt.Sprintf("%s/%s", container, name)
 	uri := b.client.getEndpoint(blobServiceName, path, url.Values{"comp": {"appendblock"}})
 	headers := b.client.getStandardHeaders()
 	headers["x-ms-blob-type"] = string(BlobTypeAppend)
 	headers["Content-Length"] = fmt.Sprintf("%v", len(chunk))
 
+	for k, v := range extraHeaders {
+		headers[k] = v
+	}
+	
 	resp, err := b.client.exec("PUT", uri, headers, bytes.NewReader(chunk))
 	if err != nil {
 		return err

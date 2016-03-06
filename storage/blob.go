@@ -835,7 +835,7 @@ func (b BlobStorageClient) AppendBlock(container, name string, chunk []byte, ext
 	for k, v := range extraHeaders {
 		headers[k] = v
 	}
-	
+
 	resp, err := b.client.exec("PUT", uri, headers, bytes.NewReader(chunk))
 	if err != nil {
 		return err

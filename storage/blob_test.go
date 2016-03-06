@@ -682,7 +682,7 @@ func (s *StorageBlobSuite) TestPutAppendBlobAppendBlocks(c *chk.C) {
 	chunk2 := []byte(randString(512))
 
 	// Append first block
-	c.Assert(cli.AppendBlock(cnt, blob, chunk1), chk.IsNil)
+	c.Assert(cli.AppendBlock(cnt, blob, chunk1, nil), chk.IsNil)
 
 	// Verify contents
 	out, err := cli.GetBlobRange(cnt, blob, fmt.Sprintf("%v-%v", 0, len(chunk1)-1))
@@ -694,7 +694,7 @@ func (s *StorageBlobSuite) TestPutAppendBlobAppendBlocks(c *chk.C) {
 	out.Close()
 
 	// Append second block
-	c.Assert(cli.AppendBlock(cnt, blob, chunk2), chk.IsNil)
+	c.Assert(cli.AppendBlock(cnt, blob, chunk2, nil), chk.IsNil)
 
 	// Verify contents
 	out, err = cli.GetBlobRange(cnt, blob, fmt.Sprintf("%v-%v", 0, len(chunk1)+len(chunk2)-1))

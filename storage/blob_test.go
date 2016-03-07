@@ -572,8 +572,8 @@ func (s *StorageBlobSuite) TestPutPagesUpdate(c *chk.C) {
 	chunk2 := []byte(randString(512))
 
 	// Append chunks
-	c.Assert(cli.PutPage(cnt, blob, 0, int64(len(chunk1)-1), PageWriteTypeUpdate, chunk1), chk.IsNil)
-	c.Assert(cli.PutPage(cnt, blob, int64(len(chunk1)), int64(len(chunk1)+len(chunk2)-1), PageWriteTypeUpdate, chunk2), chk.IsNil)
+	c.Assert(cli.PutPage(cnt, blob, 0, int64(len(chunk1)-1), PageWriteTypeUpdate, chunk1, nil), chk.IsNil)
+	c.Assert(cli.PutPage(cnt, blob, int64(len(chunk1)), int64(len(chunk1)+len(chunk2)-1), PageWriteTypeUpdate, chunk2, nil), chk.IsNil)
 
 	// Verify contents
 	out, err := cli.GetBlobRange(cnt, blob, fmt.Sprintf("%v-%v", 0, len(chunk1)+len(chunk2)-1))
@@ -586,7 +586,7 @@ func (s *StorageBlobSuite) TestPutPagesUpdate(c *chk.C) {
 
 	// Overwrite first half of chunk1
 	chunk0 := []byte(randString(512))
-	c.Assert(cli.PutPage(cnt, blob, 0, int64(len(chunk0)-1), PageWriteTypeUpdate, chunk0), chk.IsNil)
+	c.Assert(cli.PutPage(cnt, blob, 0, int64(len(chunk0)-1), PageWriteTypeUpdate, chunk0, nil), chk.IsNil)
 
 	// Verify contents
 	out, err = cli.GetBlobRange(cnt, blob, fmt.Sprintf("%v-%v", 0, len(chunk1)+len(chunk2)-1))
@@ -609,10 +609,10 @@ func (s *StorageBlobSuite) TestPutPagesClear(c *chk.C) {
 
 	// Put 0-2047
 	chunk := []byte(randString(2048))
-	c.Assert(cli.PutPage(cnt, blob, 0, 2047, PageWriteTypeUpdate, chunk), chk.IsNil)
+	c.Assert(cli.PutPage(cnt, blob, 0, 2047, PageWriteTypeUpdate, chunk, nil), chk.IsNil)
 
 	// Clear 512-1023
-	c.Assert(cli.PutPage(cnt, blob, 512, 1023, PageWriteTypeClear, nil), chk.IsNil)
+	c.Assert(cli.PutPage(cnt, blob, 512, 1023, PageWriteTypeClear, nil, nil), chk.IsNil)
 
 	// Verify contents
 	out, err := cli.GetBlobRange(cnt, blob, "0-2047")
@@ -639,14 +639,14 @@ func (s *StorageBlobSuite) TestGetPageRanges(c *chk.C) {
 	c.Assert(len(out.PageList), chk.Equals, 0)
 
 	// Add 0-512 page
-	c.Assert(cli.PutPage(cnt, blob, 0, 511, PageWriteTypeUpdate, []byte(randString(512))), chk.IsNil)
+	c.Assert(cli.PutPage(cnt, blob, 0, 511, PageWriteTypeUpdate, []byte(randString(512)), nil), chk.IsNil)
 
 	out, err = cli.GetPageRanges(cnt, blob)
 	c.Assert(err, chk.IsNil)
 	c.Assert(len(out.PageList), chk.Equals, 1)
 
 	// Add 1024-2048
-	c.Assert(cli.PutPage(cnt, blob, 1024, 2047, PageWriteTypeUpdate, []byte(randString(1024))), chk.IsNil)
+	c.Assert(cli.PutPage(cnt, blob, 1024, 2047, PageWriteTypeUpdate, []byte(randString(1024)), nil), chk.IsNil)
 
 	out, err = cli.GetPageRanges(cnt, blob)
 	c.Assert(err, chk.IsNil)

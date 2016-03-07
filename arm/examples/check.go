@@ -6,11 +6,11 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/Azure/azure-sdk-for-go/Godeps/_workspace/src/github.com/Azure/go-autorest/autorest"
-	"github.com/Azure/azure-sdk-for-go/Godeps/_workspace/src/github.com/Azure/go-autorest/autorest/azure"
-	"github.com/Azure/azure-sdk-for-go/Godeps/_workspace/src/github.com/Azure/go-autorest/autorest/to"
 	"github.com/Azure/azure-sdk-for-go/arm/examples/helpers"
 	"github.com/Azure/azure-sdk-for-go/arm/storage"
+	"github.com/Azure/go-autorest/autorest"
+	"github.com/Azure/go-autorest/autorest/azure"
+	"github.com/Azure/go-autorest/autorest/to"
 )
 
 func withInspection() autorest.PrepareDecorator {
@@ -39,7 +39,7 @@ func checkName(name string) {
 
 	ac := storage.NewAccountsClient(c["subscriptionID"])
 
-	spt, err := helpers.NewServicePrincipalTokenFromCredentials(c, azure.AzureResourceManagerScope)
+	spt, err := helpers.NewServicePrincipalTokenFromCredentials(c, azure.PublicCloud.ResourceManagerEndpoint)
 	if err != nil {
 		log.Fatalf("Error: %v", err)
 	}
@@ -50,7 +50,6 @@ func checkName(name string) {
 
 	ac.RequestInspector = withInspection()
 	ac.ResponseInspector = byInspecting()
-
 	cna, err := ac.CheckNameAvailability(
 		storage.AccountCheckNameAvailabilityParameters{
 			Name: to.StringPtr(name),

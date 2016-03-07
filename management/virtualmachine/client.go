@@ -9,12 +9,14 @@ import (
 )
 
 const (
-	azureDeploymentListURL   = "services/hostedservices/%s/deployments"
-	azureDeploymentURL       = "services/hostedservices/%s/deployments/%s"
-	deleteAzureDeploymentURL = "services/hostedservices/%s/deployments/%s?comp=media"
-	azureRoleURL             = "services/hostedservices/%s/deployments/%s/roles/%s"
-	azureOperationsURL       = "services/hostedservices/%s/deployments/%s/roleinstances/%s/Operations"
-	azureRoleSizeListURL     = "rolesizes"
+	azureDeploymentListURL        = "services/hostedservices/%s/deployments"
+	azureDeploymentURL            = "services/hostedservices/%s/deployments/%s"
+	azureListDeploymentsInSlotURL = "services/hostedservices/%s/deploymentslots/Production"
+	deleteAzureDeploymentURL      = "services/hostedservices/%s/deployments/%s?comp=media"
+	azureAddRoleURL               = "services/hostedservices/%s/deployments/%s/roles"
+	azureRoleURL                  = "services/hostedservices/%s/deployments/%s/roles/%s"
+	azureOperationsURL            = "services/hostedservices/%s/deployments/%s/roleinstances/%s/Operations"
+	azureRoleSizeListURL          = "rolesizes"
 
 	errParamNotSpecified = "Parameter %s is not specified."
 )
@@ -59,6 +61,32 @@ func (vm VirtualMachineClient) CreateDeployment(
 
 	requestURL := fmt.Sprintf(azureDeploymentListURL, cloudServiceName)
 	return vm.client.SendAzurePostRequest(requestURL, data)
+}
+
+// GetDeploymentName queries an existing Azure cloud service for the name of the Deployment,
+// if any, in its 'Production' slot (the only slot possible). If none exists, it returns empty
+// string but no error
+//
+//https://msdn.microsoft.com/en-us/library/azure/ee460804.aspx
+func (vm VirtualMachineClient) GetDeploymentName(cloudServiceName string) (string, error) {
+	var deployment DeploymentResponse
+	if cloudServiceName == "" {
+		return "", fmt.Errorf(errParamNotSpecified, "cloudServiceName")
+	}
+	requestURL := fmt.Sprintf(azureListDeploymentsInSlotURL, cloudServiceName)
+	response, err := vm.client.SendAzureGetRequest(requestURL)
+	if err != nil {
+		if management.IsResourceNotFoundError(err) {
+			return "", nil
+		}
+		return "", err
+	}
+	err = xml.Unmarshal(response, &deployment)
+	if err != nil {
+		return "", err
+	}
+
+	return deployment.Name, nil
 }
 
 func (vm VirtualMachineClient) GetDeployment(cloudServiceName, deploymentName string) (DeploymentResponse, error) {
@@ -118,6 +146,25 @@ func (vm VirtualMachineClient) GetRole(cloudServiceName, deploymentName, roleNam
 	return role, nil
 }
 
+// AddRole adds a Virtual Machine to a deployment of Virtual Machines, where role name = VM name
+// See https://msdn.microsoft.com/en-us/library/azure/jj157186.aspx
+func (vm VirtualMachineClient) AddRole(cloudServiceName string, deploymentName string, role Role) (management.OperationID, error) {
+	if cloudServiceName == "" {
+		return "", fmt.Errorf(errParamNotSpecified, "cloudServiceName")
+	}
+	if deploymentName == "" {
+		return "", fmt.Errorf(errParamNotSpecified, "deploymentName")
+	}
+
+	data, err := xml.Marshal(PersistentVMRole{Role: role})
+	if err != nil {
+		return "", err
+	}
+
+	requestURL := fmt.Sprintf(azureAddRoleURL, cloudServiceName, deploymentName)
+	return vm.client.SendAzurePostRequest(requestURL, data)
+}
+
 // UpdateRole updates the configuration of the specified virtual machine
 // See https://msdn.microsoft.com/en-us/library/azure/jj157187.aspx
 func (vm VirtualMachineClient) UpdateRole(cloudServiceName, deploymentName, roleName string, role Role) (management.OperationID, error) {
@@ -162,7 +209,7 @@ func (vm VirtualMachineClient) StartRole(cloudServiceName, deploymentName, roleN
 	return vm.client.SendAzurePostRequest(requestURL, startRoleOperationBytes)
 }
 
-func (vm VirtualMachineClient) ShutdownRole(cloudServiceName, deploymentName, roleName string) (management.OperationID, error) {
+func (vm VirtualMachineClient) ShutdownRole(cloudServiceName, deploymentName, roleName string, postaction PostShutdownAction) (management.OperationID, error) {
 	if cloudServiceName == "" {
 		return "", fmt.Errorf(errParamNotSpecified, "cloudServiceName")
 	}
@@ -174,7 +221,8 @@ func (vm VirtualMachineClient) ShutdownRole(cloudServiceName, deploymentName, ro
 	}
 
 	shutdownRoleOperationBytes, err := xml.Marshal(ShutdownRoleOperation{
-		OperationType: "ShutdownRoleOperation",
+		OperationType:      "ShutdownRoleOperation",
+		PostShutdownAction: postaction,
 	})
 	if err != nil {
 		return "", err
@@ -206,7 +254,7 @@ func (vm VirtualMachineClient) RestartRole(cloudServiceName, deploymentName, rol
 	return vm.client.SendAzurePostRequest(requestURL, restartRoleOperationBytes)
 }
 
-func (vm VirtualMachineClient) DeleteRole(cloudServiceName, deploymentName, roleName string) (management.OperationID, error) {
+func (vm VirtualMachineClient) DeleteRole(cloudServiceName, deploymentName, roleName string, deleteVHD bool) (management.OperationID, error) {
 	if cloudServiceName == "" {
 		return "", fmt.Errorf(errParamNotSpecified, "cloudServiceName")
 	}
@@ -218,6 +266,9 @@ func (vm VirtualMachineClient) DeleteRole(cloudServiceName, deploymentName, role
 	}
 
 	requestURL := fmt.Sprintf(azureRoleURL, cloudServiceName, deploymentName, roleName)
+	if deleteVHD {
+		requestURL += "?comp=media"
+	}
 	return vm.client.SendAzureDeleteRequest(requestURL)
 }
 

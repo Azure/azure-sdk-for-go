@@ -333,7 +333,7 @@ type ConfigurationSet struct {
 	TimeZone                  string               `xml:",omitempty"`                          // Optional. Specifies the time zone for the Virtual Machine.
 	DomainJoin                *DomainJoin          `xml:",omitempty"`                          // Optional. Contains properties that define a domain to which the Virtual Machine will be joined.
 	StoredCertificateSettings []CertificateSetting `xml:">StoredCertificateSetting,omitempty"` // Optional. Contains a list of service certificates with which to provision to the new Virtual Machine.
-	WinRMListeners            *WinRMListener       `xml:"WinRM>Listeners>Listener,omitempty"`  // Optional. Contains configuration settings for the Windows Remote Management service on the Virtual Machine. This enables remote Windows PowerShell.
+	WinRMListeners            *[]WinRMListener     `xml:"WinRM>Listeners>Listener,omitempty"`  // Optional. Contains configuration settings for the Windows Remote Management service on the Virtual Machine. This enables remote Windows PowerShell.
 	AdminUsername             string               `xml:",omitempty"`                          // Optional. Specifies the name of the administrator account that is created to access the Virtual Machine. If you are creating a Virtual Machine using an image, you must specify a name of an administrator account to be created by using this element. You must use the AdminPassword element to specify the password of the administrator account that is being created. If you are creating a Virtual Machine using an existing specialized disk, this element is not used because the account should already exist on the disk.
 	AdditionalUnattendContent string               `xml:",omitempty"`                          // Specifies additional base-64 encoded XML formatted information that can be included in the Unattend.xml file, which is used by Windows Setup.
 
@@ -468,10 +468,19 @@ type StartRoleOperation struct {
 	OperationType string
 }
 
+type PostShutdownAction string
+
+// Enum values for PostShutdownAction
+const (
+	PostShutdownActionStopped            PostShutdownAction = "Stopped"
+	PostShutdownActionStoppedDeallocated PostShutdownAction = "StoppedDeallocated"
+)
+
 // ShutdownRoleOperation contains the information for shutting down a Role.
 type ShutdownRoleOperation struct {
-	XMLName       xml.Name `xml:"http://schemas.microsoft.com/windowsazure ShutdownRoleOperation"`
-	OperationType string
+	XMLName            xml.Name `xml:"http://schemas.microsoft.com/windowsazure ShutdownRoleOperation"`
+	OperationType      string
+	PostShutdownAction PostShutdownAction
 }
 
 // RestartRoleOperation contains the information for restarting a Role.

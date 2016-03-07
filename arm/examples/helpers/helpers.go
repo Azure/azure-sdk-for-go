@@ -7,7 +7,7 @@ import (
 	"os"
 	"os/user"
 
-	"github.com/Azure/azure-sdk-for-go/Godeps/_workspace/src/github.com/Azure/go-autorest/autorest/azure"
+	"github.com/Azure/go-autorest/autorest/azure"
 )
 
 const (
@@ -24,7 +24,11 @@ func ToJSON(v interface{}) string {
 // NewServicePrincipalTokenFromCredentials creates a new ServicePrincipalToken using values of the
 // passed credentials map.
 func NewServicePrincipalTokenFromCredentials(c map[string]string, scope string) (*azure.ServicePrincipalToken, error) {
-	return azure.NewServicePrincipalToken(c["clientID"], c["clientSecret"], c["tenantID"], scope)
+	oauthConfig, err := azure.PublicCloud.OAuthConfigForTenant(c["tenantID"])
+	if err != nil {
+		panic(err)
+	}
+	return azure.NewServicePrincipalToken(*oauthConfig, c["clientID"], c["clientSecret"], scope)
 }
 
 // LoadCredentials reads credentials from a ~/.azure/credentials.json file. See the accompanying

@@ -7,7 +7,7 @@ import (
 	"fmt"
 	"io/ioutil"
 
-	"github.com/Azure/go-pkcs12"
+	"golang.org/x/crypto/pkcs12"
 )
 
 // ClientFromPublishSettingsData unmarshalls the contents of a publish settings file
@@ -60,7 +60,7 @@ func ClientFromPublishSettingsDataWithConfig(data []byte, subscriptionID string,
 					return client, err
 				}
 
-				pems, err := pkcs12.ConvertToPEM(pfxData, nil)
+				pems, err := pkcs12.ToPEM(pfxData, "")
 
 				cert := []byte{}
 				for _, b := range pems {

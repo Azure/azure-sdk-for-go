@@ -444,7 +444,7 @@ func (s *StorageBlobSuite) TestCreateBlockBlobFromReader(c *chk.C) {
 
 	name := randString(20)
 	data := randBytes(8888)
-	c.Assert(cli.CreateBlockBlobFromReader(cnt, name, uint64(len(data)), bytes.NewReader(data)), chk.IsNil)
+	c.Assert(cli.CreateBlockBlobFromReader(cnt, name, uint64(len(data)), bytes.NewReader(data), nil), chk.IsNil)
 
 	body, err := cli.GetBlob(cnt, name)
 	c.Assert(err, chk.IsNil)
@@ -463,7 +463,7 @@ func (s *StorageBlobSuite) TestCreateBlockBlobFromReaderWithShortData(c *chk.C) 
 
 	name := randString(20)
 	data := randBytes(8888)
-	err := cli.CreateBlockBlobFromReader(cnt, name, 9999, bytes.NewReader(data))
+	err := cli.CreateBlockBlobFromReader(cnt, name, 9999, bytes.NewReader(data), nil)
 	c.Assert(err, chk.Not(chk.IsNil))
 
 	_, err = cli.GetBlob(cnt, name)
@@ -549,7 +549,7 @@ func (s *StorageBlobSuite) TestPutPageBlob(c *chk.C) {
 
 	blob := randString(20)
 	size := int64(10 * 1024 * 1024)
-	c.Assert(cli.PutPageBlob(cnt, blob, size), chk.IsNil)
+	c.Assert(cli.PutPageBlob(cnt, blob, size, nil), chk.IsNil)
 
 	// Verify
 	props, err := cli.GetBlobProperties(cnt, blob)
@@ -566,14 +566,14 @@ func (s *StorageBlobSuite) TestPutPagesUpdate(c *chk.C) {
 
 	blob := randString(20)
 	size := int64(10 * 1024 * 1024) // larger than we'll use
-	c.Assert(cli.PutPageBlob(cnt, blob, size), chk.IsNil)
+	c.Assert(cli.PutPageBlob(cnt, blob, size, nil), chk.IsNil)
 
 	chunk1 := []byte(randString(1024))
 	chunk2 := []byte(randString(512))
 
 	// Append chunks
-	c.Assert(cli.PutPage(cnt, blob, 0, int64(len(chunk1)-1), PageWriteTypeUpdate, chunk1), chk.IsNil)
-	c.Assert(cli.PutPage(cnt, blob, int64(len(chunk1)), int64(len(chunk1)+len(chunk2)-1), PageWriteTypeUpdate, chunk2), chk.IsNil)
+	c.Assert(cli.PutPage(cnt, blob, 0, int64(len(chunk1)-1), PageWriteTypeUpdate, chunk1, nil), chk.IsNil)
+	c.Assert(cli.PutPage(cnt, blob, int64(len(chunk1)), int64(len(chunk1)+len(chunk2)-1), PageWriteTypeUpdate, chunk2, nil), chk.IsNil)
 
 	// Verify contents
 	out, err := cli.GetBlobRange(cnt, blob, fmt.Sprintf("%v-%v", 0, len(chunk1)+len(chunk2)-1))
@@ -586,7 +586,7 @@ func (s *StorageBlobSuite) TestPutPagesUpdate(c *chk.C) {
 
 	// Overwrite first half of chunk1
 	chunk0 := []byte(randString(512))
-	c.Assert(cli.PutPage(cnt, blob, 0, int64(len(chunk0)-1), PageWriteTypeUpdate, chunk0), chk.IsNil)
+	c.Assert(cli.PutPage(cnt, blob, 0, int64(len(chunk0)-1), PageWriteTypeUpdate, chunk0, nil), chk.IsNil)
 
 	// Verify contents
 	out, err = cli.GetBlobRange(cnt, blob, fmt.Sprintf("%v-%v", 0, len(chunk1)+len(chunk2)-1))
@@ -605,14 +605,14 @@ func (s *StorageBlobSuite) TestPutPagesClear(c *chk.C) {
 
 	blob := randString(20)
 	size := int64(10 * 1024 * 1024) // larger than we'll use
-	c.Assert(cli.PutPageBlob(cnt, blob, size), chk.IsNil)
+	c.Assert(cli.PutPageBlob(cnt, blob, size, nil), chk.IsNil)
 
 	// Put 0-2047
 	chunk := []byte(randString(2048))
-	c.Assert(cli.PutPage(cnt, blob, 0, 2047, PageWriteTypeUpdate, chunk), chk.IsNil)
+	c.Assert(cli.PutPage(cnt, blob, 0, 2047, PageWriteTypeUpdate, chunk, nil), chk.IsNil)
 
 	// Clear 512-1023
-	c.Assert(cli.PutPage(cnt, blob, 512, 1023, PageWriteTypeClear, nil), chk.IsNil)
+	c.Assert(cli.PutPage(cnt, blob, 512, 1023, PageWriteTypeClear, nil, nil), chk.IsNil)
 
 	// Verify contents
 	out, err := cli.GetBlobRange(cnt, blob, "0-2047")
@@ -631,7 +631,7 @@ func (s *StorageBlobSuite) TestGetPageRanges(c *chk.C) {
 
 	blob := randString(20)
 	size := int64(10 * 1024 * 1024) // larger than we'll use
-	c.Assert(cli.PutPageBlob(cnt, blob, size), chk.IsNil)
+	c.Assert(cli.PutPageBlob(cnt, blob, size, nil), chk.IsNil)
 
 	// Get page ranges on empty blob
 	out, err := cli.GetPageRanges(cnt, blob)
@@ -639,18 +639,71 @@ func (s *StorageBlobSuite) TestGetPageRanges(c *chk.C) {
 	c.Assert(len(out.PageList), chk.Equals, 0)
 
 	// Add 0-512 page
-	c.Assert(cli.PutPage(cnt, blob, 0, 511, PageWriteTypeUpdate, []byte(randString(512))), chk.IsNil)
+	c.Assert(cli.PutPage(cnt, blob, 0, 511, PageWriteTypeUpdate, []byte(randString(512)), nil), chk.IsNil)
 
 	out, err = cli.GetPageRanges(cnt, blob)
 	c.Assert(err, chk.IsNil)
 	c.Assert(len(out.PageList), chk.Equals, 1)
 
 	// Add 1024-2048
-	c.Assert(cli.PutPage(cnt, blob, 1024, 2047, PageWriteTypeUpdate, []byte(randString(1024))), chk.IsNil)
+	c.Assert(cli.PutPage(cnt, blob, 1024, 2047, PageWriteTypeUpdate, []byte(randString(1024)), nil), chk.IsNil)
 
 	out, err = cli.GetPageRanges(cnt, blob)
 	c.Assert(err, chk.IsNil)
 	c.Assert(len(out.PageList), chk.Equals, 2)
+}
+
+func (s *StorageBlobSuite) TestPutAppendBlob(c *chk.C) {
+	cli := getBlobClient(c)
+	cnt := randContainer()
+	c.Assert(cli.CreateContainer(cnt, ContainerAccessTypePrivate), chk.IsNil)
+	defer cli.deleteContainer(cnt)
+
+	blob := randString(20)
+	c.Assert(cli.PutAppendBlob(cnt, blob, nil), chk.IsNil)
+
+	// Verify
+	props, err := cli.GetBlobProperties(cnt, blob)
+	c.Assert(err, chk.IsNil)
+	c.Assert(props.ContentLength, chk.Equals, int64(0))
+	c.Assert(props.BlobType, chk.Equals, BlobTypeAppend)
+}
+
+func (s *StorageBlobSuite) TestPutAppendBlobAppendBlocks(c *chk.C) {
+	cli := getBlobClient(c)
+	cnt := randContainer()
+	c.Assert(cli.CreateContainer(cnt, ContainerAccessTypePrivate), chk.IsNil)
+	defer cli.deleteContainer(cnt)
+
+	blob := randString(20)
+	c.Assert(cli.PutAppendBlob(cnt, blob, nil), chk.IsNil)
+
+	chunk1 := []byte(randString(1024))
+	chunk2 := []byte(randString(512))
+
+	// Append first block
+	c.Assert(cli.AppendBlock(cnt, blob, chunk1, nil), chk.IsNil)
+
+	// Verify contents
+	out, err := cli.GetBlobRange(cnt, blob, fmt.Sprintf("%v-%v", 0, len(chunk1)-1))
+	c.Assert(err, chk.IsNil)
+	defer out.Close()
+	blobContents, err := ioutil.ReadAll(out)
+	c.Assert(err, chk.IsNil)
+	c.Assert(blobContents, chk.DeepEquals, chunk1)
+	out.Close()
+
+	// Append second block
+	c.Assert(cli.AppendBlock(cnt, blob, chunk2, nil), chk.IsNil)
+
+	// Verify contents
+	out, err = cli.GetBlobRange(cnt, blob, fmt.Sprintf("%v-%v", 0, len(chunk1)+len(chunk2)-1))
+	c.Assert(err, chk.IsNil)
+	defer out.Close()
+	blobContents, err = ioutil.ReadAll(out)
+	c.Assert(err, chk.IsNil)
+	c.Assert(blobContents, chk.DeepEquals, append(chunk1, chunk2...))
+	out.Close()
 }
 
 func deleteTestContainers(cli BlobStorageClient) error {

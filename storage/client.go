@@ -6,6 +6,7 @@ import (
 	"encoding/base64"
 	"encoding/json"
 	"encoding/xml"
+	"errors"
 	"fmt"
 	"io"
 	"io/ioutil"
@@ -13,6 +14,7 @@ import (
 	"net/url"
 	"regexp"
 	"sort"
+	"strconv"
 	"strings"
 )
 
@@ -23,7 +25,7 @@ const (
 
 	// DefaultAPIVersion is the  Azure Storage API version string used when a
 	// basic client is created.
-	DefaultAPIVersion = "2014-02-14"
+	DefaultAPIVersion = "2015-02-21"
 
 	defaultUseHTTPS = true
 
@@ -308,11 +310,15 @@ func (c Client) buildCanonicalizedResource(uri string) (string, error) {
 }
 
 func (c Client) buildCanonicalizedString(verb string, headers map[string]string, canonicalizedResource string) string {
+	contentLength := headers["Content-Length"]
+	if contentLength == "0" {
+		contentLength = ""
+	}
 	canonicalizedString := fmt.Sprintf("%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s",
 		verb,
 		headers["Content-Encoding"],
 		headers["Content-Language"],
-		headers["Content-Length"],
+		contentLength,
 		headers["Content-MD5"],
 		headers["Content-Type"],
 		headers["Date"],
@@ -339,6 +345,20 @@ func (c Client) exec(verb, url string, headers map[string]string, body io.Reader
 	}
 
 	req, err := http.NewRequest(verb, url, body)
+	if err != nil {
+		return nil, errors.New("azure/storage: error creating request: " + err.Error())
+	}
+
+	if clstr, ok := headers["Content-Length"]; ok {
+		// content length header is being signed, but completely ignored by golang.
+		// instead we have to use the ContentLength property on the request struct
+		// (see https://golang.org/src/net/http/request.go?s=18140:18370#L536 and
+		// https://golang.org/src/net/http/transfer.go?s=1739:2467#L49)
+		req.ContentLength, err = strconv.ParseInt(clstr, 10, 64)
+		if err != nil {
+			return nil, err
+		}
+	}
 	for k, v := range headers {
 		req.Header.Add(k, v)
 	}
@@ -461,7 +481,8 @@ func serviceErrFromXML(body []byte, statusCode int, requestID string) (AzureStor
 }
 
 func (e AzureStorageServiceError) Error() string {
-	return fmt.Sprintf("storage: service returned error: StatusCode=%d, ErrorCode=%s, ErrorMessage=%s, RequestId=%s", e.StatusCode, e.Code, e.Message, e.RequestID)
+	return fmt.Sprintf("storage: service returned error: StatusCode=%d, ErrorCode=%s, ErrorMessage=%s, RequestId=%s, QueryParameterName=%s, QueryParameterValue=%s",
+		e.StatusCode, e.Code, e.Message, e.RequestID, e.QueryParameterName, e.QueryParameterValue)
 }
 
 // checkRespCode returns UnexpectedStatusError if the given response code is not

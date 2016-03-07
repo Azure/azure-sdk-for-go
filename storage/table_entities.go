@@ -74,7 +74,7 @@ func (c *TableServiceClient) QueryTableEntities(tableName AzureTable, previousCo
 	}
 
 	uri := c.client.getEndpoint(tableServiceName, pathForTable(tableName), url.Values{})
-	uri += fmt.Sprintf("()?$top=%d", top)
+	uri += fmt.Sprintf("?$top=%d", top)
 	if query != "" {
 		uri += fmt.Sprintf("&$filter=%s", url.QueryEscape(query))
 	}

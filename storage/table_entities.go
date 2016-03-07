@@ -3,7 +3,6 @@ package storage
 import (
 	"bytes"
 	"encoding/json"
-	"errors"
 	"fmt"
 	"io"
 	"net/http"
@@ -70,7 +69,7 @@ type getTableEntriesResponse struct {
 // 		entities, cToken, err = tSvc.QueryTableEntities("table", cToken, reflect.TypeOf(entity), 20, "")
 func (c *TableServiceClient) QueryTableEntities(tableName AzureTable, previousContToken *ContinuationToken, retType reflect.Type, top int, query string) (*[]TableEntity, *ContinuationToken, error) {
 	if top > maxTopParameter {
-		return nil, nil, errors.New(fmt.Sprintf("Top accepts at maximum %d elements. Requested %d instead.", maxTopParameter, top))
+		return nil, nil, fmt.Errorf("Top accepts at maximum %d elements. Requested %d instead.", maxTopParameter, top)
 	}
 
 	uri := c.client.getEndpoint(tableServiceName, pathForTable(tableName), url.Values{})
@@ -134,9 +133,9 @@ func (c *TableServiceClient) InsertEntity(tableName AzureTable, entity TableEnti
 
 	if err := checkRespCode(resp.statusCode, []int{http.StatusCreated}); err != nil {
 		return err
-	} else {
-		return nil
 	}
+
+	return nil
 }
 
 // UpdateEntity updates the contents of an entity with the
@@ -146,7 +145,7 @@ func (c *TableServiceClient) UpdateEntity(table AzureTable, entity TableEntity) 
 	return c.updateOrMergeEntity(table, entity, true)
 }
 
-// UpdateEntity merges the contents of an entity with the
+// MergeEntity merges the contents of an entity with the
 // one passed as parameter.
 // The function fails if there is no entity
 // with the same PartitionKey and RowKey in the table.
@@ -184,9 +183,9 @@ func (c *TableServiceClient) updateOrMergeEntity(table AzureTable, entity TableE
 
 	if err := checkRespCode(resp.statusCode, []int{http.StatusCreated}); err != nil {
 		return err
-	} else {
-		return nil
 	}
+
+	return nil
 }
 
 // DeleteEntityWithoutCheck deletes the entity matching by
@@ -221,9 +220,9 @@ func (c *TableServiceClient) DeleteEntity(table AzureTable, entity TableEntity, 
 
 	if err := checkRespCode(resp.statusCode, []int{http.StatusNoContent}); err != nil {
 		return err
-	} else {
-		return nil
 	}
+
+	return nil
 }
 
 // InsertOrReplaceEntity inserts an entity in the specified table
@@ -232,7 +231,7 @@ func (c *TableServiceClient) InsertOrReplaceEntity(table AzureTable, entity Tabl
 	return c.insertOrReplaceOrMergeEntity(table, entity, false)
 }
 
-// InsertOrReplaceEntity inserts an entity in the specified table
+// InsertOrMergeEntity inserts an entity in the specified table
 // or merges the existing one.
 func (c *TableServiceClient) InsertOrMergeEntity(table AzureTable, entity TableEntity) error {
 	return c.insertOrReplaceOrMergeEntity(table, entity, true)
@@ -270,9 +269,9 @@ func (c *TableServiceClient) insertOrReplaceOrMergeEntity(table AzureTable, enti
 
 	if err := checkRespCode(resp.statusCode, []int{http.StatusNoContent}); err != nil {
 		return err
-	} else {
-		return nil
 	}
+
+	return nil
 }
 
 func injectPartitionAndRowKeys(entity TableEntity, buf *bytes.Buffer) error {

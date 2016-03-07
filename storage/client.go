@@ -429,17 +429,16 @@ func (c Client) execInternalJSON(verb, url string, headers map[string]string, bo
 			// no error in response body
 			err = fmt.Errorf("storage: service returned without a response body (%d)", resp.StatusCode)
 			return respToRet, err
-		} else {
-			// try unmarshal as odata.error json
-			err = json.Unmarshal(respBody, &respToRet.odata)
-			return respToRet, err
 		}
+		// try unmarshal as odata.error json
+		err = json.Unmarshal(respBody, &respToRet.odata)
+		return respToRet, err
 	}
 
 	return respToRet, nil
 }
 
-func (c Client) CreateSharedKeyLiteTable(url string, headers map[string]string) (string, error) {
+func (c Client) createSharedKeyLiteTable(url string, headers map[string]string) (string, error) {
 	can, err := c.buildCanonicalizedResourceTable(url)
 
 	if err != nil {
@@ -453,7 +452,7 @@ func (c Client) CreateSharedKeyLiteTable(url string, headers map[string]string) 
 
 func (c Client) execTable(verb, url string, headers map[string]string, body io.Reader) (*odataResponse, error) {
 	var err error
-	headers["Authorization"], err = c.CreateSharedKeyLiteTable(url, headers)
+	headers["Authorization"], err = c.createSharedKeyLiteTable(url, headers)
 	if err != nil {
 		return nil, err
 	}

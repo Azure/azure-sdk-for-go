@@ -8,7 +8,7 @@ import (
 	"net/url"
 )
 
-// QueueServiceClient contains operations for Microsoft Azure Table Storage
+// TableServiceClient contains operations for Microsoft Azure Table Storage
 // Service.
 type TableServiceClient struct {
 	client Client
@@ -97,9 +97,9 @@ func (c *TableServiceClient) CreateTable(table AzureTable) error {
 
 	if err := checkRespCode(resp.statusCode, []int{http.StatusCreated}); err != nil {
 		return err
-	} else {
-		return nil
 	}
+
+	return nil
 }
 
 // DeleteTable deletes the table given the specific
@@ -123,7 +123,7 @@ func (c *TableServiceClient) DeleteTable(table AzureTable) error {
 
 	if err := checkRespCode(resp.statusCode, []int{http.StatusNoContent}); err != nil {
 		return err
-	} else {
-		return nil
+
 	}
+	return nil
 }

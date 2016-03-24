@@ -161,8 +161,6 @@ func (c *TableServiceClient) updateOrMergeEntity(table AzureTable, entity TableE
 		return err
 	}
 
-	//	log.Printf("request.body == %s", string(buf.Bytes()))
-
 	headers["Content-Length"] = fmt.Sprintf("%d", buf.Len())
 
 	var err error

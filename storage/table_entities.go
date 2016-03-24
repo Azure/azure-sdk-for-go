@@ -241,13 +241,11 @@ func (c *TableServiceClient) insertOrReplaceOrMergeEntity(table AzureTable, enti
 
 	headers := c.getStandardHeaders()
 
-	buf := new(bytes.Buffer)
+	var buf bytes.Buffer
 
-	if err := injectPartitionAndRowKeys(entity, buf); err != nil {
+	if err := injectPartitionAndRowKeys(entity, &buf); err != nil {
 		return err
 	}
-
-	//	log.Printf("request.body == %s", string(buf.Bytes()))
 
 	headers["Content-Length"] = fmt.Sprintf("%d", buf.Len())
 
@@ -255,9 +253,9 @@ func (c *TableServiceClient) insertOrReplaceOrMergeEntity(table AzureTable, enti
 	var resp *odataResponse
 
 	if mergeInsteadOfReplace {
-		resp, err = c.client.execTable("MERGE", uri, headers, buf)
+		resp, err = c.client.execTable("MERGE", uri, headers, &buf)
 	} else {
-		resp, err = c.client.execTable("PUT", uri, headers, buf)
+		resp, err = c.client.execTable("PUT", uri, headers, &buf)
 	}
 
 	if err != nil {

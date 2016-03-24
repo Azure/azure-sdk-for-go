@@ -175,11 +175,11 @@ func (s *StorageBlobSuite) Test_InsertAndGetEntities(c *chk.C) {
 	entries, _, err := cli.QueryTableEntities(tn, nil, reflect.TypeOf(ce), 10, "")
 	c.Assert(err, chk.IsNil)
 
-	c.Assert(len(*entries), chk.Equals, 2)
+	c.Assert(len(entries), chk.Equals, 2)
 
-	c.Assert(ce.RowKey(), chk.Equals, (*entries)[1].RowKey())
+	c.Assert(ce.RowKey(), chk.Equals, entries[1].RowKey())
 
-	c.Assert((*entries)[1].(*CustomEntity), chk.DeepEquals, ce)
+	c.Assert(entries[1].(*CustomEntity), chk.DeepEquals, ce)
 }
 
 func (s *StorageBlobSuite) Test_InsertAndQueryEntities(c *chk.C) {
@@ -200,9 +200,9 @@ func (s *StorageBlobSuite) Test_InsertAndQueryEntities(c *chk.C) {
 	entries, _, err := cli.QueryTableEntities(tn, nil, reflect.TypeOf(ce), 10, "RowKey eq '200'")
 	c.Assert(err, chk.IsNil)
 
-	c.Assert(len(*entries), chk.Equals, 1)
+	c.Assert(len(entries), chk.Equals, 1)
 
-	c.Assert(ce.RowKey(), chk.Equals, (*entries)[0].RowKey())
+	c.Assert(ce.RowKey(), chk.Equals, entries[0].RowKey())
 }
 
 func (s *StorageBlobSuite) Test_InsertAndDeleteEntities(c *chk.C) {
@@ -224,17 +224,17 @@ func (s *StorageBlobSuite) Test_InsertAndDeleteEntities(c *chk.C) {
 	entries, _, err := cli.QueryTableEntities(tn, nil, reflect.TypeOf(ce), 10, "Number eq 1")
 	c.Assert(err, chk.IsNil)
 
-	c.Assert(len(*entries), chk.Equals, 1)
+	c.Assert(len(entries), chk.Equals, 1)
 
-	c.Assert((*entries)[0].(*CustomEntity), chk.DeepEquals, ce)
+	c.Assert(entries[0].(*CustomEntity), chk.DeepEquals, ce)
 
-	c.Assert(cli.DeleteEntityWithoutCheck(tn, (*entries)[0]), chk.IsNil)
+	c.Assert(cli.DeleteEntityWithoutCheck(tn, entries[0]), chk.IsNil)
 
 	entries, _, err = cli.QueryTableEntities(tn, nil, reflect.TypeOf(ce), 10, "")
 	c.Assert(err, chk.IsNil)
 
 	// only 1 entry must be present
-	c.Assert(len(*entries), chk.Equals, 1)
+	c.Assert(len(entries), chk.Equals, 1)
 }
 
 func (s *StorageBlobSuite) Test_ContinuationToken(c *chk.C) {
@@ -259,22 +259,22 @@ func (s *StorageBlobSuite) Test_ContinuationToken(c *chk.C) {
 	// 1 entry
 	entries, contToken, err := cli.QueryTableEntities(tn, nil, reflect.TypeOf(ce), 2, "")
 	c.Assert(err, chk.IsNil)
-	c.Assert(len(*entries), chk.Equals, 2)
-	c.Assert((*entries)[0].(*CustomEntity), chk.DeepEquals, ceList[0])
-	c.Assert((*entries)[1].(*CustomEntity), chk.DeepEquals, ceList[1])
+	c.Assert(len(entries), chk.Equals, 2)
+	c.Assert(entries[0].(*CustomEntity), chk.DeepEquals, ceList[0])
+	c.Assert(entries[1].(*CustomEntity), chk.DeepEquals, ceList[1])
 	c.Assert(contToken, chk.NotNil)
 
 	entries, contToken, err = cli.QueryTableEntities(tn, contToken, reflect.TypeOf(ce), 2, "")
 	c.Assert(err, chk.IsNil)
-	c.Assert(len(*entries), chk.Equals, 2)
-	c.Assert((*entries)[0].(*CustomEntity), chk.DeepEquals, ceList[2])
-	c.Assert((*entries)[1].(*CustomEntity), chk.DeepEquals, ceList[3])
+	c.Assert(len(entries), chk.Equals, 2)
+	c.Assert(entries[0].(*CustomEntity), chk.DeepEquals, ceList[2])
+	c.Assert(entries[1].(*CustomEntity), chk.DeepEquals, ceList[3])
 	c.Assert(contToken, chk.NotNil)
 
 	entries, contToken, err = cli.QueryTableEntities(tn, contToken, reflect.TypeOf(ce), 2, "")
 	c.Assert(err, chk.IsNil)
-	c.Assert(len(*entries), chk.Equals, 1)
-	c.Assert((*entries)[0].(*CustomEntity), chk.DeepEquals, ceList[4])
+	c.Assert(len(entries), chk.Equals, 1)
+	c.Assert(entries[0].(*CustomEntity), chk.DeepEquals, ceList[4])
 	c.Assert(contToken, chk.IsNil)
 }
 

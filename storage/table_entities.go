@@ -67,7 +67,7 @@ type getTableEntriesResponse struct {
 //
 // Example:
 // 		entities, cToken, err = tSvc.QueryTableEntities("table", cToken, reflect.TypeOf(entity), 20, "")
-func (c *TableServiceClient) QueryTableEntities(tableName AzureTable, previousContToken *ContinuationToken, retType reflect.Type, top int, query string) (*[]TableEntity, *ContinuationToken, error) {
+func (c *TableServiceClient) QueryTableEntities(tableName AzureTable, previousContToken *ContinuationToken, retType reflect.Type, top int, query string) ([]TableEntity, *ContinuationToken, error) {
 	if top > maxTopParameter {
 		return nil, nil, fmt.Errorf("Top accepts at maximum %d elements. Requested %d instead.", maxTopParameter, top)
 	}
@@ -315,7 +315,7 @@ func injectPartitionAndRowKeys(entity TableEntity, buf *bytes.Buffer) error {
 	return nil
 }
 
-func deserializeEntity(retType reflect.Type, reader io.Reader) (*[]TableEntity, error) {
+func deserializeEntity(retType reflect.Type, reader io.Reader) ([]TableEntity, error) {
 	buf := new(bytes.Buffer)
 
 	var ret getTableEntriesResponse
@@ -368,7 +368,7 @@ func deserializeEntity(retType reflect.Type, reader io.Reader) (*[]TableEntity, 
 		tEntries[i].SetRowKey(rKey)
 	}
 
-	return &tEntries, nil
+	return tEntries, nil
 }
 
 func extractContinuationTokenFromHeaders(headers map[string][]string) *ContinuationToken {

@@ -120,8 +120,6 @@ func (c *TableServiceClient) InsertEntity(tableName AzureTable, entity TableEnti
 		return err
 	}
 
-	//	log.Printf("request.body == %s", string(buf.Bytes()))
-
 	headers["Content-Length"] = fmt.Sprintf("%d", buf.Len())
 
 	resp, err := c.client.execTable("POST", uri, headers, buf)
@@ -372,8 +370,12 @@ func deserializeEntity(retType reflect.Type, reader io.Reader) ([]TableEntity, e
 }
 
 func extractContinuationTokenFromHeaders(headers map[string][]string) *ContinuationToken {
-	if len(headers[continuationTokenPartitionKeyHeader]) > 0 {
-		return &ContinuationToken{headers[continuationTokenPartitionKeyHeader][0], headers[continuationTokenRowHeader][0]}
+	if kh, ok := headers[continuationTokenPartitionKeyHeader]; ok { // continuationTokenPartitionKeyHeader must be present
+		if rh, ok := headers[continuationTokenRowHeader]; ok { // continuationTokenRowHeader must be present too
+			if (len(kh) > 0) && (len(rh) > 0) { // they both must have at least one entry
+				return &ContinuationToken{kh[0], rh[0]}
+			}
+		}
 	}
-	return nil
+	return nil // otherwise return nil
 }

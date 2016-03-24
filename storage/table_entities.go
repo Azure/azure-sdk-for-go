@@ -114,15 +114,15 @@ func (c *TableServiceClient) InsertEntity(tableName AzureTable, entity TableEnti
 	uri := c.client.getEndpoint(tableServiceName, pathForTable(tableName), url.Values{})
 	headers := c.getStandardHeaders()
 
-	buf := new(bytes.Buffer)
+	var buf bytes.Buffer
 
-	if err := injectPartitionAndRowKeys(entity, buf); err != nil {
+	if err := injectPartitionAndRowKeys(entity, &buf); err != nil {
 		return err
 	}
 
 	headers["Content-Length"] = fmt.Sprintf("%d", buf.Len())
 
-	resp, err := c.client.execTable("POST", uri, headers, buf)
+	resp, err := c.client.execTable("POST", uri, headers, &buf)
 
 	if err != nil {
 		return err

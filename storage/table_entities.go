@@ -26,6 +26,16 @@ type queryTablesResponse struct {
 	} `json:"value"`
 }
 
+const (
+	tableOperationTypeInsert          = iota
+	tableOperationTypeUpdate          = iota
+	tableOperationTypeMerge           = iota
+	tableOperationTypeInsertOrReplace = iota
+	tableOperationTypeInsertOrMerge   = iota
+)
+
+type tableOperation int
+
 // TableEntity interface specifies
 // the functions needed to support
 // marshaling and unmarshaling into
@@ -110,8 +120,16 @@ func (c *TableServiceClient) QueryTableEntities(tableName AzureTable, previousCo
 // InsertEntity inserts an entity in the specified table.
 // The function fails if there is an entity with the same
 // PartitionKey and RowKey in the table.
-func (c *TableServiceClient) InsertEntity(tableName AzureTable, entity TableEntity) error {
-	uri := c.client.getEndpoint(tableServiceName, pathForTable(tableName), url.Values{})
+func (c *TableServiceClient) InsertEntity(table AzureTable, entity TableEntity) error {
+	return c.execTable(table, entity, tableOperationTypeInsert)
+}
+
+func (c *TableServiceClient) execTable(table AzureTable, entity TableEntity, operation tableOperation) error {
+	uri := c.client.getEndpoint(tableServiceName, pathForTable(table), url.Values{})
+	if operation != tableOperationTypeInsert {
+		uri += fmt.Sprintf("(PartitionKey='%s',RowKey='%s')", url.QueryEscape(entity.PartitionKey()), url.QueryEscape(entity.RowKey()))
+	}
+
 	headers := c.getStandardHeaders()
 
 	var buf bytes.Buffer
@@ -122,14 +140,39 @@ func (c *TableServiceClient) InsertEntity(tableName AzureTable, entity TableEnti
 
 	headers["Content-Length"] = fmt.Sprintf("%d", buf.Len())
 
-	resp, err := c.client.execTable("POST", uri, headers, &buf)
+	var err error
+	var resp *odataResponse
+	var expectedStatusCode int
+
+	switch operation {
+	case tableOperationTypeInsert:
+		resp, err = c.client.execTable("POST", uri, headers, &buf)
+		expectedStatusCode = http.StatusCreated
+	case tableOperationTypeUpdate:
+		resp, err = c.client.execTable("PUT", uri, headers, &buf)
+		expectedStatusCode = http.StatusNoContent
+	case tableOperationTypeMerge:
+		resp, err = c.client.execTable("MERGE", uri, headers, &buf)
+		expectedStatusCode = http.StatusNoContent
+	case tableOperationTypeInsertOrReplace:
+		resp, err = c.client.execTable("PUT", uri, headers, &buf)
+		expectedStatusCode = http.StatusNoContent
+	case tableOperationTypeInsertOrMerge:
+		resp, err = c.client.execTable("MERGE", uri, headers, &buf)
+		expectedStatusCode = http.StatusNoContent
+	}
+
+	if resp != nil {
+		if resp.body != nil {
+			defer resp.body.Close()
+		}
+	}
 
 	if err != nil {
 		return err
 	}
-	defer resp.body.Close()
 
-	if err := checkRespCode(resp.statusCode, []int{http.StatusCreated}); err != nil {
+	if err := checkRespCode(resp.statusCode, []int{expectedStatusCode}); err != nil {
 		return err
 	}
 
@@ -140,7 +183,8 @@ func (c *TableServiceClient) InsertEntity(tableName AzureTable, entity TableEnti
 // one passed as parameter. The function fails if there is no entity
 // with the same PartitionKey and RowKey in the table.
 func (c *TableServiceClient) UpdateEntity(table AzureTable, entity TableEntity) error {
-	return c.updateOrMergeEntity(table, entity, true)
+	return c.execTable(table, entity, tableOperationTypeUpdate)
+
 }
 
 // MergeEntity merges the contents of an entity with the
@@ -148,40 +192,7 @@ func (c *TableServiceClient) UpdateEntity(table AzureTable, entity TableEntity) 
 // The function fails if there is no entity
 // with the same PartitionKey and RowKey in the table.
 func (c *TableServiceClient) MergeEntity(table AzureTable, entity TableEntity) error {
-	return c.updateOrMergeEntity(table, entity, false)
-}
-
-func (c *TableServiceClient) updateOrMergeEntity(table AzureTable, entity TableEntity, updateInsteadOfMerge bool) error {
-	uri := c.client.getEndpoint(tableServiceName, pathForTable(table), url.Values{})
-	headers := c.getStandardHeaders()
-
-	buf := new(bytes.Buffer)
-
-	if err := injectPartitionAndRowKeys(entity, buf); err != nil {
-		return err
-	}
-
-	headers["Content-Length"] = fmt.Sprintf("%d", buf.Len())
-
-	var err error
-	var resp *odataResponse
-
-	if updateInsteadOfMerge {
-		resp, err = c.client.execTable("PUT", uri, headers, buf)
-	} else {
-		resp, err = c.client.execTable("MERGE", uri, headers, buf)
-	}
-
-	if err != nil {
-		return err
-	}
-	defer resp.body.Close()
-
-	if err := checkRespCode(resp.statusCode, []int{http.StatusCreated}); err != nil {
-		return err
-	}
-
-	return nil
+	return c.execTable(table, entity, tableOperationTypeMerge)
 }
 
 // DeleteEntityWithoutCheck deletes the entity matching by
@@ -224,48 +235,13 @@ func (c *TableServiceClient) DeleteEntity(table AzureTable, entity TableEntity, 
 // InsertOrReplaceEntity inserts an entity in the specified table
 // or replaced the existing one.
 func (c *TableServiceClient) InsertOrReplaceEntity(table AzureTable, entity TableEntity) error {
-	return c.insertOrReplaceOrMergeEntity(table, entity, false)
+	return c.execTable(table, entity, tableOperationTypeInsertOrReplace)
 }
 
 // InsertOrMergeEntity inserts an entity in the specified table
 // or merges the existing one.
 func (c *TableServiceClient) InsertOrMergeEntity(table AzureTable, entity TableEntity) error {
-	return c.insertOrReplaceOrMergeEntity(table, entity, true)
-}
-
-func (c *TableServiceClient) insertOrReplaceOrMergeEntity(table AzureTable, entity TableEntity, mergeInsteadOfReplace bool) error {
-	uri := c.client.getEndpoint(tableServiceName, pathForTable(table), url.Values{})
-	uri += fmt.Sprintf("(PartitionKey='%s',RowKey='%s')", url.QueryEscape(entity.PartitionKey()), url.QueryEscape(entity.RowKey()))
-
-	headers := c.getStandardHeaders()
-
-	var buf bytes.Buffer
-
-	if err := injectPartitionAndRowKeys(entity, &buf); err != nil {
-		return err
-	}
-
-	headers["Content-Length"] = fmt.Sprintf("%d", buf.Len())
-
-	var err error
-	var resp *odataResponse
-
-	if mergeInsteadOfReplace {
-		resp, err = c.client.execTable("MERGE", uri, headers, &buf)
-	} else {
-		resp, err = c.client.execTable("PUT", uri, headers, &buf)
-	}
-
-	if err != nil {
-		return err
-	}
-	defer resp.body.Close()
-
-	if err := checkRespCode(resp.statusCode, []int{http.StatusNoContent}); err != nil {
-		return err
-	}
-
-	return nil
+	return c.execTable(table, entity, tableOperationTypeInsertOrMerge)
 }
 
 func injectPartitionAndRowKeys(entity TableEntity, buf *bytes.Buffer) error {

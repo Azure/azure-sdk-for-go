@@ -179,7 +179,7 @@ func (s *StorageBlobSuite) Test_InsertAndGetEntities(c *chk.C) {
 
 	c.Assert(ce.RowKey(), chk.Equals, (*entries)[1].RowKey())
 
-	testEquality(c, ce, (*entries)[1].(*CustomEntity))
+	c.Assert((*entries)[1].(*CustomEntity), chk.DeepEquals, ce)
 }
 
 func (s *StorageBlobSuite) Test_InsertAndQueryEntities(c *chk.C) {
@@ -226,7 +226,7 @@ func (s *StorageBlobSuite) Test_InsertAndDeleteEntities(c *chk.C) {
 
 	c.Assert(len(*entries), chk.Equals, 1)
 
-	testEquality(c, ce, (*entries)[0].(*CustomEntity))
+	c.Assert((*entries)[0].(*CustomEntity), chk.DeepEquals, ce)
 
 	c.Assert(cli.DeleteEntityWithoutCheck(tn, (*entries)[0]), chk.IsNil)
 
@@ -286,22 +286,4 @@ func randTable() string {
 		bytes[i] = alphanum[b%byte(len(alphanum))]
 	}
 	return string(bytes)
-}
-
-func testEquality(c *chk.C, c1, c2 *CustomEntity) {
-	if c1 == nil {
-		c.Assert(c2, chk.IsNil)
-		return
-	}
-	if c2 == nil {
-		c.Assert(c1, chk.IsNil)
-		return
-	}
-
-	c.Assert(c1.Name, chk.Equals, c2.Name)
-	c.Assert(c1.Surname, chk.Equals, c2.Surname)
-	c.Assert(c1.Number, chk.Equals, c2.Number)
-	c.Assert(c1.PKey, chk.Equals, c2.PKey)
-	c.Assert(c1.RKey, chk.Equals, c2.RKey)
-	c.Assert(c1.SomeDate.Unix(), chk.Equals, c2.SomeDate.Unix())
 }

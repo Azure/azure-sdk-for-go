@@ -310,10 +310,10 @@ func deserializeEntity(retType reflect.Type, reader io.Reader) ([]TableEntity, e
 		var pKey, rKey string
 		// strip pk and rk
 		for key, val := range dec {
-			switch {
-			case key == partitionKeyNode:
+			switch key {
+			case partitionKeyNode:
 				pKey = val.(string)
-			case key == rowKeyNode:
+			case rowKeyNode:
 				rKey = val.(string)
 			}
 		}

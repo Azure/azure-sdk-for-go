@@ -4,9 +4,10 @@ import (
 	"crypto/rand"
 	"encoding/base64"
 	"fmt"
-	chk "gopkg.in/check.v1"
 	"reflect"
 	"time"
+
+	chk "gopkg.in/check.v1"
 )
 
 type TableClient struct{}
@@ -246,8 +247,11 @@ func (s *StorageBlobSuite) Test_ContinuationToken(c *chk.C) {
 	defer cli.DeleteTable(tn)
 
 	var ce *CustomEntity
+	var ceList [5]*CustomEntity
+
 	for i := 0; i < 5; i++ {
 		ce = &CustomEntity{Name: "Test", Surname: "Test2", SomeDate: time.Now(), Number: i, PKey: "pkey", RKey: fmt.Sprintf("r%d", i)}
+		ceList[i] = ce
 		c.Assert(cli.InsertOrReplaceEntity(tn, ce), chk.IsNil)
 	}
 
@@ -256,16 +260,21 @@ func (s *StorageBlobSuite) Test_ContinuationToken(c *chk.C) {
 	entries, contToken, err := cli.QueryTableEntities(tn, nil, reflect.TypeOf(ce), 2, "")
 	c.Assert(err, chk.IsNil)
 	c.Assert(len(*entries), chk.Equals, 2)
+	c.Assert((*entries)[0].(*CustomEntity), chk.DeepEquals, ceList[0])
+	c.Assert((*entries)[1].(*CustomEntity), chk.DeepEquals, ceList[1])
 	c.Assert(contToken, chk.NotNil)
 
 	entries, contToken, err = cli.QueryTableEntities(tn, contToken, reflect.TypeOf(ce), 2, "")
 	c.Assert(err, chk.IsNil)
 	c.Assert(len(*entries), chk.Equals, 2)
+	c.Assert((*entries)[0].(*CustomEntity), chk.DeepEquals, ceList[2])
+	c.Assert((*entries)[1].(*CustomEntity), chk.DeepEquals, ceList[3])
 	c.Assert(contToken, chk.NotNil)
 
 	entries, contToken, err = cli.QueryTableEntities(tn, contToken, reflect.TypeOf(ce), 2, "")
 	c.Assert(err, chk.IsNil)
 	c.Assert(len(*entries), chk.Equals, 1)
+	c.Assert((*entries)[0].(*CustomEntity), chk.DeepEquals, ceList[4])
 	c.Assert(contToken, chk.IsNil)
 }
 

@@ -446,7 +446,7 @@ func (c Client) execInternalJSON(verb, url string, headers map[string]string, bo
 	return respToRet, nil
 }
 
-func (c Client) createSharedKeyLiteTable(url string, headers map[string]string) (string, error) {
+func (c Client) createSharedKeyLite(url string, headers map[string]string) (string, error) {
 	can, err := c.buildCanonicalizedResourceTable(url)
 
 	if err != nil {
@@ -460,7 +460,7 @@ func (c Client) createSharedKeyLiteTable(url string, headers map[string]string) 
 
 func (c Client) execTable(verb, url string, headers map[string]string, body io.Reader) (*odataResponse, error) {
 	var err error
-	headers["Authorization"], err = c.createSharedKeyLiteTable(url, headers)
+	headers["Authorization"], err = c.createSharedKeyLite(url, headers)
 	if err != nil {
 		return nil, err
 	}

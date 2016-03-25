@@ -218,7 +218,7 @@ func (s *StorageBlobSuite) TestBlobExists(c *chk.C) {
 	c.Assert(cli.CreateContainer(cnt, ContainerAccessTypeBlob), chk.IsNil)
 	defer cli.DeleteContainer(cnt)
 	c.Assert(cli.putSingleBlockBlob(cnt, blob, []byte("Hello!")), chk.IsNil)
-	defer cli.DeleteBlob(cnt, blob)
+	defer cli.DeleteBlob(cnt, blob, nil)
 
 	ok, err := cli.BlobExists(cnt, blob+".foo")
 	c.Assert(err, chk.IsNil)
@@ -254,10 +254,10 @@ func (s *StorageBlobSuite) TestBlobCopy(c *chk.C) {
 	defer cli.deleteContainer(cnt)
 
 	c.Assert(cli.putSingleBlockBlob(cnt, src, body), chk.IsNil)
-	defer cli.DeleteBlob(cnt, src)
+	defer cli.DeleteBlob(cnt, src, nil)
 
 	c.Assert(cli.CopyBlob(cnt, dst, cli.GetBlobURL(cnt, src)), chk.IsNil)
-	defer cli.DeleteBlob(cnt, dst)
+	defer cli.DeleteBlob(cnt, dst, nil)
 
 	blobBody, err := cli.GetBlob(cnt, dst)
 	c.Assert(err, chk.IsNil)
@@ -273,11 +273,73 @@ func (s *StorageBlobSuite) TestDeleteBlobIfExists(c *chk.C) {
 	blob := randString(20)
 
 	cli := getBlobClient(c)
-	c.Assert(cli.DeleteBlob(cnt, blob), chk.NotNil)
+	c.Assert(cli.DeleteBlob(cnt, blob, nil), chk.NotNil)
 
-	ok, err := cli.DeleteBlobIfExists(cnt, blob)
+	ok, err := cli.DeleteBlobIfExists(cnt, blob, nil)
 	c.Assert(err, chk.IsNil)
 	c.Assert(ok, chk.Equals, false)
+}
+
+func (s *StorageBlobSuite) TestDeleteBlobWithConditions(c *chk.C) {
+	cnt := randContainer()
+	blob := randString(20)
+
+	cli := getBlobClient(c)
+
+	c.Assert(cli.CreateContainer(cnt, ContainerAccessTypePrivate), chk.IsNil)
+	defer cli.deleteContainer(cnt)
+
+	c.Assert(cli.CreateBlockBlob(cnt, blob), chk.IsNil)
+	oldProps, err := cli.GetBlobProperties(cnt, blob)
+	c.Assert(err, chk.IsNil)
+
+	// Update metadata, so Etag changes
+	c.Assert(cli.SetBlobMetadata(cnt, blob, map[string]string{}), chk.IsNil)
+	newProps, err := cli.GetBlobProperties(cnt, blob)
+	c.Assert(err, chk.IsNil)
+
+	// "Delete if matches old Etag" should fail without deleting.
+	err = cli.DeleteBlob(cnt, blob, map[string]string{
+		"If-Match": oldProps.Etag,
+	})
+	c.Assert(err, chk.FitsTypeOf, AzureStorageServiceError{})
+	c.Assert(err.(AzureStorageServiceError).StatusCode, chk.Equals, http.StatusPreconditionFailed)
+	_, err = cli.GetBlob(cnt, blob)
+	c.Assert(err, chk.IsNil)
+
+	// "Delete if matches new Etag" should succeed.
+	err = cli.DeleteBlob(cnt, blob, map[string]string{
+		"If-Match": newProps.Etag,
+	})
+	c.Assert(err, chk.IsNil)
+	_, err = cli.GetBlob(cnt, blob)
+	c.Assert(err, chk.Not(chk.IsNil))
+
+	// Create a non-empty blob and set metadata in the hopes of
+	// triggering a "modified" event that will make an
+	// If-Unmodified-Since request give us a 412.
+	c.Assert(cli.CreateBlockBlobFromReader(cnt, blob, 1, bytes.NewReader([]byte{'-'}), nil), chk.IsNil)
+	c.Assert(cli.SetBlobMetadata(cnt, blob, map[string]string{"foo": "bar"}), chk.IsNil)
+
+	if false {
+		// "Delete if unmodified for 2 weeks" should fail
+		// without deleting (but this header seems to be
+		// ignored).
+		err = cli.DeleteBlob(cnt, blob, map[string]string{
+			"If-Unmodified-Since": time.Now().AddDate(0, 0, -14).Format(time.RFC1123),
+		})
+		c.Assert(err, chk.FitsTypeOf, UnexpectedStatusCodeError{})
+		c.Assert(err.(UnexpectedStatusCodeError).Got(), chk.Equals, http.StatusPreconditionFailed)
+		_, err = cli.GetBlob(cnt, blob)
+		c.Assert(err, chk.IsNil)
+	}
+
+	// "Delete if modified in the last 2 weeks" should succeed and delete
+	c.Assert(cli.DeleteBlob(cnt, blob, map[string]string{
+		"If-Modified-Since": time.Now().AddDate(0, 0, -14).Format(time.RFC1123),
+	}), chk.IsNil)
+	_, err = cli.GetBlob(cnt, blob)
+	c.Assert(err, chk.Not(chk.IsNil))
 }
 
 func (s *StorageBlobSuite) TestGetBlobProperties(c *chk.C) {
@@ -415,7 +477,7 @@ func (s *StorageBlobSuite) TestGetBlobRange(c *chk.C) {
 	defer cli.DeleteContainer(cnt)
 
 	c.Assert(cli.putSingleBlockBlob(cnt, blob, []byte(body)), chk.IsNil)
-	defer cli.DeleteBlob(cnt, blob)
+	defer cli.DeleteBlob(cnt, blob, nil)
 
 	// Read 1-3
 	for _, r := range []struct {
@@ -495,7 +557,7 @@ func (s *StorageBlobSuite) TestGetBlockList_PutBlockList(c *chk.C) {
 
 	// Put one block
 	c.Assert(cli.PutBlock(cnt, blob, blockID, chunk), chk.IsNil)
-	defer cli.deleteBlob(cnt, blob)
+	defer cli.deleteBlob(cnt, blob, nil)
 
 	// Get committed blocks
 	committed, err := cli.GetBlockList(cnt, blob, BlockListTypeCommitted)

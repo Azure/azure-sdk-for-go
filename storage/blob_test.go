@@ -314,32 +314,6 @@ func (s *StorageBlobSuite) TestDeleteBlobWithConditions(c *chk.C) {
 	c.Assert(err, chk.IsNil)
 	_, err = cli.GetBlob(cnt, blob)
 	c.Assert(err, chk.Not(chk.IsNil))
-
-	// Create a non-empty blob and set metadata in the hopes of
-	// triggering a "modified" event that will make an
-	// If-Unmodified-Since request give us a 412.
-	c.Assert(cli.CreateBlockBlobFromReader(cnt, blob, 1, bytes.NewReader([]byte{'-'}), nil), chk.IsNil)
-	c.Assert(cli.SetBlobMetadata(cnt, blob, map[string]string{"foo": "bar"}), chk.IsNil)
-
-	if false {
-		// "Delete if unmodified for 2 weeks" should fail
-		// without deleting (but this header seems to be
-		// ignored).
-		err = cli.DeleteBlob(cnt, blob, map[string]string{
-			"If-Unmodified-Since": time.Now().AddDate(0, 0, -14).Format(time.RFC1123),
-		})
-		c.Assert(err, chk.FitsTypeOf, UnexpectedStatusCodeError{})
-		c.Assert(err.(UnexpectedStatusCodeError).Got(), chk.Equals, http.StatusPreconditionFailed)
-		_, err = cli.GetBlob(cnt, blob)
-		c.Assert(err, chk.IsNil)
-	}
-
-	// "Delete if modified in the last 2 weeks" should succeed and delete
-	c.Assert(cli.DeleteBlob(cnt, blob, map[string]string{
-		"If-Modified-Since": time.Now().AddDate(0, 0, -14).Format(time.RFC1123),
-	}), chk.IsNil)
-	_, err = cli.GetBlob(cnt, blob)
-	c.Assert(err, chk.Not(chk.IsNil))
 }
 
 func (s *StorageBlobSuite) TestGetBlobProperties(c *chk.C) {

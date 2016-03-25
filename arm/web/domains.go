@@ -83,7 +83,8 @@ func (client DomainsClient) CreateOrUpdateDomainPreparer(resourceGroupName strin
 		"api-version": APIVersion,
 	}
 
-	return autorest.Prepare(&http.Request{},
+	req := http.Request{}
+	return autorest.Prepare(&req,
 		autorest.AsJSON(),
 		autorest.AsPut(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -117,7 +118,7 @@ func (client DomainsClient) CreateOrUpdateDomainResponder(resp *http.Response) (
 // resourceGroupName is name of the resource group domainName is name of the
 // domain forceHardDeleteDomain is if true then the domain will be deleted
 // immediately instead of after 24 hours
-func (client DomainsClient) DeleteDomain(resourceGroupName string, domainName string, forceHardDeleteDomain *bool) (result ObjectSet, err error) {
+func (client DomainsClient) DeleteDomain(resourceGroupName string, domainName string, forceHardDeleteDomain *bool) (result SetObject, err error) {
 	req, err := client.DeleteDomainPreparer(resourceGroupName, domainName, forceHardDeleteDomain)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web/DomainsClient", "DeleteDomain", nil, "Failure preparing request")
@@ -152,7 +153,8 @@ func (client DomainsClient) DeleteDomainPreparer(resourceGroupName string, domai
 		queryParameters["forceHardDeleteDomain"] = forceHardDeleteDomain
 	}
 
-	return autorest.Prepare(&http.Request{},
+	req := http.Request{}
+	return autorest.Prepare(&req,
 		autorest.AsJSON(),
 		autorest.AsDelete(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -169,7 +171,7 @@ func (client DomainsClient) DeleteDomainSender(req *http.Request) (*http.Respons
 
 // DeleteDomainResponder handles the response to the DeleteDomain request. The method always
 // closes the http.Response Body.
-func (client DomainsClient) DeleteDomainResponder(resp *http.Response) (result ObjectSet, err error) {
+func (client DomainsClient) DeleteDomainResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -216,7 +218,8 @@ func (client DomainsClient) GetDomainPreparer(resourceGroupName string, domainNa
 		"api-version": APIVersion,
 	}
 
-	return autorest.Prepare(&http.Request{},
+	req := http.Request{}
+	return autorest.Prepare(&req,
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -281,7 +284,8 @@ func (client DomainsClient) GetDomainOperationPreparer(resourceGroupName string,
 		"api-version": APIVersion,
 	}
 
-	return autorest.Prepare(&http.Request{},
+	req := http.Request{}
+	return autorest.Prepare(&req,
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -343,7 +347,8 @@ func (client DomainsClient) GetDomainsPreparer(resourceGroupName string) (*http.
 		"api-version": APIVersion,
 	}
 
-	return autorest.Prepare(&http.Request{},
+	req := http.Request{}
+	return autorest.Prepare(&req,
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -407,7 +412,8 @@ func (client DomainsClient) UpdateDomainPreparer(resourceGroupName string, domai
 		"api-version": APIVersion,
 	}
 
-	return autorest.Prepare(&http.Request{},
+	req := http.Request{}
+	return autorest.Prepare(&req,
 		autorest.AsJSON(),
 		autorest.AsPatch(),
 		autorest.WithBaseURL(client.BaseURI),

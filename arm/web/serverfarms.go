@@ -49,12 +49,16 @@ func NewServerFarmsClientWithBaseURI(baseURI string, subscriptionID string) Serv
 }
 
 // CreateOrUpdateServerFarm sends the create or update server farm request.
+// This method handles polling itself for long-running operations. User can
+// cancel polling for long-running calls by passing cancel channel as an
+// argument to this method (cancel <-chan struct{}). This channel won't
+// cancel the operation, it will only stop the polling.
 //
 // resourceGroupName is name of resource group name is name of App Service
 // Plan serverFarmEnvelope is details of App Service Plan allowPendingState
 // is oBSOLETE: If true, allow pending state for App Service Plan
-func (client ServerFarmsClient) CreateOrUpdateServerFarm(resourceGroupName string, name string, serverFarmEnvelope ServerFarmWithRichSku, allowPendingState *bool) (result autorest.Response, err error) {
-	req, err := client.CreateOrUpdateServerFarmPreparer(resourceGroupName, name, serverFarmEnvelope, allowPendingState)
+func (client ServerFarmsClient) CreateOrUpdateServerFarm(resourceGroupName string, name string, serverFarmEnvelope ServerFarmWithRichSku, allowPendingState *bool, cancel <-chan struct{}) (result autorest.Response, err error) {
+	req, err := client.CreateOrUpdateServerFarmPreparer(resourceGroupName, name, serverFarmEnvelope, allowPendingState, cancel)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web/ServerFarmsClient", "CreateOrUpdateServerFarm", nil, "Failure preparing request")
 	}
@@ -74,7 +78,7 @@ func (client ServerFarmsClient) CreateOrUpdateServerFarm(resourceGroupName strin
 }
 
 // CreateOrUpdateServerFarmPreparer prepares the CreateOrUpdateServerFarm request.
-func (client ServerFarmsClient) CreateOrUpdateServerFarmPreparer(resourceGroupName string, name string, serverFarmEnvelope ServerFarmWithRichSku, allowPendingState *bool) (*http.Request, error) {
+func (client ServerFarmsClient) CreateOrUpdateServerFarmPreparer(resourceGroupName string, name string, serverFarmEnvelope ServerFarmWithRichSku, allowPendingState *bool, cancel <-chan struct{}) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"name":              url.QueryEscape(name),
 		"resourceGroupName": url.QueryEscape(resourceGroupName),
@@ -88,7 +92,8 @@ func (client ServerFarmsClient) CreateOrUpdateServerFarmPreparer(resourceGroupNa
 		queryParameters["allowPendingState"] = allowPendingState
 	}
 
-	return autorest.Prepare(&http.Request{},
+	req := http.Request{Cancel: cancel}
+	return autorest.Prepare(&req,
 		autorest.AsJSON(),
 		autorest.AsPut(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -103,8 +108,7 @@ func (client ServerFarmsClient) CreateOrUpdateServerFarmPreparer(resourceGroupNa
 func (client ServerFarmsClient) CreateOrUpdateServerFarmSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client,
 		req,
-		azure.DoPollForAsynchronous(autorest.DefaultPollingDuration,
-			autorest.DefaultPollingDelay))
+		azure.DoPollForAsynchronous(autorest.DefaultPollingDelay))
 }
 
 // CreateOrUpdateServerFarmResponder handles the response to the CreateOrUpdateServerFarm request. The method always
@@ -158,7 +162,8 @@ func (client ServerFarmsClient) CreateOrUpdateVnetRoutePreparer(resourceGroupNam
 		"api-version": APIVersion,
 	}
 
-	return autorest.Prepare(&http.Request{},
+	req := http.Request{}
+	return autorest.Prepare(&req,
 		autorest.AsJSON(),
 		autorest.AsPut(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -191,7 +196,7 @@ func (client ServerFarmsClient) CreateOrUpdateVnetRouteResponder(resp *http.Resp
 //
 // resourceGroupName is name of resource group name is name of App Service
 // Plan
-func (client ServerFarmsClient) DeleteServerFarm(resourceGroupName string, name string) (result ObjectSet, err error) {
+func (client ServerFarmsClient) DeleteServerFarm(resourceGroupName string, name string) (result SetObject, err error) {
 	req, err := client.DeleteServerFarmPreparer(resourceGroupName, name)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web/ServerFarmsClient", "DeleteServerFarm", nil, "Failure preparing request")
@@ -223,7 +228,8 @@ func (client ServerFarmsClient) DeleteServerFarmPreparer(resourceGroupName strin
 		"api-version": APIVersion,
 	}
 
-	return autorest.Prepare(&http.Request{},
+	req := http.Request{}
+	return autorest.Prepare(&req,
 		autorest.AsJSON(),
 		autorest.AsDelete(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -240,7 +246,7 @@ func (client ServerFarmsClient) DeleteServerFarmSender(req *http.Request) (*http
 
 // DeleteServerFarmResponder handles the response to the DeleteServerFarm request. The method always
 // closes the http.Response Body.
-func (client ServerFarmsClient) DeleteServerFarmResponder(resp *http.Response) (result ObjectSet, err error) {
+func (client ServerFarmsClient) DeleteServerFarmResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -256,7 +262,7 @@ func (client ServerFarmsClient) DeleteServerFarmResponder(resp *http.Response) (
 // resourceGroupName is name of resource group name is name of App Service
 // Plan vnetName is name of virtual network routeName is name of the virtual
 // network route
-func (client ServerFarmsClient) DeleteVnetRoute(resourceGroupName string, name string, vnetName string, routeName string) (result ObjectSet, err error) {
+func (client ServerFarmsClient) DeleteVnetRoute(resourceGroupName string, name string, vnetName string, routeName string) (result SetObject, err error) {
 	req, err := client.DeleteVnetRoutePreparer(resourceGroupName, name, vnetName, routeName)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web/ServerFarmsClient", "DeleteVnetRoute", nil, "Failure preparing request")
@@ -290,7 +296,8 @@ func (client ServerFarmsClient) DeleteVnetRoutePreparer(resourceGroupName string
 		"api-version": APIVersion,
 	}
 
-	return autorest.Prepare(&http.Request{},
+	req := http.Request{}
+	return autorest.Prepare(&req,
 		autorest.AsJSON(),
 		autorest.AsDelete(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -307,7 +314,7 @@ func (client ServerFarmsClient) DeleteVnetRouteSender(req *http.Request) (*http.
 
 // DeleteVnetRouteResponder handles the response to the DeleteVnetRoute request. The method always
 // closes the http.Response Body.
-func (client ServerFarmsClient) DeleteVnetRouteResponder(resp *http.Response) (result ObjectSet, err error) {
+func (client ServerFarmsClient) DeleteVnetRouteResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -323,7 +330,7 @@ func (client ServerFarmsClient) DeleteVnetRouteResponder(resp *http.Response) (r
 // resourceGroupName is name of resource group name is name of App Service
 // Plan vnetName is name of virtual network routeName is name of the virtual
 // network route
-func (client ServerFarmsClient) GetRouteForVnet(resourceGroupName string, name string, vnetName string, routeName string) (result VnetRouteList, err error) {
+func (client ServerFarmsClient) GetRouteForVnet(resourceGroupName string, name string, vnetName string, routeName string) (result ListVnetRoute, err error) {
 	req, err := client.GetRouteForVnetPreparer(resourceGroupName, name, vnetName, routeName)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web/ServerFarmsClient", "GetRouteForVnet", nil, "Failure preparing request")
@@ -357,7 +364,8 @@ func (client ServerFarmsClient) GetRouteForVnetPreparer(resourceGroupName string
 		"api-version": APIVersion,
 	}
 
-	return autorest.Prepare(&http.Request{},
+	req := http.Request{}
+	return autorest.Prepare(&req,
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -374,7 +382,7 @@ func (client ServerFarmsClient) GetRouteForVnetSender(req *http.Request) (*http.
 
 // GetRouteForVnetResponder handles the response to the GetRouteForVnet request. The method always
 // closes the http.Response Body.
-func (client ServerFarmsClient) GetRouteForVnetResponder(resp *http.Response) (result VnetRouteList, err error) {
+func (client ServerFarmsClient) GetRouteForVnetResponder(resp *http.Response) (result ListVnetRoute, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -389,7 +397,7 @@ func (client ServerFarmsClient) GetRouteForVnetResponder(resp *http.Response) (r
 //
 // resourceGroupName is name of resource group name is name of App Service
 // Plan vnetName is name of virtual network
-func (client ServerFarmsClient) GetRoutesForVnet(resourceGroupName string, name string, vnetName string) (result VnetRouteList, err error) {
+func (client ServerFarmsClient) GetRoutesForVnet(resourceGroupName string, name string, vnetName string) (result ListVnetRoute, err error) {
 	req, err := client.GetRoutesForVnetPreparer(resourceGroupName, name, vnetName)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web/ServerFarmsClient", "GetRoutesForVnet", nil, "Failure preparing request")
@@ -422,7 +430,8 @@ func (client ServerFarmsClient) GetRoutesForVnetPreparer(resourceGroupName strin
 		"api-version": APIVersion,
 	}
 
-	return autorest.Prepare(&http.Request{},
+	req := http.Request{}
+	return autorest.Prepare(&req,
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -439,7 +448,7 @@ func (client ServerFarmsClient) GetRoutesForVnetSender(req *http.Request) (*http
 
 // GetRoutesForVnetResponder handles the response to the GetRoutesForVnet request. The method always
 // closes the http.Response Body.
-func (client ServerFarmsClient) GetRoutesForVnetResponder(resp *http.Response) (result VnetRouteList, err error) {
+func (client ServerFarmsClient) GetRoutesForVnetResponder(resp *http.Response) (result ListVnetRoute, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -486,7 +495,8 @@ func (client ServerFarmsClient) GetServerFarmPreparer(resourceGroupName string, 
 		"api-version": APIVersion,
 	}
 
-	return autorest.Prepare(&http.Request{},
+	req := http.Request{}
+	return autorest.Prepare(&req,
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -551,7 +561,8 @@ func (client ServerFarmsClient) GetServerFarmMetricDefintionsPreparer(resourceGr
 		"api-version": APIVersion,
 	}
 
-	return autorest.Prepare(&http.Request{},
+	req := http.Request{}
+	return autorest.Prepare(&req,
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -626,7 +637,8 @@ func (client ServerFarmsClient) GetServerFarmMetricsPreparer(resourceGroupName s
 		queryParameters["$filter"] = filter
 	}
 
-	return autorest.Prepare(&http.Request{},
+	req := http.Request{}
+	return autorest.Prepare(&req,
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -691,7 +703,8 @@ func (client ServerFarmsClient) GetServerFarmOperationPreparer(resourceGroupName
 		"api-version": APIVersion,
 	}
 
-	return autorest.Prepare(&http.Request{},
+	req := http.Request{}
+	return autorest.Prepare(&req,
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -753,7 +766,8 @@ func (client ServerFarmsClient) GetServerFarmsPreparer(resourceGroupName string)
 		"api-version": APIVersion,
 	}
 
-	return autorest.Prepare(&http.Request{},
+	req := http.Request{}
+	return autorest.Prepare(&req,
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -831,7 +845,8 @@ func (client ServerFarmsClient) GetServerFarmSitesPreparer(resourceGroupName str
 		queryParameters["$top"] = top
 	}
 
-	return autorest.Prepare(&http.Request{},
+	req := http.Request{}
+	return autorest.Prepare(&req,
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -922,7 +937,8 @@ func (client ServerFarmsClient) GetServerFarmVnetGatewayPreparer(resourceGroupNa
 		"api-version": APIVersion,
 	}
 
-	return autorest.Prepare(&http.Request{},
+	req := http.Request{}
+	return autorest.Prepare(&req,
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -987,7 +1003,8 @@ func (client ServerFarmsClient) GetVnetFromServerFarmPreparer(resourceGroupName 
 		"api-version": APIVersion,
 	}
 
-	return autorest.Prepare(&http.Request{},
+	req := http.Request{}
+	return autorest.Prepare(&req,
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -1019,7 +1036,7 @@ func (client ServerFarmsClient) GetVnetFromServerFarmResponder(resp *http.Respon
 //
 // resourceGroupName is name of resource group name is name of App Service
 // Plan
-func (client ServerFarmsClient) GetVnetsForServerFarm(resourceGroupName string, name string) (result VnetInfoList, err error) {
+func (client ServerFarmsClient) GetVnetsForServerFarm(resourceGroupName string, name string) (result ListVnetInfo, err error) {
 	req, err := client.GetVnetsForServerFarmPreparer(resourceGroupName, name)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web/ServerFarmsClient", "GetVnetsForServerFarm", nil, "Failure preparing request")
@@ -1051,7 +1068,8 @@ func (client ServerFarmsClient) GetVnetsForServerFarmPreparer(resourceGroupName 
 		"api-version": APIVersion,
 	}
 
-	return autorest.Prepare(&http.Request{},
+	req := http.Request{}
+	return autorest.Prepare(&req,
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -1068,7 +1086,7 @@ func (client ServerFarmsClient) GetVnetsForServerFarmSender(req *http.Request) (
 
 // GetVnetsForServerFarmResponder handles the response to the GetVnetsForServerFarm request. The method always
 // closes the http.Response Body.
-func (client ServerFarmsClient) GetVnetsForServerFarmResponder(resp *http.Response) (result VnetInfoList, err error) {
+func (client ServerFarmsClient) GetVnetsForServerFarmResponder(resp *http.Response) (result ListVnetInfo, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -1083,7 +1101,7 @@ func (client ServerFarmsClient) GetVnetsForServerFarmResponder(resp *http.Respon
 //
 // resourceGroupName is name of resource group name is name of server farm
 // workerName is name of worker machine, typically IP address
-func (client ServerFarmsClient) RebootWorkerForServerFarm(resourceGroupName string, name string, workerName string) (result ObjectSet, err error) {
+func (client ServerFarmsClient) RebootWorkerForServerFarm(resourceGroupName string, name string, workerName string) (result SetObject, err error) {
 	req, err := client.RebootWorkerForServerFarmPreparer(resourceGroupName, name, workerName)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web/ServerFarmsClient", "RebootWorkerForServerFarm", nil, "Failure preparing request")
@@ -1116,7 +1134,8 @@ func (client ServerFarmsClient) RebootWorkerForServerFarmPreparer(resourceGroupN
 		"api-version": APIVersion,
 	}
 
-	return autorest.Prepare(&http.Request{},
+	req := http.Request{}
+	return autorest.Prepare(&req,
 		autorest.AsJSON(),
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -1133,7 +1152,7 @@ func (client ServerFarmsClient) RebootWorkerForServerFarmSender(req *http.Reques
 
 // RebootWorkerForServerFarmResponder handles the response to the RebootWorkerForServerFarm request. The method always
 // closes the http.Response Body.
-func (client ServerFarmsClient) RebootWorkerForServerFarmResponder(resp *http.Response) (result ObjectSet, err error) {
+func (client ServerFarmsClient) RebootWorkerForServerFarmResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -1150,7 +1169,7 @@ func (client ServerFarmsClient) RebootWorkerForServerFarmResponder(resp *http.Re
 // Plan softRestart is soft restart applies the configuration settings and
 // restarts the apps if necessary. Hard restart always restarts and
 // reprovisions the apps
-func (client ServerFarmsClient) RestartSitesForServerFarm(resourceGroupName string, name string, softRestart *bool) (result ObjectSet, err error) {
+func (client ServerFarmsClient) RestartSitesForServerFarm(resourceGroupName string, name string, softRestart *bool) (result SetObject, err error) {
 	req, err := client.RestartSitesForServerFarmPreparer(resourceGroupName, name, softRestart)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web/ServerFarmsClient", "RestartSitesForServerFarm", nil, "Failure preparing request")
@@ -1185,7 +1204,8 @@ func (client ServerFarmsClient) RestartSitesForServerFarmPreparer(resourceGroupN
 		queryParameters["softRestart"] = softRestart
 	}
 
-	return autorest.Prepare(&http.Request{},
+	req := http.Request{}
+	return autorest.Prepare(&req,
 		autorest.AsJSON(),
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -1202,7 +1222,7 @@ func (client ServerFarmsClient) RestartSitesForServerFarmSender(req *http.Reques
 
 // RestartSitesForServerFarmResponder handles the response to the RestartSitesForServerFarm request. The method always
 // closes the http.Response Body.
-func (client ServerFarmsClient) RestartSitesForServerFarmResponder(resp *http.Response) (result ObjectSet, err error) {
+func (client ServerFarmsClient) RestartSitesForServerFarmResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -1254,7 +1274,8 @@ func (client ServerFarmsClient) UpdateServerFarmVnetGatewayPreparer(resourceGrou
 		"api-version": APIVersion,
 	}
 
-	return autorest.Prepare(&http.Request{},
+	req := http.Request{}
+	return autorest.Prepare(&req,
 		autorest.AsJSON(),
 		autorest.AsPut(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -1322,7 +1343,8 @@ func (client ServerFarmsClient) UpdateVnetRoutePreparer(resourceGroupName string
 		"api-version": APIVersion,
 	}
 
-	return autorest.Prepare(&http.Request{},
+	req := http.Request{}
+	return autorest.Prepare(&req,
 		autorest.AsJSON(),
 		autorest.AsPatch(),
 		autorest.WithBaseURL(client.BaseURI),

@@ -81,7 +81,8 @@ func (client DeploymentOperationsClient) GetPreparer(resourceGroupName string, d
 		"api-version": APIVersion,
 	}
 
-	return autorest.Prepare(&http.Request{},
+	req := http.Request{}
+	return autorest.Prepare(&req,
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -149,7 +150,8 @@ func (client DeploymentOperationsClient) ListPreparer(resourceGroupName string, 
 		queryParameters["$top"] = top
 	}
 
-	return autorest.Prepare(&http.Request{},
+	req := http.Request{}
+	return autorest.Prepare(&req,
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),

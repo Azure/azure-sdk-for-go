@@ -47,13 +47,17 @@ func NewVirtualNetworksClientWithBaseURI(baseURI string, subscriptionID string) 
 }
 
 // CreateOrUpdate the Put VirtualNetwork operation creates/updates a virtual
-// network in the specified resource group.
+// network in the specified resource group. This method handles polling
+// itself for long-running operations. User can cancel polling for
+// long-running calls by passing cancel channel as an argument to this method
+// (cancel <-chan struct{}). This channel won't cancel the operation, it will
+// only stop the polling.
 //
 // resourceGroupName is the name of the resource group. virtualNetworkName is
 // the name of the virtual network. parameters is parameters supplied to the
 // create/update Virtual Network operation
-func (client VirtualNetworksClient) CreateOrUpdate(resourceGroupName string, virtualNetworkName string, parameters VirtualNetwork) (result autorest.Response, err error) {
-	req, err := client.CreateOrUpdatePreparer(resourceGroupName, virtualNetworkName, parameters)
+func (client VirtualNetworksClient) CreateOrUpdate(resourceGroupName string, virtualNetworkName string, parameters VirtualNetwork, cancel <-chan struct{}) (result autorest.Response, err error) {
+	req, err := client.CreateOrUpdatePreparer(resourceGroupName, virtualNetworkName, parameters, cancel)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "network/VirtualNetworksClient", "CreateOrUpdate", nil, "Failure preparing request")
 	}
@@ -73,7 +77,7 @@ func (client VirtualNetworksClient) CreateOrUpdate(resourceGroupName string, vir
 }
 
 // CreateOrUpdatePreparer prepares the CreateOrUpdate request.
-func (client VirtualNetworksClient) CreateOrUpdatePreparer(resourceGroupName string, virtualNetworkName string, parameters VirtualNetwork) (*http.Request, error) {
+func (client VirtualNetworksClient) CreateOrUpdatePreparer(resourceGroupName string, virtualNetworkName string, parameters VirtualNetwork, cancel <-chan struct{}) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName":  url.QueryEscape(resourceGroupName),
 		"subscriptionId":     url.QueryEscape(client.SubscriptionID),
@@ -84,7 +88,8 @@ func (client VirtualNetworksClient) CreateOrUpdatePreparer(resourceGroupName str
 		"api-version": APIVersion,
 	}
 
-	return autorest.Prepare(&http.Request{},
+	req := http.Request{Cancel: cancel}
+	return autorest.Prepare(&req,
 		autorest.AsJSON(),
 		autorest.AsPut(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -99,8 +104,7 @@ func (client VirtualNetworksClient) CreateOrUpdatePreparer(resourceGroupName str
 func (client VirtualNetworksClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client,
 		req,
-		azure.DoPollForAsynchronous(autorest.DefaultPollingDuration,
-			autorest.DefaultPollingDelay))
+		azure.DoPollForAsynchronous(autorest.DefaultPollingDelay))
 }
 
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
@@ -116,12 +120,15 @@ func (client VirtualNetworksClient) CreateOrUpdateResponder(resp *http.Response)
 }
 
 // Delete the Delete VirtualNetwork operation deletes the specifed virtual
-// network
+// network This method handles polling itself for long-running operations.
+// User can cancel polling for long-running calls by passing cancel channel
+// as an argument to this method (cancel <-chan struct{}). This channel won't
+// cancel the operation, it will only stop the polling.
 //
 // resourceGroupName is the name of the resource group. virtualNetworkName is
 // the name of the virtual network.
-func (client VirtualNetworksClient) Delete(resourceGroupName string, virtualNetworkName string) (result autorest.Response, err error) {
-	req, err := client.DeletePreparer(resourceGroupName, virtualNetworkName)
+func (client VirtualNetworksClient) Delete(resourceGroupName string, virtualNetworkName string, cancel <-chan struct{}) (result autorest.Response, err error) {
+	req, err := client.DeletePreparer(resourceGroupName, virtualNetworkName, cancel)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "network/VirtualNetworksClient", "Delete", nil, "Failure preparing request")
 	}
@@ -141,7 +148,7 @@ func (client VirtualNetworksClient) Delete(resourceGroupName string, virtualNetw
 }
 
 // DeletePreparer prepares the Delete request.
-func (client VirtualNetworksClient) DeletePreparer(resourceGroupName string, virtualNetworkName string) (*http.Request, error) {
+func (client VirtualNetworksClient) DeletePreparer(resourceGroupName string, virtualNetworkName string, cancel <-chan struct{}) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName":  url.QueryEscape(resourceGroupName),
 		"subscriptionId":     url.QueryEscape(client.SubscriptionID),
@@ -152,7 +159,8 @@ func (client VirtualNetworksClient) DeletePreparer(resourceGroupName string, vir
 		"api-version": APIVersion,
 	}
 
-	return autorest.Prepare(&http.Request{},
+	req := http.Request{Cancel: cancel}
+	return autorest.Prepare(&req,
 		autorest.AsJSON(),
 		autorest.AsDelete(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -166,8 +174,7 @@ func (client VirtualNetworksClient) DeletePreparer(resourceGroupName string, vir
 func (client VirtualNetworksClient) DeleteSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client,
 		req,
-		azure.DoPollForAsynchronous(autorest.DefaultPollingDuration,
-			autorest.DefaultPollingDelay))
+		azure.DoPollForAsynchronous(autorest.DefaultPollingDelay))
 }
 
 // DeleteResponder handles the response to the Delete request. The method always
@@ -222,7 +229,8 @@ func (client VirtualNetworksClient) GetPreparer(resourceGroupName string, virtua
 		queryParameters["$expand"] = expand
 	}
 
-	return autorest.Prepare(&http.Request{},
+	req := http.Request{}
+	return autorest.Prepare(&req,
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -285,7 +293,8 @@ func (client VirtualNetworksClient) ListPreparer(resourceGroupName string) (*htt
 		"api-version": APIVersion,
 	}
 
-	return autorest.Prepare(&http.Request{},
+	req := http.Request{}
+	return autorest.Prepare(&req,
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -369,7 +378,8 @@ func (client VirtualNetworksClient) ListAllPreparer() (*http.Request, error) {
 		"api-version": APIVersion,
 	}
 
-	return autorest.Prepare(&http.Request{},
+	req := http.Request{}
+	return autorest.Prepare(&req,
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),

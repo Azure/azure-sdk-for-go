@@ -45,14 +45,18 @@ func NewProfilesClientWithBaseURI(baseURI string, subscriptionID string) Profile
 	return ProfilesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// Create sends the create request.
+// Create sends the create request. This method handles polling itself for
+// long-running operations. User can cancel polling for long-running calls by
+// passing cancel channel as an argument to this method (cancel <-chan
+// struct{}). This channel won't cancel the operation, it will only stop the
+// polling.
 //
 // profileName is name of the CDN profile within the resource group
 // profileProperties is profile properties needed for creation
 // resourceGroupName is name of the resource group within the Azure
 // subscription
-func (client ProfilesClient) Create(profileName string, profileProperties ProfileCreateParameters, resourceGroupName string) (result autorest.Response, err error) {
-	req, err := client.CreatePreparer(profileName, profileProperties, resourceGroupName)
+func (client ProfilesClient) Create(profileName string, profileProperties ProfileCreateParameters, resourceGroupName string, cancel <-chan struct{}) (result autorest.Response, err error) {
+	req, err := client.CreatePreparer(profileName, profileProperties, resourceGroupName, cancel)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "cdn/ProfilesClient", "Create", nil, "Failure preparing request")
 	}
@@ -72,7 +76,7 @@ func (client ProfilesClient) Create(profileName string, profileProperties Profil
 }
 
 // CreatePreparer prepares the Create request.
-func (client ProfilesClient) CreatePreparer(profileName string, profileProperties ProfileCreateParameters, resourceGroupName string) (*http.Request, error) {
+func (client ProfilesClient) CreatePreparer(profileName string, profileProperties ProfileCreateParameters, resourceGroupName string, cancel <-chan struct{}) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"profileName":       url.QueryEscape(profileName),
 		"resourceGroupName": url.QueryEscape(resourceGroupName),
@@ -83,7 +87,8 @@ func (client ProfilesClient) CreatePreparer(profileName string, profilePropertie
 		"api-version": APIVersion,
 	}
 
-	return autorest.Prepare(&http.Request{},
+	req := http.Request{Cancel: cancel}
+	return autorest.Prepare(&req,
 		autorest.AsJSON(),
 		autorest.AsPut(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -98,8 +103,7 @@ func (client ProfilesClient) CreatePreparer(profileName string, profilePropertie
 func (client ProfilesClient) CreateSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client,
 		req,
-		azure.DoPollForAsynchronous(autorest.DefaultPollingDuration,
-			autorest.DefaultPollingDelay))
+		azure.DoPollForAsynchronous(autorest.DefaultPollingDelay))
 }
 
 // CreateResponder handles the response to the Create request. The method always
@@ -114,13 +118,17 @@ func (client ProfilesClient) CreateResponder(resp *http.Response) (result autore
 	return
 }
 
-// DeleteIfExists sends the delete if exists request.
+// DeleteIfExists sends the delete if exists request. This method handles
+// polling itself for long-running operations. User can cancel polling for
+// long-running calls by passing cancel channel as an argument to this method
+// (cancel <-chan struct{}). This channel won't cancel the operation, it will
+// only stop the polling.
 //
 // profileName is name of the CDN profile within the resource group
 // resourceGroupName is name of the resource group within the Azure
 // subscription
-func (client ProfilesClient) DeleteIfExists(profileName string, resourceGroupName string) (result autorest.Response, err error) {
-	req, err := client.DeleteIfExistsPreparer(profileName, resourceGroupName)
+func (client ProfilesClient) DeleteIfExists(profileName string, resourceGroupName string, cancel <-chan struct{}) (result autorest.Response, err error) {
+	req, err := client.DeleteIfExistsPreparer(profileName, resourceGroupName, cancel)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "cdn/ProfilesClient", "DeleteIfExists", nil, "Failure preparing request")
 	}
@@ -140,7 +148,7 @@ func (client ProfilesClient) DeleteIfExists(profileName string, resourceGroupNam
 }
 
 // DeleteIfExistsPreparer prepares the DeleteIfExists request.
-func (client ProfilesClient) DeleteIfExistsPreparer(profileName string, resourceGroupName string) (*http.Request, error) {
+func (client ProfilesClient) DeleteIfExistsPreparer(profileName string, resourceGroupName string, cancel <-chan struct{}) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"profileName":       url.QueryEscape(profileName),
 		"resourceGroupName": url.QueryEscape(resourceGroupName),
@@ -151,7 +159,8 @@ func (client ProfilesClient) DeleteIfExistsPreparer(profileName string, resource
 		"api-version": APIVersion,
 	}
 
-	return autorest.Prepare(&http.Request{},
+	req := http.Request{Cancel: cancel}
+	return autorest.Prepare(&req,
 		autorest.AsJSON(),
 		autorest.AsDelete(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -165,8 +174,7 @@ func (client ProfilesClient) DeleteIfExistsPreparer(profileName string, resource
 func (client ProfilesClient) DeleteIfExistsSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client,
 		req,
-		azure.DoPollForAsynchronous(autorest.DefaultPollingDuration,
-			autorest.DefaultPollingDelay))
+		azure.DoPollForAsynchronous(autorest.DefaultPollingDelay))
 }
 
 // DeleteIfExistsResponder handles the response to the DeleteIfExists request. The method always
@@ -218,7 +226,8 @@ func (client ProfilesClient) GenerateSsoURIPreparer(profileName string, resource
 		"api-version": APIVersion,
 	}
 
-	return autorest.Prepare(&http.Request{},
+	req := http.Request{}
+	return autorest.Prepare(&req,
 		autorest.AsJSON(),
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -283,7 +292,8 @@ func (client ProfilesClient) GetPreparer(profileName string, resourceGroupName s
 		"api-version": APIVersion,
 	}
 
-	return autorest.Prepare(&http.Request{},
+	req := http.Request{}
+	return autorest.Prepare(&req,
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -346,7 +356,8 @@ func (client ProfilesClient) ListByResourceGroupPreparer(resourceGroupName strin
 		"api-version": APIVersion,
 	}
 
-	return autorest.Prepare(&http.Request{},
+	req := http.Request{}
+	return autorest.Prepare(&req,
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -405,7 +416,8 @@ func (client ProfilesClient) ListBySubscriptionIDPreparer() (*http.Request, erro
 		"api-version": APIVersion,
 	}
 
-	return autorest.Prepare(&http.Request{},
+	req := http.Request{}
+	return autorest.Prepare(&req,
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -471,7 +483,8 @@ func (client ProfilesClient) UpdatePreparer(profileName string, profilePropertie
 		"api-version": APIVersion,
 	}
 
-	return autorest.Prepare(&http.Request{},
+	req := http.Request{}
+	return autorest.Prepare(&req,
 		autorest.AsJSON(),
 		autorest.AsPatch(),
 		autorest.WithBaseURL(client.BaseURI),

@@ -45,13 +45,16 @@ func NewRoutesClientWithBaseURI(baseURI string, subscriptionID string) RoutesCli
 }
 
 // CreateOrUpdate the Put route operation creates/updates a route in the
-// specified route table
+// specified route table This method handles polling itself for long-running
+// operations. User can cancel polling for long-running calls by passing
+// cancel channel as an argument to this method (cancel <-chan struct{}).
+// This channel won't cancel the operation, it will only stop the polling.
 //
 // resourceGroupName is the name of the resource group. routeTableName is the
 // name of the route table. routeName is the name of the route.
 // routeParameters is parameters supplied to the create/update routeoperation
-func (client RoutesClient) CreateOrUpdate(resourceGroupName string, routeTableName string, routeName string, routeParameters Route) (result autorest.Response, err error) {
-	req, err := client.CreateOrUpdatePreparer(resourceGroupName, routeTableName, routeName, routeParameters)
+func (client RoutesClient) CreateOrUpdate(resourceGroupName string, routeTableName string, routeName string, routeParameters Route, cancel <-chan struct{}) (result autorest.Response, err error) {
+	req, err := client.CreateOrUpdatePreparer(resourceGroupName, routeTableName, routeName, routeParameters, cancel)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "network/RoutesClient", "CreateOrUpdate", nil, "Failure preparing request")
 	}
@@ -71,7 +74,7 @@ func (client RoutesClient) CreateOrUpdate(resourceGroupName string, routeTableNa
 }
 
 // CreateOrUpdatePreparer prepares the CreateOrUpdate request.
-func (client RoutesClient) CreateOrUpdatePreparer(resourceGroupName string, routeTableName string, routeName string, routeParameters Route) (*http.Request, error) {
+func (client RoutesClient) CreateOrUpdatePreparer(resourceGroupName string, routeTableName string, routeName string, routeParameters Route, cancel <-chan struct{}) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName": url.QueryEscape(resourceGroupName),
 		"routeName":         url.QueryEscape(routeName),
@@ -83,7 +86,8 @@ func (client RoutesClient) CreateOrUpdatePreparer(resourceGroupName string, rout
 		"api-version": APIVersion,
 	}
 
-	return autorest.Prepare(&http.Request{},
+	req := http.Request{Cancel: cancel}
+	return autorest.Prepare(&req,
 		autorest.AsJSON(),
 		autorest.AsPut(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -98,8 +102,7 @@ func (client RoutesClient) CreateOrUpdatePreparer(resourceGroupName string, rout
 func (client RoutesClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client,
 		req,
-		azure.DoPollForAsynchronous(autorest.DefaultPollingDuration,
-			autorest.DefaultPollingDelay))
+		azure.DoPollForAsynchronous(autorest.DefaultPollingDelay))
 }
 
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
@@ -115,12 +118,15 @@ func (client RoutesClient) CreateOrUpdateResponder(resp *http.Response) (result 
 }
 
 // Delete the delete route operation deletes the specified route from a route
-// table.
+// table. This method handles polling itself for long-running operations.
+// User can cancel polling for long-running calls by passing cancel channel
+// as an argument to this method (cancel <-chan struct{}). This channel won't
+// cancel the operation, it will only stop the polling.
 //
 // resourceGroupName is the name of the resource group. routeTableName is the
 // name of the route table. routeName is the name of the route.
-func (client RoutesClient) Delete(resourceGroupName string, routeTableName string, routeName string) (result autorest.Response, err error) {
-	req, err := client.DeletePreparer(resourceGroupName, routeTableName, routeName)
+func (client RoutesClient) Delete(resourceGroupName string, routeTableName string, routeName string, cancel <-chan struct{}) (result autorest.Response, err error) {
+	req, err := client.DeletePreparer(resourceGroupName, routeTableName, routeName, cancel)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "network/RoutesClient", "Delete", nil, "Failure preparing request")
 	}
@@ -140,7 +146,7 @@ func (client RoutesClient) Delete(resourceGroupName string, routeTableName strin
 }
 
 // DeletePreparer prepares the Delete request.
-func (client RoutesClient) DeletePreparer(resourceGroupName string, routeTableName string, routeName string) (*http.Request, error) {
+func (client RoutesClient) DeletePreparer(resourceGroupName string, routeTableName string, routeName string, cancel <-chan struct{}) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName": url.QueryEscape(resourceGroupName),
 		"routeName":         url.QueryEscape(routeName),
@@ -152,7 +158,8 @@ func (client RoutesClient) DeletePreparer(resourceGroupName string, routeTableNa
 		"api-version": APIVersion,
 	}
 
-	return autorest.Prepare(&http.Request{},
+	req := http.Request{Cancel: cancel}
+	return autorest.Prepare(&req,
 		autorest.AsJSON(),
 		autorest.AsDelete(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -166,8 +173,7 @@ func (client RoutesClient) DeletePreparer(resourceGroupName string, routeTableNa
 func (client RoutesClient) DeleteSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client,
 		req,
-		azure.DoPollForAsynchronous(autorest.DefaultPollingDuration,
-			autorest.DefaultPollingDelay))
+		azure.DoPollForAsynchronous(autorest.DefaultPollingDelay))
 }
 
 // DeleteResponder handles the response to the Delete request. The method always
@@ -220,7 +226,8 @@ func (client RoutesClient) GetPreparer(resourceGroupName string, routeTableName 
 		"api-version": APIVersion,
 	}
 
-	return autorest.Prepare(&http.Request{},
+	req := http.Request{}
+	return autorest.Prepare(&req,
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -285,7 +292,8 @@ func (client RoutesClient) ListPreparer(resourceGroupName string, routeTableName
 		"api-version": APIVersion,
 	}
 
-	return autorest.Prepare(&http.Request{},
+	req := http.Request{}
+	return autorest.Prepare(&req,
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),

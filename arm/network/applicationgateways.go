@@ -47,13 +47,16 @@ func NewApplicationGatewaysClientWithBaseURI(baseURI string, subscriptionID stri
 }
 
 // CreateOrUpdate the Put ApplicationGateway operation creates/updates a
-// ApplicationGateway
+// ApplicationGateway This method handles polling itself for long-running
+// operations. User can cancel polling for long-running calls by passing
+// cancel channel as an argument to this method (cancel <-chan struct{}).
+// This channel won't cancel the operation, it will only stop the polling.
 //
 // resourceGroupName is the name of the resource group. applicationGatewayName
 // is the name of the ApplicationGateway. parameters is parameters supplied
 // to the create/delete ApplicationGateway operation
-func (client ApplicationGatewaysClient) CreateOrUpdate(resourceGroupName string, applicationGatewayName string, parameters ApplicationGateway) (result autorest.Response, err error) {
-	req, err := client.CreateOrUpdatePreparer(resourceGroupName, applicationGatewayName, parameters)
+func (client ApplicationGatewaysClient) CreateOrUpdate(resourceGroupName string, applicationGatewayName string, parameters ApplicationGateway, cancel <-chan struct{}) (result autorest.Response, err error) {
+	req, err := client.CreateOrUpdatePreparer(resourceGroupName, applicationGatewayName, parameters, cancel)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "network/ApplicationGatewaysClient", "CreateOrUpdate", nil, "Failure preparing request")
 	}
@@ -73,7 +76,7 @@ func (client ApplicationGatewaysClient) CreateOrUpdate(resourceGroupName string,
 }
 
 // CreateOrUpdatePreparer prepares the CreateOrUpdate request.
-func (client ApplicationGatewaysClient) CreateOrUpdatePreparer(resourceGroupName string, applicationGatewayName string, parameters ApplicationGateway) (*http.Request, error) {
+func (client ApplicationGatewaysClient) CreateOrUpdatePreparer(resourceGroupName string, applicationGatewayName string, parameters ApplicationGateway, cancel <-chan struct{}) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"applicationGatewayName": url.QueryEscape(applicationGatewayName),
 		"resourceGroupName":      url.QueryEscape(resourceGroupName),
@@ -84,7 +87,8 @@ func (client ApplicationGatewaysClient) CreateOrUpdatePreparer(resourceGroupName
 		"api-version": APIVersion,
 	}
 
-	return autorest.Prepare(&http.Request{},
+	req := http.Request{Cancel: cancel}
+	return autorest.Prepare(&req,
 		autorest.AsJSON(),
 		autorest.AsPut(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -99,8 +103,7 @@ func (client ApplicationGatewaysClient) CreateOrUpdatePreparer(resourceGroupName
 func (client ApplicationGatewaysClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client,
 		req,
-		azure.DoPollForAsynchronous(autorest.DefaultPollingDuration,
-			autorest.DefaultPollingDelay))
+		azure.DoPollForAsynchronous(autorest.DefaultPollingDelay))
 }
 
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
@@ -116,12 +119,15 @@ func (client ApplicationGatewaysClient) CreateOrUpdateResponder(resp *http.Respo
 }
 
 // Delete the delete applicationgateway operation deletes the specified
-// applicationgateway.
+// applicationgateway. This method handles polling itself for long-running
+// operations. User can cancel polling for long-running calls by passing
+// cancel channel as an argument to this method (cancel <-chan struct{}).
+// This channel won't cancel the operation, it will only stop the polling.
 //
 // resourceGroupName is the name of the resource group. applicationGatewayName
 // is the name of the applicationgateway.
-func (client ApplicationGatewaysClient) Delete(resourceGroupName string, applicationGatewayName string) (result autorest.Response, err error) {
-	req, err := client.DeletePreparer(resourceGroupName, applicationGatewayName)
+func (client ApplicationGatewaysClient) Delete(resourceGroupName string, applicationGatewayName string, cancel <-chan struct{}) (result autorest.Response, err error) {
+	req, err := client.DeletePreparer(resourceGroupName, applicationGatewayName, cancel)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "network/ApplicationGatewaysClient", "Delete", nil, "Failure preparing request")
 	}
@@ -141,7 +147,7 @@ func (client ApplicationGatewaysClient) Delete(resourceGroupName string, applica
 }
 
 // DeletePreparer prepares the Delete request.
-func (client ApplicationGatewaysClient) DeletePreparer(resourceGroupName string, applicationGatewayName string) (*http.Request, error) {
+func (client ApplicationGatewaysClient) DeletePreparer(resourceGroupName string, applicationGatewayName string, cancel <-chan struct{}) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"applicationGatewayName": url.QueryEscape(applicationGatewayName),
 		"resourceGroupName":      url.QueryEscape(resourceGroupName),
@@ -152,7 +158,8 @@ func (client ApplicationGatewaysClient) DeletePreparer(resourceGroupName string,
 		"api-version": APIVersion,
 	}
 
-	return autorest.Prepare(&http.Request{},
+	req := http.Request{Cancel: cancel}
+	return autorest.Prepare(&req,
 		autorest.AsJSON(),
 		autorest.AsDelete(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -166,8 +173,7 @@ func (client ApplicationGatewaysClient) DeletePreparer(resourceGroupName string,
 func (client ApplicationGatewaysClient) DeleteSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client,
 		req,
-		azure.DoPollForAsynchronous(autorest.DefaultPollingDuration,
-			autorest.DefaultPollingDelay))
+		azure.DoPollForAsynchronous(autorest.DefaultPollingDelay))
 }
 
 // DeleteResponder handles the response to the Delete request. The method always
@@ -219,7 +225,8 @@ func (client ApplicationGatewaysClient) GetPreparer(resourceGroupName string, ap
 		"api-version": APIVersion,
 	}
 
-	return autorest.Prepare(&http.Request{},
+	req := http.Request{}
+	return autorest.Prepare(&req,
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -282,7 +289,8 @@ func (client ApplicationGatewaysClient) ListPreparer(resourceGroupName string) (
 		"api-version": APIVersion,
 	}
 
-	return autorest.Prepare(&http.Request{},
+	req := http.Request{}
+	return autorest.Prepare(&req,
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -366,7 +374,8 @@ func (client ApplicationGatewaysClient) ListAllPreparer() (*http.Request, error)
 		"api-version": APIVersion,
 	}
 
-	return autorest.Prepare(&http.Request{},
+	req := http.Request{}
+	return autorest.Prepare(&req,
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -419,12 +428,16 @@ func (client ApplicationGatewaysClient) ListAllNextResults(lastResults Applicati
 }
 
 // Start the Start ApplicationGateway operation starts application gatewayin
-// the specified resource group through Network resource provider.
+// the specified resource group through Network resource provider. This
+// method handles polling itself for long-running operations. User can cancel
+// polling for long-running calls by passing cancel channel as an argument to
+// this method (cancel <-chan struct{}). This channel won't cancel the
+// operation, it will only stop the polling.
 //
 // resourceGroupName is the name of the resource group. applicationGatewayName
 // is the name of the application gateway.
-func (client ApplicationGatewaysClient) Start(resourceGroupName string, applicationGatewayName string) (result autorest.Response, err error) {
-	req, err := client.StartPreparer(resourceGroupName, applicationGatewayName)
+func (client ApplicationGatewaysClient) Start(resourceGroupName string, applicationGatewayName string, cancel <-chan struct{}) (result autorest.Response, err error) {
+	req, err := client.StartPreparer(resourceGroupName, applicationGatewayName, cancel)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "network/ApplicationGatewaysClient", "Start", nil, "Failure preparing request")
 	}
@@ -444,7 +457,7 @@ func (client ApplicationGatewaysClient) Start(resourceGroupName string, applicat
 }
 
 // StartPreparer prepares the Start request.
-func (client ApplicationGatewaysClient) StartPreparer(resourceGroupName string, applicationGatewayName string) (*http.Request, error) {
+func (client ApplicationGatewaysClient) StartPreparer(resourceGroupName string, applicationGatewayName string, cancel <-chan struct{}) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"applicationGatewayName": url.QueryEscape(applicationGatewayName),
 		"resourceGroupName":      url.QueryEscape(resourceGroupName),
@@ -455,7 +468,8 @@ func (client ApplicationGatewaysClient) StartPreparer(resourceGroupName string, 
 		"api-version": APIVersion,
 	}
 
-	return autorest.Prepare(&http.Request{},
+	req := http.Request{Cancel: cancel}
+	return autorest.Prepare(&req,
 		autorest.AsJSON(),
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -469,8 +483,7 @@ func (client ApplicationGatewaysClient) StartPreparer(resourceGroupName string, 
 func (client ApplicationGatewaysClient) StartSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client,
 		req,
-		azure.DoPollForAsynchronous(autorest.DefaultPollingDuration,
-			autorest.DefaultPollingDelay))
+		azure.DoPollForAsynchronous(autorest.DefaultPollingDelay))
 }
 
 // StartResponder handles the response to the Start request. The method always
@@ -486,12 +499,16 @@ func (client ApplicationGatewaysClient) StartResponder(resp *http.Response) (res
 }
 
 // Stop the STOP ApplicationGateway operation stops application gatewayin the
-// specified resource group through Network resource provider.
+// specified resource group through Network resource provider. This method
+// handles polling itself for long-running operations. User can cancel
+// polling for long-running calls by passing cancel channel as an argument to
+// this method (cancel <-chan struct{}). This channel won't cancel the
+// operation, it will only stop the polling.
 //
 // resourceGroupName is the name of the resource group. applicationGatewayName
 // is the name of the application gateway.
-func (client ApplicationGatewaysClient) Stop(resourceGroupName string, applicationGatewayName string) (result autorest.Response, err error) {
-	req, err := client.StopPreparer(resourceGroupName, applicationGatewayName)
+func (client ApplicationGatewaysClient) Stop(resourceGroupName string, applicationGatewayName string, cancel <-chan struct{}) (result autorest.Response, err error) {
+	req, err := client.StopPreparer(resourceGroupName, applicationGatewayName, cancel)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "network/ApplicationGatewaysClient", "Stop", nil, "Failure preparing request")
 	}
@@ -511,7 +528,7 @@ func (client ApplicationGatewaysClient) Stop(resourceGroupName string, applicati
 }
 
 // StopPreparer prepares the Stop request.
-func (client ApplicationGatewaysClient) StopPreparer(resourceGroupName string, applicationGatewayName string) (*http.Request, error) {
+func (client ApplicationGatewaysClient) StopPreparer(resourceGroupName string, applicationGatewayName string, cancel <-chan struct{}) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"applicationGatewayName": url.QueryEscape(applicationGatewayName),
 		"resourceGroupName":      url.QueryEscape(resourceGroupName),
@@ -522,7 +539,8 @@ func (client ApplicationGatewaysClient) StopPreparer(resourceGroupName string, a
 		"api-version": APIVersion,
 	}
 
-	return autorest.Prepare(&http.Request{},
+	req := http.Request{Cancel: cancel}
+	return autorest.Prepare(&req,
 		autorest.AsJSON(),
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -536,8 +554,7 @@ func (client ApplicationGatewaysClient) StopPreparer(resourceGroupName string, a
 func (client ApplicationGatewaysClient) StopSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client,
 		req,
-		azure.DoPollForAsynchronous(autorest.DefaultPollingDuration,
-			autorest.DefaultPollingDelay))
+		azure.DoPollForAsynchronous(autorest.DefaultPollingDelay))
 }
 
 // StopResponder handles the response to the Stop request. The method always

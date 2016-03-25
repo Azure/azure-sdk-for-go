@@ -2,6 +2,10 @@
 
 -----
 
+## `v2.1.0-beta`
+- Uses go-autorest v7.0.0 (Polling and Asynchronous operations related updates).
+
+
 ## `v2.0.0-beta`
 
 - Uses go-autorest v6.0.0 (Polling and Asynchronous requests related changes).

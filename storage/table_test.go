@@ -4,9 +4,10 @@ import (
 	"crypto/rand"
 	"encoding/base64"
 	"fmt"
-	chk "gopkg.in/check.v1"
 	"reflect"
 	"time"
+
+	chk "gopkg.in/check.v1"
 )
 
 type TableClient struct{}
@@ -79,7 +80,7 @@ func (s *StorageBlobSuite) Test_SharedKeyLite(c *chk.C) {
 	}
 	url := "https://mindgotest.table.core.windows.net/tquery()"
 
-	ret, err := cli.client.createSharedKeyLiteTable(url, headers)
+	ret, err := cli.client.createSharedKeyLite(url, headers)
 	if err != nil {
 		c.Fail()
 	}
@@ -174,11 +175,11 @@ func (s *StorageBlobSuite) Test_InsertAndGetEntities(c *chk.C) {
 	entries, _, err := cli.QueryTableEntities(tn, nil, reflect.TypeOf(ce), 10, "")
 	c.Assert(err, chk.IsNil)
 
-	c.Assert(len(*entries), chk.Equals, 2)
+	c.Assert(len(entries), chk.Equals, 2)
 
-	c.Assert(ce.RowKey(), chk.Equals, (*entries)[1].RowKey())
+	c.Assert(ce.RowKey(), chk.Equals, entries[1].RowKey())
 
-	testEquality(c, ce, (*entries)[1].(*CustomEntity))
+	c.Assert(entries[1].(*CustomEntity), chk.DeepEquals, ce)
 }
 
 func (s *StorageBlobSuite) Test_InsertAndQueryEntities(c *chk.C) {
@@ -199,9 +200,9 @@ func (s *StorageBlobSuite) Test_InsertAndQueryEntities(c *chk.C) {
 	entries, _, err := cli.QueryTableEntities(tn, nil, reflect.TypeOf(ce), 10, "RowKey eq '200'")
 	c.Assert(err, chk.IsNil)
 
-	c.Assert(len(*entries), chk.Equals, 1)
+	c.Assert(len(entries), chk.Equals, 1)
 
-	c.Assert(ce.RowKey(), chk.Equals, (*entries)[0].RowKey())
+	c.Assert(ce.RowKey(), chk.Equals, entries[0].RowKey())
 }
 
 func (s *StorageBlobSuite) Test_InsertAndDeleteEntities(c *chk.C) {
@@ -223,17 +224,17 @@ func (s *StorageBlobSuite) Test_InsertAndDeleteEntities(c *chk.C) {
 	entries, _, err := cli.QueryTableEntities(tn, nil, reflect.TypeOf(ce), 10, "Number eq 1")
 	c.Assert(err, chk.IsNil)
 
-	c.Assert(len(*entries), chk.Equals, 1)
+	c.Assert(len(entries), chk.Equals, 1)
 
-	testEquality(c, ce, (*entries)[0].(*CustomEntity))
+	c.Assert(entries[0].(*CustomEntity), chk.DeepEquals, ce)
 
-	c.Assert(cli.DeleteEntityWithoutCheck(tn, (*entries)[0]), chk.IsNil)
+	c.Assert(cli.DeleteEntityWithoutCheck(tn, entries[0]), chk.IsNil)
 
 	entries, _, err = cli.QueryTableEntities(tn, nil, reflect.TypeOf(ce), 10, "")
 	c.Assert(err, chk.IsNil)
 
 	// only 1 entry must be present
-	c.Assert(len(*entries), chk.Equals, 1)
+	c.Assert(len(entries), chk.Equals, 1)
 }
 
 func (s *StorageBlobSuite) Test_ContinuationToken(c *chk.C) {
@@ -246,8 +247,11 @@ func (s *StorageBlobSuite) Test_ContinuationToken(c *chk.C) {
 	defer cli.DeleteTable(tn)
 
 	var ce *CustomEntity
+	var ceList [5]*CustomEntity
+
 	for i := 0; i < 5; i++ {
 		ce = &CustomEntity{Name: "Test", Surname: "Test2", SomeDate: time.Now(), Number: i, PKey: "pkey", RKey: fmt.Sprintf("r%d", i)}
+		ceList[i] = ce
 		c.Assert(cli.InsertOrReplaceEntity(tn, ce), chk.IsNil)
 	}
 
@@ -255,17 +259,22 @@ func (s *StorageBlobSuite) Test_ContinuationToken(c *chk.C) {
 	// 1 entry
 	entries, contToken, err := cli.QueryTableEntities(tn, nil, reflect.TypeOf(ce), 2, "")
 	c.Assert(err, chk.IsNil)
-	c.Assert(len(*entries), chk.Equals, 2)
+	c.Assert(len(entries), chk.Equals, 2)
+	c.Assert(entries[0].(*CustomEntity), chk.DeepEquals, ceList[0])
+	c.Assert(entries[1].(*CustomEntity), chk.DeepEquals, ceList[1])
 	c.Assert(contToken, chk.NotNil)
 
 	entries, contToken, err = cli.QueryTableEntities(tn, contToken, reflect.TypeOf(ce), 2, "")
 	c.Assert(err, chk.IsNil)
-	c.Assert(len(*entries), chk.Equals, 2)
+	c.Assert(len(entries), chk.Equals, 2)
+	c.Assert(entries[0].(*CustomEntity), chk.DeepEquals, ceList[2])
+	c.Assert(entries[1].(*CustomEntity), chk.DeepEquals, ceList[3])
 	c.Assert(contToken, chk.NotNil)
 
 	entries, contToken, err = cli.QueryTableEntities(tn, contToken, reflect.TypeOf(ce), 2, "")
 	c.Assert(err, chk.IsNil)
-	c.Assert(len(*entries), chk.Equals, 1)
+	c.Assert(len(entries), chk.Equals, 1)
+	c.Assert(entries[0].(*CustomEntity), chk.DeepEquals, ceList[4])
 	c.Assert(contToken, chk.IsNil)
 }
 
@@ -277,22 +286,4 @@ func randTable() string {
 		bytes[i] = alphanum[b%byte(len(alphanum))]
 	}
 	return string(bytes)
-}
-
-func testEquality(c *chk.C, c1, c2 *CustomEntity) {
-	if c1 == nil {
-		c.Assert(c2, chk.IsNil)
-		return
-	}
-	if c2 == nil {
-		c.Assert(c1, chk.IsNil)
-		return
-	}
-
-	c.Assert(c1.Name, chk.Equals, c2.Name)
-	c.Assert(c1.Surname, chk.Equals, c2.Surname)
-	c.Assert(c1.Number, chk.Equals, c2.Number)
-	c.Assert(c1.PKey, chk.Equals, c2.PKey)
-	c.Assert(c1.RKey, chk.Equals, c2.RKey)
-	c.Assert(c1.SomeDate.Unix(), chk.Equals, c2.SomeDate.Unix())
 }

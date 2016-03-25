@@ -38,6 +38,10 @@ const (
 // Client is the object that needs to be constructed to perform
 // operations on the storage account.
 type Client struct {
+	// HTTPClient is the http.Client used to initiate API
+	// requests.  If it is nil, http.DefaultClient is used.
+	HTTPClient *http.Client
+
 	accountName string
 	accountKey  []byte
 	useHTTPS    bool
@@ -362,7 +366,11 @@ func (c Client) exec(verb, url string, headers map[string]string, body io.Reader
 	for k, v := range headers {
 		req.Header.Add(k, v)
 	}
-	httpClient := http.Client{}
+
+	httpClient := c.HTTPClient
+	if httpClient == nil {
+		httpClient = http.DefaultClient
+	}
 	resp, err := httpClient.Do(req)
 	if err != nil {
 		return nil, err
@@ -438,7 +446,7 @@ func (c Client) execInternalJSON(verb, url string, headers map[string]string, bo
 	return respToRet, nil
 }
 
-func (c Client) createSharedKeyLiteTable(url string, headers map[string]string) (string, error) {
+func (c Client) createSharedKeyLite(url string, headers map[string]string) (string, error) {
 	can, err := c.buildCanonicalizedResourceTable(url)
 
 	if err != nil {
@@ -452,7 +460,7 @@ func (c Client) createSharedKeyLiteTable(url string, headers map[string]string) 
 
 func (c Client) execTable(verb, url string, headers map[string]string, body io.Reader) (*odataResponse, error) {
 	var err error
-	headers["Authorization"], err = c.createSharedKeyLiteTable(url, headers)
+	headers["Authorization"], err = c.createSharedKeyLite(url, headers)
 	if err != nil {
 		return nil, err
 	}

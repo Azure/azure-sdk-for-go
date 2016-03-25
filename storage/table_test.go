@@ -5,7 +5,6 @@ import (
 	"encoding/base64"
 	"fmt"
 	"reflect"
-	"time"
 
 	chk "gopkg.in/check.v1"
 )
@@ -17,12 +16,11 @@ func getTableClient(c *chk.C) TableServiceClient {
 }
 
 type CustomEntity struct {
-	Name     string `json:"name"`
-	Surname  string `json:"surname"`
-	SomeDate time.Time
-	Number   int
-	PKey     string `json:"pk" table:"-"`
-	RKey     string `json:"rk" table:"-"`
+	Name    string `json:"name"`
+	Surname string `json:"surname"`
+	Number  int
+	PKey    string `json:"pk" table:"-"`
+	RKey    string `json:"rk" table:"-"`
 }
 
 type CustomEntityExtended struct {
@@ -109,7 +107,7 @@ func (s *StorageBlobSuite) Test_InsertEntities(c *chk.C) {
 	c.Assert(err, chk.IsNil)
 	defer cli.DeleteTable(tn)
 
-	ce := &CustomEntity{Name: "Luke", Surname: "Skywalker", SomeDate: time.Now(), Number: 1543, PKey: "pkey"}
+	ce := &CustomEntity{Name: "Luke", Surname: "Skywalker", Number: 1543, PKey: "pkey"}
 
 	for i := 0; i < 12; i++ {
 		ce.SetRowKey(fmt.Sprintf("%d", i))
@@ -128,7 +126,7 @@ func (s *StorageBlobSuite) Test_InsertOrReplaceEntities(c *chk.C) {
 	c.Assert(err, chk.IsNil)
 	defer cli.DeleteTable(tn)
 
-	ce := &CustomEntity{Name: "Darth", Surname: "Skywalker", SomeDate: time.Now(), Number: 60, PKey: "pkey", RKey: "5"}
+	ce := &CustomEntity{Name: "Darth", Surname: "Skywalker", Number: 60, PKey: "pkey", RKey: "5"}
 
 	err = cli.InsertOrReplaceEntity(tn, ce)
 	c.Assert(err, chk.IsNil)
@@ -147,7 +145,7 @@ func (s *StorageBlobSuite) Test_InsertOrMergeEntities(c *chk.C) {
 	c.Assert(err, chk.IsNil)
 	defer cli.DeleteTable(tn)
 
-	ce := &CustomEntity{Name: "Darth", Surname: "Skywalker", SomeDate: time.Now(), Number: 60, PKey: "pkey", RKey: "5"}
+	ce := &CustomEntity{Name: "Darth", Surname: "Skywalker", Number: 60, PKey: "pkey", RKey: "5"}
 
 	err = cli.InsertOrMergeEntity(tn, ce)
 	c.Assert(err, chk.IsNil)
@@ -166,7 +164,7 @@ func (s *StorageBlobSuite) Test_InsertAndGetEntities(c *chk.C) {
 	c.Assert(err, chk.IsNil)
 	defer cli.DeleteTable(tn)
 
-	ce := &CustomEntity{Name: "Darth", Surname: "Skywalker", SomeDate: time.Now(), Number: 60, PKey: "pkey", RKey: "100"}
+	ce := &CustomEntity{Name: "Darth", Surname: "Skywalker", Number: 60, PKey: "pkey", RKey: "100"}
 	c.Assert(cli.InsertOrReplaceEntity(tn, ce), chk.IsNil)
 
 	ce.SetRowKey("200")
@@ -191,7 +189,7 @@ func (s *StorageBlobSuite) Test_InsertAndQueryEntities(c *chk.C) {
 	c.Assert(err, chk.IsNil)
 	defer cli.DeleteTable(tn)
 
-	ce := &CustomEntity{Name: "Darth", Surname: "Skywalker", SomeDate: time.Now(), Number: 60, PKey: "pkey", RKey: "100"}
+	ce := &CustomEntity{Name: "Darth", Surname: "Skywalker", Number: 60, PKey: "pkey", RKey: "100"}
 	c.Assert(cli.InsertOrReplaceEntity(tn, ce), chk.IsNil)
 
 	ce.SetRowKey("200")
@@ -214,7 +212,7 @@ func (s *StorageBlobSuite) Test_InsertAndDeleteEntities(c *chk.C) {
 	c.Assert(err, chk.IsNil)
 	defer cli.DeleteTable(tn)
 
-	ce := &CustomEntity{Name: "Test", Surname: "Test2", SomeDate: time.Now(), Number: 0, PKey: "pkey", RKey: "r01"}
+	ce := &CustomEntity{Name: "Test", Surname: "Test2", Number: 0, PKey: "pkey", RKey: "r01"}
 	c.Assert(cli.InsertOrReplaceEntity(tn, ce), chk.IsNil)
 
 	ce.Number = 1
@@ -250,7 +248,7 @@ func (s *StorageBlobSuite) Test_ContinuationToken(c *chk.C) {
 	var ceList [5]*CustomEntity
 
 	for i := 0; i < 5; i++ {
-		ce = &CustomEntity{Name: "Test", Surname: "Test2", SomeDate: time.Now(), Number: i, PKey: "pkey", RKey: fmt.Sprintf("r%d", i)}
+		ce = &CustomEntity{Name: "Test", Surname: "Test2", Number: i, PKey: "pkey", RKey: fmt.Sprintf("r%d", i)}
 		ceList[i] = ce
 		c.Assert(cli.InsertOrReplaceEntity(tn, ce), chk.IsNil)
 	}

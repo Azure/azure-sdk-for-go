@@ -162,15 +162,11 @@ func (c *TableServiceClient) execTable(table AzureTable, entity TableEntity, ope
 		expectedStatusCode = http.StatusNoContent
 	}
 
-	if resp != nil {
-		if resp.body != nil {
-			defer resp.body.Close()
-		}
-	}
-
 	if err != nil {
 		return err
 	}
+
+	defer resp.body.Close()
 
 	if err := checkRespCode(resp.statusCode, []int{expectedStatusCode}); err != nil {
 		return err

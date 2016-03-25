@@ -341,13 +341,11 @@ func deserializeEntity(retType reflect.Type, reader io.Reader) ([]TableEntity, e
 	return tEntries, nil
 }
 
-func extractContinuationTokenFromHeaders(headers map[string][]string) *ContinuationToken {
-	if kh, ok := headers[continuationTokenPartitionKeyHeader]; ok { // continuationTokenPartitionKeyHeader must be present
-		if rh, ok := headers[continuationTokenRowHeader]; ok { // continuationTokenRowHeader must be present too
-			if (len(kh) > 0) && (len(rh) > 0) { // they both must have at least one entry
-				return &ContinuationToken{kh[0], rh[0]}
-			}
-		}
+func extractContinuationTokenFromHeaders(h http.Header) *ContinuationToken {
+	ct := ContinuationToken{h.Get(continuationTokenPartitionKeyHeader), h.Get(continuationTokenRowHeader)}
+
+	if ct.NextPartitionKey != "" && ct.NextRowKey != "" {
+		return &ct
 	}
-	return nil // otherwise return nil
+	return nil
 }

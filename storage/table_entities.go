@@ -79,7 +79,7 @@ type getTableEntriesResponse struct {
 // 		entities, cToken, err = tSvc.QueryTableEntities("table", cToken, reflect.TypeOf(entity), 20, "")
 func (c *TableServiceClient) QueryTableEntities(tableName AzureTable, previousContToken *ContinuationToken, retType reflect.Type, top int, query string) ([]TableEntity, *ContinuationToken, error) {
 	if top > maxTopParameter {
-		return nil, nil, fmt.Errorf("Top accepts at maximum %d elements. Requested %d instead.", maxTopParameter, top)
+		return nil, nil, fmt.Errorf("top accepts at maximum %d elements. Requested %d instead", maxTopParameter, top)
 	}
 
 	uri := c.client.getEndpoint(tableServiceName, pathForTable(tableName), url.Values{})
@@ -121,16 +121,18 @@ func (c *TableServiceClient) QueryTableEntities(tableName AzureTable, previousCo
 // The function fails if there is an entity with the same
 // PartitionKey and RowKey in the table.
 func (c *TableServiceClient) InsertEntity(table AzureTable, entity TableEntity) error {
+	var err error
+
 	if sc, err := c.execTable(table, entity, false, "POST"); err != nil {
 		return checkRespCode(sc, []int{http.StatusCreated})
-	} else {
-		return err
 	}
+
+	return err
 }
 
-func (c *TableServiceClient) execTable(table AzureTable, entity TableEntity, specifyKeysInUrl bool, method string) (int, error) {
+func (c *TableServiceClient) execTable(table AzureTable, entity TableEntity, specifyKeysInURL bool, method string) (int, error) {
 	uri := c.client.getEndpoint(tableServiceName, pathForTable(table), url.Values{})
-	if specifyKeysInUrl {
+	if specifyKeysInURL {
 		uri += fmt.Sprintf("(PartitionKey='%s',RowKey='%s')", url.QueryEscape(entity.PartitionKey()), url.QueryEscape(entity.RowKey()))
 	}
 
@@ -162,11 +164,12 @@ func (c *TableServiceClient) execTable(table AzureTable, entity TableEntity, spe
 // one passed as parameter. The function fails if there is no entity
 // with the same PartitionKey and RowKey in the table.
 func (c *TableServiceClient) UpdateEntity(table AzureTable, entity TableEntity) error {
+	var err error
+
 	if sc, err := c.execTable(table, entity, true, "PUT"); err != nil {
 		return checkRespCode(sc, []int{http.StatusNoContent})
-	} else {
-		return err
 	}
+	return err
 }
 
 // MergeEntity merges the contents of an entity with the
@@ -174,11 +177,12 @@ func (c *TableServiceClient) UpdateEntity(table AzureTable, entity TableEntity) 
 // The function fails if there is no entity
 // with the same PartitionKey and RowKey in the table.
 func (c *TableServiceClient) MergeEntity(table AzureTable, entity TableEntity) error {
+	var err error
+
 	if sc, err := c.execTable(table, entity, true, "MERGE"); err != nil {
 		return checkRespCode(sc, []int{http.StatusNoContent})
-	} else {
-		return err
 	}
+	return err
 }
 
 // DeleteEntityWithoutCheck deletes the entity matching by
@@ -221,21 +225,23 @@ func (c *TableServiceClient) DeleteEntity(table AzureTable, entity TableEntity, 
 // InsertOrReplaceEntity inserts an entity in the specified table
 // or replaced the existing one.
 func (c *TableServiceClient) InsertOrReplaceEntity(table AzureTable, entity TableEntity) error {
+	var err error
+
 	if sc, err := c.execTable(table, entity, true, "PUT"); err != nil {
 		return checkRespCode(sc, []int{http.StatusNoContent})
-	} else {
-		return err
 	}
+	return err
 }
 
 // InsertOrMergeEntity inserts an entity in the specified table
 // or merges the existing one.
 func (c *TableServiceClient) InsertOrMergeEntity(table AzureTable, entity TableEntity) error {
+	var err error
+
 	if sc, err := c.execTable(table, entity, true, "MERGE"); err != nil {
 		return checkRespCode(sc, []int{http.StatusNoContent})
-	} else {
-		return err
 	}
+	return err
 }
 
 func injectPartitionAndRowKeys(entity TableEntity, buf *bytes.Buffer) error {

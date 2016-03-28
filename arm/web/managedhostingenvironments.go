@@ -50,17 +50,13 @@ func NewManagedHostingEnvironmentsClientWithBaseURI(baseURI string, subscription
 }
 
 // CreateOrUpdateManagedHostingEnvironment sends the create or update managed
-// hosting environment request. This method handles polling itself for
-// long-running operations. User can cancel polling for long-running calls by
-// passing cancel channel as an argument to this method (cancel <-chan
-// struct{}). This channel won't cancel the operation, it will only stop the
-// polling.
+// hosting environment request.
 //
 // resourceGroupName is name of resource group name is name of managed hosting
 // environment managedHostingEnvironmentEnvelope is properties of managed
 // hosting environment
-func (client ManagedHostingEnvironmentsClient) CreateOrUpdateManagedHostingEnvironment(resourceGroupName string, name string, managedHostingEnvironmentEnvelope HostingEnvironment, cancel <-chan struct{}) (result autorest.Response, err error) {
-	req, err := client.CreateOrUpdateManagedHostingEnvironmentPreparer(resourceGroupName, name, managedHostingEnvironmentEnvelope, cancel)
+func (client ManagedHostingEnvironmentsClient) CreateOrUpdateManagedHostingEnvironment(resourceGroupName string, name string, managedHostingEnvironmentEnvelope HostingEnvironment) (result autorest.Response, err error) {
+	req, err := client.CreateOrUpdateManagedHostingEnvironmentPreparer(resourceGroupName, name, managedHostingEnvironmentEnvelope)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web/ManagedHostingEnvironmentsClient", "CreateOrUpdateManagedHostingEnvironment", nil, "Failure preparing request")
 	}
@@ -80,7 +76,7 @@ func (client ManagedHostingEnvironmentsClient) CreateOrUpdateManagedHostingEnvir
 }
 
 // CreateOrUpdateManagedHostingEnvironmentPreparer prepares the CreateOrUpdateManagedHostingEnvironment request.
-func (client ManagedHostingEnvironmentsClient) CreateOrUpdateManagedHostingEnvironmentPreparer(resourceGroupName string, name string, managedHostingEnvironmentEnvelope HostingEnvironment, cancel <-chan struct{}) (*http.Request, error) {
+func (client ManagedHostingEnvironmentsClient) CreateOrUpdateManagedHostingEnvironmentPreparer(resourceGroupName string, name string, managedHostingEnvironmentEnvelope HostingEnvironment) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"name":              url.QueryEscape(name),
 		"resourceGroupName": url.QueryEscape(resourceGroupName),
@@ -91,8 +87,7 @@ func (client ManagedHostingEnvironmentsClient) CreateOrUpdateManagedHostingEnvir
 		"api-version": APIVersion,
 	}
 
-	req := http.Request{Cancel: cancel}
-	return autorest.Prepare(&req,
+	return autorest.Prepare(&http.Request{},
 		autorest.AsJSON(),
 		autorest.AsPut(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -107,7 +102,8 @@ func (client ManagedHostingEnvironmentsClient) CreateOrUpdateManagedHostingEnvir
 func (client ManagedHostingEnvironmentsClient) CreateOrUpdateManagedHostingEnvironmentSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client,
 		req,
-		azure.DoPollForAsynchronous(autorest.DefaultPollingDelay))
+		azure.DoPollForAsynchronous(autorest.DefaultPollingDuration,
+			autorest.DefaultPollingDelay))
 }
 
 // CreateOrUpdateManagedHostingEnvironmentResponder handles the response to the CreateOrUpdateManagedHostingEnvironment request. The method always
@@ -123,16 +119,13 @@ func (client ManagedHostingEnvironmentsClient) CreateOrUpdateManagedHostingEnvir
 }
 
 // DeleteManagedHostingEnvironment sends the delete managed hosting
-// environment request. This method handles polling itself for long-running
-// operations. User can cancel polling for long-running calls by passing
-// cancel channel as an argument to this method (cancel <-chan struct{}).
-// This channel won't cancel the operation, it will only stop the polling.
+// environment request.
 //
 // resourceGroupName is name of resource group name is name of managed hosting
 // environment forceDelete is delete even if the managed hosting environment
 // contains resources
-func (client ManagedHostingEnvironmentsClient) DeleteManagedHostingEnvironment(resourceGroupName string, name string, forceDelete *bool, cancel <-chan struct{}) (result autorest.Response, err error) {
-	req, err := client.DeleteManagedHostingEnvironmentPreparer(resourceGroupName, name, forceDelete, cancel)
+func (client ManagedHostingEnvironmentsClient) DeleteManagedHostingEnvironment(resourceGroupName string, name string, forceDelete *bool) (result autorest.Response, err error) {
+	req, err := client.DeleteManagedHostingEnvironmentPreparer(resourceGroupName, name, forceDelete)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web/ManagedHostingEnvironmentsClient", "DeleteManagedHostingEnvironment", nil, "Failure preparing request")
 	}
@@ -152,7 +145,7 @@ func (client ManagedHostingEnvironmentsClient) DeleteManagedHostingEnvironment(r
 }
 
 // DeleteManagedHostingEnvironmentPreparer prepares the DeleteManagedHostingEnvironment request.
-func (client ManagedHostingEnvironmentsClient) DeleteManagedHostingEnvironmentPreparer(resourceGroupName string, name string, forceDelete *bool, cancel <-chan struct{}) (*http.Request, error) {
+func (client ManagedHostingEnvironmentsClient) DeleteManagedHostingEnvironmentPreparer(resourceGroupName string, name string, forceDelete *bool) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"name":              url.QueryEscape(name),
 		"resourceGroupName": url.QueryEscape(resourceGroupName),
@@ -166,8 +159,7 @@ func (client ManagedHostingEnvironmentsClient) DeleteManagedHostingEnvironmentPr
 		queryParameters["forceDelete"] = forceDelete
 	}
 
-	req := http.Request{Cancel: cancel}
-	return autorest.Prepare(&req,
+	return autorest.Prepare(&http.Request{},
 		autorest.AsJSON(),
 		autorest.AsDelete(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -181,7 +173,8 @@ func (client ManagedHostingEnvironmentsClient) DeleteManagedHostingEnvironmentPr
 func (client ManagedHostingEnvironmentsClient) DeleteManagedHostingEnvironmentSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client,
 		req,
-		azure.DoPollForAsynchronous(autorest.DefaultPollingDelay))
+		azure.DoPollForAsynchronous(autorest.DefaultPollingDuration,
+			autorest.DefaultPollingDelay))
 }
 
 // DeleteManagedHostingEnvironmentResponder handles the response to the DeleteManagedHostingEnvironment request. The method always
@@ -233,8 +226,7 @@ func (client ManagedHostingEnvironmentsClient) GetManagedHostingEnvironmentPrepa
 		"api-version": APIVersion,
 	}
 
-	req := http.Request{}
-	return autorest.Prepare(&req,
+	return autorest.Prepare(&http.Request{},
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -267,7 +259,7 @@ func (client ManagedHostingEnvironmentsClient) GetManagedHostingEnvironmentRespo
 //
 // resourceGroupName is name of resource group name is name of managed hosting
 // environment operationID is operation identifier GUID
-func (client ManagedHostingEnvironmentsClient) GetManagedHostingEnvironmentOperation(resourceGroupName string, name string, operationID string) (result SetObject, err error) {
+func (client ManagedHostingEnvironmentsClient) GetManagedHostingEnvironmentOperation(resourceGroupName string, name string, operationID string) (result ObjectSet, err error) {
 	req, err := client.GetManagedHostingEnvironmentOperationPreparer(resourceGroupName, name, operationID)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web/ManagedHostingEnvironmentsClient", "GetManagedHostingEnvironmentOperation", nil, "Failure preparing request")
@@ -300,8 +292,7 @@ func (client ManagedHostingEnvironmentsClient) GetManagedHostingEnvironmentOpera
 		"api-version": APIVersion,
 	}
 
-	req := http.Request{}
-	return autorest.Prepare(&req,
+	return autorest.Prepare(&http.Request{},
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -318,7 +309,7 @@ func (client ManagedHostingEnvironmentsClient) GetManagedHostingEnvironmentOpera
 
 // GetManagedHostingEnvironmentOperationResponder handles the response to the GetManagedHostingEnvironmentOperation request. The method always
 // closes the http.Response Body.
-func (client ManagedHostingEnvironmentsClient) GetManagedHostingEnvironmentOperationResponder(resp *http.Response) (result SetObject, err error) {
+func (client ManagedHostingEnvironmentsClient) GetManagedHostingEnvironmentOperationResponder(resp *http.Response) (result ObjectSet, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -364,8 +355,7 @@ func (client ManagedHostingEnvironmentsClient) GetManagedHostingEnvironmentsPrep
 		"api-version": APIVersion,
 	}
 
-	req := http.Request{}
-	return autorest.Prepare(&req,
+	return autorest.Prepare(&http.Request{},
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -430,8 +420,7 @@ func (client ManagedHostingEnvironmentsClient) GetManagedHostingEnvironmentServe
 		"api-version": APIVersion,
 	}
 
-	req := http.Request{}
-	return autorest.Prepare(&req,
+	return autorest.Prepare(&http.Request{},
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -500,8 +489,7 @@ func (client ManagedHostingEnvironmentsClient) GetManagedHostingEnvironmentSites
 		queryParameters["propertiesToInclude"] = propertiesToInclude
 	}
 
-	req := http.Request{}
-	return autorest.Prepare(&req,
+	return autorest.Prepare(&http.Request{},
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -566,8 +554,7 @@ func (client ManagedHostingEnvironmentsClient) GetManagedHostingEnvironmentVipsP
 		"api-version": APIVersion,
 	}
 
-	req := http.Request{}
-	return autorest.Prepare(&req,
+	return autorest.Prepare(&http.Request{},
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -632,8 +619,7 @@ func (client ManagedHostingEnvironmentsClient) GetManagedHostingEnvironmentWebHo
 		"api-version": APIVersion,
 	}
 
-	req := http.Request{}
-	return autorest.Prepare(&req,
+	return autorest.Prepare(&http.Request{},
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),

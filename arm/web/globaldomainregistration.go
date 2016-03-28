@@ -82,8 +82,7 @@ func (client GlobalDomainRegistrationClient) CheckDomainAvailabilityPreparer(ide
 		"api-version": APIVersion,
 	}
 
-	req := http.Request{}
-	return autorest.Prepare(&req,
+	return autorest.Prepare(&http.Request{},
 		autorest.AsJSON(),
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -143,8 +142,7 @@ func (client GlobalDomainRegistrationClient) GetAllDomainsPreparer() (*http.Requ
 		"api-version": APIVersion,
 	}
 
-	req := http.Request{}
-	return autorest.Prepare(&req,
+	return autorest.Prepare(&http.Request{},
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -204,8 +202,7 @@ func (client GlobalDomainRegistrationClient) GetDomainControlCenterSsoRequestPre
 		"api-version": APIVersion,
 	}
 
-	req := http.Request{}
-	return autorest.Prepare(&req,
+	return autorest.Prepare(&http.Request{},
 		autorest.AsJSON(),
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -266,8 +263,7 @@ func (client GlobalDomainRegistrationClient) ListDomainRecommendationsPreparer(p
 		"api-version": APIVersion,
 	}
 
-	req := http.Request{}
-	return autorest.Prepare(&req,
+	return autorest.Prepare(&http.Request{},
 		autorest.AsJSON(),
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -300,7 +296,7 @@ func (client GlobalDomainRegistrationClient) ListDomainRecommendationsResponder(
 // information request.
 //
 // domainRegistrationInput is domain registration information
-func (client GlobalDomainRegistrationClient) ValidateDomainPurchaseInformation(domainRegistrationInput DomainRegistrationInput) (result SetObject, err error) {
+func (client GlobalDomainRegistrationClient) ValidateDomainPurchaseInformation(domainRegistrationInput DomainRegistrationInput) (result ObjectSet, err error) {
 	req, err := client.ValidateDomainPurchaseInformationPreparer(domainRegistrationInput)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web/GlobalDomainRegistrationClient", "ValidateDomainPurchaseInformation", nil, "Failure preparing request")
@@ -330,8 +326,7 @@ func (client GlobalDomainRegistrationClient) ValidateDomainPurchaseInformationPr
 		"api-version": APIVersion,
 	}
 
-	req := http.Request{}
-	return autorest.Prepare(&req,
+	return autorest.Prepare(&http.Request{},
 		autorest.AsJSON(),
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -349,7 +344,7 @@ func (client GlobalDomainRegistrationClient) ValidateDomainPurchaseInformationSe
 
 // ValidateDomainPurchaseInformationResponder handles the response to the ValidateDomainPurchaseInformation request. The method always
 // closes the http.Response Body.
-func (client GlobalDomainRegistrationClient) ValidateDomainPurchaseInformationResponder(resp *http.Response) (result SetObject, err error) {
+func (client GlobalDomainRegistrationClient) ValidateDomainPurchaseInformationResponder(resp *http.Response) (result ObjectSet, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

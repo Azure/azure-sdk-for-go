@@ -77,8 +77,7 @@ func (client NamespacesClient) CheckAvailabilityPreparer(parameters CheckAvailab
 		"api-version": APIVersion,
 	}
 
-	req := http.Request{}
-	return autorest.Prepare(&req,
+	return autorest.Prepare(&http.Request{},
 		autorest.AsJSON(),
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -145,8 +144,7 @@ func (client NamespacesClient) CreateOrUpdatePreparer(resourceGroupName string, 
 		"api-version": APIVersion,
 	}
 
-	req := http.Request{}
-	return autorest.Prepare(&req,
+	return autorest.Prepare(&http.Request{},
 		autorest.AsJSON(),
 		autorest.AsPut(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -215,8 +213,7 @@ func (client NamespacesClient) CreateOrUpdateAuthorizationRulePreparer(resourceG
 		"api-version": APIVersion,
 	}
 
-	req := http.Request{}
-	return autorest.Prepare(&req,
+	return autorest.Prepare(&http.Request{},
 		autorest.AsJSON(),
 		autorest.AsPut(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -246,16 +243,12 @@ func (client NamespacesClient) CreateOrUpdateAuthorizationRuleResponder(resp *ht
 }
 
 // Delete deletes an existing namespace. This operation also removes all
-// associated notificationHubs under the namespace. This method handles
-// polling itself for long-running operations. User can cancel polling for
-// long-running calls by passing cancel channel as an argument to this method
-// (cancel <-chan struct{}). This channel won't cancel the operation, it will
-// only stop the polling.
+// associated notificationHubs under the namespace.
 //
 // resourceGroupName is the name of the resource group. namespaceName is the
 // namespace name.
-func (client NamespacesClient) Delete(resourceGroupName string, namespaceName string, cancel <-chan struct{}) (result autorest.Response, err error) {
-	req, err := client.DeletePreparer(resourceGroupName, namespaceName, cancel)
+func (client NamespacesClient) Delete(resourceGroupName string, namespaceName string) (result autorest.Response, err error) {
+	req, err := client.DeletePreparer(resourceGroupName, namespaceName)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "notificationhubs/NamespacesClient", "Delete", nil, "Failure preparing request")
 	}
@@ -275,7 +268,7 @@ func (client NamespacesClient) Delete(resourceGroupName string, namespaceName st
 }
 
 // DeletePreparer prepares the Delete request.
-func (client NamespacesClient) DeletePreparer(resourceGroupName string, namespaceName string, cancel <-chan struct{}) (*http.Request, error) {
+func (client NamespacesClient) DeletePreparer(resourceGroupName string, namespaceName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"namespaceName":     url.QueryEscape(namespaceName),
 		"resourceGroupName": url.QueryEscape(resourceGroupName),
@@ -286,8 +279,7 @@ func (client NamespacesClient) DeletePreparer(resourceGroupName string, namespac
 		"api-version": APIVersion,
 	}
 
-	req := http.Request{Cancel: cancel}
-	return autorest.Prepare(&req,
+	return autorest.Prepare(&http.Request{},
 		autorest.AsJSON(),
 		autorest.AsDelete(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -301,7 +293,8 @@ func (client NamespacesClient) DeletePreparer(resourceGroupName string, namespac
 func (client NamespacesClient) DeleteSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client,
 		req,
-		azure.DoPollForAsynchronous(autorest.DefaultPollingDelay))
+		azure.DoPollForAsynchronous(autorest.DefaultPollingDuration,
+			autorest.DefaultPollingDelay))
 }
 
 // DeleteResponder handles the response to the Delete request. The method always
@@ -354,8 +347,7 @@ func (client NamespacesClient) DeleteAuthorizationRulePreparer(resourceGroupName
 		"api-version": APIVersion,
 	}
 
-	req := http.Request{}
-	return autorest.Prepare(&req,
+	return autorest.Prepare(&http.Request{},
 		autorest.AsJSON(),
 		autorest.AsDelete(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -418,8 +410,7 @@ func (client NamespacesClient) GetPreparer(resourceGroupName string, namespaceNa
 		"api-version": APIVersion,
 	}
 
-	req := http.Request{}
-	return autorest.Prepare(&req,
+	return autorest.Prepare(&http.Request{},
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -486,8 +477,7 @@ func (client NamespacesClient) GetAuthorizationRulePreparer(resourceGroupName st
 		"api-version": APIVersion,
 	}
 
-	req := http.Request{}
-	return autorest.Prepare(&req,
+	return autorest.Prepare(&http.Request{},
 		autorest.AsJSON(),
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -548,8 +538,7 @@ func (client NamespacesClient) GetLongRunningOperationStatusPreparer(operationSt
 		"subscriptionId":      url.QueryEscape(client.SubscriptionID),
 	}
 
-	req := http.Request{}
-	return autorest.Prepare(&req,
+	return autorest.Prepare(&http.Request{},
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -610,8 +599,7 @@ func (client NamespacesClient) ListPreparer(resourceGroupName string) (*http.Req
 		"api-version": APIVersion,
 	}
 
-	req := http.Request{}
-	return autorest.Prepare(&req,
+	return autorest.Prepare(&http.Request{},
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -695,8 +683,7 @@ func (client NamespacesClient) ListAllPreparer() (*http.Request, error) {
 		"api-version": APIVersion,
 	}
 
-	req := http.Request{}
-	return autorest.Prepare(&req,
+	return autorest.Prepare(&http.Request{},
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -785,8 +772,7 @@ func (client NamespacesClient) ListAuthorizationRulesPreparer(resourceGroupName 
 		"api-version": APIVersion,
 	}
 
-	req := http.Request{}
-	return autorest.Prepare(&req,
+	return autorest.Prepare(&http.Request{},
 		autorest.AsJSON(),
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -876,8 +862,7 @@ func (client NamespacesClient) ListKeysPreparer(resourceGroupName string, namesp
 		"api-version": APIVersion,
 	}
 
-	req := http.Request{}
-	return autorest.Prepare(&req,
+	return autorest.Prepare(&http.Request{},
 		autorest.AsJSON(),
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),

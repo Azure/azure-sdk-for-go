@@ -76,8 +76,7 @@ func (client AccountsClient) CheckNameAvailabilityPreparer(accountName AccountCh
 		"api-version": APIVersion,
 	}
 
-	req := http.Request{}
-	return autorest.Prepare(&req,
+	return autorest.Prepare(&http.Request{},
 		autorest.AsJSON(),
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -110,19 +109,15 @@ func (client AccountsClient) CheckNameAvailabilityResponder(resp *http.Response)
 // parameters. Existing accounts cannot be updated with this API and should
 // instead use the Update Storage Account API. If an account is already
 // created and subsequent PUT request is issued with exact same set of
-// properties, then HTTP 200 would be returned.  This method handles polling
-// itself for long-running operations. User can cancel polling for
-// long-running calls by passing cancel channel as an argument to this method
-// (cancel <-chan struct{}). This channel won't cancel the operation, it will
-// only stop the polling.
+// properties, then HTTP 200 would be returned.
 //
 // resourceGroupName is the name of the resource group within the user's
 // subscription. accountName is the name of the storage account within the
 // specified resource group. Storage account names must be between 3 and 24
 // characters in length and use numbers and lower-case letters only.
 // parameters is the parameters to provide for the created account.
-func (client AccountsClient) Create(resourceGroupName string, accountName string, parameters AccountCreateParameters, cancel <-chan struct{}) (result autorest.Response, err error) {
-	req, err := client.CreatePreparer(resourceGroupName, accountName, parameters, cancel)
+func (client AccountsClient) Create(resourceGroupName string, accountName string, parameters AccountCreateParameters) (result autorest.Response, err error) {
+	req, err := client.CreatePreparer(resourceGroupName, accountName, parameters)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "storage/AccountsClient", "Create", nil, "Failure preparing request")
 	}
@@ -142,7 +137,7 @@ func (client AccountsClient) Create(resourceGroupName string, accountName string
 }
 
 // CreatePreparer prepares the Create request.
-func (client AccountsClient) CreatePreparer(resourceGroupName string, accountName string, parameters AccountCreateParameters, cancel <-chan struct{}) (*http.Request, error) {
+func (client AccountsClient) CreatePreparer(resourceGroupName string, accountName string, parameters AccountCreateParameters) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"accountName":       url.QueryEscape(accountName),
 		"resourceGroupName": url.QueryEscape(resourceGroupName),
@@ -153,8 +148,7 @@ func (client AccountsClient) CreatePreparer(resourceGroupName string, accountNam
 		"api-version": APIVersion,
 	}
 
-	req := http.Request{Cancel: cancel}
-	return autorest.Prepare(&req,
+	return autorest.Prepare(&http.Request{},
 		autorest.AsJSON(),
 		autorest.AsPut(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -169,7 +163,8 @@ func (client AccountsClient) CreatePreparer(resourceGroupName string, accountNam
 func (client AccountsClient) CreateSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client,
 		req,
-		azure.DoPollForAsynchronous(autorest.DefaultPollingDelay))
+		azure.DoPollForAsynchronous(autorest.DefaultPollingDuration,
+			autorest.DefaultPollingDelay))
 }
 
 // CreateResponder handles the response to the Create request. The method always
@@ -222,8 +217,7 @@ func (client AccountsClient) DeletePreparer(resourceGroupName string, accountNam
 		"api-version": APIVersion,
 	}
 
-	req := http.Request{}
-	return autorest.Prepare(&req,
+	return autorest.Prepare(&http.Request{},
 		autorest.AsJSON(),
 		autorest.AsDelete(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -290,8 +284,7 @@ func (client AccountsClient) GetPropertiesPreparer(resourceGroupName string, acc
 		"api-version": APIVersion,
 	}
 
-	req := http.Request{}
-	return autorest.Prepare(&req,
+	return autorest.Prepare(&http.Request{},
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -351,8 +344,7 @@ func (client AccountsClient) ListPreparer() (*http.Request, error) {
 		"api-version": APIVersion,
 	}
 
-	req := http.Request{}
-	return autorest.Prepare(&req,
+	return autorest.Prepare(&http.Request{},
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -417,8 +409,7 @@ func (client AccountsClient) ListByResourceGroupPreparer(resourceGroupName strin
 		"api-version": APIVersion,
 	}
 
-	req := http.Request{}
-	return autorest.Prepare(&req,
+	return autorest.Prepare(&http.Request{},
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -482,8 +473,7 @@ func (client AccountsClient) ListKeysPreparer(resourceGroupName string, accountN
 		"api-version": APIVersion,
 	}
 
-	req := http.Request{}
-	return autorest.Prepare(&req,
+	return autorest.Prepare(&http.Request{},
 		autorest.AsJSON(),
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -551,8 +541,7 @@ func (client AccountsClient) RegenerateKeyPreparer(resourceGroupName string, acc
 		"api-version": APIVersion,
 	}
 
-	req := http.Request{}
-	return autorest.Prepare(&req,
+	return autorest.Prepare(&http.Request{},
 		autorest.AsJSON(),
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -632,8 +621,7 @@ func (client AccountsClient) UpdatePreparer(resourceGroupName string, accountNam
 		"api-version": APIVersion,
 	}
 
-	req := http.Request{}
-	return autorest.Prepare(&req,
+	return autorest.Prepare(&http.Request{},
 		autorest.AsJSON(),
 		autorest.AsPatch(),
 		autorest.WithBaseURL(client.BaseURI),

@@ -42,19 +42,15 @@ func NewVirtualMachineExtensionsClientWithBaseURI(baseURI string, subscriptionID
 	return VirtualMachineExtensionsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// CreateOrUpdate the operation to create or update the extension. This method
-// handles polling itself for long-running operations. User can cancel
-// polling for long-running calls by passing cancel channel as an argument to
-// this method (cancel <-chan struct{}). This channel won't cancel the
-// operation, it will only stop the polling.
+// CreateOrUpdate the operation to create or update the extension.
 //
 // resourceGroupName is the name of the resource group. vmName is the name of
 // the virtual machine where the extension should be create or updated.
 // vmExtensionName is the name of the virtual machine extension.
 // extensionParameters is parameters supplied to the Create Virtual Machine
 // Extension operation.
-func (client VirtualMachineExtensionsClient) CreateOrUpdate(resourceGroupName string, vmName string, vmExtensionName string, extensionParameters VirtualMachineExtension, cancel <-chan struct{}) (result autorest.Response, err error) {
-	req, err := client.CreateOrUpdatePreparer(resourceGroupName, vmName, vmExtensionName, extensionParameters, cancel)
+func (client VirtualMachineExtensionsClient) CreateOrUpdate(resourceGroupName string, vmName string, vmExtensionName string, extensionParameters VirtualMachineExtension) (result autorest.Response, err error) {
+	req, err := client.CreateOrUpdatePreparer(resourceGroupName, vmName, vmExtensionName, extensionParameters)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "compute/VirtualMachineExtensionsClient", "CreateOrUpdate", nil, "Failure preparing request")
 	}
@@ -74,7 +70,7 @@ func (client VirtualMachineExtensionsClient) CreateOrUpdate(resourceGroupName st
 }
 
 // CreateOrUpdatePreparer prepares the CreateOrUpdate request.
-func (client VirtualMachineExtensionsClient) CreateOrUpdatePreparer(resourceGroupName string, vmName string, vmExtensionName string, extensionParameters VirtualMachineExtension, cancel <-chan struct{}) (*http.Request, error) {
+func (client VirtualMachineExtensionsClient) CreateOrUpdatePreparer(resourceGroupName string, vmName string, vmExtensionName string, extensionParameters VirtualMachineExtension) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName": url.QueryEscape(resourceGroupName),
 		"subscriptionId":    url.QueryEscape(client.SubscriptionID),
@@ -86,8 +82,7 @@ func (client VirtualMachineExtensionsClient) CreateOrUpdatePreparer(resourceGrou
 		"api-version": APIVersion,
 	}
 
-	req := http.Request{Cancel: cancel}
-	return autorest.Prepare(&req,
+	return autorest.Prepare(&http.Request{},
 		autorest.AsJSON(),
 		autorest.AsPut(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -102,7 +97,8 @@ func (client VirtualMachineExtensionsClient) CreateOrUpdatePreparer(resourceGrou
 func (client VirtualMachineExtensionsClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client,
 		req,
-		azure.DoPollForAsynchronous(autorest.DefaultPollingDelay))
+		azure.DoPollForAsynchronous(autorest.DefaultPollingDuration,
+			autorest.DefaultPollingDelay))
 }
 
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
@@ -117,17 +113,13 @@ func (client VirtualMachineExtensionsClient) CreateOrUpdateResponder(resp *http.
 	return
 }
 
-// Delete the operation to delete the extension. This method handles polling
-// itself for long-running operations. User can cancel polling for
-// long-running calls by passing cancel channel as an argument to this method
-// (cancel <-chan struct{}). This channel won't cancel the operation, it will
-// only stop the polling.
+// Delete the operation to delete the extension.
 //
 // resourceGroupName is the name of the resource group. vmName is the name of
 // the virtual machine where the extension should be deleted. vmExtensionName
 // is the name of the virtual machine extension.
-func (client VirtualMachineExtensionsClient) Delete(resourceGroupName string, vmName string, vmExtensionName string, cancel <-chan struct{}) (result autorest.Response, err error) {
-	req, err := client.DeletePreparer(resourceGroupName, vmName, vmExtensionName, cancel)
+func (client VirtualMachineExtensionsClient) Delete(resourceGroupName string, vmName string, vmExtensionName string) (result autorest.Response, err error) {
+	req, err := client.DeletePreparer(resourceGroupName, vmName, vmExtensionName)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "compute/VirtualMachineExtensionsClient", "Delete", nil, "Failure preparing request")
 	}
@@ -147,7 +139,7 @@ func (client VirtualMachineExtensionsClient) Delete(resourceGroupName string, vm
 }
 
 // DeletePreparer prepares the Delete request.
-func (client VirtualMachineExtensionsClient) DeletePreparer(resourceGroupName string, vmName string, vmExtensionName string, cancel <-chan struct{}) (*http.Request, error) {
+func (client VirtualMachineExtensionsClient) DeletePreparer(resourceGroupName string, vmName string, vmExtensionName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName": url.QueryEscape(resourceGroupName),
 		"subscriptionId":    url.QueryEscape(client.SubscriptionID),
@@ -159,8 +151,7 @@ func (client VirtualMachineExtensionsClient) DeletePreparer(resourceGroupName st
 		"api-version": APIVersion,
 	}
 
-	req := http.Request{Cancel: cancel}
-	return autorest.Prepare(&req,
+	return autorest.Prepare(&http.Request{},
 		autorest.AsJSON(),
 		autorest.AsDelete(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -174,7 +165,8 @@ func (client VirtualMachineExtensionsClient) DeletePreparer(resourceGroupName st
 func (client VirtualMachineExtensionsClient) DeleteSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client,
 		req,
-		azure.DoPollForAsynchronous(autorest.DefaultPollingDelay))
+		azure.DoPollForAsynchronous(autorest.DefaultPollingDuration,
+			autorest.DefaultPollingDelay))
 }
 
 // DeleteResponder handles the response to the Delete request. The method always
@@ -231,8 +223,7 @@ func (client VirtualMachineExtensionsClient) GetPreparer(resourceGroupName strin
 		queryParameters["$expand"] = expand
 	}
 
-	req := http.Request{}
-	return autorest.Prepare(&req,
+	return autorest.Prepare(&http.Request{},
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),

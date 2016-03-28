@@ -47,17 +47,13 @@ func NewPublicIPAddressesClientWithBaseURI(baseURI string, subscriptionID string
 }
 
 // CreateOrUpdate the Put PublicIPAddress operation creates/updates a
-// stable/dynamic PublicIP address This method handles polling itself for
-// long-running operations. User can cancel polling for long-running calls by
-// passing cancel channel as an argument to this method (cancel <-chan
-// struct{}). This channel won't cancel the operation, it will only stop the
-// polling.
+// stable/dynamic PublicIP address
 //
 // resourceGroupName is the name of the resource group. publicIPAddressName is
 // the name of the publicIpAddress. parameters is parameters supplied to the
 // create/update PublicIPAddress operation
-func (client PublicIPAddressesClient) CreateOrUpdate(resourceGroupName string, publicIPAddressName string, parameters PublicIPAddress, cancel <-chan struct{}) (result autorest.Response, err error) {
-	req, err := client.CreateOrUpdatePreparer(resourceGroupName, publicIPAddressName, parameters, cancel)
+func (client PublicIPAddressesClient) CreateOrUpdate(resourceGroupName string, publicIPAddressName string, parameters PublicIPAddress) (result autorest.Response, err error) {
+	req, err := client.CreateOrUpdatePreparer(resourceGroupName, publicIPAddressName, parameters)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "network/PublicIPAddressesClient", "CreateOrUpdate", nil, "Failure preparing request")
 	}
@@ -77,7 +73,7 @@ func (client PublicIPAddressesClient) CreateOrUpdate(resourceGroupName string, p
 }
 
 // CreateOrUpdatePreparer prepares the CreateOrUpdate request.
-func (client PublicIPAddressesClient) CreateOrUpdatePreparer(resourceGroupName string, publicIPAddressName string, parameters PublicIPAddress, cancel <-chan struct{}) (*http.Request, error) {
+func (client PublicIPAddressesClient) CreateOrUpdatePreparer(resourceGroupName string, publicIPAddressName string, parameters PublicIPAddress) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"publicIpAddressName": url.QueryEscape(publicIPAddressName),
 		"resourceGroupName":   url.QueryEscape(resourceGroupName),
@@ -88,8 +84,7 @@ func (client PublicIPAddressesClient) CreateOrUpdatePreparer(resourceGroupName s
 		"api-version": APIVersion,
 	}
 
-	req := http.Request{Cancel: cancel}
-	return autorest.Prepare(&req,
+	return autorest.Prepare(&http.Request{},
 		autorest.AsJSON(),
 		autorest.AsPut(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -104,7 +99,8 @@ func (client PublicIPAddressesClient) CreateOrUpdatePreparer(resourceGroupName s
 func (client PublicIPAddressesClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client,
 		req,
-		azure.DoPollForAsynchronous(autorest.DefaultPollingDelay))
+		azure.DoPollForAsynchronous(autorest.DefaultPollingDuration,
+			autorest.DefaultPollingDelay))
 }
 
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
@@ -120,15 +116,12 @@ func (client PublicIPAddressesClient) CreateOrUpdateResponder(resp *http.Respons
 }
 
 // Delete the delete publicIpAddress operation deletes the specified
-// publicIpAddress. This method handles polling itself for long-running
-// operations. User can cancel polling for long-running calls by passing
-// cancel channel as an argument to this method (cancel <-chan struct{}).
-// This channel won't cancel the operation, it will only stop the polling.
+// publicIpAddress.
 //
 // resourceGroupName is the name of the resource group. publicIPAddressName is
 // the name of the subnet.
-func (client PublicIPAddressesClient) Delete(resourceGroupName string, publicIPAddressName string, cancel <-chan struct{}) (result autorest.Response, err error) {
-	req, err := client.DeletePreparer(resourceGroupName, publicIPAddressName, cancel)
+func (client PublicIPAddressesClient) Delete(resourceGroupName string, publicIPAddressName string) (result autorest.Response, err error) {
+	req, err := client.DeletePreparer(resourceGroupName, publicIPAddressName)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "network/PublicIPAddressesClient", "Delete", nil, "Failure preparing request")
 	}
@@ -148,7 +141,7 @@ func (client PublicIPAddressesClient) Delete(resourceGroupName string, publicIPA
 }
 
 // DeletePreparer prepares the Delete request.
-func (client PublicIPAddressesClient) DeletePreparer(resourceGroupName string, publicIPAddressName string, cancel <-chan struct{}) (*http.Request, error) {
+func (client PublicIPAddressesClient) DeletePreparer(resourceGroupName string, publicIPAddressName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"publicIpAddressName": url.QueryEscape(publicIPAddressName),
 		"resourceGroupName":   url.QueryEscape(resourceGroupName),
@@ -159,8 +152,7 @@ func (client PublicIPAddressesClient) DeletePreparer(resourceGroupName string, p
 		"api-version": APIVersion,
 	}
 
-	req := http.Request{Cancel: cancel}
-	return autorest.Prepare(&req,
+	return autorest.Prepare(&http.Request{},
 		autorest.AsJSON(),
 		autorest.AsDelete(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -174,7 +166,8 @@ func (client PublicIPAddressesClient) DeletePreparer(resourceGroupName string, p
 func (client PublicIPAddressesClient) DeleteSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client,
 		req,
-		azure.DoPollForAsynchronous(autorest.DefaultPollingDelay))
+		azure.DoPollForAsynchronous(autorest.DefaultPollingDuration,
+			autorest.DefaultPollingDelay))
 }
 
 // DeleteResponder handles the response to the Delete request. The method always
@@ -229,8 +222,7 @@ func (client PublicIPAddressesClient) GetPreparer(resourceGroupName string, publ
 		queryParameters["$expand"] = expand
 	}
 
-	req := http.Request{}
-	return autorest.Prepare(&req,
+	return autorest.Prepare(&http.Request{},
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -293,8 +285,7 @@ func (client PublicIPAddressesClient) ListPreparer(resourceGroupName string) (*h
 		"api-version": APIVersion,
 	}
 
-	req := http.Request{}
-	return autorest.Prepare(&req,
+	return autorest.Prepare(&http.Request{},
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -378,8 +369,7 @@ func (client PublicIPAddressesClient) ListAllPreparer() (*http.Request, error) {
 		"api-version": APIVersion,
 	}
 
-	req := http.Request{}
-	return autorest.Prepare(&req,
+	return autorest.Prepare(&http.Request{},
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),

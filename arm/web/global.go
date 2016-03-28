@@ -80,8 +80,7 @@ func (client GlobalClient) CheckNameAvailabilityPreparer(request ResourceNameAva
 		"api-version": APIVersion,
 	}
 
-	req := http.Request{}
-	return autorest.Prepare(&req,
+	return autorest.Prepare(&http.Request{},
 		autorest.AsJSON(),
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -141,8 +140,7 @@ func (client GlobalClient) GetAllCertificatesPreparer() (*http.Request, error) {
 		"api-version": APIVersion,
 	}
 
-	req := http.Request{}
-	return autorest.Prepare(&req,
+	return autorest.Prepare(&http.Request{},
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -202,8 +200,7 @@ func (client GlobalClient) GetAllClassicMobileServicesPreparer() (*http.Request,
 		"api-version": APIVersion,
 	}
 
-	req := http.Request{}
-	return autorest.Prepare(&req,
+	return autorest.Prepare(&http.Request{},
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -262,8 +259,7 @@ func (client GlobalClient) GetAllHostingEnvironmentsPreparer() (*http.Request, e
 		"api-version": APIVersion,
 	}
 
-	req := http.Request{}
-	return autorest.Prepare(&req,
+	return autorest.Prepare(&http.Request{},
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -323,8 +319,7 @@ func (client GlobalClient) GetAllManagedHostingEnvironmentsPreparer() (*http.Req
 		"api-version": APIVersion,
 	}
 
-	req := http.Request{}
-	return autorest.Prepare(&req,
+	return autorest.Prepare(&http.Request{},
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -390,8 +385,7 @@ func (client GlobalClient) GetAllServerFarmsPreparer(detailed *bool) (*http.Requ
 		queryParameters["detailed"] = detailed
 	}
 
-	req := http.Request{}
-	return autorest.Prepare(&req,
+	return autorest.Prepare(&http.Request{},
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -450,8 +444,7 @@ func (client GlobalClient) GetAllSitesPreparer() (*http.Request, error) {
 		"api-version": APIVersion,
 	}
 
-	req := http.Request{}
-	return autorest.Prepare(&req,
+	return autorest.Prepare(&http.Request{},
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -510,8 +503,7 @@ func (client GlobalClient) GetSubscriptionGeoRegionsPreparer() (*http.Request, e
 		"api-version": APIVersion,
 	}
 
-	req := http.Request{}
-	return autorest.Prepare(&req,
+	return autorest.Prepare(&http.Request{},
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -571,8 +563,7 @@ func (client GlobalClient) GetSubscriptionPublishingCredentialsPreparer() (*http
 		"api-version": APIVersion,
 	}
 
-	req := http.Request{}
-	return autorest.Prepare(&req,
+	return autorest.Prepare(&http.Request{},
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -604,7 +595,7 @@ func (client GlobalClient) GetSubscriptionPublishingCredentialsResponder(resp *h
 // available request.
 //
 // name is hosting environment name
-func (client GlobalClient) IsHostingEnvironmentNameAvailable(name string) (result SetObject, err error) {
+func (client GlobalClient) IsHostingEnvironmentNameAvailable(name string) (result ObjectSet, err error) {
 	req, err := client.IsHostingEnvironmentNameAvailablePreparer(name)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web/GlobalClient", "IsHostingEnvironmentNameAvailable", nil, "Failure preparing request")
@@ -635,8 +626,7 @@ func (client GlobalClient) IsHostingEnvironmentNameAvailablePreparer(name string
 		"name":        name,
 	}
 
-	req := http.Request{}
-	return autorest.Prepare(&req,
+	return autorest.Prepare(&http.Request{},
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -653,7 +643,7 @@ func (client GlobalClient) IsHostingEnvironmentNameAvailableSender(req *http.Req
 
 // IsHostingEnvironmentNameAvailableResponder handles the response to the IsHostingEnvironmentNameAvailable request. The method always
 // closes the http.Response Body.
-func (client GlobalClient) IsHostingEnvironmentNameAvailableResponder(resp *http.Response) (result SetObject, err error) {
+func (client GlobalClient) IsHostingEnvironmentNameAvailableResponder(resp *http.Response) (result ObjectSet, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -668,7 +658,7 @@ func (client GlobalClient) IsHostingEnvironmentNameAvailableResponder(resp *http
 // environment with legacy name available request.
 //
 // name is hosting environment name
-func (client GlobalClient) IsHostingEnvironmentWithLegacyNameAvailable(name string) (result SetObject, err error) {
+func (client GlobalClient) IsHostingEnvironmentWithLegacyNameAvailable(name string) (result ObjectSet, err error) {
 	req, err := client.IsHostingEnvironmentWithLegacyNameAvailablePreparer(name)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web/GlobalClient", "IsHostingEnvironmentWithLegacyNameAvailable", nil, "Failure preparing request")
@@ -699,8 +689,7 @@ func (client GlobalClient) IsHostingEnvironmentWithLegacyNameAvailablePreparer(n
 		"api-version": APIVersion,
 	}
 
-	req := http.Request{}
-	return autorest.Prepare(&req,
+	return autorest.Prepare(&http.Request{},
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -717,7 +706,7 @@ func (client GlobalClient) IsHostingEnvironmentWithLegacyNameAvailableSender(req
 
 // IsHostingEnvironmentWithLegacyNameAvailableResponder handles the response to the IsHostingEnvironmentWithLegacyNameAvailable request. The method always
 // closes the http.Response Body.
-func (client GlobalClient) IsHostingEnvironmentWithLegacyNameAvailableResponder(resp *http.Response) (result SetObject, err error) {
+func (client GlobalClient) IsHostingEnvironmentWithLegacyNameAvailableResponder(resp *http.Response) (result ObjectSet, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -729,7 +718,7 @@ func (client GlobalClient) IsHostingEnvironmentWithLegacyNameAvailableResponder(
 }
 
 // ListPremierAddOnOffers sends the list premier add on offers request.
-func (client GlobalClient) ListPremierAddOnOffers() (result SetObject, err error) {
+func (client GlobalClient) ListPremierAddOnOffers() (result ObjectSet, err error) {
 	req, err := client.ListPremierAddOnOffersPreparer()
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web/GlobalClient", "ListPremierAddOnOffers", nil, "Failure preparing request")
@@ -759,8 +748,7 @@ func (client GlobalClient) ListPremierAddOnOffersPreparer() (*http.Request, erro
 		"api-version": APIVersion,
 	}
 
-	req := http.Request{}
-	return autorest.Prepare(&req,
+	return autorest.Prepare(&http.Request{},
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -777,7 +765,7 @@ func (client GlobalClient) ListPremierAddOnOffersSender(req *http.Request) (*htt
 
 // ListPremierAddOnOffersResponder handles the response to the ListPremierAddOnOffers request. The method always
 // closes the http.Response Body.
-func (client GlobalClient) ListPremierAddOnOffersResponder(resp *http.Response) (result SetObject, err error) {
+func (client GlobalClient) ListPremierAddOnOffersResponder(resp *http.Response) (result ObjectSet, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -822,8 +810,7 @@ func (client GlobalClient) UpdateSubscriptionPublishingCredentialsPreparer(reque
 		"api-version": APIVersion,
 	}
 
-	req := http.Request{}
-	return autorest.Prepare(&req,
+	return autorest.Prepare(&http.Request{},
 		autorest.AsJSON(),
 		autorest.AsPut(),
 		autorest.WithBaseURL(client.BaseURI),

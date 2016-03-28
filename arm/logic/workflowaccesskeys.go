@@ -81,8 +81,7 @@ func (client WorkflowAccessKeysClient) CreateOrUpdatePreparer(resourceGroupName 
 		"api-version": APIVersion,
 	}
 
-	req := http.Request{}
-	return autorest.Prepare(&req,
+	return autorest.Prepare(&http.Request{},
 		autorest.AsJSON(),
 		autorest.AsPut(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -148,8 +147,7 @@ func (client WorkflowAccessKeysClient) DeletePreparer(resourceGroupName string, 
 		"api-version": APIVersion,
 	}
 
-	req := http.Request{}
-	return autorest.Prepare(&req,
+	return autorest.Prepare(&http.Request{},
 		autorest.AsJSON(),
 		autorest.AsDelete(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -213,8 +211,7 @@ func (client WorkflowAccessKeysClient) GetPreparer(resourceGroupName string, wor
 		"api-version": APIVersion,
 	}
 
-	req := http.Request{}
-	return autorest.Prepare(&req,
+	return autorest.Prepare(&http.Request{},
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -281,8 +278,7 @@ func (client WorkflowAccessKeysClient) ListPreparer(resourceGroupName string, wo
 		queryParameters["$top"] = top
 	}
 
-	req := http.Request{}
-	return autorest.Prepare(&req,
+	return autorest.Prepare(&http.Request{},
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -371,8 +367,7 @@ func (client WorkflowAccessKeysClient) ListSecretKeysPreparer(resourceGroupName 
 		"api-version": APIVersion,
 	}
 
-	req := http.Request{}
-	return autorest.Prepare(&req,
+	return autorest.Prepare(&http.Request{},
 		autorest.AsJSON(),
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -438,8 +433,7 @@ func (client WorkflowAccessKeysClient) RegenerateSecretKeyPreparer(resourceGroup
 		"api-version": APIVersion,
 	}
 
-	req := http.Request{}
-	return autorest.Prepare(&req,
+	return autorest.Prepare(&http.Request{},
 		autorest.AsJSON(),
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),

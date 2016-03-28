@@ -79,8 +79,7 @@ func (client WorkflowRunsClient) CancelPreparer(resourceGroupName string, workfl
 		"api-version": APIVersion,
 	}
 
-	req := http.Request{}
-	return autorest.Prepare(&req,
+	return autorest.Prepare(&http.Request{},
 		autorest.AsJSON(),
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -144,8 +143,7 @@ func (client WorkflowRunsClient) GetPreparer(resourceGroupName string, workflowN
 		"api-version": APIVersion,
 	}
 
-	req := http.Request{}
-	return autorest.Prepare(&req,
+	return autorest.Prepare(&http.Request{},
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -216,8 +214,7 @@ func (client WorkflowRunsClient) ListPreparer(resourceGroupName string, workflow
 		queryParameters["$filter"] = filter
 	}
 
-	req := http.Request{}
-	return autorest.Prepare(&req,
+	return autorest.Prepare(&http.Request{},
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),

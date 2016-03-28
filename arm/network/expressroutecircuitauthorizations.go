@@ -47,18 +47,14 @@ func NewExpressRouteCircuitAuthorizationsClientWithBaseURI(baseURI string, subsc
 }
 
 // CreateOrUpdate the Put Authorization operation creates/updates an
-// authorization in thespecified ExpressRouteCircuits This method handles
-// polling itself for long-running operations. User can cancel polling for
-// long-running calls by passing cancel channel as an argument to this method
-// (cancel <-chan struct{}). This channel won't cancel the operation, it will
-// only stop the polling.
+// authorization in thespecified ExpressRouteCircuits
 //
 // resourceGroupName is the name of the resource group. circuitName is the
 // name of the express route circuit. authorizationName is the name of the
 // authorization. authorizationParameters is parameters supplied to the
 // create/update ExpressRouteCircuitAuthorization operation
-func (client ExpressRouteCircuitAuthorizationsClient) CreateOrUpdate(resourceGroupName string, circuitName string, authorizationName string, authorizationParameters ExpressRouteCircuitAuthorization, cancel <-chan struct{}) (result autorest.Response, err error) {
-	req, err := client.CreateOrUpdatePreparer(resourceGroupName, circuitName, authorizationName, authorizationParameters, cancel)
+func (client ExpressRouteCircuitAuthorizationsClient) CreateOrUpdate(resourceGroupName string, circuitName string, authorizationName string, authorizationParameters ExpressRouteCircuitAuthorization) (result autorest.Response, err error) {
+	req, err := client.CreateOrUpdatePreparer(resourceGroupName, circuitName, authorizationName, authorizationParameters)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "network/ExpressRouteCircuitAuthorizationsClient", "CreateOrUpdate", nil, "Failure preparing request")
 	}
@@ -78,7 +74,7 @@ func (client ExpressRouteCircuitAuthorizationsClient) CreateOrUpdate(resourceGro
 }
 
 // CreateOrUpdatePreparer prepares the CreateOrUpdate request.
-func (client ExpressRouteCircuitAuthorizationsClient) CreateOrUpdatePreparer(resourceGroupName string, circuitName string, authorizationName string, authorizationParameters ExpressRouteCircuitAuthorization, cancel <-chan struct{}) (*http.Request, error) {
+func (client ExpressRouteCircuitAuthorizationsClient) CreateOrUpdatePreparer(resourceGroupName string, circuitName string, authorizationName string, authorizationParameters ExpressRouteCircuitAuthorization) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"authorizationName": url.QueryEscape(authorizationName),
 		"circuitName":       url.QueryEscape(circuitName),
@@ -90,8 +86,7 @@ func (client ExpressRouteCircuitAuthorizationsClient) CreateOrUpdatePreparer(res
 		"api-version": APIVersion,
 	}
 
-	req := http.Request{Cancel: cancel}
-	return autorest.Prepare(&req,
+	return autorest.Prepare(&http.Request{},
 		autorest.AsJSON(),
 		autorest.AsPut(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -106,7 +101,8 @@ func (client ExpressRouteCircuitAuthorizationsClient) CreateOrUpdatePreparer(res
 func (client ExpressRouteCircuitAuthorizationsClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client,
 		req,
-		azure.DoPollForAsynchronous(autorest.DefaultPollingDelay))
+		azure.DoPollForAsynchronous(autorest.DefaultPollingDuration,
+			autorest.DefaultPollingDelay))
 }
 
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
@@ -122,17 +118,13 @@ func (client ExpressRouteCircuitAuthorizationsClient) CreateOrUpdateResponder(re
 }
 
 // Delete the delete authorization operation deletes the specified
-// authorization from the specified ExpressRouteCircuit. This method handles
-// polling itself for long-running operations. User can cancel polling for
-// long-running calls by passing cancel channel as an argument to this method
-// (cancel <-chan struct{}). This channel won't cancel the operation, it will
-// only stop the polling.
+// authorization from the specified ExpressRouteCircuit.
 //
 // resourceGroupName is the name of the resource group. circuitName is the
 // name of the express route circuit. authorizationName is the name of the
 // authorization.
-func (client ExpressRouteCircuitAuthorizationsClient) Delete(resourceGroupName string, circuitName string, authorizationName string, cancel <-chan struct{}) (result autorest.Response, err error) {
-	req, err := client.DeletePreparer(resourceGroupName, circuitName, authorizationName, cancel)
+func (client ExpressRouteCircuitAuthorizationsClient) Delete(resourceGroupName string, circuitName string, authorizationName string) (result autorest.Response, err error) {
+	req, err := client.DeletePreparer(resourceGroupName, circuitName, authorizationName)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "network/ExpressRouteCircuitAuthorizationsClient", "Delete", nil, "Failure preparing request")
 	}
@@ -152,7 +144,7 @@ func (client ExpressRouteCircuitAuthorizationsClient) Delete(resourceGroupName s
 }
 
 // DeletePreparer prepares the Delete request.
-func (client ExpressRouteCircuitAuthorizationsClient) DeletePreparer(resourceGroupName string, circuitName string, authorizationName string, cancel <-chan struct{}) (*http.Request, error) {
+func (client ExpressRouteCircuitAuthorizationsClient) DeletePreparer(resourceGroupName string, circuitName string, authorizationName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"authorizationName": url.QueryEscape(authorizationName),
 		"circuitName":       url.QueryEscape(circuitName),
@@ -164,8 +156,7 @@ func (client ExpressRouteCircuitAuthorizationsClient) DeletePreparer(resourceGro
 		"api-version": APIVersion,
 	}
 
-	req := http.Request{Cancel: cancel}
-	return autorest.Prepare(&req,
+	return autorest.Prepare(&http.Request{},
 		autorest.AsJSON(),
 		autorest.AsDelete(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -179,7 +170,8 @@ func (client ExpressRouteCircuitAuthorizationsClient) DeletePreparer(resourceGro
 func (client ExpressRouteCircuitAuthorizationsClient) DeleteSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client,
 		req,
-		azure.DoPollForAsynchronous(autorest.DefaultPollingDelay))
+		azure.DoPollForAsynchronous(autorest.DefaultPollingDuration,
+			autorest.DefaultPollingDelay))
 }
 
 // DeleteResponder handles the response to the Delete request. The method always
@@ -233,8 +225,7 @@ func (client ExpressRouteCircuitAuthorizationsClient) GetPreparer(resourceGroupN
 		"api-version": APIVersion,
 	}
 
-	req := http.Request{}
-	return autorest.Prepare(&req,
+	return autorest.Prepare(&http.Request{},
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -299,8 +290,7 @@ func (client ExpressRouteCircuitAuthorizationsClient) ListPreparer(resourceGroup
 		"api-version": APIVersion,
 	}
 
-	req := http.Request{}
-	return autorest.Prepare(&req,
+	return autorest.Prepare(&http.Request{},
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),

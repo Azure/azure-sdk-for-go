@@ -79,8 +79,7 @@ func (client RoleDefinitionsClient) CreateOrUpdatePreparer(scope string, roleDef
 		"api-version": APIVersion,
 	}
 
-	req := http.Request{}
-	return autorest.Prepare(&req,
+	return autorest.Prepare(&http.Request{},
 		autorest.AsJSON(),
 		autorest.AsPut(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -144,8 +143,7 @@ func (client RoleDefinitionsClient) DeletePreparer(scope string, roleDefinitionI
 		"api-version": APIVersion,
 	}
 
-	req := http.Request{}
-	return autorest.Prepare(&req,
+	return autorest.Prepare(&http.Request{},
 		autorest.AsJSON(),
 		autorest.AsDelete(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -208,8 +206,7 @@ func (client RoleDefinitionsClient) GetPreparer(scope string, roleDefinitionID s
 		"api-version": APIVersion,
 	}
 
-	req := http.Request{}
-	return autorest.Prepare(&req,
+	return autorest.Prepare(&http.Request{},
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -271,8 +268,7 @@ func (client RoleDefinitionsClient) GetByIDPreparer(roleDefinitionID string) (*h
 		"api-version": APIVersion,
 	}
 
-	req := http.Request{}
-	return autorest.Prepare(&req,
+	return autorest.Prepare(&http.Request{},
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -338,8 +334,7 @@ func (client RoleDefinitionsClient) ListPreparer(scope string, filter string) (*
 		queryParameters["$filter"] = filter
 	}
 
-	req := http.Request{}
-	return autorest.Prepare(&req,
+	return autorest.Prepare(&http.Request{},
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),

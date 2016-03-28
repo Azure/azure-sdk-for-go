@@ -82,8 +82,7 @@ func (client GlobalResourceGroupsClient) MoveResourcesPreparer(resourceGroupName
 		"api-version": APIVersion,
 	}
 
-	req := http.Request{}
-	return autorest.Prepare(&req,
+	return autorest.Prepare(&http.Request{},
 		autorest.AsJSON(),
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),

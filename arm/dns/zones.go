@@ -79,8 +79,7 @@ func (client ZonesClient) CreateOrUpdatePreparer(resourceGroupName string, zoneN
 		"api-version": APIVersion,
 	}
 
-	req := http.Request{}
-	return autorest.Prepare(&req,
+	return autorest.Prepare(&http.Request{},
 		autorest.AsJSON(),
 		autorest.AsPut(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -147,8 +146,7 @@ func (client ZonesClient) DeletePreparer(resourceGroupName string, zoneName stri
 		"api-version": APIVersion,
 	}
 
-	req := http.Request{}
-	return autorest.Prepare(&req,
+	return autorest.Prepare(&http.Request{},
 		autorest.AsJSON(),
 		autorest.AsDelete(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -211,8 +209,7 @@ func (client ZonesClient) GetPreparer(resourceGroupName string, zoneName string)
 		"api-version": APIVersion,
 	}
 
-	req := http.Request{}
-	return autorest.Prepare(&req,
+	return autorest.Prepare(&http.Request{},
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -282,8 +279,7 @@ func (client ZonesClient) ListZonesInResourceGroupPreparer(resourceGroupName str
 		queryParameters["$filter"] = filter
 	}
 
-	req := http.Request{}
-	return autorest.Prepare(&req,
+	return autorest.Prepare(&http.Request{},
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -375,8 +371,7 @@ func (client ZonesClient) ListZonesInSubscriptionPreparer(top string, filter str
 		queryParameters["$filter"] = filter
 	}
 
-	req := http.Request{}
-	return autorest.Prepare(&req,
+	return autorest.Prepare(&http.Request{},
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),

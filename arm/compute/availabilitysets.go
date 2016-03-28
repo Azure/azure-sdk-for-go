@@ -79,8 +79,7 @@ func (client AvailabilitySetsClient) CreateOrUpdatePreparer(resourceGroupName st
 		"api-version": APIVersion,
 	}
 
-	req := http.Request{}
-	return autorest.Prepare(&req,
+	return autorest.Prepare(&http.Request{},
 		autorest.AsJSON(),
 		autorest.AsPut(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -145,8 +144,7 @@ func (client AvailabilitySetsClient) DeletePreparer(resourceGroupName string, av
 		"api-version": APIVersion,
 	}
 
-	req := http.Request{}
-	return autorest.Prepare(&req,
+	return autorest.Prepare(&http.Request{},
 		autorest.AsJSON(),
 		autorest.AsDelete(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -209,8 +207,7 @@ func (client AvailabilitySetsClient) GetPreparer(resourceGroupName string, avail
 		"api-version": APIVersion,
 	}
 
-	req := http.Request{}
-	return autorest.Prepare(&req,
+	return autorest.Prepare(&http.Request{},
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -272,8 +269,7 @@ func (client AvailabilitySetsClient) ListPreparer(resourceGroupName string) (*ht
 		"api-version": APIVersion,
 	}
 
-	req := http.Request{}
-	return autorest.Prepare(&req,
+	return autorest.Prepare(&http.Request{},
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -362,8 +358,7 @@ func (client AvailabilitySetsClient) ListAvailableSizesPreparer(resourceGroupNam
 		"api-version": APIVersion,
 	}
 
-	req := http.Request{}
-	return autorest.Prepare(&req,
+	return autorest.Prepare(&http.Request{},
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),

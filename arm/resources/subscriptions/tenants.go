@@ -67,8 +67,7 @@ func (client TenantsClient) ListPreparer() (*http.Request, error) {
 		"api-version": APIVersion,
 	}
 
-	req := http.Request{}
-	return autorest.Prepare(&req,
+	return autorest.Prepare(&http.Request{},
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),

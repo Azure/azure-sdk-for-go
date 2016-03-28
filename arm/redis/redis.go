@@ -79,8 +79,7 @@ func (client Client) CreateOrUpdatePreparer(resourceGroupName string, name strin
 		"api-version": APIVersion,
 	}
 
-	req := http.Request{}
-	return autorest.Prepare(&req,
+	return autorest.Prepare(&http.Request{},
 		autorest.AsJSON(),
 		autorest.AsPut(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -145,8 +144,7 @@ func (client Client) DeletePreparer(resourceGroupName string, name string) (*htt
 		"api-version": APIVersion,
 	}
 
-	req := http.Request{}
-	return autorest.Prepare(&req,
+	return autorest.Prepare(&http.Request{},
 		autorest.AsJSON(),
 		autorest.AsDelete(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -209,8 +207,7 @@ func (client Client) GetPreparer(resourceGroupName string, name string) (*http.R
 		"api-version": APIVersion,
 	}
 
-	req := http.Request{}
-	return autorest.Prepare(&req,
+	return autorest.Prepare(&http.Request{},
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -269,8 +266,7 @@ func (client Client) ListPreparer() (*http.Request, error) {
 		"api-version": APIVersion,
 	}
 
-	req := http.Request{}
-	return autorest.Prepare(&req,
+	return autorest.Prepare(&http.Request{},
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -356,8 +352,7 @@ func (client Client) ListByResourceGroupPreparer(resourceGroupName string) (*htt
 		"api-version": APIVersion,
 	}
 
-	req := http.Request{}
-	return autorest.Prepare(&req,
+	return autorest.Prepare(&http.Request{},
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -446,8 +441,7 @@ func (client Client) ListKeysPreparer(resourceGroupName string, name string) (*h
 		"api-version": APIVersion,
 	}
 
-	req := http.Request{}
-	return autorest.Prepare(&req,
+	return autorest.Prepare(&http.Request{},
 		autorest.AsJSON(),
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -512,8 +506,7 @@ func (client Client) RegenerateKeyPreparer(resourceGroupName string, name string
 		"api-version": APIVersion,
 	}
 
-	req := http.Request{}
-	return autorest.Prepare(&req,
+	return autorest.Prepare(&http.Request{},
 		autorest.AsJSON(),
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),

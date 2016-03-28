@@ -78,8 +78,7 @@ func (client DeploymentsClient) CancelPreparer(resourceGroupName string, deploym
 		"api-version": APIVersion,
 	}
 
-	req := http.Request{}
-	return autorest.Prepare(&req,
+	return autorest.Prepare(&http.Request{},
 		autorest.AsJSON(),
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -142,8 +141,7 @@ func (client DeploymentsClient) CheckExistencePreparer(resourceGroupName string,
 		"api-version": APIVersion,
 	}
 
-	req := http.Request{}
-	return autorest.Prepare(&req,
+	return autorest.Prepare(&http.Request{},
 		autorest.AsJSON(),
 		autorest.AsHead(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -170,17 +168,13 @@ func (client DeploymentsClient) CheckExistenceResponder(resp *http.Response) (re
 	return
 }
 
-// CreateOrUpdate create a named template deployment using a template. This
-// method handles polling itself for long-running operations. User can cancel
-// polling for long-running calls by passing cancel channel as an argument to
-// this method (cancel <-chan struct{}). This channel won't cancel the
-// operation, it will only stop the polling.
+// CreateOrUpdate create a named template deployment using a template.
 //
 // resourceGroupName is the name of the resource group. The name is case
 // insensitive. deploymentName is the name of the deployment. parameters is
 // additional parameters supplied to the operation.
-func (client DeploymentsClient) CreateOrUpdate(resourceGroupName string, deploymentName string, parameters Deployment, cancel <-chan struct{}) (result autorest.Response, err error) {
-	req, err := client.CreateOrUpdatePreparer(resourceGroupName, deploymentName, parameters, cancel)
+func (client DeploymentsClient) CreateOrUpdate(resourceGroupName string, deploymentName string, parameters Deployment) (result autorest.Response, err error) {
+	req, err := client.CreateOrUpdatePreparer(resourceGroupName, deploymentName, parameters)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "resources/DeploymentsClient", "CreateOrUpdate", nil, "Failure preparing request")
 	}
@@ -200,7 +194,7 @@ func (client DeploymentsClient) CreateOrUpdate(resourceGroupName string, deploym
 }
 
 // CreateOrUpdatePreparer prepares the CreateOrUpdate request.
-func (client DeploymentsClient) CreateOrUpdatePreparer(resourceGroupName string, deploymentName string, parameters Deployment, cancel <-chan struct{}) (*http.Request, error) {
+func (client DeploymentsClient) CreateOrUpdatePreparer(resourceGroupName string, deploymentName string, parameters Deployment) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"deploymentName":    url.QueryEscape(deploymentName),
 		"resourceGroupName": url.QueryEscape(resourceGroupName),
@@ -211,8 +205,7 @@ func (client DeploymentsClient) CreateOrUpdatePreparer(resourceGroupName string,
 		"api-version": APIVersion,
 	}
 
-	req := http.Request{Cancel: cancel}
-	return autorest.Prepare(&req,
+	return autorest.Prepare(&http.Request{},
 		autorest.AsJSON(),
 		autorest.AsPut(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -227,7 +220,8 @@ func (client DeploymentsClient) CreateOrUpdatePreparer(resourceGroupName string,
 func (client DeploymentsClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client,
 		req,
-		azure.DoPollForAsynchronous(autorest.DefaultPollingDelay))
+		azure.DoPollForAsynchronous(autorest.DefaultPollingDuration,
+			autorest.DefaultPollingDelay))
 }
 
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
@@ -243,16 +237,12 @@ func (client DeploymentsClient) CreateOrUpdateResponder(resp *http.Response) (re
 }
 
 // Delete begin deleting deployment.To determine whether the operation has
-// finished processing the request, call GetLongRunningOperationStatus. This
-// method handles polling itself for long-running operations. User can cancel
-// polling for long-running calls by passing cancel channel as an argument to
-// this method (cancel <-chan struct{}). This channel won't cancel the
-// operation, it will only stop the polling.
+// finished processing the request, call GetLongRunningOperationStatus.
 //
 // resourceGroupName is the name of the resource group. The name is case
 // insensitive. deploymentName is the name of the deployment to be deleted.
-func (client DeploymentsClient) Delete(resourceGroupName string, deploymentName string, cancel <-chan struct{}) (result autorest.Response, err error) {
-	req, err := client.DeletePreparer(resourceGroupName, deploymentName, cancel)
+func (client DeploymentsClient) Delete(resourceGroupName string, deploymentName string) (result autorest.Response, err error) {
+	req, err := client.DeletePreparer(resourceGroupName, deploymentName)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "resources/DeploymentsClient", "Delete", nil, "Failure preparing request")
 	}
@@ -272,7 +262,7 @@ func (client DeploymentsClient) Delete(resourceGroupName string, deploymentName 
 }
 
 // DeletePreparer prepares the Delete request.
-func (client DeploymentsClient) DeletePreparer(resourceGroupName string, deploymentName string, cancel <-chan struct{}) (*http.Request, error) {
+func (client DeploymentsClient) DeletePreparer(resourceGroupName string, deploymentName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"deploymentName":    url.QueryEscape(deploymentName),
 		"resourceGroupName": url.QueryEscape(resourceGroupName),
@@ -283,8 +273,7 @@ func (client DeploymentsClient) DeletePreparer(resourceGroupName string, deploym
 		"api-version": APIVersion,
 	}
 
-	req := http.Request{Cancel: cancel}
-	return autorest.Prepare(&req,
+	return autorest.Prepare(&http.Request{},
 		autorest.AsJSON(),
 		autorest.AsDelete(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -298,7 +287,8 @@ func (client DeploymentsClient) DeletePreparer(resourceGroupName string, deploym
 func (client DeploymentsClient) DeleteSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client,
 		req,
-		azure.DoPollForAsynchronous(autorest.DefaultPollingDelay))
+		azure.DoPollForAsynchronous(autorest.DefaultPollingDuration,
+			autorest.DefaultPollingDelay))
 }
 
 // DeleteResponder handles the response to the Delete request. The method always
@@ -349,8 +339,7 @@ func (client DeploymentsClient) GetPreparer(resourceGroupName string, deployment
 		"api-version": APIVersion,
 	}
 
-	req := http.Request{}
-	return autorest.Prepare(&req,
+	return autorest.Prepare(&http.Request{},
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -420,8 +409,7 @@ func (client DeploymentsClient) ListPreparer(resourceGroupName string, filter st
 		queryParameters["$top"] = top
 	}
 
-	req := http.Request{}
-	return autorest.Prepare(&req,
+	return autorest.Prepare(&http.Request{},
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -510,8 +498,7 @@ func (client DeploymentsClient) ValidatePreparer(resourceGroupName string, deplo
 		"api-version": APIVersion,
 	}
 
-	req := http.Request{}
-	return autorest.Prepare(&req,
+	return autorest.Prepare(&http.Request{},
 		autorest.AsJSON(),
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),

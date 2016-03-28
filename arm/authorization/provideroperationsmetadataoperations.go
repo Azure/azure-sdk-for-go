@@ -80,8 +80,7 @@ func (client ProviderOperationsMetadataOperationsClient) GetPreparer(resourcePro
 		queryParameters["$expand"] = expand
 	}
 
-	req := http.Request{}
-	return autorest.Prepare(&req,
+	return autorest.Prepare(&http.Request{},
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -144,8 +143,7 @@ func (client ProviderOperationsMetadataOperationsClient) ListPreparer(apiVersion
 		queryParameters["$expand"] = expand
 	}
 
-	req := http.Request{}
-	return autorest.Prepare(&req,
+	return autorest.Prepare(&http.Request{},
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),

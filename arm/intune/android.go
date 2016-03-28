@@ -78,8 +78,7 @@ func (client AndroidClient) AddAppForMAMPolicyPreparer(hostName string, policyNa
 		"api-version": APIVersion,
 	}
 
-	req := http.Request{}
-	return autorest.Prepare(&req,
+	return autorest.Prepare(&http.Request{},
 		autorest.AsJSON(),
 		autorest.AsPut(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -144,8 +143,7 @@ func (client AndroidClient) AddGroupForMAMPolicyPreparer(hostName string, policy
 		"api-version": APIVersion,
 	}
 
-	req := http.Request{}
-	return autorest.Prepare(&req,
+	return autorest.Prepare(&http.Request{},
 		autorest.AsJSON(),
 		autorest.AsPut(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -209,8 +207,7 @@ func (client AndroidClient) CreateOrUpdateMAMPolicyPreparer(hostName string, pol
 		"api-version": APIVersion,
 	}
 
-	req := http.Request{}
-	return autorest.Prepare(&req,
+	return autorest.Prepare(&http.Request{},
 		autorest.AsJSON(),
 		autorest.AsPut(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -275,8 +272,7 @@ func (client AndroidClient) DeleteAppForMAMPolicyPreparer(hostName string, polic
 		"api-version": APIVersion,
 	}
 
-	req := http.Request{}
-	return autorest.Prepare(&req,
+	return autorest.Prepare(&http.Request{},
 		autorest.AsJSON(),
 		autorest.AsDelete(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -339,8 +335,7 @@ func (client AndroidClient) DeleteGroupForMAMPolicyPreparer(hostName string, pol
 		"api-version": APIVersion,
 	}
 
-	req := http.Request{}
-	return autorest.Prepare(&req,
+	return autorest.Prepare(&http.Request{},
 		autorest.AsJSON(),
 		autorest.AsDelete(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -402,8 +397,7 @@ func (client AndroidClient) DeleteMAMPolicyPreparer(hostName string, policyName 
 		"api-version": APIVersion,
 	}
 
-	req := http.Request{}
-	return autorest.Prepare(&req,
+	return autorest.Prepare(&http.Request{},
 		autorest.AsJSON(),
 		autorest.AsDelete(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -475,8 +469,7 @@ func (client AndroidClient) GetAppForMAMPolicyPreparer(hostName string, policyNa
 		queryParameters["$select"] = selectParameter
 	}
 
-	req := http.Request{}
-	return autorest.Prepare(&req,
+	return autorest.Prepare(&http.Request{},
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -563,8 +556,7 @@ func (client AndroidClient) GetGroupsForMAMPolicyPreparer(hostName string, polic
 		"api-version": APIVersion,
 	}
 
-	req := http.Request{}
-	return autorest.Prepare(&req,
+	return autorest.Prepare(&http.Request{},
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -659,8 +651,7 @@ func (client AndroidClient) GetMAMPoliciesPreparer(hostName string, filter strin
 		queryParameters["$select"] = selectParameter
 	}
 
-	req := http.Request{}
-	return autorest.Prepare(&req,
+	return autorest.Prepare(&http.Request{},
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -750,8 +741,7 @@ func (client AndroidClient) GetMAMPolicyByNamePreparer(hostName string, policyNa
 		queryParameters["$select"] = selectParameter
 	}
 
-	req := http.Request{}
-	return autorest.Prepare(&req,
+	return autorest.Prepare(&http.Request{},
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -815,8 +805,7 @@ func (client AndroidClient) PatchMAMPolicyPreparer(hostName string, policyName s
 		"api-version": APIVersion,
 	}
 
-	req := http.Request{}
-	return autorest.Prepare(&req,
+	return autorest.Prepare(&http.Request{},
 		autorest.AsJSON(),
 		autorest.AsPatch(),
 		autorest.WithBaseURL(client.BaseURI),

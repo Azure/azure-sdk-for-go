@@ -47,19 +47,15 @@ func NewSecurityRulesClientWithBaseURI(baseURI string, subscriptionID string) Se
 }
 
 // CreateOrUpdate the Put network security rule operation creates/updates a
-// security rule in the specified network security group This method handles
-// polling itself for long-running operations. User can cancel polling for
-// long-running calls by passing cancel channel as an argument to this method
-// (cancel <-chan struct{}). This channel won't cancel the operation, it will
-// only stop the polling.
+// security rule in the specified network security group
 //
 // resourceGroupName is the name of the resource group.
 // networkSecurityGroupName is the name of the network security group.
 // securityRuleName is the name of the security rule. securityRuleParameters
 // is parameters supplied to the create/update network security rule
 // operation
-func (client SecurityRulesClient) CreateOrUpdate(resourceGroupName string, networkSecurityGroupName string, securityRuleName string, securityRuleParameters SecurityRule, cancel <-chan struct{}) (result autorest.Response, err error) {
-	req, err := client.CreateOrUpdatePreparer(resourceGroupName, networkSecurityGroupName, securityRuleName, securityRuleParameters, cancel)
+func (client SecurityRulesClient) CreateOrUpdate(resourceGroupName string, networkSecurityGroupName string, securityRuleName string, securityRuleParameters SecurityRule) (result autorest.Response, err error) {
+	req, err := client.CreateOrUpdatePreparer(resourceGroupName, networkSecurityGroupName, securityRuleName, securityRuleParameters)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "network/SecurityRulesClient", "CreateOrUpdate", nil, "Failure preparing request")
 	}
@@ -79,7 +75,7 @@ func (client SecurityRulesClient) CreateOrUpdate(resourceGroupName string, netwo
 }
 
 // CreateOrUpdatePreparer prepares the CreateOrUpdate request.
-func (client SecurityRulesClient) CreateOrUpdatePreparer(resourceGroupName string, networkSecurityGroupName string, securityRuleName string, securityRuleParameters SecurityRule, cancel <-chan struct{}) (*http.Request, error) {
+func (client SecurityRulesClient) CreateOrUpdatePreparer(resourceGroupName string, networkSecurityGroupName string, securityRuleName string, securityRuleParameters SecurityRule) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"networkSecurityGroupName": url.QueryEscape(networkSecurityGroupName),
 		"resourceGroupName":        url.QueryEscape(resourceGroupName),
@@ -91,8 +87,7 @@ func (client SecurityRulesClient) CreateOrUpdatePreparer(resourceGroupName strin
 		"api-version": APIVersion,
 	}
 
-	req := http.Request{Cancel: cancel}
-	return autorest.Prepare(&req,
+	return autorest.Prepare(&http.Request{},
 		autorest.AsJSON(),
 		autorest.AsPut(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -107,7 +102,8 @@ func (client SecurityRulesClient) CreateOrUpdatePreparer(resourceGroupName strin
 func (client SecurityRulesClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client,
 		req,
-		azure.DoPollForAsynchronous(autorest.DefaultPollingDelay))
+		azure.DoPollForAsynchronous(autorest.DefaultPollingDuration,
+			autorest.DefaultPollingDelay))
 }
 
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
@@ -123,16 +119,13 @@ func (client SecurityRulesClient) CreateOrUpdateResponder(resp *http.Response) (
 }
 
 // Delete the delete network security rule operation deletes the specified
-// network security rule. This method handles polling itself for long-running
-// operations. User can cancel polling for long-running calls by passing
-// cancel channel as an argument to this method (cancel <-chan struct{}).
-// This channel won't cancel the operation, it will only stop the polling.
+// network security rule.
 //
 // resourceGroupName is the name of the resource group.
 // networkSecurityGroupName is the name of the network security group.
 // securityRuleName is the name of the security rule.
-func (client SecurityRulesClient) Delete(resourceGroupName string, networkSecurityGroupName string, securityRuleName string, cancel <-chan struct{}) (result autorest.Response, err error) {
-	req, err := client.DeletePreparer(resourceGroupName, networkSecurityGroupName, securityRuleName, cancel)
+func (client SecurityRulesClient) Delete(resourceGroupName string, networkSecurityGroupName string, securityRuleName string) (result autorest.Response, err error) {
+	req, err := client.DeletePreparer(resourceGroupName, networkSecurityGroupName, securityRuleName)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "network/SecurityRulesClient", "Delete", nil, "Failure preparing request")
 	}
@@ -152,7 +145,7 @@ func (client SecurityRulesClient) Delete(resourceGroupName string, networkSecuri
 }
 
 // DeletePreparer prepares the Delete request.
-func (client SecurityRulesClient) DeletePreparer(resourceGroupName string, networkSecurityGroupName string, securityRuleName string, cancel <-chan struct{}) (*http.Request, error) {
+func (client SecurityRulesClient) DeletePreparer(resourceGroupName string, networkSecurityGroupName string, securityRuleName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"networkSecurityGroupName": url.QueryEscape(networkSecurityGroupName),
 		"resourceGroupName":        url.QueryEscape(resourceGroupName),
@@ -164,8 +157,7 @@ func (client SecurityRulesClient) DeletePreparer(resourceGroupName string, netwo
 		"api-version": APIVersion,
 	}
 
-	req := http.Request{Cancel: cancel}
-	return autorest.Prepare(&req,
+	return autorest.Prepare(&http.Request{},
 		autorest.AsJSON(),
 		autorest.AsDelete(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -179,7 +171,8 @@ func (client SecurityRulesClient) DeletePreparer(resourceGroupName string, netwo
 func (client SecurityRulesClient) DeleteSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client,
 		req,
-		azure.DoPollForAsynchronous(autorest.DefaultPollingDelay))
+		azure.DoPollForAsynchronous(autorest.DefaultPollingDuration,
+			autorest.DefaultPollingDelay))
 }
 
 // DeleteResponder handles the response to the Delete request. The method always
@@ -233,8 +226,7 @@ func (client SecurityRulesClient) GetPreparer(resourceGroupName string, networkS
 		"api-version": APIVersion,
 	}
 
-	req := http.Request{}
-	return autorest.Prepare(&req,
+	return autorest.Prepare(&http.Request{},
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -299,8 +291,7 @@ func (client SecurityRulesClient) ListPreparer(resourceGroupName string, network
 		"api-version": APIVersion,
 	}
 
-	req := http.Request{}
-	return autorest.Prepare(&req,
+	return autorest.Prepare(&http.Request{},
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),

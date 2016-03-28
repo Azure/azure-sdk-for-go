@@ -80,8 +80,7 @@ func (client ManagementLocksClient) CreateOrUpdateAtResourceGroupLevelPreparer(r
 		"api-version": APIVersion,
 	}
 
-	req := http.Request{}
-	return autorest.Prepare(&req,
+	return autorest.Prepare(&http.Request{},
 		autorest.AsJSON(),
 		autorest.AsPut(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -154,8 +153,7 @@ func (client ManagementLocksClient) CreateOrUpdateAtResourceLevelPreparer(resour
 		"api-version": APIVersion,
 	}
 
-	req := http.Request{}
-	return autorest.Prepare(&req,
+	return autorest.Prepare(&http.Request{},
 		autorest.AsJSON(),
 		autorest.AsPut(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -219,8 +217,7 @@ func (client ManagementLocksClient) CreateOrUpdateAtSubscriptionLevelPreparer(lo
 		"api-version": APIVersion,
 	}
 
-	req := http.Request{}
-	return autorest.Prepare(&req,
+	return autorest.Prepare(&http.Request{},
 		autorest.AsJSON(),
 		autorest.AsPut(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -284,8 +281,7 @@ func (client ManagementLocksClient) DeleteAtResourceGroupLevelPreparer(resourceG
 		"api-version": APIVersion,
 	}
 
-	req := http.Request{}
-	return autorest.Prepare(&req,
+	return autorest.Prepare(&http.Request{},
 		autorest.AsJSON(),
 		autorest.AsDelete(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -355,8 +351,7 @@ func (client ManagementLocksClient) DeleteAtResourceLevelPreparer(resourceGroupN
 		"api-version": APIVersion,
 	}
 
-	req := http.Request{}
-	return autorest.Prepare(&req,
+	return autorest.Prepare(&http.Request{},
 		autorest.AsJSON(),
 		autorest.AsDelete(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -417,8 +412,7 @@ func (client ManagementLocksClient) DeleteAtSubscriptionLevelPreparer(lockName s
 		"api-version": APIVersion,
 	}
 
-	req := http.Request{}
-	return autorest.Prepare(&req,
+	return autorest.Prepare(&http.Request{},
 		autorest.AsJSON(),
 		autorest.AsDelete(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -479,8 +473,7 @@ func (client ManagementLocksClient) GetPreparer(lockName string) (*http.Request,
 		"api-version": APIVersion,
 	}
 
-	req := http.Request{}
-	return autorest.Prepare(&req,
+	return autorest.Prepare(&http.Request{},
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -546,8 +539,7 @@ func (client ManagementLocksClient) ListAtResourceGroupLevelPreparer(resourceGro
 		queryParameters["$filter"] = filter
 	}
 
-	req := http.Request{}
-	return autorest.Prepare(&req,
+	return autorest.Prepare(&http.Request{},
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -645,8 +637,7 @@ func (client ManagementLocksClient) ListAtResourceLevelPreparer(resourceGroupNam
 		queryParameters["$filter"] = filter
 	}
 
-	req := http.Request{}
-	return autorest.Prepare(&req,
+	return autorest.Prepare(&http.Request{},
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -734,8 +725,7 @@ func (client ManagementLocksClient) ListAtSubscriptionLevelPreparer(filter strin
 		queryParameters["$filter"] = filter
 	}
 
-	req := http.Request{}
-	return autorest.Prepare(&req,
+	return autorest.Prepare(&http.Request{},
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -817,8 +807,7 @@ func (client ManagementLocksClient) ListNextPreparer(nextLink string) (*http.Req
 		"subscriptionId": url.QueryEscape(client.SubscriptionID),
 	}
 
-	req := http.Request{}
-	return autorest.Prepare(&req,
+	return autorest.Prepare(&http.Request{},
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),

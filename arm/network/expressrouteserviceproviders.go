@@ -78,8 +78,7 @@ func (client ExpressRouteServiceProvidersClient) ListPreparer() (*http.Request, 
 		"api-version": APIVersion,
 	}
 
-	req := http.Request{}
-	return autorest.Prepare(&req,
+	return autorest.Prepare(&http.Request{},
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),

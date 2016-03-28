@@ -82,8 +82,7 @@ func (client WorkflowTriggerHistoriesClient) GetPreparer(resourceGroupName strin
 		"api-version": APIVersion,
 	}
 
-	req := http.Request{}
-	return autorest.Prepare(&req,
+	return autorest.Prepare(&http.Request{},
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -152,8 +151,7 @@ func (client WorkflowTriggerHistoriesClient) ListPreparer(resourceGroupName stri
 		queryParameters["$top"] = top
 	}
 
-	req := http.Request{}
-	return autorest.Prepare(&req,
+	return autorest.Prepare(&http.Request{},
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),

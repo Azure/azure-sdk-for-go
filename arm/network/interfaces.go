@@ -46,16 +46,13 @@ func NewInterfacesClientWithBaseURI(baseURI string, subscriptionID string) Inter
 }
 
 // CreateOrUpdate the Put NetworkInterface operation creates/updates a
-// networkInterface This method handles polling itself for long-running
-// operations. User can cancel polling for long-running calls by passing
-// cancel channel as an argument to this method (cancel <-chan struct{}).
-// This channel won't cancel the operation, it will only stop the polling.
+// networkInterface
 //
 // resourceGroupName is the name of the resource group. networkInterfaceName
 // is the name of the network interface. parameters is parameters supplied to
 // the create/update NetworkInterface operation
-func (client InterfacesClient) CreateOrUpdate(resourceGroupName string, networkInterfaceName string, parameters Interface, cancel <-chan struct{}) (result autorest.Response, err error) {
-	req, err := client.CreateOrUpdatePreparer(resourceGroupName, networkInterfaceName, parameters, cancel)
+func (client InterfacesClient) CreateOrUpdate(resourceGroupName string, networkInterfaceName string, parameters Interface) (result autorest.Response, err error) {
+	req, err := client.CreateOrUpdatePreparer(resourceGroupName, networkInterfaceName, parameters)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "network/InterfacesClient", "CreateOrUpdate", nil, "Failure preparing request")
 	}
@@ -75,7 +72,7 @@ func (client InterfacesClient) CreateOrUpdate(resourceGroupName string, networkI
 }
 
 // CreateOrUpdatePreparer prepares the CreateOrUpdate request.
-func (client InterfacesClient) CreateOrUpdatePreparer(resourceGroupName string, networkInterfaceName string, parameters Interface, cancel <-chan struct{}) (*http.Request, error) {
+func (client InterfacesClient) CreateOrUpdatePreparer(resourceGroupName string, networkInterfaceName string, parameters Interface) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"networkInterfaceName": url.QueryEscape(networkInterfaceName),
 		"resourceGroupName":    url.QueryEscape(resourceGroupName),
@@ -86,8 +83,7 @@ func (client InterfacesClient) CreateOrUpdatePreparer(resourceGroupName string, 
 		"api-version": APIVersion,
 	}
 
-	req := http.Request{Cancel: cancel}
-	return autorest.Prepare(&req,
+	return autorest.Prepare(&http.Request{},
 		autorest.AsJSON(),
 		autorest.AsPut(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -102,7 +98,8 @@ func (client InterfacesClient) CreateOrUpdatePreparer(resourceGroupName string, 
 func (client InterfacesClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client,
 		req,
-		azure.DoPollForAsynchronous(autorest.DefaultPollingDelay))
+		azure.DoPollForAsynchronous(autorest.DefaultPollingDuration,
+			autorest.DefaultPollingDelay))
 }
 
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
@@ -118,15 +115,12 @@ func (client InterfacesClient) CreateOrUpdateResponder(resp *http.Response) (res
 }
 
 // Delete the delete netwokInterface operation deletes the specified
-// netwokInterface. This method handles polling itself for long-running
-// operations. User can cancel polling for long-running calls by passing
-// cancel channel as an argument to this method (cancel <-chan struct{}).
-// This channel won't cancel the operation, it will only stop the polling.
+// netwokInterface.
 //
 // resourceGroupName is the name of the resource group. networkInterfaceName
 // is the name of the network interface.
-func (client InterfacesClient) Delete(resourceGroupName string, networkInterfaceName string, cancel <-chan struct{}) (result autorest.Response, err error) {
-	req, err := client.DeletePreparer(resourceGroupName, networkInterfaceName, cancel)
+func (client InterfacesClient) Delete(resourceGroupName string, networkInterfaceName string) (result autorest.Response, err error) {
+	req, err := client.DeletePreparer(resourceGroupName, networkInterfaceName)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "network/InterfacesClient", "Delete", nil, "Failure preparing request")
 	}
@@ -146,7 +140,7 @@ func (client InterfacesClient) Delete(resourceGroupName string, networkInterface
 }
 
 // DeletePreparer prepares the Delete request.
-func (client InterfacesClient) DeletePreparer(resourceGroupName string, networkInterfaceName string, cancel <-chan struct{}) (*http.Request, error) {
+func (client InterfacesClient) DeletePreparer(resourceGroupName string, networkInterfaceName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"networkInterfaceName": url.QueryEscape(networkInterfaceName),
 		"resourceGroupName":    url.QueryEscape(resourceGroupName),
@@ -157,8 +151,7 @@ func (client InterfacesClient) DeletePreparer(resourceGroupName string, networkI
 		"api-version": APIVersion,
 	}
 
-	req := http.Request{Cancel: cancel}
-	return autorest.Prepare(&req,
+	return autorest.Prepare(&http.Request{},
 		autorest.AsJSON(),
 		autorest.AsDelete(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -172,7 +165,8 @@ func (client InterfacesClient) DeletePreparer(resourceGroupName string, networkI
 func (client InterfacesClient) DeleteSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client,
 		req,
-		azure.DoPollForAsynchronous(autorest.DefaultPollingDelay))
+		azure.DoPollForAsynchronous(autorest.DefaultPollingDuration,
+			autorest.DefaultPollingDelay))
 }
 
 // DeleteResponder handles the response to the Delete request. The method always
@@ -228,8 +222,7 @@ func (client InterfacesClient) GetPreparer(resourceGroupName string, networkInte
 		queryParameters["$expand"] = expand
 	}
 
-	req := http.Request{}
-	return autorest.Prepare(&req,
+	return autorest.Prepare(&http.Request{},
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -302,8 +295,7 @@ func (client InterfacesClient) GetVirtualMachineScaleSetNetworkInterfacePreparer
 		queryParameters["$expand"] = expand
 	}
 
-	req := http.Request{}
-	return autorest.Prepare(&req,
+	return autorest.Prepare(&http.Request{},
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -366,8 +358,7 @@ func (client InterfacesClient) ListPreparer(resourceGroupName string) (*http.Req
 		"api-version": APIVersion,
 	}
 
-	req := http.Request{}
-	return autorest.Prepare(&req,
+	return autorest.Prepare(&http.Request{},
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -451,8 +442,7 @@ func (client InterfacesClient) ListAllPreparer() (*http.Request, error) {
 		"api-version": APIVersion,
 	}
 
-	req := http.Request{}
-	return autorest.Prepare(&req,
+	return autorest.Prepare(&http.Request{},
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -542,8 +532,7 @@ func (client InterfacesClient) ListVirtualMachineScaleSetNetworkInterfacesPrepar
 		"api-version": APIVersion,
 	}
 
-	req := http.Request{}
-	return autorest.Prepare(&req,
+	return autorest.Prepare(&http.Request{},
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -635,8 +624,7 @@ func (client InterfacesClient) ListVirtualMachineScaleSetVMNetworkInterfacesPrep
 		"api-version": APIVersion,
 	}
 
-	req := http.Request{}
-	return autorest.Prepare(&req,
+	return autorest.Prepare(&http.Request{},
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),

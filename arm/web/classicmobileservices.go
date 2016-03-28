@@ -52,7 +52,7 @@ func NewClassicMobileServicesClientWithBaseURI(baseURI string, subscriptionID st
 // DeleteClassicMobileService sends the delete classic mobile service request.
 //
 // resourceGroupName is name of resource group name is name of mobile service
-func (client ClassicMobileServicesClient) DeleteClassicMobileService(resourceGroupName string, name string) (result SetObject, err error) {
+func (client ClassicMobileServicesClient) DeleteClassicMobileService(resourceGroupName string, name string) (result ObjectSet, err error) {
 	req, err := client.DeleteClassicMobileServicePreparer(resourceGroupName, name)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web/ClassicMobileServicesClient", "DeleteClassicMobileService", nil, "Failure preparing request")
@@ -84,8 +84,7 @@ func (client ClassicMobileServicesClient) DeleteClassicMobileServicePreparer(res
 		"api-version": APIVersion,
 	}
 
-	req := http.Request{}
-	return autorest.Prepare(&req,
+	return autorest.Prepare(&http.Request{},
 		autorest.AsJSON(),
 		autorest.AsDelete(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -102,7 +101,7 @@ func (client ClassicMobileServicesClient) DeleteClassicMobileServiceSender(req *
 
 // DeleteClassicMobileServiceResponder handles the response to the DeleteClassicMobileService request. The method always
 // closes the http.Response Body.
-func (client ClassicMobileServicesClient) DeleteClassicMobileServiceResponder(resp *http.Response) (result SetObject, err error) {
+func (client ClassicMobileServicesClient) DeleteClassicMobileServiceResponder(resp *http.Response) (result ObjectSet, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -148,8 +147,7 @@ func (client ClassicMobileServicesClient) GetClassicMobileServicePreparer(resour
 		"api-version": APIVersion,
 	}
 
-	req := http.Request{}
-	return autorest.Prepare(&req,
+	return autorest.Prepare(&http.Request{},
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -211,8 +209,7 @@ func (client ClassicMobileServicesClient) GetClassicMobileServicesPreparer(resou
 		"api-version": APIVersion,
 	}
 
-	req := http.Request{}
-	return autorest.Prepare(&req,
+	return autorest.Prepare(&http.Request{},
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),

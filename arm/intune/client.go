@@ -102,7 +102,8 @@ func (client ManagementClient) GetAppsPreparer(hostName string, filter string, t
 		queryParameters["$select"] = selectParameter
 	}
 
-	return autorest.Prepare(&http.Request{},
+	req := http.Request{}
+	return autorest.Prepare(&req,
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -181,7 +182,8 @@ func (client ManagementClient) GetLocationByHostNamePreparer() (*http.Request, e
 		"api-version": APIVersion,
 	}
 
-	return autorest.Prepare(&http.Request{},
+	req := http.Request{}
+	return autorest.Prepare(&req,
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -235,7 +237,8 @@ func (client ManagementClient) GetLocationsPreparer() (*http.Request, error) {
 		"api-version": APIVersion,
 	}
 
-	return autorest.Prepare(&http.Request{},
+	req := http.Request{}
+	return autorest.Prepare(&req,
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -324,7 +327,8 @@ func (client ManagementClient) GetMAMFlaggedUserByNamePreparer(hostName string, 
 		queryParameters["$select"] = selectParameter
 	}
 
-	return autorest.Prepare(&http.Request{},
+	req := http.Request{}
+	return autorest.Prepare(&req,
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -395,7 +399,8 @@ func (client ManagementClient) GetMAMFlaggedUsersPreparer(hostName string, filte
 		queryParameters["$select"] = selectParameter
 	}
 
-	return autorest.Prepare(&http.Request{},
+	req := http.Request{}
+	return autorest.Prepare(&req,
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -480,7 +485,8 @@ func (client ManagementClient) GetMAMStatusesPreparer(hostName string) (*http.Re
 		"api-version": APIVersion,
 	}
 
-	return autorest.Prepare(&http.Request{},
+	req := http.Request{}
+	return autorest.Prepare(&req,
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -572,7 +578,8 @@ func (client ManagementClient) GetMAMUserDeviceByDeviceNamePreparer(hostName str
 		queryParameters["$select"] = selectParameter
 	}
 
-	return autorest.Prepare(&http.Request{},
+	req := http.Request{}
+	return autorest.Prepare(&req,
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -645,7 +652,8 @@ func (client ManagementClient) GetMAMUserDevicesPreparer(hostName string, userNa
 		queryParameters["$select"] = selectParameter
 	}
 
-	return autorest.Prepare(&http.Request{},
+	req := http.Request{}
+	return autorest.Prepare(&req,
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -743,7 +751,8 @@ func (client ManagementClient) GetMAMUserFlaggedEnrolledAppsPreparer(hostName st
 		queryParameters["$select"] = selectParameter
 	}
 
-	return autorest.Prepare(&http.Request{},
+	req := http.Request{}
+	return autorest.Prepare(&req,
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -838,7 +847,8 @@ func (client ManagementClient) GetOperationResultsPreparer(hostName string, filt
 		queryParameters["$select"] = selectParameter
 	}
 
-	return autorest.Prepare(&http.Request{},
+	req := http.Request{}
+	return autorest.Prepare(&req,
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -926,7 +936,8 @@ func (client ManagementClient) WipeMAMUserDevicePreparer(hostName string, userNa
 		"api-version": APIVersion,
 	}
 
-	return autorest.Prepare(&http.Request{},
+	req := http.Request{}
+	return autorest.Prepare(&req,
 		autorest.AsJSON(),
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),

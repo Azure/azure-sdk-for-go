@@ -48,15 +48,19 @@ func NewVirtualNetworkGatewayConnectionsClientWithBaseURI(baseURI string, subscr
 
 // CreateOrUpdate the Put VirtualNetworkGatewayConnection operation
 // creates/updates a virtual network gateway connection in the specified
-// resource group through Network resource provider.
+// resource group through Network resource provider. This method handles
+// polling itself for long-running operations. User can cancel polling for
+// long-running calls by passing cancel channel as an argument to this method
+// (cancel <-chan struct{}). This channel won't cancel the operation, it will
+// only stop the polling.
 //
 // resourceGroupName is the name of the resource group.
 // virtualNetworkGatewayConnectionName is the name of the virtual network
 // gateway conenction. parameters is parameters supplied to the Begin Create
 // or update Virtual Network Gateway connection operation through Network
 // resource provider.
-func (client VirtualNetworkGatewayConnectionsClient) CreateOrUpdate(resourceGroupName string, virtualNetworkGatewayConnectionName string, parameters VirtualNetworkGatewayConnection) (result autorest.Response, err error) {
-	req, err := client.CreateOrUpdatePreparer(resourceGroupName, virtualNetworkGatewayConnectionName, parameters)
+func (client VirtualNetworkGatewayConnectionsClient) CreateOrUpdate(resourceGroupName string, virtualNetworkGatewayConnectionName string, parameters VirtualNetworkGatewayConnection, cancel <-chan struct{}) (result autorest.Response, err error) {
+	req, err := client.CreateOrUpdatePreparer(resourceGroupName, virtualNetworkGatewayConnectionName, parameters, cancel)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "network/VirtualNetworkGatewayConnectionsClient", "CreateOrUpdate", nil, "Failure preparing request")
 	}
@@ -76,7 +80,7 @@ func (client VirtualNetworkGatewayConnectionsClient) CreateOrUpdate(resourceGrou
 }
 
 // CreateOrUpdatePreparer prepares the CreateOrUpdate request.
-func (client VirtualNetworkGatewayConnectionsClient) CreateOrUpdatePreparer(resourceGroupName string, virtualNetworkGatewayConnectionName string, parameters VirtualNetworkGatewayConnection) (*http.Request, error) {
+func (client VirtualNetworkGatewayConnectionsClient) CreateOrUpdatePreparer(resourceGroupName string, virtualNetworkGatewayConnectionName string, parameters VirtualNetworkGatewayConnection, cancel <-chan struct{}) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName":                   url.QueryEscape(resourceGroupName),
 		"subscriptionId":                      url.QueryEscape(client.SubscriptionID),
@@ -87,7 +91,8 @@ func (client VirtualNetworkGatewayConnectionsClient) CreateOrUpdatePreparer(reso
 		"api-version": APIVersion,
 	}
 
-	return autorest.Prepare(&http.Request{},
+	req := http.Request{Cancel: cancel}
+	return autorest.Prepare(&req,
 		autorest.AsJSON(),
 		autorest.AsPut(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -102,8 +107,7 @@ func (client VirtualNetworkGatewayConnectionsClient) CreateOrUpdatePreparer(reso
 func (client VirtualNetworkGatewayConnectionsClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client,
 		req,
-		azure.DoPollForAsynchronous(autorest.DefaultPollingDuration,
-			autorest.DefaultPollingDelay))
+		azure.DoPollForAsynchronous(autorest.DefaultPollingDelay))
 }
 
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
@@ -120,13 +124,16 @@ func (client VirtualNetworkGatewayConnectionsClient) CreateOrUpdateResponder(res
 
 // Delete the Delete VirtualNetworkGatewayConnection operation deletes the
 // specifed virtual network Gateway connection through Network resource
-// provider.
+// provider. This method handles polling itself for long-running operations.
+// User can cancel polling for long-running calls by passing cancel channel
+// as an argument to this method (cancel <-chan struct{}). This channel won't
+// cancel the operation, it will only stop the polling.
 //
 // resourceGroupName is the name of the resource group.
 // virtualNetworkGatewayConnectionName is the name of the virtual network
 // gateway connection.
-func (client VirtualNetworkGatewayConnectionsClient) Delete(resourceGroupName string, virtualNetworkGatewayConnectionName string) (result autorest.Response, err error) {
-	req, err := client.DeletePreparer(resourceGroupName, virtualNetworkGatewayConnectionName)
+func (client VirtualNetworkGatewayConnectionsClient) Delete(resourceGroupName string, virtualNetworkGatewayConnectionName string, cancel <-chan struct{}) (result autorest.Response, err error) {
+	req, err := client.DeletePreparer(resourceGroupName, virtualNetworkGatewayConnectionName, cancel)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "network/VirtualNetworkGatewayConnectionsClient", "Delete", nil, "Failure preparing request")
 	}
@@ -146,7 +153,7 @@ func (client VirtualNetworkGatewayConnectionsClient) Delete(resourceGroupName st
 }
 
 // DeletePreparer prepares the Delete request.
-func (client VirtualNetworkGatewayConnectionsClient) DeletePreparer(resourceGroupName string, virtualNetworkGatewayConnectionName string) (*http.Request, error) {
+func (client VirtualNetworkGatewayConnectionsClient) DeletePreparer(resourceGroupName string, virtualNetworkGatewayConnectionName string, cancel <-chan struct{}) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName":                   url.QueryEscape(resourceGroupName),
 		"subscriptionId":                      url.QueryEscape(client.SubscriptionID),
@@ -157,7 +164,8 @@ func (client VirtualNetworkGatewayConnectionsClient) DeletePreparer(resourceGrou
 		"api-version": APIVersion,
 	}
 
-	return autorest.Prepare(&http.Request{},
+	req := http.Request{Cancel: cancel}
+	return autorest.Prepare(&req,
 		autorest.AsJSON(),
 		autorest.AsDelete(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -171,8 +179,7 @@ func (client VirtualNetworkGatewayConnectionsClient) DeletePreparer(resourceGrou
 func (client VirtualNetworkGatewayConnectionsClient) DeleteSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client,
 		req,
-		azure.DoPollForAsynchronous(autorest.DefaultPollingDuration,
-			autorest.DefaultPollingDelay))
+		azure.DoPollForAsynchronous(autorest.DefaultPollingDelay))
 }
 
 // DeleteResponder handles the response to the Delete request. The method always
@@ -226,7 +233,8 @@ func (client VirtualNetworkGatewayConnectionsClient) GetPreparer(resourceGroupNa
 		"api-version": APIVersion,
 	}
 
-	return autorest.Prepare(&http.Request{},
+	req := http.Request{}
+	return autorest.Prepare(&req,
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -293,7 +301,8 @@ func (client VirtualNetworkGatewayConnectionsClient) GetSharedKeyPreparer(resour
 		"api-version": APIVersion,
 	}
 
-	return autorest.Prepare(&http.Request{},
+	req := http.Request{}
+	return autorest.Prepare(&req,
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -356,7 +365,8 @@ func (client VirtualNetworkGatewayConnectionsClient) ListPreparer(resourceGroupN
 		"api-version": APIVersion,
 	}
 
-	return autorest.Prepare(&http.Request{},
+	req := http.Request{}
+	return autorest.Prepare(&req,
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -411,15 +421,19 @@ func (client VirtualNetworkGatewayConnectionsClient) ListNextResults(lastResults
 // ResetSharedKey the VirtualNetworkGatewayConnectionResetSharedKey operation
 // resets the virtual network gateway connection shared key for passed
 // virtual network gateway connection in the specified resource group through
-// Network resource provider.
+// Network resource provider. This method handles polling itself for
+// long-running operations. User can cancel polling for long-running calls by
+// passing cancel channel as an argument to this method (cancel <-chan
+// struct{}). This channel won't cancel the operation, it will only stop the
+// polling.
 //
 // resourceGroupName is the name of the resource group.
 // virtualNetworkGatewayConnectionName is the virtual network gateway
 // connection reset shared key Name. parameters is parameters supplied to the
 // Begin Reset Virtual Network Gateway connection shared key operation
 // through Network resource provider.
-func (client VirtualNetworkGatewayConnectionsClient) ResetSharedKey(resourceGroupName string, virtualNetworkGatewayConnectionName string, parameters ConnectionResetSharedKey) (result autorest.Response, err error) {
-	req, err := client.ResetSharedKeyPreparer(resourceGroupName, virtualNetworkGatewayConnectionName, parameters)
+func (client VirtualNetworkGatewayConnectionsClient) ResetSharedKey(resourceGroupName string, virtualNetworkGatewayConnectionName string, parameters ConnectionResetSharedKey, cancel <-chan struct{}) (result autorest.Response, err error) {
+	req, err := client.ResetSharedKeyPreparer(resourceGroupName, virtualNetworkGatewayConnectionName, parameters, cancel)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "network/VirtualNetworkGatewayConnectionsClient", "ResetSharedKey", nil, "Failure preparing request")
 	}
@@ -439,7 +453,7 @@ func (client VirtualNetworkGatewayConnectionsClient) ResetSharedKey(resourceGrou
 }
 
 // ResetSharedKeyPreparer prepares the ResetSharedKey request.
-func (client VirtualNetworkGatewayConnectionsClient) ResetSharedKeyPreparer(resourceGroupName string, virtualNetworkGatewayConnectionName string, parameters ConnectionResetSharedKey) (*http.Request, error) {
+func (client VirtualNetworkGatewayConnectionsClient) ResetSharedKeyPreparer(resourceGroupName string, virtualNetworkGatewayConnectionName string, parameters ConnectionResetSharedKey, cancel <-chan struct{}) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName":                   url.QueryEscape(resourceGroupName),
 		"subscriptionId":                      url.QueryEscape(client.SubscriptionID),
@@ -450,7 +464,8 @@ func (client VirtualNetworkGatewayConnectionsClient) ResetSharedKeyPreparer(reso
 		"api-version": APIVersion,
 	}
 
-	return autorest.Prepare(&http.Request{},
+	req := http.Request{Cancel: cancel}
+	return autorest.Prepare(&req,
 		autorest.AsJSON(),
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -465,8 +480,7 @@ func (client VirtualNetworkGatewayConnectionsClient) ResetSharedKeyPreparer(reso
 func (client VirtualNetworkGatewayConnectionsClient) ResetSharedKeySender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client,
 		req,
-		azure.DoPollForAsynchronous(autorest.DefaultPollingDuration,
-			autorest.DefaultPollingDelay))
+		azure.DoPollForAsynchronous(autorest.DefaultPollingDelay))
 }
 
 // ResetSharedKeyResponder handles the response to the ResetSharedKey request. The method always
@@ -484,15 +498,18 @@ func (client VirtualNetworkGatewayConnectionsClient) ResetSharedKeyResponder(res
 // SetSharedKey the Put VirtualNetworkGatewayConnectionSharedKey operation
 // sets the virtual network gateway connection shared key for passed virtual
 // network gateway connection in the specified resource group through Network
-// resource provider.
+// resource provider. This method handles polling itself for long-running
+// operations. User can cancel polling for long-running calls by passing
+// cancel channel as an argument to this method (cancel <-chan struct{}).
+// This channel won't cancel the operation, it will only stop the polling.
 //
 // resourceGroupName is the name of the resource group.
 // virtualNetworkGatewayConnectionName is the virtual network gateway
 // connection name. parameters is parameters supplied to the Begin Set
 // Virtual Network Gateway conection Shared key operation throughNetwork
 // resource provider.
-func (client VirtualNetworkGatewayConnectionsClient) SetSharedKey(resourceGroupName string, virtualNetworkGatewayConnectionName string, parameters ConnectionSharedKey) (result autorest.Response, err error) {
-	req, err := client.SetSharedKeyPreparer(resourceGroupName, virtualNetworkGatewayConnectionName, parameters)
+func (client VirtualNetworkGatewayConnectionsClient) SetSharedKey(resourceGroupName string, virtualNetworkGatewayConnectionName string, parameters ConnectionSharedKey, cancel <-chan struct{}) (result autorest.Response, err error) {
+	req, err := client.SetSharedKeyPreparer(resourceGroupName, virtualNetworkGatewayConnectionName, parameters, cancel)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "network/VirtualNetworkGatewayConnectionsClient", "SetSharedKey", nil, "Failure preparing request")
 	}
@@ -512,7 +529,7 @@ func (client VirtualNetworkGatewayConnectionsClient) SetSharedKey(resourceGroupN
 }
 
 // SetSharedKeyPreparer prepares the SetSharedKey request.
-func (client VirtualNetworkGatewayConnectionsClient) SetSharedKeyPreparer(resourceGroupName string, virtualNetworkGatewayConnectionName string, parameters ConnectionSharedKey) (*http.Request, error) {
+func (client VirtualNetworkGatewayConnectionsClient) SetSharedKeyPreparer(resourceGroupName string, virtualNetworkGatewayConnectionName string, parameters ConnectionSharedKey, cancel <-chan struct{}) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName":                   url.QueryEscape(resourceGroupName),
 		"subscriptionId":                      url.QueryEscape(client.SubscriptionID),
@@ -523,7 +540,8 @@ func (client VirtualNetworkGatewayConnectionsClient) SetSharedKeyPreparer(resour
 		"api-version": APIVersion,
 	}
 
-	return autorest.Prepare(&http.Request{},
+	req := http.Request{Cancel: cancel}
+	return autorest.Prepare(&req,
 		autorest.AsJSON(),
 		autorest.AsPut(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -538,8 +556,7 @@ func (client VirtualNetworkGatewayConnectionsClient) SetSharedKeyPreparer(resour
 func (client VirtualNetworkGatewayConnectionsClient) SetSharedKeySender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client,
 		req,
-		azure.DoPollForAsynchronous(autorest.DefaultPollingDuration,
-			autorest.DefaultPollingDelay))
+		azure.DoPollForAsynchronous(autorest.DefaultPollingDelay))
 }
 
 // SetSharedKeyResponder handles the response to the SetSharedKey request. The method always

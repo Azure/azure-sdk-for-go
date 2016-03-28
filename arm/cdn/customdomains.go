@@ -46,15 +46,19 @@ func NewCustomDomainsClientWithBaseURI(baseURI string, subscriptionID string) Cu
 	return CustomDomainsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// Create sends the create request.
+// Create sends the create request. This method handles polling itself for
+// long-running operations. User can cancel polling for long-running calls by
+// passing cancel channel as an argument to this method (cancel <-chan
+// struct{}). This channel won't cancel the operation, it will only stop the
+// polling.
 //
 // customDomainName is name of the custom domain within an endpoint
 // customDomainProperties is custom domain properties required for creation
 // endpointName is name of the endpoint within the CDN profile profileName is
 // name of the CDN profile within the resource group resourceGroupName is
 // name of the resource group within the Azure subscription
-func (client CustomDomainsClient) Create(customDomainName string, customDomainProperties CustomDomainParameters, endpointName string, profileName string, resourceGroupName string) (result autorest.Response, err error) {
-	req, err := client.CreatePreparer(customDomainName, customDomainProperties, endpointName, profileName, resourceGroupName)
+func (client CustomDomainsClient) Create(customDomainName string, customDomainProperties CustomDomainParameters, endpointName string, profileName string, resourceGroupName string, cancel <-chan struct{}) (result autorest.Response, err error) {
+	req, err := client.CreatePreparer(customDomainName, customDomainProperties, endpointName, profileName, resourceGroupName, cancel)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "cdn/CustomDomainsClient", "Create", nil, "Failure preparing request")
 	}
@@ -74,7 +78,7 @@ func (client CustomDomainsClient) Create(customDomainName string, customDomainPr
 }
 
 // CreatePreparer prepares the Create request.
-func (client CustomDomainsClient) CreatePreparer(customDomainName string, customDomainProperties CustomDomainParameters, endpointName string, profileName string, resourceGroupName string) (*http.Request, error) {
+func (client CustomDomainsClient) CreatePreparer(customDomainName string, customDomainProperties CustomDomainParameters, endpointName string, profileName string, resourceGroupName string, cancel <-chan struct{}) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"customDomainName":  url.QueryEscape(customDomainName),
 		"endpointName":      url.QueryEscape(endpointName),
@@ -87,7 +91,8 @@ func (client CustomDomainsClient) CreatePreparer(customDomainName string, custom
 		"api-version": APIVersion,
 	}
 
-	return autorest.Prepare(&http.Request{},
+	req := http.Request{Cancel: cancel}
+	return autorest.Prepare(&req,
 		autorest.AsJSON(),
 		autorest.AsPut(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -102,8 +107,7 @@ func (client CustomDomainsClient) CreatePreparer(customDomainName string, custom
 func (client CustomDomainsClient) CreateSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client,
 		req,
-		azure.DoPollForAsynchronous(autorest.DefaultPollingDuration,
-			autorest.DefaultPollingDelay))
+		azure.DoPollForAsynchronous(autorest.DefaultPollingDelay))
 }
 
 // CreateResponder handles the response to the Create request. The method always
@@ -118,14 +122,18 @@ func (client CustomDomainsClient) CreateResponder(resp *http.Response) (result a
 	return
 }
 
-// DeleteIfExists sends the delete if exists request.
+// DeleteIfExists sends the delete if exists request. This method handles
+// polling itself for long-running operations. User can cancel polling for
+// long-running calls by passing cancel channel as an argument to this method
+// (cancel <-chan struct{}). This channel won't cancel the operation, it will
+// only stop the polling.
 //
 // customDomainName is name of the custom domain within an endpoint
 // endpointName is name of the endpoint within the CDN profile profileName is
 // name of the CDN profile within the resource group resourceGroupName is
 // name of the resource group within the Azure subscription
-func (client CustomDomainsClient) DeleteIfExists(customDomainName string, endpointName string, profileName string, resourceGroupName string) (result autorest.Response, err error) {
-	req, err := client.DeleteIfExistsPreparer(customDomainName, endpointName, profileName, resourceGroupName)
+func (client CustomDomainsClient) DeleteIfExists(customDomainName string, endpointName string, profileName string, resourceGroupName string, cancel <-chan struct{}) (result autorest.Response, err error) {
+	req, err := client.DeleteIfExistsPreparer(customDomainName, endpointName, profileName, resourceGroupName, cancel)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "cdn/CustomDomainsClient", "DeleteIfExists", nil, "Failure preparing request")
 	}
@@ -145,7 +153,7 @@ func (client CustomDomainsClient) DeleteIfExists(customDomainName string, endpoi
 }
 
 // DeleteIfExistsPreparer prepares the DeleteIfExists request.
-func (client CustomDomainsClient) DeleteIfExistsPreparer(customDomainName string, endpointName string, profileName string, resourceGroupName string) (*http.Request, error) {
+func (client CustomDomainsClient) DeleteIfExistsPreparer(customDomainName string, endpointName string, profileName string, resourceGroupName string, cancel <-chan struct{}) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"customDomainName":  url.QueryEscape(customDomainName),
 		"endpointName":      url.QueryEscape(endpointName),
@@ -158,7 +166,8 @@ func (client CustomDomainsClient) DeleteIfExistsPreparer(customDomainName string
 		"api-version": APIVersion,
 	}
 
-	return autorest.Prepare(&http.Request{},
+	req := http.Request{Cancel: cancel}
+	return autorest.Prepare(&req,
 		autorest.AsJSON(),
 		autorest.AsDelete(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -172,8 +181,7 @@ func (client CustomDomainsClient) DeleteIfExistsPreparer(customDomainName string
 func (client CustomDomainsClient) DeleteIfExistsSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client,
 		req,
-		azure.DoPollForAsynchronous(autorest.DefaultPollingDuration,
-			autorest.DefaultPollingDelay))
+		azure.DoPollForAsynchronous(autorest.DefaultPollingDelay))
 }
 
 // DeleteIfExistsResponder handles the response to the DeleteIfExists request. The method always
@@ -228,7 +236,8 @@ func (client CustomDomainsClient) GetPreparer(customDomainName string, endpointN
 		"api-version": APIVersion,
 	}
 
-	return autorest.Prepare(&http.Request{},
+	req := http.Request{}
+	return autorest.Prepare(&req,
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -294,7 +303,8 @@ func (client CustomDomainsClient) ListByEndpointPreparer(endpointName string, pr
 		"api-version": APIVersion,
 	}
 
-	return autorest.Prepare(&http.Request{},
+	req := http.Request{}
+	return autorest.Prepare(&req,
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -363,7 +373,8 @@ func (client CustomDomainsClient) UpdatePreparer(customDomainName string, custom
 		"api-version": APIVersion,
 	}
 
-	return autorest.Prepare(&http.Request{},
+	req := http.Request{}
+	return autorest.Prepare(&req,
 		autorest.AsJSON(),
 		autorest.AsPatch(),
 		autorest.WithBaseURL(client.BaseURI),

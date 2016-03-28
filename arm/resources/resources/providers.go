@@ -76,7 +76,8 @@ func (client ProvidersClient) GetPreparer(resourceProviderNamespace string) (*ht
 		"api-version": APIVersion,
 	}
 
-	return autorest.Prepare(&http.Request{},
+	req := http.Request{}
+	return autorest.Prepare(&req,
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -140,7 +141,8 @@ func (client ProvidersClient) ListPreparer(top *int32) (*http.Request, error) {
 		queryParameters["$top"] = top
 	}
 
-	return autorest.Prepare(&http.Request{},
+	req := http.Request{}
+	return autorest.Prepare(&req,
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -226,7 +228,8 @@ func (client ProvidersClient) RegisterPreparer(resourceProviderNamespace string)
 		"api-version": APIVersion,
 	}
 
-	return autorest.Prepare(&http.Request{},
+	req := http.Request{}
+	return autorest.Prepare(&req,
 		autorest.AsJSON(),
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -288,7 +291,8 @@ func (client ProvidersClient) UnregisterPreparer(resourceProviderNamespace strin
 		"api-version": APIVersion,
 	}
 
-	return autorest.Prepare(&http.Request{},
+	req := http.Request{}
+	return autorest.Prepare(&req,
 		autorest.AsJSON(),
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),

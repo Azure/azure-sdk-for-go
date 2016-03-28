@@ -82,7 +82,8 @@ func (client ServicesClient) CreateOrUpdatePreparer(resourceGroupName string, se
 		"api-version": APIVersion,
 	}
 
-	return autorest.Prepare(&http.Request{},
+	req := http.Request{}
+	return autorest.Prepare(&req,
 		autorest.AsJSON(),
 		autorest.AsPut(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -148,7 +149,8 @@ func (client ServicesClient) DeletePreparer(resourceGroupName string, serviceNam
 		"api-version": APIVersion,
 	}
 
-	return autorest.Prepare(&http.Request{},
+	req := http.Request{}
+	return autorest.Prepare(&req,
 		autorest.AsJSON(),
 		autorest.AsDelete(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -210,7 +212,8 @@ func (client ServicesClient) ListPreparer(resourceGroupName string) (*http.Reque
 		"api-version": APIVersion,
 	}
 
-	return autorest.Prepare(&http.Request{},
+	req := http.Request{}
+	return autorest.Prepare(&req,
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),

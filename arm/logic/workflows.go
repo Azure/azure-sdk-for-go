@@ -78,7 +78,8 @@ func (client WorkflowsClient) CreateOrUpdatePreparer(resourceGroupName string, w
 		"api-version": APIVersion,
 	}
 
-	return autorest.Prepare(&http.Request{},
+	req := http.Request{}
+	return autorest.Prepare(&req,
 		autorest.AsJSON(),
 		autorest.AsPut(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -143,7 +144,8 @@ func (client WorkflowsClient) DeletePreparer(resourceGroupName string, workflowN
 		"api-version": APIVersion,
 	}
 
-	return autorest.Prepare(&http.Request{},
+	req := http.Request{}
+	return autorest.Prepare(&req,
 		autorest.AsJSON(),
 		autorest.AsDelete(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -206,7 +208,8 @@ func (client WorkflowsClient) DisablePreparer(resourceGroupName string, workflow
 		"api-version": APIVersion,
 	}
 
-	return autorest.Prepare(&http.Request{},
+	req := http.Request{}
+	return autorest.Prepare(&req,
 		autorest.AsJSON(),
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -269,7 +272,8 @@ func (client WorkflowsClient) EnablePreparer(resourceGroupName string, workflowN
 		"api-version": APIVersion,
 	}
 
-	return autorest.Prepare(&http.Request{},
+	req := http.Request{}
+	return autorest.Prepare(&req,
 		autorest.AsJSON(),
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -332,7 +336,8 @@ func (client WorkflowsClient) GetPreparer(resourceGroupName string, workflowName
 		"api-version": APIVersion,
 	}
 
-	return autorest.Prepare(&http.Request{},
+	req := http.Request{}
+	return autorest.Prepare(&req,
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -401,7 +406,8 @@ func (client WorkflowsClient) ListByResourceGroupPreparer(resourceGroupName stri
 		queryParameters["$filter"] = filter
 	}
 
-	return autorest.Prepare(&http.Request{},
+	req := http.Request{}
+	return autorest.Prepare(&req,
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -493,7 +499,8 @@ func (client WorkflowsClient) ListBySubscriptionPreparer(top *int32, filter stri
 		queryParameters["$filter"] = filter
 	}
 
-	return autorest.Prepare(&http.Request{},
+	req := http.Request{}
+	return autorest.Prepare(&req,
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -545,12 +552,15 @@ func (client WorkflowsClient) ListBySubscriptionNextResults(lastResults Workflow
 	return
 }
 
-// Run runs a workflow.
+// Run runs a workflow. This method handles polling itself for long-running
+// operations. User can cancel polling for long-running calls by passing
+// cancel channel as an argument to this method (cancel <-chan struct{}).
+// This channel won't cancel the operation, it will only stop the polling.
 //
 // resourceGroupName is the resource group name. workflowName is the workflow
 // name. parameters is the parameters.
-func (client WorkflowsClient) Run(resourceGroupName string, workflowName string, parameters RunWorkflowParameters) (result autorest.Response, err error) {
-	req, err := client.RunPreparer(resourceGroupName, workflowName, parameters)
+func (client WorkflowsClient) Run(resourceGroupName string, workflowName string, parameters RunWorkflowParameters, cancel <-chan struct{}) (result autorest.Response, err error) {
+	req, err := client.RunPreparer(resourceGroupName, workflowName, parameters, cancel)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "logic/WorkflowsClient", "Run", nil, "Failure preparing request")
 	}
@@ -570,7 +580,7 @@ func (client WorkflowsClient) Run(resourceGroupName string, workflowName string,
 }
 
 // RunPreparer prepares the Run request.
-func (client WorkflowsClient) RunPreparer(resourceGroupName string, workflowName string, parameters RunWorkflowParameters) (*http.Request, error) {
+func (client WorkflowsClient) RunPreparer(resourceGroupName string, workflowName string, parameters RunWorkflowParameters, cancel <-chan struct{}) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName": url.QueryEscape(resourceGroupName),
 		"subscriptionId":    url.QueryEscape(client.SubscriptionID),
@@ -581,7 +591,8 @@ func (client WorkflowsClient) RunPreparer(resourceGroupName string, workflowName
 		"api-version": APIVersion,
 	}
 
-	return autorest.Prepare(&http.Request{},
+	req := http.Request{Cancel: cancel}
+	return autorest.Prepare(&req,
 		autorest.AsJSON(),
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -596,8 +607,7 @@ func (client WorkflowsClient) RunPreparer(resourceGroupName string, workflowName
 func (client WorkflowsClient) RunSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client,
 		req,
-		azure.DoPollForAsynchronous(autorest.DefaultPollingDuration,
-			autorest.DefaultPollingDelay))
+		azure.DoPollForAsynchronous(autorest.DefaultPollingDelay))
 }
 
 // RunResponder handles the response to the Run request. The method always
@@ -648,7 +658,8 @@ func (client WorkflowsClient) UpdatePreparer(resourceGroupName string, workflowN
 		"api-version": APIVersion,
 	}
 
-	return autorest.Prepare(&http.Request{},
+	req := http.Request{}
+	return autorest.Prepare(&req,
 		autorest.AsJSON(),
 		autorest.AsPatch(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -713,7 +724,8 @@ func (client WorkflowsClient) ValidatePreparer(resourceGroupName string, workflo
 		"api-version": APIVersion,
 	}
 
-	return autorest.Prepare(&http.Request{},
+	req := http.Request{}
+	return autorest.Prepare(&req,
 		autorest.AsJSON(),
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),

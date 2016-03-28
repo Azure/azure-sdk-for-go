@@ -80,7 +80,8 @@ func (client WorkflowTriggersClient) GetPreparer(resourceGroupName string, workf
 		"api-version": APIVersion,
 	}
 
-	return autorest.Prepare(&http.Request{},
+	req := http.Request{}
+	return autorest.Prepare(&req,
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -151,7 +152,8 @@ func (client WorkflowTriggersClient) ListPreparer(resourceGroupName string, work
 		queryParameters["$filter"] = filter
 	}
 
-	return autorest.Prepare(&http.Request{},
+	req := http.Request{}
+	return autorest.Prepare(&req,
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -240,7 +242,8 @@ func (client WorkflowTriggersClient) RunPreparer(resourceGroupName string, workf
 		"api-version": APIVersion,
 	}
 
-	return autorest.Prepare(&http.Request{},
+	req := http.Request{}
+	return autorest.Prepare(&req,
 		autorest.AsJSON(),
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),

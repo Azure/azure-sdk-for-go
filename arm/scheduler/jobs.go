@@ -77,7 +77,8 @@ func (client JobsClient) CreateOrUpdatePreparer(resourceGroupName string, jobCol
 		"api-version": APIVersion,
 	}
 
-	return autorest.Prepare(&http.Request{},
+	req := http.Request{}
+	return autorest.Prepare(&req,
 		autorest.AsJSON(),
 		autorest.AsPut(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -143,7 +144,8 @@ func (client JobsClient) DeletePreparer(resourceGroupName string, jobCollectionN
 		"api-version": APIVersion,
 	}
 
-	return autorest.Prepare(&http.Request{},
+	req := http.Request{}
+	return autorest.Prepare(&req,
 		autorest.AsJSON(),
 		autorest.AsDelete(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -207,7 +209,8 @@ func (client JobsClient) GetPreparer(resourceGroupName string, jobCollectionName
 		"api-version": APIVersion,
 	}
 
-	return autorest.Prepare(&http.Request{},
+	req := http.Request{}
+	return autorest.Prepare(&req,
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -283,7 +286,8 @@ func (client JobsClient) ListPreparer(resourceGroupName string, jobCollectionNam
 		queryParameters["$filter"] = filter
 	}
 
-	return autorest.Prepare(&http.Request{},
+	req := http.Request{}
+	return autorest.Prepare(&req,
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -384,7 +388,8 @@ func (client JobsClient) ListJobHistoryPreparer(resourceGroupName string, jobCol
 		queryParameters["$filter"] = filter
 	}
 
-	return autorest.Prepare(&http.Request{},
+	req := http.Request{}
+	return autorest.Prepare(&req,
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -473,7 +478,8 @@ func (client JobsClient) PatchPreparer(resourceGroupName string, jobCollectionNa
 		"api-version": APIVersion,
 	}
 
-	return autorest.Prepare(&http.Request{},
+	req := http.Request{}
+	return autorest.Prepare(&req,
 		autorest.AsJSON(),
 		autorest.AsPatch(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -539,7 +545,8 @@ func (client JobsClient) RunPreparer(resourceGroupName string, jobCollectionName
 		"api-version": APIVersion,
 	}
 
-	return autorest.Prepare(&http.Request{},
+	req := http.Request{}
+	return autorest.Prepare(&req,
 		autorest.AsJSON(),
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),

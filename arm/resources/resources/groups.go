@@ -75,7 +75,8 @@ func (client GroupsClient) CheckExistencePreparer(resourceGroupName string) (*ht
 		"api-version": APIVersion,
 	}
 
-	return autorest.Prepare(&http.Request{},
+	req := http.Request{}
+	return autorest.Prepare(&req,
 		autorest.AsJSON(),
 		autorest.AsHead(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -138,7 +139,8 @@ func (client GroupsClient) CreateOrUpdatePreparer(resourceGroupName string, para
 		"api-version": APIVersion,
 	}
 
-	return autorest.Prepare(&http.Request{},
+	req := http.Request{}
+	return autorest.Prepare(&req,
 		autorest.AsJSON(),
 		autorest.AsPut(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -168,12 +170,16 @@ func (client GroupsClient) CreateOrUpdateResponder(resp *http.Response) (result 
 }
 
 // Delete begin deleting resource group.To determine whether the operation has
-// finished processing the request, call GetLongRunningOperationStatus.
+// finished processing the request, call GetLongRunningOperationStatus. This
+// method handles polling itself for long-running operations. User can cancel
+// polling for long-running calls by passing cancel channel as an argument to
+// this method (cancel <-chan struct{}). This channel won't cancel the
+// operation, it will only stop the polling.
 //
 // resourceGroupName is the name of the resource group to be deleted. The name
 // is case insensitive.
-func (client GroupsClient) Delete(resourceGroupName string) (result autorest.Response, err error) {
-	req, err := client.DeletePreparer(resourceGroupName)
+func (client GroupsClient) Delete(resourceGroupName string, cancel <-chan struct{}) (result autorest.Response, err error) {
+	req, err := client.DeletePreparer(resourceGroupName, cancel)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "resources/GroupsClient", "Delete", nil, "Failure preparing request")
 	}
@@ -193,7 +199,7 @@ func (client GroupsClient) Delete(resourceGroupName string) (result autorest.Res
 }
 
 // DeletePreparer prepares the Delete request.
-func (client GroupsClient) DeletePreparer(resourceGroupName string) (*http.Request, error) {
+func (client GroupsClient) DeletePreparer(resourceGroupName string, cancel <-chan struct{}) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName": url.QueryEscape(resourceGroupName),
 		"subscriptionId":    url.QueryEscape(client.SubscriptionID),
@@ -203,7 +209,8 @@ func (client GroupsClient) DeletePreparer(resourceGroupName string) (*http.Reque
 		"api-version": APIVersion,
 	}
 
-	return autorest.Prepare(&http.Request{},
+	req := http.Request{Cancel: cancel}
+	return autorest.Prepare(&req,
 		autorest.AsJSON(),
 		autorest.AsDelete(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -217,8 +224,7 @@ func (client GroupsClient) DeletePreparer(resourceGroupName string) (*http.Reque
 func (client GroupsClient) DeleteSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client,
 		req,
-		azure.DoPollForAsynchronous(autorest.DefaultPollingDuration,
-			autorest.DefaultPollingDelay))
+		azure.DoPollForAsynchronous(autorest.DefaultPollingDelay))
 }
 
 // DeleteResponder handles the response to the Delete request. The method always
@@ -268,7 +274,8 @@ func (client GroupsClient) GetPreparer(resourceGroupName string) (*http.Request,
 		"api-version": APIVersion,
 	}
 
-	return autorest.Prepare(&http.Request{},
+	req := http.Request{}
+	return autorest.Prepare(&req,
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -336,7 +343,8 @@ func (client GroupsClient) ListPreparer(filter string, top *int32) (*http.Reques
 		queryParameters["$top"] = top
 	}
 
-	return autorest.Prepare(&http.Request{},
+	req := http.Request{}
+	return autorest.Prepare(&req,
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -430,7 +438,8 @@ func (client GroupsClient) ListResourcesPreparer(resourceGroupName string, filte
 		queryParameters["$top"] = top
 	}
 
-	return autorest.Prepare(&http.Request{},
+	req := http.Request{}
+	return autorest.Prepare(&req,
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -521,7 +530,8 @@ func (client GroupsClient) PatchPreparer(resourceGroupName string, parameters Re
 		"api-version": APIVersion,
 	}
 
-	return autorest.Prepare(&http.Request{},
+	req := http.Request{}
+	return autorest.Prepare(&req,
 		autorest.AsJSON(),
 		autorest.AsPatch(),
 		autorest.WithBaseURL(client.BaseURI),

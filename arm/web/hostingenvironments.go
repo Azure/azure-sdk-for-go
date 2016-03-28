@@ -50,13 +50,16 @@ func NewHostingEnvironmentsClientWithBaseURI(baseURI string, subscriptionID stri
 }
 
 // CreateOrUpdateHostingEnvironment sends the create or update hosting
-// environment request.
+// environment request. This method handles polling itself for long-running
+// operations. User can cancel polling for long-running calls by passing
+// cancel channel as an argument to this method (cancel <-chan struct{}).
+// This channel won't cancel the operation, it will only stop the polling.
 //
 // resourceGroupName is name of resource group name is name of
 // hostingEnvironment (App Service Environment) hostingEnvironmentEnvelope is
 // properties of hostingEnvironment (App Service Environment)
-func (client HostingEnvironmentsClient) CreateOrUpdateHostingEnvironment(resourceGroupName string, name string, hostingEnvironmentEnvelope HostingEnvironment) (result autorest.Response, err error) {
-	req, err := client.CreateOrUpdateHostingEnvironmentPreparer(resourceGroupName, name, hostingEnvironmentEnvelope)
+func (client HostingEnvironmentsClient) CreateOrUpdateHostingEnvironment(resourceGroupName string, name string, hostingEnvironmentEnvelope HostingEnvironment, cancel <-chan struct{}) (result autorest.Response, err error) {
+	req, err := client.CreateOrUpdateHostingEnvironmentPreparer(resourceGroupName, name, hostingEnvironmentEnvelope, cancel)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "CreateOrUpdateHostingEnvironment", nil, "Failure preparing request")
 	}
@@ -76,7 +79,7 @@ func (client HostingEnvironmentsClient) CreateOrUpdateHostingEnvironment(resourc
 }
 
 // CreateOrUpdateHostingEnvironmentPreparer prepares the CreateOrUpdateHostingEnvironment request.
-func (client HostingEnvironmentsClient) CreateOrUpdateHostingEnvironmentPreparer(resourceGroupName string, name string, hostingEnvironmentEnvelope HostingEnvironment) (*http.Request, error) {
+func (client HostingEnvironmentsClient) CreateOrUpdateHostingEnvironmentPreparer(resourceGroupName string, name string, hostingEnvironmentEnvelope HostingEnvironment, cancel <-chan struct{}) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"name":              url.QueryEscape(name),
 		"resourceGroupName": url.QueryEscape(resourceGroupName),
@@ -87,7 +90,8 @@ func (client HostingEnvironmentsClient) CreateOrUpdateHostingEnvironmentPreparer
 		"api-version": APIVersion,
 	}
 
-	return autorest.Prepare(&http.Request{},
+	req := http.Request{Cancel: cancel}
+	return autorest.Prepare(&req,
 		autorest.AsJSON(),
 		autorest.AsPut(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -102,8 +106,7 @@ func (client HostingEnvironmentsClient) CreateOrUpdateHostingEnvironmentPreparer
 func (client HostingEnvironmentsClient) CreateOrUpdateHostingEnvironmentSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client,
 		req,
-		azure.DoPollForAsynchronous(autorest.DefaultPollingDuration,
-			autorest.DefaultPollingDelay))
+		azure.DoPollForAsynchronous(autorest.DefaultPollingDelay))
 }
 
 // CreateOrUpdateHostingEnvironmentResponder handles the response to the CreateOrUpdateHostingEnvironment request. The method always
@@ -119,13 +122,16 @@ func (client HostingEnvironmentsClient) CreateOrUpdateHostingEnvironmentResponde
 }
 
 // CreateOrUpdateMultiRolePool sends the create or update multi role pool
-// request.
+// request. This method handles polling itself for long-running operations.
+// User can cancel polling for long-running calls by passing cancel channel
+// as an argument to this method (cancel <-chan struct{}). This channel won't
+// cancel the operation, it will only stop the polling.
 //
 // resourceGroupName is name of resource group name is name of
 // hostingEnvironment (App Service Environment) multiRolePoolEnvelope is
 // properties of multiRole pool
-func (client HostingEnvironmentsClient) CreateOrUpdateMultiRolePool(resourceGroupName string, name string, multiRolePoolEnvelope WorkerPool) (result autorest.Response, err error) {
-	req, err := client.CreateOrUpdateMultiRolePoolPreparer(resourceGroupName, name, multiRolePoolEnvelope)
+func (client HostingEnvironmentsClient) CreateOrUpdateMultiRolePool(resourceGroupName string, name string, multiRolePoolEnvelope WorkerPool, cancel <-chan struct{}) (result autorest.Response, err error) {
+	req, err := client.CreateOrUpdateMultiRolePoolPreparer(resourceGroupName, name, multiRolePoolEnvelope, cancel)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "CreateOrUpdateMultiRolePool", nil, "Failure preparing request")
 	}
@@ -145,7 +151,7 @@ func (client HostingEnvironmentsClient) CreateOrUpdateMultiRolePool(resourceGrou
 }
 
 // CreateOrUpdateMultiRolePoolPreparer prepares the CreateOrUpdateMultiRolePool request.
-func (client HostingEnvironmentsClient) CreateOrUpdateMultiRolePoolPreparer(resourceGroupName string, name string, multiRolePoolEnvelope WorkerPool) (*http.Request, error) {
+func (client HostingEnvironmentsClient) CreateOrUpdateMultiRolePoolPreparer(resourceGroupName string, name string, multiRolePoolEnvelope WorkerPool, cancel <-chan struct{}) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"name":              url.QueryEscape(name),
 		"resourceGroupName": url.QueryEscape(resourceGroupName),
@@ -156,7 +162,8 @@ func (client HostingEnvironmentsClient) CreateOrUpdateMultiRolePoolPreparer(reso
 		"api-version": APIVersion,
 	}
 
-	return autorest.Prepare(&http.Request{},
+	req := http.Request{Cancel: cancel}
+	return autorest.Prepare(&req,
 		autorest.AsJSON(),
 		autorest.AsPut(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -171,8 +178,7 @@ func (client HostingEnvironmentsClient) CreateOrUpdateMultiRolePoolPreparer(reso
 func (client HostingEnvironmentsClient) CreateOrUpdateMultiRolePoolSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client,
 		req,
-		azure.DoPollForAsynchronous(autorest.DefaultPollingDuration,
-			autorest.DefaultPollingDelay))
+		azure.DoPollForAsynchronous(autorest.DefaultPollingDelay))
 }
 
 // CreateOrUpdateMultiRolePoolResponder handles the response to the CreateOrUpdateMultiRolePool request. The method always
@@ -188,12 +194,16 @@ func (client HostingEnvironmentsClient) CreateOrUpdateMultiRolePoolResponder(res
 }
 
 // CreateOrUpdateWorkerPool sends the create or update worker pool request.
+// This method handles polling itself for long-running operations. User can
+// cancel polling for long-running calls by passing cancel channel as an
+// argument to this method (cancel <-chan struct{}). This channel won't
+// cancel the operation, it will only stop the polling.
 //
 // resourceGroupName is name of resource group name is name of
 // hostingEnvironment (App Service Environment) workerPoolName is name of
 // worker pool workerPoolEnvelope is properties of worker pool
-func (client HostingEnvironmentsClient) CreateOrUpdateWorkerPool(resourceGroupName string, name string, workerPoolName string, workerPoolEnvelope WorkerPool) (result autorest.Response, err error) {
-	req, err := client.CreateOrUpdateWorkerPoolPreparer(resourceGroupName, name, workerPoolName, workerPoolEnvelope)
+func (client HostingEnvironmentsClient) CreateOrUpdateWorkerPool(resourceGroupName string, name string, workerPoolName string, workerPoolEnvelope WorkerPool, cancel <-chan struct{}) (result autorest.Response, err error) {
+	req, err := client.CreateOrUpdateWorkerPoolPreparer(resourceGroupName, name, workerPoolName, workerPoolEnvelope, cancel)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "CreateOrUpdateWorkerPool", nil, "Failure preparing request")
 	}
@@ -213,7 +223,7 @@ func (client HostingEnvironmentsClient) CreateOrUpdateWorkerPool(resourceGroupNa
 }
 
 // CreateOrUpdateWorkerPoolPreparer prepares the CreateOrUpdateWorkerPool request.
-func (client HostingEnvironmentsClient) CreateOrUpdateWorkerPoolPreparer(resourceGroupName string, name string, workerPoolName string, workerPoolEnvelope WorkerPool) (*http.Request, error) {
+func (client HostingEnvironmentsClient) CreateOrUpdateWorkerPoolPreparer(resourceGroupName string, name string, workerPoolName string, workerPoolEnvelope WorkerPool, cancel <-chan struct{}) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"name":              url.QueryEscape(name),
 		"resourceGroupName": url.QueryEscape(resourceGroupName),
@@ -225,7 +235,8 @@ func (client HostingEnvironmentsClient) CreateOrUpdateWorkerPoolPreparer(resourc
 		"api-version": APIVersion,
 	}
 
-	return autorest.Prepare(&http.Request{},
+	req := http.Request{Cancel: cancel}
+	return autorest.Prepare(&req,
 		autorest.AsJSON(),
 		autorest.AsPut(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -240,8 +251,7 @@ func (client HostingEnvironmentsClient) CreateOrUpdateWorkerPoolPreparer(resourc
 func (client HostingEnvironmentsClient) CreateOrUpdateWorkerPoolSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client,
 		req,
-		azure.DoPollForAsynchronous(autorest.DefaultPollingDuration,
-			autorest.DefaultPollingDelay))
+		azure.DoPollForAsynchronous(autorest.DefaultPollingDelay))
 }
 
 // CreateOrUpdateWorkerPoolResponder handles the response to the CreateOrUpdateWorkerPool request. The method always
@@ -256,13 +266,17 @@ func (client HostingEnvironmentsClient) CreateOrUpdateWorkerPoolResponder(resp *
 	return
 }
 
-// DeleteHostingEnvironment sends the delete hosting environment request.
+// DeleteHostingEnvironment sends the delete hosting environment request. This
+// method handles polling itself for long-running operations. User can cancel
+// polling for long-running calls by passing cancel channel as an argument to
+// this method (cancel <-chan struct{}). This channel won't cancel the
+// operation, it will only stop the polling.
 //
 // resourceGroupName is name of resource group name is name of
 // hostingEnvironment (App Service Environment) forceDelete is delete even if
 // the hostingEnvironment (App Service Environment) contains resources
-func (client HostingEnvironmentsClient) DeleteHostingEnvironment(resourceGroupName string, name string, forceDelete *bool) (result autorest.Response, err error) {
-	req, err := client.DeleteHostingEnvironmentPreparer(resourceGroupName, name, forceDelete)
+func (client HostingEnvironmentsClient) DeleteHostingEnvironment(resourceGroupName string, name string, forceDelete *bool, cancel <-chan struct{}) (result autorest.Response, err error) {
+	req, err := client.DeleteHostingEnvironmentPreparer(resourceGroupName, name, forceDelete, cancel)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "DeleteHostingEnvironment", nil, "Failure preparing request")
 	}
@@ -282,7 +296,7 @@ func (client HostingEnvironmentsClient) DeleteHostingEnvironment(resourceGroupNa
 }
 
 // DeleteHostingEnvironmentPreparer prepares the DeleteHostingEnvironment request.
-func (client HostingEnvironmentsClient) DeleteHostingEnvironmentPreparer(resourceGroupName string, name string, forceDelete *bool) (*http.Request, error) {
+func (client HostingEnvironmentsClient) DeleteHostingEnvironmentPreparer(resourceGroupName string, name string, forceDelete *bool, cancel <-chan struct{}) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"name":              url.QueryEscape(name),
 		"resourceGroupName": url.QueryEscape(resourceGroupName),
@@ -296,7 +310,8 @@ func (client HostingEnvironmentsClient) DeleteHostingEnvironmentPreparer(resourc
 		queryParameters["forceDelete"] = forceDelete
 	}
 
-	return autorest.Prepare(&http.Request{},
+	req := http.Request{Cancel: cancel}
+	return autorest.Prepare(&req,
 		autorest.AsJSON(),
 		autorest.AsDelete(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -310,8 +325,7 @@ func (client HostingEnvironmentsClient) DeleteHostingEnvironmentPreparer(resourc
 func (client HostingEnvironmentsClient) DeleteHostingEnvironmentSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client,
 		req,
-		azure.DoPollForAsynchronous(autorest.DefaultPollingDuration,
-			autorest.DefaultPollingDelay))
+		azure.DoPollForAsynchronous(autorest.DefaultPollingDelay))
 }
 
 // DeleteHostingEnvironmentResponder handles the response to the DeleteHostingEnvironment request. The method always
@@ -362,7 +376,8 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentPreparer(resourceGr
 		"api-version": APIVersion,
 	}
 
-	return autorest.Prepare(&http.Request{},
+	req := http.Request{}
+	return autorest.Prepare(&req,
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -427,7 +442,8 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentCapacitiesPreparer(
 		"api-version": APIVersion,
 	}
 
-	return autorest.Prepare(&http.Request{},
+	req := http.Request{}
+	return autorest.Prepare(&req,
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -460,7 +476,7 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentCapacitiesResponder
 //
 // resourceGroupName is name of resource group name is name of
 // hostingEnvironment (App Service Environment)
-func (client HostingEnvironmentsClient) GetHostingEnvironmentDiagnostics(resourceGroupName string, name string) (result HostingEnvironmentDiagnosticsList, err error) {
+func (client HostingEnvironmentsClient) GetHostingEnvironmentDiagnostics(resourceGroupName string, name string) (result ListHostingEnvironmentDiagnostics, err error) {
 	req, err := client.GetHostingEnvironmentDiagnosticsPreparer(resourceGroupName, name)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "GetHostingEnvironmentDiagnostics", nil, "Failure preparing request")
@@ -492,7 +508,8 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentDiagnosticsPreparer
 		"api-version": APIVersion,
 	}
 
-	return autorest.Prepare(&http.Request{},
+	req := http.Request{}
+	return autorest.Prepare(&req,
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -509,7 +526,7 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentDiagnosticsSender(r
 
 // GetHostingEnvironmentDiagnosticsResponder handles the response to the GetHostingEnvironmentDiagnostics request. The method always
 // closes the http.Response Body.
-func (client HostingEnvironmentsClient) GetHostingEnvironmentDiagnosticsResponder(resp *http.Response) (result HostingEnvironmentDiagnosticsList, err error) {
+func (client HostingEnvironmentsClient) GetHostingEnvironmentDiagnosticsResponder(resp *http.Response) (result ListHostingEnvironmentDiagnostics, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -559,7 +576,8 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentDiagnosticsItemPrep
 		"api-version": APIVersion,
 	}
 
-	return autorest.Prepare(&http.Request{},
+	req := http.Request{}
+	return autorest.Prepare(&req,
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -624,7 +642,8 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentMetricDefinitionsPr
 		"api-version": APIVersion,
 	}
 
-	return autorest.Prepare(&http.Request{},
+	req := http.Request{}
+	return autorest.Prepare(&req,
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -700,7 +719,8 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentMetricsPreparer(res
 		queryParameters["$filter"] = filter
 	}
 
-	return autorest.Prepare(&http.Request{},
+	req := http.Request{}
+	return autorest.Prepare(&req,
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -765,7 +785,8 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentMultiRoleMetricDefi
 		"api-version": APIVersion,
 	}
 
-	return autorest.Prepare(&http.Request{},
+	req := http.Request{}
+	return autorest.Prepare(&req,
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -851,7 +872,8 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentMultiRoleMetricsPre
 		queryParameters["$filter"] = filter
 	}
 
-	return autorest.Prepare(&http.Request{},
+	req := http.Request{}
+	return autorest.Prepare(&req,
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -916,7 +938,8 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentMultiRoleUsagesPrep
 		"api-version": APIVersion,
 	}
 
-	return autorest.Prepare(&http.Request{},
+	req := http.Request{}
+	return autorest.Prepare(&req,
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -950,7 +973,7 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentMultiRoleUsagesResp
 // resourceGroupName is name of resource group name is name of
 // hostingEnvironment (App Service Environment) operationID is operation
 // identifier GUID
-func (client HostingEnvironmentsClient) GetHostingEnvironmentOperation(resourceGroupName string, name string, operationID string) (result ObjectSet, err error) {
+func (client HostingEnvironmentsClient) GetHostingEnvironmentOperation(resourceGroupName string, name string, operationID string) (result SetObject, err error) {
 	req, err := client.GetHostingEnvironmentOperationPreparer(resourceGroupName, name, operationID)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "GetHostingEnvironmentOperation", nil, "Failure preparing request")
@@ -983,7 +1006,8 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentOperationPreparer(r
 		"api-version": APIVersion,
 	}
 
-	return autorest.Prepare(&http.Request{},
+	req := http.Request{}
+	return autorest.Prepare(&req,
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -1000,7 +1024,7 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentOperationSender(req
 
 // GetHostingEnvironmentOperationResponder handles the response to the GetHostingEnvironmentOperation request. The method always
 // closes the http.Response Body.
-func (client HostingEnvironmentsClient) GetHostingEnvironmentOperationResponder(resp *http.Response) (result ObjectSet, err error) {
+func (client HostingEnvironmentsClient) GetHostingEnvironmentOperationResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -1016,7 +1040,7 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentOperationResponder(
 //
 // resourceGroupName is name of resource group name is name of
 // hostingEnvironment (App Service Environment)
-func (client HostingEnvironmentsClient) GetHostingEnvironmentOperations(resourceGroupName string, name string) (result ObjectSet, err error) {
+func (client HostingEnvironmentsClient) GetHostingEnvironmentOperations(resourceGroupName string, name string) (result SetObject, err error) {
 	req, err := client.GetHostingEnvironmentOperationsPreparer(resourceGroupName, name)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "GetHostingEnvironmentOperations", nil, "Failure preparing request")
@@ -1048,7 +1072,8 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentOperationsPreparer(
 		"api-version": APIVersion,
 	}
 
-	return autorest.Prepare(&http.Request{},
+	req := http.Request{}
+	return autorest.Prepare(&req,
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -1065,7 +1090,7 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentOperationsSender(re
 
 // GetHostingEnvironmentOperationsResponder handles the response to the GetHostingEnvironmentOperations request. The method always
 // closes the http.Response Body.
-func (client HostingEnvironmentsClient) GetHostingEnvironmentOperationsResponder(resp *http.Response) (result ObjectSet, err error) {
+func (client HostingEnvironmentsClient) GetHostingEnvironmentOperationsResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -1110,7 +1135,8 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentsPreparer(resourceG
 		"api-version": APIVersion,
 	}
 
-	return autorest.Prepare(&http.Request{},
+	req := http.Request{}
+	return autorest.Prepare(&req,
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -1175,7 +1201,8 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentServerFarmsPreparer
 		"api-version": APIVersion,
 	}
 
-	return autorest.Prepare(&http.Request{},
+	req := http.Request{}
+	return autorest.Prepare(&req,
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -1243,7 +1270,8 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentSitesPreparer(resou
 		queryParameters["propertiesToInclude"] = propertiesToInclude
 	}
 
-	return autorest.Prepare(&http.Request{},
+	req := http.Request{}
+	return autorest.Prepare(&req,
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -1315,7 +1343,8 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentUsagesPreparer(reso
 		queryParameters["$filter"] = filter
 	}
 
-	return autorest.Prepare(&http.Request{},
+	req := http.Request{}
+	return autorest.Prepare(&req,
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -1379,7 +1408,8 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentVipsPreparer(resour
 		"api-version": APIVersion,
 	}
 
-	return autorest.Prepare(&http.Request{},
+	req := http.Request{}
+	return autorest.Prepare(&req,
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -1444,7 +1474,8 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentWebHostingPlansPrep
 		"api-version": APIVersion,
 	}
 
-	return autorest.Prepare(&http.Request{},
+	req := http.Request{}
+	return autorest.Prepare(&req,
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -1511,7 +1542,8 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentWebWorkerMetricDefi
 		"api-version": APIVersion,
 	}
 
-	return autorest.Prepare(&http.Request{},
+	req := http.Request{}
+	return autorest.Prepare(&req,
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -1588,7 +1620,8 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentWebWorkerMetricsPre
 		queryParameters["$filter"] = filter
 	}
 
-	return autorest.Prepare(&http.Request{},
+	req := http.Request{}
+	return autorest.Prepare(&req,
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -1655,7 +1688,8 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentWebWorkerUsagesPrep
 		"api-version": APIVersion,
 	}
 
-	return autorest.Prepare(&http.Request{},
+	req := http.Request{}
+	return autorest.Prepare(&req,
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -1719,7 +1753,8 @@ func (client HostingEnvironmentsClient) GetMultiRolePoolPreparer(resourceGroupNa
 		"api-version": APIVersion,
 	}
 
-	return autorest.Prepare(&http.Request{},
+	req := http.Request{}
+	return autorest.Prepare(&req,
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -1753,7 +1788,7 @@ func (client HostingEnvironmentsClient) GetMultiRolePoolResponder(resp *http.Res
 // resourceGroupName is name of resource group name is name of
 // hostingEnvironment (App Service Environment) instance is name of instance
 // in the multiRole pool&gt;
-func (client HostingEnvironmentsClient) GetMultiRolePoolInstanceMetricDefinitions(resourceGroupName string, name string, instance string) (result ObjectSet, err error) {
+func (client HostingEnvironmentsClient) GetMultiRolePoolInstanceMetricDefinitions(resourceGroupName string, name string, instance string) (result SetObject, err error) {
 	req, err := client.GetMultiRolePoolInstanceMetricDefinitionsPreparer(resourceGroupName, name, instance)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "GetMultiRolePoolInstanceMetricDefinitions", nil, "Failure preparing request")
@@ -1786,7 +1821,8 @@ func (client HostingEnvironmentsClient) GetMultiRolePoolInstanceMetricDefinition
 		"api-version": APIVersion,
 	}
 
-	return autorest.Prepare(&http.Request{},
+	req := http.Request{}
+	return autorest.Prepare(&req,
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -1803,7 +1839,7 @@ func (client HostingEnvironmentsClient) GetMultiRolePoolInstanceMetricDefinition
 
 // GetMultiRolePoolInstanceMetricDefinitionsResponder handles the response to the GetMultiRolePoolInstanceMetricDefinitions request. The method always
 // closes the http.Response Body.
-func (client HostingEnvironmentsClient) GetMultiRolePoolInstanceMetricDefinitionsResponder(resp *http.Response) (result ObjectSet, err error) {
+func (client HostingEnvironmentsClient) GetMultiRolePoolInstanceMetricDefinitionsResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -1820,7 +1856,7 @@ func (client HostingEnvironmentsClient) GetMultiRolePoolInstanceMetricDefinition
 // resourceGroupName is name of resource group name is name of
 // hostingEnvironment (App Service Environment) instance is name of instance
 // in the multiRole pool details is include instance details
-func (client HostingEnvironmentsClient) GetMultiRolePoolInstanceMetrics(resourceGroupName string, name string, instance string, details *bool) (result ObjectSet, err error) {
+func (client HostingEnvironmentsClient) GetMultiRolePoolInstanceMetrics(resourceGroupName string, name string, instance string, details *bool) (result SetObject, err error) {
 	req, err := client.GetMultiRolePoolInstanceMetricsPreparer(resourceGroupName, name, instance, details)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "GetMultiRolePoolInstanceMetrics", nil, "Failure preparing request")
@@ -1856,7 +1892,8 @@ func (client HostingEnvironmentsClient) GetMultiRolePoolInstanceMetricsPreparer(
 		queryParameters["details"] = details
 	}
 
-	return autorest.Prepare(&http.Request{},
+	req := http.Request{}
+	return autorest.Prepare(&req,
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -1873,7 +1910,7 @@ func (client HostingEnvironmentsClient) GetMultiRolePoolInstanceMetricsSender(re
 
 // GetMultiRolePoolInstanceMetricsResponder handles the response to the GetMultiRolePoolInstanceMetrics request. The method always
 // closes the http.Response Body.
-func (client HostingEnvironmentsClient) GetMultiRolePoolInstanceMetricsResponder(resp *http.Response) (result ObjectSet, err error) {
+func (client HostingEnvironmentsClient) GetMultiRolePoolInstanceMetricsResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -1920,7 +1957,8 @@ func (client HostingEnvironmentsClient) GetMultiRolePoolsPreparer(resourceGroupN
 		"api-version": APIVersion,
 	}
 
-	return autorest.Prepare(&http.Request{},
+	req := http.Request{}
+	return autorest.Prepare(&req,
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -1984,7 +2022,8 @@ func (client HostingEnvironmentsClient) GetMultiRolePoolSkusPreparer(resourceGro
 		"api-version": APIVersion,
 	}
 
-	return autorest.Prepare(&http.Request{},
+	req := http.Request{}
+	return autorest.Prepare(&req,
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -2050,7 +2089,8 @@ func (client HostingEnvironmentsClient) GetWorkerPoolPreparer(resourceGroupName 
 		"api-version": APIVersion,
 	}
 
-	return autorest.Prepare(&http.Request{},
+	req := http.Request{}
+	return autorest.Prepare(&req,
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -2084,7 +2124,7 @@ func (client HostingEnvironmentsClient) GetWorkerPoolResponder(resp *http.Respon
 // resourceGroupName is name of resource group name is name of
 // hostingEnvironment (App Service Environment) workerPoolName is name of
 // worker pool instance is name of instance in the worker pool
-func (client HostingEnvironmentsClient) GetWorkerPoolInstanceMetricDefinitions(resourceGroupName string, name string, workerPoolName string, instance string) (result ObjectSet, err error) {
+func (client HostingEnvironmentsClient) GetWorkerPoolInstanceMetricDefinitions(resourceGroupName string, name string, workerPoolName string, instance string) (result SetObject, err error) {
 	req, err := client.GetWorkerPoolInstanceMetricDefinitionsPreparer(resourceGroupName, name, workerPoolName, instance)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "GetWorkerPoolInstanceMetricDefinitions", nil, "Failure preparing request")
@@ -2118,7 +2158,8 @@ func (client HostingEnvironmentsClient) GetWorkerPoolInstanceMetricDefinitionsPr
 		"api-version": APIVersion,
 	}
 
-	return autorest.Prepare(&http.Request{},
+	req := http.Request{}
+	return autorest.Prepare(&req,
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -2135,7 +2176,7 @@ func (client HostingEnvironmentsClient) GetWorkerPoolInstanceMetricDefinitionsSe
 
 // GetWorkerPoolInstanceMetricDefinitionsResponder handles the response to the GetWorkerPoolInstanceMetricDefinitions request. The method always
 // closes the http.Response Body.
-func (client HostingEnvironmentsClient) GetWorkerPoolInstanceMetricDefinitionsResponder(resp *http.Response) (result ObjectSet, err error) {
+func (client HostingEnvironmentsClient) GetWorkerPoolInstanceMetricDefinitionsResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -2157,7 +2198,7 @@ func (client HostingEnvironmentsClient) GetWorkerPoolInstanceMetricDefinitionsRe
 // eq 'Metric1' or name.value eq 'Metric2') and startTime eq
 // '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain
 // eq duration'[Hour|Minute|Day]'.
-func (client HostingEnvironmentsClient) GetWorkerPoolInstanceMetrics(resourceGroupName string, name string, workerPoolName string, instance string, details *bool, filter string) (result ObjectSet, err error) {
+func (client HostingEnvironmentsClient) GetWorkerPoolInstanceMetrics(resourceGroupName string, name string, workerPoolName string, instance string, details *bool, filter string) (result SetObject, err error) {
 	req, err := client.GetWorkerPoolInstanceMetricsPreparer(resourceGroupName, name, workerPoolName, instance, details, filter)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "GetWorkerPoolInstanceMetrics", nil, "Failure preparing request")
@@ -2197,7 +2238,8 @@ func (client HostingEnvironmentsClient) GetWorkerPoolInstanceMetricsPreparer(res
 		queryParameters["$filter"] = filter
 	}
 
-	return autorest.Prepare(&http.Request{},
+	req := http.Request{}
+	return autorest.Prepare(&req,
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -2214,7 +2256,7 @@ func (client HostingEnvironmentsClient) GetWorkerPoolInstanceMetricsSender(req *
 
 // GetWorkerPoolInstanceMetricsResponder handles the response to the GetWorkerPoolInstanceMetrics request. The method always
 // closes the http.Response Body.
-func (client HostingEnvironmentsClient) GetWorkerPoolInstanceMetricsResponder(resp *http.Response) (result ObjectSet, err error) {
+func (client HostingEnvironmentsClient) GetWorkerPoolInstanceMetricsResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -2261,7 +2303,8 @@ func (client HostingEnvironmentsClient) GetWorkerPoolsPreparer(resourceGroupName
 		"api-version": APIVersion,
 	}
 
-	return autorest.Prepare(&http.Request{},
+	req := http.Request{}
+	return autorest.Prepare(&req,
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -2327,7 +2370,8 @@ func (client HostingEnvironmentsClient) GetWorkerPoolSkusPreparer(resourceGroupN
 		"api-version": APIVersion,
 	}
 
-	return autorest.Prepare(&http.Request{},
+	req := http.Request{}
+	return autorest.Prepare(&req,
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -2359,7 +2403,7 @@ func (client HostingEnvironmentsClient) GetWorkerPoolSkusResponder(resp *http.Re
 //
 // resourceGroupName is name of resource group name is name of
 // hostingEnvironment (App Service Environment)
-func (client HostingEnvironmentsClient) RebootHostingEnvironment(resourceGroupName string, name string) (result ObjectSet, err error) {
+func (client HostingEnvironmentsClient) RebootHostingEnvironment(resourceGroupName string, name string) (result SetObject, err error) {
 	req, err := client.RebootHostingEnvironmentPreparer(resourceGroupName, name)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "RebootHostingEnvironment", nil, "Failure preparing request")
@@ -2391,7 +2435,8 @@ func (client HostingEnvironmentsClient) RebootHostingEnvironmentPreparer(resourc
 		"api-version": APIVersion,
 	}
 
-	return autorest.Prepare(&http.Request{},
+	req := http.Request{}
+	return autorest.Prepare(&req,
 		autorest.AsJSON(),
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -2408,7 +2453,7 @@ func (client HostingEnvironmentsClient) RebootHostingEnvironmentSender(req *http
 
 // RebootHostingEnvironmentResponder handles the response to the RebootHostingEnvironment request. The method always
 // closes the http.Response Body.
-func (client HostingEnvironmentsClient) RebootHostingEnvironmentResponder(resp *http.Response) (result ObjectSet, err error) {
+func (client HostingEnvironmentsClient) RebootHostingEnvironmentResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -2419,12 +2464,16 @@ func (client HostingEnvironmentsClient) RebootHostingEnvironmentResponder(resp *
 	return
 }
 
-// ResumeHostingEnvironment sends the resume hosting environment request.
+// ResumeHostingEnvironment sends the resume hosting environment request. This
+// method handles polling itself for long-running operations. User can cancel
+// polling for long-running calls by passing cancel channel as an argument to
+// this method (cancel <-chan struct{}). This channel won't cancel the
+// operation, it will only stop the polling.
 //
 // resourceGroupName is name of resource group name is name of
 // hostingEnvironment (App Service Environment)
-func (client HostingEnvironmentsClient) ResumeHostingEnvironment(resourceGroupName string, name string) (result autorest.Response, err error) {
-	req, err := client.ResumeHostingEnvironmentPreparer(resourceGroupName, name)
+func (client HostingEnvironmentsClient) ResumeHostingEnvironment(resourceGroupName string, name string, cancel <-chan struct{}) (result autorest.Response, err error) {
+	req, err := client.ResumeHostingEnvironmentPreparer(resourceGroupName, name, cancel)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "ResumeHostingEnvironment", nil, "Failure preparing request")
 	}
@@ -2444,7 +2493,7 @@ func (client HostingEnvironmentsClient) ResumeHostingEnvironment(resourceGroupNa
 }
 
 // ResumeHostingEnvironmentPreparer prepares the ResumeHostingEnvironment request.
-func (client HostingEnvironmentsClient) ResumeHostingEnvironmentPreparer(resourceGroupName string, name string) (*http.Request, error) {
+func (client HostingEnvironmentsClient) ResumeHostingEnvironmentPreparer(resourceGroupName string, name string, cancel <-chan struct{}) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"name":              url.QueryEscape(name),
 		"resourceGroupName": url.QueryEscape(resourceGroupName),
@@ -2455,7 +2504,8 @@ func (client HostingEnvironmentsClient) ResumeHostingEnvironmentPreparer(resourc
 		"api-version": APIVersion,
 	}
 
-	return autorest.Prepare(&http.Request{},
+	req := http.Request{Cancel: cancel}
+	return autorest.Prepare(&req,
 		autorest.AsJSON(),
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -2469,8 +2519,7 @@ func (client HostingEnvironmentsClient) ResumeHostingEnvironmentPreparer(resourc
 func (client HostingEnvironmentsClient) ResumeHostingEnvironmentSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client,
 		req,
-		azure.DoPollForAsynchronous(autorest.DefaultPollingDuration,
-			autorest.DefaultPollingDelay))
+		azure.DoPollForAsynchronous(autorest.DefaultPollingDelay))
 }
 
 // ResumeHostingEnvironmentResponder handles the response to the ResumeHostingEnvironment request. The method always
@@ -2486,11 +2535,15 @@ func (client HostingEnvironmentsClient) ResumeHostingEnvironmentResponder(resp *
 }
 
 // SuspendHostingEnvironment sends the suspend hosting environment request.
+// This method handles polling itself for long-running operations. User can
+// cancel polling for long-running calls by passing cancel channel as an
+// argument to this method (cancel <-chan struct{}). This channel won't
+// cancel the operation, it will only stop the polling.
 //
 // resourceGroupName is name of resource group name is name of
 // hostingEnvironment (App Service Environment)
-func (client HostingEnvironmentsClient) SuspendHostingEnvironment(resourceGroupName string, name string) (result autorest.Response, err error) {
-	req, err := client.SuspendHostingEnvironmentPreparer(resourceGroupName, name)
+func (client HostingEnvironmentsClient) SuspendHostingEnvironment(resourceGroupName string, name string, cancel <-chan struct{}) (result autorest.Response, err error) {
+	req, err := client.SuspendHostingEnvironmentPreparer(resourceGroupName, name, cancel)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "SuspendHostingEnvironment", nil, "Failure preparing request")
 	}
@@ -2510,7 +2563,7 @@ func (client HostingEnvironmentsClient) SuspendHostingEnvironment(resourceGroupN
 }
 
 // SuspendHostingEnvironmentPreparer prepares the SuspendHostingEnvironment request.
-func (client HostingEnvironmentsClient) SuspendHostingEnvironmentPreparer(resourceGroupName string, name string) (*http.Request, error) {
+func (client HostingEnvironmentsClient) SuspendHostingEnvironmentPreparer(resourceGroupName string, name string, cancel <-chan struct{}) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"name":              url.QueryEscape(name),
 		"resourceGroupName": url.QueryEscape(resourceGroupName),
@@ -2521,7 +2574,8 @@ func (client HostingEnvironmentsClient) SuspendHostingEnvironmentPreparer(resour
 		"api-version": APIVersion,
 	}
 
-	return autorest.Prepare(&http.Request{},
+	req := http.Request{Cancel: cancel}
+	return autorest.Prepare(&req,
 		autorest.AsJSON(),
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -2535,8 +2589,7 @@ func (client HostingEnvironmentsClient) SuspendHostingEnvironmentPreparer(resour
 func (client HostingEnvironmentsClient) SuspendHostingEnvironmentSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client,
 		req,
-		azure.DoPollForAsynchronous(autorest.DefaultPollingDuration,
-			autorest.DefaultPollingDelay))
+		azure.DoPollForAsynchronous(autorest.DefaultPollingDelay))
 }
 
 // SuspendHostingEnvironmentResponder handles the response to the SuspendHostingEnvironment request. The method always

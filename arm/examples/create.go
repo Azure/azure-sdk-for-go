@@ -42,7 +42,8 @@ func createAccount(resourceGroup, name string) {
 	cp.Location = to.StringPtr("westus")
 	cp.Properties = &storage.AccountPropertiesCreateParameters{AccountType: storage.StandardLRS}
 
-	_, err = ac.Create(resourceGroup, name, cp)
+	cancel := make(chan struct{})
+	_, err = ac.Create(resourceGroup, name, cp, cancel)
 	if err != nil {
 		fmt.Printf("Create failed: %v\n", err)
 		return

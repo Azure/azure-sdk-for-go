@@ -78,7 +78,8 @@ func (client IosClient) AddAppForMAMPolicyPreparer(hostName string, policyName s
 		"api-version": APIVersion,
 	}
 
-	return autorest.Prepare(&http.Request{},
+	req := http.Request{}
+	return autorest.Prepare(&req,
 		autorest.AsJSON(),
 		autorest.AsPut(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -143,7 +144,8 @@ func (client IosClient) AddGroupForMAMPolicyPreparer(hostName string, policyName
 		"api-version": APIVersion,
 	}
 
-	return autorest.Prepare(&http.Request{},
+	req := http.Request{}
+	return autorest.Prepare(&req,
 		autorest.AsJSON(),
 		autorest.AsPut(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -207,7 +209,8 @@ func (client IosClient) CreateOrUpdateMAMPolicyPreparer(hostName string, policyN
 		"api-version": APIVersion,
 	}
 
-	return autorest.Prepare(&http.Request{},
+	req := http.Request{}
+	return autorest.Prepare(&req,
 		autorest.AsJSON(),
 		autorest.AsPut(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -272,7 +275,8 @@ func (client IosClient) DeleteAppForMAMPolicyPreparer(hostName string, policyNam
 		"api-version": APIVersion,
 	}
 
-	return autorest.Prepare(&http.Request{},
+	req := http.Request{}
+	return autorest.Prepare(&req,
 		autorest.AsJSON(),
 		autorest.AsDelete(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -335,7 +339,8 @@ func (client IosClient) DeleteGroupForMAMPolicyPreparer(hostName string, policyN
 		"api-version": APIVersion,
 	}
 
-	return autorest.Prepare(&http.Request{},
+	req := http.Request{}
+	return autorest.Prepare(&req,
 		autorest.AsJSON(),
 		autorest.AsDelete(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -397,7 +402,8 @@ func (client IosClient) DeleteMAMPolicyPreparer(hostName string, policyName stri
 		"api-version": APIVersion,
 	}
 
-	return autorest.Prepare(&http.Request{},
+	req := http.Request{}
+	return autorest.Prepare(&req,
 		autorest.AsJSON(),
 		autorest.AsDelete(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -469,7 +475,8 @@ func (client IosClient) GetAppForMAMPolicyPreparer(hostName string, policyName s
 		queryParameters["$select"] = selectParameter
 	}
 
-	return autorest.Prepare(&http.Request{},
+	req := http.Request{}
+	return autorest.Prepare(&req,
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -556,7 +563,8 @@ func (client IosClient) GetGroupsForMAMPolicyPreparer(hostName string, policyNam
 		"api-version": APIVersion,
 	}
 
-	return autorest.Prepare(&http.Request{},
+	req := http.Request{}
+	return autorest.Prepare(&req,
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -651,7 +659,8 @@ func (client IosClient) GetMAMPoliciesPreparer(hostName string, filter string, t
 		queryParameters["$select"] = selectParameter
 	}
 
-	return autorest.Prepare(&http.Request{},
+	req := http.Request{}
+	return autorest.Prepare(&req,
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -741,7 +750,8 @@ func (client IosClient) GetMAMPolicyByNamePreparer(hostName string, policyName s
 		queryParameters["$select"] = selectParameter
 	}
 
-	return autorest.Prepare(&http.Request{},
+	req := http.Request{}
+	return autorest.Prepare(&req,
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -805,7 +815,8 @@ func (client IosClient) PatchMAMPolicyPreparer(hostName string, policyName strin
 		"api-version": APIVersion,
 	}
 
-	return autorest.Prepare(&http.Request{},
+	req := http.Request{}
+	return autorest.Prepare(&req,
 		autorest.AsJSON(),
 		autorest.AsPatch(),
 		autorest.WithBaseURL(client.BaseURI),

@@ -45,14 +45,18 @@ func NewEndpointsClientWithBaseURI(baseURI string, subscriptionID string) Endpoi
 	return EndpointsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// Create sends the create request.
+// Create sends the create request. This method handles polling itself for
+// long-running operations. User can cancel polling for long-running calls by
+// passing cancel channel as an argument to this method (cancel <-chan
+// struct{}). This channel won't cancel the operation, it will only stop the
+// polling.
 //
 // endpointName is name of the endpoint within the CDN profile
 // endpointProperties is endpoint properties profileName is name of the CDN
 // profile within the resource group resourceGroupName is name of the
 // resource group within the Azure subscription
-func (client EndpointsClient) Create(endpointName string, endpointProperties EndpointCreateParameters, profileName string, resourceGroupName string) (result autorest.Response, err error) {
-	req, err := client.CreatePreparer(endpointName, endpointProperties, profileName, resourceGroupName)
+func (client EndpointsClient) Create(endpointName string, endpointProperties EndpointCreateParameters, profileName string, resourceGroupName string, cancel <-chan struct{}) (result autorest.Response, err error) {
+	req, err := client.CreatePreparer(endpointName, endpointProperties, profileName, resourceGroupName, cancel)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "cdn/EndpointsClient", "Create", nil, "Failure preparing request")
 	}
@@ -72,7 +76,7 @@ func (client EndpointsClient) Create(endpointName string, endpointProperties End
 }
 
 // CreatePreparer prepares the Create request.
-func (client EndpointsClient) CreatePreparer(endpointName string, endpointProperties EndpointCreateParameters, profileName string, resourceGroupName string) (*http.Request, error) {
+func (client EndpointsClient) CreatePreparer(endpointName string, endpointProperties EndpointCreateParameters, profileName string, resourceGroupName string, cancel <-chan struct{}) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"endpointName":      url.QueryEscape(endpointName),
 		"profileName":       url.QueryEscape(profileName),
@@ -84,7 +88,8 @@ func (client EndpointsClient) CreatePreparer(endpointName string, endpointProper
 		"api-version": APIVersion,
 	}
 
-	return autorest.Prepare(&http.Request{},
+	req := http.Request{Cancel: cancel}
+	return autorest.Prepare(&req,
 		autorest.AsJSON(),
 		autorest.AsPut(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -99,8 +104,7 @@ func (client EndpointsClient) CreatePreparer(endpointName string, endpointProper
 func (client EndpointsClient) CreateSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client,
 		req,
-		azure.DoPollForAsynchronous(autorest.DefaultPollingDuration,
-			autorest.DefaultPollingDelay))
+		azure.DoPollForAsynchronous(autorest.DefaultPollingDelay))
 }
 
 // CreateResponder handles the response to the Create request. The method always
@@ -115,13 +119,17 @@ func (client EndpointsClient) CreateResponder(resp *http.Response) (result autor
 	return
 }
 
-// DeleteIfExists sends the delete if exists request.
+// DeleteIfExists sends the delete if exists request. This method handles
+// polling itself for long-running operations. User can cancel polling for
+// long-running calls by passing cancel channel as an argument to this method
+// (cancel <-chan struct{}). This channel won't cancel the operation, it will
+// only stop the polling.
 //
 // endpointName is name of the endpoint within the CDN profile profileName is
 // name of the CDN profile within the resource group resourceGroupName is
 // name of the resource group within the Azure subscription
-func (client EndpointsClient) DeleteIfExists(endpointName string, profileName string, resourceGroupName string) (result autorest.Response, err error) {
-	req, err := client.DeleteIfExistsPreparer(endpointName, profileName, resourceGroupName)
+func (client EndpointsClient) DeleteIfExists(endpointName string, profileName string, resourceGroupName string, cancel <-chan struct{}) (result autorest.Response, err error) {
+	req, err := client.DeleteIfExistsPreparer(endpointName, profileName, resourceGroupName, cancel)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "cdn/EndpointsClient", "DeleteIfExists", nil, "Failure preparing request")
 	}
@@ -141,7 +149,7 @@ func (client EndpointsClient) DeleteIfExists(endpointName string, profileName st
 }
 
 // DeleteIfExistsPreparer prepares the DeleteIfExists request.
-func (client EndpointsClient) DeleteIfExistsPreparer(endpointName string, profileName string, resourceGroupName string) (*http.Request, error) {
+func (client EndpointsClient) DeleteIfExistsPreparer(endpointName string, profileName string, resourceGroupName string, cancel <-chan struct{}) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"endpointName":      url.QueryEscape(endpointName),
 		"profileName":       url.QueryEscape(profileName),
@@ -153,7 +161,8 @@ func (client EndpointsClient) DeleteIfExistsPreparer(endpointName string, profil
 		"api-version": APIVersion,
 	}
 
-	return autorest.Prepare(&http.Request{},
+	req := http.Request{Cancel: cancel}
+	return autorest.Prepare(&req,
 		autorest.AsJSON(),
 		autorest.AsDelete(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -167,8 +176,7 @@ func (client EndpointsClient) DeleteIfExistsPreparer(endpointName string, profil
 func (client EndpointsClient) DeleteIfExistsSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client,
 		req,
-		azure.DoPollForAsynchronous(autorest.DefaultPollingDuration,
-			autorest.DefaultPollingDelay))
+		azure.DoPollForAsynchronous(autorest.DefaultPollingDelay))
 }
 
 // DeleteIfExistsResponder handles the response to the DeleteIfExists request. The method always
@@ -221,7 +229,8 @@ func (client EndpointsClient) GetPreparer(endpointName string, profileName strin
 		"api-version": APIVersion,
 	}
 
-	return autorest.Prepare(&http.Request{},
+	req := http.Request{}
+	return autorest.Prepare(&req,
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -286,7 +295,8 @@ func (client EndpointsClient) ListByProfilePreparer(profileName string, resource
 		"api-version": APIVersion,
 	}
 
-	return autorest.Prepare(&http.Request{},
+	req := http.Request{}
+	return autorest.Prepare(&req,
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -314,15 +324,19 @@ func (client EndpointsClient) ListByProfileResponder(resp *http.Response) (resul
 	return
 }
 
-// LoadContent sends the load content request.
+// LoadContent sends the load content request. This method handles polling
+// itself for long-running operations. User can cancel polling for
+// long-running calls by passing cancel channel as an argument to this method
+// (cancel <-chan struct{}). This channel won't cancel the operation, it will
+// only stop the polling.
 //
 // endpointName is name of the endpoint within the CDN profile
 // contentFilePaths is the path to the content to be loaded. Path should
 // describe a file. profileName is name of the CDN profile within the
 // resource group resourceGroupName is name of the resource group within the
 // Azure subscription
-func (client EndpointsClient) LoadContent(endpointName string, contentFilePaths LoadParameters, profileName string, resourceGroupName string) (result autorest.Response, err error) {
-	req, err := client.LoadContentPreparer(endpointName, contentFilePaths, profileName, resourceGroupName)
+func (client EndpointsClient) LoadContent(endpointName string, contentFilePaths LoadParameters, profileName string, resourceGroupName string, cancel <-chan struct{}) (result autorest.Response, err error) {
+	req, err := client.LoadContentPreparer(endpointName, contentFilePaths, profileName, resourceGroupName, cancel)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "cdn/EndpointsClient", "LoadContent", nil, "Failure preparing request")
 	}
@@ -342,7 +356,7 @@ func (client EndpointsClient) LoadContent(endpointName string, contentFilePaths 
 }
 
 // LoadContentPreparer prepares the LoadContent request.
-func (client EndpointsClient) LoadContentPreparer(endpointName string, contentFilePaths LoadParameters, profileName string, resourceGroupName string) (*http.Request, error) {
+func (client EndpointsClient) LoadContentPreparer(endpointName string, contentFilePaths LoadParameters, profileName string, resourceGroupName string, cancel <-chan struct{}) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"endpointName":      url.QueryEscape(endpointName),
 		"profileName":       url.QueryEscape(profileName),
@@ -354,7 +368,8 @@ func (client EndpointsClient) LoadContentPreparer(endpointName string, contentFi
 		"api-version": APIVersion,
 	}
 
-	return autorest.Prepare(&http.Request{},
+	req := http.Request{Cancel: cancel}
+	return autorest.Prepare(&req,
 		autorest.AsJSON(),
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -369,8 +384,7 @@ func (client EndpointsClient) LoadContentPreparer(endpointName string, contentFi
 func (client EndpointsClient) LoadContentSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client,
 		req,
-		azure.DoPollForAsynchronous(autorest.DefaultPollingDuration,
-			autorest.DefaultPollingDelay))
+		azure.DoPollForAsynchronous(autorest.DefaultPollingDelay))
 }
 
 // LoadContentResponder handles the response to the LoadContent request. The method always
@@ -385,15 +399,19 @@ func (client EndpointsClient) LoadContentResponder(resp *http.Response) (result 
 	return
 }
 
-// PurgeContent sends the purge content request.
+// PurgeContent sends the purge content request. This method handles polling
+// itself for long-running operations. User can cancel polling for
+// long-running calls by passing cancel channel as an argument to this method
+// (cancel <-chan struct{}). This channel won't cancel the operation, it will
+// only stop the polling.
 //
 // endpointName is name of the endpoint within the CDN profile
 // contentFilePaths is the path to the content to be purged. Path can
 // describe a file or directory. profileName is name of the CDN profile
 // within the resource group resourceGroupName is name of the resource group
 // within the Azure subscription
-func (client EndpointsClient) PurgeContent(endpointName string, contentFilePaths PurgeParameters, profileName string, resourceGroupName string) (result autorest.Response, err error) {
-	req, err := client.PurgeContentPreparer(endpointName, contentFilePaths, profileName, resourceGroupName)
+func (client EndpointsClient) PurgeContent(endpointName string, contentFilePaths PurgeParameters, profileName string, resourceGroupName string, cancel <-chan struct{}) (result autorest.Response, err error) {
+	req, err := client.PurgeContentPreparer(endpointName, contentFilePaths, profileName, resourceGroupName, cancel)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "cdn/EndpointsClient", "PurgeContent", nil, "Failure preparing request")
 	}
@@ -413,7 +431,7 @@ func (client EndpointsClient) PurgeContent(endpointName string, contentFilePaths
 }
 
 // PurgeContentPreparer prepares the PurgeContent request.
-func (client EndpointsClient) PurgeContentPreparer(endpointName string, contentFilePaths PurgeParameters, profileName string, resourceGroupName string) (*http.Request, error) {
+func (client EndpointsClient) PurgeContentPreparer(endpointName string, contentFilePaths PurgeParameters, profileName string, resourceGroupName string, cancel <-chan struct{}) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"endpointName":      url.QueryEscape(endpointName),
 		"profileName":       url.QueryEscape(profileName),
@@ -425,7 +443,8 @@ func (client EndpointsClient) PurgeContentPreparer(endpointName string, contentF
 		"api-version": APIVersion,
 	}
 
-	return autorest.Prepare(&http.Request{},
+	req := http.Request{Cancel: cancel}
+	return autorest.Prepare(&req,
 		autorest.AsJSON(),
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -440,8 +459,7 @@ func (client EndpointsClient) PurgeContentPreparer(endpointName string, contentF
 func (client EndpointsClient) PurgeContentSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client,
 		req,
-		azure.DoPollForAsynchronous(autorest.DefaultPollingDuration,
-			autorest.DefaultPollingDelay))
+		azure.DoPollForAsynchronous(autorest.DefaultPollingDelay))
 }
 
 // PurgeContentResponder handles the response to the PurgeContent request. The method always
@@ -456,13 +474,17 @@ func (client EndpointsClient) PurgeContentResponder(resp *http.Response) (result
 	return
 }
 
-// Start sends the start request.
+// Start sends the start request. This method handles polling itself for
+// long-running operations. User can cancel polling for long-running calls by
+// passing cancel channel as an argument to this method (cancel <-chan
+// struct{}). This channel won't cancel the operation, it will only stop the
+// polling.
 //
 // endpointName is name of the endpoint within the CDN profile profileName is
 // name of the CDN profile within the resource group resourceGroupName is
 // name of the resource group within the Azure subscription
-func (client EndpointsClient) Start(endpointName string, profileName string, resourceGroupName string) (result autorest.Response, err error) {
-	req, err := client.StartPreparer(endpointName, profileName, resourceGroupName)
+func (client EndpointsClient) Start(endpointName string, profileName string, resourceGroupName string, cancel <-chan struct{}) (result autorest.Response, err error) {
+	req, err := client.StartPreparer(endpointName, profileName, resourceGroupName, cancel)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "cdn/EndpointsClient", "Start", nil, "Failure preparing request")
 	}
@@ -482,7 +504,7 @@ func (client EndpointsClient) Start(endpointName string, profileName string, res
 }
 
 // StartPreparer prepares the Start request.
-func (client EndpointsClient) StartPreparer(endpointName string, profileName string, resourceGroupName string) (*http.Request, error) {
+func (client EndpointsClient) StartPreparer(endpointName string, profileName string, resourceGroupName string, cancel <-chan struct{}) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"endpointName":      url.QueryEscape(endpointName),
 		"profileName":       url.QueryEscape(profileName),
@@ -494,7 +516,8 @@ func (client EndpointsClient) StartPreparer(endpointName string, profileName str
 		"api-version": APIVersion,
 	}
 
-	return autorest.Prepare(&http.Request{},
+	req := http.Request{Cancel: cancel}
+	return autorest.Prepare(&req,
 		autorest.AsJSON(),
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -508,8 +531,7 @@ func (client EndpointsClient) StartPreparer(endpointName string, profileName str
 func (client EndpointsClient) StartSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client,
 		req,
-		azure.DoPollForAsynchronous(autorest.DefaultPollingDuration,
-			autorest.DefaultPollingDelay))
+		azure.DoPollForAsynchronous(autorest.DefaultPollingDelay))
 }
 
 // StartResponder handles the response to the Start request. The method always
@@ -524,13 +546,17 @@ func (client EndpointsClient) StartResponder(resp *http.Response) (result autore
 	return
 }
 
-// Stop sends the stop request.
+// Stop sends the stop request. This method handles polling itself for
+// long-running operations. User can cancel polling for long-running calls by
+// passing cancel channel as an argument to this method (cancel <-chan
+// struct{}). This channel won't cancel the operation, it will only stop the
+// polling.
 //
 // endpointName is name of the endpoint within the CDN profile profileName is
 // name of the CDN profile within the resource group resourceGroupName is
 // name of the resource group within the Azure subscription
-func (client EndpointsClient) Stop(endpointName string, profileName string, resourceGroupName string) (result autorest.Response, err error) {
-	req, err := client.StopPreparer(endpointName, profileName, resourceGroupName)
+func (client EndpointsClient) Stop(endpointName string, profileName string, resourceGroupName string, cancel <-chan struct{}) (result autorest.Response, err error) {
+	req, err := client.StopPreparer(endpointName, profileName, resourceGroupName, cancel)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "cdn/EndpointsClient", "Stop", nil, "Failure preparing request")
 	}
@@ -550,7 +576,7 @@ func (client EndpointsClient) Stop(endpointName string, profileName string, reso
 }
 
 // StopPreparer prepares the Stop request.
-func (client EndpointsClient) StopPreparer(endpointName string, profileName string, resourceGroupName string) (*http.Request, error) {
+func (client EndpointsClient) StopPreparer(endpointName string, profileName string, resourceGroupName string, cancel <-chan struct{}) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"endpointName":      url.QueryEscape(endpointName),
 		"profileName":       url.QueryEscape(profileName),
@@ -562,7 +588,8 @@ func (client EndpointsClient) StopPreparer(endpointName string, profileName stri
 		"api-version": APIVersion,
 	}
 
-	return autorest.Prepare(&http.Request{},
+	req := http.Request{Cancel: cancel}
+	return autorest.Prepare(&req,
 		autorest.AsJSON(),
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -576,8 +603,7 @@ func (client EndpointsClient) StopPreparer(endpointName string, profileName stri
 func (client EndpointsClient) StopSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client,
 		req,
-		azure.DoPollForAsynchronous(autorest.DefaultPollingDuration,
-			autorest.DefaultPollingDelay))
+		azure.DoPollForAsynchronous(autorest.DefaultPollingDelay))
 }
 
 // StopResponder handles the response to the Stop request. The method always
@@ -631,7 +657,8 @@ func (client EndpointsClient) UpdatePreparer(endpointName string, endpointProper
 		"api-version": APIVersion,
 	}
 
-	return autorest.Prepare(&http.Request{},
+	req := http.Request{}
+	return autorest.Prepare(&req,
 		autorest.AsJSON(),
 		autorest.AsPatch(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -699,7 +726,8 @@ func (client EndpointsClient) ValidateCustomDomainPreparer(endpointName string, 
 		"api-version": APIVersion,
 	}
 
-	return autorest.Prepare(&http.Request{},
+	req := http.Request{}
+	return autorest.Prepare(&req,
 		autorest.AsJSON(),
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),

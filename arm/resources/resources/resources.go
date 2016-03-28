@@ -81,7 +81,8 @@ func (client Client) CheckExistencePreparer(resourceGroupName string, resourcePr
 		"api-version": APIVersion,
 	}
 
-	return autorest.Prepare(&http.Request{},
+	req := http.Request{}
+	return autorest.Prepare(&req,
 		autorest.AsJSON(),
 		autorest.AsHead(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -150,7 +151,8 @@ func (client Client) CreateOrUpdatePreparer(resourceGroupName string, resourcePr
 		"api-version": APIVersion,
 	}
 
-	return autorest.Prepare(&http.Request{},
+	req := http.Request{}
+	return autorest.Prepare(&req,
 		autorest.AsJSON(),
 		autorest.AsPut(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -220,7 +222,8 @@ func (client Client) DeletePreparer(resourceGroupName string, resourceProviderNa
 		"api-version": APIVersion,
 	}
 
-	return autorest.Prepare(&http.Request{},
+	req := http.Request{}
+	return autorest.Prepare(&req,
 		autorest.AsJSON(),
 		autorest.AsDelete(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -288,7 +291,8 @@ func (client Client) GetPreparer(resourceGroupName string, resourceProviderNames
 		"api-version": APIVersion,
 	}
 
-	return autorest.Prepare(&http.Request{},
+	req := http.Request{}
+	return autorest.Prepare(&req,
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -356,7 +360,8 @@ func (client Client) ListPreparer(filter string, top *int32) (*http.Request, err
 		queryParameters["$top"] = top
 	}
 
-	return autorest.Prepare(&http.Request{},
+	req := http.Request{}
+	return autorest.Prepare(&req,
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -409,12 +414,16 @@ func (client Client) ListNextResults(lastResults ResourceListResult) (result Res
 }
 
 // MoveResources begin moving resources.To determine whether the operation has
-// finished processing the request, call GetLongRunningOperationStatus.
+// finished processing the request, call GetLongRunningOperationStatus. This
+// method handles polling itself for long-running operations. User can cancel
+// polling for long-running calls by passing cancel channel as an argument to
+// this method (cancel <-chan struct{}). This channel won't cancel the
+// operation, it will only stop the polling.
 //
 // sourceResourceGroupName is source resource group name. parameters is move
 // resources' parameters.
-func (client Client) MoveResources(sourceResourceGroupName string, parameters MoveInfo) (result autorest.Response, err error) {
-	req, err := client.MoveResourcesPreparer(sourceResourceGroupName, parameters)
+func (client Client) MoveResources(sourceResourceGroupName string, parameters MoveInfo, cancel <-chan struct{}) (result autorest.Response, err error) {
+	req, err := client.MoveResourcesPreparer(sourceResourceGroupName, parameters, cancel)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "resources/Client", "MoveResources", nil, "Failure preparing request")
 	}
@@ -434,7 +443,7 @@ func (client Client) MoveResources(sourceResourceGroupName string, parameters Mo
 }
 
 // MoveResourcesPreparer prepares the MoveResources request.
-func (client Client) MoveResourcesPreparer(sourceResourceGroupName string, parameters MoveInfo) (*http.Request, error) {
+func (client Client) MoveResourcesPreparer(sourceResourceGroupName string, parameters MoveInfo, cancel <-chan struct{}) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"sourceResourceGroupName": url.QueryEscape(sourceResourceGroupName),
 		"subscriptionId":          url.QueryEscape(client.SubscriptionID),
@@ -444,7 +453,8 @@ func (client Client) MoveResourcesPreparer(sourceResourceGroupName string, param
 		"api-version": APIVersion,
 	}
 
-	return autorest.Prepare(&http.Request{},
+	req := http.Request{Cancel: cancel}
+	return autorest.Prepare(&req,
 		autorest.AsJSON(),
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -459,8 +469,7 @@ func (client Client) MoveResourcesPreparer(sourceResourceGroupName string, param
 func (client Client) MoveResourcesSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client,
 		req,
-		azure.DoPollForAsynchronous(autorest.DefaultPollingDuration,
-			autorest.DefaultPollingDelay))
+		azure.DoPollForAsynchronous(autorest.DefaultPollingDelay))
 }
 
 // MoveResourcesResponder handles the response to the MoveResources request. The method always

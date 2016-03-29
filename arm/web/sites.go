@@ -49,7 +49,7 @@ func NewSitesClientWithBaseURI(baseURI string, subscriptionID string) SitesClien
 
 // AddSitePremierAddOn sends the add site premier add on request.
 //
-func (client SitesClient) AddSitePremierAddOn(resourceGroupName string, name string, premierAddOnName string, premierAddOn PremierAddOnRequest) (result ObjectSet, err error) {
+func (client SitesClient) AddSitePremierAddOn(resourceGroupName string, name string, premierAddOnName string, premierAddOn PremierAddOnRequest) (result SetObject, err error) {
 	req, err := client.AddSitePremierAddOnPreparer(resourceGroupName, name, premierAddOnName, premierAddOn)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web/SitesClient", "AddSitePremierAddOn", nil, "Failure preparing request")
@@ -100,7 +100,7 @@ func (client SitesClient) AddSitePremierAddOnSender(req *http.Request) (*http.Re
 
 // AddSitePremierAddOnResponder handles the response to the AddSitePremierAddOn request. The method always
 // closes the http.Response Body.
-func (client SitesClient) AddSitePremierAddOnResponder(resp *http.Response) (result ObjectSet, err error) {
+func (client SitesClient) AddSitePremierAddOnResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -113,7 +113,7 @@ func (client SitesClient) AddSitePremierAddOnResponder(resp *http.Response) (res
 
 // AddSitePremierAddOnSlot sends the add site premier add on slot request.
 //
-func (client SitesClient) AddSitePremierAddOnSlot(resourceGroupName string, name string, premierAddOnName string, premierAddOn PremierAddOnRequest, slot string) (result ObjectSet, err error) {
+func (client SitesClient) AddSitePremierAddOnSlot(resourceGroupName string, name string, premierAddOnName string, premierAddOn PremierAddOnRequest, slot string) (result SetObject, err error) {
 	req, err := client.AddSitePremierAddOnSlotPreparer(resourceGroupName, name, premierAddOnName, premierAddOn, slot)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web/SitesClient", "AddSitePremierAddOnSlot", nil, "Failure preparing request")
@@ -165,7 +165,7 @@ func (client SitesClient) AddSitePremierAddOnSlotSender(req *http.Request) (*htt
 
 // AddSitePremierAddOnSlotResponder handles the response to the AddSitePremierAddOnSlot request. The method always
 // closes the http.Response Body.
-func (client SitesClient) AddSitePremierAddOnSlotResponder(resp *http.Response) (result ObjectSet, err error) {
+func (client SitesClient) AddSitePremierAddOnSlotResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -183,7 +183,7 @@ func (client SitesClient) AddSitePremierAddOnSlotResponder(resp *http.Response) 
 // Settings from that slot will be applied on the source slot slot is name of
 // the source slot. Settings from the target slot will be applied onto this
 // slot
-func (client SitesClient) ApplySlotConfigSlot(resourceGroupName string, name string, slotSwapEntity CsmSlotEntity, slot string) (result ObjectSet, err error) {
+func (client SitesClient) ApplySlotConfigSlot(resourceGroupName string, name string, slotSwapEntity CsmSlotEntity, slot string) (result SetObject, err error) {
 	req, err := client.ApplySlotConfigSlotPreparer(resourceGroupName, name, slotSwapEntity, slot)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web/SitesClient", "ApplySlotConfigSlot", nil, "Failure preparing request")
@@ -234,7 +234,7 @@ func (client SitesClient) ApplySlotConfigSlotSender(req *http.Request) (*http.Re
 
 // ApplySlotConfigSlotResponder handles the response to the ApplySlotConfigSlot request. The method always
 // closes the http.Response Body.
-func (client SitesClient) ApplySlotConfigSlotResponder(resp *http.Response) (result ObjectSet, err error) {
+func (client SitesClient) ApplySlotConfigSlotResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -251,7 +251,7 @@ func (client SitesClient) ApplySlotConfigSlotResponder(resp *http.Response) (res
 // resourceGroupName is name of resource group name is name of web app
 // slotSwapEntity is request body that contains the target slot name.
 // Settings from that slot will be applied on the source slot
-func (client SitesClient) ApplySlotConfigToProduction(resourceGroupName string, name string, slotSwapEntity CsmSlotEntity) (result ObjectSet, err error) {
+func (client SitesClient) ApplySlotConfigToProduction(resourceGroupName string, name string, slotSwapEntity CsmSlotEntity) (result SetObject, err error) {
 	req, err := client.ApplySlotConfigToProductionPreparer(resourceGroupName, name, slotSwapEntity)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web/SitesClient", "ApplySlotConfigToProduction", nil, "Failure preparing request")
@@ -301,7 +301,7 @@ func (client SitesClient) ApplySlotConfigToProductionSender(req *http.Request) (
 
 // ApplySlotConfigToProductionResponder handles the response to the ApplySlotConfigToProduction request. The method always
 // closes the http.Response Body.
-func (client SitesClient) ApplySlotConfigToProductionResponder(resp *http.Response) (result ObjectSet, err error) {
+func (client SitesClient) ApplySlotConfigToProductionResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -849,7 +849,10 @@ func (client SitesClient) CreateInstanceDeploymentSlotResponder(resp *http.Respo
 	return
 }
 
-// CreateOrUpdateSite sends the create or update site request.
+// CreateOrUpdateSite sends the create or update site request. This method may
+// poll for completion. Polling can be canceled by passing the cancel channel
+// argument. The channel will be used to cancel polling and any outstanding
+// HTTP requests.
 //
 // resourceGroupName is name of the resource group name is name of the web app
 // siteEnvelope is details of web app if it exists already
@@ -860,8 +863,8 @@ func (client SitesClient) CreateInstanceDeploymentSlotResponder(resp *http.Respo
 // not verified. forceDNSRegistration is if true, web app hostname is force
 // registered with DNS ttlInSeconds is time to live in seconds for web app's
 // default domain name
-func (client SitesClient) CreateOrUpdateSite(resourceGroupName string, name string, siteEnvelope Site, skipDNSRegistration string, skipCustomDomainVerification string, forceDNSRegistration string, ttlInSeconds string) (result autorest.Response, err error) {
-	req, err := client.CreateOrUpdateSitePreparer(resourceGroupName, name, siteEnvelope, skipDNSRegistration, skipCustomDomainVerification, forceDNSRegistration, ttlInSeconds)
+func (client SitesClient) CreateOrUpdateSite(resourceGroupName string, name string, siteEnvelope Site, skipDNSRegistration string, skipCustomDomainVerification string, forceDNSRegistration string, ttlInSeconds string, cancel <-chan struct{}) (result autorest.Response, err error) {
+	req, err := client.CreateOrUpdateSitePreparer(resourceGroupName, name, siteEnvelope, skipDNSRegistration, skipCustomDomainVerification, forceDNSRegistration, ttlInSeconds, cancel)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web/SitesClient", "CreateOrUpdateSite", nil, "Failure preparing request")
 	}
@@ -881,7 +884,7 @@ func (client SitesClient) CreateOrUpdateSite(resourceGroupName string, name stri
 }
 
 // CreateOrUpdateSitePreparer prepares the CreateOrUpdateSite request.
-func (client SitesClient) CreateOrUpdateSitePreparer(resourceGroupName string, name string, siteEnvelope Site, skipDNSRegistration string, skipCustomDomainVerification string, forceDNSRegistration string, ttlInSeconds string) (*http.Request, error) {
+func (client SitesClient) CreateOrUpdateSitePreparer(resourceGroupName string, name string, siteEnvelope Site, skipDNSRegistration string, skipCustomDomainVerification string, forceDNSRegistration string, ttlInSeconds string, cancel <-chan struct{}) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"name":              url.QueryEscape(name),
 		"resourceGroupName": url.QueryEscape(resourceGroupName),
@@ -904,7 +907,7 @@ func (client SitesClient) CreateOrUpdateSitePreparer(resourceGroupName string, n
 		queryParameters["ttlInSeconds"] = ttlInSeconds
 	}
 
-	return autorest.Prepare(&http.Request{},
+	return autorest.Prepare(&http.Request{Cancel: cancel},
 		autorest.AsJSON(),
 		autorest.AsPut(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -919,8 +922,7 @@ func (client SitesClient) CreateOrUpdateSitePreparer(resourceGroupName string, n
 func (client SitesClient) CreateOrUpdateSiteSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client,
 		req,
-		azure.DoPollForAsynchronous(autorest.DefaultPollingDuration,
-			autorest.DefaultPollingDelay))
+		azure.DoPollForAsynchronous(client.PollingDelay))
 }
 
 // CreateOrUpdateSiteResponder handles the response to the CreateOrUpdateSite request. The method always
@@ -1345,7 +1347,10 @@ func (client SitesClient) CreateOrUpdateSiteRelayServiceConnectionSlotResponder(
 	return
 }
 
-// CreateOrUpdateSiteSlot sends the create or update site slot request.
+// CreateOrUpdateSiteSlot sends the create or update site slot request. This
+// method may poll for completion. Polling can be canceled by passing the
+// cancel channel argument. The channel will be used to cancel polling and
+// any outstanding HTTP requests.
 //
 // resourceGroupName is name of the resource group name is name of the web app
 // siteEnvelope is details of web app if it exists already slot is name of
@@ -1357,8 +1362,8 @@ func (client SitesClient) CreateOrUpdateSiteRelayServiceConnectionSlotResponder(
 // not verified. forceDNSRegistration is if true, web app hostname is force
 // registered with DNS ttlInSeconds is time to live in seconds for web app's
 // default domain name
-func (client SitesClient) CreateOrUpdateSiteSlot(resourceGroupName string, name string, siteEnvelope Site, slot string, skipDNSRegistration string, skipCustomDomainVerification string, forceDNSRegistration string, ttlInSeconds string) (result autorest.Response, err error) {
-	req, err := client.CreateOrUpdateSiteSlotPreparer(resourceGroupName, name, siteEnvelope, slot, skipDNSRegistration, skipCustomDomainVerification, forceDNSRegistration, ttlInSeconds)
+func (client SitesClient) CreateOrUpdateSiteSlot(resourceGroupName string, name string, siteEnvelope Site, slot string, skipDNSRegistration string, skipCustomDomainVerification string, forceDNSRegistration string, ttlInSeconds string, cancel <-chan struct{}) (result autorest.Response, err error) {
+	req, err := client.CreateOrUpdateSiteSlotPreparer(resourceGroupName, name, siteEnvelope, slot, skipDNSRegistration, skipCustomDomainVerification, forceDNSRegistration, ttlInSeconds, cancel)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web/SitesClient", "CreateOrUpdateSiteSlot", nil, "Failure preparing request")
 	}
@@ -1378,7 +1383,7 @@ func (client SitesClient) CreateOrUpdateSiteSlot(resourceGroupName string, name 
 }
 
 // CreateOrUpdateSiteSlotPreparer prepares the CreateOrUpdateSiteSlot request.
-func (client SitesClient) CreateOrUpdateSiteSlotPreparer(resourceGroupName string, name string, siteEnvelope Site, slot string, skipDNSRegistration string, skipCustomDomainVerification string, forceDNSRegistration string, ttlInSeconds string) (*http.Request, error) {
+func (client SitesClient) CreateOrUpdateSiteSlotPreparer(resourceGroupName string, name string, siteEnvelope Site, slot string, skipDNSRegistration string, skipCustomDomainVerification string, forceDNSRegistration string, ttlInSeconds string, cancel <-chan struct{}) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"name":              url.QueryEscape(name),
 		"resourceGroupName": url.QueryEscape(resourceGroupName),
@@ -1402,7 +1407,7 @@ func (client SitesClient) CreateOrUpdateSiteSlotPreparer(resourceGroupName strin
 		queryParameters["ttlInSeconds"] = ttlInSeconds
 	}
 
-	return autorest.Prepare(&http.Request{},
+	return autorest.Prepare(&http.Request{Cancel: cancel},
 		autorest.AsJSON(),
 		autorest.AsPut(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -1417,8 +1422,7 @@ func (client SitesClient) CreateOrUpdateSiteSlotPreparer(resourceGroupName strin
 func (client SitesClient) CreateOrUpdateSiteSlotSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client,
 		req,
-		azure.DoPollForAsynchronous(autorest.DefaultPollingDuration,
-			autorest.DefaultPollingDelay))
+		azure.DoPollForAsynchronous(client.PollingDelay))
 }
 
 // CreateOrUpdateSiteSlotResponder handles the response to the CreateOrUpdateSiteSlot request. The method always
@@ -1985,7 +1989,7 @@ func (client SitesClient) DeleteBackupSlotResponder(resp *http.Response) (result
 //
 // resourceGroupName is name of resource group name is name of web app id is
 // id of the deployment
-func (client SitesClient) DeleteDeployment(resourceGroupName string, name string, id string) (result ObjectSet, err error) {
+func (client SitesClient) DeleteDeployment(resourceGroupName string, name string, id string) (result SetObject, err error) {
 	req, err := client.DeleteDeploymentPreparer(resourceGroupName, name, id)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web/SitesClient", "DeleteDeployment", nil, "Failure preparing request")
@@ -2035,7 +2039,7 @@ func (client SitesClient) DeleteDeploymentSender(req *http.Request) (*http.Respo
 
 // DeleteDeploymentResponder handles the response to the DeleteDeployment request. The method always
 // closes the http.Response Body.
-func (client SitesClient) DeleteDeploymentResponder(resp *http.Response) (result ObjectSet, err error) {
+func (client SitesClient) DeleteDeploymentResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -2051,7 +2055,7 @@ func (client SitesClient) DeleteDeploymentResponder(resp *http.Response) (result
 // resourceGroupName is name of resource group name is name of web app id is
 // id of the deployment slot is name of web app slot. If not specified then
 // will default to production slot.
-func (client SitesClient) DeleteDeploymentSlot(resourceGroupName string, name string, id string, slot string) (result ObjectSet, err error) {
+func (client SitesClient) DeleteDeploymentSlot(resourceGroupName string, name string, id string, slot string) (result SetObject, err error) {
 	req, err := client.DeleteDeploymentSlotPreparer(resourceGroupName, name, id, slot)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web/SitesClient", "DeleteDeploymentSlot", nil, "Failure preparing request")
@@ -2102,7 +2106,7 @@ func (client SitesClient) DeleteDeploymentSlotSender(req *http.Request) (*http.R
 
 // DeleteDeploymentSlotResponder handles the response to the DeleteDeploymentSlot request. The method always
 // closes the http.Response Body.
-func (client SitesClient) DeleteDeploymentSlotResponder(resp *http.Response) (result ObjectSet, err error) {
+func (client SitesClient) DeleteDeploymentSlotResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -2117,7 +2121,7 @@ func (client SitesClient) DeleteDeploymentSlotResponder(resp *http.Response) (re
 //
 // resourceGroupName is name of resource group name is name of web app id is
 // id of the deployment instanceID is id of web app instance
-func (client SitesClient) DeleteInstanceDeployment(resourceGroupName string, name string, id string, instanceID string) (result ObjectSet, err error) {
+func (client SitesClient) DeleteInstanceDeployment(resourceGroupName string, name string, id string, instanceID string) (result SetObject, err error) {
 	req, err := client.DeleteInstanceDeploymentPreparer(resourceGroupName, name, id, instanceID)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web/SitesClient", "DeleteInstanceDeployment", nil, "Failure preparing request")
@@ -2168,7 +2172,7 @@ func (client SitesClient) DeleteInstanceDeploymentSender(req *http.Request) (*ht
 
 // DeleteInstanceDeploymentResponder handles the response to the DeleteInstanceDeployment request. The method always
 // closes the http.Response Body.
-func (client SitesClient) DeleteInstanceDeploymentResponder(resp *http.Response) (result ObjectSet, err error) {
+func (client SitesClient) DeleteInstanceDeploymentResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -2185,7 +2189,7 @@ func (client SitesClient) DeleteInstanceDeploymentResponder(resp *http.Response)
 // resourceGroupName is name of resource group name is name of web app id is
 // id of the deployment slot is name of web app slot. If not specified then
 // will default to production slot. instanceID is id of web app instance
-func (client SitesClient) DeleteInstanceDeploymentSlot(resourceGroupName string, name string, id string, slot string, instanceID string) (result ObjectSet, err error) {
+func (client SitesClient) DeleteInstanceDeploymentSlot(resourceGroupName string, name string, id string, slot string, instanceID string) (result SetObject, err error) {
 	req, err := client.DeleteInstanceDeploymentSlotPreparer(resourceGroupName, name, id, slot, instanceID)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web/SitesClient", "DeleteInstanceDeploymentSlot", nil, "Failure preparing request")
@@ -2237,7 +2241,7 @@ func (client SitesClient) DeleteInstanceDeploymentSlotSender(req *http.Request) 
 
 // DeleteInstanceDeploymentSlotResponder handles the response to the DeleteInstanceDeploymentSlot request. The method always
 // closes the http.Response Body.
-func (client SitesClient) DeleteInstanceDeploymentSlotResponder(resp *http.Response) (result ObjectSet, err error) {
+func (client SitesClient) DeleteInstanceDeploymentSlotResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -2256,7 +2260,7 @@ func (client SitesClient) DeleteInstanceDeploymentSlotResponder(resp *http.Respo
 // app deletion, App Service Plan is also deleted skipDNSRegistration is if
 // true, DNS registration is skipped deleteAllSlots is if true, all slots
 // associated with web app are also deleted
-func (client SitesClient) DeleteSite(resourceGroupName string, name string, deleteMetrics string, deleteEmptyServerFarm string, skipDNSRegistration string, deleteAllSlots string) (result ObjectSet, err error) {
+func (client SitesClient) DeleteSite(resourceGroupName string, name string, deleteMetrics string, deleteEmptyServerFarm string, skipDNSRegistration string, deleteAllSlots string) (result SetObject, err error) {
 	req, err := client.DeleteSitePreparer(resourceGroupName, name, deleteMetrics, deleteEmptyServerFarm, skipDNSRegistration, deleteAllSlots)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web/SitesClient", "DeleteSite", nil, "Failure preparing request")
@@ -2317,7 +2321,7 @@ func (client SitesClient) DeleteSiteSender(req *http.Request) (*http.Response, e
 
 // DeleteSiteResponder handles the response to the DeleteSite request. The method always
 // closes the http.Response Body.
-func (client SitesClient) DeleteSiteResponder(resp *http.Response) (result ObjectSet, err error) {
+func (client SitesClient) DeleteSiteResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -2332,7 +2336,7 @@ func (client SitesClient) DeleteSiteResponder(resp *http.Response) (result Objec
 //
 // resourceGroupName is name of resource group name is name of web app
 // hostName is name of host
-func (client SitesClient) DeleteSiteHostNameBinding(resourceGroupName string, name string, hostName string) (result ObjectSet, err error) {
+func (client SitesClient) DeleteSiteHostNameBinding(resourceGroupName string, name string, hostName string) (result SetObject, err error) {
 	req, err := client.DeleteSiteHostNameBindingPreparer(resourceGroupName, name, hostName)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web/SitesClient", "DeleteSiteHostNameBinding", nil, "Failure preparing request")
@@ -2382,7 +2386,7 @@ func (client SitesClient) DeleteSiteHostNameBindingSender(req *http.Request) (*h
 
 // DeleteSiteHostNameBindingResponder handles the response to the DeleteSiteHostNameBinding request. The method always
 // closes the http.Response Body.
-func (client SitesClient) DeleteSiteHostNameBindingResponder(resp *http.Response) (result ObjectSet, err error) {
+func (client SitesClient) DeleteSiteHostNameBindingResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -2399,7 +2403,7 @@ func (client SitesClient) DeleteSiteHostNameBindingResponder(resp *http.Response
 // resourceGroupName is name of resource group name is name of web app slot is
 // name of web app slot. If not specified then will default to production
 // slot. hostName is name of host
-func (client SitesClient) DeleteSiteHostNameBindingSlot(resourceGroupName string, name string, slot string, hostName string) (result ObjectSet, err error) {
+func (client SitesClient) DeleteSiteHostNameBindingSlot(resourceGroupName string, name string, slot string, hostName string) (result SetObject, err error) {
 	req, err := client.DeleteSiteHostNameBindingSlotPreparer(resourceGroupName, name, slot, hostName)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web/SitesClient", "DeleteSiteHostNameBindingSlot", nil, "Failure preparing request")
@@ -2450,7 +2454,7 @@ func (client SitesClient) DeleteSiteHostNameBindingSlotSender(req *http.Request)
 
 // DeleteSiteHostNameBindingSlotResponder handles the response to the DeleteSiteHostNameBindingSlot request. The method always
 // closes the http.Response Body.
-func (client SitesClient) DeleteSiteHostNameBindingSlotResponder(resp *http.Response) (result ObjectSet, err error) {
+func (client SitesClient) DeleteSiteHostNameBindingSlotResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -2463,7 +2467,7 @@ func (client SitesClient) DeleteSiteHostNameBindingSlotResponder(resp *http.Resp
 
 // DeleteSitePremierAddOn sends the delete site premier add on request.
 //
-func (client SitesClient) DeleteSitePremierAddOn(resourceGroupName string, name string, premierAddOnName string) (result ObjectSet, err error) {
+func (client SitesClient) DeleteSitePremierAddOn(resourceGroupName string, name string, premierAddOnName string) (result SetObject, err error) {
 	req, err := client.DeleteSitePremierAddOnPreparer(resourceGroupName, name, premierAddOnName)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web/SitesClient", "DeleteSitePremierAddOn", nil, "Failure preparing request")
@@ -2513,7 +2517,7 @@ func (client SitesClient) DeleteSitePremierAddOnSender(req *http.Request) (*http
 
 // DeleteSitePremierAddOnResponder handles the response to the DeleteSitePremierAddOn request. The method always
 // closes the http.Response Body.
-func (client SitesClient) DeleteSitePremierAddOnResponder(resp *http.Response) (result ObjectSet, err error) {
+func (client SitesClient) DeleteSitePremierAddOnResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -2527,7 +2531,7 @@ func (client SitesClient) DeleteSitePremierAddOnResponder(resp *http.Response) (
 // DeleteSitePremierAddOnSlot sends the delete site premier add on slot
 // request.
 //
-func (client SitesClient) DeleteSitePremierAddOnSlot(resourceGroupName string, name string, premierAddOnName string, slot string) (result ObjectSet, err error) {
+func (client SitesClient) DeleteSitePremierAddOnSlot(resourceGroupName string, name string, premierAddOnName string, slot string) (result SetObject, err error) {
 	req, err := client.DeleteSitePremierAddOnSlotPreparer(resourceGroupName, name, premierAddOnName, slot)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web/SitesClient", "DeleteSitePremierAddOnSlot", nil, "Failure preparing request")
@@ -2578,7 +2582,7 @@ func (client SitesClient) DeleteSitePremierAddOnSlotSender(req *http.Request) (*
 
 // DeleteSitePremierAddOnSlotResponder handles the response to the DeleteSitePremierAddOnSlot request. The method always
 // closes the http.Response Body.
-func (client SitesClient) DeleteSitePremierAddOnSlotResponder(resp *http.Response) (result ObjectSet, err error) {
+func (client SitesClient) DeleteSitePremierAddOnSlotResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -2594,7 +2598,7 @@ func (client SitesClient) DeleteSitePremierAddOnSlotResponder(resp *http.Respons
 //
 // resourceGroupName is the resource group name name is the name of the web
 // app entityName is the name by which the Hybrid Connection is identified
-func (client SitesClient) DeleteSiteRelayServiceConnection(resourceGroupName string, name string, entityName string) (result ObjectSet, err error) {
+func (client SitesClient) DeleteSiteRelayServiceConnection(resourceGroupName string, name string, entityName string) (result SetObject, err error) {
 	req, err := client.DeleteSiteRelayServiceConnectionPreparer(resourceGroupName, name, entityName)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web/SitesClient", "DeleteSiteRelayServiceConnection", nil, "Failure preparing request")
@@ -2644,7 +2648,7 @@ func (client SitesClient) DeleteSiteRelayServiceConnectionSender(req *http.Reque
 
 // DeleteSiteRelayServiceConnectionResponder handles the response to the DeleteSiteRelayServiceConnection request. The method always
 // closes the http.Response Body.
-func (client SitesClient) DeleteSiteRelayServiceConnectionResponder(resp *http.Response) (result ObjectSet, err error) {
+func (client SitesClient) DeleteSiteRelayServiceConnectionResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -2661,7 +2665,7 @@ func (client SitesClient) DeleteSiteRelayServiceConnectionResponder(resp *http.R
 // resourceGroupName is the resource group name name is the name of the web
 // app entityName is the name by which the Hybrid Connection is identified
 // slot is the name of the slot for the web app.
-func (client SitesClient) DeleteSiteRelayServiceConnectionSlot(resourceGroupName string, name string, entityName string, slot string) (result ObjectSet, err error) {
+func (client SitesClient) DeleteSiteRelayServiceConnectionSlot(resourceGroupName string, name string, entityName string, slot string) (result SetObject, err error) {
 	req, err := client.DeleteSiteRelayServiceConnectionSlotPreparer(resourceGroupName, name, entityName, slot)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web/SitesClient", "DeleteSiteRelayServiceConnectionSlot", nil, "Failure preparing request")
@@ -2712,7 +2716,7 @@ func (client SitesClient) DeleteSiteRelayServiceConnectionSlotSender(req *http.R
 
 // DeleteSiteRelayServiceConnectionSlotResponder handles the response to the DeleteSiteRelayServiceConnectionSlot request. The method always
 // closes the http.Response Body.
-func (client SitesClient) DeleteSiteRelayServiceConnectionSlotResponder(resp *http.Response) (result ObjectSet, err error) {
+func (client SitesClient) DeleteSiteRelayServiceConnectionSlotResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -2732,7 +2736,7 @@ func (client SitesClient) DeleteSiteRelayServiceConnectionSlotResponder(resp *ht
 // app deletion, App Service Plan is also deleted skipDNSRegistration is if
 // true, DNS registration is skipped deleteAllSlots is if true, all slots
 // associated with web app are also deleted
-func (client SitesClient) DeleteSiteSlot(resourceGroupName string, name string, slot string, deleteMetrics string, deleteEmptyServerFarm string, skipDNSRegistration string, deleteAllSlots string) (result ObjectSet, err error) {
+func (client SitesClient) DeleteSiteSlot(resourceGroupName string, name string, slot string, deleteMetrics string, deleteEmptyServerFarm string, skipDNSRegistration string, deleteAllSlots string) (result SetObject, err error) {
 	req, err := client.DeleteSiteSlotPreparer(resourceGroupName, name, slot, deleteMetrics, deleteEmptyServerFarm, skipDNSRegistration, deleteAllSlots)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web/SitesClient", "DeleteSiteSlot", nil, "Failure preparing request")
@@ -2794,7 +2798,7 @@ func (client SitesClient) DeleteSiteSlotSender(req *http.Request) (*http.Respons
 
 // DeleteSiteSlotResponder handles the response to the DeleteSiteSlot request. The method always
 // closes the http.Response Body.
-func (client SitesClient) DeleteSiteSlotResponder(resp *http.Response) (result ObjectSet, err error) {
+func (client SitesClient) DeleteSiteSlotResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -2808,7 +2812,7 @@ func (client SitesClient) DeleteSiteSlotResponder(resp *http.Response) (result O
 // DeleteSiteSourceControl sends the delete site source control request.
 //
 // resourceGroupName is name of resource group name is name of web app
-func (client SitesClient) DeleteSiteSourceControl(resourceGroupName string, name string) (result ObjectSet, err error) {
+func (client SitesClient) DeleteSiteSourceControl(resourceGroupName string, name string) (result SetObject, err error) {
 	req, err := client.DeleteSiteSourceControlPreparer(resourceGroupName, name)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web/SitesClient", "DeleteSiteSourceControl", nil, "Failure preparing request")
@@ -2857,7 +2861,7 @@ func (client SitesClient) DeleteSiteSourceControlSender(req *http.Request) (*htt
 
 // DeleteSiteSourceControlResponder handles the response to the DeleteSiteSourceControl request. The method always
 // closes the http.Response Body.
-func (client SitesClient) DeleteSiteSourceControlResponder(resp *http.Response) (result ObjectSet, err error) {
+func (client SitesClient) DeleteSiteSourceControlResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -2874,7 +2878,7 @@ func (client SitesClient) DeleteSiteSourceControlResponder(resp *http.Response) 
 // resourceGroupName is name of resource group name is name of web app slot is
 // name of web app slot. If not specified then will default to production
 // slot.
-func (client SitesClient) DeleteSiteSourceControlSlot(resourceGroupName string, name string, slot string) (result ObjectSet, err error) {
+func (client SitesClient) DeleteSiteSourceControlSlot(resourceGroupName string, name string, slot string) (result SetObject, err error) {
 	req, err := client.DeleteSiteSourceControlSlotPreparer(resourceGroupName, name, slot)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web/SitesClient", "DeleteSiteSourceControlSlot", nil, "Failure preparing request")
@@ -2924,7 +2928,7 @@ func (client SitesClient) DeleteSiteSourceControlSlotSender(req *http.Request) (
 
 // DeleteSiteSourceControlSlotResponder handles the response to the DeleteSiteSourceControlSlot request. The method always
 // closes the http.Response Body.
-func (client SitesClient) DeleteSiteSourceControlSlotResponder(resp *http.Response) (result ObjectSet, err error) {
+func (client SitesClient) DeleteSiteSourceControlSlotResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -2939,7 +2943,7 @@ func (client SitesClient) DeleteSiteSourceControlSlotResponder(resp *http.Respon
 //
 // resourceGroupName is the resource group name name is the name of the web
 // app vnetName is the name of the Virtual Network
-func (client SitesClient) DeleteSiteVNETConnection(resourceGroupName string, name string, vnetName string) (result ObjectSet, err error) {
+func (client SitesClient) DeleteSiteVNETConnection(resourceGroupName string, name string, vnetName string) (result SetObject, err error) {
 	req, err := client.DeleteSiteVNETConnectionPreparer(resourceGroupName, name, vnetName)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web/SitesClient", "DeleteSiteVNETConnection", nil, "Failure preparing request")
@@ -2989,7 +2993,7 @@ func (client SitesClient) DeleteSiteVNETConnectionSender(req *http.Request) (*ht
 
 // DeleteSiteVNETConnectionResponder handles the response to the DeleteSiteVNETConnection request. The method always
 // closes the http.Response Body.
-func (client SitesClient) DeleteSiteVNETConnectionResponder(resp *http.Response) (result ObjectSet, err error) {
+func (client SitesClient) DeleteSiteVNETConnectionResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -3006,7 +3010,7 @@ func (client SitesClient) DeleteSiteVNETConnectionResponder(resp *http.Response)
 // resourceGroupName is the resource group name name is the name of the web
 // app vnetName is the name of the Virtual Network slot is the name of the
 // slot for this web app.
-func (client SitesClient) DeleteSiteVNETConnectionSlot(resourceGroupName string, name string, vnetName string, slot string) (result ObjectSet, err error) {
+func (client SitesClient) DeleteSiteVNETConnectionSlot(resourceGroupName string, name string, vnetName string, slot string) (result SetObject, err error) {
 	req, err := client.DeleteSiteVNETConnectionSlotPreparer(resourceGroupName, name, vnetName, slot)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web/SitesClient", "DeleteSiteVNETConnectionSlot", nil, "Failure preparing request")
@@ -3057,7 +3061,7 @@ func (client SitesClient) DeleteSiteVNETConnectionSlotSender(req *http.Request) 
 
 // DeleteSiteVNETConnectionSlotResponder handles the response to the DeleteSiteVNETConnectionSlot request. The method always
 // closes the http.Response Body.
-func (client SitesClient) DeleteSiteVNETConnectionSlotResponder(resp *http.Response) (result ObjectSet, err error) {
+func (client SitesClient) DeleteSiteVNETConnectionSlotResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -3338,7 +3342,7 @@ func (client SitesClient) DiscoverSiteRestoreSlotResponder(resp *http.Response) 
 // password request.
 //
 // resourceGroupName is name of resource group name is name of web app
-func (client SitesClient) GenerateNewSitePublishingPassword(resourceGroupName string, name string) (result ObjectSet, err error) {
+func (client SitesClient) GenerateNewSitePublishingPassword(resourceGroupName string, name string) (result SetObject, err error) {
 	req, err := client.GenerateNewSitePublishingPasswordPreparer(resourceGroupName, name)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web/SitesClient", "GenerateNewSitePublishingPassword", nil, "Failure preparing request")
@@ -3387,7 +3391,7 @@ func (client SitesClient) GenerateNewSitePublishingPasswordSender(req *http.Requ
 
 // GenerateNewSitePublishingPasswordResponder handles the response to the GenerateNewSitePublishingPassword request. The method always
 // closes the http.Response Body.
-func (client SitesClient) GenerateNewSitePublishingPasswordResponder(resp *http.Response) (result ObjectSet, err error) {
+func (client SitesClient) GenerateNewSitePublishingPasswordResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -3404,7 +3408,7 @@ func (client SitesClient) GenerateNewSitePublishingPasswordResponder(resp *http.
 // resourceGroupName is name of resource group name is name of web app slot is
 // name of web app slot. If not specified then will default to production
 // slot.
-func (client SitesClient) GenerateNewSitePublishingPasswordSlot(resourceGroupName string, name string, slot string) (result ObjectSet, err error) {
+func (client SitesClient) GenerateNewSitePublishingPasswordSlot(resourceGroupName string, name string, slot string) (result SetObject, err error) {
 	req, err := client.GenerateNewSitePublishingPasswordSlotPreparer(resourceGroupName, name, slot)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web/SitesClient", "GenerateNewSitePublishingPasswordSlot", nil, "Failure preparing request")
@@ -3454,7 +3458,7 @@ func (client SitesClient) GenerateNewSitePublishingPasswordSlotSender(req *http.
 
 // GenerateNewSitePublishingPasswordSlotResponder handles the response to the GenerateNewSitePublishingPasswordSlot request. The method always
 // closes the http.Response Body.
-func (client SitesClient) GenerateNewSitePublishingPasswordSlotResponder(resp *http.Response) (result ObjectSet, err error) {
+func (client SitesClient) GenerateNewSitePublishingPasswordSlotResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -5726,7 +5730,7 @@ func (client SitesClient) GetSiteNetworkFeaturesSlotResponder(resp *http.Respons
 //
 // resourceGroupName is name of resource group name is name of web app
 // operationID is id of an operation
-func (client SitesClient) GetSiteOperation(resourceGroupName string, name string, operationID string) (result ObjectSet, err error) {
+func (client SitesClient) GetSiteOperation(resourceGroupName string, name string, operationID string) (result SetObject, err error) {
 	req, err := client.GetSiteOperationPreparer(resourceGroupName, name, operationID)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web/SitesClient", "GetSiteOperation", nil, "Failure preparing request")
@@ -5776,7 +5780,7 @@ func (client SitesClient) GetSiteOperationSender(req *http.Request) (*http.Respo
 
 // GetSiteOperationResponder handles the response to the GetSiteOperation request. The method always
 // closes the http.Response Body.
-func (client SitesClient) GetSiteOperationResponder(resp *http.Response) (result ObjectSet, err error) {
+func (client SitesClient) GetSiteOperationResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -5792,7 +5796,7 @@ func (client SitesClient) GetSiteOperationResponder(resp *http.Response) (result
 // resourceGroupName is name of resource group name is name of web app
 // operationID is id of an operation slot is name of web app slot. If not
 // specified then will default to production slot.
-func (client SitesClient) GetSiteOperationSlot(resourceGroupName string, name string, operationID string, slot string) (result ObjectSet, err error) {
+func (client SitesClient) GetSiteOperationSlot(resourceGroupName string, name string, operationID string, slot string) (result SetObject, err error) {
 	req, err := client.GetSiteOperationSlotPreparer(resourceGroupName, name, operationID, slot)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web/SitesClient", "GetSiteOperationSlot", nil, "Failure preparing request")
@@ -5843,7 +5847,7 @@ func (client SitesClient) GetSiteOperationSlotSender(req *http.Request) (*http.R
 
 // GetSiteOperationSlotResponder handles the response to the GetSiteOperationSlot request. The method always
 // closes the http.Response Body.
-func (client SitesClient) GetSiteOperationSlotResponder(resp *http.Response) (result ObjectSet, err error) {
+func (client SitesClient) GetSiteOperationSlotResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -5856,7 +5860,7 @@ func (client SitesClient) GetSiteOperationSlotResponder(resp *http.Response) (re
 
 // GetSitePremierAddOn sends the get site premier add on request.
 //
-func (client SitesClient) GetSitePremierAddOn(resourceGroupName string, name string, premierAddOnName string) (result ObjectSet, err error) {
+func (client SitesClient) GetSitePremierAddOn(resourceGroupName string, name string, premierAddOnName string) (result SetObject, err error) {
 	req, err := client.GetSitePremierAddOnPreparer(resourceGroupName, name, premierAddOnName)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web/SitesClient", "GetSitePremierAddOn", nil, "Failure preparing request")
@@ -5906,7 +5910,7 @@ func (client SitesClient) GetSitePremierAddOnSender(req *http.Request) (*http.Re
 
 // GetSitePremierAddOnResponder handles the response to the GetSitePremierAddOn request. The method always
 // closes the http.Response Body.
-func (client SitesClient) GetSitePremierAddOnResponder(resp *http.Response) (result ObjectSet, err error) {
+func (client SitesClient) GetSitePremierAddOnResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -5919,7 +5923,7 @@ func (client SitesClient) GetSitePremierAddOnResponder(resp *http.Response) (res
 
 // GetSitePremierAddOnSlot sends the get site premier add on slot request.
 //
-func (client SitesClient) GetSitePremierAddOnSlot(resourceGroupName string, name string, premierAddOnName string, slot string) (result ObjectSet, err error) {
+func (client SitesClient) GetSitePremierAddOnSlot(resourceGroupName string, name string, premierAddOnName string, slot string) (result SetObject, err error) {
 	req, err := client.GetSitePremierAddOnSlotPreparer(resourceGroupName, name, premierAddOnName, slot)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web/SitesClient", "GetSitePremierAddOnSlot", nil, "Failure preparing request")
@@ -5970,7 +5974,7 @@ func (client SitesClient) GetSitePremierAddOnSlotSender(req *http.Request) (*htt
 
 // GetSitePremierAddOnSlotResponder handles the response to the GetSitePremierAddOnSlot request. The method always
 // closes the http.Response Body.
-func (client SitesClient) GetSitePremierAddOnSlotResponder(resp *http.Response) (result ObjectSet, err error) {
+func (client SitesClient) GetSitePremierAddOnSlotResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -6330,7 +6334,7 @@ func (client SitesClient) GetSiteSlotsResponder(resp *http.Response) (result Sit
 //
 // subscriptionName is azure subscription webspaceName is webspace name is
 // website Name
-func (client SitesClient) GetSiteSnapshots(subscriptionName string, webspaceName string, name string, resourceGroupName string) (result ObjectSet, err error) {
+func (client SitesClient) GetSiteSnapshots(subscriptionName string, webspaceName string, name string, resourceGroupName string) (result SetObject, err error) {
 	req, err := client.GetSiteSnapshotsPreparer(subscriptionName, webspaceName, name, resourceGroupName)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web/SitesClient", "GetSiteSnapshots", nil, "Failure preparing request")
@@ -6381,7 +6385,7 @@ func (client SitesClient) GetSiteSnapshotsSender(req *http.Request) (*http.Respo
 
 // GetSiteSnapshotsResponder handles the response to the GetSiteSnapshots request. The method always
 // closes the http.Response Body.
-func (client SitesClient) GetSiteSnapshotsResponder(resp *http.Response) (result ObjectSet, err error) {
+func (client SitesClient) GetSiteSnapshotsResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -6396,7 +6400,7 @@ func (client SitesClient) GetSiteSnapshotsResponder(resp *http.Response) (result
 //
 // subscriptionName is azure subscription webspaceName is webspace name is
 // website Name
-func (client SitesClient) GetSiteSnapshotsOnSku(subscriptionName string, webspaceName string, name string, resourceGroupName string) (result ObjectSet, err error) {
+func (client SitesClient) GetSiteSnapshotsOnSku(subscriptionName string, webspaceName string, name string, resourceGroupName string) (result SetObject, err error) {
 	req, err := client.GetSiteSnapshotsOnSkuPreparer(subscriptionName, webspaceName, name, resourceGroupName)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web/SitesClient", "GetSiteSnapshotsOnSku", nil, "Failure preparing request")
@@ -6447,7 +6451,7 @@ func (client SitesClient) GetSiteSnapshotsOnSkuSender(req *http.Request) (*http.
 
 // GetSiteSnapshotsOnSkuResponder handles the response to the GetSiteSnapshotsOnSku request. The method always
 // closes the http.Response Body.
-func (client SitesClient) GetSiteSnapshotsOnSkuResponder(resp *http.Response) (result ObjectSet, err error) {
+func (client SitesClient) GetSiteSnapshotsOnSkuResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -6462,7 +6466,7 @@ func (client SitesClient) GetSiteSnapshotsOnSkuResponder(resp *http.Response) (r
 //
 // subscriptionName is azure subscription webspaceName is webspace name is
 // website Name
-func (client SitesClient) GetSiteSnapshotsOnSkuSlot(subscriptionName string, webspaceName string, name string, resourceGroupName string, slot string) (result ObjectSet, err error) {
+func (client SitesClient) GetSiteSnapshotsOnSkuSlot(subscriptionName string, webspaceName string, name string, resourceGroupName string, slot string) (result SetObject, err error) {
 	req, err := client.GetSiteSnapshotsOnSkuSlotPreparer(subscriptionName, webspaceName, name, resourceGroupName, slot)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web/SitesClient", "GetSiteSnapshotsOnSkuSlot", nil, "Failure preparing request")
@@ -6514,7 +6518,7 @@ func (client SitesClient) GetSiteSnapshotsOnSkuSlotSender(req *http.Request) (*h
 
 // GetSiteSnapshotsOnSkuSlotResponder handles the response to the GetSiteSnapshotsOnSkuSlot request. The method always
 // closes the http.Response Body.
-func (client SitesClient) GetSiteSnapshotsOnSkuSlotResponder(resp *http.Response) (result ObjectSet, err error) {
+func (client SitesClient) GetSiteSnapshotsOnSkuSlotResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -6529,7 +6533,7 @@ func (client SitesClient) GetSiteSnapshotsOnSkuSlotResponder(resp *http.Response
 //
 // subscriptionName is azure subscription webspaceName is webspace name is
 // website Name
-func (client SitesClient) GetSiteSnapshotsSlot(subscriptionName string, webspaceName string, name string, resourceGroupName string, slot string) (result ObjectSet, err error) {
+func (client SitesClient) GetSiteSnapshotsSlot(subscriptionName string, webspaceName string, name string, resourceGroupName string, slot string) (result SetObject, err error) {
 	req, err := client.GetSiteSnapshotsSlotPreparer(subscriptionName, webspaceName, name, resourceGroupName, slot)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web/SitesClient", "GetSiteSnapshotsSlot", nil, "Failure preparing request")
@@ -6581,7 +6585,7 @@ func (client SitesClient) GetSiteSnapshotsSlotSender(req *http.Request) (*http.R
 
 // GetSiteSnapshotsSlotResponder handles the response to the GetSiteSnapshotsSlot request. The method always
 // closes the http.Response Body.
-func (client SitesClient) GetSiteSnapshotsSlotResponder(resp *http.Response) (result ObjectSet, err error) {
+func (client SitesClient) GetSiteSnapshotsSlotResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -6934,7 +6938,7 @@ func (client SitesClient) GetSiteVNETConnectionResponder(resp *http.Response) (r
 //
 // resourceGroupName is the resource group name name is the name of the web
 // app
-func (client SitesClient) GetSiteVNETConnections(resourceGroupName string, name string) (result VnetInfoList, err error) {
+func (client SitesClient) GetSiteVNETConnections(resourceGroupName string, name string) (result ListVnetInfo, err error) {
 	req, err := client.GetSiteVNETConnectionsPreparer(resourceGroupName, name)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web/SitesClient", "GetSiteVNETConnections", nil, "Failure preparing request")
@@ -6983,7 +6987,7 @@ func (client SitesClient) GetSiteVNETConnectionsSender(req *http.Request) (*http
 
 // GetSiteVNETConnectionsResponder handles the response to the GetSiteVNETConnections request. The method always
 // closes the http.Response Body.
-func (client SitesClient) GetSiteVNETConnectionsResponder(resp *http.Response) (result VnetInfoList, err error) {
+func (client SitesClient) GetSiteVNETConnectionsResponder(resp *http.Response) (result ListVnetInfo, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -7065,7 +7069,7 @@ func (client SitesClient) GetSiteVNETConnectionSlotResponder(resp *http.Response
 //
 // resourceGroupName is the resource group name name is the name of the web
 // app slot is the name of the slot for this web app.
-func (client SitesClient) GetSiteVNETConnectionsSlot(resourceGroupName string, name string, slot string) (result VnetInfoList, err error) {
+func (client SitesClient) GetSiteVNETConnectionsSlot(resourceGroupName string, name string, slot string) (result ListVnetInfo, err error) {
 	req, err := client.GetSiteVNETConnectionsSlotPreparer(resourceGroupName, name, slot)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web/SitesClient", "GetSiteVNETConnectionsSlot", nil, "Failure preparing request")
@@ -7115,7 +7119,7 @@ func (client SitesClient) GetSiteVNETConnectionsSlotSender(req *http.Request) (*
 
 // GetSiteVNETConnectionsSlotResponder handles the response to the GetSiteVNETConnectionsSlot request. The method always
 // closes the http.Response Body.
-func (client SitesClient) GetSiteVNETConnectionsSlotResponder(resp *http.Response) (result VnetInfoList, err error) {
+func (client SitesClient) GetSiteVNETConnectionsSlotResponder(resp *http.Response) (result ListVnetInfo, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -7131,7 +7135,7 @@ func (client SitesClient) GetSiteVNETConnectionsSlotResponder(resp *http.Respons
 // resourceGroupName is the resource group name name is the name of the web
 // app vnetName is the name of the Virtual Network gatewayName is the name of
 // the gateway. The only gateway that exists presently is "primary"
-func (client SitesClient) GetSiteVnetGateway(resourceGroupName string, name string, vnetName string, gatewayName string) (result ObjectSet, err error) {
+func (client SitesClient) GetSiteVnetGateway(resourceGroupName string, name string, vnetName string, gatewayName string) (result SetObject, err error) {
 	req, err := client.GetSiteVnetGatewayPreparer(resourceGroupName, name, vnetName, gatewayName)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web/SitesClient", "GetSiteVnetGateway", nil, "Failure preparing request")
@@ -7182,7 +7186,7 @@ func (client SitesClient) GetSiteVnetGatewaySender(req *http.Request) (*http.Res
 
 // GetSiteVnetGatewayResponder handles the response to the GetSiteVnetGateway request. The method always
 // closes the http.Response Body.
-func (client SitesClient) GetSiteVnetGatewayResponder(resp *http.Response) (result ObjectSet, err error) {
+func (client SitesClient) GetSiteVnetGatewayResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -7199,7 +7203,7 @@ func (client SitesClient) GetSiteVnetGatewayResponder(resp *http.Response) (resu
 // app vnetName is the name of the Virtual Network gatewayName is the name of
 // the gateway. The only gateway that exists presently is "primary" slot is
 // the name of the slot for this web app.
-func (client SitesClient) GetSiteVnetGatewaySlot(resourceGroupName string, name string, vnetName string, gatewayName string, slot string) (result ObjectSet, err error) {
+func (client SitesClient) GetSiteVnetGatewaySlot(resourceGroupName string, name string, vnetName string, gatewayName string, slot string) (result SetObject, err error) {
 	req, err := client.GetSiteVnetGatewaySlotPreparer(resourceGroupName, name, vnetName, gatewayName, slot)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web/SitesClient", "GetSiteVnetGatewaySlot", nil, "Failure preparing request")
@@ -7251,7 +7255,7 @@ func (client SitesClient) GetSiteVnetGatewaySlotSender(req *http.Request) (*http
 
 // GetSiteVnetGatewaySlotResponder handles the response to the GetSiteVnetGatewaySlot request. The method always
 // closes the http.Response Body.
-func (client SitesClient) GetSiteVnetGatewaySlotResponder(resp *http.Response) (result ObjectSet, err error) {
+func (client SitesClient) GetSiteVnetGatewaySlotResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -8367,7 +8371,7 @@ func (client SitesClient) ListSiteMetadataSlotResponder(resp *http.Response) (re
 
 // ListSitePremierAddOns sends the list site premier add ons request.
 //
-func (client SitesClient) ListSitePremierAddOns(resourceGroupName string, name string) (result ObjectSet, err error) {
+func (client SitesClient) ListSitePremierAddOns(resourceGroupName string, name string) (result SetObject, err error) {
 	req, err := client.ListSitePremierAddOnsPreparer(resourceGroupName, name)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web/SitesClient", "ListSitePremierAddOns", nil, "Failure preparing request")
@@ -8416,7 +8420,7 @@ func (client SitesClient) ListSitePremierAddOnsSender(req *http.Request) (*http.
 
 // ListSitePremierAddOnsResponder handles the response to the ListSitePremierAddOns request. The method always
 // closes the http.Response Body.
-func (client SitesClient) ListSitePremierAddOnsResponder(resp *http.Response) (result ObjectSet, err error) {
+func (client SitesClient) ListSitePremierAddOnsResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -8429,7 +8433,7 @@ func (client SitesClient) ListSitePremierAddOnsResponder(resp *http.Response) (r
 
 // ListSitePremierAddOnsSlot sends the list site premier add ons slot request.
 //
-func (client SitesClient) ListSitePremierAddOnsSlot(resourceGroupName string, name string, slot string) (result ObjectSet, err error) {
+func (client SitesClient) ListSitePremierAddOnsSlot(resourceGroupName string, name string, slot string) (result SetObject, err error) {
 	req, err := client.ListSitePremierAddOnsSlotPreparer(resourceGroupName, name, slot)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web/SitesClient", "ListSitePremierAddOnsSlot", nil, "Failure preparing request")
@@ -8479,7 +8483,7 @@ func (client SitesClient) ListSitePremierAddOnsSlotSender(req *http.Request) (*h
 
 // ListSitePremierAddOnsSlotResponder handles the response to the ListSitePremierAddOnsSlot request. The method always
 // closes the http.Response Body.
-func (client SitesClient) ListSitePremierAddOnsSlotResponder(resp *http.Response) (result ObjectSet, err error) {
+func (client SitesClient) ListSitePremierAddOnsSlotResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -8491,11 +8495,13 @@ func (client SitesClient) ListSitePremierAddOnsSlotResponder(resp *http.Response
 }
 
 // ListSitePublishingCredentials sends the list site publishing credentials
-// request.
+// request. This method may poll for completion. Polling can be canceled by
+// passing the cancel channel argument. The channel will be used to cancel
+// polling and any outstanding HTTP requests.
 //
 // resourceGroupName is name of resource group name is name of web app
-func (client SitesClient) ListSitePublishingCredentials(resourceGroupName string, name string) (result autorest.Response, err error) {
-	req, err := client.ListSitePublishingCredentialsPreparer(resourceGroupName, name)
+func (client SitesClient) ListSitePublishingCredentials(resourceGroupName string, name string, cancel <-chan struct{}) (result autorest.Response, err error) {
+	req, err := client.ListSitePublishingCredentialsPreparer(resourceGroupName, name, cancel)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web/SitesClient", "ListSitePublishingCredentials", nil, "Failure preparing request")
 	}
@@ -8515,7 +8521,7 @@ func (client SitesClient) ListSitePublishingCredentials(resourceGroupName string
 }
 
 // ListSitePublishingCredentialsPreparer prepares the ListSitePublishingCredentials request.
-func (client SitesClient) ListSitePublishingCredentialsPreparer(resourceGroupName string, name string) (*http.Request, error) {
+func (client SitesClient) ListSitePublishingCredentialsPreparer(resourceGroupName string, name string, cancel <-chan struct{}) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"name":              url.QueryEscape(name),
 		"resourceGroupName": url.QueryEscape(resourceGroupName),
@@ -8526,7 +8532,7 @@ func (client SitesClient) ListSitePublishingCredentialsPreparer(resourceGroupNam
 		"api-version": APIVersion,
 	}
 
-	return autorest.Prepare(&http.Request{},
+	return autorest.Prepare(&http.Request{Cancel: cancel},
 		autorest.AsJSON(),
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -8540,8 +8546,7 @@ func (client SitesClient) ListSitePublishingCredentialsPreparer(resourceGroupNam
 func (client SitesClient) ListSitePublishingCredentialsSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client,
 		req,
-		azure.DoPollForAsynchronous(autorest.DefaultPollingDuration,
-			autorest.DefaultPollingDelay))
+		azure.DoPollForAsynchronous(client.PollingDelay))
 }
 
 // ListSitePublishingCredentialsResponder handles the response to the ListSitePublishingCredentials request. The method always
@@ -8557,13 +8562,15 @@ func (client SitesClient) ListSitePublishingCredentialsResponder(resp *http.Resp
 }
 
 // ListSitePublishingCredentialsSlot sends the list site publishing
-// credentials slot request.
+// credentials slot request. This method may poll for completion. Polling can
+// be canceled by passing the cancel channel argument. The channel will be
+// used to cancel polling and any outstanding HTTP requests.
 //
 // resourceGroupName is name of resource group name is name of web app slot is
 // name of web app slot. If not specified then will default to production
 // slot.
-func (client SitesClient) ListSitePublishingCredentialsSlot(resourceGroupName string, name string, slot string) (result autorest.Response, err error) {
-	req, err := client.ListSitePublishingCredentialsSlotPreparer(resourceGroupName, name, slot)
+func (client SitesClient) ListSitePublishingCredentialsSlot(resourceGroupName string, name string, slot string, cancel <-chan struct{}) (result autorest.Response, err error) {
+	req, err := client.ListSitePublishingCredentialsSlotPreparer(resourceGroupName, name, slot, cancel)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web/SitesClient", "ListSitePublishingCredentialsSlot", nil, "Failure preparing request")
 	}
@@ -8583,7 +8590,7 @@ func (client SitesClient) ListSitePublishingCredentialsSlot(resourceGroupName st
 }
 
 // ListSitePublishingCredentialsSlotPreparer prepares the ListSitePublishingCredentialsSlot request.
-func (client SitesClient) ListSitePublishingCredentialsSlotPreparer(resourceGroupName string, name string, slot string) (*http.Request, error) {
+func (client SitesClient) ListSitePublishingCredentialsSlotPreparer(resourceGroupName string, name string, slot string, cancel <-chan struct{}) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"name":              url.QueryEscape(name),
 		"resourceGroupName": url.QueryEscape(resourceGroupName),
@@ -8595,7 +8602,7 @@ func (client SitesClient) ListSitePublishingCredentialsSlotPreparer(resourceGrou
 		"api-version": APIVersion,
 	}
 
-	return autorest.Prepare(&http.Request{},
+	return autorest.Prepare(&http.Request{Cancel: cancel},
 		autorest.AsJSON(),
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -8609,8 +8616,7 @@ func (client SitesClient) ListSitePublishingCredentialsSlotPreparer(resourceGrou
 func (client SitesClient) ListSitePublishingCredentialsSlotSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client,
 		req,
-		azure.DoPollForAsynchronous(autorest.DefaultPollingDuration,
-			autorest.DefaultPollingDelay))
+		azure.DoPollForAsynchronous(client.PollingDelay))
 }
 
 // ListSitePublishingCredentialsSlotResponder handles the response to the ListSitePublishingCredentialsSlot request. The method always
@@ -8682,12 +8688,12 @@ func (client SitesClient) ListSitePublishingProfileXMLSender(req *http.Request) 
 // ListSitePublishingProfileXMLResponder handles the response to the ListSitePublishingProfileXML request. The method always
 // closes the http.Response Body.
 func (client SitesClient) ListSitePublishingProfileXMLResponder(resp *http.Response) (result ReadCloser, err error) {
+	result.Value = &resp.Body
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result.Value),
-		autorest.ByClosing())
+		autorest.ByUnmarshallingJSON(&result.Value))
 	result.Response = autorest.Response{Response: resp}
 	return
 }
@@ -8752,12 +8758,12 @@ func (client SitesClient) ListSitePublishingProfileXMLSlotSender(req *http.Reque
 // ListSitePublishingProfileXMLSlotResponder handles the response to the ListSitePublishingProfileXMLSlot request. The method always
 // closes the http.Response Body.
 func (client SitesClient) ListSitePublishingProfileXMLSlotResponder(resp *http.Response) (result ReadCloser, err error) {
+	result.Value = &resp.Body
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result.Value),
-		autorest.ByClosing())
+		autorest.ByUnmarshallingJSON(&result.Value))
 	result.Response = autorest.Response{Response: resp}
 	return
 }
@@ -8898,7 +8904,7 @@ func (client SitesClient) ListSiteRelayServiceConnectionsSlotResponder(resp *htt
 // resourceGroupName is name of resource group name is name of web app
 // snapshot is snapshot data used for web app recovery. Snapshot information
 // can be obtained by call GetDeletedSites API.
-func (client SitesClient) RecoverSite(resourceGroupName string, name string, snapshot CsmSiteRecoveryEntity) (result ObjectSet, err error) {
+func (client SitesClient) RecoverSite(resourceGroupName string, name string, snapshot CsmSiteRecoveryEntity) (result SetObject, err error) {
 	req, err := client.RecoverSitePreparer(resourceGroupName, name, snapshot)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web/SitesClient", "RecoverSite", nil, "Failure preparing request")
@@ -8948,7 +8954,7 @@ func (client SitesClient) RecoverSiteSender(req *http.Request) (*http.Response, 
 
 // RecoverSiteResponder handles the response to the RecoverSite request. The method always
 // closes the http.Response Body.
-func (client SitesClient) RecoverSiteResponder(resp *http.Response) (result ObjectSet, err error) {
+func (client SitesClient) RecoverSiteResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -8965,7 +8971,7 @@ func (client SitesClient) RecoverSiteResponder(resp *http.Response) (result Obje
 // snapshot is snapshot data used for web app recovery. Snapshot information
 // can be obtained by call GetDeletedSites API. slot is name of web app slot.
 // If not specified then will default to production slot.
-func (client SitesClient) RecoverSiteSlot(resourceGroupName string, name string, snapshot CsmSiteRecoveryEntity, slot string) (result ObjectSet, err error) {
+func (client SitesClient) RecoverSiteSlot(resourceGroupName string, name string, snapshot CsmSiteRecoveryEntity, slot string) (result SetObject, err error) {
 	req, err := client.RecoverSiteSlotPreparer(resourceGroupName, name, snapshot, slot)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web/SitesClient", "RecoverSiteSlot", nil, "Failure preparing request")
@@ -9016,7 +9022,7 @@ func (client SitesClient) RecoverSiteSlotSender(req *http.Request) (*http.Respon
 
 // RecoverSiteSlotResponder handles the response to the RecoverSiteSlot request. The method always
 // closes the http.Response Body.
-func (client SitesClient) RecoverSiteSlotResponder(resp *http.Response) (result ObjectSet, err error) {
+func (client SitesClient) RecoverSiteSlotResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -9030,7 +9036,7 @@ func (client SitesClient) RecoverSiteSlotResponder(resp *http.Response) (result 
 // ResetProductionSlotConfig sends the reset production slot config request.
 //
 // resourceGroupName is name of resource group name is name of web app
-func (client SitesClient) ResetProductionSlotConfig(resourceGroupName string, name string) (result ObjectSet, err error) {
+func (client SitesClient) ResetProductionSlotConfig(resourceGroupName string, name string) (result SetObject, err error) {
 	req, err := client.ResetProductionSlotConfigPreparer(resourceGroupName, name)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web/SitesClient", "ResetProductionSlotConfig", nil, "Failure preparing request")
@@ -9079,7 +9085,7 @@ func (client SitesClient) ResetProductionSlotConfigSender(req *http.Request) (*h
 
 // ResetProductionSlotConfigResponder handles the response to the ResetProductionSlotConfig request. The method always
 // closes the http.Response Body.
-func (client SitesClient) ResetProductionSlotConfigResponder(resp *http.Response) (result ObjectSet, err error) {
+func (client SitesClient) ResetProductionSlotConfigResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -9095,7 +9101,7 @@ func (client SitesClient) ResetProductionSlotConfigResponder(resp *http.Response
 // resourceGroupName is name of resource group name is name of web app slot is
 // name of web app slot. If not specified then will default to production
 // slot.
-func (client SitesClient) ResetSlotConfigSlot(resourceGroupName string, name string, slot string) (result ObjectSet, err error) {
+func (client SitesClient) ResetSlotConfigSlot(resourceGroupName string, name string, slot string) (result SetObject, err error) {
 	req, err := client.ResetSlotConfigSlotPreparer(resourceGroupName, name, slot)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web/SitesClient", "ResetSlotConfigSlot", nil, "Failure preparing request")
@@ -9145,7 +9151,7 @@ func (client SitesClient) ResetSlotConfigSlotSender(req *http.Request) (*http.Re
 
 // ResetSlotConfigSlotResponder handles the response to the ResetSlotConfigSlot request. The method always
 // closes the http.Response Body.
-func (client SitesClient) ResetSlotConfigSlotResponder(resp *http.Response) (result ObjectSet, err error) {
+func (client SitesClient) ResetSlotConfigSlotResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -9163,7 +9169,7 @@ func (client SitesClient) ResetSlotConfigSlotResponder(resp *http.Response) (res
 // restarts the app if necessary. Hard restart always restarts and
 // reprovisions the app synchronous is if true then the API will block until
 // the app has been restarted
-func (client SitesClient) RestartSite(resourceGroupName string, name string, softRestart *bool, synchronous *bool) (result ObjectSet, err error) {
+func (client SitesClient) RestartSite(resourceGroupName string, name string, softRestart *bool, synchronous *bool) (result SetObject, err error) {
 	req, err := client.RestartSitePreparer(resourceGroupName, name, softRestart, synchronous)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web/SitesClient", "RestartSite", nil, "Failure preparing request")
@@ -9218,7 +9224,7 @@ func (client SitesClient) RestartSiteSender(req *http.Request) (*http.Response, 
 
 // RestartSiteResponder handles the response to the RestartSite request. The method always
 // closes the http.Response Body.
-func (client SitesClient) RestartSiteResponder(resp *http.Response) (result ObjectSet, err error) {
+func (client SitesClient) RestartSiteResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -9237,7 +9243,7 @@ func (client SitesClient) RestartSiteResponder(resp *http.Response) (result Obje
 // restarts the app if necessary. Hard restart always restarts and
 // reprovisions the app synchronous is if true then the API will block until
 // the app has been restarted
-func (client SitesClient) RestartSiteSlot(resourceGroupName string, name string, slot string, softRestart *bool, synchronous *bool) (result ObjectSet, err error) {
+func (client SitesClient) RestartSiteSlot(resourceGroupName string, name string, slot string, softRestart *bool, synchronous *bool) (result SetObject, err error) {
 	req, err := client.RestartSiteSlotPreparer(resourceGroupName, name, slot, softRestart, synchronous)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web/SitesClient", "RestartSiteSlot", nil, "Failure preparing request")
@@ -9293,7 +9299,7 @@ func (client SitesClient) RestartSiteSlotSender(req *http.Request) (*http.Respon
 
 // RestartSiteSlotResponder handles the response to the RestartSiteSlot request. The method always
 // closes the http.Response Body.
-func (client SitesClient) RestartSiteSlotResponder(resp *http.Response) (result ObjectSet, err error) {
+func (client SitesClient) RestartSiteSlotResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -9443,7 +9449,7 @@ func (client SitesClient) RestoreSiteSlotResponder(resp *http.Response) (result 
 // StartSite sends the start site request.
 //
 // resourceGroupName is name of resource group name is name of web app
-func (client SitesClient) StartSite(resourceGroupName string, name string) (result ObjectSet, err error) {
+func (client SitesClient) StartSite(resourceGroupName string, name string) (result SetObject, err error) {
 	req, err := client.StartSitePreparer(resourceGroupName, name)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web/SitesClient", "StartSite", nil, "Failure preparing request")
@@ -9492,7 +9498,7 @@ func (client SitesClient) StartSiteSender(req *http.Request) (*http.Response, er
 
 // StartSiteResponder handles the response to the StartSite request. The method always
 // closes the http.Response Body.
-func (client SitesClient) StartSiteResponder(resp *http.Response) (result ObjectSet, err error) {
+func (client SitesClient) StartSiteResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -9508,7 +9514,7 @@ func (client SitesClient) StartSiteResponder(resp *http.Response) (result Object
 // resourceGroupName is name of resource group name is name of web app slot is
 // name of web app slot. If not specified then will default to production
 // slot.
-func (client SitesClient) StartSiteSlot(resourceGroupName string, name string, slot string) (result ObjectSet, err error) {
+func (client SitesClient) StartSiteSlot(resourceGroupName string, name string, slot string) (result SetObject, err error) {
 	req, err := client.StartSiteSlotPreparer(resourceGroupName, name, slot)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web/SitesClient", "StartSiteSlot", nil, "Failure preparing request")
@@ -9558,7 +9564,7 @@ func (client SitesClient) StartSiteSlotSender(req *http.Request) (*http.Response
 
 // StartSiteSlotResponder handles the response to the StartSiteSlot request. The method always
 // closes the http.Response Body.
-func (client SitesClient) StartSiteSlotResponder(resp *http.Response) (result ObjectSet, err error) {
+func (client SitesClient) StartSiteSlotResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -9572,7 +9578,7 @@ func (client SitesClient) StartSiteSlotResponder(resp *http.Response) (result Ob
 // StopSite sends the stop site request.
 //
 // resourceGroupName is name of resource group name is name of web app
-func (client SitesClient) StopSite(resourceGroupName string, name string) (result ObjectSet, err error) {
+func (client SitesClient) StopSite(resourceGroupName string, name string) (result SetObject, err error) {
 	req, err := client.StopSitePreparer(resourceGroupName, name)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web/SitesClient", "StopSite", nil, "Failure preparing request")
@@ -9621,7 +9627,7 @@ func (client SitesClient) StopSiteSender(req *http.Request) (*http.Response, err
 
 // StopSiteResponder handles the response to the StopSite request. The method always
 // closes the http.Response Body.
-func (client SitesClient) StopSiteResponder(resp *http.Response) (result ObjectSet, err error) {
+func (client SitesClient) StopSiteResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -9637,7 +9643,7 @@ func (client SitesClient) StopSiteResponder(resp *http.Response) (result ObjectS
 // resourceGroupName is name of resource group name is name of web app slot is
 // name of web app slot. If not specified then will default to production
 // slot.
-func (client SitesClient) StopSiteSlot(resourceGroupName string, name string, slot string) (result ObjectSet, err error) {
+func (client SitesClient) StopSiteSlot(resourceGroupName string, name string, slot string) (result SetObject, err error) {
 	req, err := client.StopSiteSlotPreparer(resourceGroupName, name, slot)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web/SitesClient", "StopSiteSlot", nil, "Failure preparing request")
@@ -9687,7 +9693,7 @@ func (client SitesClient) StopSiteSlotSender(req *http.Request) (*http.Response,
 
 // StopSiteSlotResponder handles the response to the StopSiteSlot request. The method always
 // closes the http.Response Body.
-func (client SitesClient) StopSiteSlotResponder(resp *http.Response) (result ObjectSet, err error) {
+func (client SitesClient) StopSiteSlotResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -9703,7 +9709,7 @@ func (client SitesClient) StopSiteSlotResponder(resp *http.Response) (result Obj
 // resourceGroupName is name of resource group name is name of web app
 // slotSwapEntity is request body that contains the target slot name slot is
 // name of source slot for the swap
-func (client SitesClient) SwapSlotsSlot(resourceGroupName string, name string, slotSwapEntity CsmSlotEntity, slot string) (result ObjectSet, err error) {
+func (client SitesClient) SwapSlotsSlot(resourceGroupName string, name string, slotSwapEntity CsmSlotEntity, slot string) (result SetObject, err error) {
 	req, err := client.SwapSlotsSlotPreparer(resourceGroupName, name, slotSwapEntity, slot)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web/SitesClient", "SwapSlotsSlot", nil, "Failure preparing request")
@@ -9754,7 +9760,7 @@ func (client SitesClient) SwapSlotsSlotSender(req *http.Request) (*http.Response
 
 // SwapSlotsSlotResponder handles the response to the SwapSlotsSlot request. The method always
 // closes the http.Response Body.
-func (client SitesClient) SwapSlotsSlotResponder(resp *http.Response) (result ObjectSet, err error) {
+func (client SitesClient) SwapSlotsSlotResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -9769,7 +9775,7 @@ func (client SitesClient) SwapSlotsSlotResponder(resp *http.Response) (result Ob
 //
 // resourceGroupName is name of resource group name is name of web app
 // slotSwapEntity is request body that contains the target slot name
-func (client SitesClient) SwapSlotWithProduction(resourceGroupName string, name string, slotSwapEntity CsmSlotEntity) (result ObjectSet, err error) {
+func (client SitesClient) SwapSlotWithProduction(resourceGroupName string, name string, slotSwapEntity CsmSlotEntity) (result SetObject, err error) {
 	req, err := client.SwapSlotWithProductionPreparer(resourceGroupName, name, slotSwapEntity)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web/SitesClient", "SwapSlotWithProduction", nil, "Failure preparing request")
@@ -9819,7 +9825,7 @@ func (client SitesClient) SwapSlotWithProductionSender(req *http.Request) (*http
 
 // SwapSlotWithProductionResponder handles the response to the SwapSlotWithProduction request. The method always
 // closes the http.Response Body.
-func (client SitesClient) SwapSlotWithProductionResponder(resp *http.Response) (result ObjectSet, err error) {
+func (client SitesClient) SwapSlotWithProductionResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -9832,7 +9838,7 @@ func (client SitesClient) SwapSlotWithProductionResponder(resp *http.Response) (
 
 // SyncSiteRepository sends the sync site repository request.
 //
-func (client SitesClient) SyncSiteRepository(resourceGroupName string, name string) (result ObjectSet, err error) {
+func (client SitesClient) SyncSiteRepository(resourceGroupName string, name string) (result SetObject, err error) {
 	req, err := client.SyncSiteRepositoryPreparer(resourceGroupName, name)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web/SitesClient", "SyncSiteRepository", nil, "Failure preparing request")
@@ -9881,7 +9887,7 @@ func (client SitesClient) SyncSiteRepositorySender(req *http.Request) (*http.Res
 
 // SyncSiteRepositoryResponder handles the response to the SyncSiteRepository request. The method always
 // closes the http.Response Body.
-func (client SitesClient) SyncSiteRepositoryResponder(resp *http.Response) (result ObjectSet, err error) {
+func (client SitesClient) SyncSiteRepositoryResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -9894,7 +9900,7 @@ func (client SitesClient) SyncSiteRepositoryResponder(resp *http.Response) (resu
 
 // SyncSiteRepositorySlot sends the sync site repository slot request.
 //
-func (client SitesClient) SyncSiteRepositorySlot(resourceGroupName string, name string, slot string) (result ObjectSet, err error) {
+func (client SitesClient) SyncSiteRepositorySlot(resourceGroupName string, name string, slot string) (result SetObject, err error) {
 	req, err := client.SyncSiteRepositorySlotPreparer(resourceGroupName, name, slot)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web/SitesClient", "SyncSiteRepositorySlot", nil, "Failure preparing request")
@@ -9944,7 +9950,7 @@ func (client SitesClient) SyncSiteRepositorySlotSender(req *http.Request) (*http
 
 // SyncSiteRepositorySlotResponder handles the response to the SyncSiteRepositorySlot request. The method always
 // closes the http.Response Body.
-func (client SitesClient) SyncSiteRepositorySlotResponder(resp *http.Response) (result ObjectSet, err error) {
+func (client SitesClient) SyncSiteRepositorySlotResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

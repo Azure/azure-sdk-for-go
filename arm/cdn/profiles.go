@@ -45,14 +45,16 @@ func NewProfilesClientWithBaseURI(baseURI string, subscriptionID string) Profile
 	return ProfilesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// Create sends the create request.
+// Create sends the create request. This method may poll for completion.
+// Polling can be canceled by passing the cancel channel argument. The
+// channel will be used to cancel polling and any outstanding HTTP requests.
 //
 // profileName is name of the CDN profile within the resource group
 // profileProperties is profile properties needed for creation
 // resourceGroupName is name of the resource group within the Azure
 // subscription
-func (client ProfilesClient) Create(profileName string, profileProperties ProfileCreateParameters, resourceGroupName string) (result autorest.Response, err error) {
-	req, err := client.CreatePreparer(profileName, profileProperties, resourceGroupName)
+func (client ProfilesClient) Create(profileName string, profileProperties ProfileCreateParameters, resourceGroupName string, cancel <-chan struct{}) (result autorest.Response, err error) {
+	req, err := client.CreatePreparer(profileName, profileProperties, resourceGroupName, cancel)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "cdn/ProfilesClient", "Create", nil, "Failure preparing request")
 	}
@@ -72,7 +74,7 @@ func (client ProfilesClient) Create(profileName string, profileProperties Profil
 }
 
 // CreatePreparer prepares the Create request.
-func (client ProfilesClient) CreatePreparer(profileName string, profileProperties ProfileCreateParameters, resourceGroupName string) (*http.Request, error) {
+func (client ProfilesClient) CreatePreparer(profileName string, profileProperties ProfileCreateParameters, resourceGroupName string, cancel <-chan struct{}) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"profileName":       url.QueryEscape(profileName),
 		"resourceGroupName": url.QueryEscape(resourceGroupName),
@@ -83,7 +85,7 @@ func (client ProfilesClient) CreatePreparer(profileName string, profilePropertie
 		"api-version": APIVersion,
 	}
 
-	return autorest.Prepare(&http.Request{},
+	return autorest.Prepare(&http.Request{Cancel: cancel},
 		autorest.AsJSON(),
 		autorest.AsPut(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -98,8 +100,7 @@ func (client ProfilesClient) CreatePreparer(profileName string, profilePropertie
 func (client ProfilesClient) CreateSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client,
 		req,
-		azure.DoPollForAsynchronous(autorest.DefaultPollingDuration,
-			autorest.DefaultPollingDelay))
+		azure.DoPollForAsynchronous(client.PollingDelay))
 }
 
 // CreateResponder handles the response to the Create request. The method always
@@ -114,13 +115,16 @@ func (client ProfilesClient) CreateResponder(resp *http.Response) (result autore
 	return
 }
 
-// DeleteIfExists sends the delete if exists request.
+// DeleteIfExists sends the delete if exists request. This method may poll for
+// completion. Polling can be canceled by passing the cancel channel
+// argument. The channel will be used to cancel polling and any outstanding
+// HTTP requests.
 //
 // profileName is name of the CDN profile within the resource group
 // resourceGroupName is name of the resource group within the Azure
 // subscription
-func (client ProfilesClient) DeleteIfExists(profileName string, resourceGroupName string) (result autorest.Response, err error) {
-	req, err := client.DeleteIfExistsPreparer(profileName, resourceGroupName)
+func (client ProfilesClient) DeleteIfExists(profileName string, resourceGroupName string, cancel <-chan struct{}) (result autorest.Response, err error) {
+	req, err := client.DeleteIfExistsPreparer(profileName, resourceGroupName, cancel)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "cdn/ProfilesClient", "DeleteIfExists", nil, "Failure preparing request")
 	}
@@ -140,7 +144,7 @@ func (client ProfilesClient) DeleteIfExists(profileName string, resourceGroupNam
 }
 
 // DeleteIfExistsPreparer prepares the DeleteIfExists request.
-func (client ProfilesClient) DeleteIfExistsPreparer(profileName string, resourceGroupName string) (*http.Request, error) {
+func (client ProfilesClient) DeleteIfExistsPreparer(profileName string, resourceGroupName string, cancel <-chan struct{}) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"profileName":       url.QueryEscape(profileName),
 		"resourceGroupName": url.QueryEscape(resourceGroupName),
@@ -151,7 +155,7 @@ func (client ProfilesClient) DeleteIfExistsPreparer(profileName string, resource
 		"api-version": APIVersion,
 	}
 
-	return autorest.Prepare(&http.Request{},
+	return autorest.Prepare(&http.Request{Cancel: cancel},
 		autorest.AsJSON(),
 		autorest.AsDelete(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -165,8 +169,7 @@ func (client ProfilesClient) DeleteIfExistsPreparer(profileName string, resource
 func (client ProfilesClient) DeleteIfExistsSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client,
 		req,
-		azure.DoPollForAsynchronous(autorest.DefaultPollingDuration,
-			autorest.DefaultPollingDelay))
+		azure.DoPollForAsynchronous(client.PollingDelay))
 }
 
 // DeleteIfExistsResponder handles the response to the DeleteIfExists request. The method always

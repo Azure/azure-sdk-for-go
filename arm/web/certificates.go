@@ -184,7 +184,7 @@ func (client CertificatesClient) CreateOrUpdateCsrResponder(resp *http.Response)
 //
 // resourceGroupName is name of the resource group name is name of the
 // certificate to be deleted.
-func (client CertificatesClient) DeleteCertificate(resourceGroupName string, name string) (result ObjectSet, err error) {
+func (client CertificatesClient) DeleteCertificate(resourceGroupName string, name string) (result SetObject, err error) {
 	req, err := client.DeleteCertificatePreparer(resourceGroupName, name)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web/CertificatesClient", "DeleteCertificate", nil, "Failure preparing request")
@@ -233,7 +233,7 @@ func (client CertificatesClient) DeleteCertificateSender(req *http.Request) (*ht
 
 // DeleteCertificateResponder handles the response to the DeleteCertificate request. The method always
 // closes the http.Response Body.
-func (client CertificatesClient) DeleteCertificateResponder(resp *http.Response) (result ObjectSet, err error) {
+func (client CertificatesClient) DeleteCertificateResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -248,7 +248,7 @@ func (client CertificatesClient) DeleteCertificateResponder(resp *http.Response)
 //
 // resourceGroupName is name of the resource group name is name of the
 // certificate signing request.
-func (client CertificatesClient) DeleteCsr(resourceGroupName string, name string) (result ObjectSet, err error) {
+func (client CertificatesClient) DeleteCsr(resourceGroupName string, name string) (result SetObject, err error) {
 	req, err := client.DeleteCsrPreparer(resourceGroupName, name)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web/CertificatesClient", "DeleteCsr", nil, "Failure preparing request")
@@ -297,7 +297,7 @@ func (client CertificatesClient) DeleteCsrSender(req *http.Request) (*http.Respo
 
 // DeleteCsrResponder handles the response to the DeleteCsr request. The method always
 // closes the http.Response Body.
-func (client CertificatesClient) DeleteCsrResponder(resp *http.Response) (result ObjectSet, err error) {
+func (client CertificatesClient) DeleteCsrResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -501,7 +501,7 @@ func (client CertificatesClient) GetCsrResponder(resp *http.Response) (result Cs
 // GetCsrs sends the get csrs request.
 //
 // resourceGroupName is name of the resource group
-func (client CertificatesClient) GetCsrs(resourceGroupName string) (result CsrList, err error) {
+func (client CertificatesClient) GetCsrs(resourceGroupName string) (result ListCsr, err error) {
 	req, err := client.GetCsrsPreparer(resourceGroupName)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web/CertificatesClient", "GetCsrs", nil, "Failure preparing request")
@@ -549,7 +549,7 @@ func (client CertificatesClient) GetCsrsSender(req *http.Request) (*http.Respons
 
 // GetCsrsResponder handles the response to the GetCsrs request. The method always
 // closes the http.Response Body.
-func (client CertificatesClient) GetCsrsResponder(resp *http.Response) (result CsrList, err error) {
+func (client CertificatesClient) GetCsrsResponder(resp *http.Response) (result ListCsr, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

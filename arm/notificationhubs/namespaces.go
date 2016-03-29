@@ -243,12 +243,15 @@ func (client NamespacesClient) CreateOrUpdateAuthorizationRuleResponder(resp *ht
 }
 
 // Delete deletes an existing namespace. This operation also removes all
-// associated notificationHubs under the namespace.
+// associated notificationHubs under the namespace. This method may poll for
+// completion. Polling can be canceled by passing the cancel channel
+// argument. The channel will be used to cancel polling and any outstanding
+// HTTP requests.
 //
 // resourceGroupName is the name of the resource group. namespaceName is the
 // namespace name.
-func (client NamespacesClient) Delete(resourceGroupName string, namespaceName string) (result autorest.Response, err error) {
-	req, err := client.DeletePreparer(resourceGroupName, namespaceName)
+func (client NamespacesClient) Delete(resourceGroupName string, namespaceName string, cancel <-chan struct{}) (result autorest.Response, err error) {
+	req, err := client.DeletePreparer(resourceGroupName, namespaceName, cancel)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "notificationhubs/NamespacesClient", "Delete", nil, "Failure preparing request")
 	}
@@ -268,7 +271,7 @@ func (client NamespacesClient) Delete(resourceGroupName string, namespaceName st
 }
 
 // DeletePreparer prepares the Delete request.
-func (client NamespacesClient) DeletePreparer(resourceGroupName string, namespaceName string) (*http.Request, error) {
+func (client NamespacesClient) DeletePreparer(resourceGroupName string, namespaceName string, cancel <-chan struct{}) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"namespaceName":     url.QueryEscape(namespaceName),
 		"resourceGroupName": url.QueryEscape(resourceGroupName),
@@ -279,7 +282,7 @@ func (client NamespacesClient) DeletePreparer(resourceGroupName string, namespac
 		"api-version": APIVersion,
 	}
 
-	return autorest.Prepare(&http.Request{},
+	return autorest.Prepare(&http.Request{Cancel: cancel},
 		autorest.AsJSON(),
 		autorest.AsDelete(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -293,8 +296,7 @@ func (client NamespacesClient) DeletePreparer(resourceGroupName string, namespac
 func (client NamespacesClient) DeleteSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client,
 		req,
-		azure.DoPollForAsynchronous(autorest.DefaultPollingDuration,
-			autorest.DefaultPollingDelay))
+		azure.DoPollForAsynchronous(client.PollingDelay))
 }
 
 // DeleteResponder handles the response to the Delete request. The method always

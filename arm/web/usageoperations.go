@@ -54,7 +54,7 @@ func NewUsageOperationsClientWithBaseURI(baseURI string, subscriptionID string) 
 // resourceGroupName is name of resource group environmentName is environment
 // name lastID is last marker that was returned from the batch batchSize is
 // size of the batch to be returned.
-func (client UsageOperationsClient) GetUsage(resourceGroupName string, environmentName string, lastID string, batchSize int32) (result ObjectSet, err error) {
+func (client UsageOperationsClient) GetUsage(resourceGroupName string, environmentName string, lastID string, batchSize int32) (result SetObject, err error) {
 	req, err := client.GetUsagePreparer(resourceGroupName, environmentName, lastID, batchSize)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web/UsageOperationsClient", "GetUsage", nil, "Failure preparing request")
@@ -105,7 +105,7 @@ func (client UsageOperationsClient) GetUsageSender(req *http.Request) (*http.Res
 
 // GetUsageResponder handles the response to the GetUsage request. The method always
 // closes the http.Response Body.
-func (client UsageOperationsClient) GetUsageResponder(resp *http.Response) (result ObjectSet, err error) {
+func (client UsageOperationsClient) GetUsageResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

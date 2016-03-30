@@ -44,15 +44,17 @@ func NewOriginsClientWithBaseURI(baseURI string, subscriptionID string) OriginsC
 	return OriginsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// Create sends the create request.
+// Create sends the create request. This method may poll for completion.
+// Polling can be canceled by passing the cancel channel argument. The
+// channel will be used to cancel polling and any outstanding HTTP requests.
 //
 // originName is name of the origin, an arbitrary value but it needs to be
 // unique under endpoint originProperties is origin properties endpointName
 // is name of the endpoint within the CDN profile profileName is name of the
 // CDN profile within the resource group resourceGroupName is name of the
 // resource group within the Azure subscription
-func (client OriginsClient) Create(originName string, originProperties OriginParameters, endpointName string, profileName string, resourceGroupName string) (result autorest.Response, err error) {
-	req, err := client.CreatePreparer(originName, originProperties, endpointName, profileName, resourceGroupName)
+func (client OriginsClient) Create(originName string, originProperties OriginParameters, endpointName string, profileName string, resourceGroupName string, cancel <-chan struct{}) (result autorest.Response, err error) {
+	req, err := client.CreatePreparer(originName, originProperties, endpointName, profileName, resourceGroupName, cancel)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "cdn/OriginsClient", "Create", nil, "Failure preparing request")
 	}
@@ -72,7 +74,7 @@ func (client OriginsClient) Create(originName string, originProperties OriginPar
 }
 
 // CreatePreparer prepares the Create request.
-func (client OriginsClient) CreatePreparer(originName string, originProperties OriginParameters, endpointName string, profileName string, resourceGroupName string) (*http.Request, error) {
+func (client OriginsClient) CreatePreparer(originName string, originProperties OriginParameters, endpointName string, profileName string, resourceGroupName string, cancel <-chan struct{}) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"endpointName":      url.QueryEscape(endpointName),
 		"originName":        url.QueryEscape(originName),
@@ -85,7 +87,7 @@ func (client OriginsClient) CreatePreparer(originName string, originProperties O
 		"api-version": APIVersion,
 	}
 
-	return autorest.Prepare(&http.Request{},
+	return autorest.Prepare(&http.Request{Cancel: cancel},
 		autorest.AsJSON(),
 		autorest.AsPut(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -100,8 +102,7 @@ func (client OriginsClient) CreatePreparer(originName string, originProperties O
 func (client OriginsClient) CreateSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client,
 		req,
-		azure.DoPollForAsynchronous(autorest.DefaultPollingDuration,
-			autorest.DefaultPollingDelay))
+		azure.DoPollForAsynchronous(client.PollingDelay))
 }
 
 // CreateResponder handles the response to the Create request. The method always
@@ -116,15 +117,18 @@ func (client OriginsClient) CreateResponder(resp *http.Response) (result autores
 	return
 }
 
-// DeleteIfExists sends the delete if exists request.
+// DeleteIfExists sends the delete if exists request. This method may poll for
+// completion. Polling can be canceled by passing the cancel channel
+// argument. The channel will be used to cancel polling and any outstanding
+// HTTP requests.
 //
 // originName is name of the origin, an arbitrary value but it needs to be
 // unique under endpoint endpointName is name of the endpoint within the CDN
 // profile profileName is name of the CDN profile within the resource group
 // resourceGroupName is name of the resource group within the Azure
 // subscription
-func (client OriginsClient) DeleteIfExists(originName string, endpointName string, profileName string, resourceGroupName string) (result autorest.Response, err error) {
-	req, err := client.DeleteIfExistsPreparer(originName, endpointName, profileName, resourceGroupName)
+func (client OriginsClient) DeleteIfExists(originName string, endpointName string, profileName string, resourceGroupName string, cancel <-chan struct{}) (result autorest.Response, err error) {
+	req, err := client.DeleteIfExistsPreparer(originName, endpointName, profileName, resourceGroupName, cancel)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "cdn/OriginsClient", "DeleteIfExists", nil, "Failure preparing request")
 	}
@@ -144,7 +148,7 @@ func (client OriginsClient) DeleteIfExists(originName string, endpointName strin
 }
 
 // DeleteIfExistsPreparer prepares the DeleteIfExists request.
-func (client OriginsClient) DeleteIfExistsPreparer(originName string, endpointName string, profileName string, resourceGroupName string) (*http.Request, error) {
+func (client OriginsClient) DeleteIfExistsPreparer(originName string, endpointName string, profileName string, resourceGroupName string, cancel <-chan struct{}) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"endpointName":      url.QueryEscape(endpointName),
 		"originName":        url.QueryEscape(originName),
@@ -157,7 +161,7 @@ func (client OriginsClient) DeleteIfExistsPreparer(originName string, endpointNa
 		"api-version": APIVersion,
 	}
 
-	return autorest.Prepare(&http.Request{},
+	return autorest.Prepare(&http.Request{Cancel: cancel},
 		autorest.AsJSON(),
 		autorest.AsDelete(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -171,8 +175,7 @@ func (client OriginsClient) DeleteIfExistsPreparer(originName string, endpointNa
 func (client OriginsClient) DeleteIfExistsSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client,
 		req,
-		azure.DoPollForAsynchronous(autorest.DefaultPollingDuration,
-			autorest.DefaultPollingDelay))
+		azure.DoPollForAsynchronous(client.PollingDelay))
 }
 
 // DeleteIfExistsResponder handles the response to the DeleteIfExists request. The method always

@@ -776,12 +776,6 @@ type Csr struct {
 	Properties        *CsrProperties      `json:"properties,omitempty"`
 }
 
-// CsrList is
-type CsrList struct {
-	autorest.Response `json:"-"`
-	Value             *Csr `json:"value,omitempty"`
-}
-
 // CsrProperties is
 type CsrProperties struct {
 	Name               *string `json:"name,omitempty"`
@@ -1067,12 +1061,6 @@ type HostingEnvironmentDiagnostics struct {
 	DiagnosicsOutput  *string `json:"diagnosicsOutput,omitempty"`
 }
 
-// HostingEnvironmentDiagnosticsList is
-type HostingEnvironmentDiagnosticsList struct {
-	autorest.Response `json:"-"`
-	Value             *HostingEnvironmentDiagnostics `json:"value,omitempty"`
-}
-
 // HostingEnvironmentProfile is specification for a hostingEnvironment (App
 // Service Environment) to use for this resource
 type HostingEnvironmentProfile struct {
@@ -1173,6 +1161,30 @@ type HTTPLogsConfig struct {
 type KeyValuePairStringString struct {
 	Key   *string `json:"key,omitempty"`
 	Value *string `json:"value,omitempty"`
+}
+
+// ListCsr is
+type ListCsr struct {
+	autorest.Response `json:"-"`
+	Value             *[]Csr `json:"value,omitempty"`
+}
+
+// ListHostingEnvironmentDiagnostics is
+type ListHostingEnvironmentDiagnostics struct {
+	autorest.Response `json:"-"`
+	Value             *[]HostingEnvironmentDiagnostics `json:"value,omitempty"`
+}
+
+// ListVnetInfo is
+type ListVnetInfo struct {
+	autorest.Response `json:"-"`
+	Value             *[]VnetInfo `json:"value,omitempty"`
+}
+
+// ListVnetRoute is
+type ListVnetRoute struct {
+	autorest.Response `json:"-"`
+	Value             *[]VnetRoute `json:"value,omitempty"`
 }
 
 // LocalizableString is localizableString object containing the name and a
@@ -1294,12 +1306,6 @@ type NetworkFeaturesProperties struct {
 	VirtualNetworkName       *string                         `json:"virtualNetworkName,omitempty"`
 	VirtualNetworkConnection *VnetInfo                       `json:"virtualNetworkConnection,omitempty"`
 	HybridConnections        *[]RelayServiceConnectionEntity `json:"hybridConnections,omitempty"`
-}
-
-// ObjectSet is
-type ObjectSet struct {
-	autorest.Response `json:"-"`
-	Value             *interface{} `json:"value,omitempty"`
 }
 
 // PremierAddOnRequest is
@@ -1496,6 +1502,12 @@ type ServerFarmWithRichSkuProperties struct {
 	PerSiteScaling            *bool                      `json:"perSiteScaling,omitempty"`
 	NumberOfSites             *int32                     `json:"numberOfSites,omitempty"`
 	ResourceGroup             *string                    `json:"resourceGroup,omitempty"`
+}
+
+// SetObject is
+type SetObject struct {
+	autorest.Response `json:"-"`
+	Value             *map[string]interface{} `json:"value,omitempty"`
 }
 
 // Site is represents a web app
@@ -2027,12 +2039,6 @@ type VnetInfo struct {
 	Properties        *VnetInfoProperties `json:"properties,omitempty"`
 }
 
-// VnetInfoList is
-type VnetInfoList struct {
-	autorest.Response `json:"-"`
-	Value             *VnetInfo `json:"value,omitempty"`
-}
-
 // VnetInfoProperties is
 type VnetInfoProperties struct {
 	VnetResourceID *string      `json:"vnetResourceId,omitempty"`
@@ -2050,12 +2056,6 @@ type VnetRoute struct {
 	Type              *string              `json:"type,omitempty"`
 	Tags              *map[string]*string  `json:"tags,omitempty"`
 	Properties        *VnetRouteProperties `json:"properties,omitempty"`
-}
-
-// VnetRouteList is
-type VnetRouteList struct {
-	autorest.Response `json:"-"`
-	Value             *VnetRoute `json:"value,omitempty"`
 }
 
 // VnetRouteProperties is

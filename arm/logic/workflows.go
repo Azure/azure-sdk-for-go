@@ -545,12 +545,14 @@ func (client WorkflowsClient) ListBySubscriptionNextResults(lastResults Workflow
 	return
 }
 
-// Run runs a workflow.
+// Run runs a workflow. This method may poll for completion. Polling can be
+// canceled by passing the cancel channel argument. The channel will be used
+// to cancel polling and any outstanding HTTP requests.
 //
 // resourceGroupName is the resource group name. workflowName is the workflow
 // name. parameters is the parameters.
-func (client WorkflowsClient) Run(resourceGroupName string, workflowName string, parameters RunWorkflowParameters) (result autorest.Response, err error) {
-	req, err := client.RunPreparer(resourceGroupName, workflowName, parameters)
+func (client WorkflowsClient) Run(resourceGroupName string, workflowName string, parameters RunWorkflowParameters, cancel <-chan struct{}) (result autorest.Response, err error) {
+	req, err := client.RunPreparer(resourceGroupName, workflowName, parameters, cancel)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "logic/WorkflowsClient", "Run", nil, "Failure preparing request")
 	}
@@ -570,7 +572,7 @@ func (client WorkflowsClient) Run(resourceGroupName string, workflowName string,
 }
 
 // RunPreparer prepares the Run request.
-func (client WorkflowsClient) RunPreparer(resourceGroupName string, workflowName string, parameters RunWorkflowParameters) (*http.Request, error) {
+func (client WorkflowsClient) RunPreparer(resourceGroupName string, workflowName string, parameters RunWorkflowParameters, cancel <-chan struct{}) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName": url.QueryEscape(resourceGroupName),
 		"subscriptionId":    url.QueryEscape(client.SubscriptionID),
@@ -581,7 +583,7 @@ func (client WorkflowsClient) RunPreparer(resourceGroupName string, workflowName
 		"api-version": APIVersion,
 	}
 
-	return autorest.Prepare(&http.Request{},
+	return autorest.Prepare(&http.Request{Cancel: cancel},
 		autorest.AsJSON(),
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -596,8 +598,7 @@ func (client WorkflowsClient) RunPreparer(resourceGroupName string, workflowName
 func (client WorkflowsClient) RunSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client,
 		req,
-		azure.DoPollForAsynchronous(autorest.DefaultPollingDuration,
-			autorest.DefaultPollingDelay))
+		azure.DoPollForAsynchronous(client.PollingDelay))
 }
 
 // RunResponder handles the response to the Run request. The method always

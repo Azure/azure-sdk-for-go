@@ -1,8 +1,15 @@
-hash: 7407050cee9bb9ce89e23ef26bce4051cce63d558338a4937f027a18b789e3a1
-updated: 2016-03-29T14:05:25.832563-07:00
+hash: 731f123358b9ca87ed054e5d173b5c4cf2c1c947510e6be369df612b8d45a627
+updated: 2016-03-29T17:05:07.699214-07:00
 imports:
 - name: github.com/Azure/go-autorest
   version: ee3585c5d3281111d24691786decd67fbca369b8
+  subpackages:
+  - autorest
+  - autorest/azure
+  - autorest/to
+  - autorest/date
+- name: github.com/brendandixon/go-autorest
+  version: db0a5fe35f78ec6e033fd8154b8a474e9436e7f1
   subpackages:
   - autorest
   - autorest/azure

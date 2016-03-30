@@ -4,10 +4,11 @@
 
 ## `v2.1.0-beta`
 
-- arm: Uses go-autorest v7.0.2 (polling related updates).
+- arm: Uses go-autorest v7.0.3 (polling related updates).
 - arm: Cancel channel argument added in long-running calls.
 - storage: Allow caller to provide headers for DeleteBlob methods.
 - storage: Enables connection sharing with http keepalive.
+- storage: Add BlobPrefixes and Delimiter to BlobListResponse
 
 
 ## `v2.0.0-beta`

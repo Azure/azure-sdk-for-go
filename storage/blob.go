@@ -88,6 +88,16 @@ type BlobListResponse struct {
 	NextMarker string   `xml:"NextMarker"`
 	MaxResults int64    `xml:"MaxResults"`
 	Blobs      []Blob   `xml:"Blobs>Blob"`
+
+	// BlobPrefix is used to traverse blobs as if it were a file system.
+	// It is returned if ListBlobsParameters.Delimiter is specified.
+	// The list here can be thought of as "folders" that may contain
+	// other folders or blobs.
+	BlobPrefixes []string `xml:"Blobs>BlobPrefix>Name"`
+
+	// Delimiter is used to traverse blobs as if it were a file system.
+	// It is returned if ListBlobsParameters.Delimiter is specified.
+	Delimiter string `xml:"Delimiter"`
 }
 
 // ListContainersParameters defines the set of customizable parameters to make a

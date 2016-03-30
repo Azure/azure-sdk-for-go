@@ -380,6 +380,135 @@ func (s *StorageBlobSuite) TestListBlobsPagination(c *chk.C) {
 	c.Assert(seen, chk.DeepEquals, blobs)
 }
 
+// listBlobsAsFiles is a helper function to list blobs as "folders" and "files".
+func listBlobsAsFiles(cli BlobStorageClient, cnt string, parentDir string) (folders []string, files []string, err error) {
+	var blobParams ListBlobsParameters
+	var blobListResponse BlobListResponse
+
+	// Top level "folders"
+	blobParams = ListBlobsParameters{
+		Delimiter: "/",
+		Prefix:    parentDir,
+	}
+
+	blobListResponse, err = cli.ListBlobs(cnt, blobParams)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	// These are treated as "folders" under the parentDir.
+	folders = blobListResponse.BlobPrefixes
+
+	// "Files"" are blobs which are under the parentDir.
+	files = make([]string, len(blobListResponse.Blobs))
+	for i := range blobListResponse.Blobs {
+		files[i] = blobListResponse.Blobs[i].Name
+	}
+
+	return folders, files, nil
+}
+
+// TestListBlobsTraversal tests that we can correctly traverse
+// blobs in blob storage as if it were a file system by using
+// a combination of Prefix, Delimiter, and BlobPrefixes.
+//
+// Blob storage is flat, but we can *simulate* the file
+// system with folders and files using conventions in naming.
+// With the blob namedd "/usr/bin/ls", when we use delimiter '/',
+// the "ls" would be a "file"; with "/", /usr" and "/usr/bin" being
+// the "folders"
+//
+// NOTE: The use of delimiter (eg forward slash) is extremely fiddly
+// and difficult to get right so some discipline in naming and rules
+// when using the API is required to get everything to work as expected.
+//
+// Assuming our delimiter is a forward slash, the rules are:
+//
+//  - Do use a leading forward slash in blob names to make things
+//    consistent and simpler (see further).
+//    Note that doing so will show "<no name>" as the only top-level
+//    folder in the container in Azure portal, which may look strange.
+//
+//  - The "folder names" are returned *with trailing forward slash* as per MSDN.
+//
+//  - The "folder names" will be "absolue paths", e.g. listing things under "/usr/"
+//    will return folder names "/usr/bin/".
+//
+//  - The "file names" are returned as full blob names, e.g. when listing
+//    things under "/usr/bin/", the file names will be "/usr/bin/ls" and
+//    "/usr/bin/cat".
+//
+//  - Everything is returned with case-sensitive order as expected in real file system
+//    as per MSDN.
+//
+//  - To list things under a "folder" always use trailing forward slash.
+//
+//    Example: to list top level folders we use root folder named "" with
+//    trailing forward slash, so we use "/".
+//
+//    Example: to list folders under "/usr", we again append forward slash and
+//    so we use "/usr/".
+//
+//    Because we use leading forward slash we don't need to have different
+//    treatment of "get top-level folders" and "get non-top-level folders"
+//    scenarios.
+func (s *StorageBlobSuite) TestListBlobsTraversal(c *chk.C) {
+	cli := getBlobClient(c)
+	cnt := randContainer()
+
+	c.Assert(cli.CreateContainer(cnt, ContainerAccessTypePrivate), chk.IsNil)
+	defer cli.DeleteContainer(cnt)
+
+	// Note use of leading forward slash as per naming rules.
+	blobsToCreate := []string{
+		"/usr/bin/ls",
+		"/usr/bin/cat",
+		"/usr/lib64/libc.so",
+		"/etc/hosts",
+		"/etc/init.d/iptables",
+	}
+
+	// Create the above blobs
+	for _, blobName := range blobsToCreate {
+		err := cli.CreateBlockBlob(cnt, blobName)
+		c.Assert(err, chk.IsNil)
+	}
+
+	var folders []string
+	var files []string
+	var err error
+
+	// Top level folders and files.
+	folders, files, err = listBlobsAsFiles(cli, cnt, "/")
+	c.Assert(err, chk.IsNil)
+	c.Assert(folders, chk.DeepEquals, []string{"/etc/", "/usr/"})
+	c.Assert(files, chk.DeepEquals, []string{})
+
+	// Things under /etc/. Note use of trailing forward slash here as per rules.
+	folders, files, err = listBlobsAsFiles(cli, cnt, "/etc/")
+	c.Assert(err, chk.IsNil)
+	c.Assert(folders, chk.DeepEquals, []string{"/etc/init.d/"})
+	c.Assert(files, chk.DeepEquals, []string{"/etc/hosts"})
+
+	// Things under /etc/init.d/
+	folders, files, err = listBlobsAsFiles(cli, cnt, "/etc/init.d/")
+	c.Assert(err, chk.IsNil)
+	c.Assert(folders, chk.DeepEquals, []string(nil))
+	c.Assert(files, chk.DeepEquals, []string{"/etc/init.d/iptables"})
+
+	// Things under /usr/
+	folders, files, err = listBlobsAsFiles(cli, cnt, "/usr/")
+	c.Assert(err, chk.IsNil)
+	c.Assert(folders, chk.DeepEquals, []string{"/usr/bin/", "/usr/lib64/"})
+	c.Assert(files, chk.DeepEquals, []string{})
+
+	// Things under /usr/bin/
+	folders, files, err = listBlobsAsFiles(cli, cnt, "/usr/bin/")
+	c.Assert(err, chk.IsNil)
+	c.Assert(folders, chk.DeepEquals, []string(nil))
+	c.Assert(files, chk.DeepEquals, []string{"/usr/bin/cat", "/usr/bin/ls"})
+}
+
 func (s *StorageBlobSuite) TestGetAndSetMetadata(c *chk.C) {
 	cli := getBlobClient(c)
 	cnt := randContainer()

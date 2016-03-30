@@ -1,6 +1,6 @@
 package: github.com/Azure/azure-sdk-for-go
 import:
-- package: github.com/brendandixon/go-autorest
+- package: github.com/Azure/go-autorest
   subpackages:
   - /autorest
   - autorest/azure

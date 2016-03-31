@@ -414,7 +414,11 @@ func (c Client) execInternalJSON(verb, url string, headers map[string]string, bo
 		req.Header.Add(k, v)
 	}
 
-	httpClient := http.Client{}
+	httpClient := c.HTTPClient
+	if httpClient == nil {
+		httpClient = http.DefaultClient
+	}
+
 	resp, err := httpClient.Do(req)
 	if err != nil {
 		return nil, err

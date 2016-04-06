@@ -14,7 +14,7 @@ import (
 	"testing"
 	"time"
 
-	chk "github.com/Azure/azure-sdk-for-go/Godeps/_workspace/src/gopkg.in/check.v1"
+	chk "gopkg.in/check.v1"
 )
 
 type StorageBlobSuite struct{}
@@ -218,7 +218,7 @@ func (s *StorageBlobSuite) TestBlobExists(c *chk.C) {
 	c.Assert(cli.CreateContainer(cnt, ContainerAccessTypeBlob), chk.IsNil)
 	defer cli.DeleteContainer(cnt)
 	c.Assert(cli.putSingleBlockBlob(cnt, blob, []byte("Hello!")), chk.IsNil)
-	defer cli.DeleteBlob(cnt, blob)
+	defer cli.DeleteBlob(cnt, blob, nil)
 
 	ok, err := cli.BlobExists(cnt, blob+".foo")
 	c.Assert(err, chk.IsNil)
@@ -254,10 +254,10 @@ func (s *StorageBlobSuite) TestBlobCopy(c *chk.C) {
 	defer cli.deleteContainer(cnt)
 
 	c.Assert(cli.putSingleBlockBlob(cnt, src, body), chk.IsNil)
-	defer cli.DeleteBlob(cnt, src)
+	defer cli.DeleteBlob(cnt, src, nil)
 
 	c.Assert(cli.CopyBlob(cnt, dst, cli.GetBlobURL(cnt, src)), chk.IsNil)
-	defer cli.DeleteBlob(cnt, dst)
+	defer cli.DeleteBlob(cnt, dst, nil)
 
 	blobBody, err := cli.GetBlob(cnt, dst)
 	c.Assert(err, chk.IsNil)
@@ -273,11 +273,47 @@ func (s *StorageBlobSuite) TestDeleteBlobIfExists(c *chk.C) {
 	blob := randString(20)
 
 	cli := getBlobClient(c)
-	c.Assert(cli.DeleteBlob(cnt, blob), chk.NotNil)
+	c.Assert(cli.DeleteBlob(cnt, blob, nil), chk.NotNil)
 
-	ok, err := cli.DeleteBlobIfExists(cnt, blob)
+	ok, err := cli.DeleteBlobIfExists(cnt, blob, nil)
 	c.Assert(err, chk.IsNil)
 	c.Assert(ok, chk.Equals, false)
+}
+
+func (s *StorageBlobSuite) TestDeleteBlobWithConditions(c *chk.C) {
+	cnt := randContainer()
+	blob := randString(20)
+
+	cli := getBlobClient(c)
+
+	c.Assert(cli.CreateContainer(cnt, ContainerAccessTypePrivate), chk.IsNil)
+	defer cli.deleteContainer(cnt)
+
+	c.Assert(cli.CreateBlockBlob(cnt, blob), chk.IsNil)
+	oldProps, err := cli.GetBlobProperties(cnt, blob)
+	c.Assert(err, chk.IsNil)
+
+	// Update metadata, so Etag changes
+	c.Assert(cli.SetBlobMetadata(cnt, blob, map[string]string{}), chk.IsNil)
+	newProps, err := cli.GetBlobProperties(cnt, blob)
+	c.Assert(err, chk.IsNil)
+
+	// "Delete if matches old Etag" should fail without deleting.
+	err = cli.DeleteBlob(cnt, blob, map[string]string{
+		"If-Match": oldProps.Etag,
+	})
+	c.Assert(err, chk.FitsTypeOf, AzureStorageServiceError{})
+	c.Assert(err.(AzureStorageServiceError).StatusCode, chk.Equals, http.StatusPreconditionFailed)
+	_, err = cli.GetBlob(cnt, blob)
+	c.Assert(err, chk.IsNil)
+
+	// "Delete if matches new Etag" should succeed.
+	err = cli.DeleteBlob(cnt, blob, map[string]string{
+		"If-Match": newProps.Etag,
+	})
+	c.Assert(err, chk.IsNil)
+	_, err = cli.GetBlob(cnt, blob)
+	c.Assert(err, chk.Not(chk.IsNil))
 }
 
 func (s *StorageBlobSuite) TestGetBlobProperties(c *chk.C) {
@@ -342,6 +378,135 @@ func (s *StorageBlobSuite) TestListBlobsPagination(c *chk.C) {
 
 	// Compare
 	c.Assert(seen, chk.DeepEquals, blobs)
+}
+
+// listBlobsAsFiles is a helper function to list blobs as "folders" and "files".
+func listBlobsAsFiles(cli BlobStorageClient, cnt string, parentDir string) (folders []string, files []string, err error) {
+	var blobParams ListBlobsParameters
+	var blobListResponse BlobListResponse
+
+	// Top level "folders"
+	blobParams = ListBlobsParameters{
+		Delimiter: "/",
+		Prefix:    parentDir,
+	}
+
+	blobListResponse, err = cli.ListBlobs(cnt, blobParams)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	// These are treated as "folders" under the parentDir.
+	folders = blobListResponse.BlobPrefixes
+
+	// "Files"" are blobs which are under the parentDir.
+	files = make([]string, len(blobListResponse.Blobs))
+	for i := range blobListResponse.Blobs {
+		files[i] = blobListResponse.Blobs[i].Name
+	}
+
+	return folders, files, nil
+}
+
+// TestListBlobsTraversal tests that we can correctly traverse
+// blobs in blob storage as if it were a file system by using
+// a combination of Prefix, Delimiter, and BlobPrefixes.
+//
+// Blob storage is flat, but we can *simulate* the file
+// system with folders and files using conventions in naming.
+// With the blob namedd "/usr/bin/ls", when we use delimiter '/',
+// the "ls" would be a "file"; with "/", /usr" and "/usr/bin" being
+// the "folders"
+//
+// NOTE: The use of delimiter (eg forward slash) is extremely fiddly
+// and difficult to get right so some discipline in naming and rules
+// when using the API is required to get everything to work as expected.
+//
+// Assuming our delimiter is a forward slash, the rules are:
+//
+//  - Do use a leading forward slash in blob names to make things
+//    consistent and simpler (see further).
+//    Note that doing so will show "<no name>" as the only top-level
+//    folder in the container in Azure portal, which may look strange.
+//
+//  - The "folder names" are returned *with trailing forward slash* as per MSDN.
+//
+//  - The "folder names" will be "absolue paths", e.g. listing things under "/usr/"
+//    will return folder names "/usr/bin/".
+//
+//  - The "file names" are returned as full blob names, e.g. when listing
+//    things under "/usr/bin/", the file names will be "/usr/bin/ls" and
+//    "/usr/bin/cat".
+//
+//  - Everything is returned with case-sensitive order as expected in real file system
+//    as per MSDN.
+//
+//  - To list things under a "folder" always use trailing forward slash.
+//
+//    Example: to list top level folders we use root folder named "" with
+//    trailing forward slash, so we use "/".
+//
+//    Example: to list folders under "/usr", we again append forward slash and
+//    so we use "/usr/".
+//
+//    Because we use leading forward slash we don't need to have different
+//    treatment of "get top-level folders" and "get non-top-level folders"
+//    scenarios.
+func (s *StorageBlobSuite) TestListBlobsTraversal(c *chk.C) {
+	cli := getBlobClient(c)
+	cnt := randContainer()
+
+	c.Assert(cli.CreateContainer(cnt, ContainerAccessTypePrivate), chk.IsNil)
+	defer cli.DeleteContainer(cnt)
+
+	// Note use of leading forward slash as per naming rules.
+	blobsToCreate := []string{
+		"/usr/bin/ls",
+		"/usr/bin/cat",
+		"/usr/lib64/libc.so",
+		"/etc/hosts",
+		"/etc/init.d/iptables",
+	}
+
+	// Create the above blobs
+	for _, blobName := range blobsToCreate {
+		err := cli.CreateBlockBlob(cnt, blobName)
+		c.Assert(err, chk.IsNil)
+	}
+
+	var folders []string
+	var files []string
+	var err error
+
+	// Top level folders and files.
+	folders, files, err = listBlobsAsFiles(cli, cnt, "/")
+	c.Assert(err, chk.IsNil)
+	c.Assert(folders, chk.DeepEquals, []string{"/etc/", "/usr/"})
+	c.Assert(files, chk.DeepEquals, []string{})
+
+	// Things under /etc/. Note use of trailing forward slash here as per rules.
+	folders, files, err = listBlobsAsFiles(cli, cnt, "/etc/")
+	c.Assert(err, chk.IsNil)
+	c.Assert(folders, chk.DeepEquals, []string{"/etc/init.d/"})
+	c.Assert(files, chk.DeepEquals, []string{"/etc/hosts"})
+
+	// Things under /etc/init.d/
+	folders, files, err = listBlobsAsFiles(cli, cnt, "/etc/init.d/")
+	c.Assert(err, chk.IsNil)
+	c.Assert(folders, chk.DeepEquals, []string(nil))
+	c.Assert(files, chk.DeepEquals, []string{"/etc/init.d/iptables"})
+
+	// Things under /usr/
+	folders, files, err = listBlobsAsFiles(cli, cnt, "/usr/")
+	c.Assert(err, chk.IsNil)
+	c.Assert(folders, chk.DeepEquals, []string{"/usr/bin/", "/usr/lib64/"})
+	c.Assert(files, chk.DeepEquals, []string{})
+
+	// Things under /usr/bin/
+	folders, files, err = listBlobsAsFiles(cli, cnt, "/usr/bin/")
+	c.Assert(err, chk.IsNil)
+	c.Assert(folders, chk.DeepEquals, []string(nil))
+	c.Assert(files, chk.DeepEquals, []string{"/usr/bin/cat", "/usr/bin/ls"})
 }
 
 func (s *StorageBlobSuite) TestGetAndSetMetadata(c *chk.C) {
@@ -415,7 +580,7 @@ func (s *StorageBlobSuite) TestGetBlobRange(c *chk.C) {
 	defer cli.DeleteContainer(cnt)
 
 	c.Assert(cli.putSingleBlockBlob(cnt, blob, []byte(body)), chk.IsNil)
-	defer cli.DeleteBlob(cnt, blob)
+	defer cli.DeleteBlob(cnt, blob, nil)
 
 	// Read 1-3
 	for _, r := range []struct {
@@ -444,7 +609,7 @@ func (s *StorageBlobSuite) TestCreateBlockBlobFromReader(c *chk.C) {
 
 	name := randString(20)
 	data := randBytes(8888)
-	c.Assert(cli.CreateBlockBlobFromReader(cnt, name, uint64(len(data)), bytes.NewReader(data)), chk.IsNil)
+	c.Assert(cli.CreateBlockBlobFromReader(cnt, name, uint64(len(data)), bytes.NewReader(data), nil), chk.IsNil)
 
 	body, err := cli.GetBlob(cnt, name)
 	c.Assert(err, chk.IsNil)
@@ -463,7 +628,7 @@ func (s *StorageBlobSuite) TestCreateBlockBlobFromReaderWithShortData(c *chk.C) 
 
 	name := randString(20)
 	data := randBytes(8888)
-	err := cli.CreateBlockBlobFromReader(cnt, name, 9999, bytes.NewReader(data))
+	err := cli.CreateBlockBlobFromReader(cnt, name, 9999, bytes.NewReader(data), nil)
 	c.Assert(err, chk.Not(chk.IsNil))
 
 	_, err = cli.GetBlob(cnt, name)
@@ -495,7 +660,7 @@ func (s *StorageBlobSuite) TestGetBlockList_PutBlockList(c *chk.C) {
 
 	// Put one block
 	c.Assert(cli.PutBlock(cnt, blob, blockID, chunk), chk.IsNil)
-	defer cli.deleteBlob(cnt, blob)
+	defer cli.deleteBlob(cnt, blob, nil)
 
 	// Get committed blocks
 	committed, err := cli.GetBlockList(cnt, blob, BlockListTypeCommitted)
@@ -549,7 +714,7 @@ func (s *StorageBlobSuite) TestPutPageBlob(c *chk.C) {
 
 	blob := randString(20)
 	size := int64(10 * 1024 * 1024)
-	c.Assert(cli.PutPageBlob(cnt, blob, size), chk.IsNil)
+	c.Assert(cli.PutPageBlob(cnt, blob, size, nil), chk.IsNil)
 
 	// Verify
 	props, err := cli.GetBlobProperties(cnt, blob)
@@ -566,14 +731,14 @@ func (s *StorageBlobSuite) TestPutPagesUpdate(c *chk.C) {
 
 	blob := randString(20)
 	size := int64(10 * 1024 * 1024) // larger than we'll use
-	c.Assert(cli.PutPageBlob(cnt, blob, size), chk.IsNil)
+	c.Assert(cli.PutPageBlob(cnt, blob, size, nil), chk.IsNil)
 
 	chunk1 := []byte(randString(1024))
 	chunk2 := []byte(randString(512))
 
 	// Append chunks
-	c.Assert(cli.PutPage(cnt, blob, 0, int64(len(chunk1)-1), PageWriteTypeUpdate, chunk1), chk.IsNil)
-	c.Assert(cli.PutPage(cnt, blob, int64(len(chunk1)), int64(len(chunk1)+len(chunk2)-1), PageWriteTypeUpdate, chunk2), chk.IsNil)
+	c.Assert(cli.PutPage(cnt, blob, 0, int64(len(chunk1)-1), PageWriteTypeUpdate, chunk1, nil), chk.IsNil)
+	c.Assert(cli.PutPage(cnt, blob, int64(len(chunk1)), int64(len(chunk1)+len(chunk2)-1), PageWriteTypeUpdate, chunk2, nil), chk.IsNil)
 
 	// Verify contents
 	out, err := cli.GetBlobRange(cnt, blob, fmt.Sprintf("%v-%v", 0, len(chunk1)+len(chunk2)-1))
@@ -586,7 +751,7 @@ func (s *StorageBlobSuite) TestPutPagesUpdate(c *chk.C) {
 
 	// Overwrite first half of chunk1
 	chunk0 := []byte(randString(512))
-	c.Assert(cli.PutPage(cnt, blob, 0, int64(len(chunk0)-1), PageWriteTypeUpdate, chunk0), chk.IsNil)
+	c.Assert(cli.PutPage(cnt, blob, 0, int64(len(chunk0)-1), PageWriteTypeUpdate, chunk0, nil), chk.IsNil)
 
 	// Verify contents
 	out, err = cli.GetBlobRange(cnt, blob, fmt.Sprintf("%v-%v", 0, len(chunk1)+len(chunk2)-1))
@@ -605,14 +770,14 @@ func (s *StorageBlobSuite) TestPutPagesClear(c *chk.C) {
 
 	blob := randString(20)
 	size := int64(10 * 1024 * 1024) // larger than we'll use
-	c.Assert(cli.PutPageBlob(cnt, blob, size), chk.IsNil)
+	c.Assert(cli.PutPageBlob(cnt, blob, size, nil), chk.IsNil)
 
 	// Put 0-2047
 	chunk := []byte(randString(2048))
-	c.Assert(cli.PutPage(cnt, blob, 0, 2047, PageWriteTypeUpdate, chunk), chk.IsNil)
+	c.Assert(cli.PutPage(cnt, blob, 0, 2047, PageWriteTypeUpdate, chunk, nil), chk.IsNil)
 
 	// Clear 512-1023
-	c.Assert(cli.PutPage(cnt, blob, 512, 1023, PageWriteTypeClear, nil), chk.IsNil)
+	c.Assert(cli.PutPage(cnt, blob, 512, 1023, PageWriteTypeClear, nil, nil), chk.IsNil)
 
 	// Verify contents
 	out, err := cli.GetBlobRange(cnt, blob, "0-2047")
@@ -631,7 +796,7 @@ func (s *StorageBlobSuite) TestGetPageRanges(c *chk.C) {
 
 	blob := randString(20)
 	size := int64(10 * 1024 * 1024) // larger than we'll use
-	c.Assert(cli.PutPageBlob(cnt, blob, size), chk.IsNil)
+	c.Assert(cli.PutPageBlob(cnt, blob, size, nil), chk.IsNil)
 
 	// Get page ranges on empty blob
 	out, err := cli.GetPageRanges(cnt, blob)
@@ -639,18 +804,71 @@ func (s *StorageBlobSuite) TestGetPageRanges(c *chk.C) {
 	c.Assert(len(out.PageList), chk.Equals, 0)
 
 	// Add 0-512 page
-	c.Assert(cli.PutPage(cnt, blob, 0, 511, PageWriteTypeUpdate, []byte(randString(512))), chk.IsNil)
+	c.Assert(cli.PutPage(cnt, blob, 0, 511, PageWriteTypeUpdate, []byte(randString(512)), nil), chk.IsNil)
 
 	out, err = cli.GetPageRanges(cnt, blob)
 	c.Assert(err, chk.IsNil)
 	c.Assert(len(out.PageList), chk.Equals, 1)
 
 	// Add 1024-2048
-	c.Assert(cli.PutPage(cnt, blob, 1024, 2047, PageWriteTypeUpdate, []byte(randString(1024))), chk.IsNil)
+	c.Assert(cli.PutPage(cnt, blob, 1024, 2047, PageWriteTypeUpdate, []byte(randString(1024)), nil), chk.IsNil)
 
 	out, err = cli.GetPageRanges(cnt, blob)
 	c.Assert(err, chk.IsNil)
 	c.Assert(len(out.PageList), chk.Equals, 2)
+}
+
+func (s *StorageBlobSuite) TestPutAppendBlob(c *chk.C) {
+	cli := getBlobClient(c)
+	cnt := randContainer()
+	c.Assert(cli.CreateContainer(cnt, ContainerAccessTypePrivate), chk.IsNil)
+	defer cli.deleteContainer(cnt)
+
+	blob := randString(20)
+	c.Assert(cli.PutAppendBlob(cnt, blob, nil), chk.IsNil)
+
+	// Verify
+	props, err := cli.GetBlobProperties(cnt, blob)
+	c.Assert(err, chk.IsNil)
+	c.Assert(props.ContentLength, chk.Equals, int64(0))
+	c.Assert(props.BlobType, chk.Equals, BlobTypeAppend)
+}
+
+func (s *StorageBlobSuite) TestPutAppendBlobAppendBlocks(c *chk.C) {
+	cli := getBlobClient(c)
+	cnt := randContainer()
+	c.Assert(cli.CreateContainer(cnt, ContainerAccessTypePrivate), chk.IsNil)
+	defer cli.deleteContainer(cnt)
+
+	blob := randString(20)
+	c.Assert(cli.PutAppendBlob(cnt, blob, nil), chk.IsNil)
+
+	chunk1 := []byte(randString(1024))
+	chunk2 := []byte(randString(512))
+
+	// Append first block
+	c.Assert(cli.AppendBlock(cnt, blob, chunk1, nil), chk.IsNil)
+
+	// Verify contents
+	out, err := cli.GetBlobRange(cnt, blob, fmt.Sprintf("%v-%v", 0, len(chunk1)-1))
+	c.Assert(err, chk.IsNil)
+	defer out.Close()
+	blobContents, err := ioutil.ReadAll(out)
+	c.Assert(err, chk.IsNil)
+	c.Assert(blobContents, chk.DeepEquals, chunk1)
+	out.Close()
+
+	// Append second block
+	c.Assert(cli.AppendBlock(cnt, blob, chunk2, nil), chk.IsNil)
+
+	// Verify contents
+	out, err = cli.GetBlobRange(cnt, blob, fmt.Sprintf("%v-%v", 0, len(chunk1)+len(chunk2)-1))
+	c.Assert(err, chk.IsNil)
+	defer out.Close()
+	blobContents, err = ioutil.ReadAll(out)
+	c.Assert(err, chk.IsNil)
+	c.Assert(blobContents, chk.DeepEquals, append(chunk1, chunk2...))
+	out.Close()
 }
 
 func deleteTestContainers(cli BlobStorageClient) error {

@@ -24,7 +24,7 @@ const (
 
 	// DefaultAPIVersion is the  Azure Storage API version string used when a
 	// basic client is created.
-	DefaultAPIVersion = "2014-02-14"
+	DefaultAPIVersion = "2015-02-21"
 
 	defaultUseHTTPS = true
 
@@ -37,6 +37,10 @@ const (
 // Client is the object that needs to be constructed to perform
 // operations on the storage account.
 type Client struct {
+	// HTTPClient is the http.Client used to initiate API
+	// requests.  If it is nil, http.DefaultClient is used.
+	HTTPClient *http.Client
+
 	accountName string
 	accountKey  []byte
 	useHTTPS    bool
@@ -266,11 +270,15 @@ func (c Client) buildCanonicalizedResource(uri string) (string, error) {
 }
 
 func (c Client) buildCanonicalizedString(verb string, headers map[string]string, canonicalizedResource string) string {
+	contentLength := headers["Content-Length"]
+	if contentLength == "0" {
+		contentLength = ""
+	}
 	canonicalizedString := fmt.Sprintf("%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s",
 		verb,
 		headers["Content-Encoding"],
 		headers["Content-Language"],
-		headers["Content-Length"],
+		contentLength,
 		headers["Content-MD5"],
 		headers["Content-Type"],
 		headers["Date"],
@@ -300,6 +308,7 @@ func (c Client) exec(verb, url string, headers map[string]string, body io.Reader
 	if err != nil {
 		return nil, errors.New("azure/storage: error creating request: " + err.Error())
 	}
+
 	if clstr, ok := headers["Content-Length"]; ok {
 		// content length header is being signed, but completely ignored by golang.
 		// instead we have to use the ContentLength property on the request struct
@@ -313,7 +322,11 @@ func (c Client) exec(verb, url string, headers map[string]string, body io.Reader
 	for k, v := range headers {
 		req.Header.Add(k, v)
 	}
-	httpClient := http.Client{}
+
+	httpClient := c.HTTPClient
+	if httpClient == nil {
+		httpClient = http.DefaultClient
+	}
 	resp, err := httpClient.Do(req)
 	if err != nil {
 		return nil, err
@@ -371,7 +384,8 @@ func serviceErrFromXML(body []byte, statusCode int, requestID string) (AzureStor
 }
 
 func (e AzureStorageServiceError) Error() string {
-	return fmt.Sprintf("storage: service returned error: StatusCode=%d, ErrorCode=%s, ErrorMessage=%s, RequestId=%s", e.StatusCode, e.Code, e.Message, e.RequestID)
+	return fmt.Sprintf("storage: service returned error: StatusCode=%d, ErrorCode=%s, ErrorMessage=%s, RequestId=%s, QueryParameterName=%s, QueryParameterValue=%s",
+		e.StatusCode, e.Code, e.Message, e.RequestID, e.QueryParameterName, e.QueryParameterValue)
 }
 
 // checkRespCode returns UnexpectedStatusError if the given response code is not

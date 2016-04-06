@@ -34,16 +34,34 @@ func TestDeployPlatformImage(t *testing.T) {
 	testRoleConfiguration(t, client, role, location)
 }
 
+func TestDeployPlatformWindowsImage(t *testing.T) {
+	client := testutils.GetTestClient(t)
+	vmname := GenerateName()
+	sa := GetTestStorageAccount(t, client)
+	location := sa.StorageServiceProperties.Location
+
+	role := NewVMConfiguration(vmname, "Standard_D3")
+	ConfigureDeploymentFromPlatformImage(&role,
+		GetWindowsTestImage(t, client).Name,
+		fmt.Sprintf("http://%s.blob.core.windows.net/sdktest/%s.vhd", sa.ServiceName, vmname),
+		GenerateName())
+	ConfigureForWindows(&role, vmname, "azureuser", GeneratePassword(), true, "")
+	ConfigureWinRMOverHTTP(&role)
+	ConfigureWinRMOverHTTPS(&role, "")
+
+	testRoleConfiguration(t, client, role, location)
+}
+
 func TestVMImageList(t *testing.T) {
 	client := testutils.GetTestClient(t)
 	vmic := vmimage.NewClient(client)
-	il, _ := vmic.ListVirtualMachineImages()
+	il, _ := vmic.ListVirtualMachineImages(vmimage.ListParameters{})
 	for _, im := range il.VMImages {
 		t.Logf("%s -%s", im.Name, im.Description)
 	}
 }
 
-func TestDeployPlatformCaptureRedeploy(t *testing.T) {
+func TestDeployPlatformOSImageCaptureRedeploy(t *testing.T) {
 	client := testutils.GetTestClient(t)
 	vmname := GenerateName()
 	sa := GetTestStorageAccount(t, client)
@@ -74,7 +92,7 @@ func TestDeployPlatformCaptureRedeploy(t *testing.T) {
 
 	t.Logf("Shutting down VM: %s", vmname)
 	if err := Await(client, func() (management.OperationID, error) {
-		return vmc.ShutdownRole(vmname, vmname, vmname)
+		return vmc.ShutdownRole(vmname, vmname, vmname, vm.PostShutdownActionStopped)
 	}); err != nil {
 		t.Error(err)
 	}
@@ -84,14 +102,14 @@ func TestDeployPlatformCaptureRedeploy(t *testing.T) {
 	}
 
 	imagename := GenerateName()
-	t.Logf("Capturing VMImage: %s", imagename)
+	t.Logf("Capturing OSImage: %s", imagename)
 	if err := Await(client, func() (management.OperationID, error) {
 		return vmc.CaptureRole(vmname, vmname, vmname, imagename, imagename, nil)
 	}); err != nil {
 		t.Error(err)
 	}
 
-	im := GetUserImage(t, client, imagename)
+	im := GetUserOSImage(t, client, imagename)
 	t.Logf("Found image: %+v", im)
 
 	newvmname := GenerateName()
@@ -100,6 +118,73 @@ func TestDeployPlatformCaptureRedeploy(t *testing.T) {
 		im.Name,
 		fmt.Sprintf("http://%s.blob.core.windows.net/sdktest/%s.vhd", sa.ServiceName, newvmname),
 		GenerateName())
+	ConfigureForLinux(&role, newvmname, "azureuser", GeneratePassword())
+	ConfigureWithPublicSSH(&role)
+
+	t.Logf("Deploying new VM from freshly captured OS image: %s", newvmname)
+	if err := Await(client, func() (management.OperationID, error) {
+		return vmc.CreateDeployment(role, vmname, vm.CreateDeploymentOptions{})
+	}); err != nil {
+		t.Error(err)
+	}
+
+	deleteHostedService(t, client, vmname)
+}
+
+func TestDeployPlatformVMImageCaptureRedeploy(t *testing.T) {
+	client := testutils.GetTestClient(t)
+	vmname := GenerateName()
+	sa := GetTestStorageAccount(t, client)
+	location := sa.StorageServiceProperties.Location
+
+	role := NewVMConfiguration(vmname, "Standard_D3")
+	ConfigureDeploymentFromPlatformImage(&role,
+		GetLinuxTestImage(t, client).Name,
+		fmt.Sprintf("http://%s.blob.core.windows.net/sdktest/%s.vhd", sa.ServiceName, vmname),
+		GenerateName())
+	ConfigureForLinux(&role, "myvm", "azureuser", GeneratePassword())
+	ConfigureWithPublicSSH(&role)
+
+	t.Logf("Deploying VM: %s", vmname)
+	createRoleConfiguration(t, client, role, location)
+
+	t.Logf("Wait for deployment to enter running state")
+	vmc := vm.NewClient(client)
+	status := vm.DeploymentStatusDeploying
+	for status != vm.DeploymentStatusRunning {
+		deployment, err := vmc.GetDeployment(vmname, vmname)
+		if err != nil {
+			t.Error(err)
+			break
+		}
+		status = deployment.Status
+	}
+
+	t.Logf("Shutting down VM: %s", vmname)
+	if err := Await(client, func() (management.OperationID, error) {
+		return vmc.ShutdownRole(vmname, vmname, vmname, vm.PostShutdownActionStopped)
+	}); err != nil {
+		t.Error(err)
+	}
+
+	if err := WaitForDeploymentInstanceStatus(client, vmname, vmname, vm.InstanceStatusStoppedVM); err != nil {
+		t.Fatal(err)
+	}
+
+	imagename := GenerateName()
+	t.Logf("Capturing VMImage: %s", imagename)
+	if err := Await(client, func() (management.OperationID, error) {
+		return vmimage.NewClient(client).Capture(vmname, vmname, vmname, imagename, imagename, vmimage.OSStateGeneralized, vmimage.CaptureParameters{})
+	}); err != nil {
+		t.Error(err)
+	}
+
+	im := GetUserVMImage(t, client, imagename)
+	t.Logf("Found image: %+v", im)
+
+	newvmname := GenerateName()
+	role = NewVMConfiguration(newvmname, "Standard_D3")
+	ConfigureDeploymentFromUserVMImage(&role, im.Name)
 	ConfigureForLinux(&role, newvmname, "azureuser", GeneratePassword())
 	ConfigureWithPublicSSH(&role)
 
@@ -113,7 +198,7 @@ func TestDeployPlatformCaptureRedeploy(t *testing.T) {
 	deleteHostedService(t, client, vmname)
 }
 
-func TestDeployFromVmImage(t *testing.T) {
+func TestDeployFromPublishedVmImage(t *testing.T) {
 	client := testutils.GetTestClient(t)
 	vmname := GenerateName()
 	sa := GetTestStorageAccount(t, client)
@@ -125,7 +210,7 @@ func TestDeployFromVmImage(t *testing.T) {
 	})
 
 	role := NewVMConfiguration(vmname, "Standard_D4")
-	ConfigureDeploymentFromVMImage(&role, im.Name,
+	ConfigureDeploymentFromPublishedVMImage(&role, im.Name,
 		fmt.Sprintf("http://%s.blob.core.windows.net/%s", sa.ServiceName, vmname), false)
 	ConfigureForWindows(&role, vmname, "azureuser", GeneratePassword(), true, "")
 	ConfigureWithPublicSSH(&role)
@@ -150,7 +235,7 @@ func TestRoleStateOperations(t *testing.T) {
 
 	vmc := vm.NewClient(client)
 	if err := Await(client, func() (management.OperationID, error) {
-		return vmc.ShutdownRole(vmname, vmname, vmname)
+		return vmc.ShutdownRole(vmname, vmname, vmname, vm.PostShutdownActionStopped)
 	}); err != nil {
 		t.Error(err)
 	}
@@ -253,7 +338,13 @@ func GetLinuxTestImage(t *testing.T, client management.Client) osimage.OSImage {
 	})
 }
 
-func GetUserImage(t *testing.T, client management.Client, name string) osimage.OSImage {
+func GetWindowsTestImage(t *testing.T, client management.Client) osimage.OSImage {
+	return GetOSImage(t, client, func(im osimage.OSImage) bool {
+		return im.Category == "Public" && im.ImageFamily == "Windows Server 2012 R2 Datacenter"
+	})
+}
+
+func GetUserOSImage(t *testing.T, client management.Client, name string) osimage.OSImage {
 	return GetOSImage(t, client, func(im osimage.OSImage) bool {
 		return im.Category == "User" && im.Name == name
 	})
@@ -290,12 +381,18 @@ func GetOSImage(
 	return image
 }
 
+func GetUserVMImage(t *testing.T, client management.Client, name string) vmimage.VMImage {
+	return GetVMImage(t, client, func(im vmimage.VMImage) bool {
+		return im.Category == "User" && im.Name == name
+	})
+}
+
 func GetVMImage(
 	t *testing.T,
 	client management.Client,
 	filter func(vmimage.VMImage) bool) vmimage.VMImage {
 	t.Log("Selecting VM image")
-	allimages, err := vmimage.NewClient(client).ListVirtualMachineImages()
+	allimages, err := vmimage.NewClient(client).ListVirtualMachineImages(vmimage.ListParameters{})
 	if err != nil {
 		t.Fatal(err)
 	}

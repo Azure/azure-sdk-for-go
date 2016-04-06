@@ -630,13 +630,11 @@ func (b BlobStorageClient) CreateBlockBlob(container, name string) error {
 func (b BlobStorageClient) CreateBlockBlobFromReader(container, name string, size uint64, blob io.Reader) error {
 	path := fmt.Sprintf("%s/%s", container, name)
 	uri := b.client.getEndpoint(blobServiceName, path, url.Values{})
-	splitted := strings.Split(name, ".")
-	if len(splitted) == 0 {
-		splitted = []string{""}
-	}
-	mimeType := mime.TypeByExtension("." + splitted[len(splitted)-1])
 	headers := b.client.getStandardHeaders()
-	headers["Content-Type"] = mimeType
+	splitted := strings.Split(name, ".")
+	if len(splitted) > 1 {
+		headers["Content-Type"] = mime.TypeByExtension("." + splitted[len(splitted)-1])
+	}
 	headers["x-ms-blob-type"] = string(BlobTypeBlock)
 	headers["Content-Length"] = fmt.Sprintf("%d", size)
 

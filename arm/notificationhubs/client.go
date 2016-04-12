@@ -66,18 +66,18 @@ func NewWithBaseURI(baseURI string, subscriptionID string) ManagementClient {
 func (client ManagementClient) CheckAvailability(resourceGroupName string, namespaceName string, parameters CheckAvailabilityParameters) (result CheckAvailabilityResource, err error) {
 	req, err := client.CheckAvailabilityPreparer(resourceGroupName, namespaceName, parameters)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "notificationhubs/ManagementClient", "CheckAvailability", nil, "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "notificationhubs.ManagementClient", "CheckAvailability", nil, "Failure preparing request")
 	}
 
 	resp, err := client.CheckAvailabilitySender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "notificationhubs/ManagementClient", "CheckAvailability", resp, "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "notificationhubs.ManagementClient", "CheckAvailability", resp, "Failure sending request")
 	}
 
 	result, err = client.CheckAvailabilityResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "notificationhubs/ManagementClient", "CheckAvailability", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "notificationhubs.ManagementClient", "CheckAvailability", resp, "Failure responding to request")
 	}
 
 	return
@@ -132,18 +132,18 @@ func (client ManagementClient) CheckAvailabilityResponder(resp *http.Response) (
 func (client ManagementClient) Create(resourceGroupName string, namespaceName string, notificationHubName string, parameters NotificationHubCreateOrUpdateParameters) (result NotificationHubResource, err error) {
 	req, err := client.CreatePreparer(resourceGroupName, namespaceName, notificationHubName, parameters)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "notificationhubs/ManagementClient", "Create", nil, "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "notificationhubs.ManagementClient", "Create", nil, "Failure preparing request")
 	}
 
 	resp, err := client.CreateSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "notificationhubs/ManagementClient", "Create", resp, "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "notificationhubs.ManagementClient", "Create", resp, "Failure sending request")
 	}
 
 	result, err = client.CreateResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "notificationhubs/ManagementClient", "Create", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "notificationhubs.ManagementClient", "Create", resp, "Failure responding to request")
 	}
 
 	return
@@ -201,18 +201,18 @@ func (client ManagementClient) CreateResponder(resp *http.Response) (result Noti
 func (client ManagementClient) CreateOrUpdateAuthorizationRule(resourceGroupName string, namespaceName string, notificationHubName string, authorizationRuleName string, parameters SharedAccessAuthorizationRuleCreateOrUpdateParameters) (result SharedAccessAuthorizationRuleResource, err error) {
 	req, err := client.CreateOrUpdateAuthorizationRulePreparer(resourceGroupName, namespaceName, notificationHubName, authorizationRuleName, parameters)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "notificationhubs/ManagementClient", "CreateOrUpdateAuthorizationRule", nil, "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "notificationhubs.ManagementClient", "CreateOrUpdateAuthorizationRule", nil, "Failure preparing request")
 	}
 
 	resp, err := client.CreateOrUpdateAuthorizationRuleSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "notificationhubs/ManagementClient", "CreateOrUpdateAuthorizationRule", resp, "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "notificationhubs.ManagementClient", "CreateOrUpdateAuthorizationRule", resp, "Failure sending request")
 	}
 
 	result, err = client.CreateOrUpdateAuthorizationRuleResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "notificationhubs/ManagementClient", "CreateOrUpdateAuthorizationRule", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "notificationhubs.ManagementClient", "CreateOrUpdateAuthorizationRule", resp, "Failure responding to request")
 	}
 
 	return
@@ -268,18 +268,18 @@ func (client ManagementClient) CreateOrUpdateAuthorizationRuleResponder(resp *ht
 func (client ManagementClient) Delete(resourceGroupName string, namespaceName string, notificationHubName string) (result autorest.Response, err error) {
 	req, err := client.DeletePreparer(resourceGroupName, namespaceName, notificationHubName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "notificationhubs/ManagementClient", "Delete", nil, "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "notificationhubs.ManagementClient", "Delete", nil, "Failure preparing request")
 	}
 
 	resp, err := client.DeleteSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "notificationhubs/ManagementClient", "Delete", resp, "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "notificationhubs.ManagementClient", "Delete", resp, "Failure sending request")
 	}
 
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "notificationhubs/ManagementClient", "Delete", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "notificationhubs.ManagementClient", "Delete", resp, "Failure responding to request")
 	}
 
 	return
@@ -334,18 +334,18 @@ func (client ManagementClient) DeleteResponder(resp *http.Response) (result auto
 func (client ManagementClient) DeleteAuthorizationRule(resourceGroupName string, namespaceName string, notificationHubName string, authorizationRuleName string) (result autorest.Response, err error) {
 	req, err := client.DeleteAuthorizationRulePreparer(resourceGroupName, namespaceName, notificationHubName, authorizationRuleName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "notificationhubs/ManagementClient", "DeleteAuthorizationRule", nil, "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "notificationhubs.ManagementClient", "DeleteAuthorizationRule", nil, "Failure preparing request")
 	}
 
 	resp, err := client.DeleteAuthorizationRuleSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "notificationhubs/ManagementClient", "DeleteAuthorizationRule", resp, "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "notificationhubs.ManagementClient", "DeleteAuthorizationRule", resp, "Failure sending request")
 	}
 
 	result, err = client.DeleteAuthorizationRuleResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "notificationhubs/ManagementClient", "DeleteAuthorizationRule", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "notificationhubs.ManagementClient", "DeleteAuthorizationRule", resp, "Failure responding to request")
 	}
 
 	return
@@ -399,18 +399,18 @@ func (client ManagementClient) DeleteAuthorizationRuleResponder(resp *http.Respo
 func (client ManagementClient) Get(resourceGroupName string, namespaceName string, notificationHubName string) (result NotificationHubResource, err error) {
 	req, err := client.GetPreparer(resourceGroupName, namespaceName, notificationHubName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "notificationhubs/ManagementClient", "Get", nil, "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "notificationhubs.ManagementClient", "Get", nil, "Failure preparing request")
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "notificationhubs/ManagementClient", "Get", resp, "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "notificationhubs.ManagementClient", "Get", resp, "Failure sending request")
 	}
 
 	result, err = client.GetResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "notificationhubs/ManagementClient", "Get", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "notificationhubs.ManagementClient", "Get", resp, "Failure responding to request")
 	}
 
 	return
@@ -467,18 +467,18 @@ func (client ManagementClient) GetResponder(resp *http.Response) (result Notific
 func (client ManagementClient) GetAuthorizationRule(resourceGroupName string, namespaceName string, notificationHubName string, authorizationRuleName string) (result SharedAccessAuthorizationRuleResource, err error) {
 	req, err := client.GetAuthorizationRulePreparer(resourceGroupName, namespaceName, notificationHubName, authorizationRuleName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "notificationhubs/ManagementClient", "GetAuthorizationRule", nil, "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "notificationhubs.ManagementClient", "GetAuthorizationRule", nil, "Failure preparing request")
 	}
 
 	resp, err := client.GetAuthorizationRuleSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "notificationhubs/ManagementClient", "GetAuthorizationRule", resp, "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "notificationhubs.ManagementClient", "GetAuthorizationRule", resp, "Failure sending request")
 	}
 
 	result, err = client.GetAuthorizationRuleResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "notificationhubs/ManagementClient", "GetAuthorizationRule", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "notificationhubs.ManagementClient", "GetAuthorizationRule", resp, "Failure responding to request")
 	}
 
 	return
@@ -534,18 +534,18 @@ func (client ManagementClient) GetAuthorizationRuleResponder(resp *http.Response
 func (client ManagementClient) GetPnsCredentials(resourceGroupName string, namespaceName string, notificationHubName string) (result NotificationHubResource, err error) {
 	req, err := client.GetPnsCredentialsPreparer(resourceGroupName, namespaceName, notificationHubName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "notificationhubs/ManagementClient", "GetPnsCredentials", nil, "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "notificationhubs.ManagementClient", "GetPnsCredentials", nil, "Failure preparing request")
 	}
 
 	resp, err := client.GetPnsCredentialsSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "notificationhubs/ManagementClient", "GetPnsCredentials", resp, "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "notificationhubs.ManagementClient", "GetPnsCredentials", resp, "Failure sending request")
 	}
 
 	result, err = client.GetPnsCredentialsResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "notificationhubs/ManagementClient", "GetPnsCredentials", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "notificationhubs.ManagementClient", "GetPnsCredentials", resp, "Failure responding to request")
 	}
 
 	return
@@ -599,18 +599,18 @@ func (client ManagementClient) GetPnsCredentialsResponder(resp *http.Response) (
 func (client ManagementClient) List(resourceGroupName string, namespaceName string) (result NotificationHubListResult, err error) {
 	req, err := client.ListPreparer(resourceGroupName, namespaceName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "notificationhubs/ManagementClient", "List", nil, "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "notificationhubs.ManagementClient", "List", nil, "Failure preparing request")
 	}
 
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "notificationhubs/ManagementClient", "List", resp, "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "notificationhubs.ManagementClient", "List", resp, "Failure sending request")
 	}
 
 	result, err = client.ListResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "notificationhubs/ManagementClient", "List", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "notificationhubs.ManagementClient", "List", resp, "Failure responding to request")
 	}
 
 	return
@@ -660,7 +660,7 @@ func (client ManagementClient) ListResponder(resp *http.Response) (result Notifi
 func (client ManagementClient) ListNextResults(lastResults NotificationHubListResult) (result NotificationHubListResult, err error) {
 	req, err := lastResults.NotificationHubListResultPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "notificationhubs/ManagementClient", "List", nil, "Failure preparing next results request request")
+		return result, autorest.NewErrorWithError(err, "notificationhubs.ManagementClient", "List", nil, "Failure preparing next results request request")
 	}
 	if req == nil {
 		return
@@ -669,12 +669,12 @@ func (client ManagementClient) ListNextResults(lastResults NotificationHubListRe
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "notificationhubs/ManagementClient", "List", resp, "Failure sending next results request request")
+		return result, autorest.NewErrorWithError(err, "notificationhubs.ManagementClient", "List", resp, "Failure sending next results request request")
 	}
 
 	result, err = client.ListResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "notificationhubs/ManagementClient", "List", resp, "Failure responding to next results request request")
+		err = autorest.NewErrorWithError(err, "notificationhubs.ManagementClient", "List", resp, "Failure responding to next results request request")
 	}
 
 	return
@@ -689,18 +689,18 @@ func (client ManagementClient) ListNextResults(lastResults NotificationHubListRe
 func (client ManagementClient) ListAuthorizationRules(resourceGroupName string, namespaceName string, notificationHubName string) (result SharedAccessAuthorizationRuleListResult, err error) {
 	req, err := client.ListAuthorizationRulesPreparer(resourceGroupName, namespaceName, notificationHubName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "notificationhubs/ManagementClient", "ListAuthorizationRules", nil, "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "notificationhubs.ManagementClient", "ListAuthorizationRules", nil, "Failure preparing request")
 	}
 
 	resp, err := client.ListAuthorizationRulesSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "notificationhubs/ManagementClient", "ListAuthorizationRules", resp, "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "notificationhubs.ManagementClient", "ListAuthorizationRules", resp, "Failure sending request")
 	}
 
 	result, err = client.ListAuthorizationRulesResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "notificationhubs/ManagementClient", "ListAuthorizationRules", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "notificationhubs.ManagementClient", "ListAuthorizationRules", resp, "Failure responding to request")
 	}
 
 	return
@@ -751,7 +751,7 @@ func (client ManagementClient) ListAuthorizationRulesResponder(resp *http.Respon
 func (client ManagementClient) ListAuthorizationRulesNextResults(lastResults SharedAccessAuthorizationRuleListResult) (result SharedAccessAuthorizationRuleListResult, err error) {
 	req, err := lastResults.SharedAccessAuthorizationRuleListResultPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "notificationhubs/ManagementClient", "ListAuthorizationRules", nil, "Failure preparing next results request request")
+		return result, autorest.NewErrorWithError(err, "notificationhubs.ManagementClient", "ListAuthorizationRules", nil, "Failure preparing next results request request")
 	}
 	if req == nil {
 		return
@@ -760,12 +760,12 @@ func (client ManagementClient) ListAuthorizationRulesNextResults(lastResults Sha
 	resp, err := client.ListAuthorizationRulesSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "notificationhubs/ManagementClient", "ListAuthorizationRules", resp, "Failure sending next results request request")
+		return result, autorest.NewErrorWithError(err, "notificationhubs.ManagementClient", "ListAuthorizationRules", resp, "Failure sending next results request request")
 	}
 
 	result, err = client.ListAuthorizationRulesResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "notificationhubs/ManagementClient", "ListAuthorizationRules", resp, "Failure responding to next results request request")
+		err = autorest.NewErrorWithError(err, "notificationhubs.ManagementClient", "ListAuthorizationRules", resp, "Failure responding to next results request request")
 	}
 
 	return
@@ -781,18 +781,18 @@ func (client ManagementClient) ListAuthorizationRulesNextResults(lastResults Sha
 func (client ManagementClient) ListKeys(resourceGroupName string, namespaceName string, notificationHubName string, authorizationRuleName string) (result ResourceListKeys, err error) {
 	req, err := client.ListKeysPreparer(resourceGroupName, namespaceName, notificationHubName, authorizationRuleName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "notificationhubs/ManagementClient", "ListKeys", nil, "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "notificationhubs.ManagementClient", "ListKeys", nil, "Failure preparing request")
 	}
 
 	resp, err := client.ListKeysSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "notificationhubs/ManagementClient", "ListKeys", resp, "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "notificationhubs.ManagementClient", "ListKeys", resp, "Failure sending request")
 	}
 
 	result, err = client.ListKeysResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "notificationhubs/ManagementClient", "ListKeys", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "notificationhubs.ManagementClient", "ListKeys", resp, "Failure responding to request")
 	}
 
 	return

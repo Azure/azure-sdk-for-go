@@ -53,18 +53,18 @@ func NewTopLevelDomainsClientWithBaseURI(baseURI string, subscriptionID string) 
 func (client TopLevelDomainsClient) GetGetTopLevelDomains() (result TopLevelDomainCollection, err error) {
 	req, err := client.GetGetTopLevelDomainsPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web/TopLevelDomainsClient", "GetGetTopLevelDomains", nil, "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "web.TopLevelDomainsClient", "GetGetTopLevelDomains", nil, "Failure preparing request")
 	}
 
 	resp, err := client.GetGetTopLevelDomainsSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web/TopLevelDomainsClient", "GetGetTopLevelDomains", resp, "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "web.TopLevelDomainsClient", "GetGetTopLevelDomains", resp, "Failure sending request")
 	}
 
 	result, err = client.GetGetTopLevelDomainsResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "web/TopLevelDomainsClient", "GetGetTopLevelDomains", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "web.TopLevelDomainsClient", "GetGetTopLevelDomains", resp, "Failure responding to request")
 	}
 
 	return
@@ -114,18 +114,18 @@ func (client TopLevelDomainsClient) GetGetTopLevelDomainsResponder(resp *http.Re
 func (client TopLevelDomainsClient) GetTopLevelDomain(name string) (result TopLevelDomain, err error) {
 	req, err := client.GetTopLevelDomainPreparer(name)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web/TopLevelDomainsClient", "GetTopLevelDomain", nil, "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "web.TopLevelDomainsClient", "GetTopLevelDomain", nil, "Failure preparing request")
 	}
 
 	resp, err := client.GetTopLevelDomainSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web/TopLevelDomainsClient", "GetTopLevelDomain", resp, "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "web.TopLevelDomainsClient", "GetTopLevelDomain", resp, "Failure sending request")
 	}
 
 	result, err = client.GetTopLevelDomainResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "web/TopLevelDomainsClient", "GetTopLevelDomain", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "web.TopLevelDomainsClient", "GetTopLevelDomain", resp, "Failure responding to request")
 	}
 
 	return
@@ -178,18 +178,18 @@ func (client TopLevelDomainsClient) GetTopLevelDomainResponder(resp *http.Respon
 func (client TopLevelDomainsClient) ListTopLevelDomainAgreements(name string, agreementOption TopLevelDomainAgreementOption) (result TldLegalAgreementCollection, err error) {
 	req, err := client.ListTopLevelDomainAgreementsPreparer(name, agreementOption)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web/TopLevelDomainsClient", "ListTopLevelDomainAgreements", nil, "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "web.TopLevelDomainsClient", "ListTopLevelDomainAgreements", nil, "Failure preparing request")
 	}
 
 	resp, err := client.ListTopLevelDomainAgreementsSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web/TopLevelDomainsClient", "ListTopLevelDomainAgreements", resp, "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "web.TopLevelDomainsClient", "ListTopLevelDomainAgreements", resp, "Failure sending request")
 	}
 
 	result, err = client.ListTopLevelDomainAgreementsResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "web/TopLevelDomainsClient", "ListTopLevelDomainAgreements", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "web.TopLevelDomainsClient", "ListTopLevelDomainAgreements", resp, "Failure responding to request")
 	}
 
 	return

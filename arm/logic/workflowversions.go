@@ -50,18 +50,18 @@ func NewWorkflowVersionsClientWithBaseURI(baseURI string, subscriptionID string)
 func (client WorkflowVersionsClient) Get(resourceGroupName string, workflowName string, versionID string) (result WorkflowVersion, err error) {
 	req, err := client.GetPreparer(resourceGroupName, workflowName, versionID)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "logic/WorkflowVersionsClient", "Get", nil, "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "logic.WorkflowVersionsClient", "Get", nil, "Failure preparing request")
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "logic/WorkflowVersionsClient", "Get", resp, "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "logic.WorkflowVersionsClient", "Get", resp, "Failure sending request")
 	}
 
 	result, err = client.GetResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "logic/WorkflowVersionsClient", "Get", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "logic.WorkflowVersionsClient", "Get", resp, "Failure responding to request")
 	}
 
 	return

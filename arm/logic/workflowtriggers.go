@@ -50,18 +50,18 @@ func NewWorkflowTriggersClientWithBaseURI(baseURI string, subscriptionID string)
 func (client WorkflowTriggersClient) Get(resourceGroupName string, workflowName string, triggerName string) (result WorkflowTrigger, err error) {
 	req, err := client.GetPreparer(resourceGroupName, workflowName, triggerName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "logic/WorkflowTriggersClient", "Get", nil, "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "logic.WorkflowTriggersClient", "Get", nil, "Failure preparing request")
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "logic/WorkflowTriggersClient", "Get", resp, "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "logic.WorkflowTriggersClient", "Get", resp, "Failure sending request")
 	}
 
 	result, err = client.GetResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "logic/WorkflowTriggersClient", "Get", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "logic.WorkflowTriggersClient", "Get", resp, "Failure responding to request")
 	}
 
 	return
@@ -116,18 +116,18 @@ func (client WorkflowTriggersClient) GetResponder(resp *http.Response) (result W
 func (client WorkflowTriggersClient) List(resourceGroupName string, workflowName string, top *int32, filter string) (result WorkflowTriggerListResult, err error) {
 	req, err := client.ListPreparer(resourceGroupName, workflowName, top, filter)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "logic/WorkflowTriggersClient", "List", nil, "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "logic.WorkflowTriggersClient", "List", nil, "Failure preparing request")
 	}
 
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "logic/WorkflowTriggersClient", "List", resp, "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "logic.WorkflowTriggersClient", "List", resp, "Failure sending request")
 	}
 
 	result, err = client.ListResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "logic/WorkflowTriggersClient", "List", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "logic.WorkflowTriggersClient", "List", resp, "Failure responding to request")
 	}
 
 	return
@@ -183,7 +183,7 @@ func (client WorkflowTriggersClient) ListResponder(resp *http.Response) (result 
 func (client WorkflowTriggersClient) ListNextResults(lastResults WorkflowTriggerListResult) (result WorkflowTriggerListResult, err error) {
 	req, err := lastResults.WorkflowTriggerListResultPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "logic/WorkflowTriggersClient", "List", nil, "Failure preparing next results request request")
+		return result, autorest.NewErrorWithError(err, "logic.WorkflowTriggersClient", "List", nil, "Failure preparing next results request request")
 	}
 	if req == nil {
 		return
@@ -192,12 +192,12 @@ func (client WorkflowTriggersClient) ListNextResults(lastResults WorkflowTrigger
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "logic/WorkflowTriggersClient", "List", resp, "Failure sending next results request request")
+		return result, autorest.NewErrorWithError(err, "logic.WorkflowTriggersClient", "List", resp, "Failure sending next results request request")
 	}
 
 	result, err = client.ListResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "logic/WorkflowTriggersClient", "List", resp, "Failure responding to next results request request")
+		err = autorest.NewErrorWithError(err, "logic.WorkflowTriggersClient", "List", resp, "Failure responding to next results request request")
 	}
 
 	return
@@ -210,18 +210,18 @@ func (client WorkflowTriggersClient) ListNextResults(lastResults WorkflowTrigger
 func (client WorkflowTriggersClient) Run(resourceGroupName string, workflowName string, triggerName string) (result autorest.Response, err error) {
 	req, err := client.RunPreparer(resourceGroupName, workflowName, triggerName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "logic/WorkflowTriggersClient", "Run", nil, "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "logic.WorkflowTriggersClient", "Run", nil, "Failure preparing request")
 	}
 
 	resp, err := client.RunSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "logic/WorkflowTriggersClient", "Run", resp, "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "logic.WorkflowTriggersClient", "Run", resp, "Failure sending request")
 	}
 
 	result, err = client.RunResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "logic/WorkflowTriggersClient", "Run", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "logic.WorkflowTriggersClient", "Run", resp, "Failure responding to request")
 	}
 
 	return

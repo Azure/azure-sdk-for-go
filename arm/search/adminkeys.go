@@ -51,18 +51,18 @@ func NewAdminKeysClientWithBaseURI(baseURI string, subscriptionID string) AdminK
 func (client AdminKeysClient) List(resourceGroupName string, serviceName string) (result AdminKeyResult, err error) {
 	req, err := client.ListPreparer(resourceGroupName, serviceName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "search/AdminKeysClient", "List", nil, "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "search.AdminKeysClient", "List", nil, "Failure preparing request")
 	}
 
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "search/AdminKeysClient", "List", resp, "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "search.AdminKeysClient", "List", resp, "Failure sending request")
 	}
 
 	result, err = client.ListResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "search/AdminKeysClient", "List", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "search.AdminKeysClient", "List", resp, "Failure responding to request")
 	}
 
 	return

@@ -56,18 +56,18 @@ func NewEndpointsClientWithBaseURI(baseURI string, subscriptionID string) Endpoi
 func (client EndpointsClient) Create(endpointName string, endpointProperties EndpointCreateParameters, profileName string, resourceGroupName string, cancel <-chan struct{}) (result autorest.Response, err error) {
 	req, err := client.CreatePreparer(endpointName, endpointProperties, profileName, resourceGroupName, cancel)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "cdn/EndpointsClient", "Create", nil, "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "cdn.EndpointsClient", "Create", nil, "Failure preparing request")
 	}
 
 	resp, err := client.CreateSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "cdn/EndpointsClient", "Create", resp, "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "cdn.EndpointsClient", "Create", resp, "Failure sending request")
 	}
 
 	result, err = client.CreateResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "cdn/EndpointsClient", "Create", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "cdn.EndpointsClient", "Create", resp, "Failure responding to request")
 	}
 
 	return
@@ -127,18 +127,18 @@ func (client EndpointsClient) CreateResponder(resp *http.Response) (result autor
 func (client EndpointsClient) DeleteIfExists(endpointName string, profileName string, resourceGroupName string, cancel <-chan struct{}) (result autorest.Response, err error) {
 	req, err := client.DeleteIfExistsPreparer(endpointName, profileName, resourceGroupName, cancel)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "cdn/EndpointsClient", "DeleteIfExists", nil, "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "cdn.EndpointsClient", "DeleteIfExists", nil, "Failure preparing request")
 	}
 
 	resp, err := client.DeleteIfExistsSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "cdn/EndpointsClient", "DeleteIfExists", resp, "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "cdn.EndpointsClient", "DeleteIfExists", resp, "Failure sending request")
 	}
 
 	result, err = client.DeleteIfExistsResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "cdn/EndpointsClient", "DeleteIfExists", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "cdn.EndpointsClient", "DeleteIfExists", resp, "Failure responding to request")
 	}
 
 	return
@@ -194,18 +194,18 @@ func (client EndpointsClient) DeleteIfExistsResponder(resp *http.Response) (resu
 func (client EndpointsClient) Get(endpointName string, profileName string, resourceGroupName string) (result Endpoint, err error) {
 	req, err := client.GetPreparer(endpointName, profileName, resourceGroupName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "cdn/EndpointsClient", "Get", nil, "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "cdn.EndpointsClient", "Get", nil, "Failure preparing request")
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "cdn/EndpointsClient", "Get", resp, "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "cdn.EndpointsClient", "Get", resp, "Failure sending request")
 	}
 
 	result, err = client.GetResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "cdn/EndpointsClient", "Get", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "cdn.EndpointsClient", "Get", resp, "Failure responding to request")
 	}
 
 	return
@@ -260,18 +260,18 @@ func (client EndpointsClient) GetResponder(resp *http.Response) (result Endpoint
 func (client EndpointsClient) ListByProfile(profileName string, resourceGroupName string) (result EndpointListResult, err error) {
 	req, err := client.ListByProfilePreparer(profileName, resourceGroupName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "cdn/EndpointsClient", "ListByProfile", nil, "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "cdn.EndpointsClient", "ListByProfile", nil, "Failure preparing request")
 	}
 
 	resp, err := client.ListByProfileSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "cdn/EndpointsClient", "ListByProfile", resp, "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "cdn.EndpointsClient", "ListByProfile", resp, "Failure sending request")
 	}
 
 	result, err = client.ListByProfileResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "cdn/EndpointsClient", "ListByProfile", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "cdn.EndpointsClient", "ListByProfile", resp, "Failure responding to request")
 	}
 
 	return
@@ -330,18 +330,18 @@ func (client EndpointsClient) ListByProfileResponder(resp *http.Response) (resul
 func (client EndpointsClient) LoadContent(endpointName string, contentFilePaths LoadParameters, profileName string, resourceGroupName string, cancel <-chan struct{}) (result autorest.Response, err error) {
 	req, err := client.LoadContentPreparer(endpointName, contentFilePaths, profileName, resourceGroupName, cancel)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "cdn/EndpointsClient", "LoadContent", nil, "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "cdn.EndpointsClient", "LoadContent", nil, "Failure preparing request")
 	}
 
 	resp, err := client.LoadContentSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "cdn/EndpointsClient", "LoadContent", resp, "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "cdn.EndpointsClient", "LoadContent", resp, "Failure sending request")
 	}
 
 	result, err = client.LoadContentResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "cdn/EndpointsClient", "LoadContent", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "cdn.EndpointsClient", "LoadContent", resp, "Failure responding to request")
 	}
 
 	return
@@ -403,18 +403,18 @@ func (client EndpointsClient) LoadContentResponder(resp *http.Response) (result 
 func (client EndpointsClient) PurgeContent(endpointName string, contentFilePaths PurgeParameters, profileName string, resourceGroupName string, cancel <-chan struct{}) (result autorest.Response, err error) {
 	req, err := client.PurgeContentPreparer(endpointName, contentFilePaths, profileName, resourceGroupName, cancel)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "cdn/EndpointsClient", "PurgeContent", nil, "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "cdn.EndpointsClient", "PurgeContent", nil, "Failure preparing request")
 	}
 
 	resp, err := client.PurgeContentSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "cdn/EndpointsClient", "PurgeContent", resp, "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "cdn.EndpointsClient", "PurgeContent", resp, "Failure sending request")
 	}
 
 	result, err = client.PurgeContentResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "cdn/EndpointsClient", "PurgeContent", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "cdn.EndpointsClient", "PurgeContent", resp, "Failure responding to request")
 	}
 
 	return
@@ -473,18 +473,18 @@ func (client EndpointsClient) PurgeContentResponder(resp *http.Response) (result
 func (client EndpointsClient) Start(endpointName string, profileName string, resourceGroupName string, cancel <-chan struct{}) (result autorest.Response, err error) {
 	req, err := client.StartPreparer(endpointName, profileName, resourceGroupName, cancel)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "cdn/EndpointsClient", "Start", nil, "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "cdn.EndpointsClient", "Start", nil, "Failure preparing request")
 	}
 
 	resp, err := client.StartSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "cdn/EndpointsClient", "Start", resp, "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "cdn.EndpointsClient", "Start", resp, "Failure sending request")
 	}
 
 	result, err = client.StartResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "cdn/EndpointsClient", "Start", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "cdn.EndpointsClient", "Start", resp, "Failure responding to request")
 	}
 
 	return
@@ -542,18 +542,18 @@ func (client EndpointsClient) StartResponder(resp *http.Response) (result autore
 func (client EndpointsClient) Stop(endpointName string, profileName string, resourceGroupName string, cancel <-chan struct{}) (result autorest.Response, err error) {
 	req, err := client.StopPreparer(endpointName, profileName, resourceGroupName, cancel)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "cdn/EndpointsClient", "Stop", nil, "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "cdn.EndpointsClient", "Stop", nil, "Failure preparing request")
 	}
 
 	resp, err := client.StopSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "cdn/EndpointsClient", "Stop", resp, "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "cdn.EndpointsClient", "Stop", resp, "Failure sending request")
 	}
 
 	result, err = client.StopResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "cdn/EndpointsClient", "Stop", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "cdn.EndpointsClient", "Stop", resp, "Failure responding to request")
 	}
 
 	return
@@ -610,18 +610,18 @@ func (client EndpointsClient) StopResponder(resp *http.Response) (result autores
 func (client EndpointsClient) Update(endpointName string, endpointProperties EndpointUpdateParameters, profileName string, resourceGroupName string) (result Endpoint, err error) {
 	req, err := client.UpdatePreparer(endpointName, endpointProperties, profileName, resourceGroupName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "cdn/EndpointsClient", "Update", nil, "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "cdn.EndpointsClient", "Update", nil, "Failure preparing request")
 	}
 
 	resp, err := client.UpdateSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "cdn/EndpointsClient", "Update", resp, "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "cdn.EndpointsClient", "Update", resp, "Failure sending request")
 	}
 
 	result, err = client.UpdateResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "cdn/EndpointsClient", "Update", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "cdn.EndpointsClient", "Update", resp, "Failure responding to request")
 	}
 
 	return
@@ -678,18 +678,18 @@ func (client EndpointsClient) UpdateResponder(resp *http.Response) (result Endpo
 func (client EndpointsClient) ValidateCustomDomain(endpointName string, customDomainProperties ValidateCustomDomainInput, profileName string, resourceGroupName string) (result ValidateCustomDomainOutput, err error) {
 	req, err := client.ValidateCustomDomainPreparer(endpointName, customDomainProperties, profileName, resourceGroupName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "cdn/EndpointsClient", "ValidateCustomDomain", nil, "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "cdn.EndpointsClient", "ValidateCustomDomain", nil, "Failure preparing request")
 	}
 
 	resp, err := client.ValidateCustomDomainSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "cdn/EndpointsClient", "ValidateCustomDomain", resp, "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "cdn.EndpointsClient", "ValidateCustomDomain", resp, "Failure sending request")
 	}
 
 	result, err = client.ValidateCustomDomainResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "cdn/EndpointsClient", "ValidateCustomDomain", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "cdn.EndpointsClient", "ValidateCustomDomain", resp, "Failure responding to request")
 	}
 
 	return

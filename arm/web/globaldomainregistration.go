@@ -55,18 +55,18 @@ func NewGlobalDomainRegistrationClientWithBaseURI(baseURI string, subscriptionID
 func (client GlobalDomainRegistrationClient) CheckDomainAvailability(identifier NameIdentifier) (result DomainAvailablilityCheckResult, err error) {
 	req, err := client.CheckDomainAvailabilityPreparer(identifier)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web/GlobalDomainRegistrationClient", "CheckDomainAvailability", nil, "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "web.GlobalDomainRegistrationClient", "CheckDomainAvailability", nil, "Failure preparing request")
 	}
 
 	resp, err := client.CheckDomainAvailabilitySender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web/GlobalDomainRegistrationClient", "CheckDomainAvailability", resp, "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "web.GlobalDomainRegistrationClient", "CheckDomainAvailability", resp, "Failure sending request")
 	}
 
 	result, err = client.CheckDomainAvailabilityResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "web/GlobalDomainRegistrationClient", "CheckDomainAvailability", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "web.GlobalDomainRegistrationClient", "CheckDomainAvailability", resp, "Failure responding to request")
 	}
 
 	return
@@ -115,18 +115,18 @@ func (client GlobalDomainRegistrationClient) CheckDomainAvailabilityResponder(re
 func (client GlobalDomainRegistrationClient) GetAllDomains() (result DomainCollection, err error) {
 	req, err := client.GetAllDomainsPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web/GlobalDomainRegistrationClient", "GetAllDomains", nil, "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "web.GlobalDomainRegistrationClient", "GetAllDomains", nil, "Failure preparing request")
 	}
 
 	resp, err := client.GetAllDomainsSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web/GlobalDomainRegistrationClient", "GetAllDomains", resp, "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "web.GlobalDomainRegistrationClient", "GetAllDomains", resp, "Failure sending request")
 	}
 
 	result, err = client.GetAllDomainsResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "web/GlobalDomainRegistrationClient", "GetAllDomains", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "web.GlobalDomainRegistrationClient", "GetAllDomains", resp, "Failure responding to request")
 	}
 
 	return
@@ -175,18 +175,18 @@ func (client GlobalDomainRegistrationClient) GetAllDomainsResponder(resp *http.R
 func (client GlobalDomainRegistrationClient) GetDomainControlCenterSsoRequest() (result DomainControlCenterSsoRequest, err error) {
 	req, err := client.GetDomainControlCenterSsoRequestPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web/GlobalDomainRegistrationClient", "GetDomainControlCenterSsoRequest", nil, "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "web.GlobalDomainRegistrationClient", "GetDomainControlCenterSsoRequest", nil, "Failure preparing request")
 	}
 
 	resp, err := client.GetDomainControlCenterSsoRequestSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web/GlobalDomainRegistrationClient", "GetDomainControlCenterSsoRequest", resp, "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "web.GlobalDomainRegistrationClient", "GetDomainControlCenterSsoRequest", resp, "Failure sending request")
 	}
 
 	result, err = client.GetDomainControlCenterSsoRequestResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "web/GlobalDomainRegistrationClient", "GetDomainControlCenterSsoRequest", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "web.GlobalDomainRegistrationClient", "GetDomainControlCenterSsoRequest", resp, "Failure responding to request")
 	}
 
 	return
@@ -236,18 +236,18 @@ func (client GlobalDomainRegistrationClient) GetDomainControlCenterSsoRequestRes
 func (client GlobalDomainRegistrationClient) ListDomainRecommendations(parameters DomainRecommendationSearchParameters) (result NameIdentifierCollection, err error) {
 	req, err := client.ListDomainRecommendationsPreparer(parameters)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web/GlobalDomainRegistrationClient", "ListDomainRecommendations", nil, "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "web.GlobalDomainRegistrationClient", "ListDomainRecommendations", nil, "Failure preparing request")
 	}
 
 	resp, err := client.ListDomainRecommendationsSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web/GlobalDomainRegistrationClient", "ListDomainRecommendations", resp, "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "web.GlobalDomainRegistrationClient", "ListDomainRecommendations", resp, "Failure sending request")
 	}
 
 	result, err = client.ListDomainRecommendationsResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "web/GlobalDomainRegistrationClient", "ListDomainRecommendations", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "web.GlobalDomainRegistrationClient", "ListDomainRecommendations", resp, "Failure responding to request")
 	}
 
 	return
@@ -299,18 +299,18 @@ func (client GlobalDomainRegistrationClient) ListDomainRecommendationsResponder(
 func (client GlobalDomainRegistrationClient) ValidateDomainPurchaseInformation(domainRegistrationInput DomainRegistrationInput) (result SetObject, err error) {
 	req, err := client.ValidateDomainPurchaseInformationPreparer(domainRegistrationInput)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web/GlobalDomainRegistrationClient", "ValidateDomainPurchaseInformation", nil, "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "web.GlobalDomainRegistrationClient", "ValidateDomainPurchaseInformation", nil, "Failure preparing request")
 	}
 
 	resp, err := client.ValidateDomainPurchaseInformationSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web/GlobalDomainRegistrationClient", "ValidateDomainPurchaseInformation", resp, "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "web.GlobalDomainRegistrationClient", "ValidateDomainPurchaseInformation", resp, "Failure sending request")
 	}
 
 	result, err = client.ValidateDomainPurchaseInformationResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "web/GlobalDomainRegistrationClient", "ValidateDomainPurchaseInformation", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "web.GlobalDomainRegistrationClient", "ValidateDomainPurchaseInformation", resp, "Failure responding to request")
 	}
 
 	return

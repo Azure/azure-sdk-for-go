@@ -49,18 +49,18 @@ func NewWorkflowsClientWithBaseURI(baseURI string, subscriptionID string) Workfl
 func (client WorkflowsClient) CreateOrUpdate(resourceGroupName string, workflowName string, workflow Workflow) (result Workflow, err error) {
 	req, err := client.CreateOrUpdatePreparer(resourceGroupName, workflowName, workflow)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "logic/WorkflowsClient", "CreateOrUpdate", nil, "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "logic.WorkflowsClient", "CreateOrUpdate", nil, "Failure preparing request")
 	}
 
 	resp, err := client.CreateOrUpdateSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "logic/WorkflowsClient", "CreateOrUpdate", resp, "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "logic.WorkflowsClient", "CreateOrUpdate", resp, "Failure sending request")
 	}
 
 	result, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "logic/WorkflowsClient", "CreateOrUpdate", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "logic.WorkflowsClient", "CreateOrUpdate", resp, "Failure responding to request")
 	}
 
 	return
@@ -114,18 +114,18 @@ func (client WorkflowsClient) CreateOrUpdateResponder(resp *http.Response) (resu
 func (client WorkflowsClient) Delete(resourceGroupName string, workflowName string) (result autorest.Response, err error) {
 	req, err := client.DeletePreparer(resourceGroupName, workflowName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "logic/WorkflowsClient", "Delete", nil, "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "logic.WorkflowsClient", "Delete", nil, "Failure preparing request")
 	}
 
 	resp, err := client.DeleteSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "logic/WorkflowsClient", "Delete", resp, "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "logic.WorkflowsClient", "Delete", resp, "Failure sending request")
 	}
 
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "logic/WorkflowsClient", "Delete", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "logic.WorkflowsClient", "Delete", resp, "Failure responding to request")
 	}
 
 	return
@@ -177,18 +177,18 @@ func (client WorkflowsClient) DeleteResponder(resp *http.Response) (result autor
 func (client WorkflowsClient) Disable(resourceGroupName string, workflowName string) (result autorest.Response, err error) {
 	req, err := client.DisablePreparer(resourceGroupName, workflowName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "logic/WorkflowsClient", "Disable", nil, "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "logic.WorkflowsClient", "Disable", nil, "Failure preparing request")
 	}
 
 	resp, err := client.DisableSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "logic/WorkflowsClient", "Disable", resp, "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "logic.WorkflowsClient", "Disable", resp, "Failure sending request")
 	}
 
 	result, err = client.DisableResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "logic/WorkflowsClient", "Disable", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "logic.WorkflowsClient", "Disable", resp, "Failure responding to request")
 	}
 
 	return
@@ -240,18 +240,18 @@ func (client WorkflowsClient) DisableResponder(resp *http.Response) (result auto
 func (client WorkflowsClient) Enable(resourceGroupName string, workflowName string) (result autorest.Response, err error) {
 	req, err := client.EnablePreparer(resourceGroupName, workflowName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "logic/WorkflowsClient", "Enable", nil, "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "logic.WorkflowsClient", "Enable", nil, "Failure preparing request")
 	}
 
 	resp, err := client.EnableSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "logic/WorkflowsClient", "Enable", resp, "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "logic.WorkflowsClient", "Enable", resp, "Failure sending request")
 	}
 
 	result, err = client.EnableResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "logic/WorkflowsClient", "Enable", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "logic.WorkflowsClient", "Enable", resp, "Failure responding to request")
 	}
 
 	return
@@ -303,18 +303,18 @@ func (client WorkflowsClient) EnableResponder(resp *http.Response) (result autor
 func (client WorkflowsClient) Get(resourceGroupName string, workflowName string) (result Workflow, err error) {
 	req, err := client.GetPreparer(resourceGroupName, workflowName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "logic/WorkflowsClient", "Get", nil, "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "logic.WorkflowsClient", "Get", nil, "Failure preparing request")
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "logic/WorkflowsClient", "Get", resp, "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "logic.WorkflowsClient", "Get", resp, "Failure sending request")
 	}
 
 	result, err = client.GetResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "logic/WorkflowsClient", "Get", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "logic.WorkflowsClient", "Get", resp, "Failure responding to request")
 	}
 
 	return
@@ -367,18 +367,18 @@ func (client WorkflowsClient) GetResponder(resp *http.Response) (result Workflow
 func (client WorkflowsClient) ListByResourceGroup(resourceGroupName string, top *int32, filter string) (result WorkflowListResult, err error) {
 	req, err := client.ListByResourceGroupPreparer(resourceGroupName, top, filter)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "logic/WorkflowsClient", "ListByResourceGroup", nil, "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "logic.WorkflowsClient", "ListByResourceGroup", nil, "Failure preparing request")
 	}
 
 	resp, err := client.ListByResourceGroupSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "logic/WorkflowsClient", "ListByResourceGroup", resp, "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "logic.WorkflowsClient", "ListByResourceGroup", resp, "Failure sending request")
 	}
 
 	result, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "logic/WorkflowsClient", "ListByResourceGroup", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "logic.WorkflowsClient", "ListByResourceGroup", resp, "Failure responding to request")
 	}
 
 	return
@@ -433,7 +433,7 @@ func (client WorkflowsClient) ListByResourceGroupResponder(resp *http.Response) 
 func (client WorkflowsClient) ListByResourceGroupNextResults(lastResults WorkflowListResult) (result WorkflowListResult, err error) {
 	req, err := lastResults.WorkflowListResultPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "logic/WorkflowsClient", "ListByResourceGroup", nil, "Failure preparing next results request request")
+		return result, autorest.NewErrorWithError(err, "logic.WorkflowsClient", "ListByResourceGroup", nil, "Failure preparing next results request request")
 	}
 	if req == nil {
 		return
@@ -442,12 +442,12 @@ func (client WorkflowsClient) ListByResourceGroupNextResults(lastResults Workflo
 	resp, err := client.ListByResourceGroupSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "logic/WorkflowsClient", "ListByResourceGroup", resp, "Failure sending next results request request")
+		return result, autorest.NewErrorWithError(err, "logic.WorkflowsClient", "ListByResourceGroup", resp, "Failure sending next results request request")
 	}
 
 	result, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "logic/WorkflowsClient", "ListByResourceGroup", resp, "Failure responding to next results request request")
+		err = autorest.NewErrorWithError(err, "logic.WorkflowsClient", "ListByResourceGroup", resp, "Failure responding to next results request request")
 	}
 
 	return
@@ -460,18 +460,18 @@ func (client WorkflowsClient) ListByResourceGroupNextResults(lastResults Workflo
 func (client WorkflowsClient) ListBySubscription(top *int32, filter string) (result WorkflowListResult, err error) {
 	req, err := client.ListBySubscriptionPreparer(top, filter)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "logic/WorkflowsClient", "ListBySubscription", nil, "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "logic.WorkflowsClient", "ListBySubscription", nil, "Failure preparing request")
 	}
 
 	resp, err := client.ListBySubscriptionSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "logic/WorkflowsClient", "ListBySubscription", resp, "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "logic.WorkflowsClient", "ListBySubscription", resp, "Failure sending request")
 	}
 
 	result, err = client.ListBySubscriptionResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "logic/WorkflowsClient", "ListBySubscription", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "logic.WorkflowsClient", "ListBySubscription", resp, "Failure responding to request")
 	}
 
 	return
@@ -525,7 +525,7 @@ func (client WorkflowsClient) ListBySubscriptionResponder(resp *http.Response) (
 func (client WorkflowsClient) ListBySubscriptionNextResults(lastResults WorkflowListResult) (result WorkflowListResult, err error) {
 	req, err := lastResults.WorkflowListResultPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "logic/WorkflowsClient", "ListBySubscription", nil, "Failure preparing next results request request")
+		return result, autorest.NewErrorWithError(err, "logic.WorkflowsClient", "ListBySubscription", nil, "Failure preparing next results request request")
 	}
 	if req == nil {
 		return
@@ -534,12 +534,12 @@ func (client WorkflowsClient) ListBySubscriptionNextResults(lastResults Workflow
 	resp, err := client.ListBySubscriptionSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "logic/WorkflowsClient", "ListBySubscription", resp, "Failure sending next results request request")
+		return result, autorest.NewErrorWithError(err, "logic.WorkflowsClient", "ListBySubscription", resp, "Failure sending next results request request")
 	}
 
 	result, err = client.ListBySubscriptionResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "logic/WorkflowsClient", "ListBySubscription", resp, "Failure responding to next results request request")
+		err = autorest.NewErrorWithError(err, "logic.WorkflowsClient", "ListBySubscription", resp, "Failure responding to next results request request")
 	}
 
 	return
@@ -554,18 +554,18 @@ func (client WorkflowsClient) ListBySubscriptionNextResults(lastResults Workflow
 func (client WorkflowsClient) Run(resourceGroupName string, workflowName string, parameters RunWorkflowParameters, cancel <-chan struct{}) (result autorest.Response, err error) {
 	req, err := client.RunPreparer(resourceGroupName, workflowName, parameters, cancel)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "logic/WorkflowsClient", "Run", nil, "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "logic.WorkflowsClient", "Run", nil, "Failure preparing request")
 	}
 
 	resp, err := client.RunSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "logic/WorkflowsClient", "Run", resp, "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "logic.WorkflowsClient", "Run", resp, "Failure sending request")
 	}
 
 	result, err = client.RunResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "logic/WorkflowsClient", "Run", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "logic.WorkflowsClient", "Run", resp, "Failure responding to request")
 	}
 
 	return
@@ -620,18 +620,18 @@ func (client WorkflowsClient) RunResponder(resp *http.Response) (result autorest
 func (client WorkflowsClient) Update(resourceGroupName string, workflowName string, workflow Workflow) (result Workflow, err error) {
 	req, err := client.UpdatePreparer(resourceGroupName, workflowName, workflow)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "logic/WorkflowsClient", "Update", nil, "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "logic.WorkflowsClient", "Update", nil, "Failure preparing request")
 	}
 
 	resp, err := client.UpdateSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "logic/WorkflowsClient", "Update", resp, "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "logic.WorkflowsClient", "Update", resp, "Failure sending request")
 	}
 
 	result, err = client.UpdateResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "logic/WorkflowsClient", "Update", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "logic.WorkflowsClient", "Update", resp, "Failure responding to request")
 	}
 
 	return
@@ -685,18 +685,18 @@ func (client WorkflowsClient) UpdateResponder(resp *http.Response) (result Workf
 func (client WorkflowsClient) Validate(resourceGroupName string, workflowName string, workflow Workflow) (result autorest.Response, err error) {
 	req, err := client.ValidatePreparer(resourceGroupName, workflowName, workflow)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "logic/WorkflowsClient", "Validate", nil, "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "logic.WorkflowsClient", "Validate", nil, "Failure preparing request")
 	}
 
 	resp, err := client.ValidateSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "logic/WorkflowsClient", "Validate", resp, "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "logic.WorkflowsClient", "Validate", resp, "Failure sending request")
 	}
 
 	result, err = client.ValidateResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "logic/WorkflowsClient", "Validate", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "logic.WorkflowsClient", "Validate", resp, "Failure responding to request")
 	}
 
 	return

@@ -64,18 +64,18 @@ func NewWithBaseURI(baseURI string, subscriptionID string) ManagementClient {
 func (client ManagementClient) Get(resourceProviderNamespace string, featureName string) (result FeatureResult, err error) {
 	req, err := client.GetPreparer(resourceProviderNamespace, featureName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "features/ManagementClient", "Get", nil, "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "features.ManagementClient", "Get", nil, "Failure preparing request")
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "features/ManagementClient", "Get", resp, "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "features.ManagementClient", "Get", resp, "Failure sending request")
 	}
 
 	result, err = client.GetResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "features/ManagementClient", "Get", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "features.ManagementClient", "Get", resp, "Failure responding to request")
 	}
 
 	return
@@ -127,18 +127,18 @@ func (client ManagementClient) GetResponder(resp *http.Response) (result Feature
 func (client ManagementClient) List(resourceProviderNamespace string) (result FeatureOperationsListResult, err error) {
 	req, err := client.ListPreparer(resourceProviderNamespace)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "features/ManagementClient", "List", nil, "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "features.ManagementClient", "List", nil, "Failure preparing request")
 	}
 
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "features/ManagementClient", "List", resp, "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "features.ManagementClient", "List", resp, "Failure sending request")
 	}
 
 	result, err = client.ListResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "features/ManagementClient", "List", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "features.ManagementClient", "List", resp, "Failure responding to request")
 	}
 
 	return
@@ -187,7 +187,7 @@ func (client ManagementClient) ListResponder(resp *http.Response) (result Featur
 func (client ManagementClient) ListNextResults(lastResults FeatureOperationsListResult) (result FeatureOperationsListResult, err error) {
 	req, err := lastResults.FeatureOperationsListResultPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "features/ManagementClient", "List", nil, "Failure preparing next results request request")
+		return result, autorest.NewErrorWithError(err, "features.ManagementClient", "List", nil, "Failure preparing next results request request")
 	}
 	if req == nil {
 		return
@@ -196,12 +196,12 @@ func (client ManagementClient) ListNextResults(lastResults FeatureOperationsList
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "features/ManagementClient", "List", resp, "Failure sending next results request request")
+		return result, autorest.NewErrorWithError(err, "features.ManagementClient", "List", resp, "Failure sending next results request request")
 	}
 
 	result, err = client.ListResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "features/ManagementClient", "List", resp, "Failure responding to next results request request")
+		err = autorest.NewErrorWithError(err, "features.ManagementClient", "List", resp, "Failure responding to next results request request")
 	}
 
 	return
@@ -212,18 +212,18 @@ func (client ManagementClient) ListNextResults(lastResults FeatureOperationsList
 func (client ManagementClient) ListAll() (result FeatureOperationsListResult, err error) {
 	req, err := client.ListAllPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "features/ManagementClient", "ListAll", nil, "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "features.ManagementClient", "ListAll", nil, "Failure preparing request")
 	}
 
 	resp, err := client.ListAllSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "features/ManagementClient", "ListAll", resp, "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "features.ManagementClient", "ListAll", resp, "Failure sending request")
 	}
 
 	result, err = client.ListAllResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "features/ManagementClient", "ListAll", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "features.ManagementClient", "ListAll", resp, "Failure responding to request")
 	}
 
 	return
@@ -271,7 +271,7 @@ func (client ManagementClient) ListAllResponder(resp *http.Response) (result Fea
 func (client ManagementClient) ListAllNextResults(lastResults FeatureOperationsListResult) (result FeatureOperationsListResult, err error) {
 	req, err := lastResults.FeatureOperationsListResultPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "features/ManagementClient", "ListAll", nil, "Failure preparing next results request request")
+		return result, autorest.NewErrorWithError(err, "features.ManagementClient", "ListAll", nil, "Failure preparing next results request request")
 	}
 	if req == nil {
 		return
@@ -280,12 +280,12 @@ func (client ManagementClient) ListAllNextResults(lastResults FeatureOperationsL
 	resp, err := client.ListAllSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "features/ManagementClient", "ListAll", resp, "Failure sending next results request request")
+		return result, autorest.NewErrorWithError(err, "features.ManagementClient", "ListAll", resp, "Failure sending next results request request")
 	}
 
 	result, err = client.ListAllResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "features/ManagementClient", "ListAll", resp, "Failure responding to next results request request")
+		err = autorest.NewErrorWithError(err, "features.ManagementClient", "ListAll", resp, "Failure responding to next results request request")
 	}
 
 	return
@@ -298,18 +298,18 @@ func (client ManagementClient) ListAllNextResults(lastResults FeatureOperationsL
 func (client ManagementClient) Register(resourceProviderNamespace string, featureName string) (result FeatureResult, err error) {
 	req, err := client.RegisterPreparer(resourceProviderNamespace, featureName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "features/ManagementClient", "Register", nil, "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "features.ManagementClient", "Register", nil, "Failure preparing request")
 	}
 
 	resp, err := client.RegisterSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "features/ManagementClient", "Register", resp, "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "features.ManagementClient", "Register", resp, "Failure sending request")
 	}
 
 	result, err = client.RegisterResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "features/ManagementClient", "Register", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "features.ManagementClient", "Register", resp, "Failure responding to request")
 	}
 
 	return

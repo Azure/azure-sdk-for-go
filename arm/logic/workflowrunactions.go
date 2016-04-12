@@ -51,18 +51,18 @@ func NewWorkflowRunActionsClientWithBaseURI(baseURI string, subscriptionID strin
 func (client WorkflowRunActionsClient) Get(resourceGroupName string, workflowName string, runName string, actionName string) (result WorkflowRunAction, err error) {
 	req, err := client.GetPreparer(resourceGroupName, workflowName, runName, actionName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "logic/WorkflowRunActionsClient", "Get", nil, "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "logic.WorkflowRunActionsClient", "Get", nil, "Failure preparing request")
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "logic/WorkflowRunActionsClient", "Get", resp, "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "logic.WorkflowRunActionsClient", "Get", resp, "Failure sending request")
 	}
 
 	result, err = client.GetResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "logic/WorkflowRunActionsClient", "Get", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "logic.WorkflowRunActionsClient", "Get", resp, "Failure responding to request")
 	}
 
 	return
@@ -118,18 +118,18 @@ func (client WorkflowRunActionsClient) GetResponder(resp *http.Response) (result
 func (client WorkflowRunActionsClient) List(resourceGroupName string, workflowName string, runName string, top *int32, filter string) (result WorkflowRunActionListResult, err error) {
 	req, err := client.ListPreparer(resourceGroupName, workflowName, runName, top, filter)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "logic/WorkflowRunActionsClient", "List", nil, "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "logic.WorkflowRunActionsClient", "List", nil, "Failure preparing request")
 	}
 
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "logic/WorkflowRunActionsClient", "List", resp, "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "logic.WorkflowRunActionsClient", "List", resp, "Failure sending request")
 	}
 
 	result, err = client.ListResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "logic/WorkflowRunActionsClient", "List", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "logic.WorkflowRunActionsClient", "List", resp, "Failure responding to request")
 	}
 
 	return
@@ -186,7 +186,7 @@ func (client WorkflowRunActionsClient) ListResponder(resp *http.Response) (resul
 func (client WorkflowRunActionsClient) ListNextResults(lastResults WorkflowRunActionListResult) (result WorkflowRunActionListResult, err error) {
 	req, err := lastResults.WorkflowRunActionListResultPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "logic/WorkflowRunActionsClient", "List", nil, "Failure preparing next results request request")
+		return result, autorest.NewErrorWithError(err, "logic.WorkflowRunActionsClient", "List", nil, "Failure preparing next results request request")
 	}
 	if req == nil {
 		return
@@ -195,12 +195,12 @@ func (client WorkflowRunActionsClient) ListNextResults(lastResults WorkflowRunAc
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "logic/WorkflowRunActionsClient", "List", resp, "Failure sending next results request request")
+		return result, autorest.NewErrorWithError(err, "logic.WorkflowRunActionsClient", "List", resp, "Failure sending next results request request")
 	}
 
 	result, err = client.ListResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "logic/WorkflowRunActionsClient", "List", resp, "Failure responding to next results request request")
+		err = autorest.NewErrorWithError(err, "logic.WorkflowRunActionsClient", "List", resp, "Failure responding to next results request request")
 	}
 
 	return

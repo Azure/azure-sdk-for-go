@@ -51,18 +51,18 @@ func NewNameAvailabilityClientWithBaseURI(baseURI string, subscriptionID string)
 func (client NameAvailabilityClient) CheckNameAvailability(checkNameAvailabilityInput CheckNameAvailabilityInput) (result CheckNameAvailabilityOutput, err error) {
 	req, err := client.CheckNameAvailabilityPreparer(checkNameAvailabilityInput)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "cdn/NameAvailabilityClient", "CheckNameAvailability", nil, "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "cdn.NameAvailabilityClient", "CheckNameAvailability", nil, "Failure preparing request")
 	}
 
 	resp, err := client.CheckNameAvailabilitySender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "cdn/NameAvailabilityClient", "CheckNameAvailability", resp, "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "cdn.NameAvailabilityClient", "CheckNameAvailability", resp, "Failure sending request")
 	}
 
 	result, err = client.CheckNameAvailabilityResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "cdn/NameAvailabilityClient", "CheckNameAvailability", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "cdn.NameAvailabilityClient", "CheckNameAvailability", resp, "Failure responding to request")
 	}
 
 	return

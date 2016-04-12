@@ -51,18 +51,18 @@ func NewManagementLocksClientWithBaseURI(baseURI string, subscriptionID string) 
 func (client ManagementLocksClient) CreateOrUpdateAtResourceGroupLevel(resourceGroupName string, lockName string, parameters ManagementLockObject) (result ManagementLockObject, err error) {
 	req, err := client.CreateOrUpdateAtResourceGroupLevelPreparer(resourceGroupName, lockName, parameters)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "authorization/ManagementLocksClient", "CreateOrUpdateAtResourceGroupLevel", nil, "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "authorization.ManagementLocksClient", "CreateOrUpdateAtResourceGroupLevel", nil, "Failure preparing request")
 	}
 
 	resp, err := client.CreateOrUpdateAtResourceGroupLevelSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "authorization/ManagementLocksClient", "CreateOrUpdateAtResourceGroupLevel", resp, "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "authorization.ManagementLocksClient", "CreateOrUpdateAtResourceGroupLevel", resp, "Failure sending request")
 	}
 
 	result, err = client.CreateOrUpdateAtResourceGroupLevelResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "authorization/ManagementLocksClient", "CreateOrUpdateAtResourceGroupLevel", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "authorization.ManagementLocksClient", "CreateOrUpdateAtResourceGroupLevel", resp, "Failure responding to request")
 	}
 
 	return
@@ -120,18 +120,18 @@ func (client ManagementLocksClient) CreateOrUpdateAtResourceGroupLevelResponder(
 func (client ManagementLocksClient) CreateOrUpdateAtResourceLevel(resourceGroupName string, resourceProviderNamespace string, parentResourcePath string, resourceType string, resourceName string, lockName string, parameters ManagementLockObject) (result ManagementLockObject, err error) {
 	req, err := client.CreateOrUpdateAtResourceLevelPreparer(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, lockName, parameters)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "authorization/ManagementLocksClient", "CreateOrUpdateAtResourceLevel", nil, "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "authorization.ManagementLocksClient", "CreateOrUpdateAtResourceLevel", nil, "Failure preparing request")
 	}
 
 	resp, err := client.CreateOrUpdateAtResourceLevelSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "authorization/ManagementLocksClient", "CreateOrUpdateAtResourceLevel", resp, "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "authorization.ManagementLocksClient", "CreateOrUpdateAtResourceLevel", resp, "Failure sending request")
 	}
 
 	result, err = client.CreateOrUpdateAtResourceLevelResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "authorization/ManagementLocksClient", "CreateOrUpdateAtResourceLevel", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "authorization.ManagementLocksClient", "CreateOrUpdateAtResourceLevel", resp, "Failure responding to request")
 	}
 
 	return
@@ -189,18 +189,18 @@ func (client ManagementLocksClient) CreateOrUpdateAtResourceLevelResponder(resp 
 func (client ManagementLocksClient) CreateOrUpdateAtSubscriptionLevel(lockName string, parameters ManagementLockObject) (result ManagementLockObject, err error) {
 	req, err := client.CreateOrUpdateAtSubscriptionLevelPreparer(lockName, parameters)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "authorization/ManagementLocksClient", "CreateOrUpdateAtSubscriptionLevel", nil, "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "authorization.ManagementLocksClient", "CreateOrUpdateAtSubscriptionLevel", nil, "Failure preparing request")
 	}
 
 	resp, err := client.CreateOrUpdateAtSubscriptionLevelSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "authorization/ManagementLocksClient", "CreateOrUpdateAtSubscriptionLevel", resp, "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "authorization.ManagementLocksClient", "CreateOrUpdateAtSubscriptionLevel", resp, "Failure sending request")
 	}
 
 	result, err = client.CreateOrUpdateAtSubscriptionLevelResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "authorization/ManagementLocksClient", "CreateOrUpdateAtSubscriptionLevel", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "authorization.ManagementLocksClient", "CreateOrUpdateAtSubscriptionLevel", resp, "Failure responding to request")
 	}
 
 	return
@@ -252,18 +252,18 @@ func (client ManagementLocksClient) CreateOrUpdateAtSubscriptionLevelResponder(r
 func (client ManagementLocksClient) DeleteAtResourceGroupLevel(resourceGroup string, lockName string) (result autorest.Response, err error) {
 	req, err := client.DeleteAtResourceGroupLevelPreparer(resourceGroup, lockName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "authorization/ManagementLocksClient", "DeleteAtResourceGroupLevel", nil, "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "authorization.ManagementLocksClient", "DeleteAtResourceGroupLevel", nil, "Failure preparing request")
 	}
 
 	resp, err := client.DeleteAtResourceGroupLevelSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "authorization/ManagementLocksClient", "DeleteAtResourceGroupLevel", resp, "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "authorization.ManagementLocksClient", "DeleteAtResourceGroupLevel", resp, "Failure sending request")
 	}
 
 	result, err = client.DeleteAtResourceGroupLevelResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "authorization/ManagementLocksClient", "DeleteAtResourceGroupLevel", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "authorization.ManagementLocksClient", "DeleteAtResourceGroupLevel", resp, "Failure responding to request")
 	}
 
 	return
@@ -318,18 +318,18 @@ func (client ManagementLocksClient) DeleteAtResourceGroupLevelResponder(resp *ht
 func (client ManagementLocksClient) DeleteAtResourceLevel(resourceGroupName string, resourceProviderNamespace string, parentResourcePath string, resourceType string, resourceName string, lockName string) (result autorest.Response, err error) {
 	req, err := client.DeleteAtResourceLevelPreparer(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, lockName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "authorization/ManagementLocksClient", "DeleteAtResourceLevel", nil, "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "authorization.ManagementLocksClient", "DeleteAtResourceLevel", nil, "Failure preparing request")
 	}
 
 	resp, err := client.DeleteAtResourceLevelSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "authorization/ManagementLocksClient", "DeleteAtResourceLevel", resp, "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "authorization.ManagementLocksClient", "DeleteAtResourceLevel", resp, "Failure sending request")
 	}
 
 	result, err = client.DeleteAtResourceLevelResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "authorization/ManagementLocksClient", "DeleteAtResourceLevel", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "authorization.ManagementLocksClient", "DeleteAtResourceLevel", resp, "Failure responding to request")
 	}
 
 	return
@@ -384,18 +384,18 @@ func (client ManagementLocksClient) DeleteAtResourceLevelResponder(resp *http.Re
 func (client ManagementLocksClient) DeleteAtSubscriptionLevel(lockName string) (result autorest.Response, err error) {
 	req, err := client.DeleteAtSubscriptionLevelPreparer(lockName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "authorization/ManagementLocksClient", "DeleteAtSubscriptionLevel", nil, "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "authorization.ManagementLocksClient", "DeleteAtSubscriptionLevel", nil, "Failure preparing request")
 	}
 
 	resp, err := client.DeleteAtSubscriptionLevelSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "authorization/ManagementLocksClient", "DeleteAtSubscriptionLevel", resp, "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "authorization.ManagementLocksClient", "DeleteAtSubscriptionLevel", resp, "Failure sending request")
 	}
 
 	result, err = client.DeleteAtSubscriptionLevelResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "authorization/ManagementLocksClient", "DeleteAtSubscriptionLevel", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "authorization.ManagementLocksClient", "DeleteAtSubscriptionLevel", resp, "Failure responding to request")
 	}
 
 	return
@@ -445,18 +445,18 @@ func (client ManagementLocksClient) DeleteAtSubscriptionLevelResponder(resp *htt
 func (client ManagementLocksClient) Get(lockName string) (result ManagementLockObject, err error) {
 	req, err := client.GetPreparer(lockName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "authorization/ManagementLocksClient", "Get", nil, "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "authorization.ManagementLocksClient", "Get", nil, "Failure preparing request")
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "authorization/ManagementLocksClient", "Get", resp, "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "authorization.ManagementLocksClient", "Get", resp, "Failure sending request")
 	}
 
 	result, err = client.GetResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "authorization/ManagementLocksClient", "Get", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "authorization.ManagementLocksClient", "Get", resp, "Failure responding to request")
 	}
 
 	return
@@ -508,18 +508,18 @@ func (client ManagementLocksClient) GetResponder(resp *http.Response) (result Ma
 func (client ManagementLocksClient) ListAtResourceGroupLevel(resourceGroupName string, filter string) (result ManagementLockListResult, err error) {
 	req, err := client.ListAtResourceGroupLevelPreparer(resourceGroupName, filter)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "authorization/ManagementLocksClient", "ListAtResourceGroupLevel", nil, "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "authorization.ManagementLocksClient", "ListAtResourceGroupLevel", nil, "Failure preparing request")
 	}
 
 	resp, err := client.ListAtResourceGroupLevelSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "authorization/ManagementLocksClient", "ListAtResourceGroupLevel", resp, "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "authorization.ManagementLocksClient", "ListAtResourceGroupLevel", resp, "Failure sending request")
 	}
 
 	result, err = client.ListAtResourceGroupLevelResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "authorization/ManagementLocksClient", "ListAtResourceGroupLevel", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "authorization.ManagementLocksClient", "ListAtResourceGroupLevel", resp, "Failure responding to request")
 	}
 
 	return
@@ -571,7 +571,7 @@ func (client ManagementLocksClient) ListAtResourceGroupLevelResponder(resp *http
 func (client ManagementLocksClient) ListAtResourceGroupLevelNextResults(lastResults ManagementLockListResult) (result ManagementLockListResult, err error) {
 	req, err := lastResults.ManagementLockListResultPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "authorization/ManagementLocksClient", "ListAtResourceGroupLevel", nil, "Failure preparing next results request request")
+		return result, autorest.NewErrorWithError(err, "authorization.ManagementLocksClient", "ListAtResourceGroupLevel", nil, "Failure preparing next results request request")
 	}
 	if req == nil {
 		return
@@ -580,12 +580,12 @@ func (client ManagementLocksClient) ListAtResourceGroupLevelNextResults(lastResu
 	resp, err := client.ListAtResourceGroupLevelSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "authorization/ManagementLocksClient", "ListAtResourceGroupLevel", resp, "Failure sending next results request request")
+		return result, autorest.NewErrorWithError(err, "authorization.ManagementLocksClient", "ListAtResourceGroupLevel", resp, "Failure sending next results request request")
 	}
 
 	result, err = client.ListAtResourceGroupLevelResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "authorization/ManagementLocksClient", "ListAtResourceGroupLevel", resp, "Failure responding to next results request request")
+		err = autorest.NewErrorWithError(err, "authorization.ManagementLocksClient", "ListAtResourceGroupLevel", resp, "Failure responding to next results request request")
 	}
 
 	return
@@ -602,18 +602,18 @@ func (client ManagementLocksClient) ListAtResourceGroupLevelNextResults(lastResu
 func (client ManagementLocksClient) ListAtResourceLevel(resourceGroupName string, resourceProviderNamespace string, parentResourcePath string, resourceType string, resourceName string, filter string) (result ManagementLockListResult, err error) {
 	req, err := client.ListAtResourceLevelPreparer(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, filter)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "authorization/ManagementLocksClient", "ListAtResourceLevel", nil, "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "authorization.ManagementLocksClient", "ListAtResourceLevel", nil, "Failure preparing request")
 	}
 
 	resp, err := client.ListAtResourceLevelSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "authorization/ManagementLocksClient", "ListAtResourceLevel", resp, "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "authorization.ManagementLocksClient", "ListAtResourceLevel", resp, "Failure sending request")
 	}
 
 	result, err = client.ListAtResourceLevelResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "authorization/ManagementLocksClient", "ListAtResourceLevel", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "authorization.ManagementLocksClient", "ListAtResourceLevel", resp, "Failure responding to request")
 	}
 
 	return
@@ -669,7 +669,7 @@ func (client ManagementLocksClient) ListAtResourceLevelResponder(resp *http.Resp
 func (client ManagementLocksClient) ListAtResourceLevelNextResults(lastResults ManagementLockListResult) (result ManagementLockListResult, err error) {
 	req, err := lastResults.ManagementLockListResultPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "authorization/ManagementLocksClient", "ListAtResourceLevel", nil, "Failure preparing next results request request")
+		return result, autorest.NewErrorWithError(err, "authorization.ManagementLocksClient", "ListAtResourceLevel", nil, "Failure preparing next results request request")
 	}
 	if req == nil {
 		return
@@ -678,12 +678,12 @@ func (client ManagementLocksClient) ListAtResourceLevelNextResults(lastResults M
 	resp, err := client.ListAtResourceLevelSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "authorization/ManagementLocksClient", "ListAtResourceLevel", resp, "Failure sending next results request request")
+		return result, autorest.NewErrorWithError(err, "authorization.ManagementLocksClient", "ListAtResourceLevel", resp, "Failure sending next results request request")
 	}
 
 	result, err = client.ListAtResourceLevelResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "authorization/ManagementLocksClient", "ListAtResourceLevel", resp, "Failure responding to next results request request")
+		err = autorest.NewErrorWithError(err, "authorization.ManagementLocksClient", "ListAtResourceLevel", resp, "Failure responding to next results request request")
 	}
 
 	return
@@ -695,18 +695,18 @@ func (client ManagementLocksClient) ListAtResourceLevelNextResults(lastResults M
 func (client ManagementLocksClient) ListAtSubscriptionLevel(filter string) (result ManagementLockListResult, err error) {
 	req, err := client.ListAtSubscriptionLevelPreparer(filter)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "authorization/ManagementLocksClient", "ListAtSubscriptionLevel", nil, "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "authorization.ManagementLocksClient", "ListAtSubscriptionLevel", nil, "Failure preparing request")
 	}
 
 	resp, err := client.ListAtSubscriptionLevelSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "authorization/ManagementLocksClient", "ListAtSubscriptionLevel", resp, "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "authorization.ManagementLocksClient", "ListAtSubscriptionLevel", resp, "Failure sending request")
 	}
 
 	result, err = client.ListAtSubscriptionLevelResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "authorization/ManagementLocksClient", "ListAtSubscriptionLevel", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "authorization.ManagementLocksClient", "ListAtSubscriptionLevel", resp, "Failure responding to request")
 	}
 
 	return
@@ -757,7 +757,7 @@ func (client ManagementLocksClient) ListAtSubscriptionLevelResponder(resp *http.
 func (client ManagementLocksClient) ListAtSubscriptionLevelNextResults(lastResults ManagementLockListResult) (result ManagementLockListResult, err error) {
 	req, err := lastResults.ManagementLockListResultPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "authorization/ManagementLocksClient", "ListAtSubscriptionLevel", nil, "Failure preparing next results request request")
+		return result, autorest.NewErrorWithError(err, "authorization.ManagementLocksClient", "ListAtSubscriptionLevel", nil, "Failure preparing next results request request")
 	}
 	if req == nil {
 		return
@@ -766,12 +766,12 @@ func (client ManagementLocksClient) ListAtSubscriptionLevelNextResults(lastResul
 	resp, err := client.ListAtSubscriptionLevelSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "authorization/ManagementLocksClient", "ListAtSubscriptionLevel", resp, "Failure sending next results request request")
+		return result, autorest.NewErrorWithError(err, "authorization.ManagementLocksClient", "ListAtSubscriptionLevel", resp, "Failure sending next results request request")
 	}
 
 	result, err = client.ListAtSubscriptionLevelResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "authorization/ManagementLocksClient", "ListAtSubscriptionLevel", resp, "Failure responding to next results request request")
+		err = autorest.NewErrorWithError(err, "authorization.ManagementLocksClient", "ListAtSubscriptionLevel", resp, "Failure responding to next results request request")
 	}
 
 	return
@@ -783,18 +783,18 @@ func (client ManagementLocksClient) ListAtSubscriptionLevelNextResults(lastResul
 func (client ManagementLocksClient) ListNext(nextLink string) (result ManagementLockListResult, err error) {
 	req, err := client.ListNextPreparer(nextLink)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "authorization/ManagementLocksClient", "ListNext", nil, "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "authorization.ManagementLocksClient", "ListNext", nil, "Failure preparing request")
 	}
 
 	resp, err := client.ListNextSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "authorization/ManagementLocksClient", "ListNext", resp, "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "authorization.ManagementLocksClient", "ListNext", resp, "Failure sending request")
 	}
 
 	result, err = client.ListNextResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "authorization/ManagementLocksClient", "ListNext", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "authorization.ManagementLocksClient", "ListNext", resp, "Failure responding to request")
 	}
 
 	return
@@ -838,7 +838,7 @@ func (client ManagementLocksClient) ListNextResponder(resp *http.Response) (resu
 func (client ManagementLocksClient) ListNextNextResults(lastResults ManagementLockListResult) (result ManagementLockListResult, err error) {
 	req, err := lastResults.ManagementLockListResultPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "authorization/ManagementLocksClient", "ListNext", nil, "Failure preparing next results request request")
+		return result, autorest.NewErrorWithError(err, "authorization.ManagementLocksClient", "ListNext", nil, "Failure preparing next results request request")
 	}
 	if req == nil {
 		return
@@ -847,12 +847,12 @@ func (client ManagementLocksClient) ListNextNextResults(lastResults ManagementLo
 	resp, err := client.ListNextSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "authorization/ManagementLocksClient", "ListNext", resp, "Failure sending next results request request")
+		return result, autorest.NewErrorWithError(err, "authorization.ManagementLocksClient", "ListNext", resp, "Failure sending next results request request")
 	}
 
 	result, err = client.ListNextResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "authorization/ManagementLocksClient", "ListNext", resp, "Failure responding to next results request request")
+		err = autorest.NewErrorWithError(err, "authorization.ManagementLocksClient", "ListNext", resp, "Failure responding to next results request request")
 	}
 
 	return

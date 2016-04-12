@@ -47,18 +47,18 @@ func NewJobsClientWithBaseURI(baseURI string, subscriptionID string) JobsClient 
 func (client JobsClient) CreateOrUpdate(resourceGroupName string, jobCollectionName string, jobName string, job JobDefinition) (result JobDefinition, err error) {
 	req, err := client.CreateOrUpdatePreparer(resourceGroupName, jobCollectionName, jobName, job)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "scheduler/JobsClient", "CreateOrUpdate", nil, "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "scheduler.JobsClient", "CreateOrUpdate", nil, "Failure preparing request")
 	}
 
 	resp, err := client.CreateOrUpdateSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "scheduler/JobsClient", "CreateOrUpdate", resp, "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "scheduler.JobsClient", "CreateOrUpdate", resp, "Failure sending request")
 	}
 
 	result, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "scheduler/JobsClient", "CreateOrUpdate", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "scheduler.JobsClient", "CreateOrUpdate", resp, "Failure responding to request")
 	}
 
 	return
@@ -113,18 +113,18 @@ func (client JobsClient) CreateOrUpdateResponder(resp *http.Response) (result Jo
 func (client JobsClient) Delete(resourceGroupName string, jobCollectionName string, jobName string) (result autorest.Response, err error) {
 	req, err := client.DeletePreparer(resourceGroupName, jobCollectionName, jobName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "scheduler/JobsClient", "Delete", nil, "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "scheduler.JobsClient", "Delete", nil, "Failure preparing request")
 	}
 
 	resp, err := client.DeleteSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "scheduler/JobsClient", "Delete", resp, "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "scheduler.JobsClient", "Delete", resp, "Failure sending request")
 	}
 
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "scheduler/JobsClient", "Delete", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "scheduler.JobsClient", "Delete", resp, "Failure responding to request")
 	}
 
 	return
@@ -177,18 +177,18 @@ func (client JobsClient) DeleteResponder(resp *http.Response) (result autorest.R
 func (client JobsClient) Get(resourceGroupName string, jobCollectionName string, jobName string) (result JobDefinition, err error) {
 	req, err := client.GetPreparer(resourceGroupName, jobCollectionName, jobName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "scheduler/JobsClient", "Get", nil, "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "scheduler.JobsClient", "Get", nil, "Failure preparing request")
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "scheduler/JobsClient", "Get", resp, "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "scheduler.JobsClient", "Get", resp, "Failure sending request")
 	}
 
 	result, err = client.GetResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "scheduler/JobsClient", "Get", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "scheduler.JobsClient", "Get", resp, "Failure responding to request")
 	}
 
 	return
@@ -245,18 +245,18 @@ func (client JobsClient) GetResponder(resp *http.Response) (result JobDefinition
 func (client JobsClient) List(resourceGroupName string, jobCollectionName string, top *int32, skip *int32, filter string) (result JobListResult, err error) {
 	req, err := client.ListPreparer(resourceGroupName, jobCollectionName, top, skip, filter)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "scheduler/JobsClient", "List", nil, "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "scheduler.JobsClient", "List", nil, "Failure preparing request")
 	}
 
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "scheduler/JobsClient", "List", resp, "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "scheduler.JobsClient", "List", resp, "Failure sending request")
 	}
 
 	result, err = client.ListResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "scheduler/JobsClient", "List", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "scheduler.JobsClient", "List", resp, "Failure responding to request")
 	}
 
 	return
@@ -315,7 +315,7 @@ func (client JobsClient) ListResponder(resp *http.Response) (result JobListResul
 func (client JobsClient) ListNextResults(lastResults JobListResult) (result JobListResult, err error) {
 	req, err := lastResults.JobListResultPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "scheduler/JobsClient", "List", nil, "Failure preparing next results request request")
+		return result, autorest.NewErrorWithError(err, "scheduler.JobsClient", "List", nil, "Failure preparing next results request request")
 	}
 	if req == nil {
 		return
@@ -324,12 +324,12 @@ func (client JobsClient) ListNextResults(lastResults JobListResult) (result JobL
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "scheduler/JobsClient", "List", resp, "Failure sending next results request request")
+		return result, autorest.NewErrorWithError(err, "scheduler.JobsClient", "List", resp, "Failure sending next results request request")
 	}
 
 	result, err = client.ListResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "scheduler/JobsClient", "List", resp, "Failure responding to next results request request")
+		err = autorest.NewErrorWithError(err, "scheduler.JobsClient", "List", resp, "Failure responding to next results request request")
 	}
 
 	return
@@ -345,18 +345,18 @@ func (client JobsClient) ListNextResults(lastResults JobListResult) (result JobL
 func (client JobsClient) ListJobHistory(resourceGroupName string, jobCollectionName string, jobName string, top *int32, skip *int32, filter string) (result JobHistoryListResult, err error) {
 	req, err := client.ListJobHistoryPreparer(resourceGroupName, jobCollectionName, jobName, top, skip, filter)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "scheduler/JobsClient", "ListJobHistory", nil, "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "scheduler.JobsClient", "ListJobHistory", nil, "Failure preparing request")
 	}
 
 	resp, err := client.ListJobHistorySender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "scheduler/JobsClient", "ListJobHistory", resp, "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "scheduler.JobsClient", "ListJobHistory", resp, "Failure sending request")
 	}
 
 	result, err = client.ListJobHistoryResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "scheduler/JobsClient", "ListJobHistory", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "scheduler.JobsClient", "ListJobHistory", resp, "Failure responding to request")
 	}
 
 	return
@@ -416,7 +416,7 @@ func (client JobsClient) ListJobHistoryResponder(resp *http.Response) (result Jo
 func (client JobsClient) ListJobHistoryNextResults(lastResults JobHistoryListResult) (result JobHistoryListResult, err error) {
 	req, err := lastResults.JobHistoryListResultPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "scheduler/JobsClient", "ListJobHistory", nil, "Failure preparing next results request request")
+		return result, autorest.NewErrorWithError(err, "scheduler.JobsClient", "ListJobHistory", nil, "Failure preparing next results request request")
 	}
 	if req == nil {
 		return
@@ -425,12 +425,12 @@ func (client JobsClient) ListJobHistoryNextResults(lastResults JobHistoryListRes
 	resp, err := client.ListJobHistorySender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "scheduler/JobsClient", "ListJobHistory", resp, "Failure sending next results request request")
+		return result, autorest.NewErrorWithError(err, "scheduler.JobsClient", "ListJobHistory", resp, "Failure sending next results request request")
 	}
 
 	result, err = client.ListJobHistoryResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "scheduler/JobsClient", "ListJobHistory", resp, "Failure responding to next results request request")
+		err = autorest.NewErrorWithError(err, "scheduler.JobsClient", "ListJobHistory", resp, "Failure responding to next results request request")
 	}
 
 	return
@@ -443,18 +443,18 @@ func (client JobsClient) ListJobHistoryNextResults(lastResults JobHistoryListRes
 func (client JobsClient) Patch(resourceGroupName string, jobCollectionName string, jobName string, job JobDefinition) (result JobDefinition, err error) {
 	req, err := client.PatchPreparer(resourceGroupName, jobCollectionName, jobName, job)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "scheduler/JobsClient", "Patch", nil, "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "scheduler.JobsClient", "Patch", nil, "Failure preparing request")
 	}
 
 	resp, err := client.PatchSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "scheduler/JobsClient", "Patch", resp, "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "scheduler.JobsClient", "Patch", resp, "Failure sending request")
 	}
 
 	result, err = client.PatchResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "scheduler/JobsClient", "Patch", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "scheduler.JobsClient", "Patch", resp, "Failure responding to request")
 	}
 
 	return
@@ -509,18 +509,18 @@ func (client JobsClient) PatchResponder(resp *http.Response) (result JobDefiniti
 func (client JobsClient) Run(resourceGroupName string, jobCollectionName string, jobName string) (result autorest.Response, err error) {
 	req, err := client.RunPreparer(resourceGroupName, jobCollectionName, jobName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "scheduler/JobsClient", "Run", nil, "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "scheduler.JobsClient", "Run", nil, "Failure preparing request")
 	}
 
 	resp, err := client.RunSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "scheduler/JobsClient", "Run", resp, "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "scheduler.JobsClient", "Run", resp, "Failure sending request")
 	}
 
 	result, err = client.RunResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "scheduler/JobsClient", "Run", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "scheduler.JobsClient", "Run", resp, "Failure responding to request")
 	}
 
 	return

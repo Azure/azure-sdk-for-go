@@ -51,18 +51,18 @@ func NewWorkflowTriggerHistoriesClientWithBaseURI(baseURI string, subscriptionID
 func (client WorkflowTriggerHistoriesClient) Get(resourceGroupName string, workflowName string, triggerName string, historyName string) (result WorkflowTriggerHistory, err error) {
 	req, err := client.GetPreparer(resourceGroupName, workflowName, triggerName, historyName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "logic/WorkflowTriggerHistoriesClient", "Get", nil, "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "logic.WorkflowTriggerHistoriesClient", "Get", nil, "Failure preparing request")
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "logic/WorkflowTriggerHistoriesClient", "Get", resp, "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "logic.WorkflowTriggerHistoriesClient", "Get", resp, "Failure sending request")
 	}
 
 	result, err = client.GetResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "logic/WorkflowTriggerHistoriesClient", "Get", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "logic.WorkflowTriggerHistoriesClient", "Get", resp, "Failure responding to request")
 	}
 
 	return
@@ -118,18 +118,18 @@ func (client WorkflowTriggerHistoriesClient) GetResponder(resp *http.Response) (
 func (client WorkflowTriggerHistoriesClient) List(resourceGroupName string, workflowName string, triggerName string, top *int32) (result WorkflowTriggerHistoryListResult, err error) {
 	req, err := client.ListPreparer(resourceGroupName, workflowName, triggerName, top)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "logic/WorkflowTriggerHistoriesClient", "List", nil, "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "logic.WorkflowTriggerHistoriesClient", "List", nil, "Failure preparing request")
 	}
 
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "logic/WorkflowTriggerHistoriesClient", "List", resp, "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "logic.WorkflowTriggerHistoriesClient", "List", resp, "Failure sending request")
 	}
 
 	result, err = client.ListResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "logic/WorkflowTriggerHistoriesClient", "List", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "logic.WorkflowTriggerHistoriesClient", "List", resp, "Failure responding to request")
 	}
 
 	return
@@ -183,7 +183,7 @@ func (client WorkflowTriggerHistoriesClient) ListResponder(resp *http.Response) 
 func (client WorkflowTriggerHistoriesClient) ListNextResults(lastResults WorkflowTriggerHistoryListResult) (result WorkflowTriggerHistoryListResult, err error) {
 	req, err := lastResults.WorkflowTriggerHistoryListResultPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "logic/WorkflowTriggerHistoriesClient", "List", nil, "Failure preparing next results request request")
+		return result, autorest.NewErrorWithError(err, "logic.WorkflowTriggerHistoriesClient", "List", nil, "Failure preparing next results request request")
 	}
 	if req == nil {
 		return
@@ -192,12 +192,12 @@ func (client WorkflowTriggerHistoriesClient) ListNextResults(lastResults Workflo
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "logic/WorkflowTriggerHistoriesClient", "List", resp, "Failure sending next results request request")
+		return result, autorest.NewErrorWithError(err, "logic.WorkflowTriggerHistoriesClient", "List", resp, "Failure sending next results request request")
 	}
 
 	result, err = client.ListResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "logic/WorkflowTriggerHistoriesClient", "List", resp, "Failure responding to next results request request")
+		err = autorest.NewErrorWithError(err, "logic.WorkflowTriggerHistoriesClient", "List", resp, "Failure responding to next results request request")
 	}
 
 	return

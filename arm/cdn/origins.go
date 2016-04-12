@@ -56,18 +56,18 @@ func NewOriginsClientWithBaseURI(baseURI string, subscriptionID string) OriginsC
 func (client OriginsClient) Create(originName string, originProperties OriginParameters, endpointName string, profileName string, resourceGroupName string, cancel <-chan struct{}) (result autorest.Response, err error) {
 	req, err := client.CreatePreparer(originName, originProperties, endpointName, profileName, resourceGroupName, cancel)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "cdn/OriginsClient", "Create", nil, "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "cdn.OriginsClient", "Create", nil, "Failure preparing request")
 	}
 
 	resp, err := client.CreateSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "cdn/OriginsClient", "Create", resp, "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "cdn.OriginsClient", "Create", resp, "Failure sending request")
 	}
 
 	result, err = client.CreateResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "cdn/OriginsClient", "Create", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "cdn.OriginsClient", "Create", resp, "Failure responding to request")
 	}
 
 	return
@@ -130,18 +130,18 @@ func (client OriginsClient) CreateResponder(resp *http.Response) (result autores
 func (client OriginsClient) DeleteIfExists(originName string, endpointName string, profileName string, resourceGroupName string, cancel <-chan struct{}) (result autorest.Response, err error) {
 	req, err := client.DeleteIfExistsPreparer(originName, endpointName, profileName, resourceGroupName, cancel)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "cdn/OriginsClient", "DeleteIfExists", nil, "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "cdn.OriginsClient", "DeleteIfExists", nil, "Failure preparing request")
 	}
 
 	resp, err := client.DeleteIfExistsSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "cdn/OriginsClient", "DeleteIfExists", resp, "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "cdn.OriginsClient", "DeleteIfExists", resp, "Failure sending request")
 	}
 
 	result, err = client.DeleteIfExistsResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "cdn/OriginsClient", "DeleteIfExists", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "cdn.OriginsClient", "DeleteIfExists", resp, "Failure responding to request")
 	}
 
 	return
@@ -200,18 +200,18 @@ func (client OriginsClient) DeleteIfExistsResponder(resp *http.Response) (result
 func (client OriginsClient) Get(originName string, endpointName string, profileName string, resourceGroupName string) (result Origin, err error) {
 	req, err := client.GetPreparer(originName, endpointName, profileName, resourceGroupName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "cdn/OriginsClient", "Get", nil, "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "cdn.OriginsClient", "Get", nil, "Failure preparing request")
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "cdn/OriginsClient", "Get", resp, "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "cdn.OriginsClient", "Get", resp, "Failure sending request")
 	}
 
 	result, err = client.GetResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "cdn/OriginsClient", "Get", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "cdn.OriginsClient", "Get", resp, "Failure responding to request")
 	}
 
 	return
@@ -267,18 +267,18 @@ func (client OriginsClient) GetResponder(resp *http.Response) (result Origin, er
 func (client OriginsClient) ListByEndpoint(endpointName string, profileName string, resourceGroupName string) (result OriginListResult, err error) {
 	req, err := client.ListByEndpointPreparer(endpointName, profileName, resourceGroupName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "cdn/OriginsClient", "ListByEndpoint", nil, "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "cdn.OriginsClient", "ListByEndpoint", nil, "Failure preparing request")
 	}
 
 	resp, err := client.ListByEndpointSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "cdn/OriginsClient", "ListByEndpoint", resp, "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "cdn.OriginsClient", "ListByEndpoint", resp, "Failure sending request")
 	}
 
 	result, err = client.ListByEndpointResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "cdn/OriginsClient", "ListByEndpoint", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "cdn.OriginsClient", "ListByEndpoint", resp, "Failure responding to request")
 	}
 
 	return
@@ -335,18 +335,18 @@ func (client OriginsClient) ListByEndpointResponder(resp *http.Response) (result
 func (client OriginsClient) Update(originName string, originProperties OriginParameters, endpointName string, profileName string, resourceGroupName string) (result Origin, err error) {
 	req, err := client.UpdatePreparer(originName, originProperties, endpointName, profileName, resourceGroupName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "cdn/OriginsClient", "Update", nil, "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "cdn.OriginsClient", "Update", nil, "Failure preparing request")
 	}
 
 	resp, err := client.UpdateSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "cdn/OriginsClient", "Update", resp, "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "cdn.OriginsClient", "Update", resp, "Failure sending request")
 	}
 
 	result, err = client.UpdateResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "cdn/OriginsClient", "Update", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "cdn.OriginsClient", "Update", resp, "Failure responding to request")
 	}
 
 	return

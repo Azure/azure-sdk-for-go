@@ -50,18 +50,18 @@ func NewQueryKeysClientWithBaseURI(baseURI string, subscriptionID string) QueryK
 func (client QueryKeysClient) List(resourceGroupName string, serviceName string) (result ListQueryKeysResult, err error) {
 	req, err := client.ListPreparer(resourceGroupName, serviceName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "search/QueryKeysClient", "List", nil, "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "search.QueryKeysClient", "List", nil, "Failure preparing request")
 	}
 
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "search/QueryKeysClient", "List", resp, "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "search.QueryKeysClient", "List", resp, "Failure sending request")
 	}
 
 	result, err = client.ListResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "search/QueryKeysClient", "List", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "search.QueryKeysClient", "List", resp, "Failure responding to request")
 	}
 
 	return

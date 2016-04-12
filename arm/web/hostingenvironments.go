@@ -60,18 +60,18 @@ func NewHostingEnvironmentsClientWithBaseURI(baseURI string, subscriptionID stri
 func (client HostingEnvironmentsClient) CreateOrUpdateHostingEnvironment(resourceGroupName string, name string, hostingEnvironmentEnvelope HostingEnvironment, cancel <-chan struct{}) (result autorest.Response, err error) {
 	req, err := client.CreateOrUpdateHostingEnvironmentPreparer(resourceGroupName, name, hostingEnvironmentEnvelope, cancel)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "CreateOrUpdateHostingEnvironment", nil, "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "CreateOrUpdateHostingEnvironment", nil, "Failure preparing request")
 	}
 
 	resp, err := client.CreateOrUpdateHostingEnvironmentSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "CreateOrUpdateHostingEnvironment", resp, "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "CreateOrUpdateHostingEnvironment", resp, "Failure sending request")
 	}
 
 	result, err = client.CreateOrUpdateHostingEnvironmentResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "CreateOrUpdateHostingEnvironment", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "CreateOrUpdateHostingEnvironment", resp, "Failure responding to request")
 	}
 
 	return
@@ -130,18 +130,18 @@ func (client HostingEnvironmentsClient) CreateOrUpdateHostingEnvironmentResponde
 func (client HostingEnvironmentsClient) CreateOrUpdateMultiRolePool(resourceGroupName string, name string, multiRolePoolEnvelope WorkerPool, cancel <-chan struct{}) (result autorest.Response, err error) {
 	req, err := client.CreateOrUpdateMultiRolePoolPreparer(resourceGroupName, name, multiRolePoolEnvelope, cancel)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "CreateOrUpdateMultiRolePool", nil, "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "CreateOrUpdateMultiRolePool", nil, "Failure preparing request")
 	}
 
 	resp, err := client.CreateOrUpdateMultiRolePoolSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "CreateOrUpdateMultiRolePool", resp, "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "CreateOrUpdateMultiRolePool", resp, "Failure sending request")
 	}
 
 	result, err = client.CreateOrUpdateMultiRolePoolResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "CreateOrUpdateMultiRolePool", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "CreateOrUpdateMultiRolePool", resp, "Failure responding to request")
 	}
 
 	return
@@ -200,18 +200,18 @@ func (client HostingEnvironmentsClient) CreateOrUpdateMultiRolePoolResponder(res
 func (client HostingEnvironmentsClient) CreateOrUpdateWorkerPool(resourceGroupName string, name string, workerPoolName string, workerPoolEnvelope WorkerPool, cancel <-chan struct{}) (result autorest.Response, err error) {
 	req, err := client.CreateOrUpdateWorkerPoolPreparer(resourceGroupName, name, workerPoolName, workerPoolEnvelope, cancel)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "CreateOrUpdateWorkerPool", nil, "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "CreateOrUpdateWorkerPool", nil, "Failure preparing request")
 	}
 
 	resp, err := client.CreateOrUpdateWorkerPoolSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "CreateOrUpdateWorkerPool", resp, "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "CreateOrUpdateWorkerPool", resp, "Failure sending request")
 	}
 
 	result, err = client.CreateOrUpdateWorkerPoolResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "CreateOrUpdateWorkerPool", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "CreateOrUpdateWorkerPool", resp, "Failure responding to request")
 	}
 
 	return
@@ -271,18 +271,18 @@ func (client HostingEnvironmentsClient) CreateOrUpdateWorkerPoolResponder(resp *
 func (client HostingEnvironmentsClient) DeleteHostingEnvironment(resourceGroupName string, name string, forceDelete *bool, cancel <-chan struct{}) (result autorest.Response, err error) {
 	req, err := client.DeleteHostingEnvironmentPreparer(resourceGroupName, name, forceDelete, cancel)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "DeleteHostingEnvironment", nil, "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "DeleteHostingEnvironment", nil, "Failure preparing request")
 	}
 
 	resp, err := client.DeleteHostingEnvironmentSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "DeleteHostingEnvironment", resp, "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "DeleteHostingEnvironment", resp, "Failure sending request")
 	}
 
 	result, err = client.DeleteHostingEnvironmentResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "DeleteHostingEnvironment", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "DeleteHostingEnvironment", resp, "Failure responding to request")
 	}
 
 	return
@@ -339,18 +339,18 @@ func (client HostingEnvironmentsClient) DeleteHostingEnvironmentResponder(resp *
 func (client HostingEnvironmentsClient) GetHostingEnvironment(resourceGroupName string, name string) (result HostingEnvironment, err error) {
 	req, err := client.GetHostingEnvironmentPreparer(resourceGroupName, name)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "GetHostingEnvironment", nil, "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "GetHostingEnvironment", nil, "Failure preparing request")
 	}
 
 	resp, err := client.GetHostingEnvironmentSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "GetHostingEnvironment", resp, "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "GetHostingEnvironment", resp, "Failure sending request")
 	}
 
 	result, err = client.GetHostingEnvironmentResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "GetHostingEnvironment", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "GetHostingEnvironment", resp, "Failure responding to request")
 	}
 
 	return
@@ -404,18 +404,18 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentResponder(resp *htt
 func (client HostingEnvironmentsClient) GetHostingEnvironmentCapacities(resourceGroupName string, name string) (result StampCapacityCollection, err error) {
 	req, err := client.GetHostingEnvironmentCapacitiesPreparer(resourceGroupName, name)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "GetHostingEnvironmentCapacities", nil, "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "GetHostingEnvironmentCapacities", nil, "Failure preparing request")
 	}
 
 	resp, err := client.GetHostingEnvironmentCapacitiesSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "GetHostingEnvironmentCapacities", resp, "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "GetHostingEnvironmentCapacities", resp, "Failure sending request")
 	}
 
 	result, err = client.GetHostingEnvironmentCapacitiesResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "GetHostingEnvironmentCapacities", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "GetHostingEnvironmentCapacities", resp, "Failure responding to request")
 	}
 
 	return
@@ -469,18 +469,18 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentCapacitiesResponder
 func (client HostingEnvironmentsClient) GetHostingEnvironmentDiagnostics(resourceGroupName string, name string) (result ListHostingEnvironmentDiagnostics, err error) {
 	req, err := client.GetHostingEnvironmentDiagnosticsPreparer(resourceGroupName, name)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "GetHostingEnvironmentDiagnostics", nil, "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "GetHostingEnvironmentDiagnostics", nil, "Failure preparing request")
 	}
 
 	resp, err := client.GetHostingEnvironmentDiagnosticsSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "GetHostingEnvironmentDiagnostics", resp, "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "GetHostingEnvironmentDiagnostics", resp, "Failure sending request")
 	}
 
 	result, err = client.GetHostingEnvironmentDiagnosticsResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "GetHostingEnvironmentDiagnostics", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "GetHostingEnvironmentDiagnostics", resp, "Failure responding to request")
 	}
 
 	return
@@ -535,18 +535,18 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentDiagnosticsResponde
 func (client HostingEnvironmentsClient) GetHostingEnvironmentDiagnosticsItem(resourceGroupName string, name string, diagnosticsName string) (result HostingEnvironmentDiagnostics, err error) {
 	req, err := client.GetHostingEnvironmentDiagnosticsItemPreparer(resourceGroupName, name, diagnosticsName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "GetHostingEnvironmentDiagnosticsItem", nil, "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "GetHostingEnvironmentDiagnosticsItem", nil, "Failure preparing request")
 	}
 
 	resp, err := client.GetHostingEnvironmentDiagnosticsItemSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "GetHostingEnvironmentDiagnosticsItem", resp, "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "GetHostingEnvironmentDiagnosticsItem", resp, "Failure sending request")
 	}
 
 	result, err = client.GetHostingEnvironmentDiagnosticsItemResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "GetHostingEnvironmentDiagnosticsItem", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "GetHostingEnvironmentDiagnosticsItem", resp, "Failure responding to request")
 	}
 
 	return
@@ -601,18 +601,18 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentDiagnosticsItemResp
 func (client HostingEnvironmentsClient) GetHostingEnvironmentMetricDefinitions(resourceGroupName string, name string) (result MetricDefinition, err error) {
 	req, err := client.GetHostingEnvironmentMetricDefinitionsPreparer(resourceGroupName, name)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "GetHostingEnvironmentMetricDefinitions", nil, "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "GetHostingEnvironmentMetricDefinitions", nil, "Failure preparing request")
 	}
 
 	resp, err := client.GetHostingEnvironmentMetricDefinitionsSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "GetHostingEnvironmentMetricDefinitions", resp, "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "GetHostingEnvironmentMetricDefinitions", resp, "Failure sending request")
 	}
 
 	result, err = client.GetHostingEnvironmentMetricDefinitionsResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "GetHostingEnvironmentMetricDefinitions", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "GetHostingEnvironmentMetricDefinitions", resp, "Failure responding to request")
 	}
 
 	return
@@ -671,18 +671,18 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentMetricDefinitionsRe
 func (client HostingEnvironmentsClient) GetHostingEnvironmentMetrics(resourceGroupName string, name string, details *bool, filter string) (result ResourceMetricCollection, err error) {
 	req, err := client.GetHostingEnvironmentMetricsPreparer(resourceGroupName, name, details, filter)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "GetHostingEnvironmentMetrics", nil, "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "GetHostingEnvironmentMetrics", nil, "Failure preparing request")
 	}
 
 	resp, err := client.GetHostingEnvironmentMetricsSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "GetHostingEnvironmentMetrics", resp, "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "GetHostingEnvironmentMetrics", resp, "Failure sending request")
 	}
 
 	result, err = client.GetHostingEnvironmentMetricsResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "GetHostingEnvironmentMetrics", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "GetHostingEnvironmentMetrics", resp, "Failure responding to request")
 	}
 
 	return
@@ -742,18 +742,18 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentMetricsResponder(re
 func (client HostingEnvironmentsClient) GetHostingEnvironmentMultiRoleMetricDefinitions(resourceGroupName string, name string) (result MetricDefinitionCollection, err error) {
 	req, err := client.GetHostingEnvironmentMultiRoleMetricDefinitionsPreparer(resourceGroupName, name)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "GetHostingEnvironmentMultiRoleMetricDefinitions", nil, "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "GetHostingEnvironmentMultiRoleMetricDefinitions", nil, "Failure preparing request")
 	}
 
 	resp, err := client.GetHostingEnvironmentMultiRoleMetricDefinitionsSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "GetHostingEnvironmentMultiRoleMetricDefinitions", resp, "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "GetHostingEnvironmentMultiRoleMetricDefinitions", resp, "Failure sending request")
 	}
 
 	result, err = client.GetHostingEnvironmentMultiRoleMetricDefinitionsResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "GetHostingEnvironmentMultiRoleMetricDefinitions", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "GetHostingEnvironmentMultiRoleMetricDefinitions", resp, "Failure responding to request")
 	}
 
 	return
@@ -813,18 +813,18 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentMultiRoleMetricDefi
 func (client HostingEnvironmentsClient) GetHostingEnvironmentMultiRoleMetrics(resourceGroupName string, name string, startTime string, endTime string, timeGrain string, details *bool, filter string) (result ResourceMetricCollection, err error) {
 	req, err := client.GetHostingEnvironmentMultiRoleMetricsPreparer(resourceGroupName, name, startTime, endTime, timeGrain, details, filter)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "GetHostingEnvironmentMultiRoleMetrics", nil, "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "GetHostingEnvironmentMultiRoleMetrics", nil, "Failure preparing request")
 	}
 
 	resp, err := client.GetHostingEnvironmentMultiRoleMetricsSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "GetHostingEnvironmentMultiRoleMetrics", resp, "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "GetHostingEnvironmentMultiRoleMetrics", resp, "Failure sending request")
 	}
 
 	result, err = client.GetHostingEnvironmentMultiRoleMetricsResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "GetHostingEnvironmentMultiRoleMetrics", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "GetHostingEnvironmentMultiRoleMetrics", resp, "Failure responding to request")
 	}
 
 	return
@@ -893,18 +893,18 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentMultiRoleMetricsRes
 func (client HostingEnvironmentsClient) GetHostingEnvironmentMultiRoleUsages(resourceGroupName string, name string) (result UsageCollection, err error) {
 	req, err := client.GetHostingEnvironmentMultiRoleUsagesPreparer(resourceGroupName, name)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "GetHostingEnvironmentMultiRoleUsages", nil, "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "GetHostingEnvironmentMultiRoleUsages", nil, "Failure preparing request")
 	}
 
 	resp, err := client.GetHostingEnvironmentMultiRoleUsagesSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "GetHostingEnvironmentMultiRoleUsages", resp, "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "GetHostingEnvironmentMultiRoleUsages", resp, "Failure sending request")
 	}
 
 	result, err = client.GetHostingEnvironmentMultiRoleUsagesResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "GetHostingEnvironmentMultiRoleUsages", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "GetHostingEnvironmentMultiRoleUsages", resp, "Failure responding to request")
 	}
 
 	return
@@ -959,18 +959,18 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentMultiRoleUsagesResp
 func (client HostingEnvironmentsClient) GetHostingEnvironmentOperation(resourceGroupName string, name string, operationID string) (result SetObject, err error) {
 	req, err := client.GetHostingEnvironmentOperationPreparer(resourceGroupName, name, operationID)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "GetHostingEnvironmentOperation", nil, "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "GetHostingEnvironmentOperation", nil, "Failure preparing request")
 	}
 
 	resp, err := client.GetHostingEnvironmentOperationSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "GetHostingEnvironmentOperation", resp, "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "GetHostingEnvironmentOperation", resp, "Failure sending request")
 	}
 
 	result, err = client.GetHostingEnvironmentOperationResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "GetHostingEnvironmentOperation", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "GetHostingEnvironmentOperation", resp, "Failure responding to request")
 	}
 
 	return
@@ -1025,18 +1025,18 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentOperationResponder(
 func (client HostingEnvironmentsClient) GetHostingEnvironmentOperations(resourceGroupName string, name string) (result SetObject, err error) {
 	req, err := client.GetHostingEnvironmentOperationsPreparer(resourceGroupName, name)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "GetHostingEnvironmentOperations", nil, "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "GetHostingEnvironmentOperations", nil, "Failure preparing request")
 	}
 
 	resp, err := client.GetHostingEnvironmentOperationsSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "GetHostingEnvironmentOperations", resp, "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "GetHostingEnvironmentOperations", resp, "Failure sending request")
 	}
 
 	result, err = client.GetHostingEnvironmentOperationsResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "GetHostingEnvironmentOperations", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "GetHostingEnvironmentOperations", resp, "Failure responding to request")
 	}
 
 	return
@@ -1088,18 +1088,18 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentOperationsResponder
 func (client HostingEnvironmentsClient) GetHostingEnvironments(resourceGroupName string) (result HostingEnvironmentCollection, err error) {
 	req, err := client.GetHostingEnvironmentsPreparer(resourceGroupName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "GetHostingEnvironments", nil, "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "GetHostingEnvironments", nil, "Failure preparing request")
 	}
 
 	resp, err := client.GetHostingEnvironmentsSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "GetHostingEnvironments", resp, "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "GetHostingEnvironments", resp, "Failure sending request")
 	}
 
 	result, err = client.GetHostingEnvironmentsResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "GetHostingEnvironments", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "GetHostingEnvironments", resp, "Failure responding to request")
 	}
 
 	return
@@ -1152,18 +1152,18 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentsResponder(resp *ht
 func (client HostingEnvironmentsClient) GetHostingEnvironmentServerFarms(resourceGroupName string, name string) (result ServerFarmCollection, err error) {
 	req, err := client.GetHostingEnvironmentServerFarmsPreparer(resourceGroupName, name)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "GetHostingEnvironmentServerFarms", nil, "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "GetHostingEnvironmentServerFarms", nil, "Failure preparing request")
 	}
 
 	resp, err := client.GetHostingEnvironmentServerFarmsSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "GetHostingEnvironmentServerFarms", resp, "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "GetHostingEnvironmentServerFarms", resp, "Failure sending request")
 	}
 
 	result, err = client.GetHostingEnvironmentServerFarmsResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "GetHostingEnvironmentServerFarms", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "GetHostingEnvironmentServerFarms", resp, "Failure responding to request")
 	}
 
 	return
@@ -1217,18 +1217,18 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentServerFarmsResponde
 func (client HostingEnvironmentsClient) GetHostingEnvironmentSites(resourceGroupName string, name string, propertiesToInclude string) (result SiteCollection, err error) {
 	req, err := client.GetHostingEnvironmentSitesPreparer(resourceGroupName, name, propertiesToInclude)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "GetHostingEnvironmentSites", nil, "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "GetHostingEnvironmentSites", nil, "Failure preparing request")
 	}
 
 	resp, err := client.GetHostingEnvironmentSitesSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "GetHostingEnvironmentSites", resp, "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "GetHostingEnvironmentSites", resp, "Failure sending request")
 	}
 
 	result, err = client.GetHostingEnvironmentSitesResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "GetHostingEnvironmentSites", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "GetHostingEnvironmentSites", resp, "Failure responding to request")
 	}
 
 	return
@@ -1289,18 +1289,18 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentSitesResponder(resp
 func (client HostingEnvironmentsClient) GetHostingEnvironmentUsages(resourceGroupName string, name string, filter string) (result CsmUsageQuotaCollection, err error) {
 	req, err := client.GetHostingEnvironmentUsagesPreparer(resourceGroupName, name, filter)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "GetHostingEnvironmentUsages", nil, "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "GetHostingEnvironmentUsages", nil, "Failure preparing request")
 	}
 
 	resp, err := client.GetHostingEnvironmentUsagesSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "GetHostingEnvironmentUsages", resp, "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "GetHostingEnvironmentUsages", resp, "Failure sending request")
 	}
 
 	result, err = client.GetHostingEnvironmentUsagesResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "GetHostingEnvironmentUsages", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "GetHostingEnvironmentUsages", resp, "Failure responding to request")
 	}
 
 	return
@@ -1356,18 +1356,18 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentUsagesResponder(res
 func (client HostingEnvironmentsClient) GetHostingEnvironmentVips(resourceGroupName string, name string) (result AddressResponse, err error) {
 	req, err := client.GetHostingEnvironmentVipsPreparer(resourceGroupName, name)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "GetHostingEnvironmentVips", nil, "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "GetHostingEnvironmentVips", nil, "Failure preparing request")
 	}
 
 	resp, err := client.GetHostingEnvironmentVipsSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "GetHostingEnvironmentVips", resp, "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "GetHostingEnvironmentVips", resp, "Failure sending request")
 	}
 
 	result, err = client.GetHostingEnvironmentVipsResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "GetHostingEnvironmentVips", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "GetHostingEnvironmentVips", resp, "Failure responding to request")
 	}
 
 	return
@@ -1421,18 +1421,18 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentVipsResponder(resp 
 func (client HostingEnvironmentsClient) GetHostingEnvironmentWebHostingPlans(resourceGroupName string, name string) (result ServerFarmCollection, err error) {
 	req, err := client.GetHostingEnvironmentWebHostingPlansPreparer(resourceGroupName, name)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "GetHostingEnvironmentWebHostingPlans", nil, "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "GetHostingEnvironmentWebHostingPlans", nil, "Failure preparing request")
 	}
 
 	resp, err := client.GetHostingEnvironmentWebHostingPlansSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "GetHostingEnvironmentWebHostingPlans", resp, "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "GetHostingEnvironmentWebHostingPlans", resp, "Failure sending request")
 	}
 
 	result, err = client.GetHostingEnvironmentWebHostingPlansResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "GetHostingEnvironmentWebHostingPlans", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "GetHostingEnvironmentWebHostingPlans", resp, "Failure responding to request")
 	}
 
 	return
@@ -1487,18 +1487,18 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentWebHostingPlansResp
 func (client HostingEnvironmentsClient) GetHostingEnvironmentWebWorkerMetricDefinitions(resourceGroupName string, name string, workerPoolName string) (result MetricDefinitionCollection, err error) {
 	req, err := client.GetHostingEnvironmentWebWorkerMetricDefinitionsPreparer(resourceGroupName, name, workerPoolName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "GetHostingEnvironmentWebWorkerMetricDefinitions", nil, "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "GetHostingEnvironmentWebWorkerMetricDefinitions", nil, "Failure preparing request")
 	}
 
 	resp, err := client.GetHostingEnvironmentWebWorkerMetricDefinitionsSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "GetHostingEnvironmentWebWorkerMetricDefinitions", resp, "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "GetHostingEnvironmentWebWorkerMetricDefinitions", resp, "Failure sending request")
 	}
 
 	result, err = client.GetHostingEnvironmentWebWorkerMetricDefinitionsResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "GetHostingEnvironmentWebWorkerMetricDefinitions", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "GetHostingEnvironmentWebWorkerMetricDefinitions", resp, "Failure responding to request")
 	}
 
 	return
@@ -1558,18 +1558,18 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentWebWorkerMetricDefi
 func (client HostingEnvironmentsClient) GetHostingEnvironmentWebWorkerMetrics(resourceGroupName string, name string, workerPoolName string, details *bool, filter string) (result ResourceMetricCollection, err error) {
 	req, err := client.GetHostingEnvironmentWebWorkerMetricsPreparer(resourceGroupName, name, workerPoolName, details, filter)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "GetHostingEnvironmentWebWorkerMetrics", nil, "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "GetHostingEnvironmentWebWorkerMetrics", nil, "Failure preparing request")
 	}
 
 	resp, err := client.GetHostingEnvironmentWebWorkerMetricsSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "GetHostingEnvironmentWebWorkerMetrics", resp, "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "GetHostingEnvironmentWebWorkerMetrics", resp, "Failure sending request")
 	}
 
 	result, err = client.GetHostingEnvironmentWebWorkerMetricsResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "GetHostingEnvironmentWebWorkerMetrics", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "GetHostingEnvironmentWebWorkerMetrics", resp, "Failure responding to request")
 	}
 
 	return
@@ -1631,18 +1631,18 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentWebWorkerMetricsRes
 func (client HostingEnvironmentsClient) GetHostingEnvironmentWebWorkerUsages(resourceGroupName string, name string, workerPoolName string) (result UsageCollection, err error) {
 	req, err := client.GetHostingEnvironmentWebWorkerUsagesPreparer(resourceGroupName, name, workerPoolName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "GetHostingEnvironmentWebWorkerUsages", nil, "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "GetHostingEnvironmentWebWorkerUsages", nil, "Failure preparing request")
 	}
 
 	resp, err := client.GetHostingEnvironmentWebWorkerUsagesSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "GetHostingEnvironmentWebWorkerUsages", resp, "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "GetHostingEnvironmentWebWorkerUsages", resp, "Failure sending request")
 	}
 
 	result, err = client.GetHostingEnvironmentWebWorkerUsagesResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "GetHostingEnvironmentWebWorkerUsages", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "GetHostingEnvironmentWebWorkerUsages", resp, "Failure responding to request")
 	}
 
 	return
@@ -1696,18 +1696,18 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentWebWorkerUsagesResp
 func (client HostingEnvironmentsClient) GetMultiRolePool(resourceGroupName string, name string) (result WorkerPool, err error) {
 	req, err := client.GetMultiRolePoolPreparer(resourceGroupName, name)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "GetMultiRolePool", nil, "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "GetMultiRolePool", nil, "Failure preparing request")
 	}
 
 	resp, err := client.GetMultiRolePoolSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "GetMultiRolePool", resp, "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "GetMultiRolePool", resp, "Failure sending request")
 	}
 
 	result, err = client.GetMultiRolePoolResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "GetMultiRolePool", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "GetMultiRolePool", resp, "Failure responding to request")
 	}
 
 	return
@@ -1762,18 +1762,18 @@ func (client HostingEnvironmentsClient) GetMultiRolePoolResponder(resp *http.Res
 func (client HostingEnvironmentsClient) GetMultiRolePoolInstanceMetricDefinitions(resourceGroupName string, name string, instance string) (result SetObject, err error) {
 	req, err := client.GetMultiRolePoolInstanceMetricDefinitionsPreparer(resourceGroupName, name, instance)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "GetMultiRolePoolInstanceMetricDefinitions", nil, "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "GetMultiRolePoolInstanceMetricDefinitions", nil, "Failure preparing request")
 	}
 
 	resp, err := client.GetMultiRolePoolInstanceMetricDefinitionsSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "GetMultiRolePoolInstanceMetricDefinitions", resp, "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "GetMultiRolePoolInstanceMetricDefinitions", resp, "Failure sending request")
 	}
 
 	result, err = client.GetMultiRolePoolInstanceMetricDefinitionsResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "GetMultiRolePoolInstanceMetricDefinitions", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "GetMultiRolePoolInstanceMetricDefinitions", resp, "Failure responding to request")
 	}
 
 	return
@@ -1829,18 +1829,18 @@ func (client HostingEnvironmentsClient) GetMultiRolePoolInstanceMetricDefinition
 func (client HostingEnvironmentsClient) GetMultiRolePoolInstanceMetrics(resourceGroupName string, name string, instance string, details *bool) (result SetObject, err error) {
 	req, err := client.GetMultiRolePoolInstanceMetricsPreparer(resourceGroupName, name, instance, details)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "GetMultiRolePoolInstanceMetrics", nil, "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "GetMultiRolePoolInstanceMetrics", nil, "Failure preparing request")
 	}
 
 	resp, err := client.GetMultiRolePoolInstanceMetricsSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "GetMultiRolePoolInstanceMetrics", resp, "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "GetMultiRolePoolInstanceMetrics", resp, "Failure sending request")
 	}
 
 	result, err = client.GetMultiRolePoolInstanceMetricsResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "GetMultiRolePoolInstanceMetrics", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "GetMultiRolePoolInstanceMetrics", resp, "Failure responding to request")
 	}
 
 	return
@@ -1897,18 +1897,18 @@ func (client HostingEnvironmentsClient) GetMultiRolePoolInstanceMetricsResponder
 func (client HostingEnvironmentsClient) GetMultiRolePools(resourceGroupName string, name string) (result WorkerPoolCollection, err error) {
 	req, err := client.GetMultiRolePoolsPreparer(resourceGroupName, name)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "GetMultiRolePools", nil, "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "GetMultiRolePools", nil, "Failure preparing request")
 	}
 
 	resp, err := client.GetMultiRolePoolsSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "GetMultiRolePools", resp, "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "GetMultiRolePools", resp, "Failure sending request")
 	}
 
 	result, err = client.GetMultiRolePoolsResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "GetMultiRolePools", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "GetMultiRolePools", resp, "Failure responding to request")
 	}
 
 	return
@@ -1961,18 +1961,18 @@ func (client HostingEnvironmentsClient) GetMultiRolePoolsResponder(resp *http.Re
 func (client HostingEnvironmentsClient) GetMultiRolePoolSkus(resourceGroupName string, name string) (result SkuInfoCollection, err error) {
 	req, err := client.GetMultiRolePoolSkusPreparer(resourceGroupName, name)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "GetMultiRolePoolSkus", nil, "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "GetMultiRolePoolSkus", nil, "Failure preparing request")
 	}
 
 	resp, err := client.GetMultiRolePoolSkusSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "GetMultiRolePoolSkus", resp, "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "GetMultiRolePoolSkus", resp, "Failure sending request")
 	}
 
 	result, err = client.GetMultiRolePoolSkusResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "GetMultiRolePoolSkus", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "GetMultiRolePoolSkus", resp, "Failure responding to request")
 	}
 
 	return
@@ -2026,18 +2026,18 @@ func (client HostingEnvironmentsClient) GetMultiRolePoolSkusResponder(resp *http
 func (client HostingEnvironmentsClient) GetWorkerPool(resourceGroupName string, name string, workerPoolName string) (result WorkerPool, err error) {
 	req, err := client.GetWorkerPoolPreparer(resourceGroupName, name, workerPoolName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "GetWorkerPool", nil, "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "GetWorkerPool", nil, "Failure preparing request")
 	}
 
 	resp, err := client.GetWorkerPoolSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "GetWorkerPool", resp, "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "GetWorkerPool", resp, "Failure sending request")
 	}
 
 	result, err = client.GetWorkerPoolResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "GetWorkerPool", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "GetWorkerPool", resp, "Failure responding to request")
 	}
 
 	return
@@ -2093,18 +2093,18 @@ func (client HostingEnvironmentsClient) GetWorkerPoolResponder(resp *http.Respon
 func (client HostingEnvironmentsClient) GetWorkerPoolInstanceMetricDefinitions(resourceGroupName string, name string, workerPoolName string, instance string) (result SetObject, err error) {
 	req, err := client.GetWorkerPoolInstanceMetricDefinitionsPreparer(resourceGroupName, name, workerPoolName, instance)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "GetWorkerPoolInstanceMetricDefinitions", nil, "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "GetWorkerPoolInstanceMetricDefinitions", nil, "Failure preparing request")
 	}
 
 	resp, err := client.GetWorkerPoolInstanceMetricDefinitionsSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "GetWorkerPoolInstanceMetricDefinitions", resp, "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "GetWorkerPoolInstanceMetricDefinitions", resp, "Failure sending request")
 	}
 
 	result, err = client.GetWorkerPoolInstanceMetricDefinitionsResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "GetWorkerPoolInstanceMetricDefinitions", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "GetWorkerPoolInstanceMetricDefinitions", resp, "Failure responding to request")
 	}
 
 	return
@@ -2166,18 +2166,18 @@ func (client HostingEnvironmentsClient) GetWorkerPoolInstanceMetricDefinitionsRe
 func (client HostingEnvironmentsClient) GetWorkerPoolInstanceMetrics(resourceGroupName string, name string, workerPoolName string, instance string, details *bool, filter string) (result SetObject, err error) {
 	req, err := client.GetWorkerPoolInstanceMetricsPreparer(resourceGroupName, name, workerPoolName, instance, details, filter)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "GetWorkerPoolInstanceMetrics", nil, "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "GetWorkerPoolInstanceMetrics", nil, "Failure preparing request")
 	}
 
 	resp, err := client.GetWorkerPoolInstanceMetricsSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "GetWorkerPoolInstanceMetrics", resp, "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "GetWorkerPoolInstanceMetrics", resp, "Failure sending request")
 	}
 
 	result, err = client.GetWorkerPoolInstanceMetricsResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "GetWorkerPoolInstanceMetrics", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "GetWorkerPoolInstanceMetrics", resp, "Failure responding to request")
 	}
 
 	return
@@ -2238,18 +2238,18 @@ func (client HostingEnvironmentsClient) GetWorkerPoolInstanceMetricsResponder(re
 func (client HostingEnvironmentsClient) GetWorkerPools(resourceGroupName string, name string) (result WorkerPoolCollection, err error) {
 	req, err := client.GetWorkerPoolsPreparer(resourceGroupName, name)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "GetWorkerPools", nil, "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "GetWorkerPools", nil, "Failure preparing request")
 	}
 
 	resp, err := client.GetWorkerPoolsSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "GetWorkerPools", resp, "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "GetWorkerPools", resp, "Failure sending request")
 	}
 
 	result, err = client.GetWorkerPoolsResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "GetWorkerPools", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "GetWorkerPools", resp, "Failure responding to request")
 	}
 
 	return
@@ -2303,18 +2303,18 @@ func (client HostingEnvironmentsClient) GetWorkerPoolsResponder(resp *http.Respo
 func (client HostingEnvironmentsClient) GetWorkerPoolSkus(resourceGroupName string, name string, workerPoolName string) (result SkuInfoCollection, err error) {
 	req, err := client.GetWorkerPoolSkusPreparer(resourceGroupName, name, workerPoolName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "GetWorkerPoolSkus", nil, "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "GetWorkerPoolSkus", nil, "Failure preparing request")
 	}
 
 	resp, err := client.GetWorkerPoolSkusSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "GetWorkerPoolSkus", resp, "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "GetWorkerPoolSkus", resp, "Failure sending request")
 	}
 
 	result, err = client.GetWorkerPoolSkusResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "GetWorkerPoolSkus", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "GetWorkerPoolSkus", resp, "Failure responding to request")
 	}
 
 	return
@@ -2368,18 +2368,18 @@ func (client HostingEnvironmentsClient) GetWorkerPoolSkusResponder(resp *http.Re
 func (client HostingEnvironmentsClient) RebootHostingEnvironment(resourceGroupName string, name string) (result SetObject, err error) {
 	req, err := client.RebootHostingEnvironmentPreparer(resourceGroupName, name)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "RebootHostingEnvironment", nil, "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "RebootHostingEnvironment", nil, "Failure preparing request")
 	}
 
 	resp, err := client.RebootHostingEnvironmentSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "RebootHostingEnvironment", resp, "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "RebootHostingEnvironment", resp, "Failure sending request")
 	}
 
 	result, err = client.RebootHostingEnvironmentResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "RebootHostingEnvironment", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "RebootHostingEnvironment", resp, "Failure responding to request")
 	}
 
 	return
@@ -2435,18 +2435,18 @@ func (client HostingEnvironmentsClient) RebootHostingEnvironmentResponder(resp *
 func (client HostingEnvironmentsClient) ResumeHostingEnvironment(resourceGroupName string, name string, cancel <-chan struct{}) (result autorest.Response, err error) {
 	req, err := client.ResumeHostingEnvironmentPreparer(resourceGroupName, name, cancel)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "ResumeHostingEnvironment", nil, "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "ResumeHostingEnvironment", nil, "Failure preparing request")
 	}
 
 	resp, err := client.ResumeHostingEnvironmentSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "ResumeHostingEnvironment", resp, "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "ResumeHostingEnvironment", resp, "Failure sending request")
 	}
 
 	result, err = client.ResumeHostingEnvironmentResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "ResumeHostingEnvironment", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "ResumeHostingEnvironment", resp, "Failure responding to request")
 	}
 
 	return
@@ -2503,18 +2503,18 @@ func (client HostingEnvironmentsClient) ResumeHostingEnvironmentResponder(resp *
 func (client HostingEnvironmentsClient) SuspendHostingEnvironment(resourceGroupName string, name string, cancel <-chan struct{}) (result autorest.Response, err error) {
 	req, err := client.SuspendHostingEnvironmentPreparer(resourceGroupName, name, cancel)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "SuspendHostingEnvironment", nil, "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "SuspendHostingEnvironment", nil, "Failure preparing request")
 	}
 
 	resp, err := client.SuspendHostingEnvironmentSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "SuspendHostingEnvironment", resp, "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "SuspendHostingEnvironment", resp, "Failure sending request")
 	}
 
 	result, err = client.SuspendHostingEnvironmentResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "web/HostingEnvironmentsClient", "SuspendHostingEnvironment", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "SuspendHostingEnvironment", resp, "Failure responding to request")
 	}
 
 	return

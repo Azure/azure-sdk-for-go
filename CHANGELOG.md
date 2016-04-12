@@ -2,6 +2,11 @@
 
 -----
 
+## `v2.1.1-beta`
+
+- arm: Better error messages for long running operation failures (Uses go-autorest version v7.0.4).
+
+
 ## `v2.1.0-beta`
 
 - arm: Uses go-autorest v7.0.3 (polling related updates).

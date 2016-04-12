@@ -50,18 +50,18 @@ func NewZonesClientWithBaseURI(baseURI string, subscriptionID string) ZonesClien
 func (client ZonesClient) CreateOrUpdate(resourceGroupName string, zoneName string, parameters Zone, ifMatch string, ifNoneMatch string) (result Zone, err error) {
 	req, err := client.CreateOrUpdatePreparer(resourceGroupName, zoneName, parameters, ifMatch, ifNoneMatch)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "dns/ZonesClient", "CreateOrUpdate", nil, "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "dns.ZonesClient", "CreateOrUpdate", nil, "Failure preparing request")
 	}
 
 	resp, err := client.CreateOrUpdateSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "dns/ZonesClient", "CreateOrUpdate", resp, "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "dns.ZonesClient", "CreateOrUpdate", resp, "Failure sending request")
 	}
 
 	result, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "dns/ZonesClient", "CreateOrUpdate", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "dns.ZonesClient", "CreateOrUpdate", resp, "Failure responding to request")
 	}
 
 	return
@@ -117,18 +117,18 @@ func (client ZonesClient) CreateOrUpdateResponder(resp *http.Response) (result Z
 func (client ZonesClient) Delete(resourceGroupName string, zoneName string, ifMatch string) (result autorest.Response, err error) {
 	req, err := client.DeletePreparer(resourceGroupName, zoneName, ifMatch)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "dns/ZonesClient", "Delete", nil, "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "dns.ZonesClient", "Delete", nil, "Failure preparing request")
 	}
 
 	resp, err := client.DeleteSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "dns/ZonesClient", "Delete", resp, "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "dns.ZonesClient", "Delete", resp, "Failure sending request")
 	}
 
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "dns/ZonesClient", "Delete", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "dns.ZonesClient", "Delete", resp, "Failure responding to request")
 	}
 
 	return
@@ -180,18 +180,18 @@ func (client ZonesClient) DeleteResponder(resp *http.Response) (result autorest.
 func (client ZonesClient) Get(resourceGroupName string, zoneName string) (result Zone, err error) {
 	req, err := client.GetPreparer(resourceGroupName, zoneName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "dns/ZonesClient", "Get", nil, "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "dns.ZonesClient", "Get", nil, "Failure preparing request")
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "dns/ZonesClient", "Get", resp, "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "dns.ZonesClient", "Get", resp, "Failure sending request")
 	}
 
 	result, err = client.GetResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "dns/ZonesClient", "Get", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "dns.ZonesClient", "Get", resp, "Failure responding to request")
 	}
 
 	return
@@ -245,18 +245,18 @@ func (client ZonesClient) GetResponder(resp *http.Response) (result Zone, err er
 func (client ZonesClient) ListZonesInResourceGroup(resourceGroupName string, top string, filter string) (result ZoneListResult, err error) {
 	req, err := client.ListZonesInResourceGroupPreparer(resourceGroupName, top, filter)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "dns/ZonesClient", "ListZonesInResourceGroup", nil, "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "dns.ZonesClient", "ListZonesInResourceGroup", nil, "Failure preparing request")
 	}
 
 	resp, err := client.ListZonesInResourceGroupSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "dns/ZonesClient", "ListZonesInResourceGroup", resp, "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "dns.ZonesClient", "ListZonesInResourceGroup", resp, "Failure sending request")
 	}
 
 	result, err = client.ListZonesInResourceGroupResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "dns/ZonesClient", "ListZonesInResourceGroup", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "dns.ZonesClient", "ListZonesInResourceGroup", resp, "Failure responding to request")
 	}
 
 	return
@@ -311,7 +311,7 @@ func (client ZonesClient) ListZonesInResourceGroupResponder(resp *http.Response)
 func (client ZonesClient) ListZonesInResourceGroupNextResults(lastResults ZoneListResult) (result ZoneListResult, err error) {
 	req, err := lastResults.ZoneListResultPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "dns/ZonesClient", "ListZonesInResourceGroup", nil, "Failure preparing next results request request")
+		return result, autorest.NewErrorWithError(err, "dns.ZonesClient", "ListZonesInResourceGroup", nil, "Failure preparing next results request request")
 	}
 	if req == nil {
 		return
@@ -320,12 +320,12 @@ func (client ZonesClient) ListZonesInResourceGroupNextResults(lastResults ZoneLi
 	resp, err := client.ListZonesInResourceGroupSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "dns/ZonesClient", "ListZonesInResourceGroup", resp, "Failure sending next results request request")
+		return result, autorest.NewErrorWithError(err, "dns.ZonesClient", "ListZonesInResourceGroup", resp, "Failure sending next results request request")
 	}
 
 	result, err = client.ListZonesInResourceGroupResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "dns/ZonesClient", "ListZonesInResourceGroup", resp, "Failure responding to next results request request")
+		err = autorest.NewErrorWithError(err, "dns.ZonesClient", "ListZonesInResourceGroup", resp, "Failure responding to next results request request")
 	}
 
 	return
@@ -338,18 +338,18 @@ func (client ZonesClient) ListZonesInResourceGroupNextResults(lastResults ZoneLi
 func (client ZonesClient) ListZonesInSubscription(top string, filter string) (result ZoneListResult, err error) {
 	req, err := client.ListZonesInSubscriptionPreparer(top, filter)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "dns/ZonesClient", "ListZonesInSubscription", nil, "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "dns.ZonesClient", "ListZonesInSubscription", nil, "Failure preparing request")
 	}
 
 	resp, err := client.ListZonesInSubscriptionSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "dns/ZonesClient", "ListZonesInSubscription", resp, "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "dns.ZonesClient", "ListZonesInSubscription", resp, "Failure sending request")
 	}
 
 	result, err = client.ListZonesInSubscriptionResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "dns/ZonesClient", "ListZonesInSubscription", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "dns.ZonesClient", "ListZonesInSubscription", resp, "Failure responding to request")
 	}
 
 	return
@@ -403,7 +403,7 @@ func (client ZonesClient) ListZonesInSubscriptionResponder(resp *http.Response) 
 func (client ZonesClient) ListZonesInSubscriptionNextResults(lastResults ZoneListResult) (result ZoneListResult, err error) {
 	req, err := lastResults.ZoneListResultPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "dns/ZonesClient", "ListZonesInSubscription", nil, "Failure preparing next results request request")
+		return result, autorest.NewErrorWithError(err, "dns.ZonesClient", "ListZonesInSubscription", nil, "Failure preparing next results request request")
 	}
 	if req == nil {
 		return
@@ -412,12 +412,12 @@ func (client ZonesClient) ListZonesInSubscriptionNextResults(lastResults ZoneLis
 	resp, err := client.ListZonesInSubscriptionSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "dns/ZonesClient", "ListZonesInSubscription", resp, "Failure sending next results request request")
+		return result, autorest.NewErrorWithError(err, "dns.ZonesClient", "ListZonesInSubscription", resp, "Failure sending next results request request")
 	}
 
 	result, err = client.ListZonesInSubscriptionResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "dns/ZonesClient", "ListZonesInSubscription", resp, "Failure responding to next results request request")
+		err = autorest.NewErrorWithError(err, "dns.ZonesClient", "ListZonesInSubscription", resp, "Failure responding to next results request request")
 	}
 
 	return

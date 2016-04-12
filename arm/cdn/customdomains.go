@@ -58,18 +58,18 @@ func NewCustomDomainsClientWithBaseURI(baseURI string, subscriptionID string) Cu
 func (client CustomDomainsClient) Create(customDomainName string, customDomainProperties CustomDomainParameters, endpointName string, profileName string, resourceGroupName string, cancel <-chan struct{}) (result autorest.Response, err error) {
 	req, err := client.CreatePreparer(customDomainName, customDomainProperties, endpointName, profileName, resourceGroupName, cancel)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "cdn/CustomDomainsClient", "Create", nil, "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "cdn.CustomDomainsClient", "Create", nil, "Failure preparing request")
 	}
 
 	resp, err := client.CreateSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "cdn/CustomDomainsClient", "Create", resp, "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "cdn.CustomDomainsClient", "Create", resp, "Failure sending request")
 	}
 
 	result, err = client.CreateResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "cdn/CustomDomainsClient", "Create", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "cdn.CustomDomainsClient", "Create", resp, "Failure responding to request")
 	}
 
 	return
@@ -131,18 +131,18 @@ func (client CustomDomainsClient) CreateResponder(resp *http.Response) (result a
 func (client CustomDomainsClient) DeleteIfExists(customDomainName string, endpointName string, profileName string, resourceGroupName string, cancel <-chan struct{}) (result autorest.Response, err error) {
 	req, err := client.DeleteIfExistsPreparer(customDomainName, endpointName, profileName, resourceGroupName, cancel)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "cdn/CustomDomainsClient", "DeleteIfExists", nil, "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "cdn.CustomDomainsClient", "DeleteIfExists", nil, "Failure preparing request")
 	}
 
 	resp, err := client.DeleteIfExistsSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "cdn/CustomDomainsClient", "DeleteIfExists", resp, "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "cdn.CustomDomainsClient", "DeleteIfExists", resp, "Failure sending request")
 	}
 
 	result, err = client.DeleteIfExistsResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "cdn/CustomDomainsClient", "DeleteIfExists", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "cdn.CustomDomainsClient", "DeleteIfExists", resp, "Failure responding to request")
 	}
 
 	return
@@ -200,18 +200,18 @@ func (client CustomDomainsClient) DeleteIfExistsResponder(resp *http.Response) (
 func (client CustomDomainsClient) Get(customDomainName string, endpointName string, profileName string, resourceGroupName string) (result CustomDomain, err error) {
 	req, err := client.GetPreparer(customDomainName, endpointName, profileName, resourceGroupName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "cdn/CustomDomainsClient", "Get", nil, "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "cdn.CustomDomainsClient", "Get", nil, "Failure preparing request")
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "cdn/CustomDomainsClient", "Get", resp, "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "cdn.CustomDomainsClient", "Get", resp, "Failure sending request")
 	}
 
 	result, err = client.GetResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "cdn/CustomDomainsClient", "Get", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "cdn.CustomDomainsClient", "Get", resp, "Failure responding to request")
 	}
 
 	return
@@ -267,18 +267,18 @@ func (client CustomDomainsClient) GetResponder(resp *http.Response) (result Cust
 func (client CustomDomainsClient) ListByEndpoint(endpointName string, profileName string, resourceGroupName string) (result CustomDomainListResult, err error) {
 	req, err := client.ListByEndpointPreparer(endpointName, profileName, resourceGroupName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "cdn/CustomDomainsClient", "ListByEndpoint", nil, "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "cdn.CustomDomainsClient", "ListByEndpoint", nil, "Failure preparing request")
 	}
 
 	resp, err := client.ListByEndpointSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "cdn/CustomDomainsClient", "ListByEndpoint", resp, "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "cdn.CustomDomainsClient", "ListByEndpoint", resp, "Failure sending request")
 	}
 
 	result, err = client.ListByEndpointResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "cdn/CustomDomainsClient", "ListByEndpoint", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "cdn.CustomDomainsClient", "ListByEndpoint", resp, "Failure responding to request")
 	}
 
 	return
@@ -335,18 +335,18 @@ func (client CustomDomainsClient) ListByEndpointResponder(resp *http.Response) (
 func (client CustomDomainsClient) Update(customDomainName string, customDomainProperties CustomDomainParameters, endpointName string, profileName string, resourceGroupName string) (result ErrorResponse, err error) {
 	req, err := client.UpdatePreparer(customDomainName, customDomainProperties, endpointName, profileName, resourceGroupName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "cdn/CustomDomainsClient", "Update", nil, "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "cdn.CustomDomainsClient", "Update", nil, "Failure preparing request")
 	}
 
 	resp, err := client.UpdateSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "cdn/CustomDomainsClient", "Update", resp, "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "cdn.CustomDomainsClient", "Update", resp, "Failure sending request")
 	}
 
 	result, err = client.UpdateResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "cdn/CustomDomainsClient", "Update", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "cdn.CustomDomainsClient", "Update", resp, "Failure responding to request")
 	}
 
 	return

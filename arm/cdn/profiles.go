@@ -56,18 +56,18 @@ func NewProfilesClientWithBaseURI(baseURI string, subscriptionID string) Profile
 func (client ProfilesClient) Create(profileName string, profileProperties ProfileCreateParameters, resourceGroupName string, cancel <-chan struct{}) (result autorest.Response, err error) {
 	req, err := client.CreatePreparer(profileName, profileProperties, resourceGroupName, cancel)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "cdn/ProfilesClient", "Create", nil, "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "cdn.ProfilesClient", "Create", nil, "Failure preparing request")
 	}
 
 	resp, err := client.CreateSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "cdn/ProfilesClient", "Create", resp, "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "cdn.ProfilesClient", "Create", resp, "Failure sending request")
 	}
 
 	result, err = client.CreateResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "cdn/ProfilesClient", "Create", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "cdn.ProfilesClient", "Create", resp, "Failure responding to request")
 	}
 
 	return
@@ -126,18 +126,18 @@ func (client ProfilesClient) CreateResponder(resp *http.Response) (result autore
 func (client ProfilesClient) DeleteIfExists(profileName string, resourceGroupName string, cancel <-chan struct{}) (result autorest.Response, err error) {
 	req, err := client.DeleteIfExistsPreparer(profileName, resourceGroupName, cancel)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "cdn/ProfilesClient", "DeleteIfExists", nil, "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "cdn.ProfilesClient", "DeleteIfExists", nil, "Failure preparing request")
 	}
 
 	resp, err := client.DeleteIfExistsSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "cdn/ProfilesClient", "DeleteIfExists", resp, "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "cdn.ProfilesClient", "DeleteIfExists", resp, "Failure sending request")
 	}
 
 	result, err = client.DeleteIfExistsResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "cdn/ProfilesClient", "DeleteIfExists", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "cdn.ProfilesClient", "DeleteIfExists", resp, "Failure responding to request")
 	}
 
 	return
@@ -192,18 +192,18 @@ func (client ProfilesClient) DeleteIfExistsResponder(resp *http.Response) (resul
 func (client ProfilesClient) GenerateSsoURI(profileName string, resourceGroupName string) (result SsoURI, err error) {
 	req, err := client.GenerateSsoURIPreparer(profileName, resourceGroupName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "cdn/ProfilesClient", "GenerateSsoURI", nil, "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "cdn.ProfilesClient", "GenerateSsoURI", nil, "Failure preparing request")
 	}
 
 	resp, err := client.GenerateSsoURISender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "cdn/ProfilesClient", "GenerateSsoURI", resp, "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "cdn.ProfilesClient", "GenerateSsoURI", resp, "Failure sending request")
 	}
 
 	result, err = client.GenerateSsoURIResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "cdn/ProfilesClient", "GenerateSsoURI", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "cdn.ProfilesClient", "GenerateSsoURI", resp, "Failure responding to request")
 	}
 
 	return
@@ -257,18 +257,18 @@ func (client ProfilesClient) GenerateSsoURIResponder(resp *http.Response) (resul
 func (client ProfilesClient) Get(profileName string, resourceGroupName string) (result Profile, err error) {
 	req, err := client.GetPreparer(profileName, resourceGroupName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "cdn/ProfilesClient", "Get", nil, "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "cdn.ProfilesClient", "Get", nil, "Failure preparing request")
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "cdn/ProfilesClient", "Get", resp, "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "cdn.ProfilesClient", "Get", resp, "Failure sending request")
 	}
 
 	result, err = client.GetResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "cdn/ProfilesClient", "Get", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "cdn.ProfilesClient", "Get", resp, "Failure responding to request")
 	}
 
 	return
@@ -321,18 +321,18 @@ func (client ProfilesClient) GetResponder(resp *http.Response) (result Profile, 
 func (client ProfilesClient) ListByResourceGroup(resourceGroupName string) (result ProfileListResult, err error) {
 	req, err := client.ListByResourceGroupPreparer(resourceGroupName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "cdn/ProfilesClient", "ListByResourceGroup", nil, "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "cdn.ProfilesClient", "ListByResourceGroup", nil, "Failure preparing request")
 	}
 
 	resp, err := client.ListByResourceGroupSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "cdn/ProfilesClient", "ListByResourceGroup", resp, "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "cdn.ProfilesClient", "ListByResourceGroup", resp, "Failure sending request")
 	}
 
 	result, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "cdn/ProfilesClient", "ListByResourceGroup", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "cdn.ProfilesClient", "ListByResourceGroup", resp, "Failure responding to request")
 	}
 
 	return
@@ -381,18 +381,18 @@ func (client ProfilesClient) ListByResourceGroupResponder(resp *http.Response) (
 func (client ProfilesClient) ListBySubscriptionID() (result ProfileListResult, err error) {
 	req, err := client.ListBySubscriptionIDPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "cdn/ProfilesClient", "ListBySubscriptionID", nil, "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "cdn.ProfilesClient", "ListBySubscriptionID", nil, "Failure preparing request")
 	}
 
 	resp, err := client.ListBySubscriptionIDSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "cdn/ProfilesClient", "ListBySubscriptionID", resp, "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "cdn.ProfilesClient", "ListBySubscriptionID", resp, "Failure sending request")
 	}
 
 	result, err = client.ListBySubscriptionIDResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "cdn/ProfilesClient", "ListBySubscriptionID", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "cdn.ProfilesClient", "ListBySubscriptionID", resp, "Failure responding to request")
 	}
 
 	return
@@ -445,18 +445,18 @@ func (client ProfilesClient) ListBySubscriptionIDResponder(resp *http.Response) 
 func (client ProfilesClient) Update(profileName string, profileProperties ProfileUpdateParameters, resourceGroupName string) (result Profile, err error) {
 	req, err := client.UpdatePreparer(profileName, profileProperties, resourceGroupName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "cdn/ProfilesClient", "Update", nil, "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "cdn.ProfilesClient", "Update", nil, "Failure preparing request")
 	}
 
 	resp, err := client.UpdateSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "cdn/ProfilesClient", "Update", resp, "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "cdn.ProfilesClient", "Update", resp, "Failure sending request")
 	}
 
 	result, err = client.UpdateResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "cdn/ProfilesClient", "Update", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "cdn.ProfilesClient", "Update", resp, "Failure responding to request")
 	}
 
 	return

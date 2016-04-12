@@ -59,18 +59,18 @@ func NewServerFarmsClientWithBaseURI(baseURI string, subscriptionID string) Serv
 func (client ServerFarmsClient) CreateOrUpdateServerFarm(resourceGroupName string, name string, serverFarmEnvelope ServerFarmWithRichSku, allowPendingState *bool, cancel <-chan struct{}) (result autorest.Response, err error) {
 	req, err := client.CreateOrUpdateServerFarmPreparer(resourceGroupName, name, serverFarmEnvelope, allowPendingState, cancel)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web/ServerFarmsClient", "CreateOrUpdateServerFarm", nil, "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "web.ServerFarmsClient", "CreateOrUpdateServerFarm", nil, "Failure preparing request")
 	}
 
 	resp, err := client.CreateOrUpdateServerFarmSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "web/ServerFarmsClient", "CreateOrUpdateServerFarm", resp, "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "web.ServerFarmsClient", "CreateOrUpdateServerFarm", resp, "Failure sending request")
 	}
 
 	result, err = client.CreateOrUpdateServerFarmResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "web/ServerFarmsClient", "CreateOrUpdateServerFarm", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "web.ServerFarmsClient", "CreateOrUpdateServerFarm", resp, "Failure responding to request")
 	}
 
 	return
@@ -129,18 +129,18 @@ func (client ServerFarmsClient) CreateOrUpdateServerFarmResponder(resp *http.Res
 func (client ServerFarmsClient) CreateOrUpdateVnetRoute(resourceGroupName string, name string, vnetName string, routeName string, route VnetRoute) (result VnetRoute, err error) {
 	req, err := client.CreateOrUpdateVnetRoutePreparer(resourceGroupName, name, vnetName, routeName, route)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web/ServerFarmsClient", "CreateOrUpdateVnetRoute", nil, "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "web.ServerFarmsClient", "CreateOrUpdateVnetRoute", nil, "Failure preparing request")
 	}
 
 	resp, err := client.CreateOrUpdateVnetRouteSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web/ServerFarmsClient", "CreateOrUpdateVnetRoute", resp, "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "web.ServerFarmsClient", "CreateOrUpdateVnetRoute", resp, "Failure sending request")
 	}
 
 	result, err = client.CreateOrUpdateVnetRouteResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "web/ServerFarmsClient", "CreateOrUpdateVnetRoute", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "web.ServerFarmsClient", "CreateOrUpdateVnetRoute", resp, "Failure responding to request")
 	}
 
 	return
@@ -196,18 +196,18 @@ func (client ServerFarmsClient) CreateOrUpdateVnetRouteResponder(resp *http.Resp
 func (client ServerFarmsClient) DeleteServerFarm(resourceGroupName string, name string) (result SetObject, err error) {
 	req, err := client.DeleteServerFarmPreparer(resourceGroupName, name)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web/ServerFarmsClient", "DeleteServerFarm", nil, "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "web.ServerFarmsClient", "DeleteServerFarm", nil, "Failure preparing request")
 	}
 
 	resp, err := client.DeleteServerFarmSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web/ServerFarmsClient", "DeleteServerFarm", resp, "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "web.ServerFarmsClient", "DeleteServerFarm", resp, "Failure sending request")
 	}
 
 	result, err = client.DeleteServerFarmResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "web/ServerFarmsClient", "DeleteServerFarm", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "web.ServerFarmsClient", "DeleteServerFarm", resp, "Failure responding to request")
 	}
 
 	return
@@ -261,18 +261,18 @@ func (client ServerFarmsClient) DeleteServerFarmResponder(resp *http.Response) (
 func (client ServerFarmsClient) DeleteVnetRoute(resourceGroupName string, name string, vnetName string, routeName string) (result SetObject, err error) {
 	req, err := client.DeleteVnetRoutePreparer(resourceGroupName, name, vnetName, routeName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web/ServerFarmsClient", "DeleteVnetRoute", nil, "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "web.ServerFarmsClient", "DeleteVnetRoute", nil, "Failure preparing request")
 	}
 
 	resp, err := client.DeleteVnetRouteSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web/ServerFarmsClient", "DeleteVnetRoute", resp, "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "web.ServerFarmsClient", "DeleteVnetRoute", resp, "Failure sending request")
 	}
 
 	result, err = client.DeleteVnetRouteResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "web/ServerFarmsClient", "DeleteVnetRoute", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "web.ServerFarmsClient", "DeleteVnetRoute", resp, "Failure responding to request")
 	}
 
 	return
@@ -328,18 +328,18 @@ func (client ServerFarmsClient) DeleteVnetRouteResponder(resp *http.Response) (r
 func (client ServerFarmsClient) GetRouteForVnet(resourceGroupName string, name string, vnetName string, routeName string) (result ListVnetRoute, err error) {
 	req, err := client.GetRouteForVnetPreparer(resourceGroupName, name, vnetName, routeName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web/ServerFarmsClient", "GetRouteForVnet", nil, "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "web.ServerFarmsClient", "GetRouteForVnet", nil, "Failure preparing request")
 	}
 
 	resp, err := client.GetRouteForVnetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web/ServerFarmsClient", "GetRouteForVnet", resp, "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "web.ServerFarmsClient", "GetRouteForVnet", resp, "Failure sending request")
 	}
 
 	result, err = client.GetRouteForVnetResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "web/ServerFarmsClient", "GetRouteForVnet", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "web.ServerFarmsClient", "GetRouteForVnet", resp, "Failure responding to request")
 	}
 
 	return
@@ -394,18 +394,18 @@ func (client ServerFarmsClient) GetRouteForVnetResponder(resp *http.Response) (r
 func (client ServerFarmsClient) GetRoutesForVnet(resourceGroupName string, name string, vnetName string) (result ListVnetRoute, err error) {
 	req, err := client.GetRoutesForVnetPreparer(resourceGroupName, name, vnetName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web/ServerFarmsClient", "GetRoutesForVnet", nil, "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "web.ServerFarmsClient", "GetRoutesForVnet", nil, "Failure preparing request")
 	}
 
 	resp, err := client.GetRoutesForVnetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web/ServerFarmsClient", "GetRoutesForVnet", resp, "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "web.ServerFarmsClient", "GetRoutesForVnet", resp, "Failure sending request")
 	}
 
 	result, err = client.GetRoutesForVnetResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "web/ServerFarmsClient", "GetRoutesForVnet", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "web.ServerFarmsClient", "GetRoutesForVnet", resp, "Failure responding to request")
 	}
 
 	return
@@ -459,18 +459,18 @@ func (client ServerFarmsClient) GetRoutesForVnetResponder(resp *http.Response) (
 func (client ServerFarmsClient) GetServerFarm(resourceGroupName string, name string) (result ServerFarmWithRichSku, err error) {
 	req, err := client.GetServerFarmPreparer(resourceGroupName, name)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web/ServerFarmsClient", "GetServerFarm", nil, "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "web.ServerFarmsClient", "GetServerFarm", nil, "Failure preparing request")
 	}
 
 	resp, err := client.GetServerFarmSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web/ServerFarmsClient", "GetServerFarm", resp, "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "web.ServerFarmsClient", "GetServerFarm", resp, "Failure sending request")
 	}
 
 	result, err = client.GetServerFarmResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "web/ServerFarmsClient", "GetServerFarm", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "web.ServerFarmsClient", "GetServerFarm", resp, "Failure responding to request")
 	}
 
 	return
@@ -524,18 +524,18 @@ func (client ServerFarmsClient) GetServerFarmResponder(resp *http.Response) (res
 func (client ServerFarmsClient) GetServerFarmMetricDefintions(resourceGroupName string, name string) (result MetricDefinitionCollection, err error) {
 	req, err := client.GetServerFarmMetricDefintionsPreparer(resourceGroupName, name)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web/ServerFarmsClient", "GetServerFarmMetricDefintions", nil, "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "web.ServerFarmsClient", "GetServerFarmMetricDefintions", nil, "Failure preparing request")
 	}
 
 	resp, err := client.GetServerFarmMetricDefintionsSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web/ServerFarmsClient", "GetServerFarmMetricDefintions", resp, "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "web.ServerFarmsClient", "GetServerFarmMetricDefintions", resp, "Failure sending request")
 	}
 
 	result, err = client.GetServerFarmMetricDefintionsResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "web/ServerFarmsClient", "GetServerFarmMetricDefintions", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "web.ServerFarmsClient", "GetServerFarmMetricDefintions", resp, "Failure responding to request")
 	}
 
 	return
@@ -593,18 +593,18 @@ func (client ServerFarmsClient) GetServerFarmMetricDefintionsResponder(resp *htt
 func (client ServerFarmsClient) GetServerFarmMetrics(resourceGroupName string, name string, details *bool, filter string) (result ResourceMetricCollection, err error) {
 	req, err := client.GetServerFarmMetricsPreparer(resourceGroupName, name, details, filter)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web/ServerFarmsClient", "GetServerFarmMetrics", nil, "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "web.ServerFarmsClient", "GetServerFarmMetrics", nil, "Failure preparing request")
 	}
 
 	resp, err := client.GetServerFarmMetricsSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web/ServerFarmsClient", "GetServerFarmMetrics", resp, "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "web.ServerFarmsClient", "GetServerFarmMetrics", resp, "Failure sending request")
 	}
 
 	result, err = client.GetServerFarmMetricsResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "web/ServerFarmsClient", "GetServerFarmMetrics", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "web.ServerFarmsClient", "GetServerFarmMetrics", resp, "Failure responding to request")
 	}
 
 	return
@@ -663,18 +663,18 @@ func (client ServerFarmsClient) GetServerFarmMetricsResponder(resp *http.Respons
 func (client ServerFarmsClient) GetServerFarmOperation(resourceGroupName string, name string, operationID string) (result ServerFarmWithRichSku, err error) {
 	req, err := client.GetServerFarmOperationPreparer(resourceGroupName, name, operationID)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web/ServerFarmsClient", "GetServerFarmOperation", nil, "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "web.ServerFarmsClient", "GetServerFarmOperation", nil, "Failure preparing request")
 	}
 
 	resp, err := client.GetServerFarmOperationSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web/ServerFarmsClient", "GetServerFarmOperation", resp, "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "web.ServerFarmsClient", "GetServerFarmOperation", resp, "Failure sending request")
 	}
 
 	result, err = client.GetServerFarmOperationResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "web/ServerFarmsClient", "GetServerFarmOperation", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "web.ServerFarmsClient", "GetServerFarmOperation", resp, "Failure responding to request")
 	}
 
 	return
@@ -727,18 +727,18 @@ func (client ServerFarmsClient) GetServerFarmOperationResponder(resp *http.Respo
 func (client ServerFarmsClient) GetServerFarms(resourceGroupName string) (result ServerFarmCollection, err error) {
 	req, err := client.GetServerFarmsPreparer(resourceGroupName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web/ServerFarmsClient", "GetServerFarms", nil, "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "web.ServerFarmsClient", "GetServerFarms", nil, "Failure preparing request")
 	}
 
 	resp, err := client.GetServerFarmsSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web/ServerFarmsClient", "GetServerFarms", resp, "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "web.ServerFarmsClient", "GetServerFarms", resp, "Failure sending request")
 	}
 
 	result, err = client.GetServerFarmsResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "web/ServerFarmsClient", "GetServerFarms", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "web.ServerFarmsClient", "GetServerFarms", resp, "Failure responding to request")
 	}
 
 	return
@@ -795,18 +795,18 @@ func (client ServerFarmsClient) GetServerFarmsResponder(resp *http.Response) (re
 func (client ServerFarmsClient) GetServerFarmSites(resourceGroupName string, name string, skipToken string, filter string, top string) (result SiteCollection, err error) {
 	req, err := client.GetServerFarmSitesPreparer(resourceGroupName, name, skipToken, filter, top)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web/ServerFarmsClient", "GetServerFarmSites", nil, "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "web.ServerFarmsClient", "GetServerFarmSites", nil, "Failure preparing request")
 	}
 
 	resp, err := client.GetServerFarmSitesSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web/ServerFarmsClient", "GetServerFarmSites", resp, "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "web.ServerFarmsClient", "GetServerFarmSites", resp, "Failure sending request")
 	}
 
 	result, err = client.GetServerFarmSitesResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "web/ServerFarmsClient", "GetServerFarmSites", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "web.ServerFarmsClient", "GetServerFarmSites", resp, "Failure responding to request")
 	}
 
 	return
@@ -865,7 +865,7 @@ func (client ServerFarmsClient) GetServerFarmSitesResponder(resp *http.Response)
 func (client ServerFarmsClient) GetServerFarmSitesNextResults(lastResults SiteCollection) (result SiteCollection, err error) {
 	req, err := lastResults.SiteCollectionPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web/ServerFarmsClient", "GetServerFarmSites", nil, "Failure preparing next results request request")
+		return result, autorest.NewErrorWithError(err, "web.ServerFarmsClient", "GetServerFarmSites", nil, "Failure preparing next results request request")
 	}
 	if req == nil {
 		return
@@ -874,12 +874,12 @@ func (client ServerFarmsClient) GetServerFarmSitesNextResults(lastResults SiteCo
 	resp, err := client.GetServerFarmSitesSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web/ServerFarmsClient", "GetServerFarmSites", resp, "Failure sending next results request request")
+		return result, autorest.NewErrorWithError(err, "web.ServerFarmsClient", "GetServerFarmSites", resp, "Failure sending next results request request")
 	}
 
 	result, err = client.GetServerFarmSitesResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "web/ServerFarmsClient", "GetServerFarmSites", resp, "Failure responding to next results request request")
+		err = autorest.NewErrorWithError(err, "web.ServerFarmsClient", "GetServerFarmSites", resp, "Failure responding to next results request request")
 	}
 
 	return
@@ -893,18 +893,18 @@ func (client ServerFarmsClient) GetServerFarmSitesNextResults(lastResults SiteCo
 func (client ServerFarmsClient) GetServerFarmVnetGateway(resourceGroupName string, name string, vnetName string, gatewayName string) (result VnetGateway, err error) {
 	req, err := client.GetServerFarmVnetGatewayPreparer(resourceGroupName, name, vnetName, gatewayName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web/ServerFarmsClient", "GetServerFarmVnetGateway", nil, "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "web.ServerFarmsClient", "GetServerFarmVnetGateway", nil, "Failure preparing request")
 	}
 
 	resp, err := client.GetServerFarmVnetGatewaySender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web/ServerFarmsClient", "GetServerFarmVnetGateway", resp, "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "web.ServerFarmsClient", "GetServerFarmVnetGateway", resp, "Failure sending request")
 	}
 
 	result, err = client.GetServerFarmVnetGatewayResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "web/ServerFarmsClient", "GetServerFarmVnetGateway", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "web.ServerFarmsClient", "GetServerFarmVnetGateway", resp, "Failure responding to request")
 	}
 
 	return
@@ -959,18 +959,18 @@ func (client ServerFarmsClient) GetServerFarmVnetGatewayResponder(resp *http.Res
 func (client ServerFarmsClient) GetVnetFromServerFarm(resourceGroupName string, name string, vnetName string) (result VnetInfo, err error) {
 	req, err := client.GetVnetFromServerFarmPreparer(resourceGroupName, name, vnetName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web/ServerFarmsClient", "GetVnetFromServerFarm", nil, "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "web.ServerFarmsClient", "GetVnetFromServerFarm", nil, "Failure preparing request")
 	}
 
 	resp, err := client.GetVnetFromServerFarmSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web/ServerFarmsClient", "GetVnetFromServerFarm", resp, "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "web.ServerFarmsClient", "GetVnetFromServerFarm", resp, "Failure sending request")
 	}
 
 	result, err = client.GetVnetFromServerFarmResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "web/ServerFarmsClient", "GetVnetFromServerFarm", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "web.ServerFarmsClient", "GetVnetFromServerFarm", resp, "Failure responding to request")
 	}
 
 	return
@@ -1024,18 +1024,18 @@ func (client ServerFarmsClient) GetVnetFromServerFarmResponder(resp *http.Respon
 func (client ServerFarmsClient) GetVnetsForServerFarm(resourceGroupName string, name string) (result ListVnetInfo, err error) {
 	req, err := client.GetVnetsForServerFarmPreparer(resourceGroupName, name)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web/ServerFarmsClient", "GetVnetsForServerFarm", nil, "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "web.ServerFarmsClient", "GetVnetsForServerFarm", nil, "Failure preparing request")
 	}
 
 	resp, err := client.GetVnetsForServerFarmSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web/ServerFarmsClient", "GetVnetsForServerFarm", resp, "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "web.ServerFarmsClient", "GetVnetsForServerFarm", resp, "Failure sending request")
 	}
 
 	result, err = client.GetVnetsForServerFarmResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "web/ServerFarmsClient", "GetVnetsForServerFarm", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "web.ServerFarmsClient", "GetVnetsForServerFarm", resp, "Failure responding to request")
 	}
 
 	return
@@ -1088,18 +1088,18 @@ func (client ServerFarmsClient) GetVnetsForServerFarmResponder(resp *http.Respon
 func (client ServerFarmsClient) RebootWorkerForServerFarm(resourceGroupName string, name string, workerName string) (result SetObject, err error) {
 	req, err := client.RebootWorkerForServerFarmPreparer(resourceGroupName, name, workerName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web/ServerFarmsClient", "RebootWorkerForServerFarm", nil, "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "web.ServerFarmsClient", "RebootWorkerForServerFarm", nil, "Failure preparing request")
 	}
 
 	resp, err := client.RebootWorkerForServerFarmSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web/ServerFarmsClient", "RebootWorkerForServerFarm", resp, "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "web.ServerFarmsClient", "RebootWorkerForServerFarm", resp, "Failure sending request")
 	}
 
 	result, err = client.RebootWorkerForServerFarmResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "web/ServerFarmsClient", "RebootWorkerForServerFarm", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "web.ServerFarmsClient", "RebootWorkerForServerFarm", resp, "Failure responding to request")
 	}
 
 	return
@@ -1155,18 +1155,18 @@ func (client ServerFarmsClient) RebootWorkerForServerFarmResponder(resp *http.Re
 func (client ServerFarmsClient) RestartSitesForServerFarm(resourceGroupName string, name string, softRestart *bool) (result SetObject, err error) {
 	req, err := client.RestartSitesForServerFarmPreparer(resourceGroupName, name, softRestart)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web/ServerFarmsClient", "RestartSitesForServerFarm", nil, "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "web.ServerFarmsClient", "RestartSitesForServerFarm", nil, "Failure preparing request")
 	}
 
 	resp, err := client.RestartSitesForServerFarmSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web/ServerFarmsClient", "RestartSitesForServerFarm", resp, "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "web.ServerFarmsClient", "RestartSitesForServerFarm", resp, "Failure sending request")
 	}
 
 	result, err = client.RestartSitesForServerFarmResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "web/ServerFarmsClient", "RestartSitesForServerFarm", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "web.ServerFarmsClient", "RestartSitesForServerFarm", resp, "Failure responding to request")
 	}
 
 	return
@@ -1225,18 +1225,18 @@ func (client ServerFarmsClient) RestartSitesForServerFarmResponder(resp *http.Re
 func (client ServerFarmsClient) UpdateServerFarmVnetGateway(resourceGroupName string, name string, vnetName string, gatewayName string, connectionEnvelope VnetGateway) (result VnetGateway, err error) {
 	req, err := client.UpdateServerFarmVnetGatewayPreparer(resourceGroupName, name, vnetName, gatewayName, connectionEnvelope)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web/ServerFarmsClient", "UpdateServerFarmVnetGateway", nil, "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "web.ServerFarmsClient", "UpdateServerFarmVnetGateway", nil, "Failure preparing request")
 	}
 
 	resp, err := client.UpdateServerFarmVnetGatewaySender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web/ServerFarmsClient", "UpdateServerFarmVnetGateway", resp, "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "web.ServerFarmsClient", "UpdateServerFarmVnetGateway", resp, "Failure sending request")
 	}
 
 	result, err = client.UpdateServerFarmVnetGatewayResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "web/ServerFarmsClient", "UpdateServerFarmVnetGateway", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "web.ServerFarmsClient", "UpdateServerFarmVnetGateway", resp, "Failure responding to request")
 	}
 
 	return
@@ -1293,18 +1293,18 @@ func (client ServerFarmsClient) UpdateServerFarmVnetGatewayResponder(resp *http.
 func (client ServerFarmsClient) UpdateVnetRoute(resourceGroupName string, name string, vnetName string, routeName string, route VnetRoute) (result VnetRoute, err error) {
 	req, err := client.UpdateVnetRoutePreparer(resourceGroupName, name, vnetName, routeName, route)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web/ServerFarmsClient", "UpdateVnetRoute", nil, "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "web.ServerFarmsClient", "UpdateVnetRoute", nil, "Failure preparing request")
 	}
 
 	resp, err := client.UpdateVnetRouteSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web/ServerFarmsClient", "UpdateVnetRoute", resp, "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "web.ServerFarmsClient", "UpdateVnetRoute", resp, "Failure sending request")
 	}
 
 	result, err = client.UpdateVnetRouteResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "web/ServerFarmsClient", "UpdateVnetRoute", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "web.ServerFarmsClient", "UpdateVnetRoute", resp, "Failure responding to request")
 	}
 
 	return

@@ -53,9 +53,21 @@ type ContainerListResponse struct {
 
 // A Blob is an entry in BlobListResponse.
 type Blob struct {
-	Name       string         `xml:"Name"`
-	Properties BlobProperties `xml:"Properties"`
-	// TODO (ahmetalpbalkan) Metadata
+	Name       string               `xml:"Name"`
+	Properties BlobProperties       `xml:"Properties"`
+	Metadata   MetadataPropertyList `xml:"Metadata"`
+}
+
+// MetadataPropertyList belonging to a Blob
+type MetadataPropertyList struct {
+	List []MetadataProperty `xml:",any"`
+}
+
+// A MetadataProperty is a name and value pair, comprising
+// an XMLName of type xml.Name and Value of type string.
+type MetadataProperty struct {
+	XMLName xml.Name `xml:""`
+	Value   string   `xml:",chardata"`
 }
 
 // BlobProperties contains various properties of a blob

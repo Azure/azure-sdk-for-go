@@ -509,6 +509,65 @@ func (s *StorageBlobSuite) TestListBlobsTraversal(c *chk.C) {
 	c.Assert(files, chk.DeepEquals, []string{"/usr/bin/cat", "/usr/bin/ls"})
 }
 
+func (s *StorageBlobSuite) TestListBlobsWithMetadata(c *chk.C) {
+	cli := getBlobClient(c)
+	cnt := randContainer()
+
+	c.Assert(cli.CreateContainer(cnt, ContainerAccessTypePrivate), chk.IsNil)
+	defer cli.deleteContainer(cnt)
+
+	blobs := []string{}
+	size := 5
+	for i := 0; i < size; i++ {
+		name := randString(20)
+		c.Assert(cli.putSingleBlockBlob(cnt, name, []byte("Hello, world!")), chk.IsNil)
+		blobs = append(blobs, name)
+	}
+	sort.Strings(blobs)
+
+	// Set metadata on the blobs
+	for i := 0; i < size; i++ {
+		mPut := map[string]string{
+			"foo":     fmt.Sprintf("%v %v", "bar", blobs[i]),
+			"bar_baz": "waz qux",
+		}
+		err := cli.SetBlobMetadata(cnt, blobs[i], mPut)
+		c.Assert(err, chk.IsNil)
+
+		m, err := cli.GetBlobMetadata(cnt, blobs[i])
+		c.Assert(err, chk.IsNil)
+		c.Check(m, chk.DeepEquals, mPut)
+	}
+
+	// Get ListBlobs with metadata and verify
+	resp, err := cli.ListBlobs(cnt, ListBlobsParameters{
+		MaxResults: uint(size),
+		Include:    "metadata"})
+	c.Assert(err, chk.IsNil)
+
+	respBlobs := make(map[string]Blob)
+	for _, v := range resp.Blobs {
+		respBlobs[v.Name] = v
+	}
+
+	for i := 0; i < size; i++ {
+		mExpectUpper := map[string]string{
+			"Foo":     fmt.Sprintf("%v %v", "bar", blobs[i]),
+			"Bar_baz": "waz qux",
+		}
+
+		respBlob := respBlobs[blobs[i]]
+		c.Assert(respBlob, chk.NotNil)
+		respBlobMetadata := respBlob.Metadata
+		respMetadata := make(map[string]string)
+		c.Assert(respBlobMetadata, chk.NotNil)
+		for _, m := range respBlobMetadata.List {
+			respMetadata[m.XMLName.Local] = m.Value
+		}
+		c.Check(mExpectUpper, chk.DeepEquals, respMetadata)
+	}
+}
+
 func (s *StorageBlobSuite) TestGetAndSetMetadata(c *chk.C) {
 	cli := getBlobClient(c)
 	cnt := randContainer()

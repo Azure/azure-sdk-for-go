@@ -558,13 +558,8 @@ func (s *StorageBlobSuite) TestListBlobsWithMetadata(c *chk.C) {
 
 		respBlob := respBlobs[blobs[i]]
 		c.Assert(respBlob, chk.NotNil)
-		respBlobMetadata := respBlob.Metadata
-		respMetadata := make(map[string]string)
-		c.Assert(respBlobMetadata, chk.NotNil)
-		for _, m := range respBlobMetadata.List {
-			respMetadata[m.XMLName.Local] = m.Value
-		}
-		c.Check(mExpectUpper, chk.DeepEquals, respMetadata)
+		respBlobMetadata := map[string]string(respBlob.Metadata)
+		c.Check(mExpectUpper, chk.DeepEquals, respBlobMetadata)
 	}
 }
 

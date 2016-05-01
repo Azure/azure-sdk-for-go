@@ -591,7 +591,7 @@ func (s *StorageBlobSuite) TestGetBlobRange(c *chk.C) {
 		{"1-3", body[1 : 3+1]},
 		{"3-", body[3:]},
 	} {
-		resp, err := cli.GetBlobRange(cnt, blob, r.rangeStr)
+		resp, err := cli.GetBlobRange(cnt, blob, r.rangeStr, nil)
 		c.Assert(err, chk.IsNil)
 		blobBody, err := ioutil.ReadAll(resp)
 		c.Assert(err, chk.IsNil)
@@ -741,7 +741,7 @@ func (s *StorageBlobSuite) TestPutPagesUpdate(c *chk.C) {
 	c.Assert(cli.PutPage(cnt, blob, int64(len(chunk1)), int64(len(chunk1)+len(chunk2)-1), PageWriteTypeUpdate, chunk2, nil), chk.IsNil)
 
 	// Verify contents
-	out, err := cli.GetBlobRange(cnt, blob, fmt.Sprintf("%v-%v", 0, len(chunk1)+len(chunk2)-1))
+	out, err := cli.GetBlobRange(cnt, blob, fmt.Sprintf("%v-%v", 0, len(chunk1)+len(chunk2)-1), nil)
 	c.Assert(err, chk.IsNil)
 	defer out.Close()
 	blobContents, err := ioutil.ReadAll(out)
@@ -754,7 +754,7 @@ func (s *StorageBlobSuite) TestPutPagesUpdate(c *chk.C) {
 	c.Assert(cli.PutPage(cnt, blob, 0, int64(len(chunk0)-1), PageWriteTypeUpdate, chunk0, nil), chk.IsNil)
 
 	// Verify contents
-	out, err = cli.GetBlobRange(cnt, blob, fmt.Sprintf("%v-%v", 0, len(chunk1)+len(chunk2)-1))
+	out, err = cli.GetBlobRange(cnt, blob, fmt.Sprintf("%v-%v", 0, len(chunk1)+len(chunk2)-1), nil)
 	c.Assert(err, chk.IsNil)
 	defer out.Close()
 	blobContents, err = ioutil.ReadAll(out)
@@ -780,7 +780,7 @@ func (s *StorageBlobSuite) TestPutPagesClear(c *chk.C) {
 	c.Assert(cli.PutPage(cnt, blob, 512, 1023, PageWriteTypeClear, nil, nil), chk.IsNil)
 
 	// Verify contents
-	out, err := cli.GetBlobRange(cnt, blob, "0-2047")
+	out, err := cli.GetBlobRange(cnt, blob, "0-2047", nil)
 	c.Assert(err, chk.IsNil)
 	contents, err := ioutil.ReadAll(out)
 	c.Assert(err, chk.IsNil)
@@ -850,7 +850,7 @@ func (s *StorageBlobSuite) TestPutAppendBlobAppendBlocks(c *chk.C) {
 	c.Assert(cli.AppendBlock(cnt, blob, chunk1, nil), chk.IsNil)
 
 	// Verify contents
-	out, err := cli.GetBlobRange(cnt, blob, fmt.Sprintf("%v-%v", 0, len(chunk1)-1))
+	out, err := cli.GetBlobRange(cnt, blob, fmt.Sprintf("%v-%v", 0, len(chunk1)-1), nil)
 	c.Assert(err, chk.IsNil)
 	defer out.Close()
 	blobContents, err := ioutil.ReadAll(out)
@@ -862,7 +862,7 @@ func (s *StorageBlobSuite) TestPutAppendBlobAppendBlocks(c *chk.C) {
 	c.Assert(cli.AppendBlock(cnt, blob, chunk2, nil), chk.IsNil)
 
 	// Verify contents
-	out, err = cli.GetBlobRange(cnt, blob, fmt.Sprintf("%v-%v", 0, len(chunk1)+len(chunk2)-1))
+	out, err = cli.GetBlobRange(cnt, blob, fmt.Sprintf("%v-%v", 0, len(chunk1)+len(chunk2)-1), nil)
 	c.Assert(err, chk.IsNil)
 	defer out.Close()
 	blobContents, err = ioutil.ReadAll(out)

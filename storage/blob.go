@@ -79,7 +79,7 @@ func (bm *BlobMetadata) UnmarshalXML(d *xml.Decoder, start xml.StartElement) err
 		if *bm == nil {
 			*bm = make(BlobMetadata)
 		}
-		(*bm)[entry.XMLName.Local] = entry.Value
+		(*bm)[strings.ToLower(entry.XMLName.Local)] = entry.Value
 	}
 	return nil
 }

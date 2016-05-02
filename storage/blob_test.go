@@ -516,32 +516,30 @@ func (s *StorageBlobSuite) TestListBlobsWithMetadata(c *chk.C) {
 	c.Assert(cli.CreateContainer(cnt, ContainerAccessTypePrivate), chk.IsNil)
 	defer cli.deleteContainer(cnt)
 
-	blobs := []string{}
-	size := 5
-	for i := 0; i < size; i++ {
+	expectMeta := make(map[string]BlobMetadata)
+
+	// Put 4 blobs with metadata
+	for i := 0; i < 4; i++ {
 		name := randString(20)
 		c.Assert(cli.putSingleBlockBlob(cnt, name, []byte("Hello, world!")), chk.IsNil)
-		blobs = append(blobs, name)
-	}
-	sort.Strings(blobs)
-
-	// Set metadata on the blobs
-	for i := 0; i < size; i++ {
-		mPut := map[string]string{
-			"foo":     fmt.Sprintf("%v %v", "bar", blobs[i]),
-			"bar_baz": "waz qux",
+		c.Assert(cli.SetBlobMetadata(cnt, name, map[string]string{
+			"Foo":     name,
+			"Bar_BAZ": "Waz Qux",
+		}), chk.IsNil)
+		expectMeta[name] = BlobMetadata{
+			"foo":     name,
+			"bar_baz": "Waz Qux",
 		}
-		err := cli.SetBlobMetadata(cnt, blobs[i], mPut)
-		c.Assert(err, chk.IsNil)
-
-		m, err := cli.GetBlobMetadata(cnt, blobs[i])
-		c.Assert(err, chk.IsNil)
-		c.Check(m, chk.DeepEquals, mPut)
 	}
 
-	// Get ListBlobs with metadata and verify
+	// Put one more blob with no metadata
+	blobWithoutMetadata := randString(20)
+	c.Assert(cli.putSingleBlockBlob(cnt, blobWithoutMetadata, []byte("Hello, world!")), chk.IsNil)
+	expectMeta[blobWithoutMetadata] = nil
+
+	// Get ListBlobs with include:"metadata"
 	resp, err := cli.ListBlobs(cnt, ListBlobsParameters{
-		MaxResults: uint(size),
+		MaxResults: 5,
 		Include:    "metadata"})
 	c.Assert(err, chk.IsNil)
 
@@ -550,16 +548,9 @@ func (s *StorageBlobSuite) TestListBlobsWithMetadata(c *chk.C) {
 		respBlobs[v.Name] = v
 	}
 
-	for i := 0; i < size; i++ {
-		mExpectUpper := map[string]string{
-			"Foo":     fmt.Sprintf("%v %v", "bar", blobs[i]),
-			"Bar_baz": "waz qux",
-		}
-
-		respBlob := respBlobs[blobs[i]]
-		c.Assert(respBlob, chk.NotNil)
-		respBlobMetadata := map[string]string(respBlob.Metadata)
-		c.Check(mExpectUpper, chk.DeepEquals, respBlobMetadata)
+	// Verify the metadata is as expected
+	for name, _ := range expectMeta {
+		c.Check(respBlobs[name].Metadata, chk.DeepEquals, expectMeta[name])
 	}
 }
 

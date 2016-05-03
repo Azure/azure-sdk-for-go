@@ -457,7 +457,7 @@ func (b BlobStorageClient) GetBlobURL(container, name string) string {
 //
 // See https://msdn.microsoft.com/en-us/library/azure/dd179440.aspx
 func (b BlobStorageClient) GetBlob(container, name string) (io.ReadCloser, error) {
-	resp, err := b.getBlobRange(container, name, "")
+	resp, err := b.getBlobRange(container, name, "", nil)
 	if err != nil {
 		return nil, err
 	}
@@ -472,8 +472,8 @@ func (b BlobStorageClient) GetBlob(container, name string) (io.ReadCloser, error
 // string must be in a format like "0-", "10-100" as defined in HTTP 1.1 spec.
 //
 // See https://msdn.microsoft.com/en-us/library/azure/dd179440.aspx
-func (b BlobStorageClient) GetBlobRange(container, name, bytesRange string) (io.ReadCloser, error) {
-	resp, err := b.getBlobRange(container, name, bytesRange)
+func (b BlobStorageClient) GetBlobRange(container, name, bytesRange string, extraHeaders map[string]string) (io.ReadCloser, error) {
+	resp, err := b.getBlobRange(container, name, bytesRange, extraHeaders)
 	if err != nil {
 		return nil, err
 	}
@@ -484,7 +484,7 @@ func (b BlobStorageClient) GetBlobRange(container, name, bytesRange string) (io.
 	return resp.body, nil
 }
 
-func (b BlobStorageClient) getBlobRange(container, name, bytesRange string) (*storageResponse, error) {
+func (b BlobStorageClient) getBlobRange(container, name, bytesRange string, extraHeaders map[string]string) (*storageResponse, error) {
 	verb := "GET"
 	uri := b.client.getEndpoint(blobServiceName, pathForBlob(container, name), url.Values{})
 
@@ -492,6 +492,11 @@ func (b BlobStorageClient) getBlobRange(container, name, bytesRange string) (*st
 	if bytesRange != "" {
 		headers["Range"] = fmt.Sprintf("bytes=%s", bytesRange)
 	}
+
+	for k, v := range extraHeaders {
+		headers[k] = v
+	}
+
 	resp, err := b.client.exec(verb, uri, headers, nil)
 	if err != nil {
 		return nil, err

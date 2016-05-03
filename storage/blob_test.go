@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"crypto/rand"
 	"encoding/base64"
+	"encoding/xml"
 	"fmt"
 	"io"
 	"io/ioutil"
@@ -552,6 +553,18 @@ func (s *StorageBlobSuite) TestListBlobsWithMetadata(c *chk.C) {
 	for name := range expectMeta {
 		c.Check(respBlobs[name].Metadata, chk.DeepEquals, expectMeta[name])
 	}
+}
+
+// Ensure it's possible to generate a ListBlobs response with
+// metadata, e.g., for a stub server.
+func (s *StorageBlobSuite) TestMarshalBlobMetadata(c *chk.C) {
+	buf, err := xml.Marshal(Blob{
+		Name:       randString(20),
+		Properties: BlobProperties{},
+		Metadata:   BlobMetadata{"foo": "baz < waz"},
+	})
+	c.Check(err, chk.IsNil)
+	c.Check(string(buf), chk.Matches, `.*<Metadata><Foo>baz &lt; waz</Foo></Metadata>.*`)
 }
 
 func (s *StorageBlobSuite) TestGetAndSetMetadata(c *chk.C) {

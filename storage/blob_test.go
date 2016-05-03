@@ -549,7 +549,7 @@ func (s *StorageBlobSuite) TestListBlobsWithMetadata(c *chk.C) {
 	}
 
 	// Verify the metadata is as expected
-	for name, _ := range expectMeta {
+	for name := range expectMeta {
 		c.Check(respBlobs[name].Metadata, chk.DeepEquals, expectMeta[name])
 	}
 }

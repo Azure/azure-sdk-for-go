@@ -55,7 +55,33 @@ type ContainerListResponse struct {
 type Blob struct {
 	Name       string         `xml:"Name"`
 	Properties BlobProperties `xml:"Properties"`
-	// TODO (ahmetalpbalkan) Metadata
+	Metadata   BlobMetadata   `xml:"Metadata"`
+}
+
+// BlobMetadata contains various mtadata properties of the blob
+type BlobMetadata map[string]string
+
+type blobMetadataEntries struct {
+	Entries []blobMetadataEntry `xml:",any"`
+}
+type blobMetadataEntry struct {
+	XMLName xml.Name
+	Value   string `xml:",chardata"`
+}
+
+// UnmarshalXML converts the xml:Metadata into Metadata map
+func (bm *BlobMetadata) UnmarshalXML(d *xml.Decoder, start xml.StartElement) error {
+	var entries blobMetadataEntries
+	if err := d.DecodeElement(&entries, &start); err != nil {
+		return err
+	}
+	for _, entry := range entries.Entries {
+		if *bm == nil {
+			*bm = make(BlobMetadata)
+		}
+		(*bm)[strings.ToLower(entry.XMLName.Local)] = entry.Value
+	}
+	return nil
 }
 
 // BlobProperties contains various properties of a blob

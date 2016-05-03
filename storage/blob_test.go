@@ -509,6 +509,51 @@ func (s *StorageBlobSuite) TestListBlobsTraversal(c *chk.C) {
 	c.Assert(files, chk.DeepEquals, []string{"/usr/bin/cat", "/usr/bin/ls"})
 }
 
+func (s *StorageBlobSuite) TestListBlobsWithMetadata(c *chk.C) {
+	cli := getBlobClient(c)
+	cnt := randContainer()
+
+	c.Assert(cli.CreateContainer(cnt, ContainerAccessTypePrivate), chk.IsNil)
+	defer cli.deleteContainer(cnt)
+
+	expectMeta := make(map[string]BlobMetadata)
+
+	// Put 4 blobs with metadata
+	for i := 0; i < 4; i++ {
+		name := randString(20)
+		c.Assert(cli.putSingleBlockBlob(cnt, name, []byte("Hello, world!")), chk.IsNil)
+		c.Assert(cli.SetBlobMetadata(cnt, name, map[string]string{
+			"Foo":     name,
+			"Bar_BAZ": "Waz Qux",
+		}), chk.IsNil)
+		expectMeta[name] = BlobMetadata{
+			"foo":     name,
+			"bar_baz": "Waz Qux",
+		}
+	}
+
+	// Put one more blob with no metadata
+	blobWithoutMetadata := randString(20)
+	c.Assert(cli.putSingleBlockBlob(cnt, blobWithoutMetadata, []byte("Hello, world!")), chk.IsNil)
+	expectMeta[blobWithoutMetadata] = nil
+
+	// Get ListBlobs with include:"metadata"
+	resp, err := cli.ListBlobs(cnt, ListBlobsParameters{
+		MaxResults: 5,
+		Include:    "metadata"})
+	c.Assert(err, chk.IsNil)
+
+	respBlobs := make(map[string]Blob)
+	for _, v := range resp.Blobs {
+		respBlobs[v.Name] = v
+	}
+
+	// Verify the metadata is as expected
+	for name := range expectMeta {
+		c.Check(respBlobs[name].Metadata, chk.DeepEquals, expectMeta[name])
+	}
+}
+
 func (s *StorageBlobSuite) TestGetAndSetMetadata(c *chk.C) {
 	cli := getBlobClient(c)
 	cnt := randContainer()

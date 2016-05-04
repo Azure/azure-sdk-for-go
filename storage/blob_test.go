@@ -563,8 +563,8 @@ func (s *StorageBlobSuite) TestMarshalBlobMetadata(c *chk.C) {
 		Properties: BlobProperties{},
 		Metadata:   BlobMetadata{"foo": "baz < waz"},
 	})
-	c.Check(err, chk.IsNil)
-	c.Check(string(buf), chk.Matches, `.*<Metadata><Foo>baz &lt; waz</Foo></Metadata>.*`)
+	c.Assert(err, chk.IsNil)
+	c.Assert(string(buf), chk.Matches, `.*<Metadata><Foo>baz &lt; waz</Foo></Metadata>.*`)
 }
 
 func (s *StorageBlobSuite) TestGetAndSetMetadata(c *chk.C) {

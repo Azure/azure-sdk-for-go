@@ -58,7 +58,9 @@ type Blob struct {
 	Metadata   BlobMetadata   `xml:"Metadata"`
 }
 
-// BlobMetadata contains various mtadata properties of the blob
+// BlobMetadata is a set of custom name/value pairs.
+//
+// See https://msdn.microsoft.com/en-us/library/azure/dd179404.aspx
 type BlobMetadata map[string]string
 
 type blobMetadataEntries struct {
@@ -82,6 +84,22 @@ func (bm *BlobMetadata) UnmarshalXML(d *xml.Decoder, start xml.StartElement) err
 		(*bm)[strings.ToLower(entry.XMLName.Local)] = entry.Value
 	}
 	return nil
+}
+
+// MarshalXML implements the xml.Marshaler interface. It encodes
+// metadata name/value pairs as they would appear in an Azure
+// ListBlobs response.
+func (bm BlobMetadata) MarshalXML(enc *xml.Encoder, start xml.StartElement) error {
+	entries := make([]blobMetadataEntry, 0, len(bm))
+	for k, v := range bm {
+		entries = append(entries, blobMetadataEntry{
+			XMLName: xml.Name{Local: http.CanonicalHeaderKey(k)},
+			Value:   v,
+		})
+	}
+	return enc.EncodeElement(blobMetadataEntries{
+		Entries: entries,
+	}, start)
 }
 
 // BlobProperties contains various properties of a blob

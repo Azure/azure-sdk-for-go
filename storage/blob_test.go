@@ -295,7 +295,7 @@ func (s *StorageBlobSuite) TestDeleteBlobWithConditions(c *chk.C) {
 	c.Assert(err, chk.IsNil)
 
 	// Update metadata, so Etag changes
-	c.Assert(cli.SetBlobMetadata(cnt, blob, map[string]string{}), chk.IsNil)
+	c.Assert(cli.SetBlobMetadata(cnt, blob, map[string]string{}, nil), chk.IsNil)
 	newProps, err := cli.GetBlobProperties(cnt, blob)
 	c.Assert(err, chk.IsNil)
 
@@ -526,7 +526,7 @@ func (s *StorageBlobSuite) TestListBlobsWithMetadata(c *chk.C) {
 		c.Assert(cli.SetBlobMetadata(cnt, name, map[string]string{
 			"Foo":     name,
 			"Bar_BAZ": "Waz Qux",
-		}), chk.IsNil)
+		}, nil), chk.IsNil)
 		expectMeta[name] = BlobMetadata{
 			"foo":     name,
 			"bar_baz": "Waz Qux",
@@ -587,7 +587,7 @@ func (s *StorageBlobSuite) TestGetAndSetMetadata(c *chk.C) {
 		"bar_baz": "waz qux",
 	}
 
-	err = cli.SetBlobMetadata(cnt, blob, mPut)
+	err = cli.SetBlobMetadata(cnt, blob, mPut, nil)
 	c.Assert(err, chk.IsNil)
 
 	m, err = cli.GetBlobMetadata(cnt, blob)
@@ -605,12 +605,45 @@ func (s *StorageBlobSuite) TestGetAndSetMetadata(c *chk.C) {
 		"bar_baz": "different waz qux",
 	}
 
-	err = cli.SetBlobMetadata(cnt, blob, mPutUpper)
+	err = cli.SetBlobMetadata(cnt, blob, mPutUpper, nil)
 	c.Assert(err, chk.IsNil)
 
 	m, err = cli.GetBlobMetadata(cnt, blob)
 	c.Assert(err, chk.IsNil)
 	c.Check(m, chk.DeepEquals, mExpectLower)
+}
+
+func (s *StorageBlobSuite) TestSetMetadataWithExtraHeaders(c *chk.C) {
+	cli := getBlobClient(c)
+	cnt := randContainer()
+
+	c.Assert(cli.CreateContainer(cnt, ContainerAccessTypePrivate), chk.IsNil)
+	defer cli.deleteContainer(cnt)
+
+	blob := randString(20)
+	c.Assert(cli.putSingleBlockBlob(cnt, blob, []byte{}), chk.IsNil)
+
+	mPut := map[string]string{
+		"foo":     "bar",
+		"bar_baz": "waz qux",
+	}
+
+	extraHeaders := map[string]string{
+		"If-Match": "incorrect-etag",
+	}
+
+	// Set with incorrect If-Match in extra headers should result in error
+	err := cli.SetBlobMetadata(cnt, blob, mPut, extraHeaders)
+	c.Assert(err, chk.NotNil)
+
+	props, err := cli.GetBlobProperties(cnt, blob)
+	extraHeaders = map[string]string{
+		"If-Match": props.Etag,
+	}
+
+	// Set with matching If-Match in extra headers should succeed
+	err = cli.SetBlobMetadata(cnt, blob, mPut, extraHeaders)
+	c.Assert(err, chk.IsNil)
 }
 
 func (s *StorageBlobSuite) TestPutEmptyBlockBlob(c *chk.C) {

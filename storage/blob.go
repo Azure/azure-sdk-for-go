@@ -119,7 +119,7 @@ type BlobProperties struct {
 	CopyProgress          string   `xml:"CopyProgress"`
 	CopyCompletionTime    string   `xml:"CopyCompletionTime"`
 	CopyStatusDescription string   `xml:"CopyStatusDescription"`
-	LeaseStatus           string   `xml:"x-ms-lease-status"`
+	LeaseStatus           string   `xml:"LeaseStatus"`
 }
 
 // BlobListResponse contains the response fields from ListBlobs call.

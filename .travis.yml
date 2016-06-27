@@ -7,6 +7,7 @@ go: 1.6
 install:
   - go get -u github.com/golang/lint/golint
   - go get -u github.com/Masterminds/glide
+  - go get -u golang.org/x/net/context
   - export GO15VENDOREXPERIMENT=1
   - glide install
 

@@ -2,6 +2,12 @@
 
 -----
 
+## `v2.2.0-beta`
+
+- Uses go-autorest version v7.0.5.
+- Update version of pacakges "jwt-go" and "crypto" in glide.lock.
+
+
 ## `v2.1.1-beta`
 
 - arm: Better error messages for long running operation failures (Uses go-autorest version v7.0.4).

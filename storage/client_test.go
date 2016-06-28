@@ -31,6 +31,11 @@ func getBasicClient(c *chk.C) Client {
 	return cli
 }
 
+func (s *StorageClientSuite) TestMalformedKeyError(c *chk.C) {
+	_, err := NewBasicClient("foo", "malformed")
+	c.Assert(err, chk.ErrorMatches, "azure: malformed storage account key: .*")
+}
+
 func (s *StorageClientSuite) TestGetBaseURL_Basic_Https(c *chk.C) {
 	cli, err := NewBasicClient("foo", "YmFy")
 	c.Assert(err, chk.IsNil)

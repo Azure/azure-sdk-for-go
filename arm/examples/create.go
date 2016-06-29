@@ -38,9 +38,8 @@ func createAccount(resourceGroup, name string) {
 	}
 	fmt.Printf("%s is available\n\n", name)
 
-	cp := storage.AccountCreateParameters{}
+	cp := storage.AccountCreateParameters{Sku: &storage.Sku{Name: storage.StandardLRS, Tier: storage.Standard}}
 	cp.Location = to.StringPtr("westus")
-	cp.Properties = &storage.AccountPropertiesCreateParameters{AccountType: storage.StandardLRS}
 
 	cancel := make(chan struct{})
 	_, err = ac.Create(resourceGroup, name, cp, cancel)

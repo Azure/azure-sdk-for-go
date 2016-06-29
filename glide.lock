@@ -1,8 +1,8 @@
 hash: 7407050cee9bb9ce89e23ef26bce4051cce63d558338a4937f027a18b789e3a1
-updated: 2016-06-27T13:00:40.4688877-07:00
+updated: 2016-06-28T17:29:56.3835279-07:00
 imports:
 - name: github.com/Azure/go-autorest
-  version: 2ccdb9a7575caaeae226b5845842de89d9c4c8cd
+  version: 9c64b6583716b13caa7f85398c3331229c38f168
   subpackages:
   - autorest
   - autorest/azure

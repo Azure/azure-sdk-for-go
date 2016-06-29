@@ -2,6 +2,52 @@
 
 -----
 
+## `v3.0.0-beta`
+
+This release brings the Go SDK ARM packages up-to-date with Azure ARM Swagger files for most
+services. Since the underlying [Swagger files](https://github.com/Azure/azure-rest-api-specs)
+continue to change substantially, the ARM packages are still in *beta* status.
+
+The ARM packages now align with the following API versions (*highlighted* packages are new or
+updated in this release):
+
+| api                         | version             | note      |
+|:----------------------------|:--------------------|:----------|
+| arm/authorization           | 2015-07-01          | no change |
+| arm/intune                  | 2015-01-14-preview  | no change |
+| arm/notificationhubs        | 2014-09-01          | no change |
+| arm/resources/features      | 2015-12-01          | no change |
+| arm/resources/subscriptions | 2015-11-01          | no change |
+| arm/web                     | 2015-08-01          | no change |
+| arm/cdn                     | 2016-04-02          | updated   |
+| arm/compute                 | 2016-03-30          | updated   |
+| arm/dns                     | 2016-04-01          | updated   |
+| arm/logic                   | 2015-08-01-preview  | updated   |
+| arm/network                 | 2016-03-30          | updated   |
+| arm/redis                   | 2016-04-01          | updated   |
+| arm/resources/resources     | 2016-02-01          | updated   |
+| arm/resources/policy        | 2015-10-01-preview  | updated   |
+| arm/resources/locks         | 2015-01-01          | updated (resources/authorization earlier)|
+| arm/scheduler               | 2016-03-01          | updated   |
+| arm/storage                 | 2016-01-01          | updated   |
+| arm/search                  | 2015-02-28          | updated   |
+| arm/batch                   | 2015-12-01          | new       |
+| arm/cognitiveservices       | 2016-02-01-preview  | new       |
+| arm/devtestlabs             | 2016-05-15          | new       |
+| arm/machinelearning         | 2016-05-01-preview  | new       |
+| arm/powerbiembedded         | 2016-01-29          | new       |
+| arm/mobileengagement        | 2014-12-01          | new       |
+| arm/servicebus              | 2014-09-01          | new       |
+| arm/sql                     | 2015-05-01          | new       |
+| arm/trafficmanager          | 2015-11-01          | new       |
+
+
+Below are some design changes.
+- Removed Api version from method arguments.
+- Removed New...ClientWithBaseURI() method in all clients. BaseURI value is set in client.go.
+- Uses go-autorest version v7.0.6.
+
+
 ## `v2.2.0-beta`
 
 - Uses go-autorest version v7.0.5.

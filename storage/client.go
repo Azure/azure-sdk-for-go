@@ -29,10 +29,17 @@ const (
 
 	defaultUseHTTPS = true
 
+	storageEmulatorAccountName = "devstoreaccount1"
+	storageEmulatorAccountKey  = "Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KBHBeksoGMGw=="
+
 	blobServiceName  = "blob"
 	tableServiceName = "table"
 	queueServiceName = "queue"
 	fileServiceName  = "file"
+
+	storageEmulatorBlob  = "127.0.0.1:10000"
+	storageEmulatorTable = "127.0.0.1:10002"
+	storageEmulatorQueue = "127.0.0.1:10001"
 )
 
 // Client is the object that needs to be constructed to perform
@@ -114,6 +121,9 @@ func (e UnexpectedStatusCodeError) Got() int {
 // NewBasicClient constructs a Client with given storage service name and
 // key.
 func NewBasicClient(accountName, accountKey string) (Client, error) {
+	if accountName == storageEmulatorAccountName {
+		return NewClient(storageEmulatorAccountName, storageEmulatorAccountKey, DefaultBaseURL, DefaultAPIVersion, !defaultUseHTTPS)
+	}
 	return NewClient(accountName, accountKey, DefaultBaseURL, DefaultAPIVersion, defaultUseHTTPS)
 }
 
@@ -149,8 +159,19 @@ func (c Client) getBaseURL(service string) string {
 	if c.useHTTPS {
 		scheme = "https"
 	}
-
-	host := fmt.Sprintf("%s.%s.%s", c.accountName, service, c.baseURL)
+	host := ""
+	if c.accountName == storageEmulatorAccountName {
+		switch service {
+		case blobServiceName:
+			host = storageEmulatorBlob
+		case tableServiceName:
+			host = storageEmulatorTable
+		case queueServiceName:
+			host = storageEmulatorQueue
+		}
+	} else {
+		host = fmt.Sprintf("%s.%s.%s", c.accountName, service, c.baseURL)
+	}
 
 	u := &url.URL{
 		Scheme: scheme,
@@ -165,8 +186,12 @@ func (c Client) getEndpoint(service, path string, params url.Values) string {
 		panic(err)
 	}
 
-	if path == "" {
-		path = "/" // API doesn't accept path segments not starting with '/'
+	if !strings.HasPrefix(path, "/") {
+		path = fmt.Sprintf("/%v", path)
+	}
+
+	if c.accountName == storageEmulatorAccountName {
+		path = fmt.Sprintf("/%v%v", storageEmulatorAccountName, path)
 	}
 
 	u.Path = path

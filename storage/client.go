@@ -29,8 +29,11 @@ const (
 
 	defaultUseHTTPS = true
 
-	storageEmulatorAccountName = "devstoreaccount1"
-	storageEmulatorAccountKey  = "Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KBHBeksoGMGw=="
+	// StorageEmulatorAccountName is the fixed storage account used by Azure Storage Emulator
+	StorageEmulatorAccountName = "devstoreaccount1"
+
+	// StorageEmulatorAccountKey is the the fixed storage account used by Azure Storage Emulator
+	StorageEmulatorAccountKey = "Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KBHBeksoGMGw=="
 
 	blobServiceName  = "blob"
 	tableServiceName = "table"
@@ -121,8 +124,8 @@ func (e UnexpectedStatusCodeError) Got() int {
 // NewBasicClient constructs a Client with given storage service name and
 // key.
 func NewBasicClient(accountName, accountKey string) (Client, error) {
-	if accountName == storageEmulatorAccountName {
-		return NewClient(storageEmulatorAccountName, storageEmulatorAccountKey, DefaultBaseURL, DefaultAPIVersion, !defaultUseHTTPS)
+	if accountName == StorageEmulatorAccountName {
+		return NewClient(StorageEmulatorAccountName, StorageEmulatorAccountKey, DefaultBaseURL, DefaultAPIVersion, false)
 	}
 	return NewClient(accountName, accountKey, DefaultBaseURL, DefaultAPIVersion, defaultUseHTTPS)
 }
@@ -160,7 +163,7 @@ func (c Client) getBaseURL(service string) string {
 		scheme = "https"
 	}
 	host := ""
-	if c.accountName == storageEmulatorAccountName {
+	if c.accountName == StorageEmulatorAccountName {
 		switch service {
 		case blobServiceName:
 			host = storageEmulatorBlob
@@ -190,8 +193,8 @@ func (c Client) getEndpoint(service, path string, params url.Values) string {
 		path = fmt.Sprintf("/%v", path)
 	}
 
-	if c.accountName == storageEmulatorAccountName {
-		path = fmt.Sprintf("/%v%v", storageEmulatorAccountName, path)
+	if c.accountName == StorageEmulatorAccountName {
+		path = fmt.Sprintf("/%v%v", StorageEmulatorAccountName, path)
 	}
 
 	u.Path = path

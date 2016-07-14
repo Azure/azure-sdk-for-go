@@ -94,55 +94,7 @@ two clients:
 and
 [storage.UsageOperationsClient](https://godoc.org/github.com/Azure/azure-sdk-for-go/arm/storage#UsageOperationsClient).
 To check if a name is available, use the
-[storage.StorageAccountsClient](https://godoc.org/github.com/Azure/azure-sdk-for-go/arm/storage#StorageAccountsClient):
-
-```go
-package main
-
-import(
-  "fmt"
-  "log"
-
-  "github.com/Azure/azure-sdk-for-go/arm/examples/helpers"
-  "github.com/Azure/azure-sdk-for-go/arm/storage"
-  "github.com/Azure/go-autorest/autorest"
-  "github.com/Azure/go-autorest/autorest/azure"
-  "github.com/Azure/go-autorest/autorest/to"
-)
-
-func checkName(name string) {
-  c, err := helpers.LoadCredentials()
-  if err != nil {
-    log.Fatalf("Error: %v", err)
-  }
-
-  ac := storage.NewAccountsClient(c["subscriptionID"])
-
-  spt, err := helpers.NewServicePrincipalTokenFromCredentials(c, azure.PublicCloud.ResourceManagerEndpoint)
-  if err != nil {
-    log.Fatalf("Error: %v", err)
-  }
-  ac.Authorizer = spt
-
-  ac.Sender = autorest.CreateSender(
-    autorest.WithLogging(log.New(os.Stdout, "sdk-example: ", log.LstdFlags)))
-
-  cna, err := ac.CheckNameAvailability(
-    storage.AccountCheckNameAvailabilityParameters{
-      Name: to.StringPtr(name),
-      Type: to.StringPtr("Microsoft.Storage/storageAccounts")})
-
-  if err != nil {
-    log.Fatalf("Error: %v", err)
-  } else {
-    if to.Bool(cna.NameAvailable) {
-      fmt.Printf("The name '%s' is available\n", name)
-    } else {
-      fmt.Printf("The name '%s' is unavailable because %s\n", name, cna.Message)
-    }
-  }
-}
-```
+[storage.StorageAccountsClient](https://godoc.org/github.com/Azure/azure-sdk-for-go/arm/storage#StorageAccountsClient).
 
 Each ARM client composes with [autorest.Client](https://godoc.org/github.com/Azure/go-autorest/autorest#Client).
 [autorest.Client](https://godoc.org/github.com/Azure/go-autorest/autorest#Client)
@@ -179,6 +131,10 @@ the failing method (e.g.,
 [CheckNameAvailability](https://godoc.org/github.com/Azure/azure-sdk-for-go/arm/storage#StorageAccountsClient.CheckNameAvailability)),
 and a detailed error message.
 
+### Complete source code
+
+Complete source code for this example can be found [here](https://github.com/Azure/azure-sdk-for-go/blob/master/arm/examples/check.go).
+
 ## Something a Bit More Complex: Creating a new Azure Storage account
 
 Redundancy, both local and across regions, and service load affect service responsiveness. Some
@@ -213,59 +169,6 @@ the service suggested minimum polling delay.
 
 Creating a new Azure storage account is a straight-forward way to see these concepts.
 
-```go
-
-package main
-
-import(
-  "fmt"
-
-  "github.com/Azure/azure-sdk-for-go/arm/examples/helpers"
-  "github.com/Azure/azure-sdk-for-go/arm/storage"
-  "github.com/Azure/go-autorest/autorest"
-  "github.com/Azure/go-autorest/autorest/azure"
-  "github.com/Azure/go-autorest/autorest/to"
-)
-
-func create_account(resourceGroup, name string) {
-  c, err := helpers.LoadCredentials()
-  if err != nil {
-    log.Fatalf("Error: %v", err)
-  }
-
-  ac := storage.NewAccountsClient(c["subscriptionID"])
-
-  spt, err := helpers.NewServicePrincipalTokenFromCredentials(c, azure.AzureResourceManagerScope)
-  if err != nil {
-    log.Fatalf("Error: %v", err)
-  }
-  ac.Authorizer = spt
-  ac.PollingMode = autorest.PollUntilAttempts
-  ac.PollingAttempts = 5
-
-  cp := storage.AccountCreateParameters{}
-  cp.Location = to.StringPtr("westus")
-  cp.Properties = &storage.AccountPropertiesCreateParameters{AccountType: storage.StandardLRS}
-
-  sa, err := ac.Create(resourceGroup, name, cp)
-  if err != nil {
-    if sa.Response.StatusCode != http.StatusAccepted {
-      fmt.Printf("Creation of %s.%s failed with err -- %v\n", resourceGroup, name, err)
-      return
-    } else {
-      fmt.Printf("Create initiated for %s.%s -- poll %s to check status\n",
-        resourceGroup,
-        name,
-        sa.GetPollingLocation())
-      return
-    }
-  }
-
-  fmt.Printf("Successfully created %s.%s\n\n", resourceGroup, name)
-}
-```
-
-The above example modifies the
 [autorest.Client](https://godoc.org/github.com/Azure/go-autorest/autorest#Client)
 portion of the
 [storage.StorageAccountsClient](https://godoc.org/github.com/Azure/azure-sdk-for-go/arm/storage#StorageAccountsClient)
@@ -274,8 +177,11 @@ If an error occurs creating the storage account, the code inspects the HTTP stat
 prints the URL the
 [Azure Storage](http://azure.microsoft.com/en-us/documentation/services/storage/)
 service returned for polling.
+
+### Complete source for the example
 More details, including deleting the created account, are in the example code file
 [create.go](https://github.com/Azure/azure-sdk-for-go/blob/master/arm/examples/create.go).
+
 
 ## Making Asynchronous Requests
 

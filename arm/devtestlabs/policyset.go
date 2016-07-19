@@ -31,7 +31,13 @@ type PolicySetClient struct {
 
 // NewPolicySetClient creates an instance of the PolicySetClient client.
 func NewPolicySetClient(subscriptionID string) PolicySetClient {
-	return PolicySetClient{New(subscriptionID)}
+	return NewPolicySetClientWithBaseURI(DefaultBaseURI, subscriptionID)
+}
+
+// NewPolicySetClientWithBaseURI creates an instance of the PolicySetClient
+// client.
+func NewPolicySetClientWithBaseURI(baseURI string, subscriptionID string) PolicySetClient {
+	return PolicySetClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // EvaluatePolicies evaluates Lab Policy.

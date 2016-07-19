@@ -31,7 +31,12 @@ type AppsClient struct {
 
 // NewAppsClient creates an instance of the AppsClient client.
 func NewAppsClient(subscriptionID string, resourceGroupName string, appCollection string, appName string) AppsClient {
-	return AppsClient{New(subscriptionID, resourceGroupName, appCollection, appName)}
+	return NewAppsClientWithBaseURI(DefaultBaseURI, subscriptionID, resourceGroupName, appCollection, appName)
+}
+
+// NewAppsClientWithBaseURI creates an instance of the AppsClient client.
+func NewAppsClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, appCollection string, appName string) AppsClient {
+	return AppsClient{NewWithBaseURI(baseURI, subscriptionID, resourceGroupName, appCollection, appName)}
 }
 
 // List lists apps in an appCollection.

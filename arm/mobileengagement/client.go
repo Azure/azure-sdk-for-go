@@ -47,9 +47,14 @@ type ManagementClient struct {
 
 // New creates an instance of the ManagementClient client.
 func New(subscriptionID string, resourceGroupName string, appCollection string, appName string) ManagementClient {
+	return NewWithBaseURI(DefaultBaseURI, subscriptionID, resourceGroupName, appCollection, appName)
+}
+
+// NewWithBaseURI creates an instance of the ManagementClient client.
+func NewWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, appCollection string, appName string) ManagementClient {
 	return ManagementClient{
 		Client:            autorest.NewClientWithUserAgent(UserAgent()),
-		BaseURI:           DefaultBaseURI,
+		BaseURI:           baseURI,
 		APIVersion:        APIVersion,
 		SubscriptionID:    subscriptionID,
 		ResourceGroupName: resourceGroupName,

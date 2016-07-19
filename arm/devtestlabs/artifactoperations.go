@@ -32,7 +32,13 @@ type ArtifactOperationsClient struct {
 // NewArtifactOperationsClient creates an instance of the
 // ArtifactOperationsClient client.
 func NewArtifactOperationsClient(subscriptionID string) ArtifactOperationsClient {
-	return ArtifactOperationsClient{New(subscriptionID)}
+	return NewArtifactOperationsClientWithBaseURI(DefaultBaseURI, subscriptionID)
+}
+
+// NewArtifactOperationsClientWithBaseURI creates an instance of the
+// ArtifactOperationsClient client.
+func NewArtifactOperationsClientWithBaseURI(baseURI string, subscriptionID string) ArtifactOperationsClient {
+	return ArtifactOperationsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // GenerateArmTemplate generates an ARM template for the given artifact,

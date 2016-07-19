@@ -39,7 +39,13 @@ type CertificateOrdersClient struct {
 // NewCertificateOrdersClient creates an instance of the
 // CertificateOrdersClient client.
 func NewCertificateOrdersClient(subscriptionID string) CertificateOrdersClient {
-	return CertificateOrdersClient{New(subscriptionID)}
+	return NewCertificateOrdersClientWithBaseURI(DefaultBaseURI, subscriptionID)
+}
+
+// NewCertificateOrdersClientWithBaseURI creates an instance of the
+// CertificateOrdersClient client.
+func NewCertificateOrdersClientWithBaseURI(baseURI string, subscriptionID string) CertificateOrdersClient {
+	return CertificateOrdersClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // CreateOrUpdateCertificate sends the create or update certificate request.

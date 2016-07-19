@@ -36,7 +36,13 @@ type SecurityAlertPolicyClient struct {
 // NewSecurityAlertPolicyClient creates an instance of the
 // SecurityAlertPolicyClient client.
 func NewSecurityAlertPolicyClient(subscriptionID string) SecurityAlertPolicyClient {
-	return SecurityAlertPolicyClient{New(subscriptionID)}
+	return NewSecurityAlertPolicyClientWithBaseURI(DefaultBaseURI, subscriptionID)
+}
+
+// NewSecurityAlertPolicyClientWithBaseURI creates an instance of the
+// SecurityAlertPolicyClient client.
+func NewSecurityAlertPolicyClientWithBaseURI(baseURI string, subscriptionID string) SecurityAlertPolicyClient {
+	return SecurityAlertPolicyClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // CreateOrUpdate creates or updates an Azure SQL Server security alert

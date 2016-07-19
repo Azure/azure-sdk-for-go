@@ -39,7 +39,13 @@ type GlobalResourceGroupsClient struct {
 // NewGlobalResourceGroupsClient creates an instance of the
 // GlobalResourceGroupsClient client.
 func NewGlobalResourceGroupsClient(subscriptionID string) GlobalResourceGroupsClient {
-	return GlobalResourceGroupsClient{New(subscriptionID)}
+	return NewGlobalResourceGroupsClientWithBaseURI(DefaultBaseURI, subscriptionID)
+}
+
+// NewGlobalResourceGroupsClientWithBaseURI creates an instance of the
+// GlobalResourceGroupsClient client.
+func NewGlobalResourceGroupsClientWithBaseURI(baseURI string, subscriptionID string) GlobalResourceGroupsClient {
+	return GlobalResourceGroupsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // MoveResources sends the move resources request.

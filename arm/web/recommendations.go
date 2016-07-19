@@ -39,7 +39,13 @@ type RecommendationsClient struct {
 // NewRecommendationsClient creates an instance of the RecommendationsClient
 // client.
 func NewRecommendationsClient(subscriptionID string) RecommendationsClient {
-	return RecommendationsClient{New(subscriptionID)}
+	return NewRecommendationsClientWithBaseURI(DefaultBaseURI, subscriptionID)
+}
+
+// NewRecommendationsClientWithBaseURI creates an instance of the
+// RecommendationsClient client.
+func NewRecommendationsClientWithBaseURI(baseURI string, subscriptionID string) RecommendationsClient {
+	return RecommendationsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // GetRecommendationBySubscription sends the get recommendation by

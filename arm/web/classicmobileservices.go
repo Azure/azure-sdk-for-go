@@ -39,7 +39,13 @@ type ClassicMobileServicesClient struct {
 // NewClassicMobileServicesClient creates an instance of the
 // ClassicMobileServicesClient client.
 func NewClassicMobileServicesClient(subscriptionID string) ClassicMobileServicesClient {
-	return ClassicMobileServicesClient{New(subscriptionID)}
+	return NewClassicMobileServicesClientWithBaseURI(DefaultBaseURI, subscriptionID)
+}
+
+// NewClassicMobileServicesClientWithBaseURI creates an instance of the
+// ClassicMobileServicesClient client.
+func NewClassicMobileServicesClientWithBaseURI(baseURI string, subscriptionID string) ClassicMobileServicesClient {
+	return ClassicMobileServicesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // DeleteClassicMobileService sends the delete classic mobile service request.

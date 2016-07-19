@@ -39,7 +39,13 @@ type UsageOperationsClient struct {
 // NewUsageOperationsClient creates an instance of the UsageOperationsClient
 // client.
 func NewUsageOperationsClient(subscriptionID string) UsageOperationsClient {
-	return UsageOperationsClient{New(subscriptionID)}
+	return NewUsageOperationsClientWithBaseURI(DefaultBaseURI, subscriptionID)
+}
+
+// NewUsageOperationsClientWithBaseURI creates an instance of the
+// UsageOperationsClient client.
+func NewUsageOperationsClientWithBaseURI(baseURI string, subscriptionID string) UsageOperationsClient {
+	return UsageOperationsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // GetUsage sends the get usage request.

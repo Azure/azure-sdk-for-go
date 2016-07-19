@@ -32,7 +32,13 @@ type PatchSchedulesClient struct {
 // NewPatchSchedulesClient creates an instance of the PatchSchedulesClient
 // client.
 func NewPatchSchedulesClient(subscriptionID string) PatchSchedulesClient {
-	return PatchSchedulesClient{New(subscriptionID)}
+	return NewPatchSchedulesClientWithBaseURI(DefaultBaseURI, subscriptionID)
+}
+
+// NewPatchSchedulesClientWithBaseURI creates an instance of the
+// PatchSchedulesClient client.
+func NewPatchSchedulesClientWithBaseURI(baseURI string, subscriptionID string) PatchSchedulesClient {
+	return PatchSchedulesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // CreateOrUpdate create or replace the patching schedule for redis cache.

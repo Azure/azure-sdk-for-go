@@ -38,7 +38,12 @@ type SitesClient struct {
 
 // NewSitesClient creates an instance of the SitesClient client.
 func NewSitesClient(subscriptionID string) SitesClient {
-	return SitesClient{New(subscriptionID)}
+	return NewSitesClientWithBaseURI(DefaultBaseURI, subscriptionID)
+}
+
+// NewSitesClientWithBaseURI creates an instance of the SitesClient client.
+func NewSitesClientWithBaseURI(baseURI string, subscriptionID string) SitesClient {
+	return SitesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // AddSitePremierAddOn sends the add site premier add on request.

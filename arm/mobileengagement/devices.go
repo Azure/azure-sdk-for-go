@@ -31,7 +31,12 @@ type DevicesClient struct {
 
 // NewDevicesClient creates an instance of the DevicesClient client.
 func NewDevicesClient(subscriptionID string, resourceGroupName string, appCollection string, appName string) DevicesClient {
-	return DevicesClient{New(subscriptionID, resourceGroupName, appCollection, appName)}
+	return NewDevicesClientWithBaseURI(DefaultBaseURI, subscriptionID, resourceGroupName, appCollection, appName)
+}
+
+// NewDevicesClientWithBaseURI creates an instance of the DevicesClient client.
+func NewDevicesClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, appCollection string, appName string) DevicesClient {
+	return DevicesClient{NewWithBaseURI(baseURI, subscriptionID, resourceGroupName, appCollection, appName)}
 }
 
 // GetByDeviceID get the information associated to a device running an

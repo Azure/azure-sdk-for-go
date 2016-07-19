@@ -38,7 +38,12 @@ type GlobalClient struct {
 
 // NewGlobalClient creates an instance of the GlobalClient client.
 func NewGlobalClient(subscriptionID string) GlobalClient {
-	return GlobalClient{New(subscriptionID)}
+	return NewGlobalClientWithBaseURI(DefaultBaseURI, subscriptionID)
+}
+
+// NewGlobalClientWithBaseURI creates an instance of the GlobalClient client.
+func NewGlobalClientWithBaseURI(baseURI string, subscriptionID string) GlobalClient {
+	return GlobalClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // CheckNameAvailability sends the check name availability request.

@@ -2,6 +2,13 @@
 
 -----
 
+## `v3.1.0-beta`
+
+- Added a new arm/compute/containerservice (2016-03-30) package
+- Reintroduced NewxxClientWithBaseURI method.
+- Uses go-autorest version - v7.0.7.
+
+
 ## `v3.0.0-beta`
 
 This release brings the Go SDK ARM packages up-to-date with Azure ARM Swagger files for most

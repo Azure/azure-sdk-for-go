@@ -33,7 +33,13 @@ type RoleAssignmentsClient struct {
 // NewRoleAssignmentsClient creates an instance of the RoleAssignmentsClient
 // client.
 func NewRoleAssignmentsClient(subscriptionID string) RoleAssignmentsClient {
-	return RoleAssignmentsClient{New(subscriptionID)}
+	return NewRoleAssignmentsClientWithBaseURI(DefaultBaseURI, subscriptionID)
+}
+
+// NewRoleAssignmentsClientWithBaseURI creates an instance of the
+// RoleAssignmentsClient client.
+func NewRoleAssignmentsClientWithBaseURI(baseURI string, subscriptionID string) RoleAssignmentsClient {
+	return RoleAssignmentsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // Create create role assignment.

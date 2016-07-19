@@ -32,7 +32,13 @@ type CustomImageOperationsClient struct {
 // NewCustomImageOperationsClient creates an instance of the
 // CustomImageOperationsClient client.
 func NewCustomImageOperationsClient(subscriptionID string) CustomImageOperationsClient {
-	return CustomImageOperationsClient{New(subscriptionID)}
+	return NewCustomImageOperationsClientWithBaseURI(DefaultBaseURI, subscriptionID)
+}
+
+// NewCustomImageOperationsClientWithBaseURI creates an instance of the
+// CustomImageOperationsClient client.
+func NewCustomImageOperationsClientWithBaseURI(baseURI string, subscriptionID string) CustomImageOperationsClient {
+	return CustomImageOperationsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // CreateOrUpdateResource create or replace an existing custom image. This

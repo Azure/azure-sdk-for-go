@@ -32,7 +32,13 @@ type FormulaOperationsClient struct {
 // NewFormulaOperationsClient creates an instance of the
 // FormulaOperationsClient client.
 func NewFormulaOperationsClient(subscriptionID string) FormulaOperationsClient {
-	return FormulaOperationsClient{New(subscriptionID)}
+	return NewFormulaOperationsClientWithBaseURI(DefaultBaseURI, subscriptionID)
+}
+
+// NewFormulaOperationsClientWithBaseURI creates an instance of the
+// FormulaOperationsClient client.
+func NewFormulaOperationsClientWithBaseURI(baseURI string, subscriptionID string) FormulaOperationsClient {
+	return FormulaOperationsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // CreateOrUpdateResource create or replace an existing Formula. This

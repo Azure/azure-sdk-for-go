@@ -32,7 +32,12 @@ type IosClient struct {
 
 // NewIosClient creates an instance of the IosClient client.
 func NewIosClient() IosClient {
-	return IosClient{New()}
+	return NewIosClientWithBaseURI(DefaultBaseURI)
+}
+
+// NewIosClientWithBaseURI creates an instance of the IosClient client.
+func NewIosClientWithBaseURI(baseURI string) IosClient {
+	return IosClient{NewWithBaseURI(baseURI)}
 }
 
 // AddAppForMAMPolicy add app to an iOSMAMPolicy.

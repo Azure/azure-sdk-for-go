@@ -31,7 +31,12 @@ type AccountClient struct {
 
 // NewAccountClient creates an instance of the AccountClient client.
 func NewAccountClient(subscriptionID string) AccountClient {
-	return AccountClient{New(subscriptionID)}
+	return NewAccountClientWithBaseURI(DefaultBaseURI, subscriptionID)
+}
+
+// NewAccountClientWithBaseURI creates an instance of the AccountClient client.
+func NewAccountClientWithBaseURI(baseURI string, subscriptionID string) AccountClient {
+	return AccountClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // Create creates a new Batch account with the specified parameters. Existing

@@ -31,7 +31,13 @@ type ExportTasksClient struct {
 
 // NewExportTasksClient creates an instance of the ExportTasksClient client.
 func NewExportTasksClient(subscriptionID string, resourceGroupName string, appCollection string, appName string) ExportTasksClient {
-	return ExportTasksClient{New(subscriptionID, resourceGroupName, appCollection, appName)}
+	return NewExportTasksClientWithBaseURI(DefaultBaseURI, subscriptionID, resourceGroupName, appCollection, appName)
+}
+
+// NewExportTasksClientWithBaseURI creates an instance of the
+// ExportTasksClient client.
+func NewExportTasksClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, appCollection string, appName string) ExportTasksClient {
+	return ExportTasksClient{NewWithBaseURI(baseURI, subscriptionID, resourceGroupName, appCollection, appName)}
 }
 
 // CreateActivitiesTask creates a task to export activities.

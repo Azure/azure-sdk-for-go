@@ -32,7 +32,13 @@ type LabOperationsClient struct {
 // NewLabOperationsClient creates an instance of the LabOperationsClient
 // client.
 func NewLabOperationsClient(subscriptionID string) LabOperationsClient {
-	return LabOperationsClient{New(subscriptionID)}
+	return NewLabOperationsClientWithBaseURI(DefaultBaseURI, subscriptionID)
+}
+
+// NewLabOperationsClientWithBaseURI creates an instance of the
+// LabOperationsClient client.
+func NewLabOperationsClientWithBaseURI(baseURI string, subscriptionID string) LabOperationsClient {
+	return LabOperationsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // CreateEnvironment create virtual machines in a Lab. This operation can take

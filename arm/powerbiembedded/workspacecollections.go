@@ -33,7 +33,13 @@ type WorkspaceCollectionsClient struct {
 // NewWorkspaceCollectionsClient creates an instance of the
 // WorkspaceCollectionsClient client.
 func NewWorkspaceCollectionsClient(subscriptionID string) WorkspaceCollectionsClient {
-	return WorkspaceCollectionsClient{New(subscriptionID)}
+	return NewWorkspaceCollectionsClientWithBaseURI(DefaultBaseURI, subscriptionID)
+}
+
+// NewWorkspaceCollectionsClientWithBaseURI creates an instance of the
+// WorkspaceCollectionsClient client.
+func NewWorkspaceCollectionsClientWithBaseURI(baseURI string, subscriptionID string) WorkspaceCollectionsClient {
+	return WorkspaceCollectionsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // CheckNameAvailability check that the specified Power BI Workspace

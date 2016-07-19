@@ -32,7 +32,13 @@ type ServicesClient struct {
 
 // NewServicesClient creates an instance of the ServicesClient client.
 func NewServicesClient(subscriptionID string) ServicesClient {
-	return ServicesClient{New(subscriptionID)}
+	return NewServicesClientWithBaseURI(DefaultBaseURI, subscriptionID)
+}
+
+// NewServicesClientWithBaseURI creates an instance of the ServicesClient
+// client.
+func NewServicesClientWithBaseURI(baseURI string, subscriptionID string) ServicesClient {
+	return ServicesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // CreateOrUpdate creates or updates a Search service in the given resource

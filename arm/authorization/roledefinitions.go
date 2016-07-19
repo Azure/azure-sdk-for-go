@@ -33,7 +33,13 @@ type RoleDefinitionsClient struct {
 // NewRoleDefinitionsClient creates an instance of the RoleDefinitionsClient
 // client.
 func NewRoleDefinitionsClient(subscriptionID string) RoleDefinitionsClient {
-	return RoleDefinitionsClient{New(subscriptionID)}
+	return NewRoleDefinitionsClientWithBaseURI(DefaultBaseURI, subscriptionID)
+}
+
+// NewRoleDefinitionsClientWithBaseURI creates an instance of the
+// RoleDefinitionsClient client.
+func NewRoleDefinitionsClientWithBaseURI(baseURI string, subscriptionID string) RoleDefinitionsClient {
+	return RoleDefinitionsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // CreateOrUpdate creates or updates a role definition.

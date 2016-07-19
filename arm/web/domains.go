@@ -38,7 +38,12 @@ type DomainsClient struct {
 
 // NewDomainsClient creates an instance of the DomainsClient client.
 func NewDomainsClient(subscriptionID string) DomainsClient {
-	return DomainsClient{New(subscriptionID)}
+	return NewDomainsClientWithBaseURI(DefaultBaseURI, subscriptionID)
+}
+
+// NewDomainsClientWithBaseURI creates an instance of the DomainsClient client.
+func NewDomainsClientWithBaseURI(baseURI string, subscriptionID string) DomainsClient {
+	return DomainsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // CreateOrUpdateDomain sends the create or update domain request.

@@ -33,7 +33,13 @@ type ManagementLocksClient struct {
 // NewManagementLocksClient creates an instance of the ManagementLocksClient
 // client.
 func NewManagementLocksClient(subscriptionID string) ManagementLocksClient {
-	return ManagementLocksClient{New(subscriptionID)}
+	return NewManagementLocksClientWithBaseURI(DefaultBaseURI, subscriptionID)
+}
+
+// NewManagementLocksClientWithBaseURI creates an instance of the
+// ManagementLocksClient client.
+func NewManagementLocksClientWithBaseURI(baseURI string, subscriptionID string) ManagementLocksClient {
+	return ManagementLocksClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // CreateOrUpdateAtResourceGroupLevel create or update a management lock at

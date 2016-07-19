@@ -32,7 +32,13 @@ type ScheduleOperationsClient struct {
 // NewScheduleOperationsClient creates an instance of the
 // ScheduleOperationsClient client.
 func NewScheduleOperationsClient(subscriptionID string) ScheduleOperationsClient {
-	return ScheduleOperationsClient{New(subscriptionID)}
+	return NewScheduleOperationsClientWithBaseURI(DefaultBaseURI, subscriptionID)
+}
+
+// NewScheduleOperationsClientWithBaseURI creates an instance of the
+// ScheduleOperationsClient client.
+func NewScheduleOperationsClientWithBaseURI(baseURI string, subscriptionID string) ScheduleOperationsClient {
+	return ScheduleOperationsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // CreateOrUpdateResource create or replace an existing schedule.

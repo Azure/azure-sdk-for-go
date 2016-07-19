@@ -39,7 +39,13 @@ type GlobalDomainRegistrationClient struct {
 // NewGlobalDomainRegistrationClient creates an instance of the
 // GlobalDomainRegistrationClient client.
 func NewGlobalDomainRegistrationClient(subscriptionID string) GlobalDomainRegistrationClient {
-	return GlobalDomainRegistrationClient{New(subscriptionID)}
+	return NewGlobalDomainRegistrationClientWithBaseURI(DefaultBaseURI, subscriptionID)
+}
+
+// NewGlobalDomainRegistrationClientWithBaseURI creates an instance of the
+// GlobalDomainRegistrationClient client.
+func NewGlobalDomainRegistrationClientWithBaseURI(baseURI string, subscriptionID string) GlobalDomainRegistrationClient {
+	return GlobalDomainRegistrationClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // CheckDomainAvailability sends the check domain availability request.

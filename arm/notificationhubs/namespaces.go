@@ -31,7 +31,13 @@ type NamespacesClient struct {
 
 // NewNamespacesClient creates an instance of the NamespacesClient client.
 func NewNamespacesClient(subscriptionID string) NamespacesClient {
-	return NamespacesClient{New(subscriptionID)}
+	return NewNamespacesClientWithBaseURI(DefaultBaseURI, subscriptionID)
+}
+
+// NewNamespacesClientWithBaseURI creates an instance of the NamespacesClient
+// client.
+func NewNamespacesClientWithBaseURI(baseURI string, subscriptionID string) NamespacesClient {
+	return NamespacesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // CheckAvailability checks the availability of the given service namespace

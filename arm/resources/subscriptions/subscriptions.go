@@ -32,7 +32,12 @@ type Client struct {
 
 // NewClient creates an instance of the Client client.
 func NewClient() Client {
-	return Client{New()}
+	return NewClientWithBaseURI(DefaultBaseURI)
+}
+
+// NewClientWithBaseURI creates an instance of the Client client.
+func NewClientWithBaseURI(baseURI string) Client {
+	return Client{NewWithBaseURI(baseURI)}
 }
 
 // Get gets details about particular subscription.

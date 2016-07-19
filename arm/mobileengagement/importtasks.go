@@ -31,7 +31,13 @@ type ImportTasksClient struct {
 
 // NewImportTasksClient creates an instance of the ImportTasksClient client.
 func NewImportTasksClient(subscriptionID string, resourceGroupName string, appCollection string, appName string) ImportTasksClient {
-	return ImportTasksClient{New(subscriptionID, resourceGroupName, appCollection, appName)}
+	return NewImportTasksClientWithBaseURI(DefaultBaseURI, subscriptionID, resourceGroupName, appCollection, appName)
+}
+
+// NewImportTasksClientWithBaseURI creates an instance of the
+// ImportTasksClient client.
+func NewImportTasksClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, appCollection string, appName string) ImportTasksClient {
+	return ImportTasksClient{NewWithBaseURI(baseURI, subscriptionID, resourceGroupName, appCollection, appName)}
 }
 
 // Create creates a job to import the specified data to a storageUrl.

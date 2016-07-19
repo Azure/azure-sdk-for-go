@@ -33,7 +33,13 @@ type SupportedPlatformsClient struct {
 // NewSupportedPlatformsClient creates an instance of the
 // SupportedPlatformsClient client.
 func NewSupportedPlatformsClient(subscriptionID string, resourceGroupName string, appCollection string, appName string) SupportedPlatformsClient {
-	return SupportedPlatformsClient{New(subscriptionID, resourceGroupName, appCollection, appName)}
+	return NewSupportedPlatformsClientWithBaseURI(DefaultBaseURI, subscriptionID, resourceGroupName, appCollection, appName)
+}
+
+// NewSupportedPlatformsClientWithBaseURI creates an instance of the
+// SupportedPlatformsClient client.
+func NewSupportedPlatformsClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, appCollection string, appName string) SupportedPlatformsClient {
+	return SupportedPlatformsClient{NewWithBaseURI(baseURI, subscriptionID, resourceGroupName, appCollection, appName)}
 }
 
 // List lists supported platforms for Engagement applications.

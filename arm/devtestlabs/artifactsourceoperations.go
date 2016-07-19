@@ -32,7 +32,13 @@ type ArtifactSourceOperationsClient struct {
 // NewArtifactSourceOperationsClient creates an instance of the
 // ArtifactSourceOperationsClient client.
 func NewArtifactSourceOperationsClient(subscriptionID string) ArtifactSourceOperationsClient {
-	return ArtifactSourceOperationsClient{New(subscriptionID)}
+	return NewArtifactSourceOperationsClientWithBaseURI(DefaultBaseURI, subscriptionID)
+}
+
+// NewArtifactSourceOperationsClientWithBaseURI creates an instance of the
+// ArtifactSourceOperationsClient client.
+func NewArtifactSourceOperationsClientWithBaseURI(baseURI string, subscriptionID string) ArtifactSourceOperationsClient {
+	return ArtifactSourceOperationsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // CreateOrUpdateResource create or replace an existing artifact source.

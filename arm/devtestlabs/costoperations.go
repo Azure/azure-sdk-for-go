@@ -32,7 +32,13 @@ type CostOperationsClient struct {
 // NewCostOperationsClient creates an instance of the CostOperationsClient
 // client.
 func NewCostOperationsClient(subscriptionID string) CostOperationsClient {
-	return CostOperationsClient{New(subscriptionID)}
+	return NewCostOperationsClientWithBaseURI(DefaultBaseURI, subscriptionID)
+}
+
+// NewCostOperationsClientWithBaseURI creates an instance of the
+// CostOperationsClient client.
+func NewCostOperationsClientWithBaseURI(baseURI string, subscriptionID string) CostOperationsClient {
+	return CostOperationsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // GetResource get cost.

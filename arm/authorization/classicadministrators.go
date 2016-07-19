@@ -33,7 +33,13 @@ type ClassicAdministratorsClient struct {
 // NewClassicAdministratorsClient creates an instance of the
 // ClassicAdministratorsClient client.
 func NewClassicAdministratorsClient(subscriptionID string) ClassicAdministratorsClient {
-	return ClassicAdministratorsClient{New(subscriptionID)}
+	return NewClassicAdministratorsClientWithBaseURI(DefaultBaseURI, subscriptionID)
+}
+
+// NewClassicAdministratorsClientWithBaseURI creates an instance of the
+// ClassicAdministratorsClient client.
+func NewClassicAdministratorsClientWithBaseURI(baseURI string, subscriptionID string) ClassicAdministratorsClient {
+	return ClassicAdministratorsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // List gets a list of classic administrators for the subscription.

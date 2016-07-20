@@ -474,7 +474,6 @@ func (b BlobStorageClient) ListBlobs(container string, params ListBlobsParameter
 func (b BlobStorageClient) BlobExists(container, name string) (bool, error) {
 	verb := "HEAD"
 	uri := b.client.getEndpoint(blobServiceName, pathForBlob(container, name), url.Values{})
-
 	headers := b.client.getStandardHeaders()
 	resp, err := b.client.exec(verb, uri, headers, nil)
 	if resp != nil {
@@ -1033,9 +1032,21 @@ func (b BlobStorageClient) GetBlobSASURI(container, name string, expiry time.Tim
 		blobURL           = b.GetBlobURL(container, name)
 	)
 	canonicalizedResource, err := b.client.buildCanonicalizedResource(blobURL)
+
 	if err != nil {
 		return "", err
 	}
+
+	// "The canonicalizedresouce portion of the string is a canonical path to the signed resource.
+	// It must include the service name (blob, table, queue or file) for version 2015-02-21 or
+	// later, the storage account name, and the resource name, and must be URL-decoded.
+	// -- https://msdn.microsoft.com/en-us/library/azure/dn140255.aspx
+
+	canonicalizedResource, err = url.QueryUnescape(canonicalizedResource)
+	if err != nil {
+		return "", err
+	}
+
 	signedExpiry := expiry.UTC().Format(time.RFC3339)
 	signedResource := "b"
 

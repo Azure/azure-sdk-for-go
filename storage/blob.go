@@ -590,6 +590,7 @@ func (b BlobStorageClient) GetBlobProperties(container, name string) (*BlobPrope
 		ContentMD5:            resp.headers.Get("Content-MD5"),
 		ContentLength:         contentLength,
 		ContentEncoding:       resp.headers.Get("Content-Encoding"),
+		ContentType:           resp.headers.Get("Content-Type"),
 		SequenceNumber:        sequenceNum,
 		CopyCompletionTime:    resp.headers.Get("x-ms-copy-completion-time"),
 		CopyStatusDescription: resp.headers.Get("x-ms-copy-status-description"),

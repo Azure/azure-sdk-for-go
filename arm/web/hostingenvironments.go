@@ -39,7 +39,13 @@ type HostingEnvironmentsClient struct {
 // NewHostingEnvironmentsClient creates an instance of the
 // HostingEnvironmentsClient client.
 func NewHostingEnvironmentsClient(subscriptionID string) HostingEnvironmentsClient {
-	return HostingEnvironmentsClient{New(subscriptionID)}
+	return NewHostingEnvironmentsClientWithBaseURI(DefaultBaseURI, subscriptionID)
+}
+
+// NewHostingEnvironmentsClientWithBaseURI creates an instance of the
+// HostingEnvironmentsClient client.
+func NewHostingEnvironmentsClientWithBaseURI(baseURI string, subscriptionID string) HostingEnvironmentsClient {
+	return HostingEnvironmentsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // CreateOrUpdateHostingEnvironment sends the create or update hosting

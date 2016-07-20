@@ -31,7 +31,13 @@ type CampaignsClient struct {
 
 // NewCampaignsClient creates an instance of the CampaignsClient client.
 func NewCampaignsClient(subscriptionID string, resourceGroupName string, appCollection string, appName string) CampaignsClient {
-	return CampaignsClient{New(subscriptionID, resourceGroupName, appCollection, appName)}
+	return NewCampaignsClientWithBaseURI(DefaultBaseURI, subscriptionID, resourceGroupName, appCollection, appName)
+}
+
+// NewCampaignsClientWithBaseURI creates an instance of the CampaignsClient
+// client.
+func NewCampaignsClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, appCollection string, appName string) CampaignsClient {
+	return CampaignsClient{NewWithBaseURI(baseURI, subscriptionID, resourceGroupName, appCollection, appName)}
 }
 
 // Activate activate a campaign previously created by a call to Create

@@ -38,7 +38,13 @@ type ServerFarmsClient struct {
 
 // NewServerFarmsClient creates an instance of the ServerFarmsClient client.
 func NewServerFarmsClient(subscriptionID string) ServerFarmsClient {
-	return ServerFarmsClient{New(subscriptionID)}
+	return NewServerFarmsClientWithBaseURI(DefaultBaseURI, subscriptionID)
+}
+
+// NewServerFarmsClientWithBaseURI creates an instance of the
+// ServerFarmsClient client.
+func NewServerFarmsClientWithBaseURI(baseURI string, subscriptionID string) ServerFarmsClient {
+	return ServerFarmsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // CreateOrUpdateServerFarm sends the create or update server farm request.

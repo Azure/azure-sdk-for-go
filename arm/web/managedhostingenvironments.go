@@ -39,7 +39,13 @@ type ManagedHostingEnvironmentsClient struct {
 // NewManagedHostingEnvironmentsClient creates an instance of the
 // ManagedHostingEnvironmentsClient client.
 func NewManagedHostingEnvironmentsClient(subscriptionID string) ManagedHostingEnvironmentsClient {
-	return ManagedHostingEnvironmentsClient{New(subscriptionID)}
+	return NewManagedHostingEnvironmentsClientWithBaseURI(DefaultBaseURI, subscriptionID)
+}
+
+// NewManagedHostingEnvironmentsClientWithBaseURI creates an instance of the
+// ManagedHostingEnvironmentsClient client.
+func NewManagedHostingEnvironmentsClientWithBaseURI(baseURI string, subscriptionID string) ManagedHostingEnvironmentsClient {
+	return ManagedHostingEnvironmentsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // CreateOrUpdateManagedHostingEnvironment sends the create or update managed

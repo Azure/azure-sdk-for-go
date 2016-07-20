@@ -32,7 +32,13 @@ type VirtualNetworkOperationsClient struct {
 // NewVirtualNetworkOperationsClient creates an instance of the
 // VirtualNetworkOperationsClient client.
 func NewVirtualNetworkOperationsClient(subscriptionID string) VirtualNetworkOperationsClient {
-	return VirtualNetworkOperationsClient{New(subscriptionID)}
+	return NewVirtualNetworkOperationsClientWithBaseURI(DefaultBaseURI, subscriptionID)
+}
+
+// NewVirtualNetworkOperationsClientWithBaseURI creates an instance of the
+// VirtualNetworkOperationsClient client.
+func NewVirtualNetworkOperationsClientWithBaseURI(baseURI string, subscriptionID string) VirtualNetworkOperationsClient {
+	return VirtualNetworkOperationsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // CreateOrUpdateResource create or replace an existing virtual network. This

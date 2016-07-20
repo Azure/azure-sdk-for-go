@@ -33,7 +33,13 @@ type ProviderOperationsMetadataOperationsClient struct {
 // NewProviderOperationsMetadataOperationsClient creates an instance of the
 // ProviderOperationsMetadataOperationsClient client.
 func NewProviderOperationsMetadataOperationsClient(subscriptionID string) ProviderOperationsMetadataOperationsClient {
-	return ProviderOperationsMetadataOperationsClient{New(subscriptionID)}
+	return NewProviderOperationsMetadataOperationsClientWithBaseURI(DefaultBaseURI, subscriptionID)
+}
+
+// NewProviderOperationsMetadataOperationsClientWithBaseURI creates an
+// instance of the ProviderOperationsMetadataOperationsClient client.
+func NewProviderOperationsMetadataOperationsClientWithBaseURI(baseURI string, subscriptionID string) ProviderOperationsMetadataOperationsClient {
+	return ProviderOperationsMetadataOperationsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // Get gets provider operations metadata

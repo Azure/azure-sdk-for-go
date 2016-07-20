@@ -32,7 +32,13 @@ type WorkspacesClient struct {
 
 // NewWorkspacesClient creates an instance of the WorkspacesClient client.
 func NewWorkspacesClient(subscriptionID string) WorkspacesClient {
-	return WorkspacesClient{New(subscriptionID)}
+	return NewWorkspacesClientWithBaseURI(DefaultBaseURI, subscriptionID)
+}
+
+// NewWorkspacesClientWithBaseURI creates an instance of the WorkspacesClient
+// client.
+func NewWorkspacesClientWithBaseURI(baseURI string, subscriptionID string) WorkspacesClient {
+	return WorkspacesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // List retrieves all existing Power BI Workspaces in the specified Workspace

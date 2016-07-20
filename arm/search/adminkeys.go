@@ -32,7 +32,13 @@ type AdminKeysClient struct {
 
 // NewAdminKeysClient creates an instance of the AdminKeysClient client.
 func NewAdminKeysClient(subscriptionID string) AdminKeysClient {
-	return AdminKeysClient{New(subscriptionID)}
+	return NewAdminKeysClientWithBaseURI(DefaultBaseURI, subscriptionID)
+}
+
+// NewAdminKeysClientWithBaseURI creates an instance of the AdminKeysClient
+// client.
+func NewAdminKeysClientWithBaseURI(baseURI string, subscriptionID string) AdminKeysClient {
+	return AdminKeysClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // List returns the primary and secondary API keys for the given Azure Search

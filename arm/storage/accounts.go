@@ -31,7 +31,13 @@ type AccountsClient struct {
 
 // NewAccountsClient creates an instance of the AccountsClient client.
 func NewAccountsClient(subscriptionID string) AccountsClient {
-	return AccountsClient{New(subscriptionID)}
+	return NewAccountsClientWithBaseURI(DefaultBaseURI, subscriptionID)
+}
+
+// NewAccountsClientWithBaseURI creates an instance of the AccountsClient
+// client.
+func NewAccountsClientWithBaseURI(baseURI string, subscriptionID string) AccountsClient {
+	return AccountsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // CheckNameAvailability checks that account name is valid and is not in use.

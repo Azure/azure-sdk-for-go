@@ -31,7 +31,12 @@ type ZonesClient struct {
 
 // NewZonesClient creates an instance of the ZonesClient client.
 func NewZonesClient(subscriptionID string) ZonesClient {
-	return ZonesClient{New(subscriptionID)}
+	return NewZonesClientWithBaseURI(DefaultBaseURI, subscriptionID)
+}
+
+// NewZonesClientWithBaseURI creates an instance of the ZonesClient client.
+func NewZonesClientWithBaseURI(baseURI string, subscriptionID string) ZonesClient {
+	return ZonesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // CreateOrUpdate creates or Updates a DNS zone within a resource group.

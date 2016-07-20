@@ -32,7 +32,13 @@ type DefinitionsClient struct {
 
 // NewDefinitionsClient creates an instance of the DefinitionsClient client.
 func NewDefinitionsClient(subscriptionID string) DefinitionsClient {
-	return DefinitionsClient{New(subscriptionID)}
+	return NewDefinitionsClientWithBaseURI(DefaultBaseURI, subscriptionID)
+}
+
+// NewDefinitionsClientWithBaseURI creates an instance of the
+// DefinitionsClient client.
+func NewDefinitionsClientWithBaseURI(baseURI string, subscriptionID string) DefinitionsClient {
+	return DefinitionsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // CreateOrUpdate create or update a policy definition.

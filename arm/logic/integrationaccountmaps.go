@@ -33,7 +33,13 @@ type IntegrationAccountMapsClient struct {
 // NewIntegrationAccountMapsClient creates an instance of the
 // IntegrationAccountMapsClient client.
 func NewIntegrationAccountMapsClient(subscriptionID string) IntegrationAccountMapsClient {
-	return IntegrationAccountMapsClient{New(subscriptionID)}
+	return NewIntegrationAccountMapsClientWithBaseURI(DefaultBaseURI, subscriptionID)
+}
+
+// NewIntegrationAccountMapsClientWithBaseURI creates an instance of the
+// IntegrationAccountMapsClient client.
+func NewIntegrationAccountMapsClientWithBaseURI(baseURI string, subscriptionID string) IntegrationAccountMapsClient {
+	return IntegrationAccountMapsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // CreateOrUpdate creates or updates an integration account map.

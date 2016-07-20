@@ -32,7 +32,13 @@ type AppCollectionsClient struct {
 // NewAppCollectionsClient creates an instance of the AppCollectionsClient
 // client.
 func NewAppCollectionsClient(subscriptionID string, resourceGroupName string, appCollection string, appName string) AppCollectionsClient {
-	return AppCollectionsClient{New(subscriptionID, resourceGroupName, appCollection, appName)}
+	return NewAppCollectionsClientWithBaseURI(DefaultBaseURI, subscriptionID, resourceGroupName, appCollection, appName)
+}
+
+// NewAppCollectionsClientWithBaseURI creates an instance of the
+// AppCollectionsClient client.
+func NewAppCollectionsClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, appCollection string, appName string) AppCollectionsClient {
+	return AppCollectionsClient{NewWithBaseURI(baseURI, subscriptionID, resourceGroupName, appCollection, appName)}
 }
 
 // CheckNameAvailability checks availability of an app collection name in the

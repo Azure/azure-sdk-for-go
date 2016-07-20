@@ -32,7 +32,13 @@ type PermissionsClient struct {
 
 // NewPermissionsClient creates an instance of the PermissionsClient client.
 func NewPermissionsClient(subscriptionID string) PermissionsClient {
-	return PermissionsClient{New(subscriptionID)}
+	return NewPermissionsClientWithBaseURI(DefaultBaseURI, subscriptionID)
+}
+
+// NewPermissionsClientWithBaseURI creates an instance of the
+// PermissionsClient client.
+func NewPermissionsClientWithBaseURI(baseURI string, subscriptionID string) PermissionsClient {
+	return PermissionsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // ListForResource gets a resource permissions.

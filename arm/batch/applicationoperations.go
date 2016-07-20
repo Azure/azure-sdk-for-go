@@ -33,7 +33,13 @@ type ApplicationOperationsClient struct {
 // NewApplicationOperationsClient creates an instance of the
 // ApplicationOperationsClient client.
 func NewApplicationOperationsClient(subscriptionID string) ApplicationOperationsClient {
-	return ApplicationOperationsClient{New(subscriptionID)}
+	return NewApplicationOperationsClientWithBaseURI(DefaultBaseURI, subscriptionID)
+}
+
+// NewApplicationOperationsClientWithBaseURI creates an instance of the
+// ApplicationOperationsClient client.
+func NewApplicationOperationsClientWithBaseURI(baseURI string, subscriptionID string) ApplicationOperationsClient {
+	return ApplicationOperationsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // ActivateApplicationPackage activates the specified application package.

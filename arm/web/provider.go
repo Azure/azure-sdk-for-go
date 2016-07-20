@@ -38,7 +38,13 @@ type ProviderClient struct {
 
 // NewProviderClient creates an instance of the ProviderClient client.
 func NewProviderClient(subscriptionID string) ProviderClient {
-	return ProviderClient{New(subscriptionID)}
+	return NewProviderClientWithBaseURI(DefaultBaseURI, subscriptionID)
+}
+
+// NewProviderClientWithBaseURI creates an instance of the ProviderClient
+// client.
+func NewProviderClientWithBaseURI(baseURI string, subscriptionID string) ProviderClient {
+	return ProviderClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // GetPublishingUser sends the get publishing user request.

@@ -32,7 +32,13 @@ type RecordSetsClient struct {
 
 // NewRecordSetsClient creates an instance of the RecordSetsClient client.
 func NewRecordSetsClient(subscriptionID string) RecordSetsClient {
-	return RecordSetsClient{New(subscriptionID)}
+	return NewRecordSetsClientWithBaseURI(DefaultBaseURI, subscriptionID)
+}
+
+// NewRecordSetsClientWithBaseURI creates an instance of the RecordSetsClient
+// client.
+func NewRecordSetsClientWithBaseURI(baseURI string, subscriptionID string) RecordSetsClient {
+	return RecordSetsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // CreateOrUpdate creates or Updates a RecordSet within a DNS zone.

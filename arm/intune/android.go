@@ -32,7 +32,12 @@ type AndroidClient struct {
 
 // NewAndroidClient creates an instance of the AndroidClient client.
 func NewAndroidClient() AndroidClient {
-	return AndroidClient{New()}
+	return NewAndroidClientWithBaseURI(DefaultBaseURI)
+}
+
+// NewAndroidClientWithBaseURI creates an instance of the AndroidClient client.
+func NewAndroidClientWithBaseURI(baseURI string) AndroidClient {
+	return AndroidClient{NewWithBaseURI(baseURI)}
 }
 
 // AddAppForMAMPolicy add app to an AndroidMAMPolicy.

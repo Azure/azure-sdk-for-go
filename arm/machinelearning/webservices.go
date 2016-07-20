@@ -36,7 +36,13 @@ type WebServicesClient struct {
 
 // NewWebServicesClient creates an instance of the WebServicesClient client.
 func NewWebServicesClient(subscriptionID string) WebServicesClient {
-	return WebServicesClient{New(subscriptionID)}
+	return NewWebServicesClientWithBaseURI(DefaultBaseURI, subscriptionID)
+}
+
+// NewWebServicesClientWithBaseURI creates an instance of the
+// WebServicesClient client.
+func NewWebServicesClientWithBaseURI(baseURI string, subscriptionID string) WebServicesClient {
+	return WebServicesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // CreateOrUpdate creates or updates a new Azure ML web service or update an

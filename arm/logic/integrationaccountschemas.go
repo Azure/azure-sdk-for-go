@@ -33,7 +33,13 @@ type IntegrationAccountSchemasClient struct {
 // NewIntegrationAccountSchemasClient creates an instance of the
 // IntegrationAccountSchemasClient client.
 func NewIntegrationAccountSchemasClient(subscriptionID string) IntegrationAccountSchemasClient {
-	return IntegrationAccountSchemasClient{New(subscriptionID)}
+	return NewIntegrationAccountSchemasClientWithBaseURI(DefaultBaseURI, subscriptionID)
+}
+
+// NewIntegrationAccountSchemasClientWithBaseURI creates an instance of the
+// IntegrationAccountSchemasClient client.
+func NewIntegrationAccountSchemasClientWithBaseURI(baseURI string, subscriptionID string) IntegrationAccountSchemasClient {
+	return IntegrationAccountSchemasClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // CreateOrUpdate creates or updates an integration account schema.

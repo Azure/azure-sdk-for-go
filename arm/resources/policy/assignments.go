@@ -32,7 +32,13 @@ type AssignmentsClient struct {
 
 // NewAssignmentsClient creates an instance of the AssignmentsClient client.
 func NewAssignmentsClient(subscriptionID string) AssignmentsClient {
-	return AssignmentsClient{New(subscriptionID)}
+	return NewAssignmentsClientWithBaseURI(DefaultBaseURI, subscriptionID)
+}
+
+// NewAssignmentsClientWithBaseURI creates an instance of the
+// AssignmentsClient client.
+func NewAssignmentsClientWithBaseURI(baseURI string, subscriptionID string) AssignmentsClient {
+	return AssignmentsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // Create create policy assignment.

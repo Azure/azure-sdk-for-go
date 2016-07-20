@@ -33,7 +33,13 @@ type IntegrationAccountCertificatesClient struct {
 // NewIntegrationAccountCertificatesClient creates an instance of the
 // IntegrationAccountCertificatesClient client.
 func NewIntegrationAccountCertificatesClient(subscriptionID string) IntegrationAccountCertificatesClient {
-	return IntegrationAccountCertificatesClient{New(subscriptionID)}
+	return NewIntegrationAccountCertificatesClientWithBaseURI(DefaultBaseURI, subscriptionID)
+}
+
+// NewIntegrationAccountCertificatesClientWithBaseURI creates an instance of
+// the IntegrationAccountCertificatesClient client.
+func NewIntegrationAccountCertificatesClientWithBaseURI(baseURI string, subscriptionID string) IntegrationAccountCertificatesClient {
+	return IntegrationAccountCertificatesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // CreateOrUpdate creates or updates an integration account certificate.

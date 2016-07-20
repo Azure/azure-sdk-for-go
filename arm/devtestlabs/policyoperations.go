@@ -32,7 +32,13 @@ type PolicyOperationsClient struct {
 // NewPolicyOperationsClient creates an instance of the PolicyOperationsClient
 // client.
 func NewPolicyOperationsClient(subscriptionID string) PolicyOperationsClient {
-	return PolicyOperationsClient{New(subscriptionID)}
+	return NewPolicyOperationsClientWithBaseURI(DefaultBaseURI, subscriptionID)
+}
+
+// NewPolicyOperationsClientWithBaseURI creates an instance of the
+// PolicyOperationsClient client.
+func NewPolicyOperationsClientWithBaseURI(baseURI string, subscriptionID string) PolicyOperationsClient {
+	return PolicyOperationsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // CreateOrUpdateResource create or replace an existing policy.

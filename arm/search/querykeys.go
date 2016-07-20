@@ -32,7 +32,13 @@ type QueryKeysClient struct {
 
 // NewQueryKeysClient creates an instance of the QueryKeysClient client.
 func NewQueryKeysClient(subscriptionID string) QueryKeysClient {
-	return QueryKeysClient{New(subscriptionID)}
+	return NewQueryKeysClientWithBaseURI(DefaultBaseURI, subscriptionID)
+}
+
+// NewQueryKeysClientWithBaseURI creates an instance of the QueryKeysClient
+// client.
+func NewQueryKeysClientWithBaseURI(baseURI string, subscriptionID string) QueryKeysClient {
+	return QueryKeysClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // List returns the list of query API keys for the given Azure Search service.

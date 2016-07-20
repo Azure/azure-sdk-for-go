@@ -32,7 +32,12 @@ type TenantsClient struct {
 
 // NewTenantsClient creates an instance of the TenantsClient client.
 func NewTenantsClient() TenantsClient {
-	return TenantsClient{New()}
+	return NewTenantsClientWithBaseURI(DefaultBaseURI)
+}
+
+// NewTenantsClientWithBaseURI creates an instance of the TenantsClient client.
+func NewTenantsClientWithBaseURI(baseURI string) TenantsClient {
+	return TenantsClient{NewWithBaseURI(baseURI)}
 }
 
 // List gets a list of the tenantIds.

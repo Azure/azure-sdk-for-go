@@ -32,7 +32,13 @@ type VirtualMachineClient struct {
 // NewVirtualMachineClient creates an instance of the VirtualMachineClient
 // client.
 func NewVirtualMachineClient(subscriptionID string) VirtualMachineClient {
-	return VirtualMachineClient{New(subscriptionID)}
+	return NewVirtualMachineClientWithBaseURI(DefaultBaseURI, subscriptionID)
+}
+
+// NewVirtualMachineClientWithBaseURI creates an instance of the
+// VirtualMachineClient client.
+func NewVirtualMachineClientWithBaseURI(baseURI string, subscriptionID string) VirtualMachineClient {
+	return VirtualMachineClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // ApplyArtifacts apply artifacts to Lab VM. This operation can take a while

@@ -32,7 +32,13 @@ type SubscriptionClient struct {
 
 // NewSubscriptionClient creates an instance of the SubscriptionClient client.
 func NewSubscriptionClient(subscriptionID string) SubscriptionClient {
-	return SubscriptionClient{New(subscriptionID)}
+	return NewSubscriptionClientWithBaseURI(DefaultBaseURI, subscriptionID)
+}
+
+// NewSubscriptionClientWithBaseURI creates an instance of the
+// SubscriptionClient client.
+func NewSubscriptionClientWithBaseURI(baseURI string, subscriptionID string) SubscriptionClient {
+	return SubscriptionClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // GetSubscriptionQuotas gets the Batch service quotas for the specified

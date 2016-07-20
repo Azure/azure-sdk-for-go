@@ -39,7 +39,13 @@ type TopLevelDomainsClient struct {
 // NewTopLevelDomainsClient creates an instance of the TopLevelDomainsClient
 // client.
 func NewTopLevelDomainsClient(subscriptionID string) TopLevelDomainsClient {
-	return TopLevelDomainsClient{New(subscriptionID)}
+	return NewTopLevelDomainsClientWithBaseURI(DefaultBaseURI, subscriptionID)
+}
+
+// NewTopLevelDomainsClientWithBaseURI creates an instance of the
+// TopLevelDomainsClient client.
+func NewTopLevelDomainsClientWithBaseURI(baseURI string, subscriptionID string) TopLevelDomainsClient {
+	return TopLevelDomainsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // GetGetTopLevelDomains sends the get get top level domains request.

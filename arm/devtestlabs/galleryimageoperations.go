@@ -32,7 +32,13 @@ type GalleryImageOperationsClient struct {
 // NewGalleryImageOperationsClient creates an instance of the
 // GalleryImageOperationsClient client.
 func NewGalleryImageOperationsClient(subscriptionID string) GalleryImageOperationsClient {
-	return GalleryImageOperationsClient{New(subscriptionID)}
+	return NewGalleryImageOperationsClientWithBaseURI(DefaultBaseURI, subscriptionID)
+}
+
+// NewGalleryImageOperationsClientWithBaseURI creates an instance of the
+// GalleryImageOperationsClient client.
+func NewGalleryImageOperationsClientWithBaseURI(baseURI string, subscriptionID string) GalleryImageOperationsClient {
+	return GalleryImageOperationsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // List list gallery images in a given lab.

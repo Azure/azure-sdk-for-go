@@ -39,7 +39,13 @@ type GlobalCertificateOrderClient struct {
 // NewGlobalCertificateOrderClient creates an instance of the
 // GlobalCertificateOrderClient client.
 func NewGlobalCertificateOrderClient(subscriptionID string) GlobalCertificateOrderClient {
-	return GlobalCertificateOrderClient{New(subscriptionID)}
+	return NewGlobalCertificateOrderClientWithBaseURI(DefaultBaseURI, subscriptionID)
+}
+
+// NewGlobalCertificateOrderClientWithBaseURI creates an instance of the
+// GlobalCertificateOrderClient client.
+func NewGlobalCertificateOrderClientWithBaseURI(baseURI string, subscriptionID string) GlobalCertificateOrderClient {
+	return GlobalCertificateOrderClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // GetAllCertificateOrders sends the get all certificate orders request.

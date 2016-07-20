@@ -74,7 +74,7 @@ func (s *StorageBlobSuite) TestGetBlobSASURI(c *chk.C) {
 func (s *StorageBlobSuite) TestBlobSASURICorrectness(c *chk.C) {
 	cli := getBlobClient(c)
 	cnt := randContainer()
-	blob := randString(20)
+	blob := randString(5) + "/" + randString(5) + " " + randString(10)
 	body := []byte(randString(100))
 	expiry := time.Now().UTC().Add(time.Hour)
 	permissions := "r"

@@ -107,6 +107,7 @@ func (s *StorageClientSuite) Test_buildCanonicalizedResource(c *chk.C) {
 		{"https://foo.blob.core.windows.net/path?a=b&c=d", "/foo/path\na:b\nc:d"},
 		{"https://foo.blob.core.windows.net/?comp=list", "/foo/\ncomp:list"},
 		{"https://foo.blob.core.windows.net/cnt/blob", "/foo/cnt/blob"},
+		{"https://foo.blob.core.windows.net/cnt/bl ob", "/foo/cnt/bl%20ob"},
 	}
 
 	for _, i := range tests {

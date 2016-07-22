@@ -338,6 +338,7 @@ func (s *StorageBlobSuite) TestGetBlobProperties(c *chk.C) {
 	c.Assert(err, chk.IsNil)
 
 	c.Assert(props.ContentLength, chk.Equals, int64(len(contents)))
+	c.Assert(props.ContentType, chk.Equals, "application/octet-stream")
 	c.Assert(props.BlobType, chk.Equals, BlobTypeBlock)
 }
 

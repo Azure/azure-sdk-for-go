@@ -56,6 +56,12 @@ func (s *StorageFileSuite) TestDeleteShareIfNotExists(c *chk.C) {
 	c.Assert(ok, chk.Equals, true)
 }
 
+func (s *StorageFileSuite) Test_checkForStorageEmulator(c *chk.C) {
+	f := getEmulatorClient(c).GetFileService()
+	err := f.checkForStorageEmulator()
+	c.Assert(err, chk.NotNil)
+}
+
 const testSharePrefix = "zzzzztest"
 
 func randShare() string {

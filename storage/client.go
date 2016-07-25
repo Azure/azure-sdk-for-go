@@ -125,9 +125,15 @@ func (e UnexpectedStatusCodeError) Got() int {
 // key.
 func NewBasicClient(accountName, accountKey string) (Client, error) {
 	if accountName == StorageEmulatorAccountName {
-		return NewClient(StorageEmulatorAccountName, StorageEmulatorAccountKey, DefaultBaseURL, DefaultAPIVersion, false)
+		return NewEmulatorClient()
 	}
 	return NewClient(accountName, accountKey, DefaultBaseURL, DefaultAPIVersion, defaultUseHTTPS)
+}
+
+//NewEmulatorClient contructs a Client intended to only work with Azure
+//Storage Emulator
+func NewEmulatorClient() (Client, error) {
+	return NewClient(StorageEmulatorAccountName, StorageEmulatorAccountKey, DefaultBaseURL, DefaultAPIVersion, false)
 }
 
 // NewClient constructs a Client. This should be used if the caller wants
@@ -189,6 +195,7 @@ func (c Client) getEndpoint(service, path string, params url.Values) string {
 		panic(err)
 	}
 
+	// API doesn't accept path segments not starting with '/'
 	if !strings.HasPrefix(path, "/") {
 		path = fmt.Sprintf("/%v", path)
 	}

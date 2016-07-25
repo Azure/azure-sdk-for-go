@@ -31,6 +31,22 @@ func getBasicClient(c *chk.C) Client {
 	return cli
 }
 
+//getEmulatorClient returns a test client for Azure Storeage Emulator
+func getEmulatorClient(c *chk.C) Client {
+	cli, err := NewBasicClient(StorageEmulatorAccountName, "")
+	c.Assert(err, chk.IsNil)
+	return cli
+}
+
+func (s *StorageClientSuite) TestNewEmulatorClient(c *chk.C) {
+	cli, err := NewBasicClient(StorageEmulatorAccountName, "")
+	c.Assert(err, chk.IsNil)
+	c.Assert(cli.accountName, chk.Equals, StorageEmulatorAccountName)
+	expectedKey, err := base64.StdEncoding.DecodeString(StorageEmulatorAccountKey)
+	c.Assert(err, chk.IsNil)
+	c.Assert(cli.accountKey, chk.DeepEquals, expectedKey)
+}
+
 func (s *StorageClientSuite) TestMalformedKeyError(c *chk.C) {
 	_, err := NewBasicClient("foo", "malformed")
 	c.Assert(err, chk.ErrorMatches, "azure: malformed storage account key: .*")
@@ -50,6 +66,22 @@ func (s *StorageClientSuite) TestGetBaseURL_Custom_NoHttps(c *chk.C) {
 	c.Assert(err, chk.IsNil)
 	c.Assert(cli.apiVersion, chk.Equals, apiVersion)
 	c.Assert(cli.getBaseURL("table"), chk.Equals, "http://foo.table.core.chinacloudapi.cn")
+}
+
+func (s *StorageClientSuite) TestGetBaseURL_StorageEmulator(c *chk.C) {
+	cli, err := NewBasicClient(StorageEmulatorAccountName, StorageEmulatorAccountKey)
+	c.Assert(err, chk.IsNil)
+
+	type test struct{ service, expected string }
+	tests := []test{
+		{blobServiceName, "http://127.0.0.1:10000"},
+		{tableServiceName, "http://127.0.0.1:10002"},
+		{queueServiceName, "http://127.0.0.1:10001"},
+	}
+	for _, i := range tests {
+		baseURL := cli.getBaseURL(i.service)
+		c.Assert(baseURL, chk.Equals, i.expected)
+	}
 }
 
 func (s *StorageClientSuite) TestGetEndpoint_None(c *chk.C) {
@@ -84,6 +116,22 @@ func (s *StorageClientSuite) TestGetEndpoint_Mixed(c *chk.C) {
 	params.Set("c", "d")
 	output := cli.getEndpoint(blobServiceName, "path", params)
 	c.Assert(output, chk.Equals, "https://foo.blob.core.windows.net/path?a=b&c=d")
+}
+
+func (s *StorageClientSuite) TestGetEndpoint_StorageEmulator(c *chk.C) {
+	cli, err := NewBasicClient(StorageEmulatorAccountName, StorageEmulatorAccountKey)
+	c.Assert(err, chk.IsNil)
+
+	type test struct{ service, expected string }
+	tests := []test{
+		{blobServiceName, "http://127.0.0.1:10000/devstoreaccount1/"},
+		{tableServiceName, "http://127.0.0.1:10002/devstoreaccount1/"},
+		{queueServiceName, "http://127.0.0.1:10001/devstoreaccount1/"},
+	}
+	for _, i := range tests {
+		endpoint := cli.getEndpoint(i.service, "", url.Values{})
+		c.Assert(endpoint, chk.Equals, i.expected)
+	}
 }
 
 func (s *StorageClientSuite) Test_getStandardHeaders(c *chk.C) {

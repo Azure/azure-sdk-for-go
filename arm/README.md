@@ -53,8 +53,7 @@ goals were:
 fan-in set ups.
 
 These are best shown in a series of examples, all of which are included in the
-[arm/examples](https://github.com/Azure/azure-sdk-for-go/blob/master/arm/examples/)
-sub-folder.
+[arm/examples](arm/examples/) sub-folder.
 
 ## First a Sidenote: Authentication and the Azure Resource Manager
 
@@ -115,7 +114,7 @@ with a custom
 or
 [autorest.RespondDecorator](https://godoc.org/github.com/Azure/go-autorest/autorest#RespondDecorator)
 enables more control. See the included example file
-[check.go](https://github.com/Azure/azure-sdk-for-go/blob/master/arm/examples/check.go)
+[check.go](examples/check.go)
 for more details. Through these you can modify the outgoing request, inspect the incoming response,
 or even go so far as to provide a
 [circuit breaker](https://msdn.microsoft.com/en-us/library/dn589784.aspx)
@@ -133,7 +132,7 @@ and a detailed error message.
 
 ### Complete source code
 
-Complete source code for this example can be found [here](https://github.com/Azure/azure-sdk-for-go/blob/master/arm/examples/check.go).
+Complete source code for this example can be found [here](examples/check.go).
 
 ## Something a Bit More Complex: Creating a new Azure Storage account
 

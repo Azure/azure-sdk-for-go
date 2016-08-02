@@ -8,6 +8,7 @@ import (
 	"io"
 	"net/http"
 	"net/url"
+	"reflect"
 	"strconv"
 	"strings"
 	"time"
@@ -600,6 +601,37 @@ func (b BlobStorageClient) GetBlobProperties(container, name string) (*BlobPrope
 		BlobType:              BlobType(resp.headers.Get("x-ms-blob-type")),
 		LeaseStatus:           resp.headers.Get("x-ms-lease-status"),
 	}, nil
+}
+
+type ContentSetting struct {
+	ContentMD5      string `header:"x-ms-blob-content-md5"`
+	ContentLanguage string `header:"x-ms-blob-content-language"`
+	ContentEncoding string `header:"x-ms-blob-content-encoding"`
+	ContentType     string `header:"x-ms-blob-content-type"`
+	CacheControl    string `header:"x-ms-blob-cache-control"`
+}
+
+func (b BlobStorageClient) SetBlobProperties(container, name string, contentSetting ContentSetting) error {
+	params := url.Values{"comp": {"properties"}}
+	uri := b.client.getEndpoint(blobServiceName, pathForBlob(container, name), params)
+	headers := b.client.getStandardHeaders()
+
+	value := reflect.ValueOf(contentSetting)
+	for i := 0; i < value.NumField(); i++ {
+		k := value.Type().Field(i).Tag.Get("header")
+		v := value.Field(i).String()
+		if v != "" {
+			headers[k] = v
+		}
+	}
+
+	resp, err := b.client.exec("PUT", uri, headers, nil)
+	if err != nil {
+		return err
+	}
+	defer resp.body.Close()
+
+	return checkRespCode(resp.statusCode, []int{http.StatusOK})
 }
 
 // SetBlobMetadata replaces the metadata for the specified blob.

@@ -1042,6 +1042,9 @@ func (b BlobStorageClient) GetBlobSASURI(container, name string, expiry time.Tim
 	// later, the storage account name, and the resource name, and must be URL-decoded.
 	// -- https://msdn.microsoft.com/en-us/library/azure/dn140255.aspx
 
+	// We need to replace + with %2b first to avoid being treated as a space (which is correct for query strings, but not the path component).
+	canonicalizedResource = strings.Replace(canonicalizedResource, "+", "%2b", -1)
+
 	canonicalizedResource, err = url.QueryUnescape(canonicalizedResource)
 	if err != nil {
 		return "", err

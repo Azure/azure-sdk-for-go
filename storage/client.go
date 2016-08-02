@@ -315,7 +315,10 @@ func (c Client) buildCanonicalizedResource(uri string) (string, error) {
 	cr := "/" + c.accountName
 
 	if len(u.Path) > 0 {
-		cr += u.Path
+		// Any portion of the CanonicalizedResource string that is derived from
+		// the resource's URI should be encoded exactly as it is in the URI.
+		// -- https://msdn.microsoft.com/en-gb/library/azure/dd179428.aspx
+		cr += u.EscapedPath()
 	}
 
 	params, err := url.ParseQuery(u.RawQuery)
@@ -378,7 +381,6 @@ func (c Client) exec(verb, url string, headers map[string]string, body io.Reader
 		return nil, err
 	}
 	headers["Authorization"] = authHeader
-
 	if err != nil {
 		return nil, err
 	}

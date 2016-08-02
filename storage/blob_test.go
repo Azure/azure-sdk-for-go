@@ -74,7 +74,7 @@ func (s *StorageBlobSuite) TestGetBlobSASURI(c *chk.C) {
 func (s *StorageBlobSuite) TestBlobSASURICorrectness(c *chk.C) {
 	cli := getBlobClient(c)
 	cnt := randContainer()
-	blob := randString(20)
+	blob := randNameWithSpecialChars(5)
 	body := []byte(randString(100))
 	expiry := time.Now().UTC().Add(time.Hour)
 	permissions := "r"
@@ -213,7 +213,7 @@ func (s *StorageBlobSuite) TestDeleteContainerIfExists(c *chk.C) {
 
 func (s *StorageBlobSuite) TestBlobExists(c *chk.C) {
 	cnt := randContainer()
-	blob := randString(20)
+	blob := randName(5)
 	cli := getBlobClient(c)
 
 	c.Assert(cli.CreateContainer(cnt, ContainerAccessTypeBlob), chk.IsNil)
@@ -247,8 +247,8 @@ func (s *StorageBlobSuite) TestBlobCopy(c *chk.C) {
 
 	cli := getBlobClient(c)
 	cnt := randContainer()
-	src := randString(20)
-	dst := randString(20)
+	src := randName(5)
+	dst := randName(5)
 	body := []byte(randString(1024))
 
 	c.Assert(cli.CreateContainer(cnt, ContainerAccessTypePrivate), chk.IsNil)
@@ -271,7 +271,7 @@ func (s *StorageBlobSuite) TestBlobCopy(c *chk.C) {
 
 func (s *StorageBlobSuite) TestDeleteBlobIfExists(c *chk.C) {
 	cnt := randContainer()
-	blob := randString(20)
+	blob := randName(5)
 
 	cli := getBlobClient(c)
 	c.Assert(cli.DeleteBlob(cnt, blob, nil), chk.NotNil)
@@ -283,7 +283,7 @@ func (s *StorageBlobSuite) TestDeleteBlobIfExists(c *chk.C) {
 
 func (s *StorageBlobSuite) TestDeleteBlobWithConditions(c *chk.C) {
 	cnt := randContainer()
-	blob := randString(20)
+	blob := randName(5)
 
 	cli := getBlobClient(c)
 
@@ -319,7 +319,7 @@ func (s *StorageBlobSuite) TestDeleteBlobWithConditions(c *chk.C) {
 
 func (s *StorageBlobSuite) TestGetBlobProperties(c *chk.C) {
 	cnt := randContainer()
-	blob := randString(20)
+	blob := randName(5)
 	contents := randString(64)
 
 	cli := getBlobClient(c)
@@ -353,7 +353,7 @@ func (s *StorageBlobSuite) TestListBlobsPagination(c *chk.C) {
 	const n = 5
 	const pageSize = 2
 	for i := 0; i < n; i++ {
-		name := randString(20)
+		name := randName(5)
 		c.Assert(cli.putSingleBlockBlob(cnt, name, []byte("Hello, world!")), chk.IsNil)
 		blobs = append(blobs, name)
 	}
@@ -522,7 +522,7 @@ func (s *StorageBlobSuite) TestListBlobsWithMetadata(c *chk.C) {
 
 	// Put 4 blobs with metadata
 	for i := 0; i < 4; i++ {
-		name := randString(20)
+		name := randName(5)
 		c.Assert(cli.putSingleBlockBlob(cnt, name, []byte("Hello, world!")), chk.IsNil)
 		c.Assert(cli.SetBlobMetadata(cnt, name, map[string]string{
 			"Foo":     name,
@@ -535,7 +535,7 @@ func (s *StorageBlobSuite) TestListBlobsWithMetadata(c *chk.C) {
 	}
 
 	// Put one more blob with no metadata
-	blobWithoutMetadata := randString(20)
+	blobWithoutMetadata := randName(5)
 	c.Assert(cli.putSingleBlockBlob(cnt, blobWithoutMetadata, []byte("Hello, world!")), chk.IsNil)
 	expectMeta[blobWithoutMetadata] = nil
 
@@ -560,7 +560,7 @@ func (s *StorageBlobSuite) TestListBlobsWithMetadata(c *chk.C) {
 // metadata, e.g., for a stub server.
 func (s *StorageBlobSuite) TestMarshalBlobMetadata(c *chk.C) {
 	buf, err := xml.Marshal(Blob{
-		Name:       randString(20),
+		Name:       randName(5),
 		Properties: BlobProperties{},
 		Metadata:   BlobMetadata{"foo": "baz < waz"},
 	})
@@ -575,7 +575,7 @@ func (s *StorageBlobSuite) TestGetAndSetMetadata(c *chk.C) {
 	c.Assert(cli.CreateContainer(cnt, ContainerAccessTypePrivate), chk.IsNil)
 	defer cli.deleteContainer(cnt)
 
-	blob := randString(20)
+	blob := randName(5)
 	c.Assert(cli.putSingleBlockBlob(cnt, blob, []byte{}), chk.IsNil)
 
 	m, err := cli.GetBlobMetadata(cnt, blob)
@@ -621,7 +621,7 @@ func (s *StorageBlobSuite) TestSetMetadataWithExtraHeaders(c *chk.C) {
 	c.Assert(cli.CreateContainer(cnt, ContainerAccessTypePrivate), chk.IsNil)
 	defer cli.deleteContainer(cnt)
 
-	blob := randString(20)
+	blob := randName(5)
 	c.Assert(cli.putSingleBlockBlob(cnt, blob, []byte{}), chk.IsNil)
 
 	mPut := map[string]string{
@@ -654,7 +654,7 @@ func (s *StorageBlobSuite) TestPutEmptyBlockBlob(c *chk.C) {
 	c.Assert(cli.CreateContainer(cnt, ContainerAccessTypePrivate), chk.IsNil)
 	defer cli.deleteContainer(cnt)
 
-	blob := randString(20)
+	blob := randName(5)
 	c.Assert(cli.putSingleBlockBlob(cnt, blob, []byte{}), chk.IsNil)
 
 	props, err := cli.GetBlobProperties(cnt, blob)
@@ -664,7 +664,7 @@ func (s *StorageBlobSuite) TestPutEmptyBlockBlob(c *chk.C) {
 
 func (s *StorageBlobSuite) TestGetBlobRange(c *chk.C) {
 	cnt := randContainer()
-	blob := randString(20)
+	blob := randName(5)
 	body := "0123456789"
 
 	cli := getBlobClient(c)
@@ -699,7 +699,7 @@ func (s *StorageBlobSuite) TestCreateBlockBlobFromReader(c *chk.C) {
 	c.Assert(cli.CreateContainer(cnt, ContainerAccessTypePrivate), chk.IsNil)
 	defer cli.deleteContainer(cnt)
 
-	name := randString(20)
+	name := randName(5)
 	data := randBytes(8888)
 	c.Assert(cli.CreateBlockBlobFromReader(cnt, name, uint64(len(data)), bytes.NewReader(data), nil), chk.IsNil)
 
@@ -718,7 +718,7 @@ func (s *StorageBlobSuite) TestCreateBlockBlobFromReaderWithShortData(c *chk.C) 
 	c.Assert(cli.CreateContainer(cnt, ContainerAccessTypePrivate), chk.IsNil)
 	defer cli.deleteContainer(cnt)
 
-	name := randString(20)
+	name := randName(5)
 	data := randBytes(8888)
 	err := cli.CreateBlockBlobFromReader(cnt, name, 9999, bytes.NewReader(data), nil)
 	c.Assert(err, chk.Not(chk.IsNil))
@@ -734,7 +734,7 @@ func (s *StorageBlobSuite) TestPutBlock(c *chk.C) {
 	c.Assert(cli.CreateContainer(cnt, ContainerAccessTypePrivate), chk.IsNil)
 	defer cli.deleteContainer(cnt)
 
-	blob := randString(20)
+	blob := randName(5)
 	chunk := []byte(randString(1024))
 	blockID := base64.StdEncoding.EncodeToString([]byte("foo"))
 	c.Assert(cli.PutBlock(cnt, blob, blockID, chunk), chk.IsNil)
@@ -746,7 +746,7 @@ func (s *StorageBlobSuite) TestGetBlockList_PutBlockList(c *chk.C) {
 	c.Assert(cli.CreateContainer(cnt, ContainerAccessTypePrivate), chk.IsNil)
 	defer cli.deleteContainer(cnt)
 
-	blob := randString(20)
+	blob := randName(5)
 	chunk := []byte(randString(1024))
 	blockID := base64.StdEncoding.EncodeToString([]byte("foo"))
 
@@ -788,7 +788,7 @@ func (s *StorageBlobSuite) TestCreateBlockBlob(c *chk.C) {
 	c.Assert(cli.CreateContainer(cnt, ContainerAccessTypePrivate), chk.IsNil)
 	defer cli.deleteContainer(cnt)
 
-	blob := randString(20)
+	blob := randName(5)
 	c.Assert(cli.CreateBlockBlob(cnt, blob), chk.IsNil)
 
 	// Verify
@@ -804,7 +804,7 @@ func (s *StorageBlobSuite) TestPutPageBlob(c *chk.C) {
 	c.Assert(cli.CreateContainer(cnt, ContainerAccessTypePrivate), chk.IsNil)
 	defer cli.deleteContainer(cnt)
 
-	blob := randString(20)
+	blob := randName(5)
 	size := int64(10 * 1024 * 1024)
 	c.Assert(cli.PutPageBlob(cnt, blob, size, nil), chk.IsNil)
 
@@ -821,7 +821,7 @@ func (s *StorageBlobSuite) TestPutPagesUpdate(c *chk.C) {
 	c.Assert(cli.CreateContainer(cnt, ContainerAccessTypePrivate), chk.IsNil)
 	defer cli.deleteContainer(cnt)
 
-	blob := randString(20)
+	blob := randName(5)
 	size := int64(10 * 1024 * 1024) // larger than we'll use
 	c.Assert(cli.PutPageBlob(cnt, blob, size, nil), chk.IsNil)
 
@@ -860,7 +860,7 @@ func (s *StorageBlobSuite) TestPutPagesClear(c *chk.C) {
 	c.Assert(cli.CreateContainer(cnt, ContainerAccessTypePrivate), chk.IsNil)
 	defer cli.deleteContainer(cnt)
 
-	blob := randString(20)
+	blob := randName(5)
 	size := int64(10 * 1024 * 1024) // larger than we'll use
 	c.Assert(cli.PutPageBlob(cnt, blob, size, nil), chk.IsNil)
 
@@ -886,7 +886,7 @@ func (s *StorageBlobSuite) TestGetPageRanges(c *chk.C) {
 	c.Assert(cli.CreateContainer(cnt, ContainerAccessTypePrivate), chk.IsNil)
 	defer cli.deleteContainer(cnt)
 
-	blob := randString(20)
+	blob := randName(5)
 	size := int64(10 * 1024 * 1024) // larger than we'll use
 	c.Assert(cli.PutPageBlob(cnt, blob, size, nil), chk.IsNil)
 
@@ -916,7 +916,7 @@ func (s *StorageBlobSuite) TestPutAppendBlob(c *chk.C) {
 	c.Assert(cli.CreateContainer(cnt, ContainerAccessTypePrivate), chk.IsNil)
 	defer cli.deleteContainer(cnt)
 
-	blob := randString(20)
+	blob := randName(5)
 	c.Assert(cli.PutAppendBlob(cnt, blob, nil), chk.IsNil)
 
 	// Verify
@@ -932,7 +932,7 @@ func (s *StorageBlobSuite) TestPutAppendBlobAppendBlocks(c *chk.C) {
 	c.Assert(cli.CreateContainer(cnt, ContainerAccessTypePrivate), chk.IsNil)
 	defer cli.deleteContainer(cnt)
 
-	blob := randString(20)
+	blob := randName(5)
 	c.Assert(cli.PutAppendBlob(cnt, blob, nil), chk.IsNil)
 
 	chunk1 := []byte(randString(1024))
@@ -999,6 +999,49 @@ func (b BlobStorageClient) putSingleBlockBlob(container, name string, chunk []by
 	return checkRespCode(resp.statusCode, []int{http.StatusCreated})
 }
 
+func (s *StorageBlobSuite) TestPutAppendBlobSpecialChars(c *chk.C) {
+	cli := getBlobClient(c)
+	cnt := randContainer()
+	c.Assert(cli.CreateContainer(cnt, ContainerAccessTypePrivate), chk.IsNil)
+	defer cli.deleteContainer(cnt)
+
+	blob := randNameWithSpecialChars(5)
+	c.Assert(cli.PutAppendBlob(cnt, blob, nil), chk.IsNil)
+
+	// Verify metadata
+	props, err := cli.GetBlobProperties(cnt, blob)
+	c.Assert(err, chk.IsNil)
+	c.Assert(props.ContentLength, chk.Equals, int64(0))
+	c.Assert(props.BlobType, chk.Equals, BlobTypeAppend)
+
+	chunk1 := []byte(randString(1024))
+	chunk2 := []byte(randString(512))
+
+	// Append first block
+	c.Assert(cli.AppendBlock(cnt, blob, chunk1, nil), chk.IsNil)
+
+	// Verify contents
+	out, err := cli.GetBlobRange(cnt, blob, fmt.Sprintf("%v-%v", 0, len(chunk1)-1), nil)
+	c.Assert(err, chk.IsNil)
+	defer out.Close()
+	blobContents, err := ioutil.ReadAll(out)
+	c.Assert(err, chk.IsNil)
+	c.Assert(blobContents, chk.DeepEquals, chunk1)
+	out.Close()
+
+	// Append second block
+	c.Assert(cli.AppendBlock(cnt, blob, chunk2, nil), chk.IsNil)
+
+	// Verify contents
+	out, err = cli.GetBlobRange(cnt, blob, fmt.Sprintf("%v-%v", 0, len(chunk1)+len(chunk2)-1), nil)
+	c.Assert(err, chk.IsNil)
+	defer out.Close()
+	blobContents, err = ioutil.ReadAll(out)
+	c.Assert(err, chk.IsNil)
+	c.Assert(blobContents, chk.DeepEquals, append(chunk1, chunk2...))
+	out.Close()
+}
+
 func randContainer() string {
 	return testContainerPrefix + randString(32-len(testContainerPrefix))
 }
@@ -1022,4 +1065,14 @@ func randBytes(n int) []byte {
 		panic(err)
 	}
 	return data
+}
+
+func randName(n int) string {
+	name := randString(n) + "/" + randString(n)
+	return name
+}
+
+func randNameWithSpecialChars(n int) string {
+	name := randString(n) + "/" + randString(n) + "-._~:?#[]@!$&'()*,;+= " + randString(n)
+	return name
 }

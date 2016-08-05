@@ -8,7 +8,6 @@ import (
 	"io"
 	"net/http"
 	"net/url"
-	"reflect"
 	"strconv"
 	"strings"
 	"time"
@@ -125,14 +124,14 @@ type BlobProperties struct {
 	LeaseStatus           string   `xml:"LeaseStatus"`
 }
 
-// ContentSetting contains various properties of a blob and is an entry
+// BlobHeaders contains various properties of a blob and is an entry
 // in SetBlobProperties
-type ContentSetting struct {
-	ContentMD5      string `xml:"x-ms-blob-content-md5"`
-	ContentLanguage string `xml:"x-ms-blob-content-language"`
-	ContentEncoding string `xml:"x-ms-blob-content-encoding"`
-	ContentType     string `xml:"x-ms-blob-content-type"`
-	CacheControl    string `xml:"x-ms-blob-cache-control"`
+type BlobHeaders struct {
+	ContentMD5      string `header:"x-ms-blob-content-md5"`
+	ContentLanguage string `header:"x-ms-blob-content-language"`
+	ContentEncoding string `header:"x-ms-blob-content-encoding"`
+	ContentType     string `header:"x-ms-blob-content-type"`
+	CacheControl    string `header:"x-ms-blob-cache-control"`
 }
 
 // BlobListResponse contains the response fields from ListBlobs call.
@@ -617,7 +616,7 @@ func (b BlobStorageClient) GetBlobProperties(container, name string) (*BlobPrope
 	}, nil
 }
 
-// SetBlobProperties replaces the ContentSetting for the specified blob.
+// SetBlobProperties replaces the BlobHeaders for the specified blob.
 //
 // Some keys may be converted to Camel-Case before sending. All keys
 // are returned in lower case by GetBlobProperties. HTTP header names
@@ -625,18 +624,15 @@ func (b BlobStorageClient) GetBlobProperties(container, name string) (*BlobPrope
 // applications either.
 //
 // See https://msdn.microsoft.com/en-us/library/azure/ee691966.aspx
-func (b BlobStorageClient) SetBlobProperties(container, name string, contentSetting ContentSetting) error {
+func (b BlobStorageClient) SetBlobProperties(container, name string, blobHeaders BlobHeaders) error {
 	params := url.Values{"comp": {"properties"}}
 	uri := b.client.getEndpoint(blobServiceName, pathForBlob(container, name), params)
 	headers := b.client.getStandardHeaders()
 
-	value := reflect.ValueOf(contentSetting)
-	for i := 0; i < value.NumField(); i++ {
-		k := value.Type().Field(i).Tag.Get("xml")
-		v := value.Field(i).String()
-		if v != "" {
-			headers[k] = v
-		}
+	extraHeaders := headersFromStruct(blobHeaders)
+
+	for k, v := range extraHeaders {
+		headers[k] = v
 	}
 
 	resp, err := b.client.exec("PUT", uri, headers, nil)

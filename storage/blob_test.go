@@ -647,7 +647,7 @@ func (s *StorageBlobSuite) TestSetMetadataWithExtraHeaders(c *chk.C) {
 	c.Assert(err, chk.IsNil)
 }
 
-func (s *StorageBlobSuite) TestSetProperties(c *chk.C) {
+func (s *StorageBlobSuite) TestSetBlobProperties(c *chk.C) {
 	cli := getBlobClient(c)
 	cnt := randContainer()
 
@@ -657,7 +657,7 @@ func (s *StorageBlobSuite) TestSetProperties(c *chk.C) {
 	blob := randName(5)
 	c.Assert(cli.putSingleBlockBlob(cnt, blob, []byte{}), chk.IsNil)
 
-	mPut := ContentSetting{
+	mPut := BlobHeaders{
 		CacheControl:    "private, max-age=0, no-cache",
 		ContentMD5:      "oBATU+oaDduHWbVZLuzIJw==",
 		ContentType:     "application/json",

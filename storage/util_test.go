@@ -67,3 +67,20 @@ func (s *StorageClientSuite) Test_xmlMarshal(c *chk.C) {
 	c.Assert(out, chk.Equals, expected)
 	c.Assert(i, chk.Equals, len(expected))
 }
+
+func (s *StorageClientSuite) Test_headersFromStruct(c *chk.C) {
+	type t struct {
+		header1 string `header:"HEADER1"`
+		header2 string `header:"HEADER2"`
+	}
+
+	h := t{header1: "value1", header2: "value2"}
+	expected := map[string]string{
+		"HEADER1": "value1",
+		"HEADER2": "value2",
+	}
+
+	out := headersFromStruct(h)
+
+	c.Assert(out, chk.DeepEquals, expected)
+}

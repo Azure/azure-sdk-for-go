@@ -647,6 +647,37 @@ func (s *StorageBlobSuite) TestSetMetadataWithExtraHeaders(c *chk.C) {
 	c.Assert(err, chk.IsNil)
 }
 
+func (s *StorageBlobSuite) TestSetBlobProperties(c *chk.C) {
+	cli := getBlobClient(c)
+	cnt := randContainer()
+
+	c.Assert(cli.CreateContainer(cnt, ContainerAccessTypePrivate), chk.IsNil)
+	defer cli.deleteContainer(cnt)
+
+	blob := randName(5)
+	c.Assert(cli.putSingleBlockBlob(cnt, blob, []byte{}), chk.IsNil)
+
+	mPut := BlobHeaders{
+		CacheControl:    "private, max-age=0, no-cache",
+		ContentMD5:      "oBATU+oaDduHWbVZLuzIJw==",
+		ContentType:     "application/json",
+		ContentEncoding: "gzip",
+		ContentLanguage: "de-DE",
+	}
+
+	err := cli.SetBlobProperties(cnt, blob, mPut)
+	c.Assert(err, chk.IsNil)
+
+	props, err := cli.GetBlobProperties(cnt, blob)
+	c.Assert(err, chk.IsNil)
+
+	c.Check(mPut.CacheControl, chk.Equals, props.CacheControl)
+	c.Check(mPut.ContentType, chk.Equals, props.ContentType)
+	c.Check(mPut.ContentMD5, chk.Equals, props.ContentMD5)
+	c.Check(mPut.ContentEncoding, chk.Equals, props.ContentEncoding)
+	c.Check(mPut.ContentLanguage, chk.Equals, props.ContentLanguage)
+}
+
 func (s *StorageBlobSuite) TestPutEmptyBlockBlob(c *chk.C) {
 	cli := getBlobClient(c)
 	cnt := randContainer()

@@ -258,7 +258,7 @@ func (c Client) getStandardHeaders() map[string]string {
 func (c Client) getCanonicalizedAccountName() string {
 	// since we may be trying to access a secondary storage account, we need to
 	// remove the -secondary part of the storage name
-	return strings.Replace(c.accountName, "-secondary", "", -1)
+	return strings.TrimSuffix(c.accountName, "-secondary")
 }
 
 func (c Client) buildCanonicalizedHeader(headers map[string]string) string {

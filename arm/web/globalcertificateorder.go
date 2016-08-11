@@ -106,6 +106,30 @@ func (client GlobalCertificateOrderClient) GetAllCertificateOrdersResponder(resp
 	return
 }
 
+// GetAllCertificateOrdersNextResults retrieves the next set of results, if any.
+func (client GlobalCertificateOrderClient) GetAllCertificateOrdersNextResults(lastResults CertificateOrderCollection) (result CertificateOrderCollection, err error) {
+	req, err := lastResults.CertificateOrderCollectionPreparer()
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "web.GlobalCertificateOrderClient", "GetAllCertificateOrders", nil, "Failure preparing next results request request")
+	}
+	if req == nil {
+		return
+	}
+
+	resp, err := client.GetAllCertificateOrdersSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "web.GlobalCertificateOrderClient", "GetAllCertificateOrders", resp, "Failure sending next results request request")
+	}
+
+	result, err = client.GetAllCertificateOrdersResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.GlobalCertificateOrderClient", "GetAllCertificateOrders", resp, "Failure responding to next results request request")
+	}
+
+	return
+}
+
 // ValidateCertificatePurchaseInformation sends the validate certificate
 // purchase information request.
 //

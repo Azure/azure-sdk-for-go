@@ -106,6 +106,30 @@ func (client TopLevelDomainsClient) GetGetTopLevelDomainsResponder(resp *http.Re
 	return
 }
 
+// GetGetTopLevelDomainsNextResults retrieves the next set of results, if any.
+func (client TopLevelDomainsClient) GetGetTopLevelDomainsNextResults(lastResults TopLevelDomainCollection) (result TopLevelDomainCollection, err error) {
+	req, err := lastResults.TopLevelDomainCollectionPreparer()
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "web.TopLevelDomainsClient", "GetGetTopLevelDomains", nil, "Failure preparing next results request request")
+	}
+	if req == nil {
+		return
+	}
+
+	resp, err := client.GetGetTopLevelDomainsSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "web.TopLevelDomainsClient", "GetGetTopLevelDomains", resp, "Failure sending next results request request")
+	}
+
+	result, err = client.GetGetTopLevelDomainsResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.TopLevelDomainsClient", "GetGetTopLevelDomains", resp, "Failure responding to next results request request")
+	}
+
+	return
+}
+
 // GetTopLevelDomain sends the get top level domain request.
 //
 // name is name of the top level domain
@@ -229,5 +253,29 @@ func (client TopLevelDomainsClient) ListTopLevelDomainAgreementsResponder(resp *
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// ListTopLevelDomainAgreementsNextResults retrieves the next set of results, if any.
+func (client TopLevelDomainsClient) ListTopLevelDomainAgreementsNextResults(lastResults TldLegalAgreementCollection) (result TldLegalAgreementCollection, err error) {
+	req, err := lastResults.TldLegalAgreementCollectionPreparer()
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "web.TopLevelDomainsClient", "ListTopLevelDomainAgreements", nil, "Failure preparing next results request request")
+	}
+	if req == nil {
+		return
+	}
+
+	resp, err := client.ListTopLevelDomainAgreementsSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "web.TopLevelDomainsClient", "ListTopLevelDomainAgreements", resp, "Failure sending next results request request")
+	}
+
+	result, err = client.ListTopLevelDomainAgreementsResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.TopLevelDomainsClient", "ListTopLevelDomainAgreements", resp, "Failure responding to next results request request")
+	}
+
 	return
 }

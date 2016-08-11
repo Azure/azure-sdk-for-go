@@ -232,3 +232,27 @@ func (client ClassicMobileServicesClient) GetClassicMobileServicesResponder(resp
 	result.Response = autorest.Response{Response: resp}
 	return
 }
+
+// GetClassicMobileServicesNextResults retrieves the next set of results, if any.
+func (client ClassicMobileServicesClient) GetClassicMobileServicesNextResults(lastResults ClassicMobileServiceCollection) (result ClassicMobileServiceCollection, err error) {
+	req, err := lastResults.ClassicMobileServiceCollectionPreparer()
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "web.ClassicMobileServicesClient", "GetClassicMobileServices", nil, "Failure preparing next results request request")
+	}
+	if req == nil {
+		return
+	}
+
+	resp, err := client.GetClassicMobileServicesSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "web.ClassicMobileServicesClient", "GetClassicMobileServices", resp, "Failure sending next results request request")
+	}
+
+	result, err = client.GetClassicMobileServicesResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.ClassicMobileServicesClient", "GetClassicMobileServices", resp, "Failure responding to next results request request")
+	}
+
+	return
+}

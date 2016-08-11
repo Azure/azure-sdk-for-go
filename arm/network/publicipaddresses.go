@@ -249,7 +249,7 @@ func (client PublicIPAddressesClient) GetResponder(resp *http.Response) (result 
 	return
 }
 
-// List the List publicIpAddress opertion retrieves all the publicIpAddresses
+// List the List publicIpAddress operation retrieves all the publicIpAddresses
 // in a resource group.
 //
 // resourceGroupName is the name of the resource group.
@@ -335,7 +335,7 @@ func (client PublicIPAddressesClient) ListNextResults(lastResults PublicIPAddres
 	return
 }
 
-// ListAll the List publicIpAddress opertion retrieves all the
+// ListAll the List publicIpAddress operation retrieves all the
 // publicIpAddresses in a subscription.
 func (client PublicIPAddressesClient) ListAll() (result PublicIPAddressListResult, err error) {
 	req, err := client.ListAllPreparer()

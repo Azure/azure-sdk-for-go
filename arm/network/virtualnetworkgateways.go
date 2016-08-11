@@ -318,7 +318,7 @@ func (client VirtualNetworkGatewaysClient) GetResponder(resp *http.Response) (re
 	return
 }
 
-// List the List VirtualNetworkGateways opertion retrieves all the virtual
+// List the List VirtualNetworkGateways operation retrieves all the virtual
 // network gateways stored.
 //
 // resourceGroupName is the name of the resource group.

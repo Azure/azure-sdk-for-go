@@ -366,6 +366,30 @@ func (client DomainsClient) GetDomainsResponder(resp *http.Response) (result Dom
 	return
 }
 
+// GetDomainsNextResults retrieves the next set of results, if any.
+func (client DomainsClient) GetDomainsNextResults(lastResults DomainCollection) (result DomainCollection, err error) {
+	req, err := lastResults.DomainCollectionPreparer()
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "web.DomainsClient", "GetDomains", nil, "Failure preparing next results request request")
+	}
+	if req == nil {
+		return
+	}
+
+	resp, err := client.GetDomainsSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "web.DomainsClient", "GetDomains", resp, "Failure sending next results request request")
+	}
+
+	result, err = client.GetDomainsResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.DomainsClient", "GetDomains", resp, "Failure responding to next results request request")
+	}
+
+	return
+}
+
 // UpdateDomain sends the update domain request.
 //
 // resourceGroupName is &gt;Name of the resource group domainName is name of

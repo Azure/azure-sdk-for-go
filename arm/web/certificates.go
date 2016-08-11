@@ -429,6 +429,30 @@ func (client CertificatesClient) GetCertificatesResponder(resp *http.Response) (
 	return
 }
 
+// GetCertificatesNextResults retrieves the next set of results, if any.
+func (client CertificatesClient) GetCertificatesNextResults(lastResults CertificateCollection) (result CertificateCollection, err error) {
+	req, err := lastResults.CertificateCollectionPreparer()
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "web.CertificatesClient", "GetCertificates", nil, "Failure preparing next results request request")
+	}
+	if req == nil {
+		return
+	}
+
+	resp, err := client.GetCertificatesSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "web.CertificatesClient", "GetCertificates", resp, "Failure sending next results request request")
+	}
+
+	result, err = client.GetCertificatesResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.CertificatesClient", "GetCertificates", resp, "Failure responding to next results request request")
+	}
+
+	return
+}
+
 // GetCsr sends the get csr request.
 //
 // resourceGroupName is name of the resource group name is name of the

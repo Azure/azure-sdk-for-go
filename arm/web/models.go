@@ -728,6 +728,18 @@ type BackupItemCollection struct {
 	NextLink          *string       `json:"nextLink,omitempty"`
 }
 
+// BackupItemCollectionPreparer prepares a request to retrieve the next set of results. It returns
+// nil if no more results exist.
+func (client BackupItemCollection) BackupItemCollectionPreparer() (*http.Request, error) {
+	if client.NextLink == nil || len(to.String(client.NextLink)) <= 0 {
+		return nil, nil
+	}
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(client.NextLink)))
+}
+
 // BackupItemProperties is
 type BackupItemProperties struct {
 	ID                   *int32                   `json:"id,omitempty"`
@@ -796,6 +808,18 @@ type CertificateCollection struct {
 	autorest.Response `json:"-"`
 	Value             *[]Certificate `json:"value,omitempty"`
 	NextLink          *string        `json:"nextLink,omitempty"`
+}
+
+// CertificateCollectionPreparer prepares a request to retrieve the next set of results. It returns
+// nil if no more results exist.
+func (client CertificateCollection) CertificateCollectionPreparer() (*http.Request, error) {
+	if client.NextLink == nil || len(to.String(client.NextLink)) <= 0 {
+		return nil, nil
+	}
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(client.NextLink)))
 }
 
 // CertificateDetails is certificate Details
@@ -889,6 +913,18 @@ type CertificateOrderCertificateCollection struct {
 	NextLink          *string                        `json:"nextLink,omitempty"`
 }
 
+// CertificateOrderCertificateCollectionPreparer prepares a request to retrieve the next set of results. It returns
+// nil if no more results exist.
+func (client CertificateOrderCertificateCollection) CertificateOrderCertificateCollectionPreparer() (*http.Request, error) {
+	if client.NextLink == nil || len(to.String(client.NextLink)) <= 0 {
+		return nil, nil
+	}
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(client.NextLink)))
+}
+
 // CertificateOrderCertificateProperties is
 type CertificateOrderCertificateProperties struct {
 	KeyVaultID         *string              `json:"keyVaultId,omitempty"`
@@ -901,6 +937,18 @@ type CertificateOrderCollection struct {
 	autorest.Response `json:"-"`
 	Value             *[]CertificateOrder `json:"value,omitempty"`
 	NextLink          *string             `json:"nextLink,omitempty"`
+}
+
+// CertificateOrderCollectionPreparer prepares a request to retrieve the next set of results. It returns
+// nil if no more results exist.
+func (client CertificateOrderCollection) CertificateOrderCollectionPreparer() (*http.Request, error) {
+	if client.NextLink == nil || len(to.String(client.NextLink)) <= 0 {
+		return nil, nil
+	}
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(client.NextLink)))
 }
 
 // CertificateOrderProperties is
@@ -959,6 +1007,18 @@ type ClassicMobileServiceCollection struct {
 	autorest.Response `json:"-"`
 	Value             *[]ClassicMobileService `json:"value,omitempty"`
 	NextLink          *string                 `json:"nextLink,omitempty"`
+}
+
+// ClassicMobileServiceCollectionPreparer prepares a request to retrieve the next set of results. It returns
+// nil if no more results exist.
+func (client ClassicMobileServiceCollection) ClassicMobileServiceCollectionPreparer() (*http.Request, error) {
+	if client.NextLink == nil || len(to.String(client.NextLink)) <= 0 {
+		return nil, nil
+	}
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(client.NextLink)))
 }
 
 // ClassicMobileServiceProperties is
@@ -1069,6 +1129,18 @@ type CsmUsageQuotaCollection struct {
 	NextLink          *string          `json:"nextLink,omitempty"`
 }
 
+// CsmUsageQuotaCollectionPreparer prepares a request to retrieve the next set of results. It returns
+// nil if no more results exist.
+func (client CsmUsageQuotaCollection) CsmUsageQuotaCollectionPreparer() (*http.Request, error) {
+	if client.NextLink == nil || len(to.String(client.NextLink)) <= 0 {
+		return nil, nil
+	}
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(client.NextLink)))
+}
+
 // Csr is certificate signing request object
 type Csr struct {
 	autorest.Response `json:"-"`
@@ -1120,6 +1192,18 @@ type DeletedSiteCollection struct {
 	autorest.Response `json:"-"`
 	Value             *[]DeletedSite `json:"value,omitempty"`
 	NextLink          *string        `json:"nextLink,omitempty"`
+}
+
+// DeletedSiteCollectionPreparer prepares a request to retrieve the next set of results. It returns
+// nil if no more results exist.
+func (client DeletedSiteCollection) DeletedSiteCollectionPreparer() (*http.Request, error) {
+	if client.NextLink == nil || len(to.String(client.NextLink)) <= 0 {
+		return nil, nil
+	}
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(client.NextLink)))
 }
 
 // DeletedSiteProperties is
@@ -1175,6 +1259,18 @@ type DeploymentCollection struct {
 	NextLink          *string       `json:"nextLink,omitempty"`
 }
 
+// DeploymentCollectionPreparer prepares a request to retrieve the next set of results. It returns
+// nil if no more results exist.
+func (client DeploymentCollection) DeploymentCollectionPreparer() (*http.Request, error) {
+	if client.NextLink == nil || len(to.String(client.NextLink)) <= 0 {
+		return nil, nil
+	}
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(client.NextLink)))
+}
+
 // DeploymentProperties is
 type DeploymentProperties struct {
 	ID          *string    `json:"id,omitempty"`
@@ -1214,6 +1310,18 @@ type DomainCollection struct {
 	autorest.Response `json:"-"`
 	Value             *[]Domain `json:"value,omitempty"`
 	NextLink          *string   `json:"nextLink,omitempty"`
+}
+
+// DomainCollectionPreparer prepares a request to retrieve the next set of results. It returns
+// nil if no more results exist.
+func (client DomainCollection) DomainCollectionPreparer() (*http.Request, error) {
+	if client.NextLink == nil || len(to.String(client.NextLink)) <= 0 {
+		return nil, nil
+	}
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(client.NextLink)))
 }
 
 // DomainControlCenterSsoRequest is single sign on request information for
@@ -1333,6 +1441,18 @@ type GeoRegionCollection struct {
 	NextLink          *string      `json:"nextLink,omitempty"`
 }
 
+// GeoRegionCollectionPreparer prepares a request to retrieve the next set of results. It returns
+// nil if no more results exist.
+func (client GeoRegionCollection) GeoRegionCollectionPreparer() (*http.Request, error) {
+	if client.NextLink == nil || len(to.String(client.NextLink)) <= 0 {
+		return nil, nil
+	}
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(client.NextLink)))
+}
+
 // GeoRegionProperties is
 type GeoRegionProperties struct {
 	Name        *string `json:"name,omitempty"`
@@ -1369,6 +1489,18 @@ type HostingEnvironmentCollection struct {
 	autorest.Response `json:"-"`
 	Value             *[]HostingEnvironment `json:"value,omitempty"`
 	NextLink          *string               `json:"nextLink,omitempty"`
+}
+
+// HostingEnvironmentCollectionPreparer prepares a request to retrieve the next set of results. It returns
+// nil if no more results exist.
+func (client HostingEnvironmentCollection) HostingEnvironmentCollectionPreparer() (*http.Request, error) {
+	if client.NextLink == nil || len(to.String(client.NextLink)) <= 0 {
+		return nil, nil
+	}
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(client.NextLink)))
 }
 
 // HostingEnvironmentDiagnostics is diagnostics for a hosting environment (App
@@ -1450,6 +1582,18 @@ type HostNameBindingCollection struct {
 	autorest.Response `json:"-"`
 	Value             *[]HostNameBinding `json:"value,omitempty"`
 	NextLink          *string            `json:"nextLink,omitempty"`
+}
+
+// HostNameBindingCollectionPreparer prepares a request to retrieve the next set of results. It returns
+// nil if no more results exist.
+func (client HostNameBindingCollection) HostNameBindingCollectionPreparer() (*http.Request, error) {
+	if client.NextLink == nil || len(to.String(client.NextLink)) <= 0 {
+		return nil, nil
+	}
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(client.NextLink)))
 }
 
 // HostNameBindingProperties is
@@ -1559,6 +1703,18 @@ type ManagedHostingEnvironmentCollection struct {
 	NextLink          *string                      `json:"nextLink,omitempty"`
 }
 
+// ManagedHostingEnvironmentCollectionPreparer prepares a request to retrieve the next set of results. It returns
+// nil if no more results exist.
+func (client ManagedHostingEnvironmentCollection) ManagedHostingEnvironmentCollectionPreparer() (*http.Request, error) {
+	if client.NextLink == nil || len(to.String(client.NextLink)) <= 0 {
+		return nil, nil
+	}
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(client.NextLink)))
+}
+
 // ManagedHostingEnvironmentProperties is
 type ManagedHostingEnvironmentProperties struct {
 	Name                 *string                         `json:"name,omitempty"`
@@ -1600,6 +1756,18 @@ type MetricDefinitionCollection struct {
 	NextLink          *string             `json:"nextLink,omitempty"`
 }
 
+// MetricDefinitionCollectionPreparer prepares a request to retrieve the next set of results. It returns
+// nil if no more results exist.
+func (client MetricDefinitionCollection) MetricDefinitionCollectionPreparer() (*http.Request, error) {
+	if client.NextLink == nil || len(to.String(client.NextLink)) <= 0 {
+		return nil, nil
+	}
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(client.NextLink)))
+}
+
 // MetricDefinitionProperties is
 type MetricDefinitionProperties struct {
 	Name                   *string               `json:"name,omitempty"`
@@ -1619,6 +1787,18 @@ type NameIdentifierCollection struct {
 	autorest.Response `json:"-"`
 	Value             *[]NameIdentifier `json:"value,omitempty"`
 	NextLink          *string           `json:"nextLink,omitempty"`
+}
+
+// NameIdentifierCollectionPreparer prepares a request to retrieve the next set of results. It returns
+// nil if no more results exist.
+func (client NameIdentifierCollection) NameIdentifierCollectionPreparer() (*http.Request, error) {
+	if client.NextLink == nil || len(to.String(client.NextLink)) <= 0 {
+		return nil, nil
+	}
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(client.NextLink)))
 }
 
 // NameValuePair is name value pair
@@ -1817,6 +1997,18 @@ type ResourceMetricCollection struct {
 	NextLink          *string           `json:"nextLink,omitempty"`
 }
 
+// ResourceMetricCollectionPreparer prepares a request to retrieve the next set of results. It returns
+// nil if no more results exist.
+func (client ResourceMetricCollection) ResourceMetricCollectionPreparer() (*http.Request, error) {
+	if client.NextLink == nil || len(to.String(client.NextLink)) <= 0 {
+		return nil, nil
+	}
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(client.NextLink)))
+}
+
 // ResourceMetricName is name of a metric for any resource
 type ResourceMetricName struct {
 	Value          *string `json:"value,omitempty"`
@@ -1901,6 +2093,18 @@ type ServerFarmCollection struct {
 	autorest.Response `json:"-"`
 	Value             *[]ServerFarmWithRichSku `json:"value,omitempty"`
 	NextLink          *string                  `json:"nextLink,omitempty"`
+}
+
+// ServerFarmCollectionPreparer prepares a request to retrieve the next set of results. It returns
+// nil if no more results exist.
+func (client ServerFarmCollection) ServerFarmCollectionPreparer() (*http.Request, error) {
+	if client.NextLink == nil || len(to.String(client.NextLink)) <= 0 {
+		return nil, nil
+	}
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(client.NextLink)))
 }
 
 // ServerFarmWithRichSku is app Service Plan Model
@@ -2088,6 +2292,18 @@ type SiteInstanceCollection struct {
 	NextLink          *string         `json:"nextLink,omitempty"`
 }
 
+// SiteInstanceCollectionPreparer prepares a request to retrieve the next set of results. It returns
+// nil if no more results exist.
+func (client SiteInstanceCollection) SiteInstanceCollectionPreparer() (*http.Request, error) {
+	if client.NextLink == nil || len(to.String(client.NextLink)) <= 0 {
+		return nil, nil
+	}
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(client.NextLink)))
+}
+
 // SiteInstanceProperties is
 type SiteInstanceProperties struct {
 	Name *string `json:"name,omitempty"`
@@ -2212,6 +2428,18 @@ type SkuInfoCollection struct {
 	NextLink          *string    `json:"nextLink,omitempty"`
 }
 
+// SkuInfoCollectionPreparer prepares a request to retrieve the next set of results. It returns
+// nil if no more results exist.
+func (client SkuInfoCollection) SkuInfoCollectionPreparer() (*http.Request, error) {
+	if client.NextLink == nil || len(to.String(client.NextLink)) <= 0 {
+		return nil, nil
+	}
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(client.NextLink)))
+}
+
 // SlotConfigNames is class containing names for connection strings and
 // application settings to be marked as sticky to the slot
 // and not moved during swap operation
@@ -2258,6 +2486,18 @@ type SlotDifferenceCollection struct {
 	NextLink          *string           `json:"nextLink,omitempty"`
 }
 
+// SlotDifferenceCollectionPreparer prepares a request to retrieve the next set of results. It returns
+// nil if no more results exist.
+func (client SlotDifferenceCollection) SlotDifferenceCollectionPreparer() (*http.Request, error) {
+	if client.NextLink == nil || len(to.String(client.NextLink)) <= 0 {
+		return nil, nil
+	}
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(client.NextLink)))
+}
+
 // SlotDifferenceProperties is
 type SlotDifferenceProperties struct {
 	Type               *string `json:"type,omitempty"`
@@ -2295,6 +2535,18 @@ type SourceControlCollection struct {
 	NextLink          *string          `json:"nextLink,omitempty"`
 }
 
+// SourceControlCollectionPreparer prepares a request to retrieve the next set of results. It returns
+// nil if no more results exist.
+func (client SourceControlCollection) SourceControlCollectionPreparer() (*http.Request, error) {
+	if client.NextLink == nil || len(to.String(client.NextLink)) <= 0 {
+		return nil, nil
+	}
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(client.NextLink)))
+}
+
 // SourceControlProperties is
 type SourceControlProperties struct {
 	Name           *string    `json:"name,omitempty"`
@@ -2323,6 +2575,18 @@ type StampCapacityCollection struct {
 	autorest.Response `json:"-"`
 	Value             *[]StampCapacity `json:"value,omitempty"`
 	NextLink          *string          `json:"nextLink,omitempty"`
+}
+
+// StampCapacityCollectionPreparer prepares a request to retrieve the next set of results. It returns
+// nil if no more results exist.
+func (client StampCapacityCollection) StampCapacityCollectionPreparer() (*http.Request, error) {
+	if client.NextLink == nil || len(to.String(client.NextLink)) <= 0 {
+		return nil, nil
+	}
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(client.NextLink)))
 }
 
 // StatusCodesBasedTrigger is statusCodeBasedTrigger
@@ -2361,6 +2625,18 @@ type TldLegalAgreementCollection struct {
 	NextLink          *string              `json:"nextLink,omitempty"`
 }
 
+// TldLegalAgreementCollectionPreparer prepares a request to retrieve the next set of results. It returns
+// nil if no more results exist.
+func (client TldLegalAgreementCollection) TldLegalAgreementCollectionPreparer() (*http.Request, error) {
+	if client.NextLink == nil || len(to.String(client.NextLink)) <= 0 {
+		return nil, nil
+	}
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(client.NextLink)))
+}
+
 // TopLevelDomain is a top level domain object
 type TopLevelDomain struct {
 	autorest.Response `json:"-"`
@@ -2386,6 +2662,18 @@ type TopLevelDomainCollection struct {
 	NextLink          *string           `json:"nextLink,omitempty"`
 }
 
+// TopLevelDomainCollectionPreparer prepares a request to retrieve the next set of results. It returns
+// nil if no more results exist.
+func (client TopLevelDomainCollection) TopLevelDomainCollectionPreparer() (*http.Request, error) {
+	if client.NextLink == nil || len(to.String(client.NextLink)) <= 0 {
+		return nil, nil
+	}
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(client.NextLink)))
+}
+
 // TopLevelDomainProperties is
 type TopLevelDomainProperties struct {
 	Name    *string `json:"name,omitempty"`
@@ -2408,6 +2696,18 @@ type UsageCollection struct {
 	autorest.Response `json:"-"`
 	Value             *[]Usage `json:"value,omitempty"`
 	NextLink          *string  `json:"nextLink,omitempty"`
+}
+
+// UsageCollectionPreparer prepares a request to retrieve the next set of results. It returns
+// nil if no more results exist.
+func (client UsageCollection) UsageCollectionPreparer() (*http.Request, error) {
+	if client.NextLink == nil || len(to.String(client.NextLink)) <= 0 {
+		return nil, nil
+	}
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(client.NextLink)))
 }
 
 // UsageProperties is
@@ -2553,6 +2853,18 @@ type WorkerPoolCollection struct {
 	autorest.Response `json:"-"`
 	Value             *[]WorkerPool `json:"value,omitempty"`
 	NextLink          *string       `json:"nextLink,omitempty"`
+}
+
+// WorkerPoolCollectionPreparer prepares a request to retrieve the next set of results. It returns
+// nil if no more results exist.
+func (client WorkerPoolCollection) WorkerPoolCollectionPreparer() (*http.Request, error) {
+	if client.NextLink == nil || len(to.String(client.NextLink)) <= 0 {
+		return nil, nil
+	}
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(client.NextLink)))
 }
 
 // WorkerPoolProperties is

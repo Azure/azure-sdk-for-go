@@ -1,5 +1,5 @@
 // Package servicebus implements the Azure ARM Servicebus service API version
-// 2014-09-01.
+// 2015-08-01.
 //
 // Azure Service Bus client
 package servicebus
@@ -28,7 +28,7 @@ import (
 
 const (
 	// APIVersion is the version of the Servicebus
-	APIVersion = "2014-09-01"
+	APIVersion = "2015-08-01"
 
 	// DefaultBaseURI is the default URI used for the service Servicebus
 	DefaultBaseURI = "https://management.azure.com"

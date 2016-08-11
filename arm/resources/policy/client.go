@@ -1,5 +1,5 @@
 // Package policy implements the Azure ARM Policy service API version
-// 2015-10-01-preview.
+// 2016-04-01.
 //
 package policy
 
@@ -27,7 +27,7 @@ import (
 
 const (
 	// APIVersion is the version of the Policy
-	APIVersion = "2015-10-01-preview"
+	APIVersion = "2016-04-01"
 
 	// DefaultBaseURI is the default URI used for the service Policy
 	DefaultBaseURI = "https://management.azure.com"

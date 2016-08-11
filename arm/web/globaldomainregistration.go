@@ -168,6 +168,30 @@ func (client GlobalDomainRegistrationClient) GetAllDomainsResponder(resp *http.R
 	return
 }
 
+// GetAllDomainsNextResults retrieves the next set of results, if any.
+func (client GlobalDomainRegistrationClient) GetAllDomainsNextResults(lastResults DomainCollection) (result DomainCollection, err error) {
+	req, err := lastResults.DomainCollectionPreparer()
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "web.GlobalDomainRegistrationClient", "GetAllDomains", nil, "Failure preparing next results request request")
+	}
+	if req == nil {
+		return
+	}
+
+	resp, err := client.GetAllDomainsSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "web.GlobalDomainRegistrationClient", "GetAllDomains", resp, "Failure sending next results request request")
+	}
+
+	result, err = client.GetAllDomainsResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.GlobalDomainRegistrationClient", "GetAllDomains", resp, "Failure responding to next results request request")
+	}
+
+	return
+}
+
 // GetDomainControlCenterSsoRequest sends the get domain control center sso
 // request request.
 func (client GlobalDomainRegistrationClient) GetDomainControlCenterSsoRequest() (result DomainControlCenterSsoRequest, err error) {
@@ -286,6 +310,30 @@ func (client GlobalDomainRegistrationClient) ListDomainRecommendationsResponder(
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// ListDomainRecommendationsNextResults retrieves the next set of results, if any.
+func (client GlobalDomainRegistrationClient) ListDomainRecommendationsNextResults(lastResults NameIdentifierCollection) (result NameIdentifierCollection, err error) {
+	req, err := lastResults.NameIdentifierCollectionPreparer()
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "web.GlobalDomainRegistrationClient", "ListDomainRecommendations", nil, "Failure preparing next results request request")
+	}
+	if req == nil {
+		return
+	}
+
+	resp, err := client.ListDomainRecommendationsSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "web.GlobalDomainRegistrationClient", "ListDomainRecommendations", resp, "Failure sending next results request request")
+	}
+
+	result, err = client.ListDomainRecommendationsResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.GlobalDomainRegistrationClient", "ListDomainRecommendations", resp, "Failure responding to next results request request")
+	}
+
 	return
 }
 

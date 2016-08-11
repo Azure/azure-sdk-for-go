@@ -254,7 +254,7 @@ func (client SecurityRulesClient) GetResponder(resp *http.Response) (result Secu
 	return
 }
 
-// List the List network security rule opertion retrieves all the security
+// List the List network security rule operation retrieves all the security
 // rules in a network security group.
 //
 // resourceGroupName is the name of the resource group.

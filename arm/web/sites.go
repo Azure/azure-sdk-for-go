@@ -3251,6 +3251,30 @@ func (client SitesClient) GetDeletedSitesResponder(resp *http.Response) (result 
 	return
 }
 
+// GetDeletedSitesNextResults retrieves the next set of results, if any.
+func (client SitesClient) GetDeletedSitesNextResults(lastResults DeletedSiteCollection) (result DeletedSiteCollection, err error) {
+	req, err := lastResults.DeletedSiteCollectionPreparer()
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "web.SitesClient", "GetDeletedSites", nil, "Failure preparing next results request request")
+	}
+	if req == nil {
+		return
+	}
+
+	resp, err := client.GetDeletedSitesSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "web.SitesClient", "GetDeletedSites", resp, "Failure sending next results request request")
+	}
+
+	result, err = client.GetDeletedSitesResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.SitesClient", "GetDeletedSites", resp, "Failure responding to next results request request")
+	}
+
+	return
+}
+
 // GetDeployment sends the get deployment request.
 //
 // resourceGroupName is name of resource group name is name of web app id is
@@ -3374,6 +3398,30 @@ func (client SitesClient) GetDeploymentsResponder(resp *http.Response) (result D
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// GetDeploymentsNextResults retrieves the next set of results, if any.
+func (client SitesClient) GetDeploymentsNextResults(lastResults DeploymentCollection) (result DeploymentCollection, err error) {
+	req, err := lastResults.DeploymentCollectionPreparer()
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "web.SitesClient", "GetDeployments", nil, "Failure preparing next results request request")
+	}
+	if req == nil {
+		return
+	}
+
+	resp, err := client.GetDeploymentsSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "web.SitesClient", "GetDeployments", resp, "Failure sending next results request request")
+	}
+
+	result, err = client.GetDeploymentsResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.SitesClient", "GetDeployments", resp, "Failure responding to next results request request")
+	}
+
 	return
 }
 
@@ -3508,6 +3556,30 @@ func (client SitesClient) GetDeploymentsSlotResponder(resp *http.Response) (resu
 	return
 }
 
+// GetDeploymentsSlotNextResults retrieves the next set of results, if any.
+func (client SitesClient) GetDeploymentsSlotNextResults(lastResults DeploymentCollection) (result DeploymentCollection, err error) {
+	req, err := lastResults.DeploymentCollectionPreparer()
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "web.SitesClient", "GetDeploymentsSlot", nil, "Failure preparing next results request request")
+	}
+	if req == nil {
+		return
+	}
+
+	resp, err := client.GetDeploymentsSlotSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "web.SitesClient", "GetDeploymentsSlot", resp, "Failure sending next results request request")
+	}
+
+	result, err = client.GetDeploymentsSlotResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.SitesClient", "GetDeploymentsSlot", resp, "Failure responding to next results request request")
+	}
+
+	return
+}
+
 // GetInstanceDeployment sends the get instance deployment request.
 //
 // resourceGroupName is name of resource group name is name of web app id is
@@ -3634,6 +3706,30 @@ func (client SitesClient) GetInstanceDeploymentsResponder(resp *http.Response) (
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// GetInstanceDeploymentsNextResults retrieves the next set of results, if any.
+func (client SitesClient) GetInstanceDeploymentsNextResults(lastResults DeploymentCollection) (result DeploymentCollection, err error) {
+	req, err := lastResults.DeploymentCollectionPreparer()
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "web.SitesClient", "GetInstanceDeployments", nil, "Failure preparing next results request request")
+	}
+	if req == nil {
+		return
+	}
+
+	resp, err := client.GetInstanceDeploymentsSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "web.SitesClient", "GetInstanceDeployments", resp, "Failure sending next results request request")
+	}
+
+	result, err = client.GetInstanceDeploymentsResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.SitesClient", "GetInstanceDeployments", resp, "Failure responding to next results request request")
+	}
+
 	return
 }
 
@@ -3767,6 +3863,30 @@ func (client SitesClient) GetInstanceDeploymentsSlotResponder(resp *http.Respons
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// GetInstanceDeploymentsSlotNextResults retrieves the next set of results, if any.
+func (client SitesClient) GetInstanceDeploymentsSlotNextResults(lastResults DeploymentCollection) (result DeploymentCollection, err error) {
+	req, err := lastResults.DeploymentCollectionPreparer()
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "web.SitesClient", "GetInstanceDeploymentsSlot", nil, "Failure preparing next results request request")
+	}
+	if req == nil {
+		return
+	}
+
+	resp, err := client.GetInstanceDeploymentsSlotSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "web.SitesClient", "GetInstanceDeploymentsSlot", resp, "Failure sending next results request request")
+	}
+
+	result, err = client.GetInstanceDeploymentsSlotResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.SitesClient", "GetInstanceDeploymentsSlot", resp, "Failure responding to next results request request")
+	}
+
 	return
 }
 
@@ -4484,6 +4604,30 @@ func (client SitesClient) GetSiteHostNameBindingsResponder(resp *http.Response) 
 	return
 }
 
+// GetSiteHostNameBindingsNextResults retrieves the next set of results, if any.
+func (client SitesClient) GetSiteHostNameBindingsNextResults(lastResults HostNameBindingCollection) (result HostNameBindingCollection, err error) {
+	req, err := lastResults.HostNameBindingCollectionPreparer()
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "web.SitesClient", "GetSiteHostNameBindings", nil, "Failure preparing next results request request")
+	}
+	if req == nil {
+		return
+	}
+
+	resp, err := client.GetSiteHostNameBindingsSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "web.SitesClient", "GetSiteHostNameBindings", resp, "Failure sending next results request request")
+	}
+
+	result, err = client.GetSiteHostNameBindingsResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.SitesClient", "GetSiteHostNameBindings", resp, "Failure responding to next results request request")
+	}
+
+	return
+}
+
 // GetSiteHostNameBindingSlot sends the get site host name binding slot
 // request.
 //
@@ -4617,6 +4761,30 @@ func (client SitesClient) GetSiteHostNameBindingsSlotResponder(resp *http.Respon
 	return
 }
 
+// GetSiteHostNameBindingsSlotNextResults retrieves the next set of results, if any.
+func (client SitesClient) GetSiteHostNameBindingsSlotNextResults(lastResults HostNameBindingCollection) (result HostNameBindingCollection, err error) {
+	req, err := lastResults.HostNameBindingCollectionPreparer()
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "web.SitesClient", "GetSiteHostNameBindingsSlot", nil, "Failure preparing next results request request")
+	}
+	if req == nil {
+		return
+	}
+
+	resp, err := client.GetSiteHostNameBindingsSlotSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "web.SitesClient", "GetSiteHostNameBindingsSlot", resp, "Failure sending next results request request")
+	}
+
+	result, err = client.GetSiteHostNameBindingsSlotResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.SitesClient", "GetSiteHostNameBindingsSlot", resp, "Failure responding to next results request request")
+	}
+
+	return
+}
+
 // GetSiteInstanceIdentifiers sends the get site instance identifiers request.
 //
 // resourceGroupName is name of resource group name is name of web app
@@ -4676,6 +4844,30 @@ func (client SitesClient) GetSiteInstanceIdentifiersResponder(resp *http.Respons
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// GetSiteInstanceIdentifiersNextResults retrieves the next set of results, if any.
+func (client SitesClient) GetSiteInstanceIdentifiersNextResults(lastResults SiteInstanceCollection) (result SiteInstanceCollection, err error) {
+	req, err := lastResults.SiteInstanceCollectionPreparer()
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "web.SitesClient", "GetSiteInstanceIdentifiers", nil, "Failure preparing next results request request")
+	}
+	if req == nil {
+		return
+	}
+
+	resp, err := client.GetSiteInstanceIdentifiersSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "web.SitesClient", "GetSiteInstanceIdentifiers", resp, "Failure sending next results request request")
+	}
+
+	result, err = client.GetSiteInstanceIdentifiersResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.SitesClient", "GetSiteInstanceIdentifiers", resp, "Failure responding to next results request request")
+	}
+
 	return
 }
 
@@ -4742,6 +4934,30 @@ func (client SitesClient) GetSiteInstanceIdentifiersSlotResponder(resp *http.Res
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// GetSiteInstanceIdentifiersSlotNextResults retrieves the next set of results, if any.
+func (client SitesClient) GetSiteInstanceIdentifiersSlotNextResults(lastResults SiteInstanceCollection) (result SiteInstanceCollection, err error) {
+	req, err := lastResults.SiteInstanceCollectionPreparer()
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "web.SitesClient", "GetSiteInstanceIdentifiersSlot", nil, "Failure preparing next results request request")
+	}
+	if req == nil {
+		return
+	}
+
+	resp, err := client.GetSiteInstanceIdentifiersSlotSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "web.SitesClient", "GetSiteInstanceIdentifiersSlot", resp, "Failure sending next results request request")
+	}
+
+	result, err = client.GetSiteInstanceIdentifiersSlotResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.SitesClient", "GetSiteInstanceIdentifiersSlot", resp, "Failure responding to next results request request")
+	}
+
 	return
 }
 
@@ -4934,6 +5150,30 @@ func (client SitesClient) GetSiteMetricDefinitionsResponder(resp *http.Response)
 	return
 }
 
+// GetSiteMetricDefinitionsNextResults retrieves the next set of results, if any.
+func (client SitesClient) GetSiteMetricDefinitionsNextResults(lastResults MetricDefinitionCollection) (result MetricDefinitionCollection, err error) {
+	req, err := lastResults.MetricDefinitionCollectionPreparer()
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "web.SitesClient", "GetSiteMetricDefinitions", nil, "Failure preparing next results request request")
+	}
+	if req == nil {
+		return
+	}
+
+	resp, err := client.GetSiteMetricDefinitionsSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "web.SitesClient", "GetSiteMetricDefinitions", resp, "Failure sending next results request request")
+	}
+
+	result, err = client.GetSiteMetricDefinitionsResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.SitesClient", "GetSiteMetricDefinitions", resp, "Failure responding to next results request request")
+	}
+
+	return
+}
+
 // GetSiteMetricDefinitionsSlot sends the get site metric definitions slot
 // request.
 //
@@ -4997,6 +5237,30 @@ func (client SitesClient) GetSiteMetricDefinitionsSlotResponder(resp *http.Respo
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// GetSiteMetricDefinitionsSlotNextResults retrieves the next set of results, if any.
+func (client SitesClient) GetSiteMetricDefinitionsSlotNextResults(lastResults MetricDefinitionCollection) (result MetricDefinitionCollection, err error) {
+	req, err := lastResults.MetricDefinitionCollectionPreparer()
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "web.SitesClient", "GetSiteMetricDefinitionsSlot", nil, "Failure preparing next results request request")
+	}
+	if req == nil {
+		return
+	}
+
+	resp, err := client.GetSiteMetricDefinitionsSlotSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "web.SitesClient", "GetSiteMetricDefinitionsSlot", resp, "Failure sending next results request request")
+	}
+
+	result, err = client.GetSiteMetricDefinitionsSlotResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.SitesClient", "GetSiteMetricDefinitionsSlot", resp, "Failure responding to next results request request")
+	}
+
 	return
 }
 
@@ -5073,6 +5337,30 @@ func (client SitesClient) GetSiteMetricsResponder(resp *http.Response) (result R
 	return
 }
 
+// GetSiteMetricsNextResults retrieves the next set of results, if any.
+func (client SitesClient) GetSiteMetricsNextResults(lastResults ResourceMetricCollection) (result ResourceMetricCollection, err error) {
+	req, err := lastResults.ResourceMetricCollectionPreparer()
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "web.SitesClient", "GetSiteMetrics", nil, "Failure preparing next results request request")
+	}
+	if req == nil {
+		return
+	}
+
+	resp, err := client.GetSiteMetricsSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "web.SitesClient", "GetSiteMetrics", resp, "Failure sending next results request request")
+	}
+
+	result, err = client.GetSiteMetricsResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.SitesClient", "GetSiteMetrics", resp, "Failure responding to next results request request")
+	}
+
+	return
+}
+
 // GetSiteMetricsSlot sends the get site metrics slot request.
 //
 // resourceGroupName is name of resource group name is name of web app slot is
@@ -5145,6 +5433,30 @@ func (client SitesClient) GetSiteMetricsSlotResponder(resp *http.Response) (resu
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// GetSiteMetricsSlotNextResults retrieves the next set of results, if any.
+func (client SitesClient) GetSiteMetricsSlotNextResults(lastResults ResourceMetricCollection) (result ResourceMetricCollection, err error) {
+	req, err := lastResults.ResourceMetricCollectionPreparer()
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "web.SitesClient", "GetSiteMetricsSlot", nil, "Failure preparing next results request request")
+	}
+	if req == nil {
+		return
+	}
+
+	resp, err := client.GetSiteMetricsSlotSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "web.SitesClient", "GetSiteMetricsSlot", resp, "Failure sending next results request request")
+	}
+
+	result, err = client.GetSiteMetricsSlotResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.SitesClient", "GetSiteMetricsSlot", resp, "Failure responding to next results request request")
+	}
+
 	return
 }
 
@@ -5738,6 +6050,30 @@ func (client SitesClient) GetSitesResponder(resp *http.Response) (result SiteCol
 	return
 }
 
+// GetSitesNextResults retrieves the next set of results, if any.
+func (client SitesClient) GetSitesNextResults(lastResults SiteCollection) (result SiteCollection, err error) {
+	req, err := lastResults.SiteCollectionPreparer()
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "web.SitesClient", "GetSites", nil, "Failure preparing next results request request")
+	}
+	if req == nil {
+		return
+	}
+
+	resp, err := client.GetSitesSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "web.SitesClient", "GetSites", resp, "Failure sending next results request request")
+	}
+
+	result, err = client.GetSitesResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.SitesClient", "GetSites", resp, "Failure responding to next results request request")
+	}
+
+	return
+}
+
 // GetSiteSlot sends the get site slot request.
 //
 // resourceGroupName is name of resource group name is name of web app slot is
@@ -5870,6 +6206,30 @@ func (client SitesClient) GetSiteSlotsResponder(resp *http.Response) (result Sit
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// GetSiteSlotsNextResults retrieves the next set of results, if any.
+func (client SitesClient) GetSiteSlotsNextResults(lastResults SiteCollection) (result SiteCollection, err error) {
+	req, err := lastResults.SiteCollectionPreparer()
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "web.SitesClient", "GetSiteSlots", nil, "Failure preparing next results request request")
+	}
+	if req == nil {
+		return
+	}
+
+	resp, err := client.GetSiteSlotsSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "web.SitesClient", "GetSiteSlots", resp, "Failure sending next results request request")
+	}
+
+	result, err = client.GetSiteSlotsResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.SitesClient", "GetSiteSlots", resp, "Failure responding to next results request request")
+	}
+
 	return
 }
 
@@ -6195,6 +6555,30 @@ func (client SitesClient) GetSiteUsagesResponder(resp *http.Response) (result Cs
 	return
 }
 
+// GetSiteUsagesNextResults retrieves the next set of results, if any.
+func (client SitesClient) GetSiteUsagesNextResults(lastResults CsmUsageQuotaCollection) (result CsmUsageQuotaCollection, err error) {
+	req, err := lastResults.CsmUsageQuotaCollectionPreparer()
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "web.SitesClient", "GetSiteUsages", nil, "Failure preparing next results request request")
+	}
+	if req == nil {
+		return
+	}
+
+	resp, err := client.GetSiteUsagesSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "web.SitesClient", "GetSiteUsages", resp, "Failure sending next results request request")
+	}
+
+	result, err = client.GetSiteUsagesResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.SitesClient", "GetSiteUsages", resp, "Failure responding to next results request request")
+	}
+
+	return
+}
+
 // GetSiteUsagesSlot sends the get site usages slot request.
 //
 // resourceGroupName is name of resource group name is name of web app slot is
@@ -6264,6 +6648,30 @@ func (client SitesClient) GetSiteUsagesSlotResponder(resp *http.Response) (resul
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// GetSiteUsagesSlotNextResults retrieves the next set of results, if any.
+func (client SitesClient) GetSiteUsagesSlotNextResults(lastResults CsmUsageQuotaCollection) (result CsmUsageQuotaCollection, err error) {
+	req, err := lastResults.CsmUsageQuotaCollectionPreparer()
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "web.SitesClient", "GetSiteUsagesSlot", nil, "Failure preparing next results request request")
+	}
+	if req == nil {
+		return
+	}
+
+	resp, err := client.GetSiteUsagesSlotSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "web.SitesClient", "GetSiteUsagesSlot", resp, "Failure sending next results request request")
+	}
+
+	result, err = client.GetSiteUsagesSlotResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.SitesClient", "GetSiteUsagesSlot", resp, "Failure responding to next results request request")
+	}
+
 	return
 }
 
@@ -6786,6 +7194,30 @@ func (client SitesClient) GetSlotsDifferencesFromProductionResponder(resp *http.
 	return
 }
 
+// GetSlotsDifferencesFromProductionNextResults retrieves the next set of results, if any.
+func (client SitesClient) GetSlotsDifferencesFromProductionNextResults(lastResults SlotDifferenceCollection) (result SlotDifferenceCollection, err error) {
+	req, err := lastResults.SlotDifferenceCollectionPreparer()
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "web.SitesClient", "GetSlotsDifferencesFromProduction", nil, "Failure preparing next results request request")
+	}
+	if req == nil {
+		return
+	}
+
+	resp, err := client.GetSlotsDifferencesFromProductionSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "web.SitesClient", "GetSlotsDifferencesFromProduction", resp, "Failure sending next results request request")
+	}
+
+	result, err = client.GetSlotsDifferencesFromProductionResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.SitesClient", "GetSlotsDifferencesFromProduction", resp, "Failure responding to next results request request")
+	}
+
+	return
+}
+
 // GetSlotsDifferencesSlot sends the get slots differences slot request.
 //
 // resourceGroupName is name of resource group name is name of web app
@@ -6850,6 +7282,30 @@ func (client SitesClient) GetSlotsDifferencesSlotResponder(resp *http.Response) 
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// GetSlotsDifferencesSlotNextResults retrieves the next set of results, if any.
+func (client SitesClient) GetSlotsDifferencesSlotNextResults(lastResults SlotDifferenceCollection) (result SlotDifferenceCollection, err error) {
+	req, err := lastResults.SlotDifferenceCollectionPreparer()
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "web.SitesClient", "GetSlotsDifferencesSlot", nil, "Failure preparing next results request request")
+	}
+	if req == nil {
+		return
+	}
+
+	resp, err := client.GetSlotsDifferencesSlotSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "web.SitesClient", "GetSlotsDifferencesSlot", resp, "Failure sending next results request request")
+	}
+
+	result, err = client.GetSlotsDifferencesSlotResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.SitesClient", "GetSlotsDifferencesSlot", resp, "Failure responding to next results request request")
+	}
+
 	return
 }
 
@@ -7296,6 +7752,30 @@ func (client SitesClient) ListSiteBackupsResponder(resp *http.Response) (result 
 	return
 }
 
+// ListSiteBackupsNextResults retrieves the next set of results, if any.
+func (client SitesClient) ListSiteBackupsNextResults(lastResults BackupItemCollection) (result BackupItemCollection, err error) {
+	req, err := lastResults.BackupItemCollectionPreparer()
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "web.SitesClient", "ListSiteBackups", nil, "Failure preparing next results request request")
+	}
+	if req == nil {
+		return
+	}
+
+	resp, err := client.ListSiteBackupsSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "web.SitesClient", "ListSiteBackups", resp, "Failure sending next results request request")
+	}
+
+	result, err = client.ListSiteBackupsResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.SitesClient", "ListSiteBackups", resp, "Failure responding to next results request request")
+	}
+
+	return
+}
+
 // ListSiteBackupsSlot sends the list site backups slot request.
 //
 // resourceGroupName is name of resource group name is name of web app slot is
@@ -7358,6 +7838,30 @@ func (client SitesClient) ListSiteBackupsSlotResponder(resp *http.Response) (res
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// ListSiteBackupsSlotNextResults retrieves the next set of results, if any.
+func (client SitesClient) ListSiteBackupsSlotNextResults(lastResults BackupItemCollection) (result BackupItemCollection, err error) {
+	req, err := lastResults.BackupItemCollectionPreparer()
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "web.SitesClient", "ListSiteBackupsSlot", nil, "Failure preparing next results request request")
+	}
+	if req == nil {
+		return
+	}
+
+	resp, err := client.ListSiteBackupsSlotSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "web.SitesClient", "ListSiteBackupsSlot", resp, "Failure sending next results request request")
+	}
+
+	result, err = client.ListSiteBackupsSlotResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.SitesClient", "ListSiteBackupsSlot", resp, "Failure responding to next results request request")
+	}
+
 	return
 }
 

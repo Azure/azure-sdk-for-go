@@ -252,7 +252,7 @@ func (client SubnetsClient) GetResponder(resp *http.Response) (result Subnet, er
 	return
 }
 
-// List the List subnets opertion retrieves all the subnets in a virtual
+// List the List subnets operation retrieves all the subnets in a virtual
 // network.
 //
 // resourceGroupName is the name of the resource group. virtualNetworkName is

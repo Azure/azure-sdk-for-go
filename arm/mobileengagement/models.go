@@ -268,7 +268,7 @@ type AppCollection struct {
 type AppCollectionListResult struct {
 	autorest.Response `json:"-"`
 	Value             *[]AppCollection `json:"value,omitempty"`
-	NextLink          *string          `json:",omitempty"`
+	NextLink          *string          `json:"nextLink,omitempty"`
 }
 
 // AppCollectionListResultPreparer prepares a request to retrieve the next set of results. It returns
@@ -314,7 +314,7 @@ type ApplicationVersionCriterion struct {
 type AppListResult struct {
 	autorest.Response `json:"-"`
 	Value             *[]App  `json:"value,omitempty"`
-	NextLink          *string `json:",omitempty"`
+	NextLink          *string `json:"nextLink,omitempty"`
 }
 
 // AppListResultPreparer prepares a request to retrieve the next set of results. It returns

@@ -40,70 +40,6 @@ func NewNamespacesClientWithBaseURI(baseURI string, subscriptionID string) Names
 	return NamespacesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// CheckAvailability checks the availability of the given service namespace
-// across all Windows Azure subscriptions. This is useful because the domain
-// name is created based on the service namespace name.
-//
-// parameters is the namespace name.
-func (client NamespacesClient) CheckAvailability(parameters CheckAvailabilityParameters) (result CheckAvailabilityResource, err error) {
-	req, err := client.CheckAvailabilityPreparer(parameters)
-	if err != nil {
-		return result, autorest.NewErrorWithError(err, "servicebus.NamespacesClient", "CheckAvailability", nil, "Failure preparing request")
-	}
-
-	resp, err := client.CheckAvailabilitySender(req)
-	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "servicebus.NamespacesClient", "CheckAvailability", resp, "Failure sending request")
-	}
-
-	result, err = client.CheckAvailabilityResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "servicebus.NamespacesClient", "CheckAvailability", resp, "Failure responding to request")
-	}
-
-	return
-}
-
-// CheckAvailabilityPreparer prepares the CheckAvailability request.
-func (client NamespacesClient) CheckAvailabilityPreparer(parameters CheckAvailabilityParameters) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
-	}
-
-	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsJSON(),
-		autorest.AsPost(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/providers/Microsoft.ServiceBus/checkNamespaceAvailability", pathParameters),
-		autorest.WithJSON(parameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare(&http.Request{})
-}
-
-// CheckAvailabilitySender sends the CheckAvailability request. The method will close the
-// http.Response Body if it receives an error.
-func (client NamespacesClient) CheckAvailabilitySender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
-}
-
-// CheckAvailabilityResponder handles the response to the CheckAvailability request. The method always
-// closes the http.Response Body.
-func (client NamespacesClient) CheckAvailabilityResponder(resp *http.Response) (result CheckAvailabilityResource, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
-}
-
 // CreateOrUpdate creates/Updates a service namespace. Once created, this
 // namespace's resource manifest is immutable. This operation is idempotent.
 // This method may poll for completion. Polling can be canceled by passing
@@ -169,7 +105,7 @@ func (client NamespacesClient) CreateOrUpdateResponder(resp *http.Response) (res
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
+		azure.WithErrorUnlessStatusCode(http.StatusCreated, http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp
 	return
@@ -179,8 +115,8 @@ func (client NamespacesClient) CreateOrUpdateResponder(resp *http.Response) (res
 // namespace
 //
 // resourceGroupName is the name of the resource group. namespaceName is the
-// namespace name. authorizationRuleName is aauthorization Rule Name.
-// parameters is the shared access authorization rule.
+// namespace name. authorizationRuleName is namespace Aauthorization Rule
+// Name. parameters is the shared access authorization rule.
 func (client NamespacesClient) CreateOrUpdateAuthorizationRule(resourceGroupName string, namespaceName string, authorizationRuleName string, parameters SharedAccessAuthorizationRuleCreateOrUpdateParameters) (result SharedAccessAuthorizationRuleResource, err error) {
 	req, err := client.CreateOrUpdateAuthorizationRulePreparer(resourceGroupName, namespaceName, authorizationRuleName, parameters)
 	if err != nil {
@@ -305,7 +241,7 @@ func (client NamespacesClient) DeleteResponder(resp *http.Response) (result auto
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByClosing())
 	result.Response = resp
 	return
@@ -437,7 +373,7 @@ func (client NamespacesClient) GetResponder(resp *http.Response) (result Namespa
 	return
 }
 
-// GetAuthorizationRule gets an authorization rule for a namespace by name.
+// GetAuthorizationRule authorization rule for a namespace by name.
 //
 // resourceGroupName is the name of the resource group. namespaceName is the
 // namespace name authorizationRuleName is authorization rule name.
@@ -501,7 +437,7 @@ func (client NamespacesClient) GetAuthorizationRuleResponder(resp *http.Response
 	return
 }
 
-// ListAuthorizationRules gets the authorization rules for a namespace.
+// ListAuthorizationRules authorization rules for a namespace.
 //
 // resourceGroupName is the name of the resource group. namespaceName is the
 // namespace name
@@ -590,8 +526,7 @@ func (client NamespacesClient) ListAuthorizationRulesNextResults(lastResults Sha
 
 // ListByResourceGroup lists the available namespaces within a resourceGroup.
 //
-// resourceGroupName is the name of the resource group. If resourceGroupName
-// value is null the method lists all the namespaces within subscription
+// resourceGroupName is the name of the resource group.
 func (client NamespacesClient) ListByResourceGroup(resourceGroupName string) (result NamespaceListResult, err error) {
 	req, err := client.ListByResourceGroupPreparer(resourceGroupName)
 	if err != nil {
@@ -757,11 +692,10 @@ func (client NamespacesClient) ListBySubscriptionNextResults(lastResults Namespa
 	return
 }
 
-// ListKeys gets the Primary and Secondary ConnectionStrings to the namespace
+// ListKeys primary and Secondary ConnectionStrings to the namespace
 //
 // resourceGroupName is the name of the resource group. namespaceName is the
-// namespace name. authorizationRuleName is the connection string of the
-// namespace for the specified authorizationRule.
+// namespace name. authorizationRuleName is the authorizationRule name.
 func (client NamespacesClient) ListKeys(resourceGroupName string, namespaceName string, authorizationRuleName string) (result ResourceListKeys, err error) {
 	req, err := client.ListKeysPreparer(resourceGroupName, namespaceName, authorizationRuleName)
 	if err != nil {
@@ -822,13 +756,12 @@ func (client NamespacesClient) ListKeysResponder(resp *http.Response) (result Re
 	return
 }
 
-// RegenerateKeys gets the Primary and Secondary ConnectionStrings to the
+// RegenerateKeys regenerats the Primary or Secondary ConnectionStrings to the
 // namespace
 //
 // resourceGroupName is the name of the resource group. namespaceName is the
-// namespace name. authorizationRuleName is the connection string of the
-// namespace for the specified authorizationRule. parameters is parameters
-// supplied to regenerate Auth Rule.
+// namespace name. authorizationRuleName is the authorizationRule name.
+// parameters is parameters supplied to regenerate Auth Rule.
 func (client NamespacesClient) RegenerateKeys(resourceGroupName string, namespaceName string, authorizationRuleName string, parameters RegenerateKeysParameters) (result ResourceListKeys, err error) {
 	req, err := client.RegenerateKeysPreparer(resourceGroupName, namespaceName, authorizationRuleName, parameters)
 	if err != nil {

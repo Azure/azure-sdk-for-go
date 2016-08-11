@@ -495,6 +495,30 @@ func (client CertificateOrdersClient) GetCertificateOrdersResponder(resp *http.R
 	return
 }
 
+// GetCertificateOrdersNextResults retrieves the next set of results, if any.
+func (client CertificateOrdersClient) GetCertificateOrdersNextResults(lastResults CertificateOrderCollection) (result CertificateOrderCollection, err error) {
+	req, err := lastResults.CertificateOrderCollectionPreparer()
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "web.CertificateOrdersClient", "GetCertificateOrders", nil, "Failure preparing next results request request")
+	}
+	if req == nil {
+		return
+	}
+
+	resp, err := client.GetCertificateOrdersSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "web.CertificateOrdersClient", "GetCertificateOrders", resp, "Failure sending next results request request")
+	}
+
+	result, err = client.GetCertificateOrdersResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.CertificateOrdersClient", "GetCertificateOrders", resp, "Failure responding to next results request request")
+	}
+
+	return
+}
+
 // GetCertificates sends the get certificates request.
 //
 // resourceGroupName is azure resource group name certificateOrderName is
@@ -555,6 +579,30 @@ func (client CertificateOrdersClient) GetCertificatesResponder(resp *http.Respon
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// GetCertificatesNextResults retrieves the next set of results, if any.
+func (client CertificateOrdersClient) GetCertificatesNextResults(lastResults CertificateOrderCertificateCollection) (result CertificateOrderCertificateCollection, err error) {
+	req, err := lastResults.CertificateOrderCertificateCollectionPreparer()
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "web.CertificateOrdersClient", "GetCertificates", nil, "Failure preparing next results request request")
+	}
+	if req == nil {
+		return
+	}
+
+	resp, err := client.GetCertificatesSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "web.CertificateOrdersClient", "GetCertificates", resp, "Failure sending next results request request")
+	}
+
+	result, err = client.GetCertificatesResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.CertificateOrdersClient", "GetCertificates", resp, "Failure responding to next results request request")
+	}
+
 	return
 }
 

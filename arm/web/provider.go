@@ -215,6 +215,30 @@ func (client ProviderClient) GetSourceControlsResponder(resp *http.Response) (re
 	return
 }
 
+// GetSourceControlsNextResults retrieves the next set of results, if any.
+func (client ProviderClient) GetSourceControlsNextResults(lastResults SourceControlCollection) (result SourceControlCollection, err error) {
+	req, err := lastResults.SourceControlCollectionPreparer()
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "web.ProviderClient", "GetSourceControls", nil, "Failure preparing next results request request")
+	}
+	if req == nil {
+		return
+	}
+
+	resp, err := client.GetSourceControlsSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "web.ProviderClient", "GetSourceControls", resp, "Failure sending next results request request")
+	}
+
+	result, err = client.GetSourceControlsResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.ProviderClient", "GetSourceControls", resp, "Failure responding to next results request request")
+	}
+
+	return
+}
+
 // UpdatePublishingUser sends the update publishing user request.
 //
 // requestMessage is details of publishing user

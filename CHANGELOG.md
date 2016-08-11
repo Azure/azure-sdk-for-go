@@ -1,6 +1,24 @@
 # CHANGELOG
 
 -----
+## `v3.2.0-beta`
+
+| api                         | version             | note      |
+|:----------------------------|:--------------------|:----------|
+| arm/mediaservices           | 2015-10-01          | new       |
+| arm/keyvault                | 2015-06-01          | new       |
+| arm/iothub                  | 2016-02-03          | new       |
+| arm/datalake-store          | 2015-12-01          | new       |
+| arm/network                 | 2016-06-01          | updated   |
+| arm/resources/resources     | 2016-07-01          | updated   |
+| arm/resources/policy        | 2016-04-01          | updated   |
+| arm/servicebus              | 2015-08-01          | updated   |
+
+- arm: uses go-autorest version v7.1.0.
+- storage: fix for operating on blobs names containing special characters.
+- storage: add SetBlobProperties(), update BlobProperties response fields.
+- storage: make storage client work correctly with read-only secondary account.
+- storage: add Azure Storage Emulator support.
 
 ## `v3.1.0-beta`
 

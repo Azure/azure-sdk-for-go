@@ -574,6 +574,30 @@ func (client ServerFarmsClient) GetServerFarmMetricDefintionsResponder(resp *htt
 	return
 }
 
+// GetServerFarmMetricDefintionsNextResults retrieves the next set of results, if any.
+func (client ServerFarmsClient) GetServerFarmMetricDefintionsNextResults(lastResults MetricDefinitionCollection) (result MetricDefinitionCollection, err error) {
+	req, err := lastResults.MetricDefinitionCollectionPreparer()
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "web.ServerFarmsClient", "GetServerFarmMetricDefintions", nil, "Failure preparing next results request request")
+	}
+	if req == nil {
+		return
+	}
+
+	resp, err := client.GetServerFarmMetricDefintionsSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "web.ServerFarmsClient", "GetServerFarmMetricDefintions", resp, "Failure sending next results request request")
+	}
+
+	result, err = client.GetServerFarmMetricDefintionsResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.ServerFarmsClient", "GetServerFarmMetricDefintions", resp, "Failure responding to next results request request")
+	}
+
+	return
+}
+
 // GetServerFarmMetrics sends the get server farm metrics request.
 //
 // resourceGroupName is name of resource group name is name of App Service
@@ -645,6 +669,30 @@ func (client ServerFarmsClient) GetServerFarmMetricsResponder(resp *http.Respons
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// GetServerFarmMetricsNextResults retrieves the next set of results, if any.
+func (client ServerFarmsClient) GetServerFarmMetricsNextResults(lastResults ResourceMetricCollection) (result ResourceMetricCollection, err error) {
+	req, err := lastResults.ResourceMetricCollectionPreparer()
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "web.ServerFarmsClient", "GetServerFarmMetrics", nil, "Failure preparing next results request request")
+	}
+	if req == nil {
+		return
+	}
+
+	resp, err := client.GetServerFarmMetricsSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "web.ServerFarmsClient", "GetServerFarmMetrics", resp, "Failure sending next results request request")
+	}
+
+	result, err = client.GetServerFarmMetricsResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.ServerFarmsClient", "GetServerFarmMetrics", resp, "Failure responding to next results request request")
+	}
+
 	return
 }
 
@@ -770,6 +818,30 @@ func (client ServerFarmsClient) GetServerFarmsResponder(resp *http.Response) (re
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// GetServerFarmsNextResults retrieves the next set of results, if any.
+func (client ServerFarmsClient) GetServerFarmsNextResults(lastResults ServerFarmCollection) (result ServerFarmCollection, err error) {
+	req, err := lastResults.ServerFarmCollectionPreparer()
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "web.ServerFarmsClient", "GetServerFarms", nil, "Failure preparing next results request request")
+	}
+	if req == nil {
+		return
+	}
+
+	resp, err := client.GetServerFarmsSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "web.ServerFarmsClient", "GetServerFarms", resp, "Failure sending next results request request")
+	}
+
+	result, err = client.GetServerFarmsResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.ServerFarmsClient", "GetServerFarms", resp, "Failure responding to next results request request")
+	}
+
 	return
 }
 

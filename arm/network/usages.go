@@ -103,3 +103,27 @@ func (client UsagesClient) ListResponder(resp *http.Response) (result UsagesList
 	result.Response = autorest.Response{Response: resp}
 	return
 }
+
+// ListNextResults retrieves the next set of results, if any.
+func (client UsagesClient) ListNextResults(lastResults UsagesListResult) (result UsagesListResult, err error) {
+	req, err := lastResults.UsagesListResultPreparer()
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "network.UsagesClient", "List", nil, "Failure preparing next results request request")
+	}
+	if req == nil {
+		return
+	}
+
+	resp, err := client.ListSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "network.UsagesClient", "List", resp, "Failure sending next results request request")
+	}
+
+	result, err = client.ListResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.UsagesClient", "List", resp, "Failure responding to next results request request")
+	}
+
+	return
+}

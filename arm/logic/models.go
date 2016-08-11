@@ -928,9 +928,16 @@ type IntegrationAccountSku struct {
 
 // KeyVaultKeyReference is
 type KeyVaultKeyReference struct {
-	KeyVault   *ResourceReference `json:"keyVault,omitempty"`
-	KeyName    *string            `json:"keyName,omitempty"`
-	KeyVersion *string            `json:"keyVersion,omitempty"`
+	KeyVault   *KeyVaultKeyReferenceKeyVault `json:"keyVault,omitempty"`
+	KeyName    *string                       `json:"keyName,omitempty"`
+	KeyVersion *string                       `json:"keyVersion,omitempty"`
+}
+
+// KeyVaultKeyReferenceKeyVault is the key vault reference.
+type KeyVaultKeyReferenceKeyVault struct {
+	ID   *string `json:"id,omitempty"`
+	Name *string `json:"name,omitempty"`
+	Type *string `json:"type,omitempty"`
 }
 
 // ListCallbackURLParameters is
@@ -941,13 +948,6 @@ type ListCallbackURLParameters struct {
 // PartnerContent is
 type PartnerContent struct {
 	B2b *B2BPartnerContent `json:"b2b,omitempty"`
-}
-
-// ResourceReference is
-type ResourceReference struct {
-	ID   *string `json:"id,omitempty"`
-	Name *string `json:"name,omitempty"`
-	Type *string `json:"type,omitempty"`
 }
 
 // X12AcknowledgementSettings is

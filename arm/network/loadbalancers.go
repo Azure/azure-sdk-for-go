@@ -249,7 +249,7 @@ func (client LoadBalancersClient) GetResponder(resp *http.Response) (result Load
 	return
 }
 
-// List the List loadBalancer opertion retrieves all the loadbalancers in a
+// List the List loadBalancer operation retrieves all the loadbalancers in a
 // resource group.
 //
 // resourceGroupName is the name of the resource group.
@@ -335,8 +335,8 @@ func (client LoadBalancersClient) ListNextResults(lastResults LoadBalancerListRe
 	return
 }
 
-// ListAll the List loadBalancer opertion retrieves all the loadbalancers in a
-// subscription.
+// ListAll the List loadBalancer operation retrieves all the loadbalancers in
+// a subscription.
 func (client LoadBalancersClient) ListAll() (result LoadBalancerListResult, err error) {
 	req, err := client.ListAllPreparer()
 	if err != nil {

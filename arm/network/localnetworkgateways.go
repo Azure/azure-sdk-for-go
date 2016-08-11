@@ -249,8 +249,8 @@ func (client LocalNetworkGatewaysClient) GetResponder(resp *http.Response) (resu
 	return
 }
 
-// List the List LocalNetworkGateways opertion retrieves all the local network
-// gateways stored.
+// List the List LocalNetworkGateways operation retrieves all the local
+// network gateways stored.
 //
 // resourceGroupName is the name of the resource group.
 func (client LocalNetworkGatewaysClient) List(resourceGroupName string) (result LocalNetworkGatewayListResult, err error) {

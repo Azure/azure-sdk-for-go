@@ -457,6 +457,30 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentCapacitiesResponder
 	return
 }
 
+// GetHostingEnvironmentCapacitiesNextResults retrieves the next set of results, if any.
+func (client HostingEnvironmentsClient) GetHostingEnvironmentCapacitiesNextResults(lastResults StampCapacityCollection) (result StampCapacityCollection, err error) {
+	req, err := lastResults.StampCapacityCollectionPreparer()
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "GetHostingEnvironmentCapacities", nil, "Failure preparing next results request request")
+	}
+	if req == nil {
+		return
+	}
+
+	resp, err := client.GetHostingEnvironmentCapacitiesSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "GetHostingEnvironmentCapacities", resp, "Failure sending next results request request")
+	}
+
+	result, err = client.GetHostingEnvironmentCapacitiesResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "GetHostingEnvironmentCapacities", resp, "Failure responding to next results request request")
+	}
+
+	return
+}
+
 // GetHostingEnvironmentDiagnostics sends the get hosting environment
 // diagnostics request.
 //
@@ -726,6 +750,30 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentMetricsResponder(re
 	return
 }
 
+// GetHostingEnvironmentMetricsNextResults retrieves the next set of results, if any.
+func (client HostingEnvironmentsClient) GetHostingEnvironmentMetricsNextResults(lastResults ResourceMetricCollection) (result ResourceMetricCollection, err error) {
+	req, err := lastResults.ResourceMetricCollectionPreparer()
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "GetHostingEnvironmentMetrics", nil, "Failure preparing next results request request")
+	}
+	if req == nil {
+		return
+	}
+
+	resp, err := client.GetHostingEnvironmentMetricsSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "GetHostingEnvironmentMetrics", resp, "Failure sending next results request request")
+	}
+
+	result, err = client.GetHostingEnvironmentMetricsResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "GetHostingEnvironmentMetrics", resp, "Failure responding to next results request request")
+	}
+
+	return
+}
+
 // GetHostingEnvironmentMultiRoleMetricDefinitions sends the get hosting
 // environment multi role metric definitions request.
 //
@@ -787,6 +835,30 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentMultiRoleMetricDefi
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// GetHostingEnvironmentMultiRoleMetricDefinitionsNextResults retrieves the next set of results, if any.
+func (client HostingEnvironmentsClient) GetHostingEnvironmentMultiRoleMetricDefinitionsNextResults(lastResults MetricDefinitionCollection) (result MetricDefinitionCollection, err error) {
+	req, err := lastResults.MetricDefinitionCollectionPreparer()
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "GetHostingEnvironmentMultiRoleMetricDefinitions", nil, "Failure preparing next results request request")
+	}
+	if req == nil {
+		return
+	}
+
+	resp, err := client.GetHostingEnvironmentMultiRoleMetricDefinitionsSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "GetHostingEnvironmentMultiRoleMetricDefinitions", resp, "Failure sending next results request request")
+	}
+
+	result, err = client.GetHostingEnvironmentMultiRoleMetricDefinitionsResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "GetHostingEnvironmentMultiRoleMetricDefinitions", resp, "Failure responding to next results request request")
+	}
+
 	return
 }
 
@@ -875,6 +947,30 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentMultiRoleMetricsRes
 	return
 }
 
+// GetHostingEnvironmentMultiRoleMetricsNextResults retrieves the next set of results, if any.
+func (client HostingEnvironmentsClient) GetHostingEnvironmentMultiRoleMetricsNextResults(lastResults ResourceMetricCollection) (result ResourceMetricCollection, err error) {
+	req, err := lastResults.ResourceMetricCollectionPreparer()
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "GetHostingEnvironmentMultiRoleMetrics", nil, "Failure preparing next results request request")
+	}
+	if req == nil {
+		return
+	}
+
+	resp, err := client.GetHostingEnvironmentMultiRoleMetricsSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "GetHostingEnvironmentMultiRoleMetrics", resp, "Failure sending next results request request")
+	}
+
+	result, err = client.GetHostingEnvironmentMultiRoleMetricsResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "GetHostingEnvironmentMultiRoleMetrics", resp, "Failure responding to next results request request")
+	}
+
+	return
+}
+
 // GetHostingEnvironmentMultiRoleUsages sends the get hosting environment
 // multi role usages request.
 //
@@ -936,6 +1032,30 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentMultiRoleUsagesResp
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// GetHostingEnvironmentMultiRoleUsagesNextResults retrieves the next set of results, if any.
+func (client HostingEnvironmentsClient) GetHostingEnvironmentMultiRoleUsagesNextResults(lastResults UsageCollection) (result UsageCollection, err error) {
+	req, err := lastResults.UsageCollectionPreparer()
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "GetHostingEnvironmentMultiRoleUsages", nil, "Failure preparing next results request request")
+	}
+	if req == nil {
+		return
+	}
+
+	resp, err := client.GetHostingEnvironmentMultiRoleUsagesSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "GetHostingEnvironmentMultiRoleUsages", resp, "Failure sending next results request request")
+	}
+
+	result, err = client.GetHostingEnvironmentMultiRoleUsagesResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "GetHostingEnvironmentMultiRoleUsages", resp, "Failure responding to next results request request")
+	}
+
 	return
 }
 
@@ -1130,6 +1250,30 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentsResponder(resp *ht
 	return
 }
 
+// GetHostingEnvironmentsNextResults retrieves the next set of results, if any.
+func (client HostingEnvironmentsClient) GetHostingEnvironmentsNextResults(lastResults HostingEnvironmentCollection) (result HostingEnvironmentCollection, err error) {
+	req, err := lastResults.HostingEnvironmentCollectionPreparer()
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "GetHostingEnvironments", nil, "Failure preparing next results request request")
+	}
+	if req == nil {
+		return
+	}
+
+	resp, err := client.GetHostingEnvironmentsSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "GetHostingEnvironments", resp, "Failure sending next results request request")
+	}
+
+	result, err = client.GetHostingEnvironmentsResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "GetHostingEnvironments", resp, "Failure responding to next results request request")
+	}
+
+	return
+}
+
 // GetHostingEnvironmentServerFarms sends the get hosting environment server
 // farms request.
 //
@@ -1191,6 +1335,30 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentServerFarmsResponde
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// GetHostingEnvironmentServerFarmsNextResults retrieves the next set of results, if any.
+func (client HostingEnvironmentsClient) GetHostingEnvironmentServerFarmsNextResults(lastResults ServerFarmCollection) (result ServerFarmCollection, err error) {
+	req, err := lastResults.ServerFarmCollectionPreparer()
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "GetHostingEnvironmentServerFarms", nil, "Failure preparing next results request request")
+	}
+	if req == nil {
+		return
+	}
+
+	resp, err := client.GetHostingEnvironmentServerFarmsSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "GetHostingEnvironmentServerFarms", resp, "Failure sending next results request request")
+	}
+
+	result, err = client.GetHostingEnvironmentServerFarmsResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "GetHostingEnvironmentServerFarms", resp, "Failure responding to next results request request")
+	}
+
 	return
 }
 
@@ -1258,6 +1426,30 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentSitesResponder(resp
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// GetHostingEnvironmentSitesNextResults retrieves the next set of results, if any.
+func (client HostingEnvironmentsClient) GetHostingEnvironmentSitesNextResults(lastResults SiteCollection) (result SiteCollection, err error) {
+	req, err := lastResults.SiteCollectionPreparer()
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "GetHostingEnvironmentSites", nil, "Failure preparing next results request request")
+	}
+	if req == nil {
+		return
+	}
+
+	resp, err := client.GetHostingEnvironmentSitesSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "GetHostingEnvironmentSites", resp, "Failure sending next results request request")
+	}
+
+	result, err = client.GetHostingEnvironmentSitesResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "GetHostingEnvironmentSites", resp, "Failure responding to next results request request")
+	}
+
 	return
 }
 
@@ -1329,6 +1521,30 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentUsagesResponder(res
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// GetHostingEnvironmentUsagesNextResults retrieves the next set of results, if any.
+func (client HostingEnvironmentsClient) GetHostingEnvironmentUsagesNextResults(lastResults CsmUsageQuotaCollection) (result CsmUsageQuotaCollection, err error) {
+	req, err := lastResults.CsmUsageQuotaCollectionPreparer()
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "GetHostingEnvironmentUsages", nil, "Failure preparing next results request request")
+	}
+	if req == nil {
+		return
+	}
+
+	resp, err := client.GetHostingEnvironmentUsagesSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "GetHostingEnvironmentUsages", resp, "Failure sending next results request request")
+	}
+
+	result, err = client.GetHostingEnvironmentUsagesResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "GetHostingEnvironmentUsages", resp, "Failure responding to next results request request")
+	}
+
 	return
 }
 
@@ -1459,6 +1675,30 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentWebHostingPlansResp
 	return
 }
 
+// GetHostingEnvironmentWebHostingPlansNextResults retrieves the next set of results, if any.
+func (client HostingEnvironmentsClient) GetHostingEnvironmentWebHostingPlansNextResults(lastResults ServerFarmCollection) (result ServerFarmCollection, err error) {
+	req, err := lastResults.ServerFarmCollectionPreparer()
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "GetHostingEnvironmentWebHostingPlans", nil, "Failure preparing next results request request")
+	}
+	if req == nil {
+		return
+	}
+
+	resp, err := client.GetHostingEnvironmentWebHostingPlansSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "GetHostingEnvironmentWebHostingPlans", resp, "Failure sending next results request request")
+	}
+
+	result, err = client.GetHostingEnvironmentWebHostingPlansResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "GetHostingEnvironmentWebHostingPlans", resp, "Failure responding to next results request request")
+	}
+
+	return
+}
+
 // GetHostingEnvironmentWebWorkerMetricDefinitions sends the get hosting
 // environment web worker metric definitions request.
 //
@@ -1522,6 +1762,30 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentWebWorkerMetricDefi
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// GetHostingEnvironmentWebWorkerMetricDefinitionsNextResults retrieves the next set of results, if any.
+func (client HostingEnvironmentsClient) GetHostingEnvironmentWebWorkerMetricDefinitionsNextResults(lastResults MetricDefinitionCollection) (result MetricDefinitionCollection, err error) {
+	req, err := lastResults.MetricDefinitionCollectionPreparer()
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "GetHostingEnvironmentWebWorkerMetricDefinitions", nil, "Failure preparing next results request request")
+	}
+	if req == nil {
+		return
+	}
+
+	resp, err := client.GetHostingEnvironmentWebWorkerMetricDefinitionsSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "GetHostingEnvironmentWebWorkerMetricDefinitions", resp, "Failure sending next results request request")
+	}
+
+	result, err = client.GetHostingEnvironmentWebWorkerMetricDefinitionsResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "GetHostingEnvironmentWebWorkerMetricDefinitions", resp, "Failure responding to next results request request")
+	}
+
 	return
 }
 
@@ -1601,6 +1865,30 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentWebWorkerMetricsRes
 	return
 }
 
+// GetHostingEnvironmentWebWorkerMetricsNextResults retrieves the next set of results, if any.
+func (client HostingEnvironmentsClient) GetHostingEnvironmentWebWorkerMetricsNextResults(lastResults ResourceMetricCollection) (result ResourceMetricCollection, err error) {
+	req, err := lastResults.ResourceMetricCollectionPreparer()
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "GetHostingEnvironmentWebWorkerMetrics", nil, "Failure preparing next results request request")
+	}
+	if req == nil {
+		return
+	}
+
+	resp, err := client.GetHostingEnvironmentWebWorkerMetricsSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "GetHostingEnvironmentWebWorkerMetrics", resp, "Failure sending next results request request")
+	}
+
+	result, err = client.GetHostingEnvironmentWebWorkerMetricsResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "GetHostingEnvironmentWebWorkerMetrics", resp, "Failure responding to next results request request")
+	}
+
+	return
+}
+
 // GetHostingEnvironmentWebWorkerUsages sends the get hosting environment web
 // worker usages request.
 //
@@ -1664,6 +1952,30 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentWebWorkerUsagesResp
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// GetHostingEnvironmentWebWorkerUsagesNextResults retrieves the next set of results, if any.
+func (client HostingEnvironmentsClient) GetHostingEnvironmentWebWorkerUsagesNextResults(lastResults UsageCollection) (result UsageCollection, err error) {
+	req, err := lastResults.UsageCollectionPreparer()
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "GetHostingEnvironmentWebWorkerUsages", nil, "Failure preparing next results request request")
+	}
+	if req == nil {
+		return
+	}
+
+	resp, err := client.GetHostingEnvironmentWebWorkerUsagesSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "GetHostingEnvironmentWebWorkerUsages", resp, "Failure sending next results request request")
+	}
+
+	result, err = client.GetHostingEnvironmentWebWorkerUsagesResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "GetHostingEnvironmentWebWorkerUsages", resp, "Failure responding to next results request request")
+	}
+
 	return
 }
 
@@ -1928,6 +2240,30 @@ func (client HostingEnvironmentsClient) GetMultiRolePoolsResponder(resp *http.Re
 	return
 }
 
+// GetMultiRolePoolsNextResults retrieves the next set of results, if any.
+func (client HostingEnvironmentsClient) GetMultiRolePoolsNextResults(lastResults WorkerPoolCollection) (result WorkerPoolCollection, err error) {
+	req, err := lastResults.WorkerPoolCollectionPreparer()
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "GetMultiRolePools", nil, "Failure preparing next results request request")
+	}
+	if req == nil {
+		return
+	}
+
+	resp, err := client.GetMultiRolePoolsSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "GetMultiRolePools", resp, "Failure sending next results request request")
+	}
+
+	result, err = client.GetMultiRolePoolsResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "GetMultiRolePools", resp, "Failure responding to next results request request")
+	}
+
+	return
+}
+
 // GetMultiRolePoolSkus sends the get multi role pool skus request.
 //
 // resourceGroupName is name of resource group name is name of
@@ -1988,6 +2324,30 @@ func (client HostingEnvironmentsClient) GetMultiRolePoolSkusResponder(resp *http
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// GetMultiRolePoolSkusNextResults retrieves the next set of results, if any.
+func (client HostingEnvironmentsClient) GetMultiRolePoolSkusNextResults(lastResults SkuInfoCollection) (result SkuInfoCollection, err error) {
+	req, err := lastResults.SkuInfoCollectionPreparer()
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "GetMultiRolePoolSkus", nil, "Failure preparing next results request request")
+	}
+	if req == nil {
+		return
+	}
+
+	resp, err := client.GetMultiRolePoolSkusSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "GetMultiRolePoolSkus", resp, "Failure sending next results request request")
+	}
+
+	result, err = client.GetMultiRolePoolSkusResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "GetMultiRolePoolSkus", resp, "Failure responding to next results request request")
+	}
+
 	return
 }
 
@@ -2264,6 +2624,30 @@ func (client HostingEnvironmentsClient) GetWorkerPoolsResponder(resp *http.Respo
 	return
 }
 
+// GetWorkerPoolsNextResults retrieves the next set of results, if any.
+func (client HostingEnvironmentsClient) GetWorkerPoolsNextResults(lastResults WorkerPoolCollection) (result WorkerPoolCollection, err error) {
+	req, err := lastResults.WorkerPoolCollectionPreparer()
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "GetWorkerPools", nil, "Failure preparing next results request request")
+	}
+	if req == nil {
+		return
+	}
+
+	resp, err := client.GetWorkerPoolsSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "GetWorkerPools", resp, "Failure sending next results request request")
+	}
+
+	result, err = client.GetWorkerPoolsResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "GetWorkerPools", resp, "Failure responding to next results request request")
+	}
+
+	return
+}
+
 // GetWorkerPoolSkus sends the get worker pool skus request.
 //
 // resourceGroupName is name of resource group name is name of
@@ -2326,6 +2710,30 @@ func (client HostingEnvironmentsClient) GetWorkerPoolSkusResponder(resp *http.Re
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// GetWorkerPoolSkusNextResults retrieves the next set of results, if any.
+func (client HostingEnvironmentsClient) GetWorkerPoolSkusNextResults(lastResults SkuInfoCollection) (result SkuInfoCollection, err error) {
+	req, err := lastResults.SkuInfoCollectionPreparer()
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "GetWorkerPoolSkus", nil, "Failure preparing next results request request")
+	}
+	if req == nil {
+		return
+	}
+
+	resp, err := client.GetWorkerPoolSkusSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "GetWorkerPoolSkus", resp, "Failure sending next results request request")
+	}
+
+	result, err = client.GetWorkerPoolSkusResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "GetWorkerPoolSkus", resp, "Failure responding to next results request request")
+	}
+
 	return
 }
 
@@ -2459,6 +2867,30 @@ func (client HostingEnvironmentsClient) ResumeHostingEnvironmentResponder(resp *
 	return
 }
 
+// ResumeHostingEnvironmentNextResults retrieves the next set of results, if any.
+func (client HostingEnvironmentsClient) ResumeHostingEnvironmentNextResults(lastResults SiteCollection) (result autorest.Response, err error) {
+	req, err := lastResults.SiteCollectionPreparer()
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "ResumeHostingEnvironment", nil, "Failure preparing next results request request")
+	}
+	if req == nil {
+		return
+	}
+
+	resp, err := client.ResumeHostingEnvironmentSender(req)
+	if err != nil {
+		result.Response = resp
+		return result, autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "ResumeHostingEnvironment", resp, "Failure sending next results request request")
+	}
+
+	result, err = client.ResumeHostingEnvironmentResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "ResumeHostingEnvironment", resp, "Failure responding to next results request request")
+	}
+
+	return
+}
+
 // SuspendHostingEnvironment sends the suspend hosting environment request.
 // This method may poll for completion. Polling can be canceled by passing
 // the cancel channel argument. The channel will be used to cancel polling
@@ -2523,5 +2955,29 @@ func (client HostingEnvironmentsClient) SuspendHostingEnvironmentResponder(resp 
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByClosing())
 	result.Response = resp
+	return
+}
+
+// SuspendHostingEnvironmentNextResults retrieves the next set of results, if any.
+func (client HostingEnvironmentsClient) SuspendHostingEnvironmentNextResults(lastResults SiteCollection) (result autorest.Response, err error) {
+	req, err := lastResults.SiteCollectionPreparer()
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "SuspendHostingEnvironment", nil, "Failure preparing next results request request")
+	}
+	if req == nil {
+		return
+	}
+
+	resp, err := client.SuspendHostingEnvironmentSender(req)
+	if err != nil {
+		result.Response = resp
+		return result, autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "SuspendHostingEnvironment", resp, "Failure sending next results request request")
+	}
+
+	result, err = client.SuspendHostingEnvironmentResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "SuspendHostingEnvironment", resp, "Failure responding to next results request request")
+	}
+
 	return
 }

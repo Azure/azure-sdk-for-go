@@ -1,5 +1,8 @@
 # Introducing the Azure Resource Manager packages for Go
 
+The `github.com/Azure/azure-sdk-for-go/arm` packages are used to perform operations using the Azure Resource Manager (ARM). Read more about [Azure Resource Manager vs. classic deployment](https://azure.microsoft.com/documentation/articles/resource-manager-deployment-model/). Packages for Azure Service Manager or classic deployment are in the [management](https://github.com/Azure/azure-sdk-for-go/tree/master/management) folder.
+
+
 ## How Did We Get Here?
 
 Azure is growing rapidly, regularly adding new services and features. While rapid growth
@@ -16,12 +19,11 @@ with the release of the Azure Resource Manager (ARM)
 packages, is transitioning to a generated-code model. Other Azure SDKs, notably the
 [Azure SDK for .NET](https://github.com/Azure/azure-sdk-for-net), have successfully adopted a
 generated-code strategy. Recently, Microsoft published the
-[Autorest](https://github.com/Azure/autorest) tool used to create these SDKs. While the code is not
-yet public (mostly because work remains), we have been adding support for Go. The ARM packages are
+[Autorest](https://github.com/Azure/autorest) tool used to create these SDKs and we have been adding support for Go. The ARM packages are
 the first set generated using this new toolchain.
 
 There are a couple of items to note. First, since both the tooling and the underlying support
-packages are new, the code is not yet "production ready." Treat these packages as of
+packages are new, the code is not yet "production ready". Treat these packages as of
 ***beta*** quality.
 That's not to say we don't believe in the code, but we want to see what others think and how well
 they work in a variety of environments before settling down into an official, first release. If you
@@ -36,7 +38,7 @@ Since
 [go-autorest](https://github.com/Azure/go-autorest)
 is hand-crafted, we will take pull requests in the same manner as for our other repositories.
 
-We intend to rapidly improve these packages until they are "production ready."
+We intend to rapidly improve these packages until they are "production ready".
 So, try them out and give us your thoughts.
 
 ## What Have We Done?
@@ -53,14 +55,13 @@ goals were:
 fan-in set ups.
 
 These are best shown in a series of examples, all of which are included in the
-[arm/examples](arm/examples/) sub-folder.
+[examples](/examples) sub-folder.
 
 ## First a Sidenote: Authentication and the Azure Resource Manager
 
 Before using the Azure Resource Manager packages, you need to understand how it authenticates and
 authorizes requests.
-Unlike the earlier Azure service APIs, the Azure Resource Manager does *not* use certificates.
-Instead, it relies on [OAuth2](http://oauth.net). While OAuth2 provides many advantages over
+Azure Resource Manager requests can be authorized through [OAuth2](http://oauth.net). While OAuth2 provides many advantages over
 certificates, programmatic use, such as for scripts on headless servers, requires understanding and
 creating one or more *Service Principals.*
 There are several good blog posts, such as
@@ -69,31 +70,35 @@ and
 [Microsoft Azure REST API + OAuth 2.0](https://ahmetalpbalkan.com/blog/azure-rest-api-with-oauth2/),
 that describe what this means.
 For details on creating and authorizing Service Principals, see the MSDN articles
-[Azure API Management REST API Authentication](https://msdn.microsoft.com/en-us/library/azure/5b13010a-d202-4af5-aabf-7ebc26800b3d)
+[Azure API Management REST API Authentication](https://msdn.microsoft.com/library/azure/5b13010a-d202-4af5-aabf-7ebc26800b3d)
 and
-[Create a new Azure Service Principal using the Azure portal](https://azure.microsoft.com/en-us/documentation/articles/resource-group-create-service-principal-portal/).
+[Create a new Azure Service Principal using the Azure portal](https://azure.microsoft.com/documentation/articles/resource-group-create-service-principal-portal/).
 Dushyant Gill, a Senior Program Manager for Azure Active Directory, has written an extensive blog
 post,
 [Developer's Guide to Auth with Azure Resource Manager API](http://www.dushyantgill.com/blog/2015/05/23/developers-guide-to-auth-with-azure-resource-manager-api/),
 that is also quite helpful.
 
+### Complete source code
+
+Get code for a full example of [authenticating to Azure via certificate or device authorization](https://github.com/Azure/go-autorest/tree/master/autorest/azure/example).
+
 ## A Simple Example: Checking availability of name within Azure Storage
 
 Each ARM provider, such as
-[Azure Storage](http://azure.microsoft.com/en-us/documentation/services/storage/)
+[Azure Storage](http://azure.microsoft.com/documentation/services/storage/)
 or
-[Azure Compute](https://azure.microsoft.com/en-us/documentation/services/virtual-machines/),
+[Azure Compute](https://azure.microsoft.com/documentation/services/virtual-machines/),
 has its own package. Start by importing
 the packages for the providers you need. Next, most packages divide their APIs across multiple
 clients to avoid name collision and improve usability. For example, the
-[Azure Storage](http://azure.microsoft.com/en-us/documentation/services/storage/)
+[Azure Storage](http://azure.microsoft.com/documentation/services/storage/)
 package has
 two clients:
-[storage.StorageAccountsClient](https://godoc.org/github.com/Azure/azure-sdk-for-go/arm/storage#StorageAccountsClient)
+[storage.AccountsClient](https://godoc.org/github.com/Azure/azure-sdk-for-go/arm/storage#AccountsClient)
 and
 [storage.UsageOperationsClient](https://godoc.org/github.com/Azure/azure-sdk-for-go/arm/storage#UsageOperationsClient).
 To check if a name is available, use the
-[storage.StorageAccountsClient](https://godoc.org/github.com/Azure/azure-sdk-for-go/arm/storage#StorageAccountsClient).
+[storage.AccountsClient](https://godoc.org/github.com/Azure/azure-sdk-for-go/arm/storage#AccountsClient).
 
 Each ARM client composes with [autorest.Client](https://godoc.org/github.com/Azure/go-autorest/autorest#Client).
 [autorest.Client](https://godoc.org/github.com/Azure/go-autorest/autorest#Client)
@@ -114,25 +119,38 @@ with a custom
 or
 [autorest.RespondDecorator](https://godoc.org/github.com/Azure/go-autorest/autorest#RespondDecorator)
 enables more control. See the included example file
-[check.go](examples/check.go)
+[check.go](examples/check/check.go)
 for more details. Through these you can modify the outgoing request, inspect the incoming response,
 or even go so far as to provide a
-[circuit breaker](https://msdn.microsoft.com/en-us/library/dn589784.aspx)
+[circuit breaker](https://msdn.microsoft.com/library/dn589784.aspx)
 to protect your service from unexpected latencies.
 
-Lastly, all Azure ARM API calls return an instance of the
-[autorest.Error](https://godoc.org/github.com/Azure/go-autorest/autorest#Error) interface.
-Not only does the interface give anonymous access to the original
+Lastly, all Azure ARM API calls return an instance of
+[autorest.DetailedError](https://godoc.org/github.com/Azure/go-autorest/autorest#DetailedError).
+Not only DetailedError gives anonymous access to the original
 [error](http://golang.org/ref/spec#Errors),
 but provides the package type (e.g.,
-[storage.StorageAccountsClient](https://godoc.org/github.com/Azure/azure-sdk-for-go/arm/storage#StorageAccountsClient)),
+[storage.AccountsClient](https://godoc.org/github.com/Azure/azure-sdk-for-go/arm/storage#AccountsClient)),
 the failing method (e.g.,
-[CheckNameAvailability](https://godoc.org/github.com/Azure/azure-sdk-for-go/arm/storage#StorageAccountsClient.CheckNameAvailability)),
+[CheckNameAvailability](https://godoc.org/github.com/Azure/azure-sdk-for-go/arm/storage#AccountsClient.CheckNameAvailability)),
 and a detailed error message.
 
 ### Complete source code
 
-Complete source code for this example can be found [here](examples/check.go).
+Complete source code for this example can be found in [check.go](/examples/check/check.go).
+
+1. Create a [service principal](https://azure.microsoft.com/documentation/articles/resource-group-authenticate-service-principal-cli/). You will need the Tenant ID, Client ID and Client Secret for [authentication](#first-a-sidenote-authentication-and-the-azure-resource-manager), so keep them as soon as you get them.
+2. Get your Azure Subscription ID using either of the methods mentioned below:
+  - Get it through the [portal](portal.azure.com) in the subscriptions section.
+  - Get it using the [Azure CLI](https://azure.microsoft.com/documentation/articles/xplat-cli-install/) with command `azure account show`.
+  - Get it using [Azure Powershell](https://azure.microsoft.com/documentation/articles/powershell-install-configure/) whit cmdlet `Get-AzureRmSubscription`.
+3. Set environment variables `AZURE_TENANT_ID = <TENANT_ID>`, `AZURE_CLIENT_ID = <CLIENT_ID>`, `AZURE_CLIENT_SECRET = <CLIENT_SECRET>` and `AZURE_SUBSCRIPTION_ID = <SUBSCRIPTION_ID>`.
+4. Run the sample with commands:
+
+```
+$ cd arm/examples/check
+$ go run check.go
+```
 
 ## Something a Bit More Complex: Creating a new Azure Storage account
 
@@ -170,16 +188,29 @@ Creating a new Azure storage account is a straight-forward way to see these conc
 
 [autorest.Client](https://godoc.org/github.com/Azure/go-autorest/autorest#Client)
 portion of the
-[storage.StorageAccountsClient](https://godoc.org/github.com/Azure/azure-sdk-for-go/arm/storage#StorageAccountsClient)
+[storage.AccountsClient](https://godoc.org/github.com/Azure/azure-sdk-for-go/arm/storage#AccountsClient)
 to poll for a fixed number of attempts versus polling for a set duration (which is the default).
 If an error occurs creating the storage account, the code inspects the HTTP status code and
 prints the URL the
-[Azure Storage](http://azure.microsoft.com/en-us/documentation/services/storage/)
+[Azure Storage](http://azure.microsoft.com/documentation/services/storage/)
 service returned for polling.
 
 ### Complete source for the example
-More details, including deleting the created account, are in the example code file
-[create.go](https://github.com/Azure/azure-sdk-for-go/blob/master/arm/examples/create.go).
+More details, including deleting the created account, are in the example code file [create.go](/examples/create/create.go)
+
+1. Create a [service principal](https://azure.microsoft.com/documentation/articles/resource-group-authenticate-service-principal-cli/). You will need the Tenant ID, Client ID and Client Secret for [authentication](#first-a-sidenote-authentication-and-the-azure-resource-manager), so keep them as soon as you get them.
+2. Get your Azure Subscription ID using either of the methods mentioned below:
+  - Get it through the [portal](portal.azure.com) in the subscriptions section.
+  - Get it using the [Azure CLI](https://azure.microsoft.com/documentation/articles/xplat-cli-install/) with command `azure account show`.
+  - Get it using [Azure Powershell](https://azure.microsoft.com/documentation/articles/powershell-install-configure/) whit cmdlet `Get-AzureRmSubscription`.
+3. Set environment variables `AZURE_TENANT_ID = <TENANT_ID>`, `AZURE_CLIENT_ID = <CLIENT_ID>`, `AZURE_CLIENT_SECRET = <CLIENT_SECRET>` and `AZURE_SUBSCRIPTION_ID = <SUBSCRIPTION_ID>`.
+4. Create a resource group and add its name in the first line of the main function.
+5. Run the example with commands:
+
+```
+$ cd arm/examples/create
+$ go run create.go
+```
 
 
 ## Making Asynchronous Requests
@@ -194,8 +225,7 @@ defines:
 - `FooPreparer`: This method accepts the arguments for the API and returns a prepared
 `http.Request`.
 - `FooSender`: This method sends the prepared `http.Request`. It handles the possible status codes
-and will, unless the disabled in the [autorest.Client](https://godoc.org/github.com/Azure/go-
-autorest/autorest#Client), handling polling.
+and will, unless the disabled in the [autorest.Client](https://godoc.org/github.com/Azure/go-autorest/autorest#Client), handling polling.
 - `FooResponder`: This method accepts and handles the `http.Response` returned by the sender
 and unmarshals the JSON, if any, into the result.
 - `Foo`: This method accepts the arguments for the API and returns the result. It is a wrapper
@@ -230,33 +260,12 @@ The new Azure Resource Manager packages for the Azure SDK for Go are a big step 
 SDK current with Azure's rapid growth.
 As mentioned, we intend to rapidly stabilize these packages for production use.
 We'll also add more examples, including some highlighting the
-[Azure Resource Manager Templates](https://msdn.microsoft.com/en-us/library/azure/dn790568.aspx)
+[Azure Resource Manager Templates](https://msdn.microsoft.com/library/azure/dn790568.aspx)
 and the other providers.
 
 So, give the packages a try, explore the various ARM providers, and let us know what you think. 
 
 We look forward to hearing from you!
-
-
-## Installing the Azure Resource Manager Packages
-
-Install the packages you require as you would any other Go package:
-
-```bash
-go get github.com/Azure/azure-sdk-for-go/arm/authorization
-go get github.com/Azure/azure-sdk-for-go/arm/compute
-go get github.com/Azure/azure-sdk-for-go/arm/dns
-go get github.com/Azure/azure-sdk-for-go/arm/features
-go get github.com/Azure/azure-sdk-for-go/arm/logic
-go get github.com/Azure/azure-sdk-for-go/arm/network
-go get github.com/Azure/azure-sdk-for-go/arm/redis
-go get github.com/Azure/azure-sdk-for-go/arm/resources
-go get github.com/Azure/azure-sdk-for-go/arm/scheduler
-go get github.com/Azure/azure-sdk-for-go/arm/search
-go get github.com/Azure/azure-sdk-for-go/arm/storage
-go get github.com/Azure/azure-sdk-for-go/arm/subscriptions
-go get github.com/Azure/azure-sdk-for-go/arm/web
-```
 
 ## License
 

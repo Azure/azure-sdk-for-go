@@ -3,9 +3,6 @@ package helpers
 import (
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
-	"os"
-	"os/user"
 
 	"github.com/Azure/go-autorest/autorest/azure"
 )
@@ -24,42 +21,11 @@ func ToJSON(v interface{}) string {
 // NewServicePrincipalTokenFromCredentials creates a new ServicePrincipalToken using values of the
 // passed credentials map.
 func NewServicePrincipalTokenFromCredentials(c map[string]string, scope string) (*azure.ServicePrincipalToken, error) {
-	oauthConfig, err := azure.PublicCloud.OAuthConfigForTenant(c["tenantID"])
+	oauthConfig, err := azure.PublicCloud.OAuthConfigForTenant(c["AZURE_TENANT_ID"])
 	if err != nil {
 		panic(err)
 	}
-	return azure.NewServicePrincipalToken(*oauthConfig, c["clientID"], c["clientSecret"], scope)
-}
-
-// LoadCredentials reads credentials from a ~/.azure/credentials.json file. See the accompanying
-// credentials_sample.json file for an example.
-//
-// Note: Storing crendentials in a local file must be secured and not shared. It is used here
-// simply to reduce code in the examples.
-func LoadCredentials() (map[string]string, error) {
-	u, err := user.Current()
-	if err != nil {
-		return nil, fmt.Errorf("ERROR: Unable to determine current user")
-	}
-
-	n := u.HomeDir + credentialsPath
-	f, err := os.Open(n)
-	if err != nil {
-		return nil, fmt.Errorf("ERROR: Unable to locate or open Azure credentials at %s (%v)", n, err)
-	}
-
-	b, err := ioutil.ReadAll(f)
-	if err != nil {
-		return nil, fmt.Errorf("ERROR: Unable to read %s (%v)", n, err)
-	}
-
-	c := map[string]interface{}{}
-	err = json.Unmarshal(b, &c)
-	if err != nil {
-		return nil, fmt.Errorf("ERROR: %s contained invalid JSON (%s)", n, err)
-	}
-
-	return ensureValueStrings(c), nil
+	return azure.NewServicePrincipalToken(*oauthConfig, c["AZURE_CLIENT_ID"], c["AZURE_CLIENT_SECRET"], scope)
 }
 
 func ensureValueStrings(mapOfInterface map[string]interface{}) map[string]string {

@@ -19,9 +19,11 @@ package keyvault
 // regenerated.
 
 import (
+	"net/http"
+
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
-	"net/http"
+	"github.com/Azure/go-autorest/autorest/validation"
 )
 
 // VaultsClient is the the Azure management API provides a RESTful set of web
@@ -46,6 +48,20 @@ func NewVaultsClientWithBaseURI(baseURI string, subscriptionID string) VaultsCli
 // belongs. vaultName is name of the vault parameters is parameters to create
 // or update the vault
 func (client VaultsClient) CreateOrUpdate(resourceGroupName string, vaultName string, parameters VaultCreateOrUpdateParameters) (result Vault, err error) {
+	if err := validation.Validate([]validation.Validation{
+		{vaultName,
+			[]validation.Constraint{{"vaultName", validation.Pattern, "^[a-zA-Z0-9-]{3,24}$", nil}}},
+		{parameters,
+			[]validation.Constraint{{"Location", validation.Null, true, nil},
+				{"Properties", validation.Null, true,
+					[]validation.Constraint{{"Sku", validation.Null, true,
+						[]validation.Constraint{{"Family", validation.Null, true, nil}}},
+						{"AccessPolicies", validation.Null, true,
+							[]validation.Constraint{{"AccessPolicies", validation.MaxItems, 16, nil}}},
+					}}}}}); err != nil {
+		return result, autorest.NewErrorWithError(err, "keyvault.VaultsClient", "CreateOrUpdate", nil, "Validation error ")
+	}
+
 	req, err := client.CreateOrUpdatePreparer(resourceGroupName, vaultName, parameters)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "keyvault.VaultsClient", "CreateOrUpdate", nil, "Failure preparing request")
@@ -301,7 +317,7 @@ func (client VaultsClient) ListResponder(resp *http.Response) (result VaultListR
 func (client VaultsClient) ListNextResults(lastResults VaultListResult) (result VaultListResult, err error) {
 	req, err := lastResults.VaultListResultPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "keyvault.VaultsClient", "List", nil, "Failure preparing next results request request")
+		return result, autorest.NewErrorWithError(err, "keyvault.VaultsClient", "List", nil, "Failure preparing next results request")
 	}
 	if req == nil {
 		return
@@ -310,12 +326,12 @@ func (client VaultsClient) ListNextResults(lastResults VaultListResult) (result 
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "keyvault.VaultsClient", "List", resp, "Failure sending next results request request")
+		return result, autorest.NewErrorWithError(err, "keyvault.VaultsClient", "List", resp, "Failure sending next results request")
 	}
 
 	result, err = client.ListResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "keyvault.VaultsClient", "List", resp, "Failure responding to next results request request")
+		err = autorest.NewErrorWithError(err, "keyvault.VaultsClient", "List", resp, "Failure responding to next results request")
 	}
 
 	return
@@ -391,7 +407,7 @@ func (client VaultsClient) ListByResourceGroupResponder(resp *http.Response) (re
 func (client VaultsClient) ListByResourceGroupNextResults(lastResults VaultListResult) (result VaultListResult, err error) {
 	req, err := lastResults.VaultListResultPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "keyvault.VaultsClient", "ListByResourceGroup", nil, "Failure preparing next results request request")
+		return result, autorest.NewErrorWithError(err, "keyvault.VaultsClient", "ListByResourceGroup", nil, "Failure preparing next results request")
 	}
 	if req == nil {
 		return
@@ -400,12 +416,12 @@ func (client VaultsClient) ListByResourceGroupNextResults(lastResults VaultListR
 	resp, err := client.ListByResourceGroupSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "keyvault.VaultsClient", "ListByResourceGroup", resp, "Failure sending next results request request")
+		return result, autorest.NewErrorWithError(err, "keyvault.VaultsClient", "ListByResourceGroup", resp, "Failure sending next results request")
 	}
 
 	result, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "keyvault.VaultsClient", "ListByResourceGroup", resp, "Failure responding to next results request request")
+		err = autorest.NewErrorWithError(err, "keyvault.VaultsClient", "ListByResourceGroup", resp, "Failure responding to next results request")
 	}
 
 	return

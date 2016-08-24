@@ -19,10 +19,11 @@ package keyvault
 // regenerated.
 
 import (
+	"net/http"
+
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/to"
 	"github.com/satori/uuid"
-	"net/http"
 )
 
 // KeyPermissions enumerates the values for key permissions.

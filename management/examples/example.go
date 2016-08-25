@@ -7,6 +7,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/management"
 	"github.com/Azure/azure-sdk-for-go/management/hostedservice"
 	"github.com/Azure/azure-sdk-for-go/management/virtualmachine"
+	"github.com/Azure/azure-sdk-for-go/management/vmutils"
 )
 
 func Example() {
@@ -32,14 +33,14 @@ func Example() {
 	}
 
 	// create virtual machine
-	role := NewVMConfiguration(dnsName, vmSize)
-	ConfigureDeploymentFromPlatformImage(
+	role := vmutils.NewVMConfiguration(dnsName, vmSize)
+	vmutils.ConfigureDeploymentFromPlatformImage(
 		&role,
 		vmImage,
 		fmt.Sprintf("http://%s.blob.core.windows.net/sdktest/%s.vhd", storageAccount, dnsName),
 		"")
-	ConfigureForLinux(&role, dnsName, userName, userPassword)
-	ConfigureWithPublicSSH(&role)
+	vmutils.ConfigureForLinux(&role, dnsName, userName, userPassword)
+	vmutils.ConfigureWithPublicSSH(&role)
 
 	operationID, err := virtualmachine.NewClient(client).
 		CreateDeployment(role, dnsName, virtualmachine.CreateDeploymentOptions{})

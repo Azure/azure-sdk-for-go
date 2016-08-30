@@ -45,3 +45,11 @@ const (
 	IOTypeProvisioned IOType = "Provisioned"
 	IOTypeStandard    IOType = "Standard"
 )
+
+type ReplicationInput struct {
+	XMLName         xml.Name `xml:"http://schemas.microsoft.com/windowsazure ReplicationInput"`
+	TargetLocations []string `xml:"TargetLocations>Region"`
+	Offer           string   `xml:"ComputeImageAttributes>Offer"`
+	Sku             string   `xml:"ComputeImageAttributes>Sku"`
+	Version         string   `xml:"ComputeImageAttributes>Version"`
+}

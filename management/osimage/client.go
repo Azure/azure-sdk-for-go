@@ -3,12 +3,14 @@ package osimage
 
 import (
 	"encoding/xml"
+	"fmt"
 
 	"github.com/Azure/azure-sdk-for-go/management"
 )
 
 const (
 	azureImageListURL    = "services/images"
+	azureImageShareURL   = "services/images/%s/share?permission=%s"
 	errInvalidImage      = "Can not find image %s in specified subscription, please specify another image name."
 	errParamNotSpecified = "Parameter %s is not specified."
 )
@@ -28,4 +30,9 @@ func (c OSImageClient) ListOSImages() (ListOSImagesResponse, error) {
 
 	err = xml.Unmarshal(response, &l)
 	return l, err
+}
+
+func (c OSImageClient) ShareImage(image string, permission ImagePermission) (management.OperationID, error) {
+	url := fmt.Sprintf(azureImageShareURL, image, permission)
+	return c.client.SendAzurePutRequest(url, "", []byte{})
 }

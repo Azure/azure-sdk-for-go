@@ -45,3 +45,11 @@ const (
 	IOTypeProvisioned IOType = "Provisioned"
 	IOTypeStandard    IOType = "Standard"
 )
+
+type ImagePermission string
+
+const (
+	ImagePermissionPublic  ImagePermission = "public"
+	ImagePermissionMSDN    ImagePermission = "msdn"
+	ImagePermissionPrivate ImagePermission = "private"
+)

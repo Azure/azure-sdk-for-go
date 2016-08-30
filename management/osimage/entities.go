@@ -34,6 +34,7 @@ type OSImage struct {
 	RecommendedVMSize string  // Specifies the size to use for the virtual machine that is created from the image.
 	PublisherName     string  // The name of the publisher of the image. All user images have a publisher name of User.
 	PricingDetailLink string  // Specifies a URL for an image with IsPremium set to true, which contains the pricing details for a virtual machine that is created from the image.
+	IconURI           string  `xml:"IconUri"`      // Specifies the Uri to the icon that is displayed for the image in the Management Portal.
 	SmallIconURI      string  `xml:"SmallIconUri"` // Specifies the URI to the small icon that is displayed when the image is presented in the Microsoft Azure Management Portal.
 	Language          string  // Specifies the language of the image.
 	IOType            IOType  // Provisioned || Standard

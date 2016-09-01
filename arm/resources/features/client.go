@@ -186,7 +186,7 @@ func (client ManagementClient) ListResponder(resp *http.Response) (result Featur
 func (client ManagementClient) ListNextResults(lastResults FeatureOperationsListResult) (result FeatureOperationsListResult, err error) {
 	req, err := lastResults.FeatureOperationsListResultPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "features.ManagementClient", "List", nil, "Failure preparing next results request request")
+		return result, autorest.NewErrorWithError(err, "features.ManagementClient", "List", nil, "Failure preparing next results request")
 	}
 	if req == nil {
 		return
@@ -195,12 +195,12 @@ func (client ManagementClient) ListNextResults(lastResults FeatureOperationsList
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "features.ManagementClient", "List", resp, "Failure sending next results request request")
+		return result, autorest.NewErrorWithError(err, "features.ManagementClient", "List", resp, "Failure sending next results request")
 	}
 
 	result, err = client.ListResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "features.ManagementClient", "List", resp, "Failure responding to next results request request")
+		err = autorest.NewErrorWithError(err, "features.ManagementClient", "List", resp, "Failure responding to next results request")
 	}
 
 	return
@@ -269,7 +269,7 @@ func (client ManagementClient) ListAllResponder(resp *http.Response) (result Fea
 func (client ManagementClient) ListAllNextResults(lastResults FeatureOperationsListResult) (result FeatureOperationsListResult, err error) {
 	req, err := lastResults.FeatureOperationsListResultPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "features.ManagementClient", "ListAll", nil, "Failure preparing next results request request")
+		return result, autorest.NewErrorWithError(err, "features.ManagementClient", "ListAll", nil, "Failure preparing next results request")
 	}
 	if req == nil {
 		return
@@ -278,12 +278,12 @@ func (client ManagementClient) ListAllNextResults(lastResults FeatureOperationsL
 	resp, err := client.ListAllSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "features.ManagementClient", "ListAll", resp, "Failure sending next results request request")
+		return result, autorest.NewErrorWithError(err, "features.ManagementClient", "ListAll", resp, "Failure sending next results request")
 	}
 
 	result, err = client.ListAllResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "features.ManagementClient", "ListAll", resp, "Failure responding to next results request request")
+		err = autorest.NewErrorWithError(err, "features.ManagementClient", "ListAll", resp, "Failure responding to next results request")
 	}
 
 	return

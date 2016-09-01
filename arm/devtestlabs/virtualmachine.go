@@ -392,7 +392,7 @@ func (client VirtualMachineClient) ListResponder(resp *http.Response) (result Re
 func (client VirtualMachineClient) ListNextResults(lastResults ResponseWithContinuationLabVirtualMachine) (result ResponseWithContinuationLabVirtualMachine, err error) {
 	req, err := lastResults.ResponseWithContinuationLabVirtualMachinePreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "devtestlabs.VirtualMachineClient", "List", nil, "Failure preparing next results request request")
+		return result, autorest.NewErrorWithError(err, "devtestlabs.VirtualMachineClient", "List", nil, "Failure preparing next results request")
 	}
 	if req == nil {
 		return
@@ -401,12 +401,12 @@ func (client VirtualMachineClient) ListNextResults(lastResults ResponseWithConti
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "devtestlabs.VirtualMachineClient", "List", resp, "Failure sending next results request request")
+		return result, autorest.NewErrorWithError(err, "devtestlabs.VirtualMachineClient", "List", resp, "Failure sending next results request")
 	}
 
 	result, err = client.ListResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "devtestlabs.VirtualMachineClient", "List", resp, "Failure responding to next results request request")
+		err = autorest.NewErrorWithError(err, "devtestlabs.VirtualMachineClient", "List", resp, "Failure responding to next results request")
 	}
 
 	return

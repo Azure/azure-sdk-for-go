@@ -21,6 +21,7 @@ package dns
 import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
+	"github.com/Azure/go-autorest/autorest/validation"
 	"net/http"
 )
 
@@ -47,6 +48,13 @@ func NewZonesClientWithBaseURI(baseURI string, subscriptionID string) ZonesClien
 // is defines the If-None-Match condition. Set to '*' to force
 // Create-If-Not-Exist. Other values will be ignored.
 func (client ZonesClient) CreateOrUpdate(resourceGroupName string, zoneName string, parameters Zone, ifMatch string, ifNoneMatch string) (result Zone, err error) {
+	if err := validation.Validate([]validation.Validation{
+		{parameters,
+			[]validation.Constraint{{"parameters.Properties", validation.Null, false,
+				[]validation.Constraint{{"NameServers", validation.ReadOnly, true, nil}}}}}}); err != nil {
+		return result, validation.NewErrorWithValidationError(err, "dns.ZonesClient", "CreateOrUpdate")
+	}
+
 	req, err := client.CreateOrUpdatePreparer(resourceGroupName, zoneName, parameters, ifMatch, ifNoneMatch)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "dns.ZonesClient", "CreateOrUpdate", nil, "Failure preparing request")
@@ -326,7 +334,7 @@ func (client ZonesClient) ListInResourceGroupResponder(resp *http.Response) (res
 func (client ZonesClient) ListInResourceGroupNextResults(lastResults ZoneListResult) (result ZoneListResult, err error) {
 	req, err := lastResults.ZoneListResultPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "dns.ZonesClient", "ListInResourceGroup", nil, "Failure preparing next results request request")
+		return result, autorest.NewErrorWithError(err, "dns.ZonesClient", "ListInResourceGroup", nil, "Failure preparing next results request")
 	}
 	if req == nil {
 		return
@@ -335,12 +343,12 @@ func (client ZonesClient) ListInResourceGroupNextResults(lastResults ZoneListRes
 	resp, err := client.ListInResourceGroupSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "dns.ZonesClient", "ListInResourceGroup", resp, "Failure sending next results request request")
+		return result, autorest.NewErrorWithError(err, "dns.ZonesClient", "ListInResourceGroup", resp, "Failure sending next results request")
 	}
 
 	result, err = client.ListInResourceGroupResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "dns.ZonesClient", "ListInResourceGroup", resp, "Failure responding to next results request request")
+		err = autorest.NewErrorWithError(err, "dns.ZonesClient", "ListInResourceGroup", resp, "Failure responding to next results request")
 	}
 
 	return
@@ -414,7 +422,7 @@ func (client ZonesClient) ListInSubscriptionResponder(resp *http.Response) (resu
 func (client ZonesClient) ListInSubscriptionNextResults(lastResults ZoneListResult) (result ZoneListResult, err error) {
 	req, err := lastResults.ZoneListResultPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "dns.ZonesClient", "ListInSubscription", nil, "Failure preparing next results request request")
+		return result, autorest.NewErrorWithError(err, "dns.ZonesClient", "ListInSubscription", nil, "Failure preparing next results request")
 	}
 	if req == nil {
 		return
@@ -423,12 +431,12 @@ func (client ZonesClient) ListInSubscriptionNextResults(lastResults ZoneListResu
 	resp, err := client.ListInSubscriptionSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "dns.ZonesClient", "ListInSubscription", resp, "Failure sending next results request request")
+		return result, autorest.NewErrorWithError(err, "dns.ZonesClient", "ListInSubscription", resp, "Failure sending next results request")
 	}
 
 	result, err = client.ListInSubscriptionResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "dns.ZonesClient", "ListInSubscription", resp, "Failure responding to next results request request")
+		err = autorest.NewErrorWithError(err, "dns.ZonesClient", "ListInSubscription", resp, "Failure responding to next results request")
 	}
 
 	return

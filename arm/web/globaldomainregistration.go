@@ -172,7 +172,7 @@ func (client GlobalDomainRegistrationClient) GetAllDomainsResponder(resp *http.R
 func (client GlobalDomainRegistrationClient) GetAllDomainsNextResults(lastResults DomainCollection) (result DomainCollection, err error) {
 	req, err := lastResults.DomainCollectionPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.GlobalDomainRegistrationClient", "GetAllDomains", nil, "Failure preparing next results request request")
+		return result, autorest.NewErrorWithError(err, "web.GlobalDomainRegistrationClient", "GetAllDomains", nil, "Failure preparing next results request")
 	}
 	if req == nil {
 		return
@@ -181,12 +181,12 @@ func (client GlobalDomainRegistrationClient) GetAllDomainsNextResults(lastResult
 	resp, err := client.GetAllDomainsSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.GlobalDomainRegistrationClient", "GetAllDomains", resp, "Failure sending next results request request")
+		return result, autorest.NewErrorWithError(err, "web.GlobalDomainRegistrationClient", "GetAllDomains", resp, "Failure sending next results request")
 	}
 
 	result, err = client.GetAllDomainsResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "web.GlobalDomainRegistrationClient", "GetAllDomains", resp, "Failure responding to next results request request")
+		err = autorest.NewErrorWithError(err, "web.GlobalDomainRegistrationClient", "GetAllDomains", resp, "Failure responding to next results request")
 	}
 
 	return
@@ -317,7 +317,7 @@ func (client GlobalDomainRegistrationClient) ListDomainRecommendationsResponder(
 func (client GlobalDomainRegistrationClient) ListDomainRecommendationsNextResults(lastResults NameIdentifierCollection) (result NameIdentifierCollection, err error) {
 	req, err := lastResults.NameIdentifierCollectionPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.GlobalDomainRegistrationClient", "ListDomainRecommendations", nil, "Failure preparing next results request request")
+		return result, autorest.NewErrorWithError(err, "web.GlobalDomainRegistrationClient", "ListDomainRecommendations", nil, "Failure preparing next results request")
 	}
 	if req == nil {
 		return
@@ -326,12 +326,12 @@ func (client GlobalDomainRegistrationClient) ListDomainRecommendationsNextResult
 	resp, err := client.ListDomainRecommendationsSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.GlobalDomainRegistrationClient", "ListDomainRecommendations", resp, "Failure sending next results request request")
+		return result, autorest.NewErrorWithError(err, "web.GlobalDomainRegistrationClient", "ListDomainRecommendations", resp, "Failure sending next results request")
 	}
 
 	result, err = client.ListDomainRecommendationsResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "web.GlobalDomainRegistrationClient", "ListDomainRecommendations", resp, "Failure responding to next results request request")
+		err = autorest.NewErrorWithError(err, "web.GlobalDomainRegistrationClient", "ListDomainRecommendations", resp, "Failure responding to next results request")
 	}
 
 	return

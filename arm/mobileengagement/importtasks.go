@@ -21,6 +21,7 @@ package mobileengagement
 import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
+	"github.com/Azure/go-autorest/autorest/validation"
 	"net/http"
 )
 
@@ -188,6 +189,18 @@ func (client ImportTasksClient) GetResponder(resp *http.Response) (result Import
 // When not specified the asc direction is used.
 // Only one orderby property can be specified.
 func (client ImportTasksClient) List(skip *int32, top *int32, orderby string) (result ImportTaskListResult, err error) {
+	if err := validation.Validate([]validation.Validation{
+		{skip,
+			[]validation.Constraint{{"skip", validation.Null, false,
+				[]validation.Constraint{{"skip", validation.InclusiveMinimum, 0, nil}}}}},
+		{top,
+			[]validation.Constraint{{"top", validation.Null, false,
+				[]validation.Constraint{{"top", validation.InclusiveMaximum, 40, nil},
+					{"top", validation.InclusiveMinimum, 1, nil},
+				}}}}}); err != nil {
+		return result, validation.NewErrorWithValidationError(err, "mobileengagement.ImportTasksClient", "List")
+	}
+
 	req, err := client.ListPreparer(skip, top, orderby)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "mobileengagement.ImportTasksClient", "List", nil, "Failure preparing request")
@@ -260,7 +273,7 @@ func (client ImportTasksClient) ListResponder(resp *http.Response) (result Impor
 func (client ImportTasksClient) ListNextResults(lastResults ImportTaskListResult) (result ImportTaskListResult, err error) {
 	req, err := lastResults.ImportTaskListResultPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "mobileengagement.ImportTasksClient", "List", nil, "Failure preparing next results request request")
+		return result, autorest.NewErrorWithError(err, "mobileengagement.ImportTasksClient", "List", nil, "Failure preparing next results request")
 	}
 	if req == nil {
 		return
@@ -269,12 +282,12 @@ func (client ImportTasksClient) ListNextResults(lastResults ImportTaskListResult
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "mobileengagement.ImportTasksClient", "List", resp, "Failure sending next results request request")
+		return result, autorest.NewErrorWithError(err, "mobileengagement.ImportTasksClient", "List", resp, "Failure sending next results request")
 	}
 
 	result, err = client.ListResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "mobileengagement.ImportTasksClient", "List", resp, "Failure responding to next results request request")
+		err = autorest.NewErrorWithError(err, "mobileengagement.ImportTasksClient", "List", resp, "Failure responding to next results request")
 	}
 
 	return

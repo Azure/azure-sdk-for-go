@@ -25,201 +25,126 @@ import (
 	"net/http"
 )
 
-// AgreementType enumerates the values for agreement type.
-type AgreementType string
+// DayOfWeek enumerates the values for day of week.
+type DayOfWeek string
 
 const (
-	// AS2 specifies the as2 state for agreement type.
-	AS2 AgreementType = "AS2"
-	// Edifact specifies the edifact state for agreement type.
-	Edifact AgreementType = "Edifact"
-	// NotSpecified specifies the not specified state for agreement type.
-	NotSpecified AgreementType = "NotSpecified"
-	// X12 specifies the x12 state for agreement type.
-	X12 AgreementType = "X12"
+	// Friday specifies the friday state for day of week.
+	Friday DayOfWeek = "Friday"
+	// Monday specifies the monday state for day of week.
+	Monday DayOfWeek = "Monday"
+	// Saturday specifies the saturday state for day of week.
+	Saturday DayOfWeek = "Saturday"
+	// Sunday specifies the sunday state for day of week.
+	Sunday DayOfWeek = "Sunday"
+	// Thursday specifies the thursday state for day of week.
+	Thursday DayOfWeek = "Thursday"
+	// Tuesday specifies the tuesday state for day of week.
+	Tuesday DayOfWeek = "Tuesday"
+	// Wednesday specifies the wednesday state for day of week.
+	Wednesday DayOfWeek = "Wednesday"
 )
 
-// EdifactCharacterSet enumerates the values for edifact character set.
-type EdifactCharacterSet string
+// DaysOfWeek enumerates the values for days of week.
+type DaysOfWeek string
 
 const (
-	// EdifactCharacterSetKECA specifies the edifact character set keca state
-	// for edifact character set.
-	EdifactCharacterSetKECA EdifactCharacterSet = "KECA"
-	// EdifactCharacterSetNotSpecified specifies the edifact character set not
-	// specified state for edifact character set.
-	EdifactCharacterSetNotSpecified EdifactCharacterSet = "NotSpecified"
-	// EdifactCharacterSetUNOA specifies the edifact character set unoa state
-	// for edifact character set.
-	EdifactCharacterSetUNOA EdifactCharacterSet = "UNOA"
-	// EdifactCharacterSetUNOB specifies the edifact character set unob state
-	// for edifact character set.
-	EdifactCharacterSetUNOB EdifactCharacterSet = "UNOB"
-	// EdifactCharacterSetUNOC specifies the edifact character set unoc state
-	// for edifact character set.
-	EdifactCharacterSetUNOC EdifactCharacterSet = "UNOC"
-	// EdifactCharacterSetUNOD specifies the edifact character set unod state
-	// for edifact character set.
-	EdifactCharacterSetUNOD EdifactCharacterSet = "UNOD"
-	// EdifactCharacterSetUNOE specifies the edifact character set unoe state
-	// for edifact character set.
-	EdifactCharacterSetUNOE EdifactCharacterSet = "UNOE"
-	// EdifactCharacterSetUNOF specifies the edifact character set unof state
-	// for edifact character set.
-	EdifactCharacterSetUNOF EdifactCharacterSet = "UNOF"
-	// EdifactCharacterSetUNOG specifies the edifact character set unog state
-	// for edifact character set.
-	EdifactCharacterSetUNOG EdifactCharacterSet = "UNOG"
-	// EdifactCharacterSetUNOH specifies the edifact character set unoh state
-	// for edifact character set.
-	EdifactCharacterSetUNOH EdifactCharacterSet = "UNOH"
-	// EdifactCharacterSetUNOI specifies the edifact character set unoi state
-	// for edifact character set.
-	EdifactCharacterSetUNOI EdifactCharacterSet = "UNOI"
-	// EdifactCharacterSetUNOJ specifies the edifact character set unoj state
-	// for edifact character set.
-	EdifactCharacterSetUNOJ EdifactCharacterSet = "UNOJ"
-	// EdifactCharacterSetUNOK specifies the edifact character set unok state
-	// for edifact character set.
-	EdifactCharacterSetUNOK EdifactCharacterSet = "UNOK"
-	// EdifactCharacterSetUNOX specifies the edifact character set unox state
-	// for edifact character set.
-	EdifactCharacterSetUNOX EdifactCharacterSet = "UNOX"
-	// EdifactCharacterSetUNOY specifies the edifact character set unoy state
-	// for edifact character set.
-	EdifactCharacterSetUNOY EdifactCharacterSet = "UNOY"
+	// DaysOfWeekFriday specifies the days of week friday state for days of
+	// week.
+	DaysOfWeekFriday DaysOfWeek = "Friday"
+	// DaysOfWeekMonday specifies the days of week monday state for days of
+	// week.
+	DaysOfWeekMonday DaysOfWeek = "Monday"
+	// DaysOfWeekSaturday specifies the days of week saturday state for days
+	// of week.
+	DaysOfWeekSaturday DaysOfWeek = "Saturday"
+	// DaysOfWeekSunday specifies the days of week sunday state for days of
+	// week.
+	DaysOfWeekSunday DaysOfWeek = "Sunday"
+	// DaysOfWeekThursday specifies the days of week thursday state for days
+	// of week.
+	DaysOfWeekThursday DaysOfWeek = "Thursday"
+	// DaysOfWeekTuesday specifies the days of week tuesday state for days of
+	// week.
+	DaysOfWeekTuesday DaysOfWeek = "Tuesday"
+	// DaysOfWeekWednesday specifies the days of week wednesday state for days
+	// of week.
+	DaysOfWeekWednesday DaysOfWeek = "Wednesday"
 )
 
-// EdifactDecimalIndicator enumerates the values for edifact decimal indicator.
-type EdifactDecimalIndicator string
+// KeyType enumerates the values for key type.
+type KeyType string
 
 const (
-	// EdifactDecimalIndicatorComma specifies the edifact decimal indicator
-	// comma state for edifact decimal indicator.
-	EdifactDecimalIndicatorComma EdifactDecimalIndicator = "Comma"
-	// EdifactDecimalIndicatorDecimal specifies the edifact decimal indicator
-	// decimal state for edifact decimal indicator.
-	EdifactDecimalIndicatorDecimal EdifactDecimalIndicator = "Decimal"
-	// EdifactDecimalIndicatorNotSpecified specifies the edifact decimal
-	// indicator not specified state for edifact decimal indicator.
-	EdifactDecimalIndicatorNotSpecified EdifactDecimalIndicator = "NotSpecified"
+	// NotSpecified specifies the not specified state for key type.
+	NotSpecified KeyType = "NotSpecified"
+	// Primary specifies the primary state for key type.
+	Primary KeyType = "Primary"
+	// Secondary specifies the secondary state for key type.
+	Secondary KeyType = "Secondary"
 )
 
-// EncryptionAlgorithm enumerates the values for encryption algorithm.
-type EncryptionAlgorithm string
+// ParameterType enumerates the values for parameter type.
+type ParameterType string
 
 const (
-	// EncryptionAlgorithmAES128 specifies the encryption algorithm aes128
-	// state for encryption algorithm.
-	EncryptionAlgorithmAES128 EncryptionAlgorithm = "AES128"
-	// EncryptionAlgorithmAES192 specifies the encryption algorithm aes192
-	// state for encryption algorithm.
-	EncryptionAlgorithmAES192 EncryptionAlgorithm = "AES192"
-	// EncryptionAlgorithmAES256 specifies the encryption algorithm aes256
-	// state for encryption algorithm.
-	EncryptionAlgorithmAES256 EncryptionAlgorithm = "AES256"
-	// EncryptionAlgorithmDES3 specifies the encryption algorithm des3 state
-	// for encryption algorithm.
-	EncryptionAlgorithmDES3 EncryptionAlgorithm = "DES3"
-	// EncryptionAlgorithmNone specifies the encryption algorithm none state
-	// for encryption algorithm.
-	EncryptionAlgorithmNone EncryptionAlgorithm = "None"
-	// EncryptionAlgorithmNotSpecified specifies the encryption algorithm not
-	// specified state for encryption algorithm.
-	EncryptionAlgorithmNotSpecified EncryptionAlgorithm = "NotSpecified"
-	// EncryptionAlgorithmRC2 specifies the encryption algorithm rc2 state for
-	// encryption algorithm.
-	EncryptionAlgorithmRC2 EncryptionAlgorithm = "RC2"
-)
-
-// HashingAlgorithm enumerates the values for hashing algorithm.
-type HashingAlgorithm string
-
-const (
-	// HashingAlgorithmNone specifies the hashing algorithm none state for
-	// hashing algorithm.
-	HashingAlgorithmNone HashingAlgorithm = "None"
-	// HashingAlgorithmNotSpecified specifies the hashing algorithm not
-	// specified state for hashing algorithm.
-	HashingAlgorithmNotSpecified HashingAlgorithm = "NotSpecified"
-	// HashingAlgorithmSHA2256 specifies the hashing algorithm sha2256 state
-	// for hashing algorithm.
-	HashingAlgorithmSHA2256 HashingAlgorithm = "SHA2256"
-	// HashingAlgorithmSHA2384 specifies the hashing algorithm sha2384 state
-	// for hashing algorithm.
-	HashingAlgorithmSHA2384 HashingAlgorithm = "SHA2384"
-	// HashingAlgorithmSHA2512 specifies the hashing algorithm sha2512 state
-	// for hashing algorithm.
-	HashingAlgorithmSHA2512 HashingAlgorithm = "SHA2512"
-)
-
-// MapType enumerates the values for map type.
-type MapType string
-
-const (
-	// MapTypeNotSpecified specifies the map type not specified state for map
+	// ParameterTypeArray specifies the parameter type array state for
+	// parameter type.
+	ParameterTypeArray ParameterType = "Array"
+	// ParameterTypeBool specifies the parameter type bool state for parameter
 	// type.
-	MapTypeNotSpecified MapType = "NotSpecified"
-	// MapTypeXslt specifies the map type xslt state for map type.
-	MapTypeXslt MapType = "Xslt"
+	ParameterTypeBool ParameterType = "Bool"
+	// ParameterTypeFloat specifies the parameter type float state for
+	// parameter type.
+	ParameterTypeFloat ParameterType = "Float"
+	// ParameterTypeInt specifies the parameter type int state for parameter
+	// type.
+	ParameterTypeInt ParameterType = "Int"
+	// ParameterTypeNotSpecified specifies the parameter type not specified
+	// state for parameter type.
+	ParameterTypeNotSpecified ParameterType = "NotSpecified"
+	// ParameterTypeObject specifies the parameter type object state for
+	// parameter type.
+	ParameterTypeObject ParameterType = "Object"
+	// ParameterTypeSecureObject specifies the parameter type secure object
+	// state for parameter type.
+	ParameterTypeSecureObject ParameterType = "SecureObject"
+	// ParameterTypeSecureString specifies the parameter type secure string
+	// state for parameter type.
+	ParameterTypeSecureString ParameterType = "SecureString"
+	// ParameterTypeString specifies the parameter type string state for
+	// parameter type.
+	ParameterTypeString ParameterType = "String"
 )
 
-// MessageFilterType enumerates the values for message filter type.
-type MessageFilterType string
+// RecurrenceFrequency enumerates the values for recurrence frequency.
+type RecurrenceFrequency string
 
 const (
-	// MessageFilterTypeExclude specifies the message filter type exclude
-	// state for message filter type.
-	MessageFilterTypeExclude MessageFilterType = "Exclude"
-	// MessageFilterTypeInclude specifies the message filter type include
-	// state for message filter type.
-	MessageFilterTypeInclude MessageFilterType = "Include"
-	// MessageFilterTypeNotSpecified specifies the message filter type not
-	// specified state for message filter type.
-	MessageFilterTypeNotSpecified MessageFilterType = "NotSpecified"
-)
-
-// PartnerType enumerates the values for partner type.
-type PartnerType string
-
-const (
-	// PartnerTypeB2B specifies the partner type b2b state for partner type.
-	PartnerTypeB2B PartnerType = "B2B"
-	// PartnerTypeNotSpecified specifies the partner type not specified state
-	// for partner type.
-	PartnerTypeNotSpecified PartnerType = "NotSpecified"
-)
-
-// SchemaType enumerates the values for schema type.
-type SchemaType string
-
-const (
-	// SchemaTypeNotSpecified specifies the schema type not specified state
-	// for schema type.
-	SchemaTypeNotSpecified SchemaType = "NotSpecified"
-	// SchemaTypeXML specifies the schema type xml state for schema type.
-	SchemaTypeXML SchemaType = "Xml"
-)
-
-// SegmentTerminatorSuffix enumerates the values for segment terminator suffix.
-type SegmentTerminatorSuffix string
-
-const (
-	// SegmentTerminatorSuffixCR specifies the segment terminator suffix cr
-	// state for segment terminator suffix.
-	SegmentTerminatorSuffixCR SegmentTerminatorSuffix = "CR"
-	// SegmentTerminatorSuffixCRLF specifies the segment terminator suffix
-	// crlf state for segment terminator suffix.
-	SegmentTerminatorSuffixCRLF SegmentTerminatorSuffix = "CRLF"
-	// SegmentTerminatorSuffixLF specifies the segment terminator suffix lf
-	// state for segment terminator suffix.
-	SegmentTerminatorSuffixLF SegmentTerminatorSuffix = "LF"
-	// SegmentTerminatorSuffixNone specifies the segment terminator suffix
-	// none state for segment terminator suffix.
-	SegmentTerminatorSuffixNone SegmentTerminatorSuffix = "None"
-	// SegmentTerminatorSuffixNotSpecified specifies the segment terminator
-	// suffix not specified state for segment terminator suffix.
-	SegmentTerminatorSuffixNotSpecified SegmentTerminatorSuffix = "NotSpecified"
+	// RecurrenceFrequencyDay specifies the recurrence frequency day state for
+	// recurrence frequency.
+	RecurrenceFrequencyDay RecurrenceFrequency = "Day"
+	// RecurrenceFrequencyHour specifies the recurrence frequency hour state
+	// for recurrence frequency.
+	RecurrenceFrequencyHour RecurrenceFrequency = "Hour"
+	// RecurrenceFrequencyMinute specifies the recurrence frequency minute
+	// state for recurrence frequency.
+	RecurrenceFrequencyMinute RecurrenceFrequency = "Minute"
+	// RecurrenceFrequencyMonth specifies the recurrence frequency month state
+	// for recurrence frequency.
+	RecurrenceFrequencyMonth RecurrenceFrequency = "Month"
+	// RecurrenceFrequencyNotSpecified specifies the recurrence frequency not
+	// specified state for recurrence frequency.
+	RecurrenceFrequencyNotSpecified RecurrenceFrequency = "NotSpecified"
+	// RecurrenceFrequencySecond specifies the recurrence frequency second
+	// state for recurrence frequency.
+	RecurrenceFrequencySecond RecurrenceFrequency = "Second"
+	// RecurrenceFrequencyWeek specifies the recurrence frequency week state
+	// for recurrence frequency.
+	RecurrenceFrequencyWeek RecurrenceFrequency = "Week"
+	// RecurrenceFrequencyYear specifies the recurrence frequency year state
+	// for recurrence frequency.
+	RecurrenceFrequencyYear RecurrenceFrequency = "Year"
 )
 
 // SkuName enumerates the values for sku name.
@@ -241,632 +166,256 @@ const (
 	SkuNameStandard SkuName = "Standard"
 )
 
-// TrailingSeparatorPolicy enumerates the values for trailing separator policy.
-type TrailingSeparatorPolicy string
+// WorkflowProvisioningState enumerates the values for workflow provisioning
+// state.
+type WorkflowProvisioningState string
 
 const (
-	// TrailingSeparatorPolicyMandatory specifies the trailing separator
-	// policy mandatory state for trailing separator policy.
-	TrailingSeparatorPolicyMandatory TrailingSeparatorPolicy = "Mandatory"
-	// TrailingSeparatorPolicyNotAllowed specifies the trailing separator
-	// policy not allowed state for trailing separator policy.
-	TrailingSeparatorPolicyNotAllowed TrailingSeparatorPolicy = "NotAllowed"
-	// TrailingSeparatorPolicyNotSpecified specifies the trailing separator
-	// policy not specified state for trailing separator policy.
-	TrailingSeparatorPolicyNotSpecified TrailingSeparatorPolicy = "NotSpecified"
-	// TrailingSeparatorPolicyOptional specifies the trailing separator policy
-	// optional state for trailing separator policy.
-	TrailingSeparatorPolicyOptional TrailingSeparatorPolicy = "Optional"
+	// WorkflowProvisioningStateAccepted specifies the workflow provisioning
+	// state accepted state for workflow provisioning state.
+	WorkflowProvisioningStateAccepted WorkflowProvisioningState = "Accepted"
+	// WorkflowProvisioningStateCanceled specifies the workflow provisioning
+	// state canceled state for workflow provisioning state.
+	WorkflowProvisioningStateCanceled WorkflowProvisioningState = "Canceled"
+	// WorkflowProvisioningStateCompleted specifies the workflow provisioning
+	// state completed state for workflow provisioning state.
+	WorkflowProvisioningStateCompleted WorkflowProvisioningState = "Completed"
+	// WorkflowProvisioningStateCreated specifies the workflow provisioning
+	// state created state for workflow provisioning state.
+	WorkflowProvisioningStateCreated WorkflowProvisioningState = "Created"
+	// WorkflowProvisioningStateCreating specifies the workflow provisioning
+	// state creating state for workflow provisioning state.
+	WorkflowProvisioningStateCreating WorkflowProvisioningState = "Creating"
+	// WorkflowProvisioningStateDeleted specifies the workflow provisioning
+	// state deleted state for workflow provisioning state.
+	WorkflowProvisioningStateDeleted WorkflowProvisioningState = "Deleted"
+	// WorkflowProvisioningStateDeleting specifies the workflow provisioning
+	// state deleting state for workflow provisioning state.
+	WorkflowProvisioningStateDeleting WorkflowProvisioningState = "Deleting"
+	// WorkflowProvisioningStateFailed specifies the workflow provisioning
+	// state failed state for workflow provisioning state.
+	WorkflowProvisioningStateFailed WorkflowProvisioningState = "Failed"
+	// WorkflowProvisioningStateMoving specifies the workflow provisioning
+	// state moving state for workflow provisioning state.
+	WorkflowProvisioningStateMoving WorkflowProvisioningState = "Moving"
+	// WorkflowProvisioningStateNotSpecified specifies the workflow
+	// provisioning state not specified state for workflow provisioning state.
+	WorkflowProvisioningStateNotSpecified WorkflowProvisioningState = "NotSpecified"
+	// WorkflowProvisioningStateReady specifies the workflow provisioning
+	// state ready state for workflow provisioning state.
+	WorkflowProvisioningStateReady WorkflowProvisioningState = "Ready"
+	// WorkflowProvisioningStateRegistered specifies the workflow provisioning
+	// state registered state for workflow provisioning state.
+	WorkflowProvisioningStateRegistered WorkflowProvisioningState = "Registered"
+	// WorkflowProvisioningStateRegistering specifies the workflow
+	// provisioning state registering state for workflow provisioning state.
+	WorkflowProvisioningStateRegistering WorkflowProvisioningState = "Registering"
+	// WorkflowProvisioningStateRunning specifies the workflow provisioning
+	// state running state for workflow provisioning state.
+	WorkflowProvisioningStateRunning WorkflowProvisioningState = "Running"
+	// WorkflowProvisioningStateSucceeded specifies the workflow provisioning
+	// state succeeded state for workflow provisioning state.
+	WorkflowProvisioningStateSucceeded WorkflowProvisioningState = "Succeeded"
+	// WorkflowProvisioningStateUnregistered specifies the workflow
+	// provisioning state unregistered state for workflow provisioning state.
+	WorkflowProvisioningStateUnregistered WorkflowProvisioningState = "Unregistered"
+	// WorkflowProvisioningStateUnregistering specifies the workflow
+	// provisioning state unregistering state for workflow provisioning state.
+	WorkflowProvisioningStateUnregistering WorkflowProvisioningState = "Unregistering"
+	// WorkflowProvisioningStateUpdating specifies the workflow provisioning
+	// state updating state for workflow provisioning state.
+	WorkflowProvisioningStateUpdating WorkflowProvisioningState = "Updating"
 )
 
-// UsageIndicator enumerates the values for usage indicator.
-type UsageIndicator string
+// WorkflowState enumerates the values for workflow state.
+type WorkflowState string
 
 const (
-	// UsageIndicatorInformation specifies the usage indicator information
-	// state for usage indicator.
-	UsageIndicatorInformation UsageIndicator = "Information"
-	// UsageIndicatorNotSpecified specifies the usage indicator not specified
-	// state for usage indicator.
-	UsageIndicatorNotSpecified UsageIndicator = "NotSpecified"
-	// UsageIndicatorProduction specifies the usage indicator production state
-	// for usage indicator.
-	UsageIndicatorProduction UsageIndicator = "Production"
-	// UsageIndicatorTest specifies the usage indicator test state for usage
-	// indicator.
-	UsageIndicatorTest UsageIndicator = "Test"
+	// WorkflowStateCompleted specifies the workflow state completed state for
+	// workflow state.
+	WorkflowStateCompleted WorkflowState = "Completed"
+	// WorkflowStateDeleted specifies the workflow state deleted state for
+	// workflow state.
+	WorkflowStateDeleted WorkflowState = "Deleted"
+	// WorkflowStateDisabled specifies the workflow state disabled state for
+	// workflow state.
+	WorkflowStateDisabled WorkflowState = "Disabled"
+	// WorkflowStateEnabled specifies the workflow state enabled state for
+	// workflow state.
+	WorkflowStateEnabled WorkflowState = "Enabled"
+	// WorkflowStateNotSpecified specifies the workflow state not specified
+	// state for workflow state.
+	WorkflowStateNotSpecified WorkflowState = "NotSpecified"
+	// WorkflowStateSuspended specifies the workflow state suspended state for
+	// workflow state.
+	WorkflowStateSuspended WorkflowState = "Suspended"
 )
 
-// X12CharacterSet enumerates the values for x12 character set.
-type X12CharacterSet string
+// WorkflowStatus enumerates the values for workflow status.
+type WorkflowStatus string
 
 const (
-	// X12CharacterSetBasic specifies the x12 character set basic state for
-	// x12 character set.
-	X12CharacterSetBasic X12CharacterSet = "Basic"
-	// X12CharacterSetExtended specifies the x12 character set extended state
-	// for x12 character set.
-	X12CharacterSetExtended X12CharacterSet = "Extended"
-	// X12CharacterSetNotSpecified specifies the x12 character set not
-	// specified state for x12 character set.
-	X12CharacterSetNotSpecified X12CharacterSet = "NotSpecified"
-	// X12CharacterSetUTF8 specifies the x12 character set utf8 state for x12
-	// character set.
-	X12CharacterSetUTF8 X12CharacterSet = "UTF8"
+	// WorkflowStatusAborted specifies the workflow status aborted state for
+	// workflow status.
+	WorkflowStatusAborted WorkflowStatus = "Aborted"
+	// WorkflowStatusCancelled specifies the workflow status cancelled state
+	// for workflow status.
+	WorkflowStatusCancelled WorkflowStatus = "Cancelled"
+	// WorkflowStatusFailed specifies the workflow status failed state for
+	// workflow status.
+	WorkflowStatusFailed WorkflowStatus = "Failed"
+	// WorkflowStatusFaulted specifies the workflow status faulted state for
+	// workflow status.
+	WorkflowStatusFaulted WorkflowStatus = "Faulted"
+	// WorkflowStatusIgnored specifies the workflow status ignored state for
+	// workflow status.
+	WorkflowStatusIgnored WorkflowStatus = "Ignored"
+	// WorkflowStatusNotSpecified specifies the workflow status not specified
+	// state for workflow status.
+	WorkflowStatusNotSpecified WorkflowStatus = "NotSpecified"
+	// WorkflowStatusPaused specifies the workflow status paused state for
+	// workflow status.
+	WorkflowStatusPaused WorkflowStatus = "Paused"
+	// WorkflowStatusRunning specifies the workflow status running state for
+	// workflow status.
+	WorkflowStatusRunning WorkflowStatus = "Running"
+	// WorkflowStatusSkipped specifies the workflow status skipped state for
+	// workflow status.
+	WorkflowStatusSkipped WorkflowStatus = "Skipped"
+	// WorkflowStatusSucceeded specifies the workflow status succeeded state
+	// for workflow status.
+	WorkflowStatusSucceeded WorkflowStatus = "Succeeded"
+	// WorkflowStatusSuspended specifies the workflow status suspended state
+	// for workflow status.
+	WorkflowStatusSuspended WorkflowStatus = "Suspended"
+	// WorkflowStatusTimedOut specifies the workflow status timed out state
+	// for workflow status.
+	WorkflowStatusTimedOut WorkflowStatus = "TimedOut"
+	// WorkflowStatusWaiting specifies the workflow status waiting state for
+	// workflow status.
+	WorkflowStatusWaiting WorkflowStatus = "Waiting"
 )
 
-// X12DateFormat enumerates the values for x12 date format.
-type X12DateFormat string
+// WorkflowTriggerProvisioningState enumerates the values for workflow trigger
+// provisioning state.
+type WorkflowTriggerProvisioningState string
 
 const (
-	// X12DateFormatCCYYMMDD specifies the x12 date format ccyymmdd state for
-	// x12 date format.
-	X12DateFormatCCYYMMDD X12DateFormat = "CCYYMMDD"
-	// X12DateFormatNotSpecified specifies the x12 date format not specified
-	// state for x12 date format.
-	X12DateFormatNotSpecified X12DateFormat = "NotSpecified"
-	// X12DateFormatYYMMDD specifies the x12 date format yymmdd state for x12
-	// date format.
-	X12DateFormatYYMMDD X12DateFormat = "YYMMDD"
+	// WorkflowTriggerProvisioningStateAccepted specifies the workflow trigger
+	// provisioning state accepted state for workflow trigger provisioning
+	// state.
+	WorkflowTriggerProvisioningStateAccepted WorkflowTriggerProvisioningState = "Accepted"
+	// WorkflowTriggerProvisioningStateCanceled specifies the workflow trigger
+	// provisioning state canceled state for workflow trigger provisioning
+	// state.
+	WorkflowTriggerProvisioningStateCanceled WorkflowTriggerProvisioningState = "Canceled"
+	// WorkflowTriggerProvisioningStateCompleted specifies the workflow
+	// trigger provisioning state completed state for workflow trigger
+	// provisioning state.
+	WorkflowTriggerProvisioningStateCompleted WorkflowTriggerProvisioningState = "Completed"
+	// WorkflowTriggerProvisioningStateCreated specifies the workflow trigger
+	// provisioning state created state for workflow trigger provisioning
+	// state.
+	WorkflowTriggerProvisioningStateCreated WorkflowTriggerProvisioningState = "Created"
+	// WorkflowTriggerProvisioningStateCreating specifies the workflow trigger
+	// provisioning state creating state for workflow trigger provisioning
+	// state.
+	WorkflowTriggerProvisioningStateCreating WorkflowTriggerProvisioningState = "Creating"
+	// WorkflowTriggerProvisioningStateDeleted specifies the workflow trigger
+	// provisioning state deleted state for workflow trigger provisioning
+	// state.
+	WorkflowTriggerProvisioningStateDeleted WorkflowTriggerProvisioningState = "Deleted"
+	// WorkflowTriggerProvisioningStateDeleting specifies the workflow trigger
+	// provisioning state deleting state for workflow trigger provisioning
+	// state.
+	WorkflowTriggerProvisioningStateDeleting WorkflowTriggerProvisioningState = "Deleting"
+	// WorkflowTriggerProvisioningStateFailed specifies the workflow trigger
+	// provisioning state failed state for workflow trigger provisioning
+	// state.
+	WorkflowTriggerProvisioningStateFailed WorkflowTriggerProvisioningState = "Failed"
+	// WorkflowTriggerProvisioningStateMoving specifies the workflow trigger
+	// provisioning state moving state for workflow trigger provisioning
+	// state.
+	WorkflowTriggerProvisioningStateMoving WorkflowTriggerProvisioningState = "Moving"
+	// WorkflowTriggerProvisioningStateNotSpecified specifies the workflow
+	// trigger provisioning state not specified state for workflow trigger
+	// provisioning state.
+	WorkflowTriggerProvisioningStateNotSpecified WorkflowTriggerProvisioningState = "NotSpecified"
+	// WorkflowTriggerProvisioningStateReady specifies the workflow trigger
+	// provisioning state ready state for workflow trigger provisioning state.
+	WorkflowTriggerProvisioningStateReady WorkflowTriggerProvisioningState = "Ready"
+	// WorkflowTriggerProvisioningStateRegistered specifies the workflow
+	// trigger provisioning state registered state for workflow trigger
+	// provisioning state.
+	WorkflowTriggerProvisioningStateRegistered WorkflowTriggerProvisioningState = "Registered"
+	// WorkflowTriggerProvisioningStateRegistering specifies the workflow
+	// trigger provisioning state registering state for workflow trigger
+	// provisioning state.
+	WorkflowTriggerProvisioningStateRegistering WorkflowTriggerProvisioningState = "Registering"
+	// WorkflowTriggerProvisioningStateRunning specifies the workflow trigger
+	// provisioning state running state for workflow trigger provisioning
+	// state.
+	WorkflowTriggerProvisioningStateRunning WorkflowTriggerProvisioningState = "Running"
+	// WorkflowTriggerProvisioningStateSucceeded specifies the workflow
+	// trigger provisioning state succeeded state for workflow trigger
+	// provisioning state.
+	WorkflowTriggerProvisioningStateSucceeded WorkflowTriggerProvisioningState = "Succeeded"
+	// WorkflowTriggerProvisioningStateUnregistered specifies the workflow
+	// trigger provisioning state unregistered state for workflow trigger
+	// provisioning state.
+	WorkflowTriggerProvisioningStateUnregistered WorkflowTriggerProvisioningState = "Unregistered"
+	// WorkflowTriggerProvisioningStateUnregistering specifies the workflow
+	// trigger provisioning state unregistering state for workflow trigger
+	// provisioning state.
+	WorkflowTriggerProvisioningStateUnregistering WorkflowTriggerProvisioningState = "Unregistering"
+	// WorkflowTriggerProvisioningStateUpdating specifies the workflow trigger
+	// provisioning state updating state for workflow trigger provisioning
+	// state.
+	WorkflowTriggerProvisioningStateUpdating WorkflowTriggerProvisioningState = "Updating"
 )
 
-// X12TimeFormat enumerates the values for x12 time format.
-type X12TimeFormat string
-
-const (
-	// X12TimeFormatHHMM specifies the x12 time format hhmm state for x12 time
-	// format.
-	X12TimeFormatHHMM X12TimeFormat = "HHMM"
-	// X12TimeFormatHHMMSS specifies the x12 time format hhmmss state for x12
-	// time format.
-	X12TimeFormatHHMMSS X12TimeFormat = "HHMMSS"
-	// X12TimeFormatHHMMSSd specifies the x12 time format hhmms sd state for
-	// x12 time format.
-	X12TimeFormatHHMMSSd X12TimeFormat = "HHMMSSd"
-	// X12TimeFormatHHMMSSdd specifies the x12 time format hhmms sdd state for
-	// x12 time format.
-	X12TimeFormatHHMMSSdd X12TimeFormat = "HHMMSSdd"
-	// X12TimeFormatNotSpecified specifies the x12 time format not specified
-	// state for x12 time format.
-	X12TimeFormatNotSpecified X12TimeFormat = "NotSpecified"
-)
-
-// AgreementContent is
-type AgreementContent struct {
-	AS2     *AS2AgreementContent     `json:"AS2,omitempty"`
-	X12     *X12AgreementContent     `json:"X12,omitempty"`
-	Edifact *EdifactAgreementContent `json:"Edifact,omitempty"`
-}
-
-// AS2AcknowledgementConnectionSettings is
-type AS2AcknowledgementConnectionSettings struct {
-	IgnoreCertificateNameMismatch *bool `json:"ignoreCertificateNameMismatch,omitempty"`
-	SupportHTTPStatusCodeContinue *bool `json:"supportHttpStatusCodeContinue,omitempty"`
-	KeepHTTPConnectionAlive       *bool `json:"keepHttpConnectionAlive,omitempty"`
-	UnfoldHTTPHeaders             *bool `json:"unfoldHttpHeaders,omitempty"`
-}
-
-// AS2AgreementContent is
-type AS2AgreementContent struct {
-	ReceiveAgreement *AS2OneWayAgreement `json:"receiveAgreement,omitempty"`
-	SendAgreement    *AS2OneWayAgreement `json:"sendAgreement,omitempty"`
-}
-
-// AS2EnvelopeSettings is
-type AS2EnvelopeSettings struct {
-	MessageContentType                      *string `json:"messageContentType,omitempty"`
-	TransmitFileNameInMimeHeader            *bool   `json:"transmitFileNameInMimeHeader,omitempty"`
-	FileNameTemplate                        *string `json:"fileNameTemplate,omitempty"`
-	SuspendMessageOnFileNameGenerationError *bool   `json:"SuspendMessageOnFileNameGenerationError,omitempty"`
-	AutogenerateFileName                    *bool   `json:"AutogenerateFileName,omitempty"`
-}
-
-// AS2ErrorSettings is
-type AS2ErrorSettings struct {
-	SuspendDuplicateMessage *bool `json:"SuspendDuplicateMessage,omitempty"`
-	ResendIfMdnNotReceived  *bool `json:"ResendIfMdnNotReceived,omitempty"`
-}
-
-// AS2MdnSettings is
-type AS2MdnSettings struct {
-	NeedMdn                    *bool            `json:"needMdn,omitempty"`
-	SignMdn                    *bool            `json:"signMdn,omitempty"`
-	SendMdnAsynchronously      *bool            `json:"sendMdnAsynchronously,omitempty"`
-	ReceiptDeliveryURL         *string          `json:"receiptDeliveryUrl,omitempty"`
-	DispositionNotificationTo  *string          `json:"dispositionNotificationTo,omitempty"`
-	SignOutboundMdnIfOptional  *bool            `json:"signOutboundMdnIfOptional,omitempty"`
-	MdnText                    *string          `json:"mdnText,omitempty"`
-	SendInboundMdnToMessageBox *bool            `json:"sendInboundMdnToMessageBox,omitempty"`
-	MicHashingAlgorithm        HashingAlgorithm `json:"micHashingAlgorithm,omitempty"`
-}
-
-// AS2MessageConnectionSettings is
-type AS2MessageConnectionSettings struct {
-	IgnoreCertificateNameMismatch *bool `json:"ignoreCertificateNameMismatch,omitempty"`
-	SupportHTTPStatusCodeContinue *bool `json:"supportHttpStatusCodeContinue,omitempty"`
-	KeepHTTPConnectionAlive       *bool `json:"keepHttpConnectionAlive,omitempty"`
-	UnfoldHTTPHeaders             *bool `json:"unfoldHttpHeaders,omitempty"`
-}
-
-// AS2OneWayAgreement is
-type AS2OneWayAgreement struct {
-	SenderBusinessIdentity   *BusinessIdentity    `json:"senderBusinessIdentity,omitempty"`
-	ReceiverBusinessIdentity *BusinessIdentity    `json:"receiverBusinessIdentity,omitempty"`
-	ProtocolSettings         *AS2ProtocolSettings `json:"protocolSettings,omitempty"`
-}
-
-// AS2ProtocolSettings is
-type AS2ProtocolSettings struct {
-	MessageConnectionSettings         *AS2MessageConnectionSettings         `json:"messageConnectionSettings,omitempty"`
-	AcknowledgementConnectionSettings *AS2AcknowledgementConnectionSettings `json:"acknowledgementConnectionSettings,omitempty"`
-	MdnSettings                       *AS2MdnSettings                       `json:"mdnSettings,omitempty"`
-	SecuritySettings                  *AS2SecuritySettings                  `json:"securitySettings,omitempty"`
-	ValidationSettings                *AS2ValidationSettings                `json:"validationSettings,omitempty"`
-	EnvelopeSettings                  *AS2EnvelopeSettings                  `json:"envelopeSettings,omitempty"`
-	ErrorSettings                     *AS2ErrorSettings                     `json:"errorSettings,omitempty"`
-}
-
-// AS2SecuritySettings is
-type AS2SecuritySettings struct {
-	OverrideGroupSigningCertificate     *bool   `json:"overrideGroupSigningCertificate,omitempty"`
-	SigningCertificateName              *string `json:"signingCertificateName,omitempty"`
-	EncryptionCertificateName           *string `json:"encryptionCertificateName,omitempty"`
-	EnableNrrForInboundEncodedMessages  *bool   `json:"enableNrrForInboundEncodedMessages,omitempty"`
-	EnableNrrForInboundDecodedMessages  *bool   `json:"enableNrrForInboundDecodedMessages,omitempty"`
-	EnableNrrForOutboundMdn             *bool   `json:"enableNrrForOutboundMdn,omitempty"`
-	EnableNrrForOutboundEncodedMessages *bool   `json:"enableNrrForOutboundEncodedMessages,omitempty"`
-	EnableNrrForOutboundDecodedMessages *bool   `json:"enableNrrForOutboundDecodedMessages,omitempty"`
-	EnableNrrForInboundMdn              *bool   `json:"enableNrrForInboundMdn,omitempty"`
-}
-
-// AS2ValidationSettings is
-type AS2ValidationSettings struct {
-	OverrideMessageProperties               *bool               `json:"overrideMessageProperties,omitempty"`
-	EncryptMessage                          *bool               `json:"encryptMessage,omitempty"`
-	SignMessage                             *bool               `json:"signMessage,omitempty"`
-	CompressMessage                         *bool               `json:"compressMessage,omitempty"`
-	CheckDuplicateMessage                   *bool               `json:"checkDuplicateMessage,omitempty"`
-	InterchangeDuplicatesValidityDays       *int32              `json:"interchangeDuplicatesValidityDays,omitempty"`
-	CheckCertificateRevocationListOnSend    *bool               `json:"checkCertificateRevocationListOnSend,omitempty"`
-	CheckCertificateRevocationListOnReceive *bool               `json:"checkCertificateRevocationListOnReceive,omitempty"`
-	EncryptionAlgorithm                     EncryptionAlgorithm `json:"encryptionAlgorithm,omitempty"`
-}
-
-// B2BPartnerContent is
-type B2BPartnerContent struct {
-	BusinessIdentities *[]BusinessIdentity `json:"businessIdentities,omitempty"`
-}
-
-// BusinessIdentity is
-type BusinessIdentity struct {
-	Qualifier *string `json:"Qualifier,omitempty"`
-	Value     *string `json:"Value,omitempty"`
-}
-
-// CallbackURL is
-type CallbackURL struct {
-	autorest.Response `json:"-"`
-	Value             *string `json:"value,omitempty"`
-}
-
-// EdifactAcknowledgementSettings is
-type EdifactAcknowledgementSettings struct {
-	NeedTechnicalAcknowledgement           *bool   `json:"needTechnicalAcknowledgement,omitempty"`
-	BatchTechnicalAcknowledgements         *bool   `json:"batchTechnicalAcknowledgements,omitempty"`
-	NeedFunctionalAcknowledgement          *bool   `json:"needFunctionalAcknowledgement,omitempty"`
-	BatchFunctionalAcknowledgements        *bool   `json:"batchFunctionalAcknowledgements,omitempty"`
-	NeedLoopForValidMessages               *bool   `json:"needLoopForValidMessages,omitempty"`
-	SendSynchronousAcknowledgement         *bool   `json:"sendSynchronousAcknowledgement,omitempty"`
-	AcknowledgementControlNumberPrefix     *string `json:"acknowledgementControlNumberPrefix,omitempty"`
-	AcknowledgementControlNumberSuffix     *string `json:"acknowledgementControlNumberSuffix,omitempty"`
-	AcknowledgementControlNumberLowerBound *int32  `json:"acknowledgementControlNumberLowerBound,omitempty"`
-	AcknowledgementControlNumberUpperBound *int32  `json:"acknowledgementControlNumberUpperBound,omitempty"`
-	RolloverAcknowledgementControlNumber   *bool   `json:"rolloverAcknowledgementControlNumber,omitempty"`
-}
-
-// EdifactAgreementContent is
-type EdifactAgreementContent struct {
-	ReceiveAgreement *EdifactOneWayAgreement `json:"receiveAgreement,omitempty"`
-	SendAgreement    *EdifactOneWayAgreement `json:"sendAgreement,omitempty"`
-}
-
-// EdifactDelimiterOverride is
-type EdifactDelimiterOverride struct {
-	MessageID                      *string                 `json:"messageId,omitempty"`
-	MessageVersion                 *string                 `json:"messageVersion,omitempty"`
-	MessageRelease                 *string                 `json:"messageRelease,omitempty"`
-	DataElementSeparator           *int32                  `json:"dataElementSeparator,omitempty"`
-	ComponentSeparator             *int32                  `json:"componentSeparator,omitempty"`
-	SegmentTerminator              *int32                  `json:"segmentTerminator,omitempty"`
-	RepetitionSeparator            *int32                  `json:"repetitionSeparator,omitempty"`
-	SegmentTerminatorSuffix        SegmentTerminatorSuffix `json:"segmentTerminatorSuffix,omitempty"`
-	DecimalPointIndicator          EdifactDecimalIndicator `json:"decimalPointIndicator,omitempty"`
-	ReleaseIndicator               *int32                  `json:"releaseIndicator,omitempty"`
-	MessageAssociationAssignedCode *string                 `json:"messageAssociationAssignedCode,omitempty"`
-	TargetNamespace                *string                 `json:"targetNamespace,omitempty"`
-}
-
-// EdifactEnvelopeOverride is
-type EdifactEnvelopeOverride struct {
-	MessageID                      *string `json:"messageId,omitempty"`
-	MessageVersion                 *string `json:"messageVersion,omitempty"`
-	MessageRelease                 *string `json:"messageRelease,omitempty"`
-	MessageAssociationAssignedCode *string `json:"messageAssociationAssignedCode,omitempty"`
-	TargetNamespace                *string `json:"targetNamespace,omitempty"`
-	FunctionalGroupID              *string `json:"functionalGroupId,omitempty"`
-	SenderApplicationQualifier     *string `json:"senderApplicationQualifier,omitempty"`
-	SenderApplicationID            *string `json:"senderApplicationId,omitempty"`
-	ReceiverApplicationQualifier   *string `json:"receiverApplicationQualifier,omitempty"`
-	ReceiverApplicationID          *string `json:"receiverApplicationId,omitempty"`
-	ControllingAgencyCode          *string `json:"controllingAgencyCode,omitempty"`
-	GroupHeaderMessageVersion      *string `json:"groupHeaderMessageVersion,omitempty"`
-	GroupHeaderMessageRelease      *string `json:"groupHeaderMessageRelease,omitempty"`
-	AssociationAssignedCode        *string `json:"associationAssignedCode,omitempty"`
-	ApplicationPassword            *string `json:"applicationPassword,omitempty"`
-}
-
-// EdifactEnvelopeSettings is
-type EdifactEnvelopeSettings struct {
-	GroupAssociationAssignedCode                 *string `json:"groupAssociationAssignedCode,omitempty"`
-	CommunicationAgreementID                     *string `json:"communicationAgreementId,omitempty"`
-	ApplyDelimiterStringAdvice                   *bool   `json:"applyDelimiterStringAdvice,omitempty"`
-	CreateGroupingSegments                       *bool   `json:"createGroupingSegments,omitempty"`
-	EnableDefaultGroupHeaders                    *bool   `json:"enableDefaultGroupHeaders,omitempty"`
-	RecipientReferencePasswordValue              *string `json:"recipientReferencePasswordValue,omitempty"`
-	RecipientReferencePasswordQualifier          *string `json:"recipientReferencePasswordQualifier,omitempty"`
-	ApplicationReferenceID                       *string `json:"applicationReferenceId,omitempty"`
-	ProcessingPriorityCode                       *string `json:"processingPriorityCode,omitempty"`
-	InterchangeControlNumberLowerBound           *int64  `json:"interchangeControlNumberLowerBound,omitempty"`
-	InterchangeControlNumberUpperBound           *int64  `json:"interchangeControlNumberUpperBound,omitempty"`
-	RolloverInterchangeControlNumber             *bool   `json:"rolloverInterchangeControlNumber,omitempty"`
-	InterchangeControlNumberPrefix               *string `json:"interchangeControlNumberPrefix,omitempty"`
-	InterchangeControlNumberSuffix               *string `json:"interchangeControlNumberSuffix,omitempty"`
-	SenderReverseRoutingAddress                  *string `json:"senderReverseRoutingAddress,omitempty"`
-	ReceiverReverseRoutingAddress                *string `json:"receiverReverseRoutingAddress,omitempty"`
-	FunctionalGroupID                            *string `json:"functionalGroupId,omitempty"`
-	GroupControllingAgencyCode                   *string `json:"groupControllingAgencyCode,omitempty"`
-	GroupMessageVersion                          *string `json:"groupMessageVersion,omitempty"`
-	GroupMessageRelease                          *string `json:"groupMessageRelease,omitempty"`
-	GroupControlNumberLowerBound                 *int64  `json:"groupControlNumberLowerBound,omitempty"`
-	GroupControlNumberUpperBound                 *int64  `json:"groupControlNumberUpperBound,omitempty"`
-	RolloverGroupControlNumber                   *bool   `json:"rolloverGroupControlNumber,omitempty"`
-	GroupControlNumberPrefix                     *string `json:"groupControlNumberPrefix,omitempty"`
-	GroupControlNumberSuffix                     *string `json:"groupControlNumberSuffix,omitempty"`
-	GroupApplicationReceiverQualifier            *string `json:"groupApplicationReceiverQualifier,omitempty"`
-	GroupApplicationReceiverID                   *string `json:"groupApplicationReceiverId,omitempty"`
-	GroupApplicationSenderQualifier              *string `json:"groupApplicationSenderQualifier,omitempty"`
-	GroupApplicationSenderID                     *string `json:"groupApplicationSenderId,omitempty"`
-	GroupApplicationPassword                     *string `json:"groupApplicationPassword,omitempty"`
-	OverwriteExistingTransactionSetControlNumber *bool   `json:"overwriteExistingTransactionSetControlNumber,omitempty"`
-	TransactionSetControlNumberPrefix            *string `json:"transactionSetControlNumberPrefix,omitempty"`
-	TransactionSetControlNumberSuffix            *string `json:"transactionSetControlNumberSuffix,omitempty"`
-	TransactionSetControlNumberLowerBound        *int64  `json:"transactionSetControlNumberLowerBound,omitempty"`
-	TransactionSetControlNumberUpperBound        *int64  `json:"transactionSetControlNumberUpperBound,omitempty"`
-	RolloverTransactionSetControlNumber          *bool   `json:"rolloverTransactionSetControlNumber,omitempty"`
-	IsTestInterchange                            *bool   `json:"isTestInterchange,omitempty"`
-	SenderInternalIdentification                 *string `json:"senderInternalIdentification,omitempty"`
-	SenderInternalSubIdentification              *string `json:"senderInternalSubIdentification,omitempty"`
-	ReceiverInternalIdentification               *string `json:"receiverInternalIdentification,omitempty"`
-	ReceiverInternalSubIdentification            *string `json:"receiverInternalSubIdentification,omitempty"`
-}
-
-// EdifactFramingSettings is
-type EdifactFramingSettings struct {
-	ServiceCodeListDirectoryVersion *string                 `json:"serviceCodeListDirectoryVersion,omitempty"`
-	CharacterEncoding               *string                 `json:"characterEncoding,omitempty"`
-	ProtocolVersion                 *int32                  `json:"protocolVersion,omitempty"`
-	DataElementSeparator            *int32                  `json:"dataElementSeparator,omitempty"`
-	ComponentSeparator              *int32                  `json:"componentSeparator,omitempty"`
-	SegmentTerminator               *int32                  `json:"segmentTerminator,omitempty"`
-	ReleaseIndicator                *int32                  `json:"releaseIndicator,omitempty"`
-	RepetitionSeparator             *int32                  `json:"repetitionSeparator,omitempty"`
-	CharacterSet                    EdifactCharacterSet     `json:"characterSet,omitempty"`
-	DecimalPointIndicator           EdifactDecimalIndicator `json:"decimalPointIndicator,omitempty"`
-	SegmentTerminatorSuffix         SegmentTerminatorSuffix `json:"segmentTerminatorSuffix,omitempty"`
-}
-
-// EdifactMessageFilter is
-type EdifactMessageFilter struct {
-	MessageFilterType MessageFilterType `json:"messageFilterType,omitempty"`
-}
-
-// EdifactMessageIdentifier is
-type EdifactMessageIdentifier struct {
-	MessageID *string `json:"messageId,omitempty"`
-}
-
-// EdifactOneWayAgreement is
-type EdifactOneWayAgreement struct {
-	SenderBusinessIdentity   *BusinessIdentity        `json:"senderBusinessIdentity,omitempty"`
-	ReceiverBusinessIdentity *BusinessIdentity        `json:"receiverBusinessIdentity,omitempty"`
-	ProtocolSettings         *EdifactProtocolSettings `json:"protocolSettings,omitempty"`
-}
-
-// EdifactProcessingSettings is
-type EdifactProcessingSettings struct {
-	MaskSecurityInfo                        *bool `json:"maskSecurityInfo,omitempty"`
-	PreserveInterchange                     *bool `json:"preserveInterchange,omitempty"`
-	SuspendInterchangeOnError               *bool `json:"suspendInterchangeOnError,omitempty"`
-	CreateEmptyXMLTagsForTrailingSeparators *bool `json:"createEmptyXmlTagsForTrailingSeparators,omitempty"`
-	UseDotAsDecimalSeparator                *bool `json:"useDotAsDecimalSeparator,omitempty"`
-}
-
-// EdifactProtocolSettings is
-type EdifactProtocolSettings struct {
-	ValidationSettings        *EdifactValidationSettings      `json:"validationSettings,omitempty"`
-	FramingSettings           *EdifactFramingSettings         `json:"framingSettings,omitempty"`
-	EnvelopeSettings          *EdifactEnvelopeSettings        `json:"envelopeSettings,omitempty"`
-	AcknowledgementSettings   *EdifactAcknowledgementSettings `json:"acknowledgementSettings,omitempty"`
-	MessageFilter             *EdifactMessageFilter           `json:"messageFilter,omitempty"`
-	ProcessingSettings        *EdifactProcessingSettings      `json:"processingSettings,omitempty"`
-	EnvelopeOverrides         *[]EdifactEnvelopeOverride      `json:"envelopeOverrides,omitempty"`
-	MessageFilterList         *[]EdifactMessageIdentifier     `json:"messageFilterList,omitempty"`
-	SchemaReferences          *[]EdifactSchemaReference       `json:"schemaReferences,omitempty"`
-	ValidationOverrides       *[]EdifactValidationOverride    `json:"validationOverrides,omitempty"`
-	EdifactDelimiterOverrides *[]EdifactDelimiterOverride     `json:"edifactDelimiterOverrides,omitempty"`
-}
-
-// EdifactSchemaReference is
-type EdifactSchemaReference struct {
-	MessageID                  *string `json:"messageId,omitempty"`
-	MessageVersion             *string `json:"messageVersion,omitempty"`
-	MessageRelease             *string `json:"messageRelease,omitempty"`
-	SenderApplicationID        *string `json:"senderApplicationId,omitempty"`
-	SenderApplicationQualifier *string `json:"senderApplicationQualifier,omitempty"`
-	AssociationAssignedCode    *string `json:"associationAssignedCode,omitempty"`
-	SchemaName                 *string `json:"schemaName,omitempty"`
-}
-
-// EdifactValidationOverride is
-type EdifactValidationOverride struct {
-	MessageID                              *string                 `json:"messageId,omitempty"`
-	EnforceCharacterSet                    *bool                   `json:"enforceCharacterSet,omitempty"`
-	ValidateEDITypes                       *bool                   `json:"validateEDITypes,omitempty"`
-	ValidateXSDTypes                       *bool                   `json:"validateXSDTypes,omitempty"`
-	AllowLeadingAndTrailingSpacesAndZeroes *bool                   `json:"allowLeadingAndTrailingSpacesAndZeroes,omitempty"`
-	TrailingSeparatorPolicy                TrailingSeparatorPolicy `json:"trailingSeparatorPolicy,omitempty"`
-	TrimLeadingAndTrailingSpacesAndZeroes  *bool                   `json:"trimLeadingAndTrailingSpacesAndZeroes,omitempty"`
-}
-
-// EdifactValidationSettings is
-type EdifactValidationSettings struct {
-	ValidateCharacterSet                      *bool                   `json:"validateCharacterSet,omitempty"`
-	CheckDuplicateInterchangeControlNumber    *bool                   `json:"checkDuplicateInterchangeControlNumber,omitempty"`
-	InterchangeControlNumberValidityDays      *int32                  `json:"interchangeControlNumberValidityDays,omitempty"`
-	CheckDuplicateGroupControlNumber          *bool                   `json:"checkDuplicateGroupControlNumber,omitempty"`
-	CheckDuplicateTransactionSetControlNumber *bool                   `json:"checkDuplicateTransactionSetControlNumber,omitempty"`
-	ValidateEDITypes                          *bool                   `json:"validateEDITypes,omitempty"`
-	ValidateXSDTypes                          *bool                   `json:"validateXSDTypes,omitempty"`
-	AllowLeadingAndTrailingSpacesAndZeroes    *bool                   `json:"allowLeadingAndTrailingSpacesAndZeroes,omitempty"`
-	TrimLeadingAndTrailingSpacesAndZeroes     *bool                   `json:"trimLeadingAndTrailingSpacesAndZeroes,omitempty"`
-	TrailingSeparatorPolicy                   TrailingSeparatorPolicy `json:"trailingSeparatorPolicy,omitempty"`
-}
-
-// IntegrationAccount is
-type IntegrationAccount struct {
-	autorest.Response `json:"-"`
-	ID                *string                 `json:"id,omitempty"`
-	Name              *string                 `json:"name,omitempty"`
-	Type              *string                 `json:"type,omitempty"`
-	Location          *string                 `json:"location,omitempty"`
-	Tags              *map[string]*string     `json:"tags,omitempty"`
-	Properties        *map[string]interface{} `json:"properties,omitempty"`
-	Sku               *IntegrationAccountSku  `json:"sku,omitempty"`
-}
-
-// IntegrationAccountAgreement is
-type IntegrationAccountAgreement struct {
-	autorest.Response `json:"-"`
-	ID                *string                                `json:"id,omitempty"`
-	Name              *string                                `json:"name,omitempty"`
-	Type              *string                                `json:"type,omitempty"`
-	Location          *string                                `json:"location,omitempty"`
-	Tags              *map[string]*string                    `json:"tags,omitempty"`
-	Properties        *IntegrationAccountAgreementProperties `json:"properties,omitempty"`
-}
-
-// IntegrationAccountAgreementFilter is
-type IntegrationAccountAgreementFilter struct {
-	AgreementType AgreementType `json:"agreementType,omitempty"`
-}
-
-// IntegrationAccountAgreementListResult is
-type IntegrationAccountAgreementListResult struct {
-	autorest.Response `json:"-"`
-	Value             *[]IntegrationAccountAgreement `json:"value,omitempty"`
-	NextLink          *string                        `json:"nextLink,omitempty"`
-}
-
-// IntegrationAccountAgreementListResultPreparer prepares a request to retrieve the next set of results. It returns
-// nil if no more results exist.
-func (client IntegrationAccountAgreementListResult) IntegrationAccountAgreementListResultPreparer() (*http.Request, error) {
-	if client.NextLink == nil || len(to.String(client.NextLink)) <= 0 {
-		return nil, nil
-	}
-	return autorest.Prepare(&http.Request{},
-		autorest.AsJSON(),
-		autorest.AsGet(),
-		autorest.WithBaseURL(to.String(client.NextLink)))
-}
-
-// IntegrationAccountAgreementProperties is
-type IntegrationAccountAgreementProperties struct {
-	CreatedTime   *date.Time              `json:"createdTime,omitempty"`
-	ChangedTime   *date.Time              `json:"changedTime,omitempty"`
-	Metadata      *map[string]interface{} `json:"metadata,omitempty"`
-	AgreementType AgreementType           `json:"agreementType,omitempty"`
-	HostPartner   *string                 `json:"hostPartner,omitempty"`
-	GuestPartner  *string                 `json:"guestPartner,omitempty"`
-	HostIdentity  *BusinessIdentity       `json:"hostIdentity,omitempty"`
-	GuestIdentity *BusinessIdentity       `json:"guestIdentity,omitempty"`
-	Content       *AgreementContent       `json:"content,omitempty"`
-}
-
-// IntegrationAccountCertificate is
-type IntegrationAccountCertificate struct {
-	autorest.Response `json:"-"`
-	ID                *string                                  `json:"id,omitempty"`
-	Name              *string                                  `json:"name,omitempty"`
-	Type              *string                                  `json:"type,omitempty"`
-	Location          *string                                  `json:"location,omitempty"`
-	Tags              *map[string]*string                      `json:"tags,omitempty"`
-	Properties        *IntegrationAccountCertificateProperties `json:"properties,omitempty"`
-}
-
-// IntegrationAccountCertificateListResult is
-type IntegrationAccountCertificateListResult struct {
-	autorest.Response `json:"-"`
-	Value             *[]IntegrationAccountCertificate `json:"value,omitempty"`
-	NextLink          *string                          `json:"nextLink,omitempty"`
-}
-
-// IntegrationAccountCertificateListResultPreparer prepares a request to retrieve the next set of results. It returns
-// nil if no more results exist.
-func (client IntegrationAccountCertificateListResult) IntegrationAccountCertificateListResultPreparer() (*http.Request, error) {
-	if client.NextLink == nil || len(to.String(client.NextLink)) <= 0 {
-		return nil, nil
-	}
-	return autorest.Prepare(&http.Request{},
-		autorest.AsJSON(),
-		autorest.AsGet(),
-		autorest.WithBaseURL(to.String(client.NextLink)))
-}
-
-// IntegrationAccountCertificateProperties is
-type IntegrationAccountCertificateProperties struct {
-	CreatedTime       *date.Time              `json:"createdTime,omitempty"`
-	ChangedTime       *date.Time              `json:"changedTime,omitempty"`
-	Metadata          *map[string]interface{} `json:"metadata,omitempty"`
-	Key               *KeyVaultKeyReference   `json:"key,omitempty"`
-	PublicCertificate *string                 `json:"publicCertificate,omitempty"`
-}
-
-// IntegrationAccountContentHash is
-type IntegrationAccountContentHash struct {
+// ContentHash is
+type ContentHash struct {
 	Algorithm *string `json:"algorithm,omitempty"`
 	Value     *string `json:"value,omitempty"`
 }
 
-// IntegrationAccountContentLink is
-type IntegrationAccountContentLink struct {
-	URI            *string                        `json:"uri,omitempty"`
-	ContentVersion *string                        `json:"contentVersion,omitempty"`
-	ContentSize    *int64                         `json:"contentSize,omitempty"`
-	ContentHash    *IntegrationAccountContentHash `json:"contentHash,omitempty"`
-	Metadata       *map[string]interface{}        `json:"metadata,omitempty"`
+// ContentLink is
+type ContentLink struct {
+	URI            *string                 `json:"uri,omitempty"`
+	ContentVersion *string                 `json:"contentVersion,omitempty"`
+	ContentSize    *int64                  `json:"contentSize,omitempty"`
+	ContentHash    *ContentHash            `json:"contentHash,omitempty"`
+	Metadata       *map[string]interface{} `json:"metadata,omitempty"`
 }
 
-// IntegrationAccountListResult is
-type IntegrationAccountListResult struct {
-	autorest.Response `json:"-"`
-	Value             *[]IntegrationAccount `json:"value,omitempty"`
-	NextLink          *string               `json:"nextLink,omitempty"`
+// Correlation is
+type Correlation struct {
+	ClientTrackingID *string `json:"clientTrackingId,omitempty"`
 }
 
-// IntegrationAccountListResultPreparer prepares a request to retrieve the next set of results. It returns
-// nil if no more results exist.
-func (client IntegrationAccountListResult) IntegrationAccountListResultPreparer() (*http.Request, error) {
-	if client.NextLink == nil || len(to.String(client.NextLink)) <= 0 {
-		return nil, nil
-	}
-	return autorest.Prepare(&http.Request{},
-		autorest.AsJSON(),
-		autorest.AsGet(),
-		autorest.WithBaseURL(to.String(client.NextLink)))
+// GenerateUpgradedDefinitionParameters is
+type GenerateUpgradedDefinitionParameters struct {
+	TargetSchemaVersion *string `json:"targetSchemaVersion,omitempty"`
 }
 
-// IntegrationAccountMap is
-type IntegrationAccountMap struct {
-	autorest.Response `json:"-"`
-	ID                *string                          `json:"id,omitempty"`
-	Name              *string                          `json:"name,omitempty"`
-	Type              *string                          `json:"type,omitempty"`
-	Location          *string                          `json:"location,omitempty"`
-	Tags              *map[string]*string              `json:"tags,omitempty"`
-	Properties        *IntegrationAccountMapProperties `json:"properties,omitempty"`
+// RecurrenceSchedule is
+type RecurrenceSchedule struct {
+	Minutes            *[]int32                        `json:"minutes,omitempty"`
+	Hours              *[]int32                        `json:"hours,omitempty"`
+	WeekDays           *[]DaysOfWeek                   `json:"weekDays,omitempty"`
+	MonthDays          *[]int32                        `json:"monthDays,omitempty"`
+	MonthlyOccurrences *[]RecurrenceScheduleOccurrence `json:"monthlyOccurrences,omitempty"`
 }
 
-// IntegrationAccountMapFilter is
-type IntegrationAccountMapFilter struct {
-	SchemaType MapType `json:"schemaType,omitempty"`
+// RecurrenceScheduleOccurrence is
+type RecurrenceScheduleOccurrence struct {
+	Day        DayOfWeek `json:"day,omitempty"`
+	Occurrence *int32    `json:"occurrence,omitempty"`
 }
 
-// IntegrationAccountMapListResult is
-type IntegrationAccountMapListResult struct {
-	autorest.Response `json:"-"`
-	Value             *[]IntegrationAccountMap `json:"value,omitempty"`
-	NextLink          *string                  `json:"nextLink,omitempty"`
-}
-
-// IntegrationAccountMapListResultPreparer prepares a request to retrieve the next set of results. It returns
-// nil if no more results exist.
-func (client IntegrationAccountMapListResult) IntegrationAccountMapListResultPreparer() (*http.Request, error) {
-	if client.NextLink == nil || len(to.String(client.NextLink)) <= 0 {
-		return nil, nil
-	}
-	return autorest.Prepare(&http.Request{},
-		autorest.AsJSON(),
-		autorest.AsGet(),
-		autorest.WithBaseURL(to.String(client.NextLink)))
-}
-
-// IntegrationAccountMapProperties is
-type IntegrationAccountMapProperties struct {
-	MapType     MapType                        `json:"mapType,omitempty"`
-	CreatedTime *date.Time                     `json:"createdTime,omitempty"`
-	ChangedTime *date.Time                     `json:"changedTime,omitempty"`
-	Content     *map[string]interface{}        `json:"content,omitempty"`
-	ContentType *string                        `json:"contentType,omitempty"`
-	ContentLink *IntegrationAccountContentLink `json:"contentLink,omitempty"`
-	Metadata    *map[string]interface{}        `json:"metadata,omitempty"`
-}
-
-// IntegrationAccountPartner is
-type IntegrationAccountPartner struct {
-	autorest.Response `json:"-"`
-	ID                *string                              `json:"id,omitempty"`
-	Name              *string                              `json:"name,omitempty"`
-	Type              *string                              `json:"type,omitempty"`
-	Location          *string                              `json:"location,omitempty"`
-	Tags              *map[string]*string                  `json:"tags,omitempty"`
-	Properties        *IntegrationAccountPartnerProperties `json:"properties,omitempty"`
-}
-
-// IntegrationAccountPartnerFilter is
-type IntegrationAccountPartnerFilter struct {
-	PartnerType PartnerType `json:"partnerType,omitempty"`
-}
-
-// IntegrationAccountPartnerListResult is
-type IntegrationAccountPartnerListResult struct {
-	autorest.Response `json:"-"`
-	Value             *[]IntegrationAccountPartner `json:"value,omitempty"`
-	NextLink          *string                      `json:"nextLink,omitempty"`
-}
-
-// IntegrationAccountPartnerListResultPreparer prepares a request to retrieve the next set of results. It returns
-// nil if no more results exist.
-func (client IntegrationAccountPartnerListResult) IntegrationAccountPartnerListResultPreparer() (*http.Request, error) {
-	if client.NextLink == nil || len(to.String(client.NextLink)) <= 0 {
-		return nil, nil
-	}
-	return autorest.Prepare(&http.Request{},
-		autorest.AsJSON(),
-		autorest.AsGet(),
-		autorest.WithBaseURL(to.String(client.NextLink)))
-}
-
-// IntegrationAccountPartnerProperties is
-type IntegrationAccountPartnerProperties struct {
-	PartnerType PartnerType             `json:"partnerType,omitempty"`
-	CreatedTime *date.Time              `json:"createdTime,omitempty"`
-	ChangedTime *date.Time              `json:"changedTime,omitempty"`
-	Metadata    *map[string]interface{} `json:"metadata,omitempty"`
-	Content     *PartnerContent         `json:"content,omitempty"`
-}
-
-// IntegrationAccountResource is
-type IntegrationAccountResource struct {
+// Resource is
+type Resource struct {
 	ID       *string             `json:"id,omitempty"`
 	Name     *string             `json:"name,omitempty"`
 	Type     *string             `json:"type,omitempty"`
@@ -874,32 +423,56 @@ type IntegrationAccountResource struct {
 	Tags     *map[string]*string `json:"tags,omitempty"`
 }
 
-// IntegrationAccountSchema is
-type IntegrationAccountSchema struct {
+// ResourceReference is
+type ResourceReference struct {
+	ID   *string `json:"id,omitempty"`
+	Name *string `json:"name,omitempty"`
+	Type *string `json:"type,omitempty"`
+}
+
+// SetObject is
+type SetObject struct {
 	autorest.Response `json:"-"`
-	ID                *string                             `json:"id,omitempty"`
-	Name              *string                             `json:"name,omitempty"`
-	Type              *string                             `json:"type,omitempty"`
-	Location          *string                             `json:"location,omitempty"`
-	Tags              *map[string]*string                 `json:"tags,omitempty"`
-	Properties        *IntegrationAccountSchemaProperties `json:"properties,omitempty"`
+	Value             *map[string]interface{} `json:"value,omitempty"`
 }
 
-// IntegrationAccountSchemaFilter is
-type IntegrationAccountSchemaFilter struct {
-	SchemaType SchemaType `json:"schemaType,omitempty"`
+// Sku is
+type Sku struct {
+	Name SkuName            `json:"name,omitempty"`
+	Plan *ResourceReference `json:"plan,omitempty"`
 }
 
-// IntegrationAccountSchemaListResult is
-type IntegrationAccountSchemaListResult struct {
+// SubResource is
+type SubResource struct {
+	ID *string `json:"id,omitempty"`
+}
+
+// Workflow is
+type Workflow struct {
 	autorest.Response `json:"-"`
-	Value             *[]IntegrationAccountSchema `json:"value,omitempty"`
-	NextLink          *string                     `json:"nextLink,omitempty"`
+	ID                *string             `json:"id,omitempty"`
+	Name              *string             `json:"name,omitempty"`
+	Type              *string             `json:"type,omitempty"`
+	Location          *string             `json:"location,omitempty"`
+	Tags              *map[string]*string `json:"tags,omitempty"`
+	Properties        *WorkflowProperties `json:"properties,omitempty"`
 }
 
-// IntegrationAccountSchemaListResultPreparer prepares a request to retrieve the next set of results. It returns
+// WorkflowFilter is
+type WorkflowFilter struct {
+	State WorkflowState `json:"state,omitempty"`
+}
+
+// WorkflowListResult is
+type WorkflowListResult struct {
+	autorest.Response `json:"-"`
+	Value             *[]Workflow `json:"value,omitempty"`
+	NextLink          *string     `json:"nextLink,omitempty"`
+}
+
+// WorkflowListResultPreparer prepares a request to retrieve the next set of results. It returns
 // nil if no more results exist.
-func (client IntegrationAccountSchemaListResult) IntegrationAccountSchemaListResultPreparer() (*http.Request, error) {
+func (client WorkflowListResult) WorkflowListResultPreparer() (*http.Request, error) {
 	if client.NextLink == nil || len(to.String(client.NextLink)) <= 0 {
 		return nil, nil
 	}
@@ -909,218 +482,298 @@ func (client IntegrationAccountSchemaListResult) IntegrationAccountSchemaListRes
 		autorest.WithBaseURL(to.String(client.NextLink)))
 }
 
-// IntegrationAccountSchemaProperties is
-type IntegrationAccountSchemaProperties struct {
-	SchemaType      SchemaType                     `json:"schemaType,omitempty"`
-	TargetNamespace *string                        `json:"targetNamespace,omitempty"`
-	CreatedTime     *date.Time                     `json:"createdTime,omitempty"`
-	ChangedTime     *date.Time                     `json:"changedTime,omitempty"`
-	Content         *map[string]interface{}        `json:"content,omitempty"`
-	ContentType     *string                        `json:"contentType,omitempty"`
-	ContentLink     *IntegrationAccountContentLink `json:"contentLink,omitempty"`
-	Metadata        *map[string]interface{}        `json:"metadata,omitempty"`
+// WorkflowOutputParameter is
+type WorkflowOutputParameter struct {
+	Type        ParameterType           `json:"type,omitempty"`
+	Value       *map[string]interface{} `json:"value,omitempty"`
+	Metadata    *map[string]interface{} `json:"metadata,omitempty"`
+	Description *string                 `json:"description,omitempty"`
+	Error       *map[string]interface{} `json:"error,omitempty"`
 }
 
-// IntegrationAccountSku is
-type IntegrationAccountSku struct {
-	Name SkuName `json:"name,omitempty"`
+// WorkflowParameter is
+type WorkflowParameter struct {
+	Type        ParameterType           `json:"type,omitempty"`
+	Value       *map[string]interface{} `json:"value,omitempty"`
+	Metadata    *map[string]interface{} `json:"metadata,omitempty"`
+	Description *string                 `json:"description,omitempty"`
 }
 
-// KeyVaultKeyReference is
-type KeyVaultKeyReference struct {
-	KeyVault   *KeyVaultKeyReferenceKeyVault `json:"keyVault,omitempty"`
-	KeyName    *string                       `json:"keyName,omitempty"`
-	KeyVersion *string                       `json:"keyVersion,omitempty"`
+// WorkflowProperties is
+type WorkflowProperties struct {
+	ProvisioningState  WorkflowProvisioningState      `json:"provisioningState,omitempty"`
+	CreatedTime        *date.Time                     `json:"createdTime,omitempty"`
+	ChangedTime        *date.Time                     `json:"changedTime,omitempty"`
+	State              WorkflowState                  `json:"state,omitempty"`
+	Version            *string                        `json:"version,omitempty"`
+	AccessEndpoint     *string                        `json:"accessEndpoint,omitempty"`
+	Sku                *Sku                           `json:"sku,omitempty"`
+	IntegrationAccount *ResourceReference             `json:"integrationAccount,omitempty"`
+	Definition         *map[string]interface{}        `json:"definition,omitempty"`
+	Parameters         *map[string]*WorkflowParameter `json:"parameters,omitempty"`
 }
 
-// KeyVaultKeyReferenceKeyVault is the key vault reference.
-type KeyVaultKeyReferenceKeyVault struct {
-	ID   *string `json:"id,omitempty"`
-	Name *string `json:"name,omitempty"`
-	Type *string `json:"type,omitempty"`
+// WorkflowRun is
+type WorkflowRun struct {
+	autorest.Response `json:"-"`
+	ID                *string                `json:"id,omitempty"`
+	Properties        *WorkflowRunProperties `json:"properties,omitempty"`
+	Name              *string                `json:"name,omitempty"`
+	Type              *string                `json:"type,omitempty"`
 }
 
-// ListCallbackURLParameters is
-type ListCallbackURLParameters struct {
-	NotAfter *date.Time `json:"NotAfter,omitempty"`
+// WorkflowRunAction is
+type WorkflowRunAction struct {
+	autorest.Response `json:"-"`
+	ID                *string                      `json:"id,omitempty"`
+	Properties        *WorkflowRunActionProperties `json:"properties,omitempty"`
+	Name              *string                      `json:"name,omitempty"`
+	Type              *string                      `json:"type,omitempty"`
 }
 
-// PartnerContent is
-type PartnerContent struct {
-	B2b *B2BPartnerContent `json:"b2b,omitempty"`
+// WorkflowRunActionFilter is
+type WorkflowRunActionFilter struct {
+	Status WorkflowStatus `json:"status,omitempty"`
 }
 
-// X12AcknowledgementSettings is
-type X12AcknowledgementSettings struct {
-	NeedTechnicalAcknowledgement           *bool   `json:"needTechnicalAcknowledgement,omitempty"`
-	BatchTechnicalAcknowledgements         *bool   `json:"batchTechnicalAcknowledgements,omitempty"`
-	NeedFunctionalAcknowledgement          *bool   `json:"needFunctionalAcknowledgement,omitempty"`
-	FunctionalAcknowledgementVersion       *string `json:"functionalAcknowledgementVersion,omitempty"`
-	BatchFunctionalAcknowledgements        *bool   `json:"batchFunctionalAcknowledgements,omitempty"`
-	NeedImplementationAcknowledgement      *bool   `json:"needImplementationAcknowledgement,omitempty"`
-	ImplementationAcknowledgementVersion   *string `json:"implementationAcknowledgementVersion,omitempty"`
-	BatchImplementationAcknowledgements    *bool   `json:"batchImplementationAcknowledgements,omitempty"`
-	NeedLoopForValidMessages               *bool   `json:"needLoopForValidMessages,omitempty"`
-	SendSynchronousAcknowledgement         *bool   `json:"sendSynchronousAcknowledgement,omitempty"`
-	AcknowledgementControlNumberPrefix     *string `json:"acknowledgementControlNumberPrefix,omitempty"`
-	AcknowledgementControlNumberSuffix     *string `json:"acknowledgementControlNumberSuffix,omitempty"`
-	AcknowledgementControlNumberLowerBound *int32  `json:"acknowledgementControlNumberLowerBound,omitempty"`
-	AcknowledgementControlNumberUpperBound *int32  `json:"acknowledgementControlNumberUpperBound,omitempty"`
-	RolloverAcknowledgementControlNumber   *bool   `json:"rolloverAcknowledgementControlNumber,omitempty"`
+// WorkflowRunActionListResult is
+type WorkflowRunActionListResult struct {
+	autorest.Response `json:"-"`
+	Value             *[]WorkflowRunAction `json:"value,omitempty"`
+	NextLink          *string              `json:"nextLink,omitempty"`
 }
 
-// X12AgreementContent is
-type X12AgreementContent struct {
-	ReceiveAgreement *X12OneWayAgreement `json:"receiveAgreement,omitempty"`
-	SendAgreement    *X12OneWayAgreement `json:"sendAgreement,omitempty"`
+// WorkflowRunActionListResultPreparer prepares a request to retrieve the next set of results. It returns
+// nil if no more results exist.
+func (client WorkflowRunActionListResult) WorkflowRunActionListResultPreparer() (*http.Request, error) {
+	if client.NextLink == nil || len(to.String(client.NextLink)) <= 0 {
+		return nil, nil
+	}
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(client.NextLink)))
 }
 
-// X12DelimiterOverrides is
-type X12DelimiterOverrides struct {
-	ProtocolVersion            *string                 `json:"protocolVersion,omitempty"`
-	MessageID                  *string                 `json:"messageId,omitempty"`
-	DataElementSeparator       *int32                  `json:"dataElementSeparator,omitempty"`
-	ComponentSeparator         *int32                  `json:"componentSeparator,omitempty"`
-	SegmentTerminator          *int32                  `json:"segmentTerminator,omitempty"`
-	SegmentTerminatorSuffix    SegmentTerminatorSuffix `json:"segmentTerminatorSuffix,omitempty"`
-	ReplaceCharacter           *int32                  `json:"replaceCharacter,omitempty"`
-	ReplaceSeparatorsInPayload *bool                   `json:"replaceSeparatorsInPayload,omitempty"`
-	TargetNamespace            *string                 `json:"targetNamespace,omitempty"`
+// WorkflowRunActionProperties is
+type WorkflowRunActionProperties struct {
+	StartTime         *date.Time              `json:"startTime,omitempty"`
+	EndTime           *date.Time              `json:"endTime,omitempty"`
+	Status            WorkflowStatus          `json:"status,omitempty"`
+	Code              *string                 `json:"code,omitempty"`
+	Error             *map[string]interface{} `json:"error,omitempty"`
+	TrackingID        *string                 `json:"trackingId,omitempty"`
+	Correlation       *Correlation            `json:"correlation,omitempty"`
+	InputsLink        *ContentLink            `json:"inputsLink,omitempty"`
+	OutputsLink       *ContentLink            `json:"outputsLink,omitempty"`
+	TrackedProperties *map[string]interface{} `json:"trackedProperties,omitempty"`
 }
 
-// X12EnvelopeOverride is
-type X12EnvelopeOverride struct {
-	TargetNamespace          *string       `json:"targetNamespace,omitempty"`
-	ProtocolVersion          *string       `json:"protocolVersion,omitempty"`
-	MessageID                *string       `json:"messageId,omitempty"`
-	ResponsibleAgencyCode    *int32        `json:"responsibleAgencyCode,omitempty"`
-	HeaderVersion            *string       `json:"headerVersion,omitempty"`
-	SenderApplicationID      *string       `json:"senderApplicationId,omitempty"`
-	ReceiverApplicationID    *string       `json:"receiverApplicationId,omitempty"`
-	FunctionalIdentifierCode *string       `json:"functionalIdentifierCode,omitempty"`
-	DateFormat               X12DateFormat `json:"dateFormat,omitempty"`
-	TimeFormat               X12TimeFormat `json:"timeFormat,omitempty"`
+// WorkflowRunFilter is
+type WorkflowRunFilter struct {
+	Status WorkflowStatus `json:"status,omitempty"`
 }
 
-// X12EnvelopeSettings is
-type X12EnvelopeSettings struct {
-	ControlStandardsID                           *int32         `json:"controlStandardsId,omitempty"`
-	UseControlStandardsIDAsRepetitionCharacter   *bool          `json:"useControlStandardsIdAsRepetitionCharacter,omitempty"`
-	SenderApplicationID                          *string        `json:"senderApplicationId,omitempty"`
-	ReceiverApplicationID                        *string        `json:"receiverApplicationId,omitempty"`
-	ControlVersionNumber                         *string        `json:"controlVersionNumber,omitempty"`
-	InterchangeControlNumberLowerBound           *int32         `json:"interchangeControlNumberLowerBound,omitempty"`
-	InterchangeControlNumberUpperBound           *int32         `json:"interchangeControlNumberUpperBound,omitempty"`
-	RolloverInterchangeControlNumber             *bool          `json:"rolloverInterchangeControlNumber,omitempty"`
-	EnableDefaultGroupHeaders                    *bool          `json:"enableDefaultGroupHeaders,omitempty"`
-	FunctionalGroupID                            *string        `json:"functionalGroupId,omitempty"`
-	GroupControlNumberLowerBound                 *int32         `json:"groupControlNumberLowerBound,omitempty"`
-	GroupControlNumberUpperBound                 *int32         `json:"groupControlNumberUpperBound,omitempty"`
-	RolloverGroupControlNumber                   *bool          `json:"rolloverGroupControlNumber,omitempty"`
-	GroupHeaderAgencyCode                        *string        `json:"groupHeaderAgencyCode,omitempty"`
-	GroupHeaderVersion                           *string        `json:"groupHeaderVersion,omitempty"`
-	TransactionSetControlNumberLowerBound        *int32         `json:"transactionSetControlNumberLowerBound,omitempty"`
-	TransactionSetControlNumberUpperBound        *int32         `json:"transactionSetControlNumberUpperBound,omitempty"`
-	RolloverTransactionSetControlNumber          *bool          `json:"rolloverTransactionSetControlNumber,omitempty"`
-	TransactionSetControlNumberPrefix            *string        `json:"transactionSetControlNumberPrefix,omitempty"`
-	TransactionSetControlNumberSuffix            *string        `json:"transactionSetControlNumberSuffix,omitempty"`
-	OverwriteExistingTransactionSetControlNumber *bool          `json:"overwriteExistingTransactionSetControlNumber,omitempty"`
-	GroupHeaderDateFormat                        X12DateFormat  `json:"groupHeaderDateFormat,omitempty"`
-	GroupHeaderTimeFormat                        X12TimeFormat  `json:"groupHeaderTimeFormat,omitempty"`
-	UsageIndicator                               UsageIndicator `json:"usageIndicator,omitempty"`
+// WorkflowRunListResult is
+type WorkflowRunListResult struct {
+	autorest.Response `json:"-"`
+	Value             *[]WorkflowRun `json:"value,omitempty"`
+	NextLink          *string        `json:"nextLink,omitempty"`
 }
 
-// X12FramingSettings is
-type X12FramingSettings struct {
-	DataElementSeparator       *int32                  `json:"dataElementSeparator,omitempty"`
-	ComponentSeparator         *int32                  `json:"componentSeparator,omitempty"`
-	ReplaceSeparatorsInPayload *bool                   `json:"replaceSeparatorsInPayload,omitempty"`
-	ReplaceCharacter           *int32                  `json:"replaceCharacter,omitempty"`
-	SegmentTerminator          *int32                  `json:"segmentTerminator,omitempty"`
-	CharacterSet               X12CharacterSet         `json:"characterSet,omitempty"`
-	SegmentTerminatorSuffix    SegmentTerminatorSuffix `json:"segmentTerminatorSuffix,omitempty"`
+// WorkflowRunListResultPreparer prepares a request to retrieve the next set of results. It returns
+// nil if no more results exist.
+func (client WorkflowRunListResult) WorkflowRunListResultPreparer() (*http.Request, error) {
+	if client.NextLink == nil || len(to.String(client.NextLink)) <= 0 {
+		return nil, nil
+	}
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(client.NextLink)))
 }
 
-// X12MessageFilter is
-type X12MessageFilter struct {
-	MessageFilterType MessageFilterType `json:"messageFilterType,omitempty"`
+// WorkflowRunProperties is
+type WorkflowRunProperties struct {
+	StartTime     *date.Time                           `json:"startTime,omitempty"`
+	EndTime       *date.Time                           `json:"endTime,omitempty"`
+	Status        WorkflowStatus                       `json:"status,omitempty"`
+	Code          *string                              `json:"code,omitempty"`
+	Error         *map[string]interface{}              `json:"error,omitempty"`
+	CorrelationID *string                              `json:"correlationId,omitempty"`
+	Correlation   *Correlation                         `json:"correlation,omitempty"`
+	Workflow      *ResourceReference                   `json:"workflow,omitempty"`
+	Trigger       *WorkflowRunTrigger                  `json:"trigger,omitempty"`
+	Outputs       *map[string]*WorkflowOutputParameter `json:"outputs,omitempty"`
+	Response      *WorkflowRunTrigger                  `json:"response,omitempty"`
 }
 
-// X12MessageIdentifier is
-type X12MessageIdentifier struct {
-	MessageID *string `json:"messageId,omitempty"`
+// WorkflowRunTrigger is
+type WorkflowRunTrigger struct {
+	Name              *string                 `json:"name,omitempty"`
+	Inputs            *map[string]interface{} `json:"inputs,omitempty"`
+	InputsLink        *ContentLink            `json:"inputsLink,omitempty"`
+	Outputs           *map[string]interface{} `json:"outputs,omitempty"`
+	OutputsLink       *ContentLink            `json:"outputsLink,omitempty"`
+	StartTime         *date.Time              `json:"startTime,omitempty"`
+	EndTime           *date.Time              `json:"endTime,omitempty"`
+	TrackingID        *string                 `json:"trackingId,omitempty"`
+	Correlation       *Correlation            `json:"correlation,omitempty"`
+	Code              *string                 `json:"code,omitempty"`
+	Status            WorkflowStatus          `json:"status,omitempty"`
+	Error             *map[string]interface{} `json:"error,omitempty"`
+	TrackedProperties *map[string]interface{} `json:"trackedProperties,omitempty"`
 }
 
-// X12OneWayAgreement is
-type X12OneWayAgreement struct {
-	SenderBusinessIdentity   *BusinessIdentity    `json:"senderBusinessIdentity,omitempty"`
-	ReceiverBusinessIdentity *BusinessIdentity    `json:"receiverBusinessIdentity,omitempty"`
-	ProtocolSettings         *X12ProtocolSettings `json:"protocolSettings,omitempty"`
+// WorkflowTrigger is
+type WorkflowTrigger struct {
+	autorest.Response `json:"-"`
+	ID                *string                    `json:"id,omitempty"`
+	Properties        *WorkflowTriggerProperties `json:"properties,omitempty"`
+	Name              *string                    `json:"name,omitempty"`
+	Type              *string                    `json:"type,omitempty"`
 }
 
-// X12ProcessingSettings is
-type X12ProcessingSettings struct {
-	MaskSecurityInfo                        *bool `json:"maskSecurityInfo,omitempty"`
-	ConvertImpliedDecimal                   *bool `json:"convertImpliedDecimal,omitempty"`
-	PreserveInterchange                     *bool `json:"preserveInterchange,omitempty"`
-	SuspendInterchangeOnError               *bool `json:"suspendInterchangeOnError,omitempty"`
-	CreateEmptyXMLTagsForTrailingSeparators *bool `json:"createEmptyXmlTagsForTrailingSeparators,omitempty"`
-	UseDotAsDecimalSeparator                *bool `json:"useDotAsDecimalSeparator,omitempty"`
+// WorkflowTriggerCallbackURL is
+type WorkflowTriggerCallbackURL struct {
+	autorest.Response `json:"-"`
+	Value             *string `json:"value,omitempty"`
 }
 
-// X12ProtocolSettings is
-type X12ProtocolSettings struct {
-	ValidationSettings      *X12ValidationSettings      `json:"validationSettings,omitempty"`
-	FramingSettings         *X12FramingSettings         `json:"framingSettings,omitempty"`
-	EnvelopeSettings        *X12EnvelopeSettings        `json:"envelopeSettings,omitempty"`
-	AcknowledgementSettings *X12AcknowledgementSettings `json:"acknowledgementSettings,omitempty"`
-	MessageFilter           *X12MessageFilter           `json:"messageFilter,omitempty"`
-	SecuritySettings        *X12SecuritySettings        `json:"securitySettings,omitempty"`
-	ProcessingSettings      *X12ProcessingSettings      `json:"processingSettings,omitempty"`
-	EnvelopeOverrides       *[]X12EnvelopeOverride      `json:"envelopeOverrides,omitempty"`
-	ValidationOverrides     *[]X12ValidationOverride    `json:"validationOverrides,omitempty"`
-	MessageFilterList       *[]X12MessageIdentifier     `json:"messageFilterList,omitempty"`
-	SchemaReferences        *[]X12SchemaReference       `json:"schemaReferences,omitempty"`
-	X12DelimiterOverrides   *[]X12DelimiterOverrides    `json:"x12DelimiterOverrides,omitempty"`
+// WorkflowTriggerFilter is
+type WorkflowTriggerFilter struct {
+	State WorkflowState `json:"state,omitempty"`
 }
 
-// X12SchemaReference is
-type X12SchemaReference struct {
-	MessageID           *string `json:"messageId,omitempty"`
-	SenderApplicationID *string `json:"senderApplicationId,omitempty"`
-	SchemaVersion       *string `json:"schemaVersion,omitempty"`
-	SchemaName          *string `json:"schemaName,omitempty"`
+// WorkflowTriggerHistory is
+type WorkflowTriggerHistory struct {
+	autorest.Response `json:"-"`
+	ID                *string                           `json:"id,omitempty"`
+	Properties        *WorkflowTriggerHistoryProperties `json:"properties,omitempty"`
+	Name              *string                           `json:"name,omitempty"`
+	Type              *string                           `json:"type,omitempty"`
 }
 
-// X12SecuritySettings is
-type X12SecuritySettings struct {
-	AuthorizationQualifier *string `json:"authorizationQualifier,omitempty"`
-	AuthorizationValue     *string `json:"authorizationValue,omitempty"`
-	SecurityQualifier      *string `json:"securityQualifier,omitempty"`
-	PasswordValue          *string `json:"passwordValue,omitempty"`
+// WorkflowTriggerHistoryFilter is
+type WorkflowTriggerHistoryFilter struct {
+	Status WorkflowStatus `json:"status,omitempty"`
 }
 
-// X12ValidationOverride is
-type X12ValidationOverride struct {
-	MessageID                              *string                 `json:"messageId,omitempty"`
-	ValidateEDITypes                       *bool                   `json:"validateEDITypes,omitempty"`
-	ValidateXSDTypes                       *bool                   `json:"validateXSDTypes,omitempty"`
-	AllowLeadingAndTrailingSpacesAndZeroes *bool                   `json:"allowLeadingAndTrailingSpacesAndZeroes,omitempty"`
-	ValidateCharacterSet                   *bool                   `json:"validateCharacterSet,omitempty"`
-	TrimLeadingAndTrailingSpacesAndZeroes  *bool                   `json:"trimLeadingAndTrailingSpacesAndZeroes,omitempty"`
-	TrailingSeparatorPolicy                TrailingSeparatorPolicy `json:"trailingSeparatorPolicy,omitempty"`
+// WorkflowTriggerHistoryListResult is
+type WorkflowTriggerHistoryListResult struct {
+	autorest.Response `json:"-"`
+	Value             *[]WorkflowTriggerHistory `json:"value,omitempty"`
+	NextLink          *string                   `json:"nextLink,omitempty"`
 }
 
-// X12ValidationSettings is
-type X12ValidationSettings struct {
-	ValidateCharacterSet                      *bool                   `json:"validateCharacterSet,omitempty"`
-	CheckDuplicateInterchangeControlNumber    *bool                   `json:"checkDuplicateInterchangeControlNumber,omitempty"`
-	InterchangeControlNumberValidityDays      *int32                  `json:"interchangeControlNumberValidityDays,omitempty"`
-	CheckDuplicateGroupControlNumber          *bool                   `json:"checkDuplicateGroupControlNumber,omitempty"`
-	CheckDuplicateTransactionSetControlNumber *bool                   `json:"checkDuplicateTransactionSetControlNumber,omitempty"`
-	ValidateEDITypes                          *bool                   `json:"validateEDITypes,omitempty"`
-	ValidateXSDTypes                          *bool                   `json:"validateXSDTypes,omitempty"`
-	AllowLeadingAndTrailingSpacesAndZeroes    *bool                   `json:"allowLeadingAndTrailingSpacesAndZeroes,omitempty"`
-	TrimLeadingAndTrailingSpacesAndZeroes     *bool                   `json:"trimLeadingAndTrailingSpacesAndZeroes,omitempty"`
-	TrailingSeparatorPolicy                   TrailingSeparatorPolicy `json:"trailingSeparatorPolicy,omitempty"`
+// WorkflowTriggerHistoryListResultPreparer prepares a request to retrieve the next set of results. It returns
+// nil if no more results exist.
+func (client WorkflowTriggerHistoryListResult) WorkflowTriggerHistoryListResultPreparer() (*http.Request, error) {
+	if client.NextLink == nil || len(to.String(client.NextLink)) <= 0 {
+		return nil, nil
+	}
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(client.NextLink)))
+}
+
+// WorkflowTriggerHistoryProperties is
+type WorkflowTriggerHistoryProperties struct {
+	StartTime   *date.Time              `json:"startTime,omitempty"`
+	EndTime     *date.Time              `json:"endTime,omitempty"`
+	Status      WorkflowStatus          `json:"status,omitempty"`
+	Code        *string                 `json:"code,omitempty"`
+	Error       *map[string]interface{} `json:"error,omitempty"`
+	TrackingID  *string                 `json:"trackingId,omitempty"`
+	Correlation *Correlation            `json:"correlation,omitempty"`
+	InputsLink  *ContentLink            `json:"inputsLink,omitempty"`
+	OutputsLink *ContentLink            `json:"outputsLink,omitempty"`
+	Fired       *bool                   `json:"fired,omitempty"`
+	Run         *ResourceReference      `json:"run,omitempty"`
+}
+
+// WorkflowTriggerListResult is
+type WorkflowTriggerListResult struct {
+	autorest.Response `json:"-"`
+	Value             *[]WorkflowTrigger `json:"value,omitempty"`
+	NextLink          *string            `json:"nextLink,omitempty"`
+}
+
+// WorkflowTriggerListResultPreparer prepares a request to retrieve the next set of results. It returns
+// nil if no more results exist.
+func (client WorkflowTriggerListResult) WorkflowTriggerListResultPreparer() (*http.Request, error) {
+	if client.NextLink == nil || len(to.String(client.NextLink)) <= 0 {
+		return nil, nil
+	}
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(client.NextLink)))
+}
+
+// WorkflowTriggerProperties is
+type WorkflowTriggerProperties struct {
+	ProvisioningState WorkflowTriggerProvisioningState `json:"provisioningState,omitempty"`
+	CreatedTime       *date.Time                       `json:"createdTime,omitempty"`
+	ChangedTime       *date.Time                       `json:"changedTime,omitempty"`
+	State             WorkflowState                    `json:"state,omitempty"`
+	Status            WorkflowStatus                   `json:"status,omitempty"`
+	LastExecutionTime *date.Time                       `json:"lastExecutionTime,omitempty"`
+	NextExecutionTime *date.Time                       `json:"nextExecutionTime,omitempty"`
+	Recurrence        *WorkflowTriggerRecurrence       `json:"recurrence,omitempty"`
+	Workflow          *ResourceReference               `json:"workflow,omitempty"`
+}
+
+// WorkflowTriggerRecurrence is
+type WorkflowTriggerRecurrence struct {
+	Frequency RecurrenceFrequency `json:"frequency,omitempty"`
+	Interval  *int32              `json:"interval,omitempty"`
+	StartTime *date.Time          `json:"startTime,omitempty"`
+	EndTime   *date.Time          `json:"endTime,omitempty"`
+	TimeZone  *string             `json:"timeZone,omitempty"`
+	Schedule  *RecurrenceSchedule `json:"schedule,omitempty"`
+}
+
+// WorkflowVersion is
+type WorkflowVersion struct {
+	autorest.Response `json:"-"`
+	ID                *string                    `json:"id,omitempty"`
+	Name              *string                    `json:"name,omitempty"`
+	Type              *string                    `json:"type,omitempty"`
+	Location          *string                    `json:"location,omitempty"`
+	Tags              *map[string]*string        `json:"tags,omitempty"`
+	Properties        *WorkflowVersionProperties `json:"properties,omitempty"`
+}
+
+// WorkflowVersionListResult is
+type WorkflowVersionListResult struct {
+	autorest.Response `json:"-"`
+	Value             *[]WorkflowVersion `json:"value,omitempty"`
+	NextLink          *string            `json:"nextLink,omitempty"`
+}
+
+// WorkflowVersionListResultPreparer prepares a request to retrieve the next set of results. It returns
+// nil if no more results exist.
+func (client WorkflowVersionListResult) WorkflowVersionListResultPreparer() (*http.Request, error) {
+	if client.NextLink == nil || len(to.String(client.NextLink)) <= 0 {
+		return nil, nil
+	}
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(client.NextLink)))
+}
+
+// WorkflowVersionProperties is
+type WorkflowVersionProperties struct {
+	CreatedTime        *date.Time                     `json:"createdTime,omitempty"`
+	ChangedTime        *date.Time                     `json:"changedTime,omitempty"`
+	State              WorkflowState                  `json:"state,omitempty"`
+	Version            *string                        `json:"version,omitempty"`
+	AccessEndpoint     *string                        `json:"accessEndpoint,omitempty"`
+	Sku                *Sku                           `json:"sku,omitempty"`
+	IntegrationAccount *ResourceReference             `json:"integrationAccount,omitempty"`
+	Definition         *map[string]interface{}        `json:"definition,omitempty"`
+	Parameters         *map[string]*WorkflowParameter `json:"parameters,omitempty"`
 }

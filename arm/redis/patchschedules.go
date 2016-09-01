@@ -21,6 +21,7 @@ package redis
 import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
+	"github.com/Azure/go-autorest/autorest/validation"
 	"net/http"
 )
 
@@ -47,6 +48,13 @@ func NewPatchSchedulesClientWithBaseURI(baseURI string, subscriptionID string) P
 // the redis cache. parameters is parameters to set patch schedules for redis
 // cache.
 func (client PatchSchedulesClient) CreateOrUpdate(resourceGroupName string, name string, parameters PatchSchedulesRequest) (result PatchSchedulesResponse, err error) {
+	if err := validation.Validate([]validation.Validation{
+		{parameters,
+			[]validation.Constraint{{"parameters.Properties", validation.Null, true,
+				[]validation.Constraint{{"parameters.Properties.ScheduleEntriesProperty", validation.Null, true, nil}}}}}}); err != nil {
+		return result, validation.NewErrorWithValidationError(err, "redis.PatchSchedulesClient", "CreateOrUpdate")
+	}
+
 	req, err := client.CreateOrUpdatePreparer(resourceGroupName, name, parameters)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "redis.PatchSchedulesClient", "CreateOrUpdate", nil, "Failure preparing request")

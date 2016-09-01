@@ -21,6 +21,7 @@ package notificationhubs
 import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
+	"github.com/Azure/go-autorest/autorest/validation"
 	"net/http"
 )
 
@@ -44,7 +45,7 @@ func NewClientWithBaseURI(baseURI string, subscriptionID string) Client {
 //
 // resourceGroupName is the name of the resource group. namespaceName is the
 // namespace name. parameters is the notificationHub name.
-func (client Client) CheckAvailability(resourceGroupName string, namespaceName string, parameters CheckAvailabilityParameters) (result CheckAvailabilityResource, err error) {
+func (client Client) CheckAvailability(resourceGroupName string, namespaceName string, parameters CheckAvailabilityParameters) (result CheckAvailabilityResult, err error) {
 	req, err := client.CheckAvailabilityPreparer(resourceGroupName, namespaceName, parameters)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "notificationhubs.Client", "CheckAvailability", nil, "Failure preparing request")
@@ -94,7 +95,7 @@ func (client Client) CheckAvailabilitySender(req *http.Request) (*http.Response,
 
 // CheckAvailabilityResponder handles the response to the CheckAvailability request. The method always
 // closes the http.Response Body.
-func (client Client) CheckAvailabilityResponder(resp *http.Response) (result CheckAvailabilityResource, err error) {
+func (client Client) CheckAvailabilityResponder(resp *http.Response) (result CheckAvailabilityResult, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -112,6 +113,12 @@ func (client Client) CheckAvailabilityResponder(resp *http.Response) (result Che
 // parameters is parameters supplied to the create/update a NotificationHub
 // Resource.
 func (client Client) CreateOrUpdate(resourceGroupName string, namespaceName string, notificationHubName string, parameters NotificationHubCreateOrUpdateParameters) (result NotificationHubResource, err error) {
+	if err := validation.Validate([]validation.Validation{
+		{parameters,
+			[]validation.Constraint{{"parameters.Properties", validation.Null, true, nil}}}}); err != nil {
+		return result, validation.NewErrorWithValidationError(err, "notificationhubs.Client", "CreateOrUpdate")
+	}
+
 	req, err := client.CreateOrUpdatePreparer(resourceGroupName, namespaceName, notificationHubName, parameters)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "notificationhubs.Client", "CreateOrUpdate", nil, "Failure preparing request")
@@ -181,6 +188,12 @@ func (client Client) CreateOrUpdateResponder(resp *http.Response) (result Notifi
 // authorizationRuleName is authorization Rule Name. parameters is the shared
 // access authorization rule.
 func (client Client) CreateOrUpdateAuthorizationRule(resourceGroupName string, namespaceName string, notificationHubName string, authorizationRuleName string, parameters SharedAccessAuthorizationRuleCreateOrUpdateParameters) (result SharedAccessAuthorizationRuleResource, err error) {
+	if err := validation.Validate([]validation.Validation{
+		{parameters,
+			[]validation.Constraint{{"parameters.Properties", validation.Null, true, nil}}}}); err != nil {
+		return result, validation.NewErrorWithValidationError(err, "notificationhubs.Client", "CreateOrUpdateAuthorizationRule")
+	}
+
 	req, err := client.CreateOrUpdateAuthorizationRulePreparer(resourceGroupName, namespaceName, notificationHubName, authorizationRuleName, parameters)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "notificationhubs.Client", "CreateOrUpdateAuthorizationRule", nil, "Failure preparing request")
@@ -476,7 +489,7 @@ func (client Client) GetAuthorizationRulePreparer(resourceGroupName string, name
 	}
 
 	preparer := autorest.CreatePreparer(
-		autorest.AsPost(),
+		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NotificationHubs/namespaces/{namespaceName}/notificationHubs/{notificationHubName}/AuthorizationRules/{authorizationRuleName}", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
@@ -507,7 +520,7 @@ func (client Client) GetAuthorizationRuleResponder(resp *http.Response) (result 
 //
 // resourceGroupName is the name of the resource group. namespaceName is the
 // namespace name. notificationHubName is the notification hub name.
-func (client Client) GetPnsCredentials(resourceGroupName string, namespaceName string, notificationHubName string) (result NotificationHubResource, err error) {
+func (client Client) GetPnsCredentials(resourceGroupName string, namespaceName string, notificationHubName string) (result PnsCredentialsResource, err error) {
 	req, err := client.GetPnsCredentialsPreparer(resourceGroupName, namespaceName, notificationHubName)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "notificationhubs.Client", "GetPnsCredentials", nil, "Failure preparing request")
@@ -556,7 +569,7 @@ func (client Client) GetPnsCredentialsSender(req *http.Request) (*http.Response,
 
 // GetPnsCredentialsResponder handles the response to the GetPnsCredentials request. The method always
 // closes the http.Response Body.
-func (client Client) GetPnsCredentialsResponder(resp *http.Response) (result NotificationHubResource, err error) {
+func (client Client) GetPnsCredentialsResponder(resp *http.Response) (result PnsCredentialsResource, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -634,7 +647,7 @@ func (client Client) ListResponder(resp *http.Response) (result NotificationHubL
 func (client Client) ListNextResults(lastResults NotificationHubListResult) (result NotificationHubListResult, err error) {
 	req, err := lastResults.NotificationHubListResultPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "notificationhubs.Client", "List", nil, "Failure preparing next results request request")
+		return result, autorest.NewErrorWithError(err, "notificationhubs.Client", "List", nil, "Failure preparing next results request")
 	}
 	if req == nil {
 		return
@@ -643,12 +656,12 @@ func (client Client) ListNextResults(lastResults NotificationHubListResult) (res
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "notificationhubs.Client", "List", resp, "Failure sending next results request request")
+		return result, autorest.NewErrorWithError(err, "notificationhubs.Client", "List", resp, "Failure sending next results request")
 	}
 
 	result, err = client.ListResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "notificationhubs.Client", "List", resp, "Failure responding to next results request request")
+		err = autorest.NewErrorWithError(err, "notificationhubs.Client", "List", resp, "Failure responding to next results request")
 	}
 
 	return
@@ -692,7 +705,7 @@ func (client Client) ListAuthorizationRulesPreparer(resourceGroupName string, na
 	}
 
 	preparer := autorest.CreatePreparer(
-		autorest.AsPost(),
+		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NotificationHubs/namespaces/{namespaceName}/notificationHubs/{notificationHubName}/AuthorizationRules", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
@@ -722,7 +735,7 @@ func (client Client) ListAuthorizationRulesResponder(resp *http.Response) (resul
 func (client Client) ListAuthorizationRulesNextResults(lastResults SharedAccessAuthorizationRuleListResult) (result SharedAccessAuthorizationRuleListResult, err error) {
 	req, err := lastResults.SharedAccessAuthorizationRuleListResultPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "notificationhubs.Client", "ListAuthorizationRules", nil, "Failure preparing next results request request")
+		return result, autorest.NewErrorWithError(err, "notificationhubs.Client", "ListAuthorizationRules", nil, "Failure preparing next results request")
 	}
 	if req == nil {
 		return
@@ -731,12 +744,12 @@ func (client Client) ListAuthorizationRulesNextResults(lastResults SharedAccessA
 	resp, err := client.ListAuthorizationRulesSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "notificationhubs.Client", "ListAuthorizationRules", resp, "Failure sending next results request request")
+		return result, autorest.NewErrorWithError(err, "notificationhubs.Client", "ListAuthorizationRules", resp, "Failure sending next results request")
 	}
 
 	result, err = client.ListAuthorizationRulesResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "notificationhubs.Client", "ListAuthorizationRules", resp, "Failure responding to next results request request")
+		err = autorest.NewErrorWithError(err, "notificationhubs.Client", "ListAuthorizationRules", resp, "Failure responding to next results request")
 	}
 
 	return
@@ -800,6 +813,77 @@ func (client Client) ListKeysSender(req *http.Request) (*http.Response, error) {
 // ListKeysResponder handles the response to the ListKeys request. The method always
 // closes the http.Response Body.
 func (client Client) ListKeysResponder(resp *http.Response) (result ResourceListKeys, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// RegenerateKeys regenerates the Primary/Secondary Keys to the
+// NotificationHub Authorization Rule
+//
+// resourceGroupName is the name of the resource group. namespaceName is the
+// namespace name. notificationHubName is the notification hub name.
+// authorizationRuleName is the connection string of the NotificationHub for
+// the specified authorizationRule. parameters is parameters supplied to
+// regenerate the NotificationHub Authorization Rule Key.
+func (client Client) RegenerateKeys(resourceGroupName string, namespaceName string, notificationHubName string, authorizationRuleName string, parameters PolicykeyResource) (result ResourceListKeys, err error) {
+	req, err := client.RegenerateKeysPreparer(resourceGroupName, namespaceName, notificationHubName, authorizationRuleName, parameters)
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "notificationhubs.Client", "RegenerateKeys", nil, "Failure preparing request")
+	}
+
+	resp, err := client.RegenerateKeysSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "notificationhubs.Client", "RegenerateKeys", resp, "Failure sending request")
+	}
+
+	result, err = client.RegenerateKeysResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "notificationhubs.Client", "RegenerateKeys", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// RegenerateKeysPreparer prepares the RegenerateKeys request.
+func (client Client) RegenerateKeysPreparer(resourceGroupName string, namespaceName string, notificationHubName string, authorizationRuleName string, parameters PolicykeyResource) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"authorizationRuleName": autorest.Encode("path", authorizationRuleName),
+		"namespaceName":         autorest.Encode("path", namespaceName),
+		"notificationHubName":   autorest.Encode("path", notificationHubName),
+		"resourceGroupName":     autorest.Encode("path", resourceGroupName),
+		"subscriptionId":        autorest.Encode("path", client.SubscriptionID),
+	}
+
+	queryParameters := map[string]interface{}{
+		"api-version": client.APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsJSON(),
+		autorest.AsPost(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NotificationHubs/namespaces/{namespaceName}/notificationHubs/{notificationHubName}/AuthorizationRules/{authorizationRuleName}/regenerateKeys", pathParameters),
+		autorest.WithJSON(parameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare(&http.Request{})
+}
+
+// RegenerateKeysSender sends the RegenerateKeys request. The method will close the
+// http.Response Body if it receives an error.
+func (client Client) RegenerateKeysSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req)
+}
+
+// RegenerateKeysResponder handles the response to the RegenerateKeys request. The method always
+// closes the http.Response Body.
+func (client Client) RegenerateKeysResponder(resp *http.Response) (result ResourceListKeys, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

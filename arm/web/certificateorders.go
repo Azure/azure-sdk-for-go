@@ -499,7 +499,7 @@ func (client CertificateOrdersClient) GetCertificateOrdersResponder(resp *http.R
 func (client CertificateOrdersClient) GetCertificateOrdersNextResults(lastResults CertificateOrderCollection) (result CertificateOrderCollection, err error) {
 	req, err := lastResults.CertificateOrderCollectionPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.CertificateOrdersClient", "GetCertificateOrders", nil, "Failure preparing next results request request")
+		return result, autorest.NewErrorWithError(err, "web.CertificateOrdersClient", "GetCertificateOrders", nil, "Failure preparing next results request")
 	}
 	if req == nil {
 		return
@@ -508,12 +508,12 @@ func (client CertificateOrdersClient) GetCertificateOrdersNextResults(lastResult
 	resp, err := client.GetCertificateOrdersSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.CertificateOrdersClient", "GetCertificateOrders", resp, "Failure sending next results request request")
+		return result, autorest.NewErrorWithError(err, "web.CertificateOrdersClient", "GetCertificateOrders", resp, "Failure sending next results request")
 	}
 
 	result, err = client.GetCertificateOrdersResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "web.CertificateOrdersClient", "GetCertificateOrders", resp, "Failure responding to next results request request")
+		err = autorest.NewErrorWithError(err, "web.CertificateOrdersClient", "GetCertificateOrders", resp, "Failure responding to next results request")
 	}
 
 	return
@@ -586,7 +586,7 @@ func (client CertificateOrdersClient) GetCertificatesResponder(resp *http.Respon
 func (client CertificateOrdersClient) GetCertificatesNextResults(lastResults CertificateOrderCertificateCollection) (result CertificateOrderCertificateCollection, err error) {
 	req, err := lastResults.CertificateOrderCertificateCollectionPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.CertificateOrdersClient", "GetCertificates", nil, "Failure preparing next results request request")
+		return result, autorest.NewErrorWithError(err, "web.CertificateOrdersClient", "GetCertificates", nil, "Failure preparing next results request")
 	}
 	if req == nil {
 		return
@@ -595,12 +595,12 @@ func (client CertificateOrdersClient) GetCertificatesNextResults(lastResults Cer
 	resp, err := client.GetCertificatesSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.CertificateOrdersClient", "GetCertificates", resp, "Failure sending next results request request")
+		return result, autorest.NewErrorWithError(err, "web.CertificateOrdersClient", "GetCertificates", resp, "Failure sending next results request")
 	}
 
 	result, err = client.GetCertificatesResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "web.CertificateOrdersClient", "GetCertificates", resp, "Failure responding to next results request request")
+		err = autorest.NewErrorWithError(err, "web.CertificateOrdersClient", "GetCertificates", resp, "Failure responding to next results request")
 	}
 
 	return

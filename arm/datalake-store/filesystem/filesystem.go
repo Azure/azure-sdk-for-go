@@ -21,6 +21,7 @@ package filesystem
 import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
+	"github.com/Azure/go-autorest/autorest/validation"
 	"io"
 	"net/http"
 )
@@ -57,10 +58,6 @@ func NewClientWithBaseURI(baseURI string, adlsFileSystemDNSSuffix string) Client
 // the stream to begin the append operation. Default is to append at the end
 // of the stream.
 func (client Client) Append(directFilePath string, streamContents io.ReadCloser, op string, appendParameter string, transferEncoding string, offset *int64) (result autorest.Response, err error) {
-	if streamContents == nil {
-		return result, autorest.NewErrorWithError(err, "filesystem.Client", "Append", nil, "Required parameter is empty - 'streamContents'")
-	}
-
 	req, err := client.AppendPreparer(directFilePath, streamContents, op, appendParameter, transferEncoding, offset)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "filesystem.Client", "Append", nil, "Failure preparing request")
@@ -198,8 +195,10 @@ func (client Client) CheckAccessResponder(resp *http.Response) (result autorest.
 // concatenate, in the order in which they should be concatenated. op is the
 // constant value for the operation.
 func (client Client) Concat(destinationPath string, sources []string, op string) (result autorest.Response, err error) {
-	if sources == nil {
-		return result, autorest.NewErrorWithError(err, "filesystem.Client", "Concat", nil, "Required parameter is empty - 'sources'")
+	if err := validation.Validate([]validation.Validation{
+		{sources,
+			[]validation.Constraint{{"sources", validation.Null, true, nil}}}}); err != nil {
+		return result, validation.NewErrorWithValidationError(err, "filesystem.Client", "Concat")
 	}
 
 	req, err := client.ConcatPreparer(destinationPath, sources, op)
@@ -275,10 +274,6 @@ func (client Client) ConcatResponder(resp *http.Response) (result autorest.Respo
 // should create the file if it doesn't exist or just open the existing file
 // for append. Possible values include: 'autocreate'
 func (client Client) ConcurrentAppend(filePath string, streamContents io.ReadCloser, op string, transferEncoding string, appendMode AppendModeType) (result autorest.Response, err error) {
-	if streamContents == nil {
-		return result, autorest.NewErrorWithError(err, "filesystem.Client", "ConcurrentAppend", nil, "Required parameter is empty - 'streamContents'")
-	}
-
 	req, err := client.ConcurrentAppendPreparer(filePath, streamContents, op, transferEncoding, appendMode)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "filesystem.Client", "ConcurrentAppend", nil, "Failure preparing request")
@@ -901,10 +896,6 @@ func (client Client) ModifyAclEntriesResponder(resp *http.Response) (result auto
 // other files that are not source files. Only set this to true when source
 // files are the only files in the source directory.
 func (client Client) MsConcat(msConcatDestinationPath string, streamContents io.ReadCloser, op string, deleteSourceDirectory *bool) (result autorest.Response, err error) {
-	if streamContents == nil {
-		return result, autorest.NewErrorWithError(err, "filesystem.Client", "MsConcat", nil, "Required parameter is empty - 'streamContents'")
-	}
-
 	req, err := client.MsConcatPreparer(msConcatDestinationPath, streamContents, op, deleteSourceDirectory)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "filesystem.Client", "MsConcat", nil, "Failure preparing request")
@@ -1034,6 +1025,69 @@ func (client Client) OpenResponder(resp *http.Response) (result ReadCloser, err 
 	return
 }
 
+// RemoveAcl removes the existing Access Control List (ACL) of the specified
+// file or directory.
+//
+// aclFilePath is the Data Lake Store path (starting with '/') of the file or
+// directory with the ACL being removed. op is the constant value for the
+// operation.
+func (client Client) RemoveAcl(aclFilePath string, op string) (result autorest.Response, err error) {
+	req, err := client.RemoveAclPreparer(aclFilePath, op)
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "filesystem.Client", "RemoveAcl", nil, "Failure preparing request")
+	}
+
+	resp, err := client.RemoveAclSender(req)
+	if err != nil {
+		result.Response = resp
+		return result, autorest.NewErrorWithError(err, "filesystem.Client", "RemoveAcl", resp, "Failure sending request")
+	}
+
+	result, err = client.RemoveAclResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "filesystem.Client", "RemoveAcl", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// RemoveAclPreparer prepares the RemoveAcl request.
+func (client Client) RemoveAclPreparer(aclFilePath string, op string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"aclFilePath": autorest.Encode("path", aclFilePath),
+	}
+
+	queryParameters := map[string]interface{}{
+		"api-version": client.APIVersion,
+		"op":          autorest.Encode("query", op),
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsPut(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/webhdfs/v1/{aclFilePath}", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare(&http.Request{})
+}
+
+// RemoveAclSender sends the RemoveAcl request. The method will close the
+// http.Response Body if it receives an error.
+func (client Client) RemoveAclSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req)
+}
+
+// RemoveAclResponder handles the response to the RemoveAcl request. The method always
+// closes the http.Response Body.
+func (client Client) RemoveAclResponder(resp *http.Response) (result autorest.Response, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByClosing())
+	result.Response = resp
+	return
+}
+
 // RemoveAclEntries removes existing Access Control List (ACL) entries for a
 // file or folder.
 //
@@ -1090,6 +1144,69 @@ func (client Client) RemoveAclEntriesSender(req *http.Request) (*http.Response, 
 // RemoveAclEntriesResponder handles the response to the RemoveAclEntries request. The method always
 // closes the http.Response Body.
 func (client Client) RemoveAclEntriesResponder(resp *http.Response) (result autorest.Response, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByClosing())
+	result.Response = resp
+	return
+}
+
+// RemoveDefaultAcl removes the existing Default Access Control List (ACL) of
+// the specified directory.
+//
+// defaultAclFilePath is the Data Lake Store path (starting with '/') of the
+// directory with the default ACL being removed. op is the constant value for
+// the operation.
+func (client Client) RemoveDefaultAcl(defaultAclFilePath string, op string) (result autorest.Response, err error) {
+	req, err := client.RemoveDefaultAclPreparer(defaultAclFilePath, op)
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "filesystem.Client", "RemoveDefaultAcl", nil, "Failure preparing request")
+	}
+
+	resp, err := client.RemoveDefaultAclSender(req)
+	if err != nil {
+		result.Response = resp
+		return result, autorest.NewErrorWithError(err, "filesystem.Client", "RemoveDefaultAcl", resp, "Failure sending request")
+	}
+
+	result, err = client.RemoveDefaultAclResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "filesystem.Client", "RemoveDefaultAcl", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// RemoveDefaultAclPreparer prepares the RemoveDefaultAcl request.
+func (client Client) RemoveDefaultAclPreparer(defaultAclFilePath string, op string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"defaultAclFilePath": autorest.Encode("path", defaultAclFilePath),
+	}
+
+	queryParameters := map[string]interface{}{
+		"api-version": client.APIVersion,
+		"op":          autorest.Encode("query", op),
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsPut(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/webhdfs/v1/{defaultAclFilePath}", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare(&http.Request{})
+}
+
+// RemoveDefaultAclSender sends the RemoveDefaultAcl request. The method will close the
+// http.Response Body if it receives an error.
+func (client Client) RemoveDefaultAclSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req)
+}
+
+// RemoveDefaultAclResponder handles the response to the RemoveDefaultAcl request. The method always
+// closes the http.Response Body.
+func (client Client) RemoveDefaultAclResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -1219,6 +1336,83 @@ func (client Client) SetAclSender(req *http.Request) (*http.Response, error) {
 // SetAclResponder handles the response to the SetAcl request. The method always
 // closes the http.Response Body.
 func (client Client) SetAclResponder(resp *http.Response) (result autorest.Response, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByClosing())
+	result.Response = resp
+	return
+}
+
+// SetFileExpiry sets or removes the expiration time on the specified file.
+// This operation can only be executed against files. Folders are not
+// supported.
+//
+// filePath is the Data Lake Store path (starting with '/') of the file on
+// which to set or remove the expiration time. expiryOption is indicates the
+// type of expiration to use for the file: 1. NeverExpire: ExpireTime is
+// ignored. 2. RelativeToNow: ExpireTime is an integer in milliseconds
+// representing the expiration date relative to when file expiration is
+// updated. 3. RelativeToCreationDate: ExpireTime is an integer in
+// milliseconds representing the expiration date relative to file creation.
+// 4. Absolute: ExpireTime is an integer in milliseconds, as a Unix timestamp
+// relative to 1/1/1970 00:00:00. Possible values include: 'NeverExpire',
+// 'RelativeToNow', 'RelativeToCreationDate', 'Absolute' op is the constant
+// value for the operation. expireTime is the time that the file will expire,
+// corresponding to the ExpiryOption that was set.
+func (client Client) SetFileExpiry(filePath string, expiryOption ExpiryOptionType, op string, expireTime *int64) (result autorest.Response, err error) {
+	req, err := client.SetFileExpiryPreparer(filePath, expiryOption, op, expireTime)
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "filesystem.Client", "SetFileExpiry", nil, "Failure preparing request")
+	}
+
+	resp, err := client.SetFileExpirySender(req)
+	if err != nil {
+		result.Response = resp
+		return result, autorest.NewErrorWithError(err, "filesystem.Client", "SetFileExpiry", resp, "Failure sending request")
+	}
+
+	result, err = client.SetFileExpiryResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "filesystem.Client", "SetFileExpiry", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// SetFileExpiryPreparer prepares the SetFileExpiry request.
+func (client Client) SetFileExpiryPreparer(filePath string, expiryOption ExpiryOptionType, op string, expireTime *int64) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"filePath": autorest.Encode("path", filePath),
+	}
+
+	queryParameters := map[string]interface{}{
+		"api-version":  client.APIVersion,
+		"expiryOption": autorest.Encode("query", expiryOption),
+		"op":           autorest.Encode("query", op),
+	}
+	if expireTime != nil {
+		queryParameters["expireTime"] = autorest.Encode("query", *expireTime)
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsPut(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/WebHdfsExt/{filePath}", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare(&http.Request{})
+}
+
+// SetFileExpirySender sends the SetFileExpiry request. The method will close the
+// http.Response Body if it receives an error.
+func (client Client) SetFileExpirySender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req)
+}
+
+// SetFileExpiryResponder handles the response to the SetFileExpiry request. The method always
+// closes the http.Response Body.
+func (client Client) SetFileExpiryResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

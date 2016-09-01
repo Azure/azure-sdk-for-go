@@ -21,6 +21,7 @@ package intune
 import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
+	"github.com/Azure/go-autorest/autorest/validation"
 	"net/http"
 )
 
@@ -46,6 +47,13 @@ func NewAndroidClientWithBaseURI(baseURI string) AndroidClient {
 // the policy appName is application unique Name parameters is parameters
 // supplied to the Create or update app to an android policy operation.
 func (client AndroidClient) AddAppForMAMPolicy(hostName string, policyName string, appName string, parameters MAMPolicyAppIDOrGroupIDPayload) (result autorest.Response, err error) {
+	if err := validation.Validate([]validation.Validation{
+		{parameters,
+			[]validation.Constraint{{"parameters.Properties", validation.Null, false,
+				[]validation.Constraint{{"parameters.Properties.URL", validation.Null, true, nil}}}}}}); err != nil {
+		return result, validation.NewErrorWithValidationError(err, "intune.AndroidClient", "AddAppForMAMPolicy")
+	}
+
 	req, err := client.AddAppForMAMPolicyPreparer(hostName, policyName, appName, parameters)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "intune.AndroidClient", "AddAppForMAMPolicy", nil, "Failure preparing request")
@@ -111,6 +119,13 @@ func (client AndroidClient) AddAppForMAMPolicyResponder(resp *http.Response) (re
 // the policy groupID is group Id parameters is parameters supplied to the
 // Create or update app to an android policy operation.
 func (client AndroidClient) AddGroupForMAMPolicy(hostName string, policyName string, groupID string, parameters MAMPolicyAppIDOrGroupIDPayload) (result autorest.Response, err error) {
+	if err := validation.Validate([]validation.Validation{
+		{parameters,
+			[]validation.Constraint{{"parameters.Properties", validation.Null, false,
+				[]validation.Constraint{{"parameters.Properties.URL", validation.Null, true, nil}}}}}}); err != nil {
+		return result, validation.NewErrorWithValidationError(err, "intune.AndroidClient", "AddGroupForMAMPolicy")
+	}
+
 	req, err := client.AddGroupForMAMPolicyPreparer(hostName, policyName, groupID, parameters)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "intune.AndroidClient", "AddGroupForMAMPolicy", nil, "Failure preparing request")
@@ -496,7 +511,7 @@ func (client AndroidClient) GetAppForMAMPolicyResponder(resp *http.Response) (re
 func (client AndroidClient) GetAppForMAMPolicyNextResults(lastResults ApplicationCollection) (result ApplicationCollection, err error) {
 	req, err := lastResults.ApplicationCollectionPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "intune.AndroidClient", "GetAppForMAMPolicy", nil, "Failure preparing next results request request")
+		return result, autorest.NewErrorWithError(err, "intune.AndroidClient", "GetAppForMAMPolicy", nil, "Failure preparing next results request")
 	}
 	if req == nil {
 		return
@@ -505,12 +520,12 @@ func (client AndroidClient) GetAppForMAMPolicyNextResults(lastResults Applicatio
 	resp, err := client.GetAppForMAMPolicySender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "intune.AndroidClient", "GetAppForMAMPolicy", resp, "Failure sending next results request request")
+		return result, autorest.NewErrorWithError(err, "intune.AndroidClient", "GetAppForMAMPolicy", resp, "Failure sending next results request")
 	}
 
 	result, err = client.GetAppForMAMPolicyResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "intune.AndroidClient", "GetAppForMAMPolicy", resp, "Failure responding to next results request request")
+		err = autorest.NewErrorWithError(err, "intune.AndroidClient", "GetAppForMAMPolicy", resp, "Failure responding to next results request")
 	}
 
 	return
@@ -582,7 +597,7 @@ func (client AndroidClient) GetGroupsForMAMPolicyResponder(resp *http.Response) 
 func (client AndroidClient) GetGroupsForMAMPolicyNextResults(lastResults GroupsCollection) (result GroupsCollection, err error) {
 	req, err := lastResults.GroupsCollectionPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "intune.AndroidClient", "GetGroupsForMAMPolicy", nil, "Failure preparing next results request request")
+		return result, autorest.NewErrorWithError(err, "intune.AndroidClient", "GetGroupsForMAMPolicy", nil, "Failure preparing next results request")
 	}
 	if req == nil {
 		return
@@ -591,12 +606,12 @@ func (client AndroidClient) GetGroupsForMAMPolicyNextResults(lastResults GroupsC
 	resp, err := client.GetGroupsForMAMPolicySender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "intune.AndroidClient", "GetGroupsForMAMPolicy", resp, "Failure sending next results request request")
+		return result, autorest.NewErrorWithError(err, "intune.AndroidClient", "GetGroupsForMAMPolicy", resp, "Failure sending next results request")
 	}
 
 	result, err = client.GetGroupsForMAMPolicyResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "intune.AndroidClient", "GetGroupsForMAMPolicy", resp, "Failure responding to next results request request")
+		err = autorest.NewErrorWithError(err, "intune.AndroidClient", "GetGroupsForMAMPolicy", resp, "Failure responding to next results request")
 	}
 
 	return
@@ -676,7 +691,7 @@ func (client AndroidClient) GetMAMPoliciesResponder(resp *http.Response) (result
 func (client AndroidClient) GetMAMPoliciesNextResults(lastResults AndroidMAMPolicyCollection) (result AndroidMAMPolicyCollection, err error) {
 	req, err := lastResults.AndroidMAMPolicyCollectionPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "intune.AndroidClient", "GetMAMPolicies", nil, "Failure preparing next results request request")
+		return result, autorest.NewErrorWithError(err, "intune.AndroidClient", "GetMAMPolicies", nil, "Failure preparing next results request")
 	}
 	if req == nil {
 		return
@@ -685,12 +700,12 @@ func (client AndroidClient) GetMAMPoliciesNextResults(lastResults AndroidMAMPoli
 	resp, err := client.GetMAMPoliciesSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "intune.AndroidClient", "GetMAMPolicies", resp, "Failure sending next results request request")
+		return result, autorest.NewErrorWithError(err, "intune.AndroidClient", "GetMAMPolicies", resp, "Failure sending next results request")
 	}
 
 	result, err = client.GetMAMPoliciesResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "intune.AndroidClient", "GetMAMPolicies", resp, "Failure responding to next results request request")
+		err = autorest.NewErrorWithError(err, "intune.AndroidClient", "GetMAMPolicies", resp, "Failure responding to next results request")
 	}
 
 	return

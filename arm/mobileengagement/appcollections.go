@@ -165,7 +165,7 @@ func (client AppCollectionsClient) ListResponder(resp *http.Response) (result Ap
 func (client AppCollectionsClient) ListNextResults(lastResults AppCollectionListResult) (result AppCollectionListResult, err error) {
 	req, err := lastResults.AppCollectionListResultPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "mobileengagement.AppCollectionsClient", "List", nil, "Failure preparing next results request request")
+		return result, autorest.NewErrorWithError(err, "mobileengagement.AppCollectionsClient", "List", nil, "Failure preparing next results request")
 	}
 	if req == nil {
 		return
@@ -174,12 +174,12 @@ func (client AppCollectionsClient) ListNextResults(lastResults AppCollectionList
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "mobileengagement.AppCollectionsClient", "List", resp, "Failure sending next results request request")
+		return result, autorest.NewErrorWithError(err, "mobileengagement.AppCollectionsClient", "List", resp, "Failure sending next results request")
 	}
 
 	result, err = client.ListResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "mobileengagement.AppCollectionsClient", "List", resp, "Failure responding to next results request request")
+		err = autorest.NewErrorWithError(err, "mobileengagement.AppCollectionsClient", "List", resp, "Failure responding to next results request")
 	}
 
 	return

@@ -1,6 +1,11 @@
 # CHANGELOG
 
 -----
+## `v4.0.0-beta`
+- arm/logic: breaking change in package logic.
+- arm: parameter validation code added in all arm packages.
+- Uses go-autorest v7.2.0.
+
 ## `v3.2.0-beta`
 
 | api                         | version             | note      |

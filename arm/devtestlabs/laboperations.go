@@ -451,7 +451,7 @@ func (client LabOperationsClient) ListByResourceGroupResponder(resp *http.Respon
 func (client LabOperationsClient) ListByResourceGroupNextResults(lastResults ResponseWithContinuationLab) (result ResponseWithContinuationLab, err error) {
 	req, err := lastResults.ResponseWithContinuationLabPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "devtestlabs.LabOperationsClient", "ListByResourceGroup", nil, "Failure preparing next results request request")
+		return result, autorest.NewErrorWithError(err, "devtestlabs.LabOperationsClient", "ListByResourceGroup", nil, "Failure preparing next results request")
 	}
 	if req == nil {
 		return
@@ -460,12 +460,12 @@ func (client LabOperationsClient) ListByResourceGroupNextResults(lastResults Res
 	resp, err := client.ListByResourceGroupSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "devtestlabs.LabOperationsClient", "ListByResourceGroup", resp, "Failure sending next results request request")
+		return result, autorest.NewErrorWithError(err, "devtestlabs.LabOperationsClient", "ListByResourceGroup", resp, "Failure sending next results request")
 	}
 
 	result, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "devtestlabs.LabOperationsClient", "ListByResourceGroup", resp, "Failure responding to next results request request")
+		err = autorest.NewErrorWithError(err, "devtestlabs.LabOperationsClient", "ListByResourceGroup", resp, "Failure responding to next results request")
 	}
 
 	return
@@ -546,7 +546,7 @@ func (client LabOperationsClient) ListBySubscriptionResponder(resp *http.Respons
 func (client LabOperationsClient) ListBySubscriptionNextResults(lastResults ResponseWithContinuationLab) (result ResponseWithContinuationLab, err error) {
 	req, err := lastResults.ResponseWithContinuationLabPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "devtestlabs.LabOperationsClient", "ListBySubscription", nil, "Failure preparing next results request request")
+		return result, autorest.NewErrorWithError(err, "devtestlabs.LabOperationsClient", "ListBySubscription", nil, "Failure preparing next results request")
 	}
 	if req == nil {
 		return
@@ -555,12 +555,12 @@ func (client LabOperationsClient) ListBySubscriptionNextResults(lastResults Resp
 	resp, err := client.ListBySubscriptionSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "devtestlabs.LabOperationsClient", "ListBySubscription", resp, "Failure sending next results request request")
+		return result, autorest.NewErrorWithError(err, "devtestlabs.LabOperationsClient", "ListBySubscription", resp, "Failure sending next results request")
 	}
 
 	result, err = client.ListBySubscriptionResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "devtestlabs.LabOperationsClient", "ListBySubscription", resp, "Failure responding to next results request request")
+		err = autorest.NewErrorWithError(err, "devtestlabs.LabOperationsClient", "ListBySubscription", resp, "Failure responding to next results request")
 	}
 
 	return
@@ -633,7 +633,7 @@ func (client LabOperationsClient) ListVhdsResponder(resp *http.Response) (result
 func (client LabOperationsClient) ListVhdsNextResults(lastResults ResponseWithContinuationLabVhd) (result ResponseWithContinuationLabVhd, err error) {
 	req, err := lastResults.ResponseWithContinuationLabVhdPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "devtestlabs.LabOperationsClient", "ListVhds", nil, "Failure preparing next results request request")
+		return result, autorest.NewErrorWithError(err, "devtestlabs.LabOperationsClient", "ListVhds", nil, "Failure preparing next results request")
 	}
 	if req == nil {
 		return
@@ -642,12 +642,12 @@ func (client LabOperationsClient) ListVhdsNextResults(lastResults ResponseWithCo
 	resp, err := client.ListVhdsSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "devtestlabs.LabOperationsClient", "ListVhds", resp, "Failure sending next results request request")
+		return result, autorest.NewErrorWithError(err, "devtestlabs.LabOperationsClient", "ListVhds", resp, "Failure sending next results request")
 	}
 
 	result, err = client.ListVhdsResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "devtestlabs.LabOperationsClient", "ListVhds", resp, "Failure responding to next results request request")
+		err = autorest.NewErrorWithError(err, "devtestlabs.LabOperationsClient", "ListVhds", resp, "Failure responding to next results request")
 	}
 
 	return

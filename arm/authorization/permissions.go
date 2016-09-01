@@ -112,7 +112,7 @@ func (client PermissionsClient) ListForResourceResponder(resp *http.Response) (r
 func (client PermissionsClient) ListForResourceNextResults(lastResults PermissionGetResult) (result PermissionGetResult, err error) {
 	req, err := lastResults.PermissionGetResultPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "authorization.PermissionsClient", "ListForResource", nil, "Failure preparing next results request request")
+		return result, autorest.NewErrorWithError(err, "authorization.PermissionsClient", "ListForResource", nil, "Failure preparing next results request")
 	}
 	if req == nil {
 		return
@@ -121,12 +121,12 @@ func (client PermissionsClient) ListForResourceNextResults(lastResults Permissio
 	resp, err := client.ListForResourceSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "authorization.PermissionsClient", "ListForResource", resp, "Failure sending next results request request")
+		return result, autorest.NewErrorWithError(err, "authorization.PermissionsClient", "ListForResource", resp, "Failure sending next results request")
 	}
 
 	result, err = client.ListForResourceResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "authorization.PermissionsClient", "ListForResource", resp, "Failure responding to next results request request")
+		err = autorest.NewErrorWithError(err, "authorization.PermissionsClient", "ListForResource", resp, "Failure responding to next results request")
 	}
 
 	return
@@ -198,7 +198,7 @@ func (client PermissionsClient) ListForResourceGroupResponder(resp *http.Respons
 func (client PermissionsClient) ListForResourceGroupNextResults(lastResults PermissionGetResult) (result PermissionGetResult, err error) {
 	req, err := lastResults.PermissionGetResultPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "authorization.PermissionsClient", "ListForResourceGroup", nil, "Failure preparing next results request request")
+		return result, autorest.NewErrorWithError(err, "authorization.PermissionsClient", "ListForResourceGroup", nil, "Failure preparing next results request")
 	}
 	if req == nil {
 		return
@@ -207,12 +207,12 @@ func (client PermissionsClient) ListForResourceGroupNextResults(lastResults Perm
 	resp, err := client.ListForResourceGroupSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "authorization.PermissionsClient", "ListForResourceGroup", resp, "Failure sending next results request request")
+		return result, autorest.NewErrorWithError(err, "authorization.PermissionsClient", "ListForResourceGroup", resp, "Failure sending next results request")
 	}
 
 	result, err = client.ListForResourceGroupResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "authorization.PermissionsClient", "ListForResourceGroup", resp, "Failure responding to next results request request")
+		err = autorest.NewErrorWithError(err, "authorization.PermissionsClient", "ListForResourceGroup", resp, "Failure responding to next results request")
 	}
 
 	return

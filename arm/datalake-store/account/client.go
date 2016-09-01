@@ -25,6 +25,7 @@ package account
 import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
+	"github.com/Azure/go-autorest/autorest/validation"
 	"net/http"
 )
 
@@ -69,6 +70,25 @@ func NewWithBaseURI(baseURI string, subscriptionID string) ManagementClient {
 // to create. parameters is parameters supplied to create the Data Lake Store
 // account.
 func (client ManagementClient) Create(resourceGroupName string, name string, parameters DataLakeStoreAccount, cancel <-chan struct{}) (result autorest.Response, err error) {
+	if err := validation.Validate([]validation.Validation{
+		{parameters,
+			[]validation.Constraint{{"parameters.Identity", validation.Null, false,
+				[]validation.Constraint{{"PrincipalID", validation.ReadOnly, true, nil},
+					{"TenantID", validation.ReadOnly, true, nil},
+				}},
+				{"parameters.Properties", validation.Null, false,
+					[]validation.Constraint{{"ProvisioningState", validation.ReadOnly, true, nil},
+						{"State", validation.ReadOnly, true, nil},
+						{"CreationTime", validation.ReadOnly, true, nil},
+						{"EncryptionState", validation.ReadOnly, true, nil},
+						{"EncryptionProvisioningState", validation.ReadOnly, true, nil},
+						{"LastModifiedTime", validation.ReadOnly, true, nil},
+					}},
+				{"Type", validation.ReadOnly, true, nil},
+				{"ID", validation.ReadOnly, true, nil}}}}); err != nil {
+		return result, validation.NewErrorWithValidationError(err, "account.ManagementClient", "Create")
+	}
+
 	req, err := client.CreatePreparer(resourceGroupName, name, parameters, cancel)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "account.ManagementClient", "Create", nil, "Failure preparing request")
@@ -138,6 +158,12 @@ func (client ManagementClient) CreateResponder(resp *http.Response) (result auto
 // firewall rule to create or update. parameters is parameters supplied to
 // create the create firewall rule.
 func (client ManagementClient) CreateOrUpdateFirewallRule(resourceGroupName string, accountName string, name string, parameters FirewallRule) (result FirewallRule, err error) {
+	if err := validation.Validate([]validation.Validation{
+		{parameters,
+			[]validation.Constraint{{"Type", validation.ReadOnly, true, nil}}}}); err != nil {
+		return result, validation.NewErrorWithValidationError(err, "account.ManagementClient", "CreateOrUpdateFirewallRule")
+	}
+
 	req, err := client.CreateOrUpdateFirewallRulePreparer(resourceGroupName, accountName, name, parameters)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "account.ManagementClient", "CreateOrUpdateFirewallRule", nil, "Failure preparing request")
@@ -328,6 +354,70 @@ func (client ManagementClient) DeleteFirewallRuleResponder(resp *http.Response) 
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
+		autorest.ByClosing())
+	result.Response = resp
+	return
+}
+
+// EnableKeyVault attempts to enable a user managed key vault for encryption
+// of the specified Data Lake Store account.
+//
+// resourceGroupName is the name of the Azure resource group that contains the
+// Data Lake Store account. accountName is the name of the Data Lake Store
+// account to attempt to enable the Key Vault for.
+func (client ManagementClient) EnableKeyVault(resourceGroupName string, accountName string) (result autorest.Response, err error) {
+	req, err := client.EnableKeyVaultPreparer(resourceGroupName, accountName)
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "account.ManagementClient", "EnableKeyVault", nil, "Failure preparing request")
+	}
+
+	resp, err := client.EnableKeyVaultSender(req)
+	if err != nil {
+		result.Response = resp
+		return result, autorest.NewErrorWithError(err, "account.ManagementClient", "EnableKeyVault", resp, "Failure sending request")
+	}
+
+	result, err = client.EnableKeyVaultResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "account.ManagementClient", "EnableKeyVault", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// EnableKeyVaultPreparer prepares the EnableKeyVault request.
+func (client ManagementClient) EnableKeyVaultPreparer(resourceGroupName string, accountName string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"accountName":       autorest.Encode("path", accountName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	queryParameters := map[string]interface{}{
+		"api-version": client.APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsPost(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataLakeStore/accounts/{accountName}/enableKeyVault", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare(&http.Request{})
+}
+
+// EnableKeyVaultSender sends the EnableKeyVault request. The method will close the
+// http.Response Body if it receives an error.
+func (client ManagementClient) EnableKeyVaultSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req)
+}
+
+// EnableKeyVaultResponder handles the response to the EnableKeyVault request. The method always
+// closes the http.Response Body.
+func (client ManagementClient) EnableKeyVaultResponder(resp *http.Response) (result autorest.Response, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp
 	return
@@ -573,7 +663,7 @@ func (client ManagementClient) ListResponder(resp *http.Response) (result DataLa
 func (client ManagementClient) ListNextResults(lastResults DataLakeStoreAccountListResult) (result DataLakeStoreAccountListResult, err error) {
 	req, err := lastResults.DataLakeStoreAccountListResultPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "account.ManagementClient", "List", nil, "Failure preparing next results request request")
+		return result, autorest.NewErrorWithError(err, "account.ManagementClient", "List", nil, "Failure preparing next results request")
 	}
 	if req == nil {
 		return
@@ -582,12 +672,12 @@ func (client ManagementClient) ListNextResults(lastResults DataLakeStoreAccountL
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "account.ManagementClient", "List", resp, "Failure sending next results request request")
+		return result, autorest.NewErrorWithError(err, "account.ManagementClient", "List", resp, "Failure sending next results request")
 	}
 
 	result, err = client.ListResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "account.ManagementClient", "List", resp, "Failure responding to next results request request")
+		err = autorest.NewErrorWithError(err, "account.ManagementClient", "List", resp, "Failure responding to next results request")
 	}
 
 	return
@@ -706,7 +796,7 @@ func (client ManagementClient) ListByResourceGroupResponder(resp *http.Response)
 func (client ManagementClient) ListByResourceGroupNextResults(lastResults DataLakeStoreAccountListResult) (result DataLakeStoreAccountListResult, err error) {
 	req, err := lastResults.DataLakeStoreAccountListResultPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "account.ManagementClient", "ListByResourceGroup", nil, "Failure preparing next results request request")
+		return result, autorest.NewErrorWithError(err, "account.ManagementClient", "ListByResourceGroup", nil, "Failure preparing next results request")
 	}
 	if req == nil {
 		return
@@ -715,12 +805,12 @@ func (client ManagementClient) ListByResourceGroupNextResults(lastResults DataLa
 	resp, err := client.ListByResourceGroupSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "account.ManagementClient", "ListByResourceGroup", resp, "Failure sending next results request request")
+		return result, autorest.NewErrorWithError(err, "account.ManagementClient", "ListByResourceGroup", resp, "Failure sending next results request")
 	}
 
 	result, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "account.ManagementClient", "ListByResourceGroup", resp, "Failure responding to next results request request")
+		err = autorest.NewErrorWithError(err, "account.ManagementClient", "ListByResourceGroup", resp, "Failure responding to next results request")
 	}
 
 	return
@@ -795,7 +885,7 @@ func (client ManagementClient) ListFirewallRulesResponder(resp *http.Response) (
 func (client ManagementClient) ListFirewallRulesNextResults(lastResults DataLakeStoreFirewallRuleListResult) (result DataLakeStoreFirewallRuleListResult, err error) {
 	req, err := lastResults.DataLakeStoreFirewallRuleListResultPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "account.ManagementClient", "ListFirewallRules", nil, "Failure preparing next results request request")
+		return result, autorest.NewErrorWithError(err, "account.ManagementClient", "ListFirewallRules", nil, "Failure preparing next results request")
 	}
 	if req == nil {
 		return
@@ -804,12 +894,12 @@ func (client ManagementClient) ListFirewallRulesNextResults(lastResults DataLake
 	resp, err := client.ListFirewallRulesSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "account.ManagementClient", "ListFirewallRules", resp, "Failure sending next results request request")
+		return result, autorest.NewErrorWithError(err, "account.ManagementClient", "ListFirewallRules", resp, "Failure sending next results request")
 	}
 
 	result, err = client.ListFirewallRulesResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "account.ManagementClient", "ListFirewallRules", resp, "Failure responding to next results request request")
+		err = autorest.NewErrorWithError(err, "account.ManagementClient", "ListFirewallRules", resp, "Failure responding to next results request")
 	}
 
 	return
@@ -825,6 +915,13 @@ func (client ManagementClient) ListFirewallRulesNextResults(lastResults DataLake
 // to update. parameters is parameters supplied to update the Data Lake Store
 // account.
 func (client ManagementClient) Update(resourceGroupName string, name string, parameters DataLakeStoreAccount, cancel <-chan struct{}) (result autorest.Response, err error) {
+	if err := validation.Validate([]validation.Validation{
+		{parameters,
+			[]validation.Constraint{{"Type", validation.ReadOnly, true, nil},
+				{"ID", validation.ReadOnly, true, nil}}}}); err != nil {
+		return result, validation.NewErrorWithValidationError(err, "account.ManagementClient", "Update")
+	}
+
 	req, err := client.UpdatePreparer(resourceGroupName, name, parameters, cancel)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "account.ManagementClient", "Update", nil, "Failure preparing request")

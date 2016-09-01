@@ -21,6 +21,7 @@ package iothub
 import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
+	"github.com/Azure/go-autorest/autorest/validation"
 	"net/http"
 )
 
@@ -46,6 +47,12 @@ func NewResourceOperationsClientWithBaseURI(baseURI string, subscriptionID strin
 // operationInputs is the operation inputs. Set the name parameter in the
 // operationInputs structure to the desired iothub name.
 func (client ResourceOperationsClient) CheckNameAvailability(operationInputs OperationInputs) (result NameAvailabilityInfo, err error) {
+	if err := validation.Validate([]validation.Validation{
+		{operationInputs,
+			[]validation.Constraint{{"operationInputs.Name", validation.Null, true, nil}}}}); err != nil {
+		return result, validation.NewErrorWithValidationError(err, "iothub.ResourceOperationsClient", "CheckNameAvailability")
+	}
+
 	req, err := client.CheckNameAvailabilityPreparer(operationInputs)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "iothub.ResourceOperationsClient", "CheckNameAvailability", nil, "Failure preparing request")
@@ -178,6 +185,27 @@ func (client ResourceOperationsClient) CreateEventHubConsumerGroupResponder(resp
 // resourceGroupName is the name of the resource group. resourceName is the
 // name of the resource. iotHubDescription is the Iot hub description.
 func (client ResourceOperationsClient) CreateOrUpdate(resourceGroupName string, resourceName string, iotHubDescription Description, cancel <-chan struct{}) (result autorest.Response, err error) {
+	if err := validation.Validate([]validation.Validation{
+		{iotHubDescription,
+			[]validation.Constraint{{"iotHubDescription.Properties", validation.Null, false,
+				[]validation.Constraint{{"iotHubDescription.Properties.CloudToDevice", validation.Null, false,
+					[]validation.Constraint{{"iotHubDescription.Properties.CloudToDevice.MaxDeliveryCount", validation.Null, false,
+						[]validation.Constraint{{"iotHubDescription.Properties.CloudToDevice.MaxDeliveryCount", validation.InclusiveMaximum, 100, nil},
+							{"iotHubDescription.Properties.CloudToDevice.MaxDeliveryCount", validation.InclusiveMinimum, 1, nil},
+						}},
+						{"iotHubDescription.Properties.CloudToDevice.Feedback", validation.Null, false,
+							[]validation.Constraint{{"iotHubDescription.Properties.CloudToDevice.Feedback.MaxDeliveryCount", validation.Null, false,
+								[]validation.Constraint{{"iotHubDescription.Properties.CloudToDevice.Feedback.MaxDeliveryCount", validation.InclusiveMaximum, 100, nil},
+									{"iotHubDescription.Properties.CloudToDevice.Feedback.MaxDeliveryCount", validation.InclusiveMinimum, 1, nil},
+								}},
+							}},
+					}},
+				}},
+				{"iotHubDescription.Sku", validation.Null, false,
+					[]validation.Constraint{{"Tier", validation.ReadOnly, true, nil}}}}}}); err != nil {
+		return result, validation.NewErrorWithValidationError(err, "iothub.ResourceOperationsClient", "CreateOrUpdate")
+	}
+
 	req, err := client.CreateOrUpdatePreparer(resourceGroupName, resourceName, iotHubDescription, cancel)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "iothub.ResourceOperationsClient", "CreateOrUpdate", nil, "Failure preparing request")
@@ -376,6 +404,13 @@ func (client ResourceOperationsClient) DeleteEventHubConsumerGroupResponder(resp
 // name of the resource. exportDevicesParameters is the export devices
 // parameters.
 func (client ResourceOperationsClient) ExportDevices(resourceGroupName string, resourceName string, exportDevicesParameters ExportDevicesRequest) (result JobResponse, err error) {
+	if err := validation.Validate([]validation.Validation{
+		{exportDevicesParameters,
+			[]validation.Constraint{{"exportDevicesParameters.ExportBlobContainerURI", validation.Null, true, nil},
+				{"exportDevicesParameters.ExcludeKeys", validation.Null, true, nil}}}}); err != nil {
+		return result, validation.NewErrorWithValidationError(err, "iothub.ResourceOperationsClient", "ExportDevices")
+	}
+
 	req, err := client.ExportDevicesPreparer(resourceGroupName, resourceName, exportDevicesParameters)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "iothub.ResourceOperationsClient", "ExportDevices", nil, "Failure preparing request")
@@ -760,7 +795,7 @@ func (client ResourceOperationsClient) GetQuotaMetricsResponder(resp *http.Respo
 func (client ResourceOperationsClient) GetQuotaMetricsNextResults(lastResults QuotaMetricInfoListResult) (result QuotaMetricInfoListResult, err error) {
 	req, err := lastResults.QuotaMetricInfoListResultPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "iothub.ResourceOperationsClient", "GetQuotaMetrics", nil, "Failure preparing next results request request")
+		return result, autorest.NewErrorWithError(err, "iothub.ResourceOperationsClient", "GetQuotaMetrics", nil, "Failure preparing next results request")
 	}
 	if req == nil {
 		return
@@ -769,12 +804,12 @@ func (client ResourceOperationsClient) GetQuotaMetricsNextResults(lastResults Qu
 	resp, err := client.GetQuotaMetricsSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "iothub.ResourceOperationsClient", "GetQuotaMetrics", resp, "Failure sending next results request request")
+		return result, autorest.NewErrorWithError(err, "iothub.ResourceOperationsClient", "GetQuotaMetrics", resp, "Failure sending next results request")
 	}
 
 	result, err = client.GetQuotaMetricsResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "iothub.ResourceOperationsClient", "GetQuotaMetrics", resp, "Failure responding to next results request request")
+		err = autorest.NewErrorWithError(err, "iothub.ResourceOperationsClient", "GetQuotaMetrics", resp, "Failure responding to next results request")
 	}
 
 	return
@@ -910,7 +945,7 @@ func (client ResourceOperationsClient) GetValidSkusResponder(resp *http.Response
 func (client ResourceOperationsClient) GetValidSkusNextResults(lastResults SkuDescriptionListResult) (result SkuDescriptionListResult, err error) {
 	req, err := lastResults.SkuDescriptionListResultPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "iothub.ResourceOperationsClient", "GetValidSkus", nil, "Failure preparing next results request request")
+		return result, autorest.NewErrorWithError(err, "iothub.ResourceOperationsClient", "GetValidSkus", nil, "Failure preparing next results request")
 	}
 	if req == nil {
 		return
@@ -919,12 +954,12 @@ func (client ResourceOperationsClient) GetValidSkusNextResults(lastResults SkuDe
 	resp, err := client.GetValidSkusSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "iothub.ResourceOperationsClient", "GetValidSkus", resp, "Failure sending next results request request")
+		return result, autorest.NewErrorWithError(err, "iothub.ResourceOperationsClient", "GetValidSkus", resp, "Failure sending next results request")
 	}
 
 	result, err = client.GetValidSkusResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "iothub.ResourceOperationsClient", "GetValidSkus", resp, "Failure responding to next results request request")
+		err = autorest.NewErrorWithError(err, "iothub.ResourceOperationsClient", "GetValidSkus", resp, "Failure responding to next results request")
 	}
 
 	return
@@ -936,6 +971,13 @@ func (client ResourceOperationsClient) GetValidSkusNextResults(lastResults SkuDe
 // name of the resource. importDevicesParameters is the import devices
 // parameters.
 func (client ResourceOperationsClient) ImportDevices(resourceGroupName string, resourceName string, importDevicesParameters ImportDevicesRequest) (result JobResponse, err error) {
+	if err := validation.Validate([]validation.Validation{
+		{importDevicesParameters,
+			[]validation.Constraint{{"importDevicesParameters.InputBlobContainerURI", validation.Null, true, nil},
+				{"importDevicesParameters.OutputBlobContainerURI", validation.Null, true, nil}}}}); err != nil {
+		return result, validation.NewErrorWithValidationError(err, "iothub.ResourceOperationsClient", "ImportDevices")
+	}
+
 	req, err := client.ImportDevicesPreparer(resourceGroupName, resourceName, importDevicesParameters)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "iothub.ResourceOperationsClient", "ImportDevices", nil, "Failure preparing request")
@@ -1061,7 +1103,7 @@ func (client ResourceOperationsClient) ListByResourceGroupResponder(resp *http.R
 func (client ResourceOperationsClient) ListByResourceGroupNextResults(lastResults DescriptionListResult) (result DescriptionListResult, err error) {
 	req, err := lastResults.DescriptionListResultPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "iothub.ResourceOperationsClient", "ListByResourceGroup", nil, "Failure preparing next results request request")
+		return result, autorest.NewErrorWithError(err, "iothub.ResourceOperationsClient", "ListByResourceGroup", nil, "Failure preparing next results request")
 	}
 	if req == nil {
 		return
@@ -1070,12 +1112,12 @@ func (client ResourceOperationsClient) ListByResourceGroupNextResults(lastResult
 	resp, err := client.ListByResourceGroupSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "iothub.ResourceOperationsClient", "ListByResourceGroup", resp, "Failure sending next results request request")
+		return result, autorest.NewErrorWithError(err, "iothub.ResourceOperationsClient", "ListByResourceGroup", resp, "Failure sending next results request")
 	}
 
 	result, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "iothub.ResourceOperationsClient", "ListByResourceGroup", resp, "Failure responding to next results request request")
+		err = autorest.NewErrorWithError(err, "iothub.ResourceOperationsClient", "ListByResourceGroup", resp, "Failure responding to next results request")
 	}
 
 	return
@@ -1143,7 +1185,7 @@ func (client ResourceOperationsClient) ListBySubscriptionResponder(resp *http.Re
 func (client ResourceOperationsClient) ListBySubscriptionNextResults(lastResults DescriptionListResult) (result DescriptionListResult, err error) {
 	req, err := lastResults.DescriptionListResultPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "iothub.ResourceOperationsClient", "ListBySubscription", nil, "Failure preparing next results request request")
+		return result, autorest.NewErrorWithError(err, "iothub.ResourceOperationsClient", "ListBySubscription", nil, "Failure preparing next results request")
 	}
 	if req == nil {
 		return
@@ -1152,12 +1194,12 @@ func (client ResourceOperationsClient) ListBySubscriptionNextResults(lastResults
 	resp, err := client.ListBySubscriptionSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "iothub.ResourceOperationsClient", "ListBySubscription", resp, "Failure sending next results request request")
+		return result, autorest.NewErrorWithError(err, "iothub.ResourceOperationsClient", "ListBySubscription", resp, "Failure sending next results request")
 	}
 
 	result, err = client.ListBySubscriptionResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "iothub.ResourceOperationsClient", "ListBySubscription", resp, "Failure responding to next results request request")
+		err = autorest.NewErrorWithError(err, "iothub.ResourceOperationsClient", "ListBySubscription", resp, "Failure responding to next results request")
 	}
 
 	return
@@ -1232,7 +1274,7 @@ func (client ResourceOperationsClient) ListEventHubConsumerGroupsResponder(resp 
 func (client ResourceOperationsClient) ListEventHubConsumerGroupsNextResults(lastResults EventHubConsumerGroupsListResult) (result EventHubConsumerGroupsListResult, err error) {
 	req, err := lastResults.EventHubConsumerGroupsListResultPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "iothub.ResourceOperationsClient", "ListEventHubConsumerGroups", nil, "Failure preparing next results request request")
+		return result, autorest.NewErrorWithError(err, "iothub.ResourceOperationsClient", "ListEventHubConsumerGroups", nil, "Failure preparing next results request")
 	}
 	if req == nil {
 		return
@@ -1241,12 +1283,12 @@ func (client ResourceOperationsClient) ListEventHubConsumerGroupsNextResults(las
 	resp, err := client.ListEventHubConsumerGroupsSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "iothub.ResourceOperationsClient", "ListEventHubConsumerGroups", resp, "Failure sending next results request request")
+		return result, autorest.NewErrorWithError(err, "iothub.ResourceOperationsClient", "ListEventHubConsumerGroups", resp, "Failure sending next results request")
 	}
 
 	result, err = client.ListEventHubConsumerGroupsResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "iothub.ResourceOperationsClient", "ListEventHubConsumerGroups", resp, "Failure responding to next results request request")
+		err = autorest.NewErrorWithError(err, "iothub.ResourceOperationsClient", "ListEventHubConsumerGroups", resp, "Failure responding to next results request")
 	}
 
 	return
@@ -1319,7 +1361,7 @@ func (client ResourceOperationsClient) ListJobsResponder(resp *http.Response) (r
 func (client ResourceOperationsClient) ListJobsNextResults(lastResults JobResponseListResult) (result JobResponseListResult, err error) {
 	req, err := lastResults.JobResponseListResultPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "iothub.ResourceOperationsClient", "ListJobs", nil, "Failure preparing next results request request")
+		return result, autorest.NewErrorWithError(err, "iothub.ResourceOperationsClient", "ListJobs", nil, "Failure preparing next results request")
 	}
 	if req == nil {
 		return
@@ -1328,12 +1370,12 @@ func (client ResourceOperationsClient) ListJobsNextResults(lastResults JobRespon
 	resp, err := client.ListJobsSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "iothub.ResourceOperationsClient", "ListJobs", resp, "Failure sending next results request request")
+		return result, autorest.NewErrorWithError(err, "iothub.ResourceOperationsClient", "ListJobs", resp, "Failure sending next results request")
 	}
 
 	result, err = client.ListJobsResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "iothub.ResourceOperationsClient", "ListJobs", resp, "Failure responding to next results request request")
+		err = autorest.NewErrorWithError(err, "iothub.ResourceOperationsClient", "ListJobs", resp, "Failure responding to next results request")
 	}
 
 	return
@@ -1406,7 +1448,7 @@ func (client ResourceOperationsClient) ListKeysResponder(resp *http.Response) (r
 func (client ResourceOperationsClient) ListKeysNextResults(lastResults SharedAccessSignatureAuthorizationRuleListResult) (result SharedAccessSignatureAuthorizationRuleListResult, err error) {
 	req, err := lastResults.SharedAccessSignatureAuthorizationRuleListResultPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "iothub.ResourceOperationsClient", "ListKeys", nil, "Failure preparing next results request request")
+		return result, autorest.NewErrorWithError(err, "iothub.ResourceOperationsClient", "ListKeys", nil, "Failure preparing next results request")
 	}
 	if req == nil {
 		return
@@ -1415,12 +1457,12 @@ func (client ResourceOperationsClient) ListKeysNextResults(lastResults SharedAcc
 	resp, err := client.ListKeysSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "iothub.ResourceOperationsClient", "ListKeys", resp, "Failure sending next results request request")
+		return result, autorest.NewErrorWithError(err, "iothub.ResourceOperationsClient", "ListKeys", resp, "Failure sending next results request")
 	}
 
 	result, err = client.ListKeysResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "iothub.ResourceOperationsClient", "ListKeys", resp, "Failure responding to next results request request")
+		err = autorest.NewErrorWithError(err, "iothub.ResourceOperationsClient", "ListKeys", resp, "Failure responding to next results request")
 	}
 
 	return

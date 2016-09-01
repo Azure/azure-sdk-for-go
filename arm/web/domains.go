@@ -370,7 +370,7 @@ func (client DomainsClient) GetDomainsResponder(resp *http.Response) (result Dom
 func (client DomainsClient) GetDomainsNextResults(lastResults DomainCollection) (result DomainCollection, err error) {
 	req, err := lastResults.DomainCollectionPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.DomainsClient", "GetDomains", nil, "Failure preparing next results request request")
+		return result, autorest.NewErrorWithError(err, "web.DomainsClient", "GetDomains", nil, "Failure preparing next results request")
 	}
 	if req == nil {
 		return
@@ -379,12 +379,12 @@ func (client DomainsClient) GetDomainsNextResults(lastResults DomainCollection) 
 	resp, err := client.GetDomainsSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.DomainsClient", "GetDomains", resp, "Failure sending next results request request")
+		return result, autorest.NewErrorWithError(err, "web.DomainsClient", "GetDomains", resp, "Failure sending next results request")
 	}
 
 	result, err = client.GetDomainsResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "web.DomainsClient", "GetDomains", resp, "Failure responding to next results request request")
+		err = autorest.NewErrorWithError(err, "web.DomainsClient", "GetDomains", resp, "Failure responding to next results request")
 	}
 
 	return

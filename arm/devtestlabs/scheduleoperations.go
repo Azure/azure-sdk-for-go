@@ -380,7 +380,7 @@ func (client ScheduleOperationsClient) ListResponder(resp *http.Response) (resul
 func (client ScheduleOperationsClient) ListNextResults(lastResults ResponseWithContinuationSchedule) (result ResponseWithContinuationSchedule, err error) {
 	req, err := lastResults.ResponseWithContinuationSchedulePreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "devtestlabs.ScheduleOperationsClient", "List", nil, "Failure preparing next results request request")
+		return result, autorest.NewErrorWithError(err, "devtestlabs.ScheduleOperationsClient", "List", nil, "Failure preparing next results request")
 	}
 	if req == nil {
 		return
@@ -389,12 +389,12 @@ func (client ScheduleOperationsClient) ListNextResults(lastResults ResponseWithC
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "devtestlabs.ScheduleOperationsClient", "List", resp, "Failure sending next results request request")
+		return result, autorest.NewErrorWithError(err, "devtestlabs.ScheduleOperationsClient", "List", resp, "Failure sending next results request")
 	}
 
 	result, err = client.ListResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "devtestlabs.ScheduleOperationsClient", "List", resp, "Failure responding to next results request request")
+		err = autorest.NewErrorWithError(err, "devtestlabs.ScheduleOperationsClient", "List", resp, "Failure responding to next results request")
 	}
 
 	return

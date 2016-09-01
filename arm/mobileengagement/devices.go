@@ -21,6 +21,7 @@ package mobileengagement
 import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
+	"github.com/Azure/go-autorest/autorest/validation"
 	"net/http"
 )
 
@@ -287,7 +288,7 @@ func (client DevicesClient) ListResponder(resp *http.Response) (result DevicesQu
 func (client DevicesClient) ListNextResults(lastResults DevicesQueryResult) (result DevicesQueryResult, err error) {
 	req, err := lastResults.DevicesQueryResultPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "mobileengagement.DevicesClient", "List", nil, "Failure preparing next results request request")
+		return result, autorest.NewErrorWithError(err, "mobileengagement.DevicesClient", "List", nil, "Failure preparing next results request")
 	}
 	if req == nil {
 		return
@@ -296,12 +297,12 @@ func (client DevicesClient) ListNextResults(lastResults DevicesQueryResult) (res
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "mobileengagement.DevicesClient", "List", resp, "Failure sending next results request request")
+		return result, autorest.NewErrorWithError(err, "mobileengagement.DevicesClient", "List", resp, "Failure sending next results request")
 	}
 
 	result, err = client.ListResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "mobileengagement.DevicesClient", "List", resp, "Failure responding to next results request request")
+		err = autorest.NewErrorWithError(err, "mobileengagement.DevicesClient", "List", resp, "Failure responding to next results request")
 	}
 
 	return
@@ -313,6 +314,12 @@ func (client DevicesClient) ListNextResults(lastResults DevicesQueryResult) (res
 // Get device command.
 //
 func (client DevicesClient) TagByDeviceID(parameters DeviceTagsParameters) (result DeviceTagsResult, err error) {
+	if err := validation.Validate([]validation.Validation{
+		{parameters,
+			[]validation.Constraint{{"parameters.Tags", validation.Null, true, nil}}}}); err != nil {
+		return result, validation.NewErrorWithValidationError(err, "mobileengagement.DevicesClient", "TagByDeviceID")
+	}
+
 	req, err := client.TagByDeviceIDPreparer(parameters)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "mobileengagement.DevicesClient", "TagByDeviceID", nil, "Failure preparing request")
@@ -380,6 +387,12 @@ func (client DevicesClient) TagByDeviceIDResponder(resp *http.Response) (result 
 // Get device command.
 //
 func (client DevicesClient) TagByUserID(parameters DeviceTagsParameters) (result DeviceTagsResult, err error) {
+	if err := validation.Validate([]validation.Validation{
+		{parameters,
+			[]validation.Constraint{{"parameters.Tags", validation.Null, true, nil}}}}); err != nil {
+		return result, validation.NewErrorWithValidationError(err, "mobileengagement.DevicesClient", "TagByUserID")
+	}
+
 	req, err := client.TagByUserIDPreparer(parameters)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "mobileengagement.DevicesClient", "TagByUserID", nil, "Failure preparing request")

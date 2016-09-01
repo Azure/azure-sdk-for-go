@@ -21,6 +21,7 @@ package redis
 import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
+	"github.com/Azure/go-autorest/autorest/validation"
 	"net/http"
 )
 
@@ -46,6 +47,19 @@ func NewClientWithBaseURI(baseURI string, subscriptionID string) Client {
 // the redis cache. parameters is parameters supplied to the CreateOrUpdate
 // redis operation.
 func (client Client) CreateOrUpdate(resourceGroupName string, name string, parameters CreateOrUpdateParameters) (result ResourceWithAccessKey, err error) {
+	if err := validation.Validate([]validation.Validation{
+		{parameters,
+			[]validation.Constraint{{"parameters.Properties", validation.Null, true,
+				[]validation.Constraint{{"parameters.Properties.Sku", validation.Null, true,
+					[]validation.Constraint{{"parameters.Properties.Sku.Capacity", validation.Null, true, nil}}},
+					{"parameters.Properties.SubnetID", validation.Null, false,
+						[]validation.Constraint{{"parameters.Properties.SubnetID", validation.Pattern, `^/subscriptions/[^/]*/resourceGroups/[^/]*/providers/Microsoft.(ClassicNetwork|Network)/virtualNetworks/[^/]*/subnets/[^/]*$`, nil}}},
+					{"parameters.Properties.StaticIP", validation.Null, false,
+						[]validation.Constraint{{"parameters.Properties.StaticIP", validation.Pattern, `^\d+\.\d+\.\d+\.\d+$`, nil}}},
+				}}}}}); err != nil {
+		return result, validation.NewErrorWithValidationError(err, "redis.Client", "CreateOrUpdate")
+	}
+
 	req, err := client.CreateOrUpdatePreparer(resourceGroupName, name, parameters)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "redis.Client", "CreateOrUpdate", nil, "Failure preparing request")
@@ -175,6 +189,13 @@ func (client Client) DeleteResponder(resp *http.Response) (result autorest.Respo
 // resourceGroupName is the name of the resource group. name is the name of
 // the redis cache. parameters is parameters for redis export operation.
 func (client Client) Export(resourceGroupName string, name string, parameters ExportRDBParameters, cancel <-chan struct{}) (result autorest.Response, err error) {
+	if err := validation.Validate([]validation.Validation{
+		{parameters,
+			[]validation.Constraint{{"parameters.Prefix", validation.Null, true, nil},
+				{"parameters.Container", validation.Null, true, nil}}}}); err != nil {
+		return result, validation.NewErrorWithValidationError(err, "redis.Client", "Export")
+	}
+
 	req, err := client.ExportPreparer(resourceGroupName, name, parameters, cancel)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "redis.Client", "Export", nil, "Failure preparing request")
@@ -371,6 +392,12 @@ func (client Client) GetResponder(resp *http.Response) (result ResourceType, err
 // resourceGroupName is the name of the resource group. name is the name of
 // the redis cache. parameters is parameters for redis import operation.
 func (client Client) Import(resourceGroupName string, name string, parameters ImportRDBParameters, cancel <-chan struct{}) (result autorest.Response, err error) {
+	if err := validation.Validate([]validation.Validation{
+		{parameters,
+			[]validation.Constraint{{"parameters.Files", validation.Null, true, nil}}}}); err != nil {
+		return result, validation.NewErrorWithValidationError(err, "redis.Client", "Import")
+	}
+
 	req, err := client.ImportPreparer(resourceGroupName, name, parameters, cancel)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "redis.Client", "Import", nil, "Failure preparing request")
@@ -494,7 +521,7 @@ func (client Client) ListResponder(resp *http.Response) (result ListResult, err 
 func (client Client) ListNextResults(lastResults ListResult) (result ListResult, err error) {
 	req, err := lastResults.ListResultPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "redis.Client", "List", nil, "Failure preparing next results request request")
+		return result, autorest.NewErrorWithError(err, "redis.Client", "List", nil, "Failure preparing next results request")
 	}
 	if req == nil {
 		return
@@ -503,12 +530,12 @@ func (client Client) ListNextResults(lastResults ListResult) (result ListResult,
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "redis.Client", "List", resp, "Failure sending next results request request")
+		return result, autorest.NewErrorWithError(err, "redis.Client", "List", resp, "Failure sending next results request")
 	}
 
 	result, err = client.ListResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "redis.Client", "List", resp, "Failure responding to next results request request")
+		err = autorest.NewErrorWithError(err, "redis.Client", "List", resp, "Failure responding to next results request")
 	}
 
 	return
@@ -579,7 +606,7 @@ func (client Client) ListByResourceGroupResponder(resp *http.Response) (result L
 func (client Client) ListByResourceGroupNextResults(lastResults ListResult) (result ListResult, err error) {
 	req, err := lastResults.ListResultPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "redis.Client", "ListByResourceGroup", nil, "Failure preparing next results request request")
+		return result, autorest.NewErrorWithError(err, "redis.Client", "ListByResourceGroup", nil, "Failure preparing next results request")
 	}
 	if req == nil {
 		return
@@ -588,12 +615,12 @@ func (client Client) ListByResourceGroupNextResults(lastResults ListResult) (res
 	resp, err := client.ListByResourceGroupSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "redis.Client", "ListByResourceGroup", resp, "Failure sending next results request request")
+		return result, autorest.NewErrorWithError(err, "redis.Client", "ListByResourceGroup", resp, "Failure sending next results request")
 	}
 
 	result, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "redis.Client", "ListByResourceGroup", resp, "Failure responding to next results request request")
+		err = autorest.NewErrorWithError(err, "redis.Client", "ListByResourceGroup", resp, "Failure responding to next results request")
 	}
 
 	return

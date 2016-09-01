@@ -384,7 +384,7 @@ func (client ManagedHostingEnvironmentsClient) GetManagedHostingEnvironmentsResp
 func (client ManagedHostingEnvironmentsClient) GetManagedHostingEnvironmentsNextResults(lastResults HostingEnvironmentCollection) (result HostingEnvironmentCollection, err error) {
 	req, err := lastResults.HostingEnvironmentCollectionPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.ManagedHostingEnvironmentsClient", "GetManagedHostingEnvironments", nil, "Failure preparing next results request request")
+		return result, autorest.NewErrorWithError(err, "web.ManagedHostingEnvironmentsClient", "GetManagedHostingEnvironments", nil, "Failure preparing next results request")
 	}
 	if req == nil {
 		return
@@ -393,12 +393,12 @@ func (client ManagedHostingEnvironmentsClient) GetManagedHostingEnvironmentsNext
 	resp, err := client.GetManagedHostingEnvironmentsSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.ManagedHostingEnvironmentsClient", "GetManagedHostingEnvironments", resp, "Failure sending next results request request")
+		return result, autorest.NewErrorWithError(err, "web.ManagedHostingEnvironmentsClient", "GetManagedHostingEnvironments", resp, "Failure sending next results request")
 	}
 
 	result, err = client.GetManagedHostingEnvironmentsResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "web.ManagedHostingEnvironmentsClient", "GetManagedHostingEnvironments", resp, "Failure responding to next results request request")
+		err = autorest.NewErrorWithError(err, "web.ManagedHostingEnvironmentsClient", "GetManagedHostingEnvironments", resp, "Failure responding to next results request")
 	}
 
 	return
@@ -472,7 +472,7 @@ func (client ManagedHostingEnvironmentsClient) GetManagedHostingEnvironmentServe
 func (client ManagedHostingEnvironmentsClient) GetManagedHostingEnvironmentServerFarmsNextResults(lastResults ServerFarmCollection) (result ServerFarmCollection, err error) {
 	req, err := lastResults.ServerFarmCollectionPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.ManagedHostingEnvironmentsClient", "GetManagedHostingEnvironmentServerFarms", nil, "Failure preparing next results request request")
+		return result, autorest.NewErrorWithError(err, "web.ManagedHostingEnvironmentsClient", "GetManagedHostingEnvironmentServerFarms", nil, "Failure preparing next results request")
 	}
 	if req == nil {
 		return
@@ -481,12 +481,12 @@ func (client ManagedHostingEnvironmentsClient) GetManagedHostingEnvironmentServe
 	resp, err := client.GetManagedHostingEnvironmentServerFarmsSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.ManagedHostingEnvironmentsClient", "GetManagedHostingEnvironmentServerFarms", resp, "Failure sending next results request request")
+		return result, autorest.NewErrorWithError(err, "web.ManagedHostingEnvironmentsClient", "GetManagedHostingEnvironmentServerFarms", resp, "Failure sending next results request")
 	}
 
 	result, err = client.GetManagedHostingEnvironmentServerFarmsResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "web.ManagedHostingEnvironmentsClient", "GetManagedHostingEnvironmentServerFarms", resp, "Failure responding to next results request request")
+		err = autorest.NewErrorWithError(err, "web.ManagedHostingEnvironmentsClient", "GetManagedHostingEnvironmentServerFarms", resp, "Failure responding to next results request")
 	}
 
 	return
@@ -564,7 +564,7 @@ func (client ManagedHostingEnvironmentsClient) GetManagedHostingEnvironmentSites
 func (client ManagedHostingEnvironmentsClient) GetManagedHostingEnvironmentSitesNextResults(lastResults SiteCollection) (result SiteCollection, err error) {
 	req, err := lastResults.SiteCollectionPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.ManagedHostingEnvironmentsClient", "GetManagedHostingEnvironmentSites", nil, "Failure preparing next results request request")
+		return result, autorest.NewErrorWithError(err, "web.ManagedHostingEnvironmentsClient", "GetManagedHostingEnvironmentSites", nil, "Failure preparing next results request")
 	}
 	if req == nil {
 		return
@@ -573,12 +573,12 @@ func (client ManagedHostingEnvironmentsClient) GetManagedHostingEnvironmentSites
 	resp, err := client.GetManagedHostingEnvironmentSitesSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.ManagedHostingEnvironmentsClient", "GetManagedHostingEnvironmentSites", resp, "Failure sending next results request request")
+		return result, autorest.NewErrorWithError(err, "web.ManagedHostingEnvironmentsClient", "GetManagedHostingEnvironmentSites", resp, "Failure sending next results request")
 	}
 
 	result, err = client.GetManagedHostingEnvironmentSitesResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "web.ManagedHostingEnvironmentsClient", "GetManagedHostingEnvironmentSites", resp, "Failure responding to next results request request")
+		err = autorest.NewErrorWithError(err, "web.ManagedHostingEnvironmentsClient", "GetManagedHostingEnvironmentSites", resp, "Failure responding to next results request")
 	}
 
 	return
@@ -716,7 +716,7 @@ func (client ManagedHostingEnvironmentsClient) GetManagedHostingEnvironmentWebHo
 func (client ManagedHostingEnvironmentsClient) GetManagedHostingEnvironmentWebHostingPlansNextResults(lastResults ServerFarmCollection) (result ServerFarmCollection, err error) {
 	req, err := lastResults.ServerFarmCollectionPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.ManagedHostingEnvironmentsClient", "GetManagedHostingEnvironmentWebHostingPlans", nil, "Failure preparing next results request request")
+		return result, autorest.NewErrorWithError(err, "web.ManagedHostingEnvironmentsClient", "GetManagedHostingEnvironmentWebHostingPlans", nil, "Failure preparing next results request")
 	}
 	if req == nil {
 		return
@@ -725,12 +725,12 @@ func (client ManagedHostingEnvironmentsClient) GetManagedHostingEnvironmentWebHo
 	resp, err := client.GetManagedHostingEnvironmentWebHostingPlansSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.ManagedHostingEnvironmentsClient", "GetManagedHostingEnvironmentWebHostingPlans", resp, "Failure sending next results request request")
+		return result, autorest.NewErrorWithError(err, "web.ManagedHostingEnvironmentsClient", "GetManagedHostingEnvironmentWebHostingPlans", resp, "Failure sending next results request")
 	}
 
 	result, err = client.GetManagedHostingEnvironmentWebHostingPlansResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "web.ManagedHostingEnvironmentsClient", "GetManagedHostingEnvironmentWebHostingPlans", resp, "Failure responding to next results request request")
+		err = autorest.NewErrorWithError(err, "web.ManagedHostingEnvironmentsClient", "GetManagedHostingEnvironmentWebHostingPlans", resp, "Failure responding to next results request")
 	}
 
 	return

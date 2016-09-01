@@ -477,7 +477,7 @@ func (client RoleAssignmentsClient) ListResponder(resp *http.Response) (result R
 func (client RoleAssignmentsClient) ListNextResults(lastResults RoleAssignmentListResult) (result RoleAssignmentListResult, err error) {
 	req, err := lastResults.RoleAssignmentListResultPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "authorization.RoleAssignmentsClient", "List", nil, "Failure preparing next results request request")
+		return result, autorest.NewErrorWithError(err, "authorization.RoleAssignmentsClient", "List", nil, "Failure preparing next results request")
 	}
 	if req == nil {
 		return
@@ -486,12 +486,12 @@ func (client RoleAssignmentsClient) ListNextResults(lastResults RoleAssignmentLi
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "authorization.RoleAssignmentsClient", "List", resp, "Failure sending next results request request")
+		return result, autorest.NewErrorWithError(err, "authorization.RoleAssignmentsClient", "List", resp, "Failure sending next results request")
 	}
 
 	result, err = client.ListResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "authorization.RoleAssignmentsClient", "List", resp, "Failure responding to next results request request")
+		err = autorest.NewErrorWithError(err, "authorization.RoleAssignmentsClient", "List", resp, "Failure responding to next results request")
 	}
 
 	return
@@ -572,7 +572,7 @@ func (client RoleAssignmentsClient) ListForResourceResponder(resp *http.Response
 func (client RoleAssignmentsClient) ListForResourceNextResults(lastResults RoleAssignmentListResult) (result RoleAssignmentListResult, err error) {
 	req, err := lastResults.RoleAssignmentListResultPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "authorization.RoleAssignmentsClient", "ListForResource", nil, "Failure preparing next results request request")
+		return result, autorest.NewErrorWithError(err, "authorization.RoleAssignmentsClient", "ListForResource", nil, "Failure preparing next results request")
 	}
 	if req == nil {
 		return
@@ -581,12 +581,12 @@ func (client RoleAssignmentsClient) ListForResourceNextResults(lastResults RoleA
 	resp, err := client.ListForResourceSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "authorization.RoleAssignmentsClient", "ListForResource", resp, "Failure sending next results request request")
+		return result, autorest.NewErrorWithError(err, "authorization.RoleAssignmentsClient", "ListForResource", resp, "Failure sending next results request")
 	}
 
 	result, err = client.ListForResourceResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "authorization.RoleAssignmentsClient", "ListForResource", resp, "Failure responding to next results request request")
+		err = autorest.NewErrorWithError(err, "authorization.RoleAssignmentsClient", "ListForResource", resp, "Failure responding to next results request")
 	}
 
 	return
@@ -661,7 +661,7 @@ func (client RoleAssignmentsClient) ListForResourceGroupResponder(resp *http.Res
 func (client RoleAssignmentsClient) ListForResourceGroupNextResults(lastResults RoleAssignmentListResult) (result RoleAssignmentListResult, err error) {
 	req, err := lastResults.RoleAssignmentListResultPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "authorization.RoleAssignmentsClient", "ListForResourceGroup", nil, "Failure preparing next results request request")
+		return result, autorest.NewErrorWithError(err, "authorization.RoleAssignmentsClient", "ListForResourceGroup", nil, "Failure preparing next results request")
 	}
 	if req == nil {
 		return
@@ -670,12 +670,12 @@ func (client RoleAssignmentsClient) ListForResourceGroupNextResults(lastResults 
 	resp, err := client.ListForResourceGroupSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "authorization.RoleAssignmentsClient", "ListForResourceGroup", resp, "Failure sending next results request request")
+		return result, autorest.NewErrorWithError(err, "authorization.RoleAssignmentsClient", "ListForResourceGroup", resp, "Failure sending next results request")
 	}
 
 	result, err = client.ListForResourceGroupResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "authorization.RoleAssignmentsClient", "ListForResourceGroup", resp, "Failure responding to next results request request")
+		err = autorest.NewErrorWithError(err, "authorization.RoleAssignmentsClient", "ListForResourceGroup", resp, "Failure responding to next results request")
 	}
 
 	return
@@ -748,7 +748,7 @@ func (client RoleAssignmentsClient) ListForScopeResponder(resp *http.Response) (
 func (client RoleAssignmentsClient) ListForScopeNextResults(lastResults RoleAssignmentListResult) (result RoleAssignmentListResult, err error) {
 	req, err := lastResults.RoleAssignmentListResultPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "authorization.RoleAssignmentsClient", "ListForScope", nil, "Failure preparing next results request request")
+		return result, autorest.NewErrorWithError(err, "authorization.RoleAssignmentsClient", "ListForScope", nil, "Failure preparing next results request")
 	}
 	if req == nil {
 		return
@@ -757,12 +757,12 @@ func (client RoleAssignmentsClient) ListForScopeNextResults(lastResults RoleAssi
 	resp, err := client.ListForScopeSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "authorization.RoleAssignmentsClient", "ListForScope", resp, "Failure sending next results request request")
+		return result, autorest.NewErrorWithError(err, "authorization.RoleAssignmentsClient", "ListForScope", resp, "Failure sending next results request")
 	}
 
 	result, err = client.ListForScopeResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "authorization.RoleAssignmentsClient", "ListForScope", resp, "Failure responding to next results request request")
+		err = autorest.NewErrorWithError(err, "authorization.RoleAssignmentsClient", "ListForScope", resp, "Failure responding to next results request")
 	}
 
 	return

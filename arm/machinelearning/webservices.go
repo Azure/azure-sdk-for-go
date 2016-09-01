@@ -21,6 +21,7 @@ package machinelearning
 import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
+	"github.com/Azure/go-autorest/autorest/validation"
 	"net/http"
 )
 
@@ -54,6 +55,35 @@ func NewWebServicesClientWithBaseURI(baseURI string, subscriptionID string) WebS
 // service. resourceGroupName is name of the resource group. webServiceName
 // is the Azure ML web service name which you want to reach.
 func (client WebServicesClient) CreateOrUpdate(createOrUpdatePayload WebService, resourceGroupName string, webServiceName string, cancel <-chan struct{}) (result autorest.Response, err error) {
+	if err := validation.Validate([]validation.Validation{
+		{createOrUpdatePayload,
+			[]validation.Constraint{{"createOrUpdatePayload.Properties", validation.Null, true,
+				[]validation.Constraint{{"createOrUpdatePayload.Properties.RealtimeConfiguration", validation.Null, false,
+					[]validation.Constraint{{"createOrUpdatePayload.Properties.RealtimeConfiguration.MaxConcurrentCalls", validation.Null, false,
+						[]validation.Constraint{{"createOrUpdatePayload.Properties.RealtimeConfiguration.MaxConcurrentCalls", validation.InclusiveMaximum, 200, nil},
+							{"createOrUpdatePayload.Properties.RealtimeConfiguration.MaxConcurrentCalls", validation.InclusiveMinimum, 4, nil},
+						}},
+					}},
+					{"createOrUpdatePayload.Properties.MachineLearningWorkspace", validation.Null, false,
+						[]validation.Constraint{{"createOrUpdatePayload.Properties.MachineLearningWorkspace.ID", validation.Null, true, nil}}},
+					{"createOrUpdatePayload.Properties.CommitmentPlan", validation.Null, false,
+						[]validation.Constraint{{"createOrUpdatePayload.Properties.CommitmentPlan.ID", validation.Null, true, nil}}},
+					{"createOrUpdatePayload.Properties.Input", validation.Null, false,
+						[]validation.Constraint{{"createOrUpdatePayload.Properties.Input.Type", validation.Null, true, nil},
+							{"createOrUpdatePayload.Properties.Input.Properties", validation.Null, true, nil},
+						}},
+					{"createOrUpdatePayload.Properties.Output", validation.Null, false,
+						[]validation.Constraint{{"createOrUpdatePayload.Properties.Output.Type", validation.Null, true, nil},
+							{"createOrUpdatePayload.Properties.Output.Properties", validation.Null, true, nil},
+						}},
+					{"CreatedOn", validation.ReadOnly, true, nil},
+					{"ModifiedOn", validation.ReadOnly, true, nil},
+					{"ProvisioningState", validation.ReadOnly, true, nil},
+					{"SwaggerLocation", validation.ReadOnly, true, nil},
+				}}}}}); err != nil {
+		return result, validation.NewErrorWithValidationError(err, "machinelearning.WebServicesClient", "CreateOrUpdate")
+	}
+
 	req, err := client.CreateOrUpdatePreparer(createOrUpdatePayload, resourceGroupName, webServiceName, cancel)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "machinelearning.WebServicesClient", "CreateOrUpdate", nil, "Failure preparing request")

@@ -317,7 +317,7 @@ func (client FormulaOperationsClient) ListResponder(resp *http.Response) (result
 func (client FormulaOperationsClient) ListNextResults(lastResults ResponseWithContinuationFormula) (result ResponseWithContinuationFormula, err error) {
 	req, err := lastResults.ResponseWithContinuationFormulaPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "devtestlabs.FormulaOperationsClient", "List", nil, "Failure preparing next results request request")
+		return result, autorest.NewErrorWithError(err, "devtestlabs.FormulaOperationsClient", "List", nil, "Failure preparing next results request")
 	}
 	if req == nil {
 		return
@@ -326,12 +326,12 @@ func (client FormulaOperationsClient) ListNextResults(lastResults ResponseWithCo
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "devtestlabs.FormulaOperationsClient", "List", resp, "Failure sending next results request request")
+		return result, autorest.NewErrorWithError(err, "devtestlabs.FormulaOperationsClient", "List", resp, "Failure sending next results request")
 	}
 
 	result, err = client.ListResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "devtestlabs.FormulaOperationsClient", "List", resp, "Failure responding to next results request request")
+		err = autorest.NewErrorWithError(err, "devtestlabs.FormulaOperationsClient", "List", resp, "Failure responding to next results request")
 	}
 
 	return

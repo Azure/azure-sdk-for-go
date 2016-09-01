@@ -341,7 +341,7 @@ func (client RecordSetsClient) ListAllInResourceGroupResponder(resp *http.Respon
 func (client RecordSetsClient) ListAllInResourceGroupNextResults(lastResults RecordSetListResult) (result RecordSetListResult, err error) {
 	req, err := lastResults.RecordSetListResultPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "dns.RecordSetsClient", "ListAllInResourceGroup", nil, "Failure preparing next results request request")
+		return result, autorest.NewErrorWithError(err, "dns.RecordSetsClient", "ListAllInResourceGroup", nil, "Failure preparing next results request")
 	}
 	if req == nil {
 		return
@@ -350,12 +350,12 @@ func (client RecordSetsClient) ListAllInResourceGroupNextResults(lastResults Rec
 	resp, err := client.ListAllInResourceGroupSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "dns.RecordSetsClient", "ListAllInResourceGroup", resp, "Failure sending next results request request")
+		return result, autorest.NewErrorWithError(err, "dns.RecordSetsClient", "ListAllInResourceGroup", resp, "Failure sending next results request")
 	}
 
 	result, err = client.ListAllInResourceGroupResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "dns.RecordSetsClient", "ListAllInResourceGroup", resp, "Failure responding to next results request request")
+		err = autorest.NewErrorWithError(err, "dns.RecordSetsClient", "ListAllInResourceGroup", resp, "Failure responding to next results request")
 	}
 
 	return
@@ -436,7 +436,7 @@ func (client RecordSetsClient) ListByTypeResponder(resp *http.Response) (result 
 func (client RecordSetsClient) ListByTypeNextResults(lastResults RecordSetListResult) (result RecordSetListResult, err error) {
 	req, err := lastResults.RecordSetListResultPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "dns.RecordSetsClient", "ListByType", nil, "Failure preparing next results request request")
+		return result, autorest.NewErrorWithError(err, "dns.RecordSetsClient", "ListByType", nil, "Failure preparing next results request")
 	}
 	if req == nil {
 		return
@@ -445,12 +445,12 @@ func (client RecordSetsClient) ListByTypeNextResults(lastResults RecordSetListRe
 	resp, err := client.ListByTypeSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "dns.RecordSetsClient", "ListByType", resp, "Failure sending next results request request")
+		return result, autorest.NewErrorWithError(err, "dns.RecordSetsClient", "ListByType", resp, "Failure sending next results request")
 	}
 
 	result, err = client.ListByTypeResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "dns.RecordSetsClient", "ListByType", resp, "Failure responding to next results request request")
+		err = autorest.NewErrorWithError(err, "dns.RecordSetsClient", "ListByType", resp, "Failure responding to next results request")
 	}
 
 	return

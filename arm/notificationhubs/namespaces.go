@@ -21,6 +21,7 @@ package notificationhubs
 import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
+	"github.com/Azure/go-autorest/autorest/validation"
 	"net/http"
 )
 
@@ -41,11 +42,11 @@ func NewNamespacesClientWithBaseURI(baseURI string, subscriptionID string) Names
 }
 
 // CheckAvailability checks the availability of the given service namespace
-// across all Windows Azure subscriptions. This is useful because the domain
-// name is created based on the service namespace name.
+// across all Azure subscriptions. This is useful because the domain name is
+// created based on the service namespace name.
 //
 // parameters is the namespace name.
-func (client NamespacesClient) CheckAvailability(parameters CheckAvailabilityParameters) (result CheckAvailabilityResource, err error) {
+func (client NamespacesClient) CheckAvailability(parameters CheckAvailabilityParameters) (result CheckAvailabilityResult, err error) {
 	req, err := client.CheckAvailabilityPreparer(parameters)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "notificationhubs.NamespacesClient", "CheckAvailability", nil, "Failure preparing request")
@@ -93,7 +94,7 @@ func (client NamespacesClient) CheckAvailabilitySender(req *http.Request) (*http
 
 // CheckAvailabilityResponder handles the response to the CheckAvailability request. The method always
 // closes the http.Response Body.
-func (client NamespacesClient) CheckAvailabilityResponder(resp *http.Response) (result CheckAvailabilityResource, err error) {
+func (client NamespacesClient) CheckAvailabilityResponder(resp *http.Response) (result CheckAvailabilityResult, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -178,6 +179,12 @@ func (client NamespacesClient) CreateOrUpdateResponder(resp *http.Response) (res
 // namespace name. authorizationRuleName is aauthorization Rule Name.
 // parameters is the shared access authorization rule.
 func (client NamespacesClient) CreateOrUpdateAuthorizationRule(resourceGroupName string, namespaceName string, authorizationRuleName string, parameters SharedAccessAuthorizationRuleCreateOrUpdateParameters) (result SharedAccessAuthorizationRuleResource, err error) {
+	if err := validation.Validate([]validation.Validation{
+		{parameters,
+			[]validation.Constraint{{"parameters.Properties", validation.Null, true, nil}}}}); err != nil {
+		return result, validation.NewErrorWithValidationError(err, "notificationhubs.NamespacesClient", "CreateOrUpdateAuthorizationRule")
+	}
+
 	req, err := client.CreateOrUpdateAuthorizationRulePreparer(resourceGroupName, namespaceName, authorizationRuleName, parameters)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "notificationhubs.NamespacesClient", "CreateOrUpdateAuthorizationRule", nil, "Failure preparing request")
@@ -471,7 +478,7 @@ func (client NamespacesClient) GetAuthorizationRulePreparer(resourceGroupName st
 	}
 
 	preparer := autorest.CreatePreparer(
-		autorest.AsPost(),
+		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NotificationHubs/namespaces/{namespaceName}/AuthorizationRules/{authorizationRuleName}", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
@@ -494,63 +501,6 @@ func (client NamespacesClient) GetAuthorizationRuleResponder(resp *http.Response
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
-	return
-}
-
-// GetLongRunningOperationStatus the Get Operation Status operation returns
-// the status of the specified operation. After calling an asynchronous
-// operation, you can call Get Operation Status to determine whether the
-// operation has succeeded, failed, or is still in progress.
-//
-// operationStatusLink is location value returned by the Begin operation.
-func (client NamespacesClient) GetLongRunningOperationStatus(operationStatusLink string) (result autorest.Response, err error) {
-	req, err := client.GetLongRunningOperationStatusPreparer(operationStatusLink)
-	if err != nil {
-		return result, autorest.NewErrorWithError(err, "notificationhubs.NamespacesClient", "GetLongRunningOperationStatus", nil, "Failure preparing request")
-	}
-
-	resp, err := client.GetLongRunningOperationStatusSender(req)
-	if err != nil {
-		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "notificationhubs.NamespacesClient", "GetLongRunningOperationStatus", resp, "Failure sending request")
-	}
-
-	result, err = client.GetLongRunningOperationStatusResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "notificationhubs.NamespacesClient", "GetLongRunningOperationStatus", resp, "Failure responding to request")
-	}
-
-	return
-}
-
-// GetLongRunningOperationStatusPreparer prepares the GetLongRunningOperationStatus request.
-func (client NamespacesClient) GetLongRunningOperationStatusPreparer(operationStatusLink string) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"operationStatusLink": operationStatusLink,
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsGet(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/{operationStatusLink}", pathParameters))
-	return preparer.Prepare(&http.Request{})
-}
-
-// GetLongRunningOperationStatusSender sends the GetLongRunningOperationStatus request. The method will close the
-// http.Response Body if it receives an error.
-func (client NamespacesClient) GetLongRunningOperationStatusSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
-}
-
-// GetLongRunningOperationStatusResponder handles the response to the GetLongRunningOperationStatus request. The method always
-// closes the http.Response Body.
-func (client NamespacesClient) GetLongRunningOperationStatusResponder(resp *http.Response) (result autorest.Response, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusNotFound, http.StatusAccepted, http.StatusOK),
-		autorest.ByClosing())
-	result.Response = resp
 	return
 }
 
@@ -620,7 +570,7 @@ func (client NamespacesClient) ListResponder(resp *http.Response) (result Namesp
 func (client NamespacesClient) ListNextResults(lastResults NamespaceListResult) (result NamespaceListResult, err error) {
 	req, err := lastResults.NamespaceListResultPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "notificationhubs.NamespacesClient", "List", nil, "Failure preparing next results request request")
+		return result, autorest.NewErrorWithError(err, "notificationhubs.NamespacesClient", "List", nil, "Failure preparing next results request")
 	}
 	if req == nil {
 		return
@@ -629,12 +579,12 @@ func (client NamespacesClient) ListNextResults(lastResults NamespaceListResult) 
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "notificationhubs.NamespacesClient", "List", resp, "Failure sending next results request request")
+		return result, autorest.NewErrorWithError(err, "notificationhubs.NamespacesClient", "List", resp, "Failure sending next results request")
 	}
 
 	result, err = client.ListResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "notificationhubs.NamespacesClient", "List", resp, "Failure responding to next results request request")
+		err = autorest.NewErrorWithError(err, "notificationhubs.NamespacesClient", "List", resp, "Failure responding to next results request")
 	}
 
 	return
@@ -703,7 +653,7 @@ func (client NamespacesClient) ListAllResponder(resp *http.Response) (result Nam
 func (client NamespacesClient) ListAllNextResults(lastResults NamespaceListResult) (result NamespaceListResult, err error) {
 	req, err := lastResults.NamespaceListResultPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "notificationhubs.NamespacesClient", "ListAll", nil, "Failure preparing next results request request")
+		return result, autorest.NewErrorWithError(err, "notificationhubs.NamespacesClient", "ListAll", nil, "Failure preparing next results request")
 	}
 	if req == nil {
 		return
@@ -712,12 +662,12 @@ func (client NamespacesClient) ListAllNextResults(lastResults NamespaceListResul
 	resp, err := client.ListAllSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "notificationhubs.NamespacesClient", "ListAll", resp, "Failure sending next results request request")
+		return result, autorest.NewErrorWithError(err, "notificationhubs.NamespacesClient", "ListAll", resp, "Failure sending next results request")
 	}
 
 	result, err = client.ListAllResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "notificationhubs.NamespacesClient", "ListAll", resp, "Failure responding to next results request request")
+		err = autorest.NewErrorWithError(err, "notificationhubs.NamespacesClient", "ListAll", resp, "Failure responding to next results request")
 	}
 
 	return
@@ -760,7 +710,7 @@ func (client NamespacesClient) ListAuthorizationRulesPreparer(resourceGroupName 
 	}
 
 	preparer := autorest.CreatePreparer(
-		autorest.AsPost(),
+		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NotificationHubs/namespaces/{namespaceName}/AuthorizationRules", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
@@ -790,7 +740,7 @@ func (client NamespacesClient) ListAuthorizationRulesResponder(resp *http.Respon
 func (client NamespacesClient) ListAuthorizationRulesNextResults(lastResults SharedAccessAuthorizationRuleListResult) (result SharedAccessAuthorizationRuleListResult, err error) {
 	req, err := lastResults.SharedAccessAuthorizationRuleListResultPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "notificationhubs.NamespacesClient", "ListAuthorizationRules", nil, "Failure preparing next results request request")
+		return result, autorest.NewErrorWithError(err, "notificationhubs.NamespacesClient", "ListAuthorizationRules", nil, "Failure preparing next results request")
 	}
 	if req == nil {
 		return
@@ -799,12 +749,12 @@ func (client NamespacesClient) ListAuthorizationRulesNextResults(lastResults Sha
 	resp, err := client.ListAuthorizationRulesSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "notificationhubs.NamespacesClient", "ListAuthorizationRules", resp, "Failure sending next results request request")
+		return result, autorest.NewErrorWithError(err, "notificationhubs.NamespacesClient", "ListAuthorizationRules", resp, "Failure sending next results request")
 	}
 
 	result, err = client.ListAuthorizationRulesResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "notificationhubs.NamespacesClient", "ListAuthorizationRules", resp, "Failure responding to next results request request")
+		err = autorest.NewErrorWithError(err, "notificationhubs.NamespacesClient", "ListAuthorizationRules", resp, "Failure responding to next results request")
 	}
 
 	return
@@ -865,6 +815,75 @@ func (client NamespacesClient) ListKeysSender(req *http.Request) (*http.Response
 // ListKeysResponder handles the response to the ListKeys request. The method always
 // closes the http.Response Body.
 func (client NamespacesClient) ListKeysResponder(resp *http.Response) (result ResourceListKeys, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// RegenerateKeys regenerates the Primary/Secondary Keys to the Namespace
+// Authorization Rule
+//
+// resourceGroupName is the name of the resource group. namespaceName is the
+// namespace name. authorizationRuleName is the connection string of the
+// namespace for the specified authorizationRule. parameters is parameters
+// supplied to regenerate the Namespace Authorization Rule Key.
+func (client NamespacesClient) RegenerateKeys(resourceGroupName string, namespaceName string, authorizationRuleName string, parameters PolicykeyResource) (result ResourceListKeys, err error) {
+	req, err := client.RegenerateKeysPreparer(resourceGroupName, namespaceName, authorizationRuleName, parameters)
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "notificationhubs.NamespacesClient", "RegenerateKeys", nil, "Failure preparing request")
+	}
+
+	resp, err := client.RegenerateKeysSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "notificationhubs.NamespacesClient", "RegenerateKeys", resp, "Failure sending request")
+	}
+
+	result, err = client.RegenerateKeysResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "notificationhubs.NamespacesClient", "RegenerateKeys", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// RegenerateKeysPreparer prepares the RegenerateKeys request.
+func (client NamespacesClient) RegenerateKeysPreparer(resourceGroupName string, namespaceName string, authorizationRuleName string, parameters PolicykeyResource) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"authorizationRuleName": autorest.Encode("path", authorizationRuleName),
+		"namespaceName":         autorest.Encode("path", namespaceName),
+		"resourceGroupName":     autorest.Encode("path", resourceGroupName),
+		"subscriptionId":        autorest.Encode("path", client.SubscriptionID),
+	}
+
+	queryParameters := map[string]interface{}{
+		"api-version": client.APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsJSON(),
+		autorest.AsPost(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NotificationHubs/namespaces/{namespaceName}/AuthorizationRules/{authorizationRuleName}/regenerateKeys", pathParameters),
+		autorest.WithJSON(parameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare(&http.Request{})
+}
+
+// RegenerateKeysSender sends the RegenerateKeys request. The method will close the
+// http.Response Body if it receives an error.
+func (client NamespacesClient) RegenerateKeysSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req)
+}
+
+// RegenerateKeysResponder handles the response to the RegenerateKeys request. The method always
+// closes the http.Response Body.
+func (client NamespacesClient) RegenerateKeysResponder(resp *http.Response) (result ResourceListKeys, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

@@ -167,7 +167,7 @@ func (client ProviderOperationsMetadataOperationsClient) ListResponder(resp *htt
 func (client ProviderOperationsMetadataOperationsClient) ListNextResults(lastResults ProviderOperationsMetadataListResult) (result ProviderOperationsMetadataListResult, err error) {
 	req, err := lastResults.ProviderOperationsMetadataListResultPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "authorization.ProviderOperationsMetadataOperationsClient", "List", nil, "Failure preparing next results request request")
+		return result, autorest.NewErrorWithError(err, "authorization.ProviderOperationsMetadataOperationsClient", "List", nil, "Failure preparing next results request")
 	}
 	if req == nil {
 		return
@@ -176,12 +176,12 @@ func (client ProviderOperationsMetadataOperationsClient) ListNextResults(lastRes
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "authorization.ProviderOperationsMetadataOperationsClient", "List", resp, "Failure sending next results request request")
+		return result, autorest.NewErrorWithError(err, "authorization.ProviderOperationsMetadataOperationsClient", "List", resp, "Failure sending next results request")
 	}
 
 	result, err = client.ListResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "authorization.ProviderOperationsMetadataOperationsClient", "List", resp, "Failure responding to next results request request")
+		err = autorest.NewErrorWithError(err, "authorization.ProviderOperationsMetadataOperationsClient", "List", resp, "Failure responding to next results request")
 	}
 
 	return

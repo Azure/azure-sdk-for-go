@@ -320,7 +320,7 @@ func (client PolicyOperationsClient) ListResponder(resp *http.Response) (result 
 func (client PolicyOperationsClient) ListNextResults(lastResults ResponseWithContinuationPolicy) (result ResponseWithContinuationPolicy, err error) {
 	req, err := lastResults.ResponseWithContinuationPolicyPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "devtestlabs.PolicyOperationsClient", "List", nil, "Failure preparing next results request request")
+		return result, autorest.NewErrorWithError(err, "devtestlabs.PolicyOperationsClient", "List", nil, "Failure preparing next results request")
 	}
 	if req == nil {
 		return
@@ -329,12 +329,12 @@ func (client PolicyOperationsClient) ListNextResults(lastResults ResponseWithCon
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "devtestlabs.PolicyOperationsClient", "List", resp, "Failure sending next results request request")
+		return result, autorest.NewErrorWithError(err, "devtestlabs.PolicyOperationsClient", "List", resp, "Failure sending next results request")
 	}
 
 	result, err = client.ListResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "devtestlabs.PolicyOperationsClient", "List", resp, "Failure responding to next results request request")
+		err = autorest.NewErrorWithError(err, "devtestlabs.PolicyOperationsClient", "List", resp, "Failure responding to next results request")
 	}
 
 	return

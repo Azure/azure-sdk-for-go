@@ -21,6 +21,7 @@ package mobileengagement
 import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
+	"github.com/Azure/go-autorest/autorest/validation"
 	"net/http"
 )
 
@@ -43,6 +44,12 @@ func NewExportTasksClientWithBaseURI(baseURI string, subscriptionID string, reso
 // CreateActivitiesTask creates a task to export activities.
 //
 func (client ExportTasksClient) CreateActivitiesTask(parameters DateRangeExportTaskParameter) (result ExportTaskResult, err error) {
+	if err := validation.Validate([]validation.Validation{
+		{parameters,
+			[]validation.Constraint{{"parameters.ContainerURL", validation.Null, true, nil}}}}); err != nil {
+		return result, validation.NewErrorWithValidationError(err, "mobileengagement.ExportTasksClient", "CreateActivitiesTask")
+	}
+
 	req, err := client.CreateActivitiesTaskPreparer(parameters)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "mobileengagement.ExportTasksClient", "CreateActivitiesTask", nil, "Failure preparing request")
@@ -107,6 +114,12 @@ func (client ExportTasksClient) CreateActivitiesTaskResponder(resp *http.Respons
 // CreateCrashesTask creates a task to export crashes.
 //
 func (client ExportTasksClient) CreateCrashesTask(parameters DateRangeExportTaskParameter) (result ExportTaskResult, err error) {
+	if err := validation.Validate([]validation.Validation{
+		{parameters,
+			[]validation.Constraint{{"parameters.ContainerURL", validation.Null, true, nil}}}}); err != nil {
+		return result, validation.NewErrorWithValidationError(err, "mobileengagement.ExportTasksClient", "CreateCrashesTask")
+	}
+
 	req, err := client.CreateCrashesTaskPreparer(parameters)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "mobileengagement.ExportTasksClient", "CreateCrashesTask", nil, "Failure preparing request")
@@ -171,6 +184,12 @@ func (client ExportTasksClient) CreateCrashesTaskResponder(resp *http.Response) 
 // CreateErrorsTask creates a task to export errors.
 //
 func (client ExportTasksClient) CreateErrorsTask(parameters DateRangeExportTaskParameter) (result ExportTaskResult, err error) {
+	if err := validation.Validate([]validation.Validation{
+		{parameters,
+			[]validation.Constraint{{"parameters.ContainerURL", validation.Null, true, nil}}}}); err != nil {
+		return result, validation.NewErrorWithValidationError(err, "mobileengagement.ExportTasksClient", "CreateErrorsTask")
+	}
+
 	req, err := client.CreateErrorsTaskPreparer(parameters)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "mobileengagement.ExportTasksClient", "CreateErrorsTask", nil, "Failure preparing request")
@@ -235,6 +254,12 @@ func (client ExportTasksClient) CreateErrorsTaskResponder(resp *http.Response) (
 // CreateEventsTask creates a task to export events.
 //
 func (client ExportTasksClient) CreateEventsTask(parameters DateRangeExportTaskParameter) (result ExportTaskResult, err error) {
+	if err := validation.Validate([]validation.Validation{
+		{parameters,
+			[]validation.Constraint{{"parameters.ContainerURL", validation.Null, true, nil}}}}); err != nil {
+		return result, validation.NewErrorWithValidationError(err, "mobileengagement.ExportTasksClient", "CreateEventsTask")
+	}
+
 	req, err := client.CreateEventsTaskPreparer(parameters)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "mobileengagement.ExportTasksClient", "CreateEventsTask", nil, "Failure preparing request")
@@ -300,6 +325,14 @@ func (client ExportTasksClient) CreateEventsTaskResponder(resp *http.Response) (
 // for a set of campaigns.
 //
 func (client ExportTasksClient) CreateFeedbackTaskByCampaign(parameters FeedbackByCampaignParameter) (result ExportTaskResult, err error) {
+	if err := validation.Validate([]validation.Validation{
+		{parameters,
+			[]validation.Constraint{{"parameters.ContainerURL", validation.Null, true, nil},
+				{"parameters.CampaignIds", validation.Null, true,
+					[]validation.Constraint{{"parameters.CampaignIds", validation.MinItems, 1, nil}}}}}}); err != nil {
+		return result, validation.NewErrorWithValidationError(err, "mobileengagement.ExportTasksClient", "CreateFeedbackTaskByCampaign")
+	}
+
 	req, err := client.CreateFeedbackTaskByCampaignPreparer(parameters)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "mobileengagement.ExportTasksClient", "CreateFeedbackTaskByCampaign", nil, "Failure preparing request")
@@ -365,6 +398,12 @@ func (client ExportTasksClient) CreateFeedbackTaskByCampaignResponder(resp *http
 // for a date range.
 //
 func (client ExportTasksClient) CreateFeedbackTaskByDateRange(parameters FeedbackByDateRangeParameter) (result ExportTaskResult, err error) {
+	if err := validation.Validate([]validation.Validation{
+		{parameters,
+			[]validation.Constraint{{"parameters.ContainerURL", validation.Null, true, nil}}}}); err != nil {
+		return result, validation.NewErrorWithValidationError(err, "mobileengagement.ExportTasksClient", "CreateFeedbackTaskByDateRange")
+	}
+
 	req, err := client.CreateFeedbackTaskByDateRangePreparer(parameters)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "mobileengagement.ExportTasksClient", "CreateFeedbackTaskByDateRange", nil, "Failure preparing request")
@@ -429,6 +468,12 @@ func (client ExportTasksClient) CreateFeedbackTaskByDateRangeResponder(resp *htt
 // CreateJobsTask creates a task to export jobs.
 //
 func (client ExportTasksClient) CreateJobsTask(parameters DateRangeExportTaskParameter) (result ExportTaskResult, err error) {
+	if err := validation.Validate([]validation.Validation{
+		{parameters,
+			[]validation.Constraint{{"parameters.ContainerURL", validation.Null, true, nil}}}}); err != nil {
+		return result, validation.NewErrorWithValidationError(err, "mobileengagement.ExportTasksClient", "CreateJobsTask")
+	}
+
 	req, err := client.CreateJobsTaskPreparer(parameters)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "mobileengagement.ExportTasksClient", "CreateJobsTask", nil, "Failure preparing request")
@@ -493,6 +538,12 @@ func (client ExportTasksClient) CreateJobsTaskResponder(resp *http.Response) (re
 // CreateSessionsTask creates a task to export sessions.
 //
 func (client ExportTasksClient) CreateSessionsTask(parameters DateRangeExportTaskParameter) (result ExportTaskResult, err error) {
+	if err := validation.Validate([]validation.Validation{
+		{parameters,
+			[]validation.Constraint{{"parameters.ContainerURL", validation.Null, true, nil}}}}); err != nil {
+		return result, validation.NewErrorWithValidationError(err, "mobileengagement.ExportTasksClient", "CreateSessionsTask")
+	}
+
 	req, err := client.CreateSessionsTaskPreparer(parameters)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "mobileengagement.ExportTasksClient", "CreateSessionsTask", nil, "Failure preparing request")
@@ -557,6 +608,12 @@ func (client ExportTasksClient) CreateSessionsTaskResponder(resp *http.Response)
 // CreateTagsTask creates a task to export tags.
 //
 func (client ExportTasksClient) CreateTagsTask(parameters ExportTaskParameter) (result ExportTaskResult, err error) {
+	if err := validation.Validate([]validation.Validation{
+		{parameters,
+			[]validation.Constraint{{"parameters.ContainerURL", validation.Null, true, nil}}}}); err != nil {
+		return result, validation.NewErrorWithValidationError(err, "mobileengagement.ExportTasksClient", "CreateTagsTask")
+	}
+
 	req, err := client.CreateTagsTaskPreparer(parameters)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "mobileengagement.ExportTasksClient", "CreateTagsTask", nil, "Failure preparing request")
@@ -621,6 +678,12 @@ func (client ExportTasksClient) CreateTagsTaskResponder(resp *http.Response) (re
 // CreateTokensTask creates a task to export tags.
 //
 func (client ExportTasksClient) CreateTokensTask(parameters ExportTaskParameter) (result ExportTaskResult, err error) {
+	if err := validation.Validate([]validation.Validation{
+		{parameters,
+			[]validation.Constraint{{"parameters.ContainerURL", validation.Null, true, nil}}}}); err != nil {
+		return result, validation.NewErrorWithValidationError(err, "mobileengagement.ExportTasksClient", "CreateTokensTask")
+	}
+
 	req, err := client.CreateTokensTaskPreparer(parameters)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "mobileengagement.ExportTasksClient", "CreateTokensTask", nil, "Failure preparing request")
@@ -765,6 +828,18 @@ func (client ExportTasksClient) GetResponder(resp *http.Response) (result Export
 // When not specified the asc direction is used.
 // Only one orderby property can be specified.
 func (client ExportTasksClient) List(skip *int32, top *int32, orderby string) (result ExportTaskListResult, err error) {
+	if err := validation.Validate([]validation.Validation{
+		{skip,
+			[]validation.Constraint{{"skip", validation.Null, false,
+				[]validation.Constraint{{"skip", validation.InclusiveMinimum, 0, nil}}}}},
+		{top,
+			[]validation.Constraint{{"top", validation.Null, false,
+				[]validation.Constraint{{"top", validation.InclusiveMaximum, 40, nil},
+					{"top", validation.InclusiveMinimum, 1, nil},
+				}}}}}); err != nil {
+		return result, validation.NewErrorWithValidationError(err, "mobileengagement.ExportTasksClient", "List")
+	}
+
 	req, err := client.ListPreparer(skip, top, orderby)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "mobileengagement.ExportTasksClient", "List", nil, "Failure preparing request")
@@ -837,7 +912,7 @@ func (client ExportTasksClient) ListResponder(resp *http.Response) (result Expor
 func (client ExportTasksClient) ListNextResults(lastResults ExportTaskListResult) (result ExportTaskListResult, err error) {
 	req, err := lastResults.ExportTaskListResultPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "mobileengagement.ExportTasksClient", "List", nil, "Failure preparing next results request request")
+		return result, autorest.NewErrorWithError(err, "mobileengagement.ExportTasksClient", "List", nil, "Failure preparing next results request")
 	}
 	if req == nil {
 		return
@@ -846,12 +921,12 @@ func (client ExportTasksClient) ListNextResults(lastResults ExportTaskListResult
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "mobileengagement.ExportTasksClient", "List", resp, "Failure sending next results request request")
+		return result, autorest.NewErrorWithError(err, "mobileengagement.ExportTasksClient", "List", resp, "Failure sending next results request")
 	}
 
 	result, err = client.ListResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "mobileengagement.ExportTasksClient", "List", resp, "Failure responding to next results request request")
+		err = autorest.NewErrorWithError(err, "mobileengagement.ExportTasksClient", "List", resp, "Failure responding to next results request")
 	}
 
 	return

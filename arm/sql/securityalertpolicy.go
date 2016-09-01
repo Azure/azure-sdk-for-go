@@ -21,6 +21,7 @@ package sql
 import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
+	"github.com/Azure/go-autorest/autorest/validation"
 	"net/http"
 )
 
@@ -55,6 +56,17 @@ func NewSecurityAlertPolicyClientWithBaseURI(baseURI string, subscriptionID stri
 // Resource Group to which the server belongs. serverName is the name of the
 // Azure SQL Server.
 func (client SecurityAlertPolicyClient) CreateOrUpdate(parameters ServerSecurityAlertPolicyCreateOrUpdateParameters, resourceGroupName string, serverName string, cancel <-chan struct{}) (result autorest.Response, err error) {
+	if err := validation.Validate([]validation.Validation{
+		{parameters,
+			[]validation.Constraint{{"parameters.Properties", validation.Null, true,
+				[]validation.Constraint{{"State", validation.ReadOnly, true, nil},
+					{"DisabledAlerts", validation.ReadOnly, true, nil},
+					{"EmailAddresses", validation.ReadOnly, true, nil},
+					{"EmailAccountAdmins", validation.ReadOnly, true, nil},
+				}}}}}); err != nil {
+		return result, validation.NewErrorWithValidationError(err, "sql.SecurityAlertPolicyClient", "CreateOrUpdate")
+	}
+
 	req, err := client.CreateOrUpdatePreparer(parameters, resourceGroupName, serverName, cancel)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "sql.SecurityAlertPolicyClient", "CreateOrUpdate", nil, "Failure preparing request")

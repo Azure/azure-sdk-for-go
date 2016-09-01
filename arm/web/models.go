@@ -2369,13 +2369,6 @@ type SiteProperties struct {
 	DefaultHostName           *string                    `json:"defaultHostName,omitempty"`
 }
 
-// SitePropertiesModel is
-type SitePropertiesModel struct {
-	Metadata    *[]NameValuePair `json:"metadata,omitempty"`
-	Properties  *[]NameValuePair `json:"properties,omitempty"`
-	AppSettings *[]NameValuePair `json:"appSettings,omitempty"`
-}
-
 // SiteSourceControl is describes the source control configuration for web app
 type SiteSourceControl struct {
 	autorest.Response `json:"-"`

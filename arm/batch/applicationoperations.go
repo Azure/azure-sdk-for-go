@@ -21,6 +21,7 @@ package batch
 import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
+	"github.com/Azure/go-autorest/autorest/validation"
 	"net/http"
 )
 
@@ -49,6 +50,18 @@ func NewApplicationOperationsClientWithBaseURI(baseURI string, subscriptionID st
 // application. version is the version of the application to activate.
 // parameters is the parameters for the request.
 func (client ApplicationOperationsClient) ActivateApplicationPackage(resourceGroupName string, accountName string, id string, version string, parameters ActivateApplicationPackageParameters) (result autorest.Response, err error) {
+	if err := validation.Validate([]validation.Validation{
+		{resourceGroupName,
+			[]validation.Constraint{{"resourceGroupName", validation.Pattern, `^[-\w\._]+$`, nil}}},
+		{accountName,
+			[]validation.Constraint{{"accountName", validation.MaxLength, 24, nil},
+				{"accountName", validation.MinLength, 3, nil},
+				{"accountName", validation.Pattern, `^[-\w\._]+$`, nil}}},
+		{parameters,
+			[]validation.Constraint{{"parameters.Format", validation.Null, true, nil}}}}); err != nil {
+		return result, validation.NewErrorWithValidationError(err, "batch.ApplicationOperationsClient", "ActivateApplicationPackage")
+	}
+
 	req, err := client.ActivateApplicationPackagePreparer(resourceGroupName, accountName, id, version, parameters)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "batch.ApplicationOperationsClient", "ActivateApplicationPackage", nil, "Failure preparing request")
@@ -116,6 +129,16 @@ func (client ApplicationOperationsClient) ActivateApplicationPackageResponder(re
 // account. accountName is the name of the Batch account. applicationID is
 // the id of the application. parameters is the parameters for the request.
 func (client ApplicationOperationsClient) AddApplication(resourceGroupName string, accountName string, applicationID string, parameters *AddApplicationParameters) (result Application, err error) {
+	if err := validation.Validate([]validation.Validation{
+		{resourceGroupName,
+			[]validation.Constraint{{"resourceGroupName", validation.Pattern, `^[-\w\._]+$`, nil}}},
+		{accountName,
+			[]validation.Constraint{{"accountName", validation.MaxLength, 24, nil},
+				{"accountName", validation.MinLength, 3, nil},
+				{"accountName", validation.Pattern, `^[-\w\._]+$`, nil}}}}); err != nil {
+		return result, validation.NewErrorWithValidationError(err, "batch.ApplicationOperationsClient", "AddApplication")
+	}
+
 	req, err := client.AddApplicationPreparer(resourceGroupName, accountName, applicationID, parameters)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "batch.ApplicationOperationsClient", "AddApplication", nil, "Failure preparing request")
@@ -186,6 +209,16 @@ func (client ApplicationOperationsClient) AddApplicationResponder(resp *http.Res
 // account. accountName is the name of the Batch account. applicationID is
 // the id of the application. version is the version of the application.
 func (client ApplicationOperationsClient) AddApplicationPackage(resourceGroupName string, accountName string, applicationID string, version string) (result AddApplicationPackageResult, err error) {
+	if err := validation.Validate([]validation.Validation{
+		{resourceGroupName,
+			[]validation.Constraint{{"resourceGroupName", validation.Pattern, `^[-\w\._]+$`, nil}}},
+		{accountName,
+			[]validation.Constraint{{"accountName", validation.MaxLength, 24, nil},
+				{"accountName", validation.MinLength, 3, nil},
+				{"accountName", validation.Pattern, `^[-\w\._]+$`, nil}}}}); err != nil {
+		return result, validation.NewErrorWithValidationError(err, "batch.ApplicationOperationsClient", "AddApplicationPackage")
+	}
+
 	req, err := client.AddApplicationPackagePreparer(resourceGroupName, accountName, applicationID, version)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "batch.ApplicationOperationsClient", "AddApplicationPackage", nil, "Failure preparing request")
@@ -252,6 +285,16 @@ func (client ApplicationOperationsClient) AddApplicationPackageResponder(resp *h
 // account. accountName is the name of the Batch account. applicationID is
 // the id of the application.
 func (client ApplicationOperationsClient) DeleteApplication(resourceGroupName string, accountName string, applicationID string) (result autorest.Response, err error) {
+	if err := validation.Validate([]validation.Validation{
+		{resourceGroupName,
+			[]validation.Constraint{{"resourceGroupName", validation.Pattern, `^[-\w\._]+$`, nil}}},
+		{accountName,
+			[]validation.Constraint{{"accountName", validation.MaxLength, 24, nil},
+				{"accountName", validation.MinLength, 3, nil},
+				{"accountName", validation.Pattern, `^[-\w\._]+$`, nil}}}}); err != nil {
+		return result, validation.NewErrorWithValidationError(err, "batch.ApplicationOperationsClient", "DeleteApplication")
+	}
+
 	req, err := client.DeleteApplicationPreparer(resourceGroupName, accountName, applicationID)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "batch.ApplicationOperationsClient", "DeleteApplication", nil, "Failure preparing request")
@@ -318,6 +361,16 @@ func (client ApplicationOperationsClient) DeleteApplicationResponder(resp *http.
 // the id of the application. version is the version of the application to
 // delete.
 func (client ApplicationOperationsClient) DeleteApplicationPackage(resourceGroupName string, accountName string, applicationID string, version string) (result autorest.Response, err error) {
+	if err := validation.Validate([]validation.Validation{
+		{resourceGroupName,
+			[]validation.Constraint{{"resourceGroupName", validation.Pattern, `^[-\w\._]+$`, nil}}},
+		{accountName,
+			[]validation.Constraint{{"accountName", validation.MaxLength, 24, nil},
+				{"accountName", validation.MinLength, 3, nil},
+				{"accountName", validation.Pattern, `^[-\w\._]+$`, nil}}}}); err != nil {
+		return result, validation.NewErrorWithValidationError(err, "batch.ApplicationOperationsClient", "DeleteApplicationPackage")
+	}
+
 	req, err := client.DeleteApplicationPackagePreparer(resourceGroupName, accountName, applicationID, version)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "batch.ApplicationOperationsClient", "DeleteApplicationPackage", nil, "Failure preparing request")
@@ -383,6 +436,16 @@ func (client ApplicationOperationsClient) DeleteApplicationPackageResponder(resp
 // account. accountName is the name of the Batch account. applicationID is
 // the id of the application.
 func (client ApplicationOperationsClient) GetApplication(resourceGroupName string, accountName string, applicationID string) (result Application, err error) {
+	if err := validation.Validate([]validation.Validation{
+		{resourceGroupName,
+			[]validation.Constraint{{"resourceGroupName", validation.Pattern, `^[-\w\._]+$`, nil}}},
+		{accountName,
+			[]validation.Constraint{{"accountName", validation.MaxLength, 24, nil},
+				{"accountName", validation.MinLength, 3, nil},
+				{"accountName", validation.Pattern, `^[-\w\._]+$`, nil}}}}); err != nil {
+		return result, validation.NewErrorWithValidationError(err, "batch.ApplicationOperationsClient", "GetApplication")
+	}
+
 	req, err := client.GetApplicationPreparer(resourceGroupName, accountName, applicationID)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "batch.ApplicationOperationsClient", "GetApplication", nil, "Failure preparing request")
@@ -449,6 +512,16 @@ func (client ApplicationOperationsClient) GetApplicationResponder(resp *http.Res
 // account. accountName is the name of the Batch account. applicationID is
 // the id of the application. version is the version of the application.
 func (client ApplicationOperationsClient) GetApplicationPackage(resourceGroupName string, accountName string, applicationID string, version string) (result GetApplicationPackageResult, err error) {
+	if err := validation.Validate([]validation.Validation{
+		{resourceGroupName,
+			[]validation.Constraint{{"resourceGroupName", validation.Pattern, `^[-\w\._]+$`, nil}}},
+		{accountName,
+			[]validation.Constraint{{"accountName", validation.MaxLength, 24, nil},
+				{"accountName", validation.MinLength, 3, nil},
+				{"accountName", validation.Pattern, `^[-\w\._]+$`, nil}}}}); err != nil {
+		return result, validation.NewErrorWithValidationError(err, "batch.ApplicationOperationsClient", "GetApplicationPackage")
+	}
+
 	req, err := client.GetApplicationPackagePreparer(resourceGroupName, accountName, applicationID, version)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "batch.ApplicationOperationsClient", "GetApplicationPackage", nil, "Failure preparing request")
@@ -515,6 +588,16 @@ func (client ApplicationOperationsClient) GetApplicationPackageResponder(resp *h
 // account. accountName is the name of the Batch account. maxresults is the
 // maximum number of items to return in the response.
 func (client ApplicationOperationsClient) List(resourceGroupName string, accountName string, maxresults *int32) (result ListApplicationsResult, err error) {
+	if err := validation.Validate([]validation.Validation{
+		{resourceGroupName,
+			[]validation.Constraint{{"resourceGroupName", validation.Pattern, `^[-\w\._]+$`, nil}}},
+		{accountName,
+			[]validation.Constraint{{"accountName", validation.MaxLength, 24, nil},
+				{"accountName", validation.MinLength, 3, nil},
+				{"accountName", validation.Pattern, `^[-\w\._]+$`, nil}}}}); err != nil {
+		return result, validation.NewErrorWithValidationError(err, "batch.ApplicationOperationsClient", "List")
+	}
+
 	req, err := client.ListPreparer(resourceGroupName, accountName, maxresults)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "batch.ApplicationOperationsClient", "List", nil, "Failure preparing request")
@@ -580,7 +663,7 @@ func (client ApplicationOperationsClient) ListResponder(resp *http.Response) (re
 func (client ApplicationOperationsClient) ListNextResults(lastResults ListApplicationsResult) (result ListApplicationsResult, err error) {
 	req, err := lastResults.ListApplicationsResultPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "batch.ApplicationOperationsClient", "List", nil, "Failure preparing next results request request")
+		return result, autorest.NewErrorWithError(err, "batch.ApplicationOperationsClient", "List", nil, "Failure preparing next results request")
 	}
 	if req == nil {
 		return
@@ -589,12 +672,12 @@ func (client ApplicationOperationsClient) ListNextResults(lastResults ListApplic
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "batch.ApplicationOperationsClient", "List", resp, "Failure sending next results request request")
+		return result, autorest.NewErrorWithError(err, "batch.ApplicationOperationsClient", "List", resp, "Failure sending next results request")
 	}
 
 	result, err = client.ListResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "batch.ApplicationOperationsClient", "List", resp, "Failure responding to next results request request")
+		err = autorest.NewErrorWithError(err, "batch.ApplicationOperationsClient", "List", resp, "Failure responding to next results request")
 	}
 
 	return
@@ -606,6 +689,16 @@ func (client ApplicationOperationsClient) ListNextResults(lastResults ListApplic
 // account. accountName is the name of the Batch account. applicationID is
 // the id of the application. parameters is the parameters for the request.
 func (client ApplicationOperationsClient) UpdateApplication(resourceGroupName string, accountName string, applicationID string, parameters UpdateApplicationParameters) (result autorest.Response, err error) {
+	if err := validation.Validate([]validation.Validation{
+		{resourceGroupName,
+			[]validation.Constraint{{"resourceGroupName", validation.Pattern, `^[-\w\._]+$`, nil}}},
+		{accountName,
+			[]validation.Constraint{{"accountName", validation.MaxLength, 24, nil},
+				{"accountName", validation.MinLength, 3, nil},
+				{"accountName", validation.Pattern, `^[-\w\._]+$`, nil}}}}); err != nil {
+		return result, validation.NewErrorWithValidationError(err, "batch.ApplicationOperationsClient", "UpdateApplication")
+	}
+
 	req, err := client.UpdateApplicationPreparer(resourceGroupName, accountName, applicationID, parameters)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "batch.ApplicationOperationsClient", "UpdateApplication", nil, "Failure preparing request")

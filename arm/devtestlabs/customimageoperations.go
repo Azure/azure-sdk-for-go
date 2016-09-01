@@ -322,7 +322,7 @@ func (client CustomImageOperationsClient) ListResponder(resp *http.Response) (re
 func (client CustomImageOperationsClient) ListNextResults(lastResults ResponseWithContinuationCustomImage) (result ResponseWithContinuationCustomImage, err error) {
 	req, err := lastResults.ResponseWithContinuationCustomImagePreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "devtestlabs.CustomImageOperationsClient", "List", nil, "Failure preparing next results request request")
+		return result, autorest.NewErrorWithError(err, "devtestlabs.CustomImageOperationsClient", "List", nil, "Failure preparing next results request")
 	}
 	if req == nil {
 		return
@@ -331,12 +331,12 @@ func (client CustomImageOperationsClient) ListNextResults(lastResults ResponseWi
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "devtestlabs.CustomImageOperationsClient", "List", resp, "Failure sending next results request request")
+		return result, autorest.NewErrorWithError(err, "devtestlabs.CustomImageOperationsClient", "List", resp, "Failure sending next results request")
 	}
 
 	result, err = client.ListResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "devtestlabs.CustomImageOperationsClient", "List", resp, "Failure responding to next results request request")
+		err = autorest.NewErrorWithError(err, "devtestlabs.CustomImageOperationsClient", "List", resp, "Failure responding to next results request")
 	}
 
 	return

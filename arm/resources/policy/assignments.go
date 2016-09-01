@@ -21,6 +21,7 @@ package policy
 import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
+	"github.com/Azure/go-autorest/autorest/validation"
 	"net/http"
 )
 
@@ -484,7 +485,7 @@ func (client AssignmentsClient) ListResponder(resp *http.Response) (result Assig
 func (client AssignmentsClient) ListNextResults(lastResults AssignmentListResult) (result AssignmentListResult, err error) {
 	req, err := lastResults.AssignmentListResultPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "policy.AssignmentsClient", "List", nil, "Failure preparing next results request request")
+		return result, autorest.NewErrorWithError(err, "policy.AssignmentsClient", "List", nil, "Failure preparing next results request")
 	}
 	if req == nil {
 		return
@@ -493,12 +494,12 @@ func (client AssignmentsClient) ListNextResults(lastResults AssignmentListResult
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "policy.AssignmentsClient", "List", resp, "Failure sending next results request request")
+		return result, autorest.NewErrorWithError(err, "policy.AssignmentsClient", "List", resp, "Failure sending next results request")
 	}
 
 	result, err = client.ListResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "policy.AssignmentsClient", "List", resp, "Failure responding to next results request request")
+		err = autorest.NewErrorWithError(err, "policy.AssignmentsClient", "List", resp, "Failure responding to next results request")
 	}
 
 	return
@@ -512,6 +513,14 @@ func (client AssignmentsClient) ListNextResults(lastResults AssignmentListResult
 // resource type. resourceName is the resource name. filter is the filter to
 // apply on the operation.
 func (client AssignmentsClient) ListForResource(resourceGroupName string, resourceProviderNamespace string, parentResourcePath string, resourceType string, resourceName string, filter string) (result AssignmentListResult, err error) {
+	if err := validation.Validate([]validation.Validation{
+		{resourceGroupName,
+			[]validation.Constraint{{"resourceGroupName", validation.MaxLength, 90, nil},
+				{"resourceGroupName", validation.MinLength, 1, nil},
+				{"resourceGroupName", validation.Pattern, `^[-\w\._\(\)]+$`, nil}}}}); err != nil {
+		return result, validation.NewErrorWithValidationError(err, "policy.AssignmentsClient", "ListForResource")
+	}
+
 	req, err := client.ListForResourcePreparer(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, filter)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "policy.AssignmentsClient", "ListForResource", nil, "Failure preparing request")
@@ -580,7 +589,7 @@ func (client AssignmentsClient) ListForResourceResponder(resp *http.Response) (r
 func (client AssignmentsClient) ListForResourceNextResults(lastResults AssignmentListResult) (result AssignmentListResult, err error) {
 	req, err := lastResults.AssignmentListResultPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "policy.AssignmentsClient", "ListForResource", nil, "Failure preparing next results request request")
+		return result, autorest.NewErrorWithError(err, "policy.AssignmentsClient", "ListForResource", nil, "Failure preparing next results request")
 	}
 	if req == nil {
 		return
@@ -589,12 +598,12 @@ func (client AssignmentsClient) ListForResourceNextResults(lastResults Assignmen
 	resp, err := client.ListForResourceSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "policy.AssignmentsClient", "ListForResource", resp, "Failure sending next results request request")
+		return result, autorest.NewErrorWithError(err, "policy.AssignmentsClient", "ListForResource", resp, "Failure sending next results request")
 	}
 
 	result, err = client.ListForResourceResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "policy.AssignmentsClient", "ListForResource", resp, "Failure responding to next results request request")
+		err = autorest.NewErrorWithError(err, "policy.AssignmentsClient", "ListForResource", resp, "Failure responding to next results request")
 	}
 
 	return
@@ -605,6 +614,14 @@ func (client AssignmentsClient) ListForResourceNextResults(lastResults Assignmen
 // resourceGroupName is resource group name. filter is the filter to apply on
 // the operation.
 func (client AssignmentsClient) ListForResourceGroup(resourceGroupName string, filter string) (result AssignmentListResult, err error) {
+	if err := validation.Validate([]validation.Validation{
+		{resourceGroupName,
+			[]validation.Constraint{{"resourceGroupName", validation.MaxLength, 90, nil},
+				{"resourceGroupName", validation.MinLength, 1, nil},
+				{"resourceGroupName", validation.Pattern, `^[-\w\._\(\)]+$`, nil}}}}); err != nil {
+		return result, validation.NewErrorWithValidationError(err, "policy.AssignmentsClient", "ListForResourceGroup")
+	}
+
 	req, err := client.ListForResourceGroupPreparer(resourceGroupName, filter)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "policy.AssignmentsClient", "ListForResourceGroup", nil, "Failure preparing request")
@@ -669,7 +686,7 @@ func (client AssignmentsClient) ListForResourceGroupResponder(resp *http.Respons
 func (client AssignmentsClient) ListForResourceGroupNextResults(lastResults AssignmentListResult) (result AssignmentListResult, err error) {
 	req, err := lastResults.AssignmentListResultPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "policy.AssignmentsClient", "ListForResourceGroup", nil, "Failure preparing next results request request")
+		return result, autorest.NewErrorWithError(err, "policy.AssignmentsClient", "ListForResourceGroup", nil, "Failure preparing next results request")
 	}
 	if req == nil {
 		return
@@ -678,12 +695,12 @@ func (client AssignmentsClient) ListForResourceGroupNextResults(lastResults Assi
 	resp, err := client.ListForResourceGroupSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "policy.AssignmentsClient", "ListForResourceGroup", resp, "Failure sending next results request request")
+		return result, autorest.NewErrorWithError(err, "policy.AssignmentsClient", "ListForResourceGroup", resp, "Failure sending next results request")
 	}
 
 	result, err = client.ListForResourceGroupResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "policy.AssignmentsClient", "ListForResourceGroup", resp, "Failure responding to next results request request")
+		err = autorest.NewErrorWithError(err, "policy.AssignmentsClient", "ListForResourceGroup", resp, "Failure responding to next results request")
 	}
 
 	return

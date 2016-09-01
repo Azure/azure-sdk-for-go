@@ -104,7 +104,7 @@ func (client ClassicAdministratorsClient) ListResponder(resp *http.Response) (re
 func (client ClassicAdministratorsClient) ListNextResults(lastResults ClassicAdministratorListResult) (result ClassicAdministratorListResult, err error) {
 	req, err := lastResults.ClassicAdministratorListResultPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "authorization.ClassicAdministratorsClient", "List", nil, "Failure preparing next results request request")
+		return result, autorest.NewErrorWithError(err, "authorization.ClassicAdministratorsClient", "List", nil, "Failure preparing next results request")
 	}
 	if req == nil {
 		return
@@ -113,12 +113,12 @@ func (client ClassicAdministratorsClient) ListNextResults(lastResults ClassicAdm
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "authorization.ClassicAdministratorsClient", "List", resp, "Failure sending next results request request")
+		return result, autorest.NewErrorWithError(err, "authorization.ClassicAdministratorsClient", "List", resp, "Failure sending next results request")
 	}
 
 	result, err = client.ListResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "authorization.ClassicAdministratorsClient", "List", resp, "Failure responding to next results request request")
+		err = autorest.NewErrorWithError(err, "authorization.ClassicAdministratorsClient", "List", resp, "Failure responding to next results request")
 	}
 
 	return

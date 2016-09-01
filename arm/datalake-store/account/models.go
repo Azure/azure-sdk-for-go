@@ -22,6 +22,7 @@ import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/date"
 	"github.com/Azure/go-autorest/autorest/to"
+	"github.com/satori/uuid"
 	"net/http"
 )
 
@@ -68,6 +69,49 @@ const (
 	Suspending DataLakeStoreAccountStatus = "Suspending"
 )
 
+// EncryptionConfigType enumerates the values for encryption config type.
+type EncryptionConfigType string
+
+const (
+	// ServiceManaged specifies the service managed state for encryption
+	// config type.
+	ServiceManaged EncryptionConfigType = "ServiceManaged"
+	// UserManaged specifies the user managed state for encryption config type.
+	UserManaged EncryptionConfigType = "UserManaged"
+)
+
+// EncryptionIdentityType enumerates the values for encryption identity type.
+type EncryptionIdentityType string
+
+const (
+	// SystemAssigned specifies the system assigned state for encryption
+	// identity type.
+	SystemAssigned EncryptionIdentityType = "SystemAssigned"
+)
+
+// EncryptionProvisioningState enumerates the values for encryption
+// provisioning state.
+type EncryptionProvisioningState string
+
+const (
+	// EncryptionProvisioningStateCreating specifies the encryption
+	// provisioning state creating state for encryption provisioning state.
+	EncryptionProvisioningStateCreating EncryptionProvisioningState = "Creating"
+	// EncryptionProvisioningStateSucceeded specifies the encryption
+	// provisioning state succeeded state for encryption provisioning state.
+	EncryptionProvisioningStateSucceeded EncryptionProvisioningState = "Succeeded"
+)
+
+// EncryptionState enumerates the values for encryption state.
+type EncryptionState string
+
+const (
+	// Disabled specifies the disabled state for encryption state.
+	Disabled EncryptionState = "Disabled"
+	// Enabled specifies the enabled state for encryption state.
+	Enabled EncryptionState = "Enabled"
+)
+
 // OperationStatus enumerates the values for operation status.
 type OperationStatus string
 
@@ -103,6 +147,7 @@ type DataLakeStoreAccount struct {
 	Name              *string                         `json:"name,omitempty"`
 	Type              *string                         `json:"type,omitempty"`
 	ID                *string                         `json:"id,omitempty"`
+	Identity          *EncryptionIdentity             `json:"identity,omitempty"`
 	Tags              *map[string]*string             `json:"tags,omitempty"`
 	Properties        *DataLakeStoreAccountProperties `json:"properties,omitempty"`
 }
@@ -131,12 +176,15 @@ func (client DataLakeStoreAccountListResult) DataLakeStoreAccountListResultPrepa
 // DataLakeStoreAccountProperties is data Lake Store account properties
 // information
 type DataLakeStoreAccountProperties struct {
-	ProvisioningState DataLakeStoreAccountStatus `json:"provisioningState,omitempty"`
-	State             DataLakeStoreAccountState  `json:"state,omitempty"`
-	CreationTime      *date.Time                 `json:"creationTime,omitempty"`
-	LastModifiedTime  *date.Time                 `json:"lastModifiedTime,omitempty"`
-	Endpoint          *string                    `json:"endpoint,omitempty"`
-	DefaultGroup      *string                    `json:"defaultGroup,omitempty"`
+	ProvisioningState           DataLakeStoreAccountStatus  `json:"provisioningState,omitempty"`
+	State                       DataLakeStoreAccountState   `json:"state,omitempty"`
+	CreationTime                *date.Time                  `json:"creationTime,omitempty"`
+	EncryptionState             EncryptionState             `json:"encryptionState,omitempty"`
+	EncryptionProvisioningState EncryptionProvisioningState `json:"encryptionProvisioningState,omitempty"`
+	EncryptionConfig            *EncryptionConfig           `json:"encryptionConfig,omitempty"`
+	LastModifiedTime            *date.Time                  `json:"lastModifiedTime,omitempty"`
+	Endpoint                    *string                     `json:"endpoint,omitempty"`
+	DefaultGroup                *string                     `json:"defaultGroup,omitempty"`
 }
 
 // DataLakeStoreFirewallRuleListResult is data Lake Store firewall rule list
@@ -158,6 +206,19 @@ func (client DataLakeStoreFirewallRuleListResult) DataLakeStoreFirewallRuleListR
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(to.String(client.NextLink)))
+}
+
+// EncryptionConfig is
+type EncryptionConfig struct {
+	Type             EncryptionConfigType `json:"type,omitempty"`
+	KeyVaultMetaInfo *KeyVaultMetaInfo    `json:"keyVaultMetaInfo,omitempty"`
+}
+
+// EncryptionIdentity is
+type EncryptionIdentity struct {
+	Type        EncryptionIdentityType `json:"type,omitempty"`
+	PrincipalID *uuid.UUID             `json:"principalId,omitempty"`
+	TenantID    *uuid.UUID             `json:"tenantId,omitempty"`
 }
 
 // Error is data Lake Store error information
@@ -197,4 +258,11 @@ type FirewallRuleProperties struct {
 type InnerError struct {
 	Trace   *string `json:"trace,omitempty"`
 	Context *string `json:"context,omitempty"`
+}
+
+// KeyVaultMetaInfo is
+type KeyVaultMetaInfo struct {
+	KeyVaultResourceID   *string `json:"keyVaultResourceId,omitempty"`
+	EncryptionKeyName    *string `json:"encryptionKeyName,omitempty"`
+	EncryptionKeyVersion *string `json:"encryptionKeyVersion,omitempty"`
 }

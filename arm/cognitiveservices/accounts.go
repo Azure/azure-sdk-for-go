@@ -21,6 +21,7 @@ package cognitiveservices
 import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
+	"github.com/Azure/go-autorest/autorest/validation"
 	"net/http"
 )
 
@@ -51,6 +52,19 @@ func NewAccountsClientWithBaseURI(baseURI string, subscriptionID string) Account
 // letters only. parameters is the parameters to provide for the created
 // account.
 func (client AccountsClient) Create(resourceGroupName string, accountName string, parameters AccountCreateParameters) (result Account, err error) {
+	if err := validation.Validate([]validation.Validation{
+		{accountName,
+			[]validation.Constraint{{"accountName", validation.MaxLength, 24, nil},
+				{"accountName", validation.MinLength, 3, nil},
+				{"accountName", validation.Pattern, `^[a-zA-Z0-9][a-zA-Z0-9_.-]*$`, nil}}},
+		{parameters,
+			[]validation.Constraint{{"parameters.Sku", validation.Null, true,
+				[]validation.Constraint{{"Tier", validation.ReadOnly, true, nil}}},
+				{"parameters.Location", validation.Null, true, nil},
+				{"parameters.Properties", validation.Null, true, nil}}}}); err != nil {
+		return result, validation.NewErrorWithValidationError(err, "cognitiveservices.AccountsClient", "Create")
+	}
+
 	req, err := client.CreatePreparer(resourceGroupName, accountName, parameters)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "cognitiveservices.AccountsClient", "Create", nil, "Failure preparing request")
@@ -119,6 +133,14 @@ func (client AccountsClient) CreateResponder(resp *http.Response) (result Accoun
 // be between 3 and 24 characters in length and use numbers and lower-case
 // letters only.
 func (client AccountsClient) Delete(resourceGroupName string, accountName string) (result autorest.Response, err error) {
+	if err := validation.Validate([]validation.Validation{
+		{accountName,
+			[]validation.Constraint{{"accountName", validation.MaxLength, 24, nil},
+				{"accountName", validation.MinLength, 3, nil},
+				{"accountName", validation.Pattern, `^[a-zA-Z0-9][a-zA-Z0-9_.-]*$`, nil}}}}); err != nil {
+		return result, validation.NewErrorWithValidationError(err, "cognitiveservices.AccountsClient", "Delete")
+	}
+
 	req, err := client.DeletePreparer(resourceGroupName, accountName)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "cognitiveservices.AccountsClient", "Delete", nil, "Failure preparing request")
@@ -185,6 +207,14 @@ func (client AccountsClient) DeleteResponder(resp *http.Response) (result autore
 // be between 3 and 24 characters in length and use numbers and lower-case
 // letters only.
 func (client AccountsClient) GetProperties(resourceGroupName string, accountName string) (result Account, err error) {
+	if err := validation.Validate([]validation.Validation{
+		{accountName,
+			[]validation.Constraint{{"accountName", validation.MaxLength, 24, nil},
+				{"accountName", validation.MinLength, 3, nil},
+				{"accountName", validation.Pattern, `^[a-zA-Z0-9][a-zA-Z0-9_.-]*$`, nil}}}}); err != nil {
+		return result, validation.NewErrorWithValidationError(err, "cognitiveservices.AccountsClient", "GetProperties")
+	}
+
 	req, err := client.GetPropertiesPreparer(resourceGroupName, accountName)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "cognitiveservices.AccountsClient", "GetProperties", nil, "Failure preparing request")
@@ -374,6 +404,14 @@ func (client AccountsClient) ListByResourceGroupResponder(resp *http.Response) (
 // be between 3 and 24 characters in length and use numbers and lower-case
 // letters only.
 func (client AccountsClient) ListKeys(resourceGroupName string, accountName string) (result AccountKeys, err error) {
+	if err := validation.Validate([]validation.Validation{
+		{accountName,
+			[]validation.Constraint{{"accountName", validation.MaxLength, 24, nil},
+				{"accountName", validation.MinLength, 3, nil},
+				{"accountName", validation.Pattern, `^[a-zA-Z0-9][a-zA-Z0-9_.-]*$`, nil}}}}); err != nil {
+		return result, validation.NewErrorWithValidationError(err, "cognitiveservices.AccountsClient", "ListKeys")
+	}
+
 	req, err := client.ListKeysPreparer(resourceGroupName, accountName)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "cognitiveservices.AccountsClient", "ListKeys", nil, "Failure preparing request")
@@ -440,6 +478,14 @@ func (client AccountsClient) ListKeysResponder(resp *http.Response) (result Acco
 // be between 3 and 24 characters in length and use numbers and lower-case
 // letters only.
 func (client AccountsClient) ListSkus(resourceGroupName string, accountName string) (result AccountEnumerateSkusResult, err error) {
+	if err := validation.Validate([]validation.Validation{
+		{accountName,
+			[]validation.Constraint{{"accountName", validation.MaxLength, 24, nil},
+				{"accountName", validation.MinLength, 3, nil},
+				{"accountName", validation.Pattern, `^[a-zA-Z0-9][a-zA-Z0-9_.-]*$`, nil}}}}); err != nil {
+		return result, validation.NewErrorWithValidationError(err, "cognitiveservices.AccountsClient", "ListSkus")
+	}
+
 	req, err := client.ListSkusPreparer(resourceGroupName, accountName)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "cognitiveservices.AccountsClient", "ListSkus", nil, "Failure preparing request")
@@ -507,6 +553,14 @@ func (client AccountsClient) ListSkusResponder(resp *http.Response) (result Acco
 // be between 3 and 24 characters in length and use numbers and lower-case
 // letters only. body is regenerate key parameters.
 func (client AccountsClient) RegenerateKey(resourceGroupName string, accountName string, body RegenerateKeyParameters) (result AccountKeys, err error) {
+	if err := validation.Validate([]validation.Validation{
+		{accountName,
+			[]validation.Constraint{{"accountName", validation.MaxLength, 24, nil},
+				{"accountName", validation.MinLength, 3, nil},
+				{"accountName", validation.Pattern, `^[a-zA-Z0-9][a-zA-Z0-9_.-]*$`, nil}}}}); err != nil {
+		return result, validation.NewErrorWithValidationError(err, "cognitiveservices.AccountsClient", "RegenerateKey")
+	}
+
 	req, err := client.RegenerateKeyPreparer(resourceGroupName, accountName, body)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "cognitiveservices.AccountsClient", "RegenerateKey", nil, "Failure preparing request")
@@ -575,6 +629,14 @@ func (client AccountsClient) RegenerateKeyResponder(resp *http.Response) (result
 // be between 3 and 24 characters in length and use numbers and lower-case
 // letters only. body is the parameters to provide for the created account.
 func (client AccountsClient) Update(resourceGroupName string, accountName string, body AccountUpdateParameters) (result Account, err error) {
+	if err := validation.Validate([]validation.Validation{
+		{accountName,
+			[]validation.Constraint{{"accountName", validation.MaxLength, 24, nil},
+				{"accountName", validation.MinLength, 3, nil},
+				{"accountName", validation.Pattern, `^[a-zA-Z0-9][a-zA-Z0-9_.-]*$`, nil}}}}); err != nil {
+		return result, validation.NewErrorWithValidationError(err, "cognitiveservices.AccountsClient", "Update")
+	}
+
 	req, err := client.UpdatePreparer(resourceGroupName, accountName, body)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "cognitiveservices.AccountsClient", "Update", nil, "Failure preparing request")

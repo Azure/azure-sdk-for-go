@@ -21,6 +21,7 @@ package batch
 import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
+	"github.com/Azure/go-autorest/autorest/validation"
 	"net/http"
 )
 
@@ -54,6 +55,21 @@ func NewAccountClientWithBaseURI(baseURI string, subscriptionID string) AccountC
 // http://accountname.region.batch.azure.com/. parameters is additional
 // parameters for account creation.
 func (client AccountClient) Create(resourceGroupName string, accountName string, parameters AccountCreateParameters, cancel <-chan struct{}) (result autorest.Response, err error) {
+	if err := validation.Validate([]validation.Validation{
+		{resourceGroupName,
+			[]validation.Constraint{{"resourceGroupName", validation.Pattern, `^[-\w\._]+$`, nil}}},
+		{accountName,
+			[]validation.Constraint{{"accountName", validation.MaxLength, 24, nil},
+				{"accountName", validation.MinLength, 3, nil},
+				{"accountName", validation.Pattern, `^[-\w\._]+$`, nil}}},
+		{parameters,
+			[]validation.Constraint{{"parameters.Properties", validation.Null, false,
+				[]validation.Constraint{{"parameters.Properties.AutoStorage", validation.Null, false,
+					[]validation.Constraint{{"parameters.Properties.AutoStorage.StorageAccountID", validation.Null, true, nil}}},
+				}}}}}); err != nil {
+		return result, validation.NewErrorWithValidationError(err, "batch.AccountClient", "Create")
+	}
+
 	req, err := client.CreatePreparer(resourceGroupName, accountName, parameters, cancel)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "batch.AccountClient", "Create", nil, "Failure preparing request")
@@ -124,6 +140,16 @@ func (client AccountClient) CreateResponder(resp *http.Response) (result autores
 // account to be deleted. accountName is the name of the account to be
 // deleted.
 func (client AccountClient) Delete(resourceGroupName string, accountName string, cancel <-chan struct{}) (result autorest.Response, err error) {
+	if err := validation.Validate([]validation.Validation{
+		{resourceGroupName,
+			[]validation.Constraint{{"resourceGroupName", validation.Pattern, `^[-\w\._]+$`, nil}}},
+		{accountName,
+			[]validation.Constraint{{"accountName", validation.MaxLength, 24, nil},
+				{"accountName", validation.MinLength, 3, nil},
+				{"accountName", validation.Pattern, `^[-\w\._]+$`, nil}}}}); err != nil {
+		return result, validation.NewErrorWithValidationError(err, "batch.AccountClient", "Delete")
+	}
+
 	req, err := client.DeletePreparer(resourceGroupName, accountName, cancel)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "batch.AccountClient", "Delete", nil, "Failure preparing request")
@@ -188,6 +214,16 @@ func (client AccountClient) DeleteResponder(resp *http.Response) (result autores
 // resourceGroupName is the name of the resource group that contains the Batch
 // account. accountName is the name of the account.
 func (client AccountClient) Get(resourceGroupName string, accountName string) (result AccountResource, err error) {
+	if err := validation.Validate([]validation.Validation{
+		{resourceGroupName,
+			[]validation.Constraint{{"resourceGroupName", validation.Pattern, `^[-\w\._]+$`, nil}}},
+		{accountName,
+			[]validation.Constraint{{"accountName", validation.MaxLength, 24, nil},
+				{"accountName", validation.MinLength, 3, nil},
+				{"accountName", validation.Pattern, `^[-\w\._]+$`, nil}}}}); err != nil {
+		return result, validation.NewErrorWithValidationError(err, "batch.AccountClient", "Get")
+	}
+
 	req, err := client.GetPreparer(resourceGroupName, accountName)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "batch.AccountClient", "Get", nil, "Failure preparing request")
@@ -309,7 +345,7 @@ func (client AccountClient) ListResponder(resp *http.Response) (result AccountLi
 func (client AccountClient) ListNextResults(lastResults AccountListResult) (result AccountListResult, err error) {
 	req, err := lastResults.AccountListResultPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "batch.AccountClient", "List", nil, "Failure preparing next results request request")
+		return result, autorest.NewErrorWithError(err, "batch.AccountClient", "List", nil, "Failure preparing next results request")
 	}
 	if req == nil {
 		return
@@ -318,12 +354,12 @@ func (client AccountClient) ListNextResults(lastResults AccountListResult) (resu
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "batch.AccountClient", "List", resp, "Failure sending next results request request")
+		return result, autorest.NewErrorWithError(err, "batch.AccountClient", "List", resp, "Failure sending next results request")
 	}
 
 	result, err = client.ListResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "batch.AccountClient", "List", resp, "Failure responding to next results request request")
+		err = autorest.NewErrorWithError(err, "batch.AccountClient", "List", resp, "Failure responding to next results request")
 	}
 
 	return
@@ -335,6 +371,12 @@ func (client AccountClient) ListNextResults(lastResults AccountListResult) (resu
 // resourceGroupName is the name of the resource group whose Batch accounts to
 // list.
 func (client AccountClient) ListByResourceGroup(resourceGroupName string) (result AccountListResult, err error) {
+	if err := validation.Validate([]validation.Validation{
+		{resourceGroupName,
+			[]validation.Constraint{{"resourceGroupName", validation.Pattern, `^[-\w\._]+$`, nil}}}}); err != nil {
+		return result, validation.NewErrorWithValidationError(err, "batch.AccountClient", "ListByResourceGroup")
+	}
+
 	req, err := client.ListByResourceGroupPreparer(resourceGroupName)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "batch.AccountClient", "ListByResourceGroup", nil, "Failure preparing request")
@@ -396,7 +438,7 @@ func (client AccountClient) ListByResourceGroupResponder(resp *http.Response) (r
 func (client AccountClient) ListByResourceGroupNextResults(lastResults AccountListResult) (result AccountListResult, err error) {
 	req, err := lastResults.AccountListResultPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "batch.AccountClient", "ListByResourceGroup", nil, "Failure preparing next results request request")
+		return result, autorest.NewErrorWithError(err, "batch.AccountClient", "ListByResourceGroup", nil, "Failure preparing next results request")
 	}
 	if req == nil {
 		return
@@ -405,12 +447,12 @@ func (client AccountClient) ListByResourceGroupNextResults(lastResults AccountLi
 	resp, err := client.ListByResourceGroupSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "batch.AccountClient", "ListByResourceGroup", resp, "Failure sending next results request request")
+		return result, autorest.NewErrorWithError(err, "batch.AccountClient", "ListByResourceGroup", resp, "Failure sending next results request")
 	}
 
 	result, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "batch.AccountClient", "ListByResourceGroup", resp, "Failure responding to next results request request")
+		err = autorest.NewErrorWithError(err, "batch.AccountClient", "ListByResourceGroup", resp, "Failure responding to next results request")
 	}
 
 	return
@@ -421,6 +463,16 @@ func (client AccountClient) ListByResourceGroupNextResults(lastResults AccountLi
 // resourceGroupName is the name of the resource group that contains the Batch
 // account. accountName is the name of the account.
 func (client AccountClient) ListKeys(resourceGroupName string, accountName string) (result AccountListKeyResult, err error) {
+	if err := validation.Validate([]validation.Validation{
+		{resourceGroupName,
+			[]validation.Constraint{{"resourceGroupName", validation.Pattern, `^[-\w\._]+$`, nil}}},
+		{accountName,
+			[]validation.Constraint{{"accountName", validation.MaxLength, 24, nil},
+				{"accountName", validation.MinLength, 3, nil},
+				{"accountName", validation.Pattern, `^[-\w\._]+$`, nil}}}}); err != nil {
+		return result, validation.NewErrorWithValidationError(err, "batch.AccountClient", "ListKeys")
+	}
+
 	req, err := client.ListKeysPreparer(resourceGroupName, accountName)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "batch.AccountClient", "ListKeys", nil, "Failure preparing request")
@@ -486,6 +538,16 @@ func (client AccountClient) ListKeysResponder(resp *http.Response) (result Accou
 // account. accountName is the name of the account. parameters is the type of
 // key to regenerate.
 func (client AccountClient) RegenerateKey(resourceGroupName string, accountName string, parameters AccountRegenerateKeyParameters) (result AccountRegenerateKeyResult, err error) {
+	if err := validation.Validate([]validation.Validation{
+		{resourceGroupName,
+			[]validation.Constraint{{"resourceGroupName", validation.Pattern, `^[-\w\._]+$`, nil}}},
+		{accountName,
+			[]validation.Constraint{{"accountName", validation.MaxLength, 24, nil},
+				{"accountName", validation.MinLength, 3, nil},
+				{"accountName", validation.Pattern, `^[-\w\._]+$`, nil}}}}); err != nil {
+		return result, validation.NewErrorWithValidationError(err, "batch.AccountClient", "RegenerateKey")
+	}
+
 	req, err := client.RegenerateKeyPreparer(resourceGroupName, accountName, parameters)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "batch.AccountClient", "RegenerateKey", nil, "Failure preparing request")
@@ -552,6 +614,16 @@ func (client AccountClient) RegenerateKeyResponder(resp *http.Response) (result 
 // resourceGroupName is the name of the resource group that contains the Batch
 // account. accountName is the name of the Batch account.
 func (client AccountClient) SynchronizeAutoStorageKeys(resourceGroupName string, accountName string) (result autorest.Response, err error) {
+	if err := validation.Validate([]validation.Validation{
+		{resourceGroupName,
+			[]validation.Constraint{{"resourceGroupName", validation.Pattern, `^[-\w\._]+$`, nil}}},
+		{accountName,
+			[]validation.Constraint{{"accountName", validation.MaxLength, 24, nil},
+				{"accountName", validation.MinLength, 3, nil},
+				{"accountName", validation.Pattern, `^[-\w\._]+$`, nil}}}}); err != nil {
+		return result, validation.NewErrorWithValidationError(err, "batch.AccountClient", "SynchronizeAutoStorageKeys")
+	}
+
 	req, err := client.SynchronizeAutoStorageKeysPreparer(resourceGroupName, accountName)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "batch.AccountClient", "SynchronizeAutoStorageKeys", nil, "Failure preparing request")
@@ -615,6 +687,16 @@ func (client AccountClient) SynchronizeAutoStorageKeysResponder(resp *http.Respo
 // account. accountName is the name of the account. parameters is additional
 // parameters for account update.
 func (client AccountClient) Update(resourceGroupName string, accountName string, parameters AccountUpdateParameters) (result AccountResource, err error) {
+	if err := validation.Validate([]validation.Validation{
+		{resourceGroupName,
+			[]validation.Constraint{{"resourceGroupName", validation.Pattern, `^[-\w\._]+$`, nil}}},
+		{accountName,
+			[]validation.Constraint{{"accountName", validation.MaxLength, 24, nil},
+				{"accountName", validation.MinLength, 3, nil},
+				{"accountName", validation.Pattern, `^[-\w\._]+$`, nil}}}}); err != nil {
+		return result, validation.NewErrorWithValidationError(err, "batch.AccountClient", "Update")
+	}
+
 	req, err := client.UpdatePreparer(resourceGroupName, accountName, parameters)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "batch.AccountClient", "Update", nil, "Failure preparing request")

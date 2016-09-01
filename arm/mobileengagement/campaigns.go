@@ -21,6 +21,7 @@ package mobileengagement
 import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
+	"github.com/Azure/go-autorest/autorest/validation"
 	"net/http"
 )
 
@@ -114,6 +115,15 @@ func (client CampaignsClient) ActivateResponder(resp *http.Response) (result Cam
 // 'dataPushes', 'nativePushes' parameters is parameters supplied to the
 // Update Campaign operation.
 func (client CampaignsClient) Create(kind CampaignKinds, parameters Campaign) (result CampaignStateResult, err error) {
+	if err := validation.Validate([]validation.Validation{
+		{parameters,
+			[]validation.Constraint{{"parameters.Name", validation.Null, false,
+				[]validation.Constraint{{"parameters.Name", validation.MaxLength, 64, nil}}},
+				{"parameters.Category", validation.Null, false,
+					[]validation.Constraint{{"parameters.Category", validation.MaxLength, 64, nil}}}}}}); err != nil {
+		return result, validation.NewErrorWithValidationError(err, "mobileengagement.CampaignsClient", "Create")
+	}
+
 	req, err := client.CreatePreparer(kind, parameters)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "mobileengagement.CampaignsClient", "Create", nil, "Failure preparing request")
@@ -611,7 +621,7 @@ func (client CampaignsClient) ListResponder(resp *http.Response) (result Campaig
 func (client CampaignsClient) ListNextResults(lastResults CampaignsListResult) (result CampaignsListResult, err error) {
 	req, err := lastResults.CampaignsListResultPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "mobileengagement.CampaignsClient", "List", nil, "Failure preparing next results request request")
+		return result, autorest.NewErrorWithError(err, "mobileengagement.CampaignsClient", "List", nil, "Failure preparing next results request")
 	}
 	if req == nil {
 		return
@@ -620,12 +630,12 @@ func (client CampaignsClient) ListNextResults(lastResults CampaignsListResult) (
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "mobileengagement.CampaignsClient", "List", resp, "Failure sending next results request request")
+		return result, autorest.NewErrorWithError(err, "mobileengagement.CampaignsClient", "List", resp, "Failure sending next results request")
 	}
 
 	result, err = client.ListResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "mobileengagement.CampaignsClient", "List", resp, "Failure responding to next results request request")
+		err = autorest.NewErrorWithError(err, "mobileengagement.CampaignsClient", "List", resp, "Failure responding to next results request")
 	}
 
 	return
@@ -638,6 +648,18 @@ func (client CampaignsClient) ListNextResults(lastResults CampaignsListResult) (
 // 'dataPushes', 'nativePushes' id is campaign identifier. parameters is
 // parameters supplied to the Push Campaign operation.
 func (client CampaignsClient) Push(kind CampaignKinds, id int32, parameters CampaignPushParameters) (result CampaignPushResult, err error) {
+	if err := validation.Validate([]validation.Validation{
+		{parameters,
+			[]validation.Constraint{{"parameters.DeviceIds", validation.Null, true, nil},
+				{"parameters.Data", validation.Null, false,
+					[]validation.Constraint{{"parameters.Data.Name", validation.Null, false,
+						[]validation.Constraint{{"parameters.Data.Name", validation.MaxLength, 64, nil}}},
+						{"parameters.Data.Category", validation.Null, false,
+							[]validation.Constraint{{"parameters.Data.Category", validation.MaxLength, 64, nil}}},
+					}}}}}); err != nil {
+		return result, validation.NewErrorWithValidationError(err, "mobileengagement.CampaignsClient", "Push")
+	}
+
 	req, err := client.PushPreparer(kind, id, parameters)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "mobileengagement.CampaignsClient", "Push", nil, "Failure preparing request")
@@ -774,6 +796,17 @@ func (client CampaignsClient) SuspendResponder(resp *http.Response) (result Camp
 // 'dataPushes', 'nativePushes' parameters is parameters supplied to the Test
 // Campaign operation.
 func (client CampaignsClient) TestNew(kind CampaignKinds, parameters CampaignTestNewParameters) (result CampaignState, err error) {
+	if err := validation.Validate([]validation.Validation{
+		{parameters,
+			[]validation.Constraint{{"parameters.Data", validation.Null, true,
+				[]validation.Constraint{{"parameters.Data.Name", validation.Null, false,
+					[]validation.Constraint{{"parameters.Data.Name", validation.MaxLength, 64, nil}}},
+					{"parameters.Data.Category", validation.Null, false,
+						[]validation.Constraint{{"parameters.Data.Category", validation.MaxLength, 64, nil}}},
+				}}}}}); err != nil {
+		return result, validation.NewErrorWithValidationError(err, "mobileengagement.CampaignsClient", "TestNew")
+	}
+
 	req, err := client.TestNewPreparer(kind, parameters)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "mobileengagement.CampaignsClient", "TestNew", nil, "Failure preparing request")
@@ -843,6 +876,12 @@ func (client CampaignsClient) TestNewResponder(resp *http.Response) (result Camp
 // 'dataPushes', 'nativePushes' id is campaign identifier. parameters is
 // parameters supplied to the Test Campaign operation.
 func (client CampaignsClient) TestSaved(kind CampaignKinds, id int32, parameters CampaignTestSavedParameters) (result CampaignStateResult, err error) {
+	if err := validation.Validate([]validation.Validation{
+		{parameters,
+			[]validation.Constraint{{"parameters.DeviceID", validation.Null, true, nil}}}}); err != nil {
+		return result, validation.NewErrorWithValidationError(err, "mobileengagement.CampaignsClient", "TestSaved")
+	}
+
 	req, err := client.TestSavedPreparer(kind, id, parameters)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "mobileengagement.CampaignsClient", "TestSaved", nil, "Failure preparing request")
@@ -913,6 +952,15 @@ func (client CampaignsClient) TestSavedResponder(resp *http.Response) (result Ca
 // 'dataPushes', 'nativePushes' id is campaign identifier. parameters is
 // parameters supplied to the Update Campaign operation.
 func (client CampaignsClient) Update(kind CampaignKinds, id int32, parameters Campaign) (result CampaignStateResult, err error) {
+	if err := validation.Validate([]validation.Validation{
+		{parameters,
+			[]validation.Constraint{{"parameters.Name", validation.Null, false,
+				[]validation.Constraint{{"parameters.Name", validation.MaxLength, 64, nil}}},
+				{"parameters.Category", validation.Null, false,
+					[]validation.Constraint{{"parameters.Category", validation.MaxLength, 64, nil}}}}}}); err != nil {
+		return result, validation.NewErrorWithValidationError(err, "mobileengagement.CampaignsClient", "Update")
+	}
+
 	req, err := client.UpdatePreparer(kind, id, parameters)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "mobileengagement.CampaignsClient", "Update", nil, "Failure preparing request")

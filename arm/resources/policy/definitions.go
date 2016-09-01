@@ -293,7 +293,7 @@ func (client DefinitionsClient) ListResponder(resp *http.Response) (result Defin
 func (client DefinitionsClient) ListNextResults(lastResults DefinitionListResult) (result DefinitionListResult, err error) {
 	req, err := lastResults.DefinitionListResultPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "policy.DefinitionsClient", "List", nil, "Failure preparing next results request request")
+		return result, autorest.NewErrorWithError(err, "policy.DefinitionsClient", "List", nil, "Failure preparing next results request")
 	}
 	if req == nil {
 		return
@@ -302,12 +302,12 @@ func (client DefinitionsClient) ListNextResults(lastResults DefinitionListResult
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "policy.DefinitionsClient", "List", resp, "Failure sending next results request request")
+		return result, autorest.NewErrorWithError(err, "policy.DefinitionsClient", "List", resp, "Failure sending next results request")
 	}
 
 	result, err = client.ListResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "policy.DefinitionsClient", "List", resp, "Failure responding to next results request request")
+		err = autorest.NewErrorWithError(err, "policy.DefinitionsClient", "List", resp, "Failure responding to next results request")
 	}
 
 	return

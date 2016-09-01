@@ -257,7 +257,7 @@ func (client ArtifactOperationsClient) ListResponder(resp *http.Response) (resul
 func (client ArtifactOperationsClient) ListNextResults(lastResults ResponseWithContinuationArtifact) (result ResponseWithContinuationArtifact, err error) {
 	req, err := lastResults.ResponseWithContinuationArtifactPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "devtestlabs.ArtifactOperationsClient", "List", nil, "Failure preparing next results request request")
+		return result, autorest.NewErrorWithError(err, "devtestlabs.ArtifactOperationsClient", "List", nil, "Failure preparing next results request")
 	}
 	if req == nil {
 		return
@@ -266,12 +266,12 @@ func (client ArtifactOperationsClient) ListNextResults(lastResults ResponseWithC
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "devtestlabs.ArtifactOperationsClient", "List", resp, "Failure sending next results request request")
+		return result, autorest.NewErrorWithError(err, "devtestlabs.ArtifactOperationsClient", "List", resp, "Failure sending next results request")
 	}
 
 	result, err = client.ListResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "devtestlabs.ArtifactOperationsClient", "List", resp, "Failure responding to next results request request")
+		err = autorest.NewErrorWithError(err, "devtestlabs.ArtifactOperationsClient", "List", resp, "Failure responding to next results request")
 	}
 
 	return

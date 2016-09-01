@@ -167,7 +167,7 @@ func (client Client) ListResponder(resp *http.Response) (result FeatureOperation
 func (client Client) ListNextResults(lastResults FeatureOperationsListResult) (result FeatureOperationsListResult, err error) {
 	req, err := lastResults.FeatureOperationsListResultPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "features.Client", "List", nil, "Failure preparing next results request request")
+		return result, autorest.NewErrorWithError(err, "features.Client", "List", nil, "Failure preparing next results request")
 	}
 	if req == nil {
 		return
@@ -176,12 +176,12 @@ func (client Client) ListNextResults(lastResults FeatureOperationsListResult) (r
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "features.Client", "List", resp, "Failure sending next results request request")
+		return result, autorest.NewErrorWithError(err, "features.Client", "List", resp, "Failure sending next results request")
 	}
 
 	result, err = client.ListResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "features.Client", "List", resp, "Failure responding to next results request request")
+		err = autorest.NewErrorWithError(err, "features.Client", "List", resp, "Failure responding to next results request")
 	}
 
 	return
@@ -250,7 +250,7 @@ func (client Client) ListAllResponder(resp *http.Response) (result FeatureOperat
 func (client Client) ListAllNextResults(lastResults FeatureOperationsListResult) (result FeatureOperationsListResult, err error) {
 	req, err := lastResults.FeatureOperationsListResultPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "features.Client", "ListAll", nil, "Failure preparing next results request request")
+		return result, autorest.NewErrorWithError(err, "features.Client", "ListAll", nil, "Failure preparing next results request")
 	}
 	if req == nil {
 		return
@@ -259,12 +259,12 @@ func (client Client) ListAllNextResults(lastResults FeatureOperationsListResult)
 	resp, err := client.ListAllSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "features.Client", "ListAll", resp, "Failure sending next results request request")
+		return result, autorest.NewErrorWithError(err, "features.Client", "ListAll", resp, "Failure sending next results request")
 	}
 
 	result, err = client.ListAllResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "features.Client", "ListAll", resp, "Failure responding to next results request request")
+		err = autorest.NewErrorWithError(err, "features.Client", "ListAll", resp, "Failure responding to next results request")
 	}
 
 	return

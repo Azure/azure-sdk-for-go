@@ -21,6 +21,7 @@ package powerbiembedded
 import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
+	"github.com/Azure/go-autorest/autorest/validation"
 	"net/http"
 )
 
@@ -115,6 +116,15 @@ func (client WorkspaceCollectionsClient) CheckNameAvailabilityResponder(resp *ht
 // BI Embedded workspace collection name body is create workspace collection
 // request
 func (client WorkspaceCollectionsClient) Create(resourceGroupName string, workspaceCollectionName string, body CreateWorkspaceCollectionRequest) (result WorkspaceCollection, err error) {
+	if err := validation.Validate([]validation.Validation{
+		{body,
+			[]validation.Constraint{{"body.Sku", validation.Null, false,
+				[]validation.Constraint{{"body.Sku.Name", validation.Null, true, nil},
+					{"body.Sku.Tier", validation.Null, true, nil},
+				}}}}}); err != nil {
+		return result, validation.NewErrorWithValidationError(err, "powerbiembedded.WorkspaceCollectionsClient", "Create")
+	}
+
 	req, err := client.CreatePreparer(resourceGroupName, workspaceCollectionName, body)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "powerbiembedded.WorkspaceCollectionsClient", "Create", nil, "Failure preparing request")

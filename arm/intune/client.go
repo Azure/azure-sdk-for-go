@@ -132,7 +132,7 @@ func (client ManagementClient) GetAppsResponder(resp *http.Response) (result App
 func (client ManagementClient) GetAppsNextResults(lastResults ApplicationCollection) (result ApplicationCollection, err error) {
 	req, err := lastResults.ApplicationCollectionPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "intune.ManagementClient", "GetApps", nil, "Failure preparing next results request request")
+		return result, autorest.NewErrorWithError(err, "intune.ManagementClient", "GetApps", nil, "Failure preparing next results request")
 	}
 	if req == nil {
 		return
@@ -141,12 +141,12 @@ func (client ManagementClient) GetAppsNextResults(lastResults ApplicationCollect
 	resp, err := client.GetAppsSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "intune.ManagementClient", "GetApps", resp, "Failure sending next results request request")
+		return result, autorest.NewErrorWithError(err, "intune.ManagementClient", "GetApps", resp, "Failure sending next results request")
 	}
 
 	result, err = client.GetAppsResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "intune.ManagementClient", "GetApps", resp, "Failure responding to next results request request")
+		err = autorest.NewErrorWithError(err, "intune.ManagementClient", "GetApps", resp, "Failure responding to next results request")
 	}
 
 	return
@@ -264,7 +264,7 @@ func (client ManagementClient) GetLocationsResponder(resp *http.Response) (resul
 func (client ManagementClient) GetLocationsNextResults(lastResults LocationCollection) (result LocationCollection, err error) {
 	req, err := lastResults.LocationCollectionPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "intune.ManagementClient", "GetLocations", nil, "Failure preparing next results request request")
+		return result, autorest.NewErrorWithError(err, "intune.ManagementClient", "GetLocations", nil, "Failure preparing next results request")
 	}
 	if req == nil {
 		return
@@ -273,12 +273,12 @@ func (client ManagementClient) GetLocationsNextResults(lastResults LocationColle
 	resp, err := client.GetLocationsSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "intune.ManagementClient", "GetLocations", resp, "Failure sending next results request request")
+		return result, autorest.NewErrorWithError(err, "intune.ManagementClient", "GetLocations", resp, "Failure sending next results request")
 	}
 
 	result, err = client.GetLocationsResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "intune.ManagementClient", "GetLocations", resp, "Failure responding to next results request request")
+		err = autorest.NewErrorWithError(err, "intune.ManagementClient", "GetLocations", resp, "Failure responding to next results request")
 	}
 
 	return
@@ -423,7 +423,7 @@ func (client ManagementClient) GetMAMFlaggedUsersResponder(resp *http.Response) 
 func (client ManagementClient) GetMAMFlaggedUsersNextResults(lastResults FlaggedUserCollection) (result FlaggedUserCollection, err error) {
 	req, err := lastResults.FlaggedUserCollectionPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "intune.ManagementClient", "GetMAMFlaggedUsers", nil, "Failure preparing next results request request")
+		return result, autorest.NewErrorWithError(err, "intune.ManagementClient", "GetMAMFlaggedUsers", nil, "Failure preparing next results request")
 	}
 	if req == nil {
 		return
@@ -432,12 +432,12 @@ func (client ManagementClient) GetMAMFlaggedUsersNextResults(lastResults Flagged
 	resp, err := client.GetMAMFlaggedUsersSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "intune.ManagementClient", "GetMAMFlaggedUsers", resp, "Failure sending next results request request")
+		return result, autorest.NewErrorWithError(err, "intune.ManagementClient", "GetMAMFlaggedUsers", resp, "Failure sending next results request")
 	}
 
 	result, err = client.GetMAMFlaggedUsersResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "intune.ManagementClient", "GetMAMFlaggedUsers", resp, "Failure responding to next results request request")
+		err = autorest.NewErrorWithError(err, "intune.ManagementClient", "GetMAMFlaggedUsers", resp, "Failure responding to next results request")
 	}
 
 	return
@@ -507,7 +507,7 @@ func (client ManagementClient) GetMAMStatusesResponder(resp *http.Response) (res
 func (client ManagementClient) GetMAMStatusesNextResults(lastResults StatusesDefault) (result StatusesDefault, err error) {
 	req, err := lastResults.StatusesDefaultPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "intune.ManagementClient", "GetMAMStatuses", nil, "Failure preparing next results request request")
+		return result, autorest.NewErrorWithError(err, "intune.ManagementClient", "GetMAMStatuses", nil, "Failure preparing next results request")
 	}
 	if req == nil {
 		return
@@ -516,12 +516,12 @@ func (client ManagementClient) GetMAMStatusesNextResults(lastResults StatusesDef
 	resp, err := client.GetMAMStatusesSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "intune.ManagementClient", "GetMAMStatuses", resp, "Failure sending next results request request")
+		return result, autorest.NewErrorWithError(err, "intune.ManagementClient", "GetMAMStatuses", resp, "Failure sending next results request")
 	}
 
 	result, err = client.GetMAMStatusesResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "intune.ManagementClient", "GetMAMStatuses", resp, "Failure responding to next results request request")
+		err = autorest.NewErrorWithError(err, "intune.ManagementClient", "GetMAMStatuses", resp, "Failure responding to next results request")
 	}
 
 	return
@@ -670,7 +670,7 @@ func (client ManagementClient) GetMAMUserDevicesResponder(resp *http.Response) (
 func (client ManagementClient) GetMAMUserDevicesNextResults(lastResults DeviceCollection) (result DeviceCollection, err error) {
 	req, err := lastResults.DeviceCollectionPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "intune.ManagementClient", "GetMAMUserDevices", nil, "Failure preparing next results request request")
+		return result, autorest.NewErrorWithError(err, "intune.ManagementClient", "GetMAMUserDevices", nil, "Failure preparing next results request")
 	}
 	if req == nil {
 		return
@@ -679,12 +679,12 @@ func (client ManagementClient) GetMAMUserDevicesNextResults(lastResults DeviceCo
 	resp, err := client.GetMAMUserDevicesSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "intune.ManagementClient", "GetMAMUserDevices", resp, "Failure sending next results request request")
+		return result, autorest.NewErrorWithError(err, "intune.ManagementClient", "GetMAMUserDevices", resp, "Failure sending next results request")
 	}
 
 	result, err = client.GetMAMUserDevicesResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "intune.ManagementClient", "GetMAMUserDevices", resp, "Failure responding to next results request request")
+		err = autorest.NewErrorWithError(err, "intune.ManagementClient", "GetMAMUserDevices", resp, "Failure responding to next results request")
 	}
 
 	return
@@ -767,7 +767,7 @@ func (client ManagementClient) GetMAMUserFlaggedEnrolledAppsResponder(resp *http
 func (client ManagementClient) GetMAMUserFlaggedEnrolledAppsNextResults(lastResults FlaggedEnrolledAppCollection) (result FlaggedEnrolledAppCollection, err error) {
 	req, err := lastResults.FlaggedEnrolledAppCollectionPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "intune.ManagementClient", "GetMAMUserFlaggedEnrolledApps", nil, "Failure preparing next results request request")
+		return result, autorest.NewErrorWithError(err, "intune.ManagementClient", "GetMAMUserFlaggedEnrolledApps", nil, "Failure preparing next results request")
 	}
 	if req == nil {
 		return
@@ -776,12 +776,12 @@ func (client ManagementClient) GetMAMUserFlaggedEnrolledAppsNextResults(lastResu
 	resp, err := client.GetMAMUserFlaggedEnrolledAppsSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "intune.ManagementClient", "GetMAMUserFlaggedEnrolledApps", resp, "Failure sending next results request request")
+		return result, autorest.NewErrorWithError(err, "intune.ManagementClient", "GetMAMUserFlaggedEnrolledApps", resp, "Failure sending next results request")
 	}
 
 	result, err = client.GetMAMUserFlaggedEnrolledAppsResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "intune.ManagementClient", "GetMAMUserFlaggedEnrolledApps", resp, "Failure responding to next results request request")
+		err = autorest.NewErrorWithError(err, "intune.ManagementClient", "GetMAMUserFlaggedEnrolledApps", resp, "Failure responding to next results request")
 	}
 
 	return
@@ -861,7 +861,7 @@ func (client ManagementClient) GetOperationResultsResponder(resp *http.Response)
 func (client ManagementClient) GetOperationResultsNextResults(lastResults OperationResultCollection) (result OperationResultCollection, err error) {
 	req, err := lastResults.OperationResultCollectionPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "intune.ManagementClient", "GetOperationResults", nil, "Failure preparing next results request request")
+		return result, autorest.NewErrorWithError(err, "intune.ManagementClient", "GetOperationResults", nil, "Failure preparing next results request")
 	}
 	if req == nil {
 		return
@@ -870,12 +870,12 @@ func (client ManagementClient) GetOperationResultsNextResults(lastResults Operat
 	resp, err := client.GetOperationResultsSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "intune.ManagementClient", "GetOperationResults", resp, "Failure sending next results request request")
+		return result, autorest.NewErrorWithError(err, "intune.ManagementClient", "GetOperationResults", resp, "Failure sending next results request")
 	}
 
 	result, err = client.GetOperationResultsResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "intune.ManagementClient", "GetOperationResults", resp, "Failure responding to next results request request")
+		err = autorest.NewErrorWithError(err, "intune.ManagementClient", "GetOperationResults", resp, "Failure responding to next results request")
 	}
 
 	return

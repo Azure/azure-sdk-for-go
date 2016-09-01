@@ -31,6 +31,22 @@ const (
 	Autocreate AppendModeType = "autocreate"
 )
 
+// ExpiryOptionType enumerates the values for expiry option type.
+type ExpiryOptionType string
+
+const (
+	// Absolute specifies the absolute state for expiry option type.
+	Absolute ExpiryOptionType = "Absolute"
+	// NeverExpire specifies the never expire state for expiry option type.
+	NeverExpire ExpiryOptionType = "NeverExpire"
+	// RelativeToCreationDate specifies the relative to creation date state
+	// for expiry option type.
+	RelativeToCreationDate ExpiryOptionType = "RelativeToCreationDate"
+	// RelativeToNow specifies the relative to now state for expiry option
+	// type.
+	RelativeToNow ExpiryOptionType = "RelativeToNow"
+)
+
 // FileType enumerates the values for file type.
 type FileType string
 
@@ -44,10 +60,11 @@ const (
 // AclStatus is data Lake Store file or directory Access Control List
 // information.
 type AclStatus struct {
-	Entries   *[]string `json:"entries,omitempty"`
-	Group     *string   `json:"group,omitempty"`
-	Owner     *string   `json:"owner,omitempty"`
-	StickyBit *bool     `json:"stickyBit,omitempty"`
+	Entries    *[]string `json:"entries,omitempty"`
+	Group      *string   `json:"group,omitempty"`
+	Owner      *string   `json:"owner,omitempty"`
+	Permission *int32    `json:"permission,omitempty"`
+	StickyBit  *bool     `json:"stickyBit,omitempty"`
 }
 
 // AclStatusResult is data Lake Store file or directory Access Control List
@@ -180,6 +197,7 @@ type FileStatusProperties struct {
 	AccessTime       *int64   `json:"accessTime,omitempty"`
 	BlockSize        *int64   `json:"blockSize,omitempty"`
 	ChildrenNum      *int64   `json:"childrenNum,omitempty"`
+	ExpirationTime   *int64   `json:"expirationTime,omitempty"`
 	Group            *string  `json:"group,omitempty"`
 	Length           *int64   `json:"length,omitempty"`
 	ModificationTime *int64   `json:"modificationTime,omitempty"`

@@ -1,4 +1,4 @@
-package examples
+package main
 
 import (
 	"fmt"
@@ -31,18 +31,24 @@ func byInspecting() autorest.RespondDecorator {
 	}
 }
 
-func checkName(name string) {
-	c, err := helpers.LoadCredentials()
-	if err != nil {
+func main() {
+	name := "testname01"
+
+	c := map[string]string{
+		"AZURE_CLIENT_ID":       os.Getenv("AZURE_CLIENT_ID"),
+		"AZURE_CLIENT_SECRET":   os.Getenv("AZURE_CLIENT_SECRET"),
+		"AZURE_SUBSCRIPTION_ID": os.Getenv("AZURE_SUBSCRIPTION_ID"),
+		"AZURE_TENANT_ID":       os.Getenv("AZURE_TENANT_ID")}
+	if err := checkEnvVar(&c); err != nil {
 		log.Fatalf("Error: %v", err)
+		return
 	}
-
-	ac := storage.NewAccountsClient(c["subscriptionID"])
-
 	spt, err := helpers.NewServicePrincipalTokenFromCredentials(c, azure.PublicCloud.ResourceManagerEndpoint)
 	if err != nil {
 		log.Fatalf("Error: %v", err)
+		return
 	}
+	ac := storage.NewAccountsClient(c["AZURE_SUBSCRIPTION_ID"])
 	ac.Authorizer = spt
 
 	ac.Sender = autorest.CreateSender(
@@ -57,11 +63,24 @@ func checkName(name string) {
 
 	if err != nil {
 		log.Fatalf("Error: %v", err)
+		return
+	}
+	if to.Bool(cna.NameAvailable) {
+		fmt.Printf("The storage account name '%s' is available\n", name)
 	} else {
-		if to.Bool(cna.NameAvailable) {
-			fmt.Printf("The name '%s' is available\n", name)
-		} else {
-			fmt.Printf("The name '%s' is unavailable because %s\n", name, to.String(cna.Message))
+		fmt.Printf("The storage account name '%s' is unavailable because %s\n", name, to.String(cna.Message))
+	}
+}
+
+func checkEnvVar(envVars *map[string]string) error {
+	var missingVars []string
+	for varName, value := range *envVars {
+		if value == "" {
+			missingVars = append(missingVars, varName)
 		}
 	}
+	if len(missingVars) > 0 {
+		return fmt.Errorf("Missing environment variables %v", missingVars)
+	}
+	return nil
 }

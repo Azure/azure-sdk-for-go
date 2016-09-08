@@ -190,13 +190,13 @@ func (client ImportTasksClient) GetResponder(resp *http.Response) (result Import
 // Only one orderby property can be specified.
 func (client ImportTasksClient) List(skip *int32, top *int32, orderby string) (result ImportTaskListResult, err error) {
 	if err := validation.Validate([]validation.Validation{
-		{skip,
-			[]validation.Constraint{{"skip", validation.Null, false,
-				[]validation.Constraint{{"skip", validation.InclusiveMinimum, 0, nil}}}}},
-		{top,
-			[]validation.Constraint{{"top", validation.Null, false,
-				[]validation.Constraint{{"top", validation.InclusiveMaximum, 40, nil},
-					{"top", validation.InclusiveMinimum, 1, nil},
+		{TargetValue: skip,
+			Constraints: []validation.Constraint{{Target: "skip", Name: validation.Null, Rule: false,
+				Chain: []validation.Constraint{{Target: "skip", Name: validation.InclusiveMinimum, Rule: 0, Chain: nil}}}}},
+		{TargetValue: top,
+			Constraints: []validation.Constraint{{Target: "top", Name: validation.Null, Rule: false,
+				Chain: []validation.Constraint{{Target: "top", Name: validation.InclusiveMaximum, Rule: 40, Chain: nil},
+					{Target: "top", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil},
 				}}}}}); err != nil {
 		return result, validation.NewErrorWithValidationError(err, "mobileengagement.ImportTasksClient", "List")
 	}

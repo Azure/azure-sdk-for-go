@@ -56,16 +56,16 @@ func NewAccountClientWithBaseURI(baseURI string, subscriptionID string) AccountC
 // parameters for account creation.
 func (client AccountClient) Create(resourceGroupName string, accountName string, parameters AccountCreateParameters, cancel <-chan struct{}) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
-		{resourceGroupName,
-			[]validation.Constraint{{"resourceGroupName", validation.Pattern, `^[-\w\._]+$`, nil}}},
-		{accountName,
-			[]validation.Constraint{{"accountName", validation.MaxLength, 24, nil},
-				{"accountName", validation.MinLength, 3, nil},
-				{"accountName", validation.Pattern, `^[-\w\._]+$`, nil}}},
-		{parameters,
-			[]validation.Constraint{{"parameters.Properties", validation.Null, false,
-				[]validation.Constraint{{"parameters.Properties.AutoStorage", validation.Null, false,
-					[]validation.Constraint{{"parameters.Properties.AutoStorage.StorageAccountID", validation.Null, true, nil}}},
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}},
+		{TargetValue: accountName,
+			Constraints: []validation.Constraint{{Target: "accountName", Name: validation.MaxLength, Rule: 24, Chain: nil},
+				{Target: "accountName", Name: validation.MinLength, Rule: 3, Chain: nil},
+				{Target: "accountName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}},
+		{TargetValue: parameters,
+			Constraints: []validation.Constraint{{Target: "parameters.Properties", Name: validation.Null, Rule: false,
+				Chain: []validation.Constraint{{Target: "parameters.Properties.AutoStorage", Name: validation.Null, Rule: false,
+					Chain: []validation.Constraint{{Target: "parameters.Properties.AutoStorage.StorageAccountID", Name: validation.Null, Rule: true, Chain: nil}}},
 				}}}}}); err != nil {
 		return result, validation.NewErrorWithValidationError(err, "batch.AccountClient", "Create")
 	}
@@ -141,12 +141,12 @@ func (client AccountClient) CreateResponder(resp *http.Response) (result autores
 // deleted.
 func (client AccountClient) Delete(resourceGroupName string, accountName string, cancel <-chan struct{}) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
-		{resourceGroupName,
-			[]validation.Constraint{{"resourceGroupName", validation.Pattern, `^[-\w\._]+$`, nil}}},
-		{accountName,
-			[]validation.Constraint{{"accountName", validation.MaxLength, 24, nil},
-				{"accountName", validation.MinLength, 3, nil},
-				{"accountName", validation.Pattern, `^[-\w\._]+$`, nil}}}}); err != nil {
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}},
+		{TargetValue: accountName,
+			Constraints: []validation.Constraint{{Target: "accountName", Name: validation.MaxLength, Rule: 24, Chain: nil},
+				{Target: "accountName", Name: validation.MinLength, Rule: 3, Chain: nil},
+				{Target: "accountName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewErrorWithValidationError(err, "batch.AccountClient", "Delete")
 	}
 
@@ -215,12 +215,12 @@ func (client AccountClient) DeleteResponder(resp *http.Response) (result autores
 // account. accountName is the name of the account.
 func (client AccountClient) Get(resourceGroupName string, accountName string) (result AccountResource, err error) {
 	if err := validation.Validate([]validation.Validation{
-		{resourceGroupName,
-			[]validation.Constraint{{"resourceGroupName", validation.Pattern, `^[-\w\._]+$`, nil}}},
-		{accountName,
-			[]validation.Constraint{{"accountName", validation.MaxLength, 24, nil},
-				{"accountName", validation.MinLength, 3, nil},
-				{"accountName", validation.Pattern, `^[-\w\._]+$`, nil}}}}); err != nil {
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}},
+		{TargetValue: accountName,
+			Constraints: []validation.Constraint{{Target: "accountName", Name: validation.MaxLength, Rule: 24, Chain: nil},
+				{Target: "accountName", Name: validation.MinLength, Rule: 3, Chain: nil},
+				{Target: "accountName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewErrorWithValidationError(err, "batch.AccountClient", "Get")
 	}
 
@@ -372,8 +372,8 @@ func (client AccountClient) ListNextResults(lastResults AccountListResult) (resu
 // list.
 func (client AccountClient) ListByResourceGroup(resourceGroupName string) (result AccountListResult, err error) {
 	if err := validation.Validate([]validation.Validation{
-		{resourceGroupName,
-			[]validation.Constraint{{"resourceGroupName", validation.Pattern, `^[-\w\._]+$`, nil}}}}); err != nil {
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewErrorWithValidationError(err, "batch.AccountClient", "ListByResourceGroup")
 	}
 
@@ -464,12 +464,12 @@ func (client AccountClient) ListByResourceGroupNextResults(lastResults AccountLi
 // account. accountName is the name of the account.
 func (client AccountClient) ListKeys(resourceGroupName string, accountName string) (result AccountListKeyResult, err error) {
 	if err := validation.Validate([]validation.Validation{
-		{resourceGroupName,
-			[]validation.Constraint{{"resourceGroupName", validation.Pattern, `^[-\w\._]+$`, nil}}},
-		{accountName,
-			[]validation.Constraint{{"accountName", validation.MaxLength, 24, nil},
-				{"accountName", validation.MinLength, 3, nil},
-				{"accountName", validation.Pattern, `^[-\w\._]+$`, nil}}}}); err != nil {
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}},
+		{TargetValue: accountName,
+			Constraints: []validation.Constraint{{Target: "accountName", Name: validation.MaxLength, Rule: 24, Chain: nil},
+				{Target: "accountName", Name: validation.MinLength, Rule: 3, Chain: nil},
+				{Target: "accountName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewErrorWithValidationError(err, "batch.AccountClient", "ListKeys")
 	}
 
@@ -539,12 +539,12 @@ func (client AccountClient) ListKeysResponder(resp *http.Response) (result Accou
 // key to regenerate.
 func (client AccountClient) RegenerateKey(resourceGroupName string, accountName string, parameters AccountRegenerateKeyParameters) (result AccountRegenerateKeyResult, err error) {
 	if err := validation.Validate([]validation.Validation{
-		{resourceGroupName,
-			[]validation.Constraint{{"resourceGroupName", validation.Pattern, `^[-\w\._]+$`, nil}}},
-		{accountName,
-			[]validation.Constraint{{"accountName", validation.MaxLength, 24, nil},
-				{"accountName", validation.MinLength, 3, nil},
-				{"accountName", validation.Pattern, `^[-\w\._]+$`, nil}}}}); err != nil {
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}},
+		{TargetValue: accountName,
+			Constraints: []validation.Constraint{{Target: "accountName", Name: validation.MaxLength, Rule: 24, Chain: nil},
+				{Target: "accountName", Name: validation.MinLength, Rule: 3, Chain: nil},
+				{Target: "accountName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewErrorWithValidationError(err, "batch.AccountClient", "RegenerateKey")
 	}
 
@@ -615,12 +615,12 @@ func (client AccountClient) RegenerateKeyResponder(resp *http.Response) (result 
 // account. accountName is the name of the Batch account.
 func (client AccountClient) SynchronizeAutoStorageKeys(resourceGroupName string, accountName string) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
-		{resourceGroupName,
-			[]validation.Constraint{{"resourceGroupName", validation.Pattern, `^[-\w\._]+$`, nil}}},
-		{accountName,
-			[]validation.Constraint{{"accountName", validation.MaxLength, 24, nil},
-				{"accountName", validation.MinLength, 3, nil},
-				{"accountName", validation.Pattern, `^[-\w\._]+$`, nil}}}}); err != nil {
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}},
+		{TargetValue: accountName,
+			Constraints: []validation.Constraint{{Target: "accountName", Name: validation.MaxLength, Rule: 24, Chain: nil},
+				{Target: "accountName", Name: validation.MinLength, Rule: 3, Chain: nil},
+				{Target: "accountName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewErrorWithValidationError(err, "batch.AccountClient", "SynchronizeAutoStorageKeys")
 	}
 
@@ -688,12 +688,12 @@ func (client AccountClient) SynchronizeAutoStorageKeysResponder(resp *http.Respo
 // parameters for account update.
 func (client AccountClient) Update(resourceGroupName string, accountName string, parameters AccountUpdateParameters) (result AccountResource, err error) {
 	if err := validation.Validate([]validation.Validation{
-		{resourceGroupName,
-			[]validation.Constraint{{"resourceGroupName", validation.Pattern, `^[-\w\._]+$`, nil}}},
-		{accountName,
-			[]validation.Constraint{{"accountName", validation.MaxLength, 24, nil},
-				{"accountName", validation.MinLength, 3, nil},
-				{"accountName", validation.Pattern, `^[-\w\._]+$`, nil}}}}); err != nil {
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}},
+		{TargetValue: accountName,
+			Constraints: []validation.Constraint{{Target: "accountName", Name: validation.MaxLength, Rule: 24, Chain: nil},
+				{Target: "accountName", Name: validation.MinLength, Rule: 3, Chain: nil},
+				{Target: "accountName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewErrorWithValidationError(err, "batch.AccountClient", "Update")
 	}
 

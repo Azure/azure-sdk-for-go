@@ -48,8 +48,8 @@ func NewResourceOperationsClientWithBaseURI(baseURI string, subscriptionID strin
 // operationInputs structure to the desired iothub name.
 func (client ResourceOperationsClient) CheckNameAvailability(operationInputs OperationInputs) (result NameAvailabilityInfo, err error) {
 	if err := validation.Validate([]validation.Validation{
-		{operationInputs,
-			[]validation.Constraint{{"operationInputs.Name", validation.Null, true, nil}}}}); err != nil {
+		{TargetValue: operationInputs,
+			Constraints: []validation.Constraint{{Target: "operationInputs.Name", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
 		return result, validation.NewErrorWithValidationError(err, "iothub.ResourceOperationsClient", "CheckNameAvailability")
 	}
 
@@ -186,23 +186,23 @@ func (client ResourceOperationsClient) CreateEventHubConsumerGroupResponder(resp
 // name of the resource. iotHubDescription is the Iot hub description.
 func (client ResourceOperationsClient) CreateOrUpdate(resourceGroupName string, resourceName string, iotHubDescription Description, cancel <-chan struct{}) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
-		{iotHubDescription,
-			[]validation.Constraint{{"iotHubDescription.Properties", validation.Null, false,
-				[]validation.Constraint{{"iotHubDescription.Properties.CloudToDevice", validation.Null, false,
-					[]validation.Constraint{{"iotHubDescription.Properties.CloudToDevice.MaxDeliveryCount", validation.Null, false,
-						[]validation.Constraint{{"iotHubDescription.Properties.CloudToDevice.MaxDeliveryCount", validation.InclusiveMaximum, 100, nil},
-							{"iotHubDescription.Properties.CloudToDevice.MaxDeliveryCount", validation.InclusiveMinimum, 1, nil},
+		{TargetValue: iotHubDescription,
+			Constraints: []validation.Constraint{{Target: "iotHubDescription.Properties", Name: validation.Null, Rule: false,
+				Chain: []validation.Constraint{{Target: "iotHubDescription.Properties.CloudToDevice", Name: validation.Null, Rule: false,
+					Chain: []validation.Constraint{{Target: "iotHubDescription.Properties.CloudToDevice.MaxDeliveryCount", Name: validation.Null, Rule: false,
+						Chain: []validation.Constraint{{Target: "iotHubDescription.Properties.CloudToDevice.MaxDeliveryCount", Name: validation.InclusiveMaximum, Rule: 100, Chain: nil},
+							{Target: "iotHubDescription.Properties.CloudToDevice.MaxDeliveryCount", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil},
 						}},
-						{"iotHubDescription.Properties.CloudToDevice.Feedback", validation.Null, false,
-							[]validation.Constraint{{"iotHubDescription.Properties.CloudToDevice.Feedback.MaxDeliveryCount", validation.Null, false,
-								[]validation.Constraint{{"iotHubDescription.Properties.CloudToDevice.Feedback.MaxDeliveryCount", validation.InclusiveMaximum, 100, nil},
-									{"iotHubDescription.Properties.CloudToDevice.Feedback.MaxDeliveryCount", validation.InclusiveMinimum, 1, nil},
+						{Target: "iotHubDescription.Properties.CloudToDevice.Feedback", Name: validation.Null, Rule: false,
+							Chain: []validation.Constraint{{Target: "iotHubDescription.Properties.CloudToDevice.Feedback.MaxDeliveryCount", Name: validation.Null, Rule: false,
+								Chain: []validation.Constraint{{Target: "iotHubDescription.Properties.CloudToDevice.Feedback.MaxDeliveryCount", Name: validation.InclusiveMaximum, Rule: 100, Chain: nil},
+									{Target: "iotHubDescription.Properties.CloudToDevice.Feedback.MaxDeliveryCount", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil},
 								}},
 							}},
 					}},
 				}},
-				{"iotHubDescription.Sku", validation.Null, false,
-					[]validation.Constraint{{"Tier", validation.ReadOnly, true, nil}}}}}}); err != nil {
+				{Target: "iotHubDescription.Sku", Name: validation.Null, Rule: false,
+					Chain: []validation.Constraint{{Target: "iotHubDescription.Sku.Tier", Name: validation.ReadOnly, Rule: true, Chain: nil}}}}}}); err != nil {
 		return result, validation.NewErrorWithValidationError(err, "iothub.ResourceOperationsClient", "CreateOrUpdate")
 	}
 
@@ -405,9 +405,9 @@ func (client ResourceOperationsClient) DeleteEventHubConsumerGroupResponder(resp
 // parameters.
 func (client ResourceOperationsClient) ExportDevices(resourceGroupName string, resourceName string, exportDevicesParameters ExportDevicesRequest) (result JobResponse, err error) {
 	if err := validation.Validate([]validation.Validation{
-		{exportDevicesParameters,
-			[]validation.Constraint{{"exportDevicesParameters.ExportBlobContainerURI", validation.Null, true, nil},
-				{"exportDevicesParameters.ExcludeKeys", validation.Null, true, nil}}}}); err != nil {
+		{TargetValue: exportDevicesParameters,
+			Constraints: []validation.Constraint{{Target: "exportDevicesParameters.ExportBlobContainerURI", Name: validation.Null, Rule: true, Chain: nil},
+				{Target: "exportDevicesParameters.ExcludeKeys", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
 		return result, validation.NewErrorWithValidationError(err, "iothub.ResourceOperationsClient", "ExportDevices")
 	}
 
@@ -972,9 +972,9 @@ func (client ResourceOperationsClient) GetValidSkusNextResults(lastResults SkuDe
 // parameters.
 func (client ResourceOperationsClient) ImportDevices(resourceGroupName string, resourceName string, importDevicesParameters ImportDevicesRequest) (result JobResponse, err error) {
 	if err := validation.Validate([]validation.Validation{
-		{importDevicesParameters,
-			[]validation.Constraint{{"importDevicesParameters.InputBlobContainerURI", validation.Null, true, nil},
-				{"importDevicesParameters.OutputBlobContainerURI", validation.Null, true, nil}}}}); err != nil {
+		{TargetValue: importDevicesParameters,
+			Constraints: []validation.Constraint{{Target: "importDevicesParameters.InputBlobContainerURI", Name: validation.Null, Rule: true, Chain: nil},
+				{Target: "importDevicesParameters.OutputBlobContainerURI", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
 		return result, validation.NewErrorWithValidationError(err, "iothub.ResourceOperationsClient", "ImportDevices")
 	}
 

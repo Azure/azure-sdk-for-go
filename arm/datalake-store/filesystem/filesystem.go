@@ -196,8 +196,8 @@ func (client Client) CheckAccessResponder(resp *http.Response) (result autorest.
 // constant value for the operation.
 func (client Client) Concat(destinationPath string, sources []string, op string) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
-		{sources,
-			[]validation.Constraint{{"sources", validation.Null, true, nil}}}}); err != nil {
+		{TargetValue: sources,
+			Constraints: []validation.Constraint{{Target: "sources", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
 		return result, validation.NewErrorWithValidationError(err, "filesystem.Client", "Concat")
 	}
 

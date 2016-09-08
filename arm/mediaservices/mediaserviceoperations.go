@@ -47,11 +47,11 @@ func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) Opera
 // of a name.
 func (client OperationsClient) CheckNameAvailabilty(checkNameAvailabilityInput CheckNameAvailabilityInput) (result CheckNameAvailabilityOutput, err error) {
 	if err := validation.Validate([]validation.Validation{
-		{checkNameAvailabilityInput,
-			[]validation.Constraint{{"checkNameAvailabilityInput.Name", validation.Null, false,
-				[]validation.Constraint{{"checkNameAvailabilityInput.Name", validation.MaxLength, 24, nil},
-					{"checkNameAvailabilityInput.Name", validation.MinLength, 3, nil},
-					{"checkNameAvailabilityInput.Name", validation.Pattern, `^[a-z0-9]`, nil},
+		{TargetValue: checkNameAvailabilityInput,
+			Constraints: []validation.Constraint{{Target: "checkNameAvailabilityInput.Name", Name: validation.Null, Rule: false,
+				Chain: []validation.Constraint{{Target: "checkNameAvailabilityInput.Name", Name: validation.MaxLength, Rule: 24, Chain: nil},
+					{Target: "checkNameAvailabilityInput.Name", Name: validation.MinLength, Rule: 3, Chain: nil},
+					{Target: "checkNameAvailabilityInput.Name", Name: validation.Pattern, Rule: `^[a-z0-9]`, Chain: nil},
 				}}}}}); err != nil {
 		return result, validation.NewErrorWithValidationError(err, "mediaservices.OperationsClient", "CheckNameAvailabilty")
 	}
@@ -121,10 +121,10 @@ func (client OperationsClient) CheckNameAvailabiltyResponder(resp *http.Response
 // is media Service properties needed for creation.
 func (client OperationsClient) Create(resourceGroupName string, mediaServiceName string, mediaService MediaService) (result MediaService, err error) {
 	if err := validation.Validate([]validation.Validation{
-		{mediaServiceName,
-			[]validation.Constraint{{"mediaServiceName", validation.MaxLength, 24, nil},
-				{"mediaServiceName", validation.MinLength, 3, nil},
-				{"mediaServiceName", validation.Pattern, `^[a-z0-9]`, nil}}}}); err != nil {
+		{TargetValue: mediaServiceName,
+			Constraints: []validation.Constraint{{Target: "mediaServiceName", Name: validation.MaxLength, Rule: 24, Chain: nil},
+				{Target: "mediaServiceName", Name: validation.MinLength, Rule: 3, Chain: nil},
+				{Target: "mediaServiceName", Name: validation.Pattern, Rule: `^[a-z0-9]`, Chain: nil}}}}); err != nil {
 		return result, validation.NewErrorWithValidationError(err, "mediaservices.OperationsClient", "Create")
 	}
 
@@ -194,10 +194,10 @@ func (client OperationsClient) CreateResponder(resp *http.Response) (result Medi
 // subscription. mediaServiceName is name of the Media Service.
 func (client OperationsClient) Delete(resourceGroupName string, mediaServiceName string) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
-		{mediaServiceName,
-			[]validation.Constraint{{"mediaServiceName", validation.MaxLength, 24, nil},
-				{"mediaServiceName", validation.MinLength, 3, nil},
-				{"mediaServiceName", validation.Pattern, `^[a-z0-9]`, nil}}}}); err != nil {
+		{TargetValue: mediaServiceName,
+			Constraints: []validation.Constraint{{Target: "mediaServiceName", Name: validation.MaxLength, Rule: 24, Chain: nil},
+				{Target: "mediaServiceName", Name: validation.MinLength, Rule: 3, Chain: nil},
+				{Target: "mediaServiceName", Name: validation.Pattern, Rule: `^[a-z0-9]`, Chain: nil}}}}); err != nil {
 		return result, validation.NewErrorWithValidationError(err, "mediaservices.OperationsClient", "Delete")
 	}
 
@@ -264,10 +264,10 @@ func (client OperationsClient) DeleteResponder(resp *http.Response) (result auto
 // subscription. mediaServiceName is name of the Media Service.
 func (client OperationsClient) Get(resourceGroupName string, mediaServiceName string) (result MediaService, err error) {
 	if err := validation.Validate([]validation.Validation{
-		{mediaServiceName,
-			[]validation.Constraint{{"mediaServiceName", validation.MaxLength, 24, nil},
-				{"mediaServiceName", validation.MinLength, 3, nil},
-				{"mediaServiceName", validation.Pattern, `^[a-z0-9]`, nil}}}}); err != nil {
+		{TargetValue: mediaServiceName,
+			Constraints: []validation.Constraint{{Target: "mediaServiceName", Name: validation.MaxLength, Rule: 24, Chain: nil},
+				{Target: "mediaServiceName", Name: validation.MinLength, Rule: 3, Chain: nil},
+				{Target: "mediaServiceName", Name: validation.Pattern, Rule: `^[a-z0-9]`, Chain: nil}}}}); err != nil {
 		return result, validation.NewErrorWithValidationError(err, "mediaservices.OperationsClient", "Get")
 	}
 
@@ -397,10 +397,10 @@ func (client OperationsClient) ListByResourceGroupResponder(resp *http.Response)
 // subscription. mediaServiceName is name of the Media Service.
 func (client OperationsClient) ListKeys(resourceGroupName string, mediaServiceName string) (result ServiceKeys, err error) {
 	if err := validation.Validate([]validation.Validation{
-		{mediaServiceName,
-			[]validation.Constraint{{"mediaServiceName", validation.MaxLength, 24, nil},
-				{"mediaServiceName", validation.MinLength, 3, nil},
-				{"mediaServiceName", validation.Pattern, `^[a-z0-9]`, nil}}}}); err != nil {
+		{TargetValue: mediaServiceName,
+			Constraints: []validation.Constraint{{Target: "mediaServiceName", Name: validation.MaxLength, Rule: 24, Chain: nil},
+				{Target: "mediaServiceName", Name: validation.MinLength, Rule: 3, Chain: nil},
+				{Target: "mediaServiceName", Name: validation.Pattern, Rule: `^[a-z0-9]`, Chain: nil}}}}); err != nil {
 		return result, validation.NewErrorWithValidationError(err, "mediaservices.OperationsClient", "ListKeys")
 	}
 
@@ -470,10 +470,10 @@ func (client OperationsClient) ListKeysResponder(resp *http.Response) (result Se
 // key.
 func (client OperationsClient) RegenerateKey(resourceGroupName string, mediaServiceName string, regenerateKeyInput RegenerateKeyInput) (result RegenerateKeyOutput, err error) {
 	if err := validation.Validate([]validation.Validation{
-		{mediaServiceName,
-			[]validation.Constraint{{"mediaServiceName", validation.MaxLength, 24, nil},
-				{"mediaServiceName", validation.MinLength, 3, nil},
-				{"mediaServiceName", validation.Pattern, `^[a-z0-9]`, nil}}}}); err != nil {
+		{TargetValue: mediaServiceName,
+			Constraints: []validation.Constraint{{Target: "mediaServiceName", Name: validation.MaxLength, Rule: 24, Chain: nil},
+				{Target: "mediaServiceName", Name: validation.MinLength, Rule: 3, Chain: nil},
+				{Target: "mediaServiceName", Name: validation.Pattern, Rule: `^[a-z0-9]`, Chain: nil}}}}); err != nil {
 		return result, validation.NewErrorWithValidationError(err, "mediaservices.OperationsClient", "RegenerateKey")
 	}
 
@@ -545,10 +545,10 @@ func (client OperationsClient) RegenerateKeyResponder(resp *http.Response) (resu
 // storage account to the Media Service.
 func (client OperationsClient) SyncStorageKeys(resourceGroupName string, mediaServiceName string, syncStorageKeysInput SyncStorageKeysInput) (result MediaService, err error) {
 	if err := validation.Validate([]validation.Validation{
-		{mediaServiceName,
-			[]validation.Constraint{{"mediaServiceName", validation.MaxLength, 24, nil},
-				{"mediaServiceName", validation.MinLength, 3, nil},
-				{"mediaServiceName", validation.Pattern, `^[a-z0-9]`, nil}}}}); err != nil {
+		{TargetValue: mediaServiceName,
+			Constraints: []validation.Constraint{{Target: "mediaServiceName", Name: validation.MaxLength, Rule: 24, Chain: nil},
+				{Target: "mediaServiceName", Name: validation.MinLength, Rule: 3, Chain: nil},
+				{Target: "mediaServiceName", Name: validation.Pattern, Rule: `^[a-z0-9]`, Chain: nil}}}}); err != nil {
 		return result, validation.NewErrorWithValidationError(err, "mediaservices.OperationsClient", "SyncStorageKeys")
 	}
 
@@ -619,10 +619,10 @@ func (client OperationsClient) SyncStorageKeysResponder(resp *http.Response) (re
 // is media Service properties needed for update.
 func (client OperationsClient) Update(resourceGroupName string, mediaServiceName string, mediaService MediaService) (result MediaService, err error) {
 	if err := validation.Validate([]validation.Validation{
-		{mediaServiceName,
-			[]validation.Constraint{{"mediaServiceName", validation.MaxLength, 24, nil},
-				{"mediaServiceName", validation.MinLength, 3, nil},
-				{"mediaServiceName", validation.Pattern, `^[a-z0-9]`, nil}}}}); err != nil {
+		{TargetValue: mediaServiceName,
+			Constraints: []validation.Constraint{{Target: "mediaServiceName", Name: validation.MaxLength, Rule: 24, Chain: nil},
+				{Target: "mediaServiceName", Name: validation.MinLength, Rule: 3, Chain: nil},
+				{Target: "mediaServiceName", Name: validation.Pattern, Rule: `^[a-z0-9]`, Chain: nil}}}}); err != nil {
 		return result, validation.NewErrorWithValidationError(err, "mediaservices.OperationsClient", "Update")
 	}
 

@@ -51,14 +51,14 @@ func NewApplicationOperationsClientWithBaseURI(baseURI string, subscriptionID st
 // parameters is the parameters for the request.
 func (client ApplicationOperationsClient) ActivateApplicationPackage(resourceGroupName string, accountName string, id string, version string, parameters ActivateApplicationPackageParameters) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
-		{resourceGroupName,
-			[]validation.Constraint{{"resourceGroupName", validation.Pattern, `^[-\w\._]+$`, nil}}},
-		{accountName,
-			[]validation.Constraint{{"accountName", validation.MaxLength, 24, nil},
-				{"accountName", validation.MinLength, 3, nil},
-				{"accountName", validation.Pattern, `^[-\w\._]+$`, nil}}},
-		{parameters,
-			[]validation.Constraint{{"parameters.Format", validation.Null, true, nil}}}}); err != nil {
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}},
+		{TargetValue: accountName,
+			Constraints: []validation.Constraint{{Target: "accountName", Name: validation.MaxLength, Rule: 24, Chain: nil},
+				{Target: "accountName", Name: validation.MinLength, Rule: 3, Chain: nil},
+				{Target: "accountName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}},
+		{TargetValue: parameters,
+			Constraints: []validation.Constraint{{Target: "parameters.Format", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
 		return result, validation.NewErrorWithValidationError(err, "batch.ApplicationOperationsClient", "ActivateApplicationPackage")
 	}
 
@@ -130,12 +130,12 @@ func (client ApplicationOperationsClient) ActivateApplicationPackageResponder(re
 // the id of the application. parameters is the parameters for the request.
 func (client ApplicationOperationsClient) AddApplication(resourceGroupName string, accountName string, applicationID string, parameters *AddApplicationParameters) (result Application, err error) {
 	if err := validation.Validate([]validation.Validation{
-		{resourceGroupName,
-			[]validation.Constraint{{"resourceGroupName", validation.Pattern, `^[-\w\._]+$`, nil}}},
-		{accountName,
-			[]validation.Constraint{{"accountName", validation.MaxLength, 24, nil},
-				{"accountName", validation.MinLength, 3, nil},
-				{"accountName", validation.Pattern, `^[-\w\._]+$`, nil}}}}); err != nil {
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}},
+		{TargetValue: accountName,
+			Constraints: []validation.Constraint{{Target: "accountName", Name: validation.MaxLength, Rule: 24, Chain: nil},
+				{Target: "accountName", Name: validation.MinLength, Rule: 3, Chain: nil},
+				{Target: "accountName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewErrorWithValidationError(err, "batch.ApplicationOperationsClient", "AddApplication")
 	}
 
@@ -210,12 +210,12 @@ func (client ApplicationOperationsClient) AddApplicationResponder(resp *http.Res
 // the id of the application. version is the version of the application.
 func (client ApplicationOperationsClient) AddApplicationPackage(resourceGroupName string, accountName string, applicationID string, version string) (result AddApplicationPackageResult, err error) {
 	if err := validation.Validate([]validation.Validation{
-		{resourceGroupName,
-			[]validation.Constraint{{"resourceGroupName", validation.Pattern, `^[-\w\._]+$`, nil}}},
-		{accountName,
-			[]validation.Constraint{{"accountName", validation.MaxLength, 24, nil},
-				{"accountName", validation.MinLength, 3, nil},
-				{"accountName", validation.Pattern, `^[-\w\._]+$`, nil}}}}); err != nil {
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}},
+		{TargetValue: accountName,
+			Constraints: []validation.Constraint{{Target: "accountName", Name: validation.MaxLength, Rule: 24, Chain: nil},
+				{Target: "accountName", Name: validation.MinLength, Rule: 3, Chain: nil},
+				{Target: "accountName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewErrorWithValidationError(err, "batch.ApplicationOperationsClient", "AddApplicationPackage")
 	}
 
@@ -286,12 +286,12 @@ func (client ApplicationOperationsClient) AddApplicationPackageResponder(resp *h
 // the id of the application.
 func (client ApplicationOperationsClient) DeleteApplication(resourceGroupName string, accountName string, applicationID string) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
-		{resourceGroupName,
-			[]validation.Constraint{{"resourceGroupName", validation.Pattern, `^[-\w\._]+$`, nil}}},
-		{accountName,
-			[]validation.Constraint{{"accountName", validation.MaxLength, 24, nil},
-				{"accountName", validation.MinLength, 3, nil},
-				{"accountName", validation.Pattern, `^[-\w\._]+$`, nil}}}}); err != nil {
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}},
+		{TargetValue: accountName,
+			Constraints: []validation.Constraint{{Target: "accountName", Name: validation.MaxLength, Rule: 24, Chain: nil},
+				{Target: "accountName", Name: validation.MinLength, Rule: 3, Chain: nil},
+				{Target: "accountName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewErrorWithValidationError(err, "batch.ApplicationOperationsClient", "DeleteApplication")
 	}
 
@@ -362,12 +362,12 @@ func (client ApplicationOperationsClient) DeleteApplicationResponder(resp *http.
 // delete.
 func (client ApplicationOperationsClient) DeleteApplicationPackage(resourceGroupName string, accountName string, applicationID string, version string) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
-		{resourceGroupName,
-			[]validation.Constraint{{"resourceGroupName", validation.Pattern, `^[-\w\._]+$`, nil}}},
-		{accountName,
-			[]validation.Constraint{{"accountName", validation.MaxLength, 24, nil},
-				{"accountName", validation.MinLength, 3, nil},
-				{"accountName", validation.Pattern, `^[-\w\._]+$`, nil}}}}); err != nil {
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}},
+		{TargetValue: accountName,
+			Constraints: []validation.Constraint{{Target: "accountName", Name: validation.MaxLength, Rule: 24, Chain: nil},
+				{Target: "accountName", Name: validation.MinLength, Rule: 3, Chain: nil},
+				{Target: "accountName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewErrorWithValidationError(err, "batch.ApplicationOperationsClient", "DeleteApplicationPackage")
 	}
 
@@ -437,12 +437,12 @@ func (client ApplicationOperationsClient) DeleteApplicationPackageResponder(resp
 // the id of the application.
 func (client ApplicationOperationsClient) GetApplication(resourceGroupName string, accountName string, applicationID string) (result Application, err error) {
 	if err := validation.Validate([]validation.Validation{
-		{resourceGroupName,
-			[]validation.Constraint{{"resourceGroupName", validation.Pattern, `^[-\w\._]+$`, nil}}},
-		{accountName,
-			[]validation.Constraint{{"accountName", validation.MaxLength, 24, nil},
-				{"accountName", validation.MinLength, 3, nil},
-				{"accountName", validation.Pattern, `^[-\w\._]+$`, nil}}}}); err != nil {
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}},
+		{TargetValue: accountName,
+			Constraints: []validation.Constraint{{Target: "accountName", Name: validation.MaxLength, Rule: 24, Chain: nil},
+				{Target: "accountName", Name: validation.MinLength, Rule: 3, Chain: nil},
+				{Target: "accountName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewErrorWithValidationError(err, "batch.ApplicationOperationsClient", "GetApplication")
 	}
 
@@ -513,12 +513,12 @@ func (client ApplicationOperationsClient) GetApplicationResponder(resp *http.Res
 // the id of the application. version is the version of the application.
 func (client ApplicationOperationsClient) GetApplicationPackage(resourceGroupName string, accountName string, applicationID string, version string) (result GetApplicationPackageResult, err error) {
 	if err := validation.Validate([]validation.Validation{
-		{resourceGroupName,
-			[]validation.Constraint{{"resourceGroupName", validation.Pattern, `^[-\w\._]+$`, nil}}},
-		{accountName,
-			[]validation.Constraint{{"accountName", validation.MaxLength, 24, nil},
-				{"accountName", validation.MinLength, 3, nil},
-				{"accountName", validation.Pattern, `^[-\w\._]+$`, nil}}}}); err != nil {
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}},
+		{TargetValue: accountName,
+			Constraints: []validation.Constraint{{Target: "accountName", Name: validation.MaxLength, Rule: 24, Chain: nil},
+				{Target: "accountName", Name: validation.MinLength, Rule: 3, Chain: nil},
+				{Target: "accountName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewErrorWithValidationError(err, "batch.ApplicationOperationsClient", "GetApplicationPackage")
 	}
 
@@ -589,12 +589,12 @@ func (client ApplicationOperationsClient) GetApplicationPackageResponder(resp *h
 // maximum number of items to return in the response.
 func (client ApplicationOperationsClient) List(resourceGroupName string, accountName string, maxresults *int32) (result ListApplicationsResult, err error) {
 	if err := validation.Validate([]validation.Validation{
-		{resourceGroupName,
-			[]validation.Constraint{{"resourceGroupName", validation.Pattern, `^[-\w\._]+$`, nil}}},
-		{accountName,
-			[]validation.Constraint{{"accountName", validation.MaxLength, 24, nil},
-				{"accountName", validation.MinLength, 3, nil},
-				{"accountName", validation.Pattern, `^[-\w\._]+$`, nil}}}}); err != nil {
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}},
+		{TargetValue: accountName,
+			Constraints: []validation.Constraint{{Target: "accountName", Name: validation.MaxLength, Rule: 24, Chain: nil},
+				{Target: "accountName", Name: validation.MinLength, Rule: 3, Chain: nil},
+				{Target: "accountName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewErrorWithValidationError(err, "batch.ApplicationOperationsClient", "List")
 	}
 
@@ -690,12 +690,12 @@ func (client ApplicationOperationsClient) ListNextResults(lastResults ListApplic
 // the id of the application. parameters is the parameters for the request.
 func (client ApplicationOperationsClient) UpdateApplication(resourceGroupName string, accountName string, applicationID string, parameters UpdateApplicationParameters) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
-		{resourceGroupName,
-			[]validation.Constraint{{"resourceGroupName", validation.Pattern, `^[-\w\._]+$`, nil}}},
-		{accountName,
-			[]validation.Constraint{{"accountName", validation.MaxLength, 24, nil},
-				{"accountName", validation.MinLength, 3, nil},
-				{"accountName", validation.Pattern, `^[-\w\._]+$`, nil}}}}); err != nil {
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}},
+		{TargetValue: accountName,
+			Constraints: []validation.Constraint{{Target: "accountName", Name: validation.MaxLength, Rule: 24, Chain: nil},
+				{Target: "accountName", Name: validation.MinLength, Rule: 3, Chain: nil},
+				{Target: "accountName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewErrorWithValidationError(err, "batch.ApplicationOperationsClient", "UpdateApplication")
 	}
 

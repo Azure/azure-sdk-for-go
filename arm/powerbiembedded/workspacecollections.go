@@ -117,10 +117,10 @@ func (client WorkspaceCollectionsClient) CheckNameAvailabilityResponder(resp *ht
 // request
 func (client WorkspaceCollectionsClient) Create(resourceGroupName string, workspaceCollectionName string, body CreateWorkspaceCollectionRequest) (result WorkspaceCollection, err error) {
 	if err := validation.Validate([]validation.Validation{
-		{body,
-			[]validation.Constraint{{"body.Sku", validation.Null, false,
-				[]validation.Constraint{{"body.Sku.Name", validation.Null, true, nil},
-					{"body.Sku.Tier", validation.Null, true, nil},
+		{TargetValue: body,
+			Constraints: []validation.Constraint{{Target: "body.Sku", Name: validation.Null, Rule: false,
+				Chain: []validation.Constraint{{Target: "body.Sku.Name", Name: validation.Null, Rule: true, Chain: nil},
+					{Target: "body.Sku.Tier", Name: validation.Null, Rule: true, Chain: nil},
 				}}}}}); err != nil {
 		return result, validation.NewErrorWithValidationError(err, "powerbiembedded.WorkspaceCollectionsClient", "Create")
 	}

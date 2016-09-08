@@ -48,14 +48,14 @@ func NewClientWithBaseURI(baseURI string, subscriptionID string) Client {
 // redis operation.
 func (client Client) CreateOrUpdate(resourceGroupName string, name string, parameters CreateOrUpdateParameters) (result ResourceWithAccessKey, err error) {
 	if err := validation.Validate([]validation.Validation{
-		{parameters,
-			[]validation.Constraint{{"parameters.Properties", validation.Null, true,
-				[]validation.Constraint{{"parameters.Properties.Sku", validation.Null, true,
-					[]validation.Constraint{{"parameters.Properties.Sku.Capacity", validation.Null, true, nil}}},
-					{"parameters.Properties.SubnetID", validation.Null, false,
-						[]validation.Constraint{{"parameters.Properties.SubnetID", validation.Pattern, `^/subscriptions/[^/]*/resourceGroups/[^/]*/providers/Microsoft.(ClassicNetwork|Network)/virtualNetworks/[^/]*/subnets/[^/]*$`, nil}}},
-					{"parameters.Properties.StaticIP", validation.Null, false,
-						[]validation.Constraint{{"parameters.Properties.StaticIP", validation.Pattern, `^\d+\.\d+\.\d+\.\d+$`, nil}}},
+		{TargetValue: parameters,
+			Constraints: []validation.Constraint{{Target: "parameters.Properties", Name: validation.Null, Rule: true,
+				Chain: []validation.Constraint{{Target: "parameters.Properties.Sku", Name: validation.Null, Rule: true,
+					Chain: []validation.Constraint{{Target: "parameters.Properties.Sku.Capacity", Name: validation.Null, Rule: true, Chain: nil}}},
+					{Target: "parameters.Properties.SubnetID", Name: validation.Null, Rule: false,
+						Chain: []validation.Constraint{{Target: "parameters.Properties.SubnetID", Name: validation.Pattern, Rule: `^/subscriptions/[^/]*/resourceGroups/[^/]*/providers/Microsoft.(ClassicNetwork|Network)/virtualNetworks/[^/]*/subnets/[^/]*$`, Chain: nil}}},
+					{Target: "parameters.Properties.StaticIP", Name: validation.Null, Rule: false,
+						Chain: []validation.Constraint{{Target: "parameters.Properties.StaticIP", Name: validation.Pattern, Rule: `^\d+\.\d+\.\d+\.\d+$`, Chain: nil}}},
 				}}}}}); err != nil {
 		return result, validation.NewErrorWithValidationError(err, "redis.Client", "CreateOrUpdate")
 	}
@@ -190,9 +190,9 @@ func (client Client) DeleteResponder(resp *http.Response) (result autorest.Respo
 // the redis cache. parameters is parameters for redis export operation.
 func (client Client) Export(resourceGroupName string, name string, parameters ExportRDBParameters, cancel <-chan struct{}) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
-		{parameters,
-			[]validation.Constraint{{"parameters.Prefix", validation.Null, true, nil},
-				{"parameters.Container", validation.Null, true, nil}}}}); err != nil {
+		{TargetValue: parameters,
+			Constraints: []validation.Constraint{{Target: "parameters.Prefix", Name: validation.Null, Rule: true, Chain: nil},
+				{Target: "parameters.Container", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
 		return result, validation.NewErrorWithValidationError(err, "redis.Client", "Export")
 	}
 
@@ -393,8 +393,8 @@ func (client Client) GetResponder(resp *http.Response) (result ResourceType, err
 // the redis cache. parameters is parameters for redis import operation.
 func (client Client) Import(resourceGroupName string, name string, parameters ImportRDBParameters, cancel <-chan struct{}) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
-		{parameters,
-			[]validation.Constraint{{"parameters.Files", validation.Null, true, nil}}}}); err != nil {
+		{TargetValue: parameters,
+			Constraints: []validation.Constraint{{Target: "parameters.Files", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
 		return result, validation.NewErrorWithValidationError(err, "redis.Client", "Import")
 	}
 

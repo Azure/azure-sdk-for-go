@@ -11,7 +11,7 @@ download the `.publishSettings` file for your subscriptions
 
 ### Example: Creating a Linux Virtual Machine
 
-Complete source code for this example can be found in [example.go](/examples/example.go).To try this example, [download your .publishSettings](https://manage.windowsazure.com/publishsettings) and add its path in the first line of the main function. Run the example with commands:
+Complete source code for this example can be found in [example.go](/management/examples/example.go).To try this example, [download your .publishSettings](https://manage.windowsazure.com/publishsettings) and add its path in the first line of the main function. Run the example with commands:
 
 ```
 $ cd management/examples

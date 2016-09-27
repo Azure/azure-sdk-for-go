@@ -1,8 +1,8 @@
 hash: 7407050cee9bb9ce89e23ef26bce4051cce63d558338a4937f027a18b789e3a1
-updated: 2016-09-01T10:39:37.0916734-07:00
+updated: 2016-09-27T13:34:53.0115773-07:00
 imports:
 - name: github.com/Azure/go-autorest
-  version: 3a30515cff8ca0504593132b55cd9e5aa2136f74
+  version: 928711bfb9b6bc052ea85a8f4e1d8f4e1bf55f95
   subpackages:
   - autorest
   - autorest/azure
@@ -12,9 +12,9 @@ imports:
 - name: github.com/dgrijalva/jwt-go
   version: 24c63f56522a87ec5339cc3567883f1039378fdb
 - name: github.com/satori/uuid
-  version: 0aa62d5ddceb50dbcb909d790b5345affd3669b6
+  version: b061729afc07e77a8aa4fad0a2fd840958f1942a
 - name: golang.org/x/crypto
-  version: f160b6bf95857cd862817875dd958be022e587c4
+  version: 8e06e8ddd9629eb88639aba897641bff8031f1d3
   subpackages:
   - pkcs12
   - pkcs12/internal/rc2

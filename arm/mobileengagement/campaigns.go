@@ -116,11 +116,11 @@ func (client CampaignsClient) ActivateResponder(resp *http.Response) (result Cam
 // Update Campaign operation.
 func (client CampaignsClient) Create(kind CampaignKinds, parameters Campaign) (result CampaignStateResult, err error) {
 	if err := validation.Validate([]validation.Validation{
-		{parameters,
-			[]validation.Constraint{{"parameters.Name", validation.Null, false,
-				[]validation.Constraint{{"parameters.Name", validation.MaxLength, 64, nil}}},
-				{"parameters.Category", validation.Null, false,
-					[]validation.Constraint{{"parameters.Category", validation.MaxLength, 64, nil}}}}}}); err != nil {
+		{TargetValue: parameters,
+			Constraints: []validation.Constraint{{Target: "parameters.Name", Name: validation.Null, Rule: false,
+				Chain: []validation.Constraint{{Target: "parameters.Name", Name: validation.MaxLength, Rule: 64, Chain: nil}}},
+				{Target: "parameters.Category", Name: validation.Null, Rule: false,
+					Chain: []validation.Constraint{{Target: "parameters.Category", Name: validation.MaxLength, Rule: 64, Chain: nil}}}}}}); err != nil {
 		return result, validation.NewErrorWithValidationError(err, "mobileengagement.CampaignsClient", "Create")
 	}
 
@@ -649,13 +649,13 @@ func (client CampaignsClient) ListNextResults(lastResults CampaignsListResult) (
 // parameters supplied to the Push Campaign operation.
 func (client CampaignsClient) Push(kind CampaignKinds, id int32, parameters CampaignPushParameters) (result CampaignPushResult, err error) {
 	if err := validation.Validate([]validation.Validation{
-		{parameters,
-			[]validation.Constraint{{"parameters.DeviceIds", validation.Null, true, nil},
-				{"parameters.Data", validation.Null, false,
-					[]validation.Constraint{{"parameters.Data.Name", validation.Null, false,
-						[]validation.Constraint{{"parameters.Data.Name", validation.MaxLength, 64, nil}}},
-						{"parameters.Data.Category", validation.Null, false,
-							[]validation.Constraint{{"parameters.Data.Category", validation.MaxLength, 64, nil}}},
+		{TargetValue: parameters,
+			Constraints: []validation.Constraint{{Target: "parameters.DeviceIds", Name: validation.Null, Rule: true, Chain: nil},
+				{Target: "parameters.Data", Name: validation.Null, Rule: false,
+					Chain: []validation.Constraint{{Target: "parameters.Data.Name", Name: validation.Null, Rule: false,
+						Chain: []validation.Constraint{{Target: "parameters.Data.Name", Name: validation.MaxLength, Rule: 64, Chain: nil}}},
+						{Target: "parameters.Data.Category", Name: validation.Null, Rule: false,
+							Chain: []validation.Constraint{{Target: "parameters.Data.Category", Name: validation.MaxLength, Rule: 64, Chain: nil}}},
 					}}}}}); err != nil {
 		return result, validation.NewErrorWithValidationError(err, "mobileengagement.CampaignsClient", "Push")
 	}
@@ -797,12 +797,12 @@ func (client CampaignsClient) SuspendResponder(resp *http.Response) (result Camp
 // Campaign operation.
 func (client CampaignsClient) TestNew(kind CampaignKinds, parameters CampaignTestNewParameters) (result CampaignState, err error) {
 	if err := validation.Validate([]validation.Validation{
-		{parameters,
-			[]validation.Constraint{{"parameters.Data", validation.Null, true,
-				[]validation.Constraint{{"parameters.Data.Name", validation.Null, false,
-					[]validation.Constraint{{"parameters.Data.Name", validation.MaxLength, 64, nil}}},
-					{"parameters.Data.Category", validation.Null, false,
-						[]validation.Constraint{{"parameters.Data.Category", validation.MaxLength, 64, nil}}},
+		{TargetValue: parameters,
+			Constraints: []validation.Constraint{{Target: "parameters.Data", Name: validation.Null, Rule: true,
+				Chain: []validation.Constraint{{Target: "parameters.Data.Name", Name: validation.Null, Rule: false,
+					Chain: []validation.Constraint{{Target: "parameters.Data.Name", Name: validation.MaxLength, Rule: 64, Chain: nil}}},
+					{Target: "parameters.Data.Category", Name: validation.Null, Rule: false,
+						Chain: []validation.Constraint{{Target: "parameters.Data.Category", Name: validation.MaxLength, Rule: 64, Chain: nil}}},
 				}}}}}); err != nil {
 		return result, validation.NewErrorWithValidationError(err, "mobileengagement.CampaignsClient", "TestNew")
 	}
@@ -877,8 +877,8 @@ func (client CampaignsClient) TestNewResponder(resp *http.Response) (result Camp
 // parameters supplied to the Test Campaign operation.
 func (client CampaignsClient) TestSaved(kind CampaignKinds, id int32, parameters CampaignTestSavedParameters) (result CampaignStateResult, err error) {
 	if err := validation.Validate([]validation.Validation{
-		{parameters,
-			[]validation.Constraint{{"parameters.DeviceID", validation.Null, true, nil}}}}); err != nil {
+		{TargetValue: parameters,
+			Constraints: []validation.Constraint{{Target: "parameters.DeviceID", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
 		return result, validation.NewErrorWithValidationError(err, "mobileengagement.CampaignsClient", "TestSaved")
 	}
 
@@ -953,11 +953,11 @@ func (client CampaignsClient) TestSavedResponder(resp *http.Response) (result Ca
 // parameters supplied to the Update Campaign operation.
 func (client CampaignsClient) Update(kind CampaignKinds, id int32, parameters Campaign) (result CampaignStateResult, err error) {
 	if err := validation.Validate([]validation.Validation{
-		{parameters,
-			[]validation.Constraint{{"parameters.Name", validation.Null, false,
-				[]validation.Constraint{{"parameters.Name", validation.MaxLength, 64, nil}}},
-				{"parameters.Category", validation.Null, false,
-					[]validation.Constraint{{"parameters.Category", validation.MaxLength, 64, nil}}}}}}); err != nil {
+		{TargetValue: parameters,
+			Constraints: []validation.Constraint{{Target: "parameters.Name", Name: validation.Null, Rule: false,
+				Chain: []validation.Constraint{{Target: "parameters.Name", Name: validation.MaxLength, Rule: 64, Chain: nil}}},
+				{Target: "parameters.Category", Name: validation.Null, Rule: false,
+					Chain: []validation.Constraint{{Target: "parameters.Category", Name: validation.MaxLength, Rule: 64, Chain: nil}}}}}}); err != nil {
 		return result, validation.NewErrorWithValidationError(err, "mobileengagement.CampaignsClient", "Update")
 	}
 

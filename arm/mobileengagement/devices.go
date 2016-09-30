@@ -315,8 +315,8 @@ func (client DevicesClient) ListNextResults(lastResults DevicesQueryResult) (res
 //
 func (client DevicesClient) TagByDeviceID(parameters DeviceTagsParameters) (result DeviceTagsResult, err error) {
 	if err := validation.Validate([]validation.Validation{
-		{parameters,
-			[]validation.Constraint{{"parameters.Tags", validation.Null, true, nil}}}}); err != nil {
+		{TargetValue: parameters,
+			Constraints: []validation.Constraint{{Target: "parameters.Tags", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
 		return result, validation.NewErrorWithValidationError(err, "mobileengagement.DevicesClient", "TagByDeviceID")
 	}
 
@@ -388,8 +388,8 @@ func (client DevicesClient) TagByDeviceIDResponder(resp *http.Response) (result 
 //
 func (client DevicesClient) TagByUserID(parameters DeviceTagsParameters) (result DeviceTagsResult, err error) {
 	if err := validation.Validate([]validation.Validation{
-		{parameters,
-			[]validation.Constraint{{"parameters.Tags", validation.Null, true, nil}}}}); err != nil {
+		{TargetValue: parameters,
+			Constraints: []validation.Constraint{{Target: "parameters.Tags", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
 		return result, validation.NewErrorWithValidationError(err, "mobileengagement.DevicesClient", "TagByUserID")
 	}
 

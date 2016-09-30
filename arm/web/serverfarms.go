@@ -58,13 +58,13 @@ func NewServerFarmsClientWithBaseURI(baseURI string, subscriptionID string) Serv
 // is oBSOLETE: If true, allow pending state for App Service Plan
 func (client ServerFarmsClient) CreateOrUpdateServerFarm(resourceGroupName string, name string, serverFarmEnvelope ServerFarmWithRichSku, allowPendingState *bool, cancel <-chan struct{}) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
-		{serverFarmEnvelope,
-			[]validation.Constraint{{"serverFarmEnvelope.Properties", validation.Null, false,
-				[]validation.Constraint{{"Status", validation.ReadOnly, true, nil},
-					{"Subscription", validation.ReadOnly, true, nil},
-					{"GeoRegion", validation.ReadOnly, true, nil},
-					{"NumberOfSites", validation.ReadOnly, true, nil},
-					{"ResourceGroup", validation.ReadOnly, true, nil},
+		{TargetValue: serverFarmEnvelope,
+			Constraints: []validation.Constraint{{Target: "serverFarmEnvelope.Properties", Name: validation.Null, Rule: false,
+				Chain: []validation.Constraint{{Target: "serverFarmEnvelope.Properties.Status", Name: validation.ReadOnly, Rule: true, Chain: nil},
+					{Target: "serverFarmEnvelope.Properties.Subscription", Name: validation.ReadOnly, Rule: true, Chain: nil},
+					{Target: "serverFarmEnvelope.Properties.GeoRegion", Name: validation.ReadOnly, Rule: true, Chain: nil},
+					{Target: "serverFarmEnvelope.Properties.NumberOfSites", Name: validation.ReadOnly, Rule: true, Chain: nil},
+					{Target: "serverFarmEnvelope.Properties.ResourceGroup", Name: validation.ReadOnly, Rule: true, Chain: nil},
 				}}}}}); err != nil {
 		return result, validation.NewErrorWithValidationError(err, "web.ServerFarmsClient", "CreateOrUpdateServerFarm")
 	}

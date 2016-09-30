@@ -53,15 +53,15 @@ func NewAccountsClientWithBaseURI(baseURI string, subscriptionID string) Account
 // account.
 func (client AccountsClient) Create(resourceGroupName string, accountName string, parameters AccountCreateParameters) (result Account, err error) {
 	if err := validation.Validate([]validation.Validation{
-		{accountName,
-			[]validation.Constraint{{"accountName", validation.MaxLength, 24, nil},
-				{"accountName", validation.MinLength, 3, nil},
-				{"accountName", validation.Pattern, `^[a-zA-Z0-9][a-zA-Z0-9_.-]*$`, nil}}},
-		{parameters,
-			[]validation.Constraint{{"parameters.Sku", validation.Null, true,
-				[]validation.Constraint{{"Tier", validation.ReadOnly, true, nil}}},
-				{"parameters.Location", validation.Null, true, nil},
-				{"parameters.Properties", validation.Null, true, nil}}}}); err != nil {
+		{TargetValue: accountName,
+			Constraints: []validation.Constraint{{Target: "accountName", Name: validation.MaxLength, Rule: 24, Chain: nil},
+				{Target: "accountName", Name: validation.MinLength, Rule: 3, Chain: nil},
+				{Target: "accountName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9][a-zA-Z0-9_.-]*$`, Chain: nil}}},
+		{TargetValue: parameters,
+			Constraints: []validation.Constraint{{Target: "parameters.Sku", Name: validation.Null, Rule: true,
+				Chain: []validation.Constraint{{Target: "parameters.Sku.Tier", Name: validation.ReadOnly, Rule: true, Chain: nil}}},
+				{Target: "parameters.Location", Name: validation.Null, Rule: true, Chain: nil},
+				{Target: "parameters.Properties", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
 		return result, validation.NewErrorWithValidationError(err, "cognitiveservices.AccountsClient", "Create")
 	}
 
@@ -134,10 +134,10 @@ func (client AccountsClient) CreateResponder(resp *http.Response) (result Accoun
 // letters only.
 func (client AccountsClient) Delete(resourceGroupName string, accountName string) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
-		{accountName,
-			[]validation.Constraint{{"accountName", validation.MaxLength, 24, nil},
-				{"accountName", validation.MinLength, 3, nil},
-				{"accountName", validation.Pattern, `^[a-zA-Z0-9][a-zA-Z0-9_.-]*$`, nil}}}}); err != nil {
+		{TargetValue: accountName,
+			Constraints: []validation.Constraint{{Target: "accountName", Name: validation.MaxLength, Rule: 24, Chain: nil},
+				{Target: "accountName", Name: validation.MinLength, Rule: 3, Chain: nil},
+				{Target: "accountName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9][a-zA-Z0-9_.-]*$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewErrorWithValidationError(err, "cognitiveservices.AccountsClient", "Delete")
 	}
 
@@ -208,10 +208,10 @@ func (client AccountsClient) DeleteResponder(resp *http.Response) (result autore
 // letters only.
 func (client AccountsClient) GetProperties(resourceGroupName string, accountName string) (result Account, err error) {
 	if err := validation.Validate([]validation.Validation{
-		{accountName,
-			[]validation.Constraint{{"accountName", validation.MaxLength, 24, nil},
-				{"accountName", validation.MinLength, 3, nil},
-				{"accountName", validation.Pattern, `^[a-zA-Z0-9][a-zA-Z0-9_.-]*$`, nil}}}}); err != nil {
+		{TargetValue: accountName,
+			Constraints: []validation.Constraint{{Target: "accountName", Name: validation.MaxLength, Rule: 24, Chain: nil},
+				{Target: "accountName", Name: validation.MinLength, Rule: 3, Chain: nil},
+				{Target: "accountName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9][a-zA-Z0-9_.-]*$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewErrorWithValidationError(err, "cognitiveservices.AccountsClient", "GetProperties")
 	}
 
@@ -405,10 +405,10 @@ func (client AccountsClient) ListByResourceGroupResponder(resp *http.Response) (
 // letters only.
 func (client AccountsClient) ListKeys(resourceGroupName string, accountName string) (result AccountKeys, err error) {
 	if err := validation.Validate([]validation.Validation{
-		{accountName,
-			[]validation.Constraint{{"accountName", validation.MaxLength, 24, nil},
-				{"accountName", validation.MinLength, 3, nil},
-				{"accountName", validation.Pattern, `^[a-zA-Z0-9][a-zA-Z0-9_.-]*$`, nil}}}}); err != nil {
+		{TargetValue: accountName,
+			Constraints: []validation.Constraint{{Target: "accountName", Name: validation.MaxLength, Rule: 24, Chain: nil},
+				{Target: "accountName", Name: validation.MinLength, Rule: 3, Chain: nil},
+				{Target: "accountName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9][a-zA-Z0-9_.-]*$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewErrorWithValidationError(err, "cognitiveservices.AccountsClient", "ListKeys")
 	}
 
@@ -479,10 +479,10 @@ func (client AccountsClient) ListKeysResponder(resp *http.Response) (result Acco
 // letters only.
 func (client AccountsClient) ListSkus(resourceGroupName string, accountName string) (result AccountEnumerateSkusResult, err error) {
 	if err := validation.Validate([]validation.Validation{
-		{accountName,
-			[]validation.Constraint{{"accountName", validation.MaxLength, 24, nil},
-				{"accountName", validation.MinLength, 3, nil},
-				{"accountName", validation.Pattern, `^[a-zA-Z0-9][a-zA-Z0-9_.-]*$`, nil}}}}); err != nil {
+		{TargetValue: accountName,
+			Constraints: []validation.Constraint{{Target: "accountName", Name: validation.MaxLength, Rule: 24, Chain: nil},
+				{Target: "accountName", Name: validation.MinLength, Rule: 3, Chain: nil},
+				{Target: "accountName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9][a-zA-Z0-9_.-]*$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewErrorWithValidationError(err, "cognitiveservices.AccountsClient", "ListSkus")
 	}
 
@@ -554,10 +554,10 @@ func (client AccountsClient) ListSkusResponder(resp *http.Response) (result Acco
 // letters only. body is regenerate key parameters.
 func (client AccountsClient) RegenerateKey(resourceGroupName string, accountName string, body RegenerateKeyParameters) (result AccountKeys, err error) {
 	if err := validation.Validate([]validation.Validation{
-		{accountName,
-			[]validation.Constraint{{"accountName", validation.MaxLength, 24, nil},
-				{"accountName", validation.MinLength, 3, nil},
-				{"accountName", validation.Pattern, `^[a-zA-Z0-9][a-zA-Z0-9_.-]*$`, nil}}}}); err != nil {
+		{TargetValue: accountName,
+			Constraints: []validation.Constraint{{Target: "accountName", Name: validation.MaxLength, Rule: 24, Chain: nil},
+				{Target: "accountName", Name: validation.MinLength, Rule: 3, Chain: nil},
+				{Target: "accountName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9][a-zA-Z0-9_.-]*$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewErrorWithValidationError(err, "cognitiveservices.AccountsClient", "RegenerateKey")
 	}
 
@@ -630,10 +630,10 @@ func (client AccountsClient) RegenerateKeyResponder(resp *http.Response) (result
 // letters only. body is the parameters to provide for the created account.
 func (client AccountsClient) Update(resourceGroupName string, accountName string, body AccountUpdateParameters) (result Account, err error) {
 	if err := validation.Validate([]validation.Validation{
-		{accountName,
-			[]validation.Constraint{{"accountName", validation.MaxLength, 24, nil},
-				{"accountName", validation.MinLength, 3, nil},
-				{"accountName", validation.Pattern, `^[a-zA-Z0-9][a-zA-Z0-9_.-]*$`, nil}}}}); err != nil {
+		{TargetValue: accountName,
+			Constraints: []validation.Constraint{{Target: "accountName", Name: validation.MaxLength, Rule: 24, Chain: nil},
+				{Target: "accountName", Name: validation.MinLength, Rule: 3, Chain: nil},
+				{Target: "accountName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9][a-zA-Z0-9_.-]*$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewErrorWithValidationError(err, "cognitiveservices.AccountsClient", "Update")
 	}
 

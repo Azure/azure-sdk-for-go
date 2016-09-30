@@ -45,8 +45,8 @@ func NewExportTasksClientWithBaseURI(baseURI string, subscriptionID string, reso
 //
 func (client ExportTasksClient) CreateActivitiesTask(parameters DateRangeExportTaskParameter) (result ExportTaskResult, err error) {
 	if err := validation.Validate([]validation.Validation{
-		{parameters,
-			[]validation.Constraint{{"parameters.ContainerURL", validation.Null, true, nil}}}}); err != nil {
+		{TargetValue: parameters,
+			Constraints: []validation.Constraint{{Target: "parameters.ContainerURL", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
 		return result, validation.NewErrorWithValidationError(err, "mobileengagement.ExportTasksClient", "CreateActivitiesTask")
 	}
 
@@ -115,8 +115,8 @@ func (client ExportTasksClient) CreateActivitiesTaskResponder(resp *http.Respons
 //
 func (client ExportTasksClient) CreateCrashesTask(parameters DateRangeExportTaskParameter) (result ExportTaskResult, err error) {
 	if err := validation.Validate([]validation.Validation{
-		{parameters,
-			[]validation.Constraint{{"parameters.ContainerURL", validation.Null, true, nil}}}}); err != nil {
+		{TargetValue: parameters,
+			Constraints: []validation.Constraint{{Target: "parameters.ContainerURL", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
 		return result, validation.NewErrorWithValidationError(err, "mobileengagement.ExportTasksClient", "CreateCrashesTask")
 	}
 
@@ -185,8 +185,8 @@ func (client ExportTasksClient) CreateCrashesTaskResponder(resp *http.Response) 
 //
 func (client ExportTasksClient) CreateErrorsTask(parameters DateRangeExportTaskParameter) (result ExportTaskResult, err error) {
 	if err := validation.Validate([]validation.Validation{
-		{parameters,
-			[]validation.Constraint{{"parameters.ContainerURL", validation.Null, true, nil}}}}); err != nil {
+		{TargetValue: parameters,
+			Constraints: []validation.Constraint{{Target: "parameters.ContainerURL", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
 		return result, validation.NewErrorWithValidationError(err, "mobileengagement.ExportTasksClient", "CreateErrorsTask")
 	}
 
@@ -255,8 +255,8 @@ func (client ExportTasksClient) CreateErrorsTaskResponder(resp *http.Response) (
 //
 func (client ExportTasksClient) CreateEventsTask(parameters DateRangeExportTaskParameter) (result ExportTaskResult, err error) {
 	if err := validation.Validate([]validation.Validation{
-		{parameters,
-			[]validation.Constraint{{"parameters.ContainerURL", validation.Null, true, nil}}}}); err != nil {
+		{TargetValue: parameters,
+			Constraints: []validation.Constraint{{Target: "parameters.ContainerURL", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
 		return result, validation.NewErrorWithValidationError(err, "mobileengagement.ExportTasksClient", "CreateEventsTask")
 	}
 
@@ -326,10 +326,10 @@ func (client ExportTasksClient) CreateEventsTaskResponder(resp *http.Response) (
 //
 func (client ExportTasksClient) CreateFeedbackTaskByCampaign(parameters FeedbackByCampaignParameter) (result ExportTaskResult, err error) {
 	if err := validation.Validate([]validation.Validation{
-		{parameters,
-			[]validation.Constraint{{"parameters.ContainerURL", validation.Null, true, nil},
-				{"parameters.CampaignIds", validation.Null, true,
-					[]validation.Constraint{{"parameters.CampaignIds", validation.MinItems, 1, nil}}}}}}); err != nil {
+		{TargetValue: parameters,
+			Constraints: []validation.Constraint{{Target: "parameters.ContainerURL", Name: validation.Null, Rule: true, Chain: nil},
+				{Target: "parameters.CampaignIds", Name: validation.Null, Rule: true,
+					Chain: []validation.Constraint{{Target: "parameters.CampaignIds", Name: validation.MinItems, Rule: 1, Chain: nil}}}}}}); err != nil {
 		return result, validation.NewErrorWithValidationError(err, "mobileengagement.ExportTasksClient", "CreateFeedbackTaskByCampaign")
 	}
 
@@ -399,8 +399,8 @@ func (client ExportTasksClient) CreateFeedbackTaskByCampaignResponder(resp *http
 //
 func (client ExportTasksClient) CreateFeedbackTaskByDateRange(parameters FeedbackByDateRangeParameter) (result ExportTaskResult, err error) {
 	if err := validation.Validate([]validation.Validation{
-		{parameters,
-			[]validation.Constraint{{"parameters.ContainerURL", validation.Null, true, nil}}}}); err != nil {
+		{TargetValue: parameters,
+			Constraints: []validation.Constraint{{Target: "parameters.ContainerURL", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
 		return result, validation.NewErrorWithValidationError(err, "mobileengagement.ExportTasksClient", "CreateFeedbackTaskByDateRange")
 	}
 
@@ -469,8 +469,8 @@ func (client ExportTasksClient) CreateFeedbackTaskByDateRangeResponder(resp *htt
 //
 func (client ExportTasksClient) CreateJobsTask(parameters DateRangeExportTaskParameter) (result ExportTaskResult, err error) {
 	if err := validation.Validate([]validation.Validation{
-		{parameters,
-			[]validation.Constraint{{"parameters.ContainerURL", validation.Null, true, nil}}}}); err != nil {
+		{TargetValue: parameters,
+			Constraints: []validation.Constraint{{Target: "parameters.ContainerURL", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
 		return result, validation.NewErrorWithValidationError(err, "mobileengagement.ExportTasksClient", "CreateJobsTask")
 	}
 
@@ -539,8 +539,8 @@ func (client ExportTasksClient) CreateJobsTaskResponder(resp *http.Response) (re
 //
 func (client ExportTasksClient) CreateSessionsTask(parameters DateRangeExportTaskParameter) (result ExportTaskResult, err error) {
 	if err := validation.Validate([]validation.Validation{
-		{parameters,
-			[]validation.Constraint{{"parameters.ContainerURL", validation.Null, true, nil}}}}); err != nil {
+		{TargetValue: parameters,
+			Constraints: []validation.Constraint{{Target: "parameters.ContainerURL", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
 		return result, validation.NewErrorWithValidationError(err, "mobileengagement.ExportTasksClient", "CreateSessionsTask")
 	}
 
@@ -609,8 +609,8 @@ func (client ExportTasksClient) CreateSessionsTaskResponder(resp *http.Response)
 //
 func (client ExportTasksClient) CreateTagsTask(parameters ExportTaskParameter) (result ExportTaskResult, err error) {
 	if err := validation.Validate([]validation.Validation{
-		{parameters,
-			[]validation.Constraint{{"parameters.ContainerURL", validation.Null, true, nil}}}}); err != nil {
+		{TargetValue: parameters,
+			Constraints: []validation.Constraint{{Target: "parameters.ContainerURL", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
 		return result, validation.NewErrorWithValidationError(err, "mobileengagement.ExportTasksClient", "CreateTagsTask")
 	}
 
@@ -679,8 +679,8 @@ func (client ExportTasksClient) CreateTagsTaskResponder(resp *http.Response) (re
 //
 func (client ExportTasksClient) CreateTokensTask(parameters ExportTaskParameter) (result ExportTaskResult, err error) {
 	if err := validation.Validate([]validation.Validation{
-		{parameters,
-			[]validation.Constraint{{"parameters.ContainerURL", validation.Null, true, nil}}}}); err != nil {
+		{TargetValue: parameters,
+			Constraints: []validation.Constraint{{Target: "parameters.ContainerURL", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
 		return result, validation.NewErrorWithValidationError(err, "mobileengagement.ExportTasksClient", "CreateTokensTask")
 	}
 
@@ -829,13 +829,13 @@ func (client ExportTasksClient) GetResponder(resp *http.Response) (result Export
 // Only one orderby property can be specified.
 func (client ExportTasksClient) List(skip *int32, top *int32, orderby string) (result ExportTaskListResult, err error) {
 	if err := validation.Validate([]validation.Validation{
-		{skip,
-			[]validation.Constraint{{"skip", validation.Null, false,
-				[]validation.Constraint{{"skip", validation.InclusiveMinimum, 0, nil}}}}},
-		{top,
-			[]validation.Constraint{{"top", validation.Null, false,
-				[]validation.Constraint{{"top", validation.InclusiveMaximum, 40, nil},
-					{"top", validation.InclusiveMinimum, 1, nil},
+		{TargetValue: skip,
+			Constraints: []validation.Constraint{{Target: "skip", Name: validation.Null, Rule: false,
+				Chain: []validation.Constraint{{Target: "skip", Name: validation.InclusiveMinimum, Rule: 0, Chain: nil}}}}},
+		{TargetValue: top,
+			Constraints: []validation.Constraint{{Target: "top", Name: validation.Null, Rule: false,
+				Chain: []validation.Constraint{{Target: "top", Name: validation.InclusiveMaximum, Rule: 40, Chain: nil},
+					{Target: "top", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil},
 				}}}}}); err != nil {
 		return result, validation.NewErrorWithValidationError(err, "mobileengagement.ExportTasksClient", "List")
 	}

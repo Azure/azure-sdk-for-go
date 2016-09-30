@@ -51,21 +51,20 @@ func NewClientWithBaseURI(baseURI string, subscriptionID string) Client {
 // account.
 func (client Client) Create(resourceGroupName string, name string, parameters DataLakeStoreAccount, cancel <-chan struct{}) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
-		{parameters,
-			[]validation.Constraint{{"parameters.Identity", validation.Null, false,
-				[]validation.Constraint{{"PrincipalID", validation.ReadOnly, true, nil},
-					{"TenantID", validation.ReadOnly, true, nil},
+		{TargetValue: parameters,
+			Constraints: []validation.Constraint{{Target: "parameters.Identity", Name: validation.Null, Rule: false,
+				Chain: []validation.Constraint{{Target: "parameters.Identity.PrincipalID", Name: validation.ReadOnly, Rule: true, Chain: nil},
+					{Target: "parameters.Identity.TenantID", Name: validation.ReadOnly, Rule: true, Chain: nil},
 				}},
-				{"parameters.Properties", validation.Null, false,
-					[]validation.Constraint{{"ProvisioningState", validation.ReadOnly, true, nil},
-						{"State", validation.ReadOnly, true, nil},
-						{"CreationTime", validation.ReadOnly, true, nil},
-						{"EncryptionState", validation.ReadOnly, true, nil},
-						{"EncryptionProvisioningState", validation.ReadOnly, true, nil},
-						{"LastModifiedTime", validation.ReadOnly, true, nil},
+				{Target: "parameters.Properties", Name: validation.Null, Rule: false,
+					Chain: []validation.Constraint{{Target: "parameters.Properties.ProvisioningState", Name: validation.ReadOnly, Rule: true, Chain: nil},
+						{Target: "parameters.Properties.State", Name: validation.ReadOnly, Rule: true, Chain: nil},
+						{Target: "parameters.Properties.CreationTime", Name: validation.ReadOnly, Rule: true, Chain: nil},
+						{Target: "parameters.Properties.EncryptionProvisioningState", Name: validation.ReadOnly, Rule: true, Chain: nil},
+						{Target: "parameters.Properties.LastModifiedTime", Name: validation.ReadOnly, Rule: true, Chain: nil},
 					}},
-				{"Type", validation.ReadOnly, true, nil},
-				{"ID", validation.ReadOnly, true, nil}}}}); err != nil {
+				{Target: "parameters.Type", Name: validation.ReadOnly, Rule: true, Chain: nil},
+				{Target: "parameters.ID", Name: validation.ReadOnly, Rule: true, Chain: nil}}}}); err != nil {
 		return result, validation.NewErrorWithValidationError(err, "account.Client", "Create")
 	}
 
@@ -139,8 +138,8 @@ func (client Client) CreateResponder(resp *http.Response) (result autorest.Respo
 // create the create firewall rule.
 func (client Client) CreateOrUpdateFirewallRule(resourceGroupName string, accountName string, name string, parameters FirewallRule) (result FirewallRule, err error) {
 	if err := validation.Validate([]validation.Validation{
-		{parameters,
-			[]validation.Constraint{{"Type", validation.ReadOnly, true, nil}}}}); err != nil {
+		{TargetValue: parameters,
+			Constraints: []validation.Constraint{{Target: "parameters.Type", Name: validation.ReadOnly, Rule: true, Chain: nil}}}}); err != nil {
 		return result, validation.NewErrorWithValidationError(err, "account.Client", "CreateOrUpdateFirewallRule")
 	}
 
@@ -896,9 +895,9 @@ func (client Client) ListFirewallRulesNextResults(lastResults DataLakeStoreFirew
 // account.
 func (client Client) Update(resourceGroupName string, name string, parameters DataLakeStoreAccount, cancel <-chan struct{}) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
-		{parameters,
-			[]validation.Constraint{{"Type", validation.ReadOnly, true, nil},
-				{"ID", validation.ReadOnly, true, nil}}}}); err != nil {
+		{TargetValue: parameters,
+			Constraints: []validation.Constraint{{Target: "parameters.Type", Name: validation.ReadOnly, Rule: true, Chain: nil},
+				{Target: "parameters.ID", Name: validation.ReadOnly, Rule: true, Chain: nil}}}}); err != nil {
 		return result, validation.NewErrorWithValidationError(err, "account.Client", "Update")
 	}
 

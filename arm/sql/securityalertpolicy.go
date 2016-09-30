@@ -57,12 +57,12 @@ func NewSecurityAlertPolicyClientWithBaseURI(baseURI string, subscriptionID stri
 // Azure SQL Server.
 func (client SecurityAlertPolicyClient) CreateOrUpdate(parameters ServerSecurityAlertPolicyCreateOrUpdateParameters, resourceGroupName string, serverName string, cancel <-chan struct{}) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
-		{parameters,
-			[]validation.Constraint{{"parameters.Properties", validation.Null, true,
-				[]validation.Constraint{{"State", validation.ReadOnly, true, nil},
-					{"DisabledAlerts", validation.ReadOnly, true, nil},
-					{"EmailAddresses", validation.ReadOnly, true, nil},
-					{"EmailAccountAdmins", validation.ReadOnly, true, nil},
+		{TargetValue: parameters,
+			Constraints: []validation.Constraint{{Target: "parameters.Properties", Name: validation.Null, Rule: true,
+				Chain: []validation.Constraint{{Target: "parameters.Properties.State", Name: validation.ReadOnly, Rule: true, Chain: nil},
+					{Target: "parameters.Properties.DisabledAlerts", Name: validation.ReadOnly, Rule: true, Chain: nil},
+					{Target: "parameters.Properties.EmailAddresses", Name: validation.ReadOnly, Rule: true, Chain: nil},
+					{Target: "parameters.Properties.EmailAccountAdmins", Name: validation.ReadOnly, Rule: true, Chain: nil},
 				}}}}}); err != nil {
 		return result, validation.NewErrorWithValidationError(err, "sql.SecurityAlertPolicyClient", "CreateOrUpdate")
 	}

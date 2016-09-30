@@ -1,10 +1,31 @@
 # CHANGELOG
 
 -----
+## `v5.0.0-beta`
+
+| api                           | version             | note             |
+|:------------------------------|:--------------------|:-----------------|
+| arm/network                   | 2016-09-01          | updated          |
+| arm/servermanagement          | 2015-07-01-preview  | new              |
+| arm/eventhub                  | 2015-08-01          | new              |
+| arm/containerservice          | --                  | removed          |
+| arm/resources/subscriptions   | no change           | code refactoring |
+| arm/resources/features        | no change           | code refactoring |
+| arm/resources/resources       | no change           | code refactoring |
+| arm/datalake-store/accounts   | no change           | code refactoring |
+| arm/datalake-store/filesystem | no change           | code refactoring |
+| arm/notificationhubs          | no change           | code refactoring |
+| arm/redis                     | no change           | code refactoring |
+
+- storage: Add more file storage share operations.
+- azure-rest-api-specs/commit/b8cdc2c50a0872fc0039f20c2b6b33aa0c2af4bf
+
 ## `v4.0.0-beta`
+
 - arm/logic: breaking change in package logic.
 - arm: parameter validation code added in all arm packages.
 - Uses go-autorest v7.2.0.
+
 
 ## `v3.2.0-beta`
 
@@ -24,6 +45,7 @@
 - storage: add SetBlobProperties(), update BlobProperties response fields.
 - storage: make storage client work correctly with read-only secondary account.
 - storage: add Azure Storage Emulator support.
+
 
 ## `v3.1.0-beta`
 

@@ -49,9 +49,9 @@ func NewPatchSchedulesClientWithBaseURI(baseURI string, subscriptionID string) P
 // cache.
 func (client PatchSchedulesClient) CreateOrUpdate(resourceGroupName string, name string, parameters PatchSchedulesRequest) (result PatchSchedulesResponse, err error) {
 	if err := validation.Validate([]validation.Validation{
-		{parameters,
-			[]validation.Constraint{{"parameters.Properties", validation.Null, true,
-				[]validation.Constraint{{"parameters.Properties.ScheduleEntriesProperty", validation.Null, true, nil}}}}}}); err != nil {
+		{TargetValue: parameters,
+			Constraints: []validation.Constraint{{Target: "parameters.Properties", Name: validation.Null, Rule: true,
+				Chain: []validation.Constraint{{Target: "parameters.Properties.ScheduleEntriesProperty", Name: validation.Null, Rule: true, Chain: nil}}}}}}); err != nil {
 		return result, validation.NewErrorWithValidationError(err, "redis.PatchSchedulesClient", "CreateOrUpdate")
 	}
 

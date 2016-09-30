@@ -48,15 +48,15 @@ func NewVaultsClientWithBaseURI(baseURI string, subscriptionID string) VaultsCli
 // or update the vault
 func (client VaultsClient) CreateOrUpdate(resourceGroupName string, vaultName string, parameters VaultCreateOrUpdateParameters) (result Vault, err error) {
 	if err := validation.Validate([]validation.Validation{
-		{vaultName,
-			[]validation.Constraint{{"vaultName", validation.Pattern, `^[a-zA-Z0-9-]{3,24}$`, nil}}},
-		{parameters,
-			[]validation.Constraint{{"parameters.Location", validation.Null, true, nil},
-				{"parameters.Properties", validation.Null, true,
-					[]validation.Constraint{{"parameters.Properties.Sku", validation.Null, true,
-						[]validation.Constraint{{"parameters.Properties.Sku.Family", validation.Null, true, nil}}},
-						{"parameters.Properties.AccessPolicies", validation.Null, true,
-							[]validation.Constraint{{"parameters.Properties.AccessPolicies", validation.MaxItems, 16, nil}}},
+		{TargetValue: vaultName,
+			Constraints: []validation.Constraint{{Target: "vaultName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9-]{3,24}$`, Chain: nil}}},
+		{TargetValue: parameters,
+			Constraints: []validation.Constraint{{Target: "parameters.Location", Name: validation.Null, Rule: true, Chain: nil},
+				{Target: "parameters.Properties", Name: validation.Null, Rule: true,
+					Chain: []validation.Constraint{{Target: "parameters.Properties.Sku", Name: validation.Null, Rule: true,
+						Chain: []validation.Constraint{{Target: "parameters.Properties.Sku.Family", Name: validation.Null, Rule: true, Chain: nil}}},
+						{Target: "parameters.Properties.AccessPolicies", Name: validation.Null, Rule: true,
+							Chain: []validation.Constraint{{Target: "parameters.Properties.AccessPolicies", Name: validation.MaxItems, Rule: 16, Chain: nil}}},
 					}}}}}); err != nil {
 		return result, validation.NewErrorWithValidationError(err, "keyvault.VaultsClient", "CreateOrUpdate")
 	}

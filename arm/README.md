@@ -55,7 +55,7 @@ goals were:
 fan-in set ups.
 
 These are best shown in a series of examples, all of which are included in the
-[examples](/examples) sub-folder.
+[examples](/arm/examples) sub-folder.
 
 ## First a Sidenote: Authentication and the Azure Resource Manager
 
@@ -119,7 +119,7 @@ with a custom
 or
 [autorest.RespondDecorator](https://godoc.org/github.com/Azure/go-autorest/autorest#RespondDecorator)
 enables more control. See the included example file
-[check.go](examples/check/check.go)
+[check.go](/arm/examples/check/check.go)
 for more details. Through these you can modify the outgoing request, inspect the incoming response,
 or even go so far as to provide a
 [circuit breaker](https://msdn.microsoft.com/library/dn589784.aspx)
@@ -137,7 +137,7 @@ and a detailed error message.
 
 ### Complete source code
 
-Complete source code for this example can be found in [check.go](/examples/check/check.go).
+Complete source code for this example can be found in [check.go](/arm/examples/check/check.go).
 
 1. Create a [service principal](https://azure.microsoft.com/documentation/articles/resource-group-authenticate-service-principal-cli/). You will need the Tenant ID, Client ID and Client Secret for [authentication](#first-a-sidenote-authentication-and-the-azure-resource-manager), so keep them as soon as you get them.
 2. Get your Azure Subscription ID using either of the methods mentioned below:
@@ -196,7 +196,7 @@ prints the URL the
 service returned for polling.
 
 ### Complete source for the example
-More details, including deleting the created account, are in the example code file [create.go](/examples/create/create.go)
+More details, including deleting the created account, are in the example code file [create.go](/arm/examples/create/create.go)
 
 1. Create a [service principal](https://azure.microsoft.com/documentation/articles/resource-group-authenticate-service-principal-cli/). You will need the Tenant ID, Client ID and Client Secret for [authentication](#first-a-sidenote-authentication-and-the-azure-resource-manager), so keep them as soon as you get them.
 2. Get your Azure Subscription ID using either of the methods mentioned below:

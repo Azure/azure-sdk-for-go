@@ -19,8 +19,9 @@ package filesystem
 // regenerated.
 
 import (
-	"github.com/Azure/go-autorest/autorest"
 	"io"
+
+	"github.com/Azure/go-autorest/autorest"
 )
 
 // AppendModeType enumerates the values for append mode type.
@@ -57,9 +58,9 @@ const (
 	FILE FileType = "FILE"
 )
 
-// AclStatus is data Lake Store file or directory Access Control List
+// ACLStatus is data Lake Store file or directory Access Control List
 // information.
-type AclStatus struct {
+type ACLStatus struct {
 	Entries    *[]string `json:"entries,omitempty"`
 	Group      *string   `json:"group,omitempty"`
 	Owner      *string   `json:"owner,omitempty"`
@@ -67,11 +68,11 @@ type AclStatus struct {
 	StickyBit  *bool     `json:"stickyBit,omitempty"`
 }
 
-// AclStatusResult is data Lake Store file or directory Access Control List
+// ACLStatusResult is data Lake Store file or directory Access Control List
 // information.
-type AclStatusResult struct {
+type ACLStatusResult struct {
 	autorest.Response `json:"-"`
-	AclStatus         *AclStatus `json:"AclStatus,omitempty"`
+	ACLStatus         *ACLStatus `json:"ACLStatus,omitempty"`
 }
 
 // AdlsAccessControlException is a WebHDFS exception thrown indicating that

@@ -1,8 +1,8 @@
 hash: 7407050cee9bb9ce89e23ef26bce4051cce63d558338a4937f027a18b789e3a1
-updated: 2016-09-27T13:34:53.0115773-07:00
+updated: 2016-10-03T12:54:54.421464-07:00
 imports:
 - name: github.com/Azure/go-autorest
-  version: 928711bfb9b6bc052ea85a8f4e1d8f4e1bf55f95
+  version: 0781901f19f1e7db3034d97ec57af753db0bf808
   subpackages:
   - autorest
   - autorest/azure
@@ -14,7 +14,7 @@ imports:
 - name: github.com/satori/uuid
   version: b061729afc07e77a8aa4fad0a2fd840958f1942a
 - name: golang.org/x/crypto
-  version: 8e06e8ddd9629eb88639aba897641bff8031f1d3
+  version: 84e98f45760e87786b7f24603b8166a6fa09811d
   subpackages:
   - pkcs12
   - pkcs12/internal/rc2

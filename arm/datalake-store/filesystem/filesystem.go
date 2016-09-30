@@ -19,11 +19,12 @@ package filesystem
 // regenerated.
 
 import (
+	"io"
+	"net/http"
+
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
 	"github.com/Azure/go-autorest/autorest/validation"
-	"io"
-	"net/http"
 )
 
 // Client is the creates an Azure Data Lake Store filesystem client.
@@ -478,34 +479,34 @@ func (client Client) DeleteResponder(resp *http.Response) (result FileOperationR
 	return
 }
 
-// GetAclStatus gets Access Control List (ACL) entries for the specified file
+// GetACLStatus gets Access Control List (ACL) entries for the specified file
 // or directory.
 //
 // aclFilePath is the Data Lake Store path (starting with '/') of the file or
 // directory for which to get the ACL. op is the constant value for the
 // operation.
-func (client Client) GetAclStatus(aclFilePath string, op string) (result AclStatusResult, err error) {
-	req, err := client.GetAclStatusPreparer(aclFilePath, op)
+func (client Client) GetACLStatus(aclFilePath string, op string) (result ACLStatusResult, err error) {
+	req, err := client.GetACLStatusPreparer(aclFilePath, op)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "filesystem.Client", "GetAclStatus", nil, "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "filesystem.Client", "GetACLStatus", nil, "Failure preparing request")
 	}
 
-	resp, err := client.GetAclStatusSender(req)
+	resp, err := client.GetACLStatusSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "filesystem.Client", "GetAclStatus", resp, "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "filesystem.Client", "GetACLStatus", resp, "Failure sending request")
 	}
 
-	result, err = client.GetAclStatusResponder(resp)
+	result, err = client.GetACLStatusResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "filesystem.Client", "GetAclStatus", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "filesystem.Client", "GetACLStatus", resp, "Failure responding to request")
 	}
 
 	return
 }
 
-// GetAclStatusPreparer prepares the GetAclStatus request.
-func (client Client) GetAclStatusPreparer(aclFilePath string, op string) (*http.Request, error) {
+// GetACLStatusPreparer prepares the GetACLStatus request.
+func (client Client) GetACLStatusPreparer(aclFilePath string, op string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"aclFilePath": autorest.Encode("path", aclFilePath),
 	}
@@ -523,15 +524,15 @@ func (client Client) GetAclStatusPreparer(aclFilePath string, op string) (*http.
 	return preparer.Prepare(&http.Request{})
 }
 
-// GetAclStatusSender sends the GetAclStatus request. The method will close the
+// GetACLStatusSender sends the GetACLStatus request. The method will close the
 // http.Response Body if it receives an error.
-func (client Client) GetAclStatusSender(req *http.Request) (*http.Response, error) {
+func (client Client) GetACLStatusSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req)
 }
 
-// GetAclStatusResponder handles the response to the GetAclStatus request. The method always
+// GetACLStatusResponder handles the response to the GetACLStatus request. The method always
 // closes the http.Response Body.
-func (client Client) GetAclStatusResponder(resp *http.Response) (result AclStatusResult, err error) {
+func (client Client) GetACLStatusResponder(resp *http.Response) (result ACLStatusResult, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -811,38 +812,38 @@ func (client Client) MkdirsResponder(resp *http.Response) (result FileOperationR
 	return
 }
 
-// ModifyAclEntries modifies existing Access Control List (ACL) entries on a
+// ModifyACLEntries modifies existing Access Control List (ACL) entries on a
 // file or folder.
 //
-// modifyAclFilePath is the Data Lake Store path (starting with '/') of the
+// modifyACLFilePath is the Data Lake Store path (starting with '/') of the
 // file or directory with the ACL being modified. aclspec is the ACL
 // specification included in ACL modification operations in the format
 // '[default:]user|group|other::r|-w|-x|-' op is the constant value for the
 // operation.
-func (client Client) ModifyAclEntries(modifyAclFilePath string, aclspec string, op string) (result autorest.Response, err error) {
-	req, err := client.ModifyAclEntriesPreparer(modifyAclFilePath, aclspec, op)
+func (client Client) ModifyACLEntries(modifyACLFilePath string, aclspec string, op string) (result autorest.Response, err error) {
+	req, err := client.ModifyACLEntriesPreparer(modifyACLFilePath, aclspec, op)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "filesystem.Client", "ModifyAclEntries", nil, "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "filesystem.Client", "ModifyACLEntries", nil, "Failure preparing request")
 	}
 
-	resp, err := client.ModifyAclEntriesSender(req)
+	resp, err := client.ModifyACLEntriesSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "filesystem.Client", "ModifyAclEntries", resp, "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "filesystem.Client", "ModifyACLEntries", resp, "Failure sending request")
 	}
 
-	result, err = client.ModifyAclEntriesResponder(resp)
+	result, err = client.ModifyACLEntriesResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "filesystem.Client", "ModifyAclEntries", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "filesystem.Client", "ModifyACLEntries", resp, "Failure responding to request")
 	}
 
 	return
 }
 
-// ModifyAclEntriesPreparer prepares the ModifyAclEntries request.
-func (client Client) ModifyAclEntriesPreparer(modifyAclFilePath string, aclspec string, op string) (*http.Request, error) {
+// ModifyACLEntriesPreparer prepares the ModifyACLEntries request.
+func (client Client) ModifyACLEntriesPreparer(modifyACLFilePath string, aclspec string, op string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"modifyAclFilePath": autorest.Encode("path", modifyAclFilePath),
+		"modifyACLFilePath": autorest.Encode("path", modifyACLFilePath),
 	}
 
 	queryParameters := map[string]interface{}{
@@ -854,20 +855,20 @@ func (client Client) ModifyAclEntriesPreparer(modifyAclFilePath string, aclspec 
 	preparer := autorest.CreatePreparer(
 		autorest.AsPut(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/webhdfs/v1/{modifyAclFilePath}", pathParameters),
+		autorest.WithPathParameters("/webhdfs/v1/{modifyACLFilePath}", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare(&http.Request{})
 }
 
-// ModifyAclEntriesSender sends the ModifyAclEntries request. The method will close the
+// ModifyACLEntriesSender sends the ModifyACLEntries request. The method will close the
 // http.Response Body if it receives an error.
-func (client Client) ModifyAclEntriesSender(req *http.Request) (*http.Response, error) {
+func (client Client) ModifyACLEntriesSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req)
 }
 
-// ModifyAclEntriesResponder handles the response to the ModifyAclEntries request. The method always
+// ModifyACLEntriesResponder handles the response to the ModifyACLEntries request. The method always
 // closes the http.Response Body.
-func (client Client) ModifyAclEntriesResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client Client) ModifyACLEntriesResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -1025,34 +1026,34 @@ func (client Client) OpenResponder(resp *http.Response) (result ReadCloser, err 
 	return
 }
 
-// RemoveAcl removes the existing Access Control List (ACL) of the specified
+// RemoveACL removes the existing Access Control List (ACL) of the specified
 // file or directory.
 //
 // aclFilePath is the Data Lake Store path (starting with '/') of the file or
 // directory with the ACL being removed. op is the constant value for the
 // operation.
-func (client Client) RemoveAcl(aclFilePath string, op string) (result autorest.Response, err error) {
-	req, err := client.RemoveAclPreparer(aclFilePath, op)
+func (client Client) RemoveACL(aclFilePath string, op string) (result autorest.Response, err error) {
+	req, err := client.RemoveACLPreparer(aclFilePath, op)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "filesystem.Client", "RemoveAcl", nil, "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "filesystem.Client", "RemoveACL", nil, "Failure preparing request")
 	}
 
-	resp, err := client.RemoveAclSender(req)
+	resp, err := client.RemoveACLSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "filesystem.Client", "RemoveAcl", resp, "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "filesystem.Client", "RemoveACL", resp, "Failure sending request")
 	}
 
-	result, err = client.RemoveAclResponder(resp)
+	result, err = client.RemoveACLResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "filesystem.Client", "RemoveAcl", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "filesystem.Client", "RemoveACL", resp, "Failure responding to request")
 	}
 
 	return
 }
 
-// RemoveAclPreparer prepares the RemoveAcl request.
-func (client Client) RemoveAclPreparer(aclFilePath string, op string) (*http.Request, error) {
+// RemoveACLPreparer prepares the RemoveACL request.
+func (client Client) RemoveACLPreparer(aclFilePath string, op string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"aclFilePath": autorest.Encode("path", aclFilePath),
 	}
@@ -1070,15 +1071,15 @@ func (client Client) RemoveAclPreparer(aclFilePath string, op string) (*http.Req
 	return preparer.Prepare(&http.Request{})
 }
 
-// RemoveAclSender sends the RemoveAcl request. The method will close the
+// RemoveACLSender sends the RemoveACL request. The method will close the
 // http.Response Body if it receives an error.
-func (client Client) RemoveAclSender(req *http.Request) (*http.Response, error) {
+func (client Client) RemoveACLSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req)
 }
 
-// RemoveAclResponder handles the response to the RemoveAcl request. The method always
+// RemoveACLResponder handles the response to the RemoveACL request. The method always
 // closes the http.Response Body.
-func (client Client) RemoveAclResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client Client) RemoveACLResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -1088,37 +1089,37 @@ func (client Client) RemoveAclResponder(resp *http.Response) (result autorest.Re
 	return
 }
 
-// RemoveAclEntries removes existing Access Control List (ACL) entries for a
+// RemoveACLEntries removes existing Access Control List (ACL) entries for a
 // file or folder.
 //
-// removeAclFilePath is the Data Lake Store path (starting with '/') of the
+// removeACLFilePath is the Data Lake Store path (starting with '/') of the
 // file or directory with the ACL being removed. aclspec is the ACL spec
 // included in ACL removal operations in the format
 // '[default:]user|group|other' op is the constant value for the operation.
-func (client Client) RemoveAclEntries(removeAclFilePath string, aclspec string, op string) (result autorest.Response, err error) {
-	req, err := client.RemoveAclEntriesPreparer(removeAclFilePath, aclspec, op)
+func (client Client) RemoveACLEntries(removeACLFilePath string, aclspec string, op string) (result autorest.Response, err error) {
+	req, err := client.RemoveACLEntriesPreparer(removeACLFilePath, aclspec, op)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "filesystem.Client", "RemoveAclEntries", nil, "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "filesystem.Client", "RemoveACLEntries", nil, "Failure preparing request")
 	}
 
-	resp, err := client.RemoveAclEntriesSender(req)
+	resp, err := client.RemoveACLEntriesSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "filesystem.Client", "RemoveAclEntries", resp, "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "filesystem.Client", "RemoveACLEntries", resp, "Failure sending request")
 	}
 
-	result, err = client.RemoveAclEntriesResponder(resp)
+	result, err = client.RemoveACLEntriesResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "filesystem.Client", "RemoveAclEntries", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "filesystem.Client", "RemoveACLEntries", resp, "Failure responding to request")
 	}
 
 	return
 }
 
-// RemoveAclEntriesPreparer prepares the RemoveAclEntries request.
-func (client Client) RemoveAclEntriesPreparer(removeAclFilePath string, aclspec string, op string) (*http.Request, error) {
+// RemoveACLEntriesPreparer prepares the RemoveACLEntries request.
+func (client Client) RemoveACLEntriesPreparer(removeACLFilePath string, aclspec string, op string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"removeAclFilePath": autorest.Encode("path", removeAclFilePath),
+		"removeACLFilePath": autorest.Encode("path", removeACLFilePath),
 	}
 
 	queryParameters := map[string]interface{}{
@@ -1130,20 +1131,20 @@ func (client Client) RemoveAclEntriesPreparer(removeAclFilePath string, aclspec 
 	preparer := autorest.CreatePreparer(
 		autorest.AsPut(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/webhdfs/v1/{removeAclFilePath}", pathParameters),
+		autorest.WithPathParameters("/webhdfs/v1/{removeACLFilePath}", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare(&http.Request{})
 }
 
-// RemoveAclEntriesSender sends the RemoveAclEntries request. The method will close the
+// RemoveACLEntriesSender sends the RemoveACLEntries request. The method will close the
 // http.Response Body if it receives an error.
-func (client Client) RemoveAclEntriesSender(req *http.Request) (*http.Response, error) {
+func (client Client) RemoveACLEntriesSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req)
 }
 
-// RemoveAclEntriesResponder handles the response to the RemoveAclEntries request. The method always
+// RemoveACLEntriesResponder handles the response to the RemoveACLEntries request. The method always
 // closes the http.Response Body.
-func (client Client) RemoveAclEntriesResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client Client) RemoveACLEntriesResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -1153,36 +1154,36 @@ func (client Client) RemoveAclEntriesResponder(resp *http.Response) (result auto
 	return
 }
 
-// RemoveDefaultAcl removes the existing Default Access Control List (ACL) of
+// RemoveDefaultACL removes the existing Default Access Control List (ACL) of
 // the specified directory.
 //
-// defaultAclFilePath is the Data Lake Store path (starting with '/') of the
+// defaultACLFilePath is the Data Lake Store path (starting with '/') of the
 // directory with the default ACL being removed. op is the constant value for
 // the operation.
-func (client Client) RemoveDefaultAcl(defaultAclFilePath string, op string) (result autorest.Response, err error) {
-	req, err := client.RemoveDefaultAclPreparer(defaultAclFilePath, op)
+func (client Client) RemoveDefaultACL(defaultACLFilePath string, op string) (result autorest.Response, err error) {
+	req, err := client.RemoveDefaultACLPreparer(defaultACLFilePath, op)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "filesystem.Client", "RemoveDefaultAcl", nil, "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "filesystem.Client", "RemoveDefaultACL", nil, "Failure preparing request")
 	}
 
-	resp, err := client.RemoveDefaultAclSender(req)
+	resp, err := client.RemoveDefaultACLSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "filesystem.Client", "RemoveDefaultAcl", resp, "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "filesystem.Client", "RemoveDefaultACL", resp, "Failure sending request")
 	}
 
-	result, err = client.RemoveDefaultAclResponder(resp)
+	result, err = client.RemoveDefaultACLResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "filesystem.Client", "RemoveDefaultAcl", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "filesystem.Client", "RemoveDefaultACL", resp, "Failure responding to request")
 	}
 
 	return
 }
 
-// RemoveDefaultAclPreparer prepares the RemoveDefaultAcl request.
-func (client Client) RemoveDefaultAclPreparer(defaultAclFilePath string, op string) (*http.Request, error) {
+// RemoveDefaultACLPreparer prepares the RemoveDefaultACL request.
+func (client Client) RemoveDefaultACLPreparer(defaultACLFilePath string, op string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"defaultAclFilePath": autorest.Encode("path", defaultAclFilePath),
+		"defaultACLFilePath": autorest.Encode("path", defaultACLFilePath),
 	}
 
 	queryParameters := map[string]interface{}{
@@ -1193,20 +1194,20 @@ func (client Client) RemoveDefaultAclPreparer(defaultAclFilePath string, op stri
 	preparer := autorest.CreatePreparer(
 		autorest.AsPut(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/webhdfs/v1/{defaultAclFilePath}", pathParameters),
+		autorest.WithPathParameters("/webhdfs/v1/{defaultACLFilePath}", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare(&http.Request{})
 }
 
-// RemoveDefaultAclSender sends the RemoveDefaultAcl request. The method will close the
+// RemoveDefaultACLSender sends the RemoveDefaultACL request. The method will close the
 // http.Response Body if it receives an error.
-func (client Client) RemoveDefaultAclSender(req *http.Request) (*http.Response, error) {
+func (client Client) RemoveDefaultACLSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req)
 }
 
-// RemoveDefaultAclResponder handles the response to the RemoveDefaultAcl request. The method always
+// RemoveDefaultACLResponder handles the response to the RemoveDefaultACL request. The method always
 // closes the http.Response Body.
-func (client Client) RemoveDefaultAclResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client Client) RemoveDefaultACLResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -1280,37 +1281,37 @@ func (client Client) RenameResponder(resp *http.Response) (result FileOperationR
 	return
 }
 
-// SetAcl sets the Access Control List (ACL) for a file or folder.
+// SetACL sets the Access Control List (ACL) for a file or folder.
 //
-// setAclFilePath is the Data Lake Store path (starting with '/') of the file
+// setACLFilePath is the Data Lake Store path (starting with '/') of the file
 // or directory on which to set the ACL. aclspec is the ACL spec included in
 // ACL creation operations in the format
 // '[default:]user|group|other::r|-w|-x|-' op is the constant value for the
 // operation.
-func (client Client) SetAcl(setAclFilePath string, aclspec string, op string) (result autorest.Response, err error) {
-	req, err := client.SetAclPreparer(setAclFilePath, aclspec, op)
+func (client Client) SetACL(setACLFilePath string, aclspec string, op string) (result autorest.Response, err error) {
+	req, err := client.SetACLPreparer(setACLFilePath, aclspec, op)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "filesystem.Client", "SetAcl", nil, "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "filesystem.Client", "SetACL", nil, "Failure preparing request")
 	}
 
-	resp, err := client.SetAclSender(req)
+	resp, err := client.SetACLSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "filesystem.Client", "SetAcl", resp, "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "filesystem.Client", "SetACL", resp, "Failure sending request")
 	}
 
-	result, err = client.SetAclResponder(resp)
+	result, err = client.SetACLResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "filesystem.Client", "SetAcl", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "filesystem.Client", "SetACL", resp, "Failure responding to request")
 	}
 
 	return
 }
 
-// SetAclPreparer prepares the SetAcl request.
-func (client Client) SetAclPreparer(setAclFilePath string, aclspec string, op string) (*http.Request, error) {
+// SetACLPreparer prepares the SetACL request.
+func (client Client) SetACLPreparer(setACLFilePath string, aclspec string, op string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"setAclFilePath": autorest.Encode("path", setAclFilePath),
+		"setACLFilePath": autorest.Encode("path", setACLFilePath),
 	}
 
 	queryParameters := map[string]interface{}{
@@ -1322,20 +1323,20 @@ func (client Client) SetAclPreparer(setAclFilePath string, aclspec string, op st
 	preparer := autorest.CreatePreparer(
 		autorest.AsPut(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/webhdfs/v1/{setAclFilePath}", pathParameters),
+		autorest.WithPathParameters("/webhdfs/v1/{setACLFilePath}", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare(&http.Request{})
 }
 
-// SetAclSender sends the SetAcl request. The method will close the
+// SetACLSender sends the SetACL request. The method will close the
 // http.Response Body if it receives an error.
-func (client Client) SetAclSender(req *http.Request) (*http.Response, error) {
+func (client Client) SetACLSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req)
 }
 
-// SetAclResponder handles the response to the SetAcl request. The method always
+// SetACLResponder handles the response to the SetACL request. The method always
 // closes the http.Response Body.
-func (client Client) SetAclResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client Client) SetACLResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

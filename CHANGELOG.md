@@ -19,6 +19,7 @@
 
 - storage: Add more file storage share operations.
 - azure-rest-api-specs/commit/b8cdc2c50a0872fc0039f20c2b6b33aa0c2af4bf
+- Uses go-autorest v7.2.1
 
 ## `v4.0.0-beta`
 

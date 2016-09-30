@@ -18,7 +18,7 @@
 | arm/redis                     | no change           | code refactoring |
 
 - storage: Add more file storage share operations.
-
+- azure-rest-api-specs/commit/b8cdc2c50a0872fc0039f20c2b6b33aa0c2af4bf
 
 ## `v4.0.0-beta`
 

@@ -256,6 +256,22 @@ const (
 	blobCopyStatusFailed  = "failed"
 )
 
+// lease constants.
+const (
+	leaseHeaderPrefix = "x-ms-lease-"
+	leaseID           = "x-ms-lease-id"
+	leaseAction       = "x-ms-lease-action"
+	leaseBreakPeriod  = "x-ms-lease-break-period"
+	leaseDuration     = "x-ms-lease-duration"
+	leaseProposedID   = "x-ms-proposed-lease-id"
+
+	acquireLease = "acquire"
+	renewLease   = "renew"
+	changeLease  = "change"
+	releaseLease = "release"
+	breakLease   = "break"
+)
+
 // BlockListType is used to filter out types of blocks in a Get Blocks List call
 // for a block blob.
 //
@@ -558,6 +574,64 @@ func (b BlobStorageClient) getBlobRange(container, name, bytesRange string, extr
 		return nil, err
 	}
 	return resp, err
+}
+
+// AcquireLease gets a lease for a blob as per https://msdn.microsoft.com/en-us/library/azure/ee691972.aspx
+func (b BlobStorageClient) AcquireLease(container string, name string, leaseTimeInSeconds int, proposedLeaseID string) (string, error) {
+	params := url.Values{"comp": {"lease"}}
+	uri := b.client.getEndpoint(blobServiceName, pathForBlob(container, name), params)
+	headers := b.client.getStandardHeaders()
+
+	headers[leaseAction] = acquireLease
+	headers[leaseProposedID] = proposedLeaseID
+	headers[leaseDuration] = string(leaseTimeInSeconds)
+
+	resp, err := b.client.exec("PUT", uri, headers, nil)
+	if err != nil {
+		return "", err
+	}
+	defer resp.body.Close()
+
+	if err := checkRespCode(resp.statusCode, []int{http.StatusCreated}); err != nil {
+		return "", err
+	}
+
+	for k, v := range resp.headers {
+		k = strings.ToLower(k)
+		if len(v) == 0 || !strings.HasPrefix(k, strings.ToLower(leaseHeaderPrefix)) {
+			continue
+		}
+
+		// we only want the lease ID
+		if k == leaseID {
+			return v[0], nil
+		}
+	}
+
+	// what should we return in case of HTTP 201 but no lease ID?
+	// or it just cant happen? (brave words)
+
+	return "", nil
+}
+
+// BreakLease breaks the lease for a blob as per https://msdn.microsoft.com/en-us/library/azure/ee691972.aspx
+func (b BlobStorageClient) BreakLease(container string, name string, breakPeriodInSeconds int) error {
+	return nil
+}
+
+// ChangeLease changes a lease ID for a blob as per https://msdn.microsoft.com/en-us/library/azure/ee691972.aspx
+func (b BlobStorageClient) ChangeLease(container string, name string, proposedLeaseID string) (string, error) {
+	return "", nil
+}
+
+// ReleaseLease releases the lease for a blob as per https://msdn.microsoft.com/en-us/library/azure/ee691972.aspx
+func (b BlobStorageClient) ReleaseLease(container string, name string) error {
+	return nil
+}
+
+// RenewLease renews the lease for a blob as per https://msdn.microsoft.com/en-us/library/azure/ee691972.aspx
+func (b BlobStorageClient) RenewLease(container string, name string) error {
+	return nil
 }
 
 // GetBlobProperties provides various information about the specified

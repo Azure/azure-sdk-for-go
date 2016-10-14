@@ -664,7 +664,39 @@ func (b BlobStorageClient) breakLeaseCommon(container string, name string, heade
 }
 
 // ChangeLease changes a lease ID for a blob as per https://msdn.microsoft.com/en-us/library/azure/ee691972.aspx
-func (b BlobStorageClient) ChangeLease(container string, name string, proposedLeaseID string) (string, error) {
+func (b BlobStorageClient) ChangeLease(container string, name string, currentLeaseID string, proposedLeaseID string) (string, error) {
+	params := url.Values{"comp": {"lease"}}
+	uri := b.client.getEndpoint(blobServiceName, pathForBlob(container, name), params)
+	headers := b.client.getStandardHeaders()
+
+	headers[leaseAction] = changeLease
+	headers[leaseID] = currentLeaseID
+	headers[leaseProposedID] = proposedLeaseID
+
+	resp, err := b.client.exec("PUT", uri, headers, nil)
+	if err != nil {
+		return "", err
+	}
+	defer resp.body.Close()
+
+	if err := checkRespCode(resp.statusCode, []int{http.StatusOK}); err != nil {
+		return "", err
+	}
+
+	for k, v := range resp.headers {
+		k = strings.ToLower(k)
+		if len(v) == 0 || !strings.HasPrefix(k, strings.ToLower(leaseHeaderPrefix)) {
+			continue
+		}
+
+		// we only want the lease ID
+		if k == leaseID {
+			return v[0], nil
+		}
+	}
+
+	// what should we return in case of HTTP 201 but no lease ID?
+	// or it just cant happen? (brave words)
 	return "", nil
 }
 

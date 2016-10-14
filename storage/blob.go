@@ -6,6 +6,7 @@ import (
 	"errors"
 	"fmt"
 	"io"
+	"log"
 	"net/http"
 	"net/url"
 	"strconv"
@@ -264,6 +265,7 @@ const (
 	leaseBreakPeriod  = "x-ms-lease-break-period"
 	leaseDuration     = "x-ms-lease-duration"
 	leaseProposedID   = "x-ms-proposed-lease-id"
+	leaseTime         = "x-ms-lease-time"
 
 	acquireLease = "acquire"
 	renewLease   = "renew"
@@ -584,7 +586,7 @@ func (b BlobStorageClient) AcquireLease(container string, name string, leaseTime
 
 	headers[leaseAction] = acquireLease
 	headers[leaseProposedID] = proposedLeaseID
-	headers[leaseDuration] = string(leaseTimeInSeconds)
+	headers[leaseDuration] = strconv.Itoa(leaseTimeInSeconds)
 
 	resp, err := b.client.exec("PUT", uri, headers, nil)
 	if err != nil {
@@ -610,13 +612,55 @@ func (b BlobStorageClient) AcquireLease(container string, name string, leaseTime
 
 	// what should we return in case of HTTP 201 but no lease ID?
 	// or it just cant happen? (brave words)
-
 	return "", nil
 }
 
 // BreakLease breaks the lease for a blob as per https://msdn.microsoft.com/en-us/library/azure/ee691972.aspx
-func (b BlobStorageClient) BreakLease(container string, name string, breakPeriodInSeconds int) error {
-	return nil
+func (b BlobStorageClient) BreakLease(container string, name string) (int, error) {
+	headers := b.client.getStandardHeaders()
+	headers[leaseAction] = breakLease
+	return b.breakLeaseCommon(container, name, headers)
+}
+
+// BreakLeaseWithBreakPeriod breaks the lease for a blob as per https://msdn.microsoft.com/en-us/library/azure/ee691972.aspx
+func (b BlobStorageClient) BreakLeaseWithBreakPeriod(container string, name string, breakPeriodInSeconds int) (int, error) {
+	headers := b.client.getStandardHeaders()
+	headers[leaseAction] = breakLease
+	headers[leaseBreakPeriod] = strconv.Itoa(breakPeriodInSeconds)
+	return b.breakLeaseCommon(container, name, headers)
+}
+
+// breakLeaseCommon is common code for both version of BreakLease (with and without break period)
+func (b BlobStorageClient) breakLeaseCommon(container string, name string, headers map[string]string) (int, error) {
+	params := url.Values{"comp": {"lease"}}
+	uri := b.client.getEndpoint(blobServiceName, pathForBlob(container, name), params)
+
+	resp, err := b.client.exec("PUT", uri, headers, nil)
+	if err != nil {
+		return 0, err
+	}
+	defer resp.body.Close()
+
+	if err := checkRespCode(resp.statusCode, []int{http.StatusAccepted}); err != nil {
+		return 0, err
+	}
+
+	for k, v := range resp.headers {
+		log.Println(k, v)
+
+		k = strings.ToLower(k)
+		if !strings.HasPrefix(k, strings.ToLower(leaseTime)) {
+			continue
+		}
+
+		timeout, err := strconv.Atoi(v[0])
+		if err != nil {
+			return 0, err
+		}
+
+		return timeout, nil
+	}
+	return 0, nil
 }
 
 // ChangeLease changes a lease ID for a blob as per https://msdn.microsoft.com/en-us/library/azure/ee691972.aspx

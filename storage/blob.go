@@ -578,27 +578,37 @@ func (b BlobStorageClient) getBlobRange(container, name, bytesRange string, extr
 	return resp, err
 }
 
-// AcquireLease gets a lease for a blob as per https://msdn.microsoft.com/en-us/library/azure/ee691972.aspx
-func (b BlobStorageClient) AcquireLease(container string, name string, leaseTimeInSeconds int, proposedLeaseID string) (string, error) {
+// leasePut is common PUT code for the various aquire/release/break etc functions.
+func (b BlobStorageClient) leaseCommonPut(container string, name string, headers map[string]string, expectedStatus int) (http.Header, error) {
 	params := url.Values{"comp": {"lease"}}
 	uri := b.client.getEndpoint(blobServiceName, pathForBlob(container, name), params)
-	headers := b.client.getStandardHeaders()
 
+	resp, err := b.client.exec("PUT", uri, headers, nil)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.body.Close()
+
+	if err := checkRespCode(resp.statusCode, []int{expectedStatus}); err != nil {
+		return nil, err
+	}
+
+	return resp.headers, nil
+}
+
+// AcquireLease gets a lease for a blob as per https://msdn.microsoft.com/en-us/library/azure/ee691972.aspx
+func (b BlobStorageClient) AcquireLease(container string, name string, leaseTimeInSeconds int, proposedLeaseID string) (string, error) {
+	headers := b.client.getStandardHeaders()
 	headers[leaseAction] = acquireLease
 	headers[leaseProposedID] = proposedLeaseID
 	headers[leaseDuration] = strconv.Itoa(leaseTimeInSeconds)
 
-	resp, err := b.client.exec("PUT", uri, headers, nil)
+	respHeaders, err := b.leaseCommonPut(container, name, headers, http.StatusCreated)
 	if err != nil {
 		return "", err
 	}
-	defer resp.body.Close()
 
-	if err := checkRespCode(resp.statusCode, []int{http.StatusCreated}); err != nil {
-		return "", err
-	}
-
-	for k, v := range resp.headers {
+	for k, v := range respHeaders {
 		k = strings.ToLower(k)
 		if len(v) == 0 || !strings.HasPrefix(k, strings.ToLower(leaseHeaderPrefix)) {
 			continue
@@ -632,20 +642,13 @@ func (b BlobStorageClient) BreakLeaseWithBreakPeriod(container string, name stri
 
 // breakLeaseCommon is common code for both version of BreakLease (with and without break period)
 func (b BlobStorageClient) breakLeaseCommon(container string, name string, headers map[string]string) (int, error) {
-	params := url.Values{"comp": {"lease"}}
-	uri := b.client.getEndpoint(blobServiceName, pathForBlob(container, name), params)
 
-	resp, err := b.client.exec("PUT", uri, headers, nil)
+	respHeaders, err := b.leaseCommonPut(container, name, headers, http.StatusAccepted)
 	if err != nil {
 		return 0, err
 	}
-	defer resp.body.Close()
 
-	if err := checkRespCode(resp.statusCode, []int{http.StatusAccepted}); err != nil {
-		return 0, err
-	}
-
-	for k, v := range resp.headers {
+	for k, v := range respHeaders {
 		log.Println(k, v)
 
 		k = strings.ToLower(k)
@@ -665,25 +668,17 @@ func (b BlobStorageClient) breakLeaseCommon(container string, name string, heade
 
 // ChangeLease changes a lease ID for a blob as per https://msdn.microsoft.com/en-us/library/azure/ee691972.aspx
 func (b BlobStorageClient) ChangeLease(container string, name string, currentLeaseID string, proposedLeaseID string) (string, error) {
-	params := url.Values{"comp": {"lease"}}
-	uri := b.client.getEndpoint(blobServiceName, pathForBlob(container, name), params)
 	headers := b.client.getStandardHeaders()
-
 	headers[leaseAction] = changeLease
 	headers[leaseID] = currentLeaseID
 	headers[leaseProposedID] = proposedLeaseID
 
-	resp, err := b.client.exec("PUT", uri, headers, nil)
+	respHeaders, err := b.leaseCommonPut(container, name, headers, http.StatusOK)
 	if err != nil {
 		return "", err
 	}
-	defer resp.body.Close()
 
-	if err := checkRespCode(resp.statusCode, []int{http.StatusOK}); err != nil {
-		return "", err
-	}
-
-	for k, v := range resp.headers {
+	for k, v := range respHeaders {
 		k = strings.ToLower(k)
 		if len(v) == 0 || !strings.HasPrefix(k, strings.ToLower(leaseHeaderPrefix)) {
 			continue
@@ -702,20 +697,12 @@ func (b BlobStorageClient) ChangeLease(container string, name string, currentLea
 
 // ReleaseLease releases the lease for a blob as per https://msdn.microsoft.com/en-us/library/azure/ee691972.aspx
 func (b BlobStorageClient) ReleaseLease(container string, name string, currentLeaseID string) error {
-	params := url.Values{"comp": {"lease"}}
-	uri := b.client.getEndpoint(blobServiceName, pathForBlob(container, name), params)
 	headers := b.client.getStandardHeaders()
-
 	headers[leaseAction] = releaseLease
 	headers[leaseID] = currentLeaseID
 
-	resp, err := b.client.exec("PUT", uri, headers, nil)
+	_, err := b.leaseCommonPut(container, name, headers, http.StatusOK)
 	if err != nil {
-		return err
-	}
-	defer resp.body.Close()
-
-	if err := checkRespCode(resp.statusCode, []int{http.StatusOK}); err != nil {
 		return err
 	}
 
@@ -724,20 +711,12 @@ func (b BlobStorageClient) ReleaseLease(container string, name string, currentLe
 
 // RenewLease renews the lease for a blob as per https://msdn.microsoft.com/en-us/library/azure/ee691972.aspx
 func (b BlobStorageClient) RenewLease(container string, name string, currentLeaseID string) error {
-	params := url.Values{"comp": {"lease"}}
-	uri := b.client.getEndpoint(blobServiceName, pathForBlob(container, name), params)
 	headers := b.client.getStandardHeaders()
-
 	headers[leaseAction] = renewLease
 	headers[leaseID] = currentLeaseID
 
-	resp, err := b.client.exec("PUT", uri, headers, nil)
+	_, err := b.leaseCommonPut(container, name, headers, http.StatusOK)
 	if err != nil {
-		return err
-	}
-	defer resp.body.Close()
-
-	if err := checkRespCode(resp.statusCode, []int{http.StatusOK}); err != nil {
 		return err
 	}
 

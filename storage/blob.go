@@ -6,7 +6,6 @@ import (
 	"errors"
 	"fmt"
 	"io"
-	"log"
 	"net/http"
 	"net/url"
 	"strconv"
@@ -649,7 +648,6 @@ func (b BlobStorageClient) breakLeaseCommon(container string, name string, heade
 	}
 
 	for k, v := range respHeaders {
-		log.Println(k, v)
 
 		k = strings.ToLower(k)
 		if !strings.HasPrefix(k, strings.ToLower(leaseTime)) {

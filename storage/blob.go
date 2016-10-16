@@ -595,7 +595,7 @@ func (b BlobStorageClient) leaseCommonPut(container string, name string, headers
 	return resp.headers, nil
 }
 
-// AcquireLease gets a lease for a blob as per https://msdn.microsoft.com/en-us/library/azure/ee691972.aspx
+// AcquireLease creates a lease for a blob as per https://msdn.microsoft.com/en-us/library/azure/ee691972.aspx
 func (b BlobStorageClient) AcquireLease(container string, name string, leaseTimeInSeconds int, proposedLeaseID string) (string, error) {
 	headers := b.client.getStandardHeaders()
 	headers[leaseAction] = acquireLease
@@ -632,6 +632,7 @@ func (b BlobStorageClient) BreakLease(container string, name string) (int, error
 }
 
 // BreakLeaseWithBreakPeriod breaks the lease for a blob as per https://msdn.microsoft.com/en-us/library/azure/ee691972.aspx
+// breakPeriodInSeconds is used to determine how long until new lease can be created.
 func (b BlobStorageClient) BreakLeaseWithBreakPeriod(container string, name string, breakPeriodInSeconds int) (int, error) {
 	headers := b.client.getStandardHeaders()
 	headers[leaseAction] = breakLease

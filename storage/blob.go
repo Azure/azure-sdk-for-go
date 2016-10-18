@@ -256,6 +256,11 @@ const (
 	blobCopyStatusFailed  = "failed"
 )
 
+// lease constants.
+const (
+	leaseID = "x-ms-lease-id"
+)
+
 // BlockListType is used to filter out types of blocks in a Get Blocks List call
 // for a block blob.
 //
@@ -289,6 +294,15 @@ type ContainerAccessOptions struct {
 	ContainerAccess ContainerAccessType
 	Timeout         int
 	LeaseID         string
+}
+
+type ShareAccessSignatureDetails struct {
+	Id        string
+	StartTime time.Time
+	EndTime   time.Time
+	CanRead   bool
+	CanWrite  bool
+	CanDelete bool
 }
 
 const (
@@ -448,7 +462,7 @@ func (b BlobStorageClient) SetPermissions(container string, accessOptions Contai
 	}
 
 	if accessOptions.LeaseID != "" {
-		//headers[LeaseID] = accessOptions.LeaseID
+		headers[leaseID] = accessOptions.LeaseID
 	}
 
 	verb := "PUT"

@@ -296,13 +296,19 @@ type ContainerAccessOptions struct {
 	LeaseID         string
 }
 
-type ShareAccessSignatureDetails struct {
-	Id        string
-	StartTime time.Time
-	EndTime   time.Time
-	CanRead   bool
-	CanWrite  bool
-	CanDelete bool
+// Access Polcity details used for generating SharedAccessSignatures``
+type AccessPolicyDetails struct {
+	ID         string
+	StartTime  time.Time
+	ExpiryTime time.Time
+	CanRead    bool
+	CanWrite   bool
+	CanDelete  bool
+}
+
+type ContainerPermissions struct {
+	AccessOptions ContainerAccessOptions
+	AccessPolicy  AccessPolicyDetails
 }
 
 const (
@@ -446,27 +452,30 @@ func (b BlobStorageClient) ContainerExists(name string) (bool, error) {
 	return false, err
 }
 
-// SetPermissions sets up container permissions as per https://msdn.microsoft.com/en-us/library/azure/dd179391(d=printer).aspx
-func (b BlobStorageClient) SetPermissions(container string, accessOptions ContainerAccessOptions) error {
+// SetContainerPermissions sets up container permissions as per https://msdn.microsoft.com/en-us/library/azure/dd179391(d=printer).aspx
+func (b BlobStorageClient) SetContainerPermissions(container string, containerPermissions ContainerPermissions) error {
 	params := url.Values{"restype": {"container"},
 		"comp": {"acl"}}
 
-	if accessOptions.Timeout > 0 {
-		params.Add("timeout", strconv.Itoa(accessOptions.Timeout))
+	if containerPermissions.AccessOptions.Timeout > 0 {
+		params.Add("timeout", strconv.Itoa(containerPermissions.AccessOptions.Timeout))
 	}
 
 	uri := b.client.getEndpoint(blobServiceName, pathForContainer(container), params)
 	headers := b.client.getStandardHeaders()
-	if accessOptions.ContainerAccess != "" {
-		headers[ContainerAccessHeader] = string(accessOptions.ContainerAccess)
+	if containerPermissions.AccessOptions.ContainerAccess != "" {
+		headers[ContainerAccessHeader] = string(containerPermissions.AccessOptions.ContainerAccess)
 	}
 
-	if accessOptions.LeaseID != "" {
-		headers[leaseID] = accessOptions.LeaseID
+	if containerPermissions.AccessOptions.LeaseID != "" {
+		headers[leaseID] = containerPermissions.AccessOptions.LeaseID
 	}
+
+	// generate the XML for the SharedAccessSignature if required.
+	accessPolicyXML := b.generateAccessPolicy(containerPermissions.AccessPolicy)
 
 	verb := "PUT"
-	resp, err := b.client.exec(verb, uri, headers, nil)
+	resp, err := b.client.exec(verb, uri, headers, strings.NewReader(accessPolicyXML))
 	if err != nil {
 		return err
 	}
@@ -480,6 +489,33 @@ func (b BlobStorageClient) SetPermissions(container string, accessOptions Contai
 	}
 
 	return nil
+}
+
+// generateAccessPolicy generates the XML access policy used as the payload for SetContainerPermissions.
+// TODO(kpfaulkner) find better way to generate the XML. This is clunky.
+func (b BlobStorageClient) generateAccessPolicy(accessPolicy AccessPolicyDetails) string {
+	s := `<?xml version="1.0" encoding="utf-8"?><SignedIdentifiers><SignedIdentifier>`
+	s += fmt.Sprintf("<Id>%s</Id>", accessPolicy.ID)
+	s += "<AccessPolicy>"
+
+	permissions := ""
+	if accessPolicy.CanRead {
+		permissions += "r"
+	}
+
+	if accessPolicy.CanWrite {
+		permissions += "w"
+	}
+
+	if accessPolicy.CanDelete {
+		permissions += "d"
+	}
+
+	s += fmt.Sprintf("<Start>%s</Start>", accessPolicy.StartTime.Format("2006-01-02T15:04:05-0700"))
+	s += fmt.Sprintf("<Expiry>%s</Expiry>", accessPolicy.ExpiryTime.Format("2006-01-02T15:04:05-0700"))
+	s += fmt.Sprintf("<Permission>%s</Permission>", permissions)
+	s += `</AccessPolicy></SignedIdentifier></SignedIdentifiers>`
+	return s
 }
 
 // DeleteContainer deletes the container with given name on the storage

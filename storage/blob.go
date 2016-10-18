@@ -284,6 +284,13 @@ const (
 	ContainerAccessTypeContainer ContainerAccessType = "container"
 )
 
+// ContainerAccessOptions are used when setting ACLs of containers (after creation)
+type ContainerAccessOptions struct {
+	ContainerAccess ContainerAccessType
+	Timeout         int
+	LeaseID         string
+}
+
 const (
 	ContainerAccessHeader string = "x-ms-blob-public-access"
 )
@@ -426,28 +433,22 @@ func (b BlobStorageClient) ContainerExists(name string) (bool, error) {
 }
 
 // SetPermissions sets up container permissions as per https://msdn.microsoft.com/en-us/library/azure/dd179391(d=printer).aspx
-func (b BlobStorageClient) SetPermissions(container string, access ContainerAccessType) error {
+func (b BlobStorageClient) SetPermissions(container string, accessOptions ContainerAccessOptions) error {
 	params := url.Values{"restype": {"container"},
 		"comp": {"acl"}}
 
-	return b.setPermissionsCommon(container, access, params)
-}
+	if accessOptions.Timeout > 0 {
+		params.Add("timeout", strconv.Itoa(accessOptions.Timeout))
+	}
 
-// SetPermissions sets up container permissions (with timeout in seconds) as per https://msdn.microsoft.com/en-us/library/azure/dd179391(d=printer).aspx
-func (b BlobStorageClient) SetPermissionsWithTimeout(container string, access ContainerAccessType, timeout int) error {
-	params := url.Values{"restype": {"container"},
-		"comp":    {"acl"},
-		"timeout": {strconv.Itoa(timeout)}}
-
-	return b.setPermissionsCommon(container, access, params)
-}
-
-// setPermissionsCommon sets up container permissions as per https://msdn.microsoft.com/en-us/library/azure/dd179391(d=printer).aspx
-func (b BlobStorageClient) setPermissionsCommon(container string, access ContainerAccessType, params url.Values) error {
 	uri := b.client.getEndpoint(blobServiceName, pathForContainer(container), params)
 	headers := b.client.getStandardHeaders()
-	if access != "" {
-		headers[ContainerAccessHeader] = string(access)
+	if accessOptions.ContainerAccess != "" {
+		headers[ContainerAccessHeader] = string(accessOptions.ContainerAccess)
+	}
+
+	if accessOptions.LeaseID != "" {
+		//headers[LeaseID] = accessOptions.LeaseID
 	}
 
 	verb := "PUT"

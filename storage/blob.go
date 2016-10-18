@@ -284,6 +284,10 @@ const (
 	ContainerAccessTypeContainer ContainerAccessType = "container"
 )
 
+const (
+	ContainerAccessHeader string = "x-ms-blob-public-access"
+)
+
 // Maximum sizes (per REST API) for various concepts
 const (
 	MaxBlobBlockSize = 4 * 1024 * 1024
@@ -399,7 +403,7 @@ func (b BlobStorageClient) createContainer(name string, access ContainerAccessTy
 
 	headers := b.client.getStandardHeaders()
 	if access != "" {
-		headers["x-ms-blob-public-access"] = string(access)
+		headers[ContainerAccessHeader] = string(access)
 	}
 	return b.client.exec(verb, uri, headers, nil)
 }
@@ -419,6 +423,48 @@ func (b BlobStorageClient) ContainerExists(name string) (bool, error) {
 		}
 	}
 	return false, err
+}
+
+// SetPermissions sets up container permissions as per https://msdn.microsoft.com/en-us/library/azure/dd179391(d=printer).aspx
+func (b BlobStorageClient) SetPermissions(container string, access ContainerAccessType) error {
+	params := url.Values{"restype": {"container"},
+		"comp": {"acl"}}
+
+	return b.setPermissionsCommon(container, access, params)
+}
+
+// SetPermissions sets up container permissions (with timeout in seconds) as per https://msdn.microsoft.com/en-us/library/azure/dd179391(d=printer).aspx
+func (b BlobStorageClient) SetPermissionsWithTimeout(container string, access ContainerAccessType, timeout int) error {
+	params := url.Values{"restype": {"container"},
+		"comp":    {"acl"},
+		"timeout": {strconv.Itoa(timeout)}}
+
+	return b.setPermissionsCommon(container, access, params)
+}
+
+// setPermissionsCommon sets up container permissions as per https://msdn.microsoft.com/en-us/library/azure/dd179391(d=printer).aspx
+func (b BlobStorageClient) setPermissionsCommon(container string, access ContainerAccessType, params url.Values) error {
+	uri := b.client.getEndpoint(blobServiceName, pathForContainer(container), params)
+	headers := b.client.getStandardHeaders()
+	if access != "" {
+		headers[ContainerAccessHeader] = string(access)
+	}
+
+	verb := "PUT"
+	resp, err := b.client.exec(verb, uri, headers, nil)
+	if err != nil {
+		return err
+	}
+
+	if resp != nil {
+		defer resp.body.Close()
+
+		if resp.statusCode != http.StatusOK {
+			return errors.New("Unable to set permissions")
+		}
+	}
+
+	return nil
 }
 
 // DeleteContainer deletes the container with given name on the storage

@@ -13,7 +13,7 @@ import (
 	do "gopkg.in/godo.v2"
 )
 
-type Service struct {
+type service struct {
 	Name        string
 	Fullname    string
 	Namespace   string
@@ -23,27 +23,27 @@ type Service struct {
 	Input       string
 	Output      string
 	Swagger     string
-	SubServices []Service
+	SubServices []service
 }
 
-type Mapping struct {
+type mapping struct {
 	Plane       string
 	InputPrefix string
-	Services    []Service
+	Services    []service
 }
 
 var (
-	gopath      = os.Getenv("GOPATH")
-	sdkVersion  string
-	autorestDir string
-	swaggersDir string
-	deps        do.S
-	services    = []*Service{}
-	mapping     = []Mapping{
+	gopath          = os.Getenv("GOPATH")
+	sdkVersion      string
+	autorestDir     string
+	swaggersDir     string
+	deps            do.S
+	services        = []*service{}
+	servicesMapping = []mapping{
 		{
 			Plane:       "arm",
 			InputPrefix: "arm-",
-			Services: []Service{
+			Services: []service{
 				// {
 				//     Name: "asazure",
 				//     Version: "2016-05-06"
@@ -81,7 +81,7 @@ var (
 				},
 				{
 					Name: "datalake-analytics",
-					SubServices: []Service{
+					SubServices: []service{
 						{
 							Name:    "account",
 							Version: "2015-10-01-preview",
@@ -90,7 +90,7 @@ var (
 				},
 				{
 					Name: "datalake-store",
-					SubServices: []Service{
+					SubServices: []service{
 						{
 							Name:    "account",
 							Version: "2015-10-01-preview",
@@ -139,7 +139,7 @@ var (
 				},
 				{
 					Name: "machinelearning",
-					SubServices: []Service{
+					SubServices: []service{
 						{
 							Name:    "webservices",
 							Version: "2016-05-01-preview",
@@ -189,7 +189,7 @@ var (
 				},
 				{
 					Name: "resources",
-					SubServices: []Service{
+					SubServices: []service{
 						{
 							Name:    "features",
 							Version: "2015-12-01",
@@ -278,10 +278,10 @@ var (
 		{
 			Plane:       "",
 			InputPrefix: "arm-",
-			Services: []Service{
+			Services: []service{
 				{
 					Name: "datalake-store",
-					SubServices: []Service{
+					SubServices: []service{
 						{
 							Name:    "filesystem",
 							Version: "2015-10-01-preview",
@@ -307,17 +307,17 @@ var (
 )
 
 func main() {
-	for _, swaggerGroup := range mapping {
+	for _, swaggerGroup := range servicesMapping {
 		swg := swaggerGroup
 		for _, service := range swg.Services {
 			s := service
-			InitAndAddService(&s, swg.InputPrefix, swg.Plane)
+			initAndAddService(&s, swg.InputPrefix, swg.Plane)
 		}
 	}
 	do.Godo(tasks)
 }
 
-func InitAndAddService(service *Service, inputPrefix, plane string) {
+func initAndAddService(service *service, inputPrefix, plane string) {
 	if service.Swagger == "" {
 		service.Swagger = service.Name
 	}
@@ -336,7 +336,7 @@ func InitAndAddService(service *Service, inputPrefix, plane string) {
 		for _, subs := range service.SubServices {
 			ss := subs
 			ss.Packages = append(ss.Packages, service.Name)
-			InitAndAddService(&ss, inputPrefix, plane)
+			initAndAddService(&ss, inputPrefix, plane)
 		}
 	} else {
 		services = append(services, service)
@@ -369,7 +369,7 @@ func generateTasks(p *do.Project) {
 	addTasks(generate, p)
 }
 
-func generate(service *Service) {
+func generate(service *service) {
 	fmt.Printf("Generating %s...\n\n", service.Fullname)
 	delete(service)
 
@@ -396,7 +396,7 @@ func deleteTasks(p *do.Project) {
 	addTasks(format, p)
 }
 
-func delete(service *Service) {
+func delete(service *service) {
 	fmt.Printf("Deleting %s...\n\n", service.Fullname)
 	err := os.RemoveAll(service.Output)
 	if err != nil {
@@ -408,7 +408,7 @@ func formatTasks(p *do.Project) {
 	addTasks(format, p)
 }
 
-func format(service *Service) {
+func format(service *service) {
 	fmt.Printf("Formatting %s...\n\n", service.Fullname)
 	gofmt := exec.Command("gofmt", "-w", service.Output)
 	err := runner(gofmt)
@@ -421,7 +421,7 @@ func buildTasks(p *do.Project) {
 	addTasks(build, p)
 }
 
-func build(service *Service) {
+func build(service *service) {
 	fmt.Printf("Building %s...\n\n", service.Fullname)
 	gobuild := exec.Command("go", "build", service.Namespace)
 	err := runner(gobuild)
@@ -434,7 +434,7 @@ func lintTasks(p *do.Project) {
 	addTasks(lint, p)
 }
 
-func lint(service *Service) {
+func lint(service *service) {
 	fmt.Printf("Linting %s...\n\n", service.Fullname)
 	golint := exec.Command(fmt.Sprintf("%s/bin/golint", gopath), service.Namespace)
 	err := runner(golint)
@@ -447,7 +447,7 @@ func vetTasks(p *do.Project) {
 	addTasks(vet, p)
 }
 
-func vet(service *Service) {
+func vet(service *service) {
 	fmt.Printf("Vetting %s...\n\n", service.Fullname)
 	govet := exec.Command("go", "vet", service.Namespace)
 	err := runner(govet)
@@ -456,7 +456,7 @@ func vet(service *Service) {
 	}
 }
 
-func addTasks(fn func(*Service), p *do.Project) {
+func addTasks(fn func(*service), p *do.Project) {
 	for _, service := range services {
 		s := service
 		p.Task(s.TaskName, nil, func(c *do.Context) {

@@ -6,6 +6,7 @@ import (
 	"errors"
 	"fmt"
 	"io"
+	"log"
 	"net/http"
 	"net/url"
 	"strconv"
@@ -311,6 +312,13 @@ type ContainerPermissions struct {
 	AccessPolicy  AccessPolicyDetails
 }
 
+func NewContainerPermissions() ContainerPermissions {
+	perms := ContainerPermissions{}
+	perms.AccessOptions = ContainerAccessOptions{}
+
+	return perms
+}
+
 const (
 	ContainerAccessHeader string = "x-ms-blob-public-access"
 )
@@ -474,8 +482,16 @@ func (b BlobStorageClient) SetContainerPermissions(container string, containerPe
 	// generate the XML for the SharedAccessSignature if required.
 	accessPolicyXML := b.generateAccessPolicy(containerPermissions.AccessPolicy)
 
-	verb := "PUT"
-	resp, err := b.client.exec(verb, uri, headers, strings.NewReader(accessPolicyXML))
+	var resp *storageResponse
+	var err error
+	if accessPolicyXML != "" {
+		log.Printf("XML is %s", accessPolicyXML)
+		headers["Content-Length"] = fmt.Sprintf("%v", len(accessPolicyXML))
+		resp, err = b.client.exec("PUT", uri, headers, strings.NewReader(accessPolicyXML))
+	} else {
+		resp, err = b.client.exec("PUT", uri, headers, nil)
+	}
+
 	if err != nil {
 		return err
 	}
@@ -494,28 +510,33 @@ func (b BlobStorageClient) SetContainerPermissions(container string, containerPe
 // generateAccessPolicy generates the XML access policy used as the payload for SetContainerPermissions.
 // TODO(kpfaulkner) find better way to generate the XML. This is clunky.
 func (b BlobStorageClient) generateAccessPolicy(accessPolicy AccessPolicyDetails) string {
-	s := `<?xml version="1.0" encoding="utf-8"?><SignedIdentifiers><SignedIdentifier>`
-	s += fmt.Sprintf("<Id>%s</Id>", accessPolicy.ID)
-	s += "<AccessPolicy>"
 
-	permissions := ""
-	if accessPolicy.CanRead {
-		permissions += "r"
+	if accessPolicy.ID != "" {
+		s := `<?xml version="1.0" encoding="utf-8"?><SignedIdentifiers><SignedIdentifier>`
+		s += fmt.Sprintf("<Id>%s</Id>", accessPolicy.ID)
+		s += "<AccessPolicy>"
+
+		permissions := ""
+		if accessPolicy.CanRead {
+			permissions += "r"
+		}
+
+		if accessPolicy.CanWrite {
+			permissions += "w"
+		}
+
+		if accessPolicy.CanDelete {
+			permissions += "d"
+		}
+
+		s += fmt.Sprintf("<Start>%s</Start>", accessPolicy.StartTime.Format("2006-01-02"))
+		s += fmt.Sprintf("<Expiry>%s</Expiry>", accessPolicy.ExpiryTime.Format("2006-01-02"))
+		s += fmt.Sprintf("<Permission>%s</Permission>", permissions)
+		s += `</AccessPolicy></SignedIdentifier></SignedIdentifiers>`
+		return s
 	}
 
-	if accessPolicy.CanWrite {
-		permissions += "w"
-	}
-
-	if accessPolicy.CanDelete {
-		permissions += "d"
-	}
-
-	s += fmt.Sprintf("<Start>%s</Start>", accessPolicy.StartTime.Format("2006-01-02T15:04:05-0700"))
-	s += fmt.Sprintf("<Expiry>%s</Expiry>", accessPolicy.ExpiryTime.Format("2006-01-02T15:04:05-0700"))
-	s += fmt.Sprintf("<Permission>%s</Permission>", permissions)
-	s += `</AccessPolicy></SignedIdentifier></SignedIdentifiers>`
-	return s
+	return ""
 }
 
 // DeleteContainer deletes the container with given name on the storage

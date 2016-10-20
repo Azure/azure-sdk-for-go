@@ -6,6 +6,7 @@ import (
 	"errors"
 	"fmt"
 	"io"
+	"log"
 	"net/http"
 	"net/url"
 	"strconv"
@@ -529,7 +530,8 @@ func (b BlobStorageClient) SetContainerPermissions(container string, containerPe
 }
 
 // GetContainerPermissions gets the container permissions as per https://msdn.microsoft.com/en-us/library/azure/dd179469.aspx
-func (b BlobStorageClient) GetContainerPermissions(container string, timeout int, leaseID string) (*ContainerAccessResponse, error) {
+// Returns permissionResponse which is combined permissions and AccessPolicy
+func (b BlobStorageClient) GetContainerPermissions(container string, timeout int, leaseID string) (permissionResponse *ContainerAccessResponse, err error) {
 	params := url.Values{"restype": {"container"},
 		"comp": {"acl"}}
 
@@ -545,10 +547,16 @@ func (b BlobStorageClient) GetContainerPermissions(container string, timeout int
 	}
 
 	resp, err := b.client.exec("GET", uri, headers, nil)
-
 	if err != nil {
 		return nil, err
 	}
+
+	for k, v := range resp.headers {
+		log.Printf("%s : %s", k, v)
+	}
+
+	// containerAccess. Blob, Container, empty
+	containerAccess := resp.headers.Get(http.CanonicalHeaderKey(ContainerAccessHeader))
 
 	defer resp.body.Close()
 	var out AccessPolicyResponse
@@ -557,10 +565,11 @@ func (b BlobStorageClient) GetContainerPermissions(container string, timeout int
 		return nil, err
 	}
 
-	response := ContainerAccessResponse{}
-	response.AccessPolicy = out
-	//response.ContainerAccess =
-	return nil, nil
+	permissionResponse = &ContainerAccessResponse{}
+	permissionResponse.AccessPolicy = out
+	permissionResponse.ContainerAccess = ContainerAccessType(containerAccess)
+
+	return permissionResponse, nil
 }
 
 // generateAccessPolicy generates the XML access policy used as the payload for SetContainerPermissions.

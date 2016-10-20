@@ -10,7 +10,6 @@ import (
 	"fmt"
 	"io"
 	"io/ioutil"
-	"log"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -246,8 +245,6 @@ func (c Client) getAuthorizationHeader(verb, url string, headers map[string]stri
 	}
 
 	canonicalizedString := c.buildCanonicalizedString(verb, headers, canonicalizedResource)
-
-	log.Printf("canonical string %s: ", canonicalizedString)
 	return c.createAuthorizationHeader(canonicalizedString), nil
 }
 

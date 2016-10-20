@@ -689,7 +689,7 @@ func (s *StorageBlobSuite) TestAcquireLeaseWithNoProposedLeaseID(c *chk.C) {
 	c.Assert(cli.putSingleBlockBlob(cnt, blob, []byte{}), chk.IsNil)
 
 	_, err := cli.AcquireLease(cnt, blob, 30, "")
-	c.Assert(err, chk.IsNil)
+	c.Assert(err, chk.NotNil)
 }
 
 func (s *StorageBlobSuite) TestAcquireLeaseWithProposedLeaseID(c *chk.C) {

@@ -678,6 +678,173 @@ func (s *StorageBlobSuite) TestSetBlobProperties(c *chk.C) {
 	c.Check(mPut.ContentLanguage, chk.Equals, props.ContentLanguage)
 }
 
+func (s *StorageBlobSuite) TestAcquireLeaseWithNoProposedLeaseID(c *chk.C) {
+	cli := getBlobClient(c)
+	cnt := randContainer()
+
+	c.Assert(cli.CreateContainer(cnt, ContainerAccessTypePrivate), chk.IsNil)
+	defer cli.deleteContainer(cnt)
+
+	blob := randName(5)
+	c.Assert(cli.putSingleBlockBlob(cnt, blob, []byte{}), chk.IsNil)
+
+	_, err := cli.AcquireLease(cnt, blob, 30, "")
+	c.Assert(err, chk.NotNil)
+}
+
+func (s *StorageBlobSuite) TestAcquireLeaseWithProposedLeaseID(c *chk.C) {
+	cli := getBlobClient(c)
+	cnt := randContainer()
+
+	c.Assert(cli.CreateContainer(cnt, ContainerAccessTypePrivate), chk.IsNil)
+	defer cli.deleteContainer(cnt)
+
+	blob := randName(5)
+	c.Assert(cli.putSingleBlockBlob(cnt, blob, []byte{}), chk.IsNil)
+
+	proposedLeaseID := "dfe6dde8-68d5-4910-9248-c97c61768fea"
+	leaseID, err := cli.AcquireLease(cnt, blob, 30, proposedLeaseID)
+	c.Assert(err, chk.IsNil)
+	c.Assert(leaseID, chk.Equals, proposedLeaseID)
+}
+
+func (s *StorageBlobSuite) TestAcquireLeaseWithBadProposedLeaseID(c *chk.C) {
+	cli := getBlobClient(c)
+	cnt := randContainer()
+
+	c.Assert(cli.CreateContainer(cnt, ContainerAccessTypePrivate), chk.IsNil)
+	defer cli.deleteContainer(cnt)
+
+	blob := randName(5)
+	c.Assert(cli.putSingleBlockBlob(cnt, blob, []byte{}), chk.IsNil)
+
+	proposedLeaseID := "badbadbad"
+	_, err := cli.AcquireLease(cnt, blob, 30, proposedLeaseID)
+	c.Assert(err, chk.NotNil)
+}
+
+func (s *StorageBlobSuite) TestRenewLeaseSuccessful(c *chk.C) {
+	cli := getBlobClient(c)
+	cnt := randContainer()
+
+	c.Assert(cli.CreateContainer(cnt, ContainerAccessTypePrivate), chk.IsNil)
+	defer cli.deleteContainer(cnt)
+
+	blob := randName(5)
+	c.Assert(cli.putSingleBlockBlob(cnt, blob, []byte{}), chk.IsNil)
+
+	proposedLeaseID := "dfe6dde8-68d5-4910-9248-c97c61768fea"
+	leaseID, err := cli.AcquireLease(cnt, blob, 30, proposedLeaseID)
+	c.Assert(err, chk.IsNil)
+
+	err = cli.RenewLease(cnt, blob, leaseID)
+	c.Assert(err, chk.IsNil)
+}
+
+func (s *StorageBlobSuite) TestRenewLeaseAgainstNoCurrentLease(c *chk.C) {
+	cli := getBlobClient(c)
+	cnt := randContainer()
+
+	c.Assert(cli.CreateContainer(cnt, ContainerAccessTypePrivate), chk.IsNil)
+	defer cli.deleteContainer(cnt)
+
+	blob := randName(5)
+	c.Assert(cli.putSingleBlockBlob(cnt, blob, []byte{}), chk.IsNil)
+
+	badLeaseID := "1f812371-a41d-49e6-b123-f4b542e85144"
+	err := cli.RenewLease(cnt, blob, badLeaseID)
+	c.Assert(err, chk.NotNil)
+}
+
+func (s *StorageBlobSuite) TestChangeLeaseSuccessful(c *chk.C) {
+	cli := getBlobClient(c)
+	cnt := randContainer()
+
+	c.Assert(cli.CreateContainer(cnt, ContainerAccessTypePrivate), chk.IsNil)
+	defer cli.deleteContainer(cnt)
+
+	blob := randName(5)
+	c.Assert(cli.putSingleBlockBlob(cnt, blob, []byte{}), chk.IsNil)
+	proposedLeaseID := "dfe6dde8-68d5-4910-9248-c97c61768fea"
+	leaseID, err := cli.AcquireLease(cnt, blob, 30, proposedLeaseID)
+	c.Assert(err, chk.IsNil)
+
+	newProposedLeaseID := "dfe6dde8-68d5-4910-9248-c97c61768fbb"
+	newLeaseID, err := cli.ChangeLease(cnt, blob, leaseID, newProposedLeaseID)
+	c.Assert(err, chk.IsNil)
+	c.Assert(newLeaseID, chk.Equals, newProposedLeaseID)
+}
+
+func (s *StorageBlobSuite) TestChangeLeaseNotSuccessfulbadProposedLeaseID(c *chk.C) {
+	cli := getBlobClient(c)
+	cnt := randContainer()
+
+	c.Assert(cli.CreateContainer(cnt, ContainerAccessTypePrivate), chk.IsNil)
+	defer cli.deleteContainer(cnt)
+
+	blob := randName(5)
+	c.Assert(cli.putSingleBlockBlob(cnt, blob, []byte{}), chk.IsNil)
+	proposedLeaseID := "dfe6dde8-68d5-4910-9248-c97c61768fea"
+	leaseID, err := cli.AcquireLease(cnt, blob, 30, proposedLeaseID)
+	c.Assert(err, chk.IsNil)
+
+	newProposedLeaseID := "1f812371-a41d-49e6-b123-f4b542e"
+	_, err = cli.ChangeLease(cnt, blob, leaseID, newProposedLeaseID)
+	c.Assert(err, chk.NotNil)
+}
+
+func (s *StorageBlobSuite) TestReleaseLeaseSuccessful(c *chk.C) {
+	cli := getBlobClient(c)
+	cnt := randContainer()
+
+	c.Assert(cli.CreateContainer(cnt, ContainerAccessTypePrivate), chk.IsNil)
+	defer cli.deleteContainer(cnt)
+
+	blob := randName(5)
+	c.Assert(cli.putSingleBlockBlob(cnt, blob, []byte{}), chk.IsNil)
+	proposedLeaseID := "dfe6dde8-68d5-4910-9248-c97c61768fea"
+	leaseID, err := cli.AcquireLease(cnt, blob, 30, proposedLeaseID)
+	c.Assert(err, chk.IsNil)
+
+	err = cli.ReleaseLease(cnt, blob, leaseID)
+	c.Assert(err, chk.IsNil)
+}
+
+func (s *StorageBlobSuite) TestReleaseLeaseNotSuccessfulBadLeaseID(c *chk.C) {
+	cli := getBlobClient(c)
+	cnt := randContainer()
+
+	c.Assert(cli.CreateContainer(cnt, ContainerAccessTypePrivate), chk.IsNil)
+	defer cli.deleteContainer(cnt)
+
+	blob := randName(5)
+	c.Assert(cli.putSingleBlockBlob(cnt, blob, []byte{}), chk.IsNil)
+	proposedLeaseID := "dfe6dde8-68d5-4910-9248-c97c61768fea"
+	_, err := cli.AcquireLease(cnt, blob, 30, proposedLeaseID)
+	c.Assert(err, chk.IsNil)
+
+	err = cli.ReleaseLease(cnt, blob, "badleaseid")
+	c.Assert(err, chk.NotNil)
+}
+
+func (s *StorageBlobSuite) TestBreakLeaseSuccessful(c *chk.C) {
+	cli := getBlobClient(c)
+	cnt := randContainer()
+
+	c.Assert(cli.CreateContainer(cnt, ContainerAccessTypePrivate), chk.IsNil)
+	defer cli.deleteContainer(cnt)
+
+	blob := randName(5)
+	c.Assert(cli.putSingleBlockBlob(cnt, blob, []byte{}), chk.IsNil)
+
+	proposedLeaseID := "dfe6dde8-68d5-4910-9248-c97c61768fea"
+	_, err := cli.AcquireLease(cnt, blob, 30, proposedLeaseID)
+	c.Assert(err, chk.IsNil)
+
+	_, err = cli.BreakLease(cnt, blob)
+	c.Assert(err, chk.IsNil)
+}
+
 func (s *StorageBlobSuite) TestPutEmptyBlockBlob(c *chk.C) {
 	cli := getBlobClient(c)
 	cnt := randContainer()

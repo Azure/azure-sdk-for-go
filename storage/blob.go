@@ -776,7 +776,9 @@ func (b BlobStorageClient) leaseCommonPut(container string, name string, headers
 }
 
 // AcquireLease creates a lease for a blob as per https://msdn.microsoft.com/en-us/library/azure/ee691972.aspx
-func (b BlobStorageClient) AcquireLease(container string, name string, leaseTimeInSeconds int, proposedLeaseID string) (string, error) {
+
+// returns leaseID acquired
+func (b BlobStorageClient) AcquireLease(container string, name string, leaseTimeInSeconds int, proposedLeaseID string) (returnedLeaseID string, err error) {
 	headers := b.client.getStandardHeaders()
 	headers[leaseAction] = acquireLease
 	headers[leaseProposedID] = proposedLeaseID
@@ -787,25 +789,18 @@ func (b BlobStorageClient) AcquireLease(container string, name string, leaseTime
 		return "", err
 	}
 
-	for k, v := range respHeaders {
-		k = strings.ToLower(k)
-		if len(v) == 0 || !strings.HasPrefix(k, strings.ToLower(leaseHeaderPrefix)) {
-			continue
-		}
+	returnedLeaseID = respHeaders.Get(http.CanonicalHeaderKey(leaseID))
 
-		// we only want the lease ID
-		if k == leaseID {
-			return v[0], nil
-		}
+	if returnedLeaseID != "" {
+		return returnedLeaseID, nil
 	}
 
-	// what should we return in case of HTTP 201 but no lease ID?
-	// or it just cant happen? (brave words)
-	return "", nil
+	return "", errors.New("LeaseID not returned")
 }
 
 // BreakLease breaks the lease for a blob as per https://msdn.microsoft.com/en-us/library/azure/ee691972.aspx
-func (b BlobStorageClient) BreakLease(container string, name string) (int, error) {
+// Returns the timeout remaining in the lease in seconds
+func (b BlobStorageClient) BreakLease(container string, name string) (breakTimeout int, err error) {
 	headers := b.client.getStandardHeaders()
 	headers[leaseAction] = breakLease
 	return b.breakLeaseCommon(container, name, headers)
@@ -813,7 +808,8 @@ func (b BlobStorageClient) BreakLease(container string, name string) (int, error
 
 // BreakLeaseWithBreakPeriod breaks the lease for a blob as per https://msdn.microsoft.com/en-us/library/azure/ee691972.aspx
 // breakPeriodInSeconds is used to determine how long until new lease can be created.
-func (b BlobStorageClient) BreakLeaseWithBreakPeriod(container string, name string, breakPeriodInSeconds int) (int, error) {
+// Returns the timeout remaining in the lease in seconds
+func (b BlobStorageClient) BreakLeaseWithBreakPeriod(container string, name string, breakPeriodInSeconds int) (breakTimeout int, err error) {
 	headers := b.client.getStandardHeaders()
 	headers[leaseAction] = breakLease
 	headers[leaseBreakPeriod] = strconv.Itoa(breakPeriodInSeconds)
@@ -821,32 +817,27 @@ func (b BlobStorageClient) BreakLeaseWithBreakPeriod(container string, name stri
 }
 
 // breakLeaseCommon is common code for both version of BreakLease (with and without break period)
-func (b BlobStorageClient) breakLeaseCommon(container string, name string, headers map[string]string) (int, error) {
+func (b BlobStorageClient) breakLeaseCommon(container string, name string, headers map[string]string) (breakTimeout int, err error) {
 
 	respHeaders, err := b.leaseCommonPut(container, name, headers, http.StatusAccepted)
 	if err != nil {
 		return 0, err
 	}
 
-	for k, v := range respHeaders {
-
-		k = strings.ToLower(k)
-		if !strings.HasPrefix(k, strings.ToLower(leaseTime)) {
-			continue
-		}
-
-		timeout, err := strconv.Atoi(v[0])
+	breakTimeoutStr := respHeaders.Get(http.CanonicalHeaderKey(leaseTime))
+	if breakTimeoutStr != "" {
+		breakTimeout, err = strconv.Atoi(breakTimeoutStr)
 		if err != nil {
 			return 0, err
 		}
-
-		return timeout, nil
 	}
-	return 0, nil
+
+	return breakTimeout, nil
 }
 
 // ChangeLease changes a lease ID for a blob as per https://msdn.microsoft.com/en-us/library/azure/ee691972.aspx
-func (b BlobStorageClient) ChangeLease(container string, name string, currentLeaseID string, proposedLeaseID string) (string, error) {
+// Returns the new LeaseID acquired
+func (b BlobStorageClient) ChangeLease(container string, name string, currentLeaseID string, proposedLeaseID string) (newLeaseID string, err error) {
 	headers := b.client.getStandardHeaders()
 	headers[leaseAction] = changeLease
 	headers[leaseID] = currentLeaseID
@@ -857,21 +848,12 @@ func (b BlobStorageClient) ChangeLease(container string, name string, currentLea
 		return "", err
 	}
 
-	for k, v := range respHeaders {
-		k = strings.ToLower(k)
-		if len(v) == 0 || !strings.HasPrefix(k, strings.ToLower(leaseHeaderPrefix)) {
-			continue
-		}
-
-		// we only want the lease ID
-		if k == leaseID {
-			return v[0], nil
-		}
+	newLeaseID = respHeaders.Get(http.CanonicalHeaderKey(leaseID))
+	if newLeaseID != "" {
+		return newLeaseID, nil
 	}
 
-	// what should we return in case of HTTP 201 but no lease ID?
-	// or it just cant happen? (brave words)
-	return "", nil
+	return "", errors.New("LeaseID not returned")
 }
 
 // ReleaseLease releases the lease for a blob as per https://msdn.microsoft.com/en-us/library/azure/ee691972.aspx

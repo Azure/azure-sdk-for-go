@@ -678,6 +678,57 @@ func (s *StorageBlobSuite) TestSetBlobProperties(c *chk.C) {
 	c.Check(mPut.ContentLanguage, chk.Equals, props.ContentLanguage)
 }
 
+func (s *StorageBlobSuite) createContainerPermissions(accessType ContainerAccessType,
+	timeout int, leaseID string, ID string, canRead bool,
+	canWrite bool, canDelete bool) ContainerPermissions {
+	perms := ContainerPermissions{}
+	perms.AccessOptions.ContainerAccess = accessType
+	perms.AccessOptions.Timeout = timeout
+	perms.AccessOptions.LeaseID = leaseID
+	perms.AccessPolicy.ID = ID
+	perms.AccessPolicy.StartTime = time.Now()
+	perms.AccessPolicy.ExpiryTime = time.Date(2017, 1, 1, 0, 0, 0, 0, time.UTC)
+	perms.AccessPolicy.CanRead = canRead
+	perms.AccessPolicy.CanWrite = canWrite
+	perms.AccessPolicy.CanDelete = canDelete
+	return perms
+}
+
+func (s *StorageBlobSuite) TestSetContainerPermissionsSuccessfully(c *chk.C) {
+	cli := getBlobClient(c)
+	cnt := randContainer()
+
+	c.Assert(cli.CreateContainer(cnt, ContainerAccessTypePrivate), chk.IsNil)
+	defer cli.deleteContainer(cnt)
+
+	perms := s.createContainerPermissions(ContainerAccessTypeBlob, 0, "", "MTIzNDU2Nzg5MDEyMzQ1Njc4OTAxMjM0NTY3ODkwMTa=", true, true, true)
+
+	err := cli.SetContainerPermissions(cnt, perms)
+	c.Assert(err, chk.IsNil)
+}
+
+func (s *StorageBlobSuite) TestSetThenGetContainerPermissionsSuccessfully(c *chk.C) {
+	cli := getBlobClient(c)
+	cnt := randContainer()
+
+	c.Assert(cli.CreateContainer(cnt, ContainerAccessTypePrivate), chk.IsNil)
+	defer cli.deleteContainer(cnt)
+
+	perms := s.createContainerPermissions(ContainerAccessTypeBlob, 0, "", "MTIzNDU2Nzg5MDEyMzQ1Njc4OTAxMjM0NTY3ODkwMTa=", true, true, true)
+
+	err := cli.SetContainerPermissions(cnt, perms)
+	c.Assert(err, chk.IsNil)
+
+	returnedPerms, err := cli.GetContainerPermissions(cnt, 0, "")
+	c.Assert(err, chk.IsNil)
+
+	// check container permissions itself.
+	c.Assert(perms.AccessOptions.ContainerAccess, chk.Equals, returnedPerms.ContainerAccess)
+
+	// now check policy set.
+	c.Assert(perms.AccessOptions.ContainerAccess, chk.Equals, returnedPerms.ContainerAccess)
+
+}
 func (s *StorageBlobSuite) TestAcquireLeaseWithNoProposedLeaseID(c *chk.C) {
 	cli := getBlobClient(c)
 	cnt := randContainer()

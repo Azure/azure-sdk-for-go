@@ -309,7 +309,7 @@ type ContainerAccessOptions struct {
 	LeaseID         string
 }
 
-// Access Policy details used for generating SharedAccessSignatures
+// AccessPolicyDetails are used for SETTING policies
 type AccessPolicyDetails struct {
 	ID         string
 	StartTime  time.Time
@@ -319,40 +319,40 @@ type AccessPolicyDetails struct {
 	CanDelete  bool
 }
 
+// ContainerPermissions is used when setting permissions and Access Policies for containers.
 type ContainerPermissions struct {
 	AccessOptions ContainerAccessOptions
 	AccessPolicy  AccessPolicyDetails
 }
 
+// AccessPolicyDetailsResponse has specifics about an access policy
 type AccessPolicyDetailsResponse struct {
-	StartTime  string `xml:"Start"`
-	ExpiryTime string `xml:"Expiry"`
-	Permission string `xml:"Permission"`
+	StartTime  time.Time `xml:"Start"`
+	ExpiryTime time.Time `xml:"Expiry"`
+	Permission string    `xml:"Permission"`
 }
 
+// SignedIdentifierResponse is a wrapper for a specific policy
 type SignedIdentifierResponse struct {
 	ID           string                      `xml:"Id"`
 	AccessPolicy AccessPolicyDetailsResponse `xml:"AccessPolicy"`
 }
 
+// SignedIdentifiers part of the response from GetPermissions call.
 type SignedIdentifiers struct {
 	SignedIdentifiers []SignedIdentifierResponse `xml:"SignedIdentifier"`
 }
 
+// AccessPolicyResponse is the response type from the GetPermissions call.
 type AccessPolicyResponse struct {
 	SignedIdentifiersList SignedIdentifiers `xml:"SignedIdentifiers"`
 }
 
+// ContainerAccessResponse is returned for the GetContainerPermissions function.
+// This contains both the permission and access policy for the container.
 type ContainerAccessResponse struct {
 	ContainerAccess ContainerAccessType
-	AccessPolicy    AccessPolicyResponse
-}
-
-func NewContainerPermissions() ContainerPermissions {
-	perms := ContainerPermissions{}
-	perms.AccessOptions = ContainerAccessOptions{}
-
-	return perms
+	AccessPolicy    SignedIdentifiers
 }
 
 const (
@@ -542,6 +542,8 @@ func (b BlobStorageClient) SetContainerPermissions(container string, containerPe
 }
 
 // GetContainerPermissions gets the container permissions as per https://msdn.microsoft.com/en-us/library/azure/dd179469.aspx
+// If timeout is 0 then it will not be passed to Azure
+// leaseID will only be passed to Azure if populated
 // Returns permissionResponse which is combined permissions and AccessPolicy
 func (b BlobStorageClient) GetContainerPermissions(container string, timeout int, leaseID string) (permissionResponse *ContainerAccessResponse, err error) {
 	params := url.Values{"restype": {"container"},
@@ -578,7 +580,7 @@ func (b BlobStorageClient) GetContainerPermissions(container string, timeout int
 	}
 
 	permissionResponse = &ContainerAccessResponse{}
-	permissionResponse.AccessPolicy = out
+	permissionResponse.AccessPolicy = out.SignedIdentifiersList
 	permissionResponse.ContainerAccess = ContainerAccessType(containerAccess)
 
 	return permissionResponse, nil
@@ -606,8 +608,8 @@ func (b BlobStorageClient) generateAccessPolicy(accessPolicy AccessPolicyDetails
 			permissions += "d"
 		}
 
-		s += fmt.Sprintf("<Start>%s</Start>", accessPolicy.StartTime.Format("2006-01-02"))
-		s += fmt.Sprintf("<Expiry>%s</Expiry>", accessPolicy.ExpiryTime.Format("2006-01-02"))
+		s += fmt.Sprintf("<Start>%s</Start>", accessPolicy.StartTime.Format("2006-01-02T15:04:05Z"))
+		s += fmt.Sprintf("<Expiry>%s</Expiry>", accessPolicy.ExpiryTime.Format("2006-01-02T15:04:05Z"))
 		s += fmt.Sprintf("<Permission>%s</Permission>", permissions)
 		s += `</AccessPolicy></SignedIdentifier></SignedIdentifiers>`
 		return s

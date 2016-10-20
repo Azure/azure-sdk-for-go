@@ -6,7 +6,6 @@ import (
 	"errors"
 	"fmt"
 	"io"
-	"log"
 	"net/http"
 	"net/url"
 	"strconv"
@@ -297,7 +296,7 @@ type ContainerAccessOptions struct {
 	LeaseID         string
 }
 
-// Access Polcity details used for generating SharedAccessSignatures``
+// Access Policy details used for generating SharedAccessSignatures
 type AccessPolicyDetails struct {
 	ID         string
 	StartTime  time.Time
@@ -310,6 +309,30 @@ type AccessPolicyDetails struct {
 type ContainerPermissions struct {
 	AccessOptions ContainerAccessOptions
 	AccessPolicy  AccessPolicyDetails
+}
+
+type AccessPolicyDetailsResponse struct {
+	StartTime  string `xml:"Start"`
+	ExpiryTime string `xml:"Expiry"`
+	Permission string `xml:"Permission"`
+}
+
+type SignedIdentifierResponse struct {
+	ID           string                      `xml:"Id"`
+	AccessPolicy AccessPolicyDetailsResponse `xml:"AccessPolicy"`
+}
+
+type SignedIdentifiers struct {
+	SignedIdentifiers []SignedIdentifierResponse `xml:"SignedIdentifier"`
+}
+
+type AccessPolicyResponse struct {
+	SignedIdentifiersList SignedIdentifiers `xml:"SignedIdentifiers"`
+}
+
+type ContainerAccessResponse struct {
+	ContainerAccess ContainerAccessType
+	AccessPolicy    AccessPolicyResponse
 }
 
 func NewContainerPermissions() ContainerPermissions {
@@ -485,7 +508,6 @@ func (b BlobStorageClient) SetContainerPermissions(container string, containerPe
 	var resp *storageResponse
 	var err error
 	if accessPolicyXML != "" {
-		log.Printf("XML is %s", accessPolicyXML)
 		headers["Content-Length"] = fmt.Sprintf("%v", len(accessPolicyXML))
 		resp, err = b.client.exec("PUT", uri, headers, strings.NewReader(accessPolicyXML))
 	} else {
@@ -503,8 +525,42 @@ func (b BlobStorageClient) SetContainerPermissions(container string, containerPe
 			return errors.New("Unable to set permissions")
 		}
 	}
-
 	return nil
+}
+
+// GetContainerPermissions gets the container permissions as per https://msdn.microsoft.com/en-us/library/azure/dd179469.aspx
+func (b BlobStorageClient) GetContainerPermissions(container string, timeout int, leaseID string) (*ContainerAccessResponse, error) {
+	params := url.Values{"restype": {"container"},
+		"comp": {"acl"}}
+
+	if timeout > 0 {
+		params.Add("timeout", strconv.Itoa(timeout))
+	}
+
+	uri := b.client.getEndpoint(blobServiceName, pathForContainer(container), params)
+	headers := b.client.getStandardHeaders()
+
+	if leaseID != "" {
+		headers[leaseID] = leaseID
+	}
+
+	resp, err := b.client.exec("GET", uri, headers, nil)
+
+	if err != nil {
+		return nil, err
+	}
+
+	defer resp.body.Close()
+	var out AccessPolicyResponse
+	err = xmlUnmarshal(resp.body, &out.SignedIdentifiersList)
+	if err != nil {
+		return nil, err
+	}
+
+	response := ContainerAccessResponse{}
+	response.AccessPolicy = out
+	//response.ContainerAccess =
+	return nil, nil
 }
 
 // generateAccessPolicy generates the XML access policy used as the payload for SetContainerPermissions.

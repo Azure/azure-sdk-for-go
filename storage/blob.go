@@ -6,7 +6,6 @@ import (
 	"errors"
 	"fmt"
 	"io"
-	"log"
 	"net/http"
 	"net/url"
 	"strconv"
@@ -563,10 +562,6 @@ func (b BlobStorageClient) GetContainerPermissions(container string, timeout int
 	resp, err := b.client.exec("GET", uri, headers, nil)
 	if err != nil {
 		return nil, err
-	}
-
-	for k, v := range resp.headers {
-		log.Printf("%s : %s", k, v)
 	}
 
 	// containerAccess. Blob, Container, empty

@@ -685,13 +685,30 @@ func (s *StorageBlobSuite) createContainerPermissions(accessType ContainerAccess
 	perms.AccessOptions.ContainerAccess = accessType
 	perms.AccessOptions.Timeout = timeout
 	perms.AccessOptions.LeaseID = leaseID
-	perms.AccessPolicy.ID = ID
-	perms.AccessPolicy.StartTime = time.Now()
-	perms.AccessPolicy.ExpiryTime = time.Date(2017, 1, 1, 0, 0, 0, 0, time.UTC)
-	perms.AccessPolicy.CanRead = canRead
-	perms.AccessPolicy.CanWrite = canWrite
-	perms.AccessPolicy.CanDelete = canDelete
+
+	if ID != "" {
+		perms.AccessPolicy.ID = ID
+		perms.AccessPolicy.StartTime = time.Now()
+		perms.AccessPolicy.ExpiryTime = time.Date(2017, 1, 1, 0, 0, 0, 0, time.UTC)
+		perms.AccessPolicy.CanRead = canRead
+		perms.AccessPolicy.CanWrite = canWrite
+		perms.AccessPolicy.CanDelete = canDelete
+	}
+
 	return perms
+}
+
+func (s *StorageBlobSuite) TestSetContainerPermissionsWithTimeoutSuccessfully(c *chk.C) {
+	cli := getBlobClient(c)
+	cnt := randContainer()
+
+	c.Assert(cli.CreateContainer(cnt, ContainerAccessTypePrivate), chk.IsNil)
+	defer cli.deleteContainer(cnt)
+
+	perms := s.createContainerPermissions(ContainerAccessTypeBlob, 30, "", "MTIzNDU2Nzg5MDEyMzQ1Njc4OTAxMjM0NTY3ODkwMTa=", true, true, true)
+
+	err := cli.SetContainerPermissions(cnt, perms)
+	c.Assert(err, chk.IsNil)
 }
 
 func (s *StorageBlobSuite) TestSetContainerPermissionsSuccessfully(c *chk.C) {
@@ -723,12 +740,53 @@ func (s *StorageBlobSuite) TestSetThenGetContainerPermissionsSuccessfully(c *chk
 	c.Assert(err, chk.IsNil)
 
 	// check container permissions itself.
-	c.Assert(perms.AccessOptions.ContainerAccess, chk.Equals, returnedPerms.ContainerAccess)
+	c.Assert(returnedPerms.ContainerAccess, chk.Equals, perms.AccessOptions.ContainerAccess)
 
 	// now check policy set.
-	c.Assert(perms.AccessOptions.ContainerAccess, chk.Equals, returnedPerms.ContainerAccess)
+	c.Assert(1, chk.Equals, len(returnedPerms.AccessPolicy.SignedIdentifiers))
+	c.Assert(returnedPerms.AccessPolicy.SignedIdentifiers[0].ID, chk.Equals, perms.AccessPolicy.ID)
 
+	// test timestamps down the minutes
+	c.Assert(returnedPerms.AccessPolicy.SignedIdentifiers[0].AccessPolicy.StartTime.Format("2006-01-02T15:04:05Z"), chk.Equals, perms.AccessPolicy.StartTime.Format("2006-01-02T15:04:05Z"))
+	c.Assert(returnedPerms.AccessPolicy.SignedIdentifiers[0].AccessPolicy.ExpiryTime.Format("2006-01-02T15:04:05Z"), chk.Equals, perms.AccessPolicy.ExpiryTime.Format("2006-01-02T15:04:05Z"))
+	c.Assert(returnedPerms.AccessPolicy.SignedIdentifiers[0].AccessPolicy.Permission, chk.Equals, "rwd")
 }
+
+func (s *StorageBlobSuite) TestSetContainerPermissionsOnlySuccessfully(c *chk.C) {
+	cli := getBlobClient(c)
+	cnt := randContainer()
+
+	c.Assert(cli.CreateContainer(cnt, ContainerAccessTypePrivate), chk.IsNil)
+	defer cli.deleteContainer(cnt)
+
+	perms := s.createContainerPermissions(ContainerAccessTypeBlob, 0, "", "", true, true, true)
+
+	err := cli.SetContainerPermissions(cnt, perms)
+	c.Assert(err, chk.IsNil)
+}
+
+func (s *StorageBlobSuite) TestSetThenGetContainerPermissionsOnlySuccessfully(c *chk.C) {
+	cli := getBlobClient(c)
+	cnt := randContainer()
+
+	c.Assert(cli.CreateContainer(cnt, ContainerAccessTypePrivate), chk.IsNil)
+	defer cli.deleteContainer(cnt)
+
+	perms := s.createContainerPermissions(ContainerAccessTypeBlob, 0, "", "", true, true, true)
+
+	err := cli.SetContainerPermissions(cnt, perms)
+	c.Assert(err, chk.IsNil)
+
+	returnedPerms, err := cli.GetContainerPermissions(cnt, 0, "")
+	c.Assert(err, chk.IsNil)
+
+	// check container permissions itself.
+	c.Assert(returnedPerms.ContainerAccess, chk.Equals, perms.AccessOptions.ContainerAccess)
+
+	// now check there are NO policies set
+	c.Assert(0, chk.Equals, len(returnedPerms.AccessPolicy.SignedIdentifiers))
+}
+
 func (s *StorageBlobSuite) TestAcquireLeaseWithNoProposedLeaseID(c *chk.C) {
 	cli := getBlobClient(c)
 	cnt := randContainer()

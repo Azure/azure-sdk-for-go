@@ -47,6 +47,15 @@ func NewNamespacesClientWithBaseURI(baseURI string, subscriptionID string) Names
 //
 // parameters is the namespace name.
 func (client NamespacesClient) CheckAvailability(parameters CheckAvailabilityParameters) (result CheckAvailabilityResult, err error) {
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: parameters,
+			Constraints: []validation.Constraint{{Target: "parameters.Name", Name: validation.Null, Rule: true, Chain: nil},
+				{Target: "parameters.Location", Name: validation.Null, Rule: true, Chain: nil},
+				{Target: "parameters.ID", Name: validation.ReadOnly, Rule: true, Chain: nil},
+				{Target: "parameters.Type", Name: validation.ReadOnly, Rule: true, Chain: nil}}}}); err != nil {
+		return result, validation.NewErrorWithValidationError(err, "notificationhubs.NamespacesClient", "CheckAvailability")
+	}
+
 	req, err := client.CheckAvailabilityPreparer(parameters)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "notificationhubs.NamespacesClient", "CheckAvailability", nil, "Failure preparing request")
@@ -815,6 +824,72 @@ func (client NamespacesClient) ListKeysSender(req *http.Request) (*http.Response
 // ListKeysResponder handles the response to the ListKeys request. The method always
 // closes the http.Response Body.
 func (client NamespacesClient) ListKeysResponder(resp *http.Response) (result ResourceListKeys, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// Patch patches the existing namespace
+//
+// resourceGroupName is the name of the resource group. namespaceName is the
+// namespace name. parameters is parameters supplied to patch a Namespace
+// Resource.
+func (client NamespacesClient) Patch(resourceGroupName string, namespaceName string, parameters NamespacePatchParameters) (result NamespaceResource, err error) {
+	req, err := client.PatchPreparer(resourceGroupName, namespaceName, parameters)
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "notificationhubs.NamespacesClient", "Patch", nil, "Failure preparing request")
+	}
+
+	resp, err := client.PatchSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "notificationhubs.NamespacesClient", "Patch", resp, "Failure sending request")
+	}
+
+	result, err = client.PatchResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "notificationhubs.NamespacesClient", "Patch", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// PatchPreparer prepares the Patch request.
+func (client NamespacesClient) PatchPreparer(resourceGroupName string, namespaceName string, parameters NamespacePatchParameters) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"namespaceName":     autorest.Encode("path", namespaceName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	queryParameters := map[string]interface{}{
+		"api-version": client.APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsJSON(),
+		autorest.AsPatch(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NotificationHubs/namespaces/{namespaceName}", pathParameters),
+		autorest.WithJSON(parameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare(&http.Request{})
+}
+
+// PatchSender sends the Patch request. The method will close the
+// http.Response Body if it receives an error.
+func (client NamespacesClient) PatchSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req)
+}
+
+// PatchResponder handles the response to the Patch request. The method always
+// closes the http.Response Body.
+func (client NamespacesClient) PatchResponder(resp *http.Response) (result NamespaceResource, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

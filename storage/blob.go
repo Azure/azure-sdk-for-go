@@ -1147,7 +1147,6 @@ func (b BlobStorageClient) StartBlobCopy(container, name, sourceBlob string) (st
 // As defined in https://msdn.microsoft.com/en-us/library/azure/jj159098.aspx
 func (b BlobStorageClient) AbortBlobCopy(container, name, copyID, currentLeaseID string, timeout int) error {
 	uri := b.client.getEndpoint(blobServiceName, pathForBlob(container, name), url.Values{"comp": {"copy"}, "copyid": {copyID}})
-
 	headers := b.client.getStandardHeaders()
 	headers["x-ms-copy-action"] = "abort"
 
@@ -1155,7 +1154,7 @@ func (b BlobStorageClient) AbortBlobCopy(container, name, copyID, currentLeaseID
 		headers["timeout"] = strconv.Itoa(timeout)
 	}
 
-	if leaseID != "" {
+	if currentLeaseID != "" {
 		headers[leaseID] = currentLeaseID
 	}
 

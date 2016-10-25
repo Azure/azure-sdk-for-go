@@ -269,6 +269,58 @@ func (s *StorageBlobSuite) TestBlobCopy(c *chk.C) {
 	c.Assert(b, chk.DeepEquals, body)
 }
 
+func (s *StorageBlobSuite) TestStartBlobCopy(c *chk.C) {
+	if testing.Short() {
+		c.Skip("skipping blob copy in short mode, no SLA on async operation")
+	}
+
+	cli := getBlobClient(c)
+	cnt := randContainer()
+	src := randName(5)
+	dst := randName(5)
+	body := []byte(randString(1024))
+
+	c.Assert(cli.CreateContainer(cnt, ContainerAccessTypePrivate), chk.IsNil)
+	defer cli.deleteContainer(cnt)
+
+	c.Assert(cli.putSingleBlockBlob(cnt, src, body), chk.IsNil)
+	defer cli.DeleteBlob(cnt, src, nil)
+
+	// given we dont know when it will start, can we even test destination creation?
+	// will just test that an error wasn't thrown for now.
+	copyID, err := cli.StartBlobCopy(cnt, dst, cli.GetBlobURL(cnt, src))
+	c.Assert(copyID, chk.NotNil)
+	c.Assert(err, chk.IsNil)
+}
+
+func (s *StorageBlobSuite) TestAbortBlobCopy(c *chk.C) {
+	if testing.Short() {
+		c.Skip("skipping blob copy in short mode, no SLA on async operation")
+	}
+
+	cli := getBlobClient(c)
+	cnt := randContainer()
+	src := randName(5)
+	dst := randName(5)
+	body := []byte(randString(1024))
+
+	c.Assert(cli.CreateContainer(cnt, ContainerAccessTypePrivate), chk.IsNil)
+	defer cli.deleteContainer(cnt)
+
+	c.Assert(cli.putSingleBlockBlob(cnt, src, body), chk.IsNil)
+	defer cli.DeleteBlob(cnt, src, nil)
+
+	// given we dont know when it will start, can we even test destination creation?
+	// will just test that an error wasn't thrown for now.
+	copyID, err := cli.StartBlobCopy(cnt, dst, cli.GetBlobURL(cnt, src))
+	c.Assert(copyID, chk.NotNil)
+	c.Assert(err, chk.IsNil)
+
+	// Is this possible to test properly? Too much chance of a race :/
+	err = cli.AbortBlobCopy(cnt, src, copyID, "", 0)
+	c.Assert(err, chk.IsNil)
+}
+
 func (s *StorageBlobSuite) TestDeleteBlobIfExists(c *chk.C) {
 	cnt := randContainer()
 	blob := randName(5)

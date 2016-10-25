@@ -1105,7 +1105,7 @@ func (b BlobStorageClient) AppendBlock(container, name string, chunk []byte, ext
 //
 // See https://msdn.microsoft.com/en-us/library/azure/dd894037.aspx
 func (b BlobStorageClient) CopyBlob(container, name, sourceBlob string) error {
-	copyID, err := b.startBlobCopy(container, name, sourceBlob)
+	copyID, err := b.StartBlobCopy(container, name, sourceBlob)
 	if err != nil {
 		return err
 	}
@@ -1113,7 +1113,12 @@ func (b BlobStorageClient) CopyBlob(container, name, sourceBlob string) error {
 	return b.waitForBlobCopy(container, name, copyID)
 }
 
-func (b BlobStorageClient) startBlobCopy(container, name, sourceBlob string) (string, error) {
+// StartBlobCopy starts a blob copy operation.
+// sourceBlob parameter must be a canonical URL to the blob (can be
+// obtained using GetBlobURL method.)
+//
+// See https://msdn.microsoft.com/en-us/library/azure/dd894037.aspx
+func (b BlobStorageClient) StartBlobCopy(container, name, sourceBlob string) (string, error) {
 	uri := b.client.getEndpoint(blobServiceName, pathForBlob(container, name), url.Values{})
 
 	headers := b.client.getStandardHeaders()
@@ -1134,6 +1139,37 @@ func (b BlobStorageClient) startBlobCopy(container, name, sourceBlob string) (st
 		return "", errors.New("Got empty copy id header")
 	}
 	return copyID, nil
+}
+
+// AbortBlobCopy aborts a BlobCopy which has already been triggered by the StartBlobCopy function.
+// copyID is generated from StartBlobCopy function.
+// currentLeaseID is required IF the destination blob has an active lease on it.
+// As defined in https://msdn.microsoft.com/en-us/library/azure/jj159098.aspx
+func (b BlobStorageClient) AbortBlobCopy(container, name, copyID, currentLeaseID string, timeout int) error {
+	uri := b.client.getEndpoint(blobServiceName, pathForBlob(container, name), url.Values{"comp": {"copy"}, "copyid": {copyID}})
+
+	headers := b.client.getStandardHeaders()
+	headers["x-ms-copy-action"] = "abort"
+
+	if timeout > 0 {
+		headers["timeout"] = strconv.Itoa(timeout)
+	}
+
+	if leaseID != "" {
+		headers[leaseID] = currentLeaseID
+	}
+
+	resp, err := b.client.exec("PUT", uri, headers, nil)
+	if err != nil {
+		return err
+	}
+	defer resp.body.Close()
+
+	if err := checkRespCode(resp.statusCode, []int{http.StatusNoContent}); err != nil {
+		return err
+	}
+
+	return nil
 }
 
 func (b BlobStorageClient) waitForBlobCopy(container, name, copyID string) error {

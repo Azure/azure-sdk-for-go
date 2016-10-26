@@ -595,8 +595,35 @@ func (b BlobStorageClient) leaseCommonPut(container string, name string, headers
 	return resp.headers, nil
 }
 
-// AcquireLease creates a lease for a blob as per https://msdn.microsoft.com/en-us/library/azure/ee691972.aspx
+// SnapshotBlob creates a snapshot for a blob as per https://msdn.microsoft.com/en-us/library/azure/ee691971.aspx
+func (b BlobStorageClient) SnapshotBlob(container string, name string, timeout int, currentLeaseID string) (snapshotTimestamp *time.Time, err error) {
+	headers := b.client.getStandardHeaders()
+	params := url.Values{"comp": {"snapshot"}}
 
+	if currentLeaseID != "" {
+		headers[leaseID] = currentLeaseID
+	}
+
+	if timeout > 0 {
+		params.Add("timeout", strconv.Itoa(timeout))
+	}
+
+	uri := b.client.getEndpoint(blobServiceName, pathForBlob(container, name), params)
+	resp, err := b.client.exec("PUT", uri, headers, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	snapshotResponse := resp.headers.Get(http.CanonicalHeaderKey("x-ms-snapshot"))
+	if snapshotResponse != "" {
+
+		return snapshotDate, nil
+	}
+
+	return "", errors.New("Snapshot not created")
+}
+
+// AcquireLease creates a lease for a blob as per https://msdn.microsoft.com/en-us/library/azure/ee691972.aspx
 // returns leaseID acquired
 func (b BlobStorageClient) AcquireLease(container string, name string, leaseTimeInSeconds int, proposedLeaseID string) (returnedLeaseID string, err error) {
 	headers := b.client.getStandardHeaders()

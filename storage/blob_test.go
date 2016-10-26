@@ -689,7 +689,7 @@ func (s *StorageBlobSuite) createContainerPermissions(accessType ContainerAccess
 	if ID != "" {
 		perms.AccessPolicy.ID = ID
 		perms.AccessPolicy.StartTime = time.Now()
-		perms.AccessPolicy.ExpiryTime = time.Date(2017, 1, 1, 0, 0, 0, 0, time.UTC)
+		perms.AccessPolicy.ExpiryTime = time.Now().Add(time.Hour * 10)
 		perms.AccessPolicy.CanRead = canRead
 		perms.AccessPolicy.CanWrite = canWrite
 		perms.AccessPolicy.CanDelete = canDelete
@@ -743,12 +743,12 @@ func (s *StorageBlobSuite) TestSetThenGetContainerPermissionsSuccessfully(c *chk
 	c.Assert(returnedPerms.ContainerAccess, chk.Equals, perms.AccessOptions.ContainerAccess)
 
 	// now check policy set.
-	c.Assert(1, chk.Equals, len(returnedPerms.AccessPolicy.SignedIdentifiers))
+	c.Assert(returnedPerms.AccessPolicy.SignedIdentifiers, chk.HasLen, 1)
 	c.Assert(returnedPerms.AccessPolicy.SignedIdentifiers[0].ID, chk.Equals, perms.AccessPolicy.ID)
 
 	// test timestamps down the minutes
-	c.Assert(returnedPerms.AccessPolicy.SignedIdentifiers[0].AccessPolicy.StartTime.Format("2006-01-02T15:04:05Z"), chk.Equals, perms.AccessPolicy.StartTime.Format("2006-01-02T15:04:05Z"))
-	c.Assert(returnedPerms.AccessPolicy.SignedIdentifiers[0].AccessPolicy.ExpiryTime.Format("2006-01-02T15:04:05Z"), chk.Equals, perms.AccessPolicy.ExpiryTime.Format("2006-01-02T15:04:05Z"))
+	c.Assert(returnedPerms.AccessPolicy.SignedIdentifiers[0].AccessPolicy.StartTime.Format(time.RFC1123), chk.Equals, perms.AccessPolicy.StartTime.Format(time.RFC1123))
+	c.Assert(returnedPerms.AccessPolicy.SignedIdentifiers[0].AccessPolicy.ExpiryTime.Format(time.RFC1123), chk.Equals, perms.AccessPolicy.ExpiryTime.Format(time.RFC1123))
 	c.Assert(returnedPerms.AccessPolicy.SignedIdentifiers[0].AccessPolicy.Permission, chk.Equals, "rwd")
 }
 
@@ -784,7 +784,7 @@ func (s *StorageBlobSuite) TestSetThenGetContainerPermissionsOnlySuccessfully(c 
 	c.Assert(returnedPerms.ContainerAccess, chk.Equals, perms.AccessOptions.ContainerAccess)
 
 	// now check there are NO policies set
-	c.Assert(0, chk.Equals, len(returnedPerms.AccessPolicy.SignedIdentifiers))
+	c.Assert(returnedPerms.AccessPolicy.SignedIdentifiers, chk.HasLen, 0)
 }
 
 func (s *StorageBlobSuite) TestAcquireLeaseWithNoProposedLeaseID(c *chk.C) {

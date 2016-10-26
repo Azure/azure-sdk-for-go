@@ -496,10 +496,12 @@ func (b BlobStorageClient) ContainerExists(name string) (bool, error) {
 	return false, err
 }
 
-// SetContainerPermissions sets up container permissions as per https://msdn.microsoft.com/en-us/library/azure/dd179391(d=printer).aspx
+// SetContainerPermissions sets up container permissions as per https://msdn.microsoft.com/en-us/library/azure/dd179391.aspx
 func (b BlobStorageClient) SetContainerPermissions(container string, containerPermissions ContainerPermissions) error {
-	params := url.Values{"restype": {"container"},
-		"comp": {"acl"}}
+	params := url.Values{
+		"restype": {"container"},
+		"comp":    {"acl"},
+	}
 
 	if containerPermissions.AccessOptions.Timeout > 0 {
 		params.Add("timeout", strconv.Itoa(containerPermissions.AccessOptions.Timeout))
@@ -521,7 +523,7 @@ func (b BlobStorageClient) SetContainerPermissions(container string, containerPe
 	var resp *storageResponse
 	var err error
 	if accessPolicyXML != "" {
-		headers["Content-Length"] = fmt.Sprintf("%v", len(accessPolicyXML))
+		headers["Content-Length"] = strconv.Itoa(len(accessPolicyXML))
 		resp, err = b.client.exec("PUT", uri, headers, strings.NewReader(accessPolicyXML))
 	} else {
 		resp, err = b.client.exec("PUT", uri, headers, nil)

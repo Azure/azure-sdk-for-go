@@ -616,11 +616,15 @@ func (b BlobStorageClient) SnapshotBlob(container string, name string, timeout i
 
 	snapshotResponse := resp.headers.Get(http.CanonicalHeaderKey("x-ms-snapshot"))
 	if snapshotResponse != "" {
+		t, err := time.Parse(time.RFC3339, snapshotResponse)
+		if err != nil {
+			return nil, err
+		}
 
-		return snapshotDate, nil
+		return &t, nil
 	}
 
-	return "", errors.New("Snapshot not created")
+	return nil, errors.New("Snapshot not created")
 }
 
 // AcquireLease creates a lease for a blob as per https://msdn.microsoft.com/en-us/library/azure/ee691972.aspx

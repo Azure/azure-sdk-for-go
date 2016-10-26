@@ -127,8 +127,7 @@ func NewBasicClient(accountName, accountKey string) (Client, error) {
 	if accountName == StorageEmulatorAccountName {
 		return NewEmulatorClient()
 	}
-	//return NewClient(accountName, accountKey, DefaultBaseURL, DefaultAPIVersion, defaultUseHTTPS)
-	return NewEmulatorClient()
+	return NewClient(accountName, accountKey, DefaultBaseURL, DefaultAPIVersion, defaultUseHTTPS)
 
 }
 

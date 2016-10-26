@@ -743,7 +743,7 @@ func (s *StorageBlobSuite) TestSnapshotBlobWithInvalidLease(c *chk.C) {
 	c.Assert(leaseID, chk.NotNil)
 
 	snapshotTime, err := cli.SnapshotBlob(cnt, blob, 0, "718e3c89-da3d-4201-b616-dd794b0bd7c1")
-	c.Assert(err, chk.IsNil)
+	c.Assert(err, chk.NotNil)
 	c.Assert(snapshotTime, chk.IsNil)
 }
 
@@ -758,8 +758,7 @@ func (s *StorageBlobSuite) TestAcquireLeaseWithNoProposedLeaseID(c *chk.C) {
 	c.Assert(cli.putSingleBlockBlob(cnt, blob, []byte{}), chk.IsNil)
 
 	_, err := cli.AcquireLease(cnt, blob, 30, "")
-	c.Assert(err, chk.NotNil)
-
+	c.Assert(err, chk.IsNil)
 }
 
 func (s *StorageBlobSuite) TestAcquireLeaseWithProposedLeaseID(c *chk.C) {

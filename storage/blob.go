@@ -632,8 +632,14 @@ func (b BlobStorageClient) SnapshotBlob(container string, name string, timeout i
 func (b BlobStorageClient) AcquireLease(container string, name string, leaseTimeInSeconds int, proposedLeaseID string) (returnedLeaseID string, err error) {
 	headers := b.client.getStandardHeaders()
 	headers[leaseAction] = acquireLease
-	headers[leaseProposedID] = proposedLeaseID
-	headers[leaseDuration] = strconv.Itoa(leaseTimeInSeconds)
+
+	if leaseTimeInSeconds > 0 {
+		headers[leaseDuration] = strconv.Itoa(leaseTimeInSeconds)
+	}
+
+	if proposedLeaseID != "" {
+		headers[leaseProposedID] = proposedLeaseID
+	}
 
 	respHeaders, err := b.leaseCommonPut(container, name, headers, http.StatusCreated)
 	if err != nil {

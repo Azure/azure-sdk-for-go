@@ -678,6 +678,75 @@ func (s *StorageBlobSuite) TestSetBlobProperties(c *chk.C) {
 	c.Check(mPut.ContentLanguage, chk.Equals, props.ContentLanguage)
 }
 
+func (s *StorageBlobSuite) TestSnapshotBlob(c *chk.C) {
+	cli := getBlobClient(c)
+	cnt := randContainer()
+
+	c.Assert(cli.CreateContainer(cnt, ContainerAccessTypePrivate), chk.IsNil)
+	defer cli.deleteContainer(cnt)
+
+	blob := randName(5)
+	c.Assert(cli.putSingleBlockBlob(cnt, blob, []byte{}), chk.IsNil)
+
+	snapshotTime, err := cli.SnapshotBlob(cnt, blob, 0, "")
+	c.Assert(err, chk.IsNil)
+	c.Assert(snapshotTime, chk.NotNil)
+}
+
+func (s *StorageBlobSuite) TestSnapshotBlobWithTimeout(c *chk.C) {
+	cli := getBlobClient(c)
+	cnt := randContainer()
+
+	c.Assert(cli.CreateContainer(cnt, ContainerAccessTypePrivate), chk.IsNil)
+	defer cli.deleteContainer(cnt)
+
+	blob := randName(5)
+	c.Assert(cli.putSingleBlockBlob(cnt, blob, []byte{}), chk.IsNil)
+
+	snapshotTime, err := cli.SnapshotBlob(cnt, blob, 30, "")
+	c.Assert(err, chk.IsNil)
+	c.Assert(snapshotTime, chk.NotNil)
+}
+
+func (s *StorageBlobSuite) TestSnapshotBlobWithValidLease(c *chk.C) {
+	cli := getBlobClient(c)
+	cnt := randContainer()
+
+	c.Assert(cli.CreateContainer(cnt, ContainerAccessTypePrivate), chk.IsNil)
+	defer cli.deleteContainer(cnt)
+
+	blob := randName(5)
+	c.Assert(cli.putSingleBlockBlob(cnt, blob, []byte{}), chk.IsNil)
+
+	// generate lease.
+	leaseID, err := cli.AcquireLease(cnt, blob, 30, "")
+	c.Assert(err, chk.IsNil)
+
+	snapshotTime, err := cli.SnapshotBlob(cnt, blob, 0, leaseID)
+	c.Assert(err, chk.IsNil)
+	c.Assert(snapshotTime, chk.NotNil)
+}
+
+func (s *StorageBlobSuite) TestSnapshotBlobWithInvalidLease(c *chk.C) {
+	cli := getBlobClient(c)
+	cnt := randContainer()
+
+	c.Assert(cli.CreateContainer(cnt, ContainerAccessTypePrivate), chk.IsNil)
+	defer cli.deleteContainer(cnt)
+
+	blob := randName(5)
+	c.Assert(cli.putSingleBlockBlob(cnt, blob, []byte{}), chk.IsNil)
+
+	// generate lease.
+	leaseID, err := cli.AcquireLease(cnt, blob, 30, "")
+	c.Assert(err, chk.IsNil)
+	c.Assert(leaseID, chk.NotNil)
+
+	snapshotTime, err := cli.SnapshotBlob(cnt, blob, 0, "718e3c89-da3d-4201-b616-dd794b0bd7c1")
+	c.Assert(err, chk.IsNil)
+	c.Assert(snapshotTime, chk.IsNil)
+}
+
 func (s *StorageBlobSuite) TestAcquireLeaseWithNoProposedLeaseID(c *chk.C) {
 	cli := getBlobClient(c)
 	cnt := randContainer()

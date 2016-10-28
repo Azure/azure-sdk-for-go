@@ -7,7 +7,6 @@ import (
 	"fmt"
 	"io"
 	"io/ioutil"
-	"log"
 	"net/http"
 	"net/url"
 	"strconv"
@@ -522,8 +521,6 @@ func (b BlobStorageClient) SetContainerPermissions(container string, containerPe
 
 	// generate the XML for the SharedAccessSignature if required.
 	accessPolicyXML, err := b.generateAccessPolicy(containerPermissions.AccessPolicy)
-	log.Printf("AccessPolicyXML is %s", accessPolicyXML)
-
 	if err != nil {
 		return err
 	}
@@ -620,8 +617,8 @@ func (b BlobStorageClient) convertAccessPolicyToXMLStructs(accessPolicy AccessPo
 	si := SignedIdentifier{}
 	si.ID = accessPolicy.ID
 	si.AccessPolicy = AccessPolicyDetailsXML{}
-	si.AccessPolicy.StartTime = accessPolicy.StartTime
-	si.AccessPolicy.ExpiryTime = accessPolicy.ExpiryTime
+	si.AccessPolicy.StartTime = accessPolicy.StartTime.Round(time.Second)
+	si.AccessPolicy.ExpiryTime = accessPolicy.ExpiryTime.Round(time.Second)
 	permissions := b.generatePermissions(accessPolicy)
 	si.AccessPolicy.Permission = permissions
 	accessPolicyToMarshal.SignedIdentifiersList.SignedIdentifiers = append(accessPolicyToMarshal.SignedIdentifiersList.SignedIdentifiers, si)

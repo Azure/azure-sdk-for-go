@@ -643,7 +643,7 @@ func (b BlobStorageClient) generateAccessPolicy(accessPolicy AccessPolicyDetails
 		return accessPolicyXML, nil
 	}
 
-	return "", errors.New("Unable to generate AccessPolicy XML")
+	return "", nil
 }
 
 // DeleteContainer deletes the container with given name on the storage

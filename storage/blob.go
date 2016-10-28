@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"io"
 	"io/ioutil"
+	"log"
 	"net/http"
 	"net/url"
 	"strconv"
@@ -521,6 +522,8 @@ func (b BlobStorageClient) SetContainerPermissions(container string, containerPe
 
 	// generate the XML for the SharedAccessSignature if required.
 	accessPolicyXML, err := b.generateAccessPolicy(containerPermissions.AccessPolicy)
+	log.Printf("AccessPolicyXML is %s", accessPolicyXML)
+
 	if err != nil {
 		return err
 	}

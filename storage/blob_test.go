@@ -688,8 +688,8 @@ func (s *StorageBlobSuite) createContainerPermissions(accessType ContainerAccess
 
 	if ID != "" {
 		perms.AccessPolicy.ID = ID
-		perms.AccessPolicy.StartTime = time.Now().UTC()
-		perms.AccessPolicy.ExpiryTime = time.Now().UTC().Add(time.Hour * 10)
+		perms.AccessPolicy.StartTime = time.Now().UTC().Round(time.Second)
+		perms.AccessPolicy.ExpiryTime = time.Now().UTC().Add(time.Hour * 10).Round(time.Second)
 		perms.AccessPolicy.CanRead = canRead
 		perms.AccessPolicy.CanWrite = canWrite
 		perms.AccessPolicy.CanDelete = canDelete

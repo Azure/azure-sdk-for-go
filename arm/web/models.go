@@ -2133,6 +2133,7 @@ type ServerFarmWithRichSkuProperties struct {
 	PerSiteScaling            *bool                      `json:"perSiteScaling,omitempty"`
 	NumberOfSites             *int32                     `json:"numberOfSites,omitempty"`
 	ResourceGroup             *string                    `json:"resourceGroup,omitempty"`
+	Reserved                  *bool                      `json:"reserved,omitempty"`
 }
 
 // SetObject is
@@ -2237,6 +2238,7 @@ type SiteConfigProperties struct {
 	NetFrameworkVersion          *string                  `json:"netFrameworkVersion,omitempty"`
 	PhpVersion                   *string                  `json:"phpVersion,omitempty"`
 	PythonVersion                *string                  `json:"pythonVersion,omitempty"`
+	NodeVersion                  *string                  `json:"nodeVersion,omitempty"`
 	RequestTracingEnabled        *bool                    `json:"requestTracingEnabled,omitempty"`
 	RequestTracingExpirationTime *date.Time               `json:"requestTracingExpirationTime,omitempty"`
 	RemoteDebuggingEnabled       *bool                    `json:"remoteDebuggingEnabled,omitempty"`
@@ -2258,6 +2260,7 @@ type SiteConfigProperties struct {
 	JavaVersion                  *string                  `json:"javaVersion,omitempty"`
 	JavaContainer                *string                  `json:"javaContainer,omitempty"`
 	JavaContainerVersion         *string                  `json:"javaContainerVersion,omitempty"`
+	AppCommandLine               *string                  `json:"appCommandLine,omitempty"`
 	ManagedPipelineMode          ManagedPipelineMode      `json:"managedPipelineMode,omitempty"`
 	VirtualApplications          *[]VirtualApplication    `json:"virtualApplications,omitempty"`
 	LoadBalancing                SiteLoadBalancing        `json:"loadBalancing,omitempty"`

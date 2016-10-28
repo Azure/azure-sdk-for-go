@@ -24,49 +24,48 @@ import (
 	"net/http"
 )
 
-// SubscriptionClient is the client for the Subscription methods of the Batch
-// service.
-type SubscriptionClient struct {
+// LocationClient is the client for the Location methods of the Batch service.
+type LocationClient struct {
 	ManagementClient
 }
 
-// NewSubscriptionClient creates an instance of the SubscriptionClient client.
-func NewSubscriptionClient(subscriptionID string) SubscriptionClient {
-	return NewSubscriptionClientWithBaseURI(DefaultBaseURI, subscriptionID)
+// NewLocationClient creates an instance of the LocationClient client.
+func NewLocationClient(subscriptionID string) LocationClient {
+	return NewLocationClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewSubscriptionClientWithBaseURI creates an instance of the
-// SubscriptionClient client.
-func NewSubscriptionClientWithBaseURI(baseURI string, subscriptionID string) SubscriptionClient {
-	return SubscriptionClient{NewWithBaseURI(baseURI, subscriptionID)}
+// NewLocationClientWithBaseURI creates an instance of the LocationClient
+// client.
+func NewLocationClientWithBaseURI(baseURI string, subscriptionID string) LocationClient {
+	return LocationClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// GetSubscriptionQuotas gets the Batch service quotas for the specified
-// suscription.
+// GetQuotas gets the Batch service quotas for the specified subscription at
+// the given location.
 //
 // locationName is the desired region for the quotas.
-func (client SubscriptionClient) GetSubscriptionQuotas(locationName string) (result SubscriptionQuotasGetResult, err error) {
-	req, err := client.GetSubscriptionQuotasPreparer(locationName)
+func (client LocationClient) GetQuotas(locationName string) (result LocationQuota, err error) {
+	req, err := client.GetQuotasPreparer(locationName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "batch.SubscriptionClient", "GetSubscriptionQuotas", nil, "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "batch.LocationClient", "GetQuotas", nil, "Failure preparing request")
 	}
 
-	resp, err := client.GetSubscriptionQuotasSender(req)
+	resp, err := client.GetQuotasSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "batch.SubscriptionClient", "GetSubscriptionQuotas", resp, "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "batch.LocationClient", "GetQuotas", resp, "Failure sending request")
 	}
 
-	result, err = client.GetSubscriptionQuotasResponder(resp)
+	result, err = client.GetQuotasResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "batch.SubscriptionClient", "GetSubscriptionQuotas", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "batch.LocationClient", "GetQuotas", resp, "Failure responding to request")
 	}
 
 	return
 }
 
-// GetSubscriptionQuotasPreparer prepares the GetSubscriptionQuotas request.
-func (client SubscriptionClient) GetSubscriptionQuotasPreparer(locationName string) (*http.Request, error) {
+// GetQuotasPreparer prepares the GetQuotas request.
+func (client LocationClient) GetQuotasPreparer(locationName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"locationName":   autorest.Encode("path", locationName),
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
@@ -84,15 +83,15 @@ func (client SubscriptionClient) GetSubscriptionQuotasPreparer(locationName stri
 	return preparer.Prepare(&http.Request{})
 }
 
-// GetSubscriptionQuotasSender sends the GetSubscriptionQuotas request. The method will close the
+// GetQuotasSender sends the GetQuotas request. The method will close the
 // http.Response Body if it receives an error.
-func (client SubscriptionClient) GetSubscriptionQuotasSender(req *http.Request) (*http.Response, error) {
+func (client LocationClient) GetQuotasSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req)
 }
 
-// GetSubscriptionQuotasResponder handles the response to the GetSubscriptionQuotas request. The method always
+// GetQuotasResponder handles the response to the GetQuotas request. The method always
 // closes the http.Response Body.
-func (client SubscriptionClient) GetSubscriptionQuotasResponder(resp *http.Response) (result SubscriptionQuotasGetResult, err error) {
+func (client LocationClient) GetQuotasResponder(resp *http.Response) (result LocationQuota, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

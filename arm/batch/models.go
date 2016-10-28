@@ -35,25 +35,6 @@ const (
 	Secondary AccountKeyType = "Secondary"
 )
 
-// AccountProvisioningState enumerates the values for account provisioning
-// state.
-type AccountProvisioningState string
-
-const (
-	// Cancelled specifies the cancelled state for account provisioning state.
-	Cancelled AccountProvisioningState = "Cancelled"
-	// Creating specifies the creating state for account provisioning state.
-	Creating AccountProvisioningState = "Creating"
-	// Deleting specifies the deleting state for account provisioning state.
-	Deleting AccountProvisioningState = "Deleting"
-	// Failed specifies the failed state for account provisioning state.
-	Failed AccountProvisioningState = "Failed"
-	// Invalid specifies the invalid state for account provisioning state.
-	Invalid AccountProvisioningState = "Invalid"
-	// Succeeded specifies the succeeded state for account provisioning state.
-	Succeeded AccountProvisioningState = "Succeeded"
-)
-
 // PackageState enumerates the values for package state.
 type PackageState string
 
@@ -65,6 +46,35 @@ const (
 	// Unmapped specifies the unmapped state for package state.
 	Unmapped PackageState = "unmapped"
 )
+
+// ProvisioningState enumerates the values for provisioning state.
+type ProvisioningState string
+
+const (
+	// Cancelled specifies the cancelled state for provisioning state.
+	Cancelled ProvisioningState = "Cancelled"
+	// Creating specifies the creating state for provisioning state.
+	Creating ProvisioningState = "Creating"
+	// Deleting specifies the deleting state for provisioning state.
+	Deleting ProvisioningState = "Deleting"
+	// Failed specifies the failed state for provisioning state.
+	Failed ProvisioningState = "Failed"
+	// Invalid specifies the invalid state for provisioning state.
+	Invalid ProvisioningState = "Invalid"
+	// Succeeded specifies the succeeded state for provisioning state.
+	Succeeded ProvisioningState = "Succeeded"
+)
+
+// Account is contains information about an Azure Batch account.
+type Account struct {
+	autorest.Response `json:"-"`
+	ID                *string             `json:"id,omitempty"`
+	Name              *string             `json:"name,omitempty"`
+	Type              *string             `json:"type,omitempty"`
+	Location          *string             `json:"location,omitempty"`
+	Tags              *map[string]*string `json:"tags,omitempty"`
+	Properties        *AccountProperties  `json:"properties,omitempty"`
+}
 
 // AccountBaseProperties is the properties of a Batch account.
 type AccountBaseProperties struct {
@@ -78,8 +88,8 @@ type AccountCreateParameters struct {
 	Properties *AccountBaseProperties `json:"properties,omitempty"`
 }
 
-// AccountListKeyResult is values returned by the GetKeys operation.
-type AccountListKeyResult struct {
+// AccountKeys is a set of Azure Batch account keys.
+type AccountKeys struct {
 	autorest.Response `json:"-"`
 	Primary           *string `json:"primary,omitempty"`
 	Secondary         *string `json:"secondary,omitempty"`
@@ -88,8 +98,8 @@ type AccountListKeyResult struct {
 // AccountListResult is values returned by the List operation.
 type AccountListResult struct {
 	autorest.Response `json:"-"`
-	Value             *[]AccountResource `json:"value,omitempty"`
-	NextLink          *string            `json:"nextLink,omitempty"`
+	Value             *[]Account `json:"value,omitempty"`
+	NextLink          *string    `json:"nextLink,omitempty"`
 }
 
 // AccountListResultPreparer prepares a request to retrieve the next set of results. It returns
@@ -106,37 +116,18 @@ func (client AccountListResult) AccountListResultPreparer() (*http.Request, erro
 
 // AccountProperties is account specific properties.
 type AccountProperties struct {
-	AccountEndpoint              *string                  `json:"accountEndpoint,omitempty"`
-	ProvisioningState            AccountProvisioningState `json:"provisioningState,omitempty"`
-	AutoStorage                  *AutoStorageProperties   `json:"autoStorage,omitempty"`
-	CoreQuota                    *int32                   `json:"coreQuota,omitempty"`
-	PoolQuota                    *int32                   `json:"poolQuota,omitempty"`
-	ActiveJobAndJobScheduleQuota *int32                   `json:"activeJobAndJobScheduleQuota,omitempty"`
+	AccountEndpoint              *string                `json:"accountEndpoint,omitempty"`
+	ProvisioningState            ProvisioningState      `json:"provisioningState,omitempty"`
+	AutoStorage                  *AutoStorageProperties `json:"autoStorage,omitempty"`
+	CoreQuota                    *int32                 `json:"coreQuota,omitempty"`
+	PoolQuota                    *int32                 `json:"poolQuota,omitempty"`
+	ActiveJobAndJobScheduleQuota *int32                 `json:"activeJobAndJobScheduleQuota,omitempty"`
 }
 
 // AccountRegenerateKeyParameters is parameters supplied to the RegenerateKey
 // operation.
 type AccountRegenerateKeyParameters struct {
 	KeyName AccountKeyType `json:"keyName,omitempty"`
-}
-
-// AccountRegenerateKeyResult is values returned by the RegenerateKey
-// operation.
-type AccountRegenerateKeyResult struct {
-	autorest.Response `json:"-"`
-	Primary           *string `json:"primary,omitempty"`
-	Secondary         *string `json:"secondary,omitempty"`
-}
-
-// AccountResource is contains information about an Azure Batch account.
-type AccountResource struct {
-	autorest.Response `json:"-"`
-	ID                *string             `json:"id,omitempty"`
-	Name              *string             `json:"name,omitempty"`
-	Type              *string             `json:"type,omitempty"`
-	Location          *string             `json:"location,omitempty"`
-	Tags              *map[string]*string `json:"tags,omitempty"`
-	Properties        *AccountProperties  `json:"properties,omitempty"`
 }
 
 // AccountUpdateParameters is parameters supplied to the Update operation.
@@ -149,16 +140,6 @@ type AccountUpdateParameters struct {
 // ApplicationOperations.ActivateApplicationPackage request.
 type ActivateApplicationPackageParameters struct {
 	Format *string `json:"format,omitempty"`
-}
-
-// AddApplicationPackageResult is response to an
-// ApplicationOperations.AddApplicationPackage request.
-type AddApplicationPackageResult struct {
-	autorest.Response `json:"-"`
-	ID                *string    `json:"id,omitempty"`
-	Version           *string    `json:"version,omitempty"`
-	StorageURL        *string    `json:"storageUrl,omitempty"`
-	StorageURLExpiry  *date.Time `json:"storageUrlExpiry,omitempty"`
 }
 
 // AddApplicationParameters is parameters for an
@@ -178,11 +159,16 @@ type Application struct {
 	DefaultVersion    *string               `json:"defaultVersion,omitempty"`
 }
 
-// ApplicationPackage is contains information about an application package.
+// ApplicationPackage is an application package which represents a particular
+// version of an application.
 type ApplicationPackage struct {
+	autorest.Response  `json:"-"`
+	ID                 *string      `json:"id,omitempty"`
 	Version            *string      `json:"version,omitempty"`
 	State              PackageState `json:"state,omitempty"`
 	Format             *string      `json:"format,omitempty"`
+	StorageURL         *string      `json:"storageUrl,omitempty"`
+	StorageURLExpiry   *date.Time   `json:"storageUrlExpiry,omitempty"`
 	LastActivationTime *date.Time   `json:"lastActivationTime,omitempty"`
 }
 
@@ -196,19 +182,6 @@ type AutoStorageBaseProperties struct {
 type AutoStorageProperties struct {
 	StorageAccountID *string    `json:"storageAccountId,omitempty"`
 	LastKeySync      *date.Time `json:"lastKeySync,omitempty"`
-}
-
-// GetApplicationPackageResult is response to an
-// ApplicationOperations.GetApplicationPackage request.
-type GetApplicationPackageResult struct {
-	autorest.Response  `json:"-"`
-	ID                 *string      `json:"id,omitempty"`
-	Version            *string      `json:"version,omitempty"`
-	State              PackageState `json:"state,omitempty"`
-	Format             *string      `json:"format,omitempty"`
-	StorageURL         *string      `json:"storageUrl,omitempty"`
-	StorageURLExpiry   *date.Time   `json:"storageUrlExpiry,omitempty"`
-	LastActivationTime *date.Time   `json:"lastActivationTime,omitempty"`
 }
 
 // ListApplicationsResult is response to an
@@ -231,20 +204,20 @@ func (client ListApplicationsResult) ListApplicationsResultPreparer() (*http.Req
 		autorest.WithBaseURL(to.String(client.NextLink)))
 }
 
-// Resource is
+// LocationQuota is quotas associated with a Batch region for a particular
+// subscription.
+type LocationQuota struct {
+	autorest.Response `json:"-"`
+	AccountQuota      *int32 `json:"accountQuota,omitempty"`
+}
+
+// Resource is a definition of an Azure resource.
 type Resource struct {
 	ID       *string             `json:"id,omitempty"`
 	Name     *string             `json:"name,omitempty"`
 	Type     *string             `json:"type,omitempty"`
 	Location *string             `json:"location,omitempty"`
 	Tags     *map[string]*string `json:"tags,omitempty"`
-}
-
-// SubscriptionQuotasGetResult is values returned by the Get Subscription
-// Quotas operation.
-type SubscriptionQuotasGetResult struct {
-	autorest.Response `json:"-"`
-	AccountQuota      *int32 `json:"accountQuota,omitempty"`
 }
 
 // UpdateApplicationParameters is parameters for an

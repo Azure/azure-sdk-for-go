@@ -6,6 +6,7 @@ import (
 	"errors"
 	"fmt"
 	"io"
+	"io/ioutil"
 	"net/http"
 	"net/url"
 	"strconv"
@@ -324,26 +325,27 @@ type ContainerPermissions struct {
 	AccessPolicy  AccessPolicyDetails
 }
 
-// AccessPolicyDetailsResponse has specifics about an access policy
-type AccessPolicyDetailsResponse struct {
+// AccessPolicyDetailsXML has specifics about an access policy
+// annotated with XML details.
+type AccessPolicyDetailsXML struct {
 	StartTime  time.Time `xml:"Start"`
 	ExpiryTime time.Time `xml:"Expiry"`
 	Permission string    `xml:"Permission"`
 }
 
-// SignedIdentifierResponse is a wrapper for a specific policy
-type SignedIdentifierResponse struct {
-	ID           string                      `xml:"Id"`
-	AccessPolicy AccessPolicyDetailsResponse `xml:"AccessPolicy"`
+// SignedIdentifier is a wrapper for a specific policy
+type SignedIdentifier struct {
+	ID           string                 `xml:"Id"`
+	AccessPolicy AccessPolicyDetailsXML `xml:"AccessPolicy"`
 }
 
 // SignedIdentifiers part of the response from GetPermissions call.
 type SignedIdentifiers struct {
-	SignedIdentifiers []SignedIdentifierResponse `xml:"SignedIdentifier"`
+	SignedIdentifiers []SignedIdentifier `xml:"SignedIdentifier"`
 }
 
-// AccessPolicyResponse is the response type from the GetPermissions call.
-type AccessPolicyResponse struct {
+// AccessPolicy is the response type from the GetPermissions call.
+type AccessPolicy struct {
 	SignedIdentifiersList SignedIdentifiers `xml:"SignedIdentifiers"`
 }
 
@@ -518,10 +520,12 @@ func (b BlobStorageClient) SetContainerPermissions(container string, containerPe
 	}
 
 	// generate the XML for the SharedAccessSignature if required.
-	accessPolicyXML := b.generateAccessPolicy(containerPermissions.AccessPolicy)
+	accessPolicyXML, err := b.generateAccessPolicy(containerPermissions.AccessPolicy)
+	if err != nil {
+		return err
+	}
 
 	var resp *storageResponse
-	var err error
 	if accessPolicyXML != "" {
 		headers["Content-Length"] = strconv.Itoa(len(accessPolicyXML))
 		resp, err = b.client.exec("PUT", uri, headers, strings.NewReader(accessPolicyXML))
@@ -571,7 +575,7 @@ func (b BlobStorageClient) GetContainerPermissions(container string, timeout int
 	containerAccess := resp.headers.Get(http.CanonicalHeaderKey(ContainerAccessHeader))
 
 	defer resp.body.Close()
-	var out AccessPolicyResponse
+	var out AccessPolicy
 	err = xmlUnmarshal(resp.body, &out.SignedIdentifiersList)
 	if err != nil {
 		return nil, err
@@ -584,36 +588,62 @@ func (b BlobStorageClient) GetContainerPermissions(container string, timeout int
 	return permissionResponse, nil
 }
 
-// generateAccessPolicy generates the XML access policy used as the payload for SetContainerPermissions.
-// TODO(kpfaulkner) find better way to generate the XML. This is clunky.
-func (b BlobStorageClient) generateAccessPolicy(accessPolicy AccessPolicyDetails) string {
+func (b BlobStorageClient) generatePermissions(accessPolicy AccessPolicyDetails) (permissions string) {
+	// generate the permissions string (rwd).
+	// still want the end user API to have bool flags.
+	permissions = ""
 
-	if accessPolicy.ID != "" {
-		s := `<?xml version="1.0" encoding="utf-8"?><SignedIdentifiers><SignedIdentifier>`
-		s += fmt.Sprintf("<Id>%s</Id>", accessPolicy.ID)
-		s += "<AccessPolicy>"
-
-		permissions := ""
-		if accessPolicy.CanRead {
-			permissions += "r"
-		}
-
-		if accessPolicy.CanWrite {
-			permissions += "w"
-		}
-
-		if accessPolicy.CanDelete {
-			permissions += "d"
-		}
-
-		s += fmt.Sprintf("<Start>%s</Start>", accessPolicy.StartTime.Format("2006-01-02T15:04:05Z"))
-		s += fmt.Sprintf("<Expiry>%s</Expiry>", accessPolicy.ExpiryTime.Format("2006-01-02T15:04:05Z"))
-		s += fmt.Sprintf("<Permission>%s</Permission>", permissions)
-		s += `</AccessPolicy></SignedIdentifier></SignedIdentifiers>`
-		return s
+	if accessPolicy.CanRead {
+		permissions += "r"
 	}
 
-	return ""
+	if accessPolicy.CanWrite {
+		permissions += "w"
+	}
+
+	if accessPolicy.CanDelete {
+		permissions += "d"
+	}
+
+	return permissions
+}
+
+// convertAccessPolicyToXMLStructs converts between AccessPolicyDetails which is a struct better for API usage to the
+// AccessPolicy struct which will get converted to XML.
+func (b BlobStorageClient) convertAccessPolicyToXMLStructs(accessPolicy AccessPolicyDetails) (accessPolicyToMarshal AccessPolicy) {
+	accessPolicyToMarshal = AccessPolicy{}
+	accessPolicyToMarshal.SignedIdentifiersList = SignedIdentifiers{}
+	accessPolicyToMarshal.SignedIdentifiersList.SignedIdentifiers = []SignedIdentifier{}
+	si := SignedIdentifier{}
+	si.ID = accessPolicy.ID
+	si.AccessPolicy = AccessPolicyDetailsXML{}
+	si.AccessPolicy.StartTime = accessPolicy.StartTime
+	si.AccessPolicy.ExpiryTime = accessPolicy.ExpiryTime
+	permissions := b.generatePermissions(accessPolicy)
+	si.AccessPolicy.Permission = permissions
+	accessPolicyToMarshal.SignedIdentifiersList.SignedIdentifiers = append(accessPolicyToMarshal.SignedIdentifiersList.SignedIdentifiers, si)
+	return accessPolicyToMarshal
+}
+
+// generateAccessPolicy generates the XML access policy used as the payload for SetContainerPermissions.
+func (b BlobStorageClient) generateAccessPolicy(accessPolicy AccessPolicyDetails) (accessPolicyXML string, err error) {
+
+	if accessPolicy.ID != "" {
+		ap := b.convertAccessPolicyToXMLStructs(accessPolicy)
+		body, _, err := xmlMarshal(ap.SignedIdentifiersList)
+		if err != nil {
+			return "", err
+		}
+
+		xmlByteArray, err := ioutil.ReadAll(body)
+		if err != nil {
+			return "", err
+		}
+		accessPolicyXML = string(xmlByteArray)
+		return accessPolicyXML, nil
+	}
+
+	return "", errors.New("Unable to generate AccessPolicy XML")
 }
 
 // DeleteContainer deletes the container with given name on the storage

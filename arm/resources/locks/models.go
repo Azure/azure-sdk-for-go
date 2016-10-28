@@ -36,19 +36,7 @@ const (
 	ReadOnly LockLevel = "ReadOnly"
 )
 
-// DeploymentExtendedFilter is deployment filter.
-type DeploymentExtendedFilter struct {
-	ProvisioningState *string `json:"provisioningState,omitempty"`
-}
-
-// GenericResourceFilter is resource filter.
-type GenericResourceFilter struct {
-	ResourceType *string `json:"resourceType,omitempty"`
-	Tagname      *string `json:"tagname,omitempty"`
-	Tagvalue     *string `json:"tagvalue,omitempty"`
-}
-
-// ManagementLockListResult is list of management locks.
+// ManagementLockListResult is the list of locks.
 type ManagementLockListResult struct {
 	autorest.Response `json:"-"`
 	Value             *[]ManagementLockObject `json:"value,omitempty"`
@@ -67,7 +55,7 @@ func (client ManagementLockListResult) ManagementLockListResultPreparer() (*http
 		autorest.WithBaseURL(to.String(client.NextLink)))
 }
 
-// ManagementLockObject is management lock information.
+// ManagementLockObject is the lock information.
 type ManagementLockObject struct {
 	autorest.Response `json:"-"`
 	Properties        *ManagementLockProperties `json:"properties,omitempty"`
@@ -76,28 +64,14 @@ type ManagementLockObject struct {
 	Name              *string                   `json:"name,omitempty"`
 }
 
-// ManagementLockProperties is the management lock properties.
+// ManagementLockOwner is
+type ManagementLockOwner struct {
+	ApplicationID *string `json:"applicationId,omitempty"`
+}
+
+// ManagementLockProperties is the lock properties.
 type ManagementLockProperties struct {
-	Level LockLevel `json:"level,omitempty"`
-	Notes *string   `json:"notes,omitempty"`
-}
-
-// Resource is
-type Resource struct {
-	ID       *string             `json:"id,omitempty"`
-	Name     *string             `json:"name,omitempty"`
-	Type     *string             `json:"type,omitempty"`
-	Location *string             `json:"location,omitempty"`
-	Tags     *map[string]*string `json:"tags,omitempty"`
-}
-
-// ResourceGroupFilter is resource group filter.
-type ResourceGroupFilter struct {
-	TagName  *string `json:"tagName,omitempty"`
-	TagValue *string `json:"tagValue,omitempty"`
-}
-
-// SubResource is
-type SubResource struct {
-	ID *string `json:"id,omitempty"`
+	Level  LockLevel              `json:"level,omitempty"`
+	Notes  *string                `json:"notes,omitempty"`
+	Owners *[]ManagementLockOwner `json:"owners,omitempty"`
 }

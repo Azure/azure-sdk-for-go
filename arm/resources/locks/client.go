@@ -1,4 +1,4 @@
-// Package locks implements the Azure ARM Locks service API version 2015-01-01.
+// Package locks implements the Azure ARM Locks service API version 2016-09-01.
 //
 package locks
 
@@ -26,7 +26,7 @@ import (
 
 const (
 	// APIVersion is the version of the Locks
-	APIVersion = "2015-01-01"
+	APIVersion = "2016-09-01"
 
 	// DefaultBaseURI is the default URI used for the service Locks
 	DefaultBaseURI = "https://management.azure.com"

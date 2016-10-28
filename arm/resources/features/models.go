@@ -24,11 +24,6 @@ import (
 	"net/http"
 )
 
-// DeploymentExtendedFilter is deployment filter.
-type DeploymentExtendedFilter struct {
-	ProvisioningState *string `json:"provisioningState,omitempty"`
-}
-
 // FeatureOperationsListResult is list of previewed features.
 type FeatureOperationsListResult struct {
 	autorest.Response `json:"-"`
@@ -60,31 +55,4 @@ type FeatureResult struct {
 	Properties        *FeatureProperties `json:"properties,omitempty"`
 	ID                *string            `json:"id,omitempty"`
 	Type              *string            `json:"type,omitempty"`
-}
-
-// GenericResourceFilter is resource filter.
-type GenericResourceFilter struct {
-	ResourceType *string `json:"resourceType,omitempty"`
-	Tagname      *string `json:"tagname,omitempty"`
-	Tagvalue     *string `json:"tagvalue,omitempty"`
-}
-
-// Resource is
-type Resource struct {
-	ID       *string             `json:"id,omitempty"`
-	Name     *string             `json:"name,omitempty"`
-	Type     *string             `json:"type,omitempty"`
-	Location *string             `json:"location,omitempty"`
-	Tags     *map[string]*string `json:"tags,omitempty"`
-}
-
-// ResourceGroupFilter is resource group filter.
-type ResourceGroupFilter struct {
-	TagName  *string `json:"tagName,omitempty"`
-	TagValue *string `json:"tagValue,omitempty"`
-}
-
-// SubResource is
-type SubResource struct {
-	ID *string `json:"id,omitempty"`
 }

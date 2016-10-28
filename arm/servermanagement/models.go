@@ -25,20 +25,21 @@ import (
 	"net/http"
 )
 
-// AutoUpgrade enumerates the values for auto upgrade.
-type AutoUpgrade string
+// CredentialDataFormat enumerates the values for credential data format.
+type CredentialDataFormat string
 
 const (
-	// Off specifies the off state for auto upgrade.
-	Off AutoUpgrade = "Off"
-	// On specifies the on state for auto upgrade.
-	On AutoUpgrade = "On"
+	// RsaEncrypted specifies the rsa encrypted state for credential data
+	// format.
+	RsaEncrypted CredentialDataFormat = "RsaEncrypted"
 )
 
 // GatewayExpandOption enumerates the values for gateway expand option.
 type GatewayExpandOption string
 
 const (
+	// Download specifies the download state for gateway expand option.
+	Download GatewayExpandOption = "download"
 	// Status specifies the status state for gateway expand option.
 	Status GatewayExpandOption = "status"
 )
@@ -63,6 +64,34 @@ const (
 	String PromptFieldType = "String"
 )
 
+// RetentionPeriod enumerates the values for retention period.
+type RetentionPeriod string
+
+const (
+	// Persistent specifies the persistent state for retention period.
+	Persistent RetentionPeriod = "Persistent"
+	// Session specifies the session state for retention period.
+	Session RetentionPeriod = "Session"
+)
+
+// UpgradeMode enumerates the values for upgrade mode.
+type UpgradeMode string
+
+const (
+	// Automatic specifies the automatic state for upgrade mode.
+	Automatic UpgradeMode = "Automatic"
+	// Manual specifies the manual state for upgrade mode.
+	Manual UpgradeMode = "Manual"
+)
+
+// EncryptionJwkResource is the public key of the gateway
+type EncryptionJwkResource struct {
+	Kty *string `json:"kty,omitempty"`
+	Alg *string `json:"alg,omitempty"`
+	E   *string `json:"e,omitempty"`
+	N   *string `json:"n,omitempty"`
+}
+
 // Error is error message
 type Error struct {
 	Code    *int32  `json:"code,omitempty"`
@@ -70,16 +99,17 @@ type Error struct {
 	Fields  *string `json:"fields,omitempty"`
 }
 
-// GatewayParameters is
+// GatewayParameters is collection of parameters for operations on a gateway
+// resource
 type GatewayParameters struct {
 	Location   *string                      `json:"location,omitempty"`
 	Tags       *map[string]interface{}      `json:"tags,omitempty"`
 	Properties *GatewayParametersProperties `json:"properties,omitempty"`
 }
 
-// GatewayParametersProperties is
+// GatewayParametersProperties is collection of properties
 type GatewayParametersProperties struct {
-	AutoUpgrade AutoUpgrade `json:"autoUpgrade,omitempty"`
+	UpgradeMode UpgradeMode `json:"upgradeMode,omitempty"`
 }
 
 // GatewayProfile is jSON properties that the gateway service uses know how to
@@ -98,7 +128,7 @@ type GatewayProfile struct {
 	StatusBlobSignature         *string `json:"statusBlobSignature,omitempty"`
 }
 
-// GatewayResource is
+// GatewayResource is data model for an arm gateway resource
 type GatewayResource struct {
 	autorest.Response `json:"-"`
 	ID                *string                    `json:"id,omitempty"`
@@ -110,16 +140,18 @@ type GatewayResource struct {
 	Properties        *GatewayResourceProperties `json:"properties,omitempty"`
 }
 
-// GatewayResourceProperties is
+// GatewayResourceProperties is collection of properties
 type GatewayResourceProperties struct {
 	Created                   *date.Time       `json:"created,omitempty"`
 	Updated                   *date.Time       `json:"updated,omitempty"`
-	AutoUpgrade               AutoUpgrade      `json:"autoUpgrade,omitempty"`
+	UpgradeMode               UpgradeMode      `json:"upgradeMode,omitempty"`
 	DesiredVersion            *string          `json:"desiredVersion,omitempty"`
 	Instances                 *[]GatewayStatus `json:"instances,omitempty"`
 	ActiveMessageCount        *int32           `json:"activeMessageCount,omitempty"`
 	LatestPublishedMsiVersion *string          `json:"latestPublishedMsiVersion,omitempty"`
 	PublishedTimeUtc          *date.Time       `json:"publishedTimeUtc,omitempty"`
+	InstallerDownload         *string          `json:"installerDownload,omitempty"`
+	MinimumVersion            *string          `json:"minimumVersion,omitempty"`
 }
 
 // GatewayResources is collection of Gateway Resources
@@ -143,27 +175,37 @@ func (client GatewayResources) GatewayResourcesPreparer() (*http.Request, error)
 
 // GatewayStatus is expanded gateway status information
 type GatewayStatus struct {
-	AvailableMemoryMByte         *float64   `json:"availableMemoryMByte,omitempty"`
-	GatewayCPUUtilizationPercent *float64   `json:"gatewayCpuUtilizationPercent,omitempty"`
-	TotalCPUUtilizationPercent   *float64   `json:"totalCpuUtilizationPercent,omitempty"`
-	GatewayVersion               *string    `json:"gatewayVersion,omitempty"`
-	FriendlyOsName               *string    `json:"friendlyOsName,omitempty"`
-	InstalledDate                *date.Time `json:"installedDate,omitempty"`
-	LogicalProcessorCount        *int32     `json:"logicalProcessorCount,omitempty"`
-	Name                         *string    `json:"name,omitempty"`
-	GatewayID                    *string    `json:"gatewayId,omitempty"`
-	GatewayWorkingSetMByte       *float64   `json:"gatewayWorkingSetMByte,omitempty"`
-	StatusUpdated                *date.Time `json:"statusUpdated,omitempty"`
+	AvailableMemoryMByte                     *float64               `json:"availableMemoryMByte,omitempty"`
+	GatewayCPUUtilizationPercent             *float64               `json:"gatewayCpuUtilizationPercent,omitempty"`
+	TotalCPUUtilizationPercent               *float64               `json:"totalCpuUtilizationPercent,omitempty"`
+	GatewayVersion                           *string                `json:"gatewayVersion,omitempty"`
+	FriendlyOsName                           *string                `json:"friendlyOsName,omitempty"`
+	InstalledDate                            *date.Time             `json:"installedDate,omitempty"`
+	LogicalProcessorCount                    *int32                 `json:"logicalProcessorCount,omitempty"`
+	Name                                     *string                `json:"name,omitempty"`
+	GatewayID                                *string                `json:"gatewayId,omitempty"`
+	GatewayWorkingSetMByte                   *float64               `json:"gatewayWorkingSetMByte,omitempty"`
+	StatusUpdated                            *date.Time             `json:"statusUpdated,omitempty"`
+	GroupPolicyError                         *string                `json:"groupPolicyError,omitempty"`
+	AllowGatewayGroupPolicyStatus            *bool                  `json:"allowGatewayGroupPolicyStatus,omitempty"`
+	RequireMfaGroupPolicyStatus              *bool                  `json:"requireMfaGroupPolicyStatus,omitempty"`
+	EncryptionCertificateThumbprint          *string                `json:"encryptionCertificateThumbprint,omitempty"`
+	SecondaryEncryptionCertificateThumbprint *string                `json:"secondaryEncryptionCertificateThumbprint,omitempty"`
+	EncryptionJwk                            *EncryptionJwkResource `json:"encryptionJwk,omitempty"`
+	SecondaryEncryptionJwk                   *EncryptionJwkResource `json:"secondaryEncryptionJwk,omitempty"`
+	ActiveMessageCount                       *int32                 `json:"activeMessageCount,omitempty"`
+	LatestPublishedMsiVersion                *string                `json:"latestPublishedMsiVersion,omitempty"`
+	PublishedTimeUtc                         *date.Time             `json:"publishedTimeUtc,omitempty"`
 }
 
-// NodeParameters is
+// NodeParameters is parameter collection for operations on arm node resource
 type NodeParameters struct {
 	Location   *string                   `json:"location,omitempty"`
 	Tags       *map[string]interface{}   `json:"tags,omitempty"`
 	Properties *NodeParametersProperties `json:"properties,omitempty"`
 }
 
-// NodeParametersProperties is
+// NodeParametersProperties is collection of properties
 type NodeParametersProperties struct {
 	GatewayID      *string `json:"gatewayId,omitempty"`
 	ConnectionName *string `json:"connectionName,omitempty"`
@@ -183,7 +225,7 @@ type NodeResource struct {
 	Properties        *NodeResourceProperties `json:"properties,omitempty"`
 }
 
-// NodeResourceProperties is
+// NodeResourceProperties is collection of properties
 type NodeResourceProperties struct {
 	GatewayID      *string    `json:"gatewayId,omitempty"`
 	ConnectionName *string    `json:"connectionName,omitempty"`
@@ -216,12 +258,12 @@ type PowerShellCommandParameters struct {
 	Properties *PowerShellCommandParametersProperties `json:"properties,omitempty"`
 }
 
-// PowerShellCommandParametersProperties is
+// PowerShellCommandParametersProperties is collection of properties
 type PowerShellCommandParametersProperties struct {
 	Command *string `json:"command,omitempty"`
 }
 
-// PowerShellCommandResult is
+// PowerShellCommandResult is results from invoking a powershell command
 type PowerShellCommandResult struct {
 	MessageType     *int32                    `json:"messageType,omitempty"`
 	ForegroundColor *string                   `json:"foregroundColor,omitempty"`
@@ -245,7 +287,7 @@ type PowerShellCommandResults struct {
 	Completed         *bool                      `json:"completed,omitempty"`
 }
 
-// PowerShellCommandStatus is
+// PowerShellCommandStatus is result status from invoking a powershell command
 type PowerShellCommandStatus struct {
 	autorest.Response `json:"-"`
 	ID                *string                   `json:"id,omitempty"`
@@ -270,7 +312,7 @@ type PowerShellSessionResource struct {
 	Properties        *PowerShellSessionResourceProperties `json:"properties,omitempty"`
 }
 
-// PowerShellSessionResourceProperties is
+// PowerShellSessionResourceProperties is collection of properties
 type PowerShellSessionResourceProperties struct {
 	SessionID            *string                  `json:"sessionId,omitempty"`
 	State                *string                  `json:"state,omitempty"`
@@ -288,7 +330,8 @@ type PowerShellSessionResources struct {
 	NextLink          *string                      `json:"nextLink,omitempty"`
 }
 
-// PowerShellTabCompletionParameters is
+// PowerShellTabCompletionParameters is collection of parameters for
+// powershell tab completion
 type PowerShellTabCompletionParameters struct {
 	Command *string `json:"command,omitempty"`
 }
@@ -325,15 +368,19 @@ type Resource struct {
 	Etag     *string             `json:"etag,omitempty"`
 }
 
-// SessionParameters is
+// SessionParameters is parameter collection for creation and other operations
+// on sessions
 type SessionParameters struct {
 	Properties *SessionParametersProperties `json:"properties,omitempty"`
 }
 
-// SessionParametersProperties is
+// SessionParametersProperties is collection of properties
 type SessionParametersProperties struct {
-	UserName *string `json:"userName,omitempty"`
-	Password *string `json:"password,omitempty"`
+	UserName                        *string              `json:"userName,omitempty"`
+	Password                        *string              `json:"password,omitempty"`
+	RetentionPeriod                 RetentionPeriod      `json:"retentionPeriod,omitempty"`
+	CredentialDataFormat            CredentialDataFormat `json:"credentialDataFormat,omitempty"`
+	EncryptionCertificateThumbprint *string              `json:"EncryptionCertificateThumbprint,omitempty"`
 }
 
 // SessionResource is the session object
@@ -348,7 +395,7 @@ type SessionResource struct {
 	Properties        *SessionResourceProperties `json:"properties,omitempty"`
 }
 
-// SessionResourceProperties is
+// SessionResourceProperties is collection of properties
 type SessionResourceProperties struct {
 	UserName *string    `json:"userName,omitempty"`
 	Created  *date.Time `json:"created,omitempty"`

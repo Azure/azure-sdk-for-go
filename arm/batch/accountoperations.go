@@ -25,19 +25,22 @@ import (
 	"net/http"
 )
 
-// AccountClient is the client for the Account methods of the Batch service.
-type AccountClient struct {
+// AccountOperationsClient is the client for the AccountOperations methods of
+// the Batch service.
+type AccountOperationsClient struct {
 	ManagementClient
 }
 
-// NewAccountClient creates an instance of the AccountClient client.
-func NewAccountClient(subscriptionID string) AccountClient {
-	return NewAccountClientWithBaseURI(DefaultBaseURI, subscriptionID)
+// NewAccountOperationsClient creates an instance of the
+// AccountOperationsClient client.
+func NewAccountOperationsClient(subscriptionID string) AccountOperationsClient {
+	return NewAccountOperationsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewAccountClientWithBaseURI creates an instance of the AccountClient client.
-func NewAccountClientWithBaseURI(baseURI string, subscriptionID string) AccountClient {
-	return AccountClient{NewWithBaseURI(baseURI, subscriptionID)}
+// NewAccountOperationsClientWithBaseURI creates an instance of the
+// AccountOperationsClient client.
+func NewAccountOperationsClientWithBaseURI(baseURI string, subscriptionID string) AccountOperationsClient {
+	return AccountOperationsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // Create creates a new Batch account with the specified parameters. Existing
@@ -54,7 +57,7 @@ func NewAccountClientWithBaseURI(baseURI string, subscriptionID string) AccountC
 // service in the region in which the account is created. For example:
 // http://accountname.region.batch.azure.com/. parameters is additional
 // parameters for account creation.
-func (client AccountClient) Create(resourceGroupName string, accountName string, parameters AccountCreateParameters, cancel <-chan struct{}) (result autorest.Response, err error) {
+func (client AccountOperationsClient) Create(resourceGroupName string, accountName string, parameters AccountCreateParameters, cancel <-chan struct{}) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}},
@@ -63,34 +66,35 @@ func (client AccountClient) Create(resourceGroupName string, accountName string,
 				{Target: "accountName", Name: validation.MinLength, Rule: 3, Chain: nil},
 				{Target: "accountName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}},
 		{TargetValue: parameters,
-			Constraints: []validation.Constraint{{Target: "parameters.Properties", Name: validation.Null, Rule: false,
-				Chain: []validation.Constraint{{Target: "parameters.Properties.AutoStorage", Name: validation.Null, Rule: false,
-					Chain: []validation.Constraint{{Target: "parameters.Properties.AutoStorage.StorageAccountID", Name: validation.Null, Rule: true, Chain: nil}}},
-				}}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "batch.AccountClient", "Create")
+			Constraints: []validation.Constraint{{Target: "parameters.Location", Name: validation.Null, Rule: true, Chain: nil},
+				{Target: "parameters.Properties", Name: validation.Null, Rule: false,
+					Chain: []validation.Constraint{{Target: "parameters.Properties.AutoStorage", Name: validation.Null, Rule: false,
+						Chain: []validation.Constraint{{Target: "parameters.Properties.AutoStorage.StorageAccountID", Name: validation.Null, Rule: true, Chain: nil}}},
+					}}}}}); err != nil {
+		return result, validation.NewErrorWithValidationError(err, "batch.AccountOperationsClient", "Create")
 	}
 
 	req, err := client.CreatePreparer(resourceGroupName, accountName, parameters, cancel)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "batch.AccountClient", "Create", nil, "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "batch.AccountOperationsClient", "Create", nil, "Failure preparing request")
 	}
 
 	resp, err := client.CreateSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "batch.AccountClient", "Create", resp, "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "batch.AccountOperationsClient", "Create", resp, "Failure sending request")
 	}
 
 	result, err = client.CreateResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "batch.AccountClient", "Create", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "batch.AccountOperationsClient", "Create", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // CreatePreparer prepares the Create request.
-func (client AccountClient) CreatePreparer(resourceGroupName string, accountName string, parameters AccountCreateParameters, cancel <-chan struct{}) (*http.Request, error) {
+func (client AccountOperationsClient) CreatePreparer(resourceGroupName string, accountName string, parameters AccountCreateParameters, cancel <-chan struct{}) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"accountName":       autorest.Encode("path", accountName),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
@@ -113,7 +117,7 @@ func (client AccountClient) CreatePreparer(resourceGroupName string, accountName
 
 // CreateSender sends the Create request. The method will close the
 // http.Response Body if it receives an error.
-func (client AccountClient) CreateSender(req *http.Request) (*http.Response, error) {
+func (client AccountOperationsClient) CreateSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client,
 		req,
 		azure.DoPollForAsynchronous(client.PollingDelay))
@@ -121,7 +125,7 @@ func (client AccountClient) CreateSender(req *http.Request) (*http.Response, err
 
 // CreateResponder handles the response to the Create request. The method always
 // closes the http.Response Body.
-func (client AccountClient) CreateResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client AccountOperationsClient) CreateResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -139,7 +143,7 @@ func (client AccountClient) CreateResponder(resp *http.Response) (result autores
 // resourceGroupName is the name of the resource group that contains the Batch
 // account to be deleted. accountName is the name of the account to be
 // deleted.
-func (client AccountClient) Delete(resourceGroupName string, accountName string, cancel <-chan struct{}) (result autorest.Response, err error) {
+func (client AccountOperationsClient) Delete(resourceGroupName string, accountName string, cancel <-chan struct{}) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}},
@@ -147,30 +151,30 @@ func (client AccountClient) Delete(resourceGroupName string, accountName string,
 			Constraints: []validation.Constraint{{Target: "accountName", Name: validation.MaxLength, Rule: 24, Chain: nil},
 				{Target: "accountName", Name: validation.MinLength, Rule: 3, Chain: nil},
 				{Target: "accountName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "batch.AccountClient", "Delete")
+		return result, validation.NewErrorWithValidationError(err, "batch.AccountOperationsClient", "Delete")
 	}
 
 	req, err := client.DeletePreparer(resourceGroupName, accountName, cancel)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "batch.AccountClient", "Delete", nil, "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "batch.AccountOperationsClient", "Delete", nil, "Failure preparing request")
 	}
 
 	resp, err := client.DeleteSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "batch.AccountClient", "Delete", resp, "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "batch.AccountOperationsClient", "Delete", resp, "Failure sending request")
 	}
 
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "batch.AccountClient", "Delete", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "batch.AccountOperationsClient", "Delete", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // DeletePreparer prepares the Delete request.
-func (client AccountClient) DeletePreparer(resourceGroupName string, accountName string, cancel <-chan struct{}) (*http.Request, error) {
+func (client AccountOperationsClient) DeletePreparer(resourceGroupName string, accountName string, cancel <-chan struct{}) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"accountName":       autorest.Encode("path", accountName),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
@@ -191,7 +195,7 @@ func (client AccountClient) DeletePreparer(resourceGroupName string, accountName
 
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
-func (client AccountClient) DeleteSender(req *http.Request) (*http.Response, error) {
+func (client AccountOperationsClient) DeleteSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client,
 		req,
 		azure.DoPollForAsynchronous(client.PollingDelay))
@@ -199,7 +203,7 @@ func (client AccountClient) DeleteSender(req *http.Request) (*http.Response, err
 
 // DeleteResponder handles the response to the Delete request. The method always
 // closes the http.Response Body.
-func (client AccountClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client AccountOperationsClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -213,7 +217,7 @@ func (client AccountClient) DeleteResponder(resp *http.Response) (result autores
 //
 // resourceGroupName is the name of the resource group that contains the Batch
 // account. accountName is the name of the account.
-func (client AccountClient) Get(resourceGroupName string, accountName string) (result AccountResource, err error) {
+func (client AccountOperationsClient) Get(resourceGroupName string, accountName string) (result Account, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}},
@@ -221,30 +225,30 @@ func (client AccountClient) Get(resourceGroupName string, accountName string) (r
 			Constraints: []validation.Constraint{{Target: "accountName", Name: validation.MaxLength, Rule: 24, Chain: nil},
 				{Target: "accountName", Name: validation.MinLength, Rule: 3, Chain: nil},
 				{Target: "accountName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "batch.AccountClient", "Get")
+		return result, validation.NewErrorWithValidationError(err, "batch.AccountOperationsClient", "Get")
 	}
 
 	req, err := client.GetPreparer(resourceGroupName, accountName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "batch.AccountClient", "Get", nil, "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "batch.AccountOperationsClient", "Get", nil, "Failure preparing request")
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "batch.AccountClient", "Get", resp, "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "batch.AccountOperationsClient", "Get", resp, "Failure sending request")
 	}
 
 	result, err = client.GetResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "batch.AccountClient", "Get", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "batch.AccountOperationsClient", "Get", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // GetPreparer prepares the Get request.
-func (client AccountClient) GetPreparer(resourceGroupName string, accountName string) (*http.Request, error) {
+func (client AccountOperationsClient) GetPreparer(resourceGroupName string, accountName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"accountName":       autorest.Encode("path", accountName),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
@@ -265,13 +269,86 @@ func (client AccountClient) GetPreparer(resourceGroupName string, accountName st
 
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
-func (client AccountClient) GetSender(req *http.Request) (*http.Response, error) {
+func (client AccountOperationsClient) GetSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req)
 }
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
-func (client AccountClient) GetResponder(resp *http.Response) (result AccountResource, err error) {
+func (client AccountOperationsClient) GetResponder(resp *http.Response) (result Account, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// GetKeys gets the account keys for the specified Batch account.
+//
+// resourceGroupName is the name of the resource group that contains the Batch
+// account. accountName is the name of the account.
+func (client AccountOperationsClient) GetKeys(resourceGroupName string, accountName string) (result AccountKeys, err error) {
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}},
+		{TargetValue: accountName,
+			Constraints: []validation.Constraint{{Target: "accountName", Name: validation.MaxLength, Rule: 24, Chain: nil},
+				{Target: "accountName", Name: validation.MinLength, Rule: 3, Chain: nil},
+				{Target: "accountName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
+		return result, validation.NewErrorWithValidationError(err, "batch.AccountOperationsClient", "GetKeys")
+	}
+
+	req, err := client.GetKeysPreparer(resourceGroupName, accountName)
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "batch.AccountOperationsClient", "GetKeys", nil, "Failure preparing request")
+	}
+
+	resp, err := client.GetKeysSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "batch.AccountOperationsClient", "GetKeys", resp, "Failure sending request")
+	}
+
+	result, err = client.GetKeysResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "batch.AccountOperationsClient", "GetKeys", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// GetKeysPreparer prepares the GetKeys request.
+func (client AccountOperationsClient) GetKeysPreparer(resourceGroupName string, accountName string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"accountName":       autorest.Encode("path", accountName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	queryParameters := map[string]interface{}{
+		"api-version": client.APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsPost(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Batch/batchAccounts/{accountName}/listKeys", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare(&http.Request{})
+}
+
+// GetKeysSender sends the GetKeys request. The method will close the
+// http.Response Body if it receives an error.
+func (client AccountOperationsClient) GetKeysSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req)
+}
+
+// GetKeysResponder handles the response to the GetKeys request. The method always
+// closes the http.Response Body.
+func (client AccountOperationsClient) GetKeysResponder(resp *http.Response) (result AccountKeys, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -284,28 +361,28 @@ func (client AccountClient) GetResponder(resp *http.Response) (result AccountRes
 
 // List gets information about the Batch accounts associated with the
 // subscription.
-func (client AccountClient) List() (result AccountListResult, err error) {
+func (client AccountOperationsClient) List() (result AccountListResult, err error) {
 	req, err := client.ListPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "batch.AccountClient", "List", nil, "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "batch.AccountOperationsClient", "List", nil, "Failure preparing request")
 	}
 
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "batch.AccountClient", "List", resp, "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "batch.AccountOperationsClient", "List", resp, "Failure sending request")
 	}
 
 	result, err = client.ListResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "batch.AccountClient", "List", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "batch.AccountOperationsClient", "List", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // ListPreparer prepares the List request.
-func (client AccountClient) ListPreparer() (*http.Request, error) {
+func (client AccountOperationsClient) ListPreparer() (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
@@ -324,13 +401,13 @@ func (client AccountClient) ListPreparer() (*http.Request, error) {
 
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
-func (client AccountClient) ListSender(req *http.Request) (*http.Response, error) {
+func (client AccountOperationsClient) ListSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req)
 }
 
 // ListResponder handles the response to the List request. The method always
 // closes the http.Response Body.
-func (client AccountClient) ListResponder(resp *http.Response) (result AccountListResult, err error) {
+func (client AccountOperationsClient) ListResponder(resp *http.Response) (result AccountListResult, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -342,10 +419,10 @@ func (client AccountClient) ListResponder(resp *http.Response) (result AccountLi
 }
 
 // ListNextResults retrieves the next set of results, if any.
-func (client AccountClient) ListNextResults(lastResults AccountListResult) (result AccountListResult, err error) {
+func (client AccountOperationsClient) ListNextResults(lastResults AccountListResult) (result AccountListResult, err error) {
 	req, err := lastResults.AccountListResultPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "batch.AccountClient", "List", nil, "Failure preparing next results request")
+		return result, autorest.NewErrorWithError(err, "batch.AccountOperationsClient", "List", nil, "Failure preparing next results request")
 	}
 	if req == nil {
 		return
@@ -354,12 +431,12 @@ func (client AccountClient) ListNextResults(lastResults AccountListResult) (resu
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "batch.AccountClient", "List", resp, "Failure sending next results request")
+		return result, autorest.NewErrorWithError(err, "batch.AccountOperationsClient", "List", resp, "Failure sending next results request")
 	}
 
 	result, err = client.ListResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "batch.AccountClient", "List", resp, "Failure responding to next results request")
+		err = autorest.NewErrorWithError(err, "batch.AccountOperationsClient", "List", resp, "Failure responding to next results request")
 	}
 
 	return
@@ -370,34 +447,34 @@ func (client AccountClient) ListNextResults(lastResults AccountListResult) (resu
 //
 // resourceGroupName is the name of the resource group whose Batch accounts to
 // list.
-func (client AccountClient) ListByResourceGroup(resourceGroupName string) (result AccountListResult, err error) {
+func (client AccountOperationsClient) ListByResourceGroup(resourceGroupName string) (result AccountListResult, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "batch.AccountClient", "ListByResourceGroup")
+		return result, validation.NewErrorWithValidationError(err, "batch.AccountOperationsClient", "ListByResourceGroup")
 	}
 
 	req, err := client.ListByResourceGroupPreparer(resourceGroupName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "batch.AccountClient", "ListByResourceGroup", nil, "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "batch.AccountOperationsClient", "ListByResourceGroup", nil, "Failure preparing request")
 	}
 
 	resp, err := client.ListByResourceGroupSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "batch.AccountClient", "ListByResourceGroup", resp, "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "batch.AccountOperationsClient", "ListByResourceGroup", resp, "Failure sending request")
 	}
 
 	result, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "batch.AccountClient", "ListByResourceGroup", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "batch.AccountOperationsClient", "ListByResourceGroup", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // ListByResourceGroupPreparer prepares the ListByResourceGroup request.
-func (client AccountClient) ListByResourceGroupPreparer(resourceGroupName string) (*http.Request, error) {
+func (client AccountOperationsClient) ListByResourceGroupPreparer(resourceGroupName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
@@ -417,13 +494,13 @@ func (client AccountClient) ListByResourceGroupPreparer(resourceGroupName string
 
 // ListByResourceGroupSender sends the ListByResourceGroup request. The method will close the
 // http.Response Body if it receives an error.
-func (client AccountClient) ListByResourceGroupSender(req *http.Request) (*http.Response, error) {
+func (client AccountOperationsClient) ListByResourceGroupSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req)
 }
 
 // ListByResourceGroupResponder handles the response to the ListByResourceGroup request. The method always
 // closes the http.Response Body.
-func (client AccountClient) ListByResourceGroupResponder(resp *http.Response) (result AccountListResult, err error) {
+func (client AccountOperationsClient) ListByResourceGroupResponder(resp *http.Response) (result AccountListResult, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -435,10 +512,10 @@ func (client AccountClient) ListByResourceGroupResponder(resp *http.Response) (r
 }
 
 // ListByResourceGroupNextResults retrieves the next set of results, if any.
-func (client AccountClient) ListByResourceGroupNextResults(lastResults AccountListResult) (result AccountListResult, err error) {
+func (client AccountOperationsClient) ListByResourceGroupNextResults(lastResults AccountListResult) (result AccountListResult, err error) {
 	req, err := lastResults.AccountListResultPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "batch.AccountClient", "ListByResourceGroup", nil, "Failure preparing next results request")
+		return result, autorest.NewErrorWithError(err, "batch.AccountOperationsClient", "ListByResourceGroup", nil, "Failure preparing next results request")
 	}
 	if req == nil {
 		return
@@ -447,87 +524,14 @@ func (client AccountClient) ListByResourceGroupNextResults(lastResults AccountLi
 	resp, err := client.ListByResourceGroupSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "batch.AccountClient", "ListByResourceGroup", resp, "Failure sending next results request")
+		return result, autorest.NewErrorWithError(err, "batch.AccountOperationsClient", "ListByResourceGroup", resp, "Failure sending next results request")
 	}
 
 	result, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "batch.AccountClient", "ListByResourceGroup", resp, "Failure responding to next results request")
+		err = autorest.NewErrorWithError(err, "batch.AccountOperationsClient", "ListByResourceGroup", resp, "Failure responding to next results request")
 	}
 
-	return
-}
-
-// ListKeys lists the account keys for the specified Batch account.
-//
-// resourceGroupName is the name of the resource group that contains the Batch
-// account. accountName is the name of the account.
-func (client AccountClient) ListKeys(resourceGroupName string, accountName string) (result AccountListKeyResult, err error) {
-	if err := validation.Validate([]validation.Validation{
-		{TargetValue: resourceGroupName,
-			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}},
-		{TargetValue: accountName,
-			Constraints: []validation.Constraint{{Target: "accountName", Name: validation.MaxLength, Rule: 24, Chain: nil},
-				{Target: "accountName", Name: validation.MinLength, Rule: 3, Chain: nil},
-				{Target: "accountName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "batch.AccountClient", "ListKeys")
-	}
-
-	req, err := client.ListKeysPreparer(resourceGroupName, accountName)
-	if err != nil {
-		return result, autorest.NewErrorWithError(err, "batch.AccountClient", "ListKeys", nil, "Failure preparing request")
-	}
-
-	resp, err := client.ListKeysSender(req)
-	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "batch.AccountClient", "ListKeys", resp, "Failure sending request")
-	}
-
-	result, err = client.ListKeysResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "batch.AccountClient", "ListKeys", resp, "Failure responding to request")
-	}
-
-	return
-}
-
-// ListKeysPreparer prepares the ListKeys request.
-func (client AccountClient) ListKeysPreparer(resourceGroupName string, accountName string) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"accountName":       autorest.Encode("path", accountName),
-		"resourceGroupName": autorest.Encode("path", resourceGroupName),
-		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
-	}
-
-	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsPost(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Batch/batchAccounts/{accountName}/listKeys", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare(&http.Request{})
-}
-
-// ListKeysSender sends the ListKeys request. The method will close the
-// http.Response Body if it receives an error.
-func (client AccountClient) ListKeysSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
-}
-
-// ListKeysResponder handles the response to the ListKeys request. The method always
-// closes the http.Response Body.
-func (client AccountClient) ListKeysResponder(resp *http.Response) (result AccountListKeyResult, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
 	return
 }
 
@@ -537,7 +541,7 @@ func (client AccountClient) ListKeysResponder(resp *http.Response) (result Accou
 // resourceGroupName is the name of the resource group that contains the Batch
 // account. accountName is the name of the account. parameters is the type of
 // key to regenerate.
-func (client AccountClient) RegenerateKey(resourceGroupName string, accountName string, parameters AccountRegenerateKeyParameters) (result AccountRegenerateKeyResult, err error) {
+func (client AccountOperationsClient) RegenerateKey(resourceGroupName string, accountName string, parameters AccountRegenerateKeyParameters) (result AccountKeys, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}},
@@ -545,30 +549,30 @@ func (client AccountClient) RegenerateKey(resourceGroupName string, accountName 
 			Constraints: []validation.Constraint{{Target: "accountName", Name: validation.MaxLength, Rule: 24, Chain: nil},
 				{Target: "accountName", Name: validation.MinLength, Rule: 3, Chain: nil},
 				{Target: "accountName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "batch.AccountClient", "RegenerateKey")
+		return result, validation.NewErrorWithValidationError(err, "batch.AccountOperationsClient", "RegenerateKey")
 	}
 
 	req, err := client.RegenerateKeyPreparer(resourceGroupName, accountName, parameters)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "batch.AccountClient", "RegenerateKey", nil, "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "batch.AccountOperationsClient", "RegenerateKey", nil, "Failure preparing request")
 	}
 
 	resp, err := client.RegenerateKeySender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "batch.AccountClient", "RegenerateKey", resp, "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "batch.AccountOperationsClient", "RegenerateKey", resp, "Failure sending request")
 	}
 
 	result, err = client.RegenerateKeyResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "batch.AccountClient", "RegenerateKey", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "batch.AccountOperationsClient", "RegenerateKey", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // RegenerateKeyPreparer prepares the RegenerateKey request.
-func (client AccountClient) RegenerateKeyPreparer(resourceGroupName string, accountName string, parameters AccountRegenerateKeyParameters) (*http.Request, error) {
+func (client AccountOperationsClient) RegenerateKeyPreparer(resourceGroupName string, accountName string, parameters AccountRegenerateKeyParameters) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"accountName":       autorest.Encode("path", accountName),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
@@ -591,13 +595,13 @@ func (client AccountClient) RegenerateKeyPreparer(resourceGroupName string, acco
 
 // RegenerateKeySender sends the RegenerateKey request. The method will close the
 // http.Response Body if it receives an error.
-func (client AccountClient) RegenerateKeySender(req *http.Request) (*http.Response, error) {
+func (client AccountOperationsClient) RegenerateKeySender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req)
 }
 
 // RegenerateKeyResponder handles the response to the RegenerateKey request. The method always
 // closes the http.Response Body.
-func (client AccountClient) RegenerateKeyResponder(resp *http.Response) (result AccountRegenerateKeyResult, err error) {
+func (client AccountOperationsClient) RegenerateKeyResponder(resp *http.Response) (result AccountKeys, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -613,7 +617,7 @@ func (client AccountClient) RegenerateKeyResponder(resp *http.Response) (result 
 //
 // resourceGroupName is the name of the resource group that contains the Batch
 // account. accountName is the name of the Batch account.
-func (client AccountClient) SynchronizeAutoStorageKeys(resourceGroupName string, accountName string) (result autorest.Response, err error) {
+func (client AccountOperationsClient) SynchronizeAutoStorageKeys(resourceGroupName string, accountName string) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}},
@@ -621,30 +625,30 @@ func (client AccountClient) SynchronizeAutoStorageKeys(resourceGroupName string,
 			Constraints: []validation.Constraint{{Target: "accountName", Name: validation.MaxLength, Rule: 24, Chain: nil},
 				{Target: "accountName", Name: validation.MinLength, Rule: 3, Chain: nil},
 				{Target: "accountName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "batch.AccountClient", "SynchronizeAutoStorageKeys")
+		return result, validation.NewErrorWithValidationError(err, "batch.AccountOperationsClient", "SynchronizeAutoStorageKeys")
 	}
 
 	req, err := client.SynchronizeAutoStorageKeysPreparer(resourceGroupName, accountName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "batch.AccountClient", "SynchronizeAutoStorageKeys", nil, "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "batch.AccountOperationsClient", "SynchronizeAutoStorageKeys", nil, "Failure preparing request")
 	}
 
 	resp, err := client.SynchronizeAutoStorageKeysSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "batch.AccountClient", "SynchronizeAutoStorageKeys", resp, "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "batch.AccountOperationsClient", "SynchronizeAutoStorageKeys", resp, "Failure sending request")
 	}
 
 	result, err = client.SynchronizeAutoStorageKeysResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "batch.AccountClient", "SynchronizeAutoStorageKeys", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "batch.AccountOperationsClient", "SynchronizeAutoStorageKeys", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // SynchronizeAutoStorageKeysPreparer prepares the SynchronizeAutoStorageKeys request.
-func (client AccountClient) SynchronizeAutoStorageKeysPreparer(resourceGroupName string, accountName string) (*http.Request, error) {
+func (client AccountOperationsClient) SynchronizeAutoStorageKeysPreparer(resourceGroupName string, accountName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"accountName":       autorest.Encode("path", accountName),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
@@ -665,13 +669,13 @@ func (client AccountClient) SynchronizeAutoStorageKeysPreparer(resourceGroupName
 
 // SynchronizeAutoStorageKeysSender sends the SynchronizeAutoStorageKeys request. The method will close the
 // http.Response Body if it receives an error.
-func (client AccountClient) SynchronizeAutoStorageKeysSender(req *http.Request) (*http.Response, error) {
+func (client AccountOperationsClient) SynchronizeAutoStorageKeysSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req)
 }
 
 // SynchronizeAutoStorageKeysResponder handles the response to the SynchronizeAutoStorageKeys request. The method always
 // closes the http.Response Body.
-func (client AccountClient) SynchronizeAutoStorageKeysResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client AccountOperationsClient) SynchronizeAutoStorageKeysResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -686,7 +690,7 @@ func (client AccountClient) SynchronizeAutoStorageKeysResponder(resp *http.Respo
 // resourceGroupName is the name of the resource group that contains the Batch
 // account. accountName is the name of the account. parameters is additional
 // parameters for account update.
-func (client AccountClient) Update(resourceGroupName string, accountName string, parameters AccountUpdateParameters) (result AccountResource, err error) {
+func (client AccountOperationsClient) Update(resourceGroupName string, accountName string, parameters AccountUpdateParameters) (result Account, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}},
@@ -694,30 +698,30 @@ func (client AccountClient) Update(resourceGroupName string, accountName string,
 			Constraints: []validation.Constraint{{Target: "accountName", Name: validation.MaxLength, Rule: 24, Chain: nil},
 				{Target: "accountName", Name: validation.MinLength, Rule: 3, Chain: nil},
 				{Target: "accountName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "batch.AccountClient", "Update")
+		return result, validation.NewErrorWithValidationError(err, "batch.AccountOperationsClient", "Update")
 	}
 
 	req, err := client.UpdatePreparer(resourceGroupName, accountName, parameters)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "batch.AccountClient", "Update", nil, "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "batch.AccountOperationsClient", "Update", nil, "Failure preparing request")
 	}
 
 	resp, err := client.UpdateSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "batch.AccountClient", "Update", resp, "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "batch.AccountOperationsClient", "Update", resp, "Failure sending request")
 	}
 
 	result, err = client.UpdateResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "batch.AccountClient", "Update", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "batch.AccountOperationsClient", "Update", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // UpdatePreparer prepares the Update request.
-func (client AccountClient) UpdatePreparer(resourceGroupName string, accountName string, parameters AccountUpdateParameters) (*http.Request, error) {
+func (client AccountOperationsClient) UpdatePreparer(resourceGroupName string, accountName string, parameters AccountUpdateParameters) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"accountName":       autorest.Encode("path", accountName),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
@@ -740,13 +744,13 @@ func (client AccountClient) UpdatePreparer(resourceGroupName string, accountName
 
 // UpdateSender sends the Update request. The method will close the
 // http.Response Body if it receives an error.
-func (client AccountClient) UpdateSender(req *http.Request) (*http.Response, error) {
+func (client AccountOperationsClient) UpdateSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req)
 }
 
 // UpdateResponder handles the response to the Update request. The method always
 // closes the http.Response Body.
-func (client AccountClient) UpdateResponder(resp *http.Response) (result AccountResource, err error) {
+func (client AccountOperationsClient) UpdateResponder(resp *http.Response) (result Account, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

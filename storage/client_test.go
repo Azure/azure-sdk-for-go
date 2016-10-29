@@ -210,5 +210,7 @@ func (s *StorageClientSuite) Test_createAuthorizationHeader(c *chk.C) {
 
 	canonicalizedString := `foobarzoo`
 	expected := `SharedKey foo:h5U0ATVX6SpbFX1H6GNuxIMeXXCILLoIvhflPtuQZ30=`
-	c.Assert(cli.createAuthorizationHeader(canonicalizedString), chk.Equals, expected)
+	ah, err := cli.createAuthorizationHeader(canonicalizedString)
+	c.Assert(err, chk.IsNil)
+	c.Assert(ah, chk.Equals, expected)
 }

@@ -233,9 +233,12 @@ func (c Client) GetFileService() FileServiceClient {
 	return FileServiceClient{c}
 }
 
-func (c Client) createAuthorizationHeader(canonicalizedString string) string {
-	signature := c.computeHmac256(canonicalizedString)
-	return fmt.Sprintf("%s %s:%s", "SharedKey", c.getCanonicalizedAccountName(), signature)
+func (c Client) createAuthorizationHeader(canonicalizedString string) (string, error) {
+	signature, err := c.computeHmac256(canonicalizedString)
+	if err != nil {
+		return "", err
+	}
+	return fmt.Sprintf("%s %s:%s", "SharedKey", c.getCanonicalizedAccountName(), signature), nil
 }
 
 func (c Client) getAuthorizationHeader(verb, url string, headers map[string]string) (string, error) {
@@ -245,7 +248,7 @@ func (c Client) getAuthorizationHeader(verb, url string, headers map[string]stri
 	}
 
 	canonicalizedString := c.buildCanonicalizedString(verb, headers, canonicalizedResource)
-	return c.createAuthorizationHeader(canonicalizedString), nil
+	return c.createAuthorizationHeader(canonicalizedString)
 }
 
 func (c Client) getStandardHeaders() map[string]string {
@@ -501,7 +504,10 @@ func (c Client) createSharedKeyLite(url string, headers map[string]string) (stri
 	}
 	strToSign := headers["x-ms-date"] + "\n" + can
 
-	hmac := c.computeHmac256(strToSign)
+	hmac, err := c.computeHmac256(strToSign)
+	if err != nil {
+		return "", err
+	}
 	return fmt.Sprintf("SharedKeyLite %s:%s", c.accountName, hmac), nil
 }
 
@@ -515,9 +521,11 @@ func (c Client) execTable(verb, url string, headers map[string]string, body io.R
 	return c.execInternalJSON(verb, url, headers, body)
 }
 
-func readResponseBody(resp *http.Response) ([]byte, error) {
-	defer resp.Body.Close()
-	out, err := ioutil.ReadAll(resp.Body)
+func readResponseBody(resp *http.Response) (out []byte, err error) {
+	defer func() {
+		err = resp.Body.Close()
+	}()
+	out, err = ioutil.ReadAll(resp.Body)
 	if err == io.EOF {
 		err = nil
 	}

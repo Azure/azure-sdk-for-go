@@ -48,13 +48,19 @@ func main() {
 
 	fmt.Println("Create virtual machine")
 	role := vmutils.NewVMConfiguration(dnsName, vmSize)
-	vmutils.ConfigureDeploymentFromPlatformImage(
+	if err := vmutils.ConfigureDeploymentFromPlatformImage(
 		&role,
 		vmImage,
 		fmt.Sprintf("http://%s.blob.core.windows.net/%s/%s.vhd", storageAccount, dnsName, dnsName),
-		"")
-	vmutils.ConfigureForLinux(&role, dnsName, userName, userPassword)
-	vmutils.ConfigureWithPublicSSH(&role)
+		""); err != nil {
+		panic(err)
+	}
+	if err := vmutils.ConfigureForLinux(&role, dnsName, userName, userPassword); err != nil {
+		panic(err)
+	}
+	if err := vmutils.ConfigureWithPublicSSH(&role); err != nil {
+		panic(err)
+	}
 
 	fmt.Println("Deploy")
 	operationID, err := virtualmachine.NewClient(client).

@@ -15,10 +15,12 @@ import (
 	"time"
 )
 
-func (c Client) computeHmac256(message string) string {
+func (c Client) computeHmac256(message string) (string, error) {
 	h := hmac.New(sha256.New, c.accountKey)
-	h.Write([]byte(message))
-	return base64.StdEncoding.EncodeToString(h.Sum(nil))
+	if _, err := h.Write([]byte(message)); err != nil {
+		return "", fmt.Errorf("Failed computing to hmac256 : %v", err)
+	}
+	return base64.StdEncoding.EncodeToString(h.Sum(nil)), nil
 }
 
 func currentTimeRfc1123Formatted() string {

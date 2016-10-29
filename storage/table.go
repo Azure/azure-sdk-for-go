@@ -39,7 +39,7 @@ func (c *TableServiceClient) getStandardHeaders() map[string]string {
 
 // QueryTables returns the tables created in the
 // *TableServiceClient storage account.
-func (c *TableServiceClient) QueryTables() ([]AzureTable, error) {
+func (c *TableServiceClient) QueryTables() (at []AzureTable, err error) {
 	uri := c.client.getEndpoint(tableServiceName, tablesURIPath, url.Values{})
 
 	headers := c.getStandardHeaders()
@@ -49,32 +49,36 @@ func (c *TableServiceClient) QueryTables() ([]AzureTable, error) {
 	if err != nil {
 		return nil, err
 	}
-	defer resp.body.Close()
+	defer func() {
+		err = resp.body.Close()
+	}()
 
 	if err := checkRespCode(resp.statusCode, []int{http.StatusOK}); err != nil {
 		return nil, err
 	}
 
 	buf := new(bytes.Buffer)
-	buf.ReadFrom(resp.body)
+	if _, err := buf.ReadFrom(resp.body); err != nil {
+		return nil, err
+	}
 
 	var respArray queryTablesResponse
 	if err := json.Unmarshal(buf.Bytes(), &respArray); err != nil {
 		return nil, err
 	}
 
-	s := make([]AzureTable, len(respArray.TableName))
+	at = make([]AzureTable, len(respArray.TableName))
 	for i, elem := range respArray.TableName {
-		s[i] = AzureTable(elem.TableName)
+		at[i] = AzureTable(elem.TableName)
 	}
 
-	return s, nil
+	return at, nil
 }
 
 // CreateTable creates the table given the specific
 // name. This function fails if the name is not compliant
 // with the specification or the tables already exists.
-func (c *TableServiceClient) CreateTable(table AzureTable) error {
+func (c *TableServiceClient) CreateTable(table AzureTable) (err error) {
 	uri := c.client.getEndpoint(tableServiceName, tablesURIPath, url.Values{})
 
 	headers := c.getStandardHeaders()
@@ -93,7 +97,9 @@ func (c *TableServiceClient) CreateTable(table AzureTable) error {
 	if err != nil {
 		return err
 	}
-	defer resp.body.Close()
+	defer func() {
+		err = resp.body.Close()
+	}()
 
 	if err := checkRespCode(resp.statusCode, []int{http.StatusCreated}); err != nil {
 		return err
@@ -106,7 +112,7 @@ func (c *TableServiceClient) CreateTable(table AzureTable) error {
 // name. This function fails if the table is not present.
 // Be advised: DeleteTable deletes all the entries
 // that may be present.
-func (c *TableServiceClient) DeleteTable(table AzureTable) error {
+func (c *TableServiceClient) DeleteTable(table AzureTable) (err error) {
 	uri := c.client.getEndpoint(tableServiceName, tablesURIPath, url.Values{})
 	uri += fmt.Sprintf("('%s')", string(table))
 
@@ -119,7 +125,9 @@ func (c *TableServiceClient) DeleteTable(table AzureTable) error {
 	if err != nil {
 		return err
 	}
-	defer resp.body.Close()
+	defer func() {
+		err = resp.body.Close()
+	}()
 
 	if err := checkRespCode(resp.statusCode, []int{http.StatusNoContent}); err != nil {
 		return err

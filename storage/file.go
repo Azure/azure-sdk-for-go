@@ -339,6 +339,7 @@ func (f FileServiceClient) GetShareMetadata(name string) (metadata map[string]st
 		return nil, err
 	}
 
+	metadata = make(map[string]string)
 	for k, v := range resp.headers {
 		// Can't trust CanonicalHeaderKey() to munge case
 		// reliably. "_" is allowed in identifiers:

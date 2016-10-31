@@ -863,6 +863,7 @@ func (b BlobStorageClient) GetBlobMetadata(container, name string) (metadata map
 		return nil, err
 	}
 
+	metadata = make(map[string]string)
 	for k, v := range resp.headers {
 		// Can't trust CanonicalHeaderKey() to munge case
 		// reliably. "_" is allowed in identifiers:

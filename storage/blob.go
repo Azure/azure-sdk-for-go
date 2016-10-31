@@ -596,7 +596,6 @@ func (b BlobStorageClient) leaseCommonPut(container string, name string, headers
 }
 
 // AcquireLease creates a lease for a blob as per https://msdn.microsoft.com/en-us/library/azure/ee691972.aspx
-
 // returns leaseID acquired
 func (b BlobStorageClient) AcquireLease(container string, name string, leaseTimeInSeconds int, proposedLeaseID string) (returnedLeaseID string, err error) {
 	headers := b.client.getStandardHeaders()

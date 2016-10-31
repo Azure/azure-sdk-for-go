@@ -37,10 +37,10 @@ func (s *StorageBlobSuite) Test_pathForBlob(c *chk.C) {
 }
 
 func (s *StorageBlobSuite) Test_blobSASStringToSign(c *chk.C) {
-	_, err := blobSASStringToSign("2012-02-12", "CS", "SE", "SP")
+	_, err := blobSASStringToSign("2012-02-12", "CS", "SE", "SP", "", "")
 	c.Assert(err, chk.NotNil) // not implemented SAS for versions earlier than 2013-08-15
 
-	out, err := blobSASStringToSign("2013-08-15", "CS", "SE", "SP")
+	out, err := blobSASStringToSign("2013-08-15", "CS", "SE", "SP", "", "")
 	c.Assert(err, chk.IsNil)
 	c.Assert(out, chk.Equals, "SP\n\nSE\nCS\n\n2013-08-15\n\n\n\n\n")
 }
@@ -64,6 +64,63 @@ func (s *StorageBlobSuite) TestGetBlobSASURI(c *chk.C) {
 		}.Encode()}
 
 	u, err := cli.GetBlobSASURI("container", "name", expiry, "r")
+	c.Assert(err, chk.IsNil)
+	sasParts, err := url.Parse(u)
+	c.Assert(err, chk.IsNil)
+	c.Assert(expectedParts.String(), chk.Equals, sasParts.String())
+	c.Assert(expectedParts.Query(), chk.DeepEquals, sasParts.Query())
+}
+
+// Newer version specified but cannot specify IP range since this isn't really a unit test
+// but an intergration test and have no idea what the external IP address is.
+func (s *StorageBlobSuite) TestGetBlobSASURIWithSignedIPAndProtocolValidAPIVersionPassed(c *chk.C) {
+	api, err := NewClient("foo", "YmFy", DefaultBaseURL, "2015-04-05", true)
+	c.Assert(err, chk.IsNil)
+	cli := api.GetBlobService()
+	expiry := time.Time{}
+
+	expectedParts := url.URL{
+		Scheme: "https",
+		Host:   "foo.blob.core.windows.net",
+		Path:   "container/name",
+		RawQuery: url.Values{
+			"sv":  {"2015-04-05"},
+			"sig": {"R1zAMfObctZ+drkn1KJAl+9NOsffWjocV6rFXV/eySI="},
+			"sr":  {"b"},
+			"sp":  {"r"},
+			"se":  {"0001-01-01T00:00:00Z"},
+			"spr": {"https"},
+		}.Encode()}
+
+	u, err := cli.GetBlobSASURIWithSignedIPAndProtocol("container", "name", expiry, "r", "", []string{"https"})
+	c.Assert(err, chk.IsNil)
+	sasParts, err := url.Parse(u)
+	c.Assert(err, chk.IsNil)
+	c.Assert(sasParts.String(), chk.Equals, expectedParts.String())
+	c.Assert(sasParts.Query(), chk.DeepEquals, expectedParts.Query())
+}
+
+// Trying to use SignedIP and Protocol but using an older version of the API.
+// Should ignore the signedIP/protocol and just use what the older version requires.
+func (s *StorageBlobSuite) TestGetBlobSASURIWithSignedIPAndProtocolUsingOldAPIVersion(c *chk.C) {
+	api, err := NewClient("foo", "YmFy", DefaultBaseURL, "2013-08-15", true)
+	c.Assert(err, chk.IsNil)
+	cli := api.GetBlobService()
+	expiry := time.Time{}
+
+	expectedParts := url.URL{
+		Scheme: "https",
+		Host:   "foo.blob.core.windows.net",
+		Path:   "container/name",
+		RawQuery: url.Values{
+			"sv":  {"2013-08-15"},
+			"sig": {"/OXG7rWh08jYwtU03GzJM0DHZtidRGpC6g69rSGm3I0="},
+			"sr":  {"b"},
+			"sp":  {"r"},
+			"se":  {"0001-01-01T00:00:00Z"},
+		}.Encode()}
+
+	u, err := cli.GetBlobSASURIWithSignedIPAndProtocol("container", "name", expiry, "r", "", []string{"https"})
 	c.Assert(err, chk.IsNil)
 	sasParts, err := url.Parse(u)
 	c.Assert(err, chk.IsNil)

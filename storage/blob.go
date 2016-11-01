@@ -596,16 +596,16 @@ func (b BlobStorageClient) leaseCommonPut(container string, name string, headers
 }
 
 // SnapshotBlob creates a snapshot for a blob as per https://msdn.microsoft.com/en-us/library/azure/ee691971.aspx
-func (b BlobStorageClient) SnapshotBlob(container string, name string, timeout int, currentLeaseID string) (snapshotTimestamp *time.Time, err error) {
+func (b BlobStorageClient) SnapshotBlob(container string, name string, timeout int, extraHeaders map[string]string) (snapshotTimestamp *time.Time, err error) {
 	headers := b.client.getStandardHeaders()
 	params := url.Values{"comp": {"snapshot"}}
 
-	if currentLeaseID != "" {
-		headers[leaseID] = currentLeaseID
-	}
-
 	if timeout > 0 {
 		params.Add("timeout", strconv.Itoa(timeout))
+	}
+
+	for k, v := range extraHeaders {
+		headers[k] = v
 	}
 
 	uri := b.client.getEndpoint(blobServiceName, pathForBlob(container, name), params)
@@ -618,6 +618,10 @@ func (b BlobStorageClient) SnapshotBlob(container string, name string, timeout i
 	if snapshotResponse != "" {
 		snapshotTimestamp, err := time.Parse(time.RFC3339, snapshotResponse)
 		if err != nil {
+			return nil, err
+		}
+
+		if err := checkRespCode(resp.statusCode, []int{http.StatusCreated}); err != nil {
 			return nil, err
 		}
 

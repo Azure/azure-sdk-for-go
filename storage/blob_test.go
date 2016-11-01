@@ -742,7 +742,7 @@ func (s *StorageBlobSuite) TestSnapshotBlobWithInvalidLease(c *chk.C) {
 	c.Assert(cli.putSingleBlockBlob(cnt, blob, []byte{}), chk.IsNil)
 
 	// generate lease.
-	leaseID, err := cli.AcquireLease(cnt, blob, 30, "")
+	_, err := cli.AcquireLease(cnt, blob, 30, "")
 	c.Assert(err, chk.IsNil)
 	c.Assert(leaseID, chk.NotNil)
 

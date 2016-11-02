@@ -1214,13 +1214,12 @@ func pathForBlob(container, name string) string {
 // We only populate the signedIP when it non-empty.
 //
 // See https://msdn.microsoft.com/en-us/library/azure/ee395415.aspx
-func (b BlobStorageClient) GetBlobSASURIWithSignedIPAndProtocol(container, name string, expiry time.Time, permissions string, signedIPRange string, protocols []string) (string, error) {
+func (b BlobStorageClient) GetBlobSASURIWithSignedIPAndProtocol(container, name string, expiry time.Time, permissions string, signedIPRange string, HTTPSOnly bool) (string, error) {
 	var (
 		signedPermissions = permissions
 		blobURL           = b.GetBlobURL(container, name)
 	)
 	canonicalizedResource, err := b.client.buildCanonicalizedResource(blobURL)
-
 	if err != nil {
 		return "", err
 	}
@@ -1232,7 +1231,6 @@ func (b BlobStorageClient) GetBlobSASURIWithSignedIPAndProtocol(container, name 
 
 	// We need to replace + with %2b first to avoid being treated as a space (which is correct for query strings, but not the path component).
 	canonicalizedResource = strings.Replace(canonicalizedResource, "+", "%2b", -1)
-
 	canonicalizedResource, err = url.QueryUnescape(canonicalizedResource)
 	if err != nil {
 		return "", err
@@ -1241,8 +1239,11 @@ func (b BlobStorageClient) GetBlobSASURIWithSignedIPAndProtocol(container, name 
 	signedExpiry := expiry.UTC().Format(time.RFC3339)
 	signedResource := "b"
 
-	protocolStr := strings.Join(protocols, ",")
-	stringToSign, err := blobSASStringToSign(b.client.apiVersion, canonicalizedResource, signedExpiry, signedPermissions, signedIPRange, protocolStr)
+	protocols := "https,http"
+	if HTTPSOnly {
+		protocols = "https"
+	}
+	stringToSign, err := blobSASStringToSign(b.client.apiVersion, canonicalizedResource, signedExpiry, signedPermissions, signedIPRange, protocols)
 	if err != nil {
 		return "", err
 	}
@@ -1257,8 +1258,7 @@ func (b BlobStorageClient) GetBlobSASURIWithSignedIPAndProtocol(container, name 
 	}
 
 	if b.client.apiVersion >= "2015-04-05" {
-		sasParams.Add("spr", protocolStr)
-
+		sasParams.Add("spr", protocols)
 		if signedIPRange != "" {
 			sasParams.Add("sip", signedIPRange)
 		}
@@ -1277,7 +1277,7 @@ func (b BlobStorageClient) GetBlobSASURIWithSignedIPAndProtocol(container, name 
 //
 // See https://msdn.microsoft.com/en-us/library/azure/ee395415.aspx
 func (b BlobStorageClient) GetBlobSASURI(container, name string, expiry time.Time, permissions string) (string, error) {
-	url, err := b.GetBlobSASURIWithSignedIPAndProtocol(container, name, expiry, permissions, "", nil)
+	url, err := b.GetBlobSASURIWithSignedIPAndProtocol(container, name, expiry, permissions, "", false)
 	return url, err
 }
 
@@ -1288,7 +1288,7 @@ func blobSASStringToSign(signedVersion, canonicalizedResource, signedExpiry, sig
 		canonicalizedResource = "/blob" + canonicalizedResource
 	}
 
-	// https://msdn.microsoft.com/en-us/library/azure/dn140255.aspx#Anchor_8
+	// https://msdn.microsoft.com/en-us/library/azure/dn140255.aspx#Anchor_12
 	if signedVersion >= "2015-04-05" {
 		return fmt.Sprintf("%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s", signedPermissions, signedStart, signedExpiry, canonicalizedResource, signedIdentifier, signedIP, protocols, signedVersion, rscc, rscd, rsce, rscl, rsct), nil
 	}

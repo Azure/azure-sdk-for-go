@@ -71,8 +71,6 @@ func (s *StorageBlobSuite) TestGetBlobSASURI(c *chk.C) {
 	c.Assert(expectedParts.Query(), chk.DeepEquals, sasParts.Query())
 }
 
-// Newer version specified but cannot specify IP range since this isn't really a unit test
-// but an intergration test and have no idea what the external IP address is.
 func (s *StorageBlobSuite) TestGetBlobSASURIWithSignedIPAndProtocolValidAPIVersionPassed(c *chk.C) {
 	api, err := NewClient("foo", "YmFy", DefaultBaseURL, "2015-04-05", true)
 	c.Assert(err, chk.IsNil)
@@ -82,21 +80,21 @@ func (s *StorageBlobSuite) TestGetBlobSASURIWithSignedIPAndProtocolValidAPIVersi
 	expectedParts := url.URL{
 		Scheme: "https",
 		Host:   "foo.blob.core.windows.net",
-		Path:   "container/name",
+		Path:   "/container/name",
 		RawQuery: url.Values{
 			"sv":  {"2015-04-05"},
-			"sig": {"R1zAMfObctZ+drkn1KJAl+9NOsffWjocV6rFXV/eySI="},
+			"sig": {"VBOYJmt89UuBRXrxNzmsCMoC+8PXX2yklV71QcL1BfM="},
 			"sr":  {"b"},
+			"sip": {"127.0.0.1"},
 			"sp":  {"r"},
 			"se":  {"0001-01-01T00:00:00Z"},
 			"spr": {"https"},
 		}.Encode()}
 
-	u, err := cli.GetBlobSASURIWithSignedIPAndProtocol("container", "name", expiry, "r", "", []string{"https"})
+	u, err := cli.GetBlobSASURIWithSignedIPAndProtocol("container", "name", expiry, "r", "127.0.0.1", true)
 	c.Assert(err, chk.IsNil)
 	sasParts, err := url.Parse(u)
 	c.Assert(err, chk.IsNil)
-	c.Assert(sasParts.String(), chk.Equals, expectedParts.String())
 	c.Assert(sasParts.Query(), chk.DeepEquals, expectedParts.Query())
 }
 
@@ -111,7 +109,7 @@ func (s *StorageBlobSuite) TestGetBlobSASURIWithSignedIPAndProtocolUsingOldAPIVe
 	expectedParts := url.URL{
 		Scheme: "https",
 		Host:   "foo.blob.core.windows.net",
-		Path:   "container/name",
+		Path:   "/container/name",
 		RawQuery: url.Values{
 			"sv":  {"2013-08-15"},
 			"sig": {"/OXG7rWh08jYwtU03GzJM0DHZtidRGpC6g69rSGm3I0="},
@@ -120,7 +118,7 @@ func (s *StorageBlobSuite) TestGetBlobSASURIWithSignedIPAndProtocolUsingOldAPIVe
 			"se":  {"0001-01-01T00:00:00Z"},
 		}.Encode()}
 
-	u, err := cli.GetBlobSASURIWithSignedIPAndProtocol("container", "name", expiry, "r", "", []string{"https"})
+	u, err := cli.GetBlobSASURIWithSignedIPAndProtocol("container", "name", expiry, "r", "", true)
 	c.Assert(err, chk.IsNil)
 	sasParts, err := url.Parse(u)
 	c.Assert(err, chk.IsNil)

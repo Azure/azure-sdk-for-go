@@ -1145,13 +1145,14 @@ func (b BlobStorageClient) StartBlobCopy(container, name, sourceBlob string) (st
 // currentLeaseID is required IF the destination blob has an active lease on it.
 // As defined in https://msdn.microsoft.com/en-us/library/azure/jj159098.aspx
 func (b BlobStorageClient) AbortBlobCopy(container, name, copyID, currentLeaseID string, timeout int) error {
-	uri := b.client.getEndpoint(blobServiceName, pathForBlob(container, name), url.Values{"comp": {"copy"}, "copyid": {copyID}})
+	params := url.Values{"comp": {"copy"}, "copyid": {copyID}}
+	if timeout > 0 {
+		params.Add("timeout", strconv.Itoa(timeout))
+	}
+
+	uri := b.client.getEndpoint(blobServiceName, pathForBlob(container, name), params)
 	headers := b.client.getStandardHeaders()
 	headers["x-ms-copy-action"] = "abort"
-
-	if timeout > 0 {
-		headers["timeout"] = strconv.Itoa(timeout)
-	}
 
 	if currentLeaseID != "" {
 		headers[leaseID] = currentLeaseID

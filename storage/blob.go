@@ -499,7 +499,7 @@ func (b BlobStorageClient) ContainerExists(name string) (bool, error) {
 }
 
 // SetContainerPermissions sets up container permissions as per https://msdn.microsoft.com/en-us/library/azure/dd179391.aspx
-func (b BlobStorageClient) SetContainerPermissions(container string, containerPermissions ContainerPermissions) error {
+func (b BlobStorageClient) SetContainerPermissions(container string, containerPermissions ContainerPermissions) (err error) {
 	params := url.Values{
 		"restype": {"container"},
 		"comp":    {"acl"},
@@ -538,7 +538,9 @@ func (b BlobStorageClient) SetContainerPermissions(container string, containerPe
 	}
 
 	if resp != nil {
-		defer resp.body.Close()
+		defer func() {
+			err = resp.body.Close()
+		}()
 
 		if resp.statusCode != http.StatusOK {
 			return errors.New("Unable to set permissions")
@@ -574,7 +576,10 @@ func (b BlobStorageClient) GetContainerPermissions(container string, timeout int
 	// containerAccess. Blob, Container, empty
 	containerAccess := resp.headers.Get(http.CanonicalHeaderKey(ContainerAccessHeader))
 
-	defer resp.body.Close()
+	defer func() {
+		err = resp.body.Close()
+	}()
+
 	var out AccessPolicy
 	err = xmlUnmarshal(resp.body, &out.SignedIdentifiersList)
 	if err != nil {

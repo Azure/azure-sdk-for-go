@@ -43,6 +43,11 @@ func (s *StorageBlobSuite) Test_blobSASStringToSign(c *chk.C) {
 	out, err := blobSASStringToSign("2013-08-15", "CS", "SE", "SP", "", "")
 	c.Assert(err, chk.IsNil)
 	c.Assert(out, chk.Equals, "SP\n\nSE\nCS\n\n2013-08-15\n\n\n\n\n")
+
+	// check format for 2015-04-05 version
+	out, err = blobSASStringToSign("2015-04-05", "CS", "SE", "SP", "127.0.0.1", "https,http")
+	c.Assert(err, chk.IsNil)
+	c.Assert(out, chk.Equals, "SP\n\nSE\n/blobCS\n\n127.0.0.1\nhttps,http\n2015-04-05\n\n\n\n\n")
 }
 
 func (s *StorageBlobSuite) TestGetBlobSASURI(c *chk.C) {

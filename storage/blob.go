@@ -1181,10 +1181,12 @@ func (b BlobStorageClient) DeleteBlob(container, name string, extraHeaders map[s
 // See https://msdn.microsoft.com/en-us/library/azure/dd179413.aspx
 func (b BlobStorageClient) DeleteBlobIfExists(container, name string, extraHeaders map[string]string) (bool, error) {
 	resp, err := b.deleteBlob(container, name, extraHeaders)
-	if resp != nil && (resp.statusCode == http.StatusAccepted || resp.statusCode == http.StatusNotFound) {
-		return resp.statusCode == http.StatusAccepted, nil
+	if resp != nil {
+		defer resp.body.Close()
+		if resp.statusCode == http.StatusAccepted || resp.statusCode == http.StatusNotFound {
+			return resp.statusCode == http.StatusAccepted, nil
+		}
 	}
-	defer resp.body.Close()
 	return false, err
 }
 

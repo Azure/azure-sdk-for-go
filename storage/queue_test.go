@@ -87,7 +87,7 @@ func (s *StorageQueueSuite) TestQueueExists(c *chk.C) {
 	c.Assert(ok, chk.Equals, true)
 }
 
-func (s *StorageQueueSuite) TestPostMessage_PeekMessage_DeleteMessage(c *chk.C) {
+func (s *StorageQueueSuite) TestPostMessage_PeekMessage_PutMessage_DeleteMessage(c *chk.C) {
 	q := randString(20)
 	cli := getQueueClient(c)
 	c.Assert(cli.CreateQueue(q), chk.IsNil)
@@ -99,6 +99,16 @@ func (s *StorageQueueSuite) TestPostMessage_PeekMessage_DeleteMessage(c *chk.C) 
 	c.Assert(err, chk.IsNil)
 	c.Assert(len(r.QueueMessagesList), chk.Equals, 1)
 	c.Assert(r.QueueMessagesList[0].MessageText, chk.Equals, msg)
+
+	gr, gerr := cli.GetMessages(q, GetMessagesParameters{NumOfMessages: 1, VisibilityTimeout: 2})
+	c.Assert(gerr, chk.IsNil)
+
+	updatedMsg := "Test Message"
+	c.Assert(cli.UpdateMessage(q, r.QueueMessagesList[0].MessageID, updatedMsg,
+		UpdateMessageParameters{PopReceipt: gr.QueueMessagesList[0].PopReceipt, VisibilityTimeout: 2}), chk.IsNil)
+	r, err = cli.PeekMessages(q, PeekMessagesParameters{})
+	c.Assert(err, chk.IsNil)
+	c.Assert(len(r.QueueMessagesList), chk.Equals, 0)
 }
 
 func (s *StorageQueueSuite) TestGetMessages(c *chk.C) {

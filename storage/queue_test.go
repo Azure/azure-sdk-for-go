@@ -87,7 +87,7 @@ func (s *StorageQueueSuite) TestQueueExists(c *chk.C) {
 	c.Assert(ok, chk.Equals, true)
 }
 
-func (s *StorageQueueSuite) TestPostMessage_PeekMessage_PutMessage_DeleteMessage(c *chk.C) {
+func (s *StorageQueueSuite) TestPutMessage_PeekMessage_UpdateMessage_DeleteMessage(c *chk.C) {
 	q := randString(20)
 	cli := getQueueClient(c)
 	c.Assert(cli.CreateQueue(q), chk.IsNil)

@@ -42,7 +42,7 @@ func (s *StorageBlobSuite) Test_blobSASStringToSign(c *chk.C) {
 
 	out, err := blobSASStringToSign("2013-08-15", "CS", "SE", "SP")
 	c.Assert(err, chk.IsNil)
-	c.Assert(out, chk.Equals, "SP\n\nSE\nCS\n\n2013f-08-15\n\n\n\n\n")
+	c.Assert(out, chk.Equals, "SP\n\nSE\nCS\n\n2013-08-15\n\n\n\n\n")
 }
 
 func (s *StorageBlobSuite) TestGetBlobSASURI(c *chk.C) {

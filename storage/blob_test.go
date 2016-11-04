@@ -746,9 +746,11 @@ func (s *StorageBlobSuite) TestSetThenGetContainerPermissionsSuccessfully(c *chk
 	c.Assert(returnedPerms.AccessPolicy.SignedIdentifiers, chk.HasLen, 1)
 	c.Assert(returnedPerms.AccessPolicy.SignedIdentifiers[0].ID, chk.Equals, perms.AccessPolicy.ID)
 
-	// test timestamps down the minutes
-	c.Assert(returnedPerms.AccessPolicy.SignedIdentifiers[0].AccessPolicy.StartTime.Format(time.RFC1123), chk.Equals, perms.AccessPolicy.StartTime.Format(time.RFC1123))
-	c.Assert(returnedPerms.AccessPolicy.SignedIdentifiers[0].AccessPolicy.ExpiryTime.Format(time.RFC1123), chk.Equals, perms.AccessPolicy.ExpiryTime.Format(time.RFC1123))
+	// test timestamps down the second
+	// rounding start/expiry time original perms since the returned perms would have been rounded.
+	// so need rounded vs rounded.
+	c.Assert(returnedPerms.AccessPolicy.SignedIdentifiers[0].AccessPolicy.StartTime.Round(time.Second).Format(time.RFC1123), chk.Equals, perms.AccessPolicy.StartTime.Round(time.Second).Format(time.RFC1123))
+	c.Assert(returnedPerms.AccessPolicy.SignedIdentifiers[0].AccessPolicy.ExpiryTime.Round(time.Second).Format(time.RFC1123), chk.Equals, perms.AccessPolicy.ExpiryTime.Round(time.Second).Format(time.RFC1123))
 	c.Assert(returnedPerms.AccessPolicy.SignedIdentifiers[0].AccessPolicy.Permission, chk.Equals, "rwd")
 }
 

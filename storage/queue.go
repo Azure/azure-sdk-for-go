@@ -91,7 +91,7 @@ type UpdateMessageParameters struct {
 
 func (p UpdateMessageParameters) getParameters() url.Values {
 	out := url.Values{}
-	if len(p.PopReceipt) != 0 {
+	if p.PopReceipt != "" {
 		out.Set("popreceipt", p.PopReceipt)
 	}
 	if p.VisibilityTimeout != 0 {
@@ -334,7 +334,7 @@ func (c QueueServiceClient) UpdateMessage(queue string, messageID string, messag
 		return err
 	}
 	headers := c.client.getStandardHeaders()
-	headers["Content-Length"] = strconv.Itoa(nn)
+	headers["Content-Length"] = fmt.Sprintf("%d", nn)
 	resp, err := c.client.exec("PUT", uri, headers, body)
 	if err != nil {
 		return err

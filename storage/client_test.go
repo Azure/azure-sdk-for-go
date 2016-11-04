@@ -146,6 +146,23 @@ func (s *StorageClientSuite) Test_getStandardHeaders(c *chk.C) {
 	}
 }
 
+func (s *StorageClientSuite) Test_buildCanonicalizedResourceTable(c *chk.C) {
+	cli, err := NewBasicClient("foo", "YmFy")
+	c.Assert(err, chk.IsNil)
+
+	type test struct{ url, expected string }
+	tests := []test{
+		{"https://foo.table.core.windows.net/mytable", "/foo/mytable"},
+		{"https://foo.table.core.windows.net/mytable(PartitionKey='pkey',RowKey='rowkey%3D')", "/foo/mytable(PartitionKey='pkey',RowKey='rowkey%3D')"},
+	}
+
+	for _, i := range tests {
+		out, err := cli.buildCanonicalizedResourceTable(i.url)
+		c.Assert(err, chk.IsNil)
+		c.Assert(out, chk.Equals, i.expected)
+	}
+}
+
 func (s *StorageClientSuite) Test_buildCanonicalizedResource(c *chk.C) {
 	cli, err := NewBasicClient("foo", "YmFy")
 	c.Assert(err, chk.IsNil)

@@ -1458,8 +1458,8 @@ func convertAccessPolicyToXMLStructs(accessPolicy AccessPolicyDetails) SignedIde
 			{
 				ID: accessPolicy.ID,
 				AccessPolicy: AccessPolicyDetailsXML{
-					StartTime:  accessPolicy.StartTime.UTC().Round(time.Nanosecond * 100),
-					ExpiryTime: accessPolicy.ExpiryTime.UTC().Round(time.Nanosecond * 100),
+					StartTime:  accessPolicy.StartTime.UTC().Round(time.Second),
+					ExpiryTime: accessPolicy.ExpiryTime.UTC().Round(time.Second),
 					Permission: generatePermissions(accessPolicy),
 				},
 			},

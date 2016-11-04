@@ -37,12 +37,17 @@ func (s *StorageBlobSuite) Test_pathForBlob(c *chk.C) {
 }
 
 func (s *StorageBlobSuite) Test_blobSASStringToSign(c *chk.C) {
-	_, err := blobSASStringToSign("2012-02-12", "CS", "SE", "SP")
+	_, err := blobSASStringToSign("2012-02-12", "CS", "SE", "SP", "", "")
 	c.Assert(err, chk.NotNil) // not implemented SAS for versions earlier than 2013-08-15
 
-	out, err := blobSASStringToSign("2013-08-15", "CS", "SE", "SP")
+	out, err := blobSASStringToSign("2013-08-15", "CS", "SE", "SP", "", "")
 	c.Assert(err, chk.IsNil)
 	c.Assert(out, chk.Equals, "SP\n\nSE\nCS\n\n2013-08-15\n\n\n\n\n")
+
+	// check format for 2015-04-05 version
+	out, err = blobSASStringToSign("2015-04-05", "CS", "SE", "SP", "127.0.0.1", "https,http")
+	c.Assert(err, chk.IsNil)
+	c.Assert(out, chk.Equals, "SP\n\nSE\n/blobCS\n\n127.0.0.1\nhttps,http\n2015-04-05\n\n\n\n\n")
 }
 
 func (s *StorageBlobSuite) TestGetBlobSASURI(c *chk.C) {
@@ -64,6 +69,61 @@ func (s *StorageBlobSuite) TestGetBlobSASURI(c *chk.C) {
 		}.Encode()}
 
 	u, err := cli.GetBlobSASURI("container", "name", expiry, "r")
+	c.Assert(err, chk.IsNil)
+	sasParts, err := url.Parse(u)
+	c.Assert(err, chk.IsNil)
+	c.Assert(expectedParts.String(), chk.Equals, sasParts.String())
+	c.Assert(expectedParts.Query(), chk.DeepEquals, sasParts.Query())
+}
+
+func (s *StorageBlobSuite) TestGetBlobSASURIWithSignedIPAndProtocolValidAPIVersionPassed(c *chk.C) {
+	api, err := NewClient("foo", "YmFy", DefaultBaseURL, "2015-04-05", true)
+	c.Assert(err, chk.IsNil)
+	cli := api.GetBlobService()
+	expiry := time.Time{}
+
+	expectedParts := url.URL{
+		Scheme: "https",
+		Host:   "foo.blob.core.windows.net",
+		Path:   "/container/name",
+		RawQuery: url.Values{
+			"sv":  {"2015-04-05"},
+			"sig": {"VBOYJmt89UuBRXrxNzmsCMoC+8PXX2yklV71QcL1BfM="},
+			"sr":  {"b"},
+			"sip": {"127.0.0.1"},
+			"sp":  {"r"},
+			"se":  {"0001-01-01T00:00:00Z"},
+			"spr": {"https"},
+		}.Encode()}
+
+	u, err := cli.GetBlobSASURIWithSignedIPAndProtocol("container", "name", expiry, "r", "127.0.0.1", true)
+	c.Assert(err, chk.IsNil)
+	sasParts, err := url.Parse(u)
+	c.Assert(err, chk.IsNil)
+	c.Assert(sasParts.Query(), chk.DeepEquals, expectedParts.Query())
+}
+
+// Trying to use SignedIP and Protocol but using an older version of the API.
+// Should ignore the signedIP/protocol and just use what the older version requires.
+func (s *StorageBlobSuite) TestGetBlobSASURIWithSignedIPAndProtocolUsingOldAPIVersion(c *chk.C) {
+	api, err := NewClient("foo", "YmFy", DefaultBaseURL, "2013-08-15", true)
+	c.Assert(err, chk.IsNil)
+	cli := api.GetBlobService()
+	expiry := time.Time{}
+
+	expectedParts := url.URL{
+		Scheme: "https",
+		Host:   "foo.blob.core.windows.net",
+		Path:   "/container/name",
+		RawQuery: url.Values{
+			"sv":  {"2013-08-15"},
+			"sig": {"/OXG7rWh08jYwtU03GzJM0DHZtidRGpC6g69rSGm3I0="},
+			"sr":  {"b"},
+			"sp":  {"r"},
+			"se":  {"0001-01-01T00:00:00Z"},
+		}.Encode()}
+
+	u, err := cli.GetBlobSASURIWithSignedIPAndProtocol("container", "name", expiry, "r", "", true)
 	c.Assert(err, chk.IsNil)
 	sasParts, err := url.Parse(u)
 	c.Assert(err, chk.IsNil)
@@ -690,6 +750,7 @@ func (s *StorageBlobSuite) TestAcquireLeaseWithNoProposedLeaseID(c *chk.C) {
 
 	_, err := cli.AcquireLease(cnt, blob, 30, "")
 	c.Assert(err, chk.NotNil)
+
 }
 
 func (s *StorageBlobSuite) TestAcquireLeaseWithProposedLeaseID(c *chk.C) {

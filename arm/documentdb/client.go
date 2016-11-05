@@ -1,6 +1,6 @@
 // Package documentdb implements the Azure ARM Documentdb service API version
 // 2015-04-08.
-// 
+//
 // Azure DocumentDB Database Service Resource Provider REST API
 package documentdb
 
@@ -9,41 +9,40 @@ package documentdb
 // regenerated.
 
 import (
-    "github.com/Azure/go-autorest/autorest"
+	"github.com/Azure/go-autorest/autorest"
 )
 
 const (
-    // APIVersion is the version of the Documentdb
-    APIVersion = "2015-04-08"
+	// APIVersion is the version of the Documentdb
+	APIVersion = "2015-04-08"
 
-    // DefaultBaseURI is the default URI used for the service Documentdb
-    DefaultBaseURI = "https://management.azure.com"
+	// DefaultBaseURI is the default URI used for the service Documentdb
+	DefaultBaseURI = "https://management.azure.com"
 )
 
 // ManagementClient is the base client for Documentdb.
 type ManagementClient struct {
-    autorest.Client
-    BaseURI string
-    APIVersion string
-    SubscriptionID string
-    ResourceGroupName string
-    AccountName string
+	autorest.Client
+	BaseURI           string
+	APIVersion        string
+	SubscriptionID    string
+	ResourceGroupName string
+	AccountName       string
 }
 
 // New creates an instance of the ManagementClient client.
-func New(subscriptionID string, resourceGroupName string, accountName string)ManagementClient {
-    return NewWithBaseURI(DefaultBaseURI, subscriptionID, resourceGroupName, accountName)
+func New(subscriptionID string, resourceGroupName string, accountName string) ManagementClient {
+	return NewWithBaseURI(DefaultBaseURI, subscriptionID, resourceGroupName, accountName)
 }
 
 // NewWithBaseURI creates an instance of the ManagementClient client.
 func NewWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, accountName string) ManagementClient {
-   return ManagementClient{
-        Client: autorest.NewClientWithUserAgent(UserAgent()),
-        BaseURI: baseURI,
-        APIVersion: APIVersion,
-        SubscriptionID: subscriptionID,
-        ResourceGroupName: resourceGroupName,
-        AccountName: accountName,
-    }
+	return ManagementClient{
+		Client:            autorest.NewClientWithUserAgent(UserAgent()),
+		BaseURI:           baseURI,
+		APIVersion:        APIVersion,
+		SubscriptionID:    subscriptionID,
+		ResourceGroupName: resourceGroupName,
+		AccountName:       accountName,
+	}
 }
-

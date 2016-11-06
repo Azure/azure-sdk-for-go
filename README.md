@@ -20,7 +20,8 @@ the packages in your project and update them when a stable tag is out.
 - [batch](/arm/batch)
 - [cdn](/arm/cdn)
 - [cognitiveservices](/arm/cognitiveservices)
-- [compute](/arm/compute) - Includes the container service.
+- [compute](/arm/compute)
+- [containerservice](/arm/containerservice)
 - [datalake-store](/arm/datalake-store)
 - [devtestlabs](/arm/devtestlabs)
 - [dns](/arm/dns)
@@ -50,7 +51,7 @@ the packages in your project and update them when a stable tag is out.
 
 - [affinitygroup](/management/affinitygroup)
 - [hostedservice](/management/hostedservice)
-- [location](/management/location)                                                                                                                       
+- [location](/management/location)
 - [networksecuritygroup](/management/networksecuritygroup)
 - [osimage](/management/osimage)
 - [sql](/management/sql)

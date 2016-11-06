@@ -1,4 +1,4 @@
-package filesystem
+package account
 
 // Copyright (c) Microsoft and contributors.  All rights reserved.
 //
@@ -23,7 +23,7 @@ import (
 )
 
 const (
-	major = "5"
+	major = "6"
 	minor = "0"
 	patch = "0"
 	// Always begin a "tag" with a dash (as per http://semver.org)
@@ -34,7 +34,7 @@ const (
 
 // UserAgent returns the UserAgent string to use when sending http.Requests.
 func UserAgent() string {
-	return fmt.Sprintf(userAgentFormat, Version(), "filesystem", "2015-10-01-preview")
+	return fmt.Sprintf(userAgentFormat, Version(), "account", "2015-10-01-preview")
 }
 
 // Version returns the semantic version (see http://semver.org) of the client.

@@ -203,7 +203,7 @@ func (client GatewayClient) DeleteResponder(resp *http.Response) (result autores
 // name (256 characters maximum) expand is gets subscription credentials
 // which uniquely identify Microsoft Azure subscription. The subscription ID
 // forms part of the URI for every service call. Possible values include:
-// 'status'
+// 'status', 'download'
 func (client GatewayClient) Get(resourceGroupName string, gatewayName string, expand GatewayExpandOption) (result GatewayResource, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,

@@ -37,7 +37,7 @@ type ClassicAdministrator struct {
 type ClassicAdministratorListResult struct {
 	autorest.Response `json:"-"`
 	Value             *[]ClassicAdministrator `json:"value,omitempty"`
-	NextLink          *string                 `json:",omitempty"`
+	NextLink          *string                 `json:"nextLink,omitempty"`
 }
 
 // ClassicAdministratorListResultPreparer prepares a request to retrieve the next set of results. It returns
@@ -68,7 +68,7 @@ type Permission struct {
 type PermissionGetResult struct {
 	autorest.Response `json:"-"`
 	Value             *[]Permission `json:"value,omitempty"`
-	NextLink          *string       `json:",omitempty"`
+	NextLink          *string       `json:"nextLink,omitempty"`
 }
 
 // PermissionGetResultPreparer prepares a request to retrieve the next set of results. It returns
@@ -107,7 +107,7 @@ type ProviderOperationsMetadata struct {
 type ProviderOperationsMetadataListResult struct {
 	autorest.Response `json:"-"`
 	Value             *[]ProviderOperationsMetadata `json:"value,omitempty"`
-	NextLink          *string                       `json:",omitempty"`
+	NextLink          *string                       `json:"nextLink,omitempty"`
 }
 
 // ProviderOperationsMetadataListResultPreparer prepares a request to retrieve the next set of results. It returns
@@ -198,7 +198,7 @@ type RoleDefinitionFilter struct {
 type RoleDefinitionListResult struct {
 	autorest.Response `json:"-"`
 	Value             *[]RoleDefinition `json:"value,omitempty"`
-	NextLink          *string           `json:",omitempty"`
+	NextLink          *string           `json:"nextLink,omitempty"`
 }
 
 // RoleDefinitionListResultPreparer prepares a request to retrieve the next set of results. It returns

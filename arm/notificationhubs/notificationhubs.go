@@ -46,6 +46,15 @@ func NewClientWithBaseURI(baseURI string, subscriptionID string) Client {
 // resourceGroupName is the name of the resource group. namespaceName is the
 // namespace name. parameters is the notificationHub name.
 func (client Client) CheckAvailability(resourceGroupName string, namespaceName string, parameters CheckAvailabilityParameters) (result CheckAvailabilityResult, err error) {
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: parameters,
+			Constraints: []validation.Constraint{{Target: "parameters.Name", Name: validation.Null, Rule: true, Chain: nil},
+				{Target: "parameters.Location", Name: validation.Null, Rule: true, Chain: nil},
+				{Target: "parameters.ID", Name: validation.ReadOnly, Rule: true, Chain: nil},
+				{Target: "parameters.Type", Name: validation.ReadOnly, Rule: true, Chain: nil}}}}); err != nil {
+		return result, validation.NewErrorWithValidationError(err, "notificationhubs.Client", "CheckAvailability")
+	}
+
 	req, err := client.CheckAvailabilityPreparer(resourceGroupName, namespaceName, parameters)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "notificationhubs.Client", "CheckAvailability", nil, "Failure preparing request")

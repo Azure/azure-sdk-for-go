@@ -306,7 +306,7 @@ func (c Client) buildCanonicalizedResourceTable(uri string) (string, error) {
 	cr := "/" + c.getCanonicalizedAccountName()
 
 	if len(u.Path) > 0 {
-		cr += u.Path
+		cr += u.EscapedPath()
 	}
 
 	return cr, nil

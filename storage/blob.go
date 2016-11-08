@@ -6,6 +6,7 @@ import (
 	"errors"
 	"fmt"
 	"io"
+	"io/ioutil"
 	"net/http"
 	"net/url"
 	"strconv"
@@ -301,6 +302,65 @@ const (
 	ContainerAccessTypeContainer ContainerAccessType = "container"
 )
 
+// ContainerAccessOptions are used when setting ACLs of containers (after creation)
+type ContainerAccessOptions struct {
+	ContainerAccess ContainerAccessType
+	Timeout         int
+	LeaseID         string
+}
+
+// AccessPolicyDetails are used for SETTING policies
+type AccessPolicyDetails struct {
+	ID         string
+	StartTime  time.Time
+	ExpiryTime time.Time
+	CanRead    bool
+	CanWrite   bool
+	CanDelete  bool
+}
+
+// ContainerPermissions is used when setting permissions and Access Policies for containers.
+type ContainerPermissions struct {
+	AccessOptions ContainerAccessOptions
+	AccessPolicy  AccessPolicyDetails
+}
+
+// AccessPolicyDetailsXML has specifics about an access policy
+// annotated with XML details.
+type AccessPolicyDetailsXML struct {
+	StartTime  time.Time `xml:"Start"`
+	ExpiryTime time.Time `xml:"Expiry"`
+	Permission string    `xml:"Permission"`
+}
+
+// SignedIdentifier is a wrapper for a specific policy
+type SignedIdentifier struct {
+	ID           string                 `xml:"Id"`
+	AccessPolicy AccessPolicyDetailsXML `xml:"AccessPolicy"`
+}
+
+// SignedIdentifiers part of the response from GetPermissions call.
+type SignedIdentifiers struct {
+	SignedIdentifiers []SignedIdentifier `xml:"SignedIdentifier"`
+}
+
+// AccessPolicy is the response type from the GetPermissions call.
+type AccessPolicy struct {
+	SignedIdentifiersList SignedIdentifiers `xml:"SignedIdentifiers"`
+}
+
+// ContainerAccessResponse is returned for the GetContainerPermissions function.
+// This contains both the permission and access policy for the container.
+type ContainerAccessResponse struct {
+	ContainerAccess ContainerAccessType
+	AccessPolicy    SignedIdentifiers
+}
+
+// ContainerAccessHeader references header used when setting/getting container ACL
+const (
+	ContainerAccessHeader string = "x-ms-blob-public-access"
+)
+
 // Maximum sizes (per REST API) for various concepts
 const (
 	MaxBlobBlockSize = 4 * 1024 * 1024
@@ -416,7 +476,7 @@ func (b BlobStorageClient) createContainer(name string, access ContainerAccessTy
 
 	headers := b.client.getStandardHeaders()
 	if access != "" {
-		headers["x-ms-blob-public-access"] = string(access)
+		headers[ContainerAccessHeader] = string(access)
 	}
 	return b.client.exec(verb, uri, headers, nil)
 }
@@ -436,6 +496,101 @@ func (b BlobStorageClient) ContainerExists(name string) (bool, error) {
 		}
 	}
 	return false, err
+}
+
+// SetContainerPermissions sets up container permissions as per https://msdn.microsoft.com/en-us/library/azure/dd179391.aspx
+func (b BlobStorageClient) SetContainerPermissions(container string, containerPermissions ContainerPermissions) (err error) {
+	params := url.Values{
+		"restype": {"container"},
+		"comp":    {"acl"},
+	}
+
+	if containerPermissions.AccessOptions.Timeout > 0 {
+		params.Add("timeout", strconv.Itoa(containerPermissions.AccessOptions.Timeout))
+	}
+
+	uri := b.client.getEndpoint(blobServiceName, pathForContainer(container), params)
+	headers := b.client.getStandardHeaders()
+	if containerPermissions.AccessOptions.ContainerAccess != "" {
+		headers[ContainerAccessHeader] = string(containerPermissions.AccessOptions.ContainerAccess)
+	}
+
+	if containerPermissions.AccessOptions.LeaseID != "" {
+		headers[leaseID] = containerPermissions.AccessOptions.LeaseID
+	}
+
+	// generate the XML for the SharedAccessSignature if required.
+	accessPolicyXML, err := generateAccessPolicy(containerPermissions.AccessPolicy)
+	if err != nil {
+		return err
+	}
+
+	var resp *storageResponse
+	if accessPolicyXML != "" {
+		headers["Content-Length"] = strconv.Itoa(len(accessPolicyXML))
+		resp, err = b.client.exec("PUT", uri, headers, strings.NewReader(accessPolicyXML))
+	} else {
+		resp, err = b.client.exec("PUT", uri, headers, nil)
+	}
+
+	if err != nil {
+		return err
+	}
+
+	if resp != nil {
+		defer func() {
+			err = resp.body.Close()
+		}()
+
+		if resp.statusCode != http.StatusOK {
+			return errors.New("Unable to set permissions")
+		}
+	}
+	return nil
+}
+
+// GetContainerPermissions gets the container permissions as per https://msdn.microsoft.com/en-us/library/azure/dd179469.aspx
+// If timeout is 0 then it will not be passed to Azure
+// leaseID will only be passed to Azure if populated
+// Returns permissionResponse which is combined permissions and AccessPolicy
+func (b BlobStorageClient) GetContainerPermissions(container string, timeout int, leaseID string) (permissionResponse *ContainerAccessResponse, err error) {
+	params := url.Values{"restype": {"container"},
+		"comp": {"acl"}}
+
+	if timeout > 0 {
+		params.Add("timeout", strconv.Itoa(timeout))
+	}
+
+	uri := b.client.getEndpoint(blobServiceName, pathForContainer(container), params)
+	headers := b.client.getStandardHeaders()
+
+	if leaseID != "" {
+		headers[leaseID] = leaseID
+	}
+
+	resp, err := b.client.exec("GET", uri, headers, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	// containerAccess. Blob, Container, empty
+	containerAccess := resp.headers.Get(http.CanonicalHeaderKey(ContainerAccessHeader))
+
+	defer func() {
+		err = resp.body.Close()
+	}()
+
+	var out AccessPolicy
+	err = xmlUnmarshal(resp.body, &out.SignedIdentifiersList)
+	if err != nil {
+		return nil, err
+	}
+
+	permissionResponse = &ContainerAccessResponse{}
+	permissionResponse.AccessPolicy = out.SignedIdentifiersList
+	permissionResponse.ContainerAccess = ContainerAccessType(containerAccess)
+
+	return permissionResponse, nil
 }
 
 // DeleteContainer deletes the container with given name on the storage
@@ -1301,4 +1456,62 @@ func blobSASStringToSign(signedVersion, canonicalizedResource, signedExpiry, sig
 	}
 
 	return "", errors.New("storage: not implemented SAS for versions earlier than 2013-08-15")
+}
+
+func generatePermissions(accessPolicy AccessPolicyDetails) (permissions string) {
+	// generate the permissions string (rwd).
+	// still want the end user API to have bool flags.
+	permissions = ""
+
+	if accessPolicy.CanRead {
+		permissions += "r"
+	}
+
+	if accessPolicy.CanWrite {
+		permissions += "w"
+	}
+
+	if accessPolicy.CanDelete {
+		permissions += "d"
+	}
+
+	return permissions
+}
+
+// convertAccessPolicyToXMLStructs converts between AccessPolicyDetails which is a struct better for API usage to the
+// AccessPolicy struct which will get converted to XML.
+func convertAccessPolicyToXMLStructs(accessPolicy AccessPolicyDetails) SignedIdentifiers {
+	return SignedIdentifiers{
+		SignedIdentifiers: []SignedIdentifier{
+			{
+				ID: accessPolicy.ID,
+				AccessPolicy: AccessPolicyDetailsXML{
+					StartTime:  accessPolicy.StartTime.UTC().Round(time.Second),
+					ExpiryTime: accessPolicy.ExpiryTime.UTC().Round(time.Second),
+					Permission: generatePermissions(accessPolicy),
+				},
+			},
+		},
+	}
+}
+
+// generateAccessPolicy generates the XML access policy used as the payload for SetContainerPermissions.
+func generateAccessPolicy(accessPolicy AccessPolicyDetails) (accessPolicyXML string, err error) {
+
+	if accessPolicy.ID != "" {
+		signedIdentifiers := convertAccessPolicyToXMLStructs(accessPolicy)
+		body, _, err := xmlMarshal(signedIdentifiers)
+		if err != nil {
+			return "", err
+		}
+
+		xmlByteArray, err := ioutil.ReadAll(body)
+		if err != nil {
+			return "", err
+		}
+		accessPolicyXML = string(xmlByteArray)
+		return accessPolicyXML, nil
+	}
+
+	return "", nil
 }

@@ -1,5 +1,5 @@
 // Package servermanagement implements the Azure ARM Servermanagement service
-// API version 2015-07-01-preview.
+// API version 2016-07-01-preview.
 //
 // REST API for Azure Server Management Service
 package servermanagement
@@ -28,7 +28,7 @@ import (
 
 const (
 	// APIVersion is the version of the Servermanagement
-	APIVersion = "2015-07-01-preview"
+	APIVersion = "2016-07-01-preview"
 
 	// DefaultBaseURI is the default URI used for the service Servermanagement
 	DefaultBaseURI = "https://management.azure.com"

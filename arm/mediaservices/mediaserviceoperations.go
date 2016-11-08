@@ -41,42 +41,43 @@ func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) Opera
 	return OperationsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// CheckNameAvailabilty sends the check name availabilty request.
+// CheckNameAvailability sends the check name availability request.
 //
 // checkNameAvailabilityInput is properties needed to check the availability
 // of a name.
-func (client OperationsClient) CheckNameAvailabilty(checkNameAvailabilityInput CheckNameAvailabilityInput) (result CheckNameAvailabilityOutput, err error) {
+func (client OperationsClient) CheckNameAvailability(checkNameAvailabilityInput CheckNameAvailabilityInput) (result CheckNameAvailabilityOutput, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: checkNameAvailabilityInput,
-			Constraints: []validation.Constraint{{Target: "checkNameAvailabilityInput.Name", Name: validation.Null, Rule: false,
+			Constraints: []validation.Constraint{{Target: "checkNameAvailabilityInput.Name", Name: validation.Null, Rule: true,
 				Chain: []validation.Constraint{{Target: "checkNameAvailabilityInput.Name", Name: validation.MaxLength, Rule: 24, Chain: nil},
 					{Target: "checkNameAvailabilityInput.Name", Name: validation.MinLength, Rule: 3, Chain: nil},
 					{Target: "checkNameAvailabilityInput.Name", Name: validation.Pattern, Rule: `^[a-z0-9]`, Chain: nil},
-				}}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "mediaservices.OperationsClient", "CheckNameAvailabilty")
+				}},
+				{Target: "checkNameAvailabilityInput.Type", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
+		return result, validation.NewErrorWithValidationError(err, "mediaservices.OperationsClient", "CheckNameAvailability")
 	}
 
-	req, err := client.CheckNameAvailabiltyPreparer(checkNameAvailabilityInput)
+	req, err := client.CheckNameAvailabilityPreparer(checkNameAvailabilityInput)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "mediaservices.OperationsClient", "CheckNameAvailabilty", nil, "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "mediaservices.OperationsClient", "CheckNameAvailability", nil, "Failure preparing request")
 	}
 
-	resp, err := client.CheckNameAvailabiltySender(req)
+	resp, err := client.CheckNameAvailabilitySender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "mediaservices.OperationsClient", "CheckNameAvailabilty", resp, "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "mediaservices.OperationsClient", "CheckNameAvailability", resp, "Failure sending request")
 	}
 
-	result, err = client.CheckNameAvailabiltyResponder(resp)
+	result, err = client.CheckNameAvailabilityResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "mediaservices.OperationsClient", "CheckNameAvailabilty", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "mediaservices.OperationsClient", "CheckNameAvailability", resp, "Failure responding to request")
 	}
 
 	return
 }
 
-// CheckNameAvailabiltyPreparer prepares the CheckNameAvailabilty request.
-func (client OperationsClient) CheckNameAvailabiltyPreparer(checkNameAvailabilityInput CheckNameAvailabilityInput) (*http.Request, error) {
+// CheckNameAvailabilityPreparer prepares the CheckNameAvailability request.
+func (client OperationsClient) CheckNameAvailabilityPreparer(checkNameAvailabilityInput CheckNameAvailabilityInput) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
@@ -95,15 +96,15 @@ func (client OperationsClient) CheckNameAvailabiltyPreparer(checkNameAvailabilit
 	return preparer.Prepare(&http.Request{})
 }
 
-// CheckNameAvailabiltySender sends the CheckNameAvailabilty request. The method will close the
+// CheckNameAvailabilitySender sends the CheckNameAvailability request. The method will close the
 // http.Response Body if it receives an error.
-func (client OperationsClient) CheckNameAvailabiltySender(req *http.Request) (*http.Response, error) {
+func (client OperationsClient) CheckNameAvailabilitySender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req)
 }
 
-// CheckNameAvailabiltyResponder handles the response to the CheckNameAvailabilty request. The method always
+// CheckNameAvailabilityResponder handles the response to the CheckNameAvailability request. The method always
 // closes the http.Response Body.
-func (client OperationsClient) CheckNameAvailabiltyResponder(resp *http.Response) (result CheckNameAvailabilityOutput, err error) {
+func (client OperationsClient) CheckNameAvailabilityResponder(resp *http.Response) (result CheckNameAvailabilityOutput, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

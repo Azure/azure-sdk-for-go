@@ -645,7 +645,7 @@ type StatusesDefault struct {
 	Tags              *map[string]*string `json:"tags,omitempty"`
 	Location          *string             `json:"location,omitempty"`
 	Properties        *StatusesProperties `json:"properties,omitempty"`
-	Nextlink          *string             `json:",omitempty"`
+	Nextlink          *string             `json:"nextlink,omitempty"`
 }
 
 // StatusesDefaultPreparer prepares a request to retrieve the next set of results. It returns

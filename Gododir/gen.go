@@ -45,7 +45,7 @@ var (
 			InputPrefix: "arm-",
 			Services: []service{
 				// {
-				//     Name: "asazure",
+				//     Name: "analysisservices",
 				//     Version: "2016-05-06"
 				// },
 				{
@@ -58,8 +58,11 @@ var (
 					Swagger: "BatchManagement",
 				},
 				{
-					Name:    "cdn",
-					Version: "2016-10-02",
+					Name: "cdn",
+					// Currently, the generator ignores parameter location extension
+					// https://github.com/Azure/autorest/issues/1532
+					// Version: "2016-10-02",
+					Version: "2016-04-02",
 				},
 				{
 					Name:    "cognitiveservices",
@@ -138,20 +141,24 @@ var (
 					// composite swagger
 				},
 				{
-					Name: "machinelearning",
-					SubServices: []service{
-						{
-							Name:    "webservices",
-							Version: "2016-05-01-preview",
-							Input:   "machinelearning",
-						},
-						{
-							Name:    "commitmentplans",
-							Version: "2016-05-01-preview",
-							Swagger: "commitmentPlans",
-							Input:   "machinelearning",
-						},
-					},
+					Name:    "machinelearning",
+					Version: "2016-05-01-preview",
+					Swagger: "webservices",
+					// SubServices: []service{
+					// Currently, the generator ignores parameter location extension
+					// https://github.com/Azure/autorest/issues/1532
+					// {
+					// 	Name:    "webservices",
+					// 	Version: "2016-05-01-preview",
+					// 	Input:   "machinelearning",
+					// },
+					// {
+					// 	Name:    "commitmentplans",
+					// 	Version: "2016-05-01-preview",
+					// 	Swagger: "commitmentPlans",
+					// 	Input:   "machinelearning",
+					// },
+					// },
 				},
 				{
 					Name:    "mediaservices",
@@ -182,6 +189,7 @@ var (
 				// {
 				// 	Name:    "recoveryservicesbackup",
 				// 	Version: "2016-06-01",
+				// composite swagger
 				// },
 				{
 					Name:    "redis",
@@ -193,6 +201,10 @@ var (
 						{
 							Name:    "features",
 							Version: "2015-12-01",
+						},
+						{
+							Name:    "links",
+							Version: "2016-09-01",
 						},
 						{
 							Name:    "locks",
@@ -226,6 +238,10 @@ var (
 				{
 					Name:    "servermanagement",
 					Version: "2016-07-01-preview",
+				},
+				{
+					Name:    "servicebus",
+					Version: "2015-08-01",
 				},
 				{
 					Name:    "sql",

@@ -29,9 +29,8 @@ import (
 // HTTP/1.1 protocol specification and each operation returns an
 // x-ms-request-id header that can be used to obtain information about the
 // request. You must make sure that requests made to these resources are
-// secure. For more information, see <a
-// href="https://msdn.microsoft.com/en-us/library/azure/dn790557.aspx">Authenticating
-// Azure Resource Manager requests.</a>
+// secure. For more information, see
+// https://msdn.microsoft.com/en-us/library/azure/dn790557.aspx.
 type GlobalClient struct {
 	ManagementClient
 }
@@ -611,9 +610,10 @@ func (client GlobalClient) GetAllSitesNextResults(lastResults SiteCollection) (r
 
 // GetSubscriptionGeoRegions sends the get subscription geo regions request.
 //
-// sku is filter only to regions that support this sku
-func (client GlobalClient) GetSubscriptionGeoRegions(sku string) (result GeoRegionCollection, err error) {
-	req, err := client.GetSubscriptionGeoRegionsPreparer(sku)
+// sku is filter only to regions that support this sku linuxWorkersEnabled is
+// filter only to regions that support linux workers
+func (client GlobalClient) GetSubscriptionGeoRegions(sku string, linuxWorkersEnabled *bool) (result GeoRegionCollection, err error) {
+	req, err := client.GetSubscriptionGeoRegionsPreparer(sku, linuxWorkersEnabled)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web.GlobalClient", "GetSubscriptionGeoRegions", nil, "Failure preparing request")
 	}
@@ -633,7 +633,7 @@ func (client GlobalClient) GetSubscriptionGeoRegions(sku string) (result GeoRegi
 }
 
 // GetSubscriptionGeoRegionsPreparer prepares the GetSubscriptionGeoRegions request.
-func (client GlobalClient) GetSubscriptionGeoRegionsPreparer(sku string) (*http.Request, error) {
+func (client GlobalClient) GetSubscriptionGeoRegionsPreparer(sku string, linuxWorkersEnabled *bool) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
@@ -643,6 +643,9 @@ func (client GlobalClient) GetSubscriptionGeoRegionsPreparer(sku string) (*http.
 	}
 	if len(sku) > 0 {
 		queryParameters["sku"] = autorest.Encode("query", sku)
+	}
+	if linuxWorkersEnabled != nil {
+		queryParameters["linuxWorkersEnabled"] = autorest.Encode("query", *linuxWorkersEnabled)
 	}
 
 	preparer := autorest.CreatePreparer(

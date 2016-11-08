@@ -47,6 +47,14 @@ const (
 	Secondary KeyType = "Secondary"
 )
 
+// ResourceType enumerates the values for resource type.
+type ResourceType string
+
+const (
+	// Mediaservices specifies the mediaservices state for resource type.
+	Mediaservices ResourceType = "mediaservices"
+)
+
 // APIEndpoint is the properties for a Media Services REST API endpoint.
 type APIEndpoint struct {
 	Endpoint     *string `json:"endpoint,omitempty"`
@@ -70,9 +78,9 @@ type CheckNameAvailabilityInput struct {
 // API.
 type CheckNameAvailabilityOutput struct {
 	autorest.Response `json:"-"`
-	NameAvailable     *bool                          `json:"nameAvailable,omitempty"`
-	Reason            EntityNameUnavailabilityReason `json:"reason,omitempty"`
-	Message           *string                        `json:"message,omitempty"`
+	NameAvailable     *bool                          `json:"NameAvailable,omitempty"`
+	Reason            EntityNameUnavailabilityReason `json:"Reason,omitempty"`
+	Message           *string                        `json:"Message,omitempty"`
 }
 
 // MediaService is the properties of a Media Service resource.

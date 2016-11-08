@@ -83,6 +83,16 @@ const (
 	None Capabilities = "None"
 )
 
+// IPFilterActionType enumerates the values for ip filter action type.
+type IPFilterActionType string
+
+const (
+	// Accept specifies the accept state for ip filter action type.
+	Accept IPFilterActionType = "Accept"
+	// Reject specifies the reject state for ip filter action type.
+	Reject IPFilterActionType = "Reject"
+)
+
 // JobStatus enumerates the values for job status.
 type JobStatus string
 
@@ -333,6 +343,13 @@ type ImportDevicesRequest struct {
 	OutputBlobContainerURI *string `json:"OutputBlobContainerUri,omitempty"`
 }
 
+// IPFilterRule is iP filter Rule
+type IPFilterRule struct {
+	FilterName *string            `json:"filterName,omitempty"`
+	Action     IPFilterActionType `json:"action,omitempty"`
+	IPMask     *string            `json:"ipMask,omitempty"`
+}
+
 // JobResponse is the properties describing a Job Response.
 type JobResponse struct {
 	autorest.Response `json:"-"`
@@ -396,6 +413,7 @@ type OperationsMonitoringProperties struct {
 // Properties is the Iot Hub properties.
 type Properties struct {
 	AuthorizationPolicies          *[]SharedAccessSignatureAuthorizationRule `json:"authorizationPolicies,omitempty"`
+	IPFilterRules                  *[]IPFilterRule                           `json:"ipFilterRules,omitempty"`
 	HostName                       *string                                   `json:"hostName,omitempty"`
 	EventHubEndpoints              *map[string]*EventHubProperties           `json:"eventHubEndpoints,omitempty"`
 	StorageEndpoints               *map[string]*StorageEndpointProperties    `json:"storageEndpoints,omitempty"`

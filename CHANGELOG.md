@@ -1,6 +1,35 @@
 # CHANGELOG
 
 -----
+
+## `v6.0.0-beta`
+
+| api                            | version            | note                               |
+|:-------------------------------|:-------------------|:-----------------------------------|
+| arm/authorization              | no change          | code refactoring                   |
+| arm/batch                      | no change          | code refactoring                   |
+| arm/compute                    | no change          | code refactoring                   |
+| arm/containerservice           | 2016-03-30         | return                             |
+| arm/datalake-analytics/account | 2015-10-01-preview | new                                |
+| arm/datalake-store/filesystem  | no change          | moved to datalake-store/filesystem |
+| arm/eventhub                   | no change          | code refactoring                   |
+| arm/intune                     | no change          | code refactoring                   |
+| arm/iothub                     | no change          | code refactoring                   |
+| arm/keyvault                   | no change          | code refactoring                   |
+| arm/mediaservices              | no change          | code refactoring                   |
+| arm/network                    | no change          | code refactoring                   |
+| arm/notificationhubs           | no change          | code refactoring                   |
+| arm/redis                      | no change          | code refactoring                   |
+| arm/resources/resources        | no change          | code refactoring                   |
+| arm/resources/links            | 2016-09-01         | new                                |
+| arm/resources/locks            | 2016-09-01         | updated                            |
+| arm/resources/policy           | no change          | code refactoring                   |
+| arm/resources/resources        | 2016-09-01         | updated                            |
+| arm/servermanagement           | 2016-07-01-preview | updated                            |
+| arm/web                        | no change          | code refactoring                   |
+
+- storage: Added blob lease functionality and tests
+
 ## `v5.0.0-beta`
 
 | api                           | version             | note             |

@@ -71,7 +71,6 @@ func (client AssignmentsClient) CreatePreparer(scope string, policyAssignmentNam
 	pathParameters := map[string]interface{}{
 		"policyAssignmentName": autorest.Encode("path", policyAssignmentName),
 		"scope":                scope,
-		"subscriptionId":       autorest.Encode("path", client.SubscriptionID),
 	}
 
 	queryParameters := map[string]interface{}{
@@ -134,7 +133,6 @@ func (client AssignmentsClient) CreateByID(policyAssignmentID string, parameters
 func (client AssignmentsClient) CreateByIDPreparer(policyAssignmentID string, parameters Assignment) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"policyAssignmentId": policyAssignmentID,
-		"subscriptionId":     autorest.Encode("path", client.SubscriptionID),
 	}
 
 	queryParameters := map[string]interface{}{
@@ -199,7 +197,6 @@ func (client AssignmentsClient) DeletePreparer(scope string, policyAssignmentNam
 	pathParameters := map[string]interface{}{
 		"policyAssignmentName": autorest.Encode("path", policyAssignmentName),
 		"scope":                scope,
-		"subscriptionId":       autorest.Encode("path", client.SubscriptionID),
 	}
 
 	queryParameters := map[string]interface{}{
@@ -260,7 +257,6 @@ func (client AssignmentsClient) DeleteByID(policyAssignmentID string) (result As
 func (client AssignmentsClient) DeleteByIDPreparer(policyAssignmentID string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"policyAssignmentId": policyAssignmentID,
-		"subscriptionId":     autorest.Encode("path", client.SubscriptionID),
 	}
 
 	queryParameters := map[string]interface{}{
@@ -323,7 +319,6 @@ func (client AssignmentsClient) GetPreparer(scope string, policyAssignmentName s
 	pathParameters := map[string]interface{}{
 		"policyAssignmentName": autorest.Encode("path", policyAssignmentName),
 		"scope":                scope,
-		"subscriptionId":       autorest.Encode("path", client.SubscriptionID),
 	}
 
 	queryParameters := map[string]interface{}{
@@ -384,7 +379,6 @@ func (client AssignmentsClient) GetByID(policyAssignmentID string) (result Assig
 func (client AssignmentsClient) GetByIDPreparer(policyAssignmentID string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"policyAssignmentId": policyAssignmentID,
-		"subscriptionId":     autorest.Encode("path", client.SubscriptionID),
 	}
 
 	queryParameters := map[string]interface{}{

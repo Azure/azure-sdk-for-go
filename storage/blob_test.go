@@ -37,12 +37,17 @@ func (s *StorageBlobSuite) Test_pathForBlob(c *chk.C) {
 }
 
 func (s *StorageBlobSuite) Test_blobSASStringToSign(c *chk.C) {
-	_, err := blobSASStringToSign("2012-02-12", "CS", "SE", "SP")
+	_, err := blobSASStringToSign("2012-02-12", "CS", "SE", "SP", "", "")
 	c.Assert(err, chk.NotNil) // not implemented SAS for versions earlier than 2013-08-15
 
-	out, err := blobSASStringToSign("2013-08-15", "CS", "SE", "SP")
+	out, err := blobSASStringToSign("2013-08-15", "CS", "SE", "SP", "", "")
 	c.Assert(err, chk.IsNil)
 	c.Assert(out, chk.Equals, "SP\n\nSE\nCS\n\n2013-08-15\n\n\n\n\n")
+
+	// check format for 2015-04-05 version
+	out, err = blobSASStringToSign("2015-04-05", "CS", "SE", "SP", "127.0.0.1", "https,http")
+	c.Assert(err, chk.IsNil)
+	c.Assert(out, chk.Equals, "SP\n\nSE\n/blobCS\n\n127.0.0.1\nhttps,http\n2015-04-05\n\n\n\n\n")
 }
 
 func (s *StorageBlobSuite) TestGetBlobSASURI(c *chk.C) {
@@ -64,6 +69,61 @@ func (s *StorageBlobSuite) TestGetBlobSASURI(c *chk.C) {
 		}.Encode()}
 
 	u, err := cli.GetBlobSASURI("container", "name", expiry, "r")
+	c.Assert(err, chk.IsNil)
+	sasParts, err := url.Parse(u)
+	c.Assert(err, chk.IsNil)
+	c.Assert(expectedParts.String(), chk.Equals, sasParts.String())
+	c.Assert(expectedParts.Query(), chk.DeepEquals, sasParts.Query())
+}
+
+func (s *StorageBlobSuite) TestGetBlobSASURIWithSignedIPAndProtocolValidAPIVersionPassed(c *chk.C) {
+	api, err := NewClient("foo", "YmFy", DefaultBaseURL, "2015-04-05", true)
+	c.Assert(err, chk.IsNil)
+	cli := api.GetBlobService()
+	expiry := time.Time{}
+
+	expectedParts := url.URL{
+		Scheme: "https",
+		Host:   "foo.blob.core.windows.net",
+		Path:   "/container/name",
+		RawQuery: url.Values{
+			"sv":  {"2015-04-05"},
+			"sig": {"VBOYJmt89UuBRXrxNzmsCMoC+8PXX2yklV71QcL1BfM="},
+			"sr":  {"b"},
+			"sip": {"127.0.0.1"},
+			"sp":  {"r"},
+			"se":  {"0001-01-01T00:00:00Z"},
+			"spr": {"https"},
+		}.Encode()}
+
+	u, err := cli.GetBlobSASURIWithSignedIPAndProtocol("container", "name", expiry, "r", "127.0.0.1", true)
+	c.Assert(err, chk.IsNil)
+	sasParts, err := url.Parse(u)
+	c.Assert(err, chk.IsNil)
+	c.Assert(sasParts.Query(), chk.DeepEquals, expectedParts.Query())
+}
+
+// Trying to use SignedIP and Protocol but using an older version of the API.
+// Should ignore the signedIP/protocol and just use what the older version requires.
+func (s *StorageBlobSuite) TestGetBlobSASURIWithSignedIPAndProtocolUsingOldAPIVersion(c *chk.C) {
+	api, err := NewClient("foo", "YmFy", DefaultBaseURL, "2013-08-15", true)
+	c.Assert(err, chk.IsNil)
+	cli := api.GetBlobService()
+	expiry := time.Time{}
+
+	expectedParts := url.URL{
+		Scheme: "https",
+		Host:   "foo.blob.core.windows.net",
+		Path:   "/container/name",
+		RawQuery: url.Values{
+			"sv":  {"2013-08-15"},
+			"sig": {"/OXG7rWh08jYwtU03GzJM0DHZtidRGpC6g69rSGm3I0="},
+			"sr":  {"b"},
+			"sp":  {"r"},
+			"se":  {"0001-01-01T00:00:00Z"},
+		}.Encode()}
+
+	u, err := cli.GetBlobSASURIWithSignedIPAndProtocol("container", "name", expiry, "r", "", true)
 	c.Assert(err, chk.IsNil)
 	sasParts, err := url.Parse(u)
 	c.Assert(err, chk.IsNil)
@@ -700,6 +760,117 @@ func (s *StorageBlobSuite) TestSetBlobProperties(c *chk.C) {
 	c.Check(mPut.ContentMD5, chk.Equals, props.ContentMD5)
 	c.Check(mPut.ContentEncoding, chk.Equals, props.ContentEncoding)
 	c.Check(mPut.ContentLanguage, chk.Equals, props.ContentLanguage)
+}
+
+func (s *StorageBlobSuite) createContainerPermissions(accessType ContainerAccessType,
+	timeout int, leaseID string, ID string, canRead bool,
+	canWrite bool, canDelete bool) ContainerPermissions {
+	perms := ContainerPermissions{}
+	perms.AccessOptions.ContainerAccess = accessType
+	perms.AccessOptions.Timeout = timeout
+	perms.AccessOptions.LeaseID = leaseID
+
+	if ID != "" {
+		perms.AccessPolicy.ID = ID
+		perms.AccessPolicy.StartTime = time.Now()
+		perms.AccessPolicy.ExpiryTime = time.Now().Add(time.Hour * 10)
+		perms.AccessPolicy.CanRead = canRead
+		perms.AccessPolicy.CanWrite = canWrite
+		perms.AccessPolicy.CanDelete = canDelete
+	}
+
+	return perms
+}
+
+func (s *StorageBlobSuite) TestSetContainerPermissionsWithTimeoutSuccessfully(c *chk.C) {
+	cli := getBlobClient(c)
+	cnt := randContainer()
+
+	c.Assert(cli.CreateContainer(cnt, ContainerAccessTypePrivate), chk.IsNil)
+	defer cli.deleteContainer(cnt)
+
+	perms := s.createContainerPermissions(ContainerAccessTypeBlob, 30, "", "MTIzNDU2Nzg5MDEyMzQ1Njc4OTAxMjM0NTY3ODkwMTa=", true, true, true)
+
+	err := cli.SetContainerPermissions(cnt, perms)
+	c.Assert(err, chk.IsNil)
+}
+
+func (s *StorageBlobSuite) TestSetContainerPermissionsSuccessfully(c *chk.C) {
+	cli := getBlobClient(c)
+	cnt := randContainer()
+
+	c.Assert(cli.CreateContainer(cnt, ContainerAccessTypePrivate), chk.IsNil)
+	defer cli.deleteContainer(cnt)
+
+	perms := s.createContainerPermissions(ContainerAccessTypeBlob, 0, "", "MTIzNDU2Nzg5MDEyMzQ1Njc4OTAxMjM0NTY3ODkwMTa=", true, true, true)
+
+	err := cli.SetContainerPermissions(cnt, perms)
+	c.Assert(err, chk.IsNil)
+}
+
+func (s *StorageBlobSuite) TestSetThenGetContainerPermissionsSuccessfully(c *chk.C) {
+	cli := getBlobClient(c)
+	cnt := randContainer()
+
+	c.Assert(cli.CreateContainer(cnt, ContainerAccessTypePrivate), chk.IsNil)
+	defer cli.deleteContainer(cnt)
+
+	perms := s.createContainerPermissions(ContainerAccessTypeBlob, 0, "", "MTIzNDU2Nzg5MDEyMzQ1Njc4OTAxMjM0NTY3ODkwMTa=", true, true, true)
+
+	err := cli.SetContainerPermissions(cnt, perms)
+	c.Assert(err, chk.IsNil)
+
+	returnedPerms, err := cli.GetContainerPermissions(cnt, 0, "")
+	c.Assert(err, chk.IsNil)
+
+	// check container permissions itself.
+	c.Assert(returnedPerms.ContainerAccess, chk.Equals, perms.AccessOptions.ContainerAccess)
+
+	// now check policy set.
+	c.Assert(returnedPerms.AccessPolicy.SignedIdentifiers, chk.HasLen, 1)
+	c.Assert(returnedPerms.AccessPolicy.SignedIdentifiers[0].ID, chk.Equals, perms.AccessPolicy.ID)
+
+	// test timestamps down the second
+	// rounding start/expiry time original perms since the returned perms would have been rounded.
+	// so need rounded vs rounded.
+	c.Assert(returnedPerms.AccessPolicy.SignedIdentifiers[0].AccessPolicy.StartTime.Round(time.Second).Format(time.RFC1123), chk.Equals, perms.AccessPolicy.StartTime.Round(time.Second).Format(time.RFC1123))
+	c.Assert(returnedPerms.AccessPolicy.SignedIdentifiers[0].AccessPolicy.ExpiryTime.Round(time.Second).Format(time.RFC1123), chk.Equals, perms.AccessPolicy.ExpiryTime.Round(time.Second).Format(time.RFC1123))
+	c.Assert(returnedPerms.AccessPolicy.SignedIdentifiers[0].AccessPolicy.Permission, chk.Equals, "rwd")
+}
+
+func (s *StorageBlobSuite) TestSetContainerPermissionsOnlySuccessfully(c *chk.C) {
+	cli := getBlobClient(c)
+	cnt := randContainer()
+
+	c.Assert(cli.CreateContainer(cnt, ContainerAccessTypePrivate), chk.IsNil)
+	defer cli.deleteContainer(cnt)
+
+	perms := s.createContainerPermissions(ContainerAccessTypeBlob, 0, "", "", true, true, true)
+
+	err := cli.SetContainerPermissions(cnt, perms)
+	c.Assert(err, chk.IsNil)
+}
+
+func (s *StorageBlobSuite) TestSetThenGetContainerPermissionsOnlySuccessfully(c *chk.C) {
+	cli := getBlobClient(c)
+	cnt := randContainer()
+
+	c.Assert(cli.CreateContainer(cnt, ContainerAccessTypePrivate), chk.IsNil)
+	defer cli.deleteContainer(cnt)
+
+	perms := s.createContainerPermissions(ContainerAccessTypeBlob, 0, "", "", true, true, true)
+
+	err := cli.SetContainerPermissions(cnt, perms)
+	c.Assert(err, chk.IsNil)
+
+	returnedPerms, err := cli.GetContainerPermissions(cnt, 0, "")
+	c.Assert(err, chk.IsNil)
+
+	// check container permissions itself.
+	c.Assert(returnedPerms.ContainerAccess, chk.Equals, perms.AccessOptions.ContainerAccess)
+
+	// now check there are NO policies set
+	c.Assert(returnedPerms.AccessPolicy.SignedIdentifiers, chk.HasLen, 0)
 }
 
 func (s *StorageBlobSuite) TestAcquireLeaseWithNoProposedLeaseID(c *chk.C) {

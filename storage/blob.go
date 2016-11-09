@@ -1326,6 +1326,7 @@ func (b BlobStorageClient) AbortBlobCopy(container, name, copyID, currentLeaseID
 	return nil
 }
 
+// WaitForBlobCopy loops until a BlobCopy operation is completed (or fails with error)
 func (b BlobStorageClient) WaitForBlobCopy(container, name, copyID string) error {
 	for {
 		props, err := b.GetBlobProperties(container, name)

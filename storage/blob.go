@@ -1264,7 +1264,7 @@ func (b BlobStorageClient) CopyBlob(container, name, sourceBlob string) error {
 		return err
 	}
 
-	return b.waitForBlobCopy(container, name, copyID)
+	return b.WaitForBlobCopy(container, name, copyID)
 }
 
 // StartBlobCopy starts a blob copy operation.
@@ -1326,7 +1326,7 @@ func (b BlobStorageClient) AbortBlobCopy(container, name, copyID, currentLeaseID
 	return nil
 }
 
-func (b BlobStorageClient) waitForBlobCopy(container, name, copyID string) error {
+func (b BlobStorageClient) WaitForBlobCopy(container, name, copyID string) error {
 	for {
 		props, err := b.GetBlobProperties(container, name)
 		if err != nil {

@@ -19,8 +19,8 @@ with the release of the Azure Resource Manager (ARM)
 packages, is transitioning to a generated-code model. Other Azure SDKs, notably the
 [Azure SDK for .NET](https://github.com/Azure/azure-sdk-for-net), have successfully adopted a
 generated-code strategy. Recently, Microsoft published the
-[Autorest](https://github.com/Azure/autorest) tool used to create these SDKs and we have been adding support for Go. The ARM packages are
-the first set generated using this new toolchain.
+[AutoRest](https://github.com/Azure/autorest) tool used to create these SDKs and we have been adding support for Go. The ARM packages are
+the first set generated using this new toolchain. The input for AutoRest are the [Azure REST API specs](https://github.com/Azure/azure-rest-api-specs), files in Swagger JSON format.
 
 There are a couple of items to note. First, since both the tooling and the underlying support
 packages are new, the code is not yet "production ready". Treat these packages as of
@@ -56,6 +56,15 @@ fan-in set ups.
 
 These are best shown in a series of examples, all of which are included in the
 [examples](/arm/examples) sub-folder.
+
+## How is the SDK tested?
+
+Testing the SDK is currently a work in progress. It includes three different points:
+
+* Test the [Azure REST API specs](https://github.com/Azure/azure-rest-api-specs) against the APIs themselves. This way we can find if the specs are reflecting correctly the API behavior. All Azure SDKs can benefit from this tests.
+* Add [acceptance tests](https://github.com/Azure/autorest/blob/master/docs/developer/guide/writing-tests.md) to AutoRest.
+* Test the generated SDK with code samples. This would catch bugs that escaped the previous tests, and provide some documentation.
+
 
 ## First a Sidenote: Authentication and the Azure Resource Manager
 

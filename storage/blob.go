@@ -769,14 +769,14 @@ func (b BlobStorageClient) SnapshotBlob(container string, name string, timeout i
 		return nil, err
 	}
 
+	if err := checkRespCode(resp.statusCode, []int{http.StatusCreated}); err != nil {
+		return nil, err
+	}
+
 	snapshotResponse := resp.headers.Get(http.CanonicalHeaderKey("x-ms-snapshot"))
 	if snapshotResponse != "" {
 		snapshotTimestamp, err := time.Parse(time.RFC3339, snapshotResponse)
 		if err != nil {
-			return nil, err
-		}
-
-		if err := checkRespCode(resp.statusCode, []int{http.StatusCreated}); err != nil {
 			return nil, err
 		}
 

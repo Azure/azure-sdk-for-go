@@ -119,11 +119,12 @@ var (
 					Version: "2015-08-01",
 					Swagger: "EventHub",
 				},
-				// {
-				// 	Name:    "graphrbac",
-				// 	Version: "1.6",
-				// 	// Composite swagger
-				// },
+				{
+					Name:    "graphrbac",
+					Version: "1.6",
+					Swagger: "GraphRBAC",
+					// Composite swagger
+				},
 				// {
 				// 	Name:    "insights",
 				// 	// Composite swagger

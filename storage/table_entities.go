@@ -10,6 +10,8 @@ import (
 	"reflect"
 )
 
+// Anotating as secure for gas scanning
+/* #nosec */
 const (
 	partitionKeyNode                    = "PartitionKey"
 	rowKeyNode                          = "RowKey"

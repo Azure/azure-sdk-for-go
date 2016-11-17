@@ -3,9 +3,12 @@ package storage
 import (
 	"bytes"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"net/http"
 	"net/url"
+	"strconv"
+	"strings"
 )
 
 // TableServiceClient contains operations for Microsoft Azure Table Storage
@@ -126,4 +129,76 @@ func (c *TableServiceClient) DeleteTable(table AzureTable) error {
 
 	}
 	return nil
+}
+
+// SetTablePermissions sets up table ACL permissinos.
+func (c *TableServiceClient) SetTablePermissions(table AzureTable, accessPolicy AccessPolicyDetails, timeout int) (err error) {
+	params := url.Values{
+		"comp": {"acl"},
+	}
+
+	if timeout > 0 {
+		params.Add("timeout", strconv.Itoa(timeout))
+	}
+
+	uri := c.client.getEndpoint(tableServiceName, string(table), params)
+	headers := c.client.getStandardHeaders()
+
+	// generate the XML for the SharedAccessSignature if required.
+	accessPolicyXML, err := generateAccessPolicy(accessPolicy)
+	if err != nil {
+		return err
+	}
+
+	var resp *storageResponse
+	if accessPolicyXML != "" {
+		headers["Content-Length"] = strconv.Itoa(len(accessPolicyXML))
+		resp, err = c.client.exec("PUT", uri, headers, strings.NewReader(accessPolicyXML))
+	} else {
+		resp, err = c.client.exec("PUT", uri, headers, nil)
+	}
+
+	if err != nil {
+		return err
+	}
+
+	if resp != nil {
+		defer func() {
+			err = resp.body.Close()
+		}()
+
+		if resp.statusCode != http.StatusOK {
+			return errors.New("Unable to set permissions")
+		}
+	}
+	return nil
+}
+
+// GetTablePermissions gets the table ACL permissions
+func (c *TableServiceClient) GetTablePermissions(table AzureTable, timeout int) (permissionResponse *AccessPolicy, err error) {
+	params := url.Values{"comp": {"acl"}}
+
+	if timeout > 0 {
+		params.Add("timeout", strconv.Itoa(timeout))
+	}
+
+	uri := c.client.getEndpoint(tableServiceName, string(table), params)
+	headers := c.client.getStandardHeaders()
+
+	resp, err := c.client.exec("GET", uri, headers, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	defer func() {
+		err = resp.body.Close()
+	}()
+
+	var out AccessPolicy
+	err = xmlUnmarshal(resp.body, &out.SignedIdentifiersList)
+	if err != nil {
+		return nil, err
+	}
+
+	return &out, nil
 }

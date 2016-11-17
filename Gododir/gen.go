@@ -399,7 +399,7 @@ func generate(service *service) {
 		"-pv", sdkVersion)
 	err := runner(autorest)
 	if err != nil {
-		panic(fmt.Errorf("Autorest error: %s\n", err))
+		panic(fmt.Errorf("Autorest error: %s", err))
 	}
 
 	format(service)
@@ -429,7 +429,7 @@ func format(service *service) {
 	gofmt := exec.Command("gofmt", "-w", service.Output)
 	err := runner(gofmt)
 	if err != nil {
-		panic(fmt.Errorf("gofmt error: %s\n", err))
+		panic(fmt.Errorf("gofmt error: %s", err))
 	}
 }
 
@@ -442,7 +442,7 @@ func build(service *service) {
 	gobuild := exec.Command("go", "build", service.Namespace)
 	err := runner(gobuild)
 	if err != nil {
-		panic(fmt.Errorf("go build error: %s\n", err))
+		panic(fmt.Errorf("go build error: %s", err))
 	}
 }
 
@@ -455,7 +455,7 @@ func lint(service *service) {
 	golint := exec.Command(fmt.Sprintf("%s/bin/golint", gopath), service.Namespace)
 	err := runner(golint)
 	if err != nil {
-		panic(fmt.Errorf("golint error: %s\n", err))
+		panic(fmt.Errorf("golint error: %s", err))
 	}
 }
 
@@ -468,7 +468,7 @@ func vet(service *service) {
 	govet := exec.Command("go", "vet", service.Namespace)
 	err := runner(govet)
 	if err != nil {
-		panic(fmt.Errorf("go vet error: %s\n", err))
+		panic(fmt.Errorf("go vet error: %s", err))
 	}
 }
 

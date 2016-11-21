@@ -288,19 +288,17 @@ func randTable() string {
 }
 
 func (s *StorageBlobSuite) createTablePermissions(ID string, canRead bool, canAppend bool, canUpdate bool,
-	canDelete bool) TableAccessPolicy {
-
+	canDelete bool, startTime time.Time, expiryTime time.Time) TableAccessPolicy {
 	policy := TableAccessPolicy{}
 
-	if ID != "" {
-		policy.ID = ID
-		policy.StartTime = time.Now()
-		policy.ExpiryTime = time.Now().Add(time.Hour * 10)
-		policy.CanRead = canRead
-		policy.CanAppend = canAppend
-		policy.CanUpdate = canUpdate
-		policy.CanDelete = canDelete
-	}
+	policy.ID = ID
+	policy.StartTime = startTime
+	policy.ExpiryTime = expiryTime
+	policy.CanRead = canRead
+	policy.CanAppend = canAppend
+	policy.CanUpdate = canUpdate
+	policy.CanDelete = canDelete
+
 	return policy
 }
 
@@ -311,7 +309,7 @@ func (s *StorageBlobSuite) TestSetTablePermissionsSuccessfully(c *chk.C) {
 	c.Assert(err, chk.IsNil)
 	defer cli.DeleteTable(tn)
 
-	policy := s.createTablePermissions("MTIzNDU2Nzg5MDEyMzQ1Njc4OTAxMjM0NTY3ODkwMTa=", true, true, true, true)
+	policy := s.createTablePermissions("MTIzNDU2Nzg5MDEyMzQ1Njc4OTAxMjM0NTY3ODkwMTa=", true, true, true, true, time.Now(), time.Now().Add(time.Hour*10))
 	err = cli.SetTablePermissions(tn, policy, 0)
 	c.Assert(err, chk.IsNil)
 }
@@ -325,7 +323,7 @@ func (s *StorageBlobSuite) TestSetTablePermissionsUnsuccessfully(c *chk.C) {
 	c.Assert(err, chk.IsNil)
 	defer cli.DeleteTable(tn)
 
-	policy := s.createTablePermissions("", true, true, true, true)
+	policy := s.createTablePermissions("MTIzNDU2Nzg5MDEyMzQ1Njc4OTAxMjM0NTY3ODkwMTa=", true, true, true, true, time.Now(), time.Now().Add(-10*time.Hour))
 	err = cli.SetTablePermissions(tn, policy, 0)
 	c.Assert(err, chk.NotNil)
 }
@@ -337,7 +335,7 @@ func (s *StorageBlobSuite) TestSetThenGetTablePermissionsSuccessfully(c *chk.C) 
 	c.Assert(err, chk.IsNil)
 	defer cli.DeleteTable(tn)
 
-	policy := s.createTablePermissions("MTIzNDU2Nzg5MDEyMzQ1Njc4OTAxMjM0NTY3ODkwMTa=", true, true, true, true)
+	policy := s.createTablePermissions("MTIzNDU2Nzg5MDEyMzQ1Njc4OTAxMjM0NTY3ODkwMTa=", true, true, true, true, time.Now(), time.Now().Add(time.Hour*10))
 	err = cli.SetTablePermissions(tn, policy, 0)
 	c.Assert(err, chk.IsNil)
 
@@ -351,7 +349,7 @@ func (s *StorageBlobSuite) TestSetThenGetTablePermissionsSuccessfully(c *chk.C) 
 	// test timestamps down the second
 	// rounding start/expiry time original perms since the returned perms would have been rounded.
 	// so need rounded vs rounded.
-	c.Assert(returnedPerms.SignedIdentifiersList.SignedIdentifiers[0].AccessPolicy.StartTime.Round(time.Second).Format(time.RFC1123), chk.Equals, policy.StartTime.Round(time.Second).Format(time.RFC1123))
-	c.Assert(returnedPerms.SignedIdentifiersList.SignedIdentifiers[0].AccessPolicy.ExpiryTime.Round(time.Second).Format(time.RFC1123), chk.Equals, policy.ExpiryTime.Round(time.Second).Format(time.RFC1123))
+	c.Assert(returnedPerms.SignedIdentifiersList.SignedIdentifiers[0].AccessPolicy.StartTime.UTC().Round(time.Second).Format(time.RFC1123), chk.Equals, policy.StartTime.UTC().Round(time.Second).Format(time.RFC1123))
+	c.Assert(returnedPerms.SignedIdentifiersList.SignedIdentifiers[0].AccessPolicy.ExpiryTime.UTC().Round(time.Second).Format(time.RFC1123), chk.Equals, policy.ExpiryTime.UTC().Round(time.Second).Format(time.RFC1123))
 	c.Assert(returnedPerms.SignedIdentifiersList.SignedIdentifiers[0].AccessPolicy.Permission, chk.Equals, "raud")
 }

@@ -181,11 +181,15 @@ func (c *TableServiceClient) SetTablePermissions(table AzureTable, accessPolicy 
 
 	if resp != nil {
 		defer func() {
-			err = resp.body.Close()
+			closeErr := resp.body.Close()
+			if closeErr != nil && err == nil {
+				err = closeErr
+			}
 		}()
 
-		if resp.statusCode != http.StatusOK {
-			return errors.New("Unable to set permissions")
+		if resp.statusCode != http.StatusNoContent {
+			err = errors.New("Unable to set permissions")
+			return err
 		}
 	}
 	return nil

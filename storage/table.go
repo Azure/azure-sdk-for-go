@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"log"
 	"net/http"
 	"net/url"
 	"strconv"
@@ -167,6 +168,9 @@ func (c *TableServiceClient) SetTablePermissions(table AzureTable, accessPolicy 
 	}
 
 	var resp *odataResponse
+
+	// temp logging to figure out why dying in travis
+	log.Printf("access policy %s", accessPolicyXML)
 
 	if accessPolicyXML != "" {
 		headers["Content-Length"] = strconv.Itoa(len(accessPolicyXML))

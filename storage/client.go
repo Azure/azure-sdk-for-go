@@ -309,6 +309,15 @@ func (c Client) buildCanonicalizedResourceTable(uri string) (string, error) {
 		cr += u.EscapedPath()
 	}
 
+	params, err := url.ParseQuery(u.RawQuery)
+
+	// search for "comp" parameter, if exists then add it to canonicalizedresource
+	for key := range params {
+		if key == "comp" {
+			cr += "?comp=" + params[key][0]
+		}
+	}
+
 	return cr, nil
 }
 

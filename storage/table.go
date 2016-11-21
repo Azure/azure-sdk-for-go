@@ -5,7 +5,6 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"log"
 	"net/http"
 	"net/url"
 	"strconv"
@@ -30,8 +29,8 @@ type createTableRequest struct {
 	TableName string `json:"TableName"`
 }
 
-// TableAccessPolicyDetails are used for SETTING table policies
-type TableAccessPolicyDetails struct {
+// TableAccessPolicy are used for SETTING table policies
+type TableAccessPolicy struct {
 	ID         string
 	StartTime  time.Time
 	ExpiryTime time.Time
@@ -145,7 +144,7 @@ func (c *TableServiceClient) DeleteTable(table AzureTable) error {
 }
 
 // SetTablePermissions sets up table ACL permissinos.
-func (c *TableServiceClient) SetTablePermissions(table AzureTable, accessPolicy TableAccessPolicyDetails, timeout int) (err error) {
+func (c *TableServiceClient) SetTablePermissions(table AzureTable, accessPolicy TableAccessPolicy, timeout int) (err error) {
 	params := url.Values{
 		"comp": {"acl"},
 	}
@@ -167,12 +166,13 @@ func (c *TableServiceClient) SetTablePermissions(table AzureTable, accessPolicy 
 		return err
 	}
 
-	var resp *storageResponse
+	var resp *odataResponse
+
 	if accessPolicyXML != "" {
 		headers["Content-Length"] = strconv.Itoa(len(accessPolicyXML))
-		resp, err = c.client.exec("PUT", uri, headers, strings.NewReader(accessPolicyXML))
+		resp, err = c.client.execTable("PUT", uri, headers, strings.NewReader(accessPolicyXML))
 	} else {
-		resp, err = c.client.exec("PUT", uri, headers, nil)
+		resp, err = c.client.execTable("PUT", uri, headers, nil)
 	}
 
 	if err != nil {
@@ -200,10 +200,7 @@ func (c *TableServiceClient) GetTablePermissions(table AzureTable, timeout int) 
 	}
 
 	uri := c.client.getEndpoint(tableServiceName, string(table), params)
-	log.Printf("get url %s", uri)
-
 	headers := c.client.getStandardHeaders()
-
 	resp, err := c.client.execTable("GET", uri, headers, nil)
 	if err != nil {
 		return nil, err
@@ -222,7 +219,7 @@ func (c *TableServiceClient) GetTablePermissions(table AzureTable, timeout int) 
 	return &out, nil
 }
 
-func generateTablePermissions(accessPolicy TableAccessPolicyDetails) (permissions string) {
+func generateTablePermissions(accessPolicy TableAccessPolicy) (permissions string) {
 	// generate the permissions string (raud).
 	// still want the end user API to have bool flags.
 	permissions = ""

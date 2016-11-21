@@ -288,9 +288,9 @@ func randTable() string {
 }
 
 func (s *StorageBlobSuite) createTablePermissions(ID string, canRead bool, canAppend bool, canUpdate bool,
-	canDelete bool) TableAccessPolicyDetails {
+	canDelete bool) TableAccessPolicy {
 
-	policy := TableAccessPolicyDetails{}
+	policy := TableAccessPolicy{}
 
 	if ID != "" {
 		policy.ID = ID
@@ -345,13 +345,13 @@ func (s *StorageBlobSuite) TestSetThenGetTablePermissionsSuccessfully(c *chk.C) 
 	c.Assert(err, chk.IsNil)
 
 	// now check policy set.
-	c.Assert(returnedPerms.SignedIdentifiers, chk.HasLen, 1)
-	c.Assert(returnedPerms.SignedIdentifiers[0].ID, chk.Equals, policy.ID)
+	c.Assert(returnedPerms.SignedIdentifiersList.SignedIdentifiers, chk.HasLen, 1)
+	c.Assert(returnedPerms.SignedIdentifiersList.SignedIdentifiers[0].ID, chk.Equals, policy.ID)
 
 	// test timestamps down the second
 	// rounding start/expiry time original perms since the returned perms would have been rounded.
 	// so need rounded vs rounded.
-	c.Assert(returnedPerms.AccessPolicy.SignedIdentifiers[0].AccessPolicy.StartTime.Round(time.Second).Format(time.RFC1123), chk.Equals, policy.StartTime.Round(time.Second).Format(time.RFC1123))
-	c.Assert(returnedPerms.AccessPolicy.SignedIdentifiers[0].AccessPolicy.ExpiryTime.Round(time.Second).Format(time.RFC1123), chk.Equals, policy.ExpiryTime.Round(time.Second).Format(time.RFC1123))
-	c.Assert(returnedPerms.AccessPolicy.SignedIdentifiers[0].AccessPolicy.Permission, chk.Equals, "raud")
+	c.Assert(returnedPerms.SignedIdentifiersList.SignedIdentifiers[0].AccessPolicy.StartTime.Round(time.Second).Format(time.RFC1123), chk.Equals, policy.StartTime.Round(time.Second).Format(time.RFC1123))
+	c.Assert(returnedPerms.SignedIdentifiersList.SignedIdentifiers[0].AccessPolicy.ExpiryTime.Round(time.Second).Format(time.RFC1123), chk.Equals, policy.ExpiryTime.Round(time.Second).Format(time.RFC1123))
+	c.Assert(returnedPerms.SignedIdentifiersList.SignedIdentifiers[0].AccessPolicy.Permission, chk.Equals, "raud")
 }

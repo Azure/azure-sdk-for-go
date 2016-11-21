@@ -317,14 +317,9 @@ func (s *StorageBlobSuite) TestSetTablePermissionsSuccessfully(c *chk.C) {
 func (s *StorageBlobSuite) TestSetTablePermissionsUnsuccessfully(c *chk.C) {
 	cli := getTableClient(c)
 
-	tn := AzureTable(randTable())
-
-	err := cli.CreateTable(tn)
-	c.Assert(err, chk.IsNil)
-	defer cli.DeleteTable(tn)
-
-	policy := s.createTablePermissions("MTIzNDU2Nzg5MDEyMzQ1Njc4OTAxMjM0NTY3ODkwMTa=", true, true, true, true, time.Now(), time.Now().Add(-10*time.Hour))
-	err = cli.SetTablePermissions(tn, policy, 0)
+	tn := AzureTable("nonexistingtable")
+	policy := s.createTablePermissions("MTIzNDU2Nzg5MDEyMzQ1Njc4OTAxMjM0NTY3ODkwMTa=", true, true, true, true, time.Now(), time.Now().Add(10*time.Hour))
+	err := cli.SetTablePermissions(tn, policy, 0)
 	c.Assert(err, chk.NotNil)
 }
 

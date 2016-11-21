@@ -5,16 +5,6 @@ import (
 	"time"
 )
 
-// AccessPolicyDetails are used for SETTING policies
-type AccessPolicyDetails struct {
-	ID         string
-	StartTime  time.Time
-	ExpiryTime time.Time
-	CanRead    bool
-	CanWrite   bool
-	CanDelete  bool
-}
-
 // AccessPolicyDetailsXML has specifics about an access policy
 // annotated with XML details.
 type AccessPolicyDetailsXML struct {
@@ -39,37 +29,17 @@ type AccessPolicy struct {
 	SignedIdentifiersList SignedIdentifiers `xml:"SignedIdentifiers"`
 }
 
-func generatePermissions(accessPolicy AccessPolicyDetails) (permissions string) {
-	// generate the permissions string (rwd).
-	// still want the end user API to have bool flags.
-	permissions = ""
-
-	if accessPolicy.CanRead {
-		permissions += "r"
-	}
-
-	if accessPolicy.CanWrite {
-		permissions += "w"
-	}
-
-	if accessPolicy.CanDelete {
-		permissions += "d"
-	}
-
-	return permissions
-}
-
 // convertAccessPolicyToXMLStructs converts between AccessPolicyDetails which is a struct better for API usage to the
 // AccessPolicy struct which will get converted to XML.
-func convertAccessPolicyToXMLStructs(accessPolicy AccessPolicyDetails) SignedIdentifiers {
+func convertAccessPolicyToXMLStructs(id string, startTime time.Time, expiryTime time.Time, permissions string) SignedIdentifiers {
 	return SignedIdentifiers{
 		SignedIdentifiers: []SignedIdentifier{
 			{
-				ID: accessPolicy.ID,
+				ID: id,
 				AccessPolicy: AccessPolicyDetailsXML{
-					StartTime:  accessPolicy.StartTime.UTC().Round(time.Second),
-					ExpiryTime: accessPolicy.ExpiryTime.UTC().Round(time.Second),
-					Permission: generatePermissions(accessPolicy),
+					StartTime:  startTime.UTC().Round(time.Second),
+					ExpiryTime: expiryTime.UTC().Round(time.Second),
+					Permission: permissions,
 				},
 			},
 		},
@@ -77,10 +47,10 @@ func convertAccessPolicyToXMLStructs(accessPolicy AccessPolicyDetails) SignedIde
 }
 
 // generateAccessPolicy generates the XML access policy used as the payload for SetContainerPermissions.
-func generateAccessPolicy(accessPolicy AccessPolicyDetails) (accessPolicyXML string, err error) {
+func generateAccessPolicy(id string, startTime time.Time, expiryTime time.Time, permissions string) (accessPolicyXML string, err error) {
 
-	if accessPolicy.ID != "" {
-		signedIdentifiers := convertAccessPolicyToXMLStructs(accessPolicy)
+	if id != "" {
+		signedIdentifiers := convertAccessPolicyToXMLStructs(id, startTime, expiryTime, permissions)
 		body, _, err := xmlMarshal(signedIdentifiers)
 		if err != nil {
 			return "", err

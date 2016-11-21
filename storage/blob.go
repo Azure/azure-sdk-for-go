@@ -308,10 +308,20 @@ type ContainerAccessOptions struct {
 	LeaseID         string
 }
 
+// ContainerAccessPolicyDetails are used for SETTING container policies
+type ContainerAccessPolicyDetails struct {
+	ID         string
+	StartTime  time.Time
+	ExpiryTime time.Time
+	CanRead    bool
+	CanWrite   bool
+	CanDelete  bool
+}
+
 // ContainerPermissions is used when setting permissions and Access Policies for containers.
 type ContainerPermissions struct {
 	AccessOptions ContainerAccessOptions
-	AccessPolicy  AccessPolicyDetails
+	AccessPolicy  ContainerAccessPolicyDetails
 }
 
 // ContainerAccessResponse is returned for the GetContainerPermissions function.
@@ -484,8 +494,13 @@ func (b BlobStorageClient) SetContainerPermissions(container string, containerPe
 		headers[leaseID] = containerPermissions.AccessOptions.LeaseID
 	}
 
+	var permissions = generateContainerPermissions(containerPermissions.AccessPolicy)
+
 	// generate the XML for the SharedAccessSignature if required.
-	accessPolicyXML, err := generateAccessPolicy(containerPermissions.AccessPolicy)
+	accessPolicyXML, err := generateAccessPolicy(containerPermissions.AccessPolicy.ID,
+		containerPermissions.AccessPolicy.StartTime,
+		containerPermissions.AccessPolicy.ExpiryTime,
+		permissions)
 	if err != nil {
 		return err
 	}
@@ -1422,4 +1437,24 @@ func blobSASStringToSign(signedVersion, canonicalizedResource, signedExpiry, sig
 	}
 
 	return "", errors.New("storage: not implemented SAS for versions earlier than 2013-08-15")
+}
+
+func generateContainerPermissions(accessPolicy ContainerAccessPolicyDetails) (permissions string) {
+	// generate the permissions string (rwd).
+	// still want the end user API to have bool flags.
+	permissions = ""
+
+	if accessPolicy.CanRead {
+		permissions += "r"
+	}
+
+	if accessPolicy.CanWrite {
+		permissions += "w"
+	}
+
+	if accessPolicy.CanDelete {
+		permissions += "d"
+	}
+
+	return permissions
 }

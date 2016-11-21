@@ -5,6 +5,7 @@ import (
 	"encoding/base64"
 	"fmt"
 	"reflect"
+	"time"
 
 	chk "gopkg.in/check.v1"
 )
@@ -284,4 +285,73 @@ func randTable() string {
 		bytes[i] = alphanum[b%byte(len(alphanum))]
 	}
 	return string(bytes)
+}
+
+func (s *StorageBlobSuite) createTablePermissions(ID string, canRead bool, canAppend bool, canUpdate bool,
+	canDelete bool) TableAccessPolicyDetails {
+
+	policy := TableAccessPolicyDetails{}
+
+	if ID != "" {
+		policy.ID = ID
+		policy.StartTime = time.Now()
+		policy.ExpiryTime = time.Now().Add(time.Hour * 10)
+		policy.CanRead = canRead
+		policy.CanAppend = canAppend
+		policy.CanUpdate = canUpdate
+		policy.CanDelete = canDelete
+	}
+	return policy
+}
+
+func (s *StorageBlobSuite) TestSetTablePermissionsSuccessfully(c *chk.C) {
+	cli := getTableClient(c)
+	tn := AzureTable(randTable())
+	err := cli.CreateTable(tn)
+	c.Assert(err, chk.IsNil)
+	defer cli.DeleteTable(tn)
+
+	policy := s.createTablePermissions("MTIzNDU2Nzg5MDEyMzQ1Njc4OTAxMjM0NTY3ODkwMTa=", true, true, true, true)
+	err = cli.SetTablePermissions(tn, policy, 0)
+	c.Assert(err, chk.IsNil)
+}
+
+func (s *StorageBlobSuite) TestSetTablePermissionsUnsuccessfully(c *chk.C) {
+	cli := getTableClient(c)
+
+	tn := AzureTable(randTable())
+
+	err := cli.CreateTable(tn)
+	c.Assert(err, chk.IsNil)
+	defer cli.DeleteTable(tn)
+
+	policy := s.createTablePermissions("", true, true, true, true)
+	err = cli.SetTablePermissions(tn, policy, 0)
+	c.Assert(err, chk.NotNil)
+}
+
+func (s *StorageBlobSuite) TestSetThenGetTablePermissionsSuccessfully(c *chk.C) {
+	cli := getTableClient(c)
+	tn := AzureTable(randTable())
+	err := cli.CreateTable(tn)
+	c.Assert(err, chk.IsNil)
+	defer cli.DeleteTable(tn)
+
+	policy := s.createTablePermissions("MTIzNDU2Nzg5MDEyMzQ1Njc4OTAxMjM0NTY3ODkwMTa=", true, true, true, true)
+	err = cli.SetTablePermissions(tn, policy, 0)
+	c.Assert(err, chk.IsNil)
+
+	returnedPerms, err := cli.GetTablePermissions(tn, 0)
+	c.Assert(err, chk.IsNil)
+
+	// now check policy set.
+	c.Assert(returnedPerms.SignedIdentifiers, chk.HasLen, 1)
+	c.Assert(returnedPerms.SignedIdentifiers[0].ID, chk.Equals, policy.ID)
+
+	// test timestamps down the second
+	// rounding start/expiry time original perms since the returned perms would have been rounded.
+	// so need rounded vs rounded.
+	c.Assert(returnedPerms.AccessPolicy.SignedIdentifiers[0].AccessPolicy.StartTime.Round(time.Second).Format(time.RFC1123), chk.Equals, policy.StartTime.Round(time.Second).Format(time.RFC1123))
+	c.Assert(returnedPerms.AccessPolicy.SignedIdentifiers[0].AccessPolicy.ExpiryTime.Round(time.Second).Format(time.RFC1123), chk.Equals, policy.ExpiryTime.Round(time.Second).Format(time.RFC1123))
+	c.Assert(returnedPerms.AccessPolicy.SignedIdentifiers[0].AccessPolicy.Permission, chk.Equals, "raud")
 }

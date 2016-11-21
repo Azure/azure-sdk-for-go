@@ -9,6 +9,7 @@ import (
 	"fmt"
 	"io"
 	"io/ioutil"
+	"log"
 	"net/http"
 	"net/url"
 	"reflect"
@@ -60,6 +61,8 @@ func xmlUnmarshal(body io.Reader, v interface{}) error {
 	if err != nil {
 		return err
 	}
+
+	log.Printf("unmarshal %s", data)
 	return xml.Unmarshal(data, v)
 }
 

@@ -5,10 +5,12 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"log"
 	"net/http"
 	"net/url"
 	"strconv"
 	"strings"
+	"time"
 )
 
 // TableServiceClient contains operations for Microsoft Azure Table Storage
@@ -26,6 +28,17 @@ const (
 
 type createTableRequest struct {
 	TableName string `json:"TableName"`
+}
+
+// TableAccessPolicyDetails are used for SETTING table policies
+type TableAccessPolicyDetails struct {
+	ID         string
+	StartTime  time.Time
+	ExpiryTime time.Time
+	CanRead    bool
+	CanAppend  bool
+	CanUpdate  bool
+	CanDelete  bool
 }
 
 func pathForTable(table AzureTable) string { return fmt.Sprintf("%s", table) }
@@ -132,7 +145,7 @@ func (c *TableServiceClient) DeleteTable(table AzureTable) error {
 }
 
 // SetTablePermissions sets up table ACL permissinos.
-func (c *TableServiceClient) SetTablePermissions(table AzureTable, accessPolicy AccessPolicyDetails, timeout int) (err error) {
+func (c *TableServiceClient) SetTablePermissions(table AzureTable, accessPolicy TableAccessPolicyDetails, timeout int) (err error) {
 	params := url.Values{
 		"comp": {"acl"},
 	}
@@ -144,8 +157,12 @@ func (c *TableServiceClient) SetTablePermissions(table AzureTable, accessPolicy 
 	uri := c.client.getEndpoint(tableServiceName, string(table), params)
 	headers := c.client.getStandardHeaders()
 
+	var permissions = generateTablePermissions(accessPolicy)
+
 	// generate the XML for the SharedAccessSignature if required.
-	accessPolicyXML, err := generateAccessPolicy(accessPolicy)
+	accessPolicyXML, err := generateAccessPolicy(accessPolicy.ID, accessPolicy.StartTime,
+		accessPolicy.ExpiryTime,
+		permissions)
 	if err != nil {
 		return err
 	}
@@ -183,9 +200,11 @@ func (c *TableServiceClient) GetTablePermissions(table AzureTable, timeout int) 
 	}
 
 	uri := c.client.getEndpoint(tableServiceName, string(table), params)
+	log.Printf("get url %s", uri)
+
 	headers := c.client.getStandardHeaders()
 
-	resp, err := c.client.exec("GET", uri, headers, nil)
+	resp, err := c.client.execTable("GET", uri, headers, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -201,4 +220,27 @@ func (c *TableServiceClient) GetTablePermissions(table AzureTable, timeout int) 
 	}
 
 	return &out, nil
+}
+
+func generateTablePermissions(accessPolicy TableAccessPolicyDetails) (permissions string) {
+	// generate the permissions string (raud).
+	// still want the end user API to have bool flags.
+	permissions = ""
+
+	if accessPolicy.CanRead {
+		permissions += "r"
+	}
+
+	if accessPolicy.CanAppend {
+		permissions += "a"
+	}
+
+	if accessPolicy.CanUpdate {
+		permissions += "u"
+	}
+
+	if accessPolicy.CanDelete {
+		permissions += "d"
+	}
+	return permissions
 }

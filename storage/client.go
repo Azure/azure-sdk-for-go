@@ -387,11 +387,8 @@ func (c Client) exec(verb, url string, headers map[string]string, body io.Reader
 	if err != nil {
 		return nil, err
 	}
-	headers["Authorization"] = authHeader
-	if err != nil {
-		return nil, err
-	}
 
+	headers["Authorization"] = authHeader
 	req, err := http.NewRequest(verb, url, body)
 	if err != nil {
 		return nil, errors.New("azure/storage: error creating request: " + err.Error())

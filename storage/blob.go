@@ -913,7 +913,7 @@ func (b BlobStorageClient) GetBlobProperties(container, name string) (*BlobPrope
 	}
 	defer resp.body.Close()
 
-	if err := checkRespCode(resp.statusCode, []int{http.StatusOK}); err != nil {
+	if err = checkRespCode(resp.statusCode, []int{http.StatusOK}); err != nil {
 		return nil, err
 	}
 
@@ -1241,7 +1241,7 @@ func (b BlobStorageClient) GetPageRanges(container, name string) (GetPageRangesR
 	}
 	defer resp.body.Close()
 
-	if err := checkRespCode(resp.statusCode, []int{http.StatusOK}); err != nil {
+	if err = checkRespCode(resp.statusCode, []int{http.StatusOK}); err != nil {
 		return out, err
 	}
 	err = xmlUnmarshal(resp.body, &out)

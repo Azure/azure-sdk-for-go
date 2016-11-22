@@ -35,7 +35,7 @@ func (s *StorageFileSuite) TestGetURL(c *chk.C) {
 func (s *StorageFileSuite) TestCreateShareDeleteShare(c *chk.C) {
 	cli := getFileClient(c)
 	name := randShare()
-	c.Assert(cli.CreateShare(name), chk.IsNil)
+	c.Assert(cli.CreateShare(name, nil), chk.IsNil)
 	c.Assert(cli.DeleteShare(name), chk.IsNil)
 }
 
@@ -64,7 +64,7 @@ func (s *StorageFileSuite) TestDeleteShareIfNotExists(c *chk.C) {
 	c.Assert(err, chk.IsNil)
 	c.Assert(ok, chk.Equals, false)
 
-	c.Assert(cli.CreateShare(name), chk.IsNil)
+	c.Assert(cli.CreateShare(name, nil), chk.IsNil)
 
 	// delete existing share
 	ok, err = cli.DeleteShareIfExists(name)
@@ -84,7 +84,7 @@ func (s *StorageFileSuite) TestListShares(c *chk.C) {
 
 	name := randShare()
 
-	c.Assert(cli.CreateShare(name), chk.IsNil)
+	c.Assert(cli.CreateShare(name, nil), chk.IsNil)
 	defer cli.DeleteShare(name)
 
 	resp, err := cli.ListShares(ListSharesParameters{
@@ -105,7 +105,7 @@ func (s *StorageFileSuite) TestShareExists(c *chk.C) {
 	c.Assert(err, chk.IsNil)
 	c.Assert(ok, chk.Equals, false)
 
-	c.Assert(cli.CreateShare(name), chk.IsNil)
+	c.Assert(cli.CreateShare(name, nil), chk.IsNil)
 	defer cli.DeleteShare(name)
 
 	ok, err = cli.ShareExists(name)
@@ -118,7 +118,7 @@ func (s *StorageFileSuite) TestGetAndSetShareProperties(c *chk.C) {
 	quota := rand.Intn(5120)
 
 	cli := getFileClient(c)
-	c.Assert(cli.CreateShare(name), chk.IsNil)
+	c.Assert(cli.CreateShare(name, nil), chk.IsNil)
 	defer cli.DeleteShare(name)
 
 	err := cli.SetShareProperties(name, ShareHeaders{Quota: strconv.Itoa(quota)})
@@ -132,25 +132,37 @@ func (s *StorageFileSuite) TestGetAndSetShareProperties(c *chk.C) {
 
 func (s *StorageFileSuite) TestGetAndSetShareMetadata(c *chk.C) {
 	cli := getFileClient(c)
-	name := randShare()
+	share1 := randShare()
 
-	c.Assert(cli.CreateShare(name), chk.IsNil)
-	defer cli.DeleteShare(name)
+	c.Assert(cli.CreateShare(share1, nil), chk.IsNil)
+	defer cli.DeleteShare(share1)
 
-	m, err := cli.GetShareMetadata(name)
+	m, err := cli.GetShareMetadata(share1)
 	c.Assert(err, chk.IsNil)
 	c.Assert(m, chk.Not(chk.Equals), nil)
 	c.Assert(len(m), chk.Equals, 0)
+
+	share2 := randShare()
+	mCreate := map[string]string{
+		"create": "data",
+	}
+	c.Assert(cli.CreateShare(share2, mCreate), chk.IsNil)
+	defer cli.DeleteShare(share2)
+
+	m, err = cli.GetShareMetadata(share2)
+	c.Assert(err, chk.IsNil)
+	c.Assert(m, chk.Not(chk.Equals), nil)
+	c.Assert(len(m), chk.Equals, 1)
 
 	mPut := map[string]string{
 		"foo":     "bar",
 		"bar_baz": "waz qux",
 	}
 
-	err = cli.SetShareMetadata(name, mPut, nil)
+	err = cli.SetShareMetadata(share2, mPut, nil)
 	c.Assert(err, chk.IsNil)
 
-	m, err = cli.GetShareMetadata(name)
+	m, err = cli.GetShareMetadata(share2)
 	c.Assert(err, chk.IsNil)
 	c.Check(m, chk.DeepEquals, mPut)
 
@@ -165,10 +177,10 @@ func (s *StorageFileSuite) TestGetAndSetShareMetadata(c *chk.C) {
 		"bar_baz": "different waz qux",
 	}
 
-	err = cli.SetShareMetadata(name, mPutUpper, nil)
+	err = cli.SetShareMetadata(share2, mPutUpper, nil)
 	c.Assert(err, chk.IsNil)
 
-	m, err = cli.GetShareMetadata(name)
+	m, err = cli.GetShareMetadata(share2)
 	c.Assert(err, chk.IsNil)
 	c.Check(m, chk.DeepEquals, mExpectLower)
 }
@@ -178,7 +190,7 @@ func (s *StorageFileSuite) TestListDirsAndFiles(c *chk.C) {
 	cli := getFileClient(c)
 	share := randShare()
 
-	c.Assert(cli.CreateShare(share), chk.IsNil)
+	c.Assert(cli.CreateShare(share, nil), chk.IsNil)
 	defer cli.DeleteShare(share)
 
 	// list contents, should be empty
@@ -190,8 +202,8 @@ func (s *StorageFileSuite) TestListDirsAndFiles(c *chk.C) {
 	// create a directory and a file
 	dir := "SomeDirectory"
 	file := "foo.file"
-	c.Assert(cli.CreateDirectory(ToPathSegment(share, dir)), chk.IsNil)
-	c.Assert(cli.CreateFile(ToPathSegment(share, file), 512), chk.IsNil)
+	c.Assert(cli.CreateDirectory(ToPathSegment(share, dir), nil), chk.IsNil)
+	c.Assert(cli.CreateFile(ToPathSegment(share, file), 512, nil), chk.IsNil)
 
 	// list contents
 	resp, err = cli.ListDirsAndFiles(share, ListDirsAndFilesParameters{})
@@ -207,7 +219,7 @@ func (s *StorageFileSuite) TestCreateDirectory(c *chk.C) {
 	cli := getFileClient(c)
 	share := randShare()
 
-	c.Assert(cli.CreateShare(share), chk.IsNil)
+	c.Assert(cli.CreateShare(share, nil), chk.IsNil)
 	defer cli.DeleteShare(share)
 
 	// directory shouldn't exist
@@ -222,7 +234,7 @@ func (s *StorageFileSuite) TestCreateDirectory(c *chk.C) {
 	c.Assert(exists, chk.Equals, true)
 
 	// try to create again, should fail
-	c.Assert(cli.CreateDirectory(dir), chk.NotNil)
+	c.Assert(cli.CreateDirectory(dir, nil), chk.NotNil)
 	exists, err = cli.CreateDirectoryIfNotExists(dir)
 	c.Assert(err, chk.IsNil)
 	c.Assert(exists, chk.Equals, false)
@@ -245,14 +257,14 @@ func (s *StorageFileSuite) TestCreateFile(c *chk.C) {
 	cli := getFileClient(c)
 	share := randShare()
 
-	c.Assert(cli.CreateShare(share), chk.IsNil)
+	c.Assert(cli.CreateShare(share, nil), chk.IsNil)
 	defer cli.DeleteShare(share)
 
 	// create directory structure
 	dir1 := ToPathSegment(share, "one")
-	c.Assert(cli.CreateDirectory(dir1), chk.IsNil)
+	c.Assert(cli.CreateDirectory(dir1, nil), chk.IsNil)
 	dir2 := ToPathSegment(dir1, "two")
-	c.Assert(cli.CreateDirectory(dir2), chk.IsNil)
+	c.Assert(cli.CreateDirectory(dir2, nil), chk.IsNil)
 
 	// verify file doesn't exist
 	file := ToPathSegment(dir2, "some.file")
@@ -261,7 +273,7 @@ func (s *StorageFileSuite) TestCreateFile(c *chk.C) {
 	c.Assert(exists, chk.Equals, false)
 
 	// create file
-	c.Assert(cli.CreateFile(file, 1024), chk.IsNil)
+	c.Assert(cli.CreateFile(file, 1024, nil), chk.IsNil)
 	exists, err = cli.FileExists(file)
 	c.Assert(err, chk.IsNil)
 	c.Assert(exists, chk.Equals, true)
@@ -278,13 +290,13 @@ func (s *StorageFileSuite) TestGetFile(c *chk.C) {
 	cli := getFileClient(c)
 	share := randShare()
 
-	c.Assert(cli.CreateShare(share), chk.IsNil)
+	c.Assert(cli.CreateShare(share, nil), chk.IsNil)
 	defer cli.DeleteShare(share)
 
 	// create file
 	const size = uint64(1024)
 	file := ToPathSegment(share, "some.file")
-	c.Assert(cli.CreateFile(file, size), chk.IsNil)
+	c.Assert(cli.CreateFile(file, size, nil), chk.IsNil)
 
 	// fill file with some data
 	c.Assert(cli.PutRange(file, newByteStream(size), FileRange{End: size - 1}), chk.IsNil)
@@ -326,13 +338,13 @@ func (s *StorageFileSuite) TestFileRanges(c *chk.C) {
 	cli := getFileClient(c)
 	share := randShare()
 
-	c.Assert(cli.CreateShare(share), chk.IsNil)
+	c.Assert(cli.CreateShare(share, nil), chk.IsNil)
 	defer cli.DeleteShare(share)
 
 	// create file
 	fileSize := uint64(4096)
 	file := ToPathSegment(share, "test.dat")
-	c.Assert(cli.CreateFile(file, fileSize), chk.IsNil)
+	c.Assert(cli.CreateFile(file, fileSize, nil), chk.IsNil)
 
 	// verify there are no valid ranges
 	ranges, err := cli.ListFileRanges(file, nil)
@@ -391,12 +403,12 @@ func (s *StorageFileSuite) TestFileProperties(c *chk.C) {
 	cli := getFileClient(c)
 	share := randShare()
 
-	c.Assert(cli.CreateShare(share), chk.IsNil)
+	c.Assert(cli.CreateShare(share, nil), chk.IsNil)
 	defer cli.DeleteShare(share)
 
 	fileSize := uint64(512)
 	file := ToPathSegment(share, "test.dat")
-	c.Assert(cli.CreateFile(file, fileSize), chk.IsNil)
+	c.Assert(cli.CreateFile(file, fileSize, nil), chk.IsNil)
 
 	// get initial set of properties
 	props, err := cli.GetFileProperties(file)
@@ -431,29 +443,40 @@ func (s *StorageFileSuite) TestDirectoryMetadata(c *chk.C) {
 	cli := getFileClient(c)
 	share := randShare()
 
-	c.Assert(cli.CreateShare(share), chk.IsNil)
+	c.Assert(cli.CreateShare(share, nil), chk.IsNil)
 	defer cli.DeleteShare(share)
 
-	dir := ToPathSegment(share, "testdir")
-	c.Assert(cli.CreateDirectory(dir), chk.IsNil)
+	dir1 := ToPathSegment(share, "testdir1")
+	c.Assert(cli.CreateDirectory(dir1, nil), chk.IsNil)
 
 	// get metadata, shouldn't be any
-	md, err := cli.GetDirectoryMetadata(dir)
+	md, err := cli.GetDirectoryMetadata(dir1)
 	c.Assert(err, chk.IsNil)
 	c.Assert(md, chk.HasLen, 0)
+
+	mCreate := map[string]string{
+		"create": "data",
+	}
+	dir2 := ToPathSegment(share, "testdir2")
+	c.Assert(cli.CreateDirectory(dir2, mCreate), chk.IsNil)
+
+	// get metadata
+	md, err = cli.GetDirectoryMetadata(dir2)
+	c.Assert(err, chk.IsNil)
+	c.Assert(md, chk.HasLen, 1)
 
 	// set some custom metadata
 	md = map[string]string{
 		"something": "somethingvalue",
 		"another":   "anothervalue",
 	}
-	c.Assert(cli.SetDirectoryMetadata(dir, md, nil), chk.IsNil)
+	c.Assert(cli.SetDirectoryMetadata(dir2, md, nil), chk.IsNil)
 
 	// retrieve and verify
 	var mdRes map[string]string
-	mdRes, err = cli.GetDirectoryMetadata(dir)
+	mdRes, err = cli.GetDirectoryMetadata(dir2)
 	c.Assert(err, chk.IsNil)
-	c.Assert(md, chk.DeepEquals, mdRes)
+	c.Assert(mdRes, chk.DeepEquals, md)
 }
 
 func (s *StorageFileSuite) TestFileMetadata(c *chk.C) {
@@ -461,30 +484,41 @@ func (s *StorageFileSuite) TestFileMetadata(c *chk.C) {
 	cli := getFileClient(c)
 	share := randShare()
 
-	c.Assert(cli.CreateShare(share), chk.IsNil)
+	c.Assert(cli.CreateShare(share, nil), chk.IsNil)
 	defer cli.DeleteShare(share)
 
 	fileSize := uint64(512)
-	file := ToPathSegment(share, "test.dat")
-	c.Assert(cli.CreateFile(file, fileSize), chk.IsNil)
+	file1 := ToPathSegment(share, "test1.dat")
+	c.Assert(cli.CreateFile(file1, fileSize, nil), chk.IsNil)
 
 	// get metadata, shouldn't be any
-	md, err := cli.GetFileMetadata(file)
+	md, err := cli.GetFileMetadata(file1)
 	c.Assert(err, chk.IsNil)
 	c.Assert(md, chk.HasLen, 0)
+
+	mCreate := map[string]string{
+		"create": "data",
+	}
+	file2 := ToPathSegment(share, "test2.dat")
+	c.Assert(cli.CreateFile(file2, fileSize, mCreate), chk.IsNil)
+
+	// get metadata
+	md, err = cli.GetFileMetadata(file2)
+	c.Assert(err, chk.IsNil)
+	c.Assert(md, chk.HasLen, 1)
 
 	// set some custom metadata
 	md = map[string]string{
 		"something": "somethingvalue",
 		"another":   "anothervalue",
 	}
-	c.Assert(cli.SetFileMetadata(file, md, nil), chk.IsNil)
+	c.Assert(cli.SetFileMetadata(file2, md, nil), chk.IsNil)
 
 	// retrieve and verify
 	var mdRes map[string]string
-	mdRes, err = cli.GetFileMetadata(file)
+	mdRes, err = cli.GetFileMetadata(file2)
 	c.Assert(err, chk.IsNil)
-	c.Assert(md, chk.DeepEquals, mdRes)
+	c.Assert(mdRes, chk.DeepEquals, md)
 }
 
 func deleteTestShares(cli FileServiceClient) error {

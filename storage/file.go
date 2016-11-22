@@ -326,24 +326,24 @@ func (f FileServiceClient) listContent(path string, params url.Values, extraHead
 	return resp, nil
 }
 
-// CreateDirectory operation creates a new directory in the specified share. If a
-// directory with the same name already exists, the operation fails.
+// CreateDirectory operation creates a new directory with optional metadata in the
+// specified share. If a directory with the same name already exists, the operation fails.
 //
 // See https://msdn.microsoft.com/en-us/library/azure/dn166993.aspx
-func (f FileServiceClient) CreateDirectory(path string) error {
-	return f.createResource(path, resourceDirectory, nil)
+func (f FileServiceClient) CreateDirectory(path string, metadata map[string]string) error {
+	return f.createResource(path, resourceDirectory, mergeMDIntoExtraHeaders(metadata, nil))
 }
 
-// CreateFile operation creates a new file or replaces an existing one.  Note that this
-// only initializes the file, call PutRange to add content.
+// CreateFile operation creates a new file with optional metadata or replaces an existing one.
+// Note that this only initializes the file, call PutRange to add content.
 //
 // See https://msdn.microsoft.com/en-us/library/azure/dn194271.aspx
-func (f FileServiceClient) CreateFile(path string, maxSize uint64) error {
+func (f FileServiceClient) CreateFile(path string, maxSize uint64, metadata map[string]string) error {
 	extraHeaders := map[string]string{
 		"x-ms-content-length": strconv.FormatUint(maxSize, 10),
 		"x-ms-type":           "file",
 	}
-	return f.createResource(path, resourceFile, extraHeaders)
+	return f.createResource(path, resourceFile, mergeMDIntoExtraHeaders(metadata, extraHeaders))
 }
 
 // ClearRange releases the specified range of space in storage.
@@ -369,7 +369,7 @@ func (f FileServiceClient) modifyRange(path string, bytes io.Reader, fileRange F
 	if fileRange.End < fileRange.Start {
 		return errors.New("the value for rangeEnd must be greater than or equal to rangeStart")
 	}
-	if fileRange.End-fileRange.Start > 4194304 {
+	if bytes != nil && fileRange.End-fileRange.Start > 4194304 {
 		return errors.New("range cannot exceed 4MB in size")
 	}
 
@@ -428,12 +428,12 @@ func (f FileServiceClient) GetFile(path string, fileRange *FileRange) (*FileStre
 	return &FileStream{Body: resp.body, Properties: props, Metadata: md}, nil
 }
 
-// CreateShare operation creates a new share under the specified account. If the
-// share with the same name already exists, the operation fails.
+// CreateShare operation creates a new share with optional metadata under the specified account.
+// If the share with the same name already exists, the operation fails.
 //
 // See https://msdn.microsoft.com/en-us/library/azure/dn167008.aspx
-func (f FileServiceClient) CreateShare(name string) error {
-	return f.createResource(ToPathSegment(name), resourceShare, nil)
+func (f FileServiceClient) CreateShare(name string, metadata map[string]string) error {
+	return f.createResource(ToPathSegment(name), resourceShare, mergeMDIntoExtraHeaders(metadata, nil))
 }
 
 // DirectoryExists returns true if the specified directory exists on the specified share.
@@ -757,6 +757,9 @@ func (f FileServiceClient) SetShareMetadata(name string, metadata, extraHeaders 
 
 // merges metadata into extraHeaders and returns extraHeaders
 func mergeMDIntoExtraHeaders(metadata, extraHeaders map[string]string) map[string]string {
+	if metadata == nil && extraHeaders == nil {
+		return nil
+	}
 	if extraHeaders == nil {
 		extraHeaders = make(map[string]string)
 	}

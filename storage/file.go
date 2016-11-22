@@ -727,8 +727,8 @@ func (f FileServiceClient) deleteResourceNoClose(path string, res resourceType) 
 // applications either.
 //
 // See https://msdn.microsoft.com/en-us/library/azure/mt427370.aspx
-func (f FileServiceClient) SetDirectoryMetadata(path string, metadata, extraHeaders map[string]string) error {
-	return f.setResourceHeaders(path, compMetadata, resourceDirectory, mergeMDIntoExtraHeaders(metadata, extraHeaders))
+func (f FileServiceClient) SetDirectoryMetadata(path string, metadata map[string]string) error {
+	return f.setResourceHeaders(path, compMetadata, resourceDirectory, mergeMDIntoExtraHeaders(metadata, nil))
 }
 
 // SetFileMetadata replaces the metadata for the specified file.
@@ -739,8 +739,8 @@ func (f FileServiceClient) SetDirectoryMetadata(path string, metadata, extraHead
 // applications either.
 //
 // See https://msdn.microsoft.com/en-us/library/azure/dn689097.aspx
-func (f FileServiceClient) SetFileMetadata(path string, metadata, extraHeaders map[string]string) error {
-	return f.setResourceHeaders(path, compMetadata, resourceFile, mergeMDIntoExtraHeaders(metadata, extraHeaders))
+func (f FileServiceClient) SetFileMetadata(path string, metadata map[string]string) error {
+	return f.setResourceHeaders(path, compMetadata, resourceFile, mergeMDIntoExtraHeaders(metadata, nil))
 }
 
 // SetShareMetadata replaces the metadata for the specified Share.
@@ -751,8 +751,8 @@ func (f FileServiceClient) SetFileMetadata(path string, metadata, extraHeaders m
 // applications either.
 //
 // See https://msdn.microsoft.com/en-us/library/azure/dd179414.aspx
-func (f FileServiceClient) SetShareMetadata(name string, metadata, extraHeaders map[string]string) error {
-	return f.setResourceHeaders(ToPathSegment(name), compMetadata, resourceShare, mergeMDIntoExtraHeaders(metadata, extraHeaders))
+func (f FileServiceClient) SetShareMetadata(name string, metadata map[string]string) error {
+	return f.setResourceHeaders(ToPathSegment(name), compMetadata, resourceShare, mergeMDIntoExtraHeaders(metadata, nil))
 }
 
 // merges metadata into extraHeaders and returns extraHeaders

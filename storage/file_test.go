@@ -159,7 +159,7 @@ func (s *StorageFileSuite) TestGetAndSetShareMetadata(c *chk.C) {
 		"bar_baz": "waz qux",
 	}
 
-	err = cli.SetShareMetadata(share2, mPut, nil)
+	err = cli.SetShareMetadata(share2, mPut)
 	c.Assert(err, chk.IsNil)
 
 	m, err = cli.GetShareMetadata(share2)
@@ -177,7 +177,7 @@ func (s *StorageFileSuite) TestGetAndSetShareMetadata(c *chk.C) {
 		"bar_baz": "different waz qux",
 	}
 
-	err = cli.SetShareMetadata(share2, mPutUpper, nil)
+	err = cli.SetShareMetadata(share2, mPutUpper)
 	c.Assert(err, chk.IsNil)
 
 	m, err = cli.GetShareMetadata(share2)
@@ -306,7 +306,7 @@ func (s *StorageFileSuite) TestGetFile(c *chk.C) {
 		"something": "somethingvalue",
 		"another":   "anothervalue",
 	}
-	c.Assert(cli.SetFileMetadata(file, md, nil), chk.IsNil)
+	c.Assert(cli.SetFileMetadata(file, md), chk.IsNil)
 
 	// retrieve full file content and verify
 	stream, err := cli.GetFile(file, nil)
@@ -470,7 +470,7 @@ func (s *StorageFileSuite) TestDirectoryMetadata(c *chk.C) {
 		"something": "somethingvalue",
 		"another":   "anothervalue",
 	}
-	c.Assert(cli.SetDirectoryMetadata(dir2, md, nil), chk.IsNil)
+	c.Assert(cli.SetDirectoryMetadata(dir2, md), chk.IsNil)
 
 	// retrieve and verify
 	var mdRes map[string]string
@@ -512,7 +512,7 @@ func (s *StorageFileSuite) TestFileMetadata(c *chk.C) {
 		"something": "somethingvalue",
 		"another":   "anothervalue",
 	}
-	c.Assert(cli.SetFileMetadata(file2, md, nil), chk.IsNil)
+	c.Assert(cli.SetFileMetadata(file2, md), chk.IsNil)
 
 	// retrieve and verify
 	var mdRes map[string]string

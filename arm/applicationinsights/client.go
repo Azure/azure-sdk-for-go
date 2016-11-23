@@ -4,6 +4,7 @@
 // Azure Application Insights client
 package applicationinsights
 
+
 // Copyright (c) Microsoft and contributors.  All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -40,24 +41,20 @@ type ManagementClient struct {
     BaseURI string
     APIVersion string
     SubscriptionID string
-    ResourceGroupName string
-    Name string
 }
 
 // New creates an instance of the ManagementClient client.
-func New(subscriptionID string, resourceGroupName string, name string)ManagementClient {
-    return NewWithBaseURI(DefaultBaseURI, subscriptionID, resourceGroupName, name)
+func New(subscriptionID string)ManagementClient {
+    return NewWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewWithBaseURI creates an instance of the ManagementClient client.
-func NewWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, name string) ManagementClient {
+func NewWithBaseURI(baseURI string, subscriptionID string) ManagementClient {
    return ManagementClient{
         Client: autorest.NewClientWithUserAgent(UserAgent()),
         BaseURI: baseURI,
         APIVersion: APIVersion,
         SubscriptionID: subscriptionID,
-        ResourceGroupName: resourceGroupName,
-        Name: name,
     }
 }
 

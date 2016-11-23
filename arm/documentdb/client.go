@@ -37,11 +37,9 @@ const (
 // ManagementClient is the base client for Documentdb.
 type ManagementClient struct {
 	autorest.Client
-	BaseURI           string
-	APIVersion        string
-	SubscriptionID    string
-	ResourceGroupName string
-	AccountName       string
+	BaseURI        string
+	APIVersion     string
+	SubscriptionID string
 }
 
 // New creates an instance of the ManagementClient client.

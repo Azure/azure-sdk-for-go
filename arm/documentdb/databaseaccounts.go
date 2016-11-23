@@ -46,15 +46,15 @@ func NewDatabaseAccountsClientWithBaseURI(baseURI string, subscriptionID string)
 // CheckNameExists checks that the Azure DocumentDB account name already
 // exists. A valid account name may contain only lowercase letters, numbers,
 // and the '-' character, and must be between 3 and 50 characters.
-func (client DatabaseAccountsClient) CheckNameExists() (result autorest.Response, err error) {
+func (client DatabaseAccountsClient) CheckNameExists(accountName string) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
-		{TargetValue: client.AccountName,
-			Constraints: []validation.Constraint{{Target: "client.AccountName", Name: validation.MaxLength, Rule: 50, Chain: nil},
-				{Target: "client.AccountName", Name: validation.MinLength, Rule: 3, Chain: nil}}}}); err != nil {
+		{TargetValue: accountName,
+			Constraints: []validation.Constraint{{Target: "accountName", Name: validation.MaxLength, Rule: 50, Chain: nil},
+				{Target: "accountName", Name: validation.MinLength, Rule: 3, Chain: nil}}}}); err != nil {
 		return result, validation.NewErrorWithValidationError(err, "documentdb.DatabaseAccountsClient", "CheckNameExists")
 	}
 
-	req, err := client.CheckNameExistsPreparer()
+	req, err := client.CheckNameExistsPreparer(accountName)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsClient", "CheckNameExists", nil, "Failure preparing request")
 	}
@@ -74,9 +74,9 @@ func (client DatabaseAccountsClient) CheckNameExists() (result autorest.Response
 }
 
 // CheckNameExistsPreparer prepares the CheckNameExists request.
-func (client DatabaseAccountsClient) CheckNameExistsPreparer() (*http.Request, error) {
+func (client DatabaseAccountsClient) CheckNameExistsPreparer(accountName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"accountName": autorest.Encode("path", client.AccountName),
+		"accountName": autorest.Encode("path", accountName),
 	}
 
 	queryParameters := map[string]interface{}{
@@ -116,14 +116,14 @@ func (client DatabaseAccountsClient) CheckNameExistsResponder(resp *http.Respons
 //
 // createUpdateParameters is the parameters to provide for the current
 // database account.
-func (client DatabaseAccountsClient) CreateOrUpdate(createUpdateParameters DatabaseAccountCreateUpdateParameters, cancel <-chan struct{}) (result autorest.Response, err error) {
+func (client DatabaseAccountsClient) CreateOrUpdate(resourceGroupName string, accountName string, createUpdateParameters DatabaseAccountCreateUpdateParameters, cancel <-chan struct{}) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
-		{TargetValue: client.ResourceGroupName,
-			Constraints: []validation.Constraint{{Target: "client.ResourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
-				{Target: "client.ResourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "client.ResourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}},
-		{TargetValue: client.AccountName,
-			Constraints: []validation.Constraint{{Target: "client.AccountName", Name: validation.MaxLength, Rule: 50, Chain: nil},
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}},
+		{TargetValue: accountName,
+			Constraints: []validation.Constraint{{Target: "accountName", Name: validation.MaxLength, Rule: 50, Chain: nil},
 				{Target: "client.AccountName", Name: validation.MinLength, Rule: 3, Chain: nil}}},
 		{TargetValue: createUpdateParameters,
 			Constraints: []validation.Constraint{{Target: "createUpdateParameters.Properties", Name: validation.Null, Rule: true,
@@ -143,7 +143,7 @@ func (client DatabaseAccountsClient) CreateOrUpdate(createUpdateParameters Datab
 		return result, validation.NewErrorWithValidationError(err, "documentdb.DatabaseAccountsClient", "CreateOrUpdate")
 	}
 
-	req, err := client.CreateOrUpdatePreparer(createUpdateParameters, cancel)
+	req, err := client.CreateOrUpdatePreparer(resourceGroupName, accountName, createUpdateParameters, cancel)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsClient", "CreateOrUpdate", nil, "Failure preparing request")
 	}
@@ -163,10 +163,10 @@ func (client DatabaseAccountsClient) CreateOrUpdate(createUpdateParameters Datab
 }
 
 // CreateOrUpdatePreparer prepares the CreateOrUpdate request.
-func (client DatabaseAccountsClient) CreateOrUpdatePreparer(createUpdateParameters DatabaseAccountCreateUpdateParameters, cancel <-chan struct{}) (*http.Request, error) {
+func (client DatabaseAccountsClient) CreateOrUpdatePreparer(resourceGroupName string, accountName string, createUpdateParameters DatabaseAccountCreateUpdateParameters, cancel <-chan struct{}) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"accountName":       autorest.Encode("path", client.AccountName),
-		"resourceGroupName": autorest.Encode("path", client.ResourceGroupName),
+		"accountName":       autorest.Encode("path", accountName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
@@ -208,19 +208,19 @@ func (client DatabaseAccountsClient) CreateOrUpdateResponder(resp *http.Response
 // may poll for completion. Polling can be canceled by passing the cancel
 // channel argument. The channel will be used to cancel polling and any
 // outstanding HTTP requests.
-func (client DatabaseAccountsClient) Delete(cancel <-chan struct{}) (result autorest.Response, err error) {
+func (client DatabaseAccountsClient) Delete(resourceGroupName string, accountName string, cancel <-chan struct{}) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
-		{TargetValue: client.ResourceGroupName,
-			Constraints: []validation.Constraint{{Target: "client.ResourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
-				{Target: "client.ResourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "client.ResourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}},
-		{TargetValue: client.AccountName,
-			Constraints: []validation.Constraint{{Target: "client.AccountName", Name: validation.MaxLength, Rule: 50, Chain: nil},
-				{Target: "client.AccountName", Name: validation.MinLength, Rule: 3, Chain: nil}}}}); err != nil {
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}},
+		{TargetValue: accountName,
+			Constraints: []validation.Constraint{{Target: "accountName", Name: validation.MaxLength, Rule: 50, Chain: nil},
+				{Target: "accountName", Name: validation.MinLength, Rule: 3, Chain: nil}}}}); err != nil {
 		return result, validation.NewErrorWithValidationError(err, "documentdb.DatabaseAccountsClient", "Delete")
 	}
 
-	req, err := client.DeletePreparer(cancel)
+	req, err := client.DeletePreparer(resourceGroupName, accountName, cancel)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsClient", "Delete", nil, "Failure preparing request")
 	}
@@ -240,10 +240,10 @@ func (client DatabaseAccountsClient) Delete(cancel <-chan struct{}) (result auto
 }
 
 // DeletePreparer prepares the Delete request.
-func (client DatabaseAccountsClient) DeletePreparer(cancel <-chan struct{}) (*http.Request, error) {
+func (client DatabaseAccountsClient) DeletePreparer(resourceGroupName string, accountName string, cancel <-chan struct{}) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"accountName":       autorest.Encode("path", client.AccountName),
-		"resourceGroupName": autorest.Encode("path", client.ResourceGroupName),
+		"accountName":       autorest.Encode("path", accountName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
@@ -289,19 +289,19 @@ func (client DatabaseAccountsClient) DeleteResponder(resp *http.Response) (resul
 // HTTP requests.
 //
 // failoverParameters is the new failover policies for the database account.
-func (client DatabaseAccountsClient) FailoverPriorityChange(failoverParameters FailoverPolicies, cancel <-chan struct{}) (result autorest.Response, err error) {
+func (client DatabaseAccountsClient) FailoverPriorityChange(resourceGroupName string, accountName string, failoverParameters FailoverPolicies, cancel <-chan struct{}) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
-		{TargetValue: client.ResourceGroupName,
-			Constraints: []validation.Constraint{{Target: "client.ResourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
-				{Target: "client.ResourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "client.ResourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}},
-		{TargetValue: client.AccountName,
-			Constraints: []validation.Constraint{{Target: "client.AccountName", Name: validation.MaxLength, Rule: 50, Chain: nil},
-				{Target: "client.AccountName", Name: validation.MinLength, Rule: 3, Chain: nil}}}}); err != nil {
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}},
+		{TargetValue: accountName,
+			Constraints: []validation.Constraint{{Target: "accountName", Name: validation.MaxLength, Rule: 50, Chain: nil},
+				{Target: "accountName", Name: validation.MinLength, Rule: 3, Chain: nil}}}}); err != nil {
 		return result, validation.NewErrorWithValidationError(err, "documentdb.DatabaseAccountsClient", "FailoverPriorityChange")
 	}
 
-	req, err := client.FailoverPriorityChangePreparer(failoverParameters, cancel)
+	req, err := client.FailoverPriorityChangePreparer(resourceGroupName, accountName, failoverParameters, cancel)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsClient", "FailoverPriorityChange", nil, "Failure preparing request")
 	}
@@ -321,10 +321,10 @@ func (client DatabaseAccountsClient) FailoverPriorityChange(failoverParameters F
 }
 
 // FailoverPriorityChangePreparer prepares the FailoverPriorityChange request.
-func (client DatabaseAccountsClient) FailoverPriorityChangePreparer(failoverParameters FailoverPolicies, cancel <-chan struct{}) (*http.Request, error) {
+func (client DatabaseAccountsClient) FailoverPriorityChangePreparer(resourceGroupName string, accountName string, failoverParameters FailoverPolicies, cancel <-chan struct{}) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"accountName":       autorest.Encode("path", client.AccountName),
-		"resourceGroupName": autorest.Encode("path", client.ResourceGroupName),
+		"accountName":       autorest.Encode("path", accountName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
@@ -364,19 +364,19 @@ func (client DatabaseAccountsClient) FailoverPriorityChangeResponder(resp *http.
 
 // Get retrieves the properties of an existing Azure DocumentDB database
 // account.
-func (client DatabaseAccountsClient) Get() (result DatabaseAccount, err error) {
+func (client DatabaseAccountsClient) Get(resourceGroupName string, accountName string) (result DatabaseAccount, err error) {
 	if err := validation.Validate([]validation.Validation{
-		{TargetValue: client.ResourceGroupName,
-			Constraints: []validation.Constraint{{Target: "client.ResourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
-				{Target: "client.ResourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "client.ResourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}},
-		{TargetValue: client.AccountName,
-			Constraints: []validation.Constraint{{Target: "client.AccountName", Name: validation.MaxLength, Rule: 50, Chain: nil},
-				{Target: "client.AccountName", Name: validation.MinLength, Rule: 3, Chain: nil}}}}); err != nil {
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}},
+		{TargetValue: accountName,
+			Constraints: []validation.Constraint{{Target: "accountName", Name: validation.MaxLength, Rule: 50, Chain: nil},
+				{Target: "accountName", Name: validation.MinLength, Rule: 3, Chain: nil}}}}); err != nil {
 		return result, validation.NewErrorWithValidationError(err, "documentdb.DatabaseAccountsClient", "Get")
 	}
 
-	req, err := client.GetPreparer()
+	req, err := client.GetPreparer(resourceGroupName, accountName)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsClient", "Get", nil, "Failure preparing request")
 	}
@@ -396,10 +396,10 @@ func (client DatabaseAccountsClient) Get() (result DatabaseAccount, err error) {
 }
 
 // GetPreparer prepares the Get request.
-func (client DatabaseAccountsClient) GetPreparer() (*http.Request, error) {
+func (client DatabaseAccountsClient) GetPreparer(resourceGroupName string, accountName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"accountName":       autorest.Encode("path", client.AccountName),
-		"resourceGroupName": autorest.Encode("path", client.ResourceGroupName),
+		"accountName":       autorest.Encode("path", accountName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
@@ -495,16 +495,16 @@ func (client DatabaseAccountsClient) ListResponder(resp *http.Response) (result 
 
 // ListByResourceGroup lists all the Azure DocumentDB database accounts
 // available under the given resource group.
-func (client DatabaseAccountsClient) ListByResourceGroup() (result DatabaseAccountsListResult, err error) {
+func (client DatabaseAccountsClient) ListByResourceGroup(resourceGroupName string) (result DatabaseAccountsListResult, err error) {
 	if err := validation.Validate([]validation.Validation{
-		{TargetValue: client.ResourceGroupName,
-			Constraints: []validation.Constraint{{Target: "client.ResourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
-				{Target: "client.ResourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "client.ResourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewErrorWithValidationError(err, "documentdb.DatabaseAccountsClient", "ListByResourceGroup")
 	}
 
-	req, err := client.ListByResourceGroupPreparer()
+	req, err := client.ListByResourceGroupPreparer(resourceGroupName)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsClient", "ListByResourceGroup", nil, "Failure preparing request")
 	}
@@ -524,9 +524,9 @@ func (client DatabaseAccountsClient) ListByResourceGroup() (result DatabaseAccou
 }
 
 // ListByResourceGroupPreparer prepares the ListByResourceGroup request.
-func (client DatabaseAccountsClient) ListByResourceGroupPreparer() (*http.Request, error) {
+func (client DatabaseAccountsClient) ListByResourceGroupPreparer(resourceGroupName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"resourceGroupName": autorest.Encode("path", client.ResourceGroupName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
@@ -563,19 +563,19 @@ func (client DatabaseAccountsClient) ListByResourceGroupResponder(resp *http.Res
 
 // ListKeys lists the access keys for the specified Azure DocumentDB database
 // account.
-func (client DatabaseAccountsClient) ListKeys() (result DatabaseAccountListKeysResult, err error) {
+func (client DatabaseAccountsClient) ListKeys(resourceGroupName string, accountName string) (result DatabaseAccountListKeysResult, err error) {
 	if err := validation.Validate([]validation.Validation{
-		{TargetValue: client.ResourceGroupName,
-			Constraints: []validation.Constraint{{Target: "client.ResourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
-				{Target: "client.ResourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "client.ResourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}},
-		{TargetValue: client.AccountName,
-			Constraints: []validation.Constraint{{Target: "client.AccountName", Name: validation.MaxLength, Rule: 50, Chain: nil},
-				{Target: "client.AccountName", Name: validation.MinLength, Rule: 3, Chain: nil}}}}); err != nil {
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}},
+		{TargetValue: accountName,
+			Constraints: []validation.Constraint{{Target: "accountName", Name: validation.MaxLength, Rule: 50, Chain: nil},
+				{Target: "accountName", Name: validation.MinLength, Rule: 3, Chain: nil}}}}); err != nil {
 		return result, validation.NewErrorWithValidationError(err, "documentdb.DatabaseAccountsClient", "ListKeys")
 	}
 
-	req, err := client.ListKeysPreparer()
+	req, err := client.ListKeysPreparer(resourceGroupName, accountName)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsClient", "ListKeys", nil, "Failure preparing request")
 	}
@@ -595,10 +595,10 @@ func (client DatabaseAccountsClient) ListKeys() (result DatabaseAccountListKeysR
 }
 
 // ListKeysPreparer prepares the ListKeys request.
-func (client DatabaseAccountsClient) ListKeysPreparer() (*http.Request, error) {
+func (client DatabaseAccountsClient) ListKeysPreparer(resourceGroupName string, accountName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"accountName":       autorest.Encode("path", client.AccountName),
-		"resourceGroupName": autorest.Encode("path", client.ResourceGroupName),
+		"accountName":       autorest.Encode("path", accountName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
@@ -635,19 +635,19 @@ func (client DatabaseAccountsClient) ListKeysResponder(resp *http.Response) (res
 
 // ListReadOnlyKeys lists the read-only access keys for the specified Azure
 // DocumentDB database account.
-func (client DatabaseAccountsClient) ListReadOnlyKeys() (result DatabaseAccountListReadOnlyKeysResult, err error) {
+func (client DatabaseAccountsClient) ListReadOnlyKeys(resourceGroupName string, accountName string) (result DatabaseAccountListReadOnlyKeysResult, err error) {
 	if err := validation.Validate([]validation.Validation{
-		{TargetValue: client.ResourceGroupName,
-			Constraints: []validation.Constraint{{Target: "client.ResourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
-				{Target: "client.ResourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "client.ResourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}},
-		{TargetValue: client.AccountName,
-			Constraints: []validation.Constraint{{Target: "client.AccountName", Name: validation.MaxLength, Rule: 50, Chain: nil},
-				{Target: "client.AccountName", Name: validation.MinLength, Rule: 3, Chain: nil}}}}); err != nil {
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}},
+		{TargetValue: accountName,
+			Constraints: []validation.Constraint{{Target: "accountName", Name: validation.MaxLength, Rule: 50, Chain: nil},
+				{Target: "accountName", Name: validation.MinLength, Rule: 3, Chain: nil}}}}); err != nil {
 		return result, validation.NewErrorWithValidationError(err, "documentdb.DatabaseAccountsClient", "ListReadOnlyKeys")
 	}
 
-	req, err := client.ListReadOnlyKeysPreparer()
+	req, err := client.ListReadOnlyKeysPreparer(resourceGroupName, accountName)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsClient", "ListReadOnlyKeys", nil, "Failure preparing request")
 	}
@@ -667,10 +667,10 @@ func (client DatabaseAccountsClient) ListReadOnlyKeys() (result DatabaseAccountL
 }
 
 // ListReadOnlyKeysPreparer prepares the ListReadOnlyKeys request.
-func (client DatabaseAccountsClient) ListReadOnlyKeysPreparer() (*http.Request, error) {
+func (client DatabaseAccountsClient) ListReadOnlyKeysPreparer(resourceGroupName string, accountName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"accountName":       autorest.Encode("path", client.AccountName),
-		"resourceGroupName": autorest.Encode("path", client.ResourceGroupName),
+		"accountName":       autorest.Encode("path", accountName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
@@ -712,19 +712,19 @@ func (client DatabaseAccountsClient) ListReadOnlyKeysResponder(resp *http.Respon
 //
 // updateParameters is the tags parameter to patch for the current database
 // account.
-func (client DatabaseAccountsClient) Patch(updateParameters DatabaseAccountPatchParameters, cancel <-chan struct{}) (result autorest.Response, err error) {
+func (client DatabaseAccountsClient) Patch(resourceGroupName string, accountName string, updateParameters DatabaseAccountPatchParameters, cancel <-chan struct{}) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
-		{TargetValue: client.ResourceGroupName,
-			Constraints: []validation.Constraint{{Target: "client.ResourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
-				{Target: "client.ResourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "client.ResourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}},
-		{TargetValue: client.AccountName,
-			Constraints: []validation.Constraint{{Target: "client.AccountName", Name: validation.MaxLength, Rule: 50, Chain: nil},
-				{Target: "client.AccountName", Name: validation.MinLength, Rule: 3, Chain: nil}}}}); err != nil {
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}},
+		{TargetValue: accountName,
+			Constraints: []validation.Constraint{{Target: "accountName", Name: validation.MaxLength, Rule: 50, Chain: nil},
+				{Target: "accountName", Name: validation.MinLength, Rule: 3, Chain: nil}}}}); err != nil {
 		return result, validation.NewErrorWithValidationError(err, "documentdb.DatabaseAccountsClient", "Patch")
 	}
 
-	req, err := client.PatchPreparer(updateParameters, cancel)
+	req, err := client.PatchPreparer(resourceGroupName, accountName, updateParameters, cancel)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsClient", "Patch", nil, "Failure preparing request")
 	}
@@ -744,10 +744,10 @@ func (client DatabaseAccountsClient) Patch(updateParameters DatabaseAccountPatch
 }
 
 // PatchPreparer prepares the Patch request.
-func (client DatabaseAccountsClient) PatchPreparer(updateParameters DatabaseAccountPatchParameters, cancel <-chan struct{}) (*http.Request, error) {
+func (client DatabaseAccountsClient) PatchPreparer(resourceGroupName string, accountName string, updateParameters DatabaseAccountPatchParameters, cancel <-chan struct{}) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"accountName":       autorest.Encode("path", client.AccountName),
-		"resourceGroupName": autorest.Encode("path", client.ResourceGroupName),
+		"accountName":       autorest.Encode("path", accountName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
@@ -791,19 +791,19 @@ func (client DatabaseAccountsClient) PatchResponder(resp *http.Response) (result
 // to cancel polling and any outstanding HTTP requests.
 //
 // keyToRegenerate is the name of the key to regenerate.
-func (client DatabaseAccountsClient) RegenerateKey(keyToRegenerate DatabaseAccountRegenerateKeyParameters, cancel <-chan struct{}) (result autorest.Response, err error) {
+func (client DatabaseAccountsClient) RegenerateKey(resourceGroupName string, accountName string, keyToRegenerate DatabaseAccountRegenerateKeyParameters, cancel <-chan struct{}) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
-		{TargetValue: client.ResourceGroupName,
+		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "client.ResourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
-				{Target: "client.ResourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "client.ResourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}},
-		{TargetValue: client.AccountName,
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}},
+		{TargetValue: accountName,
 			Constraints: []validation.Constraint{{Target: "client.AccountName", Name: validation.MaxLength, Rule: 50, Chain: nil},
-				{Target: "client.AccountName", Name: validation.MinLength, Rule: 3, Chain: nil}}}}); err != nil {
+				{Target: "accountName", Name: validation.MinLength, Rule: 3, Chain: nil}}}}); err != nil {
 		return result, validation.NewErrorWithValidationError(err, "documentdb.DatabaseAccountsClient", "RegenerateKey")
 	}
 
-	req, err := client.RegenerateKeyPreparer(keyToRegenerate, cancel)
+	req, err := client.RegenerateKeyPreparer(resourceGroupName, accountName, keyToRegenerate, cancel)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsClient", "RegenerateKey", nil, "Failure preparing request")
 	}
@@ -823,10 +823,10 @@ func (client DatabaseAccountsClient) RegenerateKey(keyToRegenerate DatabaseAccou
 }
 
 // RegenerateKeyPreparer prepares the RegenerateKey request.
-func (client DatabaseAccountsClient) RegenerateKeyPreparer(keyToRegenerate DatabaseAccountRegenerateKeyParameters, cancel <-chan struct{}) (*http.Request, error) {
+func (client DatabaseAccountsClient) RegenerateKeyPreparer(resourceGroupName string, accountName string, keyToRegenerate DatabaseAccountRegenerateKeyParameters, cancel <-chan struct{}) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"accountName":       autorest.Encode("path", client.AccountName),
-		"resourceGroupName": autorest.Encode("path", client.ResourceGroupName),
+		"accountName":       autorest.Encode("path", accountName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 

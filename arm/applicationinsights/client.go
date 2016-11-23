@@ -1,9 +1,8 @@
 // Package applicationinsights implements the Azure ARM Applicationinsights
 // service API version 2014-04-01.
-// 
+//
 // Azure Application Insights client
 package applicationinsights
-
 
 // Copyright (c) Microsoft and contributors.  All rights reserved.
 //
@@ -24,37 +23,36 @@ package applicationinsights
 // regenerated.
 
 import (
-    "github.com/Azure/go-autorest/autorest"
+	"github.com/Azure/go-autorest/autorest"
 )
 
 const (
-    // APIVersion is the version of the Applicationinsights
-    APIVersion = "2014-04-01"
+	// APIVersion is the version of the Applicationinsights
+	APIVersion = "2014-04-01"
 
-    // DefaultBaseURI is the default URI used for the service Applicationinsights
-    DefaultBaseURI = "https://management.azure.com"
+	// DefaultBaseURI is the default URI used for the service Applicationinsights
+	DefaultBaseURI = "https://management.azure.com"
 )
 
 // ManagementClient is the base client for Applicationinsights.
 type ManagementClient struct {
-    autorest.Client
-    BaseURI string
-    APIVersion string
-    SubscriptionID string
+	autorest.Client
+	BaseURI        string
+	APIVersion     string
+	SubscriptionID string
 }
 
 // New creates an instance of the ManagementClient client.
-func New(subscriptionID string)ManagementClient {
-    return NewWithBaseURI(DefaultBaseURI, subscriptionID)
+func New(subscriptionID string) ManagementClient {
+	return NewWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewWithBaseURI creates an instance of the ManagementClient client.
 func NewWithBaseURI(baseURI string, subscriptionID string) ManagementClient {
-   return ManagementClient{
-        Client: autorest.NewClientWithUserAgent(UserAgent()),
-        BaseURI: baseURI,
-        APIVersion: APIVersion,
-        SubscriptionID: subscriptionID,
-    }
+	return ManagementClient{
+		Client:         autorest.NewClientWithUserAgent(UserAgent()),
+		BaseURI:        baseURI,
+		APIVersion:     APIVersion,
+		SubscriptionID: subscriptionID,
+	}
 }
-

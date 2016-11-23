@@ -41,7 +41,6 @@ func NewInsightsClientWithBaseURI(baseURI string, subscriptionID string) Insight
 
 // CreateOrUpdate creates or Updates an Application Insights instance
 func (client InsightsClient) CreateOrUpdate(resourceGroupName string, name string, resource Resource) (result Resource, err error) {
-    // TODO: validation
     req, err := client.CreateOrUpdatePreparer(resourceGroupName, name, resource)
     if err != nil {
         return result, autorest.NewErrorWithError(err, "applicationinsights.InsightsClient", "CreateOrUpdate", nil , "Failure preparing request")
@@ -75,7 +74,7 @@ func (client InsightsClient) CreateOrUpdatePreparer(resourceGroupName string, na
 
     preparer := autorest.CreatePreparer(
                         autorest.AsJSON(),
-                        autorest.AsPost(),
+                        autorest.AsPut(),
                         autorest.WithBaseURL(client.BaseURI),
                         autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/microsoft.insights/components/{name}",pathParameters),
                         autorest.WithJSON(resource),

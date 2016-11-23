@@ -20,6 +20,7 @@ package applicationinsights
 
 import (
     "github.com/Azure/go-autorest/autorest"
+    "github.com/Azure/go-autorest/autorest/date"
     "github.com/Azure/go-autorest/autorest/to"
     "net/http"
 )    
@@ -45,7 +46,7 @@ type Properties struct {
     RequestSource *string `json:"request_Source,omitempty"`
     InstrumentationKey *string `json:"instrumentationKey,omitempty"`
     Name *string `json:"name,omitempty"`
-    CreationDate *string `json:"creationDate,omitempty"`
+    CreationDate *date.Time `json:"creationDate,omitempty"`
     PackageID *string `json:"packageId,omitempty"`
     TenantID *string `json:"tenantId,omitempty"`
     HockeyAppID *string `json:"hockeyAppId,omitempty"`

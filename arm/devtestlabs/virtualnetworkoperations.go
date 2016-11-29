@@ -24,7 +24,7 @@ import (
 	"net/http"
 )
 
-// VirtualNetworkOperationsClient is the the DevTest Labs Client.
+// VirtualNetworkOperationsClient is the azure DevTest Labs REST API.
 type VirtualNetworkOperationsClient struct {
 	ManagementClient
 }

@@ -21,6 +21,7 @@ package search
 import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
+	"github.com/satori/uuid"
 	"net/http"
 )
 
@@ -41,36 +42,190 @@ func NewQueryKeysClientWithBaseURI(baseURI string, subscriptionID string) QueryK
 	return QueryKeysClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// List returns the list of query API keys for the given Azure Search service.
+// Create generates a new query key for the specified Search service. You can
+// create up to 50 query keys per service.
 //
 // resourceGroupName is the name of the resource group within the current
-// subscription. serviceName is the name of the Search service for which to
-// list query keys.
-func (client QueryKeysClient) List(resourceGroupName string, serviceName string) (result ListQueryKeysResult, err error) {
-	req, err := client.ListPreparer(resourceGroupName, serviceName)
+// subscription. You can obtain this value from the Azure Resource Manager
+// API or the portal. searchServiceName is the name of the Azure Search
+// service associated with the specified resource group. name is the name of
+// the new query API key. xMsClientRequestID is a client-generated GUID value
+// that identifies this request. If specified, this will be included in
+// response information as a way to track the request.
+func (client QueryKeysClient) Create(resourceGroupName string, searchServiceName string, name string, xMsClientRequestID *uuid.UUID) (result QueryKey, err error) {
+	req, err := client.CreatePreparer(resourceGroupName, searchServiceName, name, xMsClientRequestID)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "search.QueryKeysClient", "List", nil, "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "search.QueryKeysClient", "Create", nil, "Failure preparing request")
 	}
 
-	resp, err := client.ListSender(req)
+	resp, err := client.CreateSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "search.QueryKeysClient", "List", resp, "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "search.QueryKeysClient", "Create", resp, "Failure sending request")
 	}
 
-	result, err = client.ListResponder(resp)
+	result, err = client.CreateResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "search.QueryKeysClient", "List", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "search.QueryKeysClient", "Create", resp, "Failure responding to request")
 	}
 
 	return
 }
 
-// ListPreparer prepares the List request.
-func (client QueryKeysClient) ListPreparer(resourceGroupName string, serviceName string) (*http.Request, error) {
+// CreatePreparer prepares the Create request.
+func (client QueryKeysClient) CreatePreparer(resourceGroupName string, searchServiceName string, name string, xMsClientRequestID *uuid.UUID) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"name":              autorest.Encode("path", name),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"searchServiceName": autorest.Encode("path", searchServiceName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	queryParameters := map[string]interface{}{
+		"api-version": client.APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsPost(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Search/searchServices/{searchServiceName}/createQueryKey/{name}", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	if xMsClientRequestID != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("x-ms-client-request-id", autorest.String(xMsClientRequestID)))
+	}
+	return preparer.Prepare(&http.Request{})
+}
+
+// CreateSender sends the Create request. The method will close the
+// http.Response Body if it receives an error.
+func (client QueryKeysClient) CreateSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req)
+}
+
+// CreateResponder handles the response to the Create request. The method always
+// closes the http.Response Body.
+func (client QueryKeysClient) CreateResponder(resp *http.Response) (result QueryKey, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// Delete deletes the specified query key. Unlike admin keys, query keys are
+// not regenerated. The process for regenerating a query key is to delete and
+// then recreate it.
+//
+// resourceGroupName is the name of the resource group within the current
+// subscription. You can obtain this value from the Azure Resource Manager
+// API or the portal. searchServiceName is the name of the Azure Search
+// service associated with the specified resource group. key is the query key
+// to be deleted. Query keys are identified by value, not by name.
+// xMsClientRequestID is a client-generated GUID value that identifies this
+// request. If specified, this will be included in response information as a
+// way to track the request.
+func (client QueryKeysClient) Delete(resourceGroupName string, searchServiceName string, key string, xMsClientRequestID *uuid.UUID) (result autorest.Response, err error) {
+	req, err := client.DeletePreparer(resourceGroupName, searchServiceName, key, xMsClientRequestID)
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "search.QueryKeysClient", "Delete", nil, "Failure preparing request")
+	}
+
+	resp, err := client.DeleteSender(req)
+	if err != nil {
+		result.Response = resp
+		return result, autorest.NewErrorWithError(err, "search.QueryKeysClient", "Delete", resp, "Failure sending request")
+	}
+
+	result, err = client.DeleteResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "search.QueryKeysClient", "Delete", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// DeletePreparer prepares the Delete request.
+func (client QueryKeysClient) DeletePreparer(resourceGroupName string, searchServiceName string, key string, xMsClientRequestID *uuid.UUID) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"key":               autorest.Encode("path", key),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"searchServiceName": autorest.Encode("path", searchServiceName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	queryParameters := map[string]interface{}{
+		"api-version": client.APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsDelete(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Search/searchServices/{searchServiceName}/deleteQueryKey/{key}", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	if xMsClientRequestID != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("x-ms-client-request-id", autorest.String(xMsClientRequestID)))
+	}
+	return preparer.Prepare(&http.Request{})
+}
+
+// DeleteSender sends the Delete request. The method will close the
+// http.Response Body if it receives an error.
+func (client QueryKeysClient) DeleteSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req)
+}
+
+// DeleteResponder handles the response to the Delete request. The method always
+// closes the http.Response Body.
+func (client QueryKeysClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent, http.StatusNotFound),
+		autorest.ByClosing())
+	result.Response = resp
+	return
+}
+
+// ListBySearchService returns the list of query API keys for the given Azure
+// Search service.
+//
+// resourceGroupName is the name of the resource group within the current
+// subscription. You can obtain this value from the Azure Resource Manager
+// API or the portal. searchServiceName is the name of the Azure Search
+// service associated with the specified resource group. xMsClientRequestID
+// is a client-generated GUID value that identifies this request. If
+// specified, this will be included in response information as a way to track
+// the request.
+func (client QueryKeysClient) ListBySearchService(resourceGroupName string, searchServiceName string, xMsClientRequestID *uuid.UUID) (result ListQueryKeysResult, err error) {
+	req, err := client.ListBySearchServicePreparer(resourceGroupName, searchServiceName, xMsClientRequestID)
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "search.QueryKeysClient", "ListBySearchService", nil, "Failure preparing request")
+	}
+
+	resp, err := client.ListBySearchServiceSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "search.QueryKeysClient", "ListBySearchService", resp, "Failure sending request")
+	}
+
+	result, err = client.ListBySearchServiceResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "search.QueryKeysClient", "ListBySearchService", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// ListBySearchServicePreparer prepares the ListBySearchService request.
+func (client QueryKeysClient) ListBySearchServicePreparer(resourceGroupName string, searchServiceName string, xMsClientRequestID *uuid.UUID) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
-		"serviceName":       autorest.Encode("path", serviceName),
+		"searchServiceName": autorest.Encode("path", searchServiceName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
@@ -81,20 +236,24 @@ func (client QueryKeysClient) ListPreparer(resourceGroupName string, serviceName
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Search/searchServices/{serviceName}/listQueryKeys", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Search/searchServices/{searchServiceName}/listQueryKeys", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
+	if xMsClientRequestID != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("x-ms-client-request-id", autorest.String(xMsClientRequestID)))
+	}
 	return preparer.Prepare(&http.Request{})
 }
 
-// ListSender sends the List request. The method will close the
+// ListBySearchServiceSender sends the ListBySearchService request. The method will close the
 // http.Response Body if it receives an error.
-func (client QueryKeysClient) ListSender(req *http.Request) (*http.Response, error) {
+func (client QueryKeysClient) ListBySearchServiceSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req)
 }
 
-// ListResponder handles the response to the List request. The method always
+// ListBySearchServiceResponder handles the response to the ListBySearchService request. The method always
 // closes the http.Response Body.
-func (client QueryKeysClient) ListResponder(resp *http.Response) (result ListQueryKeysResult, err error) {
+func (client QueryKeysClient) ListBySearchServiceResponder(resp *http.Response) (result ListQueryKeysResult, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

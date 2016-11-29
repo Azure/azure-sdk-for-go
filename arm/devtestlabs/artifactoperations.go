@@ -24,7 +24,7 @@ import (
 	"net/http"
 )
 
-// ArtifactOperationsClient is the the DevTest Labs Client.
+// ArtifactOperationsClient is the azure DevTest Labs REST API.
 type ArtifactOperationsClient struct {
 	ManagementClient
 }

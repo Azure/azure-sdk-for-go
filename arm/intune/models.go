@@ -212,13 +212,13 @@ const (
 
 // AndroidMAMPolicy is android Policy entity for Intune MAM.
 type AndroidMAMPolicy struct {
-	autorest.Response `json:"-"`
-	ID                *string                     `json:"id,omitempty"`
-	Name              *string                     `json:"name,omitempty"`
-	Type              *string                     `json:"type,omitempty"`
-	Tags              *map[string]*string         `json:"tags,omitempty"`
-	Location          *string                     `json:"location,omitempty"`
-	Properties        *AndroidMAMPolicyProperties `json:"properties,omitempty"`
+	autorest.Response           `json:"-"`
+	ID                          *string             `json:"id,omitempty"`
+	Name                        *string             `json:"name,omitempty"`
+	Type                        *string             `json:"type,omitempty"`
+	Tags                        *map[string]*string `json:"tags,omitempty"`
+	Location                    *string             `json:"location,omitempty"`
+	*AndroidMAMPolicyProperties `json:"properties,omitempty"`
 }
 
 // AndroidMAMPolicyCollection is
@@ -266,12 +266,12 @@ type AndroidMAMPolicyProperties struct {
 
 // Application is application entity for Intune MAM.
 type Application struct {
-	ID         *string                `json:"id,omitempty"`
-	Name       *string                `json:"name,omitempty"`
-	Type       *string                `json:"type,omitempty"`
-	Tags       *map[string]*string    `json:"tags,omitempty"`
-	Location   *string                `json:"location,omitempty"`
-	Properties *ApplicationProperties `json:"properties,omitempty"`
+	ID                     *string             `json:"id,omitempty"`
+	Name                   *string             `json:"name,omitempty"`
+	Type                   *string             `json:"type,omitempty"`
+	Tags                   *map[string]*string `json:"tags,omitempty"`
+	Location               *string             `json:"location,omitempty"`
+	*ApplicationProperties `json:"properties,omitempty"`
 }
 
 // ApplicationCollection is
@@ -308,7 +308,7 @@ type Device struct {
 	Type              *string             `json:"type,omitempty"`
 	Tags              *map[string]*string `json:"tags,omitempty"`
 	Location          *string             `json:"location,omitempty"`
-	Properties        *DeviceProperties   `json:"properties,omitempty"`
+	*DeviceProperties `json:"properties,omitempty"`
 }
 
 // DeviceCollection is
@@ -347,12 +347,12 @@ type Error struct {
 
 // FlaggedEnrolledApp is flagged Enrolled App for the given tenant.
 type FlaggedEnrolledApp struct {
-	ID         *string                       `json:"id,omitempty"`
-	Name       *string                       `json:"name,omitempty"`
-	Type       *string                       `json:"type,omitempty"`
-	Tags       *map[string]*string           `json:"tags,omitempty"`
-	Location   *string                       `json:"location,omitempty"`
-	Properties *FlaggedEnrolledAppProperties `json:"properties,omitempty"`
+	ID                            *string             `json:"id,omitempty"`
+	Name                          *string             `json:"name,omitempty"`
+	Type                          *string             `json:"type,omitempty"`
+	Tags                          *map[string]*string `json:"tags,omitempty"`
+	Location                      *string             `json:"location,omitempty"`
+	*FlaggedEnrolledAppProperties `json:"properties,omitempty"`
 }
 
 // FlaggedEnrolledAppCollection is flagged Enrolled App collection for the
@@ -392,13 +392,13 @@ type FlaggedEnrolledAppProperties struct {
 
 // FlaggedUser is flagged user for the given tenant.
 type FlaggedUser struct {
-	autorest.Response `json:"-"`
-	ID                *string                `json:"id,omitempty"`
-	Name              *string                `json:"name,omitempty"`
-	Type              *string                `json:"type,omitempty"`
-	Tags              *map[string]*string    `json:"tags,omitempty"`
-	Location          *string                `json:"location,omitempty"`
-	Properties        *FlaggedUserProperties `json:"properties,omitempty"`
+	autorest.Response      `json:"-"`
+	ID                     *string             `json:"id,omitempty"`
+	Name                   *string             `json:"name,omitempty"`
+	Type                   *string             `json:"type,omitempty"`
+	Tags                   *map[string]*string `json:"tags,omitempty"`
+	Location               *string             `json:"location,omitempty"`
+	*FlaggedUserProperties `json:"properties,omitempty"`
 }
 
 // FlaggedUserCollection is flagged user collection for the given tenant.
@@ -428,12 +428,12 @@ type FlaggedUserProperties struct {
 
 // GroupItem is group entity for Intune MAM.
 type GroupItem struct {
-	ID         *string             `json:"id,omitempty"`
-	Name       *string             `json:"name,omitempty"`
-	Type       *string             `json:"type,omitempty"`
-	Tags       *map[string]*string `json:"tags,omitempty"`
-	Location   *string             `json:"location,omitempty"`
-	Properties *GroupProperties    `json:"properties,omitempty"`
+	ID               *string             `json:"id,omitempty"`
+	Name             *string             `json:"name,omitempty"`
+	Type             *string             `json:"type,omitempty"`
+	Tags             *map[string]*string `json:"tags,omitempty"`
+	Location         *string             `json:"location,omitempty"`
+	*GroupProperties `json:"properties,omitempty"`
 }
 
 // GroupProperties is
@@ -462,13 +462,13 @@ func (client GroupsCollection) GroupsCollectionPreparer() (*http.Request, error)
 
 // IOSMAMPolicy is iOS Policy entity for Intune MAM.
 type IOSMAMPolicy struct {
-	autorest.Response `json:"-"`
-	ID                *string                 `json:"id,omitempty"`
-	Name              *string                 `json:"name,omitempty"`
-	Type              *string                 `json:"type,omitempty"`
-	Tags              *map[string]*string     `json:"tags,omitempty"`
-	Location          *string                 `json:"location,omitempty"`
-	Properties        *IOSMAMPolicyProperties `json:"properties,omitempty"`
+	autorest.Response       `json:"-"`
+	ID                      *string             `json:"id,omitempty"`
+	Name                    *string             `json:"name,omitempty"`
+	Type                    *string             `json:"type,omitempty"`
+	Tags                    *map[string]*string `json:"tags,omitempty"`
+	Location                *string             `json:"location,omitempty"`
+	*IOSMAMPolicyProperties `json:"properties,omitempty"`
 }
 
 // IOSMAMPolicyCollection is
@@ -516,13 +516,13 @@ type IOSMAMPolicyProperties struct {
 
 // Location is location entity for given tenant.
 type Location struct {
-	autorest.Response `json:"-"`
-	ID                *string             `json:"id,omitempty"`
-	Name              *string             `json:"name,omitempty"`
-	Type              *string             `json:"type,omitempty"`
-	Tags              *map[string]*string `json:"tags,omitempty"`
-	Location          *string             `json:"location,omitempty"`
-	Properties        *LocationProperties `json:"properties,omitempty"`
+	autorest.Response   `json:"-"`
+	ID                  *string             `json:"id,omitempty"`
+	Name                *string             `json:"name,omitempty"`
+	Type                *string             `json:"type,omitempty"`
+	Tags                *map[string]*string `json:"tags,omitempty"`
+	Location            *string             `json:"location,omitempty"`
+	*LocationProperties `json:"properties,omitempty"`
 }
 
 // LocationCollection is
@@ -591,12 +591,12 @@ type OperationMetadataProperties struct {
 
 // OperationResult is operationResult entity for Intune.
 type OperationResult struct {
-	ID         *string                    `json:"id,omitempty"`
-	Name       *string                    `json:"name,omitempty"`
-	Type       *string                    `json:"type,omitempty"`
-	Tags       *map[string]*string        `json:"tags,omitempty"`
-	Location   *string                    `json:"location,omitempty"`
-	Properties *OperationResultProperties `json:"properties,omitempty"`
+	ID                         *string             `json:"id,omitempty"`
+	Name                       *string             `json:"name,omitempty"`
+	Type                       *string             `json:"type,omitempty"`
+	Tags                       *map[string]*string `json:"tags,omitempty"`
+	Location                   *string             `json:"location,omitempty"`
+	*OperationResultProperties `json:"properties,omitempty"`
 }
 
 // OperationResultCollection is
@@ -638,14 +638,14 @@ type Resource struct {
 
 // StatusesDefault is default Statuses entity for the given tenant.
 type StatusesDefault struct {
-	autorest.Response `json:"-"`
-	ID                *string             `json:"id,omitempty"`
-	Name              *string             `json:"name,omitempty"`
-	Type              *string             `json:"type,omitempty"`
-	Tags              *map[string]*string `json:"tags,omitempty"`
-	Location          *string             `json:"location,omitempty"`
-	Properties        *StatusesProperties `json:"properties,omitempty"`
-	Nextlink          *string             `json:"nextlink,omitempty"`
+	autorest.Response   `json:"-"`
+	ID                  *string             `json:"id,omitempty"`
+	Name                *string             `json:"name,omitempty"`
+	Type                *string             `json:"type,omitempty"`
+	Tags                *map[string]*string `json:"tags,omitempty"`
+	Location            *string             `json:"location,omitempty"`
+	*StatusesProperties `json:"properties,omitempty"`
+	Nextlink            *string `json:"nextlink,omitempty"`
 }
 
 // StatusesDefaultPreparer prepares a request to retrieve the next set of results. It returns
@@ -675,13 +675,13 @@ type StatusesProperties struct {
 
 // WipeDeviceOperationResult is device entity for Intune.
 type WipeDeviceOperationResult struct {
-	autorest.Response `json:"-"`
-	ID                *string                              `json:"id,omitempty"`
-	Name              *string                              `json:"name,omitempty"`
-	Type              *string                              `json:"type,omitempty"`
-	Tags              *map[string]*string                  `json:"tags,omitempty"`
-	Location          *string                              `json:"location,omitempty"`
-	Properties        *WipeDeviceOperationResultProperties `json:"properties,omitempty"`
+	autorest.Response                    `json:"-"`
+	ID                                   *string             `json:"id,omitempty"`
+	Name                                 *string             `json:"name,omitempty"`
+	Type                                 *string             `json:"type,omitempty"`
+	Tags                                 *map[string]*string `json:"tags,omitempty"`
+	Location                             *string             `json:"location,omitempty"`
+	*WipeDeviceOperationResultProperties `json:"properties,omitempty"`
 }
 
 // WipeDeviceOperationResultProperties is

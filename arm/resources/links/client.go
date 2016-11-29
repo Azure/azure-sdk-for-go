@@ -1,5 +1,11 @@
 // Package links implements the Azure ARM Links service API version 2016-09-01.
 //
+// Azure resources can be linked together to form logical relationships. You
+// can establish links between resources belonging to different resource
+// groups. However, all the linked resources must belong to the same
+// subscription. Each resource can be linked to 50 other resources. If any of
+// the linked resources are deleted or moved, the link owner must clean up
+// the remaining link.
 package links
 
 // Copyright (c) Microsoft and contributors.  All rights reserved.

@@ -57,14 +57,14 @@ func (client ManagementLockListResult) ManagementLockListResultPreparer() (*http
 
 // ManagementLockObject is the lock information.
 type ManagementLockObject struct {
-	autorest.Response `json:"-"`
-	Properties        *ManagementLockProperties `json:"properties,omitempty"`
-	ID                *string                   `json:"id,omitempty"`
-	Type              *string                   `json:"type,omitempty"`
-	Name              *string                   `json:"name,omitempty"`
+	autorest.Response         `json:"-"`
+	*ManagementLockProperties `json:"properties,omitempty"`
+	ID                        *string `json:"id,omitempty"`
+	Type                      *string `json:"type,omitempty"`
+	Name                      *string `json:"name,omitempty"`
 }
 
-// ManagementLockOwner is
+// ManagementLockOwner is lock owner properties.
 type ManagementLockOwner struct {
 	ApplicationID *string `json:"applicationId,omitempty"`
 }

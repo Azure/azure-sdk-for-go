@@ -1,5 +1,5 @@
 // Package filesystem implements the Azure ARM Filesystem service API version
-// 2015-10-01-preview.
+// 2016-11-01.
 //
 // Creates an Azure Data Lake Store filesystem client.
 package filesystem
@@ -28,7 +28,7 @@ import (
 
 const (
 	// APIVersion is the version of the Filesystem
-	APIVersion = "2015-10-01-preview"
+	APIVersion = "2016-11-01"
 
 	// DefaultBaseURI is the default URI used for the service Filesystem
 	DefaultBaseURI = "https://localhost"

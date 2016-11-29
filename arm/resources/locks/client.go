@@ -1,5 +1,7 @@
 // Package locks implements the Azure ARM Locks service API version 2016-09-01.
 //
+// Azure resources can be locked to prevent other users in your organization
+// from deleting or modifying resources.
 package locks
 
 // Copyright (c) Microsoft and contributors.  All rights reserved.

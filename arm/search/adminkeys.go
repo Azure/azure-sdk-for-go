@@ -21,6 +21,7 @@ package search
 import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
+	"github.com/satori/uuid"
 	"net/http"
 )
 
@@ -41,37 +42,41 @@ func NewAdminKeysClientWithBaseURI(baseURI string, subscriptionID string) AdminK
 	return AdminKeysClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// List returns the primary and secondary API keys for the given Azure Search
-// service.
+// Get gets the primary and secondary admin API keys for the specified Azure
+// Search service.
 //
 // resourceGroupName is the name of the resource group within the current
-// subscription. serviceName is the name of the Search service for which to
-// list admin keys.
-func (client AdminKeysClient) List(resourceGroupName string, serviceName string) (result AdminKeyResult, err error) {
-	req, err := client.ListPreparer(resourceGroupName, serviceName)
+// subscription. You can obtain this value from the Azure Resource Manager
+// API or the portal. searchServiceName is the name of the Azure Search
+// service associated with the specified resource group. xMsClientRequestID
+// is a client-generated GUID value that identifies this request. If
+// specified, this will be included in response information as a way to track
+// the request.
+func (client AdminKeysClient) Get(resourceGroupName string, searchServiceName string, xMsClientRequestID *uuid.UUID) (result AdminKeyResult, err error) {
+	req, err := client.GetPreparer(resourceGroupName, searchServiceName, xMsClientRequestID)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "search.AdminKeysClient", "List", nil, "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "search.AdminKeysClient", "Get", nil, "Failure preparing request")
 	}
 
-	resp, err := client.ListSender(req)
+	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "search.AdminKeysClient", "List", resp, "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "search.AdminKeysClient", "Get", resp, "Failure sending request")
 	}
 
-	result, err = client.ListResponder(resp)
+	result, err = client.GetResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "search.AdminKeysClient", "List", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "search.AdminKeysClient", "Get", resp, "Failure responding to request")
 	}
 
 	return
 }
 
-// ListPreparer prepares the List request.
-func (client AdminKeysClient) ListPreparer(resourceGroupName string, serviceName string) (*http.Request, error) {
+// GetPreparer prepares the Get request.
+func (client AdminKeysClient) GetPreparer(resourceGroupName string, searchServiceName string, xMsClientRequestID *uuid.UUID) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
-		"serviceName":       autorest.Encode("path", serviceName),
+		"searchServiceName": autorest.Encode("path", searchServiceName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
@@ -82,20 +87,100 @@ func (client AdminKeysClient) ListPreparer(resourceGroupName string, serviceName
 	preparer := autorest.CreatePreparer(
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Search/searchServices/{serviceName}/listAdminKeys", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Search/searchServices/{searchServiceName}/listAdminKeys", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
+	if xMsClientRequestID != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("x-ms-client-request-id", autorest.String(xMsClientRequestID)))
+	}
 	return preparer.Prepare(&http.Request{})
 }
 
-// ListSender sends the List request. The method will close the
+// GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
-func (client AdminKeysClient) ListSender(req *http.Request) (*http.Response, error) {
+func (client AdminKeysClient) GetSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req)
 }
 
-// ListResponder handles the response to the List request. The method always
+// GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
-func (client AdminKeysClient) ListResponder(resp *http.Response) (result AdminKeyResult, err error) {
+func (client AdminKeysClient) GetResponder(resp *http.Response) (result AdminKeyResult, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// Regenerate regenerates either the primary or secondary admin API key. You
+// can only regenerate one key at a time.
+//
+// resourceGroupName is the name of the resource group within the current
+// subscription. You can obtain this value from the Azure Resource Manager
+// API or the portal. searchServiceName is the name of the Azure Search
+// service associated with the specified resource group. keyKind is specifies
+// which key to regenerate. Valid values include 'primary' and 'secondary'.
+// Possible values include: 'primary', 'secondary' xMsClientRequestID is a
+// client-generated GUID value that identifies this request. If specified,
+// this will be included in response information as a way to track the
+// request.
+func (client AdminKeysClient) Regenerate(resourceGroupName string, searchServiceName string, keyKind AdminKeyKind, xMsClientRequestID *uuid.UUID) (result AdminKeyResult, err error) {
+	req, err := client.RegeneratePreparer(resourceGroupName, searchServiceName, keyKind, xMsClientRequestID)
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "search.AdminKeysClient", "Regenerate", nil, "Failure preparing request")
+	}
+
+	resp, err := client.RegenerateSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "search.AdminKeysClient", "Regenerate", resp, "Failure sending request")
+	}
+
+	result, err = client.RegenerateResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "search.AdminKeysClient", "Regenerate", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// RegeneratePreparer prepares the Regenerate request.
+func (client AdminKeysClient) RegeneratePreparer(resourceGroupName string, searchServiceName string, keyKind AdminKeyKind, xMsClientRequestID *uuid.UUID) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"keyKind":           autorest.Encode("path", keyKind),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"searchServiceName": autorest.Encode("path", searchServiceName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	queryParameters := map[string]interface{}{
+		"api-version": client.APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsPost(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Search/searchServices/{searchServiceName}/regenerateAdminKey/{keyKind}", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	if xMsClientRequestID != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("x-ms-client-request-id", autorest.String(xMsClientRequestID)))
+	}
+	return preparer.Prepare(&http.Request{})
+}
+
+// RegenerateSender sends the Regenerate request. The method will close the
+// http.Response Body if it receives an error.
+func (client AdminKeysClient) RegenerateSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req)
+}
+
+// RegenerateResponder handles the response to the Regenerate request. The method always
+// closes the http.Response Body.
+func (client AdminKeysClient) RegenerateResponder(resp *http.Response) (result AdminKeyResult, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

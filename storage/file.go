@@ -150,22 +150,26 @@ type ShareHeaders struct {
 }
 
 type compType string
-type resourceType string
 
 const (
-	compNone          compType     = ""
-	compList          compType     = "list"
-	compMetadata      compType     = "metadata"
-	compProperties    compType     = "properties"
-	compRangeList     compType     = "rangelist"
-	resourceDirectory resourceType = "directory"
-	resourceFile      resourceType = ""
-	resourceShare     resourceType = "share"
+	compNone       compType = ""
+	compList       compType = "list"
+	compMetadata   compType = "metadata"
+	compProperties compType = "properties"
+	compRangeList  compType = "rangelist"
 )
 
 func (ct compType) String() string {
 	return string(ct)
 }
+
+type resourceType string
+
+const (
+	resourceDirectory resourceType = "directory"
+	resourceFile      resourceType = ""
+	resourceShare     resourceType = "share"
+)
 
 func (rt resourceType) String() string {
 	return string(rt)

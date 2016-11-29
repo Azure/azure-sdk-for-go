@@ -28,5 +28,7 @@ _testmain.go
 *~
 .DS_Store
 
+.idea/
+
 # ignore vendor/
 vendor/

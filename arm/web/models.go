@@ -711,14 +711,14 @@ type AzureTableStorageApplicationLogsConfig struct {
 
 // BackupItem is backup description
 type BackupItem struct {
-	autorest.Response `json:"-"`
-	ID                *string               `json:"id,omitempty"`
-	Name              *string               `json:"name,omitempty"`
-	Kind              *string               `json:"kind,omitempty"`
-	Location          *string               `json:"location,omitempty"`
-	Type              *string               `json:"type,omitempty"`
-	Tags              *map[string]*string   `json:"tags,omitempty"`
-	Properties        *BackupItemProperties `json:"properties,omitempty"`
+	autorest.Response     `json:"-"`
+	ID                    *string             `json:"id,omitempty"`
+	Name                  *string             `json:"name,omitempty"`
+	Kind                  *string             `json:"kind,omitempty"`
+	Location              *string             `json:"location,omitempty"`
+	Type                  *string             `json:"type,omitempty"`
+	Tags                  *map[string]*string `json:"tags,omitempty"`
+	*BackupItemProperties `json:"properties,omitempty"`
 }
 
 // BackupItemCollection is collection of Backup Items
@@ -760,14 +760,14 @@ type BackupItemProperties struct {
 
 // BackupRequest is description of a backup which will be performed
 type BackupRequest struct {
-	autorest.Response `json:"-"`
-	ID                *string                  `json:"id,omitempty"`
-	Name              *string                  `json:"name,omitempty"`
-	Kind              *string                  `json:"kind,omitempty"`
-	Location          *string                  `json:"location,omitempty"`
-	Type              *string                  `json:"type,omitempty"`
-	Tags              *map[string]*string      `json:"tags,omitempty"`
-	Properties        *BackupRequestProperties `json:"properties,omitempty"`
+	autorest.Response        `json:"-"`
+	ID                       *string             `json:"id,omitempty"`
+	Name                     *string             `json:"name,omitempty"`
+	Kind                     *string             `json:"kind,omitempty"`
+	Location                 *string             `json:"location,omitempty"`
+	Type                     *string             `json:"type,omitempty"`
+	Tags                     *map[string]*string `json:"tags,omitempty"`
+	*BackupRequestProperties `json:"properties,omitempty"`
 }
 
 // BackupRequestProperties is
@@ -793,14 +793,14 @@ type BackupSchedule struct {
 
 // Certificate is app certificate
 type Certificate struct {
-	autorest.Response `json:"-"`
-	ID                *string                `json:"id,omitempty"`
-	Name              *string                `json:"name,omitempty"`
-	Kind              *string                `json:"kind,omitempty"`
-	Location          *string                `json:"location,omitempty"`
-	Type              *string                `json:"type,omitempty"`
-	Tags              *map[string]*string    `json:"tags,omitempty"`
-	Properties        *CertificateProperties `json:"properties,omitempty"`
+	autorest.Response      `json:"-"`
+	ID                     *string             `json:"id,omitempty"`
+	Name                   *string             `json:"name,omitempty"`
+	Kind                   *string             `json:"kind,omitempty"`
+	Location               *string             `json:"location,omitempty"`
+	Type                   *string             `json:"type,omitempty"`
+	Tags                   *map[string]*string `json:"tags,omitempty"`
+	*CertificateProperties `json:"properties,omitempty"`
 }
 
 // CertificateCollection is collection of certificates
@@ -824,13 +824,13 @@ func (client CertificateCollection) CertificateCollectionPreparer() (*http.Reque
 
 // CertificateDetails is certificate Details
 type CertificateDetails struct {
-	ID         *string                       `json:"id,omitempty"`
-	Name       *string                       `json:"name,omitempty"`
-	Kind       *string                       `json:"kind,omitempty"`
-	Location   *string                       `json:"location,omitempty"`
-	Type       *string                       `json:"type,omitempty"`
-	Tags       *map[string]*string           `json:"tags,omitempty"`
-	Properties *CertificateDetailsProperties `json:"properties,omitempty"`
+	ID                            *string             `json:"id,omitempty"`
+	Name                          *string             `json:"name,omitempty"`
+	Kind                          *string             `json:"kind,omitempty"`
+	Location                      *string             `json:"location,omitempty"`
+	Type                          *string             `json:"type,omitempty"`
+	Tags                          *map[string]*string `json:"tags,omitempty"`
+	*CertificateDetailsProperties `json:"properties,omitempty"`
 }
 
 // CertificateDetailsProperties is
@@ -848,13 +848,13 @@ type CertificateDetailsProperties struct {
 
 // CertificateEmail is certificate Email
 type CertificateEmail struct {
-	ID         *string                     `json:"id,omitempty"`
-	Name       *string                     `json:"name,omitempty"`
-	Kind       *string                     `json:"kind,omitempty"`
-	Location   *string                     `json:"location,omitempty"`
-	Type       *string                     `json:"type,omitempty"`
-	Tags       *map[string]*string         `json:"tags,omitempty"`
-	Properties *CertificateEmailProperties `json:"properties,omitempty"`
+	ID                          *string             `json:"id,omitempty"`
+	Name                        *string             `json:"name,omitempty"`
+	Kind                        *string             `json:"kind,omitempty"`
+	Location                    *string             `json:"location,omitempty"`
+	Type                        *string             `json:"type,omitempty"`
+	Tags                        *map[string]*string `json:"tags,omitempty"`
+	*CertificateEmailProperties `json:"properties,omitempty"`
 }
 
 // CertificateEmailProperties is
@@ -865,25 +865,25 @@ type CertificateEmailProperties struct {
 
 // CertificateOrder is certificate purchase order
 type CertificateOrder struct {
-	autorest.Response `json:"-"`
-	ID                *string                     `json:"id,omitempty"`
-	Name              *string                     `json:"name,omitempty"`
-	Kind              *string                     `json:"kind,omitempty"`
-	Location          *string                     `json:"location,omitempty"`
-	Type              *string                     `json:"type,omitempty"`
-	Tags              *map[string]*string         `json:"tags,omitempty"`
-	Properties        *CertificateOrderProperties `json:"properties,omitempty"`
+	autorest.Response           `json:"-"`
+	ID                          *string             `json:"id,omitempty"`
+	Name                        *string             `json:"name,omitempty"`
+	Kind                        *string             `json:"kind,omitempty"`
+	Location                    *string             `json:"location,omitempty"`
+	Type                        *string             `json:"type,omitempty"`
+	Tags                        *map[string]*string `json:"tags,omitempty"`
+	*CertificateOrderProperties `json:"properties,omitempty"`
 }
 
 // CertificateOrderAction is represents a certificate action
 type CertificateOrderAction struct {
-	ID         *string                           `json:"id,omitempty"`
-	Name       *string                           `json:"name,omitempty"`
-	Kind       *string                           `json:"kind,omitempty"`
-	Location   *string                           `json:"location,omitempty"`
-	Type       *string                           `json:"type,omitempty"`
-	Tags       *map[string]*string               `json:"tags,omitempty"`
-	Properties *CertificateOrderActionProperties `json:"properties,omitempty"`
+	ID                                *string             `json:"id,omitempty"`
+	Name                              *string             `json:"name,omitempty"`
+	Kind                              *string             `json:"kind,omitempty"`
+	Location                          *string             `json:"location,omitempty"`
+	Type                              *string             `json:"type,omitempty"`
+	Tags                              *map[string]*string `json:"tags,omitempty"`
+	*CertificateOrderActionProperties `json:"properties,omitempty"`
 }
 
 // CertificateOrderActionProperties is
@@ -895,14 +895,14 @@ type CertificateOrderActionProperties struct {
 // CertificateOrderCertificate is class representing the Key Vault container
 // for certificate purchased through Azure
 type CertificateOrderCertificate struct {
-	autorest.Response `json:"-"`
-	ID                *string                                `json:"id,omitempty"`
-	Name              *string                                `json:"name,omitempty"`
-	Kind              *string                                `json:"kind,omitempty"`
-	Location          *string                                `json:"location,omitempty"`
-	Type              *string                                `json:"type,omitempty"`
-	Tags              *map[string]*string                    `json:"tags,omitempty"`
-	Properties        *CertificateOrderCertificateProperties `json:"properties,omitempty"`
+	autorest.Response                      `json:"-"`
+	ID                                     *string             `json:"id,omitempty"`
+	Name                                   *string             `json:"name,omitempty"`
+	Kind                                   *string             `json:"kind,omitempty"`
+	Location                               *string             `json:"location,omitempty"`
+	Type                                   *string             `json:"type,omitempty"`
+	Tags                                   *map[string]*string `json:"tags,omitempty"`
+	*CertificateOrderCertificateProperties `json:"properties,omitempty"`
 }
 
 // CertificateOrderCertificateCollection is collection of ceritificateorder
@@ -992,14 +992,14 @@ type CertificateProperties struct {
 
 // ClassicMobileService is a mobile service
 type ClassicMobileService struct {
-	autorest.Response `json:"-"`
-	ID                *string                         `json:"id,omitempty"`
-	Name              *string                         `json:"name,omitempty"`
-	Kind              *string                         `json:"kind,omitempty"`
-	Location          *string                         `json:"location,omitempty"`
-	Type              *string                         `json:"type,omitempty"`
-	Tags              *map[string]*string             `json:"tags,omitempty"`
-	Properties        *ClassicMobileServiceProperties `json:"properties,omitempty"`
+	autorest.Response               `json:"-"`
+	ID                              *string             `json:"id,omitempty"`
+	Name                            *string             `json:"name,omitempty"`
+	Kind                            *string             `json:"kind,omitempty"`
+	Location                        *string             `json:"location,omitempty"`
+	Type                            *string             `json:"type,omitempty"`
+	Tags                            *map[string]*string `json:"tags,omitempty"`
+	*ClassicMobileServiceProperties `json:"properties,omitempty"`
 }
 
 // ClassicMobileServiceCollection is collection of Classic Mobile Services
@@ -1150,7 +1150,7 @@ type Csr struct {
 	Location          *string             `json:"location,omitempty"`
 	Type              *string             `json:"type,omitempty"`
 	Tags              *map[string]*string `json:"tags,omitempty"`
-	Properties        *CsrProperties      `json:"properties,omitempty"`
+	*CsrProperties    `json:"properties,omitempty"`
 }
 
 // CsrProperties is
@@ -1178,13 +1178,13 @@ type DatabaseBackupSetting struct {
 
 // DeletedSite is reports deleted site including the timestamp of operation
 type DeletedSite struct {
-	ID         *string                `json:"id,omitempty"`
-	Name       *string                `json:"name,omitempty"`
-	Kind       *string                `json:"kind,omitempty"`
-	Location   *string                `json:"location,omitempty"`
-	Type       *string                `json:"type,omitempty"`
-	Tags       *map[string]*string    `json:"tags,omitempty"`
-	Properties *DeletedSiteProperties `json:"properties,omitempty"`
+	ID                     *string             `json:"id,omitempty"`
+	Name                   *string             `json:"name,omitempty"`
+	Kind                   *string             `json:"kind,omitempty"`
+	Location               *string             `json:"location,omitempty"`
+	Type                   *string             `json:"type,omitempty"`
+	Tags                   *map[string]*string `json:"tags,omitempty"`
+	*DeletedSiteProperties `json:"properties,omitempty"`
 }
 
 // DeletedSiteCollection is collection of deleted sites
@@ -1242,14 +1242,14 @@ type DeletedSiteProperties struct {
 
 // Deployment is represents user crendentials used for publishing activity
 type Deployment struct {
-	autorest.Response `json:"-"`
-	ID                *string               `json:"id,omitempty"`
-	Name              *string               `json:"name,omitempty"`
-	Kind              *string               `json:"kind,omitempty"`
-	Location          *string               `json:"location,omitempty"`
-	Type              *string               `json:"type,omitempty"`
-	Tags              *map[string]*string   `json:"tags,omitempty"`
-	Properties        *DeploymentProperties `json:"properties,omitempty"`
+	autorest.Response     `json:"-"`
+	ID                    *string             `json:"id,omitempty"`
+	Name                  *string             `json:"name,omitempty"`
+	Kind                  *string             `json:"kind,omitempty"`
+	Location              *string             `json:"location,omitempty"`
+	Type                  *string             `json:"type,omitempty"`
+	Tags                  *map[string]*string `json:"tags,omitempty"`
+	*DeploymentProperties `json:"properties,omitempty"`
 }
 
 // DeploymentCollection is collection of app deployments
@@ -1294,7 +1294,7 @@ type Domain struct {
 	Location          *string             `json:"location,omitempty"`
 	Type              *string             `json:"type,omitempty"`
 	Tags              *map[string]*string `json:"tags,omitempty"`
-	Properties        *DomainProperties   `json:"properties,omitempty"`
+	*DomainProperties `json:"properties,omitempty"`
 }
 
 // DomainAvailablilityCheckResult is domain availablility check result
@@ -1370,13 +1370,13 @@ type DomainRecommendationSearchParameters struct {
 
 // DomainRegistrationInput is domain registration input for validation Api
 type DomainRegistrationInput struct {
-	ID         *string                            `json:"id,omitempty"`
-	Name       *string                            `json:"name,omitempty"`
-	Kind       *string                            `json:"kind,omitempty"`
-	Location   *string                            `json:"location,omitempty"`
-	Type       *string                            `json:"type,omitempty"`
-	Tags       *map[string]*string                `json:"tags,omitempty"`
-	Properties *DomainRegistrationInputProperties `json:"properties,omitempty"`
+	ID                                 *string             `json:"id,omitempty"`
+	Name                               *string             `json:"name,omitempty"`
+	Kind                               *string             `json:"kind,omitempty"`
+	Location                           *string             `json:"location,omitempty"`
+	Type                               *string             `json:"type,omitempty"`
+	Tags                               *map[string]*string `json:"tags,omitempty"`
+	*DomainRegistrationInputProperties `json:"properties,omitempty"`
 }
 
 // DomainRegistrationInputProperties is
@@ -1425,13 +1425,13 @@ type FileSystemHTTPLogsConfig struct {
 
 // GeoRegion is geographical region
 type GeoRegion struct {
-	ID         *string              `json:"id,omitempty"`
-	Name       *string              `json:"name,omitempty"`
-	Kind       *string              `json:"kind,omitempty"`
-	Location   *string              `json:"location,omitempty"`
-	Type       *string              `json:"type,omitempty"`
-	Tags       *map[string]*string  `json:"tags,omitempty"`
-	Properties *GeoRegionProperties `json:"properties,omitempty"`
+	ID                   *string             `json:"id,omitempty"`
+	Name                 *string             `json:"name,omitempty"`
+	Kind                 *string             `json:"kind,omitempty"`
+	Location             *string             `json:"location,omitempty"`
+	Type                 *string             `json:"type,omitempty"`
+	Tags                 *map[string]*string `json:"tags,omitempty"`
+	*GeoRegionProperties `json:"properties,omitempty"`
 }
 
 // GeoRegionCollection is collection of geo regions
@@ -1473,14 +1473,14 @@ type HandlerMapping struct {
 // HostingEnvironment is description of an hostingEnvironment (App Service
 // Environment)
 type HostingEnvironment struct {
-	autorest.Response `json:"-"`
-	ID                *string                       `json:"id,omitempty"`
-	Name              *string                       `json:"name,omitempty"`
-	Kind              *string                       `json:"kind,omitempty"`
-	Location          *string                       `json:"location,omitempty"`
-	Type              *string                       `json:"type,omitempty"`
-	Tags              *map[string]*string           `json:"tags,omitempty"`
-	Properties        *HostingEnvironmentProperties `json:"properties,omitempty"`
+	autorest.Response             `json:"-"`
+	ID                            *string             `json:"id,omitempty"`
+	Name                          *string             `json:"name,omitempty"`
+	Kind                          *string             `json:"kind,omitempty"`
+	Location                      *string             `json:"location,omitempty"`
+	Type                          *string             `json:"type,omitempty"`
+	Tags                          *map[string]*string `json:"tags,omitempty"`
+	*HostingEnvironmentProperties `json:"properties,omitempty"`
 }
 
 // HostingEnvironmentCollection is collection of hosting environments (App
@@ -1567,14 +1567,14 @@ type HostName struct {
 
 // HostNameBinding is a host name binding object
 type HostNameBinding struct {
-	autorest.Response `json:"-"`
-	ID                *string                    `json:"id,omitempty"`
-	Name              *string                    `json:"name,omitempty"`
-	Kind              *string                    `json:"kind,omitempty"`
-	Location          *string                    `json:"location,omitempty"`
-	Type              *string                    `json:"type,omitempty"`
-	Tags              *map[string]*string        `json:"tags,omitempty"`
-	Properties        *HostNameBindingProperties `json:"properties,omitempty"`
+	autorest.Response          `json:"-"`
+	ID                         *string             `json:"id,omitempty"`
+	Name                       *string             `json:"name,omitempty"`
+	Kind                       *string             `json:"kind,omitempty"`
+	Location                   *string             `json:"location,omitempty"`
+	Type                       *string             `json:"type,omitempty"`
+	Tags                       *map[string]*string `json:"tags,omitempty"`
+	*HostNameBindingProperties `json:"properties,omitempty"`
 }
 
 // HostNameBindingCollection is collection of host name bindings
@@ -1685,14 +1685,14 @@ type LocalizableString struct {
 
 // ManagedHostingEnvironment is description of a managed hosting environment
 type ManagedHostingEnvironment struct {
-	autorest.Response `json:"-"`
-	ID                *string                              `json:"id,omitempty"`
-	Name              *string                              `json:"name,omitempty"`
-	Kind              *string                              `json:"kind,omitempty"`
-	Location          *string                              `json:"location,omitempty"`
-	Type              *string                              `json:"type,omitempty"`
-	Tags              *map[string]*string                  `json:"tags,omitempty"`
-	Properties        *ManagedHostingEnvironmentProperties `json:"properties,omitempty"`
+	autorest.Response                    `json:"-"`
+	ID                                   *string             `json:"id,omitempty"`
+	Name                                 *string             `json:"name,omitempty"`
+	Kind                                 *string             `json:"kind,omitempty"`
+	Location                             *string             `json:"location,omitempty"`
+	Type                                 *string             `json:"type,omitempty"`
+	Tags                                 *map[string]*string `json:"tags,omitempty"`
+	*ManagedHostingEnvironmentProperties `json:"properties,omitempty"`
 }
 
 // ManagedHostingEnvironmentCollection is collection of managed hosting
@@ -1739,14 +1739,14 @@ type MetricAvailabilily struct {
 
 // MetricDefinition is class repesenting metadata for the metrics
 type MetricDefinition struct {
-	autorest.Response `json:"-"`
-	ID                *string                     `json:"id,omitempty"`
-	Name              *string                     `json:"name,omitempty"`
-	Kind              *string                     `json:"kind,omitempty"`
-	Location          *string                     `json:"location,omitempty"`
-	Type              *string                     `json:"type,omitempty"`
-	Tags              *map[string]*string         `json:"tags,omitempty"`
-	Properties        *MetricDefinitionProperties `json:"properties,omitempty"`
+	autorest.Response           `json:"-"`
+	ID                          *string             `json:"id,omitempty"`
+	Name                        *string             `json:"name,omitempty"`
+	Kind                        *string             `json:"kind,omitempty"`
+	Location                    *string             `json:"location,omitempty"`
+	Type                        *string             `json:"type,omitempty"`
+	Tags                        *map[string]*string `json:"tags,omitempty"`
+	*MetricDefinitionProperties `json:"properties,omitempty"`
 }
 
 // MetricDefinitionCollection is collection of metric defintions
@@ -1819,14 +1819,14 @@ type NetworkAccessControlEntry struct {
 // features (presently VNET integration and Hybrid Connections)
 // for a web app.
 type NetworkFeatures struct {
-	autorest.Response `json:"-"`
-	ID                *string                    `json:"id,omitempty"`
-	Name              *string                    `json:"name,omitempty"`
-	Kind              *string                    `json:"kind,omitempty"`
-	Location          *string                    `json:"location,omitempty"`
-	Type              *string                    `json:"type,omitempty"`
-	Tags              *map[string]*string        `json:"tags,omitempty"`
-	Properties        *NetworkFeaturesProperties `json:"properties,omitempty"`
+	autorest.Response          `json:"-"`
+	ID                         *string             `json:"id,omitempty"`
+	Name                       *string             `json:"name,omitempty"`
+	Kind                       *string             `json:"kind,omitempty"`
+	Location                   *string             `json:"location,omitempty"`
+	Type                       *string             `json:"type,omitempty"`
+	Tags                       *map[string]*string `json:"tags,omitempty"`
+	*NetworkFeaturesProperties `json:"properties,omitempty"`
 }
 
 // NetworkFeaturesProperties is
@@ -1907,13 +1907,13 @@ type RecommendationRule struct {
 // ReissueCertificateOrderRequest is class representing certificate reissue
 // request
 type ReissueCertificateOrderRequest struct {
-	ID         *string                                   `json:"id,omitempty"`
-	Name       *string                                   `json:"name,omitempty"`
-	Kind       *string                                   `json:"kind,omitempty"`
-	Location   *string                                   `json:"location,omitempty"`
-	Type       *string                                   `json:"type,omitempty"`
-	Tags       *map[string]*string                       `json:"tags,omitempty"`
-	Properties *ReissueCertificateOrderRequestProperties `json:"properties,omitempty"`
+	ID                                        *string             `json:"id,omitempty"`
+	Name                                      *string             `json:"name,omitempty"`
+	Kind                                      *string             `json:"kind,omitempty"`
+	Location                                  *string             `json:"location,omitempty"`
+	Type                                      *string             `json:"type,omitempty"`
+	Tags                                      *map[string]*string `json:"tags,omitempty"`
+	*ReissueCertificateOrderRequestProperties `json:"properties,omitempty"`
 }
 
 // ReissueCertificateOrderRequestProperties is
@@ -1925,14 +1925,14 @@ type ReissueCertificateOrderRequestProperties struct {
 // RelayServiceConnectionEntity is class that represents a Biztalk Hybrid
 // Connection
 type RelayServiceConnectionEntity struct {
-	autorest.Response `json:"-"`
-	ID                *string                                 `json:"id,omitempty"`
-	Name              *string                                 `json:"name,omitempty"`
-	Kind              *string                                 `json:"kind,omitempty"`
-	Location          *string                                 `json:"location,omitempty"`
-	Type              *string                                 `json:"type,omitempty"`
-	Tags              *map[string]*string                     `json:"tags,omitempty"`
-	Properties        *RelayServiceConnectionEntityProperties `json:"properties,omitempty"`
+	autorest.Response                       `json:"-"`
+	ID                                      *string             `json:"id,omitempty"`
+	Name                                    *string             `json:"name,omitempty"`
+	Kind                                    *string             `json:"kind,omitempty"`
+	Location                                *string             `json:"location,omitempty"`
+	Type                                    *string             `json:"type,omitempty"`
+	Tags                                    *map[string]*string `json:"tags,omitempty"`
+	*RelayServiceConnectionEntityProperties `json:"properties,omitempty"`
 }
 
 // RelayServiceConnectionEntityProperties is
@@ -1948,13 +1948,13 @@ type RelayServiceConnectionEntityProperties struct {
 
 // RenewCertificateOrderRequest is class representing certificate renew request
 type RenewCertificateOrderRequest struct {
-	ID         *string                                 `json:"id,omitempty"`
-	Name       *string                                 `json:"name,omitempty"`
-	Kind       *string                                 `json:"kind,omitempty"`
-	Location   *string                                 `json:"location,omitempty"`
-	Type       *string                                 `json:"type,omitempty"`
-	Tags       *map[string]*string                     `json:"tags,omitempty"`
-	Properties *RenewCertificateOrderRequestProperties `json:"properties,omitempty"`
+	ID                                      *string             `json:"id,omitempty"`
+	Name                                    *string             `json:"name,omitempty"`
+	Kind                                    *string             `json:"kind,omitempty"`
+	Location                                *string             `json:"location,omitempty"`
+	Type                                    *string             `json:"type,omitempty"`
+	Tags                                    *map[string]*string `json:"tags,omitempty"`
+	*RenewCertificateOrderRequestProperties `json:"properties,omitempty"`
 }
 
 // RenewCertificateOrderRequestProperties is
@@ -2043,14 +2043,14 @@ type ResourceNameAvailabilityRequest struct {
 
 // RestoreRequest is description of a restore request
 type RestoreRequest struct {
-	autorest.Response `json:"-"`
-	ID                *string                   `json:"id,omitempty"`
-	Name              *string                   `json:"name,omitempty"`
-	Kind              *string                   `json:"kind,omitempty"`
-	Location          *string                   `json:"location,omitempty"`
-	Type              *string                   `json:"type,omitempty"`
-	Tags              *map[string]*string       `json:"tags,omitempty"`
-	Properties        *RestoreRequestProperties `json:"properties,omitempty"`
+	autorest.Response         `json:"-"`
+	ID                        *string             `json:"id,omitempty"`
+	Name                      *string             `json:"name,omitempty"`
+	Kind                      *string             `json:"kind,omitempty"`
+	Location                  *string             `json:"location,omitempty"`
+	Type                      *string             `json:"type,omitempty"`
+	Tags                      *map[string]*string `json:"tags,omitempty"`
+	*RestoreRequestProperties `json:"properties,omitempty"`
 }
 
 // RestoreRequestProperties is
@@ -2068,14 +2068,14 @@ type RestoreRequestProperties struct {
 
 // RestoreResponse is response for a restore site request
 type RestoreResponse struct {
-	autorest.Response `json:"-"`
-	ID                *string                    `json:"id,omitempty"`
-	Name              *string                    `json:"name,omitempty"`
-	Kind              *string                    `json:"kind,omitempty"`
-	Location          *string                    `json:"location,omitempty"`
-	Type              *string                    `json:"type,omitempty"`
-	Tags              *map[string]*string        `json:"tags,omitempty"`
-	Properties        *RestoreResponseProperties `json:"properties,omitempty"`
+	autorest.Response          `json:"-"`
+	ID                         *string             `json:"id,omitempty"`
+	Name                       *string             `json:"name,omitempty"`
+	Kind                       *string             `json:"kind,omitempty"`
+	Location                   *string             `json:"location,omitempty"`
+	Type                       *string             `json:"type,omitempty"`
+	Tags                       *map[string]*string `json:"tags,omitempty"`
+	*RestoreResponseProperties `json:"properties,omitempty"`
 }
 
 // RestoreResponseProperties is
@@ -2109,15 +2109,15 @@ func (client ServerFarmCollection) ServerFarmCollectionPreparer() (*http.Request
 
 // ServerFarmWithRichSku is app Service Plan Model
 type ServerFarmWithRichSku struct {
-	autorest.Response `json:"-"`
-	ID                *string                          `json:"id,omitempty"`
-	Name              *string                          `json:"name,omitempty"`
-	Kind              *string                          `json:"kind,omitempty"`
-	Location          *string                          `json:"location,omitempty"`
-	Type              *string                          `json:"type,omitempty"`
-	Tags              *map[string]*string              `json:"tags,omitempty"`
-	Properties        *ServerFarmWithRichSkuProperties `json:"properties,omitempty"`
-	Sku               *SkuDescription                  `json:"sku,omitempty"`
+	autorest.Response                `json:"-"`
+	ID                               *string             `json:"id,omitempty"`
+	Name                             *string             `json:"name,omitempty"`
+	Kind                             *string             `json:"kind,omitempty"`
+	Location                         *string             `json:"location,omitempty"`
+	Type                             *string             `json:"type,omitempty"`
+	Tags                             *map[string]*string `json:"tags,omitempty"`
+	*ServerFarmWithRichSkuProperties `json:"properties,omitempty"`
+	Sku                              *SkuDescription `json:"sku,omitempty"`
 }
 
 // ServerFarmWithRichSkuProperties is
@@ -2151,7 +2151,7 @@ type Site struct {
 	Location          *string             `json:"location,omitempty"`
 	Type              *string             `json:"type,omitempty"`
 	Tags              *map[string]*string `json:"tags,omitempty"`
-	Properties        *SiteProperties     `json:"properties,omitempty"`
+	*SiteProperties   `json:"properties,omitempty"`
 }
 
 // SiteAuthSettings is configuration settings for the Azure App Service
@@ -2221,14 +2221,14 @@ func (client SiteCollection) SiteCollectionPreparer() (*http.Request, error) {
 
 // SiteConfig is configuration of Azure web site
 type SiteConfig struct {
-	autorest.Response `json:"-"`
-	ID                *string               `json:"id,omitempty"`
-	Name              *string               `json:"name,omitempty"`
-	Kind              *string               `json:"kind,omitempty"`
-	Location          *string               `json:"location,omitempty"`
-	Type              *string               `json:"type,omitempty"`
-	Tags              *map[string]*string   `json:"tags,omitempty"`
-	Properties        *SiteConfigProperties `json:"properties,omitempty"`
+	autorest.Response     `json:"-"`
+	ID                    *string             `json:"id,omitempty"`
+	Name                  *string             `json:"name,omitempty"`
+	Kind                  *string             `json:"kind,omitempty"`
+	Location              *string             `json:"location,omitempty"`
+	Type                  *string             `json:"type,omitempty"`
+	Tags                  *map[string]*string `json:"tags,omitempty"`
+	*SiteConfigProperties `json:"properties,omitempty"`
 }
 
 // SiteConfigProperties is
@@ -2279,13 +2279,13 @@ type SiteConfigProperties struct {
 
 // SiteInstance is instance of a web app
 type SiteInstance struct {
-	ID         *string                 `json:"id,omitempty"`
-	Name       *string                 `json:"name,omitempty"`
-	Kind       *string                 `json:"kind,omitempty"`
-	Location   *string                 `json:"location,omitempty"`
-	Type       *string                 `json:"type,omitempty"`
-	Tags       *map[string]*string     `json:"tags,omitempty"`
-	Properties *SiteInstanceProperties `json:"properties,omitempty"`
+	ID                      *string             `json:"id,omitempty"`
+	Name                    *string             `json:"name,omitempty"`
+	Kind                    *string             `json:"kind,omitempty"`
+	Location                *string             `json:"location,omitempty"`
+	Type                    *string             `json:"type,omitempty"`
+	Tags                    *map[string]*string `json:"tags,omitempty"`
+	*SiteInstanceProperties `json:"properties,omitempty"`
 }
 
 // SiteInstanceCollection is collection of site instances
@@ -2321,14 +2321,14 @@ type SiteLimits struct {
 
 // SiteLogsConfig is configuration of Azure web site
 type SiteLogsConfig struct {
-	autorest.Response `json:"-"`
-	ID                *string                   `json:"id,omitempty"`
-	Name              *string                   `json:"name,omitempty"`
-	Kind              *string                   `json:"kind,omitempty"`
-	Location          *string                   `json:"location,omitempty"`
-	Type              *string                   `json:"type,omitempty"`
-	Tags              *map[string]*string       `json:"tags,omitempty"`
-	Properties        *SiteLogsConfigProperties `json:"properties,omitempty"`
+	autorest.Response         `json:"-"`
+	ID                        *string             `json:"id,omitempty"`
+	Name                      *string             `json:"name,omitempty"`
+	Kind                      *string             `json:"kind,omitempty"`
+	Location                  *string             `json:"location,omitempty"`
+	Type                      *string             `json:"type,omitempty"`
+	Tags                      *map[string]*string `json:"tags,omitempty"`
+	*SiteLogsConfigProperties `json:"properties,omitempty"`
 }
 
 // SiteLogsConfigProperties is
@@ -2374,14 +2374,14 @@ type SiteProperties struct {
 
 // SiteSourceControl is describes the source control configuration for web app
 type SiteSourceControl struct {
-	autorest.Response `json:"-"`
-	ID                *string                      `json:"id,omitempty"`
-	Name              *string                      `json:"name,omitempty"`
-	Kind              *string                      `json:"kind,omitempty"`
-	Location          *string                      `json:"location,omitempty"`
-	Type              *string                      `json:"type,omitempty"`
-	Tags              *map[string]*string          `json:"tags,omitempty"`
-	Properties        *SiteSourceControlProperties `json:"properties,omitempty"`
+	autorest.Response            `json:"-"`
+	ID                           *string             `json:"id,omitempty"`
+	Name                         *string             `json:"name,omitempty"`
+	Kind                         *string             `json:"kind,omitempty"`
+	Location                     *string             `json:"location,omitempty"`
+	Type                         *string             `json:"type,omitempty"`
+	Tags                         *map[string]*string `json:"tags,omitempty"`
+	*SiteSourceControlProperties `json:"properties,omitempty"`
 }
 
 // SiteSourceControlProperties is
@@ -2447,14 +2447,14 @@ type SlotConfigNames struct {
 
 // SlotConfigNamesResource is slot Config names azure resource
 type SlotConfigNamesResource struct {
-	autorest.Response `json:"-"`
-	ID                *string                            `json:"id,omitempty"`
-	Name              *string                            `json:"name,omitempty"`
-	Kind              *string                            `json:"kind,omitempty"`
-	Location          *string                            `json:"location,omitempty"`
-	Type              *string                            `json:"type,omitempty"`
-	Tags              *map[string]*string                `json:"tags,omitempty"`
-	Properties        *SlotConfigNamesResourceProperties `json:"properties,omitempty"`
+	autorest.Response                  `json:"-"`
+	ID                                 *string             `json:"id,omitempty"`
+	Name                               *string             `json:"name,omitempty"`
+	Kind                               *string             `json:"kind,omitempty"`
+	Location                           *string             `json:"location,omitempty"`
+	Type                               *string             `json:"type,omitempty"`
+	Tags                               *map[string]*string `json:"tags,omitempty"`
+	*SlotConfigNamesResourceProperties `json:"properties,omitempty"`
 }
 
 // SlotConfigNamesResourceProperties is
@@ -2466,13 +2466,13 @@ type SlotConfigNamesResourceProperties struct {
 // SlotDifference is an object describing the difference in setting values
 // between two web app slots
 type SlotDifference struct {
-	ID         *string                   `json:"id,omitempty"`
-	Name       *string                   `json:"name,omitempty"`
-	Kind       *string                   `json:"kind,omitempty"`
-	Location   *string                   `json:"location,omitempty"`
-	Type       *string                   `json:"type,omitempty"`
-	Tags       *map[string]*string       `json:"tags,omitempty"`
-	Properties *SlotDifferenceProperties `json:"properties,omitempty"`
+	ID                        *string             `json:"id,omitempty"`
+	Name                      *string             `json:"name,omitempty"`
+	Kind                      *string             `json:"kind,omitempty"`
+	Location                  *string             `json:"location,omitempty"`
+	Type                      *string             `json:"type,omitempty"`
+	Tags                      *map[string]*string `json:"tags,omitempty"`
+	*SlotDifferenceProperties `json:"properties,omitempty"`
 }
 
 // SlotDifferenceCollection is collection of Slot Differences
@@ -2514,14 +2514,14 @@ type SlowRequestsBasedTrigger struct {
 
 // SourceControl is describes the Source Control OAuth Token
 type SourceControl struct {
-	autorest.Response `json:"-"`
-	ID                *string                  `json:"id,omitempty"`
-	Name              *string                  `json:"name,omitempty"`
-	Kind              *string                  `json:"kind,omitempty"`
-	Location          *string                  `json:"location,omitempty"`
-	Type              *string                  `json:"type,omitempty"`
-	Tags              *map[string]*string      `json:"tags,omitempty"`
-	Properties        *SourceControlProperties `json:"properties,omitempty"`
+	autorest.Response        `json:"-"`
+	ID                       *string             `json:"id,omitempty"`
+	Name                     *string             `json:"name,omitempty"`
+	Kind                     *string             `json:"kind,omitempty"`
+	Location                 *string             `json:"location,omitempty"`
+	Type                     *string             `json:"type,omitempty"`
+	Tags                     *map[string]*string `json:"tags,omitempty"`
+	*SourceControlProperties `json:"properties,omitempty"`
 }
 
 // SourceControlCollection is collection of soure controls
@@ -2635,14 +2635,14 @@ func (client TldLegalAgreementCollection) TldLegalAgreementCollectionPreparer() 
 
 // TopLevelDomain is a top level domain object
 type TopLevelDomain struct {
-	autorest.Response `json:"-"`
-	ID                *string                   `json:"id,omitempty"`
-	Name              *string                   `json:"name,omitempty"`
-	Kind              *string                   `json:"kind,omitempty"`
-	Location          *string                   `json:"location,omitempty"`
-	Type              *string                   `json:"type,omitempty"`
-	Tags              *map[string]*string       `json:"tags,omitempty"`
-	Properties        *TopLevelDomainProperties `json:"properties,omitempty"`
+	autorest.Response         `json:"-"`
+	ID                        *string             `json:"id,omitempty"`
+	Name                      *string             `json:"name,omitempty"`
+	Kind                      *string             `json:"kind,omitempty"`
+	Location                  *string             `json:"location,omitempty"`
+	Type                      *string             `json:"type,omitempty"`
+	Tags                      *map[string]*string `json:"tags,omitempty"`
+	*TopLevelDomainProperties `json:"properties,omitempty"`
 }
 
 // TopLevelDomainAgreementOption is options for retrieving the list of top
@@ -2678,13 +2678,13 @@ type TopLevelDomainProperties struct {
 
 // Usage is class that represents usage of the quota resource.
 type Usage struct {
-	ID         *string             `json:"id,omitempty"`
-	Name       *string             `json:"name,omitempty"`
-	Kind       *string             `json:"kind,omitempty"`
-	Location   *string             `json:"location,omitempty"`
-	Type       *string             `json:"type,omitempty"`
-	Tags       *map[string]*string `json:"tags,omitempty"`
-	Properties *UsageProperties    `json:"properties,omitempty"`
+	ID               *string             `json:"id,omitempty"`
+	Name             *string             `json:"name,omitempty"`
+	Kind             *string             `json:"kind,omitempty"`
+	Location         *string             `json:"location,omitempty"`
+	Type             *string             `json:"type,omitempty"`
+	Tags             *map[string]*string `json:"tags,omitempty"`
+	*UsageProperties `json:"properties,omitempty"`
 }
 
 // UsageCollection is collection of usages
@@ -2728,7 +2728,7 @@ type User struct {
 	Location          *string             `json:"location,omitempty"`
 	Type              *string             `json:"type,omitempty"`
 	Tags              *map[string]*string `json:"tags,omitempty"`
-	Properties        *UserProperties     `json:"properties,omitempty"`
+	*UserProperties   `json:"properties,omitempty"`
 }
 
 // UserProperties is
@@ -2772,14 +2772,14 @@ type VirtualNetworkProfile struct {
 // VnetGateway is the VnetGateway contract. This is used to give the vnet
 // gateway access to the VPN package.
 type VnetGateway struct {
-	autorest.Response `json:"-"`
-	ID                *string                `json:"id,omitempty"`
-	Name              *string                `json:"name,omitempty"`
-	Kind              *string                `json:"kind,omitempty"`
-	Location          *string                `json:"location,omitempty"`
-	Type              *string                `json:"type,omitempty"`
-	Tags              *map[string]*string    `json:"tags,omitempty"`
-	Properties        *VnetGatewayProperties `json:"properties,omitempty"`
+	autorest.Response      `json:"-"`
+	ID                     *string             `json:"id,omitempty"`
+	Name                   *string             `json:"name,omitempty"`
+	Kind                   *string             `json:"kind,omitempty"`
+	Location               *string             `json:"location,omitempty"`
+	Type                   *string             `json:"type,omitempty"`
+	Tags                   *map[string]*string `json:"tags,omitempty"`
+	*VnetGatewayProperties `json:"properties,omitempty"`
 }
 
 // VnetGatewayProperties is
@@ -2791,14 +2791,14 @@ type VnetGatewayProperties struct {
 // VnetInfo is vNETInfo contract. This contract is public and is a stripped
 // down version of VNETInfoInternal
 type VnetInfo struct {
-	autorest.Response `json:"-"`
-	ID                *string             `json:"id,omitempty"`
-	Name              *string             `json:"name,omitempty"`
-	Kind              *string             `json:"kind,omitempty"`
-	Location          *string             `json:"location,omitempty"`
-	Type              *string             `json:"type,omitempty"`
-	Tags              *map[string]*string `json:"tags,omitempty"`
-	Properties        *VnetInfoProperties `json:"properties,omitempty"`
+	autorest.Response   `json:"-"`
+	ID                  *string             `json:"id,omitempty"`
+	Name                *string             `json:"name,omitempty"`
+	Kind                *string             `json:"kind,omitempty"`
+	Location            *string             `json:"location,omitempty"`
+	Type                *string             `json:"type,omitempty"`
+	Tags                *map[string]*string `json:"tags,omitempty"`
+	*VnetInfoProperties `json:"properties,omitempty"`
 }
 
 // VnetInfoProperties is
@@ -2813,14 +2813,14 @@ type VnetInfoProperties struct {
 
 // VnetRoute is vnetRoute contract used to pass routing information for a vnet.
 type VnetRoute struct {
-	autorest.Response `json:"-"`
-	ID                *string              `json:"id,omitempty"`
-	Name              *string              `json:"name,omitempty"`
-	Kind              *string              `json:"kind,omitempty"`
-	Location          *string              `json:"location,omitempty"`
-	Type              *string              `json:"type,omitempty"`
-	Tags              *map[string]*string  `json:"tags,omitempty"`
-	Properties        *VnetRouteProperties `json:"properties,omitempty"`
+	autorest.Response    `json:"-"`
+	ID                   *string             `json:"id,omitempty"`
+	Name                 *string             `json:"name,omitempty"`
+	Kind                 *string             `json:"kind,omitempty"`
+	Location             *string             `json:"location,omitempty"`
+	Type                 *string             `json:"type,omitempty"`
+	Tags                 *map[string]*string `json:"tags,omitempty"`
+	*VnetRouteProperties `json:"properties,omitempty"`
 }
 
 // VnetRouteProperties is
@@ -2833,15 +2833,15 @@ type VnetRouteProperties struct {
 
 // WorkerPool is worker pool of a hostingEnvironment (App Service Environment)
 type WorkerPool struct {
-	autorest.Response `json:"-"`
-	ID                *string               `json:"id,omitempty"`
-	Name              *string               `json:"name,omitempty"`
-	Kind              *string               `json:"kind,omitempty"`
-	Location          *string               `json:"location,omitempty"`
-	Type              *string               `json:"type,omitempty"`
-	Tags              *map[string]*string   `json:"tags,omitempty"`
-	Properties        *WorkerPoolProperties `json:"properties,omitempty"`
-	Sku               *SkuDescription       `json:"sku,omitempty"`
+	autorest.Response     `json:"-"`
+	ID                    *string             `json:"id,omitempty"`
+	Name                  *string             `json:"name,omitempty"`
+	Kind                  *string             `json:"kind,omitempty"`
+	Location              *string             `json:"location,omitempty"`
+	Type                  *string             `json:"type,omitempty"`
+	Tags                  *map[string]*string `json:"tags,omitempty"`
+	*WorkerPoolProperties `json:"properties,omitempty"`
+	Sku                   *SkuDescription `json:"sku,omitempty"`
 }
 
 // WorkerPoolCollection is collection of worker pools

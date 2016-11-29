@@ -25,7 +25,7 @@ import (
 	"net/http"
 )
 
-// NodeClient is the rEST API for Azure Server Management Service
+// NodeClient is the rEST API for Azure Server Management Service.
 type NodeClient struct {
 	ManagementClient
 }
@@ -40,7 +40,7 @@ func NewNodeClientWithBaseURI(baseURI string, subscriptionID string) NodeClient 
 	return NodeClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// Create creates or updates a management node This method may poll for
+// Create creates or updates a management node. This method may poll for
 // completion. Polling can be canceled by passing the cancel channel
 // argument. The channel will be used to cancel polling and any outstanding
 // HTTP requests.
@@ -196,7 +196,7 @@ func (client NodeClient) DeleteResponder(resp *http.Response) (result autorest.R
 	return
 }
 
-// Get gets a management node
+// Get gets a management node.
 //
 // resourceGroupName is the resource group name uniquely identifies the
 // resource group within the user subscriptionId. nodeName is the node name
@@ -271,7 +271,7 @@ func (client NodeClient) GetResponder(resp *http.Response) (result NodeResource,
 	return
 }
 
-// List returns nodes in a subscription
+// List lists nodes in a subscription.
 func (client NodeClient) List() (result NodeResources, err error) {
 	req, err := client.ListPreparer()
 	if err != nil {
@@ -353,7 +353,7 @@ func (client NodeClient) ListNextResults(lastResults NodeResources) (result Node
 	return
 }
 
-// ListForResourceGroup returns nodes in a resource group
+// ListForResourceGroup lists nodes in a resource group.
 //
 // resourceGroupName is the resource group name uniquely identifies the
 // resource group within the user subscriptionId.
@@ -446,7 +446,7 @@ func (client NodeClient) ListForResourceGroupNextResults(lastResults NodeResourc
 	return
 }
 
-// Update updates a management node This method may poll for completion.
+// Update updates a management node. This method may poll for completion.
 // Polling can be canceled by passing the cancel channel argument. The
 // channel will be used to cancel polling and any outstanding HTTP requests.
 //

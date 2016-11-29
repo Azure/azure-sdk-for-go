@@ -1406,7 +1406,7 @@ func (client SitesClient) CreateOrUpdateSiteSourceControlResponder(resp *http.Re
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
@@ -1475,7 +1475,7 @@ func (client SitesClient) CreateOrUpdateSiteSourceControlSlotResponder(resp *htt
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
@@ -5349,7 +5349,7 @@ func (client SitesClient) GetSiteMetricsPreparer(resourceGroupName string, name 
 		queryParameters["details"] = autorest.Encode("query", *details)
 	}
 	if len(filter) > 0 {
-		queryParameters["$filter"] = autorest.Encode("query", filter)
+		queryParameters["$filter"] = filter
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -5448,7 +5448,7 @@ func (client SitesClient) GetSiteMetricsSlotPreparer(resourceGroupName string, n
 		queryParameters["details"] = autorest.Encode("query", *details)
 	}
 	if len(filter) > 0 {
-		queryParameters["$filter"] = autorest.Encode("query", filter)
+		queryParameters["$filter"] = filter
 	}
 
 	preparer := autorest.CreatePreparer(

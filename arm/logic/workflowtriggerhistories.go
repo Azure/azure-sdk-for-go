@@ -24,8 +24,7 @@ import (
 	"net/http"
 )
 
-// WorkflowTriggerHistoriesClient is the client for the
-// WorkflowTriggerHistories methods of the Logic service.
+// WorkflowTriggerHistoriesClient is the rEST API for Azure Logic Apps.
 type WorkflowTriggerHistoriesClient struct {
 	ManagementClient
 }

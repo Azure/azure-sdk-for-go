@@ -78,20 +78,20 @@ type CheckNameAvailabilityInput struct {
 // API.
 type CheckNameAvailabilityOutput struct {
 	autorest.Response `json:"-"`
-	NameAvailable     *bool                          `json:"NameAvailable,omitempty"`
-	Reason            EntityNameUnavailabilityReason `json:"Reason,omitempty"`
-	Message           *string                        `json:"Message,omitempty"`
+	NameAvailable     *bool                          `json:"nameAvailable,omitempty"`
+	Reason            EntityNameUnavailabilityReason `json:"reason,omitempty"`
+	Message           *string                        `json:"message,omitempty"`
 }
 
 // MediaService is the properties of a Media Service resource.
 type MediaService struct {
-	autorest.Response `json:"-"`
-	ID                *string                 `json:"id,omitempty"`
-	Name              *string                 `json:"name,omitempty"`
-	Type              *string                 `json:"type,omitempty"`
-	Location          *string                 `json:"location,omitempty"`
-	Tags              *map[string]*string     `json:"tags,omitempty"`
-	Properties        *MediaServiceProperties `json:"properties,omitempty"`
+	autorest.Response       `json:"-"`
+	ID                      *string             `json:"id,omitempty"`
+	Name                    *string             `json:"name,omitempty"`
+	Type                    *string             `json:"type,omitempty"`
+	Location                *string             `json:"location,omitempty"`
+	Tags                    *map[string]*string `json:"tags,omitempty"`
+	*MediaServiceProperties `json:"properties,omitempty"`
 }
 
 // MediaServiceCollection is the collection of Media Service resources.
@@ -118,11 +118,13 @@ type RegenerateKeyOutput struct {
 	Key               *string `json:"key,omitempty"`
 }
 
-// Resource is
+// Resource is the Azure Resource Manager resource.
 type Resource struct {
-	ID   *string `json:"id,omitempty"`
-	Name *string `json:"name,omitempty"`
-	Type *string `json:"type,omitempty"`
+	ID       *string             `json:"id,omitempty"`
+	Name     *string             `json:"name,omitempty"`
+	Type     *string             `json:"type,omitempty"`
+	Location *string             `json:"location,omitempty"`
+	Tags     *map[string]*string `json:"tags,omitempty"`
 }
 
 // ServiceKeys is the response body for a ListKeys API.
@@ -145,13 +147,4 @@ type StorageAccount struct {
 // SyncStorageKeysInput is the request  body for a SyncStorageKeys API.
 type SyncStorageKeysInput struct {
 	ID *string `json:"id,omitempty"`
-}
-
-// TrackedResource is aRM tracked resource
-type TrackedResource struct {
-	ID       *string             `json:"id,omitempty"`
-	Name     *string             `json:"name,omitempty"`
-	Type     *string             `json:"type,omitempty"`
-	Location *string             `json:"location,omitempty"`
-	Tags     *map[string]*string `json:"tags,omitempty"`
 }

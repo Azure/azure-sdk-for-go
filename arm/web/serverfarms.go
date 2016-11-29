@@ -654,7 +654,7 @@ func (client ServerFarmsClient) GetServerFarmMetricsPreparer(resourceGroupName s
 		queryParameters["details"] = autorest.Encode("query", *details)
 	}
 	if len(filter) > 0 {
-		queryParameters["$filter"] = autorest.Encode("query", filter)
+		queryParameters["$filter"] = filter
 	}
 
 	preparer := autorest.CreatePreparer(

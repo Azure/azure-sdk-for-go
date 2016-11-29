@@ -1,5 +1,5 @@
 // Package account implements the Azure ARM Account service API version
-// 2015-10-01-preview.
+// 2016-11-01.
 //
 // Creates an Azure Data Lake Analytics account management client.
 package account
@@ -28,7 +28,7 @@ import (
 
 const (
 	// APIVersion is the version of the Account
-	APIVersion = "2015-10-01-preview"
+	APIVersion = "2016-11-01"
 
 	// DefaultBaseURI is the default URI used for the service Account
 	DefaultBaseURI = "https://management.azure.com"

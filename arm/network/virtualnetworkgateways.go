@@ -58,9 +58,9 @@ func NewVirtualNetworkGatewaysClientWithBaseURI(baseURI string, subscriptionID s
 func (client VirtualNetworkGatewaysClient) CreateOrUpdate(resourceGroupName string, virtualNetworkGatewayName string, parameters VirtualNetworkGateway, cancel <-chan struct{}) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: parameters,
-			Constraints: []validation.Constraint{{Target: "parameters.Properties", Name: validation.Null, Rule: true,
-				Chain: []validation.Constraint{{Target: "parameters.Properties.IPConfigurations", Name: validation.Null, Rule: true, Chain: nil},
-					{Target: "parameters.Properties.ProvisioningState", Name: validation.ReadOnly, Rule: true, Chain: nil},
+			Constraints: []validation.Constraint{{Target: "parameters.VirtualNetworkGatewayPropertiesFormat", Name: validation.Null, Rule: true,
+				Chain: []validation.Constraint{{Target: "parameters.VirtualNetworkGatewayPropertiesFormat.IPConfigurations", Name: validation.Null, Rule: true, Chain: nil},
+					{Target: "parameters.VirtualNetworkGatewayPropertiesFormat.ProvisioningState", Name: validation.ReadOnly, Rule: true, Chain: nil},
 				}}}}}); err != nil {
 		return result, validation.NewErrorWithValidationError(err, "network.VirtualNetworkGatewaysClient", "CreateOrUpdate")
 	}

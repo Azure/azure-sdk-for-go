@@ -58,9 +58,9 @@ func NewSecurityGroupsClientWithBaseURI(baseURI string, subscriptionID string) S
 func (client SecurityGroupsClient) CreateOrUpdate(resourceGroupName string, networkSecurityGroupName string, parameters SecurityGroup, cancel <-chan struct{}) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: parameters,
-			Constraints: []validation.Constraint{{Target: "parameters.Properties", Name: validation.Null, Rule: false,
-				Chain: []validation.Constraint{{Target: "parameters.Properties.NetworkInterfaces", Name: validation.ReadOnly, Rule: true, Chain: nil},
-					{Target: "parameters.Properties.Subnets", Name: validation.ReadOnly, Rule: true, Chain: nil},
+			Constraints: []validation.Constraint{{Target: "parameters.SecurityGroupPropertiesFormat", Name: validation.Null, Rule: false,
+				Chain: []validation.Constraint{{Target: "parameters.SecurityGroupPropertiesFormat.NetworkInterfaces", Name: validation.ReadOnly, Rule: true, Chain: nil},
+					{Target: "parameters.SecurityGroupPropertiesFormat.Subnets", Name: validation.ReadOnly, Rule: true, Chain: nil},
 				}}}}}); err != nil {
 		return result, validation.NewErrorWithValidationError(err, "network.SecurityGroupsClient", "CreateOrUpdate")
 	}

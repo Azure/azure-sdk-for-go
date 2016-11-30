@@ -50,8 +50,8 @@ func NewAvailabilitySetsClientWithBaseURI(baseURI string, subscriptionID string)
 func (client AvailabilitySetsClient) CreateOrUpdate(resourceGroupName string, name string, parameters AvailabilitySet) (result AvailabilitySet, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: parameters,
-			Constraints: []validation.Constraint{{Target: "parameters.Properties", Name: validation.Null, Rule: false,
-				Chain: []validation.Constraint{{Target: "parameters.Properties.Statuses", Name: validation.ReadOnly, Rule: true, Chain: nil}}}}}}); err != nil {
+			Constraints: []validation.Constraint{{Target: "parameters.AvailabilitySetProperties", Name: validation.Null, Rule: false,
+				Chain: []validation.Constraint{{Target: "parameters.AvailabilitySetProperties.Statuses", Name: validation.ReadOnly, Rule: true, Chain: nil}}}}}}); err != nil {
 		return result, validation.NewErrorWithValidationError(err, "compute.AvailabilitySetsClient", "CreateOrUpdate")
 	}
 

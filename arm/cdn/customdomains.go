@@ -62,8 +62,8 @@ func (client CustomDomainsClient) Create(resourceGroupName string, profileName s
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}},
 		{TargetValue: customDomainProperties,
-			Constraints: []validation.Constraint{{Target: "customDomainProperties.Properties", Name: validation.Null, Rule: false,
-				Chain: []validation.Constraint{{Target: "customDomainProperties.Properties.HostName", Name: validation.Null, Rule: true, Chain: nil}}}}}}); err != nil {
+			Constraints: []validation.Constraint{{Target: "customDomainProperties.CustomDomainPropertiesParameters", Name: validation.Null, Rule: false,
+				Chain: []validation.Constraint{{Target: "customDomainProperties.CustomDomainPropertiesParameters.HostName", Name: validation.Null, Rule: true, Chain: nil}}}}}}); err != nil {
 		return result, validation.NewErrorWithValidationError(err, "cdn.CustomDomainsClient", "Create")
 	}
 

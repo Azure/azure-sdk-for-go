@@ -57,6 +57,18 @@ const (
 	FILE FileType = "FILE"
 )
 
+// SyncFlag enumerates the values for sync flag.
+type SyncFlag string
+
+const (
+	// CLOSE specifies the close state for sync flag.
+	CLOSE SyncFlag = "CLOSE"
+	// DATA specifies the data state for sync flag.
+	DATA SyncFlag = "DATA"
+	// METADATA specifies the metadata state for sync flag.
+	METADATA SyncFlag = "METADATA"
+)
+
 // ACLStatus is data Lake Store file or directory Access Control List
 // information.
 type ACLStatus struct {
@@ -129,7 +141,8 @@ type AdlsIOException struct {
 }
 
 // AdlsRemoteException is data Lake Store filesystem exception based on the
-// WebHDFS definition for RemoteExceptions.
+// WebHDFS definition for RemoteExceptions. This is a WebHDFS 'catch all'
+// exception
 type AdlsRemoteException struct {
 	JavaClassName *string `json:"javaClassName,omitempty"`
 	Message       *string `json:"message,omitempty"`
@@ -147,6 +160,14 @@ type AdlsRuntimeException struct {
 // is denied. Thrown when a 401 error response code is returned
 // (Unauthorized).
 type AdlsSecurityException struct {
+	JavaClassName *string `json:"javaClassName,omitempty"`
+	Message       *string `json:"message,omitempty"`
+}
+
+// AdlsThrottledException is a WebHDFS exception thrown indicating that the
+// request is being throttled. Reducing the number of requests or request
+// size helps to mitigate this error.
+type AdlsThrottledException struct {
 	JavaClassName *string `json:"javaClassName,omitempty"`
 	Message       *string `json:"message,omitempty"`
 }

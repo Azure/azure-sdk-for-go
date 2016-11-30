@@ -38,11 +38,11 @@ const (
 
 // Assignment is the policy definition.
 type Assignment struct {
-	autorest.Response `json:"-"`
-	Properties        *AssignmentProperties `json:"properties,omitempty"`
-	ID                *string               `json:"id,omitempty"`
-	Type              *string               `json:"type,omitempty"`
-	Name              *string               `json:"name,omitempty"`
+	autorest.Response     `json:"-"`
+	*AssignmentProperties `json:"properties,omitempty"`
+	ID                    *string `json:"id,omitempty"`
+	Type                  *string `json:"type,omitempty"`
+	Name                  *string `json:"name,omitempty"`
 }
 
 // AssignmentListResult is list of policy assignments.
@@ -73,10 +73,10 @@ type AssignmentProperties struct {
 
 // Definition is the policy definition.
 type Definition struct {
-	autorest.Response `json:"-"`
-	Properties        *DefinitionProperties `json:"properties,omitempty"`
-	ID                *string               `json:"id,omitempty"`
-	Name              *string               `json:"name,omitempty"`
+	autorest.Response     `json:"-"`
+	*DefinitionProperties `json:"properties,omitempty"`
+	ID                    *string `json:"id,omitempty"`
+	Name                  *string `json:"name,omitempty"`
 }
 
 // DefinitionListResult is list of policy definitions.

@@ -25,7 +25,7 @@ import (
 	"net/http"
 )
 
-// PowerShellClient is the rEST API for Azure Server Management Service
+// PowerShellClient is the rEST API for Azure Server Management Service.
 type PowerShellClient struct {
 	ManagementClient
 }
@@ -48,8 +48,8 @@ func NewPowerShellClientWithBaseURI(baseURI string, subscriptionID string) Power
 //
 // resourceGroupName is the resource group name uniquely identifies the
 // resource group within the user subscriptionId. nodeName is the node name
-// (256 characters maximum). session is the sessionId from the user pssession
-// is the PowerShell sessionId from the user
+// (256 characters maximum). session is the sessionId from the user.
+// pssession is the PowerShell sessionId from the user.
 func (client PowerShellClient) CancelCommand(resourceGroupName string, nodeName string, session string, pssession string, cancel <-chan struct{}) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
@@ -123,15 +123,15 @@ func (client PowerShellClient) CancelCommandResponder(resp *http.Response) (resu
 	return
 }
 
-// CreateSession creates a PowerShell session This method may poll for
+// CreateSession creates a PowerShell session. This method may poll for
 // completion. Polling can be canceled by passing the cancel channel
 // argument. The channel will be used to cancel polling and any outstanding
 // HTTP requests.
 //
 // resourceGroupName is the resource group name uniquely identifies the
 // resource group within the user subscriptionId. nodeName is the node name
-// (256 characters maximum). session is the sessionId from the user pssession
-// is the PowerShell sessionId from the user
+// (256 characters maximum). session is the sessionId from the user.
+// pssession is the PowerShell sessionId from the user.
 func (client PowerShellClient) CreateSession(resourceGroupName string, nodeName string, session string, pssession string, cancel <-chan struct{}) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
@@ -209,9 +209,9 @@ func (client PowerShellClient) CreateSessionResponder(resp *http.Response) (resu
 //
 // resourceGroupName is the resource group name uniquely identifies the
 // resource group within the user subscriptionId. nodeName is the node name
-// (256 characters maximum). session is the sessionId from the user pssession
-// is the PowerShell sessionId from the user expand is gets current output
-// from an ongoing call. Possible values include: 'output'
+// (256 characters maximum). session is the sessionId from the user.
+// pssession is the PowerShell sessionId from the user. expand is gets
+// current output from an ongoing call. Possible values include: 'output'
 func (client PowerShellClient) GetCommandStatus(resourceGroupName string, nodeName string, session string, pssession string, expand PowerShellExpandOption) (result PowerShellCommandStatus, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
@@ -294,9 +294,10 @@ func (client PowerShellClient) GetCommandStatusResponder(resp *http.Response) (r
 //
 // resourceGroupName is the resource group name uniquely identifies the
 // resource group within the user subscriptionId. nodeName is the node name
-// (256 characters maximum). session is the sessionId from the user pssession
-// is the PowerShell sessionId from the user powerShellCommandParameters is
-// parameters supplied to the Invoke PowerShell Command operation.
+// (256 characters maximum). session is the sessionId from the user.
+// pssession is the PowerShell sessionId from the user.
+// powerShellCommandParameters is parameters supplied to the Invoke
+// PowerShell Command operation.
 func (client PowerShellClient) InvokeCommand(resourceGroupName string, nodeName string, session string, pssession string, powerShellCommandParameters PowerShellCommandParameters, cancel <-chan struct{}) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
@@ -376,7 +377,7 @@ func (client PowerShellClient) InvokeCommandResponder(resp *http.Response) (resu
 //
 // resourceGroupName is the resource group name uniquely identifies the
 // resource group within the user subscriptionId. nodeName is the node name
-// (256 characters maximum). session is the sessionId from the user
+// (256 characters maximum). session is the sessionId from the user.
 func (client PowerShellClient) ListSession(resourceGroupName string, nodeName string, session string) (result PowerShellSessionResources, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
@@ -452,9 +453,10 @@ func (client PowerShellClient) ListSessionResponder(resp *http.Response) (result
 //
 // resourceGroupName is the resource group name uniquely identifies the
 // resource group within the user subscriptionId. nodeName is the node name
-// (256 characters maximum). session is the sessionId from the user pssession
-// is the PowerShell sessionId from the user powerShellTabCompletionParamters
-// is parameters supplied to the tab completion call.
+// (256 characters maximum). session is the sessionId from the user.
+// pssession is the PowerShell sessionId from the user.
+// powerShellTabCompletionParamters is parameters supplied to the tab
+// completion call.
 func (client PowerShellClient) TabCompletion(resourceGroupName string, nodeName string, session string, pssession string, powerShellTabCompletionParamters PowerShellTabCompletionParameters) (result PowerShellTabCompletionResults, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
@@ -536,8 +538,8 @@ func (client PowerShellClient) TabCompletionResponder(resp *http.Response) (resu
 //
 // resourceGroupName is the resource group name uniquely identifies the
 // resource group within the user subscriptionId. nodeName is the node name
-// (256 characters maximum). session is the sessionId from the user pssession
-// is the PowerShell sessionId from the user
+// (256 characters maximum). session is the sessionId from the user.
+// pssession is the PowerShell sessionId from the user.
 func (client PowerShellClient) UpdateCommand(resourceGroupName string, nodeName string, session string, pssession string, cancel <-chan struct{}) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,

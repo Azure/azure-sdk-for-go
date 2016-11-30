@@ -24,8 +24,12 @@ import (
 	"net/http"
 )
 
-// RoleDefinitionsClient is the client for the RoleDefinitions methods of the
-// Authorization service.
+// RoleDefinitionsClient is the role based access control provides you a way
+// to apply granular level policy administration down to individual resources
+// or resource groups. These operations enable you to manage role definitions
+// and role assignments. A role definition describes the set of actions that
+// can be performed on resources. A role assignment grants access to Azure
+// Active Directory users.
 type RoleDefinitionsClient struct {
 	ManagementClient
 }
@@ -44,8 +48,8 @@ func NewRoleDefinitionsClientWithBaseURI(baseURI string, subscriptionID string) 
 
 // CreateOrUpdate creates or updates a role definition.
 //
-// scope is scope roleDefinitionID is role definition id. roleDefinition is
-// role definition.
+// scope is the scope of the role definition. roleDefinitionID is the ID of
+// the role definition. roleDefinition is the values for the role definition.
 func (client RoleDefinitionsClient) CreateOrUpdate(scope string, roleDefinitionID string, roleDefinition RoleDefinition) (result RoleDefinition, err error) {
 	req, err := client.CreateOrUpdatePreparer(scope, roleDefinitionID, roleDefinition)
 	if err != nil {
@@ -106,9 +110,10 @@ func (client RoleDefinitionsClient) CreateOrUpdateResponder(resp *http.Response)
 	return
 }
 
-// Delete deletes the role definition.
+// Delete deletes a role definition.
 //
-// scope is scope roleDefinitionID is role definition id.
+// scope is the scope of the role definition. roleDefinitionID is the ID of
+// the role definition to delete.
 func (client RoleDefinitionsClient) Delete(scope string, roleDefinitionID string) (result RoleDefinition, err error) {
 	req, err := client.DeletePreparer(scope, roleDefinitionID)
 	if err != nil {
@@ -169,7 +174,8 @@ func (client RoleDefinitionsClient) DeleteResponder(resp *http.Response) (result
 
 // Get get role definition by name (GUID).
 //
-// scope is scope roleDefinitionID is role definition Id
+// scope is the scope of the role definition. roleDefinitionID is the ID of
+// the role definition.
 func (client RoleDefinitionsClient) Get(scope string, roleDefinitionID string) (result RoleDefinition, err error) {
 	req, err := client.GetPreparer(scope, roleDefinitionID)
 	if err != nil {
@@ -228,9 +234,9 @@ func (client RoleDefinitionsClient) GetResponder(resp *http.Response) (result Ro
 	return
 }
 
-// GetByID get role definition by name (GUID).
+// GetByID gets a role definition by ID.
 //
-// roleDefinitionID is fully qualified role definition Id
+// roleDefinitionID is the fully qualified role definition ID to get.
 func (client RoleDefinitionsClient) GetByID(roleDefinitionID string) (result RoleDefinition, err error) {
 	req, err := client.GetByIDPreparer(roleDefinitionID)
 	if err != nil {
@@ -288,10 +294,11 @@ func (client RoleDefinitionsClient) GetByIDResponder(resp *http.Response) (resul
 	return
 }
 
-// List get all role definitions that are applicable at scope and above. Use
-// atScopeAndBelow filter to search below the given scope as well
+// List get all role definitions that are applicable at scope and above.
 //
-// scope is scope filter is the filter to apply on the operation.
+// scope is the scope of the role definition. filter is the filter to apply on
+// the operation. Use atScopeAndBelow filter to search below the given scope
+// as well.
 func (client RoleDefinitionsClient) List(scope string, filter string) (result RoleDefinitionListResult, err error) {
 	req, err := client.ListPreparer(scope, filter)
 	if err != nil {

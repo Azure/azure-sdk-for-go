@@ -20,14 +20,20 @@ package containerservice
 
 import (
 	"github.com/Azure/go-autorest/autorest"
+	"github.com/Azure/go-autorest/autorest/to"
+	"net/http"
 )
 
 // OchestratorTypes enumerates the values for ochestrator types.
 type OchestratorTypes string
 
 const (
+	// Custom specifies the custom state for ochestrator types.
+	Custom OchestratorTypes = "Custom"
 	// DCOS specifies the dcos state for ochestrator types.
 	DCOS OchestratorTypes = "DCOS"
+	// Kubernetes specifies the kubernetes state for ochestrator types.
+	Kubernetes OchestratorTypes = "Kubernetes"
 	// Swarm specifies the swarm state for ochestrator types.
 	Swarm OchestratorTypes = "Swarm"
 )
@@ -132,7 +138,7 @@ const (
 	StandardGS5 VMSizeTypes = "Standard_GS5"
 )
 
-// AgentPoolProfile is profile for container service agent pool
+// AgentPoolProfile is profile for the container service agent pool.
 type AgentPoolProfile struct {
 	Name      *string     `json:"name,omitempty"`
 	Count     *int32      `json:"count,omitempty"`
@@ -141,7 +147,7 @@ type AgentPoolProfile struct {
 	Fqdn      *string     `json:"fqdn,omitempty"`
 }
 
-// ContainerService is container service
+// ContainerService is container service.
 type ContainerService struct {
 	autorest.Response `json:"-"`
 	ID                *string             `json:"id,omitempty"`
@@ -149,7 +155,12 @@ type ContainerService struct {
 	Type              *string             `json:"type,omitempty"`
 	Location          *string             `json:"location,omitempty"`
 	Tags              *map[string]*string `json:"tags,omitempty"`
-	Properties        *Properties         `json:"properties,omitempty"`
+	*Properties       `json:"properties,omitempty"`
+}
+
+// CustomProfile is properties to configure a custom container service cluster.
+type CustomProfile struct {
+	Orchestrator *string `json:"orchestrator,omitempty"`
 }
 
 // DiagnosticsProfile is
@@ -157,42 +168,57 @@ type DiagnosticsProfile struct {
 	VMDiagnostics *VMDiagnostics `json:"vmDiagnostics,omitempty"`
 }
 
-// LinuxProfile is profile for Linux VMs
+// LinuxProfile is profile for Linux VMs in the container service cluster.
 type LinuxProfile struct {
 	AdminUsername *string           `json:"adminUsername,omitempty"`
 	SSH           *SSHConfiguration `json:"ssh,omitempty"`
 }
 
-// ListResult is the List Container Service operation response
+// ListResult is the response from the List Container Services operation.
 type ListResult struct {
 	autorest.Response `json:"-"`
 	Value             *[]ContainerService `json:"value,omitempty"`
+	NextLink          *string             `json:"nextLink,omitempty"`
 }
 
-// MasterProfile is profile for container service master
+// ListResultPreparer prepares a request to retrieve the next set of results. It returns
+// nil if no more results exist.
+func (client ListResult) ListResultPreparer() (*http.Request, error) {
+	if client.NextLink == nil || len(to.String(client.NextLink)) <= 0 {
+		return nil, nil
+	}
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(client.NextLink)))
+}
+
+// MasterProfile is profile for the container service master.
 type MasterProfile struct {
 	Count     *int32  `json:"count,omitempty"`
 	DNSPrefix *string `json:"dnsPrefix,omitempty"`
 	Fqdn      *string `json:"fqdn,omitempty"`
 }
 
-// OrchestratorProfile is profile for Orchestrator
+// OrchestratorProfile is profile for the container service orchestrator.
 type OrchestratorProfile struct {
 	OrchestratorType OchestratorTypes `json:"orchestratorType,omitempty"`
 }
 
-// Properties is properties of container service
+// Properties is properties of the container service.
 type Properties struct {
-	ProvisioningState   *string              `json:"provisioningState,omitempty"`
-	OrchestratorProfile *OrchestratorProfile `json:"orchestratorProfile,omitempty"`
-	MasterProfile       *MasterProfile       `json:"masterProfile,omitempty"`
-	AgentPoolProfiles   *[]AgentPoolProfile  `json:"agentPoolProfiles,omitempty"`
-	WindowsProfile      *WindowsProfile      `json:"windowsProfile,omitempty"`
-	LinuxProfile        *LinuxProfile        `json:"linuxProfile,omitempty"`
-	DiagnosticsProfile  *DiagnosticsProfile  `json:"diagnosticsProfile,omitempty"`
+	ProvisioningState       *string                  `json:"provisioningState,omitempty"`
+	OrchestratorProfile     *OrchestratorProfile     `json:"orchestratorProfile,omitempty"`
+	CustomProfile           *CustomProfile           `json:"customProfile,omitempty"`
+	ServicePrincipalProfile *ServicePrincipalProfile `json:"servicePrincipalProfile,omitempty"`
+	MasterProfile           *MasterProfile           `json:"masterProfile,omitempty"`
+	AgentPoolProfiles       *[]AgentPoolProfile      `json:"agentPoolProfiles,omitempty"`
+	WindowsProfile          *WindowsProfile          `json:"windowsProfile,omitempty"`
+	LinuxProfile            *LinuxProfile            `json:"linuxProfile,omitempty"`
+	DiagnosticsProfile      *DiagnosticsProfile      `json:"diagnosticsProfile,omitempty"`
 }
 
-// Resource is the Resource model definition.
+// Resource is the resource model definition.
 type Resource struct {
 	ID       *string             `json:"id,omitempty"`
 	Name     *string             `json:"name,omitempty"`
@@ -201,7 +227,14 @@ type Resource struct {
 	Tags     *map[string]*string `json:"tags,omitempty"`
 }
 
-// SSHConfiguration is sSH configuration for Linux based VMs running on Azure
+// ServicePrincipalProfile is information about a service principal identity
+// for the cluster to use for manipulating Azure APIs.
+type ServicePrincipalProfile struct {
+	ClientID *string `json:"clientId,omitempty"`
+	Secret   *string `json:"secret,omitempty"`
+}
+
+// SSHConfiguration is sSH configuration for Linux-based VMs running on Azure.
 type SSHConfiguration struct {
 	PublicKeys *[]SSHPublicKey `json:"publicKeys,omitempty"`
 }
@@ -211,13 +244,13 @@ type SSHPublicKey struct {
 	KeyData *string `json:"keyData,omitempty"`
 }
 
-// VMDiagnostics is describes VM Diagnostics.
+// VMDiagnostics is profile for diagnostics on the container service VMs.
 type VMDiagnostics struct {
 	Enabled    *bool   `json:"enabled,omitempty"`
 	StorageURI *string `json:"storageUri,omitempty"`
 }
 
-// WindowsProfile is profile for Windows VMs
+// WindowsProfile is profile for Windows VMs in the container service cluster.
 type WindowsProfile struct {
 	AdminUsername *string `json:"adminUsername,omitempty"`
 	AdminPassword *string `json:"adminPassword,omitempty"`

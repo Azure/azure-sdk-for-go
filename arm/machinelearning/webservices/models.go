@@ -1,4 +1,4 @@
-package machinelearning
+package webservices
 
 // Copyright (c) Microsoft and contributors.  All rights reserved.
 //
@@ -42,8 +42,14 @@ const (
 	Byte ColumnFormat = "Byte"
 	// Char specifies the char state for column format.
 	Char ColumnFormat = "Char"
-	// Datetime specifies the datetime state for column format.
-	Datetime ColumnFormat = "Datetime"
+	// Complex128 specifies the complex 128 state for column format.
+	Complex128 ColumnFormat = "Complex128"
+	// Complex64 specifies the complex 64 state for column format.
+	Complex64 ColumnFormat = "Complex64"
+	// DateTime specifies the date time state for column format.
+	DateTime ColumnFormat = "Date-time"
+	// DateTimeOffset specifies the date time offset state for column format.
+	DateTimeOffset ColumnFormat = "Date-timeOffset"
 	// Double specifies the double state for column format.
 	Double ColumnFormat = "Double"
 	// Duration specifies the duration state for column format.
@@ -157,8 +163,6 @@ const (
 type ProvisioningState string
 
 const (
-	// Canceled specifies the canceled state for provisioning state.
-	Canceled ProvisioningState = "Canceled"
 	// Failed specifies the failed state for provisioning state.
 	Failed ProvisioningState = "Failed"
 	// Provisioning specifies the provisioning state for provisioning state.
@@ -262,6 +266,12 @@ type InputPort struct {
 	Type InputPortType `json:"type,omitempty"`
 }
 
+// MachineLearningWorkspace is information about the machine learning
+// workspace containing the experiment that is source for the web service.
+type MachineLearningWorkspace struct {
+	ID *string `json:"id,omitempty"`
+}
+
 // ModeValueInfo is nested parameter definition.
 type ModeValueInfo struct {
 	InterfaceString *string                 `json:"interfaceString,omitempty"`
@@ -362,7 +372,7 @@ type WebServiceProperties struct {
 	RealtimeConfiguration    *RealtimeConfiguration           `json:"realtimeConfiguration,omitempty"`
 	Diagnostics              *DiagnosticsConfiguration        `json:"diagnostics,omitempty"`
 	StorageAccount           *StorageAccount                  `json:"storageAccount,omitempty"`
-	MachineLearningWorkspace *Workspace                       `json:"machineLearningWorkspace,omitempty"`
+	MachineLearningWorkspace *MachineLearningWorkspace        `json:"machineLearningWorkspace,omitempty"`
 	CommitmentPlan           *CommitmentPlan                  `json:"commitmentPlan,omitempty"`
 	Input                    *ServiceInputOutputSpecification `json:"input,omitempty"`
 	Output                   *ServiceInputOutputSpecification `json:"output,omitempty"`
@@ -386,7 +396,7 @@ type WebServicePropertiesForGraph struct {
 	RealtimeConfiguration    *RealtimeConfiguration           `json:"realtimeConfiguration,omitempty"`
 	Diagnostics              *DiagnosticsConfiguration        `json:"diagnostics,omitempty"`
 	StorageAccount           *StorageAccount                  `json:"storageAccount,omitempty"`
-	MachineLearningWorkspace *Workspace                       `json:"machineLearningWorkspace,omitempty"`
+	MachineLearningWorkspace *MachineLearningWorkspace        `json:"machineLearningWorkspace,omitempty"`
 	CommitmentPlan           *CommitmentPlan                  `json:"commitmentPlan,omitempty"`
 	Input                    *ServiceInputOutputSpecification `json:"input,omitempty"`
 	Output                   *ServiceInputOutputSpecification `json:"output,omitempty"`
@@ -394,10 +404,4 @@ type WebServicePropertiesForGraph struct {
 	Assets                   *map[string]*AssetItem           `json:"assets,omitempty"`
 	Parameters               *map[string]*string              `json:"parameters,omitempty"`
 	Package                  *GraphPackage                    `json:"package,omitempty"`
-}
-
-// Workspace is information about the machine learning workspace containing
-// the experiment that is source for the web service.
-type Workspace struct {
-	ID *string `json:"id,omitempty"`
 }

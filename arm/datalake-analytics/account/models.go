@@ -31,10 +31,10 @@ type DataLakeAnalyticsAccountState string
 
 const (
 	// Active specifies the active state for data lake analytics account state.
-	Active DataLakeAnalyticsAccountState = "active"
+	Active DataLakeAnalyticsAccountState = "Active"
 	// Suspended specifies the suspended state for data lake analytics account
 	// state.
-	Suspended DataLakeAnalyticsAccountState = "suspended"
+	Suspended DataLakeAnalyticsAccountState = "Suspended"
 )
 
 // DataLakeAnalyticsAccountStatus enumerates the values for data lake
@@ -71,70 +71,35 @@ const (
 	Suspending DataLakeAnalyticsAccountStatus = "Suspending"
 )
 
-// OperationStatus enumerates the values for operation status.
-type OperationStatus string
-
-const (
-	// OperationStatusFailed specifies the operation status failed state for
-	// operation status.
-	OperationStatusFailed OperationStatus = "Failed"
-	// OperationStatusInProgress specifies the operation status in progress
-	// state for operation status.
-	OperationStatusInProgress OperationStatus = "InProgress"
-	// OperationStatusSucceeded specifies the operation status succeeded state
-	// for operation status.
-	OperationStatusSucceeded OperationStatus = "Succeeded"
-)
-
 // AddDataLakeStoreParameters is additional Data Lake Store parameters.
 type AddDataLakeStoreParameters struct {
-	Properties *DataLakeStoreAccountInfoProperties `json:"properties,omitempty"`
+	*DataLakeStoreAccountInfoProperties `json:"properties,omitempty"`
 }
 
-// AddStorageAccountParameters is additional Azure Storage account parameters.
+// AddStorageAccountParameters is storage account parameters for a storage
+// account being added to a Data Lake Analytics account.
 type AddStorageAccountParameters struct {
-	Properties *StorageAccountProperties `json:"properties,omitempty"`
+	*StorageAccountProperties `json:"properties,omitempty"`
 }
 
-// AzureAsyncOperationResult is the response body contains the status of the
-// specified asynchronous operation, indicating whether it has succeeded, is
-// inprogress, or has failed. Note that this status is distinct from the HTTP
-// status code returned for the Get Operation Status operation itself. If the
-// asynchronous operation succeeded, the response body includes the HTTP
-// status code for the successful request. If the asynchronous operation
-// failed, the response body includes the HTTP status code for the failed
-// request and error information regarding the failure.
-type AzureAsyncOperationResult struct {
-	Status OperationStatus `json:"status,omitempty"`
-	Error  *Error          `json:"error,omitempty"`
-}
-
-// BlobContainer is azure Storage blob container information.
-type BlobContainer struct {
-	autorest.Response `json:"-"`
-	Name              *string                  `json:"name,omitempty"`
-	ID                *string                  `json:"id,omitempty"`
-	Type              *string                  `json:"type,omitempty"`
-	Properties        *BlobContainerProperties `json:"properties,omitempty"`
-}
-
-// BlobContainerProperties is azure Storage blob container properties
-// information.
-type BlobContainerProperties struct {
-	LastModifiedTime *date.Time `json:"lastModifiedTime,omitempty"`
+// CreateStorageAccountInfo is azure Storage account information to add to the
+// Data Lake analytics account being created.
+type CreateStorageAccountInfo struct {
+	Name                      *string `json:"name,omitempty"`
+	*StorageAccountProperties `json:"properties,omitempty"`
 }
 
 // DataLakeAnalyticsAccount is a Data Lake Analytics account object,
 // containing all information associated with the named Data Lake Analytics
 // account.
 type DataLakeAnalyticsAccount struct {
-	autorest.Response `json:"-"`
-	Location          *string                             `json:"location,omitempty"`
-	Name              *string                             `json:"name,omitempty"`
-	Type              *string                             `json:"type,omitempty"`
-	ID                *string                             `json:"id,omitempty"`
-	Tags              *map[string]*string                 `json:"tags,omitempty"`
-	Properties        *DataLakeAnalyticsAccountProperties `json:"properties,omitempty"`
+	autorest.Response                   `json:"-"`
+	ID                                  *string             `json:"id,omitempty"`
+	Name                                *string             `json:"name,omitempty"`
+	Type                                *string             `json:"type,omitempty"`
+	Location                            *string             `json:"location,omitempty"`
+	Tags                                *map[string]*string `json:"tags,omitempty"`
+	*DataLakeAnalyticsAccountProperties `json:"properties,omitempty"`
 }
 
 // DataLakeAnalyticsAccountListDataLakeStoreResult is data Lake Account list
@@ -142,7 +107,6 @@ type DataLakeAnalyticsAccount struct {
 type DataLakeAnalyticsAccountListDataLakeStoreResult struct {
 	autorest.Response `json:"-"`
 	Value             *[]DataLakeStoreAccountInfo `json:"value,omitempty"`
-	Count             *int32                      `json:"count,omitempty"`
 	NextLink          *string                     `json:"nextLink,omitempty"`
 }
 
@@ -183,7 +147,6 @@ func (client DataLakeAnalyticsAccountListResult) DataLakeAnalyticsAccountListRes
 type DataLakeAnalyticsAccountListStorageAccountsResult struct {
 	autorest.Response `json:"-"`
 	Value             *[]StorageAccountInfo `json:"value,omitempty"`
-	Count             *int32                `json:"count,omitempty"`
 	NextLink          *string               `json:"nextLink,omitempty"`
 }
 
@@ -202,23 +165,33 @@ func (client DataLakeAnalyticsAccountListStorageAccountsResult) DataLakeAnalytic
 // DataLakeAnalyticsAccountProperties is the account specific properties that
 // are associated with an underlying Data Lake Analytics account.
 type DataLakeAnalyticsAccountProperties struct {
-	ProvisioningState           DataLakeAnalyticsAccountStatus `json:"provisioningState,omitempty"`
-	State                       DataLakeAnalyticsAccountState  `json:"state,omitempty"`
-	DefaultDataLakeStoreAccount *string                        `json:"defaultDataLakeStoreAccount,omitempty"`
-	MaxDegreeOfParallelism      *int32                         `json:"maxDegreeOfParallelism,omitempty"`
-	MaxJobCount                 *int32                         `json:"maxJobCount,omitempty"`
-	DataLakeStoreAccounts       *[]DataLakeStoreAccountInfo    `json:"dataLakeStoreAccounts,omitempty"`
-	StorageAccounts             *[]StorageAccountInfo          `json:"storageAccounts,omitempty"`
-	CreationTime                *date.Time                     `json:"creationTime,omitempty"`
-	LastModifiedTime            *date.Time                     `json:"lastModifiedTime,omitempty"`
-	Endpoint                    *string                        `json:"endpoint,omitempty"`
+	ProvisioningState            DataLakeAnalyticsAccountStatus `json:"provisioningState,omitempty"`
+	State                        DataLakeAnalyticsAccountState  `json:"state,omitempty"`
+	DefaultDataLakeStoreAccount  *string                        `json:"defaultDataLakeStoreAccount,omitempty"`
+	MaxDegreeOfParallelism       *int32                         `json:"maxDegreeOfParallelism,omitempty"`
+	QueryStoreRetention          *int32                         `json:"queryStoreRetention,omitempty"`
+	MaxJobCount                  *int32                         `json:"maxJobCount,omitempty"`
+	SystemMaxDegreeOfParallelism *int32                         `json:"systemMaxDegreeOfParallelism,omitempty"`
+	SystemMaxJobCount            *int32                         `json:"systemMaxJobCount,omitempty"`
+	DataLakeStoreAccounts        *[]DataLakeStoreAccountInfo    `json:"dataLakeStoreAccounts,omitempty"`
+	StorageAccounts              *[]StorageAccountInfo          `json:"storageAccounts,omitempty"`
+	CreationTime                 *date.Time                     `json:"creationTime,omitempty"`
+	LastModifiedTime             *date.Time                     `json:"lastModifiedTime,omitempty"`
+	Endpoint                     *string                        `json:"endpoint,omitempty"`
+}
+
+// DataLakeAnalyticsAccountUpdateParameters is the parameters that can be used
+// to update an existing Data Lake Analytics account.
+type DataLakeAnalyticsAccountUpdateParameters struct {
+	Tags                                      *map[string]*string `json:"tags,omitempty"`
+	*UpdateDataLakeAnalyticsAccountProperties `json:"properties,omitempty"`
 }
 
 // DataLakeStoreAccountInfo is data Lake Store account information.
 type DataLakeStoreAccountInfo struct {
-	autorest.Response `json:"-"`
-	Name              *string                             `json:"name,omitempty"`
-	Properties        *DataLakeStoreAccountInfoProperties `json:"properties,omitempty"`
+	autorest.Response                   `json:"-"`
+	Name                                *string `json:"name,omitempty"`
+	*DataLakeStoreAccountInfoProperties `json:"properties,omitempty"`
 }
 
 // DataLakeStoreAccountInfoProperties is data Lake Store account properties
@@ -249,26 +222,6 @@ type InnerError struct {
 	Context *string `json:"context,omitempty"`
 }
 
-// ListBlobContainersResult is the list of blob containers associated with the
-// storage account attached to the Data Lake Analytics account.
-type ListBlobContainersResult struct {
-	autorest.Response `json:"-"`
-	Value             *[]BlobContainer `json:"value,omitempty"`
-	NextLink          *string          `json:"nextLink,omitempty"`
-}
-
-// ListBlobContainersResultPreparer prepares a request to retrieve the next set of results. It returns
-// nil if no more results exist.
-func (client ListBlobContainersResult) ListBlobContainersResultPreparer() (*http.Request, error) {
-	if client.NextLink == nil || len(to.String(client.NextLink)) <= 0 {
-		return nil, nil
-	}
-	return autorest.Prepare(&http.Request{},
-		autorest.AsJSON(),
-		autorest.AsGet(),
-		autorest.WithBaseURL(to.String(client.NextLink)))
-}
-
 // ListSasTokensResult is the SAS response that contains the storage account,
 // container and associated SAS token for connection use.
 type ListSasTokensResult struct {
@@ -289,6 +242,35 @@ func (client ListSasTokensResult) ListSasTokensResultPreparer() (*http.Request, 
 		autorest.WithBaseURL(to.String(client.NextLink)))
 }
 
+// ListStorageContainersResult is the list of blob containers associated with
+// the storage account attached to the Data Lake Analytics account.
+type ListStorageContainersResult struct {
+	autorest.Response `json:"-"`
+	Value             *[]StorageContainer `json:"value,omitempty"`
+	NextLink          *string             `json:"nextLink,omitempty"`
+}
+
+// ListStorageContainersResultPreparer prepares a request to retrieve the next set of results. It returns
+// nil if no more results exist.
+func (client ListStorageContainersResult) ListStorageContainersResultPreparer() (*http.Request, error) {
+	if client.NextLink == nil || len(to.String(client.NextLink)) <= 0 {
+		return nil, nil
+	}
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(client.NextLink)))
+}
+
+// Resource is the Resource model definition.
+type Resource struct {
+	ID       *string             `json:"id,omitempty"`
+	Name     *string             `json:"name,omitempty"`
+	Type     *string             `json:"type,omitempty"`
+	Location *string             `json:"location,omitempty"`
+	Tags     *map[string]*string `json:"tags,omitempty"`
+}
+
 // SasTokenInfo is sAS token information.
 type SasTokenInfo struct {
 	AccessToken *string `json:"accessToken,omitempty"`
@@ -296,13 +278,49 @@ type SasTokenInfo struct {
 
 // StorageAccountInfo is azure Storage account information.
 type StorageAccountInfo struct {
-	autorest.Response `json:"-"`
-	Name              *string                   `json:"name,omitempty"`
-	Properties        *StorageAccountProperties `json:"properties,omitempty"`
+	autorest.Response         `json:"-"`
+	Name                      *string `json:"name,omitempty"`
+	*StorageAccountProperties `json:"properties,omitempty"`
 }
 
 // StorageAccountProperties is azure Storage account properties information.
 type StorageAccountProperties struct {
+	AccessKey *string `json:"accessKey,omitempty"`
+	Suffix    *string `json:"suffix,omitempty"`
+}
+
+// StorageContainer is azure Storage blob container information.
+type StorageContainer struct {
+	autorest.Response           `json:"-"`
+	Name                        *string `json:"name,omitempty"`
+	ID                          *string `json:"id,omitempty"`
+	Type                        *string `json:"type,omitempty"`
+	*StorageContainerProperties `json:"properties,omitempty"`
+}
+
+// StorageContainerProperties is azure Storage blob container properties
+// information.
+type StorageContainerProperties struct {
+	LastModifiedTime *date.Time `json:"lastModifiedTime,omitempty"`
+}
+
+// UpdateDataLakeAnalyticsAccountProperties is the properties to update that
+// are associated with an underlying Data Lake Analytics account to.
+type UpdateDataLakeAnalyticsAccountProperties struct {
+	MaxDegreeOfParallelism *int32 `json:"maxDegreeOfParallelism,omitempty"`
+	QueryStoreRetention    *int32 `json:"queryStoreRetention,omitempty"`
+	MaxJobCount            *int32 `json:"maxJobCount,omitempty"`
+}
+
+// UpdateStorageAccountParameters is storage account parameters for a storage
+// account being updated in a Data Lake Analytics account.
+type UpdateStorageAccountParameters struct {
+	*UpdateStorageAccountProperties `json:"properties,omitempty"`
+}
+
+// UpdateStorageAccountProperties is azure Storage account properties
+// information to update.
+type UpdateStorageAccountProperties struct {
 	AccessKey *string `json:"accessKey,omitempty"`
 	Suffix    *string `json:"suffix,omitempty"`
 }

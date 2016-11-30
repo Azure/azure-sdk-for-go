@@ -61,7 +61,7 @@ const (
 
 // AdmCredential is description of a NotificationHub AdmCredential.
 type AdmCredential struct {
-	Properties *AdmCredentialProperties `json:"properties,omitempty"`
+	*AdmCredentialProperties `json:"properties,omitempty"`
 }
 
 // AdmCredentialProperties is description of a NotificationHub AdmCredential.
@@ -73,7 +73,7 @@ type AdmCredentialProperties struct {
 
 // ApnsCredential is description of a NotificationHub ApnsCredential.
 type ApnsCredential struct {
-	Properties *ApnsCredentialProperties `json:"properties,omitempty"`
+	*ApnsCredentialProperties `json:"properties,omitempty"`
 }
 
 // ApnsCredentialProperties is description of a NotificationHub ApnsCredential.
@@ -86,7 +86,7 @@ type ApnsCredentialProperties struct {
 
 // BaiduCredential is description of a NotificationHub BaiduCredential.
 type BaiduCredential struct {
-	Properties *BaiduCredentialProperties `json:"properties,omitempty"`
+	*BaiduCredentialProperties `json:"properties,omitempty"`
 }
 
 // BaiduCredentialProperties is description of a NotificationHub
@@ -123,7 +123,7 @@ type CheckAvailabilityResult struct {
 
 // GcmCredential is description of a NotificationHub GcmCredential.
 type GcmCredential struct {
-	Properties *GcmCredentialProperties `json:"properties,omitempty"`
+	*GcmCredentialProperties `json:"properties,omitempty"`
 }
 
 // GcmCredentialProperties is description of a NotificationHub GcmCredential.
@@ -134,7 +134,7 @@ type GcmCredentialProperties struct {
 
 // MpnsCredential is description of a NotificationHub MpnsCredential.
 type MpnsCredential struct {
-	Properties *MpnsCredentialProperties `json:"properties,omitempty"`
+	*MpnsCredentialProperties `json:"properties,omitempty"`
 }
 
 // MpnsCredentialProperties is description of a NotificationHub MpnsCredential.
@@ -147,13 +147,13 @@ type MpnsCredentialProperties struct {
 // NamespaceCreateOrUpdateParameters is parameters supplied to the
 // CreateOrUpdate Namespace operation.
 type NamespaceCreateOrUpdateParameters struct {
-	ID         *string              `json:"id,omitempty"`
-	Name       *string              `json:"name,omitempty"`
-	Type       *string              `json:"type,omitempty"`
-	Location   *string              `json:"location,omitempty"`
-	Tags       *map[string]*string  `json:"tags,omitempty"`
-	Sku        *Sku                 `json:"sku,omitempty"`
-	Properties *NamespaceProperties `json:"properties,omitempty"`
+	ID                   *string             `json:"id,omitempty"`
+	Name                 *string             `json:"name,omitempty"`
+	Type                 *string             `json:"type,omitempty"`
+	Location             *string             `json:"location,omitempty"`
+	Tags                 *map[string]*string `json:"tags,omitempty"`
+	Sku                  *Sku                `json:"sku,omitempty"`
+	*NamespaceProperties `json:"properties,omitempty"`
 }
 
 // NamespaceListResult is the response of the List Namespace operation.
@@ -199,26 +199,26 @@ type NamespaceProperties struct {
 
 // NamespaceResource is description of a Namespace resource.
 type NamespaceResource struct {
-	autorest.Response `json:"-"`
-	ID                *string              `json:"id,omitempty"`
-	Name              *string              `json:"name,omitempty"`
-	Type              *string              `json:"type,omitempty"`
-	Location          *string              `json:"location,omitempty"`
-	Tags              *map[string]*string  `json:"tags,omitempty"`
-	Sku               *Sku                 `json:"sku,omitempty"`
-	Properties        *NamespaceProperties `json:"properties,omitempty"`
+	autorest.Response    `json:"-"`
+	ID                   *string             `json:"id,omitempty"`
+	Name                 *string             `json:"name,omitempty"`
+	Type                 *string             `json:"type,omitempty"`
+	Location             *string             `json:"location,omitempty"`
+	Tags                 *map[string]*string `json:"tags,omitempty"`
+	Sku                  *Sku                `json:"sku,omitempty"`
+	*NamespaceProperties `json:"properties,omitempty"`
 }
 
 // NotificationHubCreateOrUpdateParameters is parameters supplied to the
 // CreateOrUpdate NotificationHub operation.
 type NotificationHubCreateOrUpdateParameters struct {
-	ID         *string                    `json:"id,omitempty"`
-	Name       *string                    `json:"name,omitempty"`
-	Type       *string                    `json:"type,omitempty"`
-	Location   *string                    `json:"location,omitempty"`
-	Tags       *map[string]*string        `json:"tags,omitempty"`
-	Sku        *Sku                       `json:"sku,omitempty"`
-	Properties *NotificationHubProperties `json:"properties,omitempty"`
+	ID                         *string             `json:"id,omitempty"`
+	Name                       *string             `json:"name,omitempty"`
+	Type                       *string             `json:"type,omitempty"`
+	Location                   *string             `json:"location,omitempty"`
+	Tags                       *map[string]*string `json:"tags,omitempty"`
+	Sku                        *Sku                `json:"sku,omitempty"`
+	*NotificationHubProperties `json:"properties,omitempty"`
 }
 
 // NotificationHubListResult is the response of the List NotificationHub
@@ -256,14 +256,14 @@ type NotificationHubProperties struct {
 
 // NotificationHubResource is description of a NotificationHub Resource.
 type NotificationHubResource struct {
-	autorest.Response `json:"-"`
-	ID                *string                    `json:"id,omitempty"`
-	Name              *string                    `json:"name,omitempty"`
-	Type              *string                    `json:"type,omitempty"`
-	Location          *string                    `json:"location,omitempty"`
-	Tags              *map[string]*string        `json:"tags,omitempty"`
-	Sku               *Sku                       `json:"sku,omitempty"`
-	Properties        *NotificationHubProperties `json:"properties,omitempty"`
+	autorest.Response          `json:"-"`
+	ID                         *string             `json:"id,omitempty"`
+	Name                       *string             `json:"name,omitempty"`
+	Type                       *string             `json:"type,omitempty"`
+	Location                   *string             `json:"location,omitempty"`
+	Tags                       *map[string]*string `json:"tags,omitempty"`
+	Sku                        *Sku                `json:"sku,omitempty"`
+	*NotificationHubProperties `json:"properties,omitempty"`
 }
 
 // PnsCredentialsProperties is description of a NotificationHub PNS
@@ -279,14 +279,14 @@ type PnsCredentialsProperties struct {
 
 // PnsCredentialsResource is description of a NotificationHub PNS Credentials.
 type PnsCredentialsResource struct {
-	autorest.Response `json:"-"`
-	ID                *string                   `json:"id,omitempty"`
-	Name              *string                   `json:"name,omitempty"`
-	Type              *string                   `json:"type,omitempty"`
-	Location          *string                   `json:"location,omitempty"`
-	Tags              *map[string]*string       `json:"tags,omitempty"`
-	Sku               *Sku                      `json:"sku,omitempty"`
-	Properties        *PnsCredentialsProperties `json:"properties,omitempty"`
+	autorest.Response         `json:"-"`
+	ID                        *string             `json:"id,omitempty"`
+	Name                      *string             `json:"name,omitempty"`
+	Type                      *string             `json:"type,omitempty"`
+	Location                  *string             `json:"location,omitempty"`
+	Tags                      *map[string]*string `json:"tags,omitempty"`
+	Sku                       *Sku                `json:"sku,omitempty"`
+	*PnsCredentialsProperties `json:"properties,omitempty"`
 }
 
 // PolicykeyResource is namespace/NotificationHub Regenerate Keys
@@ -355,14 +355,14 @@ type SharedAccessAuthorizationRuleProperties struct {
 // SharedAccessAuthorizationRuleResource is description of a Namespace
 // AuthorizationRules.
 type SharedAccessAuthorizationRuleResource struct {
-	autorest.Response `json:"-"`
-	ID                *string                                  `json:"id,omitempty"`
-	Name              *string                                  `json:"name,omitempty"`
-	Type              *string                                  `json:"type,omitempty"`
-	Location          *string                                  `json:"location,omitempty"`
-	Tags              *map[string]*string                      `json:"tags,omitempty"`
-	Sku               *Sku                                     `json:"sku,omitempty"`
-	Properties        *SharedAccessAuthorizationRuleProperties `json:"properties,omitempty"`
+	autorest.Response                        `json:"-"`
+	ID                                       *string             `json:"id,omitempty"`
+	Name                                     *string             `json:"name,omitempty"`
+	Type                                     *string             `json:"type,omitempty"`
+	Location                                 *string             `json:"location,omitempty"`
+	Tags                                     *map[string]*string `json:"tags,omitempty"`
+	Sku                                      *Sku                `json:"sku,omitempty"`
+	*SharedAccessAuthorizationRuleProperties `json:"properties,omitempty"`
 }
 
 // Sku is the Sku description for a namespace
@@ -381,7 +381,7 @@ type SubResource struct {
 
 // WnsCredential is description of a NotificationHub WnsCredential.
 type WnsCredential struct {
-	Properties *WnsCredentialProperties `json:"properties,omitempty"`
+	*WnsCredentialProperties `json:"properties,omitempty"`
 }
 
 // WnsCredentialProperties is description of a NotificationHub WnsCredential.

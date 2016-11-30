@@ -246,22 +246,22 @@ type APIErrorError struct {
 
 // App is the Mobile Engagement App resource.
 type App struct {
-	ID         *string             `json:"id,omitempty"`
-	Name       *string             `json:"name,omitempty"`
-	Type       *string             `json:"type,omitempty"`
-	Location   *string             `json:"location,omitempty"`
-	Tags       *map[string]*string `json:"tags,omitempty"`
-	Properties *AppProperties      `json:"properties,omitempty"`
+	ID             *string             `json:"id,omitempty"`
+	Name           *string             `json:"name,omitempty"`
+	Type           *string             `json:"type,omitempty"`
+	Location       *string             `json:"location,omitempty"`
+	Tags           *map[string]*string `json:"tags,omitempty"`
+	*AppProperties `json:"properties,omitempty"`
 }
 
 // AppCollection is the AppCollection resource.
 type AppCollection struct {
-	ID         *string                  `json:"id,omitempty"`
-	Name       *string                  `json:"name,omitempty"`
-	Type       *string                  `json:"type,omitempty"`
-	Location   *string                  `json:"location,omitempty"`
-	Tags       *map[string]*string      `json:"tags,omitempty"`
-	Properties *AppCollectionProperties `json:"properties,omitempty"`
+	ID                       *string             `json:"id,omitempty"`
+	Name                     *string             `json:"name,omitempty"`
+	Type                     *string             `json:"type,omitempty"`
+	Location                 *string             `json:"location,omitempty"`
+	Tags                     *map[string]*string `json:"tags,omitempty"`
+	*AppCollectionProperties `json:"properties,omitempty"`
 }
 
 // AppCollectionListResult is the list AppCollections operation response.

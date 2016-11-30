@@ -24,7 +24,7 @@ import (
 	"net/http"
 )
 
-// PolicyOperationsClient is the the DevTest Labs Client.
+// PolicyOperationsClient is the azure DevTest Labs REST API.
 type PolicyOperationsClient struct {
 	ManagementClient
 }

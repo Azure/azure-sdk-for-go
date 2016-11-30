@@ -101,16 +101,16 @@ const (
 // Account is cognitive Services Account is an Azure resource representing the
 // provisioned account, its type, location and SKU.
 type Account struct {
-	autorest.Response `json:"-"`
-	Etag              *string             `json:"etag,omitempty"`
-	ID                *string             `json:"id,omitempty"`
-	Kind              *string             `json:"kind,omitempty"`
-	Location          *string             `json:"location,omitempty"`
-	Name              *string             `json:"name,omitempty"`
-	Properties        *AccountProperties  `json:"properties,omitempty"`
-	Sku               *Sku                `json:"sku,omitempty"`
-	Tags              *map[string]*string `json:"tags,omitempty"`
-	Type              *string             `json:"type,omitempty"`
+	autorest.Response  `json:"-"`
+	Etag               *string `json:"etag,omitempty"`
+	ID                 *string `json:"id,omitempty"`
+	Kind               *string `json:"kind,omitempty"`
+	Location           *string `json:"location,omitempty"`
+	Name               *string `json:"name,omitempty"`
+	*AccountProperties `json:"properties,omitempty"`
+	Sku                *Sku                `json:"sku,omitempty"`
+	Tags               *map[string]*string `json:"tags,omitempty"`
+	Type               *string             `json:"type,omitempty"`
 }
 
 // AccountCreateParameters is the parameters to provide for the account.

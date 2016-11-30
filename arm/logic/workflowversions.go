@@ -24,8 +24,7 @@ import (
 	"net/http"
 )
 
-// WorkflowVersionsClient is the client for the WorkflowVersions methods of
-// the Logic service.
+// WorkflowVersionsClient is the rEST API for Azure Logic Apps.
 type WorkflowVersionsClient struct {
 	ManagementClient
 }

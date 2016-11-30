@@ -129,7 +129,7 @@ func (client AccountOperationsClient) CreateResponder(resp *http.Response) (resu
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusAccepted, http.StatusOK),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByClosing())
 	result.Response = resp
 	return
@@ -207,7 +207,7 @@ func (client AccountOperationsClient) DeleteResponder(resp *http.Response) (resu
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusAccepted, http.StatusNoContent, http.StatusOK),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByClosing())
 	result.Response = resp
 	return
@@ -535,8 +535,7 @@ func (client AccountOperationsClient) ListByResourceGroupNextResults(lastResults
 	return
 }
 
-// RegenerateKey regenerates the specified account key for the specified Batch
-// account.
+// RegenerateKey regenerates the specified account key for the Batch account.
 //
 // resourceGroupName is the name of the resource group that contains the Batch
 // account. accountName is the name of the account. parameters is the type of

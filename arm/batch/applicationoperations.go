@@ -47,7 +47,7 @@ func NewApplicationOperationsClientWithBaseURI(baseURI string, subscriptionID st
 //
 // resourceGroupName is the name of the resource group that contains the Batch
 // account. accountName is the name of the Batch account. applicationID is
-// the id of the application. parameters is the parameters for the request.
+// the ID of the application. parameters is the parameters for the request.
 func (client ApplicationOperationsClient) Create(resourceGroupName string, accountName string, applicationID string, parameters *AddApplicationParameters) (result Application, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
@@ -127,7 +127,7 @@ func (client ApplicationOperationsClient) CreateResponder(resp *http.Response) (
 //
 // resourceGroupName is the name of the resource group that contains the Batch
 // account. accountName is the name of the Batch account. applicationID is
-// the id of the application.
+// the ID of the application.
 func (client ApplicationOperationsClient) Delete(resourceGroupName string, accountName string, applicationID string) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
@@ -201,7 +201,7 @@ func (client ApplicationOperationsClient) DeleteResponder(resp *http.Response) (
 //
 // resourceGroupName is the name of the resource group that contains the Batch
 // account. accountName is the name of the Batch account. applicationID is
-// the id of the application.
+// the ID of the application.
 func (client ApplicationOperationsClient) Get(resourceGroupName string, accountName string, applicationID string) (result Application, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
@@ -377,7 +377,7 @@ func (client ApplicationOperationsClient) ListNextResults(lastResults ListApplic
 //
 // resourceGroupName is the name of the resource group that contains the Batch
 // account. accountName is the name of the Batch account. applicationID is
-// the id of the application. parameters is the parameters for the request.
+// the ID of the application. parameters is the parameters for the request.
 func (client ApplicationOperationsClient) Update(resourceGroupName string, accountName string, applicationID string, parameters UpdateApplicationParameters) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,

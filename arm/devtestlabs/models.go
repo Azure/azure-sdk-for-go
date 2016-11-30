@@ -202,13 +202,13 @@ type ArmTemplateInfo struct {
 
 // Artifact is an artifact.
 type Artifact struct {
-	autorest.Response `json:"-"`
-	Properties        *ArtifactProperties `json:"properties,omitempty"`
-	ID                *string             `json:"id,omitempty"`
-	Name              *string             `json:"name,omitempty"`
-	Type              *string             `json:"type,omitempty"`
-	Location          *string             `json:"location,omitempty"`
-	Tags              *map[string]*string `json:"tags,omitempty"`
+	autorest.Response   `json:"-"`
+	*ArtifactProperties `json:"properties,omitempty"`
+	ID                  *string             `json:"id,omitempty"`
+	Name                *string             `json:"name,omitempty"`
+	Type                *string             `json:"type,omitempty"`
+	Location            *string             `json:"location,omitempty"`
+	Tags                *map[string]*string `json:"tags,omitempty"`
 }
 
 // ArtifactDeploymentStatusProperties is properties of an artifact deployment.
@@ -242,13 +242,13 @@ type ArtifactProperties struct {
 
 // ArtifactSource is properties of an artifact source.
 type ArtifactSource struct {
-	autorest.Response `json:"-"`
-	Properties        *ArtifactSourceProperties `json:"properties,omitempty"`
-	ID                *string                   `json:"id,omitempty"`
-	Name              *string                   `json:"name,omitempty"`
-	Type              *string                   `json:"type,omitempty"`
-	Location          *string                   `json:"location,omitempty"`
-	Tags              *map[string]*string       `json:"tags,omitempty"`
+	autorest.Response         `json:"-"`
+	*ArtifactSourceProperties `json:"properties,omitempty"`
+	ID                        *string             `json:"id,omitempty"`
+	Name                      *string             `json:"name,omitempty"`
+	Type                      *string             `json:"type,omitempty"`
+	Location                  *string             `json:"location,omitempty"`
+	Tags                      *map[string]*string `json:"tags,omitempty"`
 }
 
 // ArtifactSourceProperties is properties of an artifact source.
@@ -280,7 +280,7 @@ type CloudErrorBody struct {
 // Cost is a cost item.
 type Cost struct {
 	autorest.Response `json:"-"`
-	Properties        *CostProperties     `json:"properties,omitempty"`
+	*CostProperties   `json:"properties,omitempty"`
 	ID                *string             `json:"id,omitempty"`
 	Name              *string             `json:"name,omitempty"`
 	Type              *string             `json:"type,omitempty"`
@@ -304,13 +304,13 @@ type CostProperties struct {
 
 // CustomImage is a custom image.
 type CustomImage struct {
-	autorest.Response `json:"-"`
-	Properties        *CustomImageProperties `json:"properties,omitempty"`
-	ID                *string                `json:"id,omitempty"`
-	Name              *string                `json:"name,omitempty"`
-	Type              *string                `json:"type,omitempty"`
-	Location          *string                `json:"location,omitempty"`
-	Tags              *map[string]*string    `json:"tags,omitempty"`
+	autorest.Response      `json:"-"`
+	*CustomImageProperties `json:"properties,omitempty"`
+	ID                     *string             `json:"id,omitempty"`
+	Name                   *string             `json:"name,omitempty"`
+	Type                   *string             `json:"type,omitempty"`
+	Location               *string             `json:"location,omitempty"`
+	Tags                   *map[string]*string `json:"tags,omitempty"`
 }
 
 // CustomImageProperties is properties of a custom image.
@@ -365,13 +365,13 @@ type EvaluatePoliciesResponse struct {
 
 // Formula is a formula.
 type Formula struct {
-	autorest.Response `json:"-"`
-	Properties        *FormulaProperties  `json:"properties,omitempty"`
-	ID                *string             `json:"id,omitempty"`
-	Name              *string             `json:"name,omitempty"`
-	Type              *string             `json:"type,omitempty"`
-	Location          *string             `json:"location,omitempty"`
-	Tags              *map[string]*string `json:"tags,omitempty"`
+	autorest.Response  `json:"-"`
+	*FormulaProperties `json:"properties,omitempty"`
+	ID                 *string             `json:"id,omitempty"`
+	Name               *string             `json:"name,omitempty"`
+	Type               *string             `json:"type,omitempty"`
+	Location           *string             `json:"location,omitempty"`
+	Tags               *map[string]*string `json:"tags,omitempty"`
 }
 
 // FormulaProperties is properties of a formula.
@@ -394,12 +394,12 @@ type FormulaPropertiesFromVM struct {
 
 // GalleryImage is a gallery image.
 type GalleryImage struct {
-	Properties *GalleryImageProperties `json:"properties,omitempty"`
-	ID         *string                 `json:"id,omitempty"`
-	Name       *string                 `json:"name,omitempty"`
-	Type       *string                 `json:"type,omitempty"`
-	Location   *string                 `json:"location,omitempty"`
-	Tags       *map[string]*string     `json:"tags,omitempty"`
+	*GalleryImageProperties `json:"properties,omitempty"`
+	ID                      *string             `json:"id,omitempty"`
+	Name                    *string             `json:"name,omitempty"`
+	Type                    *string             `json:"type,omitempty"`
+	Location                *string             `json:"location,omitempty"`
+	Tags                    *map[string]*string `json:"tags,omitempty"`
 }
 
 // GalleryImageProperties is properties of a gallery image.
@@ -449,7 +449,7 @@ type HourDetails struct {
 // Lab is a lab.
 type Lab struct {
 	autorest.Response `json:"-"`
-	Properties        *LabProperties      `json:"properties,omitempty"`
+	*LabProperties    `json:"properties,omitempty"`
 	ID                *string             `json:"id,omitempty"`
 	Name              *string             `json:"name,omitempty"`
 	Type              *string             `json:"type,omitempty"`
@@ -475,13 +475,13 @@ type LabVhd struct {
 
 // LabVirtualMachine is a virtual machine.
 type LabVirtualMachine struct {
-	autorest.Response `json:"-"`
-	Properties        *LabVirtualMachineProperties `json:"properties,omitempty"`
-	ID                *string                      `json:"id,omitempty"`
-	Name              *string                      `json:"name,omitempty"`
-	Type              *string                      `json:"type,omitempty"`
-	Location          *string                      `json:"location,omitempty"`
-	Tags              *map[string]*string          `json:"tags,omitempty"`
+	autorest.Response            `json:"-"`
+	*LabVirtualMachineProperties `json:"properties,omitempty"`
+	ID                           *string             `json:"id,omitempty"`
+	Name                         *string             `json:"name,omitempty"`
+	Type                         *string             `json:"type,omitempty"`
+	Location                     *string             `json:"location,omitempty"`
+	Tags                         *map[string]*string `json:"tags,omitempty"`
 }
 
 // LabVirtualMachineProperties is properties of a virtual machine.
@@ -523,7 +523,7 @@ type ParameterInfo struct {
 // Policy is a Policy.
 type Policy struct {
 	autorest.Response `json:"-"`
-	Properties        *PolicyProperties   `json:"properties,omitempty"`
+	*PolicyProperties `json:"properties,omitempty"`
 	ID                *string             `json:"id,omitempty"`
 	Name              *string             `json:"name,omitempty"`
 	Type              *string             `json:"type,omitempty"`
@@ -778,13 +778,13 @@ func (client ResponseWithContinuationVirtualNetwork) ResponseWithContinuationVir
 
 // Schedule is a schedule.
 type Schedule struct {
-	autorest.Response `json:"-"`
-	Properties        *ScheduleProperties `json:"properties,omitempty"`
-	ID                *string             `json:"id,omitempty"`
-	Name              *string             `json:"name,omitempty"`
-	Type              *string             `json:"type,omitempty"`
-	Location          *string             `json:"location,omitempty"`
-	Tags              *map[string]*string `json:"tags,omitempty"`
+	autorest.Response   `json:"-"`
+	*ScheduleProperties `json:"properties,omitempty"`
+	ID                  *string             `json:"id,omitempty"`
+	Name                *string             `json:"name,omitempty"`
+	Type                *string             `json:"type,omitempty"`
+	Location            *string             `json:"location,omitempty"`
+	Tags                *map[string]*string `json:"tags,omitempty"`
 }
 
 // ScheduleProperties is properties of a schedule.
@@ -828,13 +828,13 @@ type SubscriptionNotificationProperties struct {
 
 // VirtualNetwork is a virtual network.
 type VirtualNetwork struct {
-	autorest.Response `json:"-"`
-	Properties        *VirtualNetworkProperties `json:"properties,omitempty"`
-	ID                *string                   `json:"id,omitempty"`
-	Name              *string                   `json:"name,omitempty"`
-	Type              *string                   `json:"type,omitempty"`
-	Location          *string                   `json:"location,omitempty"`
-	Tags              *map[string]*string       `json:"tags,omitempty"`
+	autorest.Response         `json:"-"`
+	*VirtualNetworkProperties `json:"properties,omitempty"`
+	ID                        *string             `json:"id,omitempty"`
+	Name                      *string             `json:"name,omitempty"`
+	Type                      *string             `json:"type,omitempty"`
+	Location                  *string             `json:"location,omitempty"`
+	Tags                      *map[string]*string `json:"tags,omitempty"`
 }
 
 // VirtualNetworkProperties is properties of a virtual network.

@@ -25,8 +25,7 @@ import (
 	"net/http"
 )
 
-// WorkflowsClient is the client for the Workflows methods of the Logic
-// service.
+// WorkflowsClient is the rEST API for Azure Logic Apps.
 type WorkflowsClient struct {
 	ManagementClient
 }

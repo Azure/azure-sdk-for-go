@@ -56,18 +56,18 @@ func NewSubnetsClientWithBaseURI(baseURI string, subscriptionID string) SubnetsC
 func (client SubnetsClient) CreateOrUpdate(resourceGroupName string, virtualNetworkName string, subnetName string, subnetParameters Subnet, cancel <-chan struct{}) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: subnetParameters,
-			Constraints: []validation.Constraint{{Target: "subnetParameters.Properties", Name: validation.Null, Rule: false,
-				Chain: []validation.Constraint{{Target: "subnetParameters.Properties.NetworkSecurityGroup", Name: validation.Null, Rule: false,
-					Chain: []validation.Constraint{{Target: "subnetParameters.Properties.NetworkSecurityGroup.Properties", Name: validation.Null, Rule: false,
-						Chain: []validation.Constraint{{Target: "subnetParameters.Properties.NetworkSecurityGroup.Properties.NetworkInterfaces", Name: validation.ReadOnly, Rule: true, Chain: nil},
-							{Target: "subnetParameters.Properties.NetworkSecurityGroup.Properties.Subnets", Name: validation.ReadOnly, Rule: true, Chain: nil},
+			Constraints: []validation.Constraint{{Target: "subnetParameters.SubnetPropertiesFormat", Name: validation.Null, Rule: false,
+				Chain: []validation.Constraint{{Target: "subnetParameters.SubnetPropertiesFormat.NetworkSecurityGroup", Name: validation.Null, Rule: false,
+					Chain: []validation.Constraint{{Target: "subnetParameters.SubnetPropertiesFormat.NetworkSecurityGroup.SecurityGroupPropertiesFormat", Name: validation.Null, Rule: false,
+						Chain: []validation.Constraint{{Target: "subnetParameters.SubnetPropertiesFormat.NetworkSecurityGroup.SecurityGroupPropertiesFormat.NetworkInterfaces", Name: validation.ReadOnly, Rule: true, Chain: nil},
+							{Target: "subnetParameters.SubnetPropertiesFormat.NetworkSecurityGroup.SecurityGroupPropertiesFormat.Subnets", Name: validation.ReadOnly, Rule: true, Chain: nil},
 						}},
 					}},
-					{Target: "subnetParameters.Properties.RouteTable", Name: validation.Null, Rule: false,
-						Chain: []validation.Constraint{{Target: "subnetParameters.Properties.RouteTable.Properties", Name: validation.Null, Rule: false,
-							Chain: []validation.Constraint{{Target: "subnetParameters.Properties.RouteTable.Properties.Subnets", Name: validation.ReadOnly, Rule: true, Chain: nil}}},
+					{Target: "subnetParameters.SubnetPropertiesFormat.RouteTable", Name: validation.Null, Rule: false,
+						Chain: []validation.Constraint{{Target: "subnetParameters.SubnetPropertiesFormat.RouteTable.RouteTablePropertiesFormat", Name: validation.Null, Rule: false,
+							Chain: []validation.Constraint{{Target: "subnetParameters.SubnetPropertiesFormat.RouteTable.RouteTablePropertiesFormat.Subnets", Name: validation.ReadOnly, Rule: true, Chain: nil}}},
 						}},
-					{Target: "subnetParameters.Properties.IPConfigurations", Name: validation.ReadOnly, Rule: true, Chain: nil},
+					{Target: "subnetParameters.SubnetPropertiesFormat.IPConfigurations", Name: validation.ReadOnly, Rule: true, Chain: nil},
 				}}}}}); err != nil {
 		return result, validation.NewErrorWithValidationError(err, "network.SubnetsClient", "CreateOrUpdate")
 	}

@@ -51,9 +51,9 @@ func NewClientWithBaseURI(baseURI string, subscriptionID string) Client {
 func (client Client) Create(resourceGroupName string, name string, parameters CreateParameters, cancel <-chan struct{}) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: parameters,
-			Constraints: []validation.Constraint{{Target: "parameters.Properties", Name: validation.Null, Rule: true,
-				Chain: []validation.Constraint{{Target: "parameters.Properties.Sku", Name: validation.Null, Rule: true,
-					Chain: []validation.Constraint{{Target: "parameters.Properties.Sku.Capacity", Name: validation.Null, Rule: true, Chain: nil}}},
+			Constraints: []validation.Constraint{{Target: "parameters.CreateProperties", Name: validation.Null, Rule: true,
+				Chain: []validation.Constraint{{Target: "parameters.CreateProperties.Sku", Name: validation.Null, Rule: true,
+					Chain: []validation.Constraint{{Target: "parameters.CreateProperties.Sku.Capacity", Name: validation.Null, Rule: true, Chain: nil}}},
 				}}}}}); err != nil {
 		return result, validation.NewErrorWithValidationError(err, "redis.Client", "Create")
 	}

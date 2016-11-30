@@ -58,9 +58,9 @@ func NewLocalNetworkGatewaysClientWithBaseURI(baseURI string, subscriptionID str
 func (client LocalNetworkGatewaysClient) CreateOrUpdate(resourceGroupName string, localNetworkGatewayName string, parameters LocalNetworkGateway, cancel <-chan struct{}) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: parameters,
-			Constraints: []validation.Constraint{{Target: "parameters.Properties", Name: validation.Null, Rule: true,
-				Chain: []validation.Constraint{{Target: "parameters.Properties.LocalNetworkAddressSpace", Name: validation.Null, Rule: true, Chain: nil},
-					{Target: "parameters.Properties.ProvisioningState", Name: validation.ReadOnly, Rule: true, Chain: nil},
+			Constraints: []validation.Constraint{{Target: "parameters.LocalNetworkGatewayPropertiesFormat", Name: validation.Null, Rule: true,
+				Chain: []validation.Constraint{{Target: "parameters.LocalNetworkGatewayPropertiesFormat.LocalNetworkAddressSpace", Name: validation.Null, Rule: true, Chain: nil},
+					{Target: "parameters.LocalNetworkGatewayPropertiesFormat.ProvisioningState", Name: validation.ReadOnly, Rule: true, Chain: nil},
 				}}}}}); err != nil {
 		return result, validation.NewErrorWithValidationError(err, "network.LocalNetworkGatewaysClient", "CreateOrUpdate")
 	}

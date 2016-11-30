@@ -67,9 +67,9 @@ func (client AccountOperationsClient) Create(resourceGroupName string, accountNa
 				{Target: "accountName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}},
 		{TargetValue: parameters,
 			Constraints: []validation.Constraint{{Target: "parameters.Location", Name: validation.Null, Rule: true, Chain: nil},
-				{Target: "parameters.Properties", Name: validation.Null, Rule: false,
-					Chain: []validation.Constraint{{Target: "parameters.Properties.AutoStorage", Name: validation.Null, Rule: false,
-						Chain: []validation.Constraint{{Target: "parameters.Properties.AutoStorage.StorageAccountID", Name: validation.Null, Rule: true, Chain: nil}}},
+				{Target: "parameters.AccountBaseProperties", Name: validation.Null, Rule: false,
+					Chain: []validation.Constraint{{Target: "parameters.AccountBaseProperties.AutoStorage", Name: validation.Null, Rule: false,
+						Chain: []validation.Constraint{{Target: "parameters.AccountBaseProperties.AutoStorage.StorageAccountID", Name: validation.Null, Rule: true, Chain: nil}}},
 					}}}}}); err != nil {
 		return result, validation.NewErrorWithValidationError(err, "batch.AccountOperationsClient", "Create")
 	}

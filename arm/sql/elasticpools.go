@@ -57,9 +57,9 @@ func NewElasticPoolsClientWithBaseURI(baseURI string, subscriptionID string) Ela
 func (client ElasticPoolsClient) CreateOrUpdate(resourceGroupName string, serverName string, elasticPoolName string, parameters ElasticPool, cancel <-chan struct{}) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: parameters,
-			Constraints: []validation.Constraint{{Target: "parameters.Properties", Name: validation.Null, Rule: false,
-				Chain: []validation.Constraint{{Target: "parameters.Properties.CreationDate", Name: validation.ReadOnly, Rule: true, Chain: nil},
-					{Target: "parameters.Properties.State", Name: validation.ReadOnly, Rule: true, Chain: nil},
+			Constraints: []validation.Constraint{{Target: "parameters.ElasticPoolProperties", Name: validation.Null, Rule: false,
+				Chain: []validation.Constraint{{Target: "parameters.ElasticPoolProperties.CreationDate", Name: validation.ReadOnly, Rule: true, Chain: nil},
+					{Target: "parameters.ElasticPoolProperties.State", Name: validation.ReadOnly, Rule: true, Chain: nil},
 				}}}}}); err != nil {
 		return result, validation.NewErrorWithValidationError(err, "sql.ElasticPoolsClient", "CreateOrUpdate")
 	}

@@ -53,18 +53,25 @@ func (client Client) Create(resourceGroupName string, name string, parameters Da
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: parameters,
 			Constraints: []validation.Constraint{{Target: "parameters.Identity", Name: validation.Null, Rule: false,
-				Chain: []validation.Constraint{{Target: "parameters.Identity.PrincipalID", Name: validation.ReadOnly, Rule: true, Chain: nil},
+				Chain: []validation.Constraint{{Target: "parameters.Identity.Type", Name: validation.Null, Rule: true, Chain: nil},
+					{Target: "parameters.Identity.PrincipalID", Name: validation.ReadOnly, Rule: true, Chain: nil},
 					{Target: "parameters.Identity.TenantID", Name: validation.ReadOnly, Rule: true, Chain: nil},
 				}},
-				{Target: "parameters.Properties", Name: validation.Null, Rule: false,
-					Chain: []validation.Constraint{{Target: "parameters.Properties.ProvisioningState", Name: validation.ReadOnly, Rule: true, Chain: nil},
-						{Target: "parameters.Properties.State", Name: validation.ReadOnly, Rule: true, Chain: nil},
-						{Target: "parameters.Properties.CreationTime", Name: validation.ReadOnly, Rule: true, Chain: nil},
-						{Target: "parameters.Properties.EncryptionProvisioningState", Name: validation.ReadOnly, Rule: true, Chain: nil},
-						{Target: "parameters.Properties.LastModifiedTime", Name: validation.ReadOnly, Rule: true, Chain: nil},
-					}},
-				{Target: "parameters.Type", Name: validation.ReadOnly, Rule: true, Chain: nil},
-				{Target: "parameters.ID", Name: validation.ReadOnly, Rule: true, Chain: nil}}}}); err != nil {
+				{Target: "parameters.DataLakeStoreAccountProperties", Name: validation.Null, Rule: false,
+					Chain: []validation.Constraint{{Target: "parameters.DataLakeStoreAccountProperties.EncryptionConfig", Name: validation.Null, Rule: false,
+						Chain: []validation.Constraint{{Target: "parameters.DataLakeStoreAccountProperties.EncryptionConfig.KeyVaultMetaInfo", Name: validation.Null, Rule: false,
+							Chain: []validation.Constraint{{Target: "parameters.DataLakeStoreAccountProperties.EncryptionConfig.KeyVaultMetaInfo.KeyVaultResourceID", Name: validation.Null, Rule: true, Chain: nil},
+								{Target: "parameters.DataLakeStoreAccountProperties.EncryptionConfig.KeyVaultMetaInfo.EncryptionKeyName", Name: validation.Null, Rule: true, Chain: nil},
+								{Target: "parameters.DataLakeStoreAccountProperties.EncryptionConfig.KeyVaultMetaInfo.EncryptionKeyVersion", Name: validation.Null, Rule: true, Chain: nil},
+							}},
+						}},
+						{Target: "parameters.DataLakeStoreAccountProperties.ProvisioningState", Name: validation.ReadOnly, Rule: true, Chain: nil},
+						{Target: "parameters.DataLakeStoreAccountProperties.State", Name: validation.ReadOnly, Rule: true, Chain: nil},
+						{Target: "parameters.DataLakeStoreAccountProperties.CreationTime", Name: validation.ReadOnly, Rule: true, Chain: nil},
+						{Target: "parameters.DataLakeStoreAccountProperties.EncryptionProvisioningState", Name: validation.ReadOnly, Rule: true, Chain: nil},
+						{Target: "parameters.DataLakeStoreAccountProperties.LastModifiedTime", Name: validation.ReadOnly, Rule: true, Chain: nil},
+						{Target: "parameters.DataLakeStoreAccountProperties.Endpoint", Name: validation.ReadOnly, Rule: true, Chain: nil},
+					}}}}}); err != nil {
 		return result, validation.NewErrorWithValidationError(err, "account.Client", "Create")
 	}
 
@@ -126,81 +133,6 @@ func (client Client) CreateResponder(resp *http.Response) (result autorest.Respo
 		azure.WithErrorUnlessStatusCode(http.StatusCreated, http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp
-	return
-}
-
-// CreateOrUpdateFirewallRule creates or updates the specified firewall rule.
-//
-// resourceGroupName is the name of the Azure resource group that contains the
-// Data Lake Store account. accountName is the name of the Data Lake Store
-// account to which to add the firewall rule. name is the name of the
-// firewall rule to create or update. parameters is parameters supplied to
-// create the create firewall rule.
-func (client Client) CreateOrUpdateFirewallRule(resourceGroupName string, accountName string, name string, parameters FirewallRule) (result FirewallRule, err error) {
-	if err := validation.Validate([]validation.Validation{
-		{TargetValue: parameters,
-			Constraints: []validation.Constraint{{Target: "parameters.Type", Name: validation.ReadOnly, Rule: true, Chain: nil}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "account.Client", "CreateOrUpdateFirewallRule")
-	}
-
-	req, err := client.CreateOrUpdateFirewallRulePreparer(resourceGroupName, accountName, name, parameters)
-	if err != nil {
-		return result, autorest.NewErrorWithError(err, "account.Client", "CreateOrUpdateFirewallRule", nil, "Failure preparing request")
-	}
-
-	resp, err := client.CreateOrUpdateFirewallRuleSender(req)
-	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "account.Client", "CreateOrUpdateFirewallRule", resp, "Failure sending request")
-	}
-
-	result, err = client.CreateOrUpdateFirewallRuleResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "account.Client", "CreateOrUpdateFirewallRule", resp, "Failure responding to request")
-	}
-
-	return
-}
-
-// CreateOrUpdateFirewallRulePreparer prepares the CreateOrUpdateFirewallRule request.
-func (client Client) CreateOrUpdateFirewallRulePreparer(resourceGroupName string, accountName string, name string, parameters FirewallRule) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"accountName":       autorest.Encode("path", accountName),
-		"name":              autorest.Encode("path", name),
-		"resourceGroupName": autorest.Encode("path", resourceGroupName),
-		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
-	}
-
-	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsJSON(),
-		autorest.AsPut(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataLakeStore/accounts/{accountName}/firewallRules/{name}", pathParameters),
-		autorest.WithJSON(parameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare(&http.Request{})
-}
-
-// CreateOrUpdateFirewallRuleSender sends the CreateOrUpdateFirewallRule request. The method will close the
-// http.Response Body if it receives an error.
-func (client Client) CreateOrUpdateFirewallRuleSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
-}
-
-// CreateOrUpdateFirewallRuleResponder handles the response to the CreateOrUpdateFirewallRule request. The method always
-// closes the http.Response Body.
-func (client Client) CreateOrUpdateFirewallRuleResponder(resp *http.Response) (result FirewallRule, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
 	return
 }
 
@@ -266,73 +198,7 @@ func (client Client) DeleteResponder(resp *http.Response) (result autorest.Respo
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNotFound, http.StatusNoContent, http.StatusAccepted),
-		autorest.ByClosing())
-	result.Response = resp
-	return
-}
-
-// DeleteFirewallRule deletes the specified firewall rule from the specified
-// Data Lake Store account
-//
-// resourceGroupName is the name of the Azure resource group that contains the
-// Data Lake Store account. accountName is the name of the Data Lake Store
-// account from which to delete the firewall rule. firewallRuleName is the
-// name of the firewall rule to delete.
-func (client Client) DeleteFirewallRule(resourceGroupName string, accountName string, firewallRuleName string) (result autorest.Response, err error) {
-	req, err := client.DeleteFirewallRulePreparer(resourceGroupName, accountName, firewallRuleName)
-	if err != nil {
-		return result, autorest.NewErrorWithError(err, "account.Client", "DeleteFirewallRule", nil, "Failure preparing request")
-	}
-
-	resp, err := client.DeleteFirewallRuleSender(req)
-	if err != nil {
-		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "account.Client", "DeleteFirewallRule", resp, "Failure sending request")
-	}
-
-	result, err = client.DeleteFirewallRuleResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "account.Client", "DeleteFirewallRule", resp, "Failure responding to request")
-	}
-
-	return
-}
-
-// DeleteFirewallRulePreparer prepares the DeleteFirewallRule request.
-func (client Client) DeleteFirewallRulePreparer(resourceGroupName string, accountName string, firewallRuleName string) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"accountName":       autorest.Encode("path", accountName),
-		"firewallRuleName":  autorest.Encode("path", firewallRuleName),
-		"resourceGroupName": autorest.Encode("path", resourceGroupName),
-		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
-	}
-
-	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsDelete(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataLakeStore/accounts/{accountName}/firewallRules/{firewallRuleName}", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare(&http.Request{})
-}
-
-// DeleteFirewallRuleSender sends the DeleteFirewallRule request. The method will close the
-// http.Response Body if it receives an error.
-func (client Client) DeleteFirewallRuleSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
-}
-
-// DeleteFirewallRuleResponder handles the response to the DeleteFirewallRule request. The method always
-// closes the http.Response Body.
-func (client Client) DeleteFirewallRuleResponder(resp *http.Response) (result autorest.Response, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent, http.StatusAccepted),
 		autorest.ByClosing())
 	result.Response = resp
 	return
@@ -466,96 +332,32 @@ func (client Client) GetResponder(resp *http.Response) (result DataLakeStoreAcco
 	return
 }
 
-// GetFirewallRule gets the specified Data Lake Store firewall rule.
-//
-// resourceGroupName is the name of the Azure resource group that contains the
-// Data Lake Store account. accountName is the name of the Data Lake Store
-// account from which to get the firewall rule. firewallRuleName is the name
-// of the firewall rule to retrieve.
-func (client Client) GetFirewallRule(resourceGroupName string, accountName string, firewallRuleName string) (result FirewallRule, err error) {
-	req, err := client.GetFirewallRulePreparer(resourceGroupName, accountName, firewallRuleName)
-	if err != nil {
-		return result, autorest.NewErrorWithError(err, "account.Client", "GetFirewallRule", nil, "Failure preparing request")
-	}
-
-	resp, err := client.GetFirewallRuleSender(req)
-	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "account.Client", "GetFirewallRule", resp, "Failure sending request")
-	}
-
-	result, err = client.GetFirewallRuleResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "account.Client", "GetFirewallRule", resp, "Failure responding to request")
-	}
-
-	return
-}
-
-// GetFirewallRulePreparer prepares the GetFirewallRule request.
-func (client Client) GetFirewallRulePreparer(resourceGroupName string, accountName string, firewallRuleName string) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"accountName":       autorest.Encode("path", accountName),
-		"firewallRuleName":  autorest.Encode("path", firewallRuleName),
-		"resourceGroupName": autorest.Encode("path", resourceGroupName),
-		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
-	}
-
-	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsGet(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataLakeStore/accounts/{accountName}/firewallRules/{firewallRuleName}", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare(&http.Request{})
-}
-
-// GetFirewallRuleSender sends the GetFirewallRule request. The method will close the
-// http.Response Body if it receives an error.
-func (client Client) GetFirewallRuleSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
-}
-
-// GetFirewallRuleResponder handles the response to the GetFirewallRule request. The method always
-// closes the http.Response Body.
-func (client Client) GetFirewallRuleResponder(resp *http.Response) (result FirewallRule, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
-}
-
 // List lists the Data Lake Store accounts within the subscription. The
 // response includes a link to the next page of results, if any.
 //
 // filter is oData filter. Optional. top is the number of items to return.
 // Optional. skip is the number of items to skip over before returning
-// elements. Optional. expand is oData expansion. Expand related resources in
-// line with the retrieved resources, e.g. Categories/$expand=Products would
-// expand Product data in line with each Category entry. Optional.
-// selectParameter is oData Select statement. Limits the properties on each
-// entry to just those requested, e.g.
+// elements. Optional. selectParameter is oData Select statement. Limits the
+// properties on each entry to just those requested, e.g.
 // Categories?$select=CategoryName,Description. Optional. orderby is orderBy
 // clause. One or more comma-separated expressions with an optional "asc"
 // (the default) or "desc" depending on the order you'd like the values
 // sorted, e.g. Categories?$orderby=CategoryName desc. Optional. count is the
 // Boolean value of true or false to request a count of the matching
 // resources included with the resources in the response, e.g.
-// Categories?$count=true. Optional. search is a free form search. A
-// free-text search expression to match for whether a particular entry should
-// be included in the feed, e.g. Categories?$search=blue OR green. Optional.
-// formatParameter is the desired return format. Return the response in
-// particular formatxii without access to request headers for standard
-// content-type negotiation (e.g Orders?$format=json). Optional.
-func (client Client) List(filter string, top *int32, skip *int32, expand string, selectParameter string, orderby string, count *bool, search string, formatParameter string) (result DataLakeStoreAccountListResult, err error) {
-	req, err := client.ListPreparer(filter, top, skip, expand, selectParameter, orderby, count, search, formatParameter)
+// Categories?$count=true. Optional.
+func (client Client) List(filter string, top *int32, skip *int32, selectParameter string, orderby string, count *bool) (result DataLakeStoreAccountListResult, err error) {
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: top,
+			Constraints: []validation.Constraint{{Target: "top", Name: validation.Null, Rule: false,
+				Chain: []validation.Constraint{{Target: "top", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil}}}}},
+		{TargetValue: skip,
+			Constraints: []validation.Constraint{{Target: "skip", Name: validation.Null, Rule: false,
+				Chain: []validation.Constraint{{Target: "skip", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil}}}}}}); err != nil {
+		return result, validation.NewErrorWithValidationError(err, "account.Client", "List")
+	}
+
+	req, err := client.ListPreparer(filter, top, skip, selectParameter, orderby, count)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "account.Client", "List", nil, "Failure preparing request")
 	}
@@ -575,7 +377,7 @@ func (client Client) List(filter string, top *int32, skip *int32, expand string,
 }
 
 // ListPreparer prepares the List request.
-func (client Client) ListPreparer(filter string, top *int32, skip *int32, expand string, selectParameter string, orderby string, count *bool, search string, formatParameter string) (*http.Request, error) {
+func (client Client) ListPreparer(filter string, top *int32, skip *int32, selectParameter string, orderby string, count *bool) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
@@ -592,9 +394,6 @@ func (client Client) ListPreparer(filter string, top *int32, skip *int32, expand
 	if skip != nil {
 		queryParameters["$skip"] = autorest.Encode("query", *skip)
 	}
-	if len(expand) > 0 {
-		queryParameters["$expand"] = autorest.Encode("query", expand)
-	}
 	if len(selectParameter) > 0 {
 		queryParameters["$select"] = autorest.Encode("query", selectParameter)
 	}
@@ -603,12 +402,6 @@ func (client Client) ListPreparer(filter string, top *int32, skip *int32, expand
 	}
 	if count != nil {
 		queryParameters["$count"] = autorest.Encode("query", *count)
-	}
-	if len(search) > 0 {
-		queryParameters["$search"] = autorest.Encode("query", search)
-	}
-	if len(formatParameter) > 0 {
-		queryParameters["$format"] = autorest.Encode("query", formatParameter)
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -669,25 +462,27 @@ func (client Client) ListNextResults(lastResults DataLakeStoreAccountListResult)
 // resourceGroupName is the name of the Azure resource group that contains the
 // Data Lake Store account(s). filter is oData filter. Optional. top is the
 // number of items to return. Optional. skip is the number of items to skip
-// over before returning elements. Optional. expand is oData expansion.
-// Expand related resources in line with the retrieved resources, e.g.
-// Categories/$expand=Products would expand Product data in line with each
-// Category entry. Optional. selectParameter is oData Select statement.
-// Limits the properties on each entry to just those requested, e.g.
-// Categories?$select=CategoryName,Description. Optional. orderby is orderBy
-// clause. One or more comma-separated expressions with an optional "asc"
-// (the default) or "desc" depending on the order you'd like the values
+// over before returning elements. Optional. selectParameter is oData Select
+// statement. Limits the properties on each entry to just those requested,
+// e.g. Categories?$select=CategoryName,Description. Optional. orderby is
+// orderBy clause. One or more comma-separated expressions with an optional
+// "asc" (the default) or "desc" depending on the order you'd like the values
 // sorted, e.g. Categories?$orderby=CategoryName desc. Optional. count is a
 // Boolean value of true or false to request a count of the matching
 // resources included with the resources in the response, e.g.
-// Categories?$count=true. Optional. search is a free form search. A
-// free-text search expression to match for whether a particular entry should
-// be included in the feed, e.g. Categories?$search=blue OR green. Optional.
-// formatParameter is the desired return format. Return the response in
-// particular formatxii without access to request headers for standard
-// content-type negotiation (e.g Orders?$format=json). Optional.
-func (client Client) ListByResourceGroup(resourceGroupName string, filter string, top *int32, skip *int32, expand string, selectParameter string, orderby string, count *bool, search string, formatParameter string) (result DataLakeStoreAccountListResult, err error) {
-	req, err := client.ListByResourceGroupPreparer(resourceGroupName, filter, top, skip, expand, selectParameter, orderby, count, search, formatParameter)
+// Categories?$count=true. Optional.
+func (client Client) ListByResourceGroup(resourceGroupName string, filter string, top *int32, skip *int32, selectParameter string, orderby string, count *bool) (result DataLakeStoreAccountListResult, err error) {
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: top,
+			Constraints: []validation.Constraint{{Target: "top", Name: validation.Null, Rule: false,
+				Chain: []validation.Constraint{{Target: "top", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil}}}}},
+		{TargetValue: skip,
+			Constraints: []validation.Constraint{{Target: "skip", Name: validation.Null, Rule: false,
+				Chain: []validation.Constraint{{Target: "skip", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil}}}}}}); err != nil {
+		return result, validation.NewErrorWithValidationError(err, "account.Client", "ListByResourceGroup")
+	}
+
+	req, err := client.ListByResourceGroupPreparer(resourceGroupName, filter, top, skip, selectParameter, orderby, count)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "account.Client", "ListByResourceGroup", nil, "Failure preparing request")
 	}
@@ -707,7 +502,7 @@ func (client Client) ListByResourceGroup(resourceGroupName string, filter string
 }
 
 // ListByResourceGroupPreparer prepares the ListByResourceGroup request.
-func (client Client) ListByResourceGroupPreparer(resourceGroupName string, filter string, top *int32, skip *int32, expand string, selectParameter string, orderby string, count *bool, search string, formatParameter string) (*http.Request, error) {
+func (client Client) ListByResourceGroupPreparer(resourceGroupName string, filter string, top *int32, skip *int32, selectParameter string, orderby string, count *bool) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
@@ -725,9 +520,6 @@ func (client Client) ListByResourceGroupPreparer(resourceGroupName string, filte
 	if skip != nil {
 		queryParameters["$skip"] = autorest.Encode("query", *skip)
 	}
-	if len(expand) > 0 {
-		queryParameters["$expand"] = autorest.Encode("query", expand)
-	}
 	if len(selectParameter) > 0 {
 		queryParameters["$select"] = autorest.Encode("query", selectParameter)
 	}
@@ -736,12 +528,6 @@ func (client Client) ListByResourceGroupPreparer(resourceGroupName string, filte
 	}
 	if count != nil {
 		queryParameters["$count"] = autorest.Encode("query", *count)
-	}
-	if len(search) > 0 {
-		queryParameters["$search"] = autorest.Encode("query", search)
-	}
-	if len(formatParameter) > 0 {
-		queryParameters["$format"] = autorest.Encode("query", formatParameter)
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -795,95 +581,6 @@ func (client Client) ListByResourceGroupNextResults(lastResults DataLakeStoreAcc
 	return
 }
 
-// ListFirewallRules lists the Data Lake Store firewall rules within the
-// specified Data Lake Store account.
-//
-// resourceGroupName is the name of the Azure resource group that contains the
-// Data Lake Store account. accountName is the name of the Data Lake Store
-// account from which to get the firewall rules.
-func (client Client) ListFirewallRules(resourceGroupName string, accountName string) (result DataLakeStoreFirewallRuleListResult, err error) {
-	req, err := client.ListFirewallRulesPreparer(resourceGroupName, accountName)
-	if err != nil {
-		return result, autorest.NewErrorWithError(err, "account.Client", "ListFirewallRules", nil, "Failure preparing request")
-	}
-
-	resp, err := client.ListFirewallRulesSender(req)
-	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "account.Client", "ListFirewallRules", resp, "Failure sending request")
-	}
-
-	result, err = client.ListFirewallRulesResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "account.Client", "ListFirewallRules", resp, "Failure responding to request")
-	}
-
-	return
-}
-
-// ListFirewallRulesPreparer prepares the ListFirewallRules request.
-func (client Client) ListFirewallRulesPreparer(resourceGroupName string, accountName string) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"accountName":       autorest.Encode("path", accountName),
-		"resourceGroupName": autorest.Encode("path", resourceGroupName),
-		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
-	}
-
-	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsGet(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataLakeStore/accounts/{accountName}/firewallRules", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare(&http.Request{})
-}
-
-// ListFirewallRulesSender sends the ListFirewallRules request. The method will close the
-// http.Response Body if it receives an error.
-func (client Client) ListFirewallRulesSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
-}
-
-// ListFirewallRulesResponder handles the response to the ListFirewallRules request. The method always
-// closes the http.Response Body.
-func (client Client) ListFirewallRulesResponder(resp *http.Response) (result DataLakeStoreFirewallRuleListResult, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
-}
-
-// ListFirewallRulesNextResults retrieves the next set of results, if any.
-func (client Client) ListFirewallRulesNextResults(lastResults DataLakeStoreFirewallRuleListResult) (result DataLakeStoreFirewallRuleListResult, err error) {
-	req, err := lastResults.DataLakeStoreFirewallRuleListResultPreparer()
-	if err != nil {
-		return result, autorest.NewErrorWithError(err, "account.Client", "ListFirewallRules", nil, "Failure preparing next results request")
-	}
-	if req == nil {
-		return
-	}
-
-	resp, err := client.ListFirewallRulesSender(req)
-	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "account.Client", "ListFirewallRules", resp, "Failure sending next results request")
-	}
-
-	result, err = client.ListFirewallRulesResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "account.Client", "ListFirewallRules", resp, "Failure responding to next results request")
-	}
-
-	return
-}
-
 // Update updates the specified Data Lake Store account information. This
 // method may poll for completion. Polling can be canceled by passing the
 // cancel channel argument. The channel will be used to cancel polling and
@@ -893,14 +590,7 @@ func (client Client) ListFirewallRulesNextResults(lastResults DataLakeStoreFirew
 // Data Lake Store account. name is the name of the Data Lake Store account
 // to update. parameters is parameters supplied to update the Data Lake Store
 // account.
-func (client Client) Update(resourceGroupName string, name string, parameters DataLakeStoreAccount, cancel <-chan struct{}) (result autorest.Response, err error) {
-	if err := validation.Validate([]validation.Validation{
-		{TargetValue: parameters,
-			Constraints: []validation.Constraint{{Target: "parameters.Type", Name: validation.ReadOnly, Rule: true, Chain: nil},
-				{Target: "parameters.ID", Name: validation.ReadOnly, Rule: true, Chain: nil}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "account.Client", "Update")
-	}
-
+func (client Client) Update(resourceGroupName string, name string, parameters DataLakeStoreAccountUpdateParameters, cancel <-chan struct{}) (result autorest.Response, err error) {
 	req, err := client.UpdatePreparer(resourceGroupName, name, parameters, cancel)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "account.Client", "Update", nil, "Failure preparing request")
@@ -921,7 +611,7 @@ func (client Client) Update(resourceGroupName string, name string, parameters Da
 }
 
 // UpdatePreparer prepares the Update request.
-func (client Client) UpdatePreparer(resourceGroupName string, name string, parameters DataLakeStoreAccount, cancel <-chan struct{}) (*http.Request, error) {
+func (client Client) UpdatePreparer(resourceGroupName string, name string, parameters DataLakeStoreAccountUpdateParameters, cancel <-chan struct{}) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"name":              autorest.Encode("path", name),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),

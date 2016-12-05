@@ -24,7 +24,7 @@ import (
 	"net/http"
 )
 
-// GalleryImageOperationsClient is the the DevTest Labs Client.
+// GalleryImageOperationsClient is the azure DevTest Labs REST API.
 type GalleryImageOperationsClient struct {
 	ManagementClient
 }

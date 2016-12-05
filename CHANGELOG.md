@@ -2,6 +2,35 @@
 
 -----
 
+## `v7.0.0-beta`
+
+| api                                 | version            | note                               |
+|:------------------------------------|:-------------------|:-----------------------------------|
+| arm/analysisservices                | 2016-05-16         | new                                |
+| arm/cdn                             | 2016-10-02         | update to latest swagger           |
+| arm/commerce                        | 2015-06-01-preview | new                                |
+| arm/containerservice                | 2016-09-30         | update to latest swagger           |
+| arm/containerregistry               | 2016-06-27-preview | new                                |
+| arm/datalake-analytics/account      | 2016-11-01         | update to latest swagger           |
+| arm/datalake-store/account          | 2016-11-01         | update to latest swagger           |
+| arm/datalake-store/filesystem       | 2016-11-01         | update to latest swagger           |
+| arm/documentdb                      | 2015-04-08         | new                                |
+| arm/machinelearning/commitmentplans | 2016-05-01-preview | new                                |
+| arm/recoveryservices                | 2016-06-01         | new                                |
+| arm/resources/subscriptions         | 2016-06-01         | new                                |
+| arm/search                          | 2015-08-19         | update to latest swagger           |
+| arm/sql                             | 2014-04-01         | previous version was deleted       |
+
+### Storage
+- Can now update messages in storage queues.
+- Added support for blob snapshots and aborting blob copy operations.
+- Added support for getting and setting ACLs on containers.
+- Added various APIs for file and directory manipulation.
+
+### Support for the following swagger extensions was added to the Go generator which affected codegen.
+- x-ms-client-flatten
+- x-ms-paramater-location
+
 ## `v6.0.0-beta`
 
 | api                            | version            | note                               |

@@ -1,7 +1,7 @@
 // Package devtestlabs implements the Azure ARM Devtestlabs service API
 // version 2016-05-15.
 //
-// The DevTest Labs Client.
+// Azure DevTest Labs REST API.
 package devtestlabs
 
 // Copyright (c) Microsoft and contributors.  All rights reserved.

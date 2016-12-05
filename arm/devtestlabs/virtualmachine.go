@@ -24,7 +24,7 @@ import (
 	"net/http"
 )
 
-// VirtualMachineClient is the the DevTest Labs Client.
+// VirtualMachineClient is the azure DevTest Labs REST API.
 type VirtualMachineClient struct {
 	ManagementClient
 }

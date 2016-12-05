@@ -53,12 +53,16 @@ func NewClientWithBaseURI(baseURI string, adlsFileSystemDNSSuffix string) Client
 // appending to the file. streamContents will be closed upon successful
 // return. Callers should ensure closure when receiving an error.op is the
 // constant value for the operation. appendParameter is the constant value
-// for the operation. transferEncoding is indicates the data being sent to
-// the server is being streamed in chunks. offset is the optional offset in
-// the stream to begin the append operation. Default is to append at the end
-// of the stream.
-func (client Client) Append(directFilePath string, streamContents io.ReadCloser, op string, appendParameter string, transferEncoding string, offset *int64) (result autorest.Response, err error) {
-	req, err := client.AppendPreparer(directFilePath, streamContents, op, appendParameter, transferEncoding, offset)
+// for the operation. offset is the optional offset in the stream to begin
+// the append operation. Default is to append at the end of the stream.
+// syncFlag is optionally indicates what to do after completion of the
+// append. DATA indicates more data is coming so no sync takes place,
+// METADATA indicates a sync should be done to refresh metadata of the file
+// only. CLOSE indicates that both the stream and metadata should be
+// refreshed upon append completion. Possible values include: 'DATA',
+// 'METADATA', 'CLOSE'
+func (client Client) Append(directFilePath string, streamContents io.ReadCloser, op string, appendParameter string, offset *int64, syncFlag SyncFlag) (result autorest.Response, err error) {
+	req, err := client.AppendPreparer(directFilePath, streamContents, op, appendParameter, offset, syncFlag)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "filesystem.Client", "Append", nil, "Failure preparing request")
 	}
@@ -78,7 +82,7 @@ func (client Client) Append(directFilePath string, streamContents io.ReadCloser,
 }
 
 // AppendPreparer prepares the Append request.
-func (client Client) AppendPreparer(directFilePath string, streamContents io.ReadCloser, op string, appendParameter string, transferEncoding string, offset *int64) (*http.Request, error) {
+func (client Client) AppendPreparer(directFilePath string, streamContents io.ReadCloser, op string, appendParameter string, offset *int64, syncFlag SyncFlag) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"directFilePath": autorest.Encode("path", directFilePath),
 	}
@@ -91,14 +95,16 @@ func (client Client) AppendPreparer(directFilePath string, streamContents io.Rea
 	if offset != nil {
 		queryParameters["offset"] = autorest.Encode("query", *offset)
 	}
+	if len(string(syncFlag)) > 0 {
+		queryParameters["syncFlag"] = autorest.Encode("query", syncFlag)
+	}
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPathParameters("/webhdfs/v1/{directFilePath}", pathParameters),
 		autorest.WithFile(streamContents),
-		autorest.WithQueryParameters(queryParameters),
-		autorest.WithHeader("Transfer-Encoding", autorest.String(transferEncoding)))
+		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare(&http.Request{})
 }
 
@@ -259,10 +265,11 @@ func (client Client) ConcatResponder(resp *http.Response) (result autorest.Respo
 }
 
 // ConcurrentAppend appends to the specified file. This method supports
-// multiple concurrent appends to the file. NOTE: Concurrent append and
-// normal (serial) append CANNOT be used interchangeably. Once a file has
-// been appended to using either append option, it can only be appended to
-// using that append option.
+// multiple concurrent appends to the file. NOTE: ConcurrentAppend and normal
+// (serial) Append CANNOT be used interchangeably; once a file has been
+// appended to using either of these append options, it can only be appended
+// to using that append option. ConcurrentAppend DOES NOT guarantee order and
+// can result in duplicated data landing in the target file.
 //
 // filePath is the Data Lake Store path (starting with '/') of the file to
 // which to append using concurrent append. streamContents is the file
@@ -339,15 +346,19 @@ func (client Client) ConcurrentAppendResponder(resp *http.Response) (result auto
 //
 // directFilePath is the Data Lake Store path (starting with '/') of the file
 // to create. op is the constant value for the operation. write is the
-// constant value for the operation. transferEncoding is indicates the data
-// being sent to the server is being streamed in chunks. streamContents is
-// the file contents to include when creating the file. This parameter is
-// optional, resulting in an empty file if not specified. streamContents will
-// be closed upon successful return. Callers should ensure closure when
-// receiving an error.overwrite is the indication of if the file should be
-// overwritten.
-func (client Client) Create(directFilePath string, op string, write string, transferEncoding string, streamContents io.ReadCloser, overwrite *bool) (result autorest.Response, err error) {
-	req, err := client.CreatePreparer(directFilePath, op, write, transferEncoding, streamContents, overwrite)
+// constant value for the operation. streamContents is the file contents to
+// include when creating the file. This parameter is optional, resulting in
+// an empty file if not specified. streamContents will be closed upon
+// successful return. Callers should ensure closure when receiving an
+// error.overwrite is the indication of if the file should be overwritten.
+// syncFlag is optionally indicates what to do after completion of the
+// append. DATA indicates more data is coming so no sync takes place,
+// METADATA indicates a sync should be done to refresh metadata of the file
+// only. CLOSE indicates that both the stream and metadata should be
+// refreshed upon append completion. Possible values include: 'DATA',
+// 'METADATA', 'CLOSE'
+func (client Client) Create(directFilePath string, op string, write string, streamContents io.ReadCloser, overwrite *bool, syncFlag SyncFlag) (result autorest.Response, err error) {
+	req, err := client.CreatePreparer(directFilePath, op, write, streamContents, overwrite, syncFlag)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "filesystem.Client", "Create", nil, "Failure preparing request")
 	}
@@ -367,7 +378,7 @@ func (client Client) Create(directFilePath string, op string, write string, tran
 }
 
 // CreatePreparer prepares the Create request.
-func (client Client) CreatePreparer(directFilePath string, op string, write string, transferEncoding string, streamContents io.ReadCloser, overwrite *bool) (*http.Request, error) {
+func (client Client) CreatePreparer(directFilePath string, op string, write string, streamContents io.ReadCloser, overwrite *bool, syncFlag SyncFlag) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"directFilePath": autorest.Encode("path", directFilePath),
 	}
@@ -380,13 +391,15 @@ func (client Client) CreatePreparer(directFilePath string, op string, write stri
 	if overwrite != nil {
 		queryParameters["overwrite"] = autorest.Encode("query", *overwrite)
 	}
+	if len(string(syncFlag)) > 0 {
+		queryParameters["syncFlag"] = autorest.Encode("query", syncFlag)
+	}
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsPut(),
 		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPathParameters("/webhdfs/v1/{directFilePath}", pathParameters),
-		autorest.WithQueryParameters(queryParameters),
-		autorest.WithHeader("Transfer-Encoding", autorest.String(transferEncoding)))
+		autorest.WithQueryParameters(queryParameters))
 	if streamContents != nil {
 		preparer = autorest.DecoratePreparer(preparer,
 			autorest.WithJSON(streamContents))
@@ -960,7 +973,9 @@ func (client Client) MsConcatResponder(resp *http.Response) (result autorest.Res
 //
 // directFilePath is the Data Lake Store path (starting with '/') of the file
 // to open. op is the constant value for the operation. read is the constant
-// value for the operation.
+// value for the operation. length is the number of bytes that the server
+// will attempt to retrieve. It will retrieve <= length bytes. offset is the
+// byte offset to start reading data from.
 func (client Client) Open(directFilePath string, op string, read string, length *int64, offset *int64) (result ReadCloser, err error) {
 	req, err := client.OpenPreparer(directFilePath, op, read, length, offset)
 	if err != nil {

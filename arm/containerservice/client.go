@@ -1,5 +1,5 @@
 // Package containerservice implements the Azure ARM Containerservice service
-// API version 2016-03-30.
+// API version 2016-09-30.
 //
 // The Container Service Client.
 package containerservice
@@ -28,7 +28,7 @@ import (
 
 const (
 	// APIVersion is the version of the Containerservice
-	APIVersion = "2016-03-30"
+	APIVersion = "2016-09-30"
 
 	// DefaultBaseURI is the default URI used for the service Containerservice
 	DefaultBaseURI = "https://management.azure.com"

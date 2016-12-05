@@ -24,7 +24,7 @@ import (
 	"net/http"
 )
 
-// CustomImageOperationsClient is the the DevTest Labs Client.
+// CustomImageOperationsClient is the azure DevTest Labs REST API.
 type CustomImageOperationsClient struct {
 	ManagementClient
 }

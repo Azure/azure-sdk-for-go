@@ -43,7 +43,7 @@ func (client FeatureOperationsListResult) FeatureOperationsListResultPreparer() 
 		autorest.WithBaseURL(to.String(client.NextLink)))
 }
 
-// FeatureProperties is previewed feature information.
+// FeatureProperties is information about feature.
 type FeatureProperties struct {
 	State *string `json:"state,omitempty"`
 }

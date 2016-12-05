@@ -1,6 +1,8 @@
 // Package policy implements the Azure ARM Policy service API version
 // 2016-04-01.
 //
+// To manage and control access to your resources, you can define customized
+// policies and assign them at a scope.
 package policy
 
 // Copyright (c) Microsoft and contributors.  All rights reserved.

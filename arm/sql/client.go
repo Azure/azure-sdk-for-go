@@ -1,10 +1,8 @@
-// Package sql implements the Azure ARM Sql service API version
-// 2015-05-01-preview.
+// Package sql implements the Azure ARM Sql service API version 2014-04-01.
 //
-// The Azure SQL Database management API provides a RESTful set of web
-// services that interact with Azure SQL Database services to manage your
-// databases. The API enables users to create, retrieve, update, and delete
-// Databases, Servers and related resources.
+// Provides create, read, update and delete functionality for Azure SQL
+// resources including servers, databases, elastic pools, recommendations,
+// operations, and usage metrics.
 package sql
 
 // Copyright (c) Microsoft and contributors.  All rights reserved.
@@ -31,7 +29,7 @@ import (
 
 const (
 	// APIVersion is the version of the Sql
-	APIVersion = "2015-05-01-preview"
+	APIVersion = "2014-04-01"
 
 	// DefaultBaseURI is the default URI used for the service Sql
 	DefaultBaseURI = "https://management.azure.com"

@@ -22,6 +22,26 @@ import (
 	"github.com/Azure/go-autorest/autorest"
 )
 
+// AdminKeyKind enumerates the values for admin key kind.
+type AdminKeyKind string
+
+const (
+	// Primary specifies the primary state for admin key kind.
+	Primary AdminKeyKind = "primary"
+	// Secondary specifies the secondary state for admin key kind.
+	Secondary AdminKeyKind = "secondary"
+)
+
+// HostingMode enumerates the values for hosting mode.
+type HostingMode string
+
+const (
+	// Default specifies the default state for hosting mode.
+	Default HostingMode = "default"
+	// HighDensity specifies the high density state for hosting mode.
+	HighDensity HostingMode = "highDensity"
+)
+
 // ProvisioningState enumerates the values for provisioning state.
 type ProvisioningState string
 
@@ -58,24 +78,67 @@ const (
 	ServiceStatusRunning ServiceStatus = "running"
 )
 
-// SkuType enumerates the values for sku type.
-type SkuType string
+// SkuName enumerates the values for sku name.
+type SkuName string
 
 const (
-	// Free specifies the free state for sku type.
-	Free SkuType = "free"
-	// Standard specifies the standard state for sku type.
-	Standard SkuType = "standard"
-	// Standard2 specifies the standard 2 state for sku type.
-	Standard2 SkuType = "standard2"
+	// Basic specifies the basic state for sku name.
+	Basic SkuName = "basic"
+	// Free specifies the free state for sku name.
+	Free SkuName = "free"
+	// Standard specifies the standard state for sku name.
+	Standard SkuName = "standard"
+	// Standard2 specifies the standard 2 state for sku name.
+	Standard2 SkuName = "standard2"
+	// Standard3 specifies the standard 3 state for sku name.
+	Standard3 SkuName = "standard3"
 )
 
-// AdminKeyResult is response containing the primary and secondary API keys
-// for a given Azure Search service.
+// UnavailableNameReason enumerates the values for unavailable name reason.
+type UnavailableNameReason string
+
+const (
+	// AlreadyExists specifies the already exists state for unavailable name
+	// reason.
+	AlreadyExists UnavailableNameReason = "AlreadyExists"
+	// Invalid specifies the invalid state for unavailable name reason.
+	Invalid UnavailableNameReason = "Invalid"
+)
+
+// AdminKeyResult is response containing the primary and secondary admin API
+// keys for a given Azure Search service.
 type AdminKeyResult struct {
 	autorest.Response `json:"-"`
 	PrimaryKey        *string `json:"primaryKey,omitempty"`
 	SecondaryKey      *string `json:"secondaryKey,omitempty"`
+}
+
+// CheckNameAvailabilityInput is input of check name availability API.
+type CheckNameAvailabilityInput struct {
+	Name *string `json:"name,omitempty"`
+	Type *string `json:"type,omitempty"`
+}
+
+// CheckNameAvailabilityOutput is output of check name availability API.
+type CheckNameAvailabilityOutput struct {
+	autorest.Response `json:"-"`
+	NameAvailable     *bool                 `json:"nameAvailable,omitempty"`
+	Reason            UnavailableNameReason `json:"reason,omitempty"`
+	Message           *string               `json:"message,omitempty"`
+}
+
+// CloudError is contains information about an API error.
+type CloudError struct {
+	Error *CloudErrorBody `json:"error,omitempty"`
+}
+
+// CloudErrorBody is describes a particular API error with an error code and a
+// message.
+type CloudErrorBody struct {
+	Code    *string           `json:"code,omitempty"`
+	Message *string           `json:"message,omitempty"`
+	Target  *string           `json:"target,omitempty"`
+	Details *[]CloudErrorBody `json:"details,omitempty"`
 }
 
 // ListQueryKeysResult is response containing the query API keys for a given
@@ -88,11 +151,12 @@ type ListQueryKeysResult struct {
 // QueryKey is describes an API key for a given Azure Search service that has
 // permissions for query operations only.
 type QueryKey struct {
-	Name *string `json:"name,omitempty"`
-	Key  *string `json:"key,omitempty"`
+	autorest.Response `json:"-"`
+	Name              *string `json:"name,omitempty"`
+	Key               *string `json:"key,omitempty"`
 }
 
-// Resource is
+// Resource is base type for all Azure resources.
 type Resource struct {
 	ID       *string             `json:"id,omitempty"`
 	Name     *string             `json:"name,omitempty"`
@@ -101,57 +165,36 @@ type Resource struct {
 	Tags     *map[string]*string `json:"tags,omitempty"`
 }
 
-// ServiceCreateOrUpdateParameters is properties that describe an Azure Search
-// service.
-type ServiceCreateOrUpdateParameters struct {
-	Location   *string             `json:"location,omitempty"`
-	Tags       *map[string]*string `json:"tags,omitempty"`
-	Properties *ServiceProperties  `json:"properties,omitempty"`
+// Service is describes an Azure Search service and its current state.
+type Service struct {
+	autorest.Response  `json:"-"`
+	ID                 *string             `json:"id,omitempty"`
+	Name               *string             `json:"name,omitempty"`
+	Type               *string             `json:"type,omitempty"`
+	Location           *string             `json:"location,omitempty"`
+	Tags               *map[string]*string `json:"tags,omitempty"`
+	*ServiceProperties `json:"properties,omitempty"`
+	Sku                *Sku `json:"sku,omitempty"`
 }
 
-// ServiceListResult is response containing a list of Azure Search services
-// for a given resource group.
+// ServiceListResult is response containing a list of Azure Search services.
 type ServiceListResult struct {
 	autorest.Response `json:"-"`
-	Value             *[]ServiceResource `json:"value,omitempty"`
+	Value             *[]Service `json:"value,omitempty"`
 }
 
-// ServiceProperties is defines properties of an Azure Search service that can
-// be modified.
+// ServiceProperties is properties of the Search service.
 type ServiceProperties struct {
-	Sku            *Sku   `json:"sku,omitempty"`
-	ReplicaCount   *int32 `json:"replicaCount,omitempty"`
-	PartitionCount *int32 `json:"partitionCount,omitempty"`
-}
-
-// ServiceReadableProperties is defines all the properties of an Azure Search
-// service.
-type ServiceReadableProperties struct {
+	ReplicaCount      *int32            `json:"replicaCount,omitempty"`
+	PartitionCount    *int32            `json:"partitionCount,omitempty"`
+	HostingMode       HostingMode       `json:"hostingMode,omitempty"`
 	Status            ServiceStatus     `json:"status,omitempty"`
 	StatusDetails     *string           `json:"statusDetails,omitempty"`
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
-	Sku               *Sku              `json:"sku,omitempty"`
-	ReplicaCount      *int32            `json:"replicaCount,omitempty"`
-	PartitionCount    *int32            `json:"partitionCount,omitempty"`
-}
-
-// ServiceResource is describes an Azure Search service and its current state.
-type ServiceResource struct {
-	autorest.Response `json:"-"`
-	ID                *string                    `json:"id,omitempty"`
-	Name              *string                    `json:"name,omitempty"`
-	Location          *string                    `json:"location,omitempty"`
-	Tags              *map[string]*string        `json:"tags,omitempty"`
-	Properties        *ServiceReadableProperties `json:"properties,omitempty"`
 }
 
 // Sku is defines the SKU of an Azure Search Service, which determines price
 // tier and capacity limits.
 type Sku struct {
-	Name SkuType `json:"name,omitempty"`
-}
-
-// SubResource is
-type SubResource struct {
-	ID *string `json:"id,omitempty"`
+	Name SkuName `json:"name,omitempty"`
 }

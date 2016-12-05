@@ -733,21 +733,21 @@ func (client SitesClient) CreateInstanceDeploymentSlotResponder(resp *http.Respo
 func (client SitesClient) CreateOrUpdateSite(resourceGroupName string, name string, siteEnvelope Site, skipDNSRegistration string, skipCustomDomainVerification string, forceDNSRegistration string, ttlInSeconds string, cancel <-chan struct{}) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: siteEnvelope,
-			Constraints: []validation.Constraint{{Target: "siteEnvelope.Properties", Name: validation.Null, Rule: false,
-				Chain: []validation.Constraint{{Target: "siteEnvelope.Properties.State", Name: validation.ReadOnly, Rule: true, Chain: nil},
-					{Target: "siteEnvelope.Properties.HostNames", Name: validation.ReadOnly, Rule: true, Chain: nil},
-					{Target: "siteEnvelope.Properties.RepositorySiteName", Name: validation.ReadOnly, Rule: true, Chain: nil},
-					{Target: "siteEnvelope.Properties.UsageState", Name: validation.ReadOnly, Rule: true, Chain: nil},
-					{Target: "siteEnvelope.Properties.EnabledHostNames", Name: validation.ReadOnly, Rule: true, Chain: nil},
-					{Target: "siteEnvelope.Properties.AvailabilityState", Name: validation.ReadOnly, Rule: true, Chain: nil},
-					{Target: "siteEnvelope.Properties.LastModifiedTimeUtc", Name: validation.ReadOnly, Rule: true, Chain: nil},
-					{Target: "siteEnvelope.Properties.TrafficManagerHostNames", Name: validation.ReadOnly, Rule: true, Chain: nil},
-					{Target: "siteEnvelope.Properties.PremiumAppDeployed", Name: validation.ReadOnly, Rule: true, Chain: nil},
-					{Target: "siteEnvelope.Properties.TargetSwapSlot", Name: validation.ReadOnly, Rule: true, Chain: nil},
-					{Target: "siteEnvelope.Properties.OutboundIPAddresses", Name: validation.ReadOnly, Rule: true, Chain: nil},
-					{Target: "siteEnvelope.Properties.ResourceGroup", Name: validation.ReadOnly, Rule: true, Chain: nil},
-					{Target: "siteEnvelope.Properties.IsDefaultContainer", Name: validation.ReadOnly, Rule: true, Chain: nil},
-					{Target: "siteEnvelope.Properties.DefaultHostName", Name: validation.ReadOnly, Rule: true, Chain: nil},
+			Constraints: []validation.Constraint{{Target: "siteEnvelope.SiteProperties", Name: validation.Null, Rule: false,
+				Chain: []validation.Constraint{{Target: "siteEnvelope.SiteProperties.State", Name: validation.ReadOnly, Rule: true, Chain: nil},
+					{Target: "siteEnvelope.SiteProperties.HostNames", Name: validation.ReadOnly, Rule: true, Chain: nil},
+					{Target: "siteEnvelope.SiteProperties.RepositorySiteName", Name: validation.ReadOnly, Rule: true, Chain: nil},
+					{Target: "siteEnvelope.SiteProperties.UsageState", Name: validation.ReadOnly, Rule: true, Chain: nil},
+					{Target: "siteEnvelope.SiteProperties.EnabledHostNames", Name: validation.ReadOnly, Rule: true, Chain: nil},
+					{Target: "siteEnvelope.SiteProperties.AvailabilityState", Name: validation.ReadOnly, Rule: true, Chain: nil},
+					{Target: "siteEnvelope.SiteProperties.LastModifiedTimeUtc", Name: validation.ReadOnly, Rule: true, Chain: nil},
+					{Target: "siteEnvelope.SiteProperties.TrafficManagerHostNames", Name: validation.ReadOnly, Rule: true, Chain: nil},
+					{Target: "siteEnvelope.SiteProperties.PremiumAppDeployed", Name: validation.ReadOnly, Rule: true, Chain: nil},
+					{Target: "siteEnvelope.SiteProperties.TargetSwapSlot", Name: validation.ReadOnly, Rule: true, Chain: nil},
+					{Target: "siteEnvelope.SiteProperties.OutboundIPAddresses", Name: validation.ReadOnly, Rule: true, Chain: nil},
+					{Target: "siteEnvelope.SiteProperties.ResourceGroup", Name: validation.ReadOnly, Rule: true, Chain: nil},
+					{Target: "siteEnvelope.SiteProperties.IsDefaultContainer", Name: validation.ReadOnly, Rule: true, Chain: nil},
+					{Target: "siteEnvelope.SiteProperties.DefaultHostName", Name: validation.ReadOnly, Rule: true, Chain: nil},
 				}}}}}); err != nil {
 		return result, validation.NewErrorWithValidationError(err, "web.SitesClient", "CreateOrUpdateSite")
 	}
@@ -1253,21 +1253,21 @@ func (client SitesClient) CreateOrUpdateSiteRelayServiceConnectionSlotResponder(
 func (client SitesClient) CreateOrUpdateSiteSlot(resourceGroupName string, name string, siteEnvelope Site, slot string, skipDNSRegistration string, skipCustomDomainVerification string, forceDNSRegistration string, ttlInSeconds string, cancel <-chan struct{}) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: siteEnvelope,
-			Constraints: []validation.Constraint{{Target: "siteEnvelope.Properties", Name: validation.Null, Rule: false,
-				Chain: []validation.Constraint{{Target: "siteEnvelope.Properties.State", Name: validation.ReadOnly, Rule: true, Chain: nil},
-					{Target: "siteEnvelope.Properties.HostNames", Name: validation.ReadOnly, Rule: true, Chain: nil},
-					{Target: "siteEnvelope.Properties.RepositorySiteName", Name: validation.ReadOnly, Rule: true, Chain: nil},
-					{Target: "siteEnvelope.Properties.UsageState", Name: validation.ReadOnly, Rule: true, Chain: nil},
-					{Target: "siteEnvelope.Properties.EnabledHostNames", Name: validation.ReadOnly, Rule: true, Chain: nil},
-					{Target: "siteEnvelope.Properties.AvailabilityState", Name: validation.ReadOnly, Rule: true, Chain: nil},
-					{Target: "siteEnvelope.Properties.LastModifiedTimeUtc", Name: validation.ReadOnly, Rule: true, Chain: nil},
-					{Target: "siteEnvelope.Properties.TrafficManagerHostNames", Name: validation.ReadOnly, Rule: true, Chain: nil},
-					{Target: "siteEnvelope.Properties.PremiumAppDeployed", Name: validation.ReadOnly, Rule: true, Chain: nil},
-					{Target: "siteEnvelope.Properties.TargetSwapSlot", Name: validation.ReadOnly, Rule: true, Chain: nil},
-					{Target: "siteEnvelope.Properties.OutboundIPAddresses", Name: validation.ReadOnly, Rule: true, Chain: nil},
-					{Target: "siteEnvelope.Properties.ResourceGroup", Name: validation.ReadOnly, Rule: true, Chain: nil},
-					{Target: "siteEnvelope.Properties.IsDefaultContainer", Name: validation.ReadOnly, Rule: true, Chain: nil},
-					{Target: "siteEnvelope.Properties.DefaultHostName", Name: validation.ReadOnly, Rule: true, Chain: nil},
+			Constraints: []validation.Constraint{{Target: "siteEnvelope.SiteProperties", Name: validation.Null, Rule: false,
+				Chain: []validation.Constraint{{Target: "siteEnvelope.SiteProperties.State", Name: validation.ReadOnly, Rule: true, Chain: nil},
+					{Target: "siteEnvelope.SiteProperties.HostNames", Name: validation.ReadOnly, Rule: true, Chain: nil},
+					{Target: "siteEnvelope.SiteProperties.RepositorySiteName", Name: validation.ReadOnly, Rule: true, Chain: nil},
+					{Target: "siteEnvelope.SiteProperties.UsageState", Name: validation.ReadOnly, Rule: true, Chain: nil},
+					{Target: "siteEnvelope.SiteProperties.EnabledHostNames", Name: validation.ReadOnly, Rule: true, Chain: nil},
+					{Target: "siteEnvelope.SiteProperties.AvailabilityState", Name: validation.ReadOnly, Rule: true, Chain: nil},
+					{Target: "siteEnvelope.SiteProperties.LastModifiedTimeUtc", Name: validation.ReadOnly, Rule: true, Chain: nil},
+					{Target: "siteEnvelope.SiteProperties.TrafficManagerHostNames", Name: validation.ReadOnly, Rule: true, Chain: nil},
+					{Target: "siteEnvelope.SiteProperties.PremiumAppDeployed", Name: validation.ReadOnly, Rule: true, Chain: nil},
+					{Target: "siteEnvelope.SiteProperties.TargetSwapSlot", Name: validation.ReadOnly, Rule: true, Chain: nil},
+					{Target: "siteEnvelope.SiteProperties.OutboundIPAddresses", Name: validation.ReadOnly, Rule: true, Chain: nil},
+					{Target: "siteEnvelope.SiteProperties.ResourceGroup", Name: validation.ReadOnly, Rule: true, Chain: nil},
+					{Target: "siteEnvelope.SiteProperties.IsDefaultContainer", Name: validation.ReadOnly, Rule: true, Chain: nil},
+					{Target: "siteEnvelope.SiteProperties.DefaultHostName", Name: validation.ReadOnly, Rule: true, Chain: nil},
 				}}}}}); err != nil {
 		return result, validation.NewErrorWithValidationError(err, "web.SitesClient", "CreateOrUpdateSiteSlot")
 	}
@@ -1406,7 +1406,7 @@ func (client SitesClient) CreateOrUpdateSiteSourceControlResponder(resp *http.Re
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
@@ -1475,7 +1475,7 @@ func (client SitesClient) CreateOrUpdateSiteSourceControlSlotResponder(resp *htt
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
@@ -5349,7 +5349,7 @@ func (client SitesClient) GetSiteMetricsPreparer(resourceGroupName string, name 
 		queryParameters["details"] = autorest.Encode("query", *details)
 	}
 	if len(filter) > 0 {
-		queryParameters["$filter"] = autorest.Encode("query", filter)
+		queryParameters["$filter"] = filter
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -5448,7 +5448,7 @@ func (client SitesClient) GetSiteMetricsSlotPreparer(resourceGroupName string, n
 		queryParameters["details"] = autorest.Encode("query", *details)
 	}
 	if len(filter) > 0 {
-		queryParameters["$filter"] = autorest.Encode("query", filter)
+		queryParameters["$filter"] = filter
 	}
 
 	preparer := autorest.CreatePreparer(

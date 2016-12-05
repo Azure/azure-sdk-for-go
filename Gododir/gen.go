@@ -44,10 +44,10 @@ var (
 			Plane:       "arm",
 			InputPrefix: "arm-",
 			Services: []service{
-				// {
-				//     Name: "analysisservices",
-				//     Version: "2016-05-06"
-				// },
+				{
+					Name:    "analysisservices",
+					Version: "2016-05-16",
+				},
 				{
 					Name:    "authorization",
 					Version: "2015-07-01",
@@ -58,36 +58,37 @@ var (
 					Swagger: "BatchManagement",
 				},
 				{
-					Name: "cdn",
-					// Currently, the generator ignores parameter location extension
-					// https://github.com/Azure/autorest/issues/1532
-					// Version: "2016-10-02",
-					Version: "2016-04-02",
+					Name:    "cdn",
+					Version: "2016-10-02",
 				},
 				{
 					Name:    "cognitiveservices",
 					Version: "2016-02-01-preview",
 				},
-				// {
-				// 	Name:    "commerce",
-				// 	Version: "2015-06-01-preview",
-				// },
+				{
+					Name:    "commerce",
+					Version: "2015-06-01-preview",
+				},
 				{
 					Name:    "compute",
 					Version: "2016-03-30",
 				},
 				{
 					Name:    "containerservice",
-					Version: "2016-03-30",
+					Version: "2016-09-30",
 					Swagger: "containerService",
 					Input:   "compute",
+				},
+				{
+					Name:    "containerregistry",
+					Version: "2016-06-27-preview",
 				},
 				{
 					Name: "datalake-analytics",
 					SubServices: []service{
 						{
 							Name:    "account",
-							Version: "2015-10-01-preview",
+							Version: "2016-11-01",
 						},
 					},
 				},
@@ -96,7 +97,7 @@ var (
 					SubServices: []service{
 						{
 							Name:    "account",
-							Version: "2015-10-01-preview",
+							Version: "2016-11-01",
 						},
 					},
 				},
@@ -108,6 +109,10 @@ var (
 				{
 					Name:    "dns",
 					Version: "2016-04-01",
+				},
+				{
+					Name:    "documentdb",
+					Version: "2015-04-08",
 				},
 				{
 					Name:    "eventhub",
@@ -141,24 +146,20 @@ var (
 					// composite swagger
 				},
 				{
-					Name:    "machinelearning",
-					Version: "2016-05-01-preview",
-					Swagger: "webservices",
-					// SubServices: []service{
-					// Currently, the generator ignores parameter location extension
-					// https://github.com/Azure/autorest/issues/1532
-					// {
-					// 	Name:    "webservices",
-					// 	Version: "2016-05-01-preview",
-					// 	Input:   "machinelearning",
-					// },
-					// {
-					// 	Name:    "commitmentplans",
-					// 	Version: "2016-05-01-preview",
-					// 	Swagger: "commitmentPlans",
-					// 	Input:   "machinelearning",
-					// },
-					// },
+					Name: "machinelearning",
+					SubServices: []service{
+						{
+							Name:    "webservices",
+							Version: "2016-05-01-preview",
+							Input:   "machinelearning",
+						},
+						{
+							Name:    "commitmentplans",
+							Version: "2016-05-01-preview",
+							Swagger: "commitmentPlans",
+							Input:   "machinelearning",
+						},
+					},
 				},
 				{
 					Name:    "mediaservices",
@@ -182,10 +183,10 @@ var (
 					Name:    "powerbiembedded",
 					Version: "2016-01-29",
 				},
-				// {
-				// 	Name:    "recoveryservices",
-				// 	Version: "2016-06-01",
-				// },
+				{
+					Name:    "recoveryservices",
+					Version: "2016-06-01",
+				},
 				// {
 				// 	Name:    "recoveryservicesbackup",
 				// 	Version: "2016-06-01",
@@ -219,11 +220,8 @@ var (
 							Version: "2016-09-01",
 						},
 						{
-							Name: "subscriptions",
-							// AutoRest Go generator has a bug and generates an ugly SDK for subscription newest API version
-							// https://github.com/Azure/autorest/issues/1477
-							// 	Version: "2016-06-01",
-							Version: "2015-11-01",
+							Name:    "subscriptions",
+							Version: "2016-06-01",
 						},
 					},
 				},
@@ -233,7 +231,7 @@ var (
 				},
 				{
 					Name:    "search",
-					Version: "2015-02-28",
+					Version: "2015-08-19",
 				},
 				{
 					Name:    "servermanagement",
@@ -245,7 +243,8 @@ var (
 				},
 				{
 					Name:    "sql",
-					Version: "2015-05-01",
+					Version: "2014-04-01",
+					Swagger: "sql.core",
 				},
 				{
 					Name:    "storage",
@@ -300,7 +299,7 @@ var (
 					SubServices: []service{
 						{
 							Name:    "filesystem",
-							Version: "2015-10-01-preview",
+							Version: "2016-11-01",
 						},
 					},
 				},

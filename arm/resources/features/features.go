@@ -24,7 +24,11 @@ import (
 	"net/http"
 )
 
-// Client is the client for the Features methods of the Features service.
+// Client is the azure Feature Exposure Control (AFEC) provides a mechanism
+// for the resource providers to control feature exposure to users. Resource
+// providers typically use this mechanism to provide public/private preview
+// for new features prior to making them generally available. Users need to
+// explicitly register for AFEC features to get access to such functionality.
 type Client struct {
 	ManagementClient
 }
@@ -39,10 +43,10 @@ func NewClientWithBaseURI(baseURI string, subscriptionID string) Client {
 	return Client{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// Get get all features under the subscription.
+// Get gets the preview feature with the specified name.
 //
-// resourceProviderNamespace is namespace of the resource provider.
-// featureName is previewed feature name in the resource provider.
+// resourceProviderNamespace is the resource provider namespace for the
+// feature. featureName is the name of the feature to get.
 func (client Client) Get(resourceProviderNamespace string, featureName string) (result FeatureResult, err error) {
 	req, err := client.GetPreparer(resourceProviderNamespace, featureName)
 	if err != nil {
@@ -102,9 +106,11 @@ func (client Client) GetResponder(resp *http.Response) (result FeatureResult, er
 	return
 }
 
-// List gets a list of previewed features of a resource provider.
+// List gets all the preview features in a provider namespace that are
+// available through AFEC for the subscription.
 //
-// resourceProviderNamespace is the namespace of the resource provider.
+// resourceProviderNamespace is the namespace of the resource provider for
+// getting features.
 func (client Client) List(resourceProviderNamespace string) (result FeatureOperationsListResult, err error) {
 	req, err := client.ListPreparer(resourceProviderNamespace)
 	if err != nil {
@@ -187,8 +193,8 @@ func (client Client) ListNextResults(lastResults FeatureOperationsListResult) (r
 	return
 }
 
-// ListAll gets a list of previewed features for all the providers in the
-// current subscription.
+// ListAll gets all the preview features that are available through AFEC for
+// the subscription.
 func (client Client) ListAll() (result FeatureOperationsListResult, err error) {
 	req, err := client.ListAllPreparer()
 	if err != nil {
@@ -270,10 +276,10 @@ func (client Client) ListAllNextResults(lastResults FeatureOperationsListResult)
 	return
 }
 
-// Register registers for a previewed feature of a resource provider.
+// Register registers the preview feature for the subscription.
 //
-// resourceProviderNamespace is namespace of the resource provider.
-// featureName is previewed feature name in the resource provider.
+// resourceProviderNamespace is the namespace of the resource provider.
+// featureName is the name of the feature to register.
 func (client Client) Register(resourceProviderNamespace string, featureName string) (result FeatureResult, err error) {
 	req, err := client.RegisterPreparer(resourceProviderNamespace, featureName)
 	if err != nil {

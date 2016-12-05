@@ -1,13 +1,7 @@
-// Package machinelearning implements the Azure ARM Machinelearning service
-// API version 2016-05-01-preview.
+// Package containerregistry implements the Azure ARM Containerregistry
+// service API version 2016-06-27-preview.
 //
-// These APIs allow end users to operate on Azure Machine Learning Web
-// Services resources. They support the following operations:<ul><li>Create
-// or update a web service</li><li>Get a web service</li><li>Patch a web
-// service</li><li>Delete a web service</li><li>Get All Web Services in a
-// Resource Group </li><li>Get All Web Services in a Subscription</li><li>Get
-// Web Services Keys</li></ul>
-package machinelearning
+package containerregistry
 
 // Copyright (c) Microsoft and contributors.  All rights reserved.
 //
@@ -32,14 +26,14 @@ import (
 )
 
 const (
-	// APIVersion is the version of the Machinelearning
-	APIVersion = "2016-05-01-preview"
+	// APIVersion is the version of the Containerregistry
+	APIVersion = "2016-06-27-preview"
 
-	// DefaultBaseURI is the default URI used for the service Machinelearning
+	// DefaultBaseURI is the default URI used for the service Containerregistry
 	DefaultBaseURI = "https://management.azure.com"
 )
 
-// ManagementClient is the base client for Machinelearning.
+// ManagementClient is the base client for Containerregistry.
 type ManagementClient struct {
 	autorest.Client
 	BaseURI        string

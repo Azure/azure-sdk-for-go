@@ -1,5 +1,5 @@
 // Package search implements the Azure ARM Search service API version
-// 2015-02-28.
+// 2015-08-19.
 //
 // Client that can be used to manage Azure Search services and API keys.
 package search
@@ -28,7 +28,7 @@ import (
 
 const (
 	// APIVersion is the version of the Search
-	APIVersion = "2015-02-28"
+	APIVersion = "2015-08-19"
 
 	// DefaultBaseURI is the default URI used for the service Search
 	DefaultBaseURI = "https://management.azure.com"

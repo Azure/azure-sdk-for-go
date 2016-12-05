@@ -58,12 +58,12 @@ func NewServerFarmsClientWithBaseURI(baseURI string, subscriptionID string) Serv
 func (client ServerFarmsClient) CreateOrUpdateServerFarm(resourceGroupName string, name string, serverFarmEnvelope ServerFarmWithRichSku, allowPendingState *bool, cancel <-chan struct{}) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serverFarmEnvelope,
-			Constraints: []validation.Constraint{{Target: "serverFarmEnvelope.Properties", Name: validation.Null, Rule: false,
-				Chain: []validation.Constraint{{Target: "serverFarmEnvelope.Properties.Status", Name: validation.ReadOnly, Rule: true, Chain: nil},
-					{Target: "serverFarmEnvelope.Properties.Subscription", Name: validation.ReadOnly, Rule: true, Chain: nil},
-					{Target: "serverFarmEnvelope.Properties.GeoRegion", Name: validation.ReadOnly, Rule: true, Chain: nil},
-					{Target: "serverFarmEnvelope.Properties.NumberOfSites", Name: validation.ReadOnly, Rule: true, Chain: nil},
-					{Target: "serverFarmEnvelope.Properties.ResourceGroup", Name: validation.ReadOnly, Rule: true, Chain: nil},
+			Constraints: []validation.Constraint{{Target: "serverFarmEnvelope.ServerFarmWithRichSkuProperties", Name: validation.Null, Rule: false,
+				Chain: []validation.Constraint{{Target: "serverFarmEnvelope.ServerFarmWithRichSkuProperties.Status", Name: validation.ReadOnly, Rule: true, Chain: nil},
+					{Target: "serverFarmEnvelope.ServerFarmWithRichSkuProperties.Subscription", Name: validation.ReadOnly, Rule: true, Chain: nil},
+					{Target: "serverFarmEnvelope.ServerFarmWithRichSkuProperties.GeoRegion", Name: validation.ReadOnly, Rule: true, Chain: nil},
+					{Target: "serverFarmEnvelope.ServerFarmWithRichSkuProperties.NumberOfSites", Name: validation.ReadOnly, Rule: true, Chain: nil},
+					{Target: "serverFarmEnvelope.ServerFarmWithRichSkuProperties.ResourceGroup", Name: validation.ReadOnly, Rule: true, Chain: nil},
 				}}}}}); err != nil {
 		return result, validation.NewErrorWithValidationError(err, "web.ServerFarmsClient", "CreateOrUpdateServerFarm")
 	}
@@ -654,7 +654,7 @@ func (client ServerFarmsClient) GetServerFarmMetricsPreparer(resourceGroupName s
 		queryParameters["details"] = autorest.Encode("query", *details)
 	}
 	if len(filter) > 0 {
-		queryParameters["$filter"] = autorest.Encode("query", filter)
+		queryParameters["$filter"] = filter
 	}
 
 	preparer := autorest.CreatePreparer(

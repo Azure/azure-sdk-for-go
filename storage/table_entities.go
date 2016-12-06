@@ -98,7 +98,7 @@ func (c *TableServiceClient) QueryTableEntities(tableName AzureTable, previousCo
 
 	headers["Content-Length"] = "0"
 
-	resp, err := c.client.execTable("GET", uri, headers, nil)
+	resp, err := c.client.execTable(http.MethodGet, uri, headers, nil)
 
 	if err != nil {
 		return nil, nil, err
@@ -124,7 +124,7 @@ func (c *TableServiceClient) QueryTableEntities(tableName AzureTable, previousCo
 // The function fails if there is an entity with the same
 // PartitionKey and RowKey in the table.
 func (c *TableServiceClient) InsertEntity(table AzureTable, entity TableEntity) error {
-	if sc, err := c.execTable(table, entity, false, "POST"); err != nil {
+	if sc, err := c.execTable(table, entity, false, http.MethodPost); err != nil {
 		return checkRespCode(sc, []int{http.StatusCreated})
 	}
 
@@ -165,7 +165,7 @@ func (c *TableServiceClient) execTable(table AzureTable, entity TableEntity, spe
 // one passed as parameter. The function fails if there is no entity
 // with the same PartitionKey and RowKey in the table.
 func (c *TableServiceClient) UpdateEntity(table AzureTable, entity TableEntity) error {
-	if sc, err := c.execTable(table, entity, true, "PUT"); err != nil {
+	if sc, err := c.execTable(table, entity, true, http.MethodPut); err != nil {
 		return checkRespCode(sc, []int{http.StatusNoContent})
 	}
 	return nil
@@ -205,7 +205,7 @@ func (c *TableServiceClient) DeleteEntity(table AzureTable, entity TableEntity, 
 	headers["Content-Length"] = "0"
 	headers["If-Match"] = ifMatch
 
-	resp, err := c.client.execTable("DELETE", uri, headers, nil)
+	resp, err := c.client.execTable(http.MethodDelete, uri, headers, nil)
 
 	if err != nil {
 		return err
@@ -222,7 +222,7 @@ func (c *TableServiceClient) DeleteEntity(table AzureTable, entity TableEntity, 
 // InsertOrReplaceEntity inserts an entity in the specified table
 // or replaced the existing one.
 func (c *TableServiceClient) InsertOrReplaceEntity(table AzureTable, entity TableEntity) error {
-	if sc, err := c.execTable(table, entity, true, "PUT"); err != nil {
+	if sc, err := c.execTable(table, entity, true, http.MethodPut); err != nil {
 		return checkRespCode(sc, []int{http.StatusNoContent})
 	}
 	return nil

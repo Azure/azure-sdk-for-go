@@ -141,18 +141,18 @@ func (client ServicesClient) CheckNameAvailabilityResponder(resp *http.Response)
 func (client ServicesClient) CreateOrUpdate(resourceGroupName string, searchServiceName string, service Service, xMsClientRequestID *uuid.UUID) (result Service, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: service,
-			Constraints: []validation.Constraint{{Target: "service.Properties", Name: validation.Null, Rule: false,
-				Chain: []validation.Constraint{{Target: "service.Properties.ReplicaCount", Name: validation.Null, Rule: false,
-					Chain: []validation.Constraint{{Target: "service.Properties.ReplicaCount", Name: validation.InclusiveMaximum, Rule: 12, Chain: nil},
-						{Target: "service.Properties.ReplicaCount", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil},
+			Constraints: []validation.Constraint{{Target: "service.ServiceProperties", Name: validation.Null, Rule: false,
+				Chain: []validation.Constraint{{Target: "service.ServiceProperties.ReplicaCount", Name: validation.Null, Rule: false,
+					Chain: []validation.Constraint{{Target: "service.ServiceProperties.ReplicaCount", Name: validation.InclusiveMaximum, Rule: 12, Chain: nil},
+						{Target: "service.ServiceProperties.ReplicaCount", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil},
 					}},
-					{Target: "service.Properties.PartitionCount", Name: validation.Null, Rule: false,
-						Chain: []validation.Constraint{{Target: "service.Properties.PartitionCount", Name: validation.InclusiveMaximum, Rule: 12, Chain: nil},
-							{Target: "service.Properties.PartitionCount", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil},
+					{Target: "service.ServiceProperties.PartitionCount", Name: validation.Null, Rule: false,
+						Chain: []validation.Constraint{{Target: "service.ServiceProperties.PartitionCount", Name: validation.InclusiveMaximum, Rule: 12, Chain: nil},
+							{Target: "service.ServiceProperties.PartitionCount", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil},
 						}},
-					{Target: "service.Properties.Status", Name: validation.ReadOnly, Rule: true, Chain: nil},
-					{Target: "service.Properties.StatusDetails", Name: validation.ReadOnly, Rule: true, Chain: nil},
-					{Target: "service.Properties.ProvisioningState", Name: validation.ReadOnly, Rule: true, Chain: nil},
+					{Target: "service.ServiceProperties.Status", Name: validation.ReadOnly, Rule: true, Chain: nil},
+					{Target: "service.ServiceProperties.StatusDetails", Name: validation.ReadOnly, Rule: true, Chain: nil},
+					{Target: "service.ServiceProperties.ProvisioningState", Name: validation.ReadOnly, Rule: true, Chain: nil},
 				}},
 				{Target: "service.Sku", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
 		return result, validation.NewErrorWithValidationError(err, "search.ServicesClient", "CreateOrUpdate")

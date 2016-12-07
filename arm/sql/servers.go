@@ -51,8 +51,8 @@ func NewServersClientWithBaseURI(baseURI string, subscriptionID string) ServersC
 func (client ServersClient) CreateOrUpdate(resourceGroupName string, serverName string, parameters Server) (result Server, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: parameters,
-			Constraints: []validation.Constraint{{Target: "parameters.Properties", Name: validation.Null, Rule: false,
-				Chain: []validation.Constraint{{Target: "parameters.Properties.FullyQualifiedDomainName", Name: validation.ReadOnly, Rule: true, Chain: nil}}}}}}); err != nil {
+			Constraints: []validation.Constraint{{Target: "parameters.ServerProperties", Name: validation.Null, Rule: false,
+				Chain: []validation.Constraint{{Target: "parameters.ServerProperties.FullyQualifiedDomainName", Name: validation.ReadOnly, Rule: true, Chain: nil}}}}}}); err != nil {
 		return result, validation.NewErrorWithValidationError(err, "sql.ServersClient", "CreateOrUpdate")
 	}
 

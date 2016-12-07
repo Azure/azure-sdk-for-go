@@ -52,14 +52,14 @@ func NewVirtualMachineScaleSetsClientWithBaseURI(baseURI string, subscriptionID 
 func (client VirtualMachineScaleSetsClient) CreateOrUpdate(resourceGroupName string, name string, parameters VirtualMachineScaleSet, cancel <-chan struct{}) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: parameters,
-			Constraints: []validation.Constraint{{Target: "parameters.Properties", Name: validation.Null, Rule: false,
-				Chain: []validation.Constraint{{Target: "parameters.Properties.VirtualMachineProfile", Name: validation.Null, Rule: false,
-					Chain: []validation.Constraint{{Target: "parameters.Properties.VirtualMachineProfile.StorageProfile", Name: validation.Null, Rule: false,
-						Chain: []validation.Constraint{{Target: "parameters.Properties.VirtualMachineProfile.StorageProfile.OsDisk", Name: validation.Null, Rule: false,
-							Chain: []validation.Constraint{{Target: "parameters.Properties.VirtualMachineProfile.StorageProfile.OsDisk.Name", Name: validation.Null, Rule: true, Chain: nil}}},
+			Constraints: []validation.Constraint{{Target: "parameters.VirtualMachineScaleSetProperties", Name: validation.Null, Rule: false,
+				Chain: []validation.Constraint{{Target: "parameters.VirtualMachineScaleSetProperties.VirtualMachineProfile", Name: validation.Null, Rule: false,
+					Chain: []validation.Constraint{{Target: "parameters.VirtualMachineScaleSetProperties.VirtualMachineProfile.StorageProfile", Name: validation.Null, Rule: false,
+						Chain: []validation.Constraint{{Target: "parameters.VirtualMachineScaleSetProperties.VirtualMachineProfile.StorageProfile.OsDisk", Name: validation.Null, Rule: false,
+							Chain: []validation.Constraint{{Target: "parameters.VirtualMachineScaleSetProperties.VirtualMachineProfile.StorageProfile.OsDisk.Name", Name: validation.Null, Rule: true, Chain: nil}}},
 						}},
 					}},
-					{Target: "parameters.Properties.ProvisioningState", Name: validation.ReadOnly, Rule: true, Chain: nil},
+					{Target: "parameters.VirtualMachineScaleSetProperties.ProvisioningState", Name: validation.ReadOnly, Rule: true, Chain: nil},
 				}}}}}); err != nil {
 		return result, validation.NewErrorWithValidationError(err, "compute.VirtualMachineScaleSetsClient", "CreateOrUpdate")
 	}

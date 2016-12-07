@@ -128,8 +128,8 @@ func (client OperationsClient) Create(resourceGroupName string, mediaServiceName
 				{Target: "mediaServiceName", Name: validation.MinLength, Rule: 3, Chain: nil},
 				{Target: "mediaServiceName", Name: validation.Pattern, Rule: `^[a-z0-9]`, Chain: nil}}},
 		{TargetValue: mediaService,
-			Constraints: []validation.Constraint{{Target: "mediaService.Properties", Name: validation.Null, Rule: false,
-				Chain: []validation.Constraint{{Target: "mediaService.Properties.APIEndpoints", Name: validation.ReadOnly, Rule: true, Chain: nil}}}}}}); err != nil {
+			Constraints: []validation.Constraint{{Target: "mediaService.MediaServiceProperties", Name: validation.Null, Rule: false,
+				Chain: []validation.Constraint{{Target: "mediaService.MediaServiceProperties.APIEndpoints", Name: validation.ReadOnly, Rule: true, Chain: nil}}}}}}); err != nil {
 		return result, validation.NewErrorWithValidationError(err, "mediaservices.OperationsClient", "Create")
 	}
 

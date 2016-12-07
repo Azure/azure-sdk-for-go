@@ -50,8 +50,8 @@ func NewPatchSchedulesClientWithBaseURI(baseURI string, subscriptionID string) P
 func (client PatchSchedulesClient) CreateOrUpdate(resourceGroupName string, name string, parameters PatchSchedule) (result PatchSchedule, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: parameters,
-			Constraints: []validation.Constraint{{Target: "parameters.Properties", Name: validation.Null, Rule: true,
-				Chain: []validation.Constraint{{Target: "parameters.Properties.ScheduleEntriesProperty", Name: validation.Null, Rule: true, Chain: nil}}},
+			Constraints: []validation.Constraint{{Target: "parameters.ScheduleEntries", Name: validation.Null, Rule: true,
+				Chain: []validation.Constraint{{Target: "parameters.ScheduleEntries.ScheduleEntriesProperty", Name: validation.Null, Rule: true, Chain: nil}}},
 				{Target: "parameters.ID", Name: validation.ReadOnly, Rule: true, Chain: nil},
 				{Target: "parameters.Name", Name: validation.ReadOnly, Rule: true, Chain: nil},
 				{Target: "parameters.Type", Name: validation.ReadOnly, Rule: true, Chain: nil},

@@ -60,9 +60,9 @@ func (client ProfilesClient) Create(resourceGroupName string, profileName string
 				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}},
 		{TargetValue: profile,
 			Constraints: []validation.Constraint{{Target: "profile.Sku", Name: validation.Null, Rule: true, Chain: nil},
-				{Target: "profile.Properties", Name: validation.Null, Rule: false,
-					Chain: []validation.Constraint{{Target: "profile.Properties.ResourceState", Name: validation.ReadOnly, Rule: true, Chain: nil},
-						{Target: "profile.Properties.ProvisioningState", Name: validation.ReadOnly, Rule: true, Chain: nil},
+				{Target: "profile.ProfileProperties", Name: validation.Null, Rule: false,
+					Chain: []validation.Constraint{{Target: "profile.ProfileProperties.ResourceState", Name: validation.ReadOnly, Rule: true, Chain: nil},
+						{Target: "profile.ProfileProperties.ProvisioningState", Name: validation.ReadOnly, Rule: true, Chain: nil},
 					}}}}}); err != nil {
 		return result, validation.NewErrorWithValidationError(err, "cdn.ProfilesClient", "Create")
 	}

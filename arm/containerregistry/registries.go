@@ -123,13 +123,13 @@ func (client RegistriesClient) CheckNameAvailabilityResponder(resp *http.Respons
 func (client RegistriesClient) CreateOrUpdate(resourceGroupName string, registryName string, registry Registry) (result Registry, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: registry,
-			Constraints: []validation.Constraint{{Target: "registry.Properties", Name: validation.Null, Rule: false,
-				Chain: []validation.Constraint{{Target: "registry.Properties.StorageAccount", Name: validation.Null, Rule: true,
-					Chain: []validation.Constraint{{Target: "registry.Properties.StorageAccount.Name", Name: validation.Null, Rule: true, Chain: nil},
-						{Target: "registry.Properties.StorageAccount.AccessKey", Name: validation.Null, Rule: true, Chain: nil},
+			Constraints: []validation.Constraint{{Target: "registry.RegistryProperties", Name: validation.Null, Rule: false,
+				Chain: []validation.Constraint{{Target: "registry.RegistryProperties.StorageAccount", Name: validation.Null, Rule: true,
+					Chain: []validation.Constraint{{Target: "registry.RegistryProperties.StorageAccount.Name", Name: validation.Null, Rule: true, Chain: nil},
+						{Target: "registry.RegistryProperties.StorageAccount.AccessKey", Name: validation.Null, Rule: true, Chain: nil},
 					}},
-					{Target: "registry.Properties.LoginServer", Name: validation.ReadOnly, Rule: true, Chain: nil},
-					{Target: "registry.Properties.CreationDate", Name: validation.ReadOnly, Rule: true, Chain: nil},
+					{Target: "registry.RegistryProperties.LoginServer", Name: validation.ReadOnly, Rule: true, Chain: nil},
+					{Target: "registry.RegistryProperties.CreationDate", Name: validation.ReadOnly, Rule: true, Chain: nil},
 				}}}}}); err != nil {
 		return result, validation.NewErrorWithValidationError(err, "containerregistry.RegistriesClient", "CreateOrUpdate")
 	}

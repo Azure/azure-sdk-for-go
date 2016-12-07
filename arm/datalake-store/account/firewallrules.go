@@ -55,9 +55,9 @@ func NewFirewallRulesClientWithBaseURI(baseURI string, subscriptionID string) Fi
 func (client FirewallRulesClient) CreateOrUpdate(resourceGroupName string, accountName string, firewallRuleName string, parameters FirewallRule) (result FirewallRule, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: parameters,
-			Constraints: []validation.Constraint{{Target: "parameters.Properties", Name: validation.Null, Rule: true,
-				Chain: []validation.Constraint{{Target: "parameters.Properties.StartIPAddress", Name: validation.Null, Rule: true, Chain: nil},
-					{Target: "parameters.Properties.EndIPAddress", Name: validation.Null, Rule: true, Chain: nil},
+			Constraints: []validation.Constraint{{Target: "parameters.FirewallRuleProperties", Name: validation.Null, Rule: true,
+				Chain: []validation.Constraint{{Target: "parameters.FirewallRuleProperties.StartIPAddress", Name: validation.Null, Rule: true, Chain: nil},
+					{Target: "parameters.FirewallRuleProperties.EndIPAddress", Name: validation.Null, Rule: true, Chain: nil},
 				}}}}}); err != nil {
 		return result, validation.NewErrorWithValidationError(err, "account.FirewallRulesClient", "CreateOrUpdate")
 	}

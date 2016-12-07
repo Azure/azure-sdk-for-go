@@ -165,7 +165,7 @@ type DeploymentProperties struct {
 	Parameters     *map[string]interface{} `json:"parameters,omitempty"`
 	ParametersLink *ParametersLink         `json:"parametersLink,omitempty"`
 	Mode           DeploymentMode          `json:"mode,omitempty"`
-	DebugSetting   *DebugSetting           `json:"debugSetting,omitempty"`
+	*DebugSetting  `json:"debugSetting,omitempty"`
 }
 
 // DeploymentPropertiesExtended is deployment properties with additional
@@ -182,7 +182,7 @@ type DeploymentPropertiesExtended struct {
 	Parameters        *map[string]interface{} `json:"parameters,omitempty"`
 	ParametersLink    *ParametersLink         `json:"parametersLink,omitempty"`
 	Mode              DeploymentMode          `json:"mode,omitempty"`
-	DebugSetting      *DebugSetting           `json:"debugSetting,omitempty"`
+	*DebugSetting     `json:"debugSetting,omitempty"`
 }
 
 // DeploymentValidateResult is information from validate template deployment

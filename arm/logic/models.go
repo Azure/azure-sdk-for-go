@@ -449,13 +449,13 @@ type SubResource struct {
 
 // Workflow is
 type Workflow struct {
-	autorest.Response `json:"-"`
-	ID                *string             `json:"id,omitempty"`
-	Name              *string             `json:"name,omitempty"`
-	Type              *string             `json:"type,omitempty"`
-	Location          *string             `json:"location,omitempty"`
-	Tags              *map[string]*string `json:"tags,omitempty"`
-	Properties        *WorkflowProperties `json:"properties,omitempty"`
+	autorest.Response   `json:"-"`
+	ID                  *string             `json:"id,omitempty"`
+	Name                *string             `json:"name,omitempty"`
+	Type                *string             `json:"type,omitempty"`
+	Location            *string             `json:"location,omitempty"`
+	Tags                *map[string]*string `json:"tags,omitempty"`
+	*WorkflowProperties `json:"properties,omitempty"`
 }
 
 // WorkflowFilter is
@@ -515,20 +515,20 @@ type WorkflowProperties struct {
 
 // WorkflowRun is
 type WorkflowRun struct {
-	autorest.Response `json:"-"`
-	ID                *string                `json:"id,omitempty"`
-	Properties        *WorkflowRunProperties `json:"properties,omitempty"`
-	Name              *string                `json:"name,omitempty"`
-	Type              *string                `json:"type,omitempty"`
+	autorest.Response      `json:"-"`
+	ID                     *string `json:"id,omitempty"`
+	*WorkflowRunProperties `json:"properties,omitempty"`
+	Name                   *string `json:"name,omitempty"`
+	Type                   *string `json:"type,omitempty"`
 }
 
 // WorkflowRunAction is
 type WorkflowRunAction struct {
-	autorest.Response `json:"-"`
-	ID                *string                      `json:"id,omitempty"`
-	Properties        *WorkflowRunActionProperties `json:"properties,omitempty"`
-	Name              *string                      `json:"name,omitempty"`
-	Type              *string                      `json:"type,omitempty"`
+	autorest.Response            `json:"-"`
+	ID                           *string `json:"id,omitempty"`
+	*WorkflowRunActionProperties `json:"properties,omitempty"`
+	Name                         *string `json:"name,omitempty"`
+	Type                         *string `json:"type,omitempty"`
 }
 
 // WorkflowRunActionFilter is
@@ -627,11 +627,11 @@ type WorkflowRunTrigger struct {
 
 // WorkflowTrigger is
 type WorkflowTrigger struct {
-	autorest.Response `json:"-"`
-	ID                *string                    `json:"id,omitempty"`
-	Properties        *WorkflowTriggerProperties `json:"properties,omitempty"`
-	Name              *string                    `json:"name,omitempty"`
-	Type              *string                    `json:"type,omitempty"`
+	autorest.Response          `json:"-"`
+	ID                         *string `json:"id,omitempty"`
+	*WorkflowTriggerProperties `json:"properties,omitempty"`
+	Name                       *string `json:"name,omitempty"`
+	Type                       *string `json:"type,omitempty"`
 }
 
 // WorkflowTriggerCallbackURL is
@@ -647,11 +647,11 @@ type WorkflowTriggerFilter struct {
 
 // WorkflowTriggerHistory is
 type WorkflowTriggerHistory struct {
-	autorest.Response `json:"-"`
-	ID                *string                           `json:"id,omitempty"`
-	Properties        *WorkflowTriggerHistoryProperties `json:"properties,omitempty"`
-	Name              *string                           `json:"name,omitempty"`
-	Type              *string                           `json:"type,omitempty"`
+	autorest.Response                 `json:"-"`
+	ID                                *string `json:"id,omitempty"`
+	*WorkflowTriggerHistoryProperties `json:"properties,omitempty"`
+	Name                              *string `json:"name,omitempty"`
+	Type                              *string `json:"type,omitempty"`
 }
 
 // WorkflowTriggerHistoryFilter is
@@ -737,13 +737,13 @@ type WorkflowTriggerRecurrence struct {
 
 // WorkflowVersion is
 type WorkflowVersion struct {
-	autorest.Response `json:"-"`
-	ID                *string                    `json:"id,omitempty"`
-	Name              *string                    `json:"name,omitempty"`
-	Type              *string                    `json:"type,omitempty"`
-	Location          *string                    `json:"location,omitempty"`
-	Tags              *map[string]*string        `json:"tags,omitempty"`
-	Properties        *WorkflowVersionProperties `json:"properties,omitempty"`
+	autorest.Response          `json:"-"`
+	ID                         *string             `json:"id,omitempty"`
+	Name                       *string             `json:"name,omitempty"`
+	Type                       *string             `json:"type,omitempty"`
+	Location                   *string             `json:"location,omitempty"`
+	Tags                       *map[string]*string `json:"tags,omitempty"`
+	*WorkflowVersionProperties `json:"properties,omitempty"`
 }
 
 // WorkflowVersionListResult is

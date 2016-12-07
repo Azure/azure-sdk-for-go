@@ -24,7 +24,7 @@ import (
 	"net/http"
 )
 
-// ScheduleOperationsClient is the the DevTest Labs Client.
+// ScheduleOperationsClient is the azure DevTest Labs REST API.
 type ScheduleOperationsClient struct {
 	ManagementClient
 }

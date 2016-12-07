@@ -1,7 +1,7 @@
 // Package powerbiembedded implements the Azure ARM Powerbiembedded service
 // API version 2016-01-29.
 //
-// Client to manage your Power BI embedded workspace collections and retrieve
+// Client to manage your Power BI Embedded workspace collections and retrieve
 // workspaces.
 package powerbiembedded
 

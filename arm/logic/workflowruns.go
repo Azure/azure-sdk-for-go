@@ -24,8 +24,7 @@ import (
 	"net/http"
 )
 
-// WorkflowRunsClient is the client for the WorkflowRuns methods of the Logic
-// service.
+// WorkflowRunsClient is the rEST API for Azure Logic Apps.
 type WorkflowRunsClient struct {
 	ManagementClient
 }

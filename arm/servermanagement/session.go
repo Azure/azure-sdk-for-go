@@ -25,7 +25,7 @@ import (
 	"net/http"
 )
 
-// SessionClient is the rEST API for Azure Server Management Service
+// SessionClient is the rEST API for Azure Server Management Service.
 type SessionClient struct {
 	ManagementClient
 }
@@ -40,13 +40,13 @@ func NewSessionClientWithBaseURI(baseURI string, subscriptionID string) SessionC
 	return SessionClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// Create creates a session for a node This method may poll for completion.
+// Create creates a session for a node. This method may poll for completion.
 // Polling can be canceled by passing the cancel channel argument. The
 // channel will be used to cancel polling and any outstanding HTTP requests.
 //
 // resourceGroupName is the resource group name uniquely identifies the
 // resource group within the user subscriptionId. nodeName is the node name
-// (256 characters maximum). session is the sessionId from the user
+// (256 characters maximum). session is the sessionId from the user.
 // sessionParameters is parameters supplied to the CreateOrUpdate operation.
 func (client SessionClient) Create(resourceGroupName string, nodeName string, session string, sessionParameters SessionParameters, cancel <-chan struct{}) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
@@ -122,11 +122,11 @@ func (client SessionClient) CreateResponder(resp *http.Response) (result autores
 	return
 }
 
-// Delete deletes a session for a node
+// Delete deletes a session for a node.
 //
 // resourceGroupName is the resource group name uniquely identifies the
 // resource group within the user subscriptionId. nodeName is the node name
-// (256 characters maximum). session is the sessionId from the user
+// (256 characters maximum). session is the sessionId from the user.
 func (client SessionClient) Delete(resourceGroupName string, nodeName string, session string) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
@@ -197,11 +197,11 @@ func (client SessionClient) DeleteResponder(resp *http.Response) (result autores
 	return
 }
 
-// Get gets a session for a node
+// Get gets a session for a node.
 //
 // resourceGroupName is the resource group name uniquely identifies the
 // resource group within the user subscriptionId. nodeName is the node name
-// (256 characters maximum). session is the sessionId from the user
+// (256 characters maximum). session is the sessionId from the user.
 func (client SessionClient) Get(resourceGroupName string, nodeName string, session string) (result SessionResource, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,

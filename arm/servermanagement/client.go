@@ -1,7 +1,7 @@
 // Package servermanagement implements the Azure ARM Servermanagement service
 // API version 2016-07-01-preview.
 //
-// REST API for Azure Server Management Service
+// REST API for Azure Server Management Service.
 package servermanagement
 
 // Copyright (c) Microsoft and contributors.  All rights reserved.

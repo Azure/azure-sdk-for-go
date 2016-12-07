@@ -24,7 +24,7 @@ import (
 	"net/http"
 )
 
-// LabOperationsClient is the the DevTest Labs Client.
+// LabOperationsClient is the azure DevTest Labs REST API.
 type LabOperationsClient struct {
 	ManagementClient
 }

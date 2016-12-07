@@ -24,123 +24,123 @@ import (
 	"net/http"
 )
 
-// HtpStatusCode enumerates the values for htp status code.
-type HtpStatusCode string
+// HTTPStatusCode enumerates the values for http status code.
+type HTTPStatusCode string
 
 const (
-	// Accepted specifies the accepted state for htp status code.
-	Accepted HtpStatusCode = "Accepted"
-	// Ambiguous specifies the ambiguous state for htp status code.
-	Ambiguous HtpStatusCode = "Ambiguous"
-	// BadGateway specifies the bad gateway state for htp status code.
-	BadGateway HtpStatusCode = "BadGateway"
-	// BadRequest specifies the bad request state for htp status code.
-	BadRequest HtpStatusCode = "BadRequest"
-	// Conflict specifies the conflict state for htp status code.
-	Conflict HtpStatusCode = "Conflict"
-	// Continue specifies the continue state for htp status code.
-	Continue HtpStatusCode = "Continue"
-	// Created specifies the created state for htp status code.
-	Created HtpStatusCode = "Created"
-	// ExpectationFailed specifies the expectation failed state for htp status
-	// code.
-	ExpectationFailed HtpStatusCode = "ExpectationFailed"
-	// Forbidden specifies the forbidden state for htp status code.
-	Forbidden HtpStatusCode = "Forbidden"
-	// Found specifies the found state for htp status code.
-	Found HtpStatusCode = "Found"
-	// GatewayTimeout specifies the gateway timeout state for htp status code.
-	GatewayTimeout HtpStatusCode = "GatewayTimeout"
-	// Gone specifies the gone state for htp status code.
-	Gone HtpStatusCode = "Gone"
+	// Accepted specifies the accepted state for http status code.
+	Accepted HTTPStatusCode = "Accepted"
+	// Ambiguous specifies the ambiguous state for http status code.
+	Ambiguous HTTPStatusCode = "Ambiguous"
+	// BadGateway specifies the bad gateway state for http status code.
+	BadGateway HTTPStatusCode = "BadGateway"
+	// BadRequest specifies the bad request state for http status code.
+	BadRequest HTTPStatusCode = "BadRequest"
+	// Conflict specifies the conflict state for http status code.
+	Conflict HTTPStatusCode = "Conflict"
+	// Continue specifies the continue state for http status code.
+	Continue HTTPStatusCode = "Continue"
+	// Created specifies the created state for http status code.
+	Created HTTPStatusCode = "Created"
+	// ExpectationFailed specifies the expectation failed state for http
+	// status code.
+	ExpectationFailed HTTPStatusCode = "ExpectationFailed"
+	// Forbidden specifies the forbidden state for http status code.
+	Forbidden HTTPStatusCode = "Forbidden"
+	// Found specifies the found state for http status code.
+	Found HTTPStatusCode = "Found"
+	// GatewayTimeout specifies the gateway timeout state for http status code.
+	GatewayTimeout HTTPStatusCode = "GatewayTimeout"
+	// Gone specifies the gone state for http status code.
+	Gone HTTPStatusCode = "Gone"
 	// HTTPVersionNotSupported specifies the http version not supported state
-	// for htp status code.
-	HTTPVersionNotSupported HtpStatusCode = "HttpVersionNotSupported"
-	// InternalServerError specifies the internal server error state for htp
+	// for http status code.
+	HTTPVersionNotSupported HTTPStatusCode = "HttpVersionNotSupported"
+	// InternalServerError specifies the internal server error state for http
 	// status code.
-	InternalServerError HtpStatusCode = "InternalServerError"
-	// LengthRequired specifies the length required state for htp status code.
-	LengthRequired HtpStatusCode = "LengthRequired"
-	// MethodNotAllowed specifies the method not allowed state for htp status
+	InternalServerError HTTPStatusCode = "InternalServerError"
+	// LengthRequired specifies the length required state for http status code.
+	LengthRequired HTTPStatusCode = "LengthRequired"
+	// MethodNotAllowed specifies the method not allowed state for http status
 	// code.
-	MethodNotAllowed HtpStatusCode = "MethodNotAllowed"
-	// Moved specifies the moved state for htp status code.
-	Moved HtpStatusCode = "Moved"
-	// MovedPermanently specifies the moved permanently state for htp status
+	MethodNotAllowed HTTPStatusCode = "MethodNotAllowed"
+	// Moved specifies the moved state for http status code.
+	Moved HTTPStatusCode = "Moved"
+	// MovedPermanently specifies the moved permanently state for http status
 	// code.
-	MovedPermanently HtpStatusCode = "MovedPermanently"
-	// MultipleChoices specifies the multiple choices state for htp status
+	MovedPermanently HTTPStatusCode = "MovedPermanently"
+	// MultipleChoices specifies the multiple choices state for http status
 	// code.
-	MultipleChoices HtpStatusCode = "MultipleChoices"
-	// NoContent specifies the no content state for htp status code.
-	NoContent HtpStatusCode = "NoContent"
+	MultipleChoices HTTPStatusCode = "MultipleChoices"
+	// NoContent specifies the no content state for http status code.
+	NoContent HTTPStatusCode = "NoContent"
 	// NonAuthoritativeInformation specifies the non authoritative information
-	// state for htp status code.
-	NonAuthoritativeInformation HtpStatusCode = "NonAuthoritativeInformation"
-	// NotAcceptable specifies the not acceptable state for htp status code.
-	NotAcceptable HtpStatusCode = "NotAcceptable"
-	// NotFound specifies the not found state for htp status code.
-	NotFound HtpStatusCode = "NotFound"
-	// NotImplemented specifies the not implemented state for htp status code.
-	NotImplemented HtpStatusCode = "NotImplemented"
-	// NotModified specifies the not modified state for htp status code.
-	NotModified HtpStatusCode = "NotModified"
-	// OK specifies the ok state for htp status code.
-	OK HtpStatusCode = "OK"
-	// PartialContent specifies the partial content state for htp status code.
-	PartialContent HtpStatusCode = "PartialContent"
-	// PaymentRequired specifies the payment required state for htp status
+	// state for http status code.
+	NonAuthoritativeInformation HTTPStatusCode = "NonAuthoritativeInformation"
+	// NotAcceptable specifies the not acceptable state for http status code.
+	NotAcceptable HTTPStatusCode = "NotAcceptable"
+	// NotFound specifies the not found state for http status code.
+	NotFound HTTPStatusCode = "NotFound"
+	// NotImplemented specifies the not implemented state for http status code.
+	NotImplemented HTTPStatusCode = "NotImplemented"
+	// NotModified specifies the not modified state for http status code.
+	NotModified HTTPStatusCode = "NotModified"
+	// OK specifies the ok state for http status code.
+	OK HTTPStatusCode = "OK"
+	// PartialContent specifies the partial content state for http status code.
+	PartialContent HTTPStatusCode = "PartialContent"
+	// PaymentRequired specifies the payment required state for http status
 	// code.
-	PaymentRequired HtpStatusCode = "PaymentRequired"
-	// PreconditionFailed specifies the precondition failed state for htp
+	PaymentRequired HTTPStatusCode = "PaymentRequired"
+	// PreconditionFailed specifies the precondition failed state for http
 	// status code.
-	PreconditionFailed HtpStatusCode = "PreconditionFailed"
+	PreconditionFailed HTTPStatusCode = "PreconditionFailed"
 	// ProxyAuthenticationRequired specifies the proxy authentication required
-	// state for htp status code.
-	ProxyAuthenticationRequired HtpStatusCode = "ProxyAuthenticationRequired"
-	// Redirect specifies the redirect state for htp status code.
-	Redirect HtpStatusCode = "Redirect"
-	// RedirectKeepVerb specifies the redirect keep verb state for htp status
+	// state for http status code.
+	ProxyAuthenticationRequired HTTPStatusCode = "ProxyAuthenticationRequired"
+	// Redirect specifies the redirect state for http status code.
+	Redirect HTTPStatusCode = "Redirect"
+	// RedirectKeepVerb specifies the redirect keep verb state for http status
 	// code.
-	RedirectKeepVerb HtpStatusCode = "RedirectKeepVerb"
-	// RedirectMethod specifies the redirect method state for htp status code.
-	RedirectMethod HtpStatusCode = "RedirectMethod"
+	RedirectKeepVerb HTTPStatusCode = "RedirectKeepVerb"
+	// RedirectMethod specifies the redirect method state for http status code.
+	RedirectMethod HTTPStatusCode = "RedirectMethod"
 	// RequestedRangeNotSatisfiable specifies the requested range not
-	// satisfiable state for htp status code.
-	RequestedRangeNotSatisfiable HtpStatusCode = "RequestedRangeNotSatisfiable"
+	// satisfiable state for http status code.
+	RequestedRangeNotSatisfiable HTTPStatusCode = "RequestedRangeNotSatisfiable"
 	// RequestEntityTooLarge specifies the request entity too large state for
-	// htp status code.
-	RequestEntityTooLarge HtpStatusCode = "RequestEntityTooLarge"
-	// RequestTimeout specifies the request timeout state for htp status code.
-	RequestTimeout HtpStatusCode = "RequestTimeout"
-	// RequestURITooLong specifies the request uri too long state for htp
+	// http status code.
+	RequestEntityTooLarge HTTPStatusCode = "RequestEntityTooLarge"
+	// RequestTimeout specifies the request timeout state for http status code.
+	RequestTimeout HTTPStatusCode = "RequestTimeout"
+	// RequestURITooLong specifies the request uri too long state for http
 	// status code.
-	RequestURITooLong HtpStatusCode = "RequestUriTooLong"
-	// ResetContent specifies the reset content state for htp status code.
-	ResetContent HtpStatusCode = "ResetContent"
-	// SeeOther specifies the see other state for htp status code.
-	SeeOther HtpStatusCode = "SeeOther"
-	// ServiceUnavailable specifies the service unavailable state for htp
+	RequestURITooLong HTTPStatusCode = "RequestUriTooLong"
+	// ResetContent specifies the reset content state for http status code.
+	ResetContent HTTPStatusCode = "ResetContent"
+	// SeeOther specifies the see other state for http status code.
+	SeeOther HTTPStatusCode = "SeeOther"
+	// ServiceUnavailable specifies the service unavailable state for http
 	// status code.
-	ServiceUnavailable HtpStatusCode = "ServiceUnavailable"
-	// SwitchingProtocols specifies the switching protocols state for htp
+	ServiceUnavailable HTTPStatusCode = "ServiceUnavailable"
+	// SwitchingProtocols specifies the switching protocols state for http
 	// status code.
-	SwitchingProtocols HtpStatusCode = "SwitchingProtocols"
-	// TemporaryRedirect specifies the temporary redirect state for htp status
+	SwitchingProtocols HTTPStatusCode = "SwitchingProtocols"
+	// TemporaryRedirect specifies the temporary redirect state for http
+	// status code.
+	TemporaryRedirect HTTPStatusCode = "TemporaryRedirect"
+	// Unauthorized specifies the unauthorized state for http status code.
+	Unauthorized HTTPStatusCode = "Unauthorized"
+	// UnsupportedMediaType specifies the unsupported media type state for
+	// http status code.
+	UnsupportedMediaType HTTPStatusCode = "UnsupportedMediaType"
+	// Unused specifies the unused state for http status code.
+	Unused HTTPStatusCode = "Unused"
+	// UpgradeRequired specifies the upgrade required state for http status
 	// code.
-	TemporaryRedirect HtpStatusCode = "TemporaryRedirect"
-	// Unauthorized specifies the unauthorized state for htp status code.
-	Unauthorized HtpStatusCode = "Unauthorized"
-	// UnsupportedMediaType specifies the unsupported media type state for htp
-	// status code.
-	UnsupportedMediaType HtpStatusCode = "UnsupportedMediaType"
-	// Unused specifies the unused state for htp status code.
-	Unused HtpStatusCode = "Unused"
-	// UpgradeRequired specifies the upgrade required state for htp status
-	// code.
-	UpgradeRequired HtpStatusCode = "UpgradeRequired"
-	// UseProxy specifies the use proxy state for htp status code.
-	UseProxy HtpStatusCode = "UseProxy"
+	UpgradeRequired HTTPStatusCode = "UpgradeRequired"
+	// UseProxy specifies the use proxy state for http status code.
+	UseProxy HTTPStatusCode = "UseProxy"
 )
 
 // OperationStatus enumerates the values for operation status.
@@ -223,18 +223,18 @@ type PtrRecord struct {
 	Ptrdname *string `json:"ptrdname,omitempty"`
 }
 
-// RecordSet is describes a DNS RecordSet (a set of DNS records with the same
-// name and type).
+// RecordSet is describes a DNS record set (a collection of DNS records with
+// the same name and type).
 type RecordSet struct {
-	autorest.Response `json:"-"`
-	ID                *string              `json:"id,omitempty"`
-	Name              *string              `json:"name,omitempty"`
-	Type              *string              `json:"type,omitempty"`
-	Etag              *string              `json:"etag,omitempty"`
-	Properties        *RecordSetProperties `json:"properties,omitempty"`
+	autorest.Response    `json:"-"`
+	ID                   *string `json:"id,omitempty"`
+	Name                 *string `json:"name,omitempty"`
+	Type                 *string `json:"type,omitempty"`
+	Etag                 *string `json:"etag,omitempty"`
+	*RecordSetProperties `json:"properties,omitempty"`
 }
 
-// RecordSetListResult is the response to a RecordSet List operation.
+// RecordSetListResult is the response to a record set List operation.
 type RecordSetListResult struct {
 	autorest.Response `json:"-"`
 	Value             *[]RecordSet `json:"value,omitempty"`
@@ -254,7 +254,7 @@ func (client RecordSetListResult) RecordSetListResultPreparer() (*http.Request, 
 }
 
 // RecordSetProperties is represents the properties of the records in the
-// RecordSet.
+// record set.
 type RecordSetProperties struct {
 	Metadata    *map[string]*string `json:"metadata,omitempty"`
 	TTL         *int64              `json:"TTL,omitempty"`
@@ -269,7 +269,7 @@ type RecordSetProperties struct {
 	SOARecord   *SoaRecord          `json:"SOARecord,omitempty"`
 }
 
-// RecordSetUpdateParameters is parameters supplied to update a RecordSet.
+// RecordSetUpdateParameters is parameters supplied to update a record set.
 type RecordSetUpdateParameters struct {
 	RecordSet *RecordSet `json:"RecordSet,omitempty"`
 }
@@ -321,7 +321,7 @@ type Zone struct {
 	Location          *string             `json:"location,omitempty"`
 	Tags              *map[string]*string `json:"tags,omitempty"`
 	Etag              *string             `json:"etag,omitempty"`
-	Properties        *ZoneProperties     `json:"properties,omitempty"`
+	*ZoneProperties   `json:"properties,omitempty"`
 }
 
 // ZoneDeleteResult is the response to a Zone Delete operation.
@@ -329,7 +329,7 @@ type ZoneDeleteResult struct {
 	autorest.Response   `json:"-"`
 	AzureAsyncOperation *string         `json:"azureAsyncOperation,omitempty"`
 	Status              OperationStatus `json:"status,omitempty"`
-	StatusCode          HtpStatusCode   `json:"statusCode,omitempty"`
+	StatusCode          HTTPStatusCode  `json:"statusCode,omitempty"`
 	RequestID           *string         `json:"requestId,omitempty"`
 }
 

@@ -25,8 +25,12 @@ import (
 	"net/http"
 )
 
-// ResourceLinksClient is the client for the ResourceLinks methods of the
-// Links service.
+// ResourceLinksClient is the azure resources can be linked together to form
+// logical relationships. You can establish links between resources belonging
+// to different resource groups. However, all the linked resources must
+// belong to the same subscription. Each resource can be linked to 50 other
+// resources. If any of the linked resources are deleted or moved, the link
+// owner must clean up the remaining link.
 type ResourceLinksClient struct {
 	ManagementClient
 }
@@ -43,11 +47,14 @@ func NewResourceLinksClientWithBaseURI(baseURI string, subscriptionID string) Re
 	return ResourceLinksClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// CreateOrUpdate create a resource link.
+// CreateOrUpdate creates or updates a resource link between the specified
+// resources.
 //
-// linkID is the fully qualified Id of the resource link. For example,
+// linkID is the fully qualified ID of the resource link. Use the format,
+// /subscriptions/{subscription-id}/resourceGroups/{resource-group-name}/{provider-namespace}/{resource-type}/{resource-name}/Microsoft.Resources/links/{link-name}.
+// For example,
 // /subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myGroup/Microsoft.Web/sites/mySite/Microsoft.Resources/links/myLink
-// parameters is create or update resource link parameters.
+// parameters is parameters for creating or updating a resource link.
 func (client ResourceLinksClient) CreateOrUpdate(linkID string, parameters ResourceLink) (result ResourceLink, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: parameters,
@@ -118,9 +125,11 @@ func (client ResourceLinksClient) CreateOrUpdateResponder(resp *http.Response) (
 	return
 }
 
-// Delete deletes a resource link.
+// Delete deletes a resource link with the specified ID.
 //
-// linkID is the fully qualified Id of the resource link. For example,
+// linkID is the fully qualified ID of the resource link. Use the format,
+// /subscriptions/{subscription-id}/resourceGroups/{resource-group-name}/{provider-namespace}/{resource-type}/{resource-name}/Microsoft.Resources/links/{link-name}.
+// For example,
 // /subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myGroup/Microsoft.Web/sites/mySite/Microsoft.Resources/links/myLink
 func (client ResourceLinksClient) Delete(linkID string) (result autorest.Response, err error) {
 	req, err := client.DeletePreparer(linkID)
@@ -178,7 +187,7 @@ func (client ResourceLinksClient) DeleteResponder(resp *http.Response) (result a
 	return
 }
 
-// Get gets a resource link.
+// Get gets a resource link with the specified ID.
 //
 // linkID is the fully qualified Id of the resource link. For example,
 // /subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myGroup/Microsoft.Web/sites/mySite/Microsoft.Resources/links/myLink
@@ -240,16 +249,15 @@ func (client ResourceLinksClient) GetResponder(resp *http.Response) (result Reso
 }
 
 // ListAtSourceScope gets a list of resource links at and below the specified
-// source scope. For example, to list resource links at and under a resource
-// group, set the scope to
-// /subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myGroup.
+// source scope.
 //
-// scope is the fully qualified Id of the source resource scope. For example,
-// to list resource links at and under a resource group, set the scope to
+// scope is the fully qualified ID of the scope for getting the resource
+// links. For example, to list resource links at and under a resource group,
+// set the scope to
 // /subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myGroup.
-// filter is the filter to apply on the list resource links operation. To
-// list links only at the specified scope (not below the scope), use
-// Filter.atScope(). Possible values include: 'atScope()'
+// filter is the filter to apply when getting resource links. To get links
+// only at the specified scope (not below the scope), use Filter.atScope().
+// Possible values include: 'atScope()'
 func (client ResourceLinksClient) ListAtSourceScope(scope string, filter Filter) (result ResourceLinkResult, err error) {
 	req, err := client.ListAtSourceScopePreparer(scope, filter)
 	if err != nil {
@@ -334,10 +342,11 @@ func (client ResourceLinksClient) ListAtSourceScopeNextResults(lastResults Resou
 	return
 }
 
-// ListAtSubscription gets a list of resource links under the subscription.
+// ListAtSubscription gets all the linked resources for the subscription.
 //
 // filter is the filter to apply on the list resource links operation. The
-// supported filter for list resource links is targetId.
+// supported filter for list resource links is targetid. For example,
+// $filter=targetid eq {value}
 func (client ResourceLinksClient) ListAtSubscription(filter string) (result ResourceLinkResult, err error) {
 	req, err := client.ListAtSubscriptionPreparer(filter)
 	if err != nil {

@@ -24,8 +24,12 @@ import (
 	"net/http"
 )
 
-// ProviderOperationsMetadataOperationsClient is the client for the
-// ProviderOperationsMetadataOperations methods of the Authorization service.
+// ProviderOperationsMetadataOperationsClient is the role based access control
+// provides you a way to apply granular level policy administration down to
+// individual resources or resource groups. These operations enable you to
+// manage role definitions and role assignments. A role definition describes
+// the set of actions that can be performed on resources. A role assignment
+// grants access to Azure Active Directory users.
 type ProviderOperationsMetadataOperationsClient struct {
 	ManagementClient
 }
@@ -42,9 +46,10 @@ func NewProviderOperationsMetadataOperationsClientWithBaseURI(baseURI string, su
 	return ProviderOperationsMetadataOperationsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// Get gets provider operations metadata
+// Get gets provider operations metadata for the specified resource provider.
 //
-// resourceProviderNamespace is namespace of the resource provider.
+// resourceProviderNamespace is the namespace of the resource provider. expand
+// is specifies whether to expand the values.
 func (client ProviderOperationsMetadataOperationsClient) Get(resourceProviderNamespace string, expand string) (result ProviderOperationsMetadata, err error) {
 	req, err := client.GetPreparer(resourceProviderNamespace, expand)
 	if err != nil {
@@ -105,8 +110,9 @@ func (client ProviderOperationsMetadataOperationsClient) GetResponder(resp *http
 	return
 }
 
-// List gets provider operations metadata list
+// List gets provider operations metadata for all resource providers.
 //
+// expand is specifies whether to expand the values.
 func (client ProviderOperationsMetadataOperationsClient) List(expand string) (result ProviderOperationsMetadataListResult, err error) {
 	req, err := client.ListPreparer(expand)
 	if err != nil {

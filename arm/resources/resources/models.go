@@ -386,7 +386,7 @@ type ResourceProviderOperationDisplayProperties struct {
 	Description *string `json:"description,omitempty"`
 }
 
-// Sku is sku for the resource.
+// Sku is sKU for the resource.
 type Sku struct {
 	Name     *string `json:"name,omitempty"`
 	Tier     *string `json:"tier,omitempty"`

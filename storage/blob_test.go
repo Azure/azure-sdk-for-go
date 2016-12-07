@@ -329,6 +329,66 @@ func (s *StorageBlobSuite) TestBlobCopy(c *chk.C) {
 	c.Assert(b, chk.DeepEquals, body)
 }
 
+func (s *StorageBlobSuite) TestStartBlobCopy(c *chk.C) {
+	if testing.Short() {
+		c.Skip("skipping blob copy in short mode, no SLA on async operation")
+	}
+
+	cli := getBlobClient(c)
+	cnt := randContainer()
+	src := randName(5)
+	dst := randName(5)
+	body := []byte(randString(1024))
+
+	c.Assert(cli.CreateContainer(cnt, ContainerAccessTypePrivate), chk.IsNil)
+	defer cli.deleteContainer(cnt)
+
+	c.Assert(cli.putSingleBlockBlob(cnt, src, body), chk.IsNil)
+	defer cli.DeleteBlob(cnt, src, nil)
+
+	// given we dont know when it will start, can we even test destination creation?
+	// will just test that an error wasn't thrown for now.
+	copyID, err := cli.StartBlobCopy(cnt, dst, cli.GetBlobURL(cnt, src))
+	c.Assert(copyID, chk.NotNil)
+	c.Assert(err, chk.IsNil)
+}
+
+// Tests abort of blobcopy. Given the blobcopy is usually over before we can actually trigger an abort
+// it is agreed that we perform a copy then try and perform an abort. It should result in a HTTP status of 409.
+// So basically we're testing negative scenario (as good as we can do for now)
+func (s *StorageBlobSuite) TestAbortBlobCopy(c *chk.C) {
+	if testing.Short() {
+		c.Skip("skipping blob copy in short mode, no SLA on async operation")
+	}
+
+	cli := getBlobClient(c)
+	cnt := randContainer()
+	src := randName(5)
+	dst := randName(5)
+	body := []byte(randString(1024))
+
+	c.Assert(cli.CreateContainer(cnt, ContainerAccessTypePrivate), chk.IsNil)
+	defer cli.deleteContainer(cnt)
+
+	c.Assert(cli.putSingleBlockBlob(cnt, src, body), chk.IsNil)
+	defer cli.DeleteBlob(cnt, src, nil)
+
+	// given we dont know when it will start, can we even test destination creation?
+	// will just test that an error wasn't thrown for now.
+	copyID, err := cli.StartBlobCopy(cnt, dst, cli.GetBlobURL(cnt, src))
+	c.Assert(copyID, chk.NotNil)
+	c.Assert(err, chk.IsNil)
+
+	err = cli.WaitForBlobCopy(cnt, dst, copyID)
+	c.Assert(err, chk.IsNil)
+
+	// abort abort abort, but we *know* its already completed.
+	err = cli.AbortBlobCopy(cnt, dst, copyID, "", 0)
+
+	// abort should fail (over already)
+	c.Assert(err.(AzureStorageServiceError).StatusCode, chk.Equals, http.StatusConflict)
+}
+
 func (s *StorageBlobSuite) TestDeleteBlobIfExists(c *chk.C) {
 	cnt := randContainer()
 	blob := randName(5)
@@ -849,6 +909,83 @@ func (s *StorageBlobSuite) TestSetThenGetContainerPermissionsOnlySuccessfully(c 
 	c.Assert(returnedPerms.AccessPolicy.SignedIdentifiers, chk.HasLen, 0)
 }
 
+func (s *StorageBlobSuite) TestSnapshotBlob(c *chk.C) {
+	cli := getBlobClient(c)
+	cnt := randContainer()
+
+	c.Assert(cli.CreateContainer(cnt, ContainerAccessTypePrivate), chk.IsNil)
+	defer cli.deleteContainer(cnt)
+
+	blob := randName(5)
+	c.Assert(cli.putSingleBlockBlob(cnt, blob, []byte{}), chk.IsNil)
+
+	snapshotTime, err := cli.SnapshotBlob(cnt, blob, 0, nil)
+	c.Assert(err, chk.IsNil)
+	c.Assert(snapshotTime, chk.NotNil)
+}
+
+func (s *StorageBlobSuite) TestSnapshotBlobWithTimeout(c *chk.C) {
+	cli := getBlobClient(c)
+	cnt := randContainer()
+
+	c.Assert(cli.CreateContainer(cnt, ContainerAccessTypePrivate), chk.IsNil)
+	defer cli.deleteContainer(cnt)
+
+	blob := randName(5)
+	c.Assert(cli.putSingleBlockBlob(cnt, blob, []byte{}), chk.IsNil)
+
+	snapshotTime, err := cli.SnapshotBlob(cnt, blob, 30, nil)
+	c.Assert(err, chk.IsNil)
+	c.Assert(snapshotTime, chk.NotNil)
+}
+
+func (s *StorageBlobSuite) TestSnapshotBlobWithValidLease(c *chk.C) {
+	cli := getBlobClient(c)
+	cnt := randContainer()
+
+	c.Assert(cli.CreateContainer(cnt, ContainerAccessTypePrivate), chk.IsNil)
+	defer cli.deleteContainer(cnt)
+
+	blob := randName(5)
+	c.Assert(cli.putSingleBlockBlob(cnt, blob, []byte{}), chk.IsNil)
+
+	// generate lease.
+	currentLeaseID, err := cli.AcquireLease(cnt, blob, 30, "")
+	c.Assert(err, chk.IsNil)
+
+	extraHeaders := map[string]string{
+		leaseID: currentLeaseID,
+	}
+
+	snapshotTime, err := cli.SnapshotBlob(cnt, blob, 0, extraHeaders)
+	c.Assert(err, chk.IsNil)
+	c.Assert(snapshotTime, chk.NotNil)
+}
+
+func (s *StorageBlobSuite) TestSnapshotBlobWithInvalidLease(c *chk.C) {
+	cli := getBlobClient(c)
+	cnt := randContainer()
+
+	c.Assert(cli.CreateContainer(cnt, ContainerAccessTypePrivate), chk.IsNil)
+	defer cli.deleteContainer(cnt)
+
+	blob := randName(5)
+	c.Assert(cli.putSingleBlockBlob(cnt, blob, []byte{}), chk.IsNil)
+
+	// generate lease.
+	_, err := cli.AcquireLease(cnt, blob, 30, "")
+	c.Assert(err, chk.IsNil)
+	c.Assert(leaseID, chk.NotNil)
+
+	extraHeaders := map[string]string{
+		leaseID: "718e3c89-da3d-4201-b616-dd794b0bd7c1",
+	}
+
+	snapshotTime, err := cli.SnapshotBlob(cnt, blob, 0, extraHeaders)
+	c.Assert(err, chk.NotNil)
+	c.Assert(snapshotTime, chk.IsNil)
+}
+
 func (s *StorageBlobSuite) TestAcquireLeaseWithNoProposedLeaseID(c *chk.C) {
 	cli := getBlobClient(c)
 	cnt := randContainer()
@@ -860,8 +997,7 @@ func (s *StorageBlobSuite) TestAcquireLeaseWithNoProposedLeaseID(c *chk.C) {
 	c.Assert(cli.putSingleBlockBlob(cnt, blob, []byte{}), chk.IsNil)
 
 	_, err := cli.AcquireLease(cnt, blob, 30, "")
-	c.Assert(err, chk.NotNil)
-
+	c.Assert(err, chk.IsNil)
 }
 
 func (s *StorageBlobSuite) TestAcquireLeaseWithProposedLeaseID(c *chk.C) {

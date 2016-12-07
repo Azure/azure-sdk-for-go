@@ -47,7 +47,7 @@ func NewApplicationPackageOperationsClientWithBaseURI(baseURI string, subscripti
 //
 // resourceGroupName is the name of the resource group that contains the Batch
 // account. accountName is the name of the Batch account. applicationID is
-// the id of the application. version is the version of the application to
+// the ID of the application. version is the version of the application to
 // activate. parameters is the parameters for the request.
 func (client ApplicationPackageOperationsClient) Activate(resourceGroupName string, accountName string, applicationID string, version string, parameters ActivateApplicationPackageParameters) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
@@ -127,7 +127,7 @@ func (client ApplicationPackageOperationsClient) ActivateResponder(resp *http.Re
 //
 // resourceGroupName is the name of the resource group that contains the Batch
 // account. accountName is the name of the Batch account. applicationID is
-// the id of the application. version is the version of the application.
+// the ID of the application. version is the version of the application.
 func (client ApplicationPackageOperationsClient) Create(resourceGroupName string, accountName string, applicationID string, version string) (result ApplicationPackage, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
@@ -203,7 +203,7 @@ func (client ApplicationPackageOperationsClient) CreateResponder(resp *http.Resp
 //
 // resourceGroupName is the name of the resource group that contains the Batch
 // account. accountName is the name of the Batch account. applicationID is
-// the id of the application. version is the version of the application to
+// the ID of the application. version is the version of the application to
 // delete.
 func (client ApplicationPackageOperationsClient) Delete(resourceGroupName string, accountName string, applicationID string, version string) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
@@ -279,7 +279,7 @@ func (client ApplicationPackageOperationsClient) DeleteResponder(resp *http.Resp
 //
 // resourceGroupName is the name of the resource group that contains the Batch
 // account. accountName is the name of the Batch account. applicationID is
-// the id of the application. version is the version of the application.
+// the ID of the application. version is the version of the application.
 func (client ApplicationPackageOperationsClient) Get(resourceGroupName string, accountName string, applicationID string, version string) (result ApplicationPackage, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,

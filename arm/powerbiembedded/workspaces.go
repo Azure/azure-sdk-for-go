@@ -24,7 +24,7 @@ import (
 	"net/http"
 )
 
-// WorkspacesClient is the client to manage your Power BI embedded workspace
+// WorkspacesClient is the client to manage your Power BI Embedded workspace
 // collections and retrieve workspaces.
 type WorkspacesClient struct {
 	ManagementClient
@@ -41,11 +41,11 @@ func NewWorkspacesClientWithBaseURI(baseURI string, subscriptionID string) Works
 	return WorkspacesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// List retrieves all existing Power BI Workspaces in the specified Workspace
-// Collection.
+// List retrieves all existing Power BI workspaces in the specified workspace
+// collection.
 //
 // resourceGroupName is azure resource group workspaceCollectionName is power
-// BI Embedded workspace collection name
+// BI Embedded Workspace Collection name
 func (client WorkspacesClient) List(resourceGroupName string, workspaceCollectionName string) (result WorkspaceList, err error) {
 	req, err := client.ListPreparer(resourceGroupName, workspaceCollectionName)
 	if err != nil {

@@ -84,7 +84,7 @@ const (
 	Manual UpgradeMode = "Manual"
 )
 
-// EncryptionJwkResource is the public key of the gateway
+// EncryptionJwkResource is the public key of the gateway.
 type EncryptionJwkResource struct {
 	Kty *string `json:"kty,omitempty"`
 	Alg *string `json:"alg,omitempty"`
@@ -92,7 +92,7 @@ type EncryptionJwkResource struct {
 	N   *string `json:"n,omitempty"`
 }
 
-// Error is error message
+// Error is error message.
 type Error struct {
 	Code    *int32  `json:"code,omitempty"`
 	Message *string `json:"message,omitempty"`
@@ -100,14 +100,14 @@ type Error struct {
 }
 
 // GatewayParameters is collection of parameters for operations on a gateway
-// resource
+// resource.
 type GatewayParameters struct {
-	Location   *string                      `json:"location,omitempty"`
-	Tags       *map[string]interface{}      `json:"tags,omitempty"`
-	Properties *GatewayParametersProperties `json:"properties,omitempty"`
+	Location                     *string                 `json:"location,omitempty"`
+	Tags                         *map[string]interface{} `json:"tags,omitempty"`
+	*GatewayParametersProperties `json:"properties,omitempty"`
 }
 
-// GatewayParametersProperties is collection of properties
+// GatewayParametersProperties is collection of properties.
 type GatewayParametersProperties struct {
 	UpgradeMode UpgradeMode `json:"upgradeMode,omitempty"`
 }
@@ -128,19 +128,19 @@ type GatewayProfile struct {
 	StatusBlobSignature         *string `json:"statusBlobSignature,omitempty"`
 }
 
-// GatewayResource is data model for an arm gateway resource
+// GatewayResource is data model for an arm gateway resource.
 type GatewayResource struct {
-	autorest.Response `json:"-"`
-	ID                *string                    `json:"id,omitempty"`
-	Type              *string                    `json:"type,omitempty"`
-	Name              *string                    `json:"name,omitempty"`
-	Location          *string                    `json:"location,omitempty"`
-	Tags              *map[string]*string        `json:"tags,omitempty"`
-	Etag              *string                    `json:"etag,omitempty"`
-	Properties        *GatewayResourceProperties `json:"properties,omitempty"`
+	autorest.Response          `json:"-"`
+	ID                         *string             `json:"id,omitempty"`
+	Type                       *string             `json:"type,omitempty"`
+	Name                       *string             `json:"name,omitempty"`
+	Location                   *string             `json:"location,omitempty"`
+	Tags                       *map[string]*string `json:"tags,omitempty"`
+	Etag                       *string             `json:"etag,omitempty"`
+	*GatewayResourceProperties `json:"properties,omitempty"`
 }
 
-// GatewayResourceProperties is collection of properties
+// GatewayResourceProperties is collection of properties.
 type GatewayResourceProperties struct {
 	Created                   *date.Time       `json:"created,omitempty"`
 	Updated                   *date.Time       `json:"updated,omitempty"`
@@ -154,7 +154,7 @@ type GatewayResourceProperties struct {
 	MinimumVersion            *string          `json:"minimumVersion,omitempty"`
 }
 
-// GatewayResources is collection of Gateway Resources
+// GatewayResources is collection of Gateway Resources.
 type GatewayResources struct {
 	autorest.Response `json:"-"`
 	Value             *[]GatewayResource `json:"value,omitempty"`
@@ -173,7 +173,7 @@ func (client GatewayResources) GatewayResourcesPreparer() (*http.Request, error)
 		autorest.WithBaseURL(to.String(client.NextLink)))
 }
 
-// GatewayStatus is expanded gateway status information
+// GatewayStatus is expanded gateway status information.
 type GatewayStatus struct {
 	AvailableMemoryMByte                     *float64               `json:"availableMemoryMByte,omitempty"`
 	GatewayCPUUtilizationPercent             *float64               `json:"gatewayCpuUtilizationPercent,omitempty"`
@@ -198,14 +198,14 @@ type GatewayStatus struct {
 	PublishedTimeUtc                         *date.Time             `json:"publishedTimeUtc,omitempty"`
 }
 
-// NodeParameters is parameter collection for operations on arm node resource
+// NodeParameters is parameter collection for operations on arm node resource.
 type NodeParameters struct {
-	Location   *string                   `json:"location,omitempty"`
-	Tags       *map[string]interface{}   `json:"tags,omitempty"`
-	Properties *NodeParametersProperties `json:"properties,omitempty"`
+	Location                  *string                 `json:"location,omitempty"`
+	Tags                      *map[string]interface{} `json:"tags,omitempty"`
+	*NodeParametersProperties `json:"properties,omitempty"`
 }
 
-// NodeParametersProperties is collection of properties
+// NodeParametersProperties is collection of properties.
 type NodeParametersProperties struct {
 	GatewayID      *string `json:"gatewayId,omitempty"`
 	ConnectionName *string `json:"connectionName,omitempty"`
@@ -213,19 +213,19 @@ type NodeParametersProperties struct {
 	Password       *string `json:"password,omitempty"`
 }
 
-// NodeResource is a Node Resource
+// NodeResource is a Node Resource.
 type NodeResource struct {
-	autorest.Response `json:"-"`
-	ID                *string                 `json:"id,omitempty"`
-	Type              *string                 `json:"type,omitempty"`
-	Name              *string                 `json:"name,omitempty"`
-	Location          *string                 `json:"location,omitempty"`
-	Tags              *map[string]*string     `json:"tags,omitempty"`
-	Etag              *string                 `json:"etag,omitempty"`
-	Properties        *NodeResourceProperties `json:"properties,omitempty"`
+	autorest.Response       `json:"-"`
+	ID                      *string             `json:"id,omitempty"`
+	Type                    *string             `json:"type,omitempty"`
+	Name                    *string             `json:"name,omitempty"`
+	Location                *string             `json:"location,omitempty"`
+	Tags                    *map[string]*string `json:"tags,omitempty"`
+	Etag                    *string             `json:"etag,omitempty"`
+	*NodeResourceProperties `json:"properties,omitempty"`
 }
 
-// NodeResourceProperties is collection of properties
+// NodeResourceProperties is collection of properties.
 type NodeResourceProperties struct {
 	GatewayID      *string    `json:"gatewayId,omitempty"`
 	ConnectionName *string    `json:"connectionName,omitempty"`
@@ -233,7 +233,7 @@ type NodeResourceProperties struct {
 	Updated        *date.Time `json:"updated,omitempty"`
 }
 
-// NodeResources is a collection of node resource objects
+// NodeResources is a collection of node resource objects.
 type NodeResources struct {
 	autorest.Response `json:"-"`
 	Value             *[]NodeResource `json:"value,omitempty"`
@@ -252,18 +252,18 @@ func (client NodeResources) NodeResourcesPreparer() (*http.Request, error) {
 		autorest.WithBaseURL(to.String(client.NextLink)))
 }
 
-// PowerShellCommandParameters is the parameters to a powershell script
-// execution command
+// PowerShellCommandParameters is the parameters to a PowerShell script
+// execution command.
 type PowerShellCommandParameters struct {
-	Properties *PowerShellCommandParametersProperties `json:"properties,omitempty"`
+	*PowerShellCommandParametersProperties `json:"properties,omitempty"`
 }
 
-// PowerShellCommandParametersProperties is collection of properties
+// PowerShellCommandParametersProperties is collection of properties.
 type PowerShellCommandParametersProperties struct {
 	Command *string `json:"command,omitempty"`
 }
 
-// PowerShellCommandResult is results from invoking a powershell command
+// PowerShellCommandResult is results from invoking a PowerShell command.
 type PowerShellCommandResult struct {
 	MessageType     *int32                    `json:"messageType,omitempty"`
 	ForegroundColor *string                   `json:"foregroundColor,omitempty"`
@@ -277,8 +277,8 @@ type PowerShellCommandResult struct {
 	Descriptions    *[]PromptFieldDescription `json:"descriptions,omitempty"`
 }
 
-// PowerShellCommandResults is a collection of results from a powershell
-// command
+// PowerShellCommandResults is a collection of results from a PowerShell
+// command.
 type PowerShellCommandResults struct {
 	autorest.Response `json:"-"`
 	Results           *[]PowerShellCommandResult `json:"results,omitempty"`
@@ -287,32 +287,32 @@ type PowerShellCommandResults struct {
 	Completed         *bool                      `json:"completed,omitempty"`
 }
 
-// PowerShellCommandStatus is result status from invoking a powershell command
+// PowerShellCommandStatus is result status from invoking a PowerShell command.
 type PowerShellCommandStatus struct {
-	autorest.Response `json:"-"`
-	ID                *string                   `json:"id,omitempty"`
-	Type              *string                   `json:"type,omitempty"`
-	Name              *string                   `json:"name,omitempty"`
-	Location          *string                   `json:"location,omitempty"`
-	Tags              *map[string]*string       `json:"tags,omitempty"`
-	Etag              *string                   `json:"etag,omitempty"`
-	Properties        *PowerShellCommandResults `json:"properties,omitempty"`
+	autorest.Response         `json:"-"`
+	ID                        *string             `json:"id,omitempty"`
+	Type                      *string             `json:"type,omitempty"`
+	Name                      *string             `json:"name,omitempty"`
+	Location                  *string             `json:"location,omitempty"`
+	Tags                      *map[string]*string `json:"tags,omitempty"`
+	Etag                      *string             `json:"etag,omitempty"`
+	*PowerShellCommandResults `json:"properties,omitempty"`
 }
 
-// PowerShellSessionResource is a powershell session resource (practically
-// equivalent to a runspace instance)
+// PowerShellSessionResource is a PowerShell session resource (practically
+// equivalent to a runspace instance).
 type PowerShellSessionResource struct {
-	autorest.Response `json:"-"`
-	ID                *string                              `json:"id,omitempty"`
-	Type              *string                              `json:"type,omitempty"`
-	Name              *string                              `json:"name,omitempty"`
-	Location          *string                              `json:"location,omitempty"`
-	Tags              *map[string]*string                  `json:"tags,omitempty"`
-	Etag              *string                              `json:"etag,omitempty"`
-	Properties        *PowerShellSessionResourceProperties `json:"properties,omitempty"`
+	autorest.Response                    `json:"-"`
+	ID                                   *string             `json:"id,omitempty"`
+	Type                                 *string             `json:"type,omitempty"`
+	Name                                 *string             `json:"name,omitempty"`
+	Location                             *string             `json:"location,omitempty"`
+	Tags                                 *map[string]*string `json:"tags,omitempty"`
+	Etag                                 *string             `json:"etag,omitempty"`
+	*PowerShellSessionResourceProperties `json:"properties,omitempty"`
 }
 
-// PowerShellSessionResourceProperties is collection of properties
+// PowerShellSessionResourceProperties is collection of properties.
 type PowerShellSessionResourceProperties struct {
 	SessionID            *string                  `json:"sessionId,omitempty"`
 	State                *string                  `json:"state,omitempty"`
@@ -323,7 +323,7 @@ type PowerShellSessionResourceProperties struct {
 	Name                 *string                  `json:"name,omitempty"`
 }
 
-// PowerShellSessionResources is a collaction of powershell session resources
+// PowerShellSessionResources is a collection of PowerShell session resources
 type PowerShellSessionResources struct {
 	autorest.Response `json:"-"`
 	Value             *[]PowerShellSessionResource `json:"value,omitempty"`
@@ -331,13 +331,13 @@ type PowerShellSessionResources struct {
 }
 
 // PowerShellTabCompletionParameters is collection of parameters for
-// powershell tab completion
+// PowerShell tab completion.
 type PowerShellTabCompletionParameters struct {
 	Command *string `json:"command,omitempty"`
 }
 
 // PowerShellTabCompletionResults is an array of strings representing the
-// different values that can be tabbed thru
+// different values that can be selected through.
 type PowerShellTabCompletionResults struct {
 	autorest.Response `json:"-"`
 	Results           *[]string `json:"results,omitempty"`
@@ -353,12 +353,12 @@ type PromptFieldDescription struct {
 	PromptFieldType       PromptFieldType `json:"promptFieldType,omitempty"`
 }
 
-// PromptMessageResponse is the response to a prompt message
+// PromptMessageResponse is the response to a prompt message.
 type PromptMessageResponse struct {
 	Response *[]string `json:"response,omitempty"`
 }
 
-// Resource is aRM Resource Information
+// Resource is resource Manager Resource Information.
 type Resource struct {
 	ID       *string             `json:"id,omitempty"`
 	Type     *string             `json:"type,omitempty"`
@@ -369,9 +369,9 @@ type Resource struct {
 }
 
 // SessionParameters is parameter collection for creation and other operations
-// on sessions
+// on sessions.
 type SessionParameters struct {
-	Properties *SessionParametersProperties `json:"properties,omitempty"`
+	*SessionParametersProperties `json:"properties,omitempty"`
 }
 
 // SessionParametersProperties is collection of properties
@@ -383,26 +383,26 @@ type SessionParametersProperties struct {
 	EncryptionCertificateThumbprint *string              `json:"EncryptionCertificateThumbprint,omitempty"`
 }
 
-// SessionResource is the session object
+// SessionResource is the session object.
 type SessionResource struct {
-	autorest.Response `json:"-"`
-	ID                *string                    `json:"id,omitempty"`
-	Type              *string                    `json:"type,omitempty"`
-	Name              *string                    `json:"name,omitempty"`
-	Location          *string                    `json:"location,omitempty"`
-	Tags              *map[string]*string        `json:"tags,omitempty"`
-	Etag              *string                    `json:"etag,omitempty"`
-	Properties        *SessionResourceProperties `json:"properties,omitempty"`
+	autorest.Response          `json:"-"`
+	ID                         *string             `json:"id,omitempty"`
+	Type                       *string             `json:"type,omitempty"`
+	Name                       *string             `json:"name,omitempty"`
+	Location                   *string             `json:"location,omitempty"`
+	Tags                       *map[string]*string `json:"tags,omitempty"`
+	Etag                       *string             `json:"etag,omitempty"`
+	*SessionResourceProperties `json:"properties,omitempty"`
 }
 
-// SessionResourceProperties is collection of properties
+// SessionResourceProperties is collection of properties.
 type SessionResourceProperties struct {
 	UserName *string    `json:"userName,omitempty"`
 	Created  *date.Time `json:"created,omitempty"`
 	Updated  *date.Time `json:"updated,omitempty"`
 }
 
-// VersionServermanagement is a multipart-numeric version number
+// VersionServermanagement is a multipart-numeric version number.
 type VersionServermanagement struct {
 	Major         *int32 `json:"major,omitempty"`
 	Minor         *int32 `json:"minor,omitempty"`

@@ -24,8 +24,7 @@ import (
 	"net/http"
 )
 
-// RecordSetsClient is the client for the RecordSets methods of the Dns
-// service.
+// RecordSetsClient is the the DNS Management Client.
 type RecordSetsClient struct {
 	ManagementClient
 }
@@ -41,16 +40,20 @@ func NewRecordSetsClientWithBaseURI(baseURI string, subscriptionID string) Recor
 	return RecordSetsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// CreateOrUpdate creates or Updates a RecordSet within a DNS zone.
+// CreateOrUpdate creates or updates a record set within a DNS zone.
 //
 // resourceGroupName is the name of the resource group. zoneName is the name
-// of the zone without a terminating dot. relativeRecordSetName is the name
-// of the RecordSet, relative to the name of the zone. recordType is the type
-// of DNS record. Possible values include: 'A', 'AAAA', 'CNAME', 'MX', 'NS',
-// 'PTR', 'SOA', 'SRV', 'TXT' parameters is parameters supplied to the
-// CreateOrUpdate operation. ifMatch is the etag of Recordset. ifNoneMatch is
-// defines the If-None-Match condition. Set to '*' to force
-// Create-If-Not-Exist. Other values will be ignored.
+// of the DNS zone (without a terminating dot). relativeRecordSetName is the
+// name of the record set, relative to the name of the zone. recordType is
+// the type of DNS record in this record set. Record sets of type SOA can be
+// updated but not created (they are created when the DNS zone is created).
+// Possible values include: 'A', 'AAAA', 'CNAME', 'MX', 'NS', 'PTR', 'SOA',
+// 'SRV', 'TXT' parameters is parameters supplied to the CreateOrUpdate
+// operation. ifMatch is the etag of the record set. Omit this value to
+// always overwrite the current record set. Specify the last-seen etag value
+// to prevent accidentally overwritting any concurrent changes. ifNoneMatch
+// is set to '*' to allow a new record set to be created, but to prevent
+// updating an existing record set. Other values will be ignored.
 func (client RecordSetsClient) CreateOrUpdate(resourceGroupName string, zoneName string, relativeRecordSetName string, recordType RecordType, parameters RecordSet, ifMatch string, ifNoneMatch string) (result RecordSet, err error) {
 	req, err := client.CreateOrUpdatePreparer(resourceGroupName, zoneName, relativeRecordSetName, recordType, parameters, ifMatch, ifNoneMatch)
 	if err != nil {
@@ -89,7 +92,7 @@ func (client RecordSetsClient) CreateOrUpdatePreparer(resourceGroupName string, 
 		autorest.AsJSON(),
 		autorest.AsPut(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/dnszones/{zoneName}/{recordType}/{relativeRecordSetName}", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/dnsZones/{zoneName}/{recordType}/{relativeRecordSetName}", pathParameters),
 		autorest.WithJSON(parameters),
 		autorest.WithQueryParameters(queryParameters))
 	if len(ifMatch) > 0 {
@@ -122,19 +125,20 @@ func (client RecordSetsClient) CreateOrUpdateResponder(resp *http.Response) (res
 	return
 }
 
-// Delete removes a RecordSet from a DNS zone.
+// Delete deletes a record set from a DNS zone. This operation cannot be
+// undone.
 //
 // resourceGroupName is the name of the resource group. zoneName is the name
-// of the zone without a terminating dot. relativeRecordSetName is the name
-// of the RecordSet, relative to the name of the zone. recordType is the type
-// of DNS record. Possible values include: 'A', 'AAAA', 'CNAME', 'MX', 'NS',
-// 'PTR', 'SOA', 'SRV', 'TXT' ifMatch is defines the If-Match condition. The
-// delete operation will be performed only if the ETag of the zone on the
-// server matches this value. ifNoneMatch is defines the If-None-Match
-// condition. The delete operation will be performed only if the ETag of the
-// zone on the server does not match this value.
-func (client RecordSetsClient) Delete(resourceGroupName string, zoneName string, relativeRecordSetName string, recordType RecordType, ifMatch string, ifNoneMatch string) (result autorest.Response, err error) {
-	req, err := client.DeletePreparer(resourceGroupName, zoneName, relativeRecordSetName, recordType, ifMatch, ifNoneMatch)
+// of the DNS zone (without a terminating dot). relativeRecordSetName is the
+// name of the record set, relative to the name of the zone. recordType is
+// the type of DNS record in this record set. Record sets of type SOA cannot
+// be deleted (they are deleted when the DNS zone is deleted). Possible
+// values include: 'A', 'AAAA', 'CNAME', 'MX', 'NS', 'PTR', 'SOA', 'SRV',
+// 'TXT' ifMatch is the etag of the record set. Omit this value to always
+// delete the current record set. Specify the last-seen etag value to prevent
+// accidentally deleting any concurrent changes.
+func (client RecordSetsClient) Delete(resourceGroupName string, zoneName string, relativeRecordSetName string, recordType RecordType, ifMatch string) (result autorest.Response, err error) {
+	req, err := client.DeletePreparer(resourceGroupName, zoneName, relativeRecordSetName, recordType, ifMatch)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "dns.RecordSetsClient", "Delete", nil, "Failure preparing request")
 	}
@@ -154,7 +158,7 @@ func (client RecordSetsClient) Delete(resourceGroupName string, zoneName string,
 }
 
 // DeletePreparer prepares the Delete request.
-func (client RecordSetsClient) DeletePreparer(resourceGroupName string, zoneName string, relativeRecordSetName string, recordType RecordType, ifMatch string, ifNoneMatch string) (*http.Request, error) {
+func (client RecordSetsClient) DeletePreparer(resourceGroupName string, zoneName string, relativeRecordSetName string, recordType RecordType, ifMatch string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"recordType":            autorest.Encode("path", recordType),
 		"relativeRecordSetName": relativeRecordSetName,
@@ -170,15 +174,11 @@ func (client RecordSetsClient) DeletePreparer(resourceGroupName string, zoneName
 	preparer := autorest.CreatePreparer(
 		autorest.AsDelete(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/dnszones/{zoneName}/{recordType}/{relativeRecordSetName}", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/dnsZones/{zoneName}/{recordType}/{relativeRecordSetName}", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	if len(ifMatch) > 0 {
 		preparer = autorest.DecoratePreparer(preparer,
 			autorest.WithHeader("If-Match", autorest.String(ifMatch)))
-	}
-	if len(ifNoneMatch) > 0 {
-		preparer = autorest.DecoratePreparer(preparer,
-			autorest.WithHeader("If-None-Match", autorest.String(ifNoneMatch)))
 	}
 	return preparer.Prepare(&http.Request{})
 }
@@ -201,13 +201,13 @@ func (client RecordSetsClient) DeleteResponder(resp *http.Response) (result auto
 	return
 }
 
-// Get gets a RecordSet.
+// Get gets a record set.
 //
 // resourceGroupName is the name of the resource group. zoneName is the name
-// of the zone without a terminating dot. relativeRecordSetName is the name
-// of the RecordSet, relative to the name of the zone. recordType is the type
-// of DNS record. Possible values include: 'A', 'AAAA', 'CNAME', 'MX', 'NS',
-// 'PTR', 'SOA', 'SRV', 'TXT'
+// of the DNS zone (without a terminating dot). relativeRecordSetName is the
+// name of the record set, relative to the name of the zone. recordType is
+// the type of DNS record in this record set. Possible values include: 'A',
+// 'AAAA', 'CNAME', 'MX', 'NS', 'PTR', 'SOA', 'SRV', 'TXT'
 func (client RecordSetsClient) Get(resourceGroupName string, zoneName string, relativeRecordSetName string, recordType RecordType) (result RecordSet, err error) {
 	req, err := client.GetPreparer(resourceGroupName, zoneName, relativeRecordSetName, recordType)
 	if err != nil {
@@ -245,7 +245,7 @@ func (client RecordSetsClient) GetPreparer(resourceGroupName string, zoneName st
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/dnszones/{zoneName}/{recordType}/{relativeRecordSetName}", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/dnsZones/{zoneName}/{recordType}/{relativeRecordSetName}", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare(&http.Request{})
 }
@@ -269,34 +269,33 @@ func (client RecordSetsClient) GetResponder(resp *http.Response) (result RecordS
 	return
 }
 
-// ListAllInResourceGroup lists all RecordSets in a DNS zone.
+// ListByDNSZone lists all record sets in a DNS zone.
 //
-// resourceGroupName is the name of the resource group that contains the zone.
-// zoneName is the name of the zone from which to enumerate RecordSets. top
-// is query parameters. If null is passed returns the default number of
-// zones.
-func (client RecordSetsClient) ListAllInResourceGroup(resourceGroupName string, zoneName string, top string) (result RecordSetListResult, err error) {
-	req, err := client.ListAllInResourceGroupPreparer(resourceGroupName, zoneName, top)
+// resourceGroupName is the name of the resource group. zoneName is the name
+// of the DNS zone (without a terminating dot). top is the maximum number of
+// record sets to return. If not specified, returns up to 100 record sets.
+func (client RecordSetsClient) ListByDNSZone(resourceGroupName string, zoneName string, top *int32) (result RecordSetListResult, err error) {
+	req, err := client.ListByDNSZonePreparer(resourceGroupName, zoneName, top)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "dns.RecordSetsClient", "ListAllInResourceGroup", nil, "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "dns.RecordSetsClient", "ListByDNSZone", nil, "Failure preparing request")
 	}
 
-	resp, err := client.ListAllInResourceGroupSender(req)
+	resp, err := client.ListByDNSZoneSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "dns.RecordSetsClient", "ListAllInResourceGroup", resp, "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "dns.RecordSetsClient", "ListByDNSZone", resp, "Failure sending request")
 	}
 
-	result, err = client.ListAllInResourceGroupResponder(resp)
+	result, err = client.ListByDNSZoneResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "dns.RecordSetsClient", "ListAllInResourceGroup", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "dns.RecordSetsClient", "ListByDNSZone", resp, "Failure responding to request")
 	}
 
 	return
 }
 
-// ListAllInResourceGroupPreparer prepares the ListAllInResourceGroup request.
-func (client RecordSetsClient) ListAllInResourceGroupPreparer(resourceGroupName string, zoneName string, top string) (*http.Request, error) {
+// ListByDNSZonePreparer prepares the ListByDNSZone request.
+func (client RecordSetsClient) ListByDNSZonePreparer(resourceGroupName string, zoneName string, top *int32) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
@@ -306,27 +305,27 @@ func (client RecordSetsClient) ListAllInResourceGroupPreparer(resourceGroupName 
 	queryParameters := map[string]interface{}{
 		"api-version": client.APIVersion,
 	}
-	if len(top) > 0 {
-		queryParameters["$top"] = autorest.Encode("query", top)
+	if top != nil {
+		queryParameters["$top"] = autorest.Encode("query", *top)
 	}
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/dnszones/{zoneName}/recordsets", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/dnsZones/{zoneName}/recordsets", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare(&http.Request{})
 }
 
-// ListAllInResourceGroupSender sends the ListAllInResourceGroup request. The method will close the
+// ListByDNSZoneSender sends the ListByDNSZone request. The method will close the
 // http.Response Body if it receives an error.
-func (client RecordSetsClient) ListAllInResourceGroupSender(req *http.Request) (*http.Response, error) {
+func (client RecordSetsClient) ListByDNSZoneSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req)
 }
 
-// ListAllInResourceGroupResponder handles the response to the ListAllInResourceGroup request. The method always
+// ListByDNSZoneResponder handles the response to the ListByDNSZone request. The method always
 // closes the http.Response Body.
-func (client RecordSetsClient) ListAllInResourceGroupResponder(resp *http.Response) (result RecordSetListResult, err error) {
+func (client RecordSetsClient) ListByDNSZoneResponder(resp *http.Response) (result RecordSetListResult, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -337,39 +336,38 @@ func (client RecordSetsClient) ListAllInResourceGroupResponder(resp *http.Respon
 	return
 }
 
-// ListAllInResourceGroupNextResults retrieves the next set of results, if any.
-func (client RecordSetsClient) ListAllInResourceGroupNextResults(lastResults RecordSetListResult) (result RecordSetListResult, err error) {
+// ListByDNSZoneNextResults retrieves the next set of results, if any.
+func (client RecordSetsClient) ListByDNSZoneNextResults(lastResults RecordSetListResult) (result RecordSetListResult, err error) {
 	req, err := lastResults.RecordSetListResultPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "dns.RecordSetsClient", "ListAllInResourceGroup", nil, "Failure preparing next results request")
+		return result, autorest.NewErrorWithError(err, "dns.RecordSetsClient", "ListByDNSZone", nil, "Failure preparing next results request")
 	}
 	if req == nil {
 		return
 	}
 
-	resp, err := client.ListAllInResourceGroupSender(req)
+	resp, err := client.ListByDNSZoneSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "dns.RecordSetsClient", "ListAllInResourceGroup", resp, "Failure sending next results request")
+		return result, autorest.NewErrorWithError(err, "dns.RecordSetsClient", "ListByDNSZone", resp, "Failure sending next results request")
 	}
 
-	result, err = client.ListAllInResourceGroupResponder(resp)
+	result, err = client.ListByDNSZoneResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "dns.RecordSetsClient", "ListAllInResourceGroup", resp, "Failure responding to next results request")
+		err = autorest.NewErrorWithError(err, "dns.RecordSetsClient", "ListByDNSZone", resp, "Failure responding to next results request")
 	}
 
 	return
 }
 
-// ListByType lists the RecordSets of a specified type in a DNS zone.
+// ListByType lists the record sets of a specified type in a DNS zone.
 //
-// resourceGroupName is the name of the resource group that contains the zone.
-// zoneName is the name of the zone from which to enumerate RecordsSets.
-// recordType is the type of record sets to enumerate. Possible values
-// include: 'A', 'AAAA', 'CNAME', 'MX', 'NS', 'PTR', 'SOA', 'SRV', 'TXT' top
-// is query parameters. If null is passed returns the default number of
-// zones.
-func (client RecordSetsClient) ListByType(resourceGroupName string, zoneName string, recordType RecordType, top string) (result RecordSetListResult, err error) {
+// resourceGroupName is the name of the resource group. zoneName is the name
+// of the DNS zone (without a terminating dot). recordType is the type of
+// record sets to enumerate. Possible values include: 'A', 'AAAA', 'CNAME',
+// 'MX', 'NS', 'PTR', 'SOA', 'SRV', 'TXT' top is the maximum number of record
+// sets to return. If not specified, returns up to 100 record sets.
+func (client RecordSetsClient) ListByType(resourceGroupName string, zoneName string, recordType RecordType, top *int32) (result RecordSetListResult, err error) {
 	req, err := client.ListByTypePreparer(resourceGroupName, zoneName, recordType, top)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "dns.RecordSetsClient", "ListByType", nil, "Failure preparing request")
@@ -390,7 +388,7 @@ func (client RecordSetsClient) ListByType(resourceGroupName string, zoneName str
 }
 
 // ListByTypePreparer prepares the ListByType request.
-func (client RecordSetsClient) ListByTypePreparer(resourceGroupName string, zoneName string, recordType RecordType, top string) (*http.Request, error) {
+func (client RecordSetsClient) ListByTypePreparer(resourceGroupName string, zoneName string, recordType RecordType, top *int32) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"recordType":        autorest.Encode("path", recordType),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
@@ -401,14 +399,14 @@ func (client RecordSetsClient) ListByTypePreparer(resourceGroupName string, zone
 	queryParameters := map[string]interface{}{
 		"api-version": client.APIVersion,
 	}
-	if len(top) > 0 {
-		queryParameters["$top"] = autorest.Encode("query", top)
+	if top != nil {
+		queryParameters["$top"] = autorest.Encode("query", *top)
 	}
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/dnszones/{zoneName}/{recordType}", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/dnsZones/{zoneName}/{recordType}", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare(&http.Request{})
 }
@@ -456,18 +454,19 @@ func (client RecordSetsClient) ListByTypeNextResults(lastResults RecordSetListRe
 	return
 }
 
-// Update updates a RecordSet within a DNS zone.
+// Update updates a record set within a DNS zone.
 //
 // resourceGroupName is the name of the resource group. zoneName is the name
-// of the zone without a terminating dot. relativeRecordSetName is the name
-// of the RecordSet, relative to the name of the zone. recordType is the type
-// of DNS record. Possible values include: 'A', 'AAAA', 'CNAME', 'MX', 'NS',
-// 'PTR', 'SOA', 'SRV', 'TXT' parameters is parameters supplied to the Update
-// operation. ifMatch is the etag of Zone. ifNoneMatch is defines the
-// If-None-Match condition. Set to '*' to force Create-If-Not-Exist. Other
-// values will be ignored.
-func (client RecordSetsClient) Update(resourceGroupName string, zoneName string, relativeRecordSetName string, recordType RecordType, parameters RecordSet, ifMatch string, ifNoneMatch string) (result RecordSet, err error) {
-	req, err := client.UpdatePreparer(resourceGroupName, zoneName, relativeRecordSetName, recordType, parameters, ifMatch, ifNoneMatch)
+// of the DNS zone (without a terminating dot). relativeRecordSetName is the
+// name of the record set, relative to the name of the zone. recordType is
+// the type of DNS record in this record set. Possible values include: 'A',
+// 'AAAA', 'CNAME', 'MX', 'NS', 'PTR', 'SOA', 'SRV', 'TXT' parameters is
+// parameters supplied to the Update operation. ifMatch is the etag of the
+// record set. Omit this value to always overwrite the current record set.
+// Specify the last-seen etag value to prevent accidentally overwritting
+// concurrent changes.
+func (client RecordSetsClient) Update(resourceGroupName string, zoneName string, relativeRecordSetName string, recordType RecordType, parameters RecordSet, ifMatch string) (result RecordSet, err error) {
+	req, err := client.UpdatePreparer(resourceGroupName, zoneName, relativeRecordSetName, recordType, parameters, ifMatch)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "dns.RecordSetsClient", "Update", nil, "Failure preparing request")
 	}
@@ -487,7 +486,7 @@ func (client RecordSetsClient) Update(resourceGroupName string, zoneName string,
 }
 
 // UpdatePreparer prepares the Update request.
-func (client RecordSetsClient) UpdatePreparer(resourceGroupName string, zoneName string, relativeRecordSetName string, recordType RecordType, parameters RecordSet, ifMatch string, ifNoneMatch string) (*http.Request, error) {
+func (client RecordSetsClient) UpdatePreparer(resourceGroupName string, zoneName string, relativeRecordSetName string, recordType RecordType, parameters RecordSet, ifMatch string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"recordType":            autorest.Encode("path", recordType),
 		"relativeRecordSetName": relativeRecordSetName,
@@ -504,16 +503,12 @@ func (client RecordSetsClient) UpdatePreparer(resourceGroupName string, zoneName
 		autorest.AsJSON(),
 		autorest.AsPatch(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/dnszones/{zoneName}/{recordType}/{relativeRecordSetName}", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/dnsZones/{zoneName}/{recordType}/{relativeRecordSetName}", pathParameters),
 		autorest.WithJSON(parameters),
 		autorest.WithQueryParameters(queryParameters))
 	if len(ifMatch) > 0 {
 		preparer = autorest.DecoratePreparer(preparer,
 			autorest.WithHeader("If-Match", autorest.String(ifMatch)))
-	}
-	if len(ifNoneMatch) > 0 {
-		preparer = autorest.DecoratePreparer(preparer,
-			autorest.WithHeader("If-None-Match", autorest.String(ifNoneMatch)))
 	}
 	return preparer.Prepare(&http.Request{})
 }

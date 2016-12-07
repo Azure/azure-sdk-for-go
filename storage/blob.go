@@ -730,13 +730,55 @@ func (b BlobStorageClient) leaseCommonPut(container string, name string, headers
 	return resp.headers, nil
 }
 
+// SnapshotBlob creates a snapshot for a blob as per https://msdn.microsoft.com/en-us/library/azure/ee691971.aspx
+func (b BlobStorageClient) SnapshotBlob(container string, name string, timeout int, extraHeaders map[string]string) (snapshotTimestamp *time.Time, err error) {
+	headers := b.client.getStandardHeaders()
+	params := url.Values{"comp": {"snapshot"}}
+
+	if timeout > 0 {
+		params.Add("timeout", strconv.Itoa(timeout))
+	}
+
+	for k, v := range extraHeaders {
+		headers[k] = v
+	}
+
+	uri := b.client.getEndpoint(blobServiceName, pathForBlob(container, name), params)
+	resp, err := b.client.exec("PUT", uri, headers, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if err := checkRespCode(resp.statusCode, []int{http.StatusCreated}); err != nil {
+		return nil, err
+	}
+
+	snapshotResponse := resp.headers.Get(http.CanonicalHeaderKey("x-ms-snapshot"))
+	if snapshotResponse != "" {
+		snapshotTimestamp, err := time.Parse(time.RFC3339, snapshotResponse)
+		if err != nil {
+			return nil, err
+		}
+
+		return &snapshotTimestamp, nil
+	}
+
+	return nil, errors.New("Snapshot not created")
+}
+
 // AcquireLease creates a lease for a blob as per https://msdn.microsoft.com/en-us/library/azure/ee691972.aspx
 // returns leaseID acquired
 func (b BlobStorageClient) AcquireLease(container string, name string, leaseTimeInSeconds int, proposedLeaseID string) (returnedLeaseID string, err error) {
 	headers := b.client.getStandardHeaders()
 	headers[leaseAction] = acquireLease
-	headers[leaseProposedID] = proposedLeaseID
-	headers[leaseDuration] = strconv.Itoa(leaseTimeInSeconds)
+
+	if leaseTimeInSeconds > 0 {
+		headers[leaseDuration] = strconv.Itoa(leaseTimeInSeconds)
+	}
+
+	if proposedLeaseID != "" {
+		headers[leaseProposedID] = proposedLeaseID
+	}
 
 	respHeaders, err := b.leaseCommonPut(container, name, headers, http.StatusCreated)
 	if err != nil {
@@ -1239,15 +1281,20 @@ func (b BlobStorageClient) AppendBlock(container, name string, chunk []byte, ext
 //
 // See https://msdn.microsoft.com/en-us/library/azure/dd894037.aspx
 func (b BlobStorageClient) CopyBlob(container, name, sourceBlob string) error {
-	copyID, err := b.startBlobCopy(container, name, sourceBlob)
+	copyID, err := b.StartBlobCopy(container, name, sourceBlob)
 	if err != nil {
 		return err
 	}
 
-	return b.waitForBlobCopy(container, name, copyID)
+	return b.WaitForBlobCopy(container, name, copyID)
 }
 
-func (b BlobStorageClient) startBlobCopy(container, name, sourceBlob string) (string, error) {
+// StartBlobCopy starts a blob copy operation.
+// sourceBlob parameter must be a canonical URL to the blob (can be
+// obtained using GetBlobURL method.)
+//
+// See https://msdn.microsoft.com/en-us/library/azure/dd894037.aspx
+func (b BlobStorageClient) StartBlobCopy(container, name, sourceBlob string) (string, error) {
 	uri := b.client.getEndpoint(blobServiceName, pathForBlob(container, name), url.Values{})
 
 	headers := b.client.getStandardHeaders()
@@ -1270,7 +1317,39 @@ func (b BlobStorageClient) startBlobCopy(container, name, sourceBlob string) (st
 	return copyID, nil
 }
 
-func (b BlobStorageClient) waitForBlobCopy(container, name, copyID string) error {
+// AbortBlobCopy aborts a BlobCopy which has already been triggered by the StartBlobCopy function.
+// copyID is generated from StartBlobCopy function.
+// currentLeaseID is required IF the destination blob has an active lease on it.
+// As defined in https://msdn.microsoft.com/en-us/library/azure/jj159098.aspx
+func (b BlobStorageClient) AbortBlobCopy(container, name, copyID, currentLeaseID string, timeout int) error {
+	params := url.Values{"comp": {"copy"}, "copyid": {copyID}}
+	if timeout > 0 {
+		params.Add("timeout", strconv.Itoa(timeout))
+	}
+
+	uri := b.client.getEndpoint(blobServiceName, pathForBlob(container, name), params)
+	headers := b.client.getStandardHeaders()
+	headers["x-ms-copy-action"] = "abort"
+
+	if currentLeaseID != "" {
+		headers[leaseID] = currentLeaseID
+	}
+
+	resp, err := b.client.exec("PUT", uri, headers, nil)
+	if err != nil {
+		return err
+	}
+	defer resp.body.Close()
+
+	if err := checkRespCode(resp.statusCode, []int{http.StatusNoContent}); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+// WaitForBlobCopy loops until a BlobCopy operation is completed (or fails with error)
+func (b BlobStorageClient) WaitForBlobCopy(container, name, copyID string) error {
 	for {
 		props, err := b.GetBlobProperties(container, name)
 		if err != nil {

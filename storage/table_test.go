@@ -289,17 +289,16 @@ func randTable() string {
 
 func (s *StorageBlobSuite) createTablePermissions(ID string, canRead bool, canAppend bool, canUpdate bool,
 	canDelete bool, startTime time.Time, expiryTime time.Time) TableAccessPolicy {
-	policy := TableAccessPolicy{}
 
-	policy.ID = ID
-	policy.StartTime = startTime
-	policy.ExpiryTime = expiryTime
-	policy.CanRead = canRead
-	policy.CanAppend = canAppend
-	policy.CanUpdate = canUpdate
-	policy.CanDelete = canDelete
-
-	return policy
+	return TableAccessPolicy{
+		ID:         ID,
+		StartTime:  startTime,
+		ExpiryTime: expiryTime,
+		CanRead:    canRead,
+		CanAppend:  canAppend,
+		CanUpdate:  canUpdate,
+		CanDelete:  canDelete,
+	}
 }
 
 func (s *StorageBlobSuite) TestSetTablePermissionsSuccessfully(c *chk.C) {

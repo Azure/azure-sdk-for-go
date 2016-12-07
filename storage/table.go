@@ -3,9 +3,7 @@ package storage
 import (
 	"bytes"
 	"encoding/json"
-	"errors"
 	"fmt"
-	"log"
 	"net/http"
 	"net/url"
 	"strconv"
@@ -61,7 +59,7 @@ func (c *TableServiceClient) QueryTables() ([]AzureTable, error) {
 	headers := c.getStandardHeaders()
 	headers["Content-Length"] = "0"
 
-	resp, err := c.client.execTable("GET", uri, headers, nil)
+	resp, err := c.client.execTable(http.MethodGet, uri, headers, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -104,7 +102,7 @@ func (c *TableServiceClient) CreateTable(table AzureTable) error {
 
 	headers["Content-Length"] = fmt.Sprintf("%d", buf.Len())
 
-	resp, err := c.client.execTable("POST", uri, headers, buf)
+	resp, err := c.client.execTable(http.MethodPost, uri, headers, buf)
 
 	if err != nil {
 		return err
@@ -144,40 +142,34 @@ func (c *TableServiceClient) DeleteTable(table AzureTable) error {
 	return nil
 }
 
-// SetTablePermissions sets up table ACL permissinos.
-func (c *TableServiceClient) SetTablePermissions(table AzureTable, accessPolicy TableAccessPolicy, timeout int) (err error) {
+// SetTablePermissions sets up table ACL permissions as per REST details https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/Set-Table-ACL
+func (c *TableServiceClient) SetTablePermissions(table AzureTable, accessPolicy TableAccessPolicy, timeout uint) (err error) {
 	params := url.Values{
 		"comp": {"acl"},
 	}
 
 	if timeout > 0 {
-		params.Add("timeout", strconv.Itoa(timeout))
+		params.Add("timeout", fmt.Sprint(timeout))
 	}
 
 	uri := c.client.getEndpoint(tableServiceName, string(table), params)
 	headers := c.client.getStandardHeaders()
 
-	var permissions = generateTablePermissions(accessPolicy)
+	permissions := generateTablePermissions(accessPolicy)
 
 	// generate the XML for the SharedAccessSignature if required.
-	accessPolicyXML, err := generateAccessPolicy(accessPolicy.ID, accessPolicy.StartTime,
+	accessPolicyXML, err := generateAccessPolicy(accessPolicy.ID,
+		accessPolicy.StartTime,
 		accessPolicy.ExpiryTime,
 		permissions)
+
 	if err != nil {
 		return err
 	}
 
 	var resp *odataResponse
-
-	// temp logging to figure out why dying in travis
-	log.Printf("access policy %s", accessPolicyXML)
-
-	if accessPolicyXML != "" {
-		headers["Content-Length"] = strconv.Itoa(len(accessPolicyXML))
-		resp, err = c.client.execTable("PUT", uri, headers, strings.NewReader(accessPolicyXML))
-	} else {
-		resp, err = c.client.execTable("PUT", uri, headers, nil)
-	}
+	headers["Content-Length"] = strconv.Itoa(len(accessPolicyXML))
+	resp, err = c.client.execTable(http.MethodPut, uri, headers, strings.NewReader(accessPolicyXML))
 
 	if err != nil {
 		return err
@@ -191,15 +183,14 @@ func (c *TableServiceClient) SetTablePermissions(table AzureTable, accessPolicy 
 			}
 		}()
 
-		if resp.statusCode != http.StatusNoContent {
-			err = errors.New("Unable to set permissions")
+		if err := checkRespCode(resp.statusCode, []int{http.StatusNoContent}); err != nil {
 			return err
 		}
 	}
 	return nil
 }
 
-// GetTablePermissions gets the table ACL permissions
+// GetTablePermissions gets the table ACL permissions, as per REST details https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/get-table-acl
 func (c *TableServiceClient) GetTablePermissions(table AzureTable, timeout int) (permissionResponse *AccessPolicy, err error) {
 	params := url.Values{"comp": {"acl"}}
 
@@ -209,7 +200,7 @@ func (c *TableServiceClient) GetTablePermissions(table AzureTable, timeout int) 
 
 	uri := c.client.getEndpoint(tableServiceName, string(table), params)
 	headers := c.client.getStandardHeaders()
-	resp, err := c.client.execTable("GET", uri, headers, nil)
+	resp, err := c.client.execTable(http.MethodGet, uri, headers, nil)
 	if err != nil {
 		return nil, err
 	}

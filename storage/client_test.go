@@ -2,6 +2,7 @@ package storage
 
 import (
 	"encoding/base64"
+	"net/http"
 	"net/url"
 	"os"
 	"testing"

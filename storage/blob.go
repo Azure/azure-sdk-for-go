@@ -472,24 +472,22 @@ func (b BlobStorageClient) CreateContainerIfNotExists(name string, access Contai
 }
 
 func (b BlobStorageClient) createContainer(name string, access ContainerAccessType) (*storageResponse, error) {
-	verb := http.MethodPut
 	uri := b.client.getEndpoint(blobServiceName, pathForContainer(name), url.Values{"restype": {"container"}})
 
 	headers := b.client.getStandardHeaders()
 	if access != "" {
 		headers[ContainerAccessHeader] = string(access)
 	}
-	return b.client.exec(verb, uri, headers, nil)
+	return b.client.exec(http.MethodPut, uri, headers, nil)
 }
 
 // ContainerExists returns true if a container with given name exists
 // on the storage account, otherwise returns false.
 func (b BlobStorageClient) ContainerExists(name string) (bool, error) {
-	verb := http.MethodHead
 	uri := b.client.getEndpoint(blobServiceName, pathForContainer(name), url.Values{"restype": {"container"}})
 	headers := b.client.getStandardHeaders()
 
-	resp, err := b.client.exec(verb, uri, headers, nil)
+	resp, err := b.client.exec(http.MethodHead, uri, headers, nil)
 	if resp != nil {
 		defer resp.body.Close()
 		if resp.statusCode == http.StatusOK || resp.statusCode == http.StatusNotFound {
@@ -625,11 +623,10 @@ func (b BlobStorageClient) DeleteContainerIfExists(name string) (bool, error) {
 }
 
 func (b BlobStorageClient) deleteContainer(name string) (*storageResponse, error) {
-	verb := http.MethodDelete
 	uri := b.client.getEndpoint(blobServiceName, pathForContainer(name), url.Values{"restype": {"container"}})
 
 	headers := b.client.getStandardHeaders()
-	return b.client.exec(verb, uri, headers, nil)
+	return b.client.exec(http.MethodDelete, uri, headers, nil)
 }
 
 // ListBlobs returns an object that contains list of blobs in the container,
@@ -657,10 +654,9 @@ func (b BlobStorageClient) ListBlobs(container string, params ListBlobsParameter
 // BlobExists returns true if a blob with given name exists on the specified
 // container of the storage account.
 func (b BlobStorageClient) BlobExists(container, name string) (bool, error) {
-	verb := http.MethodHead
 	uri := b.client.getEndpoint(blobServiceName, pathForBlob(container, name), url.Values{})
 	headers := b.client.getStandardHeaders()
-	resp, err := b.client.exec(verb, uri, headers, nil)
+	resp, err := b.client.exec(http.MethodHead, uri, headers, nil)
 	if resp != nil {
 		defer resp.body.Close()
 		if resp.statusCode == http.StatusOK || resp.statusCode == http.StatusNotFound {
@@ -714,7 +710,6 @@ func (b BlobStorageClient) GetBlobRange(container, name, bytesRange string, extr
 }
 
 func (b BlobStorageClient) getBlobRange(container, name, bytesRange string, extraHeaders map[string]string) (*storageResponse, error) {
-	verb := http.MethodGet
 	uri := b.client.getEndpoint(blobServiceName, pathForBlob(container, name), url.Values{})
 
 	headers := b.client.getStandardHeaders()
@@ -726,7 +721,7 @@ func (b BlobStorageClient) getBlobRange(container, name, bytesRange string, extr
 		headers[k] = v
 	}
 
-	resp, err := b.client.exec(verb, uri, headers, nil)
+	resp, err := b.client.exec(http.MethodGet, uri, headers, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -904,11 +899,10 @@ func (b BlobStorageClient) RenewLease(container string, name string, currentLeas
 // GetBlobProperties provides various information about the specified
 // blob. See https://msdn.microsoft.com/en-us/library/azure/dd179394.aspx
 func (b BlobStorageClient) GetBlobProperties(container, name string) (*BlobProperties, error) {
-	verb := http.MethodHead
 	uri := b.client.getEndpoint(blobServiceName, pathForBlob(container, name), url.Values{})
 
 	headers := b.client.getStandardHeaders()
-	resp, err := b.client.exec(verb, uri, headers, nil)
+	resp, err := b.client.exec(http.MethodHead, uri, headers, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -1425,14 +1419,13 @@ func (b BlobStorageClient) DeleteBlobIfExists(container, name string, extraHeade
 }
 
 func (b BlobStorageClient) deleteBlob(container, name string, extraHeaders map[string]string) (*storageResponse, error) {
-	verb := http.MethodDelete
 	uri := b.client.getEndpoint(blobServiceName, pathForBlob(container, name), url.Values{})
 	headers := b.client.getStandardHeaders()
 	for k, v := range extraHeaders {
 		headers[k] = v
 	}
 
-	return b.client.exec(verb, uri, headers, nil)
+	return b.client.exec(http.MethodDelete, uri, headers, nil)
 }
 
 // helper method to construct the path to a container given its name

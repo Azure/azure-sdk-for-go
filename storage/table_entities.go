@@ -77,7 +77,7 @@ type getTableEntriesResponse struct {
 //
 // Example:
 // 		entities, cToken, err = tSvc.QueryTableEntities("table", cToken, reflect.TypeOf(entity), 20, "")
-func (c *TableServiceClient) QueryTableEntities(tableName AzureTable, previousContToken *ContinuationToken, retType reflect.Type, top int, query string) (te []TableEntity, ct *ContinuationToken, err error) {
+func (c *TableServiceClient) QueryTableEntities(tableName AzureTable, previousContToken *ContinuationToken, retType reflect.Type, top int, query string) ([]TableEntity, *ContinuationToken, error) {
 	if top > maxTopParameter {
 		return nil, nil, fmt.Errorf("top accepts at maximum %d elements. Requested %d instead", maxTopParameter, top)
 	}
@@ -107,9 +107,7 @@ func (c *TableServiceClient) QueryTableEntities(tableName AzureTable, previousCo
 	if err != nil {
 		return nil, contToken, err
 	}
-	defer func() {
-		err = resp.body.Close()
-	}()
+	defer resp.body.Close()
 
 	if err := checkRespCode(resp.statusCode, []int{http.StatusOK}); err != nil {
 		return nil, contToken, err
@@ -136,7 +134,7 @@ func (c *TableServiceClient) InsertEntity(table AzureTable, entity TableEntity) 
 	return err
 }
 
-func (c *TableServiceClient) execTable(table AzureTable, entity TableEntity, specifyKeysInURL bool, method string) (statusCode int, err error) {
+func (c *TableServiceClient) execTable(table AzureTable, entity TableEntity, specifyKeysInURL bool, method string) (int, error) {
 	uri := c.client.getEndpoint(tableServiceName, pathForTable(table), url.Values{})
 	if specifyKeysInURL {
 		uri += fmt.Sprintf("(PartitionKey='%s',RowKey='%s')", url.QueryEscape(entity.PartitionKey()), url.QueryEscape(entity.RowKey()))
@@ -158,9 +156,7 @@ func (c *TableServiceClient) execTable(table AzureTable, entity TableEntity, spe
 		return 0, err
 	}
 
-	defer func() {
-		err = resp.body.Close()
-	}()
+	defer resp.body.Close()
 
 	return resp.statusCode, nil
 }
@@ -218,9 +214,7 @@ func (c *TableServiceClient) DeleteEntity(table AzureTable, entity TableEntity, 
 	if err != nil {
 		return err
 	}
-	defer func() {
-		err = resp.body.Close()
-	}()
+	defer resp.body.Close()
 
 	if err := checkRespCode(resp.statusCode, []int{http.StatusNoContent}); err != nil {
 		return err

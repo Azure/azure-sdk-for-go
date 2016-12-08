@@ -131,7 +131,7 @@ type QueueMetadataResponse struct {
 // Metadata is associated with the queue as name-value pairs.
 //
 // See https://msdn.microsoft.com/en-us/library/azure/dd179348.aspx
-func (c QueueServiceClient) SetMetadata(name string, metadata map[string]string) (err error) {
+func (c QueueServiceClient) SetMetadata(name string, metadata map[string]string) error {
 	uri := c.client.getEndpoint(queueServiceName, pathForQueue(name), url.Values{"comp": []string{"metadata"}})
 	headers := c.client.getStandardHeaders()
 	for k, v := range metadata {
@@ -142,9 +142,7 @@ func (c QueueServiceClient) SetMetadata(name string, metadata map[string]string)
 	if err != nil {
 		return err
 	}
-	defer func() {
-		err = resp.body.Close()
-	}()
+	defer resp.body.Close()
 
 	return checkRespCode(resp.statusCode, []int{http.StatusNoContent})
 }
@@ -158,7 +156,7 @@ func (c QueueServiceClient) SetMetadata(name string, metadata map[string]string)
 // Because the way Golang's http client (and http.Header in particular)
 // canonicalize header names, the returned metadata names would always
 // be all lower case.
-func (c QueueServiceClient) GetMetadata(name string) (qmr QueueMetadataResponse, err error) {
+func (c QueueServiceClient) GetMetadata(name string) (QueueMetadataResponse, error) {
 	qm := QueueMetadataResponse{}
 	qm.UserDefinedMetadata = make(map[string]string)
 	uri := c.client.getEndpoint(queueServiceName, pathForQueue(name), url.Values{"comp": []string{"metadata"}})
@@ -167,9 +165,7 @@ func (c QueueServiceClient) GetMetadata(name string) (qmr QueueMetadataResponse,
 	if err != nil {
 		return qm, err
 	}
-	defer func() {
-		err = resp.body.Close()
-	}()
+	defer resp.body.Close()
 
 	for k, v := range resp.headers {
 		if len(v) != 1 {
@@ -195,31 +191,27 @@ func (c QueueServiceClient) GetMetadata(name string) (qmr QueueMetadataResponse,
 // CreateQueue operation creates a queue under the given account.
 //
 // See https://msdn.microsoft.com/en-us/library/azure/dd179342.aspx
-func (c QueueServiceClient) CreateQueue(name string) (err error) {
+func (c QueueServiceClient) CreateQueue(name string) error {
 	uri := c.client.getEndpoint(queueServiceName, pathForQueue(name), url.Values{})
 	headers := c.client.getStandardHeaders()
 	resp, err := c.client.exec("PUT", uri, headers, nil)
 	if err != nil {
 		return err
 	}
-	defer func() {
-		err = resp.body.Close()
-	}()
+	defer resp.body.Close()
 	return checkRespCode(resp.statusCode, []int{http.StatusCreated})
 }
 
 // DeleteQueue operation permanently deletes the specified queue.
 //
 // See https://msdn.microsoft.com/en-us/library/azure/dd179436.aspx
-func (c QueueServiceClient) DeleteQueue(name string) (err error) {
+func (c QueueServiceClient) DeleteQueue(name string) error {
 	uri := c.client.getEndpoint(queueServiceName, pathForQueue(name), url.Values{})
 	resp, err := c.client.exec("DELETE", uri, c.client.getStandardHeaders(), nil)
 	if err != nil {
 		return err
 	}
-	defer func() {
-		err = resp.body.Close()
-	}()
+	defer resp.body.Close()
 	return checkRespCode(resp.statusCode, []int{http.StatusNoContent})
 }
 
@@ -237,7 +229,7 @@ func (c QueueServiceClient) QueueExists(name string) (bool, error) {
 // PutMessage operation adds a new message to the back of the message queue.
 //
 // See https://msdn.microsoft.com/en-us/library/azure/dd179346.aspx
-func (c QueueServiceClient) PutMessage(queue string, message string, params PutMessageParameters) (err error) {
+func (c QueueServiceClient) PutMessage(queue string, message string, params PutMessageParameters) error {
 	uri := c.client.getEndpoint(queueServiceName, pathForQueueMessages(queue), params.getParameters())
 	req := putMessageRequest{MessageText: message}
 	body, nn, err := xmlMarshal(req)
@@ -250,24 +242,20 @@ func (c QueueServiceClient) PutMessage(queue string, message string, params PutM
 	if err != nil {
 		return err
 	}
-	defer func() {
-		err = resp.body.Close()
-	}()
+	defer resp.body.Close()
 	return checkRespCode(resp.statusCode, []int{http.StatusCreated})
 }
 
 // ClearMessages operation deletes all messages from the specified queue.
 //
 // See https://msdn.microsoft.com/en-us/library/azure/dd179454.aspx
-func (c QueueServiceClient) ClearMessages(queue string) (err error) {
+func (c QueueServiceClient) ClearMessages(queue string) error {
 	uri := c.client.getEndpoint(queueServiceName, pathForQueueMessages(queue), url.Values{})
 	resp, err := c.client.exec("DELETE", uri, c.client.getStandardHeaders(), nil)
 	if err != nil {
 		return err
 	}
-	defer func() {
-		err = resp.body.Close()
-	}()
+	defer resp.body.Close()
 	return checkRespCode(resp.statusCode, []int{http.StatusNoContent})
 }
 
@@ -275,48 +263,44 @@ func (c QueueServiceClient) ClearMessages(queue string) (err error) {
 // queue.
 //
 // See https://msdn.microsoft.com/en-us/library/azure/dd179474.aspx
-func (c QueueServiceClient) GetMessages(queue string, params GetMessagesParameters) (gmr GetMessagesResponse, err error) {
+func (c QueueServiceClient) GetMessages(queue string, params GetMessagesParameters) (GetMessagesResponse, error) {
+	var r GetMessagesResponse
 	uri := c.client.getEndpoint(queueServiceName, pathForQueueMessages(queue), params.getParameters())
 	resp, err := c.client.exec("GET", uri, c.client.getStandardHeaders(), nil)
 	if err != nil {
-		return gmr, err
+		return r, err
 	}
-	defer func() {
-		err = resp.body.Close()
-	}()
-	err = xmlUnmarshal(resp.body, &gmr)
-	return gmr, err
+	defer resp.body.Close()
+	err = xmlUnmarshal(resp.body, &r)
+	return r, err
 }
 
 // PeekMessages retrieves one or more messages from the front of the queue, but
 // does not alter the visibility of the message.
 //
 // See https://msdn.microsoft.com/en-us/library/azure/dd179472.aspx
-func (c QueueServiceClient) PeekMessages(queue string, params PeekMessagesParameters) (pmr PeekMessagesResponse, err error) {
+func (c QueueServiceClient) PeekMessages(queue string, params PeekMessagesParameters) (PeekMessagesResponse, error) {
+	var r PeekMessagesResponse
 	uri := c.client.getEndpoint(queueServiceName, pathForQueueMessages(queue), params.getParameters())
 	resp, err := c.client.exec("GET", uri, c.client.getStandardHeaders(), nil)
 	if err != nil {
-		return pmr, err
+		return r, err
 	}
-	defer func() {
-		err = resp.body.Close()
-	}()
-	err = xmlUnmarshal(resp.body, &pmr)
-	return pmr, err
+	defer resp.body.Close()
+	err = xmlUnmarshal(resp.body, &r)
+	return r, err
 }
 
 // DeleteMessage operation deletes the specified message.
 //
 // See https://msdn.microsoft.com/en-us/library/azure/dd179347.aspx
-func (c QueueServiceClient) DeleteMessage(queue, messageID, popReceipt string) (err error) {
+func (c QueueServiceClient) DeleteMessage(queue, messageID, popReceipt string) error {
 	uri := c.client.getEndpoint(queueServiceName, pathForMessage(queue, messageID), url.Values{
 		"popreceipt": {popReceipt}})
 	resp, err := c.client.exec("DELETE", uri, c.client.getStandardHeaders(), nil)
 	if err != nil {
 		return err
 	}
-	defer func() {
-		err = resp.body.Close()
-	}()
+	defer resp.body.Close()
 	return checkRespCode(resp.statusCode, []int{http.StatusNoContent})
 }

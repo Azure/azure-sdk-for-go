@@ -90,35 +90,32 @@ func pathForFileShare(name string) string {
 // pagination token and other response details.
 //
 // See https://msdn.microsoft.com/en-us/library/azure/dd179352.aspx
-func (f FileServiceClient) ListShares(params ListSharesParameters) (slr ShareListResponse, err error) {
+func (f FileServiceClient) ListShares(params ListSharesParameters) (ShareListResponse, error) {
 	q := mergeParams(params.getParameters(), url.Values{"comp": {"list"}})
 	uri := f.client.getEndpoint(fileServiceName, "", q)
 	headers := f.client.getStandardHeaders()
 
+	var out ShareListResponse
 	resp, err := f.client.exec("GET", uri, headers, nil)
 	if err != nil {
-		return slr, err
+		return out, err
 	}
-	defer func() {
-		err = resp.body.Close()
-	}()
+	defer resp.body.Close()
 
-	err = xmlUnmarshal(resp.body, &slr)
-	return slr, err
+	err = xmlUnmarshal(resp.body, &out)
+	return out, err
 }
 
 // CreateShare operation creates a new share under the specified account. If the
 // share with the same name already exists, the operation fails.
 //
 // See https://msdn.microsoft.com/en-us/library/azure/dn167008.aspx
-func (f FileServiceClient) CreateShare(name string) (err error) {
+func (f FileServiceClient) CreateShare(name string) error {
 	resp, err := f.createShare(name)
 	if err != nil {
 		return err
 	}
-	defer func() {
-		err = resp.body.Close()
-	}()
+	defer resp.body.Close()
 	return checkRespCode(resp.statusCode, []int{http.StatusCreated})
 }
 
@@ -130,9 +127,7 @@ func (f FileServiceClient) ShareExists(name string) (bool, error) {
 
 	resp, err := f.client.exec("HEAD", uri, headers, nil)
 	if resp != nil {
-		defer func() {
-			err = resp.body.Close()
-		}()
+		defer resp.body.Close()
 		if resp.statusCode == http.StatusOK || resp.statusCode == http.StatusNotFound {
 			return resp.statusCode == http.StatusOK, nil
 		}
@@ -153,12 +148,10 @@ func (f FileServiceClient) GetShareURL(name string) string {
 // container already exists.
 //
 // See https://msdn.microsoft.com/en-us/library/azure/dn167008.aspx
-func (f FileServiceClient) CreateShareIfNotExists(name string) (created bool, err error) {
+func (f FileServiceClient) CreateShareIfNotExists(name string) (bool, error) {
 	resp, err := f.createShare(name)
 	if resp != nil {
-		defer func() {
-			err = resp.body.Close()
-		}()
+		defer resp.body.Close()
 		if resp.statusCode == http.StatusCreated || resp.statusCode == http.StatusConflict {
 			return resp.statusCode == http.StatusCreated, nil
 		}
@@ -178,7 +171,7 @@ func (f FileServiceClient) createShare(name string) (*storageResponse, error) {
 
 // GetShareProperties provides various information about the specified
 // file. See https://msdn.microsoft.com/en-us/library/azure/dn689099.aspx
-func (f FileServiceClient) GetShareProperties(name string) (sp *ShareProperties, err error) {
+func (f FileServiceClient) GetShareProperties(name string) (*ShareProperties, error) {
 	uri := f.client.getEndpoint(fileServiceName, pathForFileShare(name), url.Values{"restype": {"share"}})
 
 	headers := f.client.getStandardHeaders()
@@ -186,9 +179,7 @@ func (f FileServiceClient) GetShareProperties(name string) (sp *ShareProperties,
 	if err != nil {
 		return nil, err
 	}
-	defer func() {
-		err = resp.body.Close()
-	}()
+	defer resp.body.Close()
 
 	if err := checkRespCode(resp.statusCode, []int{http.StatusOK}); err != nil {
 		return nil, err
@@ -209,7 +200,7 @@ func (f FileServiceClient) GetShareProperties(name string) (sp *ShareProperties,
 // applications either.
 //
 // See https://msdn.microsoft.com/en-us/library/azure/mt427368.aspx
-func (f FileServiceClient) SetShareProperties(name string, shareHeaders ShareHeaders) (err error) {
+func (f FileServiceClient) SetShareProperties(name string, shareHeaders ShareHeaders) error {
 	params := url.Values{}
 	params.Set("restype", "share")
 	params.Set("comp", "properties")
@@ -227,9 +218,7 @@ func (f FileServiceClient) SetShareProperties(name string, shareHeaders ShareHea
 	if err != nil {
 		return err
 	}
-	defer func() {
-		err = resp.body.Close()
-	}()
+	defer resp.body.Close()
 
 	return checkRespCode(resp.statusCode, []int{http.StatusOK})
 }
@@ -239,14 +228,12 @@ func (f FileServiceClient) SetShareProperties(name string, shareHeaders ShareHea
 // collection.
 //
 // See https://msdn.microsoft.com/en-us/library/azure/dn689090.aspx
-func (f FileServiceClient) DeleteShare(name string) (err error) {
+func (f FileServiceClient) DeleteShare(name string) error {
 	resp, err := f.deleteShare(name)
 	if err != nil {
 		return err
 	}
-	defer func() {
-		err = resp.body.Close()
-	}()
+	defer resp.body.Close()
 	return checkRespCode(resp.statusCode, []int{http.StatusAccepted})
 }
 
@@ -256,12 +243,10 @@ func (f FileServiceClient) DeleteShare(name string) (err error) {
 // false otherwise.
 //
 // See https://msdn.microsoft.com/en-us/library/azure/dn689090.aspx
-func (f FileServiceClient) DeleteShareIfExists(name string) (deleted bool, err error) {
+func (f FileServiceClient) DeleteShareIfExists(name string) (bool, error) {
 	resp, err := f.deleteShare(name)
 	if resp != nil {
-		defer func() {
-			err = resp.body.Close()
-		}()
+		defer resp.body.Close()
 		if resp.statusCode == http.StatusAccepted || resp.statusCode == http.StatusNotFound {
 			return resp.statusCode == http.StatusAccepted, nil
 		}
@@ -287,7 +272,7 @@ func (f FileServiceClient) deleteShare(name string) (*storageResponse, error) {
 // applications either.
 //
 // See https://msdn.microsoft.com/en-us/library/azure/dd179414.aspx
-func (f FileServiceClient) SetShareMetadata(name string, metadata map[string]string, extraHeaders map[string]string) (err error) {
+func (f FileServiceClient) SetShareMetadata(name string, metadata map[string]string, extraHeaders map[string]string) error {
 	params := url.Values{}
 	params.Set("restype", "share")
 	params.Set("comp", "metadata")
@@ -306,9 +291,7 @@ func (f FileServiceClient) SetShareMetadata(name string, metadata map[string]str
 	if err != nil {
 		return err
 	}
-	defer func() {
-		err = resp.body.Close()
-	}()
+	defer resp.body.Close()
 
 	return checkRespCode(resp.statusCode, []int{http.StatusOK})
 }
@@ -319,7 +302,7 @@ func (f FileServiceClient) SetShareMetadata(name string, metadata map[string]str
 // names are case-insensitive.)
 //
 // See https://msdn.microsoft.com/en-us/library/azure/dd179414.aspx
-func (f FileServiceClient) GetShareMetadata(name string) (metadata map[string]string, err error) {
+func (f FileServiceClient) GetShareMetadata(name string) (map[string]string, error) {
 	params := url.Values{}
 	params.Set("restype", "share")
 	params.Set("comp", "metadata")
@@ -331,15 +314,13 @@ func (f FileServiceClient) GetShareMetadata(name string) (metadata map[string]st
 	if err != nil {
 		return nil, err
 	}
-	defer func() {
-		err = resp.body.Close()
-	}()
+	defer resp.body.Close()
 
 	if err := checkRespCode(resp.statusCode, []int{http.StatusOK}); err != nil {
 		return nil, err
 	}
 
-	metadata = make(map[string]string)
+	metadata := make(map[string]string)
 	for k, v := range resp.headers {
 		// Can't trust CanonicalHeaderKey() to munge case
 		// reliably. "_" is allowed in identifiers:

@@ -6,6 +6,9 @@ import (
 )
 
 func getResponseBody(response *http.Response) ([]byte, error) {
-	defer response.Body.Close()
+	defer func() {
+		_ = response.Body.Close()
+	}()
+
 	return ioutil.ReadAll(response.Body)
 }

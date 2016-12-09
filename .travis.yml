@@ -15,7 +15,7 @@ install:
   - glide install
 
 script:
-  - gas -exclude=G104 -skip=*/arm/*/models.go -skip=*/management/examples/*.go -skip=*vendor* -skip=*/Gododir/* ./...
+  - gas -skip=*/arm/*/models.go -skip=*/management/examples/*.go -skip=*vendor* -skip=*/Gododir/* ./...
   - test -z "$(gofmt -s -l $(find ./arm/* -type d -print) | tee /dev/stderr)"
   - test -z "$(gofmt -s -l -w management | tee /dev/stderr)"
   - test -z "$(gofmt -s -l -w storage | tee /dev/stderr)"
@@ -31,6 +31,4 @@ script:
   - go vet ./management/...
   - test -z "$(golint ./Gododir/... | tee /dev/stderr)"
   - go vet ./Gododir/...
-  - set -e; for v in ./arm/... ./datalake-store/... ./Gododir/... ./management/... ./storage/...; do errcheck -ignoretests "$v"; done
-  
-   
+  - set -e; for v in ./arm/... ./datalake-store/... ./Gododir/... ./management/... ./storage/...; do (errcheck -ignoretests "$v" | grep -v 'Close()' | tee /dev/stderr); done

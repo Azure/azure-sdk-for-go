@@ -106,9 +106,7 @@ func (c *TableServiceClient) QueryTableEntities(tableName AzureTable, previousCo
 
 	contToken := extractContinuationTokenFromHeaders(resp.headers)
 
-	defer func() {
-		_ = resp.body.Close()
-	}()
+	defer resp.body.Close()
 
 	if err = checkRespCode(resp.statusCode, []int{http.StatusOK}); err != nil {
 		return nil, contToken, err
@@ -155,9 +153,7 @@ func (c *TableServiceClient) execTable(table AzureTable, entity TableEntity, spe
 		return 0, err
 	}
 
-	defer func() {
-		_ = resp.body.Close()
-	}()
+	defer resp.body.Close()
 
 	return resp.statusCode, nil
 }
@@ -211,9 +207,7 @@ func (c *TableServiceClient) DeleteEntity(table AzureTable, entity TableEntity, 
 	if err != nil {
 		return err
 	}
-	defer func() {
-		_ = resp.body.Close()
-	}()
+	defer resp.body.Close()
 
 	if err := checkRespCode(resp.statusCode, []int{http.StatusNoContent}); err != nil {
 		return err

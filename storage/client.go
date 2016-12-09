@@ -521,9 +521,7 @@ func (c Client) execTable(verb, url string, headers map[string]string, body io.R
 }
 
 func readResponseBody(resp *http.Response) ([]byte, error) {
-	defer func() {
-		_ = resp.Body.Close()
-	}()
+	defer resp.Body.Close()
 	out, err := ioutil.ReadAll(resp.Body)
 	if err == io.EOF {
 		err = nil

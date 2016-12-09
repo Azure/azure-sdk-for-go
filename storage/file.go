@@ -100,7 +100,9 @@ func (f FileServiceClient) ListShares(params ListSharesParameters) (ShareListRes
 	if err != nil {
 		return out, err
 	}
-	defer resp.body.Close()
+	defer func() {
+		_ = resp.body.Close()
+	}()
 
 	err = xmlUnmarshal(resp.body, &out)
 	return out, err
@@ -115,7 +117,9 @@ func (f FileServiceClient) CreateShare(name string) error {
 	if err != nil {
 		return err
 	}
-	defer resp.body.Close()
+	defer func() {
+		_ = resp.body.Close()
+	}()
 	return checkRespCode(resp.statusCode, []int{http.StatusCreated})
 }
 
@@ -127,7 +131,9 @@ func (f FileServiceClient) ShareExists(name string) (bool, error) {
 
 	resp, err := f.client.exec("HEAD", uri, headers, nil)
 	if resp != nil {
-		defer resp.body.Close()
+		defer func() {
+			_ = resp.body.Close()
+		}()
 		if resp.statusCode == http.StatusOK || resp.statusCode == http.StatusNotFound {
 			return resp.statusCode == http.StatusOK, nil
 		}
@@ -151,7 +157,9 @@ func (f FileServiceClient) GetShareURL(name string) string {
 func (f FileServiceClient) CreateShareIfNotExists(name string) (bool, error) {
 	resp, err := f.createShare(name)
 	if resp != nil {
-		defer resp.body.Close()
+		defer func() {
+			_ = resp.body.Close()
+		}()
 		if resp.statusCode == http.StatusCreated || resp.statusCode == http.StatusConflict {
 			return resp.statusCode == http.StatusCreated, nil
 		}
@@ -179,7 +187,9 @@ func (f FileServiceClient) GetShareProperties(name string) (*ShareProperties, er
 	if err != nil {
 		return nil, err
 	}
-	defer resp.body.Close()
+	defer func() {
+		_ = resp.body.Close()
+	}()
 
 	if err := checkRespCode(resp.statusCode, []int{http.StatusOK}); err != nil {
 		return nil, err
@@ -218,7 +228,9 @@ func (f FileServiceClient) SetShareProperties(name string, shareHeaders ShareHea
 	if err != nil {
 		return err
 	}
-	defer resp.body.Close()
+	defer func() {
+		_ = resp.body.Close()
+	}()
 
 	return checkRespCode(resp.statusCode, []int{http.StatusOK})
 }
@@ -233,7 +245,9 @@ func (f FileServiceClient) DeleteShare(name string) error {
 	if err != nil {
 		return err
 	}
-	defer resp.body.Close()
+	defer func() {
+		_ = resp.body.Close()
+	}()
 	return checkRespCode(resp.statusCode, []int{http.StatusAccepted})
 }
 
@@ -246,7 +260,9 @@ func (f FileServiceClient) DeleteShare(name string) error {
 func (f FileServiceClient) DeleteShareIfExists(name string) (bool, error) {
 	resp, err := f.deleteShare(name)
 	if resp != nil {
-		defer resp.body.Close()
+		defer func() {
+			_ = resp.body.Close()
+		}()
 		if resp.statusCode == http.StatusAccepted || resp.statusCode == http.StatusNotFound {
 			return resp.statusCode == http.StatusAccepted, nil
 		}
@@ -291,7 +307,9 @@ func (f FileServiceClient) SetShareMetadata(name string, metadata map[string]str
 	if err != nil {
 		return err
 	}
-	defer resp.body.Close()
+	defer func() {
+		_ = resp.body.Close()
+	}()
 
 	return checkRespCode(resp.statusCode, []int{http.StatusOK})
 }
@@ -314,7 +332,9 @@ func (f FileServiceClient) GetShareMetadata(name string) (map[string]string, err
 	if err != nil {
 		return nil, err
 	}
-	defer resp.body.Close()
+	defer func() {
+		_ = resp.body.Close()
+	}()
 
 	if err := checkRespCode(resp.statusCode, []int{http.StatusOK}); err != nil {
 		return nil, err

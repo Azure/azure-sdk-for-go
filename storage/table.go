@@ -49,7 +49,9 @@ func (c *TableServiceClient) QueryTables() ([]AzureTable, error) {
 	if err != nil {
 		return nil, err
 	}
-	defer resp.body.Close()
+	defer func() {
+		_ = resp.body.Close()
+	}()
 
 	if err := checkRespCode(resp.statusCode, []int{http.StatusOK}); err != nil {
 		return nil, err
@@ -95,7 +97,9 @@ func (c *TableServiceClient) CreateTable(table AzureTable) error {
 	if err != nil {
 		return err
 	}
-	defer resp.body.Close()
+	defer func() {
+		_ = resp.body.Close()
+	}()
 
 	if err := checkRespCode(resp.statusCode, []int{http.StatusCreated}); err != nil {
 		return err
@@ -121,7 +125,9 @@ func (c *TableServiceClient) DeleteTable(table AzureTable) error {
 	if err != nil {
 		return err
 	}
-	defer resp.body.Close()
+	defer func() {
+		_ = resp.body.Close()
+	}()
 
 	if err := checkRespCode(resp.statusCode, []int{http.StatusNoContent}); err != nil {
 		return err

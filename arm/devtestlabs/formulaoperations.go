@@ -24,7 +24,7 @@ import (
 	"net/http"
 )
 
-// FormulaOperationsClient is the the DevTest Labs Client.
+// FormulaOperationsClient is the azure DevTest Labs REST API.
 type FormulaOperationsClient struct {
 	ManagementClient
 }

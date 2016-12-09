@@ -719,7 +719,7 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentMetricsPreparer(res
 		queryParameters["details"] = autorest.Encode("query", *details)
 	}
 	if len(filter) > 0 {
-		queryParameters["$filter"] = autorest.Encode("query", filter)
+		queryParameters["$filter"] = filter
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -916,7 +916,7 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentMultiRoleMetricsPre
 		queryParameters["details"] = autorest.Encode("query", *details)
 	}
 	if len(filter) > 0 {
-		queryParameters["$filter"] = autorest.Encode("query", filter)
+		queryParameters["$filter"] = filter
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -1493,7 +1493,7 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentUsagesPreparer(reso
 		"api-version": client.APIVersion,
 	}
 	if len(filter) > 0 {
-		queryParameters["$filter"] = autorest.Encode("query", filter)
+		queryParameters["$filter"] = filter
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -1834,7 +1834,7 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentWebWorkerMetricsPre
 		queryParameters["details"] = autorest.Encode("query", *details)
 	}
 	if len(filter) > 0 {
-		queryParameters["$filter"] = autorest.Encode("query", filter)
+		queryParameters["$filter"] = filter
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -2530,7 +2530,7 @@ func (client HostingEnvironmentsClient) GetWorkerPoolInstanceMetricsPreparer(res
 		queryParameters["details"] = autorest.Encode("query", *details)
 	}
 	if len(filter) > 0 {
-		queryParameters["$filter"] = autorest.Encode("query", filter)
+		queryParameters["$filter"] = filter
 	}
 
 	preparer := autorest.CreatePreparer(

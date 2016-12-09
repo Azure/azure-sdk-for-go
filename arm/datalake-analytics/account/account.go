@@ -41,158 +41,6 @@ func NewClientWithBaseURI(baseURI string, subscriptionID string) Client {
 	return Client{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// AddDataLakeStoreAccount updates the specified Data Lake Analytics account
-// to include the additional Data Lake Store account.
-//
-// resourceGroupName is the name of the Azure resource group that contains the
-// Data Lake Analytics account. accountName is the name of the Data Lake
-// Analytics account to which to add the Data Lake Store account.
-// dataLakeStoreAccountName is the name of the Data Lake Store account to
-// add. parameters is the details of the Data Lake Store account.
-func (client Client) AddDataLakeStoreAccount(resourceGroupName string, accountName string, dataLakeStoreAccountName string, parameters AddDataLakeStoreParameters) (result autorest.Response, err error) {
-	if err := validation.Validate([]validation.Validation{
-		{TargetValue: parameters,
-			Constraints: []validation.Constraint{{Target: "parameters.Properties", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "account.Client", "AddDataLakeStoreAccount")
-	}
-
-	req, err := client.AddDataLakeStoreAccountPreparer(resourceGroupName, accountName, dataLakeStoreAccountName, parameters)
-	if err != nil {
-		return result, autorest.NewErrorWithError(err, "account.Client", "AddDataLakeStoreAccount", nil, "Failure preparing request")
-	}
-
-	resp, err := client.AddDataLakeStoreAccountSender(req)
-	if err != nil {
-		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "account.Client", "AddDataLakeStoreAccount", resp, "Failure sending request")
-	}
-
-	result, err = client.AddDataLakeStoreAccountResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "account.Client", "AddDataLakeStoreAccount", resp, "Failure responding to request")
-	}
-
-	return
-}
-
-// AddDataLakeStoreAccountPreparer prepares the AddDataLakeStoreAccount request.
-func (client Client) AddDataLakeStoreAccountPreparer(resourceGroupName string, accountName string, dataLakeStoreAccountName string, parameters AddDataLakeStoreParameters) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"accountName":              autorest.Encode("path", accountName),
-		"dataLakeStoreAccountName": autorest.Encode("path", dataLakeStoreAccountName),
-		"resourceGroupName":        autorest.Encode("path", resourceGroupName),
-		"subscriptionId":           autorest.Encode("path", client.SubscriptionID),
-	}
-
-	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsJSON(),
-		autorest.AsPut(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataLakeAnalytics/accounts/{accountName}/DataLakeStoreAccounts/{dataLakeStoreAccountName}", pathParameters),
-		autorest.WithJSON(parameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare(&http.Request{})
-}
-
-// AddDataLakeStoreAccountSender sends the AddDataLakeStoreAccount request. The method will close the
-// http.Response Body if it receives an error.
-func (client Client) AddDataLakeStoreAccountSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
-}
-
-// AddDataLakeStoreAccountResponder handles the response to the AddDataLakeStoreAccount request. The method always
-// closes the http.Response Body.
-func (client Client) AddDataLakeStoreAccountResponder(resp *http.Response) (result autorest.Response, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByClosing())
-	result.Response = resp
-	return
-}
-
-// AddStorageAccount updates the specified Data Lake Analytics account to add
-// an Azure Storage account.
-//
-// resourceGroupName is the name of the Azure resource group that contains the
-// Data Lake Analytics account. accountName is the name of the Data Lake
-// Analytics account to which to add the Azure Storage account.
-// storageAccountName is the name of the Azure Storage account to add
-// parameters is the parameters containing the access key and optional suffix
-// for the Azure Storage Account.
-func (client Client) AddStorageAccount(resourceGroupName string, accountName string, storageAccountName string, parameters AddStorageAccountParameters) (result autorest.Response, err error) {
-	if err := validation.Validate([]validation.Validation{
-		{TargetValue: parameters,
-			Constraints: []validation.Constraint{{Target: "parameters.Properties", Name: validation.Null, Rule: true,
-				Chain: []validation.Constraint{{Target: "parameters.Properties.AccessKey", Name: validation.Null, Rule: true, Chain: nil}}}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "account.Client", "AddStorageAccount")
-	}
-
-	req, err := client.AddStorageAccountPreparer(resourceGroupName, accountName, storageAccountName, parameters)
-	if err != nil {
-		return result, autorest.NewErrorWithError(err, "account.Client", "AddStorageAccount", nil, "Failure preparing request")
-	}
-
-	resp, err := client.AddStorageAccountSender(req)
-	if err != nil {
-		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "account.Client", "AddStorageAccount", resp, "Failure sending request")
-	}
-
-	result, err = client.AddStorageAccountResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "account.Client", "AddStorageAccount", resp, "Failure responding to request")
-	}
-
-	return
-}
-
-// AddStorageAccountPreparer prepares the AddStorageAccount request.
-func (client Client) AddStorageAccountPreparer(resourceGroupName string, accountName string, storageAccountName string, parameters AddStorageAccountParameters) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"accountName":        autorest.Encode("path", accountName),
-		"resourceGroupName":  autorest.Encode("path", resourceGroupName),
-		"storageAccountName": autorest.Encode("path", storageAccountName),
-		"subscriptionId":     autorest.Encode("path", client.SubscriptionID),
-	}
-
-	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsJSON(),
-		autorest.AsPut(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataLakeAnalytics/accounts/{accountName}/StorageAccounts/{storageAccountName}", pathParameters),
-		autorest.WithJSON(parameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare(&http.Request{})
-}
-
-// AddStorageAccountSender sends the AddStorageAccount request. The method will close the
-// http.Response Body if it receives an error.
-func (client Client) AddStorageAccountSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
-}
-
-// AddStorageAccountResponder handles the response to the AddStorageAccount request. The method always
-// closes the http.Response Body.
-func (client Client) AddStorageAccountResponder(resp *http.Response) (result autorest.Response, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByClosing())
-	result.Response = resp
-	return
-}
-
 // Create creates the specified Data Lake Analytics account. This supplies the
 // user with computation services for Data Lake Analytics workloads This
 // method may poll for completion. Polling can be canceled by passing the
@@ -206,15 +54,25 @@ func (client Client) AddStorageAccountResponder(resp *http.Response) (result aut
 func (client Client) Create(resourceGroupName string, name string, parameters DataLakeAnalyticsAccount, cancel <-chan struct{}) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: parameters,
-			Constraints: []validation.Constraint{{Target: "parameters.Properties", Name: validation.Null, Rule: false,
-				Chain: []validation.Constraint{{Target: "parameters.Properties.ProvisioningState", Name: validation.ReadOnly, Rule: true, Chain: nil},
-					{Target: "parameters.Properties.State", Name: validation.ReadOnly, Rule: true, Chain: nil},
-					{Target: "parameters.Properties.CreationTime", Name: validation.ReadOnly, Rule: true, Chain: nil},
-					{Target: "parameters.Properties.LastModifiedTime", Name: validation.ReadOnly, Rule: true, Chain: nil},
-					{Target: "parameters.Properties.Endpoint", Name: validation.ReadOnly, Rule: true, Chain: nil},
-				}},
-				{Target: "parameters.Type", Name: validation.ReadOnly, Rule: true, Chain: nil},
-				{Target: "parameters.ID", Name: validation.ReadOnly, Rule: true, Chain: nil}}}}); err != nil {
+			Constraints: []validation.Constraint{{Target: "parameters.DataLakeAnalyticsAccountProperties", Name: validation.Null, Rule: true,
+				Chain: []validation.Constraint{{Target: "parameters.DataLakeAnalyticsAccountProperties.DefaultDataLakeStoreAccount", Name: validation.Null, Rule: true, Chain: nil},
+					{Target: "parameters.DataLakeAnalyticsAccountProperties.MaxDegreeOfParallelism", Name: validation.Null, Rule: false,
+						Chain: []validation.Constraint{{Target: "parameters.DataLakeAnalyticsAccountProperties.MaxDegreeOfParallelism", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil}}},
+					{Target: "parameters.DataLakeAnalyticsAccountProperties.QueryStoreRetention", Name: validation.Null, Rule: false,
+						Chain: []validation.Constraint{{Target: "parameters.DataLakeAnalyticsAccountProperties.QueryStoreRetention", Name: validation.InclusiveMaximum, Rule: 180, Chain: nil},
+							{Target: "parameters.DataLakeAnalyticsAccountProperties.QueryStoreRetention", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil},
+						}},
+					{Target: "parameters.DataLakeAnalyticsAccountProperties.MaxJobCount", Name: validation.Null, Rule: false,
+						Chain: []validation.Constraint{{Target: "parameters.DataLakeAnalyticsAccountProperties.MaxJobCount", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil}}},
+					{Target: "parameters.DataLakeAnalyticsAccountProperties.DataLakeStoreAccounts", Name: validation.Null, Rule: true, Chain: nil},
+					{Target: "parameters.DataLakeAnalyticsAccountProperties.ProvisioningState", Name: validation.ReadOnly, Rule: true, Chain: nil},
+					{Target: "parameters.DataLakeAnalyticsAccountProperties.State", Name: validation.ReadOnly, Rule: true, Chain: nil},
+					{Target: "parameters.DataLakeAnalyticsAccountProperties.SystemMaxDegreeOfParallelism", Name: validation.ReadOnly, Rule: true, Chain: nil},
+					{Target: "parameters.DataLakeAnalyticsAccountProperties.SystemMaxJobCount", Name: validation.ReadOnly, Rule: true, Chain: nil},
+					{Target: "parameters.DataLakeAnalyticsAccountProperties.CreationTime", Name: validation.ReadOnly, Rule: true, Chain: nil},
+					{Target: "parameters.DataLakeAnalyticsAccountProperties.LastModifiedTime", Name: validation.ReadOnly, Rule: true, Chain: nil},
+					{Target: "parameters.DataLakeAnalyticsAccountProperties.Endpoint", Name: validation.ReadOnly, Rule: true, Chain: nil},
+				}}}}}); err != nil {
 		return result, validation.NewErrorWithValidationError(err, "account.Client", "Create")
 	}
 
@@ -341,140 +199,7 @@ func (client Client) DeleteResponder(resp *http.Response) (result autorest.Respo
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNotFound, http.StatusNoContent),
-		autorest.ByClosing())
-	result.Response = resp
-	return
-}
-
-// DeleteDataLakeStoreAccount updates the Data Lake Analytics account
-// specified to remove the specified Data Lake Store account.
-//
-// resourceGroupName is the name of the Azure resource group that contains the
-// Data Lake Analytics account. accountName is the name of the Data Lake
-// Analytics account from which to remove the Data Lake Store account.
-// dataLakeStoreAccountName is the name of the Data Lake Store account to
-// remove
-func (client Client) DeleteDataLakeStoreAccount(resourceGroupName string, accountName string, dataLakeStoreAccountName string) (result autorest.Response, err error) {
-	req, err := client.DeleteDataLakeStoreAccountPreparer(resourceGroupName, accountName, dataLakeStoreAccountName)
-	if err != nil {
-		return result, autorest.NewErrorWithError(err, "account.Client", "DeleteDataLakeStoreAccount", nil, "Failure preparing request")
-	}
-
-	resp, err := client.DeleteDataLakeStoreAccountSender(req)
-	if err != nil {
-		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "account.Client", "DeleteDataLakeStoreAccount", resp, "Failure sending request")
-	}
-
-	result, err = client.DeleteDataLakeStoreAccountResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "account.Client", "DeleteDataLakeStoreAccount", resp, "Failure responding to request")
-	}
-
-	return
-}
-
-// DeleteDataLakeStoreAccountPreparer prepares the DeleteDataLakeStoreAccount request.
-func (client Client) DeleteDataLakeStoreAccountPreparer(resourceGroupName string, accountName string, dataLakeStoreAccountName string) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"accountName":              autorest.Encode("path", accountName),
-		"dataLakeStoreAccountName": autorest.Encode("path", dataLakeStoreAccountName),
-		"resourceGroupName":        autorest.Encode("path", resourceGroupName),
-		"subscriptionId":           autorest.Encode("path", client.SubscriptionID),
-	}
-
-	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsDelete(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataLakeAnalytics/accounts/{accountName}/DataLakeStoreAccounts/{dataLakeStoreAccountName}", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare(&http.Request{})
-}
-
-// DeleteDataLakeStoreAccountSender sends the DeleteDataLakeStoreAccount request. The method will close the
-// http.Response Body if it receives an error.
-func (client Client) DeleteDataLakeStoreAccountSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
-}
-
-// DeleteDataLakeStoreAccountResponder handles the response to the DeleteDataLakeStoreAccount request. The method always
-// closes the http.Response Body.
-func (client Client) DeleteDataLakeStoreAccountResponder(resp *http.Response) (result autorest.Response, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByClosing())
-	result.Response = resp
-	return
-}
-
-// DeleteStorageAccount updates the specified Data Lake Analytics account to
-// remove an Azure Storage account.
-//
-// resourceGroupName is the name of the Azure resource group that contains the
-// Data Lake Analytics account. accountName is the name of the Data Lake
-// Analytics account from which to remove the Azure Storage account.
-// storageAccountName is the name of the Azure Storage account to remove
-func (client Client) DeleteStorageAccount(resourceGroupName string, accountName string, storageAccountName string) (result autorest.Response, err error) {
-	req, err := client.DeleteStorageAccountPreparer(resourceGroupName, accountName, storageAccountName)
-	if err != nil {
-		return result, autorest.NewErrorWithError(err, "account.Client", "DeleteStorageAccount", nil, "Failure preparing request")
-	}
-
-	resp, err := client.DeleteStorageAccountSender(req)
-	if err != nil {
-		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "account.Client", "DeleteStorageAccount", resp, "Failure sending request")
-	}
-
-	result, err = client.DeleteStorageAccountResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "account.Client", "DeleteStorageAccount", resp, "Failure responding to request")
-	}
-
-	return
-}
-
-// DeleteStorageAccountPreparer prepares the DeleteStorageAccount request.
-func (client Client) DeleteStorageAccountPreparer(resourceGroupName string, accountName string, storageAccountName string) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"accountName":        autorest.Encode("path", accountName),
-		"resourceGroupName":  autorest.Encode("path", resourceGroupName),
-		"storageAccountName": autorest.Encode("path", storageAccountName),
-		"subscriptionId":     autorest.Encode("path", client.SubscriptionID),
-	}
-
-	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsDelete(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataLakeAnalytics/accounts/{accountName}/StorageAccounts/{storageAccountName}", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare(&http.Request{})
-}
-
-// DeleteStorageAccountSender sends the DeleteStorageAccount request. The method will close the
-// http.Response Body if it receives an error.
-func (client Client) DeleteStorageAccountSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
-}
-
-// DeleteStorageAccountResponder handles the response to the DeleteStorageAccount request. The method always
-// closes the http.Response Body.
-func (client Client) DeleteStorageAccountResponder(resp *http.Response) (result autorest.Response, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
 	return
@@ -544,236 +269,32 @@ func (client Client) GetResponder(resp *http.Response) (result DataLakeAnalytics
 	return
 }
 
-// GetDataLakeStoreAccount gets the specified Data Lake Store account details
-// in the specified Data Lake Analytics account.
-//
-// resourceGroupName is the name of the Azure resource group that contains the
-// Data Lake Analytics account. accountName is the name of the Data Lake
-// Analytics account from which to retrieve the Data Lake Store account
-// details. dataLakeStoreAccountName is the name of the Data Lake Store
-// account to retrieve
-func (client Client) GetDataLakeStoreAccount(resourceGroupName string, accountName string, dataLakeStoreAccountName string) (result DataLakeStoreAccountInfo, err error) {
-	req, err := client.GetDataLakeStoreAccountPreparer(resourceGroupName, accountName, dataLakeStoreAccountName)
-	if err != nil {
-		return result, autorest.NewErrorWithError(err, "account.Client", "GetDataLakeStoreAccount", nil, "Failure preparing request")
-	}
-
-	resp, err := client.GetDataLakeStoreAccountSender(req)
-	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "account.Client", "GetDataLakeStoreAccount", resp, "Failure sending request")
-	}
-
-	result, err = client.GetDataLakeStoreAccountResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "account.Client", "GetDataLakeStoreAccount", resp, "Failure responding to request")
-	}
-
-	return
-}
-
-// GetDataLakeStoreAccountPreparer prepares the GetDataLakeStoreAccount request.
-func (client Client) GetDataLakeStoreAccountPreparer(resourceGroupName string, accountName string, dataLakeStoreAccountName string) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"accountName":              autorest.Encode("path", accountName),
-		"dataLakeStoreAccountName": autorest.Encode("path", dataLakeStoreAccountName),
-		"resourceGroupName":        autorest.Encode("path", resourceGroupName),
-		"subscriptionId":           autorest.Encode("path", client.SubscriptionID),
-	}
-
-	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsGet(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataLakeAnalytics/accounts/{accountName}/DataLakeStoreAccounts/{dataLakeStoreAccountName}", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare(&http.Request{})
-}
-
-// GetDataLakeStoreAccountSender sends the GetDataLakeStoreAccount request. The method will close the
-// http.Response Body if it receives an error.
-func (client Client) GetDataLakeStoreAccountSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
-}
-
-// GetDataLakeStoreAccountResponder handles the response to the GetDataLakeStoreAccount request. The method always
-// closes the http.Response Body.
-func (client Client) GetDataLakeStoreAccountResponder(resp *http.Response) (result DataLakeStoreAccountInfo, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
-}
-
-// GetStorageAccount gets the specified Azure Storage account linked to the
-// given Data Lake Analytics account.
-//
-// resourceGroupName is the name of the Azure resource group that contains the
-// Data Lake Analytics account. accountName is the name of the Data Lake
-// Analytics account from which to retrieve Azure storage account details.
-// storageAccountName is the name of the Azure Storage account for which to
-// retrieve the details.
-func (client Client) GetStorageAccount(resourceGroupName string, accountName string, storageAccountName string) (result StorageAccountInfo, err error) {
-	req, err := client.GetStorageAccountPreparer(resourceGroupName, accountName, storageAccountName)
-	if err != nil {
-		return result, autorest.NewErrorWithError(err, "account.Client", "GetStorageAccount", nil, "Failure preparing request")
-	}
-
-	resp, err := client.GetStorageAccountSender(req)
-	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "account.Client", "GetStorageAccount", resp, "Failure sending request")
-	}
-
-	result, err = client.GetStorageAccountResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "account.Client", "GetStorageAccount", resp, "Failure responding to request")
-	}
-
-	return
-}
-
-// GetStorageAccountPreparer prepares the GetStorageAccount request.
-func (client Client) GetStorageAccountPreparer(resourceGroupName string, accountName string, storageAccountName string) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"accountName":        autorest.Encode("path", accountName),
-		"resourceGroupName":  autorest.Encode("path", resourceGroupName),
-		"storageAccountName": autorest.Encode("path", storageAccountName),
-		"subscriptionId":     autorest.Encode("path", client.SubscriptionID),
-	}
-
-	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsGet(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataLakeAnalytics/accounts/{accountName}/StorageAccounts/{storageAccountName}", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare(&http.Request{})
-}
-
-// GetStorageAccountSender sends the GetStorageAccount request. The method will close the
-// http.Response Body if it receives an error.
-func (client Client) GetStorageAccountSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
-}
-
-// GetStorageAccountResponder handles the response to the GetStorageAccount request. The method always
-// closes the http.Response Body.
-func (client Client) GetStorageAccountResponder(resp *http.Response) (result StorageAccountInfo, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
-}
-
-// GetStorageContainer gets the specified Azure Storage container associated
-// with the given Data Lake Analytics and Azure Storage accounts.
-//
-// resourceGroupName is the name of the Azure resource group that contains the
-// Data Lake Analytics account. accountName is the name of the Data Lake
-// Analytics account for which to retrieve blob container. storageAccountName
-// is the name of the Azure storage account from which to retrieve the blob
-// container. containerName is the name of the Azure storage container to
-// retrieve
-func (client Client) GetStorageContainer(resourceGroupName string, accountName string, storageAccountName string, containerName string) (result BlobContainer, err error) {
-	req, err := client.GetStorageContainerPreparer(resourceGroupName, accountName, storageAccountName, containerName)
-	if err != nil {
-		return result, autorest.NewErrorWithError(err, "account.Client", "GetStorageContainer", nil, "Failure preparing request")
-	}
-
-	resp, err := client.GetStorageContainerSender(req)
-	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "account.Client", "GetStorageContainer", resp, "Failure sending request")
-	}
-
-	result, err = client.GetStorageContainerResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "account.Client", "GetStorageContainer", resp, "Failure responding to request")
-	}
-
-	return
-}
-
-// GetStorageContainerPreparer prepares the GetStorageContainer request.
-func (client Client) GetStorageContainerPreparer(resourceGroupName string, accountName string, storageAccountName string, containerName string) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"accountName":        autorest.Encode("path", accountName),
-		"containerName":      autorest.Encode("path", containerName),
-		"resourceGroupName":  autorest.Encode("path", resourceGroupName),
-		"storageAccountName": autorest.Encode("path", storageAccountName),
-		"subscriptionId":     autorest.Encode("path", client.SubscriptionID),
-	}
-
-	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsGet(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataLakeAnalytics/accounts/{accountName}/StorageAccounts/{storageAccountName}/Containers/{containerName}", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare(&http.Request{})
-}
-
-// GetStorageContainerSender sends the GetStorageContainer request. The method will close the
-// http.Response Body if it receives an error.
-func (client Client) GetStorageContainerSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
-}
-
-// GetStorageContainerResponder handles the response to the GetStorageContainer request. The method always
-// closes the http.Response Body.
-func (client Client) GetStorageContainerResponder(resp *http.Response) (result BlobContainer, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
-}
-
 // List gets the first page of Data Lake Analytics accounts, if any, within
 // the current subscription. This includes a link to the next page, if any.
 //
 // filter is oData filter. Optional. top is the number of items to return.
 // Optional. skip is the number of items to skip over before returning
-// elements. Optional. expand is oData expansion. Expand related resources in
-// line with the retrieved resources, e.g. Categories/$expand=Products would
-// expand Product data in line with each Category entry. Optional.
-// selectParameter is oData Select statement. Limits the properties on each
-// entry to just those requested, e.g.
+// elements. Optional. selectParameter is oData Select statement. Limits the
+// properties on each entry to just those requested, e.g.
 // Categories?$select=CategoryName,Description. Optional. orderby is orderBy
 // clause. One or more comma-separated expressions with an optional "asc"
 // (the default) or "desc" depending on the order you'd like the values
 // sorted, e.g. Categories?$orderby=CategoryName desc. Optional. count is the
 // Boolean value of true or false to request a count of the matching
 // resources included with the resources in the response, e.g.
-// Categories?$count=true. Optional. search is a free form search. A
-// free-text search expression to match for whether a particular entry should
-// be included in the feed, e.g. Categories?$search=blue OR green. Optional.
-// formatParameter is the desired return format. Return the response in
-// particular formatxii without access to request headers for standard
-// content-type negotiation (e.g Orders?$format=json). Optional.
-func (client Client) List(filter string, top *int32, skip *int32, expand string, selectParameter string, orderby string, count *bool, search string, formatParameter string) (result DataLakeAnalyticsAccountListResult, err error) {
-	req, err := client.ListPreparer(filter, top, skip, expand, selectParameter, orderby, count, search, formatParameter)
+// Categories?$count=true. Optional.
+func (client Client) List(filter string, top *int32, skip *int32, selectParameter string, orderby string, count *bool) (result DataLakeAnalyticsAccountListResult, err error) {
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: top,
+			Constraints: []validation.Constraint{{Target: "top", Name: validation.Null, Rule: false,
+				Chain: []validation.Constraint{{Target: "top", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil}}}}},
+		{TargetValue: skip,
+			Constraints: []validation.Constraint{{Target: "skip", Name: validation.Null, Rule: false,
+				Chain: []validation.Constraint{{Target: "skip", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil}}}}}}); err != nil {
+		return result, validation.NewErrorWithValidationError(err, "account.Client", "List")
+	}
+
+	req, err := client.ListPreparer(filter, top, skip, selectParameter, orderby, count)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "account.Client", "List", nil, "Failure preparing request")
 	}
@@ -793,7 +314,7 @@ func (client Client) List(filter string, top *int32, skip *int32, expand string,
 }
 
 // ListPreparer prepares the List request.
-func (client Client) ListPreparer(filter string, top *int32, skip *int32, expand string, selectParameter string, orderby string, count *bool, search string, formatParameter string) (*http.Request, error) {
+func (client Client) ListPreparer(filter string, top *int32, skip *int32, selectParameter string, orderby string, count *bool) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
@@ -810,9 +331,6 @@ func (client Client) ListPreparer(filter string, top *int32, skip *int32, expand
 	if skip != nil {
 		queryParameters["$skip"] = autorest.Encode("query", *skip)
 	}
-	if len(expand) > 0 {
-		queryParameters["$expand"] = autorest.Encode("query", expand)
-	}
 	if len(selectParameter) > 0 {
 		queryParameters["$select"] = autorest.Encode("query", selectParameter)
 	}
@@ -821,12 +339,6 @@ func (client Client) ListPreparer(filter string, top *int32, skip *int32, expand
 	}
 	if count != nil {
 		queryParameters["$count"] = autorest.Encode("query", *count)
-	}
-	if len(search) > 0 {
-		queryParameters["$search"] = autorest.Encode("query", search)
-	}
-	if len(formatParameter) > 0 {
-		queryParameters["$format"] = autorest.Encode("query", formatParameter)
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -887,25 +399,27 @@ func (client Client) ListNextResults(lastResults DataLakeAnalyticsAccountListRes
 // resourceGroupName is the name of the Azure resource group that contains the
 // Data Lake Analytics account. filter is oData filter. Optional. top is the
 // number of items to return. Optional. skip is the number of items to skip
-// over before returning elements. Optional. expand is oData expansion.
-// Expand related resources in line with the retrieved resources, e.g.
-// Categories/$expand=Products would expand Product data in line with each
-// Category entry. Optional. selectParameter is oData Select statement.
-// Limits the properties on each entry to just those requested, e.g.
-// Categories?$select=CategoryName,Description. Optional. orderby is orderBy
-// clause. One or more comma-separated expressions with an optional "asc"
-// (the default) or "desc" depending on the order you'd like the values
+// over before returning elements. Optional. selectParameter is oData Select
+// statement. Limits the properties on each entry to just those requested,
+// e.g. Categories?$select=CategoryName,Description. Optional. orderby is
+// orderBy clause. One or more comma-separated expressions with an optional
+// "asc" (the default) or "desc" depending on the order you'd like the values
 // sorted, e.g. Categories?$orderby=CategoryName desc. Optional. count is the
 // Boolean value of true or false to request a count of the matching
 // resources included with the resources in the response, e.g.
-// Categories?$count=true. Optional. search is a free form search. A
-// free-text search expression to match for whether a particular entry should
-// be included in the feed, e.g. Categories?$search=blue OR green. Optional.
-// formatParameter is the return format. Return the response in particular
-// formatxii without access to request headers for standard content-type
-// negotiation (e.g Orders?$format=json). Optional.
-func (client Client) ListByResourceGroup(resourceGroupName string, filter string, top *int32, skip *int32, expand string, selectParameter string, orderby string, count *bool, search string, formatParameter string) (result DataLakeAnalyticsAccountListResult, err error) {
-	req, err := client.ListByResourceGroupPreparer(resourceGroupName, filter, top, skip, expand, selectParameter, orderby, count, search, formatParameter)
+// Categories?$count=true. Optional.
+func (client Client) ListByResourceGroup(resourceGroupName string, filter string, top *int32, skip *int32, selectParameter string, orderby string, count *bool) (result DataLakeAnalyticsAccountListResult, err error) {
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: top,
+			Constraints: []validation.Constraint{{Target: "top", Name: validation.Null, Rule: false,
+				Chain: []validation.Constraint{{Target: "top", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil}}}}},
+		{TargetValue: skip,
+			Constraints: []validation.Constraint{{Target: "skip", Name: validation.Null, Rule: false,
+				Chain: []validation.Constraint{{Target: "skip", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil}}}}}}); err != nil {
+		return result, validation.NewErrorWithValidationError(err, "account.Client", "ListByResourceGroup")
+	}
+
+	req, err := client.ListByResourceGroupPreparer(resourceGroupName, filter, top, skip, selectParameter, orderby, count)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "account.Client", "ListByResourceGroup", nil, "Failure preparing request")
 	}
@@ -925,7 +439,7 @@ func (client Client) ListByResourceGroup(resourceGroupName string, filter string
 }
 
 // ListByResourceGroupPreparer prepares the ListByResourceGroup request.
-func (client Client) ListByResourceGroupPreparer(resourceGroupName string, filter string, top *int32, skip *int32, expand string, selectParameter string, orderby string, count *bool, search string, formatParameter string) (*http.Request, error) {
+func (client Client) ListByResourceGroupPreparer(resourceGroupName string, filter string, top *int32, skip *int32, selectParameter string, orderby string, count *bool) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
@@ -943,9 +457,6 @@ func (client Client) ListByResourceGroupPreparer(resourceGroupName string, filte
 	if skip != nil {
 		queryParameters["$skip"] = autorest.Encode("query", *skip)
 	}
-	if len(expand) > 0 {
-		queryParameters["$expand"] = autorest.Encode("query", expand)
-	}
 	if len(selectParameter) > 0 {
 		queryParameters["$select"] = autorest.Encode("query", selectParameter)
 	}
@@ -954,12 +465,6 @@ func (client Client) ListByResourceGroupPreparer(resourceGroupName string, filte
 	}
 	if count != nil {
 		queryParameters["$count"] = autorest.Encode("query", *count)
-	}
-	if len(search) > 0 {
-		queryParameters["$search"] = autorest.Encode("query", search)
-	}
-	if len(formatParameter) > 0 {
-		queryParameters["$format"] = autorest.Encode("query", formatParameter)
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -1013,466 +518,6 @@ func (client Client) ListByResourceGroupNextResults(lastResults DataLakeAnalytic
 	return
 }
 
-// ListDataLakeStoreAccounts gets the first page of Data Lake Store accounts
-// linked to the specified Data Lake Analytics account. The response includes
-// a link to the next page, if any.
-//
-// resourceGroupName is the name of the Azure resource group that contains the
-// Data Lake Analytics account. accountName is the name of the Data Lake
-// Analytics account for which to list Data Lake Store accounts. filter is
-// oData filter. Optional. top is the number of items to return. Optional.
-// skip is the number of items to skip over before returning elements.
-// Optional. expand is oData expansion. Expand related resources in line with
-// the retrieved resources, e.g. Categories/$expand=Products would expand
-// Product data in line with each Category entry. Optional. selectParameter
-// is oData Select statement. Limits the properties on each entry to just
-// those requested, e.g. Categories?$select=CategoryName,Description.
-// Optional. orderby is orderBy clause. One or more comma-separated
-// expressions with an optional "asc" (the default) or "desc" depending on
-// the order you'd like the values sorted, e.g.
-// Categories?$orderby=CategoryName desc. Optional. count is the Boolean
-// value of true or false to request a count of the matching resources
-// included with the resources in the response, e.g. Categories?$count=true.
-// Optional. search is a free form search. A free-text search expression to
-// match for whether a particular entry should be included in the feed, e.g.
-// Categories?$search=blue OR green. Optional. formatParameter is the desired
-// return format. Return the response in particular formatxii without access
-// to request headers for standard content-type negotiation (e.g
-// Orders?$format=json). Optional.
-func (client Client) ListDataLakeStoreAccounts(resourceGroupName string, accountName string, filter string, top *int32, skip *int32, expand string, selectParameter string, orderby string, count *bool, search string, formatParameter string) (result DataLakeAnalyticsAccountListDataLakeStoreResult, err error) {
-	req, err := client.ListDataLakeStoreAccountsPreparer(resourceGroupName, accountName, filter, top, skip, expand, selectParameter, orderby, count, search, formatParameter)
-	if err != nil {
-		return result, autorest.NewErrorWithError(err, "account.Client", "ListDataLakeStoreAccounts", nil, "Failure preparing request")
-	}
-
-	resp, err := client.ListDataLakeStoreAccountsSender(req)
-	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "account.Client", "ListDataLakeStoreAccounts", resp, "Failure sending request")
-	}
-
-	result, err = client.ListDataLakeStoreAccountsResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "account.Client", "ListDataLakeStoreAccounts", resp, "Failure responding to request")
-	}
-
-	return
-}
-
-// ListDataLakeStoreAccountsPreparer prepares the ListDataLakeStoreAccounts request.
-func (client Client) ListDataLakeStoreAccountsPreparer(resourceGroupName string, accountName string, filter string, top *int32, skip *int32, expand string, selectParameter string, orderby string, count *bool, search string, formatParameter string) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"accountName":       autorest.Encode("path", accountName),
-		"resourceGroupName": autorest.Encode("path", resourceGroupName),
-		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
-	}
-
-	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
-	}
-	if len(filter) > 0 {
-		queryParameters["$filter"] = autorest.Encode("query", filter)
-	}
-	if top != nil {
-		queryParameters["$top"] = autorest.Encode("query", *top)
-	}
-	if skip != nil {
-		queryParameters["$skip"] = autorest.Encode("query", *skip)
-	}
-	if len(expand) > 0 {
-		queryParameters["$expand"] = autorest.Encode("query", expand)
-	}
-	if len(selectParameter) > 0 {
-		queryParameters["$select"] = autorest.Encode("query", selectParameter)
-	}
-	if len(orderby) > 0 {
-		queryParameters["$orderby"] = autorest.Encode("query", orderby)
-	}
-	if count != nil {
-		queryParameters["$count"] = autorest.Encode("query", *count)
-	}
-	if len(search) > 0 {
-		queryParameters["$search"] = autorest.Encode("query", search)
-	}
-	if len(formatParameter) > 0 {
-		queryParameters["$format"] = autorest.Encode("query", formatParameter)
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsGet(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataLakeAnalytics/accounts/{accountName}/DataLakeStoreAccounts/", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare(&http.Request{})
-}
-
-// ListDataLakeStoreAccountsSender sends the ListDataLakeStoreAccounts request. The method will close the
-// http.Response Body if it receives an error.
-func (client Client) ListDataLakeStoreAccountsSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
-}
-
-// ListDataLakeStoreAccountsResponder handles the response to the ListDataLakeStoreAccounts request. The method always
-// closes the http.Response Body.
-func (client Client) ListDataLakeStoreAccountsResponder(resp *http.Response) (result DataLakeAnalyticsAccountListDataLakeStoreResult, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
-}
-
-// ListDataLakeStoreAccountsNextResults retrieves the next set of results, if any.
-func (client Client) ListDataLakeStoreAccountsNextResults(lastResults DataLakeAnalyticsAccountListDataLakeStoreResult) (result DataLakeAnalyticsAccountListDataLakeStoreResult, err error) {
-	req, err := lastResults.DataLakeAnalyticsAccountListDataLakeStoreResultPreparer()
-	if err != nil {
-		return result, autorest.NewErrorWithError(err, "account.Client", "ListDataLakeStoreAccounts", nil, "Failure preparing next results request")
-	}
-	if req == nil {
-		return
-	}
-
-	resp, err := client.ListDataLakeStoreAccountsSender(req)
-	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "account.Client", "ListDataLakeStoreAccounts", resp, "Failure sending next results request")
-	}
-
-	result, err = client.ListDataLakeStoreAccountsResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "account.Client", "ListDataLakeStoreAccounts", resp, "Failure responding to next results request")
-	}
-
-	return
-}
-
-// ListSasTokens gets the SAS token associated with the specified Data Lake
-// Analytics and Azure Storage account and container combination.
-//
-// resourceGroupName is the name of the Azure resource group that contains the
-// Data Lake Analytics account. accountName is the name of the Data Lake
-// Analytics account from which an Azure Storage account's SAS token is being
-// requested. storageAccountName is the name of the Azure storage account for
-// which the SAS token is being requested. containerName is the name of the
-// Azure storage container for which the SAS token is being requested.
-func (client Client) ListSasTokens(resourceGroupName string, accountName string, storageAccountName string, containerName string) (result ListSasTokensResult, err error) {
-	req, err := client.ListSasTokensPreparer(resourceGroupName, accountName, storageAccountName, containerName)
-	if err != nil {
-		return result, autorest.NewErrorWithError(err, "account.Client", "ListSasTokens", nil, "Failure preparing request")
-	}
-
-	resp, err := client.ListSasTokensSender(req)
-	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "account.Client", "ListSasTokens", resp, "Failure sending request")
-	}
-
-	result, err = client.ListSasTokensResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "account.Client", "ListSasTokens", resp, "Failure responding to request")
-	}
-
-	return
-}
-
-// ListSasTokensPreparer prepares the ListSasTokens request.
-func (client Client) ListSasTokensPreparer(resourceGroupName string, accountName string, storageAccountName string, containerName string) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"accountName":        autorest.Encode("path", accountName),
-		"containerName":      autorest.Encode("path", containerName),
-		"resourceGroupName":  autorest.Encode("path", resourceGroupName),
-		"storageAccountName": autorest.Encode("path", storageAccountName),
-		"subscriptionId":     autorest.Encode("path", client.SubscriptionID),
-	}
-
-	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsPost(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataLakeAnalytics/accounts/{accountName}/StorageAccounts/{storageAccountName}/Containers/{containerName}/listSasTokens", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare(&http.Request{})
-}
-
-// ListSasTokensSender sends the ListSasTokens request. The method will close the
-// http.Response Body if it receives an error.
-func (client Client) ListSasTokensSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
-}
-
-// ListSasTokensResponder handles the response to the ListSasTokens request. The method always
-// closes the http.Response Body.
-func (client Client) ListSasTokensResponder(resp *http.Response) (result ListSasTokensResult, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
-}
-
-// ListSasTokensNextResults retrieves the next set of results, if any.
-func (client Client) ListSasTokensNextResults(lastResults ListSasTokensResult) (result ListSasTokensResult, err error) {
-	req, err := lastResults.ListSasTokensResultPreparer()
-	if err != nil {
-		return result, autorest.NewErrorWithError(err, "account.Client", "ListSasTokens", nil, "Failure preparing next results request")
-	}
-	if req == nil {
-		return
-	}
-
-	resp, err := client.ListSasTokensSender(req)
-	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "account.Client", "ListSasTokens", resp, "Failure sending next results request")
-	}
-
-	result, err = client.ListSasTokensResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "account.Client", "ListSasTokens", resp, "Failure responding to next results request")
-	}
-
-	return
-}
-
-// ListStorageAccounts gets the first page of Azure Storage accounts, if any,
-// linked to the specified Data Lake Analytics account. The response includes
-// a link to the next page, if any.
-//
-// resourceGroupName is the name of the Azure resource group that contains the
-// Data Lake Analytics account. accountName is the name of the Data Lake
-// Analytics account for which to list Azure Storage accounts. filter is the
-// OData filter. Optional. top is the number of items to return. Optional.
-// skip is the number of items to skip over before returning elements.
-// Optional. expand is oData expansion. Expand related resources in line with
-// the retrieved resources, e.g. Categories/$expand=Products would expand
-// Product data in line with each Category entry. Optional. selectParameter
-// is oData Select statement. Limits the properties on each entry to just
-// those requested, e.g. Categories?$select=CategoryName,Description.
-// Optional. orderby is orderBy clause. One or more comma-separated
-// expressions with an optional "asc" (the default) or "desc" depending on
-// the order you'd like the values sorted, e.g.
-// Categories?$orderby=CategoryName desc. Optional. count is the Boolean
-// value of true or false to request a count of the matching resources
-// included with the resources in the response, e.g. Categories?$count=true.
-// Optional. search is a free form search. A free-text search expression to
-// match for whether a particular entry should be included in the feed, e.g.
-// Categories?$search=blue OR green. Optional. formatParameter is the desired
-// return format. Return the response in particular formatxii without access
-// to request headers for standard content-type negotiation (e.g
-// Orders?$format=json). Optional.
-func (client Client) ListStorageAccounts(resourceGroupName string, accountName string, filter string, top *int32, skip *int32, expand string, selectParameter string, orderby string, count *bool, search string, formatParameter string) (result DataLakeAnalyticsAccountListStorageAccountsResult, err error) {
-	req, err := client.ListStorageAccountsPreparer(resourceGroupName, accountName, filter, top, skip, expand, selectParameter, orderby, count, search, formatParameter)
-	if err != nil {
-		return result, autorest.NewErrorWithError(err, "account.Client", "ListStorageAccounts", nil, "Failure preparing request")
-	}
-
-	resp, err := client.ListStorageAccountsSender(req)
-	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "account.Client", "ListStorageAccounts", resp, "Failure sending request")
-	}
-
-	result, err = client.ListStorageAccountsResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "account.Client", "ListStorageAccounts", resp, "Failure responding to request")
-	}
-
-	return
-}
-
-// ListStorageAccountsPreparer prepares the ListStorageAccounts request.
-func (client Client) ListStorageAccountsPreparer(resourceGroupName string, accountName string, filter string, top *int32, skip *int32, expand string, selectParameter string, orderby string, count *bool, search string, formatParameter string) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"accountName":       autorest.Encode("path", accountName),
-		"resourceGroupName": autorest.Encode("path", resourceGroupName),
-		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
-	}
-
-	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
-	}
-	if len(filter) > 0 {
-		queryParameters["$filter"] = autorest.Encode("query", filter)
-	}
-	if top != nil {
-		queryParameters["$top"] = autorest.Encode("query", *top)
-	}
-	if skip != nil {
-		queryParameters["$skip"] = autorest.Encode("query", *skip)
-	}
-	if len(expand) > 0 {
-		queryParameters["$expand"] = autorest.Encode("query", expand)
-	}
-	if len(selectParameter) > 0 {
-		queryParameters["$select"] = autorest.Encode("query", selectParameter)
-	}
-	if len(orderby) > 0 {
-		queryParameters["$orderby"] = autorest.Encode("query", orderby)
-	}
-	if count != nil {
-		queryParameters["$count"] = autorest.Encode("query", *count)
-	}
-	if len(search) > 0 {
-		queryParameters["$search"] = autorest.Encode("query", search)
-	}
-	if len(formatParameter) > 0 {
-		queryParameters["$format"] = autorest.Encode("query", formatParameter)
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsGet(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataLakeAnalytics/accounts/{accountName}/StorageAccounts/", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare(&http.Request{})
-}
-
-// ListStorageAccountsSender sends the ListStorageAccounts request. The method will close the
-// http.Response Body if it receives an error.
-func (client Client) ListStorageAccountsSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
-}
-
-// ListStorageAccountsResponder handles the response to the ListStorageAccounts request. The method always
-// closes the http.Response Body.
-func (client Client) ListStorageAccountsResponder(resp *http.Response) (result DataLakeAnalyticsAccountListStorageAccountsResult, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
-}
-
-// ListStorageAccountsNextResults retrieves the next set of results, if any.
-func (client Client) ListStorageAccountsNextResults(lastResults DataLakeAnalyticsAccountListStorageAccountsResult) (result DataLakeAnalyticsAccountListStorageAccountsResult, err error) {
-	req, err := lastResults.DataLakeAnalyticsAccountListStorageAccountsResultPreparer()
-	if err != nil {
-		return result, autorest.NewErrorWithError(err, "account.Client", "ListStorageAccounts", nil, "Failure preparing next results request")
-	}
-	if req == nil {
-		return
-	}
-
-	resp, err := client.ListStorageAccountsSender(req)
-	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "account.Client", "ListStorageAccounts", resp, "Failure sending next results request")
-	}
-
-	result, err = client.ListStorageAccountsResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "account.Client", "ListStorageAccounts", resp, "Failure responding to next results request")
-	}
-
-	return
-}
-
-// ListStorageContainers lists the Azure Storage containers, if any,
-// associated with the specified Data Lake Analytics and Azure Storage
-// account combination. The response includes a link to the next page of
-// results, if any.
-//
-// resourceGroupName is the name of the Azure resource group that contains the
-// Data Lake Analytics account. accountName is the name of the Data Lake
-// Analytics account for which to list Azure Storage blob containers.
-// storageAccountName is the name of the Azure storage account from which to
-// list blob containers.
-func (client Client) ListStorageContainers(resourceGroupName string, accountName string, storageAccountName string) (result ListBlobContainersResult, err error) {
-	req, err := client.ListStorageContainersPreparer(resourceGroupName, accountName, storageAccountName)
-	if err != nil {
-		return result, autorest.NewErrorWithError(err, "account.Client", "ListStorageContainers", nil, "Failure preparing request")
-	}
-
-	resp, err := client.ListStorageContainersSender(req)
-	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "account.Client", "ListStorageContainers", resp, "Failure sending request")
-	}
-
-	result, err = client.ListStorageContainersResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "account.Client", "ListStorageContainers", resp, "Failure responding to request")
-	}
-
-	return
-}
-
-// ListStorageContainersPreparer prepares the ListStorageContainers request.
-func (client Client) ListStorageContainersPreparer(resourceGroupName string, accountName string, storageAccountName string) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"accountName":        autorest.Encode("path", accountName),
-		"resourceGroupName":  autorest.Encode("path", resourceGroupName),
-		"storageAccountName": autorest.Encode("path", storageAccountName),
-		"subscriptionId":     autorest.Encode("path", client.SubscriptionID),
-	}
-
-	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsGet(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataLakeAnalytics/accounts/{accountName}/StorageAccounts/{storageAccountName}/Containers", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare(&http.Request{})
-}
-
-// ListStorageContainersSender sends the ListStorageContainers request. The method will close the
-// http.Response Body if it receives an error.
-func (client Client) ListStorageContainersSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
-}
-
-// ListStorageContainersResponder handles the response to the ListStorageContainers request. The method always
-// closes the http.Response Body.
-func (client Client) ListStorageContainersResponder(resp *http.Response) (result ListBlobContainersResult, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
-}
-
-// ListStorageContainersNextResults retrieves the next set of results, if any.
-func (client Client) ListStorageContainersNextResults(lastResults ListBlobContainersResult) (result ListBlobContainersResult, err error) {
-	req, err := lastResults.ListBlobContainersResultPreparer()
-	if err != nil {
-		return result, autorest.NewErrorWithError(err, "account.Client", "ListStorageContainers", nil, "Failure preparing next results request")
-	}
-	if req == nil {
-		return
-	}
-
-	resp, err := client.ListStorageContainersSender(req)
-	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "account.Client", "ListStorageContainers", resp, "Failure sending next results request")
-	}
-
-	result, err = client.ListStorageContainersResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "account.Client", "ListStorageContainers", resp, "Failure responding to next results request")
-	}
-
-	return
-}
-
 // Update updates the Data Lake Analytics account object specified by the
 // accountName with the contents of the account object. This method may poll
 // for completion. Polling can be canceled by passing the cancel channel
@@ -1483,14 +528,7 @@ func (client Client) ListStorageContainersNextResults(lastResults ListBlobContai
 // Data Lake Analytics account. name is the name of the Data Lake Analytics
 // account to update. parameters is parameters supplied to the update Data
 // Lake Analytics account operation.
-func (client Client) Update(resourceGroupName string, name string, parameters DataLakeAnalyticsAccount, cancel <-chan struct{}) (result autorest.Response, err error) {
-	if err := validation.Validate([]validation.Validation{
-		{TargetValue: parameters,
-			Constraints: []validation.Constraint{{Target: "parameters.Type", Name: validation.ReadOnly, Rule: true, Chain: nil},
-				{Target: "parameters.ID", Name: validation.ReadOnly, Rule: true, Chain: nil}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "account.Client", "Update")
-	}
-
+func (client Client) Update(resourceGroupName string, name string, parameters *DataLakeAnalyticsAccountUpdateParameters, cancel <-chan struct{}) (result autorest.Response, err error) {
 	req, err := client.UpdatePreparer(resourceGroupName, name, parameters, cancel)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "account.Client", "Update", nil, "Failure preparing request")
@@ -1511,7 +549,7 @@ func (client Client) Update(resourceGroupName string, name string, parameters Da
 }
 
 // UpdatePreparer prepares the Update request.
-func (client Client) UpdatePreparer(resourceGroupName string, name string, parameters DataLakeAnalyticsAccount, cancel <-chan struct{}) (*http.Request, error) {
+func (client Client) UpdatePreparer(resourceGroupName string, name string, parameters *DataLakeAnalyticsAccountUpdateParameters, cancel <-chan struct{}) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"name":              autorest.Encode("path", name),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
@@ -1527,8 +565,11 @@ func (client Client) UpdatePreparer(resourceGroupName string, name string, param
 		autorest.AsPatch(),
 		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataLakeAnalytics/accounts/{name}", pathParameters),
-		autorest.WithJSON(parameters),
 		autorest.WithQueryParameters(queryParameters))
+	if parameters != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithJSON(parameters))
+	}
 	return preparer.Prepare(&http.Request{Cancel: cancel})
 }
 
@@ -1547,75 +588,6 @@ func (client Client) UpdateResponder(resp *http.Response) (result autorest.Respo
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
-		autorest.ByClosing())
-	result.Response = resp
-	return
-}
-
-// UpdateStorageAccount updates the Data Lake Analytics account to replace
-// Azure Storage blob account details, such as the access key and/or suffix.
-//
-// resourceGroupName is the name of the Azure resource group that contains the
-// Data Lake Analytics account. accountName is the name of the Data Lake
-// Analytics account to modify storage accounts in storageAccountName is the
-// Azure Storage account to modify parameters is the parameters containing
-// the access key and suffix to update the storage account with.
-func (client Client) UpdateStorageAccount(resourceGroupName string, accountName string, storageAccountName string, parameters AddStorageAccountParameters) (result autorest.Response, err error) {
-	req, err := client.UpdateStorageAccountPreparer(resourceGroupName, accountName, storageAccountName, parameters)
-	if err != nil {
-		return result, autorest.NewErrorWithError(err, "account.Client", "UpdateStorageAccount", nil, "Failure preparing request")
-	}
-
-	resp, err := client.UpdateStorageAccountSender(req)
-	if err != nil {
-		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "account.Client", "UpdateStorageAccount", resp, "Failure sending request")
-	}
-
-	result, err = client.UpdateStorageAccountResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "account.Client", "UpdateStorageAccount", resp, "Failure responding to request")
-	}
-
-	return
-}
-
-// UpdateStorageAccountPreparer prepares the UpdateStorageAccount request.
-func (client Client) UpdateStorageAccountPreparer(resourceGroupName string, accountName string, storageAccountName string, parameters AddStorageAccountParameters) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"accountName":        autorest.Encode("path", accountName),
-		"resourceGroupName":  autorest.Encode("path", resourceGroupName),
-		"storageAccountName": autorest.Encode("path", storageAccountName),
-		"subscriptionId":     autorest.Encode("path", client.SubscriptionID),
-	}
-
-	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsJSON(),
-		autorest.AsPatch(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataLakeAnalytics/accounts/{accountName}/StorageAccounts/{storageAccountName}", pathParameters),
-		autorest.WithJSON(parameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare(&http.Request{})
-}
-
-// UpdateStorageAccountSender sends the UpdateStorageAccount request. The method will close the
-// http.Response Body if it receives an error.
-func (client Client) UpdateStorageAccountSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
-}
-
-// UpdateStorageAccountResponder handles the response to the UpdateStorageAccount request. The method always
-// closes the http.Response Body.
-func (client Client) UpdateStorageAccountResponder(resp *http.Response) (result autorest.Response, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp
 	return

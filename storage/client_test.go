@@ -2,6 +2,7 @@ package storage
 
 import (
 	"encoding/base64"
+	"net/http"
 	"net/url"
 	"os"
 	"testing"
@@ -146,6 +147,23 @@ func (s *StorageClientSuite) Test_getStandardHeaders(c *chk.C) {
 	}
 }
 
+func (s *StorageClientSuite) Test_buildCanonicalizedResourceTable(c *chk.C) {
+	cli, err := NewBasicClient("foo", "YmFy")
+	c.Assert(err, chk.IsNil)
+
+	type test struct{ url, expected string }
+	tests := []test{
+		{"https://foo.table.core.windows.net/mytable", "/foo/mytable"},
+		{"https://foo.table.core.windows.net/mytable(PartitionKey='pkey',RowKey='rowkey%3D')", "/foo/mytable(PartitionKey='pkey',RowKey='rowkey%3D')"},
+	}
+
+	for _, i := range tests {
+		out, err := cli.buildCanonicalizedResourceTable(i.url)
+		c.Assert(err, chk.IsNil)
+		c.Assert(out, chk.Equals, i.expected)
+	}
+}
+
 func (s *StorageClientSuite) Test_buildCanonicalizedResource(c *chk.C) {
 	cli, err := NewBasicClient("foo", "YmFy")
 	c.Assert(err, chk.IsNil)
@@ -201,6 +219,22 @@ func (s *StorageClientSuite) TestReturnsStorageServiceError(c *chk.C) {
 	c.Assert(v.StatusCode, chk.Equals, 404)
 	c.Assert(v.Code, chk.Equals, "ContainerNotFound")
 	c.Assert(v.Code, chk.Not(chk.Equals), "")
+	c.Assert(v.RequestID, chk.Not(chk.Equals), "")
+}
+
+func (s *StorageClientSuite) TestReturnsStorageServiceError_withoutResponseBody(c *chk.C) {
+	// HEAD on non-existing blob
+	_, err := getBlobClient(c).GetBlobProperties("non-existing-blob", "non-existing-container")
+
+	c.Assert(err, chk.NotNil)
+	c.Assert(err, chk.FitsTypeOf, AzureStorageServiceError{})
+
+	v, ok := err.(AzureStorageServiceError)
+	c.Check(ok, chk.Equals, true)
+	c.Assert(v.StatusCode, chk.Equals, http.StatusNotFound)
+	c.Assert(v.Code, chk.Equals, "404 The specified container does not exist.")
+	c.Assert(v.RequestID, chk.Not(chk.Equals), "")
+	c.Assert(v.Message, chk.Equals, "no response body was available for error status code")
 }
 
 func (s *StorageClientSuite) Test_createAuthorizationHeader(c *chk.C) {

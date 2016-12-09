@@ -1,4 +1,4 @@
-package machinelearning
+package webservices
 
 // Copyright (c) Microsoft and contributors.  All rights reserved.
 //
@@ -25,36 +25,39 @@ import (
 	"net/http"
 )
 
-// WebServicesClient is the these APIs allow end users to operate on Azure
-// Machine Learning Web Services resources. They support the following
+// Client is the these APIs allow end users to operate on Azure Machine
+// Learning Web Services resources. They support the following
 // operations:<ul><li>Create or update a web service</li><li>Get a web
 // service</li><li>Patch a web service</li><li>Delete a web
 // service</li><li>Get All Web Services in a Resource Group </li><li>Get All
 // Web Services in a Subscription</li><li>Get Web Services Keys</li></ul>
-type WebServicesClient struct {
+type Client struct {
 	ManagementClient
 }
 
-// NewWebServicesClient creates an instance of the WebServicesClient client.
-func NewWebServicesClient(subscriptionID string) WebServicesClient {
-	return NewWebServicesClientWithBaseURI(DefaultBaseURI, subscriptionID)
+// NewClient creates an instance of the Client client.
+func NewClient(subscriptionID string) Client {
+	return NewClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewWebServicesClientWithBaseURI creates an instance of the
-// WebServicesClient client.
-func NewWebServicesClientWithBaseURI(baseURI string, subscriptionID string) WebServicesClient {
-	return WebServicesClient{NewWithBaseURI(baseURI, subscriptionID)}
+// NewClientWithBaseURI creates an instance of the Client client.
+func NewClientWithBaseURI(baseURI string, subscriptionID string) Client {
+	return Client{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// CreateOrUpdate creates or updates a new Azure ML web service or update an
-// existing one. This method may poll for completion. Polling can be canceled
-// by passing the cancel channel argument. The channel will be used to cancel
-// polling and any outstanding HTTP requests.
+// CreateOrUpdate create or update a web service. This call will overwrite an
+// existing web service. Note that there is no warning or confirmation. This
+// is a nonrecoverable operation. If your intent is to create a new web
+// service, call the Get operation first to verify that it does not exist.
+// This method may poll for completion. Polling can be canceled by passing
+// the cancel channel argument. The channel will be used to cancel polling
+// and any outstanding HTTP requests.
 //
-// createOrUpdatePayload is the payload to create or update the Azure ML web
-// service. resourceGroupName is name of the resource group. webServiceName
-// is the Azure ML web service name which you want to reach.
-func (client WebServicesClient) CreateOrUpdate(createOrUpdatePayload WebService, resourceGroupName string, webServiceName string, cancel <-chan struct{}) (result autorest.Response, err error) {
+// resourceGroupName is name of the resource group in which the web service is
+// located. webServiceName is the name of the web service.
+// createOrUpdatePayload is the payload that is used to create or update the
+// web service.
+func (client Client) CreateOrUpdate(resourceGroupName string, webServiceName string, createOrUpdatePayload WebService, cancel <-chan struct{}) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: createOrUpdatePayload,
 			Constraints: []validation.Constraint{{Target: "createOrUpdatePayload.Properties", Name: validation.Null, Rule: true,
@@ -81,30 +84,30 @@ func (client WebServicesClient) CreateOrUpdate(createOrUpdatePayload WebService,
 					{Target: "createOrUpdatePayload.Properties.ProvisioningState", Name: validation.ReadOnly, Rule: true, Chain: nil},
 					{Target: "createOrUpdatePayload.Properties.SwaggerLocation", Name: validation.ReadOnly, Rule: true, Chain: nil},
 				}}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "machinelearning.WebServicesClient", "CreateOrUpdate")
+		return result, validation.NewErrorWithValidationError(err, "webservices.Client", "CreateOrUpdate")
 	}
 
-	req, err := client.CreateOrUpdatePreparer(createOrUpdatePayload, resourceGroupName, webServiceName, cancel)
+	req, err := client.CreateOrUpdatePreparer(resourceGroupName, webServiceName, createOrUpdatePayload, cancel)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "machinelearning.WebServicesClient", "CreateOrUpdate", nil, "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "webservices.Client", "CreateOrUpdate", nil, "Failure preparing request")
 	}
 
 	resp, err := client.CreateOrUpdateSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "machinelearning.WebServicesClient", "CreateOrUpdate", resp, "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "webservices.Client", "CreateOrUpdate", resp, "Failure sending request")
 	}
 
 	result, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "machinelearning.WebServicesClient", "CreateOrUpdate", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "webservices.Client", "CreateOrUpdate", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // CreateOrUpdatePreparer prepares the CreateOrUpdate request.
-func (client WebServicesClient) CreateOrUpdatePreparer(createOrUpdatePayload WebService, resourceGroupName string, webServiceName string, cancel <-chan struct{}) (*http.Request, error) {
+func (client Client) CreateOrUpdatePreparer(resourceGroupName string, webServiceName string, createOrUpdatePayload WebService, cancel <-chan struct{}) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
@@ -127,7 +130,7 @@ func (client WebServicesClient) CreateOrUpdatePreparer(createOrUpdatePayload Web
 
 // CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
 // http.Response Body if it receives an error.
-func (client WebServicesClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
+func (client Client) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client,
 		req,
 		azure.DoPollForAsynchronous(client.PollingDelay))
@@ -135,7 +138,7 @@ func (client WebServicesClient) CreateOrUpdateSender(req *http.Request) (*http.R
 
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
 // closes the http.Response Body.
-func (client WebServicesClient) CreateOrUpdateResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client Client) CreateOrUpdateResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -145,33 +148,35 @@ func (client WebServicesClient) CreateOrUpdateResponder(resp *http.Response) (re
 	return
 }
 
-// Get retrieve an Azure ML web service definition by its subscription,
-// resource group and name.
+// Get gets the Web Service Definiton as specified by a subscription, resource
+// group, and name. Note that the storage credentials and web service keys
+// are not returned by this call. To get the web service access keys, call
+// List Keys.
 //
-// resourceGroupName is name of the resource group. webServiceName is the
-// Azure ML web service name which you want to reach.
-func (client WebServicesClient) Get(resourceGroupName string, webServiceName string) (result WebService, err error) {
+// resourceGroupName is name of the resource group in which the web service is
+// located. webServiceName is the name of the web service.
+func (client Client) Get(resourceGroupName string, webServiceName string) (result WebService, err error) {
 	req, err := client.GetPreparer(resourceGroupName, webServiceName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "machinelearning.WebServicesClient", "Get", nil, "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "webservices.Client", "Get", nil, "Failure preparing request")
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "machinelearning.WebServicesClient", "Get", resp, "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "webservices.Client", "Get", resp, "Failure sending request")
 	}
 
 	result, err = client.GetResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "machinelearning.WebServicesClient", "Get", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "webservices.Client", "Get", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // GetPreparer prepares the Get request.
-func (client WebServicesClient) GetPreparer(resourceGroupName string, webServiceName string) (*http.Request, error) {
+func (client Client) GetPreparer(resourceGroupName string, webServiceName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
@@ -192,13 +197,13 @@ func (client WebServicesClient) GetPreparer(resourceGroupName string, webService
 
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
-func (client WebServicesClient) GetSender(req *http.Request) (*http.Response, error) {
+func (client Client) GetSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req)
 }
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
-func (client WebServicesClient) GetResponder(resp *http.Response) (result WebService, err error) {
+func (client Client) GetResponder(resp *http.Response) (result WebService, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -209,31 +214,31 @@ func (client WebServicesClient) GetResponder(resp *http.Response) (result WebSer
 	return
 }
 
-// List retrieve all Azure ML web services in the current Azure subscription.
+// List gets the web services in the specified subscription.
 //
 // skiptoken is continuation token for pagination.
-func (client WebServicesClient) List(skiptoken string) (result PaginatedWebServicesList, err error) {
+func (client Client) List(skiptoken string) (result PaginatedWebServicesList, err error) {
 	req, err := client.ListPreparer(skiptoken)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "machinelearning.WebServicesClient", "List", nil, "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "webservices.Client", "List", nil, "Failure preparing request")
 	}
 
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "machinelearning.WebServicesClient", "List", resp, "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "webservices.Client", "List", resp, "Failure sending request")
 	}
 
 	result, err = client.ListResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "machinelearning.WebServicesClient", "List", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "webservices.Client", "List", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // ListPreparer prepares the List request.
-func (client WebServicesClient) ListPreparer(skiptoken string) (*http.Request, error) {
+func (client Client) ListPreparer(skiptoken string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
@@ -255,13 +260,13 @@ func (client WebServicesClient) ListPreparer(skiptoken string) (*http.Request, e
 
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
-func (client WebServicesClient) ListSender(req *http.Request) (*http.Response, error) {
+func (client Client) ListSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req)
 }
 
 // ListResponder handles the response to the List request. The method always
 // closes the http.Response Body.
-func (client WebServicesClient) ListResponder(resp *http.Response) (result PaginatedWebServicesList, err error) {
+func (client Client) ListResponder(resp *http.Response) (result PaginatedWebServicesList, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -272,33 +277,32 @@ func (client WebServicesClient) ListResponder(resp *http.Response) (result Pagin
 	return
 }
 
-// ListInResourceGroup retrieve all Azure ML web services in a given resource
-// group.
+// ListInResourceGroup gets the web services in the specified resource group.
 //
-// resourceGroupName is name of the resource group. skiptoken is continuation
-// token for pagination.
-func (client WebServicesClient) ListInResourceGroup(resourceGroupName string, skiptoken string) (result PaginatedWebServicesList, err error) {
+// resourceGroupName is name of the resource group in which the web service is
+// located. skiptoken is continuation token for pagination.
+func (client Client) ListInResourceGroup(resourceGroupName string, skiptoken string) (result PaginatedWebServicesList, err error) {
 	req, err := client.ListInResourceGroupPreparer(resourceGroupName, skiptoken)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "machinelearning.WebServicesClient", "ListInResourceGroup", nil, "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "webservices.Client", "ListInResourceGroup", nil, "Failure preparing request")
 	}
 
 	resp, err := client.ListInResourceGroupSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "machinelearning.WebServicesClient", "ListInResourceGroup", resp, "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "webservices.Client", "ListInResourceGroup", resp, "Failure sending request")
 	}
 
 	result, err = client.ListInResourceGroupResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "machinelearning.WebServicesClient", "ListInResourceGroup", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "webservices.Client", "ListInResourceGroup", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // ListInResourceGroupPreparer prepares the ListInResourceGroup request.
-func (client WebServicesClient) ListInResourceGroupPreparer(resourceGroupName string, skiptoken string) (*http.Request, error) {
+func (client Client) ListInResourceGroupPreparer(resourceGroupName string, skiptoken string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
@@ -321,13 +325,13 @@ func (client WebServicesClient) ListInResourceGroupPreparer(resourceGroupName st
 
 // ListInResourceGroupSender sends the ListInResourceGroup request. The method will close the
 // http.Response Body if it receives an error.
-func (client WebServicesClient) ListInResourceGroupSender(req *http.Request) (*http.Response, error) {
+func (client Client) ListInResourceGroupSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req)
 }
 
 // ListInResourceGroupResponder handles the response to the ListInResourceGroup request. The method always
 // closes the http.Response Body.
-func (client WebServicesClient) ListInResourceGroupResponder(resp *http.Response) (result PaginatedWebServicesList, err error) {
+func (client Client) ListInResourceGroupResponder(resp *http.Response) (result PaginatedWebServicesList, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -338,32 +342,32 @@ func (client WebServicesClient) ListInResourceGroupResponder(resp *http.Response
 	return
 }
 
-// ListKeys get the access keys of a particular Azure ML web service
+// ListKeys gets the access keys for the specified web service.
 //
-// resourceGroupName is name of the resource group. webServiceName is the
-// Azure ML web service name which you want to reach.
-func (client WebServicesClient) ListKeys(resourceGroupName string, webServiceName string) (result WebServiceKeys, err error) {
+// resourceGroupName is name of the resource group in which the web service is
+// located. webServiceName is the name of the web service.
+func (client Client) ListKeys(resourceGroupName string, webServiceName string) (result WebServiceKeys, err error) {
 	req, err := client.ListKeysPreparer(resourceGroupName, webServiceName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "machinelearning.WebServicesClient", "ListKeys", nil, "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "webservices.Client", "ListKeys", nil, "Failure preparing request")
 	}
 
 	resp, err := client.ListKeysSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "machinelearning.WebServicesClient", "ListKeys", resp, "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "webservices.Client", "ListKeys", resp, "Failure sending request")
 	}
 
 	result, err = client.ListKeysResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "machinelearning.WebServicesClient", "ListKeys", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "webservices.Client", "ListKeys", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // ListKeysPreparer prepares the ListKeys request.
-func (client WebServicesClient) ListKeysPreparer(resourceGroupName string, webServiceName string) (*http.Request, error) {
+func (client Client) ListKeysPreparer(resourceGroupName string, webServiceName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
@@ -384,13 +388,13 @@ func (client WebServicesClient) ListKeysPreparer(resourceGroupName string, webSe
 
 // ListKeysSender sends the ListKeys request. The method will close the
 // http.Response Body if it receives an error.
-func (client WebServicesClient) ListKeysSender(req *http.Request) (*http.Response, error) {
+func (client Client) ListKeysSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req)
 }
 
 // ListKeysResponder handles the response to the ListKeys request. The method always
 // closes the http.Response Body.
-func (client WebServicesClient) ListKeysResponder(resp *http.Response) (result WebServiceKeys, err error) {
+func (client Client) ListKeysResponder(resp *http.Response) (result WebServiceKeys, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -401,36 +405,38 @@ func (client WebServicesClient) ListKeysResponder(resp *http.Response) (result W
 	return
 }
 
-// Patch patch an existing Azure ML web service resource. This method may poll
-// for completion. Polling can be canceled by passing the cancel channel
+// Patch modifies an existing web service resource. The PATCH API call is an
+// asynchronous operation. To determine whether it has completed
+// successfully, you must perform a Get operation. This method may poll for
+// completion. Polling can be canceled by passing the cancel channel
 // argument. The channel will be used to cancel polling and any outstanding
 // HTTP requests.
 //
-// patchPayload is the payload to patch the Azure ML web service with.
-// resourceGroupName is name of the resource group. webServiceName is the
-// Azure ML web service name which you want to reach.
-func (client WebServicesClient) Patch(patchPayload WebService, resourceGroupName string, webServiceName string, cancel <-chan struct{}) (result autorest.Response, err error) {
-	req, err := client.PatchPreparer(patchPayload, resourceGroupName, webServiceName, cancel)
+// resourceGroupName is name of the resource group in which the web service is
+// located. webServiceName is the name of the web service. patchPayload is
+// the payload to use to patch the web service.
+func (client Client) Patch(resourceGroupName string, webServiceName string, patchPayload WebService, cancel <-chan struct{}) (result autorest.Response, err error) {
+	req, err := client.PatchPreparer(resourceGroupName, webServiceName, patchPayload, cancel)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "machinelearning.WebServicesClient", "Patch", nil, "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "webservices.Client", "Patch", nil, "Failure preparing request")
 	}
 
 	resp, err := client.PatchSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "machinelearning.WebServicesClient", "Patch", resp, "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "webservices.Client", "Patch", resp, "Failure sending request")
 	}
 
 	result, err = client.PatchResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "machinelearning.WebServicesClient", "Patch", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "webservices.Client", "Patch", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // PatchPreparer prepares the Patch request.
-func (client WebServicesClient) PatchPreparer(patchPayload WebService, resourceGroupName string, webServiceName string, cancel <-chan struct{}) (*http.Request, error) {
+func (client Client) PatchPreparer(resourceGroupName string, webServiceName string, patchPayload WebService, cancel <-chan struct{}) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
@@ -453,7 +459,7 @@ func (client WebServicesClient) PatchPreparer(patchPayload WebService, resourceG
 
 // PatchSender sends the Patch request. The method will close the
 // http.Response Body if it receives an error.
-func (client WebServicesClient) PatchSender(req *http.Request) (*http.Response, error) {
+func (client Client) PatchSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client,
 		req,
 		azure.DoPollForAsynchronous(client.PollingDelay))
@@ -461,7 +467,7 @@ func (client WebServicesClient) PatchSender(req *http.Request) (*http.Response, 
 
 // PatchResponder handles the response to the Patch request. The method always
 // closes the http.Response Body.
-func (client WebServicesClient) PatchResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client Client) PatchResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -471,35 +477,35 @@ func (client WebServicesClient) PatchResponder(resp *http.Response) (result auto
 	return
 }
 
-// Remove remove an existing Azure ML web service. This method may poll for
+// Remove deletes the specified web service. This method may poll for
 // completion. Polling can be canceled by passing the cancel channel
 // argument. The channel will be used to cancel polling and any outstanding
 // HTTP requests.
 //
-// resourceGroupName is name of the resource group. webServiceName is the
-// Azure ML web service name which you want to reach.
-func (client WebServicesClient) Remove(resourceGroupName string, webServiceName string, cancel <-chan struct{}) (result autorest.Response, err error) {
+// resourceGroupName is name of the resource group in which the web service is
+// located. webServiceName is the name of the web service.
+func (client Client) Remove(resourceGroupName string, webServiceName string, cancel <-chan struct{}) (result autorest.Response, err error) {
 	req, err := client.RemovePreparer(resourceGroupName, webServiceName, cancel)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "machinelearning.WebServicesClient", "Remove", nil, "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "webservices.Client", "Remove", nil, "Failure preparing request")
 	}
 
 	resp, err := client.RemoveSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "machinelearning.WebServicesClient", "Remove", resp, "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "webservices.Client", "Remove", resp, "Failure sending request")
 	}
 
 	result, err = client.RemoveResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "machinelearning.WebServicesClient", "Remove", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "webservices.Client", "Remove", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // RemovePreparer prepares the Remove request.
-func (client WebServicesClient) RemovePreparer(resourceGroupName string, webServiceName string, cancel <-chan struct{}) (*http.Request, error) {
+func (client Client) RemovePreparer(resourceGroupName string, webServiceName string, cancel <-chan struct{}) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
@@ -520,7 +526,7 @@ func (client WebServicesClient) RemovePreparer(resourceGroupName string, webServ
 
 // RemoveSender sends the Remove request. The method will close the
 // http.Response Body if it receives an error.
-func (client WebServicesClient) RemoveSender(req *http.Request) (*http.Response, error) {
+func (client Client) RemoveSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client,
 		req,
 		azure.DoPollForAsynchronous(client.PollingDelay))
@@ -528,11 +534,11 @@ func (client WebServicesClient) RemoveSender(req *http.Request) (*http.Response,
 
 // RemoveResponder handles the response to the Remove request. The method always
 // closes the http.Response Body.
-func (client WebServicesClient) RemoveResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client Client) RemoveResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByClosing())
 	result.Response = resp
 	return

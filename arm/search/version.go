@@ -23,9 +23,9 @@ import (
 )
 
 const (
-	major = "6"
+	major = "7"
 	minor = "0"
-	patch = "0"
+	patch = "1"
 	// Always begin a "tag" with a dash (as per http://semver.org)
 	tag             = "-beta"
 	semVerFormat    = "%s.%s.%s%s"
@@ -34,7 +34,7 @@ const (
 
 // UserAgent returns the UserAgent string to use when sending http.Requests.
 func UserAgent() string {
-	return fmt.Sprintf(userAgentFormat, Version(), "search", "2015-02-28")
+	return fmt.Sprintf(userAgentFormat, Version(), "search", "2015-08-19")
 }
 
 // Version returns the semantic version (see http://semver.org) of the client.

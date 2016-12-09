@@ -37,12 +37,17 @@ func (s *StorageBlobSuite) Test_pathForBlob(c *chk.C) {
 }
 
 func (s *StorageBlobSuite) Test_blobSASStringToSign(c *chk.C) {
-	_, err := blobSASStringToSign("2012-02-12", "CS", "SE", "SP")
+	_, err := blobSASStringToSign("2012-02-12", "CS", "SE", "SP", "", "")
 	c.Assert(err, chk.NotNil) // not implemented SAS for versions earlier than 2013-08-15
 
-	out, err := blobSASStringToSign("2013-08-15", "CS", "SE", "SP")
+	out, err := blobSASStringToSign("2013-08-15", "CS", "SE", "SP", "", "")
 	c.Assert(err, chk.IsNil)
 	c.Assert(out, chk.Equals, "SP\n\nSE\nCS\n\n2013-08-15\n\n\n\n\n")
+
+	// check format for 2015-04-05 version
+	out, err = blobSASStringToSign("2015-04-05", "CS", "SE", "SP", "127.0.0.1", "https,http")
+	c.Assert(err, chk.IsNil)
+	c.Assert(out, chk.Equals, "SP\n\nSE\n/blobCS\n\n127.0.0.1\nhttps,http\n2015-04-05\n\n\n\n\n")
 }
 
 func (s *StorageBlobSuite) TestGetBlobSASURI(c *chk.C) {
@@ -64,6 +69,61 @@ func (s *StorageBlobSuite) TestGetBlobSASURI(c *chk.C) {
 		}.Encode()}
 
 	u, err := cli.GetBlobSASURI("container", "name", expiry, "r")
+	c.Assert(err, chk.IsNil)
+	sasParts, err := url.Parse(u)
+	c.Assert(err, chk.IsNil)
+	c.Assert(expectedParts.String(), chk.Equals, sasParts.String())
+	c.Assert(expectedParts.Query(), chk.DeepEquals, sasParts.Query())
+}
+
+func (s *StorageBlobSuite) TestGetBlobSASURIWithSignedIPAndProtocolValidAPIVersionPassed(c *chk.C) {
+	api, err := NewClient("foo", "YmFy", DefaultBaseURL, "2015-04-05", true)
+	c.Assert(err, chk.IsNil)
+	cli := api.GetBlobService()
+	expiry := time.Time{}
+
+	expectedParts := url.URL{
+		Scheme: "https",
+		Host:   "foo.blob.core.windows.net",
+		Path:   "/container/name",
+		RawQuery: url.Values{
+			"sv":  {"2015-04-05"},
+			"sig": {"VBOYJmt89UuBRXrxNzmsCMoC+8PXX2yklV71QcL1BfM="},
+			"sr":  {"b"},
+			"sip": {"127.0.0.1"},
+			"sp":  {"r"},
+			"se":  {"0001-01-01T00:00:00Z"},
+			"spr": {"https"},
+		}.Encode()}
+
+	u, err := cli.GetBlobSASURIWithSignedIPAndProtocol("container", "name", expiry, "r", "127.0.0.1", true)
+	c.Assert(err, chk.IsNil)
+	sasParts, err := url.Parse(u)
+	c.Assert(err, chk.IsNil)
+	c.Assert(sasParts.Query(), chk.DeepEquals, expectedParts.Query())
+}
+
+// Trying to use SignedIP and Protocol but using an older version of the API.
+// Should ignore the signedIP/protocol and just use what the older version requires.
+func (s *StorageBlobSuite) TestGetBlobSASURIWithSignedIPAndProtocolUsingOldAPIVersion(c *chk.C) {
+	api, err := NewClient("foo", "YmFy", DefaultBaseURL, "2013-08-15", true)
+	c.Assert(err, chk.IsNil)
+	cli := api.GetBlobService()
+	expiry := time.Time{}
+
+	expectedParts := url.URL{
+		Scheme: "https",
+		Host:   "foo.blob.core.windows.net",
+		Path:   "/container/name",
+		RawQuery: url.Values{
+			"sv":  {"2013-08-15"},
+			"sig": {"/OXG7rWh08jYwtU03GzJM0DHZtidRGpC6g69rSGm3I0="},
+			"sr":  {"b"},
+			"sp":  {"r"},
+			"se":  {"0001-01-01T00:00:00Z"},
+		}.Encode()}
+
+	u, err := cli.GetBlobSASURIWithSignedIPAndProtocol("container", "name", expiry, "r", "", true)
 	c.Assert(err, chk.IsNil)
 	sasParts, err := url.Parse(u)
 	c.Assert(err, chk.IsNil)
@@ -267,6 +327,66 @@ func (s *StorageBlobSuite) TestBlobCopy(c *chk.C) {
 	defer blobBody.Close()
 	c.Assert(err, chk.IsNil)
 	c.Assert(b, chk.DeepEquals, body)
+}
+
+func (s *StorageBlobSuite) TestStartBlobCopy(c *chk.C) {
+	if testing.Short() {
+		c.Skip("skipping blob copy in short mode, no SLA on async operation")
+	}
+
+	cli := getBlobClient(c)
+	cnt := randContainer()
+	src := randName(5)
+	dst := randName(5)
+	body := []byte(randString(1024))
+
+	c.Assert(cli.CreateContainer(cnt, ContainerAccessTypePrivate), chk.IsNil)
+	defer cli.deleteContainer(cnt)
+
+	c.Assert(cli.putSingleBlockBlob(cnt, src, body), chk.IsNil)
+	defer cli.DeleteBlob(cnt, src, nil)
+
+	// given we dont know when it will start, can we even test destination creation?
+	// will just test that an error wasn't thrown for now.
+	copyID, err := cli.StartBlobCopy(cnt, dst, cli.GetBlobURL(cnt, src))
+	c.Assert(copyID, chk.NotNil)
+	c.Assert(err, chk.IsNil)
+}
+
+// Tests abort of blobcopy. Given the blobcopy is usually over before we can actually trigger an abort
+// it is agreed that we perform a copy then try and perform an abort. It should result in a HTTP status of 409.
+// So basically we're testing negative scenario (as good as we can do for now)
+func (s *StorageBlobSuite) TestAbortBlobCopy(c *chk.C) {
+	if testing.Short() {
+		c.Skip("skipping blob copy in short mode, no SLA on async operation")
+	}
+
+	cli := getBlobClient(c)
+	cnt := randContainer()
+	src := randName(5)
+	dst := randName(5)
+	body := []byte(randString(1024))
+
+	c.Assert(cli.CreateContainer(cnt, ContainerAccessTypePrivate), chk.IsNil)
+	defer cli.deleteContainer(cnt)
+
+	c.Assert(cli.putSingleBlockBlob(cnt, src, body), chk.IsNil)
+	defer cli.DeleteBlob(cnt, src, nil)
+
+	// given we dont know when it will start, can we even test destination creation?
+	// will just test that an error wasn't thrown for now.
+	copyID, err := cli.StartBlobCopy(cnt, dst, cli.GetBlobURL(cnt, src))
+	c.Assert(copyID, chk.NotNil)
+	c.Assert(err, chk.IsNil)
+
+	err = cli.WaitForBlobCopy(cnt, dst, copyID)
+	c.Assert(err, chk.IsNil)
+
+	// abort abort abort, but we *know* its already completed.
+	err = cli.AbortBlobCopy(cnt, dst, copyID, "", 0)
+
+	// abort should fail (over already)
+	c.Assert(err.(AzureStorageServiceError).StatusCode, chk.Equals, http.StatusConflict)
 }
 
 func (s *StorageBlobSuite) TestDeleteBlobIfExists(c *chk.C) {
@@ -678,6 +798,194 @@ func (s *StorageBlobSuite) TestSetBlobProperties(c *chk.C) {
 	c.Check(mPut.ContentLanguage, chk.Equals, props.ContentLanguage)
 }
 
+func (s *StorageBlobSuite) createContainerPermissions(accessType ContainerAccessType,
+	timeout int, leaseID string, ID string, canRead bool,
+	canWrite bool, canDelete bool) ContainerPermissions {
+	perms := ContainerPermissions{}
+	perms.AccessOptions.ContainerAccess = accessType
+	perms.AccessOptions.Timeout = timeout
+	perms.AccessOptions.LeaseID = leaseID
+
+	if ID != "" {
+		perms.AccessPolicy.ID = ID
+		perms.AccessPolicy.StartTime = time.Now()
+		perms.AccessPolicy.ExpiryTime = time.Now().Add(time.Hour * 10)
+		perms.AccessPolicy.CanRead = canRead
+		perms.AccessPolicy.CanWrite = canWrite
+		perms.AccessPolicy.CanDelete = canDelete
+	}
+
+	return perms
+}
+
+func (s *StorageBlobSuite) TestSetContainerPermissionsWithTimeoutSuccessfully(c *chk.C) {
+	cli := getBlobClient(c)
+	cnt := randContainer()
+
+	c.Assert(cli.CreateContainer(cnt, ContainerAccessTypePrivate), chk.IsNil)
+	defer cli.deleteContainer(cnt)
+
+	perms := s.createContainerPermissions(ContainerAccessTypeBlob, 30, "", "MTIzNDU2Nzg5MDEyMzQ1Njc4OTAxMjM0NTY3ODkwMTa=", true, true, true)
+
+	err := cli.SetContainerPermissions(cnt, perms)
+	c.Assert(err, chk.IsNil)
+}
+
+func (s *StorageBlobSuite) TestSetContainerPermissionsSuccessfully(c *chk.C) {
+	cli := getBlobClient(c)
+	cnt := randContainer()
+
+	c.Assert(cli.CreateContainer(cnt, ContainerAccessTypePrivate), chk.IsNil)
+	defer cli.deleteContainer(cnt)
+
+	perms := s.createContainerPermissions(ContainerAccessTypeBlob, 0, "", "MTIzNDU2Nzg5MDEyMzQ1Njc4OTAxMjM0NTY3ODkwMTa=", true, true, true)
+
+	err := cli.SetContainerPermissions(cnt, perms)
+	c.Assert(err, chk.IsNil)
+}
+
+func (s *StorageBlobSuite) TestSetThenGetContainerPermissionsSuccessfully(c *chk.C) {
+	cli := getBlobClient(c)
+	cnt := randContainer()
+
+	c.Assert(cli.CreateContainer(cnt, ContainerAccessTypePrivate), chk.IsNil)
+	defer cli.deleteContainer(cnt)
+
+	perms := s.createContainerPermissions(ContainerAccessTypeBlob, 0, "", "MTIzNDU2Nzg5MDEyMzQ1Njc4OTAxMjM0NTY3ODkwMTa=", true, true, true)
+
+	err := cli.SetContainerPermissions(cnt, perms)
+	c.Assert(err, chk.IsNil)
+
+	returnedPerms, err := cli.GetContainerPermissions(cnt, 0, "")
+	c.Assert(err, chk.IsNil)
+
+	// check container permissions itself.
+	c.Assert(returnedPerms.ContainerAccess, chk.Equals, perms.AccessOptions.ContainerAccess)
+
+	// now check policy set.
+	c.Assert(returnedPerms.AccessPolicy.SignedIdentifiers, chk.HasLen, 1)
+	c.Assert(returnedPerms.AccessPolicy.SignedIdentifiers[0].ID, chk.Equals, perms.AccessPolicy.ID)
+
+	// test timestamps down the second
+	// rounding start/expiry time original perms since the returned perms would have been rounded.
+	// so need rounded vs rounded.
+	c.Assert(returnedPerms.AccessPolicy.SignedIdentifiers[0].AccessPolicy.StartTime.Round(time.Second).Format(time.RFC1123), chk.Equals, perms.AccessPolicy.StartTime.UTC().Round(time.Second).Format(time.RFC1123))
+	c.Assert(returnedPerms.AccessPolicy.SignedIdentifiers[0].AccessPolicy.ExpiryTime.Round(time.Second).Format(time.RFC1123), chk.Equals, perms.AccessPolicy.ExpiryTime.UTC().Round(time.Second).Format(time.RFC1123))
+	c.Assert(returnedPerms.AccessPolicy.SignedIdentifiers[0].AccessPolicy.Permission, chk.Equals, "rwd")
+}
+
+func (s *StorageBlobSuite) TestSetContainerPermissionsOnlySuccessfully(c *chk.C) {
+	cli := getBlobClient(c)
+	cnt := randContainer()
+
+	c.Assert(cli.CreateContainer(cnt, ContainerAccessTypePrivate), chk.IsNil)
+	defer cli.deleteContainer(cnt)
+
+	perms := s.createContainerPermissions(ContainerAccessTypeBlob, 0, "", "", true, true, true)
+
+	err := cli.SetContainerPermissions(cnt, perms)
+	c.Assert(err, chk.IsNil)
+}
+
+func (s *StorageBlobSuite) TestSetThenGetContainerPermissionsOnlySuccessfully(c *chk.C) {
+	cli := getBlobClient(c)
+	cnt := randContainer()
+
+	c.Assert(cli.CreateContainer(cnt, ContainerAccessTypePrivate), chk.IsNil)
+	defer cli.deleteContainer(cnt)
+
+	perms := s.createContainerPermissions(ContainerAccessTypeBlob, 0, "", "", true, true, true)
+
+	err := cli.SetContainerPermissions(cnt, perms)
+	c.Assert(err, chk.IsNil)
+
+	returnedPerms, err := cli.GetContainerPermissions(cnt, 0, "")
+	c.Assert(err, chk.IsNil)
+
+	// check container permissions itself.
+	c.Assert(returnedPerms.ContainerAccess, chk.Equals, perms.AccessOptions.ContainerAccess)
+
+	// now check there are NO policies set
+	c.Assert(returnedPerms.AccessPolicy.SignedIdentifiers, chk.HasLen, 0)
+}
+
+func (s *StorageBlobSuite) TestSnapshotBlob(c *chk.C) {
+	cli := getBlobClient(c)
+	cnt := randContainer()
+
+	c.Assert(cli.CreateContainer(cnt, ContainerAccessTypePrivate), chk.IsNil)
+	defer cli.deleteContainer(cnt)
+
+	blob := randName(5)
+	c.Assert(cli.putSingleBlockBlob(cnt, blob, []byte{}), chk.IsNil)
+
+	snapshotTime, err := cli.SnapshotBlob(cnt, blob, 0, nil)
+	c.Assert(err, chk.IsNil)
+	c.Assert(snapshotTime, chk.NotNil)
+}
+
+func (s *StorageBlobSuite) TestSnapshotBlobWithTimeout(c *chk.C) {
+	cli := getBlobClient(c)
+	cnt := randContainer()
+
+	c.Assert(cli.CreateContainer(cnt, ContainerAccessTypePrivate), chk.IsNil)
+	defer cli.deleteContainer(cnt)
+
+	blob := randName(5)
+	c.Assert(cli.putSingleBlockBlob(cnt, blob, []byte{}), chk.IsNil)
+
+	snapshotTime, err := cli.SnapshotBlob(cnt, blob, 30, nil)
+	c.Assert(err, chk.IsNil)
+	c.Assert(snapshotTime, chk.NotNil)
+}
+
+func (s *StorageBlobSuite) TestSnapshotBlobWithValidLease(c *chk.C) {
+	cli := getBlobClient(c)
+	cnt := randContainer()
+
+	c.Assert(cli.CreateContainer(cnt, ContainerAccessTypePrivate), chk.IsNil)
+	defer cli.deleteContainer(cnt)
+
+	blob := randName(5)
+	c.Assert(cli.putSingleBlockBlob(cnt, blob, []byte{}), chk.IsNil)
+
+	// generate lease.
+	currentLeaseID, err := cli.AcquireLease(cnt, blob, 30, "")
+	c.Assert(err, chk.IsNil)
+
+	extraHeaders := map[string]string{
+		leaseID: currentLeaseID,
+	}
+
+	snapshotTime, err := cli.SnapshotBlob(cnt, blob, 0, extraHeaders)
+	c.Assert(err, chk.IsNil)
+	c.Assert(snapshotTime, chk.NotNil)
+}
+
+func (s *StorageBlobSuite) TestSnapshotBlobWithInvalidLease(c *chk.C) {
+	cli := getBlobClient(c)
+	cnt := randContainer()
+
+	c.Assert(cli.CreateContainer(cnt, ContainerAccessTypePrivate), chk.IsNil)
+	defer cli.deleteContainer(cnt)
+
+	blob := randName(5)
+	c.Assert(cli.putSingleBlockBlob(cnt, blob, []byte{}), chk.IsNil)
+
+	// generate lease.
+	_, err := cli.AcquireLease(cnt, blob, 30, "")
+	c.Assert(err, chk.IsNil)
+	c.Assert(leaseID, chk.NotNil)
+
+	extraHeaders := map[string]string{
+		leaseID: "718e3c89-da3d-4201-b616-dd794b0bd7c1",
+	}
+
+	snapshotTime, err := cli.SnapshotBlob(cnt, blob, 0, extraHeaders)
+	c.Assert(err, chk.NotNil)
+	c.Assert(snapshotTime, chk.IsNil)
+}
+
 func (s *StorageBlobSuite) TestAcquireLeaseWithNoProposedLeaseID(c *chk.C) {
 	cli := getBlobClient(c)
 	cnt := randContainer()
@@ -689,7 +997,7 @@ func (s *StorageBlobSuite) TestAcquireLeaseWithNoProposedLeaseID(c *chk.C) {
 	c.Assert(cli.putSingleBlockBlob(cnt, blob, []byte{}), chk.IsNil)
 
 	_, err := cli.AcquireLease(cnt, blob, 30, "")
-	c.Assert(err, chk.NotNil)
+	c.Assert(err, chk.IsNil)
 }
 
 func (s *StorageBlobSuite) TestAcquireLeaseWithProposedLeaseID(c *chk.C) {
@@ -1190,7 +1498,7 @@ func (b BlobStorageClient) putSingleBlockBlob(container, name string, chunk []by
 	headers["x-ms-blob-type"] = string(BlobTypeBlock)
 	headers["Content-Length"] = fmt.Sprintf("%v", len(chunk))
 
-	resp, err := b.client.exec("PUT", uri, headers, bytes.NewReader(chunk))
+	resp, err := b.client.exec(http.MethodPut, uri, headers, bytes.NewReader(chunk))
 	if err != nil {
 		return err
 	}

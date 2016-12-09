@@ -24,7 +24,7 @@ import (
 	"net/http"
 )
 
-// CostOperationsClient is the the DevTest Labs Client.
+// CostOperationsClient is the azure DevTest Labs REST API.
 type CostOperationsClient struct {
 	ManagementClient
 }

@@ -25,7 +25,7 @@ import (
 	"net/http"
 )
 
-// GatewayClient is the rEST API for Azure Server Management Service
+// GatewayClient is the rEST API for Azure Server Management Service.
 type GatewayClient struct {
 	ManagementClient
 }
@@ -196,7 +196,7 @@ func (client GatewayClient) DeleteResponder(resp *http.Response) (result autores
 	return
 }
 
-// Get returns a gateway
+// Get gets a gateway.
 //
 // resourceGroupName is the resource group name uniquely identifies the
 // resource group within the user subscriptionId. gatewayName is the gateway
@@ -277,7 +277,7 @@ func (client GatewayClient) GetResponder(resp *http.Response) (result GatewayRes
 	return
 }
 
-// GetProfile gets a gateway profile This method may poll for completion.
+// GetProfile gets a gateway profile. This method may poll for completion.
 // Polling can be canceled by passing the cancel channel argument. The
 // channel will be used to cancel polling and any outstanding HTTP requests.
 //
@@ -355,7 +355,7 @@ func (client GatewayClient) GetProfileResponder(resp *http.Response) (result aut
 	return
 }
 
-// List returns gateways in a subscription
+// List returns gateways in a subscription.
 func (client GatewayClient) List() (result GatewayResources, err error) {
 	req, err := client.ListPreparer()
 	if err != nil {
@@ -437,7 +437,7 @@ func (client GatewayClient) ListNextResults(lastResults GatewayResources) (resul
 	return
 }
 
-// ListForResourceGroup returns gateways in a resource group
+// ListForResourceGroup returns gateways in a resource group.
 //
 // resourceGroupName is the resource group name uniquely identifies the
 // resource group within the user subscriptionId.
@@ -691,9 +691,9 @@ func (client GatewayClient) UpdateResponder(resp *http.Response) (result autores
 	return
 }
 
-// Upgrade upgrade a gateway This method may poll for completion. Polling can
-// be canceled by passing the cancel channel argument. The channel will be
-// used to cancel polling and any outstanding HTTP requests.
+// Upgrade upgrades a gateway. This method may poll for completion. Polling
+// can be canceled by passing the cancel channel argument. The channel will
+// be used to cancel polling and any outstanding HTTP requests.
 //
 // resourceGroupName is the resource group name uniquely identifies the
 // resource group within the user subscriptionId. gatewayName is the gateway

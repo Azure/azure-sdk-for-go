@@ -67,13 +67,13 @@ const (
 
 // Account is contains information about an Azure Batch account.
 type Account struct {
-	autorest.Response `json:"-"`
-	ID                *string             `json:"id,omitempty"`
-	Name              *string             `json:"name,omitempty"`
-	Type              *string             `json:"type,omitempty"`
-	Location          *string             `json:"location,omitempty"`
-	Tags              *map[string]*string `json:"tags,omitempty"`
-	Properties        *AccountProperties  `json:"properties,omitempty"`
+	autorest.Response  `json:"-"`
+	ID                 *string             `json:"id,omitempty"`
+	Name               *string             `json:"name,omitempty"`
+	Type               *string             `json:"type,omitempty"`
+	Location           *string             `json:"location,omitempty"`
+	Tags               *map[string]*string `json:"tags,omitempty"`
+	*AccountProperties `json:"properties,omitempty"`
 }
 
 // AccountBaseProperties is the properties of a Batch account.
@@ -83,9 +83,9 @@ type AccountBaseProperties struct {
 
 // AccountCreateParameters is parameters supplied to the Create operation.
 type AccountCreateParameters struct {
-	Location   *string                `json:"location,omitempty"`
-	Tags       *map[string]*string    `json:"tags,omitempty"`
-	Properties *AccountBaseProperties `json:"properties,omitempty"`
+	Location               *string             `json:"location,omitempty"`
+	Tags                   *map[string]*string `json:"tags,omitempty"`
+	*AccountBaseProperties `json:"properties,omitempty"`
 }
 
 // AccountKeys is a set of Azure Batch account keys.
@@ -132,8 +132,8 @@ type AccountRegenerateKeyParameters struct {
 
 // AccountUpdateParameters is parameters supplied to the Update operation.
 type AccountUpdateParameters struct {
-	Tags       *map[string]*string    `json:"tags,omitempty"`
-	Properties *AccountBaseProperties `json:"properties,omitempty"`
+	Tags                   *map[string]*string `json:"tags,omitempty"`
+	*AccountBaseProperties `json:"properties,omitempty"`
 }
 
 // ActivateApplicationPackageParameters is parameters for an
@@ -182,6 +182,21 @@ type AutoStorageBaseProperties struct {
 type AutoStorageProperties struct {
 	StorageAccountID *string    `json:"storageAccountId,omitempty"`
 	LastKeySync      *date.Time `json:"lastKeySync,omitempty"`
+}
+
+// ErrorBody is an error response from the Batch service.
+type ErrorBody struct {
+	Code    *string        `json:"code,omitempty"`
+	Message *string        `json:"message,omitempty"`
+	Target  *string        `json:"target,omitempty"`
+	Details *[]ErrorDetail `json:"details,omitempty"`
+}
+
+// ErrorDetail is specific detail about an error.
+type ErrorDetail struct {
+	Code    *string `json:"code,omitempty"`
+	Message *string `json:"message,omitempty"`
+	Target  *string `json:"target,omitempty"`
 }
 
 // ListApplicationsResult is response to an

@@ -67,9 +67,9 @@ func (client AccountOperationsClient) Create(resourceGroupName string, accountNa
 				{Target: "accountName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}},
 		{TargetValue: parameters,
 			Constraints: []validation.Constraint{{Target: "parameters.Location", Name: validation.Null, Rule: true, Chain: nil},
-				{Target: "parameters.Properties", Name: validation.Null, Rule: false,
-					Chain: []validation.Constraint{{Target: "parameters.Properties.AutoStorage", Name: validation.Null, Rule: false,
-						Chain: []validation.Constraint{{Target: "parameters.Properties.AutoStorage.StorageAccountID", Name: validation.Null, Rule: true, Chain: nil}}},
+				{Target: "parameters.AccountBaseProperties", Name: validation.Null, Rule: false,
+					Chain: []validation.Constraint{{Target: "parameters.AccountBaseProperties.AutoStorage", Name: validation.Null, Rule: false,
+						Chain: []validation.Constraint{{Target: "parameters.AccountBaseProperties.AutoStorage.StorageAccountID", Name: validation.Null, Rule: true, Chain: nil}}},
 					}}}}}); err != nil {
 		return result, validation.NewErrorWithValidationError(err, "batch.AccountOperationsClient", "Create")
 	}
@@ -129,7 +129,7 @@ func (client AccountOperationsClient) CreateResponder(resp *http.Response) (resu
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusAccepted, http.StatusOK),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByClosing())
 	result.Response = resp
 	return
@@ -207,7 +207,7 @@ func (client AccountOperationsClient) DeleteResponder(resp *http.Response) (resu
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusAccepted, http.StatusNoContent, http.StatusOK),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByClosing())
 	result.Response = resp
 	return
@@ -535,8 +535,7 @@ func (client AccountOperationsClient) ListByResourceGroupNextResults(lastResults
 	return
 }
 
-// RegenerateKey regenerates the specified account key for the specified Batch
-// account.
+// RegenerateKey regenerates the specified account key for the Batch account.
 //
 // resourceGroupName is the name of the resource group that contains the Batch
 // account. accountName is the name of the account. parameters is the type of

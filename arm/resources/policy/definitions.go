@@ -24,8 +24,8 @@ import (
 	"net/http"
 )
 
-// DefinitionsClient is the client for the Definitions methods of the Policy
-// service.
+// DefinitionsClient is the to manage and control access to your resources,
+// you can define customized policies and assign them at a scope.
 type DefinitionsClient struct {
 	ManagementClient
 }
@@ -41,10 +41,10 @@ func NewDefinitionsClientWithBaseURI(baseURI string, subscriptionID string) Defi
 	return DefinitionsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// CreateOrUpdate create or update a policy definition.
+// CreateOrUpdate creates or updates a policy definition.
 //
-// policyDefinitionName is the policy definition name. parameters is the
-// policy definition properties.
+// policyDefinitionName is the name of the policy definition to create.
+// parameters is the policy definition properties.
 func (client DefinitionsClient) CreateOrUpdate(policyDefinitionName string, parameters Definition) (result Definition, err error) {
 	req, err := client.CreateOrUpdatePreparer(policyDefinitionName, parameters)
 	if err != nil {
@@ -105,9 +105,9 @@ func (client DefinitionsClient) CreateOrUpdateResponder(resp *http.Response) (re
 	return
 }
 
-// Delete deletes the policy definition.
+// Delete deletes a policy definition.
 //
-// policyDefinitionName is the policy definition name.
+// policyDefinitionName is the name of the policy definition to delete.
 func (client DefinitionsClient) Delete(policyDefinitionName string) (result autorest.Response, err error) {
 	req, err := client.DeletePreparer(policyDefinitionName)
 	if err != nil {
@@ -167,7 +167,7 @@ func (client DefinitionsClient) DeleteResponder(resp *http.Response) (result aut
 
 // Get gets the policy definition.
 //
-// policyDefinitionName is the policy definition name.
+// policyDefinitionName is the name of the policy definition to get.
 func (client DefinitionsClient) Get(policyDefinitionName string) (result Definition, err error) {
 	req, err := client.GetPreparer(policyDefinitionName)
 	if err != nil {
@@ -226,7 +226,7 @@ func (client DefinitionsClient) GetResponder(resp *http.Response) (result Defini
 	return
 }
 
-// List gets all the policy definitions of a subscription.
+// List gets all the policy definitions for a subscription.
 //
 // filter is the filter to apply on the operation.
 func (client DefinitionsClient) List(filter string) (result DefinitionListResult, err error) {

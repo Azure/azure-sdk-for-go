@@ -1,5 +1,5 @@
 hash: 7407050cee9bb9ce89e23ef26bce4051cce63d558338a4937f027a18b789e3a1
-updated: 2016-10-25T11:34:48.4987356-07:00
+updated: 2016-12-08T17:31:55.7578123-08:00
 imports:
 - name: github.com/Azure/go-autorest
   version: 0781901f19f1e7db3034d97ec57af753db0bf808
@@ -31,6 +31,8 @@ imports:
   version: d9b45f19996c645d38c9266d1f5cf1990e930119
 - name: github.com/satori/uuid
   version: b061729afc07e77a8aa4fad0a2fd840958f1942a
+- name: github.com/shopspring/decimal
+  version: d6f52241f332c63811249bd79a522406bea1a7c9
 - name: golang.org/x/crypto
   version: 84e98f45760e87786b7f24603b8166a6fa09811d
   subpackages:

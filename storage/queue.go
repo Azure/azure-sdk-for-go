@@ -335,7 +335,9 @@ func (c QueueServiceClient) DeleteMessage(queue, messageID, popReceipt string) e
 	if err != nil {
 		return err
 	}
-	defer resp.body.Close()
+	defer func() {
+		_ = resp.body.Close()
+	}()
 	return checkRespCode(resp.statusCode, []int{http.StatusNoContent})
 }
 

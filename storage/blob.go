@@ -1401,7 +1401,9 @@ func (b BlobStorageClient) AbortBlobCopy(container, name, copyID, currentLeaseID
 	if err != nil {
 		return err
 	}
-	defer resp.body.Close()
+	defer func() {
+		_ = resp.body.Close()
+	}()
 
 	if err := checkRespCode(resp.statusCode, []int{http.StatusNoContent}); err != nil {
 		return err

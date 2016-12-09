@@ -250,8 +250,9 @@ func (f FileServiceClient) ListDirsAndFiles(path string, params ListDirsAndFiles
 	if err != nil {
 		return out, err
 	}
-
-	defer resp.body.Close()
+	defer func() {
+		_ = resp.body.Close()
+	}()
 	err = xmlUnmarshal(resp.body, &out)
 	return out, err
 }
@@ -275,7 +276,9 @@ func (f FileServiceClient) ListFileRanges(path string, listRange *FileRange) (Fi
 		return out, err
 	}
 
-	defer resp.body.Close()
+	defer func() {
+		_ = resp.body.Close()
+	}()
 	var cl uint64
 	cl, err = strconv.ParseUint(resp.headers.Get("x-ms-content-length"), 10, 64)
 	if err != nil {
@@ -324,7 +327,7 @@ func (f FileServiceClient) listContent(path string, params url.Values, extraHead
 	}
 
 	if err = checkRespCode(resp.statusCode, []int{http.StatusOK}); err != nil {
-		resp.body.Close()
+		_ = resp.body.Close()
 		return nil, err
 	}
 
@@ -425,7 +428,9 @@ func (f FileServiceClient) GetFile(path string, fileRange *FileRange) (*FileStre
 	}
 
 	if err = checkRespCode(resp.statusCode, []int{http.StatusOK, http.StatusPartialContent}); err != nil {
-		resp.body.Close()
+		defer func() {
+			_ = resp.body.Close()
+		}()
 		return nil, err
 	}
 
@@ -501,7 +506,9 @@ func (f FileServiceClient) GetShareURL(name string) string {
 func (f FileServiceClient) CreateDirectoryIfNotExists(path string) (bool, error) {
 	resp, err := f.createResourceNoClose(path, resourceDirectory, nil)
 	if resp != nil {
-		defer resp.body.Close()
+		defer func() {
+			_ = resp.body.Close()
+		}()
 		if resp.statusCode == http.StatusCreated || resp.statusCode == http.StatusConflict {
 			return resp.statusCode == http.StatusCreated, nil
 		}
@@ -533,7 +540,9 @@ func (f FileServiceClient) createResource(path string, res resourceType, extraHe
 	if err != nil {
 		return err
 	}
-	defer resp.body.Close()
+	defer func() {
+		_ = resp.body.Close()
+	}()
 	return checkRespCode(resp.statusCode, []int{http.StatusCreated})
 }
 
@@ -718,7 +727,9 @@ func (f FileServiceClient) deleteResource(path string, res resourceType) error {
 	if err != nil {
 		return err
 	}
-	defer resp.body.Close()
+	defer func() {
+		_ = resp.body.Close()
+	}()
 	return checkRespCode(resp.statusCode, []int{http.StatusAccepted})
 }
 

@@ -128,7 +128,7 @@ func (c *TableServiceClient) DeleteTable(table AzureTable) error {
 
 	headers["Content-Length"] = "0"
 
-	resp, err := c.client.execTable("DELETE", uri, headers, nil)
+	resp, err := c.client.execTable(http.MethodDelete, uri, headers, nil)
 
 	if err != nil {
 		return err

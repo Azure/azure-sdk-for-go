@@ -2,6 +2,7 @@ package storage
 
 import (
 	"encoding/base64"
+	"net/http"
 	"net/url"
 	"os"
 	"testing"
@@ -218,6 +219,22 @@ func (s *StorageClientSuite) TestReturnsStorageServiceError(c *chk.C) {
 	c.Assert(v.StatusCode, chk.Equals, 404)
 	c.Assert(v.Code, chk.Equals, "ContainerNotFound")
 	c.Assert(v.Code, chk.Not(chk.Equals), "")
+	c.Assert(v.RequestID, chk.Not(chk.Equals), "")
+}
+
+func (s *StorageClientSuite) TestReturnsStorageServiceError_withoutResponseBody(c *chk.C) {
+	// HEAD on non-existing blob
+	_, err := getBlobClient(c).GetBlobProperties("non-existing-blob", "non-existing-container")
+
+	c.Assert(err, chk.NotNil)
+	c.Assert(err, chk.FitsTypeOf, AzureStorageServiceError{})
+
+	v, ok := err.(AzureStorageServiceError)
+	c.Check(ok, chk.Equals, true)
+	c.Assert(v.StatusCode, chk.Equals, http.StatusNotFound)
+	c.Assert(v.Code, chk.Equals, "404 The specified container does not exist.")
+	c.Assert(v.RequestID, chk.Not(chk.Equals), "")
+	c.Assert(v.Message, chk.Equals, "no response body was available for error status code")
 }
 
 func (s *StorageClientSuite) Test_createAuthorizationHeader(c *chk.C) {

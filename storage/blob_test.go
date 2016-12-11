@@ -869,8 +869,8 @@ func (s *StorageBlobSuite) TestSetThenGetContainerPermissionsSuccessfully(c *chk
 	// test timestamps down the second
 	// rounding start/expiry time original perms since the returned perms would have been rounded.
 	// so need rounded vs rounded.
-	c.Assert(returnedPerms.AccessPolicy.SignedIdentifiers[0].AccessPolicy.StartTime.Round(time.Second).Format(time.RFC1123), chk.Equals, perms.AccessPolicy.StartTime.Round(time.Second).Format(time.RFC1123))
-	c.Assert(returnedPerms.AccessPolicy.SignedIdentifiers[0].AccessPolicy.ExpiryTime.Round(time.Second).Format(time.RFC1123), chk.Equals, perms.AccessPolicy.ExpiryTime.Round(time.Second).Format(time.RFC1123))
+	c.Assert(returnedPerms.AccessPolicy.SignedIdentifiers[0].AccessPolicy.StartTime.Round(time.Second).Format(time.RFC1123), chk.Equals, perms.AccessPolicy.StartTime.UTC().Round(time.Second).Format(time.RFC1123))
+	c.Assert(returnedPerms.AccessPolicy.SignedIdentifiers[0].AccessPolicy.ExpiryTime.Round(time.Second).Format(time.RFC1123), chk.Equals, perms.AccessPolicy.ExpiryTime.UTC().Round(time.Second).Format(time.RFC1123))
 	c.Assert(returnedPerms.AccessPolicy.SignedIdentifiers[0].AccessPolicy.Permission, chk.Equals, "rwd")
 }
 
@@ -1498,7 +1498,7 @@ func (b BlobStorageClient) putSingleBlockBlob(container, name string, chunk []by
 	headers["x-ms-blob-type"] = string(BlobTypeBlock)
 	headers["Content-Length"] = fmt.Sprintf("%v", len(chunk))
 
-	resp, err := b.client.exec("PUT", uri, headers, bytes.NewReader(chunk))
+	resp, err := b.client.exec(http.MethodPut, uri, headers, bytes.NewReader(chunk))
 	if err != nil {
 		return err
 	}

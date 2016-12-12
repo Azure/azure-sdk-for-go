@@ -321,7 +321,7 @@ func (f FileServiceClient) listContent(path string, params url.Values, extraHead
 	}
 
 	if err = checkRespCode(resp.statusCode, []int{http.StatusOK}); err != nil {
-		_ = resp.body.Close()
+		resp.body.Close()
 		return nil, err
 	}
 
@@ -420,7 +420,7 @@ func (f FileServiceClient) GetFile(path string, fileRange *FileRange) (*FileStre
 	}
 
 	if err = checkRespCode(resp.statusCode, []int{http.StatusOK, http.StatusPartialContent}); err != nil {
-		defer resp.body.Close()
+		resp.body.Close()
 		return nil, err
 	}
 

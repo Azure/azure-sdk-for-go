@@ -234,12 +234,9 @@ func (c Client) GetFileService() FileServiceClient {
 	return FileServiceClient{c}
 }
 
-func (c Client) createAuthorizationHeader(canonicalizedString string) (string, error) {
-	signature, err := c.computeHmac256(canonicalizedString)
-	if err != nil {
-		return "", err
-	}
-	return fmt.Sprintf("%s %s:%s", "SharedKey", c.getCanonicalizedAccountName(), signature), nil
+func (c Client) createAuthorizationHeader(canonicalizedString string) string {
+	signature := c.computeHmac256(canonicalizedString)
+	return fmt.Sprintf("%s %s:%s", "SharedKey", c.getCanonicalizedAccountName(), signature)
 }
 
 func (c Client) getAuthorizationHeader(verb, url string, headers map[string]string) (string, error) {
@@ -249,7 +246,7 @@ func (c Client) getAuthorizationHeader(verb, url string, headers map[string]stri
 	}
 
 	canonicalizedString := c.buildCanonicalizedString(verb, headers, canonicalizedResource)
-	return c.createAuthorizationHeader(canonicalizedString)
+	return c.createAuthorizationHeader(canonicalizedString), nil
 }
 
 func (c Client) getStandardHeaders() map[string]string {
@@ -503,10 +500,7 @@ func (c Client) createSharedKeyLite(url string, headers map[string]string) (stri
 	}
 	strToSign := headers["x-ms-date"] + "\n" + can
 
-	hmac, err := c.computeHmac256(strToSign)
-	if err != nil {
-		return "", err
-	}
+	hmac := c.computeHmac256(strToSign)
 	return fmt.Sprintf("SharedKeyLite %s:%s", c.accountName, hmac), nil
 }
 

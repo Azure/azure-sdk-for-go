@@ -1475,10 +1475,7 @@ func (b BlobStorageClient) GetBlobSASURIWithSignedIPAndProtocol(container, name 
 		return "", err
 	}
 
-	sig, err := b.client.computeHmac256(stringToSign)
-	if err != nil {
-		return "", err
-	}
+	sig := b.client.computeHmac256(stringToSign)
 	sasParams := url.Values{
 		"sv":  {b.client.apiVersion},
 		"se":  {signedExpiry},

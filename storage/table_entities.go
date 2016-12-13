@@ -147,10 +147,7 @@ func (c *TableServiceClient) execTable(table AzureTable, entity TableEntity, spe
 
 	headers["Content-Length"] = fmt.Sprintf("%d", buf.Len())
 
-	var err error
-	var resp *odataResponse
-
-	resp, err = c.client.execTable(method, uri, headers, &buf)
+	resp, err := c.client.execTable(method, uri, headers, &buf)
 
 	if err != nil {
 		return 0, err
@@ -327,8 +324,12 @@ func deserializeEntity(retType reflect.Type, reader io.Reader) ([]TableEntity, e
 		}
 
 		// Reset PartitionKey and RowKey
-		tEntries[i].SetPartitionKey(pKey)
-		tEntries[i].SetRowKey(rKey)
+		if err := tEntries[i].SetPartitionKey(pKey); err != nil {
+			return nil, err
+		}
+		if err := tEntries[i].SetRowKey(rKey); err != nil {
+			return nil, err
+		}
 	}
 
 	return tEntries, nil

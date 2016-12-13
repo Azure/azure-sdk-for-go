@@ -56,7 +56,9 @@ func (c *TableServiceClient) QueryTables() ([]AzureTable, error) {
 	}
 
 	buf := new(bytes.Buffer)
-	buf.ReadFrom(resp.body)
+	if _, err := buf.ReadFrom(resp.body); err != nil {
+		return nil, err
+	}
 
 	var respArray queryTablesResponse
 	if err := json.Unmarshal(buf.Bytes(), &respArray); err != nil {

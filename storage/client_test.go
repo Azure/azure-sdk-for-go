@@ -154,6 +154,8 @@ func (s *StorageClientSuite) Test_buildCanonicalizedResourceTable(c *chk.C) {
 	type test struct{ url, expected string }
 	tests := []test{
 		{"https://foo.table.core.windows.net/mytable", "/foo/mytable"},
+		{"https://foo.table.core.windows.net/mytable?comp=acl", "/foo/mytable?comp=acl"},
+		{"https://foo.table.core.windows.net/mytable?comp=acl&timeout=10", "/foo/mytable?comp=acl"},
 		{"https://foo.table.core.windows.net/mytable(PartitionKey='pkey',RowKey='rowkey%3D')", "/foo/mytable(PartitionKey='pkey',RowKey='rowkey%3D')"},
 	}
 

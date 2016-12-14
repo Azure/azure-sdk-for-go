@@ -6,7 +6,6 @@ import (
 	"errors"
 	"fmt"
 	"io"
-	"io/ioutil"
 	"net/http"
 	"net/url"
 	"strconv"
@@ -310,8 +309,8 @@ type ContainerAccessOptions struct {
 	LeaseID         string
 }
 
-// AccessPolicyDetails are used for SETTING policies
-type AccessPolicyDetails struct {
+// ContainerAccessPolicyDetails are used for SETTING container policies
+type ContainerAccessPolicyDetails struct {
 	ID         string
 	StartTime  time.Time
 	ExpiryTime time.Time
@@ -323,31 +322,7 @@ type AccessPolicyDetails struct {
 // ContainerPermissions is used when setting permissions and Access Policies for containers.
 type ContainerPermissions struct {
 	AccessOptions ContainerAccessOptions
-	AccessPolicy  AccessPolicyDetails
-}
-
-// AccessPolicyDetailsXML has specifics about an access policy
-// annotated with XML details.
-type AccessPolicyDetailsXML struct {
-	StartTime  time.Time `xml:"Start"`
-	ExpiryTime time.Time `xml:"Expiry"`
-	Permission string    `xml:"Permission"`
-}
-
-// SignedIdentifier is a wrapper for a specific policy
-type SignedIdentifier struct {
-	ID           string                 `xml:"Id"`
-	AccessPolicy AccessPolicyDetailsXML `xml:"AccessPolicy"`
-}
-
-// SignedIdentifiers part of the response from GetPermissions call.
-type SignedIdentifiers struct {
-	SignedIdentifiers []SignedIdentifier `xml:"SignedIdentifier"`
-}
-
-// AccessPolicy is the response type from the GetPermissions call.
-type AccessPolicy struct {
-	SignedIdentifiersList SignedIdentifiers `xml:"SignedIdentifiers"`
+	AccessPolicy  ContainerAccessPolicyDetails
 }
 
 // ContainerAccessResponse is returned for the GetContainerPermissions function.
@@ -518,8 +493,13 @@ func (b BlobStorageClient) SetContainerPermissions(container string, containerPe
 		headers[leaseID] = containerPermissions.AccessOptions.LeaseID
 	}
 
+	var permissions = generateContainerPermissions(containerPermissions.AccessPolicy)
+
 	// generate the XML for the SharedAccessSignature if required.
-	accessPolicyXML, err := generateAccessPolicy(containerPermissions.AccessPolicy)
+	accessPolicyXML, err := generateAccessPolicy(containerPermissions.AccessPolicy.ID,
+		containerPermissions.AccessPolicy.StartTime,
+		containerPermissions.AccessPolicy.ExpiryTime,
+		permissions)
 	if err != nil {
 		return err
 	}
@@ -1528,7 +1508,7 @@ func blobSASStringToSign(signedVersion, canonicalizedResource, signedExpiry, sig
 	return "", errors.New("storage: not implemented SAS for versions earlier than 2013-08-15")
 }
 
-func generatePermissions(accessPolicy AccessPolicyDetails) (permissions string) {
+func generateContainerPermissions(accessPolicy ContainerAccessPolicyDetails) (permissions string) {
 	// generate the permissions string (rwd).
 	// still want the end user API to have bool flags.
 	permissions = ""
@@ -1546,42 +1526,4 @@ func generatePermissions(accessPolicy AccessPolicyDetails) (permissions string) 
 	}
 
 	return permissions
-}
-
-// convertAccessPolicyToXMLStructs converts between AccessPolicyDetails which is a struct better for API usage to the
-// AccessPolicy struct which will get converted to XML.
-func convertAccessPolicyToXMLStructs(accessPolicy AccessPolicyDetails) SignedIdentifiers {
-	return SignedIdentifiers{
-		SignedIdentifiers: []SignedIdentifier{
-			{
-				ID: accessPolicy.ID,
-				AccessPolicy: AccessPolicyDetailsXML{
-					StartTime:  accessPolicy.StartTime.UTC().Round(time.Second),
-					ExpiryTime: accessPolicy.ExpiryTime.UTC().Round(time.Second),
-					Permission: generatePermissions(accessPolicy),
-				},
-			},
-		},
-	}
-}
-
-// generateAccessPolicy generates the XML access policy used as the payload for SetContainerPermissions.
-func generateAccessPolicy(accessPolicy AccessPolicyDetails) (accessPolicyXML string, err error) {
-
-	if accessPolicy.ID != "" {
-		signedIdentifiers := convertAccessPolicyToXMLStructs(accessPolicy)
-		body, _, err := xmlMarshal(signedIdentifiers)
-		if err != nil {
-			return "", err
-		}
-
-		xmlByteArray, err := ioutil.ReadAll(body)
-		if err != nil {
-			return "", err
-		}
-		accessPolicyXML = string(xmlByteArray)
-		return accessPolicyXML, nil
-	}
-
-	return "", nil
 }

@@ -30,3 +30,6 @@ _testmain.go
 
 # ignore vendor/
 vendor/
+
+# IDEs
+.idea

@@ -425,6 +425,10 @@ func (f FileServiceClient) GetFile(path string, fileRange *FileRange) (*FileStre
 	}
 
 	props, err := getFileProps(resp.headers)
+	if err != nil {
+		return nil, err
+	}
+
 	md := getFileMDFromHeaders(resp.headers)
 	return &FileStream{Body: resp.body, Properties: props, Metadata: md}, nil
 }

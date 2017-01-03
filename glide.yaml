@@ -10,3 +10,7 @@ import:
   subpackages:
   - /pkcs12
 - package: gopkg.in/check.v1
+testImport:
+- package: github.com/GoASTScanner/gas
+  version: d4f9b88cbf6b9f190a2425120c9cecc466ec363b
+  

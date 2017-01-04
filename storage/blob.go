@@ -377,7 +377,7 @@ type BlockResponse struct {
 	Size int64  `xml:"Size"`
 }
 
-// GetPageRangesResponse contains the reponse fields from
+// GetPageRangesResponse contains the response fields from
 // Get Page Ranges call.
 //
 // See https://msdn.microsoft.com/en-us/library/azure/ee691973.aspx
@@ -704,7 +704,7 @@ func (b BlobStorageClient) getBlobRange(container, name, bytesRange string, extr
 	return resp, err
 }
 
-// leasePut is common PUT code for the various aquire/release/break etc functions.
+// leasePut is common PUT code for the various acquire/release/break etc functions.
 func (b BlobStorageClient) leaseCommonPut(container string, name string, headers map[string]string, expectedStatus int) (http.Header, error) {
 	params := url.Values{"comp": {"lease"}}
 	uri := b.client.getEndpoint(blobServiceName, pathForBlob(container, name), params)
@@ -1416,7 +1416,7 @@ func pathForBlob(container, name string) string {
 }
 
 // GetBlobSASURIWithSignedIPAndProtocol creates an URL to the specified blob which contains the Shared
-// Access Signature with specified permissions and expiration time. Also includes signedIPRange and allowed procotols.
+// Access Signature with specified permissions and expiration time. Also includes signedIPRange and allowed protocols.
 // If old API version is used but no signedIP is passed (ie empty string) then this should still work.
 // We only populate the signedIP when it non-empty.
 //

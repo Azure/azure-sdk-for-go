@@ -151,6 +151,7 @@ type QueueMetadataResponse struct {
 // See https://msdn.microsoft.com/en-us/library/azure/dd179348.aspx
 func (c QueueServiceClient) SetMetadata(name string, metadata map[string]string) error {
 	uri := c.client.getEndpoint(queueServiceName, pathForQueue(name), url.Values{"comp": []string{"metadata"}})
+	metadata = c.client.protectUserAgent(metadata)
 	headers := c.client.getStandardHeaders()
 	for k, v := range metadata {
 		headers[userDefinedMetadataHeaderPrefix+k] = v

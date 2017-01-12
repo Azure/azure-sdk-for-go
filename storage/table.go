@@ -48,6 +48,7 @@ func (c *TableServiceClient) getStandardHeaders() map[string]string {
 		"Accept":         "application/json;odata=nometadata",
 		"Accept-Charset": "UTF-8",
 		"Content-Type":   "application/json",
+		userAgentHeader:  c.client.userAgent,
 	}
 }
 

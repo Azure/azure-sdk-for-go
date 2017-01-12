@@ -140,11 +140,12 @@ func (s *StorageClientSuite) Test_getStandardHeaders(c *chk.C) {
 	c.Assert(err, chk.IsNil)
 
 	headers := cli.getStandardHeaders()
-	c.Assert(len(headers), chk.Equals, 2)
+	c.Assert(len(headers), chk.Equals, 3)
 	c.Assert(headers["x-ms-version"], chk.Equals, cli.apiVersion)
 	if _, ok := headers["x-ms-date"]; !ok {
 		c.Fatal("Missing date header")
 	}
+	c.Assert(headers[userAgentHeader], chk.Equals, cli.getDefaultUserAgent())
 }
 
 func (s *StorageClientSuite) Test_buildCanonicalizedResourceTable(c *chk.C) {
@@ -247,4 +248,64 @@ func (s *StorageClientSuite) Test_createAuthorizationHeader(c *chk.C) {
 	canonicalizedString := `foobarzoo`
 	expected := `SharedKey foo:h5U0ATVX6SpbFX1H6GNuxIMeXXCILLoIvhflPtuQZ30=`
 	c.Assert(cli.createAuthorizationHeader(canonicalizedString), chk.Equals, expected)
+}
+
+func (s *StorageClientSuite) Test_createServiceClients(c *chk.C) {
+	cli, err := NewBasicClient("foo", "YmFy")
+	c.Assert(err, chk.IsNil)
+
+	ua := cli.getDefaultUserAgent()
+
+	headers := cli.getStandardHeaders()
+	c.Assert(headers[userAgentHeader], chk.Equals, ua)
+	c.Assert(cli.userAgent, chk.Equals, ua)
+
+	b := cli.GetBlobService()
+	c.Assert(b.client.userAgent, chk.Equals, ua+" "+blobServiceName)
+	c.Assert(cli.userAgent, chk.Equals, ua)
+
+	t := cli.GetTableService()
+	c.Assert(t.client.userAgent, chk.Equals, ua+" "+tableServiceName)
+	c.Assert(cli.userAgent, chk.Equals, ua)
+
+	q := cli.GetQueueService()
+	c.Assert(q.client.userAgent, chk.Equals, ua+" "+queueServiceName)
+	c.Assert(cli.userAgent, chk.Equals, ua)
+
+	f := cli.GetFileService()
+	c.Assert(f.client.userAgent, chk.Equals, ua+" "+fileServiceName)
+	c.Assert(cli.userAgent, chk.Equals, ua)
+}
+
+func (s *StorageClientSuite) TestAddToUserAgent(c *chk.C) {
+	cli, err := NewBasicClient("foo", "YmFy")
+	c.Assert(err, chk.IsNil)
+
+	ua := cli.getDefaultUserAgent()
+
+	cli.AddToUserAgent("bar")
+	c.Assert(cli.userAgent, chk.Equals, ua+" bar")
+}
+
+func (s *StorageClientSuite) Test_protectUserAgent(c *chk.C) {
+	extraheaders := map[string]string{
+		"1":             "one",
+		"2":             "two",
+		"3":             "three",
+		userAgentHeader: "four",
+	}
+
+	cli, err := NewBasicClient("foo", "YmFy")
+	c.Assert(err, chk.IsNil)
+
+	ua := cli.getDefaultUserAgent()
+
+	got := cli.protectUserAgent(extraheaders)
+	c.Assert(cli.userAgent, chk.Equals, ua+" four")
+	c.Assert(got, chk.HasLen, 3)
+	c.Assert(got, chk.DeepEquals, map[string]string{
+		"1": "one",
+		"2": "two",
+		"3": "three",
+	})
 }

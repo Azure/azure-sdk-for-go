@@ -13,6 +13,7 @@ import (
 	"net/http"
 	"net/url"
 	"regexp"
+	"runtime"
 	"sort"
 	"strconv"
 	"strings"
@@ -43,6 +44,8 @@ const (
 	storageEmulatorBlob  = "127.0.0.1:10000"
 	storageEmulatorTable = "127.0.0.1:10002"
 	storageEmulatorQueue = "127.0.0.1:10001"
+
+	userAgentHeader = "User-Agent"
 )
 
 // Client is the object that needs to be constructed to perform
@@ -57,6 +60,7 @@ type Client struct {
 	useHTTPS    bool
 	baseURL     string
 	apiVersion  string
+	userAgent   string
 }
 
 type storageResponse struct {
@@ -155,13 +159,41 @@ func NewClient(accountName, accountKey, blobServiceBaseURL, apiVersion string, u
 		return c, fmt.Errorf("azure: malformed storage account key: %v", err)
 	}
 
-	return Client{
+	c = Client{
 		accountName: accountName,
 		accountKey:  key,
 		useHTTPS:    useHTTPS,
 		baseURL:     blobServiceBaseURL,
 		apiVersion:  apiVersion,
-	}, nil
+	}
+	c.userAgent = c.getDefaultUserAgent()
+	return c, nil
+}
+
+func (c Client) getDefaultUserAgent() string {
+	return fmt.Sprintf("Go/%s (%s-%s) Azure-SDK-for-Go/%s storage-dataplane/%s",
+		runtime.Version(),
+		runtime.GOARCH,
+		runtime.GOOS,
+		sdkVersion,
+		c.apiVersion,
+	)
+}
+
+// AddToUserAgent adds an extension to the current user agent
+func (c *Client) AddToUserAgent(extension string) {
+	c.userAgent = fmt.Sprintf("%s %s", c.userAgent, extension)
+}
+
+// protectUserAgent is used in funcs that include extraheaders as a parameter.
+// It prevents the User-Agent header to be overwritten, instead if it happens to
+// be present, it gets added to the current User-Agent. Use it before getStandardHeaders
+func (c *Client) protectUserAgent(extraheaders map[string]string) map[string]string {
+	if v, ok := extraheaders[userAgentHeader]; ok {
+		c.AddToUserAgent(v)
+		delete(extraheaders, userAgentHeader)
+	}
+	return extraheaders
 }
 
 func (c Client) getBaseURL(service string) string {
@@ -213,25 +245,33 @@ func (c Client) getEndpoint(service, path string, params url.Values) string {
 // GetBlobService returns a BlobStorageClient which can operate on the blob
 // service of the storage account.
 func (c Client) GetBlobService() BlobStorageClient {
-	return BlobStorageClient{c}
+	c.AddToUserAgent(blobServiceName)
+	b := BlobStorageClient{c}
+	return b
 }
 
 // GetQueueService returns a QueueServiceClient which can operate on the queue
 // service of the storage account.
 func (c Client) GetQueueService() QueueServiceClient {
-	return QueueServiceClient{c}
+	q := QueueServiceClient{c}
+	q.client.AddToUserAgent(queueServiceName)
+	return q
 }
 
 // GetTableService returns a TableServiceClient which can operate on the table
 // service of the storage account.
 func (c Client) GetTableService() TableServiceClient {
-	return TableServiceClient{c}
+	t := TableServiceClient{c}
+	t.client.AddToUserAgent(tableServiceName)
+	return t
 }
 
 // GetFileService returns a FileServiceClient which can operate on the file
 // service of the storage account.
 func (c Client) GetFileService() FileServiceClient {
-	return FileServiceClient{c}
+	f := FileServiceClient{c}
+	f.client.AddToUserAgent(fileServiceName)
+	return f
 }
 
 func (c Client) createAuthorizationHeader(canonicalizedString string) string {
@@ -251,8 +291,9 @@ func (c Client) getAuthorizationHeader(verb, url string, headers map[string]stri
 
 func (c Client) getStandardHeaders() map[string]string {
 	return map[string]string{
-		"x-ms-version": c.apiVersion,
-		"x-ms-date":    currentTimeRfc1123Formatted(),
+		userAgentHeader: c.userAgent,
+		"x-ms-version":  c.apiVersion,
+		"x-ms-date":     currentTimeRfc1123Formatted(),
 	}
 }
 

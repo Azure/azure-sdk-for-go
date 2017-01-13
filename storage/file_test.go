@@ -161,7 +161,7 @@ func (s *StorageFileSuite) TestFileRanges(c *chk.C) {
 	c.Assert(file.ClearRange(putRanges[2]), chk.IsNil)
 	ranges, err = file.ListRanges(nil)
 	c.Assert(err, chk.IsNil)
-	c.Assert(len(ranges.FileRanges), chk.Equals, 2)
+	c.Assert(ranges.FileRanges, chk.HasLen, 2)
 	c.Assert(ranges.FileRanges[0], chk.DeepEquals, putRanges[1])
 	c.Assert(ranges.FileRanges[1], chk.DeepEquals, putRanges[3])
 }

@@ -170,7 +170,7 @@ func (f FileServiceClient) listContent(path string, params url.Values, extraHead
 	return resp, nil
 }
 
-// returns true if the specified directory or share exists
+// returns true if the specified resource exists
 func (f FileServiceClient) resourceExists(path string, res resourceType) (bool, http.Header, error) {
 	if err := f.checkForStorageEmulator(); err != nil {
 		return false, nil, err

@@ -7,7 +7,7 @@ import (
 	"strconv"
 )
 
-// Share represents a Azure file share.
+// Share represents an Azure file share.
 type Share struct {
 	fsc        *FileServiceClient
 	Name       string          `xml:"Name"`

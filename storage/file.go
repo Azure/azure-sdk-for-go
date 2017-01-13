@@ -325,12 +325,11 @@ func (f *File) updateProperties(header http.Header) {
 		f.Properties.Length = size
 	}
 
+	f.updateEtagAndLastModified(header)
 	f.Properties.CacheControl = header.Get("Cache-Control")
 	f.Properties.Disposition = header.Get("Content-Disposition")
 	f.Properties.Encoding = header.Get("Content-Encoding")
-	f.Properties.Etag = header.Get("ETag")
 	f.Properties.Language = header.Get("Content-Language")
-	f.Properties.LastModified = header.Get("Last-Modified")
 	f.Properties.MD5 = header.Get("Content-MD5")
 	f.Properties.Type = header.Get("Content-Type")
 }

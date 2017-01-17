@@ -171,7 +171,7 @@ func NewClient(accountName, accountKey, blobServiceBaseURL, apiVersion string, u
 }
 
 func (c Client) getDefaultUserAgent() string {
-	return fmt.Sprintf("Go/%s (%s-%s) Azure-SDK-for-Go/%s storage-dataplane/%s",
+	return fmt.Sprintf("Go/%s (%s-%s) Azure-SDK-For-Go/%s storage-dataplane/%s",
 		runtime.Version(),
 		runtime.GOARCH,
 		runtime.GOOS,

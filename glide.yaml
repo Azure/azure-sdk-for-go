@@ -1,6 +1,7 @@
 package: github.com/Azure/azure-sdk-for-go
 import:
 - package: github.com/Azure/go-autorest
+  version: ~7.2.2
   subpackages:
   - /autorest
   - autorest/azure

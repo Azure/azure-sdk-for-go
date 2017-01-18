@@ -283,8 +283,12 @@ func (s *StorageClientSuite) TestAddToUserAgent(c *chk.C) {
 
 	ua := cli.getDefaultUserAgent()
 
-	cli.AddToUserAgent("bar")
+	err = cli.AddToUserAgent("bar")
+	c.Assert(err, chk.IsNil)
 	c.Assert(cli.userAgent, chk.Equals, ua+" bar")
+
+	err = cli.AddToUserAgent("")
+	c.Assert(err, chk.NotNil)
 }
 
 func (s *StorageClientSuite) Test_protectUserAgent(c *chk.C) {

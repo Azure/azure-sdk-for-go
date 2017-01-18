@@ -181,8 +181,12 @@ func (c Client) getDefaultUserAgent() string {
 }
 
 // AddToUserAgent adds an extension to the current user agent
-func (c *Client) AddToUserAgent(extension string) {
-	c.userAgent = fmt.Sprintf("%s %s", c.userAgent, extension)
+func (c *Client) AddToUserAgent(extension string) error {
+	if extension != "" {
+		c.userAgent = fmt.Sprintf("%s %s", c.userAgent, extension)
+		return nil
+	}
+	return fmt.Errorf("Extension was empty, User Agent stayed as %s", c.userAgent)
 }
 
 // protectUserAgent is used in funcs that include extraheaders as a parameter.
@@ -245,8 +249,8 @@ func (c Client) getEndpoint(service, path string, params url.Values) string {
 // GetBlobService returns a BlobStorageClient which can operate on the blob
 // service of the storage account.
 func (c Client) GetBlobService() BlobStorageClient {
-	c.AddToUserAgent(blobServiceName)
 	b := BlobStorageClient{c}
+	b.client.AddToUserAgent(blobServiceName)
 	return b
 }
 

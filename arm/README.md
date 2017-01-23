@@ -152,7 +152,7 @@ Complete source code for this example can be found in [check.go](/arm/examples/c
 2. Get your Azure Subscription ID using either of the methods mentioned below:
   - Get it through the [portal](portal.azure.com) in the subscriptions section.
   - Get it using the [Azure CLI](https://azure.microsoft.com/documentation/articles/xplat-cli-install/) with command `azure account show`.
-  - Get it using [Azure Powershell](https://azure.microsoft.com/documentation/articles/powershell-install-configure/) whit cmdlet `Get-AzureRmSubscription`.
+  - Get it using [Azure Powershell](https://azure.microsoft.com/documentation/articles/powershell-install-configure/) with cmdlet `Get-AzureRmSubscription`.
 3. Set environment variables `AZURE_TENANT_ID = <TENANT_ID>`, `AZURE_CLIENT_ID = <CLIENT_ID>`, `AZURE_CLIENT_SECRET = <CLIENT_SECRET>` and `AZURE_SUBSCRIPTION_ID = <SUBSCRIPTION_ID>`.
 4. Run the sample with commands:
 
@@ -211,7 +211,7 @@ More details, including deleting the created account, are in the example code fi
 2. Get your Azure Subscription ID using either of the methods mentioned below:
   - Get it through the [portal](portal.azure.com) in the subscriptions section.
   - Get it using the [Azure CLI](https://azure.microsoft.com/documentation/articles/xplat-cli-install/) with command `azure account show`.
-  - Get it using [Azure Powershell](https://azure.microsoft.com/documentation/articles/powershell-install-configure/) whit cmdlet `Get-AzureRmSubscription`.
+  - Get it using [Azure Powershell](https://azure.microsoft.com/documentation/articles/powershell-install-configure/) with cmdlet `Get-AzureRmSubscription`.
 3. Set environment variables `AZURE_TENANT_ID = <TENANT_ID>`, `AZURE_CLIENT_ID = <CLIENT_ID>`, `AZURE_CLIENT_SECRET = <CLIENT_SECRET>` and `AZURE_SUBSCRIPTION_ID = <SUBSCRIPTION_ID>`.
 4. Create a resource group and add its name in the first line of the main function.
 5. Run the example with commands:

@@ -73,7 +73,11 @@ authorizes requests.
 Azure Resource Manager requests can be authorized through [OAuth2](http://oauth.net). While OAuth2 provides many advantages over
 certificates, programmatic use, such as for scripts on headless servers, requires understanding and
 creating one or more *Service Principals.*
-There are several good blog posts, such as
+
+The Azure-SDK-for-Node has an excellent tutorial that includes instructions for how to create Service Principals in the Portal and using the Azure CLI, both of which are applicable to Go.
+Find that documentation here: [Authenticaion, Azure/azure-sdk-for-node](https://github.com/Azure/azure-sdk-for-node/blob/master/Documentation/Authentication.md)
+
+In addition, there are several good blog posts, such as
 [Automating Azure on your CI server using a Service Principal](http://blog.davidebbo.com/2014/12/azure-service-principal.html)
 and
 [Microsoft Azure REST API + OAuth 2.0](https://ahmetalpbalkan.com/blog/azure-rest-api-with-oauth2/),

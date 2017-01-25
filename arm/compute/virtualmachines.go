@@ -149,11 +149,7 @@ func (client VirtualMachinesClient) CreateOrUpdate(resourceGroupName string, vmN
 							{Target: "parameters.VirtualMachineProperties.StorageProfile.OsDisk.Vhd", Name: validation.Null, Rule: true, Chain: nil},
 						}},
 					}},
-					{Target: "parameters.VirtualMachineProperties.ProvisioningState", Name: validation.ReadOnly, Rule: true, Chain: nil},
-					{Target: "parameters.VirtualMachineProperties.InstanceView", Name: validation.ReadOnly, Rule: true, Chain: nil},
-					{Target: "parameters.VirtualMachineProperties.VMID", Name: validation.ReadOnly, Rule: true, Chain: nil},
-				}},
-				{Target: "parameters.Resources", Name: validation.ReadOnly, Rule: true, Chain: nil}}}}); err != nil {
+				}}}}}); err != nil {
 		return result, validation.NewErrorWithValidationError(err, "compute.VirtualMachinesClient", "CreateOrUpdate")
 	}
 

@@ -21,7 +21,6 @@ package web
 import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/Azure/go-autorest/autorest/validation"
 	"net/http"
 )
 
@@ -56,18 +55,6 @@ func NewServerFarmsClientWithBaseURI(baseURI string, subscriptionID string) Serv
 // Plan serverFarmEnvelope is details of App Service Plan allowPendingState
 // is oBSOLETE: If true, allow pending state for App Service Plan
 func (client ServerFarmsClient) CreateOrUpdateServerFarm(resourceGroupName string, name string, serverFarmEnvelope ServerFarmWithRichSku, allowPendingState *bool, cancel <-chan struct{}) (result autorest.Response, err error) {
-	if err := validation.Validate([]validation.Validation{
-		{TargetValue: serverFarmEnvelope,
-			Constraints: []validation.Constraint{{Target: "serverFarmEnvelope.ServerFarmWithRichSkuProperties", Name: validation.Null, Rule: false,
-				Chain: []validation.Constraint{{Target: "serverFarmEnvelope.ServerFarmWithRichSkuProperties.Status", Name: validation.ReadOnly, Rule: true, Chain: nil},
-					{Target: "serverFarmEnvelope.ServerFarmWithRichSkuProperties.Subscription", Name: validation.ReadOnly, Rule: true, Chain: nil},
-					{Target: "serverFarmEnvelope.ServerFarmWithRichSkuProperties.GeoRegion", Name: validation.ReadOnly, Rule: true, Chain: nil},
-					{Target: "serverFarmEnvelope.ServerFarmWithRichSkuProperties.NumberOfSites", Name: validation.ReadOnly, Rule: true, Chain: nil},
-					{Target: "serverFarmEnvelope.ServerFarmWithRichSkuProperties.ResourceGroup", Name: validation.ReadOnly, Rule: true, Chain: nil},
-				}}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "web.ServerFarmsClient", "CreateOrUpdateServerFarm")
-	}
-
 	req, err := client.CreateOrUpdateServerFarmPreparer(resourceGroupName, name, serverFarmEnvelope, allowPendingState, cancel)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web.ServerFarmsClient", "CreateOrUpdateServerFarm", nil, "Failure preparing request")

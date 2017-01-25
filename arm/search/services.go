@@ -150,9 +150,6 @@ func (client ServicesClient) CreateOrUpdate(resourceGroupName string, searchServ
 						Chain: []validation.Constraint{{Target: "service.ServiceProperties.PartitionCount", Name: validation.InclusiveMaximum, Rule: 12, Chain: nil},
 							{Target: "service.ServiceProperties.PartitionCount", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil},
 						}},
-					{Target: "service.ServiceProperties.Status", Name: validation.ReadOnly, Rule: true, Chain: nil},
-					{Target: "service.ServiceProperties.StatusDetails", Name: validation.ReadOnly, Rule: true, Chain: nil},
-					{Target: "service.ServiceProperties.ProvisioningState", Name: validation.ReadOnly, Rule: true, Chain: nil},
 				}},
 				{Target: "service.Sku", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
 		return result, validation.NewErrorWithValidationError(err, "search.ServicesClient", "CreateOrUpdate")

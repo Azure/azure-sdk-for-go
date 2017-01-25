@@ -63,9 +63,7 @@ func (client ContainerServicesClient) CreateOrUpdate(resourceGroupName string, c
 							{Target: "parameters.Properties.ServicePrincipalProfile.Secret", Name: validation.Null, Rule: true, Chain: nil},
 						}},
 					{Target: "parameters.Properties.MasterProfile", Name: validation.Null, Rule: true,
-						Chain: []validation.Constraint{{Target: "parameters.Properties.MasterProfile.DNSPrefix", Name: validation.Null, Rule: true, Chain: nil},
-							{Target: "parameters.Properties.MasterProfile.Fqdn", Name: validation.ReadOnly, Rule: true, Chain: nil},
-						}},
+						Chain: []validation.Constraint{{Target: "parameters.Properties.MasterProfile.DNSPrefix", Name: validation.Null, Rule: true, Chain: nil}}},
 					{Target: "parameters.Properties.AgentPoolProfiles", Name: validation.Null, Rule: true, Chain: nil},
 					{Target: "parameters.Properties.WindowsProfile", Name: validation.Null, Rule: false,
 						Chain: []validation.Constraint{{Target: "parameters.Properties.WindowsProfile.AdminUsername", Name: validation.Null, Rule: true,
@@ -81,11 +79,8 @@ func (client ContainerServicesClient) CreateOrUpdate(resourceGroupName string, c
 						}},
 					{Target: "parameters.Properties.DiagnosticsProfile", Name: validation.Null, Rule: false,
 						Chain: []validation.Constraint{{Target: "parameters.Properties.DiagnosticsProfile.VMDiagnostics", Name: validation.Null, Rule: true,
-							Chain: []validation.Constraint{{Target: "parameters.Properties.DiagnosticsProfile.VMDiagnostics.Enabled", Name: validation.Null, Rule: true, Chain: nil},
-								{Target: "parameters.Properties.DiagnosticsProfile.VMDiagnostics.StorageURI", Name: validation.ReadOnly, Rule: true, Chain: nil},
-							}},
+							Chain: []validation.Constraint{{Target: "parameters.Properties.DiagnosticsProfile.VMDiagnostics.Enabled", Name: validation.Null, Rule: true, Chain: nil}}},
 						}},
-					{Target: "parameters.Properties.ProvisioningState", Name: validation.ReadOnly, Rule: true, Chain: nil},
 				}}}}}); err != nil {
 		return result, validation.NewErrorWithValidationError(err, "containerservice.ContainerServicesClient", "CreateOrUpdate")
 	}

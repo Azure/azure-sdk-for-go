@@ -196,11 +196,7 @@ func (client Client) CreateOrUpdate(resourceGroupName string, resourceProviderNa
 				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}},
 		{TargetValue: parameters,
 			Constraints: []validation.Constraint{{Target: "parameters.Kind", Name: validation.Null, Rule: false,
-				Chain: []validation.Constraint{{Target: "parameters.Kind", Name: validation.Pattern, Rule: `^[-\w\._,\(\)]+$`, Chain: nil}}},
-				{Target: "parameters.Identity", Name: validation.Null, Rule: false,
-					Chain: []validation.Constraint{{Target: "parameters.Identity.PrincipalID", Name: validation.ReadOnly, Rule: true, Chain: nil},
-						{Target: "parameters.Identity.TenantID", Name: validation.ReadOnly, Rule: true, Chain: nil},
-					}}}}}); err != nil {
+				Chain: []validation.Constraint{{Target: "parameters.Kind", Name: validation.Pattern, Rule: `^[-\w\._,\(\)]+$`, Chain: nil}}}}}}); err != nil {
 		return result, validation.NewErrorWithValidationError(err, "resources.Client", "CreateOrUpdate")
 	}
 
@@ -281,11 +277,7 @@ func (client Client) CreateOrUpdateByID(resourceID string, parameters GenericRes
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: parameters,
 			Constraints: []validation.Constraint{{Target: "parameters.Kind", Name: validation.Null, Rule: false,
-				Chain: []validation.Constraint{{Target: "parameters.Kind", Name: validation.Pattern, Rule: `^[-\w\._,\(\)]+$`, Chain: nil}}},
-				{Target: "parameters.Identity", Name: validation.Null, Rule: false,
-					Chain: []validation.Constraint{{Target: "parameters.Identity.PrincipalID", Name: validation.ReadOnly, Rule: true, Chain: nil},
-						{Target: "parameters.Identity.TenantID", Name: validation.ReadOnly, Rule: true, Chain: nil},
-					}}}}}); err != nil {
+				Chain: []validation.Constraint{{Target: "parameters.Kind", Name: validation.Pattern, Rule: `^[-\w\._,\(\)]+$`, Chain: nil}}}}}}); err != nil {
 		return result, validation.NewErrorWithValidationError(err, "resources.Client", "CreateOrUpdateByID")
 	}
 

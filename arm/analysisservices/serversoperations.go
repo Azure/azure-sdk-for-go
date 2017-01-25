@@ -65,12 +65,7 @@ func (client ServersOperationsClient) Create(resourceGroupName string, serverNam
 		{TargetValue: serverName,
 			Constraints: []validation.Constraint{{Target: "serverName", Name: validation.MaxLength, Rule: 63, Chain: nil},
 				{Target: "serverName", Name: validation.MinLength, Rule: 3, Chain: nil},
-				{Target: "serverName", Name: validation.Pattern, Rule: `^[a-z][a-z0-9]*$`, Chain: nil}}},
-		{TargetValue: serverParameters,
-			Constraints: []validation.Constraint{{Target: "serverParameters.ServerProperties", Name: validation.Null, Rule: false,
-				Chain: []validation.Constraint{{Target: "serverParameters.ServerProperties.ProvisioningState", Name: validation.ReadOnly, Rule: true, Chain: nil},
-					{Target: "serverParameters.ServerProperties.ServerFullName", Name: validation.ReadOnly, Rule: true, Chain: nil},
-				}}}}}); err != nil {
+				{Target: "serverName", Name: validation.Pattern, Rule: `^[a-z][a-z0-9]*$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewErrorWithValidationError(err, "analysisservices.ServersOperationsClient", "Create")
 	}
 

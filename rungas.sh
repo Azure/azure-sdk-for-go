@@ -5,10 +5,10 @@ if [ "master" != $GITBRANCH ]; then
 fi
 REALEXITSTATUS=0
 go get -u github.com/HewlettPackard/gas
-gas -skip=*/arm/*/models.go -skip=*/management/examples/*.go -skip=*vendor* -skip=*/Gododir/* ./...
+gas -skip=*/arm/*/models.go -skip=*/management/examples/*.go -skip=*vendor* -skip=*/Gododir/* ./... | tee /dev/stderr
 REALEXITSTATUS=$(($REALEXITSTATUS+$?))
-gas -exclude=G101 ./arm/... ./management/examples/...
+gas -exclude=G101 ./arm/... ./management/examples/... | tee /dev/stderr
 REALEXITSTATUS=$(($REALEXITSTATUS+$?))
-gas -exclude=G204 ./Gododir/...
+gas -exclude=G204 ./Gododir/... | tee /dev/stderr
 REALEXITSTATUS=$(($REALEXITSTATUS+$?))
 exit $REALEXITSTATUS

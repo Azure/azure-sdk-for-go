@@ -52,7 +52,7 @@ func (a *AuthorizationSuite) Test_getSharedKey(c *chk.C) {
 	c.Assert(key, chk.Equals, "SharedKeyLite mindgotest:+32DTgsPUgXPo/O7RYaTs0DllA6FTXMj3uK4Qst8y/E=")
 }
 
-func (s *StorageClientSuite) Test_buildCanonicalizedResource(c *chk.C) {
+func (a *AuthorizationSuite) Test_buildCanonicalizedResource(c *chk.C) {
 	cli, err := NewBasicClient("foo", "YmFy")
 	c.Assert(err, chk.IsNil)
 
@@ -149,7 +149,7 @@ func (a *AuthorizationSuite) Test_buildCanonicalizedString(c *chk.C) {
 	}
 }
 
-func (s *StorageClientSuite) Test_buildCanonicalizedHeader(c *chk.C) {
+func (a *AuthorizationSuite) Test_buildCanonicalizedHeader(c *chk.C) {
 	cli, err := NewBasicClient("foo", "YmFy")
 	c.Assert(err, chk.IsNil)
 
@@ -180,7 +180,7 @@ func (s *StorageClientSuite) Test_buildCanonicalizedHeader(c *chk.C) {
 	}
 }
 
-func (s *StorageClientSuite) Test_createAuthorizationHeader(c *chk.C) {
+func (a *AuthorizationSuite) Test_createAuthorizationHeader(c *chk.C) {
 	cli, err := NewBasicClient("foo", base64.StdEncoding.EncodeToString([]byte("bar")))
 	c.Assert(err, chk.IsNil)
 

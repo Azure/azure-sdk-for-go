@@ -23,7 +23,7 @@ import (
     "github.com/Azure/go-autorest/autorest/date"
     "github.com/Azure/go-autorest/autorest/to"
     "net/http"
-)    
+)
 
 // HostnameType enumerates the values for hostname type.
 type HostnameType string
@@ -83,50 +83,50 @@ const (
 // AdditionalRegion is description of an additional API Management resource
 // location.
 type AdditionalRegion struct {
-    Location         *string                      `json:"location,omitempty"`
-    SkuType          SkuType                      `json:"skuType,omitempty"`
-    SkuUnitCount     *int32                       `json:"skuUnitCount,omitempty"`
-    StaticIPs        *[]string                    `json:"staticIPs,omitempty"`
+    Location *string `json:"location,omitempty"`
+    SkuType SkuType `json:"skuType,omitempty"`
+    SkuUnitCount *int32 `json:"skuUnitCount,omitempty"`
+    StaticIPs *[]string `json:"staticIPs,omitempty"`
     Vpnconfiguration *VirtualNetworkConfiguration `json:"vpnconfiguration,omitempty"`
 }
 
 // CertificateInformation is sSL certificate information.
 type CertificateInformation struct {
     autorest.Response `json:"-"`
-    Expiry            *date.Time `json:"expiry,omitempty"`
-    Thumbprint        *string    `json:"thumbprint,omitempty"`
-    Subject           *string    `json:"subject,omitempty"`
+    Expiry *date.Time `json:"expiry,omitempty"`
+    Thumbprint *string `json:"thumbprint,omitempty"`
+    Subject *string `json:"subject,omitempty"`
 }
 
 // ErrorResponse is error Response.
 type ErrorResponse struct {
     autorest.Response `json:"-"`
-    Code              *string `json:"code,omitempty"`
-    Message           *string `json:"message,omitempty"`
+    Code *string `json:"code,omitempty"`
+    Message *string `json:"message,omitempty"`
 }
 
 // HostnameConfiguration is custom hostname configuration.
 type HostnameConfiguration struct {
     Type HostnameType `json:"type,omitempty"`
-    Hostname          *string                 `json:"hostname,omitempty"`
-    Certificate       *CertificateInformation `json:"certificate,omitempty"`
+    Hostname *string `json:"hostname,omitempty"`
+    Certificate *CertificateInformation `json:"certificate,omitempty"`
 }
 
 // ServiceBackupRestoreParameters is parameters supplied to the Backup/Restore
 // of an API Management service operation.
 type ServiceBackupRestoreParameters struct {
     StorageAccount *string `json:"storageAccount,omitempty"`
-    AccessKey      *string `json:"accessKey,omitempty"`
-    ContainerName  *string `json:"containerName,omitempty"`
-    BackupName     *string `json:"backupName,omitempty"`
+    AccessKey *string `json:"accessKey,omitempty"`
+    ContainerName *string `json:"containerName,omitempty"`
+    BackupName *string `json:"backupName,omitempty"`
 }
 
 // ServiceBaseParameters is parameters supplied to the Update API Management
 // service operation.
 type ServiceBaseParameters struct {
-    Tags       *map[string]*string   `json:"tags,omitempty"`
-    Properties *ServiceProperties    `json:"properties,omitempty"`
-    Sku        *ServiceSkuProperties `json:"sku,omitempty"`
+    Tags *map[string]*string `json:"tags,omitempty"`
+    *ServiceProperties `json:"properties,omitempty"`
+    Sku *ServiceSkuProperties `json:"sku,omitempty"`
 }
 
 // ServiceCheckNameAvailabilityParameters is parameters supplied to the
@@ -145,8 +145,8 @@ type ServiceGetSsoTokenResult struct {
 // operation.
 type ServiceListResult struct {
     autorest.Response `json:"-"`
-    Value    *[]ServiceResource `json:"value,omitempty"`
-    NextLink *string            `json:"nextLink,omitempty"`
+    Value *[]ServiceResource `json:"value,omitempty"`
+    NextLink *string `json:"nextLink,omitempty"`
 }
 
 // ServiceListResultPreparer prepares a request to retrieve the next set of results. It returns
@@ -164,76 +164,76 @@ func (client ServiceListResult) ServiceListResultPreparer() (*http.Request, erro
 // ServiceManageDeploymentsParameters is parameters supplied to the
 // ManageDeployments operation.
 type ServiceManageDeploymentsParameters struct {
-    Location            *string                      `json:"location,omitempty"`
-    SkuType             SkuType                      `json:"skuType,omitempty"`
-    SkuUnitCount        *int32                       `json:"skuUnitCount,omitempty"`
-    AdditionalLocations *[]AdditionalRegion          `json:"additionalLocations,omitempty"`
-    VpnConfiguration    *VirtualNetworkConfiguration `json:"vpnConfiguration,omitempty"`
-    VpnType             VirtualNetworkType           `json:"vpnType,omitempty"`
+    Location *string `json:"location,omitempty"`
+    SkuType SkuType `json:"skuType,omitempty"`
+    SkuUnitCount *int32 `json:"skuUnitCount,omitempty"`
+    AdditionalLocations *[]AdditionalRegion `json:"additionalLocations,omitempty"`
+    VpnConfiguration *VirtualNetworkConfiguration `json:"vpnConfiguration,omitempty"`
+    VpnType VirtualNetworkType `json:"vpnType,omitempty"`
 }
 
 // ServiceNameAvailabilityResult is response of the CheckNameAvailability
 // operation.
 type ServiceNameAvailabilityResult struct {
     autorest.Response `json:"-"`
-    NameAvailable *bool                  `json:"nameAvailable,omitempty"`
-    Message       *string                `json:"message,omitempty"`
-    Reason        NameAvailabilityReason `json:"reason,omitempty"`
+    NameAvailable *bool `json:"nameAvailable,omitempty"`
+    Message *string `json:"message,omitempty"`
+    Reason NameAvailabilityReason `json:"reason,omitempty"`
 }
 
 // ServiceProperties is properties of an API Management service resource
 // description.
 type ServiceProperties struct {
-    PublisherEmail          *string                      `json:"publisherEmail,omitempty"`
-    PublisherName           *string                      `json:"publisherName,omitempty"`
-    ProvisioningState       *string                      `json:"provisioningState,omitempty"`
-    TargetProvisioningState *string                      `json:"targetProvisioningState,omitempty"`
-    CreatedAtUtc            *date.Time                   `json:"createdAtUtc,omitempty"`
-    RuntimeURL              *string                      `json:"runtimeUrl,omitempty"`
-    PortalURL               *string                      `json:"portalUrl,omitempty"`
-    ManagementAPIURL        *string                      `json:"managementApiUrl,omitempty"`
-    ScmURL                  *string                      `json:"scmUrl,omitempty"`
-    AddresserEmail          *string                      `json:"addresserEmail,omitempty"`
-    HostnameConfigurations  *[]HostnameConfiguration     `json:"hostnameConfigurations,omitempty"`
-    StaticIPs               *[]string                    `json:"staticIPs,omitempty"`
-    Vpnconfiguration        *VirtualNetworkConfiguration `json:"vpnconfiguration,omitempty"`
-    AdditionalLocations     *[]AdditionalRegion          `json:"additionalLocations,omitempty"`
-    CustomProperties        *map[string]*string          `json:"customProperties,omitempty"`
-    VpnType                 VirtualNetworkType           `json:"vpnType,omitempty"`
+    PublisherEmail *string `json:"publisherEmail,omitempty"`
+    PublisherName *string `json:"publisherName,omitempty"`
+    ProvisioningState *string `json:"provisioningState,omitempty"`
+    TargetProvisioningState *string `json:"targetProvisioningState,omitempty"`
+    CreatedAtUtc *date.Time `json:"createdAtUtc,omitempty"`
+    RuntimeURL *string `json:"runtimeUrl,omitempty"`
+    PortalURL *string `json:"portalUrl,omitempty"`
+    ManagementAPIURL *string `json:"managementApiUrl,omitempty"`
+    ScmURL *string `json:"scmUrl,omitempty"`
+    AddresserEmail *string `json:"addresserEmail,omitempty"`
+    HostnameConfigurations *[]HostnameConfiguration `json:"hostnameConfigurations,omitempty"`
+    StaticIPs *[]string `json:"staticIPs,omitempty"`
+    Vpnconfiguration *VirtualNetworkConfiguration `json:"vpnconfiguration,omitempty"`
+    AdditionalLocations *[]AdditionalRegion `json:"additionalLocations,omitempty"`
+    CustomProperties *map[string]*string `json:"customProperties,omitempty"`
+    VpnType VirtualNetworkType `json:"vpnType,omitempty"`
 }
 
 // ServiceResource is description of an API Management service resource.
 type ServiceResource struct {
     autorest.Response `json:"-"`
-    Tags       *map[string]*string   `json:"tags,omitempty"`
-    Properties *ServiceProperties    `json:"properties,omitempty"`
-    Sku        *ServiceSkuProperties `json:"sku,omitempty"`
-    ID         *string               `json:"id,omitempty"`
-    Location   *string               `json:"location,omitempty"`
-    Name       *string               `json:"name,omitempty"`
-    Type       *string               `json:"type,omitempty"`
-    Etag       *string               `json:"etag,omitempty"`
+    Tags *map[string]*string `json:"tags,omitempty"`
+    *ServiceProperties `json:"properties,omitempty"`
+    Sku *ServiceSkuProperties `json:"sku,omitempty"`
+    ID *string `json:"id,omitempty"`
+    Location *string `json:"location,omitempty"`
+    Name *string `json:"name,omitempty"`
+    Type *string `json:"type,omitempty"`
+    Etag *string `json:"etag,omitempty"`
 }
 
 // ServiceSkuProperties is aPI Management service resource SKU properties.
 type ServiceSkuProperties struct {
-    Name     SkuType `json:"name,omitempty"`
-    Capacity *int32  `json:"capacity,omitempty"`
+    Name SkuType `json:"name,omitempty"`
+    Capacity *int32 `json:"capacity,omitempty"`
 }
 
-// ServiceUpdateHostnameParameters is parameters supplied to the
-// UpdateHostname operation.
+// ServiceUpdateHostnameParameters is parameters supplied to the UpdateHostname
+// operation.
 type ServiceUpdateHostnameParameters struct {
     Update *[]HostnameConfiguration `json:"update,omitempty"`
-    Delete *[]HostnameType          `json:"delete,omitempty"`
+    Delete *[]HostnameType `json:"delete,omitempty"`
 }
 
 // ServiceUploadCertificateParameters is parameters supplied to the Upload SSL
 // certificate for an API Management service operation.
 type ServiceUploadCertificateParameters struct {
-    Type                HostnameType `json:"type,omitempty"`
-    Certificate         *string      `json:"certificate,omitempty"`
-    CertificatePassword *string      `json:"certificate_password,omitempty"`
+    Type HostnameType `json:"type,omitempty"`
+    Certificate *string `json:"certificate,omitempty"`
+    CertificatePassword *string `json:"certificate_password,omitempty"`
 }
 
 // SetObject is
@@ -245,9 +245,9 @@ type SetObject struct {
 // VirtualNetworkConfiguration is configuration of a virtual network to which
 // API Management service is deployed.
 type VirtualNetworkConfiguration struct {
-    Vnetid           *string `json:"vnetid,omitempty"`
-    Subnetname       *string `json:"subnetname,omitempty"`
+    Vnetid *string `json:"vnetid,omitempty"`
+    Subnetname *string `json:"subnetname,omitempty"`
     SubnetResourceID *string `json:"subnetResourceId,omitempty"`
-    Location         *string `json:"location,omitempty"`
+    Location *string `json:"location,omitempty"`
 }
 

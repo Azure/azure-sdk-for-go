@@ -1,7 +1,3 @@
-// Package apimanagement implements the Azure ARM Apimanagement service API
-// version 2016-07-07.
-// 
-// Azure API Management client.
 package apimanagement
 
 // Copyright (c) Microsoft and contributors.  All rights reserved.
@@ -23,37 +19,37 @@ package apimanagement
 // regenerated.
 
 import (
-        "github.com/Azure/go-autorest/autorest"
+    "github.com/Azure/go-autorest/autorest"
 )
 
 const (
-        // APIVersion is the version of the Apimanagement
-        APIVersion = "2016-07-07"
+    // APIVersion is the version of the Apimanagement
+    APIVersion = "2016-07-07"
 
-        // DefaultBaseURI is the default URI used for the service Apimanagement
-        DefaultBaseURI = "https://management.azure.com"
+    // DefaultBaseURI is the default URI used for the service Apimanagement
+    DefaultBaseURI = "https://management.azure.com"
 )
 
 // ManagementClient is the base client for Apimanagement.
 type ManagementClient struct {
-        autorest.Client
-        BaseURI        string
-        APIVersion     string
-        SubscriptionID string
+    autorest.Client
+    BaseURI string
+    APIVersion string
+    SubscriptionID string
 }
 
 // New creates an instance of the ManagementClient client.
 func New(subscriptionID string)ManagementClient {
-        return NewWithBaseURI(DefaultBaseURI, subscriptionID)
+    return NewWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewWithBaseURI creates an instance of the ManagementClient client.
 func NewWithBaseURI(baseURI string, subscriptionID string) ManagementClient {
-        return ManagementClient{
-                Client:         autorest.NewClientWithUserAgent(UserAgent()),
-                BaseURI:        baseURI,
-                APIVersion:     APIVersion,
-                SubscriptionID: subscriptionID,
-        }
+   return ManagementClient{
+        Client: autorest.NewClientWithUserAgent(UserAgent()),
+        BaseURI: baseURI,
+        APIVersion: APIVersion,
+        SubscriptionID: subscriptionID,
+    }
 }
 

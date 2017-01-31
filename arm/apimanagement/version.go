@@ -23,13 +23,13 @@ import (
 )
 
 const (
-    major = "6"
+    major = "7"
     minor = "0"
-    patch = "0"
+    patch = "2"
     // Always begin a "tag" with a dash (as per http://semver.org)
     tag   = "-beta"
     semVerFormat = "%s.%s.%s%s"
-    userAgentFormat = "Azure-SDK-for-Go/%s arm-%s/%s"
+    userAgentFormat = "Azure-SDK-For-Go/%s arm-%s/%s"
 )
 
 // UserAgent returns the UserAgent string to use when sending http.Requests.

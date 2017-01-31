@@ -12,6 +12,7 @@ import (
 	"io/ioutil"
 	"net/http"
 	"net/url"
+	"runtime"
 	"strconv"
 	"strings"
 )
@@ -41,6 +42,8 @@ const (
 	storageEmulatorBlob  = "127.0.0.1:10000"
 	storageEmulatorTable = "127.0.0.1:10002"
 	storageEmulatorQueue = "127.0.0.1:10001"
+
+	userAgentHeader = "User-Agent"
 )
 
 // Client is the object that needs to be constructed to perform
@@ -56,6 +59,7 @@ type Client struct {
 	UseSharedKeyLite bool
 	baseURL          string
 	apiVersion       string
+	userAgent        string
 }
 
 type storageResponse struct {
@@ -154,14 +158,46 @@ func NewClient(accountName, accountKey, blobServiceBaseURL, apiVersion string, u
 		return c, fmt.Errorf("azure: malformed storage account key: %v", err)
 	}
 
-	return Client{
+	c = Client{
 		accountName:      accountName,
 		accountKey:       key,
 		useHTTPS:         useHTTPS,
 		baseURL:          blobServiceBaseURL,
 		apiVersion:       apiVersion,
 		UseSharedKeyLite: false,
-	}, nil
+	}
+	c.userAgent = c.getDefaultUserAgent()
+	return c, nil
+}
+
+func (c Client) getDefaultUserAgent() string {
+	return fmt.Sprintf("Go/%s (%s-%s) Azure-SDK-For-Go/%s storage-dataplane/%s",
+		runtime.Version(),
+		runtime.GOARCH,
+		runtime.GOOS,
+		sdkVersion,
+		c.apiVersion,
+	)
+}
+
+// AddToUserAgent adds an extension to the current user agent
+func (c *Client) AddToUserAgent(extension string) error {
+	if extension != "" {
+		c.userAgent = fmt.Sprintf("%s %s", c.userAgent, extension)
+		return nil
+	}
+	return fmt.Errorf("Extension was empty, User Agent stayed as %s", c.userAgent)
+}
+
+// protectUserAgent is used in funcs that include extraheaders as a parameter.
+// It prevents the User-Agent header to be overwritten, instead if it happens to
+// be present, it gets added to the current User-Agent. Use it before getStandardHeaders
+func (c *Client) protectUserAgent(extraheaders map[string]string) map[string]string {
+	if v, ok := extraheaders[userAgentHeader]; ok {
+		c.AddToUserAgent(v)
+		delete(extraheaders, userAgentHeader)
+	}
+	return extraheaders
 }
 
 func (c Client) getBaseURL(service string) string {
@@ -213,59 +249,64 @@ func (c Client) getEndpoint(service, path string, params url.Values) string {
 // GetBlobService returns a BlobStorageClient which can operate on the blob
 // service of the storage account.
 func (c Client) GetBlobService() BlobStorageClient {
-	auth := sharedKey
-	if c.UseSharedKeyLite {
-		auth = sharedKeyLite
-	}
-	return BlobStorageClient{
+	b := BlobStorageClient{
 		client: c,
-		auth:   auth,
 	}
+	b.client.AddToUserAgent(blobServiceName)
+	b.auth = sharedKey
+	if c.UseSharedKeyLite {
+		b.auth = sharedKeyLite
+	}
+	return b
 }
 
 // GetQueueService returns a QueueServiceClient which can operate on the queue
 // service of the storage account.
 func (c Client) GetQueueService() QueueServiceClient {
-	auth := sharedKey
-	if c.UseSharedKeyLite {
-		auth = sharedKeyLite
-	}
-	return QueueServiceClient{
+	q := QueueServiceClient{
 		client: c,
-		auth:   auth,
 	}
+	q.client.AddToUserAgent(queueServiceName)
+	q.auth = sharedKey
+	if c.UseSharedKeyLite {
+		q.auth = sharedKeyLite
+	}
+	return q
 }
 
 // GetTableService returns a TableServiceClient which can operate on the table
 // service of the storage account.
 func (c Client) GetTableService() TableServiceClient {
-	auth := sharedKeyForTable
-	if c.UseSharedKeyLite {
-		auth = sharedKeyLiteForTable
-	}
-	return TableServiceClient{
+	t := TableServiceClient{
 		client: c,
-		auth:   auth,
 	}
+	t.client.AddToUserAgent(tableServiceName)
+	t.auth = sharedKeyForTable
+	if c.UseSharedKeyLite {
+		t.auth = sharedKeyLiteForTable
+	}
+	return t
 }
 
 // GetFileService returns a FileServiceClient which can operate on the file
 // service of the storage account.
 func (c Client) GetFileService() FileServiceClient {
-	auth := sharedKey
-	if c.UseSharedKeyLite {
-		auth = sharedKeyLite
-	}
-	return FileServiceClient{
+	f := FileServiceClient{
 		client: c,
-		auth:   auth,
 	}
+	f.client.AddToUserAgent(fileServiceName)
+	f.auth = sharedKey
+	if c.UseSharedKeyLite {
+		f.auth = sharedKeyLite
+	}
+	return f
 }
 
 func (c Client) getStandardHeaders() map[string]string {
 	return map[string]string{
-		"x-ms-version": c.apiVersion,
-		"x-ms-date":    currentTimeRfc1123Formatted(),
+		userAgentHeader: c.userAgent,
+		"x-ms-version":  c.apiVersion,
+		"x-ms-date":     currentTimeRfc1123Formatted(),
 	}
 }
 

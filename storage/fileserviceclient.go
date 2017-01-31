@@ -156,6 +156,7 @@ func (f FileServiceClient) listContent(path string, params url.Values, extraHead
 	}
 
 	uri := f.client.getEndpoint(fileServiceName, path, params)
+	extraHeaders = f.client.protectUserAgent(extraHeaders)
 	headers := mergeHeaders(f.client.getStandardHeaders(), extraHeaders)
 
 	resp, err := f.client.exec(http.MethodGet, uri, headers, nil, f.auth)
@@ -208,6 +209,7 @@ func (f FileServiceClient) createResourceNoClose(path string, res resourceType, 
 
 	values := getURLInitValues(compNone, res)
 	uri := f.client.getEndpoint(fileServiceName, path, values)
+	extraHeaders = f.client.protectUserAgent(extraHeaders)
 	headers := mergeHeaders(f.client.getStandardHeaders(), extraHeaders)
 
 	return f.client.exec(http.MethodPut, uri, headers, nil, f.auth)
@@ -236,6 +238,7 @@ func (f FileServiceClient) getResourceNoClose(path string, comp compType, res re
 
 	params := getURLInitValues(comp, res)
 	uri := f.client.getEndpoint(fileServiceName, path, params)
+	extraHeaders = f.client.protectUserAgent(extraHeaders)
 	headers := mergeHeaders(f.client.getStandardHeaders(), extraHeaders)
 
 	return f.client.exec(verb, uri, headers, nil, f.auth)
@@ -292,6 +295,7 @@ func (f FileServiceClient) setResourceHeaders(path string, comp compType, res re
 
 	params := getURLInitValues(comp, res)
 	uri := f.client.getEndpoint(fileServiceName, path, params)
+	extraHeaders = f.client.protectUserAgent(extraHeaders)
 	headers := mergeHeaders(f.client.getStandardHeaders(), extraHeaders)
 
 	resp, err := f.client.exec(http.MethodPut, uri, headers, nil, f.auth)

@@ -689,6 +689,7 @@ func (b BlobStorageClient) GetBlobRange(container, name, bytesRange string, extr
 func (b BlobStorageClient) getBlobRange(container, name, bytesRange string, extraHeaders map[string]string) (*storageResponse, error) {
 	uri := b.client.getEndpoint(blobServiceName, pathForBlob(container, name), url.Values{})
 
+	extraHeaders = b.client.protectUserAgent(extraHeaders)
 	headers := b.client.getStandardHeaders()
 	if bytesRange != "" {
 		headers["Range"] = fmt.Sprintf("bytes=%s", bytesRange)
@@ -725,6 +726,7 @@ func (b BlobStorageClient) leaseCommonPut(container string, name string, headers
 
 // SnapshotBlob creates a snapshot for a blob as per https://msdn.microsoft.com/en-us/library/azure/ee691971.aspx
 func (b BlobStorageClient) SnapshotBlob(container string, name string, timeout int, extraHeaders map[string]string) (snapshotTimestamp *time.Time, err error) {
+	extraHeaders = b.client.protectUserAgent(extraHeaders)
 	headers := b.client.getStandardHeaders()
 	params := url.Values{"comp": {"snapshot"}}
 
@@ -968,6 +970,8 @@ func (b BlobStorageClient) SetBlobProperties(container, name string, blobHeaders
 func (b BlobStorageClient) SetBlobMetadata(container, name string, metadata map[string]string, extraHeaders map[string]string) error {
 	params := url.Values{"comp": {"metadata"}}
 	uri := b.client.getEndpoint(blobServiceName, pathForBlob(container, name), params)
+	metadata = b.client.protectUserAgent(metadata)
+	extraHeaders = b.client.protectUserAgent(extraHeaders)
 	headers := b.client.getStandardHeaders()
 	for k, v := range metadata {
 		headers[userDefinedMetadataHeaderPrefix+k] = v
@@ -1048,6 +1052,7 @@ func (b BlobStorageClient) CreateBlockBlob(container, name string) error {
 func (b BlobStorageClient) CreateBlockBlobFromReader(container, name string, size uint64, blob io.Reader, extraHeaders map[string]string) error {
 	path := fmt.Sprintf("%s/%s", container, name)
 	uri := b.client.getEndpoint(blobServiceName, path, url.Values{})
+	extraHeaders = b.client.protectUserAgent(extraHeaders)
 	headers := b.client.getStandardHeaders()
 	headers["x-ms-blob-type"] = string(BlobTypeBlock)
 	headers["Content-Length"] = fmt.Sprintf("%d", size)
@@ -1085,6 +1090,7 @@ func (b BlobStorageClient) PutBlock(container, name, blockID string, chunk []byt
 // See https://msdn.microsoft.com/en-us/library/azure/dd135726.aspx
 func (b BlobStorageClient) PutBlockWithLength(container, name, blockID string, size uint64, blob io.Reader, extraHeaders map[string]string) error {
 	uri := b.client.getEndpoint(blobServiceName, pathForBlob(container, name), url.Values{"comp": {"block"}, "blockid": {blockID}})
+	extraHeaders = b.client.protectUserAgent(extraHeaders)
 	headers := b.client.getStandardHeaders()
 	headers["x-ms-blob-type"] = string(BlobTypeBlock)
 	headers["Content-Length"] = fmt.Sprintf("%v", size)
@@ -1147,6 +1153,7 @@ func (b BlobStorageClient) GetBlockList(container, name string, blockType BlockL
 func (b BlobStorageClient) PutPageBlob(container, name string, size int64, extraHeaders map[string]string) error {
 	path := fmt.Sprintf("%s/%s", container, name)
 	uri := b.client.getEndpoint(blobServiceName, path, url.Values{})
+	extraHeaders = b.client.protectUserAgent(extraHeaders)
 	headers := b.client.getStandardHeaders()
 	headers["x-ms-blob-type"] = string(BlobTypePage)
 	headers["x-ms-blob-content-length"] = fmt.Sprintf("%v", size)
@@ -1172,6 +1179,7 @@ func (b BlobStorageClient) PutPageBlob(container, name string, size int64, extra
 func (b BlobStorageClient) PutPage(container, name string, startByte, endByte int64, writeType PageWriteType, chunk []byte, extraHeaders map[string]string) error {
 	path := fmt.Sprintf("%s/%s", container, name)
 	uri := b.client.getEndpoint(blobServiceName, path, url.Values{"comp": {"page"}})
+	extraHeaders = b.client.protectUserAgent(extraHeaders)
 	headers := b.client.getStandardHeaders()
 	headers["x-ms-blob-type"] = string(BlobTypePage)
 	headers["x-ms-page-write"] = string(writeType)
@@ -1228,6 +1236,7 @@ func (b BlobStorageClient) GetPageRanges(container, name string) (GetPageRangesR
 func (b BlobStorageClient) PutAppendBlob(container, name string, extraHeaders map[string]string) error {
 	path := fmt.Sprintf("%s/%s", container, name)
 	uri := b.client.getEndpoint(blobServiceName, path, url.Values{})
+	extraHeaders = b.client.protectUserAgent(extraHeaders)
 	headers := b.client.getStandardHeaders()
 	headers["x-ms-blob-type"] = string(BlobTypeAppend)
 
@@ -1250,6 +1259,7 @@ func (b BlobStorageClient) PutAppendBlob(container, name string, extraHeaders ma
 func (b BlobStorageClient) AppendBlock(container, name string, chunk []byte, extraHeaders map[string]string) error {
 	path := fmt.Sprintf("%s/%s", container, name)
 	uri := b.client.getEndpoint(blobServiceName, path, url.Values{"comp": {"appendblock"}})
+	extraHeaders = b.client.protectUserAgent(extraHeaders)
 	headers := b.client.getStandardHeaders()
 	headers["x-ms-blob-type"] = string(BlobTypeAppend)
 	headers["Content-Length"] = fmt.Sprintf("%v", len(chunk))
@@ -1397,6 +1407,7 @@ func (b BlobStorageClient) DeleteBlobIfExists(container, name string, extraHeade
 
 func (b BlobStorageClient) deleteBlob(container, name string, extraHeaders map[string]string) (*storageResponse, error) {
 	uri := b.client.getEndpoint(blobServiceName, pathForBlob(container, name), url.Values{})
+	extraHeaders = b.client.protectUserAgent(extraHeaders)
 	headers := b.client.getStandardHeaders()
 	for k, v := range extraHeaders {
 		headers[k] = v

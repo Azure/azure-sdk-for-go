@@ -2,6 +2,7 @@
 package storage
 
 import (
+	"bytes"
 	"fmt"
 	"net/url"
 	"sort"
@@ -35,7 +36,7 @@ const (
 	headerRange             = "Range"
 )
 
-func (c Client) addAuthorizationHeader(verb, url string, headers *map[string]string, auth authentication) error {
+func (c *Client) addAuthorizationHeader(verb, url string, headers *map[string]string, auth authentication) error {
 	authHeader, err := c.getSharedKey(verb, url, *headers, auth)
 	if err != nil {
 		return err
@@ -44,7 +45,7 @@ func (c Client) addAuthorizationHeader(verb, url string, headers *map[string]str
 	return nil
 }
 
-func (c Client) getSharedKey(verb, url string, headers map[string]string, auth authentication) (string, error) {
+func (c *Client) getSharedKey(verb, url string, headers map[string]string, auth authentication) (string, error) {
 	canRes, err := c.buildCanonicalizedResource(url, auth)
 	if err != nil {
 		return "", err
@@ -54,20 +55,21 @@ func (c Client) getSharedKey(verb, url string, headers map[string]string, auth a
 	return c.createAuthorizationHeader(canString, auth), nil
 }
 
-func (c Client) buildCanonicalizedResource(uri string, auth authentication) (string, error) {
+func (c *Client) buildCanonicalizedResource(uri string, auth authentication) (string, error) {
 	errMsg := "buildCanonicalizedResource error: %s"
 	u, err := url.Parse(uri)
 	if err != nil {
 		return "", fmt.Errorf(errMsg, err.Error())
 	}
 
-	cr := "/" + c.getCanonicalizedAccountName()
+	cr := bytes.NewBufferString("/")
+	cr.WriteString(c.getCanonicalizedAccountName())
 
 	if len(u.Path) > 0 {
 		// Any portion of the CanonicalizedResource string that is derived from
 		// the resource's URI should be encoded exactly as it is in the URI.
 		// -- https://msdn.microsoft.com/en-gb/library/azure/dd179428.aspx
-		cr += u.EscapedPath()
+		cr.WriteString(u.EscapedPath())
 	}
 
 	params, err := url.ParseQuery(u.RawQuery)
@@ -78,45 +80,41 @@ func (c Client) buildCanonicalizedResource(uri string, auth authentication) (str
 	// See https://github.com/Azure/azure-storage-net/blob/master/Lib/Common/Core/Util/AuthenticationUtility.cs#L277
 	if auth == sharedKey {
 		if len(params) > 0 {
-			cr += "\n"
-			keys := make([]string, 0, len(params))
+			cr.WriteString("\n")
+
+			keys := []string{}
 			for key := range params {
 				keys = append(keys, key)
 			}
-
 			sort.Strings(keys)
 
-			for i, key := range keys {
+			completeParams := []string{}
+			for _, key := range keys {
 				if len(params[key]) > 1 {
 					sort.Strings(params[key])
 				}
 
-				if i == len(keys)-1 {
-					cr += fmt.Sprintf("%s:%s", key, strings.Join(params[key], ","))
-				} else {
-					cr += fmt.Sprintf("%s:%s\n", key, strings.Join(params[key], ","))
-				}
+				completeParams = append(completeParams, fmt.Sprintf("%s:%s", key, strings.Join(params[key], ",")))
 			}
+			cr.WriteString(strings.Join(completeParams, "\n"))
 		}
 	} else {
 		// search for "comp" parameter, if exists then add it to canonicalizedresource
-		for key := range params {
-			if key == "comp" {
-				cr += "?comp=" + params[key][0]
-			}
+		if v, ok := params["comp"]; ok {
+			cr.WriteString("?comp=" + v[0])
 		}
 	}
 
-	return cr, nil
+	return string(cr.Bytes()), nil
 }
 
-func (c Client) getCanonicalizedAccountName() string {
+func (c *Client) getCanonicalizedAccountName() string {
 	// since we may be trying to access a secondary storage account, we need to
 	// remove the -secondary part of the storage name
 	return strings.TrimSuffix(c.accountName, "-secondary")
 }
 
-func (c Client) buildCanonicalizedString(verb string, headers map[string]string, canonicalizedResource string, auth authentication) string {
+func (c *Client) buildCanonicalizedString(verb string, headers map[string]string, canonicalizedResource string, auth authentication) string {
 	contentLength := headers[headerContentLength]
 	if contentLength == "0" {
 		contentLength = ""
@@ -174,7 +172,7 @@ func (c Client) buildCanonicalizedString(verb string, headers map[string]string,
 	return canString
 }
 
-func (c Client) buildCanonicalizedHeader(headers map[string]string) string {
+func (c *Client) buildCanonicalizedHeader(headers map[string]string) string {
 	cm := make(map[string]string)
 
 	for k, v := range headers {
@@ -188,26 +186,25 @@ func (c Client) buildCanonicalizedHeader(headers map[string]string) string {
 		return ""
 	}
 
-	keys := make([]string, 0, len(cm))
+	keys := []string{}
 	for key := range cm {
 		keys = append(keys, key)
 	}
 
 	sort.Strings(keys)
 
-	ch := ""
+	ch := bytes.NewBufferString("")
 
-	for i, key := range keys {
-		if i == len(keys)-1 {
-			ch += fmt.Sprintf("%s:%s", key, cm[key])
-		} else {
-			ch += fmt.Sprintf("%s:%s\n", key, cm[key])
-		}
+	completeHeaders := []string{}
+	for _, key := range keys {
+		completeHeaders = append(completeHeaders, fmt.Sprintf("%s:%s", key, cm[key]))
 	}
-	return ch
+	ch.WriteString(strings.Join(completeHeaders, "\n"))
+
+	return string(ch.Bytes())
 }
 
-func (c Client) createAuthorizationHeader(canonicalizedString string, auth authentication) string {
+func (c *Client) createAuthorizationHeader(canonicalizedString string, auth authentication) string {
 	signature := c.computeHmac256(canonicalizedString)
 	var key string
 	switch auth {

@@ -15,6 +15,7 @@ import (
 // Service.
 type TableServiceClient struct {
 	client Client
+	auth   authentication
 }
 
 // AzureTable is the typedef of the Azure Table name
@@ -59,7 +60,7 @@ func (c *TableServiceClient) QueryTables() ([]AzureTable, error) {
 	headers := c.getStandardHeaders()
 	headers["Content-Length"] = "0"
 
-	resp, err := c.client.execTable(http.MethodGet, uri, headers, nil)
+	resp, err := c.client.execInternalJSON(http.MethodGet, uri, headers, nil, c.auth)
 	if err != nil {
 		return nil, err
 	}
@@ -104,7 +105,7 @@ func (c *TableServiceClient) CreateTable(table AzureTable) error {
 
 	headers["Content-Length"] = fmt.Sprintf("%d", buf.Len())
 
-	resp, err := c.client.execTable(http.MethodPost, uri, headers, buf)
+	resp, err := c.client.execInternalJSON(http.MethodPost, uri, headers, buf, c.auth)
 
 	if err != nil {
 		return err
@@ -130,7 +131,7 @@ func (c *TableServiceClient) DeleteTable(table AzureTable) error {
 
 	headers["Content-Length"] = "0"
 
-	resp, err := c.client.execTable(http.MethodDelete, uri, headers, nil)
+	resp, err := c.client.execInternalJSON(http.MethodDelete, uri, headers, nil, c.auth)
 
 	if err != nil {
 		return err
@@ -171,7 +172,7 @@ func (c *TableServiceClient) SetTablePermissions(table AzureTable, accessPolicy 
 
 	var resp *odataResponse
 	headers["Content-Length"] = strconv.Itoa(len(accessPolicyXML))
-	resp, err = c.client.execTable(http.MethodPut, uri, headers, strings.NewReader(accessPolicyXML))
+	resp, err = c.client.execInternalJSON(http.MethodPut, uri, headers, strings.NewReader(accessPolicyXML), c.auth)
 
 	if err != nil {
 		return err
@@ -202,7 +203,7 @@ func (c *TableServiceClient) GetTablePermissions(table AzureTable, timeout int) 
 
 	uri := c.client.getEndpoint(tableServiceName, string(table), params)
 	headers := c.client.getStandardHeaders()
-	resp, err := c.client.execTable(http.MethodGet, uri, headers, nil)
+	resp, err := c.client.execInternalJSON(http.MethodGet, uri, headers, nil, c.auth)
 	if err != nil {
 		return nil, err
 	}

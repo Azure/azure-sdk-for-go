@@ -49,6 +49,14 @@ var (
 					Name:    "analysisservices",
 					Version: "2016-05-16",
 				},
+				// {
+				// 	Name:    "apimanagement",
+				// 	Version: "2016-07-07",
+				// },
+				// {
+				// 	Name:    "apimdeployment",
+				// 	Version: "2016-07-07",
+				// },
 				{
 					Name:    "authorization",
 					Version: "2015-07-01",
@@ -106,6 +114,12 @@ var (
 					Name:    "devtestlabs",
 					Version: "2016-05-15",
 					Swagger: "DTL",
+				},
+				{
+					Name:    "disk",
+					Version: "2016-04-30-preview",
+					Swagger: "disk",
+					Input:   "compute",
 				},
 				{
 					Name:    "dns",
@@ -214,7 +228,7 @@ var (
 						},
 						{
 							Name:    "policy",
-							Version: "2016-04-01",
+							Version: "2016-12-01",
 						},
 						{
 							Name:    "resources",
@@ -394,7 +408,7 @@ func generate(service *service) {
 		"-Input", fmt.Sprintf("%s/azure-rest-api-specs/%s.json", swaggersDir, service.Input),
 		"-CodeGenerator", "Go",
 		"-Header", "MICROSOFT_APACHE",
-		"-Namespace", service.Namespace,
+		"-Namespace", service.Name,
 		"-OutputDirectory", service.Output,
 		"-Modeler", "Swagger",
 		"-pv", sdkVersion)

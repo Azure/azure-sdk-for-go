@@ -480,7 +480,7 @@ func (b BlobStorageClient) SetContainerPermissions(container string, containerPe
 	}
 
 	body, length, err := generateContainerACLpayload(containerPermissions.AccessPolicies)
-	headers["Content-Length"] = fmt.Sprintf("%v", length)
+	headers["Content-Length"] = strconv.Itoa(length)
 	resp, err := b.client.exec(http.MethodPut, uri, headers, body)
 
 	if err != nil {
@@ -528,12 +528,12 @@ func (b BlobStorageClient) GetContainerPermissions(container string, timeout int
 		return nil, err
 	}
 
-	permissionResponse = b.updateAccessPolicy(out, &resp.headers)
+	permissionResponse = updateContainerAccessPolicy(out, &resp.headers)
 
 	return permissionResponse, nil
 }
 
-func (b BlobStorageClient) updateAccessPolicy(ap AccessPolicy, headers *http.Header) *ContainerPermissions {
+func updateContainerAccessPolicy(ap AccessPolicy, headers *http.Header) *ContainerPermissions {
 	// containerAccess. Blob, Container, empty
 	containerAccess := headers.Get(http.CanonicalHeaderKey(ContainerAccessHeader))
 

@@ -136,7 +136,7 @@ func (s *StorageBlobSuite) TestBlobSASURICorrectness(c *chk.C) {
 	cnt := randContainer()
 	blob := randNameWithSpecialChars(5)
 	body := []byte(randString(100))
-	expiry := time.Now().UTC().Add(time.Hour)
+	expiry := now.UTC().Add(time.Hour)
 	permissions := "r"
 
 	c.Assert(cli.CreateContainer(cnt, ContainerAccessTypePrivate), chk.IsNil)
@@ -798,9 +798,9 @@ func (s *StorageBlobSuite) TestSetBlobProperties(c *chk.C) {
 	c.Check(mPut.ContentLanguage, chk.Equals, props.ContentLanguage)
 }
 
-func (perms *ContainerPermissions) createContainerPermissions(accessType ContainerAccessType,
+func appendContainerPermission(perms ContainerPermissions, accessType ContainerAccessType,
 	ID string, start time.Time, expiry time.Time,
-	canRead bool, canWrite bool, canDelete bool) {
+	canRead bool, canWrite bool, canDelete bool) ContainerPermissions {
 
 	perms.AccessType = accessType
 
@@ -815,6 +815,7 @@ func (perms *ContainerPermissions) createContainerPermissions(accessType Contain
 		}
 		perms.AccessPolicies = append(perms.AccessPolicies, capd)
 	}
+	return perms
 }
 
 func (s *StorageBlobSuite) TestSetContainerPermissionsWithTimeoutSuccessfully(c *chk.C) {
@@ -825,7 +826,7 @@ func (s *StorageBlobSuite) TestSetContainerPermissionsWithTimeoutSuccessfully(c 
 	defer cli.deleteContainer(cnt)
 
 	perms := ContainerPermissions{}
-	perms.createContainerPermissions(ContainerAccessTypeBlob, "GolangRocksOnAzure", time.Now(), time.Now().Add(10*time.Hour), true, true, true)
+	perms = appendContainerPermission(perms, ContainerAccessTypeBlob, "GolangRocksOnAzure", now, now.Add(10*time.Hour), true, true, true)
 
 	err := cli.SetContainerPermissions(cnt, perms, 30, "")
 	c.Assert(err, chk.IsNil)
@@ -839,7 +840,7 @@ func (s *StorageBlobSuite) TestSetContainerPermissionsSuccessfully(c *chk.C) {
 	defer cli.deleteContainer(cnt)
 
 	perms := ContainerPermissions{}
-	perms.createContainerPermissions(ContainerAccessTypeBlob, "GolangRocksOnAzure", time.Now(), time.Now().Add(10*time.Hour), true, true, true)
+	perms = appendContainerPermission(perms, ContainerAccessTypeBlob, "GolangRocksOnAzure", now, now.Add(10*time.Hour), true, true, true)
 
 	err := cli.SetContainerPermissions(cnt, perms, 0, "")
 	c.Assert(err, chk.IsNil)
@@ -853,8 +854,8 @@ func (s *StorageBlobSuite) TestSetThenGetContainerPermissionsSuccessfully(c *chk
 	defer cli.deleteContainer(cnt)
 
 	perms := ContainerPermissions{}
-	perms.createContainerPermissions(ContainerAccessTypeBlob, "AutoRestIsSuperCool", time.Now(), time.Now().Add(10*time.Hour), true, true, true)
-	perms.createContainerPermissions(ContainerAccessTypeBlob, "GolangRocksOnAzure", time.Now().Add(20*time.Hour), time.Now().Add(30*time.Hour), true, false, false)
+	perms = appendContainerPermission(perms, ContainerAccessTypeBlob, "AutoRestIsSuperCool", now, now.Add(10*time.Hour), true, true, true)
+	perms = appendContainerPermission(perms, ContainerAccessTypeBlob, "GolangRocksOnAzure", now.Add(20*time.Hour), now.Add(30*time.Hour), true, false, false)
 
 	err := cli.SetContainerPermissions(cnt, perms, 0, "")
 	c.Assert(err, chk.IsNil)
@@ -894,7 +895,7 @@ func (s *StorageBlobSuite) TestSetContainerPermissionsOnlySuccessfully(c *chk.C)
 	defer cli.deleteContainer(cnt)
 
 	perms := ContainerPermissions{}
-	perms.createContainerPermissions(ContainerAccessTypeBlob, "GolangRocksOnAzure", time.Now(), time.Now().Add(10*time.Hour), true, true, true)
+	perms = appendContainerPermission(perms, ContainerAccessTypeBlob, "GolangRocksOnAzure", now, now.Add(10*time.Hour), true, true, true)
 
 	err := cli.SetContainerPermissions(cnt, perms, 0, "")
 	c.Assert(err, chk.IsNil)
@@ -908,7 +909,7 @@ func (s *StorageBlobSuite) TestSetThenGetContainerPermissionsOnlySuccessfully(c 
 	defer cli.deleteContainer(cnt)
 
 	perms := ContainerPermissions{}
-	perms.createContainerPermissions(ContainerAccessTypeBlob, "", time.Now(), time.Now().Add(10*time.Hour), true, true, true)
+	perms = appendContainerPermission(perms, ContainerAccessTypeBlob, "", now, now.Add(10*time.Hour), true, true, true)
 
 	err := cli.SetContainerPermissions(cnt, perms, 0, "")
 	c.Assert(err, chk.IsNil)
@@ -992,7 +993,7 @@ func (s *StorageBlobSuite) TestSnapshotBlobWithInvalidLease(c *chk.C) {
 	c.Assert(leaseID, chk.Not(chk.Equals), "")
 
 	extraHeaders := map[string]string{
-		headerLeaseID: "718e3c89-da3d-4201-b616-dd794b0bd7c1",
+		headerLeaseID: "GolangRocksOnAzure",
 	}
 
 	snapshotTime, err := cli.SnapshotBlob(cnt, blob, 0, extraHeaders)

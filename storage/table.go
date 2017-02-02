@@ -156,7 +156,7 @@ func (c *TableServiceClient) SetTablePermissions(table AzureTable, policies []Ta
 	uri := c.client.getEndpoint(tableServiceName, string(table), params)
 	headers := c.client.getStandardHeaders()
 
-	body, length, err := generateTableACLpayload(policies)
+	body, length, err := generateTableACLPayload(policies)
 	if err != nil {
 		return err
 	}
@@ -174,7 +174,7 @@ func (c *TableServiceClient) SetTablePermissions(table AzureTable, policies []Ta
 	return nil
 }
 
-func generateTableACLpayload(policies []TableAccessPolicy) (io.Reader, int, error) {
+func generateTableACLPayload(policies []TableAccessPolicy) (io.Reader, int, error) {
 	sil := SignedIdentifiers{
 		SignedIdentifiers: []SignedIdentifier{},
 	}
@@ -213,10 +213,10 @@ func (c *TableServiceClient) GetTablePermissions(table AzureTable, timeout int) 
 		return nil, err
 	}
 
-	return updateAccessPolicy(ap), nil
+	return updateTableAccessPolicy(ap), nil
 }
 
-func updateAccessPolicy(ap AccessPolicy) *[]TableAccessPolicy {
+func updateTableAccessPolicy(ap AccessPolicy) *[]TableAccessPolicy {
 	out := []TableAccessPolicy{}
 	for _, policy := range ap.SignedIdentifiersList.SignedIdentifiers {
 		tap := TableAccessPolicy{

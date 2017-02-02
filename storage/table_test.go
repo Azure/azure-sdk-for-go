@@ -287,9 +287,9 @@ func randTable() string {
 	return string(bytes)
 }
 
-func (s *StorageBlobSuite) createTablePermissions(policies *[]TableAccessPolicy, ID string,
+func appendTablePermission(policies []TableAccessPolicy, ID string,
 	canRead bool, canAppend bool, canUpdate bool, canDelete bool,
-	startTime time.Time, expiryTime time.Time) {
+	startTime time.Time, expiryTime time.Time) []TableAccessPolicy {
 
 	tap := TableAccessPolicy{
 		ID:         ID,
@@ -300,7 +300,8 @@ func (s *StorageBlobSuite) createTablePermissions(policies *[]TableAccessPolicy,
 		CanUpdate:  canUpdate,
 		CanDelete:  canDelete,
 	}
-	*policies = append(*policies, tap)
+	policies = append(policies, tap)
+	return policies
 }
 
 func (s *StorageBlobSuite) TestSetTablePermissionsSuccessfully(c *chk.C) {
@@ -311,7 +312,7 @@ func (s *StorageBlobSuite) TestSetTablePermissionsSuccessfully(c *chk.C) {
 	defer cli.DeleteTable(tn)
 
 	policies := []TableAccessPolicy{}
-	s.createTablePermissions(&policies, "GolangRocksOnAzure", true, true, true, true, time.Now(), time.Now().Add(10*time.Hour))
+	policies = appendTablePermission(policies, "GolangRocksOnAzure", true, true, true, true, now, now.Add(10*time.Hour))
 
 	err = cli.SetTablePermissions(tn, policies, 0)
 	c.Assert(err, chk.IsNil)
@@ -322,7 +323,7 @@ func (s *StorageBlobSuite) TestSetTablePermissionsUnsuccessfully(c *chk.C) {
 	tn := AzureTable("nonexistingtable")
 
 	policies := []TableAccessPolicy{}
-	s.createTablePermissions(&policies, "GolangRocksOnAzure", true, true, true, true, time.Now(), time.Now().Add(10*time.Hour))
+	policies = appendTablePermission(policies, "GolangRocksOnAzure", true, true, true, true, now, now.Add(10*time.Hour))
 
 	err := cli.SetTablePermissions(tn, policies, 0)
 	c.Assert(err, chk.NotNil)
@@ -336,8 +337,8 @@ func (s *StorageBlobSuite) TestSetThenGetTablePermissionsSuccessfully(c *chk.C) 
 	defer cli.DeleteTable(tn)
 
 	policies := []TableAccessPolicy{}
-	s.createTablePermissions(&policies, "GolangRocksOnAzure", true, true, true, true, time.Now(), time.Now().Add(10*time.Hour))
-	s.createTablePermissions(&policies, "AutoRestIsSuperCool", true, true, false, true, time.Now().Add(20*time.Hour), time.Now().Add(30*time.Hour))
+	policies = appendTablePermission(policies, "GolangRocksOnAzure", true, true, true, true, now, now.Add(10*time.Hour))
+	policies = appendTablePermission(policies, "AutoRestIsSuperCool", true, true, false, true, now.Add(20*time.Hour), now.Add(30*time.Hour))
 	err = cli.SetTablePermissions(tn, policies, 0)
 	c.Assert(err, chk.IsNil)
 

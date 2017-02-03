@@ -86,9 +86,6 @@ func (a *AuthorizationSuite) Test_buildCanonicalizedResource(c *chk.C) {
 }
 
 func (a *AuthorizationSuite) Test_buildCanonicalizedString(c *chk.C) {
-	cli, err := NewEmulatorClient()
-	c.Assert(err, chk.IsNil)
-
 	var tests = []struct {
 		verb                  string
 		headers               map[string]string
@@ -144,15 +141,12 @@ func (a *AuthorizationSuite) Test_buildCanonicalizedString(c *chk.C) {
 	}
 
 	for _, t := range tests {
-		canonicalizedString := cli.buildCanonicalizedString(t.verb, t.headers, t.canonicalizedResource, t.auth)
+		canonicalizedString := buildCanonicalizedString(t.verb, t.headers, t.canonicalizedResource, t.auth)
 		c.Assert(canonicalizedString, chk.Equals, t.out)
 	}
 }
 
 func (a *AuthorizationSuite) Test_buildCanonicalizedHeader(c *chk.C) {
-	cli, err := NewBasicClient("foo", "YmFy")
-	c.Assert(err, chk.IsNil)
-
 	type test struct {
 		headers  map[string]string
 		expected string
@@ -176,7 +170,7 @@ func (a *AuthorizationSuite) Test_buildCanonicalizedHeader(c *chk.C) {
 			"x-ms-blob-type:BlockBlob\nx-ms-version:9999-99-99"}}
 
 	for _, i := range tests {
-		c.Assert(cli.buildCanonicalizedHeader(i.headers), chk.Equals, i.expected)
+		c.Assert(buildCanonicalizedHeader(i.headers), chk.Equals, i.expected)
 	}
 }
 

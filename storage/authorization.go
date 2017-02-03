@@ -51,7 +51,7 @@ func (c *Client) getSharedKey(verb, url string, headers map[string]string, auth 
 		return "", err
 	}
 
-	canString := c.buildCanonicalizedString(verb, headers, canRes, auth)
+	canString := buildCanonicalizedString(verb, headers, canRes, auth)
 	return c.createAuthorizationHeader(canString, auth), nil
 }
 
@@ -114,7 +114,7 @@ func (c *Client) getCanonicalizedAccountName() string {
 	return strings.TrimSuffix(c.accountName, "-secondary")
 }
 
-func (c *Client) buildCanonicalizedString(verb string, headers map[string]string, canonicalizedResource string, auth authentication) string {
+func buildCanonicalizedString(verb string, headers map[string]string, canonicalizedResource string, auth authentication) string {
 	contentLength := headers[headerContentLength]
 	if contentLength == "0" {
 		contentLength = ""
@@ -143,7 +143,7 @@ func (c *Client) buildCanonicalizedString(verb string, headers map[string]string
 			headers[headerIfNoneMatch],
 			headers[headerIfUnmodifiedSince],
 			headers[headerRange],
-			c.buildCanonicalizedHeader(headers),
+			buildCanonicalizedHeader(headers),
 			canonicalizedResource,
 		}, "\n")
 	case sharedKeyForTable:
@@ -160,7 +160,7 @@ func (c *Client) buildCanonicalizedString(verb string, headers map[string]string
 			headers[headerContentMD5],
 			headers[headerContentType],
 			date,
-			c.buildCanonicalizedHeader(headers),
+			buildCanonicalizedHeader(headers),
 			canonicalizedResource,
 		}, "\n")
 	case sharedKeyLiteForTable:
@@ -172,7 +172,7 @@ func (c *Client) buildCanonicalizedString(verb string, headers map[string]string
 	return canString
 }
 
-func (c *Client) buildCanonicalizedHeader(headers map[string]string) string {
+func buildCanonicalizedHeader(headers map[string]string) string {
 	cm := make(map[string]string)
 
 	for k, v := range headers {
@@ -195,13 +195,14 @@ func (c *Client) buildCanonicalizedHeader(headers map[string]string) string {
 
 	ch := bytes.NewBufferString("")
 
-	completeHeaders := []string{}
 	for _, key := range keys {
-		completeHeaders = append(completeHeaders, fmt.Sprintf("%s:%s", key, cm[key]))
+		ch.WriteString(key)
+		ch.WriteRune(':')
+		ch.WriteString(cm[key])
+		ch.WriteRune('\n')
 	}
-	ch.WriteString(strings.Join(completeHeaders, "\n"))
 
-	return string(ch.Bytes())
+	return strings.TrimSuffix(string(ch.Bytes()), "\n")
 }
 
 func (c *Client) createAuthorizationHeader(canonicalizedString string, auth authentication) string {

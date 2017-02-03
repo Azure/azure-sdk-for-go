@@ -261,7 +261,7 @@ const (
 // lease constants.
 const (
 	leaseHeaderPrefix = "x-ms-lease-"
-	leaseID           = "x-ms-lease-id"
+	headerLeaseID     = "x-ms-lease-id"
 	leaseAction       = "x-ms-lease-action"
 	leaseBreakPeriod  = "x-ms-lease-break-period"
 	leaseDuration     = "x-ms-lease-duration"
@@ -303,13 +303,6 @@ const (
 	ContainerAccessTypeContainer ContainerAccessType = "container"
 )
 
-// ContainerAccessOptions are used when setting ACLs of containers (after creation)
-type ContainerAccessOptions struct {
-	ContainerAccess ContainerAccessType
-	Timeout         int
-	LeaseID         string
-}
-
 // ContainerAccessPolicyDetails are used for SETTING container policies
 type ContainerAccessPolicyDetails struct {
 	ID         string
@@ -322,15 +315,8 @@ type ContainerAccessPolicyDetails struct {
 
 // ContainerPermissions is used when setting permissions and Access Policies for containers.
 type ContainerPermissions struct {
-	AccessOptions ContainerAccessOptions
-	AccessPolicy  ContainerAccessPolicyDetails
-}
-
-// ContainerAccessResponse is returned for the GetContainerPermissions function.
-// This contains both the permission and access policy for the container.
-type ContainerAccessResponse struct {
-	ContainerAccess ContainerAccessType
-	AccessPolicy    SignedIdentifiers
+	AccessType     ContainerAccessType
+	AccessPolicies []ContainerAccessPolicyDetails
 }
 
 // ContainerAccessHeader references header used when setting/getting container ACL
@@ -474,44 +460,29 @@ func (b BlobStorageClient) ContainerExists(name string) (bool, error) {
 }
 
 // SetContainerPermissions sets up container permissions as per https://msdn.microsoft.com/en-us/library/azure/dd179391.aspx
-func (b BlobStorageClient) SetContainerPermissions(container string, containerPermissions ContainerPermissions) (err error) {
+func (b BlobStorageClient) SetContainerPermissions(container string, containerPermissions ContainerPermissions, timeout int, leaseID string) (err error) {
 	params := url.Values{
 		"restype": {"container"},
 		"comp":    {"acl"},
 	}
 
-	if containerPermissions.AccessOptions.Timeout > 0 {
-		params.Add("timeout", strconv.Itoa(containerPermissions.AccessOptions.Timeout))
+	if timeout > 0 {
+		params.Add("timeout", strconv.Itoa(timeout))
 	}
 
 	uri := b.client.getEndpoint(blobServiceName, pathForContainer(container), params)
 	headers := b.client.getStandardHeaders()
-	if containerPermissions.AccessOptions.ContainerAccess != "" {
-		headers[ContainerAccessHeader] = string(containerPermissions.AccessOptions.ContainerAccess)
+	if containerPermissions.AccessType != "" {
+		headers[ContainerAccessHeader] = string(containerPermissions.AccessType)
 	}
 
-	if containerPermissions.AccessOptions.LeaseID != "" {
-		headers[leaseID] = containerPermissions.AccessOptions.LeaseID
+	if leaseID != "" {
+		headers[headerLeaseID] = leaseID
 	}
 
-	var permissions = generateContainerPermissions(containerPermissions.AccessPolicy)
-
-	// generate the XML for the SharedAccessSignature if required.
-	accessPolicyXML, err := generateAccessPolicy(containerPermissions.AccessPolicy.ID,
-		containerPermissions.AccessPolicy.StartTime,
-		containerPermissions.AccessPolicy.ExpiryTime,
-		permissions)
-	if err != nil {
-		return err
-	}
-
-	var resp *storageResponse
-	if accessPolicyXML != "" {
-		headers["Content-Length"] = strconv.Itoa(len(accessPolicyXML))
-		resp, err = b.client.exec(http.MethodPut, uri, headers, strings.NewReader(accessPolicyXML), b.auth)
-	} else {
-		resp, err = b.client.exec(http.MethodPut, uri, headers, nil, b.auth)
-	}
+	body, length, err := generateContainerACLpayload(containerPermissions.AccessPolicies)
+	headers["Content-Length"] = strconv.Itoa(length)
+	resp, err := b.client.exec(http.MethodPut, uri, headers, body, b.auth)
 
 	if err != nil {
 		return err
@@ -531,7 +502,7 @@ func (b BlobStorageClient) SetContainerPermissions(container string, containerPe
 // If timeout is 0 then it will not be passed to Azure
 // leaseID will only be passed to Azure if populated
 // Returns permissionResponse which is combined permissions and AccessPolicy
-func (b BlobStorageClient) GetContainerPermissions(container string, timeout int, leaseID string) (permissionResponse *ContainerAccessResponse, err error) {
+func (b BlobStorageClient) GetContainerPermissions(container string, timeout int, leaseID string) (*ContainerPermissions, error) {
 	params := url.Values{"restype": {"container"},
 		"comp": {"acl"}}
 
@@ -543,17 +514,13 @@ func (b BlobStorageClient) GetContainerPermissions(container string, timeout int
 	headers := b.client.getStandardHeaders()
 
 	if leaseID != "" {
-		headers[leaseID] = leaseID
+		headers[headerLeaseID] = leaseID
 	}
 
 	resp, err := b.client.exec(http.MethodGet, uri, headers, nil, b.auth)
 	if err != nil {
 		return nil, err
 	}
-
-	// containerAccess. Blob, Container, empty
-	containerAccess := resp.headers.Get(http.CanonicalHeaderKey(ContainerAccessHeader))
-
 	defer resp.body.Close()
 
 	var out AccessPolicy
@@ -562,11 +529,30 @@ func (b BlobStorageClient) GetContainerPermissions(container string, timeout int
 		return nil, err
 	}
 
-	permissionResponse = &ContainerAccessResponse{}
-	permissionResponse.AccessPolicy = out.SignedIdentifiersList
-	permissionResponse.ContainerAccess = ContainerAccessType(containerAccess)
+	permissionResponse := updateContainerAccessPolicy(out, &resp.headers)
+	return &permissionResponse, nil
+}
 
-	return permissionResponse, nil
+func updateContainerAccessPolicy(ap AccessPolicy, headers *http.Header) ContainerPermissions {
+	// containerAccess. Blob, Container, empty
+	containerAccess := headers.Get(http.CanonicalHeaderKey(ContainerAccessHeader))
+
+	var cp ContainerPermissions
+	cp.AccessType = ContainerAccessType(containerAccess)
+	for _, policy := range ap.SignedIdentifiersList.SignedIdentifiers {
+		capd := ContainerAccessPolicyDetails{
+			ID:         policy.ID,
+			StartTime:  policy.AccessPolicy.StartTime,
+			ExpiryTime: policy.AccessPolicy.ExpiryTime,
+		}
+		capd.CanRead = updatePermissions(policy.AccessPolicy.Permission, "r")
+		capd.CanWrite = updatePermissions(policy.AccessPolicy.Permission, "w")
+		capd.CanDelete = updatePermissions(policy.AccessPolicy.Permission, "d")
+
+		cp.AccessPolicies = append(cp.AccessPolicies, capd)
+	}
+
+	return cp
 }
 
 // DeleteContainer deletes the container with given name on the storage
@@ -780,7 +766,7 @@ func (b BlobStorageClient) AcquireLease(container string, name string, leaseTime
 		return "", err
 	}
 
-	returnedLeaseID = respHeaders.Get(http.CanonicalHeaderKey(leaseID))
+	returnedLeaseID = respHeaders.Get(http.CanonicalHeaderKey(headerLeaseID))
 
 	if returnedLeaseID != "" {
 		return returnedLeaseID, nil
@@ -831,7 +817,7 @@ func (b BlobStorageClient) breakLeaseCommon(container string, name string, heade
 func (b BlobStorageClient) ChangeLease(container string, name string, currentLeaseID string, proposedLeaseID string) (newLeaseID string, err error) {
 	headers := b.client.getStandardHeaders()
 	headers[leaseAction] = changeLease
-	headers[leaseID] = currentLeaseID
+	headers[headerLeaseID] = currentLeaseID
 	headers[leaseProposedID] = proposedLeaseID
 
 	respHeaders, err := b.leaseCommonPut(container, name, headers, http.StatusOK)
@@ -839,7 +825,7 @@ func (b BlobStorageClient) ChangeLease(container string, name string, currentLea
 		return "", err
 	}
 
-	newLeaseID = respHeaders.Get(http.CanonicalHeaderKey(leaseID))
+	newLeaseID = respHeaders.Get(http.CanonicalHeaderKey(headerLeaseID))
 	if newLeaseID != "" {
 		return newLeaseID, nil
 	}
@@ -851,7 +837,7 @@ func (b BlobStorageClient) ChangeLease(container string, name string, currentLea
 func (b BlobStorageClient) ReleaseLease(container string, name string, currentLeaseID string) error {
 	headers := b.client.getStandardHeaders()
 	headers[leaseAction] = releaseLease
-	headers[leaseID] = currentLeaseID
+	headers[headerLeaseID] = currentLeaseID
 
 	_, err := b.leaseCommonPut(container, name, headers, http.StatusOK)
 	if err != nil {
@@ -865,7 +851,7 @@ func (b BlobStorageClient) ReleaseLease(container string, name string, currentLe
 func (b BlobStorageClient) RenewLease(container string, name string, currentLeaseID string) error {
 	headers := b.client.getStandardHeaders()
 	headers[leaseAction] = renewLease
-	headers[leaseID] = currentLeaseID
+	headers[headerLeaseID] = currentLeaseID
 
 	_, err := b.leaseCommonPut(container, name, headers, http.StatusOK)
 	if err != nil {
@@ -1335,7 +1321,7 @@ func (b BlobStorageClient) AbortBlobCopy(container, name, copyID, currentLeaseID
 	headers["x-ms-copy-action"] = "abort"
 
 	if currentLeaseID != "" {
-		headers[leaseID] = currentLeaseID
+		headers[headerLeaseID] = currentLeaseID
 	}
 
 	resp, err := b.client.exec(http.MethodPut, uri, headers, nil, b.auth)
@@ -1520,20 +1506,32 @@ func blobSASStringToSign(signedVersion, canonicalizedResource, signedExpiry, sig
 	return "", errors.New("storage: not implemented SAS for versions earlier than 2013-08-15")
 }
 
-func generateContainerPermissions(accessPolicy ContainerAccessPolicyDetails) (permissions string) {
+func generateContainerACLpayload(policies []ContainerAccessPolicyDetails) (io.Reader, int, error) {
+	sil := SignedIdentifiers{
+		SignedIdentifiers: []SignedIdentifier{},
+	}
+	for _, capd := range policies {
+		permission := capd.generateContainerPermissions()
+		signedIdentifier := convertAccessPolicyToXMLStructs(capd.ID, capd.StartTime, capd.ExpiryTime, permission)
+		sil.SignedIdentifiers = append(sil.SignedIdentifiers, signedIdentifier)
+	}
+	return xmlMarshal(sil)
+}
+
+func (capd *ContainerAccessPolicyDetails) generateContainerPermissions() (permissions string) {
 	// generate the permissions string (rwd).
 	// still want the end user API to have bool flags.
 	permissions = ""
 
-	if accessPolicy.CanRead {
+	if capd.CanRead {
 		permissions += "r"
 	}
 
-	if accessPolicy.CanWrite {
+	if capd.CanWrite {
 		permissions += "w"
 	}
 
-	if accessPolicy.CanDelete {
+	if capd.CanDelete {
 		permissions += "d"
 	}
 

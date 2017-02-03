@@ -346,24 +346,24 @@ func (s *StorageBlobSuite) TestSetThenGetTablePermissionsSuccessfully(c *chk.C) 
 	c.Assert(err, chk.IsNil)
 
 	// now check policy set.
-	c.Assert(*returnedPolicies, chk.HasLen, 2)
+	c.Assert(returnedPolicies, chk.HasLen, 2)
 
 	for i := range policies {
-		c.Assert((*returnedPolicies)[i].ID, chk.Equals, policies[i].ID)
+		c.Assert(returnedPolicies[i].ID, chk.Equals, policies[i].ID)
 
 		// test timestamps down the second
 		// rounding start/expiry time original perms since the returned perms would have been rounded.
 		// so need rounded vs rounded.
-		c.Assert((*returnedPolicies)[i].StartTime.UTC().Round(time.Second).Format(time.RFC1123),
+		c.Assert(returnedPolicies[i].StartTime.UTC().Round(time.Second).Format(time.RFC1123),
 			chk.Equals, policies[i].StartTime.UTC().Round(time.Second).Format(time.RFC1123))
 
-		c.Assert((*returnedPolicies)[i].ExpiryTime.UTC().Round(time.Second).Format(time.RFC1123),
+		c.Assert(returnedPolicies[i].ExpiryTime.UTC().Round(time.Second).Format(time.RFC1123),
 			chk.Equals, policies[i].ExpiryTime.UTC().Round(time.Second).Format(time.RFC1123))
 
-		c.Assert((*returnedPolicies)[i].CanRead, chk.Equals, policies[i].CanRead)
-		c.Assert((*returnedPolicies)[i].CanAppend, chk.Equals, policies[i].CanAppend)
-		c.Assert((*returnedPolicies)[i].CanUpdate, chk.Equals, policies[i].CanUpdate)
-		c.Assert((*returnedPolicies)[i].CanDelete, chk.Equals, policies[i].CanDelete)
+		c.Assert(returnedPolicies[i].CanRead, chk.Equals, policies[i].CanRead)
+		c.Assert(returnedPolicies[i].CanAppend, chk.Equals, policies[i].CanAppend)
+		c.Assert(returnedPolicies[i].CanUpdate, chk.Equals, policies[i].CanUpdate)
+		c.Assert(returnedPolicies[i].CanDelete, chk.Equals, policies[i].CanDelete)
 
 	}
 }

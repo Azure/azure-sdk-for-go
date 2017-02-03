@@ -187,7 +187,7 @@ func generateTableACLPayload(policies []TableAccessPolicy) (io.Reader, int, erro
 }
 
 // GetTablePermissions gets the table ACL permissions, as per REST details https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/get-table-acl
-func (c *TableServiceClient) GetTablePermissions(table AzureTable, timeout int) (permissionResponse *[]TableAccessPolicy, err error) {
+func (c *TableServiceClient) GetTablePermissions(table AzureTable, timeout int) (permissionResponse []TableAccessPolicy, err error) {
 	params := url.Values{"comp": {"acl"}}
 
 	if timeout > 0 {
@@ -212,11 +212,11 @@ func (c *TableServiceClient) GetTablePermissions(table AzureTable, timeout int) 
 	if err != nil {
 		return nil, err
 	}
-
-	return updateTableAccessPolicy(ap), nil
+	out := updateTableAccessPolicy(ap)
+	return out, nil
 }
 
-func updateTableAccessPolicy(ap AccessPolicy) *[]TableAccessPolicy {
+func updateTableAccessPolicy(ap AccessPolicy) []TableAccessPolicy {
 	out := []TableAccessPolicy{}
 	for _, policy := range ap.SignedIdentifiersList.SignedIdentifiers {
 		tap := TableAccessPolicy{
@@ -224,14 +224,14 @@ func updateTableAccessPolicy(ap AccessPolicy) *[]TableAccessPolicy {
 			StartTime:  policy.AccessPolicy.StartTime,
 			ExpiryTime: policy.AccessPolicy.ExpiryTime,
 		}
-		updatePermissions(&tap.CanRead, policy.AccessPolicy.Permission, "r")
-		updatePermissions(&tap.CanAppend, policy.AccessPolicy.Permission, "a")
-		updatePermissions(&tap.CanUpdate, policy.AccessPolicy.Permission, "u")
-		updatePermissions(&tap.CanDelete, policy.AccessPolicy.Permission, "d")
+		tap.CanRead = updatePermissions(policy.AccessPolicy.Permission, "r")
+		tap.CanAppend = updatePermissions(policy.AccessPolicy.Permission, "a")
+		tap.CanUpdate = updatePermissions(policy.AccessPolicy.Permission, "u")
+		tap.CanDelete = updatePermissions(policy.AccessPolicy.Permission, "d")
 
 		out = append(out, tap)
 	}
-	return &out
+	return out
 }
 
 func generateTablePermissions(tap *TableAccessPolicy) (permissions string) {

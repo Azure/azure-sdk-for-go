@@ -501,7 +501,7 @@ func (b BlobStorageClient) SetContainerPermissions(container string, containerPe
 // If timeout is 0 then it will not be passed to Azure
 // leaseID will only be passed to Azure if populated
 // Returns permissionResponse which is combined permissions and AccessPolicy
-func (b BlobStorageClient) GetContainerPermissions(container string, timeout int, leaseID string) (permissionResponse *ContainerPermissions, err error) {
+func (b BlobStorageClient) GetContainerPermissions(container string, timeout int, leaseID string) (*ContainerPermissions, error) {
 	params := url.Values{"restype": {"container"},
 		"comp": {"acl"}}
 
@@ -528,12 +528,11 @@ func (b BlobStorageClient) GetContainerPermissions(container string, timeout int
 		return nil, err
 	}
 
-	permissionResponse = updateContainerAccessPolicy(out, &resp.headers)
-
-	return permissionResponse, nil
+	permissionResponse := updateContainerAccessPolicy(out, &resp.headers)
+	return &permissionResponse, nil
 }
 
-func updateContainerAccessPolicy(ap AccessPolicy, headers *http.Header) *ContainerPermissions {
+func updateContainerAccessPolicy(ap AccessPolicy, headers *http.Header) ContainerPermissions {
 	// containerAccess. Blob, Container, empty
 	containerAccess := headers.Get(http.CanonicalHeaderKey(ContainerAccessHeader))
 
@@ -545,14 +544,14 @@ func updateContainerAccessPolicy(ap AccessPolicy, headers *http.Header) *Contain
 			StartTime:  policy.AccessPolicy.StartTime,
 			ExpiryTime: policy.AccessPolicy.ExpiryTime,
 		}
-		updatePermissions(&capd.CanRead, policy.AccessPolicy.Permission, "r")
-		updatePermissions(&capd.CanWrite, policy.AccessPolicy.Permission, "w")
-		updatePermissions(&capd.CanDelete, policy.AccessPolicy.Permission, "d")
+		capd.CanRead = updatePermissions(policy.AccessPolicy.Permission, "r")
+		capd.CanWrite = updatePermissions(policy.AccessPolicy.Permission, "w")
+		capd.CanDelete = updatePermissions(policy.AccessPolicy.Permission, "d")
 
 		cp.AccessPolicies = append(cp.AccessPolicies, capd)
 	}
 
-	return &cp
+	return cp
 }
 
 // DeleteContainer deletes the container with given name on the storage

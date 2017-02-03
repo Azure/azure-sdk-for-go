@@ -42,6 +42,6 @@ func convertAccessPolicyToXMLStructs(id string, startTime time.Time, expiryTime 
 	}
 }
 
-func updatePermissions(policy *bool, permissions, permission string) {
-	*policy = strings.Contains(permissions, permission)
+func updatePermissions(permissions, permission string) bool {
+	return strings.Contains(permissions, permission)
 }

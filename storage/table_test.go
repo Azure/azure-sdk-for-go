@@ -287,10 +287,11 @@ func randTable() string {
 	return string(bytes)
 }
 
-func (s *StorageBlobSuite) createTablePermissions(ID string, canRead bool, canAppend bool, canUpdate bool,
-	canDelete bool, startTime time.Time, expiryTime time.Time) TableAccessPolicy {
+func appendTablePermission(policies []TableAccessPolicy, ID string,
+	canRead bool, canAppend bool, canUpdate bool, canDelete bool,
+	startTime time.Time, expiryTime time.Time) []TableAccessPolicy {
 
-	return TableAccessPolicy{
+	tap := TableAccessPolicy{
 		ID:         ID,
 		StartTime:  startTime,
 		ExpiryTime: expiryTime,
@@ -299,6 +300,8 @@ func (s *StorageBlobSuite) createTablePermissions(ID string, canRead bool, canAp
 		CanUpdate:  canUpdate,
 		CanDelete:  canDelete,
 	}
+	policies = append(policies, tap)
+	return policies
 }
 
 func (s *StorageBlobSuite) TestSetTablePermissionsSuccessfully(c *chk.C) {
@@ -308,17 +311,21 @@ func (s *StorageBlobSuite) TestSetTablePermissionsSuccessfully(c *chk.C) {
 	c.Assert(err, chk.IsNil)
 	defer cli.DeleteTable(tn)
 
-	policy := s.createTablePermissions("MTIzNDU2Nzg5MDEyMzQ1Njc4OTAxMjM0NTY3ODkwMTa=", true, true, true, true, time.Now(), time.Now().Add(time.Hour*10))
-	err = cli.SetTablePermissions(tn, policy, 0)
+	policies := []TableAccessPolicy{}
+	policies = appendTablePermission(policies, "GolangRocksOnAzure", true, true, true, true, now, now.Add(10*time.Hour))
+
+	err = cli.SetTablePermissions(tn, policies, 0)
 	c.Assert(err, chk.IsNil)
 }
 
 func (s *StorageBlobSuite) TestSetTablePermissionsUnsuccessfully(c *chk.C) {
 	cli := getTableClient(c)
-
 	tn := AzureTable("nonexistingtable")
-	policy := s.createTablePermissions("MTIzNDU2Nzg5MDEyMzQ1Njc4OTAxMjM0NTY3ODkwMTa=", true, true, true, true, time.Now(), time.Now().Add(10*time.Hour))
-	err := cli.SetTablePermissions(tn, policy, 0)
+
+	policies := []TableAccessPolicy{}
+	policies = appendTablePermission(policies, "GolangRocksOnAzure", true, true, true, true, now, now.Add(10*time.Hour))
+
+	err := cli.SetTablePermissions(tn, policies, 0)
 	c.Assert(err, chk.NotNil)
 }
 
@@ -329,21 +336,34 @@ func (s *StorageBlobSuite) TestSetThenGetTablePermissionsSuccessfully(c *chk.C) 
 	c.Assert(err, chk.IsNil)
 	defer cli.DeleteTable(tn)
 
-	policy := s.createTablePermissions("MTIzNDU2Nzg5MDEyMzQ1Njc4OTAxMjM0NTY3ODkwMTa=", true, true, true, true, time.Now(), time.Now().Add(time.Hour*10))
-	err = cli.SetTablePermissions(tn, policy, 0)
+	policies := []TableAccessPolicy{}
+	policies = appendTablePermission(policies, "GolangRocksOnAzure", true, true, true, true, now, now.Add(10*time.Hour))
+	policies = appendTablePermission(policies, "AutoRestIsSuperCool", true, true, false, true, now.Add(20*time.Hour), now.Add(30*time.Hour))
+	err = cli.SetTablePermissions(tn, policies, 0)
 	c.Assert(err, chk.IsNil)
 
-	returnedPerms, err := cli.GetTablePermissions(tn, 0)
+	returnedPolicies, err := cli.GetTablePermissions(tn, 0)
 	c.Assert(err, chk.IsNil)
 
 	// now check policy set.
-	c.Assert(returnedPerms.SignedIdentifiersList.SignedIdentifiers, chk.HasLen, 1)
-	c.Assert(returnedPerms.SignedIdentifiersList.SignedIdentifiers[0].ID, chk.Equals, policy.ID)
+	c.Assert(returnedPolicies, chk.HasLen, 2)
 
-	// test timestamps down the second
-	// rounding start/expiry time original perms since the returned perms would have been rounded.
-	// so need rounded vs rounded.
-	c.Assert(returnedPerms.SignedIdentifiersList.SignedIdentifiers[0].AccessPolicy.StartTime.UTC().Round(time.Second).Format(time.RFC1123), chk.Equals, policy.StartTime.UTC().Round(time.Second).Format(time.RFC1123))
-	c.Assert(returnedPerms.SignedIdentifiersList.SignedIdentifiers[0].AccessPolicy.ExpiryTime.UTC().Round(time.Second).Format(time.RFC1123), chk.Equals, policy.ExpiryTime.UTC().Round(time.Second).Format(time.RFC1123))
-	c.Assert(returnedPerms.SignedIdentifiersList.SignedIdentifiers[0].AccessPolicy.Permission, chk.Equals, "raud")
+	for i := range policies {
+		c.Assert(returnedPolicies[i].ID, chk.Equals, policies[i].ID)
+
+		// test timestamps down the second
+		// rounding start/expiry time original perms since the returned perms would have been rounded.
+		// so need rounded vs rounded.
+		c.Assert(returnedPolicies[i].StartTime.UTC().Round(time.Second).Format(time.RFC1123),
+			chk.Equals, policies[i].StartTime.UTC().Round(time.Second).Format(time.RFC1123))
+
+		c.Assert(returnedPolicies[i].ExpiryTime.UTC().Round(time.Second).Format(time.RFC1123),
+			chk.Equals, policies[i].ExpiryTime.UTC().Round(time.Second).Format(time.RFC1123))
+
+		c.Assert(returnedPolicies[i].CanRead, chk.Equals, policies[i].CanRead)
+		c.Assert(returnedPolicies[i].CanAppend, chk.Equals, policies[i].CanAppend)
+		c.Assert(returnedPolicies[i].CanUpdate, chk.Equals, policies[i].CanUpdate)
+		c.Assert(returnedPolicies[i].CanDelete, chk.Equals, policies[i].CanDelete)
+
+	}
 }

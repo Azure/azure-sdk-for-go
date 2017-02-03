@@ -6,6 +6,7 @@ import (
 	"net/url"
 	"os"
 	"testing"
+	"time"
 
 	chk "gopkg.in/check.v1"
 )
@@ -16,6 +17,8 @@ func Test(t *testing.T) { chk.TestingT(t) }
 type StorageClientSuite struct{}
 
 var _ = chk.Suite(&StorageClientSuite{})
+
+var now = time.Now()
 
 // getBasicClient returns a test client from storage credentials in the env
 func getBasicClient(c *chk.C) Client {

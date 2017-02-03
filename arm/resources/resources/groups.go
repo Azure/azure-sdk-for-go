@@ -122,10 +122,7 @@ func (client GroupsClient) CreateOrUpdate(resourceGroupName string, parameters R
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}},
 		{TargetValue: parameters,
-			Constraints: []validation.Constraint{{Target: "parameters.Properties", Name: validation.Null, Rule: false,
-				Chain: []validation.Constraint{{Target: "parameters.Properties.ProvisioningState", Name: validation.ReadOnly, Rule: true, Chain: nil}}},
-				{Target: "parameters.Location", Name: validation.Null, Rule: true, Chain: nil},
-				{Target: "parameters.ID", Name: validation.ReadOnly, Rule: true, Chain: nil}}}}); err != nil {
+			Constraints: []validation.Constraint{{Target: "parameters.Location", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
 		return result, validation.NewErrorWithValidationError(err, "resources.GroupsClient", "CreateOrUpdate")
 	}
 
@@ -613,9 +610,7 @@ func (client GroupsClient) Patch(resourceGroupName string, parameters ResourceGr
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}},
-		{TargetValue: parameters,
-			Constraints: []validation.Constraint{{Target: "parameters.ID", Name: validation.ReadOnly, Rule: true, Chain: nil}}}}); err != nil {
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewErrorWithValidationError(err, "resources.GroupsClient", "Patch")
 	}
 

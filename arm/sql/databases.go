@@ -21,7 +21,6 @@ package sql
 import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/Azure/go-autorest/autorest/validation"
 	"net/http"
 )
 
@@ -57,26 +56,6 @@ func NewDatabasesClientWithBaseURI(baseURI string, subscriptionID string) Databa
 // created). parameters is the required parameters for creating or updating a
 // database.
 func (client DatabasesClient) CreateOrUpdate(resourceGroupName string, serverName string, databaseName string, parameters Database, cancel <-chan struct{}) (result autorest.Response, err error) {
-	if err := validation.Validate([]validation.Validation{
-		{TargetValue: parameters,
-			Constraints: []validation.Constraint{{Target: "parameters.DatabaseProperties", Name: validation.Null, Rule: false,
-				Chain: []validation.Constraint{{Target: "parameters.DatabaseProperties.CreationDate", Name: validation.ReadOnly, Rule: true, Chain: nil},
-					{Target: "parameters.DatabaseProperties.ContainmentState", Name: validation.ReadOnly, Rule: true, Chain: nil},
-					{Target: "parameters.DatabaseProperties.CurrentServiceObjectiveID", Name: validation.ReadOnly, Rule: true, Chain: nil},
-					{Target: "parameters.DatabaseProperties.DatabaseID", Name: validation.ReadOnly, Rule: true, Chain: nil},
-					{Target: "parameters.DatabaseProperties.EarliestRestoreDate", Name: validation.ReadOnly, Rule: true, Chain: nil},
-					{Target: "parameters.DatabaseProperties.ServiceLevelObjective", Name: validation.ReadOnly, Rule: true, Chain: nil},
-					{Target: "parameters.DatabaseProperties.Status", Name: validation.ReadOnly, Rule: true, Chain: nil},
-					{Target: "parameters.DatabaseProperties.DefaultSecondaryLocation", Name: validation.ReadOnly, Rule: true, Chain: nil},
-					{Target: "parameters.DatabaseProperties.ServiceTierAdvisors", Name: validation.ReadOnly, Rule: true, Chain: nil},
-					{Target: "parameters.DatabaseProperties.UpgradeHint", Name: validation.ReadOnly, Rule: true, Chain: nil},
-					{Target: "parameters.DatabaseProperties.Schemas", Name: validation.ReadOnly, Rule: true, Chain: nil},
-					{Target: "parameters.DatabaseProperties.TransparentDataEncryption", Name: validation.ReadOnly, Rule: true, Chain: nil},
-					{Target: "parameters.DatabaseProperties.RecommendedIndex", Name: validation.ReadOnly, Rule: true, Chain: nil},
-				}}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "sql.DatabasesClient", "CreateOrUpdate")
-	}
-
 	req, err := client.CreateOrUpdatePreparer(resourceGroupName, serverName, databaseName, parameters, cancel)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "sql.DatabasesClient", "CreateOrUpdate", nil, "Failure preparing request")

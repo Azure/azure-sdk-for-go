@@ -21,7 +21,6 @@ package commitmentplans
 import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/Azure/go-autorest/autorest/validation"
 	"net/http"
 )
 
@@ -51,24 +50,6 @@ func NewClientWithBaseURI(baseURI string, subscriptionID string) Client {
 // commitment plan. resourceGroupName is the resource group name.
 // commitmentPlanName is the Azure ML commitment plan name.
 func (client Client) CreateOrUpdate(createOrUpdatePayload CommitmentPlan, resourceGroupName string, commitmentPlanName string) (result CommitmentPlan, err error) {
-	if err := validation.Validate([]validation.Validation{
-		{TargetValue: createOrUpdatePayload,
-			Constraints: []validation.Constraint{{Target: "createOrUpdatePayload.Properties", Name: validation.Null, Rule: false,
-				Chain: []validation.Constraint{{Target: "createOrUpdatePayload.Properties.ChargeForOverage", Name: validation.ReadOnly, Rule: true, Chain: nil},
-					{Target: "createOrUpdatePayload.Properties.ChargeForPlan", Name: validation.ReadOnly, Rule: true, Chain: nil},
-					{Target: "createOrUpdatePayload.Properties.CreationDate", Name: validation.ReadOnly, Rule: true, Chain: nil},
-					{Target: "createOrUpdatePayload.Properties.IncludedQuantities", Name: validation.ReadOnly, Rule: true, Chain: nil},
-					{Target: "createOrUpdatePayload.Properties.MaxAssociationLimit", Name: validation.ReadOnly, Rule: true, Chain: nil},
-					{Target: "createOrUpdatePayload.Properties.MaxCapacityLimit", Name: validation.ReadOnly, Rule: true, Chain: nil},
-					{Target: "createOrUpdatePayload.Properties.MinCapacityLimit", Name: validation.ReadOnly, Rule: true, Chain: nil},
-					{Target: "createOrUpdatePayload.Properties.PlanMeter", Name: validation.ReadOnly, Rule: true, Chain: nil},
-					{Target: "createOrUpdatePayload.Properties.RefillFrequencyInDays", Name: validation.ReadOnly, Rule: true, Chain: nil},
-					{Target: "createOrUpdatePayload.Properties.SuspendPlanOnOverage", Name: validation.ReadOnly, Rule: true, Chain: nil},
-				}},
-				{Target: "createOrUpdatePayload.Properties", Name: validation.ReadOnly, Rule: true, Chain: nil}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "commitmentplans.Client", "CreateOrUpdate")
-	}
-
 	req, err := client.CreateOrUpdatePreparer(createOrUpdatePayload, resourceGroupName, commitmentPlanName)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "commitmentplans.Client", "CreateOrUpdate", nil, "Failure preparing request")

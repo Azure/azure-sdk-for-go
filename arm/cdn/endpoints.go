@@ -60,11 +60,7 @@ func (client EndpointsClient) Create(resourceGroupName string, profileName strin
 				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}},
 		{TargetValue: endpoint,
 			Constraints: []validation.Constraint{{Target: "endpoint.EndpointProperties", Name: validation.Null, Rule: false,
-				Chain: []validation.Constraint{{Target: "endpoint.EndpointProperties.Origins", Name: validation.Null, Rule: true, Chain: nil},
-					{Target: "endpoint.EndpointProperties.HostName", Name: validation.ReadOnly, Rule: true, Chain: nil},
-					{Target: "endpoint.EndpointProperties.ResourceState", Name: validation.ReadOnly, Rule: true, Chain: nil},
-					{Target: "endpoint.EndpointProperties.ProvisioningState", Name: validation.ReadOnly, Rule: true, Chain: nil},
-				}}}}}); err != nil {
+				Chain: []validation.Constraint{{Target: "endpoint.EndpointProperties.Origins", Name: validation.Null, Rule: true, Chain: nil}}}}}}); err != nil {
 		return result, validation.NewErrorWithValidationError(err, "cdn.EndpointsClient", "Create")
 	}
 

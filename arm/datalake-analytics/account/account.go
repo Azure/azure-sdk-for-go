@@ -65,13 +65,6 @@ func (client Client) Create(resourceGroupName string, name string, parameters Da
 					{Target: "parameters.DataLakeAnalyticsAccountProperties.MaxJobCount", Name: validation.Null, Rule: false,
 						Chain: []validation.Constraint{{Target: "parameters.DataLakeAnalyticsAccountProperties.MaxJobCount", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil}}},
 					{Target: "parameters.DataLakeAnalyticsAccountProperties.DataLakeStoreAccounts", Name: validation.Null, Rule: true, Chain: nil},
-					{Target: "parameters.DataLakeAnalyticsAccountProperties.ProvisioningState", Name: validation.ReadOnly, Rule: true, Chain: nil},
-					{Target: "parameters.DataLakeAnalyticsAccountProperties.State", Name: validation.ReadOnly, Rule: true, Chain: nil},
-					{Target: "parameters.DataLakeAnalyticsAccountProperties.SystemMaxDegreeOfParallelism", Name: validation.ReadOnly, Rule: true, Chain: nil},
-					{Target: "parameters.DataLakeAnalyticsAccountProperties.SystemMaxJobCount", Name: validation.ReadOnly, Rule: true, Chain: nil},
-					{Target: "parameters.DataLakeAnalyticsAccountProperties.CreationTime", Name: validation.ReadOnly, Rule: true, Chain: nil},
-					{Target: "parameters.DataLakeAnalyticsAccountProperties.LastModifiedTime", Name: validation.ReadOnly, Rule: true, Chain: nil},
-					{Target: "parameters.DataLakeAnalyticsAccountProperties.Endpoint", Name: validation.ReadOnly, Rule: true, Chain: nil},
 				}}}}}); err != nil {
 		return result, validation.NewErrorWithValidationError(err, "account.Client", "Create")
 	}

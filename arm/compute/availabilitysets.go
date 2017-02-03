@@ -21,7 +21,6 @@ package compute
 import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/Azure/go-autorest/autorest/validation"
 	"net/http"
 )
 
@@ -48,13 +47,6 @@ func NewAvailabilitySetsClientWithBaseURI(baseURI string, subscriptionID string)
 // the availability set. parameters is parameters supplied to the Create
 // Availability Set operation.
 func (client AvailabilitySetsClient) CreateOrUpdate(resourceGroupName string, name string, parameters AvailabilitySet) (result AvailabilitySet, err error) {
-	if err := validation.Validate([]validation.Validation{
-		{TargetValue: parameters,
-			Constraints: []validation.Constraint{{Target: "parameters.AvailabilitySetProperties", Name: validation.Null, Rule: false,
-				Chain: []validation.Constraint{{Target: "parameters.AvailabilitySetProperties.Statuses", Name: validation.ReadOnly, Rule: true, Chain: nil}}}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "compute.AvailabilitySetsClient", "CreateOrUpdate")
-	}
-
 	req, err := client.CreateOrUpdatePreparer(resourceGroupName, name, parameters)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "compute.AvailabilitySetsClient", "CreateOrUpdate", nil, "Failure preparing request")

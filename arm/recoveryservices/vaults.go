@@ -21,7 +21,6 @@ package recoveryservices
 import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/Azure/go-autorest/autorest/validation"
 	"net/http"
 )
 
@@ -47,14 +46,6 @@ func NewVaultsClientWithBaseURI(baseURI string, subscriptionID string) VaultsCli
 // services vault is present. vaultName is the name of the recovery services
 // vault. vault is recovery Services Vault to be created.
 func (client VaultsClient) CreateOrUpdate(resourceGroupName string, vaultName string, vault Vault) (result Vault, err error) {
-	if err := validation.Validate([]validation.Validation{
-		{TargetValue: vault,
-			Constraints: []validation.Constraint{{Target: "vault.Properties", Name: validation.Null, Rule: false,
-				Chain: []validation.Constraint{{Target: "vault.Properties.ProvisioningState", Name: validation.ReadOnly, Rule: true, Chain: nil}}},
-				{Target: "vault.Etag", Name: validation.ReadOnly, Rule: true, Chain: nil}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "recoveryservices.VaultsClient", "CreateOrUpdate")
-	}
-
 	req, err := client.CreateOrUpdatePreparer(resourceGroupName, vaultName, vault)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "recoveryservices.VaultsClient", "CreateOrUpdate", nil, "Failure preparing request")

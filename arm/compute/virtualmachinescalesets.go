@@ -59,7 +59,6 @@ func (client VirtualMachineScaleSetsClient) CreateOrUpdate(resourceGroupName str
 							Chain: []validation.Constraint{{Target: "parameters.VirtualMachineScaleSetProperties.VirtualMachineProfile.StorageProfile.OsDisk.Name", Name: validation.Null, Rule: true, Chain: nil}}},
 						}},
 					}},
-					{Target: "parameters.VirtualMachineScaleSetProperties.ProvisioningState", Name: validation.ReadOnly, Rule: true, Chain: nil},
 				}}}}}); err != nil {
 		return result, validation.NewErrorWithValidationError(err, "compute.VirtualMachineScaleSetsClient", "CreateOrUpdate")
 	}

@@ -200,9 +200,7 @@ func (client ResourceOperationsClient) CreateOrUpdate(resourceGroupName string, 
 								}},
 							}},
 					}},
-				}},
-				{Target: "iotHubDescription.Sku", Name: validation.Null, Rule: false,
-					Chain: []validation.Constraint{{Target: "iotHubDescription.Sku.Tier", Name: validation.ReadOnly, Rule: true, Chain: nil}}}}}}); err != nil {
+				}}}}}); err != nil {
 		return result, validation.NewErrorWithValidationError(err, "iothub.ResourceOperationsClient", "CreateOrUpdate")
 	}
 

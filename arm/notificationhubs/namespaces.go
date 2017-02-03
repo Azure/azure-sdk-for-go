@@ -50,9 +50,7 @@ func (client NamespacesClient) CheckAvailability(parameters CheckAvailabilityPar
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: parameters,
 			Constraints: []validation.Constraint{{Target: "parameters.Name", Name: validation.Null, Rule: true, Chain: nil},
-				{Target: "parameters.Location", Name: validation.Null, Rule: true, Chain: nil},
-				{Target: "parameters.ID", Name: validation.ReadOnly, Rule: true, Chain: nil},
-				{Target: "parameters.Type", Name: validation.ReadOnly, Rule: true, Chain: nil}}}}); err != nil {
+				{Target: "parameters.Location", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
 		return result, validation.NewErrorWithValidationError(err, "notificationhubs.NamespacesClient", "CheckAvailability")
 	}
 

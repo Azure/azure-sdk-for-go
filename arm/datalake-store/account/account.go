@@ -53,10 +53,7 @@ func (client Client) Create(resourceGroupName string, name string, parameters Da
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: parameters,
 			Constraints: []validation.Constraint{{Target: "parameters.Identity", Name: validation.Null, Rule: false,
-				Chain: []validation.Constraint{{Target: "parameters.Identity.Type", Name: validation.Null, Rule: true, Chain: nil},
-					{Target: "parameters.Identity.PrincipalID", Name: validation.ReadOnly, Rule: true, Chain: nil},
-					{Target: "parameters.Identity.TenantID", Name: validation.ReadOnly, Rule: true, Chain: nil},
-				}},
+				Chain: []validation.Constraint{{Target: "parameters.Identity.Type", Name: validation.Null, Rule: true, Chain: nil}}},
 				{Target: "parameters.DataLakeStoreAccountProperties", Name: validation.Null, Rule: false,
 					Chain: []validation.Constraint{{Target: "parameters.DataLakeStoreAccountProperties.EncryptionConfig", Name: validation.Null, Rule: false,
 						Chain: []validation.Constraint{{Target: "parameters.DataLakeStoreAccountProperties.EncryptionConfig.KeyVaultMetaInfo", Name: validation.Null, Rule: false,
@@ -65,12 +62,6 @@ func (client Client) Create(resourceGroupName string, name string, parameters Da
 								{Target: "parameters.DataLakeStoreAccountProperties.EncryptionConfig.KeyVaultMetaInfo.EncryptionKeyVersion", Name: validation.Null, Rule: true, Chain: nil},
 							}},
 						}},
-						{Target: "parameters.DataLakeStoreAccountProperties.ProvisioningState", Name: validation.ReadOnly, Rule: true, Chain: nil},
-						{Target: "parameters.DataLakeStoreAccountProperties.State", Name: validation.ReadOnly, Rule: true, Chain: nil},
-						{Target: "parameters.DataLakeStoreAccountProperties.CreationTime", Name: validation.ReadOnly, Rule: true, Chain: nil},
-						{Target: "parameters.DataLakeStoreAccountProperties.EncryptionProvisioningState", Name: validation.ReadOnly, Rule: true, Chain: nil},
-						{Target: "parameters.DataLakeStoreAccountProperties.LastModifiedTime", Name: validation.ReadOnly, Rule: true, Chain: nil},
-						{Target: "parameters.DataLakeStoreAccountProperties.Endpoint", Name: validation.ReadOnly, Rule: true, Chain: nil},
 					}}}}}); err != nil {
 		return result, validation.NewErrorWithValidationError(err, "account.Client", "Create")
 	}

@@ -79,10 +79,6 @@ func (client Client) CreateOrUpdate(resourceGroupName string, webServiceName str
 						Chain: []validation.Constraint{{Target: "createOrUpdatePayload.Properties.Output.Type", Name: validation.Null, Rule: true, Chain: nil},
 							{Target: "createOrUpdatePayload.Properties.Output.Properties", Name: validation.Null, Rule: true, Chain: nil},
 						}},
-					{Target: "createOrUpdatePayload.Properties.CreatedOn", Name: validation.ReadOnly, Rule: true, Chain: nil},
-					{Target: "createOrUpdatePayload.Properties.ModifiedOn", Name: validation.ReadOnly, Rule: true, Chain: nil},
-					{Target: "createOrUpdatePayload.Properties.ProvisioningState", Name: validation.ReadOnly, Rule: true, Chain: nil},
-					{Target: "createOrUpdatePayload.Properties.SwaggerLocation", Name: validation.ReadOnly, Rule: true, Chain: nil},
 				}}}}}); err != nil {
 		return result, validation.NewErrorWithValidationError(err, "webservices.Client", "CreateOrUpdate")
 	}

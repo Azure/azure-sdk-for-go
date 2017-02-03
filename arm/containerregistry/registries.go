@@ -128,8 +128,6 @@ func (client RegistriesClient) CreateOrUpdate(resourceGroupName string, registry
 					Chain: []validation.Constraint{{Target: "registry.RegistryProperties.StorageAccount.Name", Name: validation.Null, Rule: true, Chain: nil},
 						{Target: "registry.RegistryProperties.StorageAccount.AccessKey", Name: validation.Null, Rule: true, Chain: nil},
 					}},
-					{Target: "registry.RegistryProperties.LoginServer", Name: validation.ReadOnly, Rule: true, Chain: nil},
-					{Target: "registry.RegistryProperties.CreationDate", Name: validation.ReadOnly, Rule: true, Chain: nil},
 				}}}}}); err != nil {
 		return result, validation.NewErrorWithValidationError(err, "containerregistry.RegistriesClient", "CreateOrUpdate")
 	}

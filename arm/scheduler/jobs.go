@@ -45,24 +45,6 @@ func NewJobsClientWithBaseURI(baseURI string, subscriptionID string) JobsClient 
 // resourceGroupName is the resource group name. jobCollectionName is the job
 // collection name. jobName is the job name. job is the job definition.
 func (client JobsClient) CreateOrUpdate(resourceGroupName string, jobCollectionName string, jobName string, job JobDefinition) (result JobDefinition, err error) {
-	if err := validation.Validate([]validation.Validation{
-		{TargetValue: job,
-			Constraints: []validation.Constraint{{Target: "job.Properties", Name: validation.Null, Rule: false,
-				Chain: []validation.Constraint{{Target: "job.Properties.Status", Name: validation.Null, Rule: false,
-					Chain: []validation.Constraint{{Target: "job.Properties.Status.ExecutionCount", Name: validation.ReadOnly, Rule: true, Chain: nil},
-						{Target: "job.Properties.Status.FailureCount", Name: validation.ReadOnly, Rule: true, Chain: nil},
-						{Target: "job.Properties.Status.FaultedCount", Name: validation.ReadOnly, Rule: true, Chain: nil},
-						{Target: "job.Properties.Status.LastExecutionTime", Name: validation.ReadOnly, Rule: true, Chain: nil},
-						{Target: "job.Properties.Status.NextExecutionTime", Name: validation.ReadOnly, Rule: true, Chain: nil},
-					}},
-					{Target: "job.Properties.Status", Name: validation.ReadOnly, Rule: true, Chain: nil},
-				}},
-				{Target: "job.ID", Name: validation.ReadOnly, Rule: true, Chain: nil},
-				{Target: "job.Type", Name: validation.ReadOnly, Rule: true, Chain: nil},
-				{Target: "job.Name", Name: validation.ReadOnly, Rule: true, Chain: nil}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "scheduler.JobsClient", "CreateOrUpdate")
-	}
-
 	req, err := client.CreateOrUpdatePreparer(resourceGroupName, jobCollectionName, jobName, job)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "scheduler.JobsClient", "CreateOrUpdate", nil, "Failure preparing request")
@@ -473,14 +455,6 @@ func (client JobsClient) ListJobHistoryNextResults(lastResults JobHistoryListRes
 // resourceGroupName is the resource group name. jobCollectionName is the job
 // collection name. jobName is the job name. job is the job definition.
 func (client JobsClient) Patch(resourceGroupName string, jobCollectionName string, jobName string, job JobDefinition) (result JobDefinition, err error) {
-	if err := validation.Validate([]validation.Validation{
-		{TargetValue: job,
-			Constraints: []validation.Constraint{{Target: "job.ID", Name: validation.ReadOnly, Rule: true, Chain: nil},
-				{Target: "job.Type", Name: validation.ReadOnly, Rule: true, Chain: nil},
-				{Target: "job.Name", Name: validation.ReadOnly, Rule: true, Chain: nil}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "scheduler.JobsClient", "Patch")
-	}
-
 	req, err := client.PatchPreparer(resourceGroupName, jobCollectionName, jobName, job)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "scheduler.JobsClient", "Patch", nil, "Failure preparing request")

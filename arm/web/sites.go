@@ -21,7 +21,6 @@ package web
 import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/Azure/go-autorest/autorest/validation"
 	"net/http"
 )
 
@@ -731,27 +730,6 @@ func (client SitesClient) CreateInstanceDeploymentSlotResponder(resp *http.Respo
 // registered with DNS ttlInSeconds is time to live in seconds for web app's
 // default domain name
 func (client SitesClient) CreateOrUpdateSite(resourceGroupName string, name string, siteEnvelope Site, skipDNSRegistration string, skipCustomDomainVerification string, forceDNSRegistration string, ttlInSeconds string, cancel <-chan struct{}) (result autorest.Response, err error) {
-	if err := validation.Validate([]validation.Validation{
-		{TargetValue: siteEnvelope,
-			Constraints: []validation.Constraint{{Target: "siteEnvelope.SiteProperties", Name: validation.Null, Rule: false,
-				Chain: []validation.Constraint{{Target: "siteEnvelope.SiteProperties.State", Name: validation.ReadOnly, Rule: true, Chain: nil},
-					{Target: "siteEnvelope.SiteProperties.HostNames", Name: validation.ReadOnly, Rule: true, Chain: nil},
-					{Target: "siteEnvelope.SiteProperties.RepositorySiteName", Name: validation.ReadOnly, Rule: true, Chain: nil},
-					{Target: "siteEnvelope.SiteProperties.UsageState", Name: validation.ReadOnly, Rule: true, Chain: nil},
-					{Target: "siteEnvelope.SiteProperties.EnabledHostNames", Name: validation.ReadOnly, Rule: true, Chain: nil},
-					{Target: "siteEnvelope.SiteProperties.AvailabilityState", Name: validation.ReadOnly, Rule: true, Chain: nil},
-					{Target: "siteEnvelope.SiteProperties.LastModifiedTimeUtc", Name: validation.ReadOnly, Rule: true, Chain: nil},
-					{Target: "siteEnvelope.SiteProperties.TrafficManagerHostNames", Name: validation.ReadOnly, Rule: true, Chain: nil},
-					{Target: "siteEnvelope.SiteProperties.PremiumAppDeployed", Name: validation.ReadOnly, Rule: true, Chain: nil},
-					{Target: "siteEnvelope.SiteProperties.TargetSwapSlot", Name: validation.ReadOnly, Rule: true, Chain: nil},
-					{Target: "siteEnvelope.SiteProperties.OutboundIPAddresses", Name: validation.ReadOnly, Rule: true, Chain: nil},
-					{Target: "siteEnvelope.SiteProperties.ResourceGroup", Name: validation.ReadOnly, Rule: true, Chain: nil},
-					{Target: "siteEnvelope.SiteProperties.IsDefaultContainer", Name: validation.ReadOnly, Rule: true, Chain: nil},
-					{Target: "siteEnvelope.SiteProperties.DefaultHostName", Name: validation.ReadOnly, Rule: true, Chain: nil},
-				}}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "web.SitesClient", "CreateOrUpdateSite")
-	}
-
 	req, err := client.CreateOrUpdateSitePreparer(resourceGroupName, name, siteEnvelope, skipDNSRegistration, skipCustomDomainVerification, forceDNSRegistration, ttlInSeconds, cancel)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web.SitesClient", "CreateOrUpdateSite", nil, "Failure preparing request")
@@ -1251,27 +1229,6 @@ func (client SitesClient) CreateOrUpdateSiteRelayServiceConnectionSlotResponder(
 // registered with DNS ttlInSeconds is time to live in seconds for web app's
 // default domain name
 func (client SitesClient) CreateOrUpdateSiteSlot(resourceGroupName string, name string, siteEnvelope Site, slot string, skipDNSRegistration string, skipCustomDomainVerification string, forceDNSRegistration string, ttlInSeconds string, cancel <-chan struct{}) (result autorest.Response, err error) {
-	if err := validation.Validate([]validation.Validation{
-		{TargetValue: siteEnvelope,
-			Constraints: []validation.Constraint{{Target: "siteEnvelope.SiteProperties", Name: validation.Null, Rule: false,
-				Chain: []validation.Constraint{{Target: "siteEnvelope.SiteProperties.State", Name: validation.ReadOnly, Rule: true, Chain: nil},
-					{Target: "siteEnvelope.SiteProperties.HostNames", Name: validation.ReadOnly, Rule: true, Chain: nil},
-					{Target: "siteEnvelope.SiteProperties.RepositorySiteName", Name: validation.ReadOnly, Rule: true, Chain: nil},
-					{Target: "siteEnvelope.SiteProperties.UsageState", Name: validation.ReadOnly, Rule: true, Chain: nil},
-					{Target: "siteEnvelope.SiteProperties.EnabledHostNames", Name: validation.ReadOnly, Rule: true, Chain: nil},
-					{Target: "siteEnvelope.SiteProperties.AvailabilityState", Name: validation.ReadOnly, Rule: true, Chain: nil},
-					{Target: "siteEnvelope.SiteProperties.LastModifiedTimeUtc", Name: validation.ReadOnly, Rule: true, Chain: nil},
-					{Target: "siteEnvelope.SiteProperties.TrafficManagerHostNames", Name: validation.ReadOnly, Rule: true, Chain: nil},
-					{Target: "siteEnvelope.SiteProperties.PremiumAppDeployed", Name: validation.ReadOnly, Rule: true, Chain: nil},
-					{Target: "siteEnvelope.SiteProperties.TargetSwapSlot", Name: validation.ReadOnly, Rule: true, Chain: nil},
-					{Target: "siteEnvelope.SiteProperties.OutboundIPAddresses", Name: validation.ReadOnly, Rule: true, Chain: nil},
-					{Target: "siteEnvelope.SiteProperties.ResourceGroup", Name: validation.ReadOnly, Rule: true, Chain: nil},
-					{Target: "siteEnvelope.SiteProperties.IsDefaultContainer", Name: validation.ReadOnly, Rule: true, Chain: nil},
-					{Target: "siteEnvelope.SiteProperties.DefaultHostName", Name: validation.ReadOnly, Rule: true, Chain: nil},
-				}}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "web.SitesClient", "CreateOrUpdateSiteSlot")
-	}
-
 	req, err := client.CreateOrUpdateSiteSlotPreparer(resourceGroupName, name, siteEnvelope, slot, skipDNSRegistration, skipCustomDomainVerification, forceDNSRegistration, ttlInSeconds, cancel)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web.SitesClient", "CreateOrUpdateSiteSlot", nil, "Failure preparing request")

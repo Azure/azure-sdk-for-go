@@ -311,7 +311,11 @@ func (c Client) getStandardHeaders() map[string]string {
 }
 
 func (c Client) exec(verb, url string, headers map[string]string, body io.Reader, auth authentication) (*storageResponse, error) {
-	c.addAuthorizationHeader(verb, url, &headers, auth)
+	headers, err := c.addAuthorizationHeader(verb, url, headers, auth)
+	if err != nil {
+		return nil, err
+	}
+
 	req, err := http.NewRequest(verb, url, body)
 	if err != nil {
 		return nil, errors.New("azure/storage: error creating request: " + err.Error())
@@ -374,7 +378,10 @@ func (c Client) exec(verb, url string, headers map[string]string, body io.Reader
 }
 
 func (c Client) execInternalJSON(verb, url string, headers map[string]string, body io.Reader, auth authentication) (*odataResponse, error) {
-	c.addAuthorizationHeader(verb, url, &headers, auth)
+	headers, err := c.addAuthorizationHeader(verb, url, headers, auth)
+	if err != nil {
+		return nil, err
+	}
 
 	req, err := http.NewRequest(verb, url, body)
 	for k, v := range headers {

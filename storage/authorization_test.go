@@ -26,7 +26,7 @@ func (a *AuthorizationSuite) Test_addAuthorizationHeader(c *chk.C) {
 		"Accept":            "application/json;odata=nometadata",
 	}
 	url := "https://mindgotest.table.core.windows.net/tquery()"
-	err = tableCli.client.addAuthorizationHeader("", url, &headers, tableCli.auth)
+	headers, err = tableCli.client.addAuthorizationHeader("", url, headers, tableCli.auth)
 	c.Assert(err, chk.IsNil)
 
 	c.Assert(headers[headerAuthorization], chk.Equals, "SharedKeyLite mindgotest:+32DTgsPUgXPo/O7RYaTs0DllA6FTXMj3uK4Qst8y/E=")
@@ -141,7 +141,8 @@ func (a *AuthorizationSuite) Test_buildCanonicalizedString(c *chk.C) {
 	}
 
 	for _, t := range tests {
-		canonicalizedString := buildCanonicalizedString(t.verb, t.headers, t.canonicalizedResource, t.auth)
+		canonicalizedString, err := buildCanonicalizedString(t.verb, t.headers, t.canonicalizedResource, t.auth)
+		c.Assert(err, chk.IsNil)
 		c.Assert(canonicalizedString, chk.Equals, t.out)
 	}
 }

@@ -36,13 +36,13 @@ const (
 	headerRange             = "Range"
 )
 
-func (c *Client) addAuthorizationHeader(verb, url string, headers *map[string]string, auth authentication) error {
-	authHeader, err := c.getSharedKey(verb, url, *headers, auth)
+func (c *Client) addAuthorizationHeader(verb, url string, headers map[string]string, auth authentication) (map[string]string, error) {
+	authHeader, err := c.getSharedKey(verb, url, headers, auth)
 	if err != nil {
-		return err
+		return nil, err
 	}
-	(*headers)[headerAuthorization] = authHeader
-	return nil
+	headers[headerAuthorization] = authHeader
+	return headers, nil
 }
 
 func (c *Client) getSharedKey(verb, url string, headers map[string]string, auth authentication) (string, error) {
@@ -51,7 +51,10 @@ func (c *Client) getSharedKey(verb, url string, headers map[string]string, auth 
 		return "", err
 	}
 
-	canString := buildCanonicalizedString(verb, headers, canRes, auth)
+	canString, err := buildCanonicalizedString(verb, headers, canRes, auth)
+	if err != nil {
+		return "", err
+	}
 	return c.createAuthorizationHeader(canString, auth), nil
 }
 
@@ -114,7 +117,7 @@ func (c *Client) getCanonicalizedAccountName() string {
 	return strings.TrimSuffix(c.accountName, "-secondary")
 }
 
-func buildCanonicalizedString(verb string, headers map[string]string, canonicalizedResource string, auth authentication) string {
+func buildCanonicalizedString(verb string, headers map[string]string, canonicalizedResource string, auth authentication) (string, error) {
 	contentLength := headers[headerContentLength]
 	if contentLength == "0" {
 		contentLength = ""
@@ -168,8 +171,10 @@ func buildCanonicalizedString(verb string, headers map[string]string, canonicali
 			date,
 			canonicalizedResource,
 		}, "\n")
+	default:
+		return "", fmt.Errorf("%s authentication is not supported yet", auth)
 	}
-	return canString
+	return canString, nil
 }
 
 func buildCanonicalizedHeader(headers map[string]string) string {

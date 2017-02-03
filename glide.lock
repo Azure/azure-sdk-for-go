@@ -1,8 +1,23 @@
-hash: 7407050cee9bb9ce89e23ef26bce4051cce63d558338a4937f027a18b789e3a1
-updated: 2016-12-08T17:31:55.7578123-08:00
+hash: 3a11da81c75582dfd5068c841666b0efe621a6191b1b976d389b0223aa118472
+updated: 2017-01-17T12:47:26.9853413-08:00
 imports:
+- name: github.com/Azure/azure-sdk-for-go
+  version: d05c22dc3f9fdd2ec6e3593839fdd44df17f2de5
+  subpackages:
+  - arm/examples/helpers
+  - arm/storage
+  - management
+  - management/hostedservice
+  - management/storageservice
+  - management/virtualmachine
+  - management/vmutils
+  - management/virtualmachinedisk
+  - management/location
+  - management/testutils
+  - management/osimage
+  - management/virtualmachineimage
 - name: github.com/Azure/go-autorest
-  version: 0781901f19f1e7db3034d97ec57af753db0bf808
+  version: d7c034a8af24eda120dd6460bfcd6d9ed14e43ca
   subpackages:
   - autorest
   - autorest/azure
@@ -10,13 +25,13 @@ imports:
   - autorest/to
   - autorest/validation
 - name: github.com/dgrijalva/jwt-go
-  version: 24c63f56522a87ec5339cc3567883f1039378fdb
+  version: a601269ab70c205d26370c16f7c81e9017c14e04
 - name: github.com/howeyc/gopass
-  version: f5387c492211eb133053880d23dfae62aa14123d
+  version: bf9dde6d0d2c004a008c27aaee91170c786f6db8
 - name: github.com/mattn/go-colorable
-  version: 6c903ff4aa50920ca86087a280590b36b3152b9c
+  version: d228849504861217f796da67fae4f6e347643f15
 - name: github.com/mattn/go-isatty
-  version: 66b8e73f3f5cda9f96b69efd03dd3d7fc4a5cdb8
+  version: 30a891c33c7cde7b02a981314b4228ec99380cca
 - name: github.com/mgutz/ansi
   version: c286dcecd19ff979eeb73ea444e479b903f2cfcb
 - name: github.com/mgutz/minimist
@@ -24,9 +39,9 @@ imports:
 - name: github.com/mgutz/str
   version: 968bf66e3da857419e4f6e71b2d5c9ae95682dc4
 - name: github.com/mgutz/to
-  version: 2a0bcba0661696e339461f5efb2273f4459dd1b9
+  version: 00c06406c2dd2e011f153a6502a21473676db33f
 - name: github.com/MichaelTJones/walk
-  version: 3af09438b0ab0e8f296410bfa646a7e635ea1fc0
+  version: 4748e29d5718c2df4028a6543edf86fd8cc0f881
 - name: github.com/nozzle/throttler
   version: d9b45f19996c645d38c9266d1f5cf1990e930119
 - name: github.com/satori/uuid
@@ -34,17 +49,17 @@ imports:
 - name: github.com/shopspring/decimal
   version: d6f52241f332c63811249bd79a522406bea1a7c9
 - name: golang.org/x/crypto
-  version: 84e98f45760e87786b7f24603b8166a6fa09811d
+  version: 91902e332b9d47760598861512d2ae148f94ca58
   subpackages:
   - pkcs12
   - pkcs12/internal/rc2
   - ssh/terminal
 - name: golang.org/x/sys
-  version: c200b10b5d5e122be351b67af224adc6128af5bf
+  version: d75a52659825e75fff6158388dddc6a5b04f9ba5
   subpackages:
   - unix
 - name: gopkg.in/check.v1
-  version: 4f90aeace3a26ad7021961c297b22c42160c7b25
+  version: 20d25e2804050c1cd24a7eea1e7a6447dd0e74ec
 - name: gopkg.in/godo.v2
   version: b5fd2f0bef1ebe832e628cfad18ab1cc707f65a1
   subpackages:

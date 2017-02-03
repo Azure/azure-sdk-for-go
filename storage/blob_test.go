@@ -1513,7 +1513,7 @@ func (b BlobStorageClient) putSingleBlockBlob(container, name string, chunk []by
 	headers["x-ms-blob-type"] = string(BlobTypeBlock)
 	headers["Content-Length"] = fmt.Sprintf("%v", len(chunk))
 
-	resp, err := b.client.exec(http.MethodPut, uri, headers, bytes.NewReader(chunk))
+	resp, err := b.client.exec(http.MethodPut, uri, headers, bytes.NewReader(chunk), b.auth)
 	if err != nil {
 		return err
 	}

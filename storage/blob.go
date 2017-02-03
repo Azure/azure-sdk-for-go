@@ -17,6 +17,7 @@ import (
 // Service.
 type BlobStorageClient struct {
 	client Client
+	auth   authentication
 }
 
 // A Container is an entry in ContainerListResponse.
@@ -396,7 +397,7 @@ func (b BlobStorageClient) ListContainers(params ListContainersParameters) (Cont
 	headers := b.client.getStandardHeaders()
 
 	var out ContainerListResponse
-	resp, err := b.client.exec(http.MethodGet, uri, headers, nil)
+	resp, err := b.client.exec(http.MethodGet, uri, headers, nil, b.auth)
 	if err != nil {
 		return out, err
 	}
@@ -439,7 +440,7 @@ func (b BlobStorageClient) createContainer(name string, access ContainerAccessTy
 	if access != "" {
 		headers[ContainerAccessHeader] = string(access)
 	}
-	return b.client.exec(http.MethodPut, uri, headers, nil)
+	return b.client.exec(http.MethodPut, uri, headers, nil, b.auth)
 }
 
 // ContainerExists returns true if a container with given name exists
@@ -448,7 +449,7 @@ func (b BlobStorageClient) ContainerExists(name string) (bool, error) {
 	uri := b.client.getEndpoint(blobServiceName, pathForContainer(name), url.Values{"restype": {"container"}})
 	headers := b.client.getStandardHeaders()
 
-	resp, err := b.client.exec(http.MethodHead, uri, headers, nil)
+	resp, err := b.client.exec(http.MethodHead, uri, headers, nil, b.auth)
 	if resp != nil {
 		defer resp.body.Close()
 		if resp.statusCode == http.StatusOK || resp.statusCode == http.StatusNotFound {
@@ -481,7 +482,7 @@ func (b BlobStorageClient) SetContainerPermissions(container string, containerPe
 
 	body, length, err := generateContainerACLpayload(containerPermissions.AccessPolicies)
 	headers["Content-Length"] = strconv.Itoa(length)
-	resp, err := b.client.exec(http.MethodPut, uri, headers, body)
+	resp, err := b.client.exec(http.MethodPut, uri, headers, body, b.auth)
 
 	if err != nil {
 		return err
@@ -516,7 +517,7 @@ func (b BlobStorageClient) GetContainerPermissions(container string, timeout int
 		headers[headerLeaseID] = leaseID
 	}
 
-	resp, err := b.client.exec(http.MethodGet, uri, headers, nil)
+	resp, err := b.client.exec(http.MethodGet, uri, headers, nil, b.auth)
 	if err != nil {
 		return nil, err
 	}
@@ -588,7 +589,7 @@ func (b BlobStorageClient) deleteContainer(name string) (*storageResponse, error
 	uri := b.client.getEndpoint(blobServiceName, pathForContainer(name), url.Values{"restype": {"container"}})
 
 	headers := b.client.getStandardHeaders()
-	return b.client.exec(http.MethodDelete, uri, headers, nil)
+	return b.client.exec(http.MethodDelete, uri, headers, nil, b.auth)
 }
 
 // ListBlobs returns an object that contains list of blobs in the container,
@@ -603,7 +604,7 @@ func (b BlobStorageClient) ListBlobs(container string, params ListBlobsParameter
 	headers := b.client.getStandardHeaders()
 
 	var out BlobListResponse
-	resp, err := b.client.exec(http.MethodGet, uri, headers, nil)
+	resp, err := b.client.exec(http.MethodGet, uri, headers, nil, b.auth)
 	if err != nil {
 		return out, err
 	}
@@ -618,7 +619,7 @@ func (b BlobStorageClient) ListBlobs(container string, params ListBlobsParameter
 func (b BlobStorageClient) BlobExists(container, name string) (bool, error) {
 	uri := b.client.getEndpoint(blobServiceName, pathForBlob(container, name), url.Values{})
 	headers := b.client.getStandardHeaders()
-	resp, err := b.client.exec(http.MethodHead, uri, headers, nil)
+	resp, err := b.client.exec(http.MethodHead, uri, headers, nil, b.auth)
 	if resp != nil {
 		defer resp.body.Close()
 		if resp.statusCode == http.StatusOK || resp.statusCode == http.StatusNotFound {
@@ -684,7 +685,7 @@ func (b BlobStorageClient) getBlobRange(container, name, bytesRange string, extr
 		headers[k] = v
 	}
 
-	resp, err := b.client.exec(http.MethodGet, uri, headers, nil)
+	resp, err := b.client.exec(http.MethodGet, uri, headers, nil, b.auth)
 	if err != nil {
 		return nil, err
 	}
@@ -696,7 +697,7 @@ func (b BlobStorageClient) leaseCommonPut(container string, name string, headers
 	params := url.Values{"comp": {"lease"}}
 	uri := b.client.getEndpoint(blobServiceName, pathForBlob(container, name), params)
 
-	resp, err := b.client.exec(http.MethodPut, uri, headers, nil)
+	resp, err := b.client.exec(http.MethodPut, uri, headers, nil, b.auth)
 	if err != nil {
 		return nil, err
 	}
@@ -724,7 +725,7 @@ func (b BlobStorageClient) SnapshotBlob(container string, name string, timeout i
 	}
 
 	uri := b.client.getEndpoint(blobServiceName, pathForBlob(container, name), params)
-	resp, err := b.client.exec(http.MethodPut, uri, headers, nil)
+	resp, err := b.client.exec(http.MethodPut, uri, headers, nil, b.auth)
 	if err != nil {
 		return nil, err
 	}
@@ -866,7 +867,7 @@ func (b BlobStorageClient) GetBlobProperties(container, name string) (*BlobPrope
 	uri := b.client.getEndpoint(blobServiceName, pathForBlob(container, name), url.Values{})
 
 	headers := b.client.getStandardHeaders()
-	resp, err := b.client.exec(http.MethodHead, uri, headers, nil)
+	resp, err := b.client.exec(http.MethodHead, uri, headers, nil, b.auth)
 	if err != nil {
 		return nil, err
 	}
@@ -935,7 +936,7 @@ func (b BlobStorageClient) SetBlobProperties(container, name string, blobHeaders
 		headers[k] = v
 	}
 
-	resp, err := b.client.exec(http.MethodPut, uri, headers, nil)
+	resp, err := b.client.exec(http.MethodPut, uri, headers, nil, b.auth)
 	if err != nil {
 		return err
 	}
@@ -966,7 +967,7 @@ func (b BlobStorageClient) SetBlobMetadata(container, name string, metadata map[
 		headers[k] = v
 	}
 
-	resp, err := b.client.exec(http.MethodPut, uri, headers, nil)
+	resp, err := b.client.exec(http.MethodPut, uri, headers, nil, b.auth)
 	if err != nil {
 		return err
 	}
@@ -986,7 +987,7 @@ func (b BlobStorageClient) GetBlobMetadata(container, name string) (map[string]s
 	uri := b.client.getEndpoint(blobServiceName, pathForBlob(container, name), params)
 	headers := b.client.getStandardHeaders()
 
-	resp, err := b.client.exec(http.MethodGet, uri, headers, nil)
+	resp, err := b.client.exec(http.MethodGet, uri, headers, nil, b.auth)
 	if err != nil {
 		return nil, err
 	}
@@ -1046,7 +1047,7 @@ func (b BlobStorageClient) CreateBlockBlobFromReader(container, name string, siz
 		headers[k] = v
 	}
 
-	resp, err := b.client.exec(http.MethodPut, uri, headers, blob)
+	resp, err := b.client.exec(http.MethodPut, uri, headers, blob, b.auth)
 	if err != nil {
 		return err
 	}
@@ -1084,7 +1085,7 @@ func (b BlobStorageClient) PutBlockWithLength(container, name, blockID string, s
 		headers[k] = v
 	}
 
-	resp, err := b.client.exec(http.MethodPut, uri, headers, blob)
+	resp, err := b.client.exec(http.MethodPut, uri, headers, blob, b.auth)
 	if err != nil {
 		return err
 	}
@@ -1103,7 +1104,7 @@ func (b BlobStorageClient) PutBlockList(container, name string, blocks []Block) 
 	headers := b.client.getStandardHeaders()
 	headers["Content-Length"] = fmt.Sprintf("%v", len(blockListXML))
 
-	resp, err := b.client.exec(http.MethodPut, uri, headers, strings.NewReader(blockListXML))
+	resp, err := b.client.exec(http.MethodPut, uri, headers, strings.NewReader(blockListXML), b.auth)
 	if err != nil {
 		return err
 	}
@@ -1120,7 +1121,7 @@ func (b BlobStorageClient) GetBlockList(container, name string, blockType BlockL
 	headers := b.client.getStandardHeaders()
 
 	var out BlockListResponse
-	resp, err := b.client.exec(http.MethodGet, uri, headers, nil)
+	resp, err := b.client.exec(http.MethodGet, uri, headers, nil, b.auth)
 	if err != nil {
 		return out, err
 	}
@@ -1147,7 +1148,7 @@ func (b BlobStorageClient) PutPageBlob(container, name string, size int64, extra
 		headers[k] = v
 	}
 
-	resp, err := b.client.exec(http.MethodPut, uri, headers, nil)
+	resp, err := b.client.exec(http.MethodPut, uri, headers, nil, b.auth)
 	if err != nil {
 		return err
 	}
@@ -1183,7 +1184,7 @@ func (b BlobStorageClient) PutPage(container, name string, startByte, endByte in
 	}
 	headers["Content-Length"] = fmt.Sprintf("%v", contentLength)
 
-	resp, err := b.client.exec(http.MethodPut, uri, headers, data)
+	resp, err := b.client.exec(http.MethodPut, uri, headers, data, b.auth)
 	if err != nil {
 		return err
 	}
@@ -1201,7 +1202,7 @@ func (b BlobStorageClient) GetPageRanges(container, name string) (GetPageRangesR
 	headers := b.client.getStandardHeaders()
 
 	var out GetPageRangesResponse
-	resp, err := b.client.exec(http.MethodGet, uri, headers, nil)
+	resp, err := b.client.exec(http.MethodGet, uri, headers, nil, b.auth)
 	if err != nil {
 		return out, err
 	}
@@ -1229,7 +1230,7 @@ func (b BlobStorageClient) PutAppendBlob(container, name string, extraHeaders ma
 		headers[k] = v
 	}
 
-	resp, err := b.client.exec(http.MethodPut, uri, headers, nil)
+	resp, err := b.client.exec(http.MethodPut, uri, headers, nil, b.auth)
 	if err != nil {
 		return err
 	}
@@ -1253,7 +1254,7 @@ func (b BlobStorageClient) AppendBlock(container, name string, chunk []byte, ext
 		headers[k] = v
 	}
 
-	resp, err := b.client.exec(http.MethodPut, uri, headers, bytes.NewReader(chunk))
+	resp, err := b.client.exec(http.MethodPut, uri, headers, bytes.NewReader(chunk), b.auth)
 	if err != nil {
 		return err
 	}
@@ -1288,7 +1289,7 @@ func (b BlobStorageClient) StartBlobCopy(container, name, sourceBlob string) (st
 	headers := b.client.getStandardHeaders()
 	headers["x-ms-copy-source"] = sourceBlob
 
-	resp, err := b.client.exec(http.MethodPut, uri, headers, nil)
+	resp, err := b.client.exec(http.MethodPut, uri, headers, nil, b.auth)
 	if err != nil {
 		return "", err
 	}
@@ -1323,7 +1324,7 @@ func (b BlobStorageClient) AbortBlobCopy(container, name, copyID, currentLeaseID
 		headers[headerLeaseID] = currentLeaseID
 	}
 
-	resp, err := b.client.exec(http.MethodPut, uri, headers, nil)
+	resp, err := b.client.exec(http.MethodPut, uri, headers, nil, b.auth)
 	if err != nil {
 		return err
 	}
@@ -1398,7 +1399,7 @@ func (b BlobStorageClient) deleteBlob(container, name string, extraHeaders map[s
 		headers[k] = v
 	}
 
-	return b.client.exec(http.MethodDelete, uri, headers, nil)
+	return b.client.exec(http.MethodDelete, uri, headers, nil, b.auth)
 }
 
 // helper method to construct the path to a container given its name
@@ -1423,7 +1424,7 @@ func (b BlobStorageClient) GetBlobSASURIWithSignedIPAndProtocol(container, name 
 		signedPermissions = permissions
 		blobURL           = b.GetBlobURL(container, name)
 	)
-	canonicalizedResource, err := b.client.buildCanonicalizedResource(blobURL)
+	canonicalizedResource, err := b.client.buildCanonicalizedResource(blobURL, b.auth)
 	if err != nil {
 		return "", err
 	}

@@ -11,6 +11,7 @@ import (
 // FileServiceClient contains operations for Microsoft Azure File Service.
 type FileServiceClient struct {
 	client Client
+	auth   authentication
 }
 
 // ListSharesParameters defines the set of customizable parameters to make a
@@ -158,7 +159,7 @@ func (f FileServiceClient) listContent(path string, params url.Values, extraHead
 	extraHeaders = f.client.protectUserAgent(extraHeaders)
 	headers := mergeHeaders(f.client.getStandardHeaders(), extraHeaders)
 
-	resp, err := f.client.exec(http.MethodGet, uri, headers, nil)
+	resp, err := f.client.exec(http.MethodGet, uri, headers, nil, f.auth)
 	if err != nil {
 		return nil, err
 	}
@@ -180,7 +181,7 @@ func (f FileServiceClient) resourceExists(path string, res resourceType) (bool, 
 	uri := f.client.getEndpoint(fileServiceName, path, getURLInitValues(compNone, res))
 	headers := f.client.getStandardHeaders()
 
-	resp, err := f.client.exec(http.MethodHead, uri, headers, nil)
+	resp, err := f.client.exec(http.MethodHead, uri, headers, nil, f.auth)
 	if resp != nil {
 		defer resp.body.Close()
 		if resp.statusCode == http.StatusOK || resp.statusCode == http.StatusNotFound {
@@ -211,7 +212,7 @@ func (f FileServiceClient) createResourceNoClose(path string, res resourceType, 
 	extraHeaders = f.client.protectUserAgent(extraHeaders)
 	headers := mergeHeaders(f.client.getStandardHeaders(), extraHeaders)
 
-	return f.client.exec(http.MethodPut, uri, headers, nil)
+	return f.client.exec(http.MethodPut, uri, headers, nil, f.auth)
 }
 
 // returns HTTP header data for the specified directory or share
@@ -240,7 +241,7 @@ func (f FileServiceClient) getResourceNoClose(path string, comp compType, res re
 	extraHeaders = f.client.protectUserAgent(extraHeaders)
 	headers := mergeHeaders(f.client.getStandardHeaders(), extraHeaders)
 
-	return f.client.exec(verb, uri, headers, nil)
+	return f.client.exec(verb, uri, headers, nil, f.auth)
 }
 
 // deletes the resource and returns the response
@@ -261,7 +262,7 @@ func (f FileServiceClient) deleteResourceNoClose(path string, res resourceType) 
 
 	values := getURLInitValues(compNone, res)
 	uri := f.client.getEndpoint(fileServiceName, path, values)
-	return f.client.exec(http.MethodDelete, uri, f.client.getStandardHeaders(), nil)
+	return f.client.exec(http.MethodDelete, uri, f.client.getStandardHeaders(), nil, f.auth)
 }
 
 // merges metadata into extraHeaders and returns extraHeaders
@@ -297,7 +298,7 @@ func (f FileServiceClient) setResourceHeaders(path string, comp compType, res re
 	extraHeaders = f.client.protectUserAgent(extraHeaders)
 	headers := mergeHeaders(f.client.getStandardHeaders(), extraHeaders)
 
-	resp, err := f.client.exec(http.MethodPut, uri, headers, nil)
+	resp, err := f.client.exec(http.MethodPut, uri, headers, nil, f.auth)
 	if err != nil {
 		return nil, err
 	}

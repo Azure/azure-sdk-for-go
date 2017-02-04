@@ -6,16 +6,19 @@ import (
 	"strings"
 )
 
+// This consts are meant to help with opdata supported operations
 const (
 	OdataTypeSuffix = "@odata.type"
 
 	// Types
+
 	OdataBinary   = "Edm.Binary"
 	OdataDateTime = "Edm.DateTime"
 	OdataGUID     = "Edm.Guid"
 	OdataInt64    = "Edm.Int64"
 
 	// Query options
+
 	OdataFilter  = "$filter"
 	OdataOrderBy = "$orderby"
 	OdataTop     = "$top"

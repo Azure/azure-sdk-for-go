@@ -28,7 +28,7 @@ const (
 	major           = "8"
 	minor           = "0"
 	patch           = "0"
-	tag             = ""
+	tag             = "beta"
 	userAgentFormat = "Azure-SDK-For-Go/%s arm-%s/%s"
 )
 

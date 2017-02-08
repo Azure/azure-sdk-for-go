@@ -21,7 +21,6 @@ package sql
 import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/Azure/go-autorest/autorest/validation"
 	"net/http"
 )
 
@@ -55,15 +54,6 @@ func NewElasticPoolsClientWithBaseURI(baseURI string, subscriptionID string) Ela
 // on (Updated or created). parameters is the required parameters for
 // creating or updating an Elastic Pool.
 func (client ElasticPoolsClient) CreateOrUpdate(resourceGroupName string, serverName string, elasticPoolName string, parameters ElasticPool, cancel <-chan struct{}) (result autorest.Response, err error) {
-	if err := validation.Validate([]validation.Validation{
-		{TargetValue: parameters,
-			Constraints: []validation.Constraint{{Target: "parameters.ElasticPoolProperties", Name: validation.Null, Rule: false,
-				Chain: []validation.Constraint{{Target: "parameters.ElasticPoolProperties.CreationDate", Name: validation.ReadOnly, Rule: true, Chain: nil},
-					{Target: "parameters.ElasticPoolProperties.State", Name: validation.ReadOnly, Rule: true, Chain: nil},
-				}}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "sql.ElasticPoolsClient", "CreateOrUpdate")
-	}
-
 	req, err := client.CreateOrUpdatePreparer(resourceGroupName, serverName, elasticPoolName, parameters, cancel)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "sql.ElasticPoolsClient", "CreateOrUpdate", nil, "Failure preparing request")

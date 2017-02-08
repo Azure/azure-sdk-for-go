@@ -21,7 +21,6 @@ package sql
 import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/Azure/go-autorest/autorest/validation"
 	"net/http"
 )
 
@@ -49,13 +48,6 @@ func NewServersClientWithBaseURI(baseURI string, subscriptionID string) ServersC
 // the portal. serverName is the name of the Azure SQL server. parameters is
 // the required parameters for creating or updating a server.
 func (client ServersClient) CreateOrUpdate(resourceGroupName string, serverName string, parameters Server) (result Server, err error) {
-	if err := validation.Validate([]validation.Validation{
-		{TargetValue: parameters,
-			Constraints: []validation.Constraint{{Target: "parameters.ServerProperties", Name: validation.Null, Rule: false,
-				Chain: []validation.Constraint{{Target: "parameters.ServerProperties.FullyQualifiedDomainName", Name: validation.ReadOnly, Rule: true, Chain: nil}}}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "sql.ServersClient", "CreateOrUpdate")
-	}
-
 	req, err := client.CreateOrUpdatePreparer(resourceGroupName, serverName, parameters)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "sql.ServersClient", "CreateOrUpdate", nil, "Failure preparing request")

@@ -19,10 +19,11 @@ package analysisservices
 // regenerated.
 
 import (
+	"net/http"
+
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
 	"github.com/Azure/go-autorest/autorest/validation"
-	"net/http"
 )
 
 // ServersClient is the the Azure Analysis Services Web API provides a RESTful

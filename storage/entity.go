@@ -25,7 +25,7 @@ const (
 // Entity represents an entity inside an Azure table.
 type Entity struct {
 	tsc           *TableServiceClient
-	table         *Table
+	Table         *Table
 	PartitionKey  string
 	RowKey        string
 	TimeStamp     time.Time
@@ -43,7 +43,7 @@ func (t *Table) GetEntityReference(partitionKey, rowKey string) Entity {
 	return Entity{
 		PartitionKey: partitionKey,
 		RowKey:       rowKey,
-		table:        t,
+		Table:        t,
 		tsc:          t.tsc,
 	}
 }
@@ -53,7 +53,7 @@ func (t *Table) GetEntityReference(partitionKey, rowKey string) Entity {
 // PartitionKey and RowKey in the table.
 // See: https://docs.microsoft.com/rest/api/storageservices/fileservices/insert-entity
 func (e *Entity) Insert(getResponse bool) error {
-	uri := e.tsc.client.getEndpoint(tableServiceName, e.table.buildPath(), nil)
+	uri := e.tsc.client.getEndpoint(tableServiceName, e.Table.buildPath(), nil)
 
 	body, err := json.Marshal(e)
 	if err != nil {
@@ -152,7 +152,7 @@ func (e *Entity) InsertOrMerge() error {
 }
 
 func (e *Entity) buildPath() string {
-	return fmt.Sprintf("%s(PartitionKey='%s', RowKey='%s')", e.table.buildPath(), e.PartitionKey, e.RowKey)
+	return fmt.Sprintf("%s(PartitionKey='%s', RowKey='%s')", e.Table.buildPath(), e.PartitionKey, e.RowKey)
 }
 
 // MarshalJSON is a custom marshaller for entity
@@ -161,17 +161,17 @@ func (e *Entity) MarshalJSON() ([]byte, error) {
 	completeMap[partitionKeyNode] = e.PartitionKey
 	completeMap[rowKeyNode] = e.RowKey
 	for k, v := range e.Properties {
-		typeKey := fmt.Sprintf("%s%s", k, OdataTypeSuffix)
-		switch v.(type) {
+		typeKey := strings.Join([]string{k, OdataTypeSuffix}, "")
+		switch t := v.(type) {
 		case []byte:
 			completeMap[typeKey] = OdataBinary
-			completeMap[k] = string(v.([]byte))
+			completeMap[k] = string(t)
 		case time.Time:
 			completeMap[typeKey] = OdataDateTime
-			completeMap[k] = v.(time.Time).Format(time.RFC3339Nano)
+			completeMap[k] = t.Format(time.RFC3339Nano)
 		case uuid.UUID:
 			completeMap[typeKey] = OdataGUID
-			completeMap[k] = v.(uuid.UUID).String()
+			completeMap[k] = t.String()
 		case int64:
 			completeMap[typeKey] = OdataInt64
 			completeMap[k] = fmt.Sprintf("%v", v)

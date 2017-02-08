@@ -258,7 +258,7 @@ func (t *Table) queryEntities(uri string) (*EntityQueryResult, error) {
 
 	for i := range entities.Entities {
 		entities.Entities[i].tsc = t.tsc
-		entities.Entities[i].table = t
+		entities.Entities[i].Table = t
 	}
 
 	contToken := extractContinuationTokenFromHeaders(resp.headers)

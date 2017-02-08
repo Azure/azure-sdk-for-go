@@ -49,15 +49,23 @@ var (
 					Name:    "analysisservices",
 					Version: "2016-05-16",
 				},
-				{
-					Name:    "authorization",
-					Version: "2015-07-01",
-				},
-				{
-					Name:    "batch",
-					Version: "2015-12-01",
-					Swagger: "BatchManagement",
-				},
+				// {
+				// 	Name:    "apimanagement",
+				// 	Version: "2016-07-07",
+				// },
+				// {
+				// 	Name:    "apimdeployment",
+				// 	Version: "2016-07-07",
+				// },
+				// {
+				// 	Name:    "authorization",
+				// 	Version: "2015-07-01",
+				// },
+				// {
+				// 	Name:    "batch",
+				// 	Version: "2015-12-01",
+				// 	Swagger: "BatchManagement",
+				// },
 				{
 					Name:    "cdn",
 					Version: "2016-10-02",
@@ -66,10 +74,10 @@ var (
 					Name:    "cognitiveservices",
 					Version: "2016-02-01-preview",
 				},
-				{
-					Name:    "commerce",
-					Version: "2015-06-01-preview",
-				},
+				// {
+				// 	Name:    "commerce",
+				// 	Version: "2015-06-01-preview",
+				// },
 				{
 					Name:    "compute",
 					Version: "2016-03-30",
@@ -102,24 +110,30 @@ var (
 						},
 					},
 				},
+				// {
+				// 	Name:    "devtestlabs",
+				// 	Version: "2016-05-15",
+				// 	Swagger: "DTL",
+				// },
 				{
-					Name:    "devtestlabs",
-					Version: "2016-05-15",
-					Swagger: "DTL",
+					Name:    "disk",
+					Version: "2016-04-30-preview",
+					Swagger: "disk",
+					Input:   "compute",
 				},
-				{
-					Name:    "dns",
-					Version: "2016-04-01",
-				},
+				// {
+				// 	Name:    "dns",
+				// 	Version: "2016-04-01",
+				// },
 				{
 					Name:    "documentdb",
 					Version: "2015-04-08",
 				},
-				{
-					Name:    "eventhub",
-					Version: "2015-08-01",
-					Swagger: "EventHub",
-				},
+				// {
+				// 	Name:    "eventhub",
+				// 	Version: "2015-08-01",
+				// 	Swagger: "EventHub",
+				// },
 				// {
 				// 	Name:    "graphrbac",
 				// 	Version: "1.6",
@@ -129,10 +143,10 @@ var (
 				// 	Name:    "insights",
 				// 	// Composite swagger
 				// },
-				{
-					Name:    "intune",
-					Version: "2015-01-14-preview",
-				},
+				// {
+				// 	Name:    "intune",
+				// 	Version: "2015-01-14-preview",
+				// },
 				{
 					Name:    "iothub",
 					Version: "2016-02-03",
@@ -154,12 +168,12 @@ var (
 							Version: "2016-05-01-preview",
 							Input:   "machinelearning",
 						},
-						{
-							Name:    "commitmentplans",
-							Version: "2016-05-01-preview",
-							Swagger: "commitmentPlans",
-							Input:   "machinelearning",
-						},
+						// {
+						// 	Name:    "commitmentplans",
+						// 	Version: "2016-05-01-preview",
+						// 	Swagger: "commitmentPlans",
+						// 	Input:   "machinelearning",
+						// },
 					},
 				},
 				{
@@ -172,14 +186,14 @@ var (
 					Version: "2014-12-01",
 					Swagger: "mobile-engagement",
 				},
-				{
-					Name:    "network",
-					Version: "2016-09-01",
-				},
-				{
-					Name:    "notificationhubs",
-					Version: "2016-03-01",
-				},
+				// {
+				// 	Name:    "network",
+				// 	Version: "2016-09-01",
+				// },
+				// {
+				// 	Name:    "notificationhubs",
+				// 	Version: "2016-03-01",
+				// },
 				{
 					Name:    "powerbiembedded",
 					Version: "2016-01-29",
@@ -200,30 +214,30 @@ var (
 				{
 					Name: "resources",
 					SubServices: []service{
-						{
-							Name:    "features",
-							Version: "2015-12-01",
-						},
-						{
-							Name:    "links",
-							Version: "2016-09-01",
-						},
+						// {
+						// 	Name:    "features",
+						// 	Version: "2015-12-01",
+						// },
+						// {
+						// 	Name:    "links",
+						// 	Version: "2016-09-01",
+						// },
 						{
 							Name:    "locks",
 							Version: "2016-09-01",
 						},
 						{
 							Name:    "policy",
-							Version: "2016-04-01",
+							Version: "2016-12-01",
 						},
 						{
 							Name:    "resources",
 							Version: "2016-09-01",
 						},
-						{
-							Name:    "subscriptions",
-							Version: "2016-06-01",
-						},
+						// {
+						// 	Name:    "subscriptions",
+						// 	Version: "2016-06-01",
+						// },
 					},
 				},
 				{
@@ -242,15 +256,15 @@ var (
 					Name:    "servicebus",
 					Version: "2015-08-01",
 				},
-				{
-					Name:    "sql",
-					Version: "2014-04-01",
-					Swagger: "sql.core",
-				},
-				{
-					Name:    "storage",
-					Version: "2016-01-01",
-				},
+				// {
+				// 	Name:    "sql",
+				// 	Version: "2014-04-01",
+				// 	Swagger: "sql.core",
+				// },
+				// {
+				// 	Name:    "storage",
+				// 	Version: "2016-01-01",
+				// },
 				{
 					Name:    "trafficmanager",
 					Version: "2015-11-01",
@@ -394,7 +408,7 @@ func generate(service *service) {
 		"-Input", fmt.Sprintf("%s/azure-rest-api-specs/%s.json", swaggersDir, service.Input),
 		"-CodeGenerator", "Go",
 		"-Header", "MICROSOFT_APACHE",
-		"-Namespace", service.Namespace,
+		"-Namespace", service.Name,
 		"-OutputDirectory", service.Output,
 		"-Modeler", "Swagger",
 		"-pv", sdkVersion)
@@ -479,7 +493,7 @@ func storageVersion(c *do.Context) {
 	template := `package storage
 
 var (
-	sdkVersion = "%s-beta"
+	sdkVersion = "%s"
 )
 	`
 	data := []byte(fmt.Sprintf(template, sdkVersion))

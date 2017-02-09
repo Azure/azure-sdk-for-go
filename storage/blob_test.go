@@ -24,7 +24,7 @@ var _ = chk.Suite(&StorageBlobSuite{})
 
 const testContainerPrefix = "zzzztest-"
 
-func getBlobClient(c *chk.C) BlobStorageClient {
+func getBlobClient(c *chk.C) BlobServiceClient {
 	return getBasicClient(c).GetBlobService()
 }
 
@@ -503,7 +503,7 @@ func (s *StorageBlobSuite) TestListBlobsPagination(c *chk.C) {
 }
 
 // listBlobsAsFiles is a helper function to list blobs as "folders" and "files".
-func listBlobsAsFiles(cli BlobStorageClient, cnt string, parentDir string) (folders []string, files []string, err error) {
+func listBlobsAsFiles(cli BlobServiceClient, cnt string, parentDir string) (folders []string, files []string, err error) {
 	var blobParams ListBlobsParameters
 	var blobListResponse BlobListResponse
 
@@ -1484,7 +1484,7 @@ func (s *StorageBlobSuite) TestPutAppendBlobAppendBlocks(c *chk.C) {
 	out.Close()
 }
 
-func deleteTestContainers(cli BlobStorageClient) error {
+func deleteTestContainers(cli BlobServiceClient) error {
 	for {
 		resp, err := cli.ListContainers(ListContainersParameters{Prefix: testContainerPrefix})
 		if err != nil {
@@ -1503,7 +1503,7 @@ func deleteTestContainers(cli BlobStorageClient) error {
 	return nil
 }
 
-func (b BlobStorageClient) putSingleBlockBlob(container, name string, chunk []byte) error {
+func (b BlobServiceClient) putSingleBlockBlob(container, name string, chunk []byte) error {
 	if len(chunk) > MaxBlobBlockSize {
 		return fmt.Errorf("storage: provided chunk (%d bytes) cannot fit into single-block blob (max %d bytes)", len(chunk), MaxBlobBlockSize)
 	}

@@ -13,9 +13,9 @@ import (
 	"time"
 )
 
-// BlobStorageClient contains operations for Microsoft Azure Blob Storage
+// BlobServiceClient contains operations for Microsoft Azure Blob Storage
 // Service.
-type BlobStorageClient struct {
+type BlobServiceClient struct {
 	client Client
 	auth   authentication
 }
@@ -391,7 +391,7 @@ var (
 // pagination token and other response details.
 //
 // See https://msdn.microsoft.com/en-us/library/azure/dd179352.aspx
-func (b BlobStorageClient) ListContainers(params ListContainersParameters) (ContainerListResponse, error) {
+func (b BlobServiceClient) ListContainers(params ListContainersParameters) (ContainerListResponse, error) {
 	q := mergeParams(params.getParameters(), url.Values{"comp": {"list"}})
 	uri := b.client.getEndpoint(blobServiceName, "", q)
 	headers := b.client.getStandardHeaders()
@@ -411,7 +411,7 @@ func (b BlobStorageClient) ListContainers(params ListContainersParameters) (Cont
 // with given name and access level. Returns error if container already exists.
 //
 // See https://msdn.microsoft.com/en-us/library/azure/dd179468.aspx
-func (b BlobStorageClient) CreateContainer(name string, access ContainerAccessType) error {
+func (b BlobServiceClient) CreateContainer(name string, access ContainerAccessType) error {
 	resp, err := b.createContainer(name, access)
 	if err != nil {
 		return err
@@ -422,7 +422,7 @@ func (b BlobStorageClient) CreateContainer(name string, access ContainerAccessTy
 
 // CreateContainerIfNotExists creates a blob container if it does not exist. Returns
 // true if container is newly created or false if container already exists.
-func (b BlobStorageClient) CreateContainerIfNotExists(name string, access ContainerAccessType) (bool, error) {
+func (b BlobServiceClient) CreateContainerIfNotExists(name string, access ContainerAccessType) (bool, error) {
 	resp, err := b.createContainer(name, access)
 	if resp != nil {
 		defer resp.body.Close()
@@ -433,7 +433,7 @@ func (b BlobStorageClient) CreateContainerIfNotExists(name string, access Contai
 	return false, err
 }
 
-func (b BlobStorageClient) createContainer(name string, access ContainerAccessType) (*storageResponse, error) {
+func (b BlobServiceClient) createContainer(name string, access ContainerAccessType) (*storageResponse, error) {
 	uri := b.client.getEndpoint(blobServiceName, pathForContainer(name), url.Values{"restype": {"container"}})
 
 	headers := b.client.getStandardHeaders()
@@ -445,7 +445,7 @@ func (b BlobStorageClient) createContainer(name string, access ContainerAccessTy
 
 // ContainerExists returns true if a container with given name exists
 // on the storage account, otherwise returns false.
-func (b BlobStorageClient) ContainerExists(name string) (bool, error) {
+func (b BlobServiceClient) ContainerExists(name string) (bool, error) {
 	uri := b.client.getEndpoint(blobServiceName, pathForContainer(name), url.Values{"restype": {"container"}})
 	headers := b.client.getStandardHeaders()
 
@@ -460,7 +460,7 @@ func (b BlobStorageClient) ContainerExists(name string) (bool, error) {
 }
 
 // SetContainerPermissions sets up container permissions as per https://msdn.microsoft.com/en-us/library/azure/dd179391.aspx
-func (b BlobStorageClient) SetContainerPermissions(container string, containerPermissions ContainerPermissions, timeout int, leaseID string) (err error) {
+func (b BlobServiceClient) SetContainerPermissions(container string, containerPermissions ContainerPermissions, timeout int, leaseID string) (err error) {
 	params := url.Values{
 		"restype": {"container"},
 		"comp":    {"acl"},
@@ -502,7 +502,7 @@ func (b BlobStorageClient) SetContainerPermissions(container string, containerPe
 // If timeout is 0 then it will not be passed to Azure
 // leaseID will only be passed to Azure if populated
 // Returns permissionResponse which is combined permissions and AccessPolicy
-func (b BlobStorageClient) GetContainerPermissions(container string, timeout int, leaseID string) (*ContainerPermissions, error) {
+func (b BlobServiceClient) GetContainerPermissions(container string, timeout int, leaseID string) (*ContainerPermissions, error) {
 	params := url.Values{"restype": {"container"},
 		"comp": {"acl"}}
 
@@ -559,7 +559,7 @@ func updateContainerAccessPolicy(ap AccessPolicy, headers *http.Header) Containe
 // account. If the container does not exist returns error.
 //
 // See https://msdn.microsoft.com/en-us/library/azure/dd179408.aspx
-func (b BlobStorageClient) DeleteContainer(name string) error {
+func (b BlobServiceClient) DeleteContainer(name string) error {
 	resp, err := b.deleteContainer(name)
 	if err != nil {
 		return err
@@ -574,7 +574,7 @@ func (b BlobStorageClient) DeleteContainer(name string) error {
 // operation.
 //
 // See https://msdn.microsoft.com/en-us/library/azure/dd179408.aspx
-func (b BlobStorageClient) DeleteContainerIfExists(name string) (bool, error) {
+func (b BlobServiceClient) DeleteContainerIfExists(name string) (bool, error) {
 	resp, err := b.deleteContainer(name)
 	if resp != nil {
 		defer resp.body.Close()
@@ -585,7 +585,7 @@ func (b BlobStorageClient) DeleteContainerIfExists(name string) (bool, error) {
 	return false, err
 }
 
-func (b BlobStorageClient) deleteContainer(name string) (*storageResponse, error) {
+func (b BlobServiceClient) deleteContainer(name string) (*storageResponse, error) {
 	uri := b.client.getEndpoint(blobServiceName, pathForContainer(name), url.Values{"restype": {"container"}})
 
 	headers := b.client.getStandardHeaders()
@@ -596,7 +596,7 @@ func (b BlobStorageClient) deleteContainer(name string) (*storageResponse, error
 // pagination token and other information in the response of List Blobs call.
 //
 // See https://msdn.microsoft.com/en-us/library/azure/dd135734.aspx
-func (b BlobStorageClient) ListBlobs(container string, params ListBlobsParameters) (BlobListResponse, error) {
+func (b BlobServiceClient) ListBlobs(container string, params ListBlobsParameters) (BlobListResponse, error) {
 	q := mergeParams(params.getParameters(), url.Values{
 		"restype": {"container"},
 		"comp":    {"list"}})
@@ -616,7 +616,7 @@ func (b BlobStorageClient) ListBlobs(container string, params ListBlobsParameter
 
 // BlobExists returns true if a blob with given name exists on the specified
 // container of the storage account.
-func (b BlobStorageClient) BlobExists(container, name string) (bool, error) {
+func (b BlobServiceClient) BlobExists(container, name string) (bool, error) {
 	uri := b.client.getEndpoint(blobServiceName, pathForBlob(container, name), url.Values{})
 	headers := b.client.getStandardHeaders()
 	resp, err := b.client.exec(http.MethodHead, uri, headers, nil, b.auth)
@@ -633,7 +633,7 @@ func (b BlobStorageClient) BlobExists(container, name string) (bool, error) {
 // specified container. This method does not create a publicly accessible URL if
 // the blob or container is private and this method does not check if the blob
 // exists.
-func (b BlobStorageClient) GetBlobURL(container, name string) string {
+func (b BlobServiceClient) GetBlobURL(container, name string) string {
 	if container == "" {
 		container = "$root"
 	}
@@ -644,7 +644,7 @@ func (b BlobStorageClient) GetBlobURL(container, name string) string {
 // reader to close on the underlying connection.
 //
 // See https://msdn.microsoft.com/en-us/library/azure/dd179440.aspx
-func (b BlobStorageClient) GetBlob(container, name string) (io.ReadCloser, error) {
+func (b BlobServiceClient) GetBlob(container, name string) (io.ReadCloser, error) {
 	resp, err := b.getBlobRange(container, name, "", nil)
 	if err != nil {
 		return nil, err
@@ -660,7 +660,7 @@ func (b BlobStorageClient) GetBlob(container, name string) (io.ReadCloser, error
 // string must be in a format like "0-", "10-100" as defined in HTTP 1.1 spec.
 //
 // See https://msdn.microsoft.com/en-us/library/azure/dd179440.aspx
-func (b BlobStorageClient) GetBlobRange(container, name, bytesRange string, extraHeaders map[string]string) (io.ReadCloser, error) {
+func (b BlobServiceClient) GetBlobRange(container, name, bytesRange string, extraHeaders map[string]string) (io.ReadCloser, error) {
 	resp, err := b.getBlobRange(container, name, bytesRange, extraHeaders)
 	if err != nil {
 		return nil, err
@@ -672,7 +672,7 @@ func (b BlobStorageClient) GetBlobRange(container, name, bytesRange string, extr
 	return resp.body, nil
 }
 
-func (b BlobStorageClient) getBlobRange(container, name, bytesRange string, extraHeaders map[string]string) (*storageResponse, error) {
+func (b BlobServiceClient) getBlobRange(container, name, bytesRange string, extraHeaders map[string]string) (*storageResponse, error) {
 	uri := b.client.getEndpoint(blobServiceName, pathForBlob(container, name), url.Values{})
 
 	extraHeaders = b.client.protectUserAgent(extraHeaders)
@@ -693,7 +693,7 @@ func (b BlobStorageClient) getBlobRange(container, name, bytesRange string, extr
 }
 
 // leasePut is common PUT code for the various acquire/release/break etc functions.
-func (b BlobStorageClient) leaseCommonPut(container string, name string, headers map[string]string, expectedStatus int) (http.Header, error) {
+func (b BlobServiceClient) leaseCommonPut(container string, name string, headers map[string]string, expectedStatus int) (http.Header, error) {
 	params := url.Values{"comp": {"lease"}}
 	uri := b.client.getEndpoint(blobServiceName, pathForBlob(container, name), params)
 
@@ -711,7 +711,7 @@ func (b BlobStorageClient) leaseCommonPut(container string, name string, headers
 }
 
 // SnapshotBlob creates a snapshot for a blob as per https://msdn.microsoft.com/en-us/library/azure/ee691971.aspx
-func (b BlobStorageClient) SnapshotBlob(container string, name string, timeout int, extraHeaders map[string]string) (snapshotTimestamp *time.Time, err error) {
+func (b BlobServiceClient) SnapshotBlob(container string, name string, timeout int, extraHeaders map[string]string) (snapshotTimestamp *time.Time, err error) {
 	extraHeaders = b.client.protectUserAgent(extraHeaders)
 	headers := b.client.getStandardHeaders()
 	params := url.Values{"comp": {"snapshot"}}
@@ -749,7 +749,7 @@ func (b BlobStorageClient) SnapshotBlob(container string, name string, timeout i
 
 // AcquireLease creates a lease for a blob as per https://msdn.microsoft.com/en-us/library/azure/ee691972.aspx
 // returns leaseID acquired
-func (b BlobStorageClient) AcquireLease(container string, name string, leaseTimeInSeconds int, proposedLeaseID string) (returnedLeaseID string, err error) {
+func (b BlobServiceClient) AcquireLease(container string, name string, leaseTimeInSeconds int, proposedLeaseID string) (returnedLeaseID string, err error) {
 	headers := b.client.getStandardHeaders()
 	headers[leaseAction] = acquireLease
 
@@ -777,7 +777,7 @@ func (b BlobStorageClient) AcquireLease(container string, name string, leaseTime
 
 // BreakLease breaks the lease for a blob as per https://msdn.microsoft.com/en-us/library/azure/ee691972.aspx
 // Returns the timeout remaining in the lease in seconds
-func (b BlobStorageClient) BreakLease(container string, name string) (breakTimeout int, err error) {
+func (b BlobServiceClient) BreakLease(container string, name string) (breakTimeout int, err error) {
 	headers := b.client.getStandardHeaders()
 	headers[leaseAction] = breakLease
 	return b.breakLeaseCommon(container, name, headers)
@@ -786,7 +786,7 @@ func (b BlobStorageClient) BreakLease(container string, name string) (breakTimeo
 // BreakLeaseWithBreakPeriod breaks the lease for a blob as per https://msdn.microsoft.com/en-us/library/azure/ee691972.aspx
 // breakPeriodInSeconds is used to determine how long until new lease can be created.
 // Returns the timeout remaining in the lease in seconds
-func (b BlobStorageClient) BreakLeaseWithBreakPeriod(container string, name string, breakPeriodInSeconds int) (breakTimeout int, err error) {
+func (b BlobServiceClient) BreakLeaseWithBreakPeriod(container string, name string, breakPeriodInSeconds int) (breakTimeout int, err error) {
 	headers := b.client.getStandardHeaders()
 	headers[leaseAction] = breakLease
 	headers[leaseBreakPeriod] = strconv.Itoa(breakPeriodInSeconds)
@@ -794,7 +794,7 @@ func (b BlobStorageClient) BreakLeaseWithBreakPeriod(container string, name stri
 }
 
 // breakLeaseCommon is common code for both version of BreakLease (with and without break period)
-func (b BlobStorageClient) breakLeaseCommon(container string, name string, headers map[string]string) (breakTimeout int, err error) {
+func (b BlobServiceClient) breakLeaseCommon(container string, name string, headers map[string]string) (breakTimeout int, err error) {
 
 	respHeaders, err := b.leaseCommonPut(container, name, headers, http.StatusAccepted)
 	if err != nil {
@@ -814,7 +814,7 @@ func (b BlobStorageClient) breakLeaseCommon(container string, name string, heade
 
 // ChangeLease changes a lease ID for a blob as per https://msdn.microsoft.com/en-us/library/azure/ee691972.aspx
 // Returns the new LeaseID acquired
-func (b BlobStorageClient) ChangeLease(container string, name string, currentLeaseID string, proposedLeaseID string) (newLeaseID string, err error) {
+func (b BlobServiceClient) ChangeLease(container string, name string, currentLeaseID string, proposedLeaseID string) (newLeaseID string, err error) {
 	headers := b.client.getStandardHeaders()
 	headers[leaseAction] = changeLease
 	headers[headerLeaseID] = currentLeaseID
@@ -834,7 +834,7 @@ func (b BlobStorageClient) ChangeLease(container string, name string, currentLea
 }
 
 // ReleaseLease releases the lease for a blob as per https://msdn.microsoft.com/en-us/library/azure/ee691972.aspx
-func (b BlobStorageClient) ReleaseLease(container string, name string, currentLeaseID string) error {
+func (b BlobServiceClient) ReleaseLease(container string, name string, currentLeaseID string) error {
 	headers := b.client.getStandardHeaders()
 	headers[leaseAction] = releaseLease
 	headers[headerLeaseID] = currentLeaseID
@@ -848,7 +848,7 @@ func (b BlobStorageClient) ReleaseLease(container string, name string, currentLe
 }
 
 // RenewLease renews the lease for a blob as per https://msdn.microsoft.com/en-us/library/azure/ee691972.aspx
-func (b BlobStorageClient) RenewLease(container string, name string, currentLeaseID string) error {
+func (b BlobServiceClient) RenewLease(container string, name string, currentLeaseID string) error {
 	headers := b.client.getStandardHeaders()
 	headers[leaseAction] = renewLease
 	headers[headerLeaseID] = currentLeaseID
@@ -863,7 +863,7 @@ func (b BlobStorageClient) RenewLease(container string, name string, currentLeas
 
 // GetBlobProperties provides various information about the specified
 // blob. See https://msdn.microsoft.com/en-us/library/azure/dd179394.aspx
-func (b BlobStorageClient) GetBlobProperties(container, name string) (*BlobProperties, error) {
+func (b BlobServiceClient) GetBlobProperties(container, name string) (*BlobProperties, error) {
 	uri := b.client.getEndpoint(blobServiceName, pathForBlob(container, name), url.Values{})
 
 	headers := b.client.getStandardHeaders()
@@ -925,7 +925,7 @@ func (b BlobStorageClient) GetBlobProperties(container, name string) (*BlobPrope
 // applications either.
 //
 // See https://msdn.microsoft.com/en-us/library/azure/ee691966.aspx
-func (b BlobStorageClient) SetBlobProperties(container, name string, blobHeaders BlobHeaders) error {
+func (b BlobServiceClient) SetBlobProperties(container, name string, blobHeaders BlobHeaders) error {
 	params := url.Values{"comp": {"properties"}}
 	uri := b.client.getEndpoint(blobServiceName, pathForBlob(container, name), params)
 	headers := b.client.getStandardHeaders()
@@ -953,7 +953,7 @@ func (b BlobStorageClient) SetBlobProperties(container, name string, blobHeaders
 // applications either.
 //
 // See https://msdn.microsoft.com/en-us/library/azure/dd179414.aspx
-func (b BlobStorageClient) SetBlobMetadata(container, name string, metadata map[string]string, extraHeaders map[string]string) error {
+func (b BlobServiceClient) SetBlobMetadata(container, name string, metadata map[string]string, extraHeaders map[string]string) error {
 	params := url.Values{"comp": {"metadata"}}
 	uri := b.client.getEndpoint(blobServiceName, pathForBlob(container, name), params)
 	metadata = b.client.protectUserAgent(metadata)
@@ -982,7 +982,7 @@ func (b BlobStorageClient) SetBlobMetadata(container, name string, metadata map[
 // names are case-insensitive.)
 //
 // See https://msdn.microsoft.com/en-us/library/azure/dd179414.aspx
-func (b BlobStorageClient) GetBlobMetadata(container, name string) (map[string]string, error) {
+func (b BlobServiceClient) GetBlobMetadata(container, name string) (map[string]string, error) {
 	params := url.Values{"comp": {"metadata"}}
 	uri := b.client.getEndpoint(blobServiceName, pathForBlob(container, name), params)
 	headers := b.client.getStandardHeaders()
@@ -1022,7 +1022,7 @@ func (b BlobStorageClient) GetBlobMetadata(container, name string) (map[string]s
 // CreateBlockBlob initializes an empty block blob with no blocks.
 //
 // See https://msdn.microsoft.com/en-us/library/azure/dd179451.aspx
-func (b BlobStorageClient) CreateBlockBlob(container, name string) error {
+func (b BlobServiceClient) CreateBlockBlob(container, name string) error {
 	return b.CreateBlockBlobFromReader(container, name, 0, nil, nil)
 }
 
@@ -1035,7 +1035,7 @@ func (b BlobStorageClient) CreateBlockBlob(container, name string) error {
 // PutBlock, and PutBlockList.
 //
 // See https://msdn.microsoft.com/en-us/library/azure/dd179451.aspx
-func (b BlobStorageClient) CreateBlockBlobFromReader(container, name string, size uint64, blob io.Reader, extraHeaders map[string]string) error {
+func (b BlobServiceClient) CreateBlockBlobFromReader(container, name string, size uint64, blob io.Reader, extraHeaders map[string]string) error {
 	path := fmt.Sprintf("%s/%s", container, name)
 	uri := b.client.getEndpoint(blobServiceName, path, url.Values{})
 	extraHeaders = b.client.protectUserAgent(extraHeaders)
@@ -1062,7 +1062,7 @@ func (b BlobStorageClient) CreateBlockBlobFromReader(container, name string, siz
 // checked by the SDK).
 //
 // See https://msdn.microsoft.com/en-us/library/azure/dd135726.aspx
-func (b BlobStorageClient) PutBlock(container, name, blockID string, chunk []byte) error {
+func (b BlobServiceClient) PutBlock(container, name, blockID string, chunk []byte) error {
 	return b.PutBlockWithLength(container, name, blockID, uint64(len(chunk)), bytes.NewReader(chunk), nil)
 }
 
@@ -1074,7 +1074,7 @@ func (b BlobStorageClient) PutBlock(container, name, blockID string, chunk []byt
 // checked by the SDK).
 //
 // See https://msdn.microsoft.com/en-us/library/azure/dd135726.aspx
-func (b BlobStorageClient) PutBlockWithLength(container, name, blockID string, size uint64, blob io.Reader, extraHeaders map[string]string) error {
+func (b BlobServiceClient) PutBlockWithLength(container, name, blockID string, size uint64, blob io.Reader, extraHeaders map[string]string) error {
 	uri := b.client.getEndpoint(blobServiceName, pathForBlob(container, name), url.Values{"comp": {"block"}, "blockid": {blockID}})
 	extraHeaders = b.client.protectUserAgent(extraHeaders)
 	headers := b.client.getStandardHeaders()
@@ -1097,7 +1097,7 @@ func (b BlobStorageClient) PutBlockWithLength(container, name, blockID string, s
 // PutBlockList saves list of blocks to the specified block blob.
 //
 // See https://msdn.microsoft.com/en-us/library/azure/dd179467.aspx
-func (b BlobStorageClient) PutBlockList(container, name string, blocks []Block) error {
+func (b BlobServiceClient) PutBlockList(container, name string, blocks []Block) error {
 	blockListXML := prepareBlockListRequest(blocks)
 
 	uri := b.client.getEndpoint(blobServiceName, pathForBlob(container, name), url.Values{"comp": {"blocklist"}})
@@ -1115,7 +1115,7 @@ func (b BlobStorageClient) PutBlockList(container, name string, blocks []Block) 
 // GetBlockList retrieves list of blocks in the specified block blob.
 //
 // See https://msdn.microsoft.com/en-us/library/azure/dd179400.aspx
-func (b BlobStorageClient) GetBlockList(container, name string, blockType BlockListType) (BlockListResponse, error) {
+func (b BlobServiceClient) GetBlockList(container, name string, blockType BlockListType) (BlockListResponse, error) {
 	params := url.Values{"comp": {"blocklist"}, "blocklisttype": {string(blockType)}}
 	uri := b.client.getEndpoint(blobServiceName, pathForBlob(container, name), params)
 	headers := b.client.getStandardHeaders()
@@ -1136,7 +1136,7 @@ func (b BlobStorageClient) GetBlockList(container, name string, blockType BlockL
 // be created using this method before writing pages.
 //
 // See https://msdn.microsoft.com/en-us/library/azure/dd179451.aspx
-func (b BlobStorageClient) PutPageBlob(container, name string, size int64, extraHeaders map[string]string) error {
+func (b BlobServiceClient) PutPageBlob(container, name string, size int64, extraHeaders map[string]string) error {
 	path := fmt.Sprintf("%s/%s", container, name)
 	uri := b.client.getEndpoint(blobServiceName, path, url.Values{})
 	extraHeaders = b.client.protectUserAgent(extraHeaders)
@@ -1162,7 +1162,7 @@ func (b BlobStorageClient) PutPageBlob(container, name string, size int64, extra
 // with 512-byte boundaries and chunk must be of size multiplies by 512.
 //
 // See https://msdn.microsoft.com/en-us/library/ee691975.aspx
-func (b BlobStorageClient) PutPage(container, name string, startByte, endByte int64, writeType PageWriteType, chunk []byte, extraHeaders map[string]string) error {
+func (b BlobServiceClient) PutPage(container, name string, startByte, endByte int64, writeType PageWriteType, chunk []byte, extraHeaders map[string]string) error {
 	path := fmt.Sprintf("%s/%s", container, name)
 	uri := b.client.getEndpoint(blobServiceName, path, url.Values{"comp": {"page"}})
 	extraHeaders = b.client.protectUserAgent(extraHeaders)
@@ -1196,7 +1196,7 @@ func (b BlobStorageClient) PutPage(container, name string, startByte, endByte in
 // GetPageRanges returns the list of valid page ranges for a page blob.
 //
 // See https://msdn.microsoft.com/en-us/library/azure/ee691973.aspx
-func (b BlobStorageClient) GetPageRanges(container, name string) (GetPageRangesResponse, error) {
+func (b BlobServiceClient) GetPageRanges(container, name string) (GetPageRangesResponse, error) {
 	path := fmt.Sprintf("%s/%s", container, name)
 	uri := b.client.getEndpoint(blobServiceName, path, url.Values{"comp": {"pagelist"}})
 	headers := b.client.getStandardHeaders()
@@ -1219,7 +1219,7 @@ func (b BlobStorageClient) GetPageRanges(container, name string) (GetPageRangesR
 // append blob must be created using this method before appending blocks.
 //
 // See https://msdn.microsoft.com/en-us/library/azure/dd179451.aspx
-func (b BlobStorageClient) PutAppendBlob(container, name string, extraHeaders map[string]string) error {
+func (b BlobServiceClient) PutAppendBlob(container, name string, extraHeaders map[string]string) error {
 	path := fmt.Sprintf("%s/%s", container, name)
 	uri := b.client.getEndpoint(blobServiceName, path, url.Values{})
 	extraHeaders = b.client.protectUserAgent(extraHeaders)
@@ -1242,7 +1242,7 @@ func (b BlobStorageClient) PutAppendBlob(container, name string, extraHeaders ma
 // AppendBlock appends a block to an append blob.
 //
 // See https://msdn.microsoft.com/en-us/library/azure/mt427365.aspx
-func (b BlobStorageClient) AppendBlock(container, name string, chunk []byte, extraHeaders map[string]string) error {
+func (b BlobServiceClient) AppendBlock(container, name string, chunk []byte, extraHeaders map[string]string) error {
 	path := fmt.Sprintf("%s/%s", container, name)
 	uri := b.client.getEndpoint(blobServiceName, path, url.Values{"comp": {"appendblock"}})
 	extraHeaders = b.client.protectUserAgent(extraHeaders)
@@ -1269,7 +1269,7 @@ func (b BlobStorageClient) AppendBlock(container, name string, chunk []byte, ext
 // this helper method works faster on smaller files.
 //
 // See https://msdn.microsoft.com/en-us/library/azure/dd894037.aspx
-func (b BlobStorageClient) CopyBlob(container, name, sourceBlob string) error {
+func (b BlobServiceClient) CopyBlob(container, name, sourceBlob string) error {
 	copyID, err := b.StartBlobCopy(container, name, sourceBlob)
 	if err != nil {
 		return err
@@ -1283,7 +1283,7 @@ func (b BlobStorageClient) CopyBlob(container, name, sourceBlob string) error {
 // obtained using GetBlobURL method.)
 //
 // See https://msdn.microsoft.com/en-us/library/azure/dd894037.aspx
-func (b BlobStorageClient) StartBlobCopy(container, name, sourceBlob string) (string, error) {
+func (b BlobServiceClient) StartBlobCopy(container, name, sourceBlob string) (string, error) {
 	uri := b.client.getEndpoint(blobServiceName, pathForBlob(container, name), url.Values{})
 
 	headers := b.client.getStandardHeaders()
@@ -1310,7 +1310,7 @@ func (b BlobStorageClient) StartBlobCopy(container, name, sourceBlob string) (st
 // copyID is generated from StartBlobCopy function.
 // currentLeaseID is required IF the destination blob has an active lease on it.
 // As defined in https://msdn.microsoft.com/en-us/library/azure/jj159098.aspx
-func (b BlobStorageClient) AbortBlobCopy(container, name, copyID, currentLeaseID string, timeout int) error {
+func (b BlobServiceClient) AbortBlobCopy(container, name, copyID, currentLeaseID string, timeout int) error {
 	params := url.Values{"comp": {"copy"}, "copyid": {copyID}}
 	if timeout > 0 {
 		params.Add("timeout", strconv.Itoa(timeout))
@@ -1338,7 +1338,7 @@ func (b BlobStorageClient) AbortBlobCopy(container, name, copyID, currentLeaseID
 }
 
 // WaitForBlobCopy loops until a BlobCopy operation is completed (or fails with error)
-func (b BlobStorageClient) WaitForBlobCopy(container, name, copyID string) error {
+func (b BlobServiceClient) WaitForBlobCopy(container, name, copyID string) error {
 	for {
 		props, err := b.GetBlobProperties(container, name)
 		if err != nil {
@@ -1367,7 +1367,7 @@ func (b BlobStorageClient) WaitForBlobCopy(container, name, copyID string) error
 // DeleteBlob deletes the given blob from the specified container.
 // If the blob does not exists at the time of the Delete Blob operation, it
 // returns error. See https://msdn.microsoft.com/en-us/library/azure/dd179413.aspx
-func (b BlobStorageClient) DeleteBlob(container, name string, extraHeaders map[string]string) error {
+func (b BlobServiceClient) DeleteBlob(container, name string, extraHeaders map[string]string) error {
 	resp, err := b.deleteBlob(container, name, extraHeaders)
 	if err != nil {
 		return err
@@ -1380,7 +1380,7 @@ func (b BlobStorageClient) DeleteBlob(container, name string, extraHeaders map[s
 // blob is deleted with this call, returns true. Otherwise returns false.
 //
 // See https://msdn.microsoft.com/en-us/library/azure/dd179413.aspx
-func (b BlobStorageClient) DeleteBlobIfExists(container, name string, extraHeaders map[string]string) (bool, error) {
+func (b BlobServiceClient) DeleteBlobIfExists(container, name string, extraHeaders map[string]string) (bool, error) {
 	resp, err := b.deleteBlob(container, name, extraHeaders)
 	if resp != nil {
 		defer resp.body.Close()
@@ -1391,7 +1391,7 @@ func (b BlobStorageClient) DeleteBlobIfExists(container, name string, extraHeade
 	return false, err
 }
 
-func (b BlobStorageClient) deleteBlob(container, name string, extraHeaders map[string]string) (*storageResponse, error) {
+func (b BlobServiceClient) deleteBlob(container, name string, extraHeaders map[string]string) (*storageResponse, error) {
 	uri := b.client.getEndpoint(blobServiceName, pathForBlob(container, name), url.Values{})
 	extraHeaders = b.client.protectUserAgent(extraHeaders)
 	headers := b.client.getStandardHeaders()
@@ -1419,7 +1419,7 @@ func pathForBlob(container, name string) string {
 // We only populate the signedIP when it non-empty.
 //
 // See https://msdn.microsoft.com/en-us/library/azure/ee395415.aspx
-func (b BlobStorageClient) GetBlobSASURIWithSignedIPAndProtocol(container, name string, expiry time.Time, permissions string, signedIPRange string, HTTPSOnly bool) (string, error) {
+func (b BlobServiceClient) GetBlobSASURIWithSignedIPAndProtocol(container, name string, expiry time.Time, permissions string, signedIPRange string, HTTPSOnly bool) (string, error) {
 	var (
 		signedPermissions = permissions
 		blobURL           = b.GetBlobURL(container, name)
@@ -1481,7 +1481,7 @@ func (b BlobStorageClient) GetBlobSASURIWithSignedIPAndProtocol(container, name 
 // Access Signature with specified permissions and expiration time.
 //
 // See https://msdn.microsoft.com/en-us/library/azure/ee395415.aspx
-func (b BlobStorageClient) GetBlobSASURI(container, name string, expiry time.Time, permissions string) (string, error) {
+func (b BlobServiceClient) GetBlobSASURI(container, name string, expiry time.Time, permissions string) (string, error) {
 	url, err := b.GetBlobSASURIWithSignedIPAndProtocol(container, name, expiry, permissions, "", false)
 	return url, err
 }

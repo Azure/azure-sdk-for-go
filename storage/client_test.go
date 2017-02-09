@@ -6,6 +6,7 @@ import (
 	"net/url"
 	"os"
 	"testing"
+	"time"
 
 	chk "gopkg.in/check.v1"
 )
@@ -16,6 +17,8 @@ func Test(t *testing.T) { chk.TestingT(t) }
 type StorageClientSuite struct{}
 
 var _ = chk.Suite(&StorageClientSuite{})
+
+var now = time.Now()
 
 // getBasicClient returns a test client from storage credentials in the env
 func getBasicClient(c *chk.C) Client {
@@ -148,70 +151,6 @@ func (s *StorageClientSuite) Test_getStandardHeaders(c *chk.C) {
 	c.Assert(headers[userAgentHeader], chk.Equals, cli.getDefaultUserAgent())
 }
 
-func (s *StorageClientSuite) Test_buildCanonicalizedResourceTable(c *chk.C) {
-	cli, err := NewBasicClient("foo", "YmFy")
-	c.Assert(err, chk.IsNil)
-
-	type test struct{ url, expected string }
-	tests := []test{
-		{"https://foo.table.core.windows.net/mytable", "/foo/mytable"},
-		{"https://foo.table.core.windows.net/mytable?comp=acl", "/foo/mytable?comp=acl"},
-		{"https://foo.table.core.windows.net/mytable?comp=acl&timeout=10", "/foo/mytable?comp=acl"},
-		{"https://foo.table.core.windows.net/mytable(PartitionKey='pkey',RowKey='rowkey%3D')", "/foo/mytable(PartitionKey='pkey',RowKey='rowkey%3D')"},
-	}
-
-	for _, i := range tests {
-		out, err := cli.buildCanonicalizedResourceTable(i.url)
-		c.Assert(err, chk.IsNil)
-		c.Assert(out, chk.Equals, i.expected)
-	}
-}
-
-func (s *StorageClientSuite) Test_buildCanonicalizedResource(c *chk.C) {
-	cli, err := NewBasicClient("foo", "YmFy")
-	c.Assert(err, chk.IsNil)
-
-	type test struct{ url, expected string }
-	tests := []test{
-		{"https://foo.blob.core.windows.net/path?a=b&c=d", "/foo/path\na:b\nc:d"},
-		{"https://foo.blob.core.windows.net/?comp=list", "/foo/\ncomp:list"},
-		{"https://foo.blob.core.windows.net/cnt/blob", "/foo/cnt/blob"},
-		{"https://foo.blob.core.windows.net/cnt/bl ob", "/foo/cnt/bl%20ob"},
-		{"https://foo.blob.core.windows.net/c nt/blob", "/foo/c%20nt/blob"},
-		{"https://foo.blob.core.windows.net/cnt/blob%3F%23%5B%5D%21$&%27%28%29%2A blob", "/foo/cnt/blob%3F%23%5B%5D%21$&%27%28%29%2A%20blob"},
-		{"https://foo.blob.core.windows.net/cnt/blob-._~:,@;+=blob", "/foo/cnt/blob-._~:,@;+=blob"},
-		{"https://foo.blob.core.windows.net/c nt/blob-._~:%3F%23%5B%5D@%21$&%27%28%29%2A,;+=/blob", "/foo/c%20nt/blob-._~:%3F%23%5B%5D@%21$&%27%28%29%2A,;+=/blob"},
-	}
-
-	for _, i := range tests {
-		out, err := cli.buildCanonicalizedResource(i.url)
-		c.Assert(err, chk.IsNil)
-		c.Assert(out, chk.Equals, i.expected)
-	}
-}
-
-func (s *StorageClientSuite) Test_buildCanonicalizedHeader(c *chk.C) {
-	cli, err := NewBasicClient("foo", "YmFy")
-	c.Assert(err, chk.IsNil)
-
-	type test struct {
-		headers  map[string]string
-		expected string
-	}
-	tests := []test{
-		{map[string]string{}, ""},
-		{map[string]string{"x-ms-foo": "bar"}, "x-ms-foo:bar"},
-		{map[string]string{"foo:": "bar"}, ""},
-		{map[string]string{"foo:": "bar", "x-ms-foo": "bar"}, "x-ms-foo:bar"},
-		{map[string]string{
-			"x-ms-version":   "9999-99-99",
-			"x-ms-blob-type": "BlockBlob"}, "x-ms-blob-type:BlockBlob\nx-ms-version:9999-99-99"}}
-
-	for _, i := range tests {
-		c.Assert(cli.buildCanonicalizedHeader(i.headers), chk.Equals, i.expected)
-	}
-}
-
 func (s *StorageClientSuite) TestReturnsStorageServiceError(c *chk.C) {
 	// attempt to delete a nonexisting container
 	_, err := getBlobClient(c).deleteContainer(randContainer())
@@ -238,16 +177,6 @@ func (s *StorageClientSuite) TestReturnsStorageServiceError_withoutResponseBody(
 	c.Assert(v.Code, chk.Equals, "404 The specified container does not exist.")
 	c.Assert(v.RequestID, chk.Not(chk.Equals), "")
 	c.Assert(v.Message, chk.Equals, "no response body was available for error status code")
-}
-
-func (s *StorageClientSuite) Test_createAuthorizationHeader(c *chk.C) {
-	key := base64.StdEncoding.EncodeToString([]byte("bar"))
-	cli, err := NewBasicClient("foo", key)
-	c.Assert(err, chk.IsNil)
-
-	canonicalizedString := `foobarzoo`
-	expected := `SharedKey foo:h5U0ATVX6SpbFX1H6GNuxIMeXXCILLoIvhflPtuQZ30=`
-	c.Assert(cli.createAuthorizationHeader(canonicalizedString), chk.Equals, expected)
 }
 
 func (s *StorageClientSuite) Test_createServiceClients(c *chk.C) {

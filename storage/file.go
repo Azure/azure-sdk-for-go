@@ -268,7 +268,7 @@ func (f *File) modifyRange(bytes io.Reader, fileRange FileRange, contentMD5 *str
 	}
 
 	headers := mergeHeaders(f.fsc.client.getStandardHeaders(), extraHeaders)
-	resp, err := f.fsc.client.exec(http.MethodPut, uri, headers, bytes)
+	resp, err := f.fsc.client.exec(http.MethodPut, uri, headers, bytes, f.fsc.auth)
 	if err != nil {
 		return nil, err
 	}

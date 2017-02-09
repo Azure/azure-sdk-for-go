@@ -18,11 +18,23 @@ import (
 )
 
 const (
-	// DefaultBaseURL is the domain name used for storage requests when a
-	// default client is created.
+	// DefaultBaseURL is the domain name used for storage requests in the
+	// public cloud when a default client is created.
 	DefaultBaseURL = "core.windows.net"
 
-	// DefaultAPIVersion is the  Azure Storage API version string used when a
+	// ChinaBaseURL is the domain name used for storage requests in the
+	// China cloud when a client is created.
+	ChinaBaseURL = "core.chinacloudapi.cn"
+
+	// GermanyBaseURL is the domain name used for storage requests in the
+	// Germany cloud when a client is created.
+	GermanyBaseURL = "core.cloudapi.de"
+
+	// USGovBaseURL is the domain name used for storage requests in the
+	// US government cloud when a client is created.
+	USGovBaseURL = "core.usgovcloudapi.net"
+
+	// DefaultAPIVersion is the Azure Storage API version string used when a
 	// basic client is created.
 	DefaultAPIVersion = "2015-02-21"
 
@@ -131,7 +143,33 @@ func NewBasicClient(accountName, accountKey string) (Client, error) {
 		return NewEmulatorClient()
 	}
 	return NewClient(accountName, accountKey, DefaultBaseURL, DefaultAPIVersion, defaultUseHTTPS)
+}
 
+// NewBasicClientChina constructs a Client with given storage service name and
+// key in the China cloud.
+func NewBasicClientChina(accountName, accountKey string) (Client, error) {
+	if accountName == StorageEmulatorAccountName {
+		return NewEmulatorClient()
+	}
+	return NewClient(accountName, accountKey, ChinaBaseURL, DefaultAPIVersion, defaultUseHTTPS)
+}
+
+// NewBasicClientGermany constructs a Client with given storage service name and
+// key in the Germany cloud.
+func NewBasicClientGermany(accountName, accountKey string) (Client, error) {
+	if accountName == StorageEmulatorAccountName {
+		return NewEmulatorClient()
+	}
+	return NewClient(accountName, accountKey, GermanyBaseURL, DefaultAPIVersion, defaultUseHTTPS)
+}
+
+// NewBasicClientUSGov constructs a Client with given storage service name and
+// key in the US government cloud.
+func NewBasicClientUSGov(accountName, accountKey string) (Client, error) {
+	if accountName == StorageEmulatorAccountName {
+		return NewEmulatorClient()
+	}
+	return NewClient(accountName, accountKey, USGovBaseURL, DefaultAPIVersion, defaultUseHTTPS)
 }
 
 //NewEmulatorClient contructs a Client intended to only work with Azure

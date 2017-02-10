@@ -24,7 +24,6 @@ const (
 
 // Entity represents an entity inside an Azure table.
 type Entity struct {
-	tsc           *TableServiceClient
 	Table         *Table
 	PartitionKey  string
 	RowKey        string
@@ -44,32 +43,28 @@ func (t *Table) GetEntityReference(partitionKey, rowKey string) Entity {
 		PartitionKey: partitionKey,
 		RowKey:       rowKey,
 		Table:        t,
-		tsc:          t.tsc,
 	}
 }
 
 // Insert inserts the referenced entity in its table.
 // The function fails if there is an entity with the same
 // PartitionKey and RowKey in the table.
+// ml determines the level of detail of metadata in the operation response,
+// or no data at all.
 // See: https://docs.microsoft.com/rest/api/storageservices/fileservices/insert-entity
-func (e *Entity) Insert(getResponse bool) error {
-	uri := e.tsc.client.getEndpoint(tableServiceName, e.Table.buildPath(), nil)
+func (e *Entity) Insert(ml MetadataLevel) error {
+	uri := e.Table.tsc.client.getEndpoint(tableServiceName, e.Table.buildPath(), nil)
 
 	body, err := json.Marshal(e)
 	if err != nil {
 		return err
 	}
 
-	headers := e.tsc.client.getStandardHeaders()
-	addBodyRelatedHeaders(&headers, len(body))
-	if getResponse {
-		headers[headerPrefer] = "return-content"
-		headers[headerAccept] = "application/json;odata=fullmetadata"
-	} else {
-		headers[headerPrefer] = "return-no-content"
-	}
+	headers := e.Table.tsc.client.getStandardHeaders()
+	headers = addBodyRelatedHeaders(headers, len(body))
+	headers = addReturnContentHeaders(headers, ml)
 
-	resp, err := e.tsc.client.execInternalJSON(http.MethodPost, uri, headers, bytes.NewReader(body), e.tsc.auth)
+	resp, err := e.Table.tsc.client.execInternalJSON(http.MethodPost, uri, headers, bytes.NewReader(body), e.Table.tsc.auth)
 	if err != nil {
 		return err
 	}
@@ -80,7 +75,7 @@ func (e *Entity) Insert(getResponse bool) error {
 		return err
 	}
 
-	if getResponse {
+	if ml != EmptyPayload {
 		if err = checkRespCode(resp.statusCode, []int{http.StatusCreated}); err != nil {
 			return err
 		}
@@ -118,12 +113,12 @@ func (e *Entity) Merge(force bool) error {
 // RowKey in the table or if the ETag is different than the one in Azure.
 // See: https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/delete-entity1
 func (e *Entity) Delete(force bool) error {
-	uri := e.tsc.client.getEndpoint(tableServiceName, e.buildPath(), nil)
+	uri := e.Table.tsc.client.getEndpoint(tableServiceName, e.buildPath(), nil)
 
-	headers := e.tsc.client.getStandardHeaders()
-	addIfMatchHeader(&headers, force, e.OdataEtag)
+	headers := e.Table.tsc.client.getStandardHeaders()
+	headers = addIfMatchHeader(headers, force, e.OdataEtag)
 
-	resp, err := e.tsc.client.execInternalJSON(http.MethodDelete, uri, headers, nil, e.tsc.auth)
+	resp, err := e.Table.tsc.client.execInternalJSON(http.MethodDelete, uri, headers, nil, e.Table.tsc.auth)
 	if err != nil {
 		if resp.statusCode == http.StatusPreconditionFailed {
 			return fmt.Errorf(etagErrorTemplate, err)
@@ -205,13 +200,13 @@ func (e *Entity) UnmarshalJSON(data []byte) error {
 	}
 
 	// deselialize metadata
-	e.OdataMetadata = getAndDelete(&props, "odata.metadata")
-	e.OdataType = getAndDelete(&props, "odata.type")
-	e.OdataID = getAndDelete(&props, "odata.id")
-	e.OdataEtag = getAndDelete(&props, "odata.etag")
-	e.OdataEditLink = getAndDelete(&props, "odata.editLink")
-	e.PartitionKey = getAndDelete(&props, partitionKeyNode)
-	e.RowKey = getAndDelete(&props, rowKeyNode)
+	props = assignFromMap(props, &e.OdataMetadata, "odata.metadata")
+	props = assignFromMap(props, &e.OdataType, "odata.type")
+	props = assignFromMap(props, &e.OdataID, "odata.id")
+	props = assignFromMap(props, &e.OdataEtag, "odata.etag")
+	props = assignFromMap(props, &e.OdataEditLink, "odata.editLink")
+	props = assignFromMap(props, &e.PartitionKey, partitionKeyNode)
+	props = assignFromMap(props, &e.RowKey, rowKeyNode)
 
 	// deserialize timestamp
 	str, ok := props["Timestamp"].(string)
@@ -262,23 +257,23 @@ func (e *Entity) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func getAndDelete(props *map[string]interface{}, key string) string {
-	str, _ := (*props)[key].(string)
-	delete(*props, key)
-	return str
-}
+func getAndDelete(props map[string]interface{}, key string) (map[string]interface{}, string) {
+	str, ok := props[key].(string)
+	if ok {
+		delete(props, key)
+		return props, str
 
-func addBodyRelatedHeaders(h *map[string]string, length int) {
-	(*h)[headerContentType] = "application/json"
-	(*h)[headerContentLength] = fmt.Sprintf("%v", length)
-}
-
-func addIfMatchHeader(h *map[string]string, force bool, etag string) {
-	if force {
-		(*h)[headerIfMatch] = "*"
-	} else {
-		(*h)[headerIfMatch] = etag
 	}
+	return props, ""
+}
+
+func addIfMatchHeader(h map[string]string, force bool, etag string) map[string]string {
+	if force {
+		h[headerIfMatch] = "*"
+	} else {
+		h[headerIfMatch] = etag
+	}
+	return h
 }
 
 // updates Etag and timestamp
@@ -298,17 +293,17 @@ func (e *Entity) updateTimestamp(headers http.Header) error {
 }
 
 func (e *Entity) insertOr(verb string) error {
-	uri := e.tsc.client.getEndpoint(tableServiceName, e.buildPath(), nil)
+	uri := e.Table.tsc.client.getEndpoint(tableServiceName, e.buildPath(), nil)
 
 	body, err := json.Marshal(e)
 	if err != nil {
 		return err
 	}
 
-	headers := e.tsc.client.getStandardHeaders()
-	addBodyRelatedHeaders(&headers, len(body))
+	headers := e.Table.tsc.client.getStandardHeaders()
+	headers = addBodyRelatedHeaders(headers, len(body))
 
-	resp, err := e.tsc.client.execInternalJSON(verb, uri, headers, bytes.NewReader(body), e.tsc.auth)
+	resp, err := e.Table.tsc.client.execInternalJSON(verb, uri, headers, bytes.NewReader(body), e.Table.tsc.auth)
 	if err != nil {
 		return err
 	}
@@ -322,18 +317,18 @@ func (e *Entity) insertOr(verb string) error {
 }
 
 func (e *Entity) updateMerge(force bool, verb string) error {
-	uri := e.tsc.client.getEndpoint(tableServiceName, e.buildPath(), nil)
+	uri := e.Table.tsc.client.getEndpoint(tableServiceName, e.buildPath(), nil)
 
 	body, err := json.Marshal(e)
 	if err != nil {
 		return err
 	}
 
-	headers := e.tsc.client.getStandardHeaders()
-	addBodyRelatedHeaders(&headers, len(body))
-	addIfMatchHeader(&headers, force, e.OdataEtag)
+	headers := e.Table.tsc.client.getStandardHeaders()
+	headers = addBodyRelatedHeaders(headers, len(body))
+	headers = addIfMatchHeader(headers, force, e.OdataEtag)
 
-	resp, err := e.tsc.client.execInternalJSON(verb, uri, headers, bytes.NewReader(body), e.tsc.auth)
+	resp, err := e.Table.tsc.client.execInternalJSON(verb, uri, headers, bytes.NewReader(body), e.Table.tsc.auth)
 	if err != nil {
 		if resp.statusCode == http.StatusPreconditionFailed {
 			return fmt.Errorf(etagErrorTemplate, err)
@@ -347,4 +342,12 @@ func (e *Entity) updateMerge(force bool, verb string) error {
 	}
 
 	return e.updateEtagAndTimestamp(resp.headers)
+}
+
+func assignFromMap(props map[string]interface{}, field *string, key string) map[string]interface{} {
+	props, newString := getAndDelete(props, key)
+	if newString != "" {
+		*field = newString
+	}
+	return props
 }

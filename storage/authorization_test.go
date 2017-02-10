@@ -205,7 +205,7 @@ func (a *AuthorizationSuite) Test_allSharedKeys(c *chk.C) {
 	c.Assert(tableCli.auth, chk.Equals, sharedKeyForTable)
 	table1 := tableCli.GetTableReference(randTable())
 	c.Assert(table1.tsc.auth, chk.Equals, sharedKeyForTable)
-	c.Assert(table1.Create(false), chk.IsNil)
+	c.Assert(table1.Create(EmptyPayload), chk.IsNil)
 	c.Assert(table1.Delete(), chk.IsNil)
 
 	// Change to Lite
@@ -223,6 +223,6 @@ func (a *AuthorizationSuite) Test_allSharedKeys(c *chk.C) {
 	c.Assert(tableCli.auth, chk.Equals, sharedKeyLiteForTable)
 	table2 := tableCli.GetTableReference(randTable())
 	c.Assert(table2.tsc.auth, chk.Equals, sharedKeyLiteForTable)
-	c.Assert(table2.Create(false), chk.IsNil)
+	c.Assert(table2.Create(EmptyPayload), chk.IsNil)
 	c.Assert(table2.Delete(), chk.IsNil)
 }

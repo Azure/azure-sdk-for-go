@@ -31,12 +31,12 @@ func (s *StorageTableSuite) Test_CreateAndDeleteTable(c *chk.C) {
 	cli := getBasicClient(c).GetTableService()
 	table := cli.GetTableReference(randTable())
 
-	err := table.Create(false)
+	err := table.Create(EmptyPayload)
 	c.Assert(err, chk.IsNil)
 
 	// update table metadata
 	table2 := cli.GetTableReference(randTable())
-	err = table2.Create(true)
+	err = table2.Create(FullMetadata)
 	defer table2.Delete()
 	c.Assert(err, chk.IsNil)
 	// Check not empty values
@@ -55,7 +55,7 @@ func (s *StorageTableSuite) TestQueryTablesNextResults(c *chk.C) {
 
 	for i := 0; i < 3; i++ {
 		table := cli.GetTableReference(randTable())
-		err := table.Create(false)
+		err := table.Create(EmptyPayload)
 		c.Assert(err, chk.IsNil)
 		defer table.Delete()
 	}
@@ -103,8 +103,9 @@ func appendTablePermission(policies []TableAccessPolicy, ID string,
 }
 
 func (s *StorageTableSuite) TestSetPermissionsSuccessfully(c *chk.C) {
-	table := getTableClient(c).GetTableReference(randTable())
-	c.Assert(table.Create(false), chk.IsNil)
+	cli := getTableClient(c)
+	table := cli.GetTableReference(randTable())
+	c.Assert(table.Create(EmptyPayload), chk.IsNil)
 	defer table.Delete()
 
 	policies := []TableAccessPolicy{}
@@ -116,7 +117,8 @@ func (s *StorageTableSuite) TestSetPermissionsSuccessfully(c *chk.C) {
 }
 
 func (s *StorageTableSuite) TestSetPermissionsUnsuccessfully(c *chk.C) {
-	table := getTableClient(c).GetTableReference("nonexistingtable")
+	cli := getTableClient(c)
+	table := cli.GetTableReference("nonexistingtable")
 
 	policies := []TableAccessPolicy{}
 	policies = appendTablePermission(policies, "GolangRocksOnAzure", true, true, true, true, now, now.Add(10*time.Hour))
@@ -127,8 +129,9 @@ func (s *StorageTableSuite) TestSetPermissionsUnsuccessfully(c *chk.C) {
 }
 
 func (s *StorageTableSuite) TestSetThenGetPermissionsSuccessfully(c *chk.C) {
-	table := getTableClient(c).GetTableReference(randTable())
-	c.Assert(table.Create(false), chk.IsNil)
+	cli := getTableClient(c)
+	table := cli.GetTableReference(randTable())
+	c.Assert(table.Create(EmptyPayload), chk.IsNil)
 	defer table.Delete()
 
 	policies := []TableAccessPolicy{}

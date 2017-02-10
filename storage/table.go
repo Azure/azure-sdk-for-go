@@ -45,7 +45,7 @@ type Table struct {
 }
 
 // EntityQueryResult contains the response from
-// QueryEntities and QueryEntitiesNextResults functions.
+// ExecuteQuery and ExecuteQueryNextResults functions.
 type EntityQueryResult struct {
 	OdataMetadata string   `json:"odata.metadata"`
 	Entities      []Entity `json:"value"`
@@ -64,31 +64,24 @@ func (t *Table) buildPath() string {
 // Create creates the referenced table.
 // This function fails if the name is not compliant
 // with the specification or the tables already exists.
+// ml determines the level of detail of metadata in the operation response,
+// or no data at all.
 // See https://docs.microsoft.com/rest/api/storageservices/fileservices/create-table
-func (t *Table) Create(getResponse bool) error {
+func (t *Table) Create(ml MetadataLevel) error {
 	uri := t.tsc.client.getEndpoint(tableServiceName, tablesURIPath, nil)
-
-	headers := t.tsc.client.getStandardHeaders()
-	headers[headerContentType] = "application/json"
-	if getResponse {
-		headers[headerPrefer] = "return-content"
-		headers[headerAccept] = "application/json;odata=fullmetadata"
-	} else {
-		headers[headerPrefer] = "return-no-content"
-	}
 
 	type createTableRequest struct {
 		TableName string `json:"TableName"`
 	}
 	req := createTableRequest{TableName: t.Name}
-
 	buf := new(bytes.Buffer)
-
 	if err := json.NewEncoder(buf).Encode(req); err != nil {
 		return err
 	}
 
-	headers["Content-Length"] = fmt.Sprintf("%d", buf.Len())
+	headers := t.tsc.client.getStandardHeaders()
+	headers = addReturnContentHeaders(headers, ml)
+	headers = addBodyRelatedHeaders(headers, buf.Len())
 
 	resp, err := t.tsc.client.execInternalJSON(http.MethodPost, uri, headers, buf, t.tsc.auth)
 	if err != nil {
@@ -100,7 +93,7 @@ func (t *Table) Create(getResponse bool) error {
 		return err
 	}
 
-	if getResponse {
+	if ml != EmptyPayload {
 		data, err := ioutil.ReadAll(resp.body)
 		if err != nil {
 			return err
@@ -137,25 +130,25 @@ func (t *Table) Delete() error {
 	return nil
 }
 
-// QueryEntities returns the entities in the table.
+// ExecuteQuery returns the entities in the table.
 // You can use query options defined by the OData Protocol specification.
 //
 // See: https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/query-entities
-func (t *Table) QueryEntities(odataQuery url.Values) (*EntityQueryResult, error) {
+func (t *Table) ExecuteQuery(odataQuery url.Values) (*EntityQueryResult, error) {
 	uri := t.tsc.client.getEndpoint(tableServiceName, t.buildPath(), fixOdataQuery(odataQuery))
-	return t.queryEntities(uri)
+	return t.executeQuery(uri)
 }
 
-// QueryEntitiesNextResults returns the next page of results
-// from a QueryEntities or QueryEntitiesNextResults operation.
+// ExecuteQueryNextResults returns the next page of results
+// from a ExecuteQuery or ExecuteQueryNextResults operation.
 //
 // See: https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/query-entities
 // See https://docs.microsoft.com/rest/api/storageservices/fileservices/query-timeout-and-pagination
-func (t *Table) QueryEntitiesNextResults(results *EntityQueryResult) (*EntityQueryResult, error) {
+func (t *Table) ExecuteQueryNextResults(results *EntityQueryResult) (*EntityQueryResult, error) {
 	if results.NextLink == nil {
 		return nil, errors.New("There are no more pages in this query results")
 	}
-	return t.queryEntities(*results.NextLink)
+	return t.executeQuery(*results.NextLink)
 }
 
 // SetPermissions sets up table ACL permissions
@@ -232,7 +225,7 @@ func (t *Table) GetPermissions(timeout int) error {
 	return nil
 }
 
-func (t *Table) queryEntities(uri string) (*EntityQueryResult, error) {
+func (t *Table) executeQuery(uri string) (*EntityQueryResult, error) {
 	headers := t.tsc.client.getStandardHeaders()
 	headers[headerAccept] = "application/json;odata=fullmetadata"
 
@@ -257,7 +250,6 @@ func (t *Table) queryEntities(uri string) (*EntityQueryResult, error) {
 	}
 
 	for i := range entities.Entities {
-		entities.Entities[i].tsc = t.tsc
 		entities.Entities[i].Table = t
 	}
 

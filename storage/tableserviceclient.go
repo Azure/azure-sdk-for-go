@@ -3,6 +3,7 @@ package storage
 import (
 	"encoding/json"
 	"errors"
+	"fmt"
 	"io/ioutil"
 	"net/http"
 	"net/url"
@@ -31,9 +32,9 @@ type TableQueryResult struct {
 }
 
 // GetTableReference returns a Table object for the specified table name.
-func (t TableServiceClient) GetTableReference(name string) Table {
+func (t *TableServiceClient) GetTableReference(name string) Table {
 	return Table{
-		tsc:  &t,
+		tsc:  t,
 		Name: name,
 	}
 }
@@ -103,4 +104,20 @@ func (t *TableServiceClient) queryTables(uri string) (*TableQueryResult, error) 
 	}
 
 	return &out, nil
+}
+
+func addBodyRelatedHeaders(h map[string]string, length int) map[string]string {
+	h[headerContentType] = "application/json"
+	h[headerContentLength] = fmt.Sprintf("%v", length)
+	return h
+}
+
+func addReturnContentHeaders(h map[string]string, ml MetadataLevel) map[string]string {
+	if ml != EmptyPayload {
+		h[headerPrefer] = "return-content"
+		h[headerAccept] = string(ml)
+	} else {
+		h[headerPrefer] = "return-no-content"
+	}
+	return h
 }

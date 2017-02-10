@@ -18,7 +18,7 @@ func (s *StorageEntitySuite) TestInsert(c *chk.C) {
 	cli := getBasicClient(c).GetTableService()
 	table := cli.GetTableReference(randTable())
 
-	err := table.Create(false)
+	err := table.Create(EmptyPayload)
 	c.Assert(err, chk.IsNil)
 	defer table.Delete()
 
@@ -32,7 +32,7 @@ func (s *StorageEntitySuite) TestInsert(c *chk.C) {
 		"NumberOfOrders": int64(255),
 	}
 	entity.Properties = props
-	err = entity.Insert(false)
+	err = entity.Insert(EmptyPayload)
 	c.Assert(err, chk.IsNil)
 	// Did not update
 	c.Assert(entity.TimeStamp, chk.Equals, time.Time{})
@@ -45,7 +45,7 @@ func (s *StorageEntitySuite) TestInsert(c *chk.C) {
 	// Update
 	entity.PartitionKey = "mypartitionkey2"
 	entity.RowKey = "myrowkey2"
-	err = entity.Insert(true)
+	err = entity.Insert(FullMetadata)
 	c.Assert(err, chk.IsNil)
 	// Check everything was updated...
 	c.Assert(entity.TimeStamp, chk.NotNil)
@@ -60,7 +60,7 @@ func (s *StorageEntitySuite) TestUpdate(c *chk.C) {
 	cli := getBasicClient(c).GetTableService()
 	table := cli.GetTableReference(randTable())
 
-	err := table.Create(false)
+	err := table.Create(EmptyPayload)
 	c.Assert(err, chk.IsNil)
 	defer table.Delete()
 
@@ -73,7 +73,7 @@ func (s *StorageEntitySuite) TestUpdate(c *chk.C) {
 		"NumberOfOrders": int64(255),
 	}
 	// Force update
-	err = entity.Insert(true)
+	err = entity.Insert(FullMetadata)
 	c.Assert(err, chk.IsNil)
 
 	etag := entity.OdataEtag
@@ -115,7 +115,7 @@ func (s *StorageEntitySuite) TestMerge(c *chk.C) {
 	cli := getBasicClient(c).GetTableService()
 	table := cli.GetTableReference(randTable())
 
-	err := table.Create(false)
+	err := table.Create(EmptyPayload)
 	c.Assert(err, chk.IsNil)
 	defer table.Delete()
 
@@ -124,7 +124,7 @@ func (s *StorageEntitySuite) TestMerge(c *chk.C) {
 		"Country":  "Mexico",
 		"MalePoet": "Nezahualcoyotl",
 	}
-	c.Assert(entity.Insert(true), chk.IsNil)
+	c.Assert(entity.Insert(FullMetadata), chk.IsNil)
 
 	etag := entity.OdataEtag
 	timestamp := entity.TimeStamp
@@ -157,20 +157,20 @@ func (s *StorageEntitySuite) TestDelete(c *chk.C) {
 	cli := getBasicClient(c).GetTableService()
 	table := cli.GetTableReference(randTable())
 
-	err := table.Create(false)
+	err := table.Create(EmptyPayload)
 	c.Assert(err, chk.IsNil)
 	defer table.Delete()
 
 	// Delete providing etag
 	entity1 := table.GetEntityReference("mypartitionkey", "myrowkey")
-	c.Assert(entity1.Insert(true), chk.IsNil)
+	c.Assert(entity1.Insert(FullMetadata), chk.IsNil)
 
 	err = entity1.Delete(false)
 	c.Assert(err, chk.IsNil)
 
 	// Try to delete with incorrect etag
 	entity2 := table.GetEntityReference("mypartitionkey", "myrowkey")
-	c.Assert(entity2.Insert(false), chk.IsNil)
+	c.Assert(entity2.Insert(EmptyPayload), chk.IsNil)
 	entity2.OdataEtag = "GolangRocksOnAzure"
 
 	err = entity1.Delete(false)
@@ -185,7 +185,7 @@ func (s *StorageEntitySuite) TestInsertOrReplace(c *chk.C) {
 	cli := getBasicClient(c).GetTableService()
 	table := cli.GetTableReference(randTable())
 
-	err := table.Create(false)
+	err := table.Create(EmptyPayload)
 	c.Assert(err, chk.IsNil)
 	defer table.Delete()
 
@@ -212,7 +212,7 @@ func (s *StorageEntitySuite) TestInsertOrMerge(c *chk.C) {
 	cli := getBasicClient(c).GetTableService()
 	table := cli.GetTableReference(randTable())
 
-	err := table.Create(false)
+	err := table.Create(EmptyPayload)
 	c.Assert(err, chk.IsNil)
 	defer table.Delete()
 
@@ -237,7 +237,7 @@ func (s *StorageEntitySuite) Test_InsertAndGetEntities(c *chk.C) {
 	cli := getBasicClient(c).GetTableService()
 	table := cli.GetTableReference(randTable())
 
-	err := table.Create(false)
+	err := table.Create(EmptyPayload)
 	c.Assert(err, chk.IsNil)
 	defer table.Delete()
 
@@ -247,12 +247,12 @@ func (s *StorageEntitySuite) Test_InsertAndGetEntities(c *chk.C) {
 		"FamilyName":    "Skywalker",
 		"HasCoolWeapon": true,
 	}
-	c.Assert(entity.Insert(false), chk.IsNil)
+	c.Assert(entity.Insert(EmptyPayload), chk.IsNil)
 
 	entity.RowKey = "200"
-	c.Assert(entity.Insert(true), chk.IsNil)
+	c.Assert(entity.Insert(FullMetadata), chk.IsNil)
 
-	entities, err := table.QueryEntities(nil)
+	entities, err := table.ExecuteQuery(nil)
 	c.Assert(err, chk.IsNil)
 
 	c.Assert(entities.Entities, chk.HasLen, 2)
@@ -261,11 +261,11 @@ func (s *StorageEntitySuite) Test_InsertAndGetEntities(c *chk.C) {
 	compareEntities(entities.Entities[1], entity, c)
 }
 
-func (s *StorageEntitySuite) Test_InsertAndQueryEntities(c *chk.C) {
+func (s *StorageEntitySuite) Test_InsertAndExecuteQuery(c *chk.C) {
 	cli := getBasicClient(c).GetTableService()
 	table := cli.GetTableReference(randTable())
 
-	err := table.Create(false)
+	err := table.Create(EmptyPayload)
 	c.Assert(err, chk.IsNil)
 	defer table.Delete()
 
@@ -275,12 +275,12 @@ func (s *StorageEntitySuite) Test_InsertAndQueryEntities(c *chk.C) {
 		"FamilyName":    "Skywalker",
 		"HasCoolWeapon": true,
 	}
-	c.Assert(entity.Insert(false), chk.IsNil)
+	c.Assert(entity.Insert(EmptyPayload), chk.IsNil)
 
 	entity.RowKey = "200"
-	c.Assert(entity.Insert(false), chk.IsNil)
+	c.Assert(entity.Insert(EmptyPayload), chk.IsNil)
 
-	entities, err := table.QueryEntities(url.Values{"filter": {"RowKey eq '200'"}})
+	entities, err := table.ExecuteQuery(url.Values{"filter": {"RowKey eq '200'"}})
 	c.Assert(err, chk.IsNil)
 
 	c.Assert(entities.Entities, chk.HasLen, 1)
@@ -291,7 +291,7 @@ func (s *StorageEntitySuite) Test_InsertAndDeleteEntities(c *chk.C) {
 	cli := getBasicClient(c).GetTableService()
 	table := cli.GetTableReference(randTable())
 
-	err := table.Create(false)
+	err := table.Create(EmptyPayload)
 	c.Assert(err, chk.IsNil)
 	defer table.Delete()
 
@@ -301,36 +301,32 @@ func (s *StorageEntitySuite) Test_InsertAndDeleteEntities(c *chk.C) {
 		"Name":       "Luke",
 		"Number":     3,
 	}
-	c.Assert(entity.Insert(false), chk.IsNil)
+	c.Assert(entity.Insert(EmptyPayload), chk.IsNil)
 
 	entity.Properties["Number"] = 1
 	entity.RowKey = "200"
-	c.Assert(entity.Insert(true), chk.IsNil)
+	c.Assert(entity.Insert(FullMetadata), chk.IsNil)
 
-	result, err := table.QueryEntities(url.Values{OdataFilter: {"Number eq 1"}})
+	result, err := table.ExecuteQuery(url.Values{OdataFilter: {"Number eq 1"}})
 	c.Assert(err, chk.IsNil)
 	c.Assert(result.Entities, chk.HasLen, 1)
 	compareEntities(result.Entities[0], entity, c)
 
-	if result.Entities[0].tsc == nil {
-		fmt.Println("cliente de entity es nulo")
-	}
-
 	err = result.Entities[0].Delete(true)
 	c.Assert(err, chk.IsNil)
 
-	result, err = table.QueryEntities(nil)
+	result, err = table.ExecuteQuery(nil)
 	c.Assert(err, chk.IsNil)
 
 	// only 1 entry must be present
 	c.Assert(result.Entities, chk.HasLen, 1)
 }
 
-func (s *StorageEntitySuite) TestQueryEntitiesNextResults(c *chk.C) {
+func (s *StorageEntitySuite) TestExecuteQueryNextResults(c *chk.C) {
 	cli := getBasicClient(c).GetTableService()
 	table := cli.GetTableReference(randTable())
 
-	err := table.Create(false)
+	err := table.Create(EmptyPayload)
 	c.Assert(err, chk.IsNil)
 	defer table.Delete()
 
@@ -338,28 +334,28 @@ func (s *StorageEntitySuite) TestQueryEntitiesNextResults(c *chk.C) {
 
 	for i := 0; i < 5; i++ {
 		entity := table.GetEntityReference("pkey", fmt.Sprintf("r%d", i))
-		err := entity.Insert(true)
+		err := entity.Insert(FullMetadata)
 		c.Assert(err, chk.IsNil)
 		entityList = append(entityList, entity)
 	}
 
 	// retrieve using top = 2. Should return 2 entries, 2 entries and finally
 	// 1 entry
-	results, err := table.QueryEntities(url.Values{OdataTop: {"2"}})
+	results, err := table.ExecuteQuery(url.Values{OdataTop: {"2"}})
 	c.Assert(err, chk.IsNil)
 	c.Assert(results.Entities, chk.HasLen, 2)
 	c.Assert(results.NextLink, chk.NotNil)
 	compareEntities(results.Entities[0], entityList[0], c)
 	compareEntities(results.Entities[1], entityList[1], c)
 
-	results, err = table.QueryEntitiesNextResults(results)
+	results, err = table.ExecuteQueryNextResults(results)
 	c.Assert(err, chk.IsNil)
 	c.Assert(results.Entities, chk.HasLen, 2)
 	c.Assert(results.NextLink, chk.NotNil)
 	compareEntities(results.Entities[0], entityList[2], c)
 	compareEntities(results.Entities[1], entityList[3], c)
 
-	results, err = table.QueryEntitiesNextResults(results)
+	results, err = table.ExecuteQueryNextResults(results)
 	c.Assert(err, chk.IsNil)
 	c.Assert(results.Entities, chk.HasLen, 1)
 	c.Assert(results.NextLink, chk.IsNil)

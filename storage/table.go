@@ -35,13 +35,12 @@ type TableAccessPolicy struct {
 
 // Table represents an Azure table.
 type Table struct {
-	tsc            *TableServiceClient
-	Name           string `json:"TableName"`
-	OdataEditLink  string `json:"odata.editLink"`
-	OdataID        string `json:"odata.id"`
-	OdataMetadata  string `json:"odata.metadata"`
-	OdataType      string `json:"odata.type"`
-	AccessPolicies []TableAccessPolicy
+	tsc           *TableServiceClient
+	Name          string `json:"TableName"`
+	OdataEditLink string `json:"odata.editLink"`
+	OdataID       string `json:"odata.id"`
+	OdataMetadata string `json:"odata.metadata"`
+	OdataType     string `json:"odata.type"`
 }
 
 // EntityQueryResult contains the response from
@@ -153,7 +152,7 @@ func (t *Table) ExecuteQueryNextResults(results *EntityQueryResult) (*EntityQuer
 
 // SetPermissions sets up table ACL permissions
 // See https://docs.microsoft.com/rest/api/storageservices/fileservices/Set-Table-ACL
-func (t *Table) SetPermissions(timeout uint) error {
+func (t *Table) SetPermissions(tap []TableAccessPolicy, timeout uint) error {
 	params := url.Values{"comp": {"acl"}}
 
 	if timeout > 0 {
@@ -163,7 +162,7 @@ func (t *Table) SetPermissions(timeout uint) error {
 	uri := t.tsc.client.getEndpoint(tableServiceName, t.Name, params)
 	headers := t.tsc.client.getStandardHeaders()
 
-	body, length, err := generateTableACLPayload(t.AccessPolicies)
+	body, length, err := generateTableACLPayload(tap)
 	if err != nil {
 		return err
 	}
@@ -195,7 +194,7 @@ func generateTableACLPayload(policies []TableAccessPolicy) (io.Reader, int, erro
 
 // GetPermissions gets the table ACL permissions
 // See https://docs.microsoft.com/rest/api/storageservices/fileservices/get-table-acl
-func (t *Table) GetPermissions(timeout int) error {
+func (t *Table) GetPermissions(timeout int) ([]TableAccessPolicy, error) {
 	params := url.Values{"comp": {"acl"}}
 
 	if timeout > 0 {
@@ -207,22 +206,20 @@ func (t *Table) GetPermissions(timeout int) error {
 
 	resp, err := t.tsc.client.execInternalJSON(http.MethodGet, uri, headers, nil, t.tsc.auth)
 	if err != nil {
-		return err
+		return nil, err
 	}
 	defer resp.body.Close()
 
 	if err = checkRespCode(resp.statusCode, []int{http.StatusOK}); err != nil {
-		return err
+		return nil, err
 	}
 
 	var ap AccessPolicy
 	err = xmlUnmarshal(resp.body, &ap.SignedIdentifiersList)
 	if err != nil {
-		return err
+		return nil, err
 	}
-	t.updateAccessPolicy(ap)
-
-	return nil
+	return updateTableAccessPolicy(ap), nil
 }
 
 func (t *Table) executeQuery(uri string) (*EntityQueryResult, error) {
@@ -283,8 +280,8 @@ func extractContinuationTokenFromHeaders(h http.Header) *continuationToken {
 	return nil
 }
 
-func (t *Table) updateAccessPolicy(ap AccessPolicy) {
-	t.AccessPolicies = []TableAccessPolicy{}
+func updateTableAccessPolicy(ap AccessPolicy) []TableAccessPolicy {
+	taps := []TableAccessPolicy{}
 	for _, policy := range ap.SignedIdentifiersList.SignedIdentifiers {
 		tap := TableAccessPolicy{
 			ID:         policy.ID,
@@ -296,8 +293,9 @@ func (t *Table) updateAccessPolicy(ap AccessPolicy) {
 		tap.CanUpdate = updatePermissions(policy.AccessPolicy.Permission, "u")
 		tap.CanDelete = updatePermissions(policy.AccessPolicy.Permission, "d")
 
-		t.AccessPolicies = append(t.AccessPolicies, tap)
+		taps = append(taps, tap)
 	}
+	return taps
 }
 
 func generateTablePermissions(tap *TableAccessPolicy) (permissions string) {

@@ -110,9 +110,8 @@ func (s *StorageTableSuite) TestSetPermissionsSuccessfully(c *chk.C) {
 
 	policies := []TableAccessPolicy{}
 	policies = appendTablePermission(policies, "GolangRocksOnAzure", true, true, true, true, now, now.Add(10*time.Hour))
-	table.AccessPolicies = policies
 
-	err := table.SetPermissions(0)
+	err := table.SetPermissions(policies, 0)
 	c.Assert(err, chk.IsNil)
 }
 
@@ -122,9 +121,8 @@ func (s *StorageTableSuite) TestSetPermissionsUnsuccessfully(c *chk.C) {
 
 	policies := []TableAccessPolicy{}
 	policies = appendTablePermission(policies, "GolangRocksOnAzure", true, true, true, true, now, now.Add(10*time.Hour))
-	table.AccessPolicies = policies
 
-	err := table.SetPermissions(0)
+	err := table.SetPermissions(policies, 0)
 	c.Assert(err, chk.NotNil)
 }
 
@@ -137,31 +135,30 @@ func (s *StorageTableSuite) TestSetThenGetPermissionsSuccessfully(c *chk.C) {
 	policies := []TableAccessPolicy{}
 	policies = appendTablePermission(policies, "GolangRocksOnAzure", true, true, true, true, now, now.Add(10*time.Hour))
 	policies = appendTablePermission(policies, "AutoRestIsSuperCool", true, true, false, true, now.Add(20*time.Hour), now.Add(30*time.Hour))
-	table.AccessPolicies = policies
 
-	err := table.SetPermissions(0)
+	err := table.SetPermissions(policies, 0)
 	c.Assert(err, chk.IsNil)
 
-	err = table.GetPermissions(0)
+	newPolicies, err := table.GetPermissions(0)
 	c.Assert(err, chk.IsNil)
 
 	// now check policy set.
-	c.Assert(table.AccessPolicies, chk.HasLen, 2)
+	c.Assert(newPolicies, chk.HasLen, 2)
 
-	for i := range table.AccessPolicies {
-		c.Assert(table.AccessPolicies[i].ID, chk.Equals, policies[i].ID)
+	for i := range newPolicies {
+		c.Assert(newPolicies[i].ID, chk.Equals, policies[i].ID)
 
 		// test timestamps down the second
 		// rounding start/expiry time original perms since the returned perms would have been rounded.
 		// so need rounded vs rounded.
-		c.Assert(table.AccessPolicies[i].StartTime.UTC().Round(time.Second).Format(time.RFC1123),
+		c.Assert(newPolicies[i].StartTime.UTC().Round(time.Second).Format(time.RFC1123),
 			chk.Equals, policies[i].StartTime.UTC().Round(time.Second).Format(time.RFC1123))
-		c.Assert(table.AccessPolicies[i].ExpiryTime.UTC().Round(time.Second).Format(time.RFC1123),
+		c.Assert(newPolicies[i].ExpiryTime.UTC().Round(time.Second).Format(time.RFC1123),
 			chk.Equals, policies[i].ExpiryTime.UTC().Round(time.Second).Format(time.RFC1123))
 
-		c.Assert(table.AccessPolicies[i].CanRead, chk.Equals, policies[i].CanRead)
-		c.Assert(table.AccessPolicies[i].CanAppend, chk.Equals, policies[i].CanAppend)
-		c.Assert(table.AccessPolicies[i].CanUpdate, chk.Equals, policies[i].CanUpdate)
-		c.Assert(table.AccessPolicies[i].CanDelete, chk.Equals, policies[i].CanDelete)
+		c.Assert(newPolicies[i].CanRead, chk.Equals, policies[i].CanRead)
+		c.Assert(newPolicies[i].CanAppend, chk.Equals, policies[i].CanAppend)
+		c.Assert(newPolicies[i].CanUpdate, chk.Equals, policies[i].CanUpdate)
+		c.Assert(newPolicies[i].CanDelete, chk.Equals, policies[i].CanDelete)
 	}
 }

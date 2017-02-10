@@ -128,7 +128,7 @@ func (s *StorageBlobSuite) TestGetBlobSASURIWithSignedIPAndProtocolUsingOldAPIVe
 func (s *StorageBlobSuite) TestBlobSASURICorrectness(c *chk.C) {
 	cli := getBlobClient(c)
 	cnt := cli.GetContainerReference(randContainer())
-	c.Assert(cnt.Create(ContainerAccessTypePrivate), chk.IsNil)
+	c.Assert(cnt.Create(), chk.IsNil)
 	defer cnt.Delete()
 
 	blob := randNameWithSpecialChars(5)
@@ -157,7 +157,7 @@ func (s *StorageBlobSuite) TestBlobExists(c *chk.C) {
 
 	cli := getBlobClient(c)
 	cnt := cli.GetContainerReference(randContainer())
-	c.Assert(cnt.Create(ContainerAccessTypePrivate), chk.IsNil)
+	c.Assert(cnt.Create(), chk.IsNil)
 	defer cnt.Delete()
 
 	c.Assert(cli.putSingleBlockBlob(cnt.Name, blob, []byte("Hello!")), chk.IsNil)
@@ -189,7 +189,7 @@ func (s *StorageBlobSuite) TestBlobCopy(c *chk.C) {
 
 	cli := getBlobClient(c)
 	cnt := cli.GetContainerReference(randContainer())
-	c.Assert(cnt.Create(ContainerAccessTypePrivate), chk.IsNil)
+	c.Assert(cnt.Create(), chk.IsNil)
 	defer cnt.Delete()
 
 	src := randName(5)
@@ -218,7 +218,7 @@ func (s *StorageBlobSuite) TestStartBlobCopy(c *chk.C) {
 
 	cli := getBlobClient(c)
 	cnt := cli.GetContainerReference(randContainer())
-	c.Assert(cnt.Create(ContainerAccessTypePrivate), chk.IsNil)
+	c.Assert(cnt.Create(), chk.IsNil)
 	defer cnt.Delete()
 
 	src := randName(5)
@@ -245,7 +245,7 @@ func (s *StorageBlobSuite) TestAbortBlobCopy(c *chk.C) {
 
 	cli := getBlobClient(c)
 	cnt := cli.GetContainerReference(randContainer())
-	c.Assert(cnt.Create(ContainerAccessTypePrivate), chk.IsNil)
+	c.Assert(cnt.Create(), chk.IsNil)
 	defer cnt.Delete()
 
 	src := randName(5)
@@ -276,7 +276,7 @@ func (s *StorageBlobSuite) TestDeleteBlobIfExists(c *chk.C) {
 
 	cli := getBlobClient(c)
 	cnt := cli.GetContainerReference(randContainer())
-	c.Assert(cnt.Create(ContainerAccessTypePrivate), chk.IsNil)
+	c.Assert(cnt.Create(), chk.IsNil)
 	defer cnt.Delete()
 
 	c.Assert(cli.DeleteBlob(cnt.Name, blob, nil), chk.NotNil)
@@ -291,7 +291,7 @@ func (s *StorageBlobSuite) TestDeleteBlobWithConditions(c *chk.C) {
 
 	cli := getBlobClient(c)
 	cnt := cli.GetContainerReference(randContainer())
-	c.Assert(cnt.Create(ContainerAccessTypePrivate), chk.IsNil)
+	c.Assert(cnt.Create(), chk.IsNil)
 	defer cnt.Delete()
 
 	c.Assert(cli.CreateBlockBlob(cnt.Name, blob), chk.IsNil)
@@ -327,7 +327,7 @@ func (s *StorageBlobSuite) TestGetBlobProperties(c *chk.C) {
 
 	cli := getBlobClient(c)
 	cnt := cli.GetContainerReference(randContainer())
-	c.Assert(cnt.Create(ContainerAccessTypePrivate), chk.IsNil)
+	c.Assert(cnt.Create(), chk.IsNil)
 	defer cnt.Delete()
 
 	// Nonexisting blob
@@ -361,7 +361,7 @@ func (s *StorageBlobSuite) TestMarshalBlobMetadata(c *chk.C) {
 func (s *StorageBlobSuite) TestGetAndSetMetadata(c *chk.C) {
 	cli := getBlobClient(c)
 	cnt := cli.GetContainerReference(randContainer())
-	c.Assert(cnt.Create(ContainerAccessTypePrivate), chk.IsNil)
+	c.Assert(cnt.Create(), chk.IsNil)
 	defer cnt.Delete()
 
 	blob := randName(5)
@@ -406,7 +406,7 @@ func (s *StorageBlobSuite) TestGetAndSetMetadata(c *chk.C) {
 func (s *StorageBlobSuite) TestSetMetadataWithExtraHeaders(c *chk.C) {
 	cli := getBlobClient(c)
 	cnt := cli.GetContainerReference(randContainer())
-	c.Assert(cnt.Create(ContainerAccessTypePrivate), chk.IsNil)
+	c.Assert(cnt.Create(), chk.IsNil)
 	defer cnt.Delete()
 
 	blob := randName(5)
@@ -438,7 +438,7 @@ func (s *StorageBlobSuite) TestSetMetadataWithExtraHeaders(c *chk.C) {
 func (s *StorageBlobSuite) TestSetBlobProperties(c *chk.C) {
 	cli := getBlobClient(c)
 	cnt := cli.GetContainerReference(randContainer())
-	c.Assert(cnt.Create(ContainerAccessTypePrivate), chk.IsNil)
+	c.Assert(cnt.Create(), chk.IsNil)
 	defer cnt.Delete()
 
 	blob := randName(5)
@@ -468,7 +468,7 @@ func (s *StorageBlobSuite) TestSetBlobProperties(c *chk.C) {
 func (s *StorageBlobSuite) TestSnapshotBlob(c *chk.C) {
 	cli := getBlobClient(c)
 	cnt := cli.GetContainerReference(randContainer())
-	c.Assert(cnt.Create(ContainerAccessTypePrivate), chk.IsNil)
+	c.Assert(cnt.Create(), chk.IsNil)
 	defer cnt.Delete()
 
 	blob := randName(5)
@@ -482,7 +482,7 @@ func (s *StorageBlobSuite) TestSnapshotBlob(c *chk.C) {
 func (s *StorageBlobSuite) TestSnapshotBlobWithTimeout(c *chk.C) {
 	cli := getBlobClient(c)
 	cnt := cli.GetContainerReference(randContainer())
-	c.Assert(cnt.Create(ContainerAccessTypePrivate), chk.IsNil)
+	c.Assert(cnt.Create(), chk.IsNil)
 	defer cnt.Delete()
 
 	blob := randName(5)
@@ -496,7 +496,7 @@ func (s *StorageBlobSuite) TestSnapshotBlobWithTimeout(c *chk.C) {
 func (s *StorageBlobSuite) TestSnapshotBlobWithValidLease(c *chk.C) {
 	cli := getBlobClient(c)
 	cnt := cli.GetContainerReference(randContainer())
-	c.Assert(cnt.Create(ContainerAccessTypePrivate), chk.IsNil)
+	c.Assert(cnt.Create(), chk.IsNil)
 	defer cnt.Delete()
 
 	blob := randName(5)
@@ -518,7 +518,7 @@ func (s *StorageBlobSuite) TestSnapshotBlobWithValidLease(c *chk.C) {
 func (s *StorageBlobSuite) TestSnapshotBlobWithInvalidLease(c *chk.C) {
 	cli := getBlobClient(c)
 	cnt := cli.GetContainerReference(randContainer())
-	c.Assert(cnt.Create(ContainerAccessTypePrivate), chk.IsNil)
+	c.Assert(cnt.Create(), chk.IsNil)
 	defer cnt.Delete()
 
 	blob := randName(5)
@@ -541,7 +541,7 @@ func (s *StorageBlobSuite) TestSnapshotBlobWithInvalidLease(c *chk.C) {
 func (s *StorageBlobSuite) TestAcquireLeaseWithNoProposedLeaseID(c *chk.C) {
 	cli := getBlobClient(c)
 	cnt := cli.GetContainerReference(randContainer())
-	c.Assert(cnt.Create(ContainerAccessTypePrivate), chk.IsNil)
+	c.Assert(cnt.Create(), chk.IsNil)
 	defer cnt.Delete()
 
 	blob := randName(5)
@@ -554,7 +554,7 @@ func (s *StorageBlobSuite) TestAcquireLeaseWithNoProposedLeaseID(c *chk.C) {
 func (s *StorageBlobSuite) TestAcquireLeaseWithProposedLeaseID(c *chk.C) {
 	cli := getBlobClient(c)
 	cnt := cli.GetContainerReference(randContainer())
-	c.Assert(cnt.Create(ContainerAccessTypePrivate), chk.IsNil)
+	c.Assert(cnt.Create(), chk.IsNil)
 	defer cnt.Delete()
 
 	blob := randName(5)
@@ -569,7 +569,7 @@ func (s *StorageBlobSuite) TestAcquireLeaseWithProposedLeaseID(c *chk.C) {
 func (s *StorageBlobSuite) TestAcquireLeaseWithBadProposedLeaseID(c *chk.C) {
 	cli := getBlobClient(c)
 	cnt := cli.GetContainerReference(randContainer())
-	c.Assert(cnt.Create(ContainerAccessTypePrivate), chk.IsNil)
+	c.Assert(cnt.Create(), chk.IsNil)
 	defer cnt.Delete()
 
 	blob := randName(5)
@@ -583,7 +583,7 @@ func (s *StorageBlobSuite) TestAcquireLeaseWithBadProposedLeaseID(c *chk.C) {
 func (s *StorageBlobSuite) TestRenewLeaseSuccessful(c *chk.C) {
 	cli := getBlobClient(c)
 	cnt := cli.GetContainerReference(randContainer())
-	c.Assert(cnt.Create(ContainerAccessTypePrivate), chk.IsNil)
+	c.Assert(cnt.Create(), chk.IsNil)
 	defer cnt.Delete()
 
 	blob := randName(5)
@@ -600,7 +600,7 @@ func (s *StorageBlobSuite) TestRenewLeaseSuccessful(c *chk.C) {
 func (s *StorageBlobSuite) TestRenewLeaseAgainstNoCurrentLease(c *chk.C) {
 	cli := getBlobClient(c)
 	cnt := cli.GetContainerReference(randContainer())
-	c.Assert(cnt.Create(ContainerAccessTypePrivate), chk.IsNil)
+	c.Assert(cnt.Create(), chk.IsNil)
 	defer cnt.Delete()
 
 	blob := randName(5)
@@ -614,7 +614,7 @@ func (s *StorageBlobSuite) TestRenewLeaseAgainstNoCurrentLease(c *chk.C) {
 func (s *StorageBlobSuite) TestChangeLeaseSuccessful(c *chk.C) {
 	cli := getBlobClient(c)
 	cnt := cli.GetContainerReference(randContainer())
-	c.Assert(cnt.Create(ContainerAccessTypePrivate), chk.IsNil)
+	c.Assert(cnt.Create(), chk.IsNil)
 	defer cnt.Delete()
 
 	blob := randName(5)
@@ -632,7 +632,7 @@ func (s *StorageBlobSuite) TestChangeLeaseSuccessful(c *chk.C) {
 func (s *StorageBlobSuite) TestChangeLeaseNotSuccessfulbadProposedLeaseID(c *chk.C) {
 	cli := getBlobClient(c)
 	cnt := cli.GetContainerReference(randContainer())
-	c.Assert(cnt.Create(ContainerAccessTypePrivate), chk.IsNil)
+	c.Assert(cnt.Create(), chk.IsNil)
 	defer cnt.Delete()
 
 	blob := randName(5)
@@ -649,7 +649,7 @@ func (s *StorageBlobSuite) TestChangeLeaseNotSuccessfulbadProposedLeaseID(c *chk
 func (s *StorageBlobSuite) TestReleaseLeaseSuccessful(c *chk.C) {
 	cli := getBlobClient(c)
 	cnt := cli.GetContainerReference(randContainer())
-	c.Assert(cnt.Create(ContainerAccessTypePrivate), chk.IsNil)
+	c.Assert(cnt.Create(), chk.IsNil)
 	defer cnt.Delete()
 
 	blob := randName(5)
@@ -665,7 +665,7 @@ func (s *StorageBlobSuite) TestReleaseLeaseSuccessful(c *chk.C) {
 func (s *StorageBlobSuite) TestReleaseLeaseNotSuccessfulBadLeaseID(c *chk.C) {
 	cli := getBlobClient(c)
 	cnt := cli.GetContainerReference(randContainer())
-	c.Assert(cnt.Create(ContainerAccessTypePrivate), chk.IsNil)
+	c.Assert(cnt.Create(), chk.IsNil)
 	defer cnt.Delete()
 
 	blob := randName(5)
@@ -681,7 +681,7 @@ func (s *StorageBlobSuite) TestReleaseLeaseNotSuccessfulBadLeaseID(c *chk.C) {
 func (s *StorageBlobSuite) TestBreakLeaseSuccessful(c *chk.C) {
 	cli := getBlobClient(c)
 	cnt := cli.GetContainerReference(randContainer())
-	c.Assert(cnt.Create(ContainerAccessTypePrivate), chk.IsNil)
+	c.Assert(cnt.Create(), chk.IsNil)
 	defer cnt.Delete()
 
 	blob := randName(5)
@@ -698,7 +698,7 @@ func (s *StorageBlobSuite) TestBreakLeaseSuccessful(c *chk.C) {
 func (s *StorageBlobSuite) TestPutEmptyBlockBlob(c *chk.C) {
 	cli := getBlobClient(c)
 	cnt := cli.GetContainerReference(randContainer())
-	c.Assert(cnt.Create(ContainerAccessTypePrivate), chk.IsNil)
+	c.Assert(cnt.Create(), chk.IsNil)
 	defer cnt.Delete()
 
 	blob := randName(5)
@@ -715,7 +715,7 @@ func (s *StorageBlobSuite) TestGetBlobRange(c *chk.C) {
 
 	cli := getBlobClient(c)
 	cnt := cli.GetContainerReference(randContainer())
-	c.Assert(cnt.Create(ContainerAccessTypePrivate), chk.IsNil)
+	c.Assert(cnt.Create(), chk.IsNil)
 	defer cnt.Delete()
 
 	c.Assert(cli.putSingleBlockBlob(cnt.Name, blob, []byte(body)), chk.IsNil)
@@ -743,7 +743,7 @@ func (s *StorageBlobSuite) TestGetBlobRange(c *chk.C) {
 func (s *StorageBlobSuite) TestCreateBlockBlobFromReader(c *chk.C) {
 	cli := getBlobClient(c)
 	cnt := cli.GetContainerReference(randContainer())
-	c.Assert(cnt.Create(ContainerAccessTypePrivate), chk.IsNil)
+	c.Assert(cnt.Create(), chk.IsNil)
 	defer cnt.Delete()
 
 	name := randName(5)
@@ -762,7 +762,7 @@ func (s *StorageBlobSuite) TestCreateBlockBlobFromReader(c *chk.C) {
 func (s *StorageBlobSuite) TestCreateBlockBlobFromReaderWithShortData(c *chk.C) {
 	cli := getBlobClient(c)
 	cnt := cli.GetContainerReference(randContainer())
-	c.Assert(cnt.Create(ContainerAccessTypePrivate), chk.IsNil)
+	c.Assert(cnt.Create(), chk.IsNil)
 	defer cnt.Delete()
 
 	name := randName(5)
@@ -778,7 +778,7 @@ func (s *StorageBlobSuite) TestCreateBlockBlobFromReaderWithShortData(c *chk.C) 
 func (s *StorageBlobSuite) TestPutBlock(c *chk.C) {
 	cli := getBlobClient(c)
 	cnt := cli.GetContainerReference(randContainer())
-	c.Assert(cnt.Create(ContainerAccessTypePrivate), chk.IsNil)
+	c.Assert(cnt.Create(), chk.IsNil)
 	defer cnt.Delete()
 
 	blob := randName(5)
@@ -790,7 +790,7 @@ func (s *StorageBlobSuite) TestPutBlock(c *chk.C) {
 func (s *StorageBlobSuite) TestGetBlockList_PutBlockList(c *chk.C) {
 	cli := getBlobClient(c)
 	cnt := cli.GetContainerReference(randContainer())
-	c.Assert(cnt.Create(ContainerAccessTypePrivate), chk.IsNil)
+	c.Assert(cnt.Create(), chk.IsNil)
 	defer cnt.Delete()
 
 	blob := randName(5)
@@ -832,7 +832,7 @@ func (s *StorageBlobSuite) TestGetBlockList_PutBlockList(c *chk.C) {
 func (s *StorageBlobSuite) TestCreateBlockBlob(c *chk.C) {
 	cli := getBlobClient(c)
 	cnt := cli.GetContainerReference(randContainer())
-	c.Assert(cnt.Create(ContainerAccessTypePrivate), chk.IsNil)
+	c.Assert(cnt.Create(), chk.IsNil)
 	defer cnt.Delete()
 
 	blob := randName(5)
@@ -848,7 +848,7 @@ func (s *StorageBlobSuite) TestCreateBlockBlob(c *chk.C) {
 func (s *StorageBlobSuite) TestPutPageBlob(c *chk.C) {
 	cli := getBlobClient(c)
 	cnt := cli.GetContainerReference(randContainer())
-	c.Assert(cnt.Create(ContainerAccessTypePrivate), chk.IsNil)
+	c.Assert(cnt.Create(), chk.IsNil)
 	defer cnt.Delete()
 
 	blob := randName(5)
@@ -865,7 +865,7 @@ func (s *StorageBlobSuite) TestPutPageBlob(c *chk.C) {
 func (s *StorageBlobSuite) TestPutPagesUpdate(c *chk.C) {
 	cli := getBlobClient(c)
 	cnt := cli.GetContainerReference(randContainer())
-	c.Assert(cnt.Create(ContainerAccessTypePrivate), chk.IsNil)
+	c.Assert(cnt.Create(), chk.IsNil)
 	defer cnt.Delete()
 
 	blob := randName(5)
@@ -904,7 +904,7 @@ func (s *StorageBlobSuite) TestPutPagesUpdate(c *chk.C) {
 func (s *StorageBlobSuite) TestPutPagesClear(c *chk.C) {
 	cli := getBlobClient(c)
 	cnt := cli.GetContainerReference(randContainer())
-	c.Assert(cnt.Create(ContainerAccessTypePrivate), chk.IsNil)
+	c.Assert(cnt.Create(), chk.IsNil)
 	defer cnt.Delete()
 
 	blob := randName(5)
@@ -930,7 +930,7 @@ func (s *StorageBlobSuite) TestPutPagesClear(c *chk.C) {
 func (s *StorageBlobSuite) TestGetPageRanges(c *chk.C) {
 	cli := getBlobClient(c)
 	cnt := cli.GetContainerReference(randContainer())
-	c.Assert(cnt.Create(ContainerAccessTypePrivate), chk.IsNil)
+	c.Assert(cnt.Create(), chk.IsNil)
 	defer cnt.Delete()
 
 	blob := randName(5)
@@ -960,7 +960,7 @@ func (s *StorageBlobSuite) TestGetPageRanges(c *chk.C) {
 func (s *StorageBlobSuite) TestPutAppendBlob(c *chk.C) {
 	cli := getBlobClient(c)
 	cnt := cli.GetContainerReference(randContainer())
-	c.Assert(cnt.Create(ContainerAccessTypePrivate), chk.IsNil)
+	c.Assert(cnt.Create(), chk.IsNil)
 	defer cnt.Delete()
 
 	blob := randName(5)
@@ -976,7 +976,7 @@ func (s *StorageBlobSuite) TestPutAppendBlob(c *chk.C) {
 func (s *StorageBlobSuite) TestPutAppendBlobAppendBlocks(c *chk.C) {
 	cli := getBlobClient(c)
 	cnt := cli.GetContainerReference(randContainer())
-	c.Assert(cnt.Create(ContainerAccessTypePrivate), chk.IsNil)
+	c.Assert(cnt.Create(), chk.IsNil)
 	defer cnt.Delete()
 
 	blob := randName(5)
@@ -1030,7 +1030,7 @@ func (b BlobServiceClient) putSingleBlockBlob(container, name string, chunk []by
 func (s *StorageBlobSuite) TestPutAppendBlobSpecialChars(c *chk.C) {
 	cli := getBlobClient(c)
 	cnt := cli.GetContainerReference(randContainer())
-	c.Assert(cnt.Create(ContainerAccessTypePrivate), chk.IsNil)
+	c.Assert(cnt.Create(), chk.IsNil)
 	defer cnt.Delete()
 
 	blob := randNameWithSpecialChars(5)

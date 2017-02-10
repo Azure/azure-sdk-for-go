@@ -35,7 +35,7 @@ func (s *ContainerSuite) TestListContainersPagination(c *chk.C) {
 	created := []Container{}
 	for i := 0; i < n; i++ {
 		cnt := cli.GetContainerReference(cntNames[i])
-		c.Assert(cnt.Create(ContainerAccessTypePrivate), chk.IsNil)
+		c.Assert(cnt.Create(), chk.IsNil)
 		created = append(created, cnt)
 		defer cnt.Delete()
 	}
@@ -77,7 +77,7 @@ func (s *ContainerSuite) TestContainerExists(c *chk.C) {
 	c.Assert(err, chk.IsNil)
 	c.Assert(ok, chk.Equals, false)
 
-	c.Assert(cnt.Create(ContainerAccessTypeBlob), chk.IsNil)
+	c.Assert(cnt.Create(), chk.IsNil)
 	defer cnt.Delete()
 
 	ok, err = cnt.Exists()
@@ -88,7 +88,7 @@ func (s *ContainerSuite) TestContainerExists(c *chk.C) {
 func (s *ContainerSuite) TestCreateContainerDeleteContainer(c *chk.C) {
 	cli := getBlobClient(c)
 	cnt := cli.GetContainerReference(randContainer())
-	c.Assert(cnt.Create(ContainerAccessTypePrivate), chk.IsNil)
+	c.Assert(cnt.Create(), chk.IsNil)
 	c.Assert(cnt.Delete(), chk.IsNil)
 }
 
@@ -98,12 +98,12 @@ func (s *ContainerSuite) TestCreateContainerIfNotExists(c *chk.C) {
 	defer cnt.Delete()
 
 	// First create
-	ok, err := cnt.CreateIfNotExists(ContainerAccessTypePrivate)
+	ok, err := cnt.CreateIfNotExists()
 	c.Assert(err, chk.IsNil)
 	c.Assert(ok, chk.Equals, true)
 
 	// Second create, should not give errors
-	ok, err = cnt.CreateIfNotExists(ContainerAccessTypePrivate)
+	ok, err = cnt.CreateIfNotExists()
 	c.Assert(err, chk.IsNil)
 	c.Assert(ok, chk.Equals, false)
 }
@@ -120,7 +120,7 @@ func (s *ContainerSuite) TestDeleteContainerIfExists(c *chk.C) {
 	c.Assert(ok, chk.Equals, false)
 
 	// Existing container
-	c.Assert(cnt.Create(ContainerAccessTypePrivate), chk.IsNil)
+	c.Assert(cnt.Create(), chk.IsNil)
 	ok, err = cnt.DeleteIfExists()
 	c.Assert(err, chk.IsNil)
 	c.Assert(ok, chk.Equals, true)
@@ -130,7 +130,7 @@ func (s *ContainerSuite) TestListBlobsPagination(c *chk.C) {
 	cli := getBlobClient(c)
 	cnt := cli.GetContainerReference(randContainer())
 
-	c.Assert(cnt.Create(ContainerAccessTypePrivate), chk.IsNil)
+	c.Assert(cnt.Create(), chk.IsNil)
 	defer cnt.Delete()
 
 	blobs := []string{}
@@ -241,7 +241,7 @@ func listBlobsAsFiles(cli BlobServiceClient, cnt Container, parentDir string) (f
 func (s *ContainerSuite) TestListBlobsTraversal(c *chk.C) {
 	cli := getBlobClient(c)
 	cnt := cli.GetContainerReference(randContainer())
-	c.Assert(cnt.Create(ContainerAccessTypePrivate), chk.IsNil)
+	c.Assert(cnt.Create(), chk.IsNil)
 	defer cnt.Delete()
 
 	// Note use of leading forward slash as per naming rules.
@@ -297,7 +297,7 @@ func (s *ContainerSuite) TestListBlobsTraversal(c *chk.C) {
 func (s *ContainerSuite) TestListBlobsWithMetadata(c *chk.C) {
 	cli := getBlobClient(c)
 	cnt := cli.GetContainerReference(randContainer())
-	c.Assert(cnt.Create(ContainerAccessTypePrivate), chk.IsNil)
+	c.Assert(cnt.Create(), chk.IsNil)
 	defer cnt.Delete()
 
 	expectMeta := make(map[string]BlobMetadata)
@@ -361,105 +361,103 @@ func appendContainerPermission(perms ContainerPermissions, accessType ContainerA
 func (s *ContainerSuite) TestSetContainerPermissionsWithTimeoutSuccessfully(c *chk.C) {
 	cli := getBlobClient(c)
 	cnt := cli.GetContainerReference(randContainer())
-	c.Assert(cnt.Create(ContainerAccessTypePrivate), chk.IsNil)
+	c.Assert(cnt.Create(), chk.IsNil)
 	defer cnt.Delete()
 
 	perms := ContainerPermissions{}
 	perms = appendContainerPermission(perms, ContainerAccessTypeBlob, "GolangRocksOnAzure", now, now.Add(10*time.Hour), true, true, true)
 
-	err := cnt.SetPermissions(30, "")
+	err := cnt.SetPermissions(perms, 30, "")
 	c.Assert(err, chk.IsNil)
 }
 
 func (s *ContainerSuite) TestSetContainerPermissionsSuccessfully(c *chk.C) {
 	cli := getBlobClient(c)
 	cnt := cli.GetContainerReference(randContainer())
-	c.Assert(cnt.Create(ContainerAccessTypePrivate), chk.IsNil)
+	c.Assert(cnt.Create(), chk.IsNil)
 	defer cnt.Delete()
 
 	perms := ContainerPermissions{}
 	perms = appendContainerPermission(perms, ContainerAccessTypeBlob, "GolangRocksOnAzure", now, now.Add(10*time.Hour), true, true, true)
 
-	err := cnt.SetPermissions(0, "")
+	err := cnt.SetPermissions(perms, 0, "")
 	c.Assert(err, chk.IsNil)
 }
 
 func (s *ContainerSuite) TestSetThenGetContainerPermissionsSuccessfully(c *chk.C) {
 	cli := getBlobClient(c)
 	cnt := cli.GetContainerReference(randContainer())
-	c.Assert(cnt.Create(ContainerAccessTypePrivate), chk.IsNil)
+	c.Assert(cnt.Create(), chk.IsNil)
 	defer cnt.delete()
 
 	perms := ContainerPermissions{}
 	perms = appendContainerPermission(perms, ContainerAccessTypeBlob, "AutoRestIsSuperCool", now, now.Add(10*time.Hour), true, true, true)
 	perms = appendContainerPermission(perms, ContainerAccessTypeBlob, "GolangRocksOnAzure", now.Add(20*time.Hour), now.Add(30*time.Hour), true, false, false)
 	c.Assert(perms.AccessPolicies, chk.HasLen, 2)
-	cnt.Permissions = perms
 
-	err := cnt.SetPermissions(0, "")
+	err := cnt.SetPermissions(perms, 0, "")
 	c.Assert(err, chk.IsNil)
 
-	err = cnt.GetPermissions(0, "")
+	newPerms, err := cnt.GetPermissions(0, "")
 	c.Assert(err, chk.IsNil)
 
 	// check container permissions itself.
-	c.Assert(cnt.Permissions.AccessType, chk.Equals, perms.AccessType)
+	c.Assert(newPerms.AccessType, chk.Equals, perms.AccessType)
 
 	// now check policy set.
-	c.Assert(cnt.Permissions.AccessPolicies, chk.HasLen, 2)
+	c.Assert(newPerms.AccessPolicies, chk.HasLen, 2)
 
 	for i := range perms.AccessPolicies {
-		c.Assert(cnt.Permissions.AccessPolicies[i].ID, chk.Equals, perms.AccessPolicies[i].ID)
+		c.Assert(newPerms.AccessPolicies[i].ID, chk.Equals, perms.AccessPolicies[i].ID)
 
 		// test timestamps down the second
 		// rounding start/expiry time original perms since the returned perms would have been rounded.
 		// so need rounded vs rounded.
-		c.Assert(cnt.Permissions.AccessPolicies[i].StartTime.UTC().Round(time.Second).Format(time.RFC1123),
+		c.Assert(newPerms.AccessPolicies[i].StartTime.UTC().Round(time.Second).Format(time.RFC1123),
 			chk.Equals, perms.AccessPolicies[i].StartTime.UTC().Round(time.Second).Format(time.RFC1123))
 
-		c.Assert(cnt.Permissions.AccessPolicies[i].ExpiryTime.UTC().Round(time.Second).Format(time.RFC1123),
+		c.Assert(newPerms.AccessPolicies[i].ExpiryTime.UTC().Round(time.Second).Format(time.RFC1123),
 			chk.Equals, perms.AccessPolicies[i].ExpiryTime.UTC().Round(time.Second).Format(time.RFC1123))
 
-		c.Assert(cnt.Permissions.AccessPolicies[i].CanRead, chk.Equals, perms.AccessPolicies[i].CanRead)
-		c.Assert(cnt.Permissions.AccessPolicies[i].CanWrite, chk.Equals, perms.AccessPolicies[i].CanWrite)
-		c.Assert(cnt.Permissions.AccessPolicies[i].CanDelete, chk.Equals, perms.AccessPolicies[i].CanDelete)
+		c.Assert(newPerms.AccessPolicies[i].CanRead, chk.Equals, perms.AccessPolicies[i].CanRead)
+		c.Assert(newPerms.AccessPolicies[i].CanWrite, chk.Equals, perms.AccessPolicies[i].CanWrite)
+		c.Assert(newPerms.AccessPolicies[i].CanDelete, chk.Equals, perms.AccessPolicies[i].CanDelete)
 	}
 }
 
 func (s *ContainerSuite) TestSetContainerPermissionsOnlySuccessfully(c *chk.C) {
 	cli := getBlobClient(c)
 	cnt := cli.GetContainerReference(randContainer())
-	c.Assert(cnt.Create(ContainerAccessTypePrivate), chk.IsNil)
+	c.Assert(cnt.Create(), chk.IsNil)
 	defer cnt.Delete()
 
 	perms := ContainerPermissions{}
 	perms = appendContainerPermission(perms, ContainerAccessTypeBlob, "GolangRocksOnAzure", now, now.Add(10*time.Hour), true, true, true)
 
-	err := cnt.SetPermissions(0, "")
+	err := cnt.SetPermissions(perms, 0, "")
 	c.Assert(err, chk.IsNil)
 }
 
 func (s *ContainerSuite) TestSetThenGetContainerPermissionsOnlySuccessfully(c *chk.C) {
 	cli := getBlobClient(c)
 	cnt := cli.GetContainerReference(randContainer())
-	c.Assert(cnt.Create(ContainerAccessTypePrivate), chk.IsNil)
+	c.Assert(cnt.Create(), chk.IsNil)
 	defer cnt.Delete()
 
 	perms := ContainerPermissions{}
 	perms = appendContainerPermission(perms, ContainerAccessTypeBlob, "", now, now.Add(10*time.Hour), true, true, true)
-	cnt.Permissions = perms
 
-	err := cnt.SetPermissions(0, "")
+	err := cnt.SetPermissions(perms, 0, "")
 	c.Assert(err, chk.IsNil)
 
-	err = cnt.GetPermissions(0, "")
+	newPerms, err := cnt.GetPermissions(0, "")
 	c.Assert(err, chk.IsNil)
 
 	// check container permissions itself.
-	c.Assert(cnt.Permissions.AccessType, chk.Equals, perms.AccessType)
+	c.Assert(newPerms.AccessType, chk.Equals, perms.AccessType)
 
 	// now check there are NO policies set
-	c.Assert(cnt.Permissions.AccessPolicies, chk.HasLen, 0)
+	c.Assert(newPerms.AccessPolicies, chk.HasLen, 0)
 }
 
 func deleteTestContainers(cli BlobServiceClient) error {

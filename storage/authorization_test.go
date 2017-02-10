@@ -201,7 +201,7 @@ func (a *AuthorizationSuite) Test_allSharedKeys(c *chk.C) {
 
 	// Shared Key
 	c.Assert(blobCli.auth, chk.Equals, sharedKey)
-	c.Assert(cnt1.Create(ContainerAccessTypePrivate), chk.IsNil)
+	c.Assert(cnt1.Create(), chk.IsNil)
 	c.Assert(cnt1.Delete(), chk.IsNil)
 
 	// Shared Key for Tables
@@ -216,7 +216,7 @@ func (a *AuthorizationSuite) Test_allSharedKeys(c *chk.C) {
 
 	// Shared Key Lite
 	c.Assert(blobCli.auth, chk.Equals, sharedKeyLite)
-	c.Assert(cnt2.Create(ContainerAccessTypePrivate), chk.IsNil)
+	c.Assert(cnt2.Create(), chk.IsNil)
 	c.Assert(cnt2.Delete(), chk.IsNil)
 
 	// Shared Key Lite for Tables

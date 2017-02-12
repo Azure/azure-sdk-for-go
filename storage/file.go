@@ -51,7 +51,8 @@ type FileStream struct {
 	ContentMD5 string
 }
 
-// Options passed to misc file operations.
+// FileRequestOptions will be passed to misc file operations.
+// Currently just Timeout but will expand.
 type FileRequestOptions struct {
 	Timeout uint
 }

@@ -192,8 +192,8 @@ func (f FileServiceClient) resourceExists(path string, res resourceType) (bool, 
 }
 
 // creates a resource depending on the specified resource type
-func (f FileServiceClient) createResource(path string, res resourceType, extraHeaders map[string]string) (http.Header, error) {
-	resp, err := f.createResourceNoClose(path, res, extraHeaders)
+func (f FileServiceClient) createResource(path string, res resourceType, urlParams url.Values, extraHeaders map[string]string) (http.Header, error) {
+	resp, err := f.createResourceNoClose(path, res, urlParams, extraHeaders)
 	if err != nil {
 		return nil, err
 	}
@@ -202,13 +202,14 @@ func (f FileServiceClient) createResource(path string, res resourceType, extraHe
 }
 
 // creates a resource depending on the specified resource type, doesn't close the response body
-func (f FileServiceClient) createResourceNoClose(path string, res resourceType, extraHeaders map[string]string) (*storageResponse, error) {
+func (f FileServiceClient) createResourceNoClose(path string, res resourceType, urlParams url.Values, extraHeaders map[string]string) (*storageResponse, error) {
 	if err := f.checkForStorageEmulator(); err != nil {
 		return nil, err
 	}
 
 	values := getURLInitValues(compNone, res)
-	uri := f.client.getEndpoint(fileServiceName, path, values)
+	combinedParams := mergeParams(values, urlParams)
+	uri := f.client.getEndpoint(fileServiceName, path, combinedParams)
 	extraHeaders = f.client.protectUserAgent(extraHeaders)
 	headers := mergeHeaders(f.client.getStandardHeaders(), extraHeaders)
 

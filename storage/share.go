@@ -32,7 +32,7 @@ func (s *Share) buildPath() string {
 //
 // See https://msdn.microsoft.com/en-us/library/azure/dn167008.aspx
 func (s *Share) Create() error {
-	headers, err := s.fsc.createResource(s.buildPath(), resourceShare, mergeMDIntoExtraHeaders(s.Metadata, nil))
+	headers, err := s.fsc.createResource(s.buildPath(), resourceShare, nil, mergeMDIntoExtraHeaders(s.Metadata, nil))
 	if err != nil {
 		return err
 	}
@@ -47,7 +47,7 @@ func (s *Share) Create() error {
 //
 // See https://msdn.microsoft.com/en-us/library/azure/dn167008.aspx
 func (s *Share) CreateIfNotExists() (bool, error) {
-	resp, err := s.fsc.createResourceNoClose(s.buildPath(), resourceShare, nil)
+	resp, err := s.fsc.createResourceNoClose(s.buildPath(), resourceShare, nil, nil)
 	if resp != nil {
 		defer resp.body.Close()
 		if resp.statusCode == http.StatusCreated || resp.statusCode == http.StatusConflict {

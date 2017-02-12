@@ -51,6 +51,23 @@ type FileStream struct {
 	ContentMD5 string
 }
 
+// Options passed to misc file operations.
+type FileRequestOptions struct {
+	Timeout uint
+}
+
+// getParameters, construct parameters for FileRequestOptions.
+// currently only timeout, but expecting to grow as functionality fills out.
+func (p FileRequestOptions) getParameters() url.Values {
+	out := url.Values{}
+
+	if p.Timeout != 0 {
+		out.Set("timeout", fmt.Sprintf("%v", p.Timeout))
+	}
+
+	return out
+}
+
 // FileRanges contains a list of file range information for a file.
 //
 // See https://msdn.microsoft.com/en-us/library/azure/dn166984.aspx
@@ -104,12 +121,30 @@ func (f *File) Create(maxSize uint64) error {
 		"x-ms-type":           "file",
 	}
 
-	headers, err := f.fsc.createResource(f.buildPath(), resourceFile, mergeMDIntoExtraHeaders(f.Metadata, extraHeaders))
+	headers, err := f.fsc.createResource(f.buildPath(), resourceFile, nil, mergeMDIntoExtraHeaders(f.Metadata, extraHeaders))
 	if err != nil {
 		return err
 	}
 
 	f.Properties.Length = maxSize
+	f.updateEtagAndLastModified(headers)
+	return nil
+}
+
+// CopyFile operation copied a file/blob from the sourceURL to the path provided.
+//
+// See https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/copy-file
+func (f File) CopyFile(sourceURL string, options *FileRequestOptions, metadata map[string]string) error {
+	extraHeaders := map[string]string{
+		"x-ms-type":        "file",
+		"x-ms-copy-source": sourceURL,
+	}
+
+	headers, err := f.fsc.createResource(f.buildPath(), resourceFile, options.getParameters(), mergeMDIntoExtraHeaders(f.Metadata, extraHeaders))
+	if err != nil {
+		return err
+	}
+
 	f.updateEtagAndLastModified(headers)
 	return nil
 }

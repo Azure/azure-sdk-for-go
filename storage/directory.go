@@ -67,7 +67,7 @@ func (d *Directory) Create() error {
 		return nil
 	}
 
-	headers, err := d.fsc.createResource(d.buildPath(), resourceDirectory, mergeMDIntoExtraHeaders(d.Metadata, nil))
+	headers, err := d.fsc.createResource(d.buildPath(), resourceDirectory, nil, mergeMDIntoExtraHeaders(d.Metadata, nil))
 	if err != nil {
 		return err
 	}
@@ -87,7 +87,7 @@ func (d *Directory) CreateIfNotExists() (bool, error) {
 		return false, nil
 	}
 
-	resp, err := d.fsc.createResourceNoClose(d.buildPath(), resourceDirectory, nil)
+	resp, err := d.fsc.createResourceNoClose(d.buildPath(), resourceDirectory, nil, nil)
 	if resp != nil {
 		defer resp.body.Close()
 		if resp.statusCode == http.StatusCreated || resp.statusCode == http.StatusConflict {

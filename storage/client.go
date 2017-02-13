@@ -15,24 +15,14 @@ import (
 	"runtime"
 	"strconv"
 	"strings"
+
+	"github.com/Azure/go-autorest/autorest/azure"
 )
 
 const (
 	// DefaultBaseURL is the domain name used for storage requests in the
 	// public cloud when a default client is created.
 	DefaultBaseURL = "core.windows.net"
-
-	// ChinaBaseURL is the domain name used for storage requests in the
-	// China cloud when a client is created.
-	ChinaBaseURL = "core.chinacloudapi.cn"
-
-	// GermanyBaseURL is the domain name used for storage requests in the
-	// Germany cloud when a client is created.
-	GermanyBaseURL = "core.cloudapi.de"
-
-	// USGovBaseURL is the domain name used for storage requests in the
-	// US government cloud when a client is created.
-	USGovBaseURL = "core.usgovcloudapi.net"
 
 	// DefaultAPIVersion is the Azure Storage API version string used when a
 	// basic client is created.
@@ -145,31 +135,13 @@ func NewBasicClient(accountName, accountKey string) (Client, error) {
 	return NewClient(accountName, accountKey, DefaultBaseURL, DefaultAPIVersion, defaultUseHTTPS)
 }
 
-// NewBasicClientChina constructs a Client with given storage service name and
-// key in the China cloud.
-func NewBasicClientChina(accountName, accountKey string) (Client, error) {
+// NewBasicClientOnSovereignCloud constructs a Client with given storage service name and
+// key in the referenced cloud.
+func NewBasicClientOnSovereignCloud(accountName, accountKey string, env azure.Environment) (Client, error) {
 	if accountName == StorageEmulatorAccountName {
 		return NewEmulatorClient()
 	}
-	return NewClient(accountName, accountKey, ChinaBaseURL, DefaultAPIVersion, defaultUseHTTPS)
-}
-
-// NewBasicClientGermany constructs a Client with given storage service name and
-// key in the Germany cloud.
-func NewBasicClientGermany(accountName, accountKey string) (Client, error) {
-	if accountName == StorageEmulatorAccountName {
-		return NewEmulatorClient()
-	}
-	return NewClient(accountName, accountKey, GermanyBaseURL, DefaultAPIVersion, defaultUseHTTPS)
-}
-
-// NewBasicClientUSGov constructs a Client with given storage service name and
-// key in the US government cloud.
-func NewBasicClientUSGov(accountName, accountKey string) (Client, error) {
-	if accountName == StorageEmulatorAccountName {
-		return NewEmulatorClient()
-	}
-	return NewClient(accountName, accountKey, USGovBaseURL, DefaultAPIVersion, defaultUseHTTPS)
+	return NewClient(accountName, accountKey, env.StorageEndpointSuffix, DefaultAPIVersion, defaultUseHTTPS)
 }
 
 //NewEmulatorClient contructs a Client intended to only work with Azure

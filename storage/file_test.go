@@ -386,6 +386,6 @@ func (s *StorageFileSuite) TestCopyFileMissingFile(c *chk.C) {
 	otherFile := dir1.GetFileReference("someother.file")
 
 	// copy the file, no timeout parameter
-	err := otherFile.CopyFile(file.URL(), nil, nil)
+	err := otherFile.CopyFile("", nil, nil)
 	c.Assert(err, chk.NotNil)
 }

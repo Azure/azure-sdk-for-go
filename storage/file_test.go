@@ -1,7 +1,6 @@
 package storage
 
 import (
-	"azure-sdk-for-go/storage"
 	"bytes"
 	"crypto/md5"
 	"encoding/base64"
@@ -350,7 +349,7 @@ func (s *StorageFileSuite) TestCopyFileSameAccountTimeout(c *chk.C) {
 
 	otherFile := dir2.GetFileReference("someother.file")
 
-	options := storage.FileRequestOptions{}
+	options := FileRequestOptions{}
 	options.Timeout = 60
 
 	// copy the file, no timeout parameter

@@ -304,7 +304,7 @@ func (s *StorageFileSuite) TestCopyFileSameAccountNoMetaData(c *chk.C) {
 	otherFile := dir2.GetFileReference("someother.file")
 
 	// copy the file, no timeout parameter
-	err = otherFile.CopyFile(file.URL(), destURL, nil, nil)
+	err = otherFile.CopyFile(file.URL(), nil, nil)
 	c.Assert(err, chk.IsNil)
 
 	// delete file and verify
@@ -353,7 +353,7 @@ func (s *StorageFileSuite) TestCopyFileSameAccountTimeout(c *chk.C) {
 	options.Timeout = 60
 
 	// copy the file, no timeout parameter
-	err = otherFile.CopyFile(file.URL(), destURL, &options, nil)
+	err = otherFile.CopyFile(file.URL(), &options, nil)
 	c.Assert(err, chk.IsNil)
 
 	// delete file and verify
@@ -386,6 +386,6 @@ func (s *StorageFileSuite) TestCopyFileMissingFile(c *chk.C) {
 	otherFile := dir1.GetFileReference("someother.file")
 
 	// copy the file, no timeout parameter
-	err = otherFile.CopyFile(file.URL(), destURL, nil, nil)
+	err := otherFile.CopyFile(file.URL(), nil, nil)
 	c.Assert(err, chk.NotNil)
 }

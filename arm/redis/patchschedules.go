@@ -19,10 +19,11 @@ package redis
 // regenerated.
 
 import (
+	"net/http"
+
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
 	"github.com/Azure/go-autorest/autorest/validation"
-	"net/http"
 )
 
 // PatchSchedulesClient is the rEST API for Azure Redis Cache Service.
@@ -53,6 +54,7 @@ func (client PatchSchedulesClient) CreateOrUpdate(resourceGroupName string, name
 		{TargetValue: parameters,
 			Constraints: []validation.Constraint{{Target: "parameters.ScheduleEntries", Name: validation.Null, Rule: true,
 				Chain: []validation.Constraint{{Target: "parameters.ScheduleEntries.ScheduleEntries", Name: validation.Null, Rule: true, Chain: nil}}}}}}); err != nil {
+
 		return result, validation.NewErrorWithValidationError(err, "redis.PatchSchedulesClient", "CreateOrUpdate")
 	}
 

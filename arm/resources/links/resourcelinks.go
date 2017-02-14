@@ -59,11 +59,7 @@ func (client ResourceLinksClient) CreateOrUpdate(linkID string, parameters Resou
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: parameters,
 			Constraints: []validation.Constraint{{Target: "parameters.Properties", Name: validation.Null, Rule: false,
-				Chain: []validation.Constraint{{Target: "parameters.Properties.TargetID", Name: validation.Null, Rule: true, Chain: nil},
-					{Target: "parameters.Properties.SourceID", Name: validation.ReadOnly, Rule: true, Chain: nil},
-				}},
-				{Target: "parameters.ID", Name: validation.ReadOnly, Rule: true, Chain: nil},
-				{Target: "parameters.Name", Name: validation.ReadOnly, Rule: true, Chain: nil}}}}); err != nil {
+				Chain: []validation.Constraint{{Target: "parameters.Properties.TargetID", Name: validation.Null, Rule: true, Chain: nil}}}}}}); err != nil {
 		return result, validation.NewErrorWithValidationError(err, "links.ResourceLinksClient", "CreateOrUpdate")
 	}
 

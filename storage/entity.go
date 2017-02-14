@@ -125,7 +125,7 @@ func (e *Entity) Delete(force bool) error {
 		}
 		return err
 	}
-	defer resp.body.Close()
+	defer readAndCloseBody(resp.body)
 
 	if err = checkRespCode(resp.statusCode, []int{http.StatusNoContent}); err != nil {
 		return err
@@ -307,7 +307,7 @@ func (e *Entity) insertOr(verb string) error {
 	if err != nil {
 		return err
 	}
-	defer resp.body.Close()
+	defer readAndCloseBody(resp.body)
 
 	if err = checkRespCode(resp.statusCode, []int{http.StatusNoContent}); err != nil {
 		return err
@@ -335,7 +335,7 @@ func (e *Entity) updateMerge(force bool, verb string) error {
 		}
 		return err
 	}
-	defer resp.body.Close()
+	defer readAndCloseBody(resp.body)
 
 	if err = checkRespCode(resp.statusCode, []int{http.StatusNoContent}); err != nil {
 		return err

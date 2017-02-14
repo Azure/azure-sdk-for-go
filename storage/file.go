@@ -14,12 +14,13 @@ const oneTB = uint64(1099511627776)
 
 // File represents a file on a share.
 type File struct {
-	fsc        *FileServiceClient
-	Metadata   map[string]string
-	Name       string `xml:"Name"`
-	parent     *Directory
-	Properties FileProperties `xml:"Properties"`
-	share      *Share
+	fsc                *FileServiceClient
+	Metadata           map[string]string
+	Name               string `xml:"Name"`
+	parent             *Directory
+	Properties         FileProperties `xml:"Properties"`
+	share              *Share
+	FileCopyProperties FileCopyState
 }
 
 // FileProperties contains various properties of a file.
@@ -33,6 +34,7 @@ type FileProperties struct {
 	Length       uint64 `xml:"Content-Length"`
 	MD5          string `header:"x-ms-content-md5"`
 	Type         string `header:"x-ms-content-type"`
+	CopyID       string `header:"x-ms-copy-id"`
 }
 
 // FileCopyState contains various properties of a file copy operation.
@@ -52,9 +54,9 @@ type FileStream struct {
 }
 
 // FileRequestOptions will be passed to misc file operations.
-// Currently just Timeout but will expand.
+// Currently just Timeout (in seconds) but will expand.
 type FileRequestOptions struct {
-	Timeout uint
+	Timeout uint // timeout duration in seconds.
 }
 
 // getParameters, construct parameters for FileRequestOptions.
@@ -135,18 +137,23 @@ func (f *File) Create(maxSize uint64) error {
 // CopyFile operation copied a file/blob from the sourceURL to the path provided.
 //
 // See https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/copy-file
-func (f File) CopyFile(sourceURL string, options *FileRequestOptions, metadata map[string]string) error {
+func (f File) CopyFile(sourceURL string, options *FileRequestOptions) error {
 	extraHeaders := map[string]string{
 		"x-ms-type":        "file",
 		"x-ms-copy-source": sourceURL,
 	}
 
-	headers, err := f.fsc.createResource(f.buildPath(), resourceFile, options.getParameters(), mergeMDIntoExtraHeaders(f.Metadata, extraHeaders))
+	var parameters url.Values
+	if options != nil {
+		parameters = options.getParameters()
+	}
+
+	headers, err := f.fsc.createResource(f.buildPath(), resourceFile, parameters, mergeMDIntoExtraHeaders(f.Metadata, extraHeaders))
 	if err != nil {
 		return err
 	}
 
-	f.updateEtagAndLastModified(headers)
+	f.updateEtagLastModifiedAndCopyID(headers)
 	return nil
 }
 
@@ -352,6 +359,13 @@ func (f *File) SetProperties() error {
 func (f *File) updateEtagAndLastModified(headers http.Header) {
 	f.Properties.Etag = headers.Get("Etag")
 	f.Properties.LastModified = headers.Get("Last-Modified")
+}
+
+// updates Etag, last modified date and x-ms-copy-id
+func (f *File) updateEtagLastModifiedAndCopyID(headers http.Header) {
+	f.Properties.Etag = headers.Get("Etag")
+	f.Properties.LastModified = headers.Get("Last-Modified")
+	f.Properties.CopyID = headers.Get("x-ms-copy-id")
 }
 
 // updates file properties from the specified HTTP header

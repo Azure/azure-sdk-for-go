@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
+	"io/ioutil"
 	"net/http"
 	"net/url"
 	"strconv"
@@ -68,6 +69,7 @@ func (c *TableServiceClient) QueryTables() ([]AzureTable, error) {
 	defer resp.body.Close()
 
 	if err := checkRespCode(resp.statusCode, []int{http.StatusOK}); err != nil {
+		ioutil.ReadAll(resp.body)
 		return nil, err
 	}
 
@@ -111,7 +113,7 @@ func (c *TableServiceClient) CreateTable(table AzureTable) error {
 	if err != nil {
 		return err
 	}
-	defer resp.body.Close()
+	defer readBody(resp.body)
 
 	if err := checkRespCode(resp.statusCode, []int{http.StatusCreated}); err != nil {
 		return err
@@ -137,7 +139,7 @@ func (c *TableServiceClient) DeleteTable(table AzureTable) error {
 	if err != nil {
 		return err
 	}
-	defer resp.body.Close()
+	defer readBody(resp.body)
 
 	if err := checkRespCode(resp.statusCode, []int{http.StatusNoContent}); err != nil {
 		return err
@@ -167,7 +169,7 @@ func (c *TableServiceClient) SetTablePermissions(table AzureTable, policies []Ta
 	if err != nil {
 		return err
 	}
-	defer resp.body.Close()
+	defer readBody(resp.body)
 
 	if err := checkRespCode(resp.statusCode, []int{http.StatusNoContent}); err != nil {
 		return err
@@ -204,6 +206,7 @@ func (c *TableServiceClient) GetTablePermissions(table AzureTable, timeout int) 
 	defer resp.body.Close()
 
 	if err = checkRespCode(resp.statusCode, []int{http.StatusOK}); err != nil {
+		ioutil.ReadAll(resp.body)
 		return nil, err
 	}
 

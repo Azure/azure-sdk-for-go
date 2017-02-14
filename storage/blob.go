@@ -416,7 +416,7 @@ func (b BlobStorageClient) CreateContainer(name string, access ContainerAccessTy
 	if err != nil {
 		return err
 	}
-	defer resp.body.Close()
+	defer readBody(resp.body)
 	return checkRespCode(resp.statusCode, []int{http.StatusCreated})
 }
 
@@ -425,7 +425,7 @@ func (b BlobStorageClient) CreateContainer(name string, access ContainerAccessTy
 func (b BlobStorageClient) CreateContainerIfNotExists(name string, access ContainerAccessType) (bool, error) {
 	resp, err := b.createContainer(name, access)
 	if resp != nil {
-		defer resp.body.Close()
+		defer readBody(resp.body)
 		if resp.statusCode == http.StatusCreated || resp.statusCode == http.StatusConflict {
 			return resp.statusCode == http.StatusCreated, nil
 		}
@@ -451,7 +451,7 @@ func (b BlobStorageClient) ContainerExists(name string) (bool, error) {
 
 	resp, err := b.client.exec(http.MethodHead, uri, headers, nil, b.auth)
 	if resp != nil {
-		defer resp.body.Close()
+		defer readBody(resp.body)
 		if resp.statusCode == http.StatusOK || resp.statusCode == http.StatusNotFound {
 			return resp.statusCode == http.StatusOK, nil
 		}
@@ -489,7 +489,7 @@ func (b BlobStorageClient) SetContainerPermissions(container string, containerPe
 	}
 
 	if resp != nil {
-		defer resp.body.Close()
+		defer readBody(resp.body)
 
 		if resp.statusCode != http.StatusOK {
 			return errors.New("Unable to set permissions")
@@ -564,7 +564,7 @@ func (b BlobStorageClient) DeleteContainer(name string) error {
 	if err != nil {
 		return err
 	}
-	defer resp.body.Close()
+	defer readBody(resp.body)
 	return checkRespCode(resp.statusCode, []int{http.StatusAccepted})
 }
 
@@ -577,7 +577,7 @@ func (b BlobStorageClient) DeleteContainer(name string) error {
 func (b BlobStorageClient) DeleteContainerIfExists(name string) (bool, error) {
 	resp, err := b.deleteContainer(name)
 	if resp != nil {
-		defer resp.body.Close()
+		defer readBody(resp.body)
 		if resp.statusCode == http.StatusAccepted || resp.statusCode == http.StatusNotFound {
 			return resp.statusCode == http.StatusAccepted, nil
 		}
@@ -621,7 +621,7 @@ func (b BlobStorageClient) BlobExists(container, name string) (bool, error) {
 	headers := b.client.getStandardHeaders()
 	resp, err := b.client.exec(http.MethodHead, uri, headers, nil, b.auth)
 	if resp != nil {
-		defer resp.body.Close()
+		defer readBody(resp.body)
 		if resp.statusCode == http.StatusOK || resp.statusCode == http.StatusNotFound {
 			return resp.statusCode == http.StatusOK, nil
 		}
@@ -701,7 +701,7 @@ func (b BlobStorageClient) leaseCommonPut(container string, name string, headers
 	if err != nil {
 		return nil, err
 	}
-	defer resp.body.Close()
+	defer readBody(resp.body)
 
 	if err := checkRespCode(resp.statusCode, []int{expectedStatus}); err != nil {
 		return nil, err
@@ -726,9 +726,11 @@ func (b BlobStorageClient) SnapshotBlob(container string, name string, timeout i
 
 	uri := b.client.getEndpoint(blobServiceName, pathForBlob(container, name), params)
 	resp, err := b.client.exec(http.MethodPut, uri, headers, nil, b.auth)
-	if err != nil {
+	if err != nil || resp == nil {
 		return nil, err
 	}
+
+	defer readBody(resp.body)
 
 	if err := checkRespCode(resp.statusCode, []int{http.StatusCreated}); err != nil {
 		return nil, err
@@ -871,7 +873,7 @@ func (b BlobStorageClient) GetBlobProperties(container, name string) (*BlobPrope
 	if err != nil {
 		return nil, err
 	}
-	defer resp.body.Close()
+	defer readBody(resp.body)
 
 	if err = checkRespCode(resp.statusCode, []int{http.StatusOK}); err != nil {
 		return nil, err
@@ -940,7 +942,7 @@ func (b BlobStorageClient) SetBlobProperties(container, name string, blobHeaders
 	if err != nil {
 		return err
 	}
-	defer resp.body.Close()
+	defer readBody(resp.body)
 
 	return checkRespCode(resp.statusCode, []int{http.StatusOK})
 }
@@ -971,7 +973,7 @@ func (b BlobStorageClient) SetBlobMetadata(container, name string, metadata map[
 	if err != nil {
 		return err
 	}
-	defer resp.body.Close()
+	defer readBody(resp.body)
 
 	return checkRespCode(resp.statusCode, []int{http.StatusOK})
 }
@@ -991,7 +993,7 @@ func (b BlobStorageClient) GetBlobMetadata(container, name string) (map[string]s
 	if err != nil {
 		return nil, err
 	}
-	defer resp.body.Close()
+	defer readBody(resp.body)
 
 	if err := checkRespCode(resp.statusCode, []int{http.StatusOK}); err != nil {
 		return nil, err
@@ -1051,7 +1053,7 @@ func (b BlobStorageClient) CreateBlockBlobFromReader(container, name string, siz
 	if err != nil {
 		return err
 	}
-	defer resp.body.Close()
+	defer readBody(resp.body)
 	return checkRespCode(resp.statusCode, []int{http.StatusCreated})
 }
 
@@ -1090,7 +1092,7 @@ func (b BlobStorageClient) PutBlockWithLength(container, name, blockID string, s
 		return err
 	}
 
-	defer resp.body.Close()
+	defer readBody(resp.body)
 	return checkRespCode(resp.statusCode, []int{http.StatusCreated})
 }
 
@@ -1108,7 +1110,7 @@ func (b BlobStorageClient) PutBlockList(container, name string, blocks []Block) 
 	if err != nil {
 		return err
 	}
-	defer resp.body.Close()
+	defer readBody(resp.body)
 	return checkRespCode(resp.statusCode, []int{http.StatusCreated})
 }
 
@@ -1152,7 +1154,7 @@ func (b BlobStorageClient) PutPageBlob(container, name string, size int64, extra
 	if err != nil {
 		return err
 	}
-	defer resp.body.Close()
+	defer readBody(resp.body)
 
 	return checkRespCode(resp.statusCode, []int{http.StatusCreated})
 }
@@ -1188,7 +1190,7 @@ func (b BlobStorageClient) PutPage(container, name string, startByte, endByte in
 	if err != nil {
 		return err
 	}
-	defer resp.body.Close()
+	defer readBody(resp.body)
 
 	return checkRespCode(resp.statusCode, []int{http.StatusCreated})
 }
@@ -1234,7 +1236,7 @@ func (b BlobStorageClient) PutAppendBlob(container, name string, extraHeaders ma
 	if err != nil {
 		return err
 	}
-	defer resp.body.Close()
+	defer readBody(resp.body)
 
 	return checkRespCode(resp.statusCode, []int{http.StatusCreated})
 }
@@ -1258,7 +1260,7 @@ func (b BlobStorageClient) AppendBlock(container, name string, chunk []byte, ext
 	if err != nil {
 		return err
 	}
-	defer resp.body.Close()
+	defer readBody(resp.body)
 
 	return checkRespCode(resp.statusCode, []int{http.StatusCreated})
 }
@@ -1293,7 +1295,7 @@ func (b BlobStorageClient) StartBlobCopy(container, name, sourceBlob string) (st
 	if err != nil {
 		return "", err
 	}
-	defer resp.body.Close()
+	defer readBody(resp.body)
 
 	if err := checkRespCode(resp.statusCode, []int{http.StatusAccepted, http.StatusCreated}); err != nil {
 		return "", err
@@ -1328,7 +1330,7 @@ func (b BlobStorageClient) AbortBlobCopy(container, name, copyID, currentLeaseID
 	if err != nil {
 		return err
 	}
-	defer resp.body.Close()
+	defer readBody(resp.body)
 
 	if err := checkRespCode(resp.statusCode, []int{http.StatusNoContent}); err != nil {
 		return err
@@ -1372,7 +1374,7 @@ func (b BlobStorageClient) DeleteBlob(container, name string, extraHeaders map[s
 	if err != nil {
 		return err
 	}
-	defer resp.body.Close()
+	defer readBody(resp.body)
 	return checkRespCode(resp.statusCode, []int{http.StatusAccepted})
 }
 
@@ -1383,7 +1385,7 @@ func (b BlobStorageClient) DeleteBlob(container, name string, extraHeaders map[s
 func (b BlobStorageClient) DeleteBlobIfExists(container, name string, extraHeaders map[string]string) (bool, error) {
 	resp, err := b.deleteBlob(container, name, extraHeaders)
 	if resp != nil {
-		defer resp.body.Close()
+		defer readBody(resp.body)
 		if resp.statusCode == http.StatusAccepted || resp.statusCode == http.StatusNotFound {
 			return resp.statusCode == http.StatusAccepted, nil
 		}

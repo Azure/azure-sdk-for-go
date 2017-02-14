@@ -151,7 +151,7 @@ func (c *Container) Create() error {
 	if err != nil {
 		return err
 	}
-	defer resp.body.Close()
+	defer readAndCloseBody(resp.body)
 	return checkRespCode(resp.statusCode, []int{http.StatusCreated})
 }
 
@@ -160,7 +160,7 @@ func (c *Container) Create() error {
 func (c *Container) CreateIfNotExists() (bool, error) {
 	resp, err := c.create()
 	if resp != nil {
-		defer resp.body.Close()
+		defer readAndCloseBody(resp.body)
 		if resp.statusCode == http.StatusCreated || resp.statusCode == http.StatusConflict {
 			return resp.statusCode == http.StatusCreated, nil
 		}
@@ -182,7 +182,7 @@ func (c *Container) Exists() (bool, error) {
 
 	resp, err := c.bsc.client.exec(http.MethodHead, uri, headers, nil, c.bsc.auth)
 	if resp != nil {
-		defer resp.body.Close()
+		defer readAndCloseBody(resp.body)
 		if resp.statusCode == http.StatusOK || resp.statusCode == http.StatusNotFound {
 			return resp.statusCode == http.StatusOK, nil
 		}
@@ -218,7 +218,7 @@ func (c *Container) SetPermissions(permissions ContainerPermissions, timeout int
 	if err != nil {
 		return err
 	}
-	defer resp.body.Close()
+	defer readAndCloseBody(resp.body)
 
 	if err := checkRespCode(resp.statusCode, []int{http.StatusOK}); err != nil {
 		return errors.New("Unable to set permissions")
@@ -293,7 +293,7 @@ func (c *Container) Delete() error {
 	if err != nil {
 		return err
 	}
-	defer resp.body.Close()
+	defer readAndCloseBody(resp.body)
 	return checkRespCode(resp.statusCode, []int{http.StatusAccepted})
 }
 
@@ -306,7 +306,7 @@ func (c *Container) Delete() error {
 func (c *Container) DeleteIfExists() (bool, error) {
 	resp, err := c.delete()
 	if resp != nil {
-		defer resp.body.Close()
+		defer readAndCloseBody(resp.body)
 		if resp.statusCode == http.StatusAccepted || resp.statusCode == http.StatusNotFound {
 			return resp.statusCode == http.StatusAccepted, nil
 		}

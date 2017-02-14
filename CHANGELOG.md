@@ -1,6 +1,37 @@
 # CHANGELOG
 
 -----
+## `v8.0.0-beta`
+### ARM
+- In addition to the tablulated changes below, all updated packages received performance
+  improvements to their Version() method.
+- Some validation that was taking place in the runtime was erroneously blocking calls.
+  all packages have been updated to take that bug fix.
+
+| api                                 | version            | note                               |
+|:------------------------------------|:-------------------|:-----------------------------------|
+| arm/analysisservices                | 2016-05-16         | update to latest swagger           |
+| arm/cdn                             | 2016-10-02         | update to latest swagger           |
+| arm/cognitiveservices               | 2016-02-01-preview | update to latest swagger           |
+| arm/compute                         | 2016-03-30         | update to latest swagger, refactor |
+| arm/containerregistry               | 2016-06-27-preview | update to latest swagger           |
+| arm/containerservice                | 2016-09-30         | update to latest swagger           |
+| arm/datalake-analytics              | 2016-11-01         | update to latest swagger           |
+| arm/datalake-store                  | 2016-11-01         | update to latest swagger           |
+| arm/disk                            | 2016-04-30-preview | new                                |
+| arm/documentdb                      | 2015-04-08         | update to latest swagger           |
+| arm/iothub                          | 2016-02-03         | update to latest swagger           |
+| arm/keyvault                        | 2015-06-01         | update to latest swagger           |
+| arm/logic                           | 2016-06-01         | update to latest swagger           |
+| arm/machinelearning                 | 2016-05-01-preview | update to latest swagger           |
+| arm/mobileengagement                | 2014-12-01         | update to latest swagger, refactor |
+| arm/redis                           | 2016-04-01         | update to latest swagger           |
+| arm/resources/locks                 | 2016-09-01         | refactor                           |
+| arm/resources/policy                | 2016-12-01         | previous version was deleted       |
+| arm/resources/resources             | 2016-09-01         | update to latest swagger, refactor |
+| arm/scheduler                       | 2016-03-01         | refactor                           |
+| arm/search                          | 2015-08-19         | refactor                           |
+| arm/web                             | 2015-08-01         | refactor                           |
 
 ## `v7.0.0-beta`
 

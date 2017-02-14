@@ -1,5 +1,5 @@
 package storage
 
 var (
-	sdkVersion = "7.0.1-beta"
+	sdkVersion = "8.0.0-beta"
 )

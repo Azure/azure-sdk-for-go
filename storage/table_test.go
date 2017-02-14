@@ -30,7 +30,6 @@ func deleteAllTables(c *chk.C) {
 func (s *StorageTableSuite) Test_CreateAndDeleteTable(c *chk.C) {
 	cli := getBasicClient(c).GetTableService()
 	table := cli.GetTableReference(randTable())
-
 	err := table.Create(EmptyPayload)
 	c.Assert(err, chk.IsNil)
 

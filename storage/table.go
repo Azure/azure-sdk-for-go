@@ -86,7 +86,7 @@ func (t *Table) Create(ml MetadataLevel) error {
 	if err != nil {
 		return err
 	}
-	defer resp.body.Close()
+	defer readAndCloseBody(resp.body)
 
 	if err := checkRespCode(resp.statusCode, []int{http.StatusCreated, http.StatusNoContent}); err != nil {
 		return err
@@ -120,7 +120,7 @@ func (t *Table) Delete() error {
 	if err != nil {
 		return err
 	}
-	defer resp.body.Close()
+	defer readAndCloseBody(resp.body)
 
 	if err := checkRespCode(resp.statusCode, []int{http.StatusNoContent}); err != nil {
 		return err
@@ -172,7 +172,7 @@ func (t *Table) SetPermissions(tap []TableAccessPolicy, timeout uint) error {
 	if err != nil {
 		return err
 	}
-	defer resp.body.Close()
+	defer readAndCloseBody(resp.body)
 
 	if err := checkRespCode(resp.statusCode, []int{http.StatusNoContent}); err != nil {
 		return err
@@ -211,6 +211,7 @@ func (t *Table) GetPermissions(timeout int) ([]TableAccessPolicy, error) {
 	defer resp.body.Close()
 
 	if err = checkRespCode(resp.statusCode, []int{http.StatusOK}); err != nil {
+		ioutil.ReadAll(resp.body)
 		return nil, err
 	}
 

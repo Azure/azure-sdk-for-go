@@ -347,7 +347,7 @@ func (c Client) exec(verb, url string, headers map[string]string, body io.Reader
 	statusCode := resp.StatusCode
 	if statusCode >= 400 && statusCode <= 505 {
 		var respBody []byte
-		respBody, err = readBody(resp.Body)
+		respBody, err = readAndCloseBody(resp.Body)
 		if err != nil {
 			return nil, err
 		}
@@ -406,7 +406,7 @@ func (c Client) execInternalJSON(verb, url string, headers map[string]string, bo
 	statusCode := resp.StatusCode
 	if statusCode >= 400 && statusCode <= 505 {
 		var respBody []byte
-		respBody, err = readBody(resp.Body)
+		respBody, err = readAndCloseBody(resp.Body)
 		if err != nil {
 			return nil, err
 		}
@@ -424,7 +424,7 @@ func (c Client) execInternalJSON(verb, url string, headers map[string]string, bo
 	return respToRet, nil
 }
 
-func readBody(body io.ReadCloser) ([]byte, error) {
+func readAndCloseBody(body io.ReadCloser) ([]byte, error) {
 	defer body.Close()
 	out, err := ioutil.ReadAll(body)
 	if err == io.EOF {

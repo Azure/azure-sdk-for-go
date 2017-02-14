@@ -128,7 +128,7 @@ func (f *File) Delete() error {
 func (f *File) DeleteIfExists() (bool, error) {
 	resp, err := f.fsc.deleteResourceNoClose(f.buildPath(), resourceFile)
 	if resp != nil {
-		defer readBody(resp.body)
+		defer readAndCloseBody(resp.body)
 		if resp.statusCode == http.StatusAccepted || resp.statusCode == http.StatusNotFound {
 			return resp.statusCode == http.StatusAccepted, nil
 		}
@@ -274,7 +274,7 @@ func (f *File) modifyRange(bytes io.Reader, fileRange FileRange, contentMD5 *str
 	if err != nil {
 		return nil, err
 	}
-	defer readBody(resp.body)
+	defer readAndCloseBody(resp.body)
 	return resp.headers, checkRespCode(resp.statusCode, []int{http.StatusCreated})
 }
 

@@ -49,7 +49,7 @@ func (s *Share) Create() error {
 func (s *Share) CreateIfNotExists() (bool, error) {
 	resp, err := s.fsc.createResourceNoClose(s.buildPath(), resourceShare, nil)
 	if resp != nil {
-		defer readBody(resp.body)
+		defer readAndCloseBody(resp.body)
 		if resp.statusCode == http.StatusCreated || resp.statusCode == http.StatusConflict {
 			if resp.statusCode == http.StatusCreated {
 				s.updateEtagAndLastModified(resp.headers)
@@ -77,7 +77,7 @@ func (s *Share) Delete() error {
 func (s *Share) DeleteIfExists() (bool, error) {
 	resp, err := s.fsc.deleteResourceNoClose(s.buildPath(), resourceShare)
 	if resp != nil {
-		defer readBody(resp.body)
+		defer readAndCloseBody(resp.body)
 		if resp.statusCode == http.StatusAccepted || resp.statusCode == http.StatusNotFound {
 			return resp.statusCode == http.StatusAccepted, nil
 		}

@@ -234,14 +234,16 @@ func (b BlobStorageClient) BlobExists(container, name string) (bool, error) {
 }
 
 // GetBlobURL gets the canonical URL to the blob with the specified name in the
-// specified container. This method does not create a publicly accessible URL if
-// the blob or container is private and this method does not check if the blob
-// exists.
+// specified container. If name is not specified, the canonical URL for the entire
+// container is obtained.
+// This method does not create a publicly accessible URL if the blob or container
+// is private and this method does not check if the blob exists.
+
 func (b BlobStorageClient) GetBlobURL(container, name string) string {
 	if container == "" {
 		container = "$root"
 	}
-	return b.client.getEndpoint(blobServiceName, pathForBlob(container, name), url.Values{})
+	return b.client.getEndpoint(blobServiceName, pathForResource(container, name), url.Values{})
 }
 
 // GetBlob returns a stream to read the blob. Caller must call Close() the
@@ -1014,6 +1016,14 @@ func pathForBlob(container, name string) string {
 	return fmt.Sprintf("/%s/%s", container, name)
 }
 
+// helper method that combines pathForBlob or pathForContainer
+func pathForResource(container, name string) string {
+	if len(name) > 0 {
+		return pathForBlob(container, name)
+	}
+	return pathForContainer(container)
+}
+
 // GetBlobSASURIWithSignedIPAndProtocol creates an URL to the specified blob which contains the Shared
 // Access Signature with specified permissions and expiration time. Also includes signedIPRange and allowed protocols.
 // If old API version is used but no signedIP is passed (ie empty string) then this should still work.
@@ -1043,7 +1053,12 @@ func (b BlobStorageClient) GetBlobSASURIWithSignedIPAndProtocol(container, name 
 	}
 
 	signedExpiry := expiry.UTC().Format(time.RFC3339)
-	signedResource := "b"
+
+	//If blob name is missing, resource is a container
+	signedResource := "c"
+	if len(name) > 0 {
+		signedResource = "b"
+	}
 
 	protocols := "https,http"
 	if HTTPSOnly {

@@ -13,13 +13,6 @@ import (
 	"time"
 )
 
-// BlobStorageClient contains operations for Microsoft Azure Blob Storage
-// Service.
-type BlobStorageClient struct {
-	client Client
-	auth   authentication
-}
-
 // A Container is an entry in ContainerListResponse.
 type Container struct {
 	Name       string              `xml:"Name"`

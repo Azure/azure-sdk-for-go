@@ -149,6 +149,20 @@ func (f FileServiceClient) ListShares(params ListSharesParameters) (*ShareListRe
 	return &out, err
 }
 
+// GetServiceProperties gets the properties of your storage account's file service.
+// File service does not support logging
+// See: https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/get-file-service-properties
+func (f *FileServiceClient) GetServiceProperties() (*ServiceProperties, error) {
+	return f.client.getServiceProperties(fileServiceName, f.auth)
+}
+
+// SetServiceProperties sets the properties of your storage account's file service.
+// File service does not support logging
+// See: https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/set-file-service-properties
+func (f *FileServiceClient) SetServiceProperties(props ServiceProperties) error {
+	return f.client.setServiceProperties(props, fileServiceName, f.auth)
+}
+
 // retrieves directory or share content
 func (f FileServiceClient) listContent(path string, params url.Values, extraHeaders map[string]string) (*storageResponse, error) {
 	if err := f.checkForStorageEmulator(); err != nil {

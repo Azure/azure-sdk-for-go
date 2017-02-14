@@ -15,13 +15,6 @@ const (
 	userDefinedMetadataHeaderPrefix = "X-Ms-Meta-"
 )
 
-// QueueServiceClient contains operations for Microsoft Azure Queue Storage
-// Service.
-type QueueServiceClient struct {
-	client Client
-	auth   authentication
-}
-
 func pathForQueue(queue string) string         { return fmt.Sprintf("/%s", queue) }
 func pathForQueueMessages(queue string) string { return fmt.Sprintf("/%s/messages", queue) }
 func pathForMessage(queue, name string) string { return fmt.Sprintf("/%s/messages/%s", queue, name) }

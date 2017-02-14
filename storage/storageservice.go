@@ -112,7 +112,7 @@ func (c Client) setServiceProperties(props ServiceProperties, service string, au
 	if err != nil {
 		return err
 	}
-	defer resp.body.Close()
+	defer readAndCloseBody(resp.body)
 
 	return checkRespCode(resp.statusCode, []int{http.StatusAccepted})
 }

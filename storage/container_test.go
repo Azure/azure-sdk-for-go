@@ -167,7 +167,7 @@ func (s *ContainerSuite) TestListBlobsPagination(c *chk.C) {
 }
 
 // listBlobsAsFiles is a helper function to list blobs as "folders" and "files".
-func listBlobsAsFiles(cli BlobServiceClient, cnt Container, parentDir string) (folders []string, files []string, err error) {
+func listBlobsAsFiles(cli BlobStorageClient, cnt Container, parentDir string) (folders []string, files []string, err error) {
 	var blobParams ListBlobsParameters
 	var blobListResponse BlobListResponse
 
@@ -460,7 +460,7 @@ func (s *ContainerSuite) TestSetThenGetContainerPermissionsOnlySuccessfully(c *c
 	c.Assert(newPerms.AccessPolicies, chk.HasLen, 0)
 }
 
-func deleteTestContainers(cli BlobServiceClient) error {
+func deleteTestContainers(cli BlobStorageClient) error {
 	for {
 		resp, err := cli.ListContainers(ListContainersParameters{Prefix: testContainerPrefix})
 		if err != nil {

@@ -6,9 +6,9 @@ import (
 	"net/url"
 )
 
-// BlobServiceClient contains operations for Microsoft Azure Blob Storage
+// BlobStorageClient contains operations for Microsoft Azure Blob Storage
 // Service.
-type BlobServiceClient struct {
+type BlobStorageClient struct {
 	client Client
 	auth   authentication
 }
@@ -26,7 +26,7 @@ type ListContainersParameters struct {
 }
 
 // GetContainerReference returns a Container object for the specified container name.
-func (b BlobServiceClient) GetContainerReference(name string) Container {
+func (b BlobStorageClient) GetContainerReference(name string) Container {
 	return Container{
 		bsc:  &b,
 		Name: name,
@@ -37,7 +37,7 @@ func (b BlobServiceClient) GetContainerReference(name string) Container {
 // pagination token and other response details.
 //
 // See https://msdn.microsoft.com/en-us/library/azure/dd179352.aspx
-func (b BlobServiceClient) ListContainers(params ListContainersParameters) (*ContainerListResponse, error) {
+func (b BlobStorageClient) ListContainers(params ListContainersParameters) (*ContainerListResponse, error) {
 	q := mergeParams(params.getParameters(), url.Values{"comp": {"list"}})
 	uri := b.client.getEndpoint(blobServiceName, "", q)
 	headers := b.client.getStandardHeaders()

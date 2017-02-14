@@ -246,10 +246,10 @@ func (c Client) getEndpoint(service, path string, params url.Values) string {
 	return u.String()
 }
 
-// GetBlobService returns a BlobServiceClient which can operate on the blob
+// GetBlobService returns a BlobStorageClient which can operate on the blob
 // service of the storage account.
-func (c Client) GetBlobService() BlobServiceClient {
-	b := BlobServiceClient{
+func (c Client) GetBlobService() BlobStorageClient {
+	b := BlobStorageClient{
 		client: c,
 	}
 	b.client.AddToUserAgent(blobServiceName)

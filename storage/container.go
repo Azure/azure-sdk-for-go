@@ -13,10 +13,9 @@ import (
 
 // Container represents an Azure container.
 type Container struct {
-	bsc        *BlobServiceClient
+	bsc        *BlobStorageClient
 	Name       string              `xml:"Name"`
 	Properties ContainerProperties `xml:"Properties"`
-	// TODO (ahmetalpbalkan) Metadata
 }
 
 func (c *Container) buildPath() string {
@@ -31,7 +30,6 @@ type ContainerProperties struct {
 	LeaseStatus   string `xml:"LeaseStatus"`
 	LeaseState    string `xml:"LeaseState"`
 	LeaseDuration string `xml:"LeaseDuration"`
-	// TODO (ahmetalpbalkan) remaining fields
 }
 
 // ContainerListResponse contains the response fields from

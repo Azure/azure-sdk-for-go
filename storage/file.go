@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"io"
+	"io/ioutil"
 	"net/http"
 	"net/url"
 	"strconv"
@@ -127,7 +128,7 @@ func (f *File) Delete() error {
 func (f *File) DeleteIfExists() (bool, error) {
 	resp, err := f.fsc.deleteResourceNoClose(f.buildPath(), resourceFile)
 	if resp != nil {
-		defer resp.body.Close()
+		defer readAndCloseBody(resp.body)
 		if resp.statusCode == http.StatusAccepted || resp.statusCode == http.StatusNotFound {
 			return resp.statusCode == http.StatusAccepted, nil
 		}
@@ -221,6 +222,7 @@ func (f *File) ListRanges(listRange *FileRange) (*FileRanges, error) {
 	var cl uint64
 	cl, err = strconv.ParseUint(resp.headers.Get("x-ms-content-length"), 10, 64)
 	if err != nil {
+		ioutil.ReadAll(resp.body)
 		return nil, err
 	}
 
@@ -272,7 +274,7 @@ func (f *File) modifyRange(bytes io.Reader, fileRange FileRange, contentMD5 *str
 	if err != nil {
 		return nil, err
 	}
-	defer resp.body.Close()
+	defer readAndCloseBody(resp.body)
 	return resp.headers, checkRespCode(resp.statusCode, []int{http.StatusCreated})
 }
 

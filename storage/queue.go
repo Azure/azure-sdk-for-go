@@ -155,7 +155,7 @@ func (c QueueServiceClient) SetMetadata(name string, metadata map[string]string)
 	if err != nil {
 		return err
 	}
-	defer resp.body.Close()
+	defer readAndCloseBody(resp.body)
 
 	return checkRespCode(resp.statusCode, []int{http.StatusNoContent})
 }
@@ -178,7 +178,7 @@ func (c QueueServiceClient) GetMetadata(name string) (QueueMetadataResponse, err
 	if err != nil {
 		return qm, err
 	}
-	defer resp.body.Close()
+	defer readAndCloseBody(resp.body)
 
 	for k, v := range resp.headers {
 		if len(v) != 1 {
@@ -211,7 +211,7 @@ func (c QueueServiceClient) CreateQueue(name string) error {
 	if err != nil {
 		return err
 	}
-	defer resp.body.Close()
+	defer readAndCloseBody(resp.body)
 	return checkRespCode(resp.statusCode, []int{http.StatusCreated})
 }
 
@@ -224,7 +224,7 @@ func (c QueueServiceClient) DeleteQueue(name string) error {
 	if err != nil {
 		return err
 	}
-	defer resp.body.Close()
+	defer readAndCloseBody(resp.body)
 	return checkRespCode(resp.statusCode, []int{http.StatusNoContent})
 }
 
@@ -255,7 +255,7 @@ func (c QueueServiceClient) PutMessage(queue string, message string, params PutM
 	if err != nil {
 		return err
 	}
-	defer resp.body.Close()
+	defer readAndCloseBody(resp.body)
 	return checkRespCode(resp.statusCode, []int{http.StatusCreated})
 }
 
@@ -268,7 +268,7 @@ func (c QueueServiceClient) ClearMessages(queue string) error {
 	if err != nil {
 		return err
 	}
-	defer resp.body.Close()
+	defer readAndCloseBody(resp.body)
 	return checkRespCode(resp.statusCode, []int{http.StatusNoContent})
 }
 
@@ -314,7 +314,7 @@ func (c QueueServiceClient) DeleteMessage(queue, messageID, popReceipt string) e
 	if err != nil {
 		return err
 	}
-	defer resp.body.Close()
+	defer readAndCloseBody(resp.body)
 	return checkRespCode(resp.statusCode, []int{http.StatusNoContent})
 }
 
@@ -334,6 +334,6 @@ func (c QueueServiceClient) UpdateMessage(queue string, messageID string, messag
 	if err != nil {
 		return err
 	}
-	defer resp.body.Close()
+	defer readAndCloseBody(resp.body)
 	return checkRespCode(resp.statusCode, []int{http.StatusNoContent})
 }

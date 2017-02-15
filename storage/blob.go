@@ -1015,12 +1015,12 @@ func pathForBlob(container, name string) string {
 	return fmt.Sprintf("/%s/%s", container, name)
 }
 
-// helper method that combines pathForBlob or pathForContainer
+// helper method to construct the path to either a blob or container
 func pathForResource(container, name string) string {
 	if len(name) > 0 {
-		return pathForBlob(container, name)
+		return fmt.Sprintf("/%s/%s", container, name)
 	}
-	return pathForContainer(container)
+	return fmt.Sprintf("/%s", container)
 }
 
 // GetBlobSASURIWithSignedIPAndProtocol creates an URL to the specified blob which contains the Shared

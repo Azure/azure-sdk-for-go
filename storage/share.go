@@ -32,7 +32,7 @@ func (s *Share) buildPath() string {
 //
 // See https://msdn.microsoft.com/en-us/library/azure/dn167008.aspx
 func (s *Share) Create() error {
-	headers, err := s.fsc.createResource(s.buildPath(), resourceShare, nil, mergeMDIntoExtraHeaders(s.Metadata, nil))
+	headers, err := s.fsc.createResource(s.buildPath(), resourceShare, nil, mergeMDIntoExtraHeaders(s.Metadata, nil), []int{http.StatusCreated})
 	if err != nil {
 		return err
 	}

@@ -192,13 +192,13 @@ func (f FileServiceClient) resourceExists(path string, res resourceType) (bool, 
 }
 
 // creates a resource depending on the specified resource type
-func (f FileServiceClient) createResource(path string, res resourceType, urlParams url.Values, extraHeaders map[string]string) (http.Header, error) {
+func (f FileServiceClient) createResource(path string, res resourceType, urlParams url.Values, extraHeaders map[string]string, expectedResponseCodes []int) (http.Header, error) {
 	resp, err := f.createResourceNoClose(path, res, urlParams, extraHeaders)
 	if err != nil {
 		return nil, err
 	}
 	defer resp.body.Close()
-	return resp.headers, checkRespCode(resp.statusCode, []int{http.StatusCreated})
+	return resp.headers, checkRespCode(resp.statusCode, expectedResponseCodes)
 }
 
 // creates a resource depending on the specified resource type, doesn't close the response body

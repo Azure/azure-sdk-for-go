@@ -35,6 +35,7 @@ type FileProperties struct {
 	MD5          string `header:"x-ms-content-md5"`
 	Type         string `header:"x-ms-content-type"`
 	CopyID       string `header:"x-ms-copy-id"`
+	CopyStatus   string `header:"x-ms-copy-status"`
 }
 
 // FileCopyState contains various properties of a file copy operation.
@@ -124,7 +125,7 @@ func (f *File) Create(maxSize uint64) error {
 		"x-ms-type":           "file",
 	}
 
-	headers, err := f.fsc.createResource(f.buildPath(), resourceFile, nil, mergeMDIntoExtraHeaders(f.Metadata, extraHeaders))
+	headers, err := f.fsc.createResource(f.buildPath(), resourceFile, nil, mergeMDIntoExtraHeaders(f.Metadata, extraHeaders), []int{http.StatusCreated})
 	if err != nil {
 		return err
 	}
@@ -148,12 +149,12 @@ func (f File) CopyFile(sourceURL string, options *FileRequestOptions) error {
 		parameters = options.getParameters()
 	}
 
-	headers, err := f.fsc.createResource(f.buildPath(), resourceFile, parameters, mergeMDIntoExtraHeaders(f.Metadata, extraHeaders))
+	headers, err := f.fsc.createResource(f.buildPath(), resourceFile, parameters, mergeMDIntoExtraHeaders(f.Metadata, extraHeaders), []int{http.StatusAccepted})
 	if err != nil {
 		return err
 	}
 
-	f.updateEtagLastModifiedAndCopyID(headers)
+	f.updateEtagLastModifiedAndCopyHeaders(headers)
 	return nil
 }
 
@@ -362,10 +363,11 @@ func (f *File) updateEtagAndLastModified(headers http.Header) {
 }
 
 // updates Etag, last modified date and x-ms-copy-id
-func (f *File) updateEtagLastModifiedAndCopyID(headers http.Header) {
+func (f *File) updateEtagLastModifiedAndCopyHeaders(headers http.Header) {
 	f.Properties.Etag = headers.Get("Etag")
 	f.Properties.LastModified = headers.Get("Last-Modified")
 	f.Properties.CopyID = headers.Get("x-ms-copy-id")
+	f.Properties.CopyStatus = headers.Get("x-ms-copy-status")
 }
 
 // updates file properties from the specified HTTP header

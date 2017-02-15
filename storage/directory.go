@@ -67,7 +67,7 @@ func (d *Directory) Create() error {
 		return nil
 	}
 
-	headers, err := d.fsc.createResource(d.buildPath(), resourceDirectory, nil, mergeMDIntoExtraHeaders(d.Metadata, nil))
+	headers, err := d.fsc.createResource(d.buildPath(), resourceDirectory, nil, mergeMDIntoExtraHeaders(d.Metadata, nil), []int{http.StatusCreated})
 	if err != nil {
 		return err
 	}

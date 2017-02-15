@@ -238,7 +238,6 @@ func (b BlobStorageClient) BlobExists(container, name string) (bool, error) {
 // container is obtained.
 // This method does not create a publicly accessible URL if the blob or container
 // is private and this method does not check if the blob exists.
-
 func (b BlobStorageClient) GetBlobURL(container, name string) string {
 	if container == "" {
 		container = "$root"

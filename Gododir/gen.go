@@ -9,6 +9,7 @@ import (
 	"io/ioutil"
 	"os"
 	"os/exec"
+	"path/filepath"
 	"strings"
 
 	do "gopkg.in/godo.v2"
@@ -414,6 +415,11 @@ func generate(service *service) {
 	fmt.Printf("Generating %s...\n\n", service.Fullname)
 	delete(service)
 
+	_, err := exec.LookPath("gulp")
+	if err != nil {
+		panic("You need gulp (and some other tools) to run AutoRest. See https://github.com/Azure/autorest/pull/1827")
+	}
+
 	autorest := exec.Command("gulp",
 		"autorest",
 		"-Input", fmt.Sprintf("%s/azure-rest-api-specs/%s.json", swaggersDir, service.Input),
@@ -423,8 +429,8 @@ func generate(service *service) {
 		"-OutputDirectory", service.Output,
 		"-Modeler", "Swagger",
 		"-pv", sdkVersion)
-	autorest.Dir = fmt.Sprintf("%s/autorest", autorestDir)
-	err := runner(autorest)
+	autorest.Dir = filepath.Join(autorestDir, "autorest")
+	err = runner(autorest)
 	if err != nil {
 		panic(fmt.Errorf("Autorest error: %s", err))
 	}

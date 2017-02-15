@@ -280,29 +280,39 @@ var (
 		{
 		// Plane:       "dataplane",
 		// InputPrefix: "",
-		// Services: []Service{
+		// Services: []service{
 		// 	{
 		// 		Name:    "batch",
 		// 		Version: "2016-07-01.3.1",
 		// 		Swagger: "BatchService",
 		// 	},
-		//     {
-		//         Name: "insights",
-		//         // composite swagger
-		//     },
-		//     {
-		//         Name: "keyvault",
-		//         Version: "2015-06-01",
-		//     },
-		//     {
-		//         Name: "search",'
-		//         Version: "2015-02-28"
-		//         // There are 2 files, but no composite swagger...
-		//     },
-		//     {
-		//         Name: "servicefabric",
-		//         Version: "2016-01-28",
-		//     },
+		// 	{
+		// 		Name: "insights",
+		// 		// composite swagger
+		// 	},
+		// 	{
+		// 		Name:    "keyvault",
+		// 		Version: "2015-06-01",
+		// 	},
+		// 	{
+		// 		Name: "search",
+		// 		SubServices: []service{
+		// 			{
+		// 				Name:    "searchindex",
+		// 				Version: "2015-02-28",
+		// 				Input:   "search",
+		// 			},
+		// 			{
+		// 				Name:    "searchservice",
+		// 				Version: "2015-02-28",
+		// 				Input:   "search",
+		// 			},
+		// 		},
+		// 	},
+		// 	{
+		// 		Name:    "servicefabric",
+		// 		Version: "2016-01-28",
+		// 	},
 		// },
 		},
 		{
@@ -320,14 +330,14 @@ var (
 				},
 				// {
 				// 	Name: "datalake-analytics",
-				// 	SubServices: []Service{
+				// 	SubServices: []service{
 				// 		{
 				// 			Name:    "catalog",
-				// 			Version: "2016-06-01-preview",
+				// 			Version: "2016-11-01",
 				// 		},
 				// 		{
 				// 			Name:    "job",
-				// 			Version: "2016-03-20-preview",
+				// 			Version: "2016-11-01",
 				// 		},
 				// 	},
 				// },
@@ -404,7 +414,8 @@ func generate(service *service) {
 	fmt.Printf("Generating %s...\n\n", service.Fullname)
 	delete(service)
 
-	autorest := exec.Command(fmt.Sprintf("%s/autorest/src/core/AutoRest/bin/Debug/net451/win7-x64/autorest", autorestDir),
+	autorest := exec.Command("gulp",
+		"autorest",
 		"-Input", fmt.Sprintf("%s/azure-rest-api-specs/%s.json", swaggersDir, service.Input),
 		"-CodeGenerator", "Go",
 		"-Header", "MICROSOFT_APACHE",
@@ -412,6 +423,7 @@ func generate(service *service) {
 		"-OutputDirectory", service.Output,
 		"-Modeler", "Swagger",
 		"-pv", sdkVersion)
+	autorest.Dir = fmt.Sprintf("%s/autorest", autorestDir)
 	err := runner(autorest)
 	if err != nil {
 		panic(fmt.Errorf("Autorest error: %s", err))

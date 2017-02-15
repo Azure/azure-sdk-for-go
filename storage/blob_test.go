@@ -30,6 +30,11 @@ func (s *StorageBlobSuite) Test_pathForBlob(c *chk.C) {
 	c.Assert(pathForBlob("foo", "blob"), chk.Equals, "/foo/blob")
 }
 
+func (s *StorageBlobSuite) Test_pathForResource(c *chk.C) {
+	c.Assert(pathForResource("foo", ""), chk.Equals, "/foo")
+	c.Assert(pathForResource("foo", "blob"), chk.Equals, "/foo/blob")
+}
+
 func (s *StorageBlobSuite) Test_blobSASStringToSign(c *chk.C) {
 	_, err := blobSASStringToSign("2012-02-12", "CS", "SE", "SP", "", "")
 	c.Assert(err, chk.NotNil) // not implemented SAS for versions earlier than 2013-08-15
@@ -63,6 +68,33 @@ func (s *StorageBlobSuite) TestGetBlobSASURI(c *chk.C) {
 		}.Encode()}
 
 	u, err := cli.GetBlobSASURI("container", "name", expiry, "r")
+	c.Assert(err, chk.IsNil)
+	sasParts, err := url.Parse(u)
+	c.Assert(err, chk.IsNil)
+	c.Assert(expectedParts.String(), chk.Equals, sasParts.String())
+	c.Assert(expectedParts.Query(), chk.DeepEquals, sasParts.Query())
+}
+
+//Gets a SASURI for the entire container
+func (s *StorageBlobSuite) TestGetBlobSASURIContainer(c *chk.C) {
+	api, err := NewClient("foo", "YmFy", DefaultBaseURL, "2013-08-15", true)
+	c.Assert(err, chk.IsNil)
+	cli := api.GetBlobService()
+	expiry := time.Time{}
+
+	expectedParts := url.URL{
+		Scheme: "https",
+		Host:   "foo.blob.core.windows.net",
+		Path:   "container",
+		RawQuery: url.Values{
+			"sv":  {"2013-08-15"},
+			"sig": {"KMjYyQODKp6uK9EKR3yGhO2M84e1LfoztypU32kHj4s="},
+			"sr":  {"c"},
+			"sp":  {"r"},
+			"se":  {"0001-01-01T00:00:00Z"},
+		}.Encode()}
+
+	u, err := cli.GetBlobSASURI("container", "", expiry, "r")
 	c.Assert(err, chk.IsNil)
 	sasParts, err := url.Parse(u)
 	c.Assert(err, chk.IsNil)
@@ -180,6 +212,15 @@ func (s *StorageBlobSuite) TestGetBlobURL(c *chk.C) {
 	c.Assert(cli.GetBlobURL("c", "nested/blob"), chk.Equals, "https://foo.blob.core.windows.net/c/nested/blob")
 	c.Assert(cli.GetBlobURL("", "blob"), chk.Equals, "https://foo.blob.core.windows.net/$root/blob")
 	c.Assert(cli.GetBlobURL("", "nested/blob"), chk.Equals, "https://foo.blob.core.windows.net/$root/nested/blob")
+}
+
+func (s *StorageBlobSuite) TestGetBlobContainerURL(c *chk.C) {
+	api, err := NewBasicClient("foo", "YmFy")
+	c.Assert(err, chk.IsNil)
+	cli := api.GetBlobService()
+
+	c.Assert(cli.GetBlobURL("c", ""), chk.Equals, "https://foo.blob.core.windows.net/c")
+	c.Assert(cli.GetBlobURL("", ""), chk.Equals, "https://foo.blob.core.windows.net/$root")
 }
 
 func (s *StorageBlobSuite) TestBlobCopy(c *chk.C) {

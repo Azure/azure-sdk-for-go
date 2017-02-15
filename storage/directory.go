@@ -89,7 +89,7 @@ func (d *Directory) CreateIfNotExists() (bool, error) {
 
 	resp, err := d.fsc.createResourceNoClose(d.buildPath(), resourceDirectory, nil, nil)
 	if resp != nil {
-		defer resp.body.Close()
+		defer readAndCloseBody(resp.body)
 		if resp.statusCode == http.StatusCreated || resp.statusCode == http.StatusConflict {
 			if resp.statusCode == http.StatusCreated {
 				d.updateEtagAndLastModified(resp.headers)
@@ -117,7 +117,7 @@ func (d *Directory) Delete() error {
 func (d *Directory) DeleteIfExists() (bool, error) {
 	resp, err := d.fsc.deleteResourceNoClose(d.buildPath(), resourceDirectory)
 	if resp != nil {
-		defer resp.body.Close()
+		defer readAndCloseBody(resp.body)
 		if resp.statusCode == http.StatusAccepted || resp.statusCode == http.StatusNotFound {
 			return resp.statusCode == http.StatusAccepted, nil
 		}

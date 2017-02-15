@@ -364,14 +364,14 @@ func initAndAddService(service *service, inputPrefix, plane string) {
 	}
 	packages := append(service.Packages, service.Name)
 	service.TaskName = fmt.Sprintf("%s>%s", plane, strings.Join(packages, ">"))
-	service.Fullname = fmt.Sprintf("%s/%s", plane, strings.Join(packages, "/"))
+	service.Fullname = filepath.Join(plane, strings.Join(packages, "/"))
 	if service.Input == "" {
-		service.Input = fmt.Sprintf("%s%s/%s/swagger/%s", inputPrefix, strings.Join(packages, "/"), service.Version, service.Swagger)
+		service.Input = filepath.Join(inputPrefix+strings.Join(packages, "/"), service.Version, "swagger", service.Swagger)
 	} else {
-		service.Input = fmt.Sprintf("%s%s/%s/swagger/%s", inputPrefix, service.Input, service.Version, service.Swagger)
+		service.Input = filepath.Join(inputPrefix+service.Input, service.Version, "swagger", service.Swagger)
 	}
-	service.Namespace = fmt.Sprintf("github.com/Azure/azure-sdk-for-go/%s", service.Fullname)
-	service.Output = fmt.Sprintf("%s/src/%s", gopath, service.Namespace)
+	service.Namespace = filepath.Join("github.com", "Azure", "azure-sdk-for-go", service.Fullname)
+	service.Output = filepath.Join(gopath, "src", service.Namespace)
 
 	if service.SubServices != nil {
 		for _, subs := range service.SubServices {
@@ -403,8 +403,8 @@ func setVars(c *do.Context) {
 	}
 
 	sdkVersion = c.Args.MustString("s", "sdk", "version")
-	autorestDir = c.Args.MayString("C:", "a", "ar", "autorest")
-	swaggersDir = c.Args.MayString("C:", "w", "sw", "swagger")
+	autorestDir = c.Args.MayString("C:/", "a", "ar", "autorest")
+	swaggersDir = c.Args.MayString("C:/", "w", "sw", "swagger")
 }
 
 func generateTasks(p *do.Project) {
@@ -422,7 +422,7 @@ func generate(service *service) {
 
 	autorest := exec.Command("gulp",
 		"autorest",
-		"-Input", fmt.Sprintf("%s/azure-rest-api-specs/%s.json", swaggersDir, service.Input),
+		"-Input", filepath.Join(swaggersDir, "azure-rest-api-specs", service.Input+".json"),
 		"-CodeGenerator", "Go",
 		"-Header", "MICROSOFT_APACHE",
 		"-Namespace", service.Name,
@@ -485,7 +485,7 @@ func lintTasks(p *do.Project) {
 
 func lint(service *service) {
 	fmt.Printf("Linting %s...\n\n", service.Fullname)
-	golint := exec.Command(fmt.Sprintf("%s/bin/golint", gopath), service.Namespace)
+	golint := exec.Command(filepath.Join(gopath, "bin", "golint"), service.Namespace)
 	err := runner(golint)
 	if err != nil {
 		panic(fmt.Errorf("golint error: %s", err))

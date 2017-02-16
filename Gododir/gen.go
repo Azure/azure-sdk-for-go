@@ -9,6 +9,7 @@ import (
 	"io/ioutil"
 	"os"
 	"os/exec"
+	"path/filepath"
 	"strings"
 
 	do "gopkg.in/godo.v2"
@@ -280,29 +281,39 @@ var (
 		{
 		// Plane:       "dataplane",
 		// InputPrefix: "",
-		// Services: []Service{
+		// Services: []service{
 		// 	{
 		// 		Name:    "batch",
 		// 		Version: "2016-07-01.3.1",
 		// 		Swagger: "BatchService",
 		// 	},
-		//     {
-		//         Name: "insights",
-		//         // composite swagger
-		//     },
-		//     {
-		//         Name: "keyvault",
-		//         Version: "2015-06-01",
-		//     },
-		//     {
-		//         Name: "search",'
-		//         Version: "2015-02-28"
-		//         // There are 2 files, but no composite swagger...
-		//     },
-		//     {
-		//         Name: "servicefabric",
-		//         Version: "2016-01-28",
-		//     },
+		// 	{
+		// 		Name: "insights",
+		// 		// composite swagger
+		// 	},
+		// 	{
+		// 		Name:    "keyvault",
+		// 		Version: "2015-06-01",
+		// 	},
+		// 	{
+		// 		Name: "search",
+		// 		SubServices: []service{
+		// 			{
+		// 				Name:    "searchindex",
+		// 				Version: "2015-02-28",
+		// 				Input:   "search",
+		// 			},
+		// 			{
+		// 				Name:    "searchservice",
+		// 				Version: "2015-02-28",
+		// 				Input:   "search",
+		// 			},
+		// 		},
+		// 	},
+		// 	{
+		// 		Name:    "servicefabric",
+		// 		Version: "2016-01-28",
+		// 	},
 		// },
 		},
 		{
@@ -320,14 +331,14 @@ var (
 				},
 				// {
 				// 	Name: "datalake-analytics",
-				// 	SubServices: []Service{
+				// 	SubServices: []service{
 				// 		{
 				// 			Name:    "catalog",
-				// 			Version: "2016-06-01-preview",
+				// 			Version: "2016-11-01",
 				// 		},
 				// 		{
 				// 			Name:    "job",
-				// 			Version: "2016-03-20-preview",
+				// 			Version: "2016-11-01",
 				// 		},
 				// 	},
 				// },
@@ -353,14 +364,14 @@ func initAndAddService(service *service, inputPrefix, plane string) {
 	}
 	packages := append(service.Packages, service.Name)
 	service.TaskName = fmt.Sprintf("%s>%s", plane, strings.Join(packages, ">"))
-	service.Fullname = fmt.Sprintf("%s/%s", plane, strings.Join(packages, "/"))
+	service.Fullname = filepath.Join(plane, strings.Join(packages, "/"))
 	if service.Input == "" {
-		service.Input = fmt.Sprintf("%s%s/%s/swagger/%s", inputPrefix, strings.Join(packages, "/"), service.Version, service.Swagger)
+		service.Input = filepath.Join(inputPrefix+strings.Join(packages, "/"), service.Version, "swagger", service.Swagger)
 	} else {
-		service.Input = fmt.Sprintf("%s%s/%s/swagger/%s", inputPrefix, service.Input, service.Version, service.Swagger)
+		service.Input = filepath.Join(inputPrefix+service.Input, service.Version, "swagger", service.Swagger)
 	}
-	service.Namespace = fmt.Sprintf("github.com/Azure/azure-sdk-for-go/%s", service.Fullname)
-	service.Output = fmt.Sprintf("%s/src/%s", gopath, service.Namespace)
+	service.Namespace = filepath.Join("github.com", "Azure", "azure-sdk-for-go", service.Fullname)
+	service.Output = filepath.Join(gopath, "src", service.Namespace)
 
 	if service.SubServices != nil {
 		for _, subs := range service.SubServices {
@@ -392,8 +403,8 @@ func setVars(c *do.Context) {
 	}
 
 	sdkVersion = c.Args.MustString("s", "sdk", "version")
-	autorestDir = c.Args.MayString("C:", "a", "ar", "autorest")
-	swaggersDir = c.Args.MayString("C:", "w", "sw", "swagger")
+	autorestDir = c.Args.MayString("C:/", "a", "ar", "autorest")
+	swaggersDir = c.Args.MayString("C:/", "w", "sw", "swagger")
 }
 
 func generateTasks(p *do.Project) {
@@ -404,15 +415,22 @@ func generate(service *service) {
 	fmt.Printf("Generating %s...\n\n", service.Fullname)
 	delete(service)
 
-	autorest := exec.Command(fmt.Sprintf("%s/autorest/src/core/AutoRest/bin/Debug/net451/win7-x64/autorest", autorestDir),
-		"-Input", fmt.Sprintf("%s/azure-rest-api-specs/%s.json", swaggersDir, service.Input),
+	_, err := exec.LookPath("gulp")
+	if err != nil {
+		panic("You need gulp (and some other tools) to run AutoRest. See https://github.com/Azure/autorest/pull/1827")
+	}
+
+	autorest := exec.Command("gulp",
+		"autorest",
+		"-Input", filepath.Join(swaggersDir, "azure-rest-api-specs", service.Input+".json"),
 		"-CodeGenerator", "Go",
 		"-Header", "MICROSOFT_APACHE",
 		"-Namespace", service.Name,
 		"-OutputDirectory", service.Output,
 		"-Modeler", "Swagger",
 		"-pv", sdkVersion)
-	err := runner(autorest)
+	autorest.Dir = filepath.Join(autorestDir, "autorest")
+	err = runner(autorest)
 	if err != nil {
 		panic(fmt.Errorf("Autorest error: %s", err))
 	}
@@ -467,7 +485,7 @@ func lintTasks(p *do.Project) {
 
 func lint(service *service) {
 	fmt.Printf("Linting %s...\n\n", service.Fullname)
-	golint := exec.Command(fmt.Sprintf("%s/bin/golint", gopath), service.Namespace)
+	golint := exec.Command(filepath.Join(gopath, "bin", "golint"), service.Namespace)
 	err := runner(golint)
 	if err != nil {
 		panic(fmt.Errorf("golint error: %s", err))

@@ -15,14 +15,16 @@ import (
 	"runtime"
 	"strconv"
 	"strings"
+
+	"github.com/Azure/go-autorest/autorest/azure"
 )
 
 const (
-	// DefaultBaseURL is the domain name used for storage requests when a
-	// default client is created.
+	// DefaultBaseURL is the domain name used for storage requests in the
+	// public cloud when a default client is created.
 	DefaultBaseURL = "core.windows.net"
 
-	// DefaultAPIVersion is the  Azure Storage API version string used when a
+	// DefaultAPIVersion is the Azure Storage API version string used when a
 	// basic client is created.
 	DefaultAPIVersion = "2015-04-05"
 
@@ -131,7 +133,15 @@ func NewBasicClient(accountName, accountKey string) (Client, error) {
 		return NewEmulatorClient()
 	}
 	return NewClient(accountName, accountKey, DefaultBaseURL, DefaultAPIVersion, defaultUseHTTPS)
+}
 
+// NewBasicClientOnSovereignCloud constructs a Client with given storage service name and
+// key in the referenced cloud.
+func NewBasicClientOnSovereignCloud(accountName, accountKey string, env azure.Environment) (Client, error) {
+	if accountName == StorageEmulatorAccountName {
+		return NewEmulatorClient()
+	}
+	return NewClient(accountName, accountKey, env.StorageEndpointSuffix, DefaultAPIVersion, defaultUseHTTPS)
 }
 
 //NewEmulatorClient contructs a Client intended to only work with Azure

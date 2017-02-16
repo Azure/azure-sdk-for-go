@@ -153,7 +153,9 @@ func (s *StorageClientSuite) Test_getStandardHeaders(c *chk.C) {
 
 func (s *StorageClientSuite) TestReturnsStorageServiceError(c *chk.C) {
 	// attempt to delete a nonexisting container
-	_, err := getBlobClient(c).deleteContainer(randContainer())
+	cli := getBlobClient(c)
+	cnt := cli.GetContainerReference(randContainer())
+	_, err := cnt.delete()
 	c.Assert(err, chk.NotNil)
 
 	v, ok := err.(AzureStorageServiceError)

@@ -193,16 +193,16 @@ func (a *AuthorizationSuite) Test_allSharedKeys(c *chk.C) {
 	blobCli := cli.GetBlobService()
 	tableCli := cli.GetTableService()
 
-	cnt1 := randContainer()
-	cnt2 := randContainer()
+	cnt1 := blobCli.GetContainerReference(randContainer())
+	cnt2 := blobCli.GetContainerReference(randContainer())
 
 	tn1 := AzureTable(randTable())
 	tn2 := AzureTable(randTable())
 
 	// Shared Key
 	c.Assert(blobCli.auth, chk.Equals, sharedKey)
-	c.Assert(blobCli.CreateContainer(cnt1, ContainerAccessTypePrivate), chk.IsNil)
-	c.Assert(blobCli.DeleteContainer(cnt1), chk.IsNil)
+	c.Assert(cnt1.Create(), chk.IsNil)
+	c.Assert(cnt1.Delete(), chk.IsNil)
 
 	// Shared Key for Tables
 	c.Assert(tableCli.auth, chk.Equals, sharedKeyForTable)
@@ -216,8 +216,8 @@ func (a *AuthorizationSuite) Test_allSharedKeys(c *chk.C) {
 
 	// Shared Key Lite
 	c.Assert(blobCli.auth, chk.Equals, sharedKeyLite)
-	c.Assert(blobCli.CreateContainer(cnt2, ContainerAccessTypeBlob), chk.IsNil)
-	c.Assert(blobCli.DeleteContainer(cnt2), chk.IsNil)
+	c.Assert(cnt2.Create(), chk.IsNil)
+	c.Assert(cnt2.Delete(), chk.IsNil)
 
 	// Shared Key Lite for Tables
 	c.Assert(tableCli.auth, chk.Equals, sharedKeyLiteForTable)

@@ -356,13 +356,21 @@ func (b BlobStorageClient) SnapshotBlob(container string, name string, timeout i
 
 // AcquireLease creates a lease for a blob as per https://msdn.microsoft.com/en-us/library/azure/ee691972.aspx
 // returns leaseID acquired
+// In API Versions starting on 2012-02-12, the minimum leaseTimeInSeconds is 15, the maximum
+// non-infinite leaseTimeInSeconds is 60. To specify an infinite lease, provide the value -1.
 func (b BlobStorageClient) AcquireLease(container string, name string, leaseTimeInSeconds int, proposedLeaseID string) (returnedLeaseID string, err error) {
 	headers := b.client.getStandardHeaders()
 	headers[leaseAction] = acquireLease
 
-	if leaseTimeInSeconds > 0 {
-		headers[leaseDuration] = strconv.Itoa(leaseTimeInSeconds)
+	if leaseTimeInSeconds == -1 {
+		// Do nothing, but don't trigger the following clauses.
+	} else if leaseTimeInSeconds > 60 || b.client.apiVersion < "2012-02-12" {
+		leaseTimeInSeconds = 60
+	} else if leaseTimeInSeconds < 15 {
+		leaseTimeInSeconds = 15
 	}
+
+	headers[leaseDuration] = strconv.Itoa(leaseTimeInSeconds)
 
 	if proposedLeaseID != "" {
 		headers[leaseProposedID] = proposedLeaseID

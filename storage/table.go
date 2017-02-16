@@ -12,13 +12,6 @@ import (
 	"time"
 )
 
-// TableServiceClient contains operations for Microsoft Azure Table Storage
-// Service.
-type TableServiceClient struct {
-	client Client
-	auth   authentication
-}
-
 // AzureTable is the typedef of the Azure Table name
 type AzureTable string
 

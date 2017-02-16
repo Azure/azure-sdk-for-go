@@ -35,17 +35,15 @@ type FileProperties struct {
 	Length       uint64 `xml:"Content-Length"`
 	MD5          string `header:"x-ms-content-md5"`
 	Type         string `header:"x-ms-content-type"`
-	CopyID       string `header:"x-ms-copy-id"`
-	CopyStatus   string `header:"x-ms-copy-status"`
 }
 
 // FileCopyState contains various properties of a file copy operation.
 type FileCopyState struct {
 	CompletionTime string
-	ID             string
+	ID             string `header:"x-ms-copy-id"`
 	Progress       string
 	Source         string
-	Status         string
+	Status         string `header:"x-ms-copy-status"`
 	StatusDesc     string
 }
 
@@ -139,7 +137,7 @@ func (f *File) Create(maxSize uint64) error {
 // CopyFile operation copied a file/blob from the sourceURL to the path provided.
 //
 // See https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/copy-file
-func (f File) CopyFile(sourceURL string, options *FileRequestOptions) error {
+func (f *File) CopyFile(sourceURL string, options *FileRequestOptions) error {
 	extraHeaders := map[string]string{
 		"x-ms-type":        "file",
 		"x-ms-copy-source": sourceURL,
@@ -368,8 +366,8 @@ func (f *File) updateEtagAndLastModified(headers http.Header) {
 func (f *File) updateEtagLastModifiedAndCopyHeaders(headers http.Header) {
 	f.Properties.Etag = headers.Get("Etag")
 	f.Properties.LastModified = headers.Get("Last-Modified")
-	f.Properties.CopyID = headers.Get("x-ms-copy-id")
-	f.Properties.CopyStatus = headers.Get("x-ms-copy-status")
+	f.FileCopyProperties.ID = headers.Get("X-Ms-Copy-Id")
+	f.FileCopyProperties.Status = headers.Get("X-Ms-Copy-Status")
 }
 
 // updates file properties from the specified HTTP header

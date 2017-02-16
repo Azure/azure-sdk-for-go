@@ -272,3 +272,120 @@ func newByteStream(count uint64) (io.Reader, string) {
 
 	return bytes.NewReader(b), base64.StdEncoding.EncodeToString(hash[:])
 }
+
+func (s *StorageFileSuite) TestCopyFileSameAccountNoMetaData(c *chk.C) {
+
+	// create share
+	cli := getFileClient(c)
+	share := cli.GetShareReference(randShare())
+
+	c.Assert(share.Create(), chk.IsNil)
+	defer share.Delete()
+	root := share.GetRootDirectoryReference()
+
+	// create directory structure
+	dir1 := root.GetDirectoryReference("one")
+	c.Assert(dir1.Create(), chk.IsNil)
+	dir2 := dir1.GetDirectoryReference("two")
+	c.Assert(dir2.Create(), chk.IsNil)
+
+	// verify file doesn't exist
+	file := dir2.GetFileReference("some.file")
+	exists, err := file.Exists()
+	c.Assert(err, chk.IsNil)
+	c.Assert(exists, chk.Equals, false)
+
+	// create file
+	c.Assert(file.Create(1024), chk.IsNil)
+	exists, err = file.Exists()
+	c.Assert(err, chk.IsNil)
+	c.Assert(exists, chk.Equals, true)
+
+	otherFile := dir2.GetFileReference("someother.file")
+
+	// copy the file, no timeout parameter
+	err = otherFile.CopyFile(file.URL(), nil)
+	c.Assert(err, chk.IsNil)
+
+	// delete file and verify
+	c.Assert(file.Delete(), chk.IsNil)
+	c.Assert(otherFile.Delete(), chk.IsNil)
+	exists, err = file.Exists()
+	c.Assert(err, chk.IsNil)
+	c.Assert(exists, chk.Equals, false)
+
+	exists, err = otherFile.Exists()
+	c.Assert(err, chk.IsNil)
+	c.Assert(exists, chk.Equals, false)
+
+}
+
+func (s *StorageFileSuite) TestCopyFileSameAccountTimeout(c *chk.C) {
+	// create share
+	cli := getFileClient(c)
+	share := cli.GetShareReference(randShare())
+
+	c.Assert(share.Create(), chk.IsNil)
+	defer share.Delete()
+	root := share.GetRootDirectoryReference()
+
+	// create directory structure
+	dir1 := root.GetDirectoryReference("one")
+	c.Assert(dir1.Create(), chk.IsNil)
+	dir2 := dir1.GetDirectoryReference("two")
+	c.Assert(dir2.Create(), chk.IsNil)
+
+	// verify file doesn't exist
+	file := dir2.GetFileReference("some.file")
+	exists, err := file.Exists()
+	c.Assert(err, chk.IsNil)
+	c.Assert(exists, chk.Equals, false)
+
+	// create file
+	c.Assert(file.Create(1024), chk.IsNil)
+	exists, err = file.Exists()
+	c.Assert(err, chk.IsNil)
+	c.Assert(exists, chk.Equals, true)
+
+	otherFile := dir2.GetFileReference("someother.file")
+
+	options := FileRequestOptions{}
+	options.Timeout = 60
+
+	// copy the file, 60 second timeout.
+	err = otherFile.CopyFile(file.URL(), &options)
+	c.Assert(err, chk.IsNil)
+
+	// delete file and verify
+	c.Assert(file.Delete(), chk.IsNil)
+	c.Assert(otherFile.Delete(), chk.IsNil)
+	exists, err = file.Exists()
+	c.Assert(err, chk.IsNil)
+	c.Assert(exists, chk.Equals, false)
+
+	exists, err = otherFile.Exists()
+	c.Assert(err, chk.IsNil)
+	c.Assert(exists, chk.Equals, false)
+
+}
+
+func (s *StorageFileSuite) TestCopyFileMissingFile(c *chk.C) {
+
+	// create share
+	cli := getFileClient(c)
+	share := cli.GetShareReference(randShare())
+
+	c.Assert(share.Create(), chk.IsNil)
+	defer share.Delete()
+	root := share.GetRootDirectoryReference()
+
+	// create directory structure
+	dir1 := root.GetDirectoryReference("one")
+	c.Assert(dir1.Create(), chk.IsNil)
+
+	otherFile := dir1.GetFileReference("someother.file")
+
+	// copy the file, no timeout parameter
+	err := otherFile.CopyFile("", nil)
+	c.Assert(err, chk.NotNil)
+}

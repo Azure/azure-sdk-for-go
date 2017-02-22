@@ -149,6 +149,20 @@ func (f FileServiceClient) ListShares(params ListSharesParameters) (*ShareListRe
 	return &out, err
 }
 
+// GetServiceProperties gets the properties of your storage account's file service.
+// File service does not support logging
+// See: https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/get-file-service-properties
+func (f *FileServiceClient) GetServiceProperties() (*ServiceProperties, error) {
+	return f.client.getServiceProperties(fileServiceName, f.auth)
+}
+
+// SetServiceProperties sets the properties of your storage account's file service.
+// File service does not support logging
+// See: https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/set-file-service-properties
+func (f *FileServiceClient) SetServiceProperties(props ServiceProperties) error {
+	return f.client.setServiceProperties(props, fileServiceName, f.auth)
+}
+
 // retrieves directory or share content
 func (f FileServiceClient) listContent(path string, params url.Values, extraHeaders map[string]string) (*storageResponse, error) {
 	if err := f.checkForStorageEmulator(); err != nil {
@@ -192,23 +206,24 @@ func (f FileServiceClient) resourceExists(path string, res resourceType) (bool, 
 }
 
 // creates a resource depending on the specified resource type
-func (f FileServiceClient) createResource(path string, res resourceType, extraHeaders map[string]string) (http.Header, error) {
-	resp, err := f.createResourceNoClose(path, res, extraHeaders)
+func (f FileServiceClient) createResource(path string, res resourceType, urlParams url.Values, extraHeaders map[string]string, expectedResponseCodes []int) (http.Header, error) {
+	resp, err := f.createResourceNoClose(path, res, urlParams, extraHeaders)
 	if err != nil {
 		return nil, err
 	}
 	defer readAndCloseBody(resp.body)
-	return resp.headers, checkRespCode(resp.statusCode, []int{http.StatusCreated})
+	return resp.headers, checkRespCode(resp.statusCode, expectedResponseCodes)
 }
 
 // creates a resource depending on the specified resource type, doesn't close the response body
-func (f FileServiceClient) createResourceNoClose(path string, res resourceType, extraHeaders map[string]string) (*storageResponse, error) {
+func (f FileServiceClient) createResourceNoClose(path string, res resourceType, urlParams url.Values, extraHeaders map[string]string) (*storageResponse, error) {
 	if err := f.checkForStorageEmulator(); err != nil {
 		return nil, err
 	}
 
 	values := getURLInitValues(compNone, res)
-	uri := f.client.getEndpoint(fileServiceName, path, values)
+	combinedParams := mergeParams(values, urlParams)
+	uri := f.client.getEndpoint(fileServiceName, path, combinedParams)
 	extraHeaders = f.client.protectUserAgent(extraHeaders)
 	headers := mergeHeaders(f.client.getStandardHeaders(), extraHeaders)
 

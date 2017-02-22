@@ -121,3 +121,15 @@ func addReturnContentHeaders(h map[string]string, ml MetadataLevel) map[string]s
 	}
 	return h
 }
+
+// GetServiceProperties gets the properties of your storage account's table service.
+// See: https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/get-table-service-properties
+func (t *TableServiceClient) GetServiceProperties() (*ServiceProperties, error) {
+	return t.client.getServiceProperties(tableServiceName, t.auth)
+}
+
+// SetServiceProperties sets the properties of your storage account's table service.
+// See: https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/set-table-service-properties
+func (t *TableServiceClient) SetServiceProperties(props ServiceProperties) error {
+	return t.client.setServiceProperties(props, tableServiceName, t.auth)
+}

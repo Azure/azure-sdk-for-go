@@ -386,7 +386,7 @@ func initAndAddService(service *service, inputPrefix, plane string) {
 }
 
 func tasks(p *do.Project) {
-	p.Task("default", do.S{"setvars", "generate:all", "storage"}, nil)
+	p.Task("default", do.S{"setvars", "generate:all", "storage", "management"}, nil)
 	p.Task("setvars", nil, setVars)
 	p.Use("generate", generateTasks)
 	p.Use("gofmt", formatTasks)
@@ -395,6 +395,7 @@ func tasks(p *do.Project) {
 	p.Use("govet", vetTasks)
 	p.Use("delete", deleteTasks)
 	p.Task("storage", do.S{"setvars"}, storageVersion)
+	p.Task("management", do.S{"setvars"}, managementVersion)
 }
 
 func setVars(c *do.Context) {
@@ -506,15 +507,23 @@ func vet(service *service) {
 }
 
 func storageVersion(c *do.Context) {
-	versionFile := "storage/version.go"
+	version("storage")
+}
+
+func managementVersion(c *do.Context) {
+	version("management")
+}
+
+func version(packageName string) {
+	versionFile := filepath.Join(packageName, "version.go")
 	os.Remove(versionFile)
-	template := `package storage
+	template := `package %s
 
 var (
 	sdkVersion = "%s"
 )
-	`
-	data := []byte(fmt.Sprintf(template, sdkVersion))
+`
+	data := []byte(fmt.Sprintf(template, packageName, sdkVersion))
 	ioutil.WriteFile(versionFile, data, 0644)
 }
 

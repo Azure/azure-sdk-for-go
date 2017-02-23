@@ -1,0 +1,3 @@
+[submodule "storage"]
+	path = storage
+	url = https://github.com/Azure/azure-sdk-for-go-storage

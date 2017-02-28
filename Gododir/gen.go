@@ -9,6 +9,7 @@ import (
 	"io/ioutil"
 	"os"
 	"os/exec"
+	"path/filepath"
 	"strings"
 
 	do "gopkg.in/godo.v2"
@@ -307,41 +308,8 @@ var (
 			},
 		},
 		{
-<<<<<<< 8e625d1702a32d01cef05a9252198d231c4af113
-		// Plane:       "dataplane",
-		// InputPrefix: "",
-		// Services: []Service{
-		// 	{
-		// 		Name:    "batch",
-		// 		Version: "2016-07-01.3.1",
-		// 		Swagger: "BatchService",
-		// 	},
-		//     {
-		//         Name: "insights",
-		//         // composite swagger
-		//     },
-		//     {
-		//         Name: "keyvault",
-		//         Version: "2015-06-01",
-		//     },
-		//     {
-		//         Name: "search",'
-		//         Version: "2015-02-28"
-		//         // There are 2 files, but no composite swagger...
-		//     },
-		//     {
-		//         Name: "servicefabric",
-		//         Version: "2016-01-28",
-		//     },
-		// },
-		},
-		{
-			Plane:       "",
-			InputPrefix: "arm-",
-=======
 			Plane:       "dataplane",
 			InputPrefix: "",
->>>>>>> Regen (except swaggers with breaking changes)
 			Services: []service{
 				// 	{
 				// 		Name:    "batch",
@@ -354,20 +322,8 @@ var (
 				// 	},
 				{
 					Name:    "keyvault",
-					Version: "2015-06-01",
+					Version: "2016-10-01",
 				},
-<<<<<<< 8e625d1702a32d01cef05a9252198d231c4af113
-				// {
-				// 	Name: "datalake-analytics",
-				// 	SubServices: []Service{
-				// 		{
-				// 			Name:    "catalog",
-				// 			Version: "2016-06-01-preview",
-				// 		},
-				// 		{
-				// 			Name:    "job",
-				// 			Version: "2016-03-20-preview",
-=======
 				// 	{
 				// 		Name: "search",
 				// 		SubServices: []service{
@@ -381,7 +337,6 @@ var (
 				// 				Version: "2015-02-28",
 				// 				Input:   "search",
 				// 			},
->>>>>>> Regen (except swaggers with breaking changes)
 				// 		},
 				// 	},
 				// 	{
@@ -489,10 +444,6 @@ func generate(service *service) {
 	fmt.Printf("Generating %s...\n\n", service.Fullname)
 	delete(service)
 
-<<<<<<< 8e625d1702a32d01cef05a9252198d231c4af113
-	autorest := exec.Command(fmt.Sprintf("%s/autorest/src/core/AutoRest/bin/Debug/net451/win7-x64/autorest", autorestDir),
-		"-Input", fmt.Sprintf("%s/azure-rest-api-specs/%s.json", swaggersDir, service.Input),
-=======
 	fmt.Println("Running AutoRest...")
 	_, err := exec.LookPath("gulp")
 	if err != nil {
@@ -502,22 +453,16 @@ func generate(service *service) {
 	autorest := exec.Command("gulp",
 		"autorest",
 		"-Input", filepath.Join(swaggersDir, "azure-rest-api-specs", service.Input+".json"),
->>>>>>> Regen (except swaggers with breaking changes)
 		"-CodeGenerator", "Go",
 		"-Header", "MICROSOFT_APACHE",
 		"-Namespace", service.Name,
 		"-OutputDirectory", service.Output,
 		"-Modeler", "Swagger",
-<<<<<<< 8e625d1702a32d01cef05a9252198d231c4af113
-		"-pv", sdkVersion)
-	err := runner(autorest)
-=======
 		"-pv", sdkVersion,
 		"-SkipValidation",
 	)
 	autorest.Dir = filepath.Join(autorestDir, "autorest")
 	err = runner(autorest)
->>>>>>> Regen (except swaggers with breaking changes)
 	if err != nil {
 		panic(fmt.Errorf("Autorest error: %s", err))
 	}

@@ -432,8 +432,8 @@ func setVars(c *do.Context) {
 	}
 
 	sdkVersion = c.Args.MustString("s", "sdk", "version")
-	autorestDir = c.Args.MayString("C:", "a", "ar", "autorest")
-	swaggersDir = c.Args.MayString("C:", "w", "sw", "swagger")
+	autorestDir = c.Args.MayString("C:/", "a", "ar", "autorest")
+	swaggersDir = c.Args.MayString("C:/", "w", "sw", "swagger")
 }
 
 func generateTasks(p *do.Project) {

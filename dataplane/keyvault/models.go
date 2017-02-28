@@ -125,7 +125,7 @@ type Action struct {
 }
 
 // AdministratorDetails is details of the organization administrator of the
-// certificate issuer
+// certificate issuer.
 type AdministratorDetails struct {
 	FirstName    *string `json:"first_name,omitempty"`
 	LastName     *string `json:"last_name,omitempty"`
@@ -133,7 +133,7 @@ type AdministratorDetails struct {
 	Phone        *string `json:"phone,omitempty"`
 }
 
-// Attributes is the object attributes managed by the KeyVault service
+// Attributes is the object attributes managed by the KeyVault service.
 type Attributes struct {
 	Enabled   *bool   `json:"enabled,omitempty"`
 	NotBefore *string `json:"nbf,omitempty"`
@@ -142,13 +142,13 @@ type Attributes struct {
 	Updated   *string `json:"updated,omitempty"`
 }
 
-// BackupKeyResult is the backup key result, containing the backup blob
+// BackupKeyResult is the backup key result, containing the backup blob.
 type BackupKeyResult struct {
 	autorest.Response `json:"-"`
 	Value             *string `json:"value,omitempty"`
 }
 
-// CertificateAttributes is the certificate management attributes
+// CertificateAttributes is the certificate management attributes.
 type CertificateAttributes struct {
 	Enabled   *bool   `json:"enabled,omitempty"`
 	NotBefore *string `json:"nbf,omitempty"`
@@ -172,14 +172,14 @@ type CertificateBundle struct {
 	Tags              *map[string]*string    `json:"tags,omitempty"`
 }
 
-// CertificateCreateParameters is the certificate create parameters
+// CertificateCreateParameters is the certificate create parameters.
 type CertificateCreateParameters struct {
 	CertificatePolicy     *CertificatePolicy     `json:"policy,omitempty"`
 	CertificateAttributes *CertificateAttributes `json:"attributes,omitempty"`
 	Tags                  *map[string]*string    `json:"tags,omitempty"`
 }
 
-// CertificateImportParameters is the certificate import parameters
+// CertificateImportParameters is the certificate import parameters.
 type CertificateImportParameters struct {
 	Base64EncodedCertificate *string                `json:"value,omitempty"`
 	Password                 *string                `json:"pwd,omitempty"`
@@ -189,13 +189,13 @@ type CertificateImportParameters struct {
 }
 
 // CertificateIssuerItem is the certificate issuer item containing certificate
-// issuer metadata
+// issuer metadata.
 type CertificateIssuerItem struct {
 	ID       *string `json:"id,omitempty"`
 	Provider *string `json:"provider,omitempty"`
 }
 
-// CertificateIssuerListResult is the certificate issuer list result
+// CertificateIssuerListResult is the certificate issuer list result.
 type CertificateIssuerListResult struct {
 	autorest.Response `json:"-"`
 	Value             *[]CertificateIssuerItem `json:"value,omitempty"`
@@ -231,7 +231,7 @@ type CertificateIssuerUpdateParameters struct {
 	Attributes          *IssuerAttributes    `json:"attributes,omitempty"`
 }
 
-// CertificateItem is the certificate item containing certificate metadata
+// CertificateItem is the certificate item containing certificate metadata.
 type CertificateItem struct {
 	ID             *string                `json:"id,omitempty"`
 	Attributes     *CertificateAttributes `json:"attributes,omitempty"`
@@ -239,7 +239,7 @@ type CertificateItem struct {
 	X509Thumbprint *string                `json:"x5t,omitempty"`
 }
 
-// CertificateListResult is the certificate list result
+// CertificateListResult is the certificate list result.
 type CertificateListResult struct {
 	autorest.Response `json:"-"`
 	Value             *[]CertificateItem `json:"value,omitempty"`
@@ -265,8 +265,8 @@ type CertificateMergeParameters struct {
 	Tags                  *map[string]*string    `json:"tags,omitempty"`
 }
 
-// CertificateOperation is a certificate operation is returned in case of async
-// requests.
+// CertificateOperation is a certificate operation is returned in case of
+// asynchronous requests.
 type CertificateOperation struct {
 	autorest.Response     `json:"-"`
 	ID                    *string           `json:"id,omitempty"`
@@ -298,7 +298,7 @@ type CertificatePolicy struct {
 	Attributes                *CertificateAttributes     `json:"attributes,omitempty"`
 }
 
-// CertificateUpdateParameters is the certificate update parameters
+// CertificateUpdateParameters is the certificate update parameters.
 type CertificateUpdateParameters struct {
 	CertificatePolicy     *CertificatePolicy     `json:"policy,omitempty"`
 	CertificateAttributes *CertificateAttributes `json:"attributes,omitempty"`
@@ -319,26 +319,27 @@ type Contacts struct {
 	ContactList       *[]Contact `json:"contacts,omitempty"`
 }
 
-// Error is the key vault server error
+// Error is the key vault server error.
 type Error struct {
-	Code    *string `json:"code,omitempty"`
-	Message *string `json:"message,omitempty"`
+	Code       *string `json:"code,omitempty"`
+	Message    *string `json:"message,omitempty"`
+	InnerError *Error  `json:"innererror,omitempty"`
 }
 
-// ErrorType is the key vault error exception
+// ErrorType is the key vault error exception.
 type ErrorType struct {
 	Error *Error `json:"error,omitempty"`
 }
 
-// IssuerAttributes is the attributes of an issuer managed by the KeyVault
-// service
+// IssuerAttributes is the attributes of an issuer managed by the Key Vault
+// service.
 type IssuerAttributes struct {
 	Enabled *bool   `json:"enabled,omitempty"`
 	Created *string `json:"created,omitempty"`
 	Updated *string `json:"updated,omitempty"`
 }
 
-// IssuerBundle is the issuer for Key Vault certificate
+// IssuerBundle is the issuer for Key Vault certificate.
 type IssuerBundle struct {
 	autorest.Response   `json:"-"`
 	ID                  *string              `json:"id,omitempty"`
@@ -379,7 +380,7 @@ type JSONWebKey struct {
 	T      *string        `json:"key_hsm,omitempty"`
 }
 
-// KeyAttributes is the attributes of a key managed by the KeyVault service
+// KeyAttributes is the attributes of a key managed by the key vault service.
 type KeyAttributes struct {
 	Enabled   *bool   `json:"enabled,omitempty"`
 	NotBefore *string `json:"nbf,omitempty"`
@@ -388,7 +389,7 @@ type KeyAttributes struct {
 	Updated   *string `json:"updated,omitempty"`
 }
 
-// KeyBundle is a KeyBundle consisting of a WebKey plus its Attributes
+// KeyBundle is a KeyBundle consisting of a WebKey plus its attributes.
 type KeyBundle struct {
 	autorest.Response `json:"-"`
 	Key               *JSONWebKey         `json:"key,omitempty"`
@@ -397,7 +398,7 @@ type KeyBundle struct {
 	Managed           *bool               `json:"managed,omitempty"`
 }
 
-// KeyCreateParameters is the key create parameters
+// KeyCreateParameters is the key create parameters.
 type KeyCreateParameters struct {
 	Kty           JSONWebKeyType         `json:"kty,omitempty"`
 	KeySize       *int32                 `json:"key_size,omitempty"`
@@ -406,7 +407,7 @@ type KeyCreateParameters struct {
 	Tags          *map[string]*string    `json:"tags,omitempty"`
 }
 
-// KeyImportParameters is the key import parameters
+// KeyImportParameters is the key import parameters.
 type KeyImportParameters struct {
 	Hsm           *bool               `json:"Hsm,omitempty"`
 	Key           *JSONWebKey         `json:"key,omitempty"`
@@ -414,7 +415,7 @@ type KeyImportParameters struct {
 	Tags          *map[string]*string `json:"tags,omitempty"`
 }
 
-// KeyItem is the key item containing key metadata
+// KeyItem is the key item containing key metadata.
 type KeyItem struct {
 	Kid        *string             `json:"kid,omitempty"`
 	Attributes *KeyAttributes      `json:"attributes,omitempty"`
@@ -422,7 +423,7 @@ type KeyItem struct {
 	Managed    *bool               `json:"managed,omitempty"`
 }
 
-// KeyListResult is the key list result
+// KeyListResult is the key list result.
 type KeyListResult struct {
 	autorest.Response `json:"-"`
 	Value             *[]KeyItem `json:"value,omitempty"`
@@ -441,14 +442,14 @@ func (client KeyListResult) KeyListResultPreparer() (*http.Request, error) {
 		autorest.WithBaseURL(to.String(client.NextLink)))
 }
 
-// KeyOperationResult is the key operation result
+// KeyOperationResult is the key operation result.
 type KeyOperationResult struct {
 	autorest.Response `json:"-"`
 	Kid               *string `json:"kid,omitempty"`
 	Result            *string `json:"value,omitempty"`
 }
 
-// KeyOperationsParameters is the key operations parameters
+// KeyOperationsParameters is the key operations parameters.
 type KeyOperationsParameters struct {
 	Algorithm JSONWebKeyEncryptionAlgorithm `json:"alg,omitempty"`
 	Value     *string                       `json:"value,omitempty"`
@@ -462,32 +463,32 @@ type KeyProperties struct {
 	ReuseKey   *bool   `json:"reuse_key,omitempty"`
 }
 
-// KeyRestoreParameters is the key restore parameters
+// KeyRestoreParameters is the key restore parameters.
 type KeyRestoreParameters struct {
 	KeyBundleBackup *string `json:"value,omitempty"`
 }
 
-// KeySignParameters is the key operations parameters
+// KeySignParameters is the key operations parameters.
 type KeySignParameters struct {
 	Algorithm JSONWebKeySignatureAlgorithm `json:"alg,omitempty"`
 	Value     *string                      `json:"value,omitempty"`
 }
 
-// KeyUpdateParameters is the key update parameters
+// KeyUpdateParameters is the key update parameters.
 type KeyUpdateParameters struct {
 	KeyOps        *[]JSONWebKeyOperation `json:"key_ops,omitempty"`
 	KeyAttributes *KeyAttributes         `json:"attributes,omitempty"`
 	Tags          *map[string]*string    `json:"tags,omitempty"`
 }
 
-// KeyVerifyParameters is the key verify parameters
+// KeyVerifyParameters is the key verify parameters.
 type KeyVerifyParameters struct {
 	Algorithm JSONWebKeySignatureAlgorithm `json:"alg,omitempty"`
 	Digest    *string                      `json:"digest,omitempty"`
 	Signature *string                      `json:"value,omitempty"`
 }
 
-// KeyVerifyResult is the key verify result
+// KeyVerifyResult is the key verify result.
 type KeyVerifyResult struct {
 	autorest.Response `json:"-"`
 	Value             *bool `json:"value,omitempty"`
@@ -508,12 +509,12 @@ type OrganizationDetails struct {
 }
 
 // PendingCertificateSigningRequestResult is the pending certificate signing
-// request result
+// request result.
 type PendingCertificateSigningRequestResult struct {
 	Value *string `json:"value,omitempty"`
 }
 
-// SecretAttributes is the secret management attributes
+// SecretAttributes is the secret management attributes.
 type SecretAttributes struct {
 	Enabled   *bool   `json:"enabled,omitempty"`
 	NotBefore *string `json:"nbf,omitempty"`
@@ -522,7 +523,7 @@ type SecretAttributes struct {
 	Updated   *string `json:"updated,omitempty"`
 }
 
-// SecretBundle is a Secret consisting of a value, id and its attributes.
+// SecretBundle is a secret consisting of a value, id and its attributes.
 type SecretBundle struct {
 	autorest.Response `json:"-"`
 	Value             *string             `json:"value,omitempty"`
@@ -534,7 +535,7 @@ type SecretBundle struct {
 	Managed           *bool               `json:"managed,omitempty"`
 }
 
-// SecretItem is the secret item containing secret metadata
+// SecretItem is the secret item containing secret metadata.
 type SecretItem struct {
 	ID          *string             `json:"id,omitempty"`
 	Attributes  *SecretAttributes   `json:"attributes,omitempty"`
@@ -543,7 +544,7 @@ type SecretItem struct {
 	Managed     *bool               `json:"managed,omitempty"`
 }
 
-// SecretListResult is the secret list result
+// SecretListResult is the secret list result.
 type SecretListResult struct {
 	autorest.Response `json:"-"`
 	Value             *[]SecretItem `json:"value,omitempty"`
@@ -567,7 +568,7 @@ type SecretProperties struct {
 	ContentType *string `json:"contentType,omitempty"`
 }
 
-// SecretSetParameters is the secret set parameters
+// SecretSetParameters is the secret set parameters.
 type SecretSetParameters struct {
 	Value            *string             `json:"value,omitempty"`
 	Tags             *map[string]*string `json:"tags,omitempty"`
@@ -575,7 +576,7 @@ type SecretSetParameters struct {
 	SecretAttributes *SecretAttributes   `json:"attributes,omitempty"`
 }
 
-// SecretUpdateParameters is the secret update parameters
+// SecretUpdateParameters is the secret update parameters.
 type SecretUpdateParameters struct {
 	ContentType      *string             `json:"contentType,omitempty"`
 	SecretAttributes *SecretAttributes   `json:"attributes,omitempty"`

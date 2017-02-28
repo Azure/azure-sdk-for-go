@@ -1,8 +1,8 @@
 // Package keyvault implements the Azure ARM Keyvault service API version
-// 2015-06-01.
+// 2016-10-01.
 //
-// Performs cryptographic key operations and vault operations against the Key
-// Vault service.
+// The key vault client performs cryptographic key operations and vault
+// operations against the Key Vault service.
 package keyvault
 
 // Copyright (c) Microsoft and contributors.  All rights reserved.
@@ -32,7 +32,7 @@ import (
 
 const (
 	// APIVersion is the version of the Keyvault
-	APIVersion = "2015-06-01"
+	APIVersion = "2016-10-01"
 )
 
 // ManagementClient is the base client for Keyvault.
@@ -57,8 +57,8 @@ func NewWithoutDefaults() ManagementClient {
 // BackupKey requests that a backup of the specified key be downloaded to the
 // client.
 //
-// vaultBaseURL is the vault name, e.g. https://myvault.vault.azure.net keyName
-// is the name of the key
+// vaultBaseURL is the vault name, for example https://myvault.vault.azure.net.
+// keyName is the name of the key.
 func (client ManagementClient) BackupKey(vaultBaseURL string, keyName string) (result BackupKeyResult, err error) {
 	req, err := client.BackupKeyPreparer(vaultBaseURL, keyName)
 	if err != nil {
@@ -120,12 +120,12 @@ func (client ManagementClient) BackupKeyResponder(resp *http.Response) (result B
 	return
 }
 
-// CreateCertificate creates a new certificate version. If this is the first
-// version, the certificate resource is created.
+// CreateCertificate creates a new certificate. If this is the first version,
+// the certificate resource is created.
 //
-// vaultBaseURL is the vault name, e.g. https://myvault.vault.azure.net
-// certificateName is the name of the certificate parameters is the parameters
-// to create certificate.
+// vaultBaseURL is the vault name, for example https://myvault.vault.azure.net.
+// certificateName is the name of the certificate. parameters is the parameters
+// to create a certificate.
 func (client ManagementClient) CreateCertificate(vaultBaseURL string, certificateName string, parameters CertificateCreateParameters) (result CertificateOperation, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: certificateName,
@@ -202,10 +202,15 @@ func (client ManagementClient) CreateCertificateResponder(resp *http.Response) (
 	return
 }
 
-// CreateKey creates a new, named, key in the specified vault.
+// CreateKey creates a new key, stores it, then returns key parameters and
+// attributes to the client. The create key operation can be used to create any
+// key type in Azure Key Vault. If the named key already exists, Azure Key
+// Vault creates a new version of the key. Authorization: Requires the
+// keys/create permission.
 //
-// vaultBaseURL is the vault name, e.g. https://myvault.vault.azure.net keyName
-// is the name of the key parameters is the parameters to create key.
+// vaultBaseURL is the vault name, for example https://myvault.vault.azure.net.
+// keyName is the name for the new key. The system will generate the version
+// name for the new key. parameters is the parameters to create a key.
 func (client ManagementClient) CreateKey(vaultBaseURL string, keyName string, parameters KeyCreateParameters) (result KeyBundle, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: keyName,
@@ -275,11 +280,11 @@ func (client ManagementClient) CreateKeyResponder(resp *http.Response) (result K
 	return
 }
 
-// Decrypt decrypts a single block of encrypted data
+// Decrypt decrypts a single block of encrypted data.
 //
-// vaultBaseURL is the vault name, e.g. https://myvault.vault.azure.net keyName
-// is the name of the key keyVersion is the version of the key parameters is
-// the parameters for key operations.
+// vaultBaseURL is the vault name, for example https://myvault.vault.azure.net.
+// keyName is the name of the key. keyVersion is the version of the key.
+// parameters is the parameters for the decryption operation.
 func (client ManagementClient) Decrypt(vaultBaseURL string, keyName string, keyVersion string, parameters KeyOperationsParameters) (result KeyOperationResult, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: parameters,
@@ -350,10 +355,10 @@ func (client ManagementClient) DecryptResponder(resp *http.Response) (result Key
 	return
 }
 
-// DeleteCertificate deletes a certificate from the specified vault.
+// DeleteCertificate deletes a certificate from a specified key vault.
 //
-// vaultBaseURL is the vault name, e.g. https://myvault.vault.azure.net
-// certificateName is the name of the certificate in the given vault
+// vaultBaseURL is the vault name, for example https://myvault.vault.azure.net.
+// certificateName is the name of the certificate.
 func (client ManagementClient) DeleteCertificate(vaultBaseURL string, certificateName string) (result CertificateBundle, err error) {
 	req, err := client.DeleteCertificatePreparer(vaultBaseURL, certificateName)
 	if err != nil {
@@ -415,10 +420,10 @@ func (client ManagementClient) DeleteCertificateResponder(resp *http.Response) (
 	return
 }
 
-// DeleteCertificateContacts deletes the certificate contacts for the specified
-// vault.
+// DeleteCertificateContacts deletes the certificate contacts for a specified
+// key vault.
 //
-// vaultBaseURL is the vault name, e.g. https://myvault.vault.azure.net
+// vaultBaseURL is the vault name, for example https://myvault.vault.azure.net.
 func (client ManagementClient) DeleteCertificateContacts(vaultBaseURL string) (result Contacts, err error) {
 	req, err := client.DeleteCertificateContactsPreparer(vaultBaseURL)
 	if err != nil {
@@ -478,7 +483,7 @@ func (client ManagementClient) DeleteCertificateContactsResponder(resp *http.Res
 
 // DeleteCertificateIssuer deletes the specified certificate issuer.
 //
-// vaultBaseURL is the vault name, e.g. https://myvault.vault.azure.net
+// vaultBaseURL is the vault name, for example https://myvault.vault.azure.net.
 // issuerName is the name of the issuer.
 func (client ManagementClient) DeleteCertificateIssuer(vaultBaseURL string, issuerName string) (result IssuerBundle, err error) {
 	req, err := client.DeleteCertificateIssuerPreparer(vaultBaseURL, issuerName)
@@ -541,10 +546,11 @@ func (client ManagementClient) DeleteCertificateIssuerResponder(resp *http.Respo
 	return
 }
 
-// DeleteCertificateOperation deletes the certificate operation.
+// DeleteCertificateOperation deletes the operation for a specified
+// certificate.
 //
-// vaultBaseURL is the vault name, e.g. https://myvault.vault.azure.net
-// certificateName is the name of the certificate
+// vaultBaseURL is the vault name, for example https://myvault.vault.azure.net.
+// certificateName is the name of the certificate.
 func (client ManagementClient) DeleteCertificateOperation(vaultBaseURL string, certificateName string) (result CertificateOperation, err error) {
 	req, err := client.DeleteCertificateOperationPreparer(vaultBaseURL, certificateName)
 	if err != nil {
@@ -606,10 +612,15 @@ func (client ManagementClient) DeleteCertificateOperationResponder(resp *http.Re
 	return
 }
 
-// DeleteKey deletes the specified key
+// DeleteKey deletes a key of any type from storage in Azure Key Vault. The
+// delete key operation cannot be used to remove individual versions of a key.
+// This operation removes the cryptographic material associated with the key,
+// which means the key is not usable for Sign/Verify, Wrap/Unwrap or
+// Encrypt/Decrypt operations. Authorization: Requires the keys/delete
+// permission.
 //
-// vaultBaseURL is the vault name, e.g. https://myvault.vault.azure.net keyName
-// is the name of the key
+// vaultBaseURL is the vault name, for example https://myvault.vault.azure.net.
+// keyName is the name of the key to delete.
 func (client ManagementClient) DeleteKey(vaultBaseURL string, keyName string) (result KeyBundle, err error) {
 	req, err := client.DeleteKeyPreparer(vaultBaseURL, keyName)
 	if err != nil {
@@ -671,10 +682,10 @@ func (client ManagementClient) DeleteKeyResponder(resp *http.Response) (result K
 	return
 }
 
-// DeleteSecret deletes a secret from the specified vault.
+// DeleteSecret deletes a secret from a specified key vault.
 //
-// vaultBaseURL is the vault name, e.g. https://myvault.vault.azure.net
-// secretName is the name of the secret in the given vault
+// vaultBaseURL is the vault name, for example https://myvault.vault.azure.net.
+// secretName is the name of the secret.
 func (client ManagementClient) DeleteSecret(vaultBaseURL string, secretName string) (result SecretBundle, err error) {
 	req, err := client.DeleteSecretPreparer(vaultBaseURL, secretName)
 	if err != nil {
@@ -737,11 +748,11 @@ func (client ManagementClient) DeleteSecretResponder(resp *http.Response) (resul
 }
 
 // Encrypt encrypts an arbitrary sequence of bytes using an encryption key that
-// is stored in Azure Key Vault.
+// is stored in a key vault.
 //
-// vaultBaseURL is the vault name, e.g. https://myvault.vault.azure.net keyName
-// is the name of the key keyVersion is the version of the key parameters is
-// the parameters for key operations.
+// vaultBaseURL is the vault name, for example https://myvault.vault.azure.net.
+// keyName is the name of the key. keyVersion is the version of the key.
+// parameters is the parameters for the encryption operation.
 func (client ManagementClient) Encrypt(vaultBaseURL string, keyName string, keyVersion string, parameters KeyOperationsParameters) (result KeyOperationResult, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: parameters,
@@ -812,11 +823,11 @@ func (client ManagementClient) EncryptResponder(resp *http.Response) (result Key
 	return
 }
 
-// GetCertificate gets a Certificate.
+// GetCertificate gets information about a specified certificate.
 //
-// vaultBaseURL is the vault name, e.g. https://myvault.vault.azure.net
-// certificateName is the name of the certificate in the given vault
-// certificateVersion is the version of the certificate
+// vaultBaseURL is the vault name, for example https://myvault.vault.azure.net.
+// certificateName is the name of the certificate in the given vault.
+// certificateVersion is the version of the certificate.
 func (client ManagementClient) GetCertificate(vaultBaseURL string, certificateName string, certificateVersion string) (result CertificateBundle, err error) {
 	req, err := client.GetCertificatePreparer(vaultBaseURL, certificateName, certificateVersion)
 	if err != nil {
@@ -879,10 +890,10 @@ func (client ManagementClient) GetCertificateResponder(resp *http.Response) (res
 	return
 }
 
-// GetCertificateContacts gets the certificate contacts for the specified
+// GetCertificateContacts lists the certificate contacts for a specified key
 // vault.
 //
-// vaultBaseURL is the vault name, e.g. https://myvault.vault.azure.net
+// vaultBaseURL is the vault name, for example https://myvault.vault.azure.net.
 func (client ManagementClient) GetCertificateContacts(vaultBaseURL string) (result Contacts, err error) {
 	req, err := client.GetCertificateContactsPreparer(vaultBaseURL)
 	if err != nil {
@@ -940,9 +951,9 @@ func (client ManagementClient) GetCertificateContactsResponder(resp *http.Respon
 	return
 }
 
-// GetCertificateIssuer gets the specified certificate issuer.
+// GetCertificateIssuer lists the specified certificate issuer.
 //
-// vaultBaseURL is the vault name, e.g. https://myvault.vault.azure.net
+// vaultBaseURL is the vault name, for example https://myvault.vault.azure.net.
 // issuerName is the name of the issuer.
 func (client ManagementClient) GetCertificateIssuer(vaultBaseURL string, issuerName string) (result IssuerBundle, err error) {
 	req, err := client.GetCertificateIssuerPreparer(vaultBaseURL, issuerName)
@@ -1005,9 +1016,9 @@ func (client ManagementClient) GetCertificateIssuerResponder(resp *http.Response
 	return
 }
 
-// GetCertificateIssuers list certificate issuers for the specified vault.
+// GetCertificateIssuers list certificate issuers for a specified key vault.
 //
-// vaultBaseURL is the vault name, e.g. https://myvault.vault.azure.net
+// vaultBaseURL is the vault name, for example https://myvault.vault.azure.net.
 // maxresults is maximum number of results to return in a page. If not
 // specified the service will return up to 25 results.
 func (client ManagementClient) GetCertificateIssuers(vaultBaseURL string, maxresults *int32) (result CertificateIssuerListResult, err error) {
@@ -1103,10 +1114,11 @@ func (client ManagementClient) GetCertificateIssuersNextResults(lastResults Cert
 	return
 }
 
-// GetCertificateOperation gets the certificate operation response.
+// GetCertificateOperation gets the operation associated with a specified
+// certificate.
 //
-// vaultBaseURL is the vault name, e.g. https://myvault.vault.azure.net
-// certificateName is the name of the certificate
+// vaultBaseURL is the vault name, for example https://myvault.vault.azure.net.
+// certificateName is the name of the certificate.
 func (client ManagementClient) GetCertificateOperation(vaultBaseURL string, certificateName string) (result CertificateOperation, err error) {
 	req, err := client.GetCertificateOperationPreparer(vaultBaseURL, certificateName)
 	if err != nil {
@@ -1168,10 +1180,10 @@ func (client ManagementClient) GetCertificateOperationResponder(resp *http.Respo
 	return
 }
 
-// GetCertificatePolicy gets the policy for a certificate.
+// GetCertificatePolicy lists the policy for a certificate.
 //
-// vaultBaseURL is the vault name, e.g. https://myvault.vault.azure.net
-// certificateName is the name of the certificate in the given vault.
+// vaultBaseURL is the vault name, for example https://myvault.vault.azure.net.
+// certificateName is the name of the certificate in a given key vault.
 func (client ManagementClient) GetCertificatePolicy(vaultBaseURL string, certificateName string) (result CertificatePolicy, err error) {
 	req, err := client.GetCertificatePolicyPreparer(vaultBaseURL, certificateName)
 	if err != nil {
@@ -1233,9 +1245,9 @@ func (client ManagementClient) GetCertificatePolicyResponder(resp *http.Response
 	return
 }
 
-// GetCertificates list certificates in the specified vault
+// GetCertificates list certificates in a specified key vault
 //
-// vaultBaseURL is the vault name, e.g. https://myvault.vault.azure.net
+// vaultBaseURL is the vault name, for example https://myvault.vault.azure.net.
 // maxresults is maximum number of results to return in a page. If not
 // specified the service will return up to 25 results.
 func (client ManagementClient) GetCertificates(vaultBaseURL string, maxresults *int32) (result CertificateListResult, err error) {
@@ -1333,8 +1345,8 @@ func (client ManagementClient) GetCertificatesNextResults(lastResults Certificat
 
 // GetCertificateVersions list the versions of a certificate.
 //
-// vaultBaseURL is the vault name, e.g. https://myvault.vault.azure.net
-// certificateName is the name of the certificate maxresults is maximum number
+// vaultBaseURL is the vault name, for example https://myvault.vault.azure.net.
+// certificateName is the name of the certificate. maxresults is maximum number
 // of results to return in a page. If not specified the service will return up
 // to 25 results.
 func (client ManagementClient) GetCertificateVersions(vaultBaseURL string, certificateName string, maxresults *int32) (result CertificateListResult, err error) {
@@ -1434,10 +1446,14 @@ func (client ManagementClient) GetCertificateVersionsNextResults(lastResults Cer
 	return
 }
 
-// GetKey retrieves the public portion of a key plus its attributes
+// GetKey gets the public part of a stored key. The get key operation is
+// applicable to all key types. If the requested key is symmetric, then no key
+// material is released in the response. Authorization: Requires the keys/get
+// permission.
 //
-// vaultBaseURL is the vault name, e.g. https://myvault.vault.azure.net keyName
-// is the name of the key keyVersion is the version of the key
+// vaultBaseURL is the vault name, for example https://myvault.vault.azure.net.
+// keyName is the name of the key to get. keyVersion is adding the version
+// parameter retrieves a specific version of a key.
 func (client ManagementClient) GetKey(vaultBaseURL string, keyName string, keyVersion string) (result KeyBundle, err error) {
 	req, err := client.GetKeyPreparer(vaultBaseURL, keyName, keyVersion)
 	if err != nil {
@@ -1500,9 +1516,9 @@ func (client ManagementClient) GetKeyResponder(resp *http.Response) (result KeyB
 	return
 }
 
-// GetKeys list keys in the specified vault
+// GetKeys list keys in the specified vault.
 //
-// vaultBaseURL is the vault name, e.g. https://myvault.vault.azure.net
+// vaultBaseURL is the vault name, for example https://myvault.vault.azure.net.
 // maxresults is maximum number of results to return in a page. If not
 // specified the service will return up to 25 results.
 func (client ManagementClient) GetKeys(vaultBaseURL string, maxresults *int32) (result KeyListResult, err error) {
@@ -1598,11 +1614,13 @@ func (client ManagementClient) GetKeysNextResults(lastResults KeyListResult) (re
 	return
 }
 
-// GetKeyVersions list the versions of the specified key
+// GetKeyVersions retrieves a list of individual key versions with the same key
+// name. The full key identifier, attributes, and tags are provided in the
+// response. Authorization: Requires the keys/list permission.
 //
-// vaultBaseURL is the vault name, e.g. https://myvault.vault.azure.net keyName
-// is the name of the key maxresults is maximum number of results to return in
-// a page. If not specified the service will return up to 25 results.
+// vaultBaseURL is the vault name, for example https://myvault.vault.azure.net.
+// keyName is the name of the key. maxresults is maximum number of results to
+// return in a page. If not specified the service will return up to 25 results.
 func (client ManagementClient) GetKeyVersions(vaultBaseURL string, keyName string, maxresults *int32) (result KeyListResult, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: maxresults,
@@ -1700,11 +1718,11 @@ func (client ManagementClient) GetKeyVersionsNextResults(lastResults KeyListResu
 	return
 }
 
-// GetSecret gets a secret.
+// GetSecret get a specified secret from a given key vault.
 //
-// vaultBaseURL is the vault name, e.g. https://myvault.vault.azure.net
-// secretName is the name of the secret in the given vault secretVersion is the
-// version of the secret
+// vaultBaseURL is the vault name, for example https://myvault.vault.azure.net.
+// secretName is the name of the secret. secretVersion is the version of the
+// secret.
 func (client ManagementClient) GetSecret(vaultBaseURL string, secretName string, secretVersion string) (result SecretBundle, err error) {
 	req, err := client.GetSecretPreparer(vaultBaseURL, secretName, secretVersion)
 	if err != nil {
@@ -1767,9 +1785,9 @@ func (client ManagementClient) GetSecretResponder(resp *http.Response) (result S
 	return
 }
 
-// GetSecrets list secrets in the specified vault
+// GetSecrets list secrets in a specified key vault
 //
-// vaultBaseURL is the vault name, e.g. https://myvault.vault.azure.net
+// vaultBaseURL is the vault name, for example https://myvault.vault.azure.net.
 // maxresults is maximum number of results to return in a page. If not
 // specified the service will return up to 25 results.
 func (client ManagementClient) GetSecrets(vaultBaseURL string, maxresults *int32) (result SecretListResult, err error) {
@@ -1865,12 +1883,12 @@ func (client ManagementClient) GetSecretsNextResults(lastResults SecretListResul
 	return
 }
 
-// GetSecretVersions list the versions of the specified secret
+// GetSecretVersions list the versions of the specified secret.
 //
-// vaultBaseURL is the vault name, e.g. https://myvault.vault.azure.net
-// secretName is the name of the secret in the given vault maxresults is
-// maximum number of results to return in a page. If not specified the service
-// will return up to 25 results.
+// vaultBaseURL is the vault name, for example https://myvault.vault.azure.net.
+// secretName is the name of the secret. maxresults is maximum number of
+// results to return in a page. If not specified the service will return up to
+// 25 results.
 func (client ManagementClient) GetSecretVersions(vaultBaseURL string, secretName string, maxresults *int32) (result SecretListResult, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: maxresults,
@@ -1968,11 +1986,11 @@ func (client ManagementClient) GetSecretVersionsNextResults(lastResults SecretLi
 	return
 }
 
-// ImportCertificate imports a certificate into the specified vault
+// ImportCertificate imports a certificate into a specified key vault.
 //
-// vaultBaseURL is the vault name, e.g. https://myvault.vault.azure.net
-// certificateName is the name of the certificate parameters is the parameters
-// to import certificate.
+// vaultBaseURL is the vault name, for example https://myvault.vault.azure.net.
+// certificateName is the name of the certificate. parameters is the parameters
+// to import the certificate.
 func (client ManagementClient) ImportCertificate(vaultBaseURL string, certificateName string, parameters CertificateImportParameters) (result CertificateBundle, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: certificateName,
@@ -2050,10 +2068,15 @@ func (client ManagementClient) ImportCertificateResponder(resp *http.Response) (
 	return
 }
 
-// ImportKey imports a key into the specified vault
+// ImportKey imports an externally created key, stores it, and returns key
+// parameters and attributes to the client. The import key operation may be
+// used to import any key type into an Azure Key Vault. If the named key
+// already exists, Azure Key Vault creates a new version of the key.
+// Authorization: requires the keys/import permission.
 //
-// vaultBaseURL is the vault name, e.g. https://myvault.vault.azure.net keyName
-// is the name of the key parameters is the parameters to import key.
+// vaultBaseURL is the vault name, for example https://myvault.vault.azure.net.
+// keyName is name for the imported key. parameters is the parameters to import
+// a key.
 func (client ManagementClient) ImportKey(vaultBaseURL string, keyName string, parameters KeyImportParameters) (result KeyBundle, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: keyName,
@@ -2128,8 +2151,8 @@ func (client ManagementClient) ImportKeyResponder(resp *http.Response) (result K
 // MergeCertificate merges a certificate or a certificate chain with a key pair
 // existing on the server.
 //
-// vaultBaseURL is the vault name, e.g. https://myvault.vault.azure.net
-// certificateName is the name of the certificate parameters is the parameters
+// vaultBaseURL is the vault name, for example https://myvault.vault.azure.net.
+// certificateName is the name of the certificate. parameters is the parameters
 // to merge certificate.
 func (client ManagementClient) MergeCertificate(vaultBaseURL string, certificateName string, parameters CertificateMergeParameters) (result CertificateBundle, err error) {
 	if err := validation.Validate([]validation.Validation{
@@ -2200,10 +2223,10 @@ func (client ManagementClient) MergeCertificateResponder(resp *http.Response) (r
 	return
 }
 
-// RestoreKey restores the backup key in to a vault
+// RestoreKey restores a backed up key to a vault.
 //
-// vaultBaseURL is the vault name, e.g. https://myvault.vault.azure.net
-// parameters is the parameters to restore key
+// vaultBaseURL is the vault name, for example https://myvault.vault.azure.net.
+// parameters is the parameters to restore the key.
 func (client ManagementClient) RestoreKey(vaultBaseURL string, parameters KeyRestoreParameters) (result KeyBundle, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: parameters,
@@ -2269,11 +2292,11 @@ func (client ManagementClient) RestoreKeyResponder(resp *http.Response) (result 
 	return
 }
 
-// SetCertificateContacts sets the certificate contacts for the specified
+// SetCertificateContacts sets the certificate contacts for the specified key
 // vault.
 //
-// vaultBaseURL is the vault name, e.g. https://myvault.vault.azure.net
-// contacts is the contacts for the vault certificates.
+// vaultBaseURL is the vault name, for example https://myvault.vault.azure.net.
+// contacts is the contacts for the key vault certificate.
 func (client ManagementClient) SetCertificateContacts(vaultBaseURL string, contacts Contacts) (result Contacts, err error) {
 	req, err := client.SetCertificateContactsPreparer(vaultBaseURL, contacts)
 	if err != nil {
@@ -2335,7 +2358,7 @@ func (client ManagementClient) SetCertificateContactsResponder(resp *http.Respon
 
 // SetCertificateIssuer sets the specified certificate issuer.
 //
-// vaultBaseURL is the vault name, e.g. https://myvault.vault.azure.net
+// vaultBaseURL is the vault name, for example https://myvault.vault.azure.net.
 // issuerName is the name of the issuer. parameter is certificate issuer set
 // parameter.
 func (client ManagementClient) SetCertificateIssuer(vaultBaseURL string, issuerName string, parameter CertificateIssuerSetParameters) (result IssuerBundle, err error) {
@@ -2407,11 +2430,11 @@ func (client ManagementClient) SetCertificateIssuerResponder(resp *http.Response
 	return
 }
 
-// SetSecret sets a secret in the specified vault.
+// SetSecret sets a secret in a specified key vault.
 //
-// vaultBaseURL is the vault name, e.g. https://myvault.vault.azure.net
-// secretName is the name of the secret in the given vault parameters is the
-// parameters for secret set
+// vaultBaseURL is the vault name, for example https://myvault.vault.azure.net.
+// secretName is the name of the secret. parameters is the parameters for
+// setting the secret.
 func (client ManagementClient) SetSecret(vaultBaseURL string, secretName string, parameters SecretSetParameters) (result SecretBundle, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: secretName,
@@ -2483,11 +2506,11 @@ func (client ManagementClient) SetSecretResponder(resp *http.Response) (result S
 	return
 }
 
-// Sign creates a signature from a digest using the specified key in the vault
+// Sign creates a signature from a digest using the specified key.
 //
-// vaultBaseURL is the vault name, e.g. https://myvault.vault.azure.net keyName
-// is the name of the key keyVersion is the version of the key parameters is
-// the parameters for key operations.
+// vaultBaseURL is the vault name, for example https://myvault.vault.azure.net.
+// keyName is the name of the key. keyVersion is the version of the key.
+// parameters is the parameters for the signing operation.
 func (client ManagementClient) Sign(vaultBaseURL string, keyName string, keyVersion string, parameters KeySignParameters) (result KeyOperationResult, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: parameters,
@@ -2558,12 +2581,12 @@ func (client ManagementClient) SignResponder(resp *http.Response) (result KeyOpe
 	return
 }
 
-// UnwrapKey unwraps a symmetric key using the specified key in the vault that
-// has initially been used for wrapping the key.
+// UnwrapKey unwraps a symmetric key using the specified key that was initially
+// used for wrapping that key.
 //
-// vaultBaseURL is the vault name, e.g. https://myvault.vault.azure.net keyName
-// is the name of the key keyVersion is the version of the key parameters is
-// the parameters for key operations.
+// vaultBaseURL is the vault name, for example https://myvault.vault.azure.net.
+// keyName is the name of the key. keyVersion is the version of the key.
+// parameters is the parameters for the key operation.
 func (client ManagementClient) UnwrapKey(vaultBaseURL string, keyName string, keyVersion string, parameters KeyOperationsParameters) (result KeyOperationResult, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: parameters,
@@ -2634,12 +2657,13 @@ func (client ManagementClient) UnwrapKeyResponder(resp *http.Response) (result K
 	return
 }
 
-// UpdateCertificate updates the attributes associated with the specified
-// certificate
+// UpdateCertificate updates the specified attributes associated with the given
+// certificate.
 //
-// vaultBaseURL is the vault name, e.g. https://myvault.vault.azure.net
-// certificateName is the name of the certificate in the given vault
-// certificateVersion is the version of the certificate
+// vaultBaseURL is the vault name, for example https://myvault.vault.azure.net.
+// certificateName is the name of the certificate in the given key vault.
+// certificateVersion is the version of the certificate. parameters is the
+// parameters for certificate update.
 func (client ManagementClient) UpdateCertificate(vaultBaseURL string, certificateName string, certificateVersion string, parameters CertificateUpdateParameters) (result CertificateBundle, err error) {
 	req, err := client.UpdateCertificatePreparer(vaultBaseURL, certificateName, certificateVersion, parameters)
 	if err != nil {
@@ -2706,7 +2730,7 @@ func (client ManagementClient) UpdateCertificateResponder(resp *http.Response) (
 
 // UpdateCertificateIssuer updates the specified certificate issuer.
 //
-// vaultBaseURL is the vault name, e.g. https://myvault.vault.azure.net
+// vaultBaseURL is the vault name, for example https://myvault.vault.azure.net.
 // issuerName is the name of the issuer. parameter is certificate issuer update
 // parameter.
 func (client ManagementClient) UpdateCertificateIssuer(vaultBaseURL string, issuerName string, parameter CertificateIssuerUpdateParameters) (result IssuerBundle, err error) {
@@ -2774,8 +2798,8 @@ func (client ManagementClient) UpdateCertificateIssuerResponder(resp *http.Respo
 
 // UpdateCertificateOperation updates a certificate operation.
 //
-// vaultBaseURL is the vault name, e.g. https://myvault.vault.azure.net
-// certificateName is the name of the certificate certificateOperation is the
+// vaultBaseURL is the vault name, for example https://myvault.vault.azure.net.
+// certificateName is the name of the certificate. certificateOperation is the
 // certificate operation response.
 func (client ManagementClient) UpdateCertificateOperation(vaultBaseURL string, certificateName string, certificateOperation CertificateOperationUpdateParameter) (result CertificateOperation, err error) {
 	req, err := client.UpdateCertificateOperationPreparer(vaultBaseURL, certificateName, certificateOperation)
@@ -2840,11 +2864,10 @@ func (client ManagementClient) UpdateCertificateOperationResponder(resp *http.Re
 	return
 }
 
-// UpdateCertificatePolicy updates the policy for a certificate. Set
-// appropriate members in the certificatePolicy that must be updated. Leave
-// others as null.
+// UpdateCertificatePolicy updates the policy for a certificate. Set specified
+// members in the certificate policy. Leave others as null.
 //
-// vaultBaseURL is the vault name, e.g. https://myvault.vault.azure.net
+// vaultBaseURL is the vault name, for example https://myvault.vault.azure.net.
 // certificateName is the name of the certificate in the given vault.
 // certificatePolicy is the policy for the certificate.
 func (client ManagementClient) UpdateCertificatePolicy(vaultBaseURL string, certificateName string, certificatePolicy CertificatePolicy) (result CertificatePolicy, err error) {
@@ -2910,11 +2933,15 @@ func (client ManagementClient) UpdateCertificatePolicyResponder(resp *http.Respo
 	return
 }
 
-// UpdateKey updates the Key Attributes associated with the specified key
+// UpdateKey the update key operation changes specified attributes of a stored
+// key and can be applied to any key type and key version stored in Azure Key
+// Vault. The cryptographic material of a key itself cannot be changed. In
+// order to perform this operation, the key must already exist in the Key
+// Vault. Authorization: requires the keys/update permission.
 //
-// vaultBaseURL is the vault name, e.g. https://myvault.vault.azure.net keyName
-// is the name of the key keyVersion is the version of the key parameters is
-// the parameters to update key.
+// vaultBaseURL is the vault name, for example https://myvault.vault.azure.net.
+// keyName is the name of key to update. keyVersion is the version of the key
+// to update. parameters is the parameters for the key to update.
 func (client ManagementClient) UpdateKey(vaultBaseURL string, keyName string, keyVersion string, parameters KeyUpdateParameters) (result KeyBundle, err error) {
 	req, err := client.UpdateKeyPreparer(vaultBaseURL, keyName, keyVersion, parameters)
 	if err != nil {
@@ -2979,11 +3006,12 @@ func (client ManagementClient) UpdateKeyResponder(resp *http.Response) (result K
 	return
 }
 
-// UpdateSecret updates the attributes associated with the specified secret
+// UpdateSecret updates the attributes associated with a specified secret in a
+// given key vault.
 //
-// vaultBaseURL is the vault name, e.g. https://myvault.vault.azure.net
-// secretName is the name of the secret in the given vault secretVersion is the
-// version of the secret
+// vaultBaseURL is the vault name, for example https://myvault.vault.azure.net.
+// secretName is the name of the secret. secretVersion is the version of the
+// secret. parameters is the parameters for update secret operation.
 func (client ManagementClient) UpdateSecret(vaultBaseURL string, secretName string, secretVersion string, parameters SecretUpdateParameters) (result SecretBundle, err error) {
 	req, err := client.UpdateSecretPreparer(vaultBaseURL, secretName, secretVersion, parameters)
 	if err != nil {
@@ -3048,11 +3076,11 @@ func (client ManagementClient) UpdateSecretResponder(resp *http.Response) (resul
 	return
 }
 
-// Verify verifies a signature using the specified key
+// Verify verifies a signature using a specified key.
 //
-// vaultBaseURL is the vault name, e.g. https://myvault.vault.azure.net keyName
-// is the name of the key keyVersion is the version of the key parameters is
-// the parameters for key operations.
+// vaultBaseURL is the vault name, for example https://myvault.vault.azure.net.
+// keyName is the name of the key. keyVersion is the version of the key.
+// parameters is the parameters for verify operations.
 func (client ManagementClient) Verify(vaultBaseURL string, keyName string, keyVersion string, parameters KeyVerifyParameters) (result KeyVerifyResult, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: parameters,
@@ -3124,11 +3152,11 @@ func (client ManagementClient) VerifyResponder(resp *http.Response) (result KeyV
 	return
 }
 
-// WrapKey wraps a symmetric key using the specified key
+// WrapKey wraps a symmetric key using a specified key.
 //
-// vaultBaseURL is the vault name, e.g. https://myvault.vault.azure.net keyName
-// is the name of the key keyVersion is the version of the key parameters is
-// the parameters for key operations.
+// vaultBaseURL is the vault name, for example https://myvault.vault.azure.net.
+// keyName is the name of the key. keyVersion is the version of the key.
+// parameters is the parameters for wrap operation.
 func (client ManagementClient) WrapKey(vaultBaseURL string, keyName string, keyVersion string, parameters KeyOperationsParameters) (result KeyOperationResult, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: parameters,

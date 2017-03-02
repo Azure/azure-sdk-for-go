@@ -77,6 +77,16 @@ func (s *StorageBlobSuite) Test_InsertEntities(c *chk.C) {
 	}
 }
 
+func (s *StorageBlobSuite) Test_InsertEntitiesRandomTableFails(c *chk.C) {
+	cli := getTableClient(c)
+
+	tn := AzureTable(randTable())
+
+	ce := &CustomEntity{Name: "Luke", Surname: "Skywalker", Number: 1543, PKey: "pkey", RKey: "5"}
+	err := cli.InsertEntity(tn, ce)
+	c.Assert(err, chk.NotNil)
+}
+
 func (s *StorageBlobSuite) Test_InsertOrReplaceEntities(c *chk.C) {
 	cli := getTableClient(c)
 

@@ -9,6 +9,7 @@ import (
 	"io/ioutil"
 	"os"
 	"os/exec"
+	"path/filepath"
 	"strings"
 
 	do "gopkg.in/godo.v2"
@@ -49,27 +50,32 @@ var (
 					Name:    "analysisservices",
 					Version: "2016-05-16",
 				},
-				// {
-				// 	Name:    "apimanagement",
-				// 	Version: "2016-07-07",
-				// },
-				// {
-				// 	Name:    "apimdeployment",
-				// 	Version: "2016-07-07",
-				// },
+				{
+					Name:    "apimanagement",
+					Version: "2016-07-07",
+				},
+				{
+					Name:    "apimdeployment",
+					Version: "2016-07-07",
+					Input:   "apimanagement",
+				},
 				// {
 				// 	Name:    "authorization",
 				// 	Version: "2015-07-01",
 				// },
 				// {
 				// 	Name:    "batch",
-				// 	Version: "2015-12-01",
+				// 	Version: "2017-01-01",
 				// 	Swagger: "BatchManagement",
 				// },
 				{
-					Name:    "cdn",
-					Version: "2016-10-02",
+					Name:    "billing",
+					Version: "2017-02-27-preview",
 				},
+				// {
+				// 	Name:    "cdn",
+				// 	Version: "2016-10-02",
+				// },
 				{
 					Name:    "cognitiveservices",
 					Version: "2016-02-01-preview",
@@ -80,11 +86,11 @@ var (
 				// },
 				{
 					Name:    "compute",
-					Version: "2016-03-30",
+					Version: "2016-04-30-preview",
 				},
 				{
 					Name:    "containerservice",
-					Version: "2016-09-30",
+					Version: "2017-01-31",
 					Swagger: "containerService",
 					Input:   "compute",
 				},
@@ -93,14 +99,18 @@ var (
 					Version: "2016-06-27-preview",
 				},
 				{
-					Name: "datalake-analytics",
-					SubServices: []service{
-						{
-							Name:    "account",
-							Version: "2016-11-01",
-						},
-					},
+					Name:    "customer-insights",
+					Version: "2017-01-01",
 				},
+				// {
+				// 	Name: "datalake-analytics",
+				// 	SubServices: []service{
+				// 		{
+				// 			Name:    "account",
+				// 			Version: "2016-11-01",
+				// 		},
+				// 	},
+				// },
 				{
 					Name: "datalake-store",
 					SubServices: []service{
@@ -134,19 +144,19 @@ var (
 				// 	Version: "2015-08-01",
 				// 	Swagger: "EventHub",
 				// },
-				// {
-				// 	Name:    "graphrbac",
-				// 	Version: "1.6",
-				// 	// Composite swagger
-				// },
+				{
+					Name:    "graphrbac",
+					Version: "1.6",
+					// Composite swagger
+				},
 				// {
 				// 	Name:    "insights",
 				// 	// Composite swagger
 				// },
-				// {
-				// 	Name:    "intune",
-				// 	Version: "2015-01-14-preview",
-				// },
+				{
+					Name:    "intune",
+					Version: "2015-01-14-preview",
+				},
 				{
 					Name:    "iothub",
 					Version: "2016-02-03",
@@ -155,25 +165,25 @@ var (
 					Name:    "keyvault",
 					Version: "2015-06-01",
 				},
-				{
-					Name:    "logic",
-					Version: "2016-06-01",
-					// composite swagger
-				},
+				// {
+				// 	Name:    "logic",
+				// 	Version: "2016-06-01",
+				// 	// composite swagger
+				// },
 				{
 					Name: "machinelearning",
 					SubServices: []service{
+						{
+							Name:    "commitmentplans",
+							Version: "2016-05-01-preview",
+							Swagger: "commitmentPlans",
+							Input:   "machinelearning",
+						},
 						{
 							Name:    "webservices",
 							Version: "2016-05-01-preview",
 							Input:   "machinelearning",
 						},
-						// {
-						// 	Name:    "commitmentplans",
-						// 	Version: "2016-05-01-preview",
-						// 	Swagger: "commitmentPlans",
-						// 	Input:   "machinelearning",
-						// },
 					},
 				},
 				{
@@ -190,10 +200,21 @@ var (
 				// 	Name:    "network",
 				// 	Version: "2016-09-01",
 				// },
+				{
+					Name:    "networkwatcher",
+					Version: "2016-12-01",
+					Swagger: "networkWatcher",
+					Input:   "network",
+				},
 				// {
 				// 	Name:    "notificationhubs",
 				// 	Version: "2016-03-01",
 				// },
+				{
+					Name:    "operationalinsights",
+					Version: "2015-11-01-preview",
+					Swagger: "OperationalInsights",
+				},
 				{
 					Name:    "powerbiembedded",
 					Version: "2016-01-29",
@@ -205,12 +226,12 @@ var (
 				// {
 				// 	Name:    "recoveryservicesbackup",
 				// 	Version: "2016-06-01",
-				// composite swagger
+				// 	// composite swagger
 				// },
-				{
-					Name:    "redis",
-					Version: "2016-04-01",
-				},
+				// {
+				// 	Name:    "redis",
+				// 	Version: "2016-04-01",
+				// },
 				{
 					Name: "resources",
 					SubServices: []service{
@@ -218,10 +239,10 @@ var (
 						// 	Name:    "features",
 						// 	Version: "2015-12-01",
 						// },
-						// {
-						// 	Name:    "links",
-						// 	Version: "2016-09-01",
-						// },
+						{
+							Name:    "links",
+							Version: "2016-09-01",
+						},
 						{
 							Name:    "locks",
 							Version: "2016-09-01",
@@ -252,9 +273,14 @@ var (
 					Name:    "servermanagement",
 					Version: "2016-07-01-preview",
 				},
+				// {
+				// 	Name:    "servicebus",
+				// 	Version: "2015-08-01",
+				// },
 				{
-					Name:    "servicebus",
-					Version: "2015-08-01",
+					Name:    "service-map",
+					Version: "2015-11-01-preview",
+					Swagger: "arm-service-map",
 				},
 				// {
 				// 	Name:    "sql",
@@ -263,7 +289,11 @@ var (
 				// },
 				// {
 				// 	Name:    "storage",
-				// 	Version: "2016-01-01",
+				// 	Version: "2016-12-01",
+				// },
+				// {
+				// 	Name:    "storageimportexport",
+				// 	Version: "2016-11-01",
 				// },
 				{
 					Name:    "trafficmanager",
@@ -278,61 +308,71 @@ var (
 			},
 		},
 		{
-		// Plane:       "dataplane",
-		// InputPrefix: "",
-		// Services: []Service{
-		// 	{
-		// 		Name:    "batch",
-		// 		Version: "2016-07-01.3.1",
-		// 		Swagger: "BatchService",
-		// 	},
-		//     {
-		//         Name: "insights",
-		//         // composite swagger
-		//     },
-		//     {
-		//         Name: "keyvault",
-		//         Version: "2015-06-01",
-		//     },
-		//     {
-		//         Name: "search",'
-		//         Version: "2015-02-28"
-		//         // There are 2 files, but no composite swagger...
-		//     },
-		//     {
-		//         Name: "servicefabric",
-		//         Version: "2016-01-28",
-		//     },
-		// },
-		},
-		{
-			Plane:       "",
-			InputPrefix: "arm-",
+			Plane:       "dataplane",
+			InputPrefix: "",
 			Services: []service{
+				// 	{
+				// 		Name:    "batch",
+				// 		Version: "2016-07-01.3.1",
+				// 		Swagger: "BatchService",
+				// 	},
+				// 	{
+				// 		Name: "insights",
+				// 		// composite swagger
+				// 	},
 				{
-					Name: "datalake-store",
-					SubServices: []service{
-						{
-							Name:    "filesystem",
-							Version: "2016-11-01",
-						},
-					},
+					Name:    "keyvault",
+					Version: "2016-10-01",
 				},
-				// {
-				// 	Name: "datalake-analytics",
-				// 	SubServices: []Service{
-				// 		{
-				// 			Name:    "catalog",
-				// 			Version: "2016-06-01-preview",
-				// 		},
-				// 		{
-				// 			Name:    "job",
-				// 			Version: "2016-03-20-preview",
+				// 	{
+				// 		Name: "search",
+				// 		SubServices: []service{
+				// 			{
+				// 				Name:    "searchindex",
+				// 				Version: "2015-02-28",
+				// 				Input:   "search",
+				// 			},
+				// 			{
+				// 				Name:    "searchservice",
+				// 				Version: "2015-02-28",
+				// 				Input:   "search",
+				// 			},
 				// 		},
 				// 	},
-				// },
+				// 	{
+				// 		Name:    "servicefabric",
+				// 		Version: "2016-01-28",
+				// 	},
 			},
 		},
+		// {
+		// 	Plane:       "",
+		// 	InputPrefix: "arm-",
+		// 	Services: []service{
+		// 		{
+		// 			Name: "datalake-store",
+		// 			SubServices: []service{
+		// 				{
+		// 					Name:    "filesystem",
+		// 					Version: "2016-11-01",
+		// 				},
+		// 			},
+		// 		},
+		// {
+		// 	Name: "datalake-analytics",
+		// 	SubServices: []service{
+		// 		{
+		// 			Name:    "catalog",
+		// 			Version: "2016-11-01",
+		// 		},
+		// 		{
+		// 			Name:    "job",
+		// 			Version: "2016-11-01",
+		// 		},
+		// 	},
+		// },
+		// 	},
+		// },
 	}
 )
 
@@ -392,8 +432,8 @@ func setVars(c *do.Context) {
 	}
 
 	sdkVersion = c.Args.MustString("s", "sdk", "version")
-	autorestDir = c.Args.MayString("C:", "a", "ar", "autorest")
-	swaggersDir = c.Args.MayString("C:", "w", "sw", "swagger")
+	autorestDir = c.Args.MayString("C:/", "a", "ar", "autorest")
+	swaggersDir = c.Args.MayString("C:/", "w", "sw", "swagger")
 }
 
 func generateTasks(p *do.Project) {
@@ -404,15 +444,25 @@ func generate(service *service) {
 	fmt.Printf("Generating %s...\n\n", service.Fullname)
 	delete(service)
 
-	autorest := exec.Command(fmt.Sprintf("%s/autorest/src/core/AutoRest/bin/Debug/net451/win7-x64/autorest", autorestDir),
-		"-Input", fmt.Sprintf("%s/azure-rest-api-specs/%s.json", swaggersDir, service.Input),
+	fmt.Println("Running AutoRest...")
+	_, err := exec.LookPath("gulp")
+	if err != nil {
+		panic("You need gulp (and some other tools) to run AutoRest. See https://github.com/Azure/autorest/pull/1827")
+	}
+
+	autorest := exec.Command("gulp",
+		"autorest",
+		"-Input", filepath.Join(swaggersDir, "azure-rest-api-specs", service.Input+".json"),
 		"-CodeGenerator", "Go",
 		"-Header", "MICROSOFT_APACHE",
 		"-Namespace", service.Name,
 		"-OutputDirectory", service.Output,
 		"-Modeler", "Swagger",
-		"-pv", sdkVersion)
-	err := runner(autorest)
+		"-pv", sdkVersion,
+		"-SkipValidation",
+	)
+	autorest.Dir = filepath.Join(autorestDir, "autorest")
+	err = runner(autorest)
 	if err != nil {
 		panic(fmt.Errorf("Autorest error: %s", err))
 	}

@@ -1,6 +1,31 @@
 # CHANGELOG
 
 -----
+
+## `v8.1.0-beta`
+### ARM
+| api                                 | version            | note                               |
+|:------------------------------------|:-------------------|:-----------------------------------|
+| arm/apimanagement                   | 2016-07-07         | new                                |
+| arm/apideployment                   | 2016-07-07         | new                                |
+| arm/billing                         | 2017-02-27-preview | new                                |
+| arm/compute                         | 2016-04-30-preview | update to latest swagger           |
+| arm/containerservice                | 2017-01-31         | update to latest swagger           |
+| arm/customer-insights               | 2017-01-01         | new                                |
+| arm/graphrbac                       | 1.6                | new                                |
+| arm/networkwatcher                  | 2016-12-01         | new                                |
+| arm/operationalinsights             | 2015-11-01-preview | new                                |
+| arm/service-map                     | 2015-11-01-preview | new                                |
+| arm/storageimportexport             | 2016-11-01         | new                                |
+
+### Data plane
+| api                                 | version            | note                               |
+|:------------------------------------|:-------------------|:-----------------------------------|
+| dataplane/keyvault                  | 2016-10-01         | new                                |
+
+- Uses go-autorest v7.3.0
+
+
 ## `v8.0.0-beta`
 ### ARM
 - In addition to the tablulated changes below, all updated packages received performance

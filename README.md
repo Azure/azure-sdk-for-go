@@ -94,6 +94,11 @@ the packages in your project and update them when a stable tag is out.
 
 - [storage](/storage)
 
+## Azure KeyVault SDK for Go
+
+[About KeyVault](/keyvault/README.md)
+- [keyvault](/keyvault)
+
 # Installation
 
 - [Install Go 1.7](https://golang.org/dl/).

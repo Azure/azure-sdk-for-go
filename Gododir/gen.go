@@ -386,7 +386,7 @@ func initAndAddService(service *service, inputPrefix, plane string) {
 }
 
 func tasks(p *do.Project) {
-	p.Task("default", do.S{"setvars", "generate:all", "storage", "management"}, nil)
+	p.Task("default", do.S{"setvars", "generate:all", "management"}, nil)
 	p.Task("setvars", nil, setVars)
 	p.Use("generate", generateTasks)
 	p.Use("gofmt", formatTasks)
@@ -394,7 +394,6 @@ func tasks(p *do.Project) {
 	p.Use("golint", lintTasks)
 	p.Use("govet", vetTasks)
 	p.Use("delete", deleteTasks)
-	p.Task("storage", do.S{"setvars"}, storageVersion)
 	p.Task("management", do.S{"setvars"}, managementVersion)
 }
 
@@ -504,10 +503,6 @@ func vet(service *service) {
 	if err != nil {
 		panic(fmt.Errorf("go vet error: %s", err))
 	}
-}
-
-func storageVersion(c *do.Context) {
-	version("storage")
 }
 
 func managementVersion(c *do.Context) {

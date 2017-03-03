@@ -35,8 +35,8 @@ func (s *StorageClientSuite) Test_prepareBlockListRequest(c *chk.C) {
 	expected := `<?xml version="1.0" encoding="utf-8"?><BlockList></BlockList>`
 	c.Assert(prepareBlockListRequest(empty), chk.DeepEquals, expected)
 
-	blocks := []Block{{"foo", BlockStatusLatest}, {"bar", BlockStatusUncommitted}}
-	expected = `<?xml version="1.0" encoding="utf-8"?><BlockList><Latest>foo</Latest><Uncommitted>bar</Uncommitted></BlockList>`
+	blocks := []Block{{"lol", BlockStatusLatest}, {"rofl", BlockStatusUncommitted}}
+	expected = `<?xml version="1.0" encoding="utf-8"?><BlockList><Latest>lol</Latest><Uncommitted>rofl</Uncommitted></BlockList>`
 	c.Assert(prepareBlockListRequest(blocks), chk.DeepEquals, expected)
 }
 

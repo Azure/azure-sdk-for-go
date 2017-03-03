@@ -12,7 +12,7 @@ type AuthorizationSuite struct{}
 var _ = chk.Suite(&AuthorizationSuite{})
 
 func (a *AuthorizationSuite) Test_addAuthorizationHeader(c *chk.C) {
-	cli, err := NewBasicClient("mindgotest", "zHDHGs7C+Di9pZSDMuarxJJz3xRBzAHBYaobxpLEc7kwTptR/hPEa9j93hIfb2Tbe9IA50MViGmjQ6nUF/OVvA==")
+	cli, err := NewBasicClient(dummyStorageAccount, dummyMiniStorageKey)
 	c.Assert(err, chk.IsNil)
 	cli.UseSharedKeyLite = true
 	tableCli := cli.GetTableService()
@@ -25,16 +25,16 @@ func (a *AuthorizationSuite) Test_addAuthorizationHeader(c *chk.C) {
 		headerXmsVersion:    "2015-02-21",
 		"Accept":            "application/json;odata=nometadata",
 	}
-	url := "https://mindgotest.table.core.windows.net/tquery()"
+	url := "https://golangrocksonazure.table.core.windows.net/tquery()"
 	headers, err = tableCli.client.addAuthorizationHeader("", url, headers, tableCli.auth)
 	c.Assert(err, chk.IsNil)
 
-	c.Assert(headers[headerAuthorization], chk.Equals, "SharedKeyLite mindgotest:+32DTgsPUgXPo/O7RYaTs0DllA6FTXMj3uK4Qst8y/E=")
+	c.Assert(headers[headerAuthorization], chk.Equals, "SharedKeyLite golangrocksonazure:NusXSFXAvHqr6EQNXnZZ50CvU1sX0iP/FFDHehnixLc=")
 }
 
 func (a *AuthorizationSuite) Test_getSharedKey(c *chk.C) {
 	// Shared Key Lite for Tables
-	cli, err := NewBasicClient("mindgotest", "zHDHGs7C+Di9pZSDMuarxJJz3xRBzAHBYaobxpLEc7kwTptR/hPEa9j93hIfb2Tbe9IA50MViGmjQ6nUF/OVvA==")
+	cli, err := NewBasicClient(dummyStorageAccount, dummyMiniStorageKey)
 	c.Assert(err, chk.IsNil)
 
 	headers := map[string]string{
@@ -45,15 +45,15 @@ func (a *AuthorizationSuite) Test_getSharedKey(c *chk.C) {
 		headerXmsVersion:    "2015-02-21",
 		"Accept":            "application/json;odata=nometadata",
 	}
-	url := "https://mindgotest.table.core.windows.net/tquery()"
+	url := "https://golangrocksonazure.table.core.windows.net/tquery()"
 
 	key, err := cli.getSharedKey("", url, headers, sharedKeyLiteForTable)
 	c.Assert(err, chk.IsNil)
-	c.Assert(key, chk.Equals, "SharedKeyLite mindgotest:+32DTgsPUgXPo/O7RYaTs0DllA6FTXMj3uK4Qst8y/E=")
+	c.Assert(key, chk.Equals, "SharedKeyLite golangrocksonazure:NusXSFXAvHqr6EQNXnZZ50CvU1sX0iP/FFDHehnixLc=")
 }
 
 func (a *AuthorizationSuite) Test_buildCanonicalizedResource(c *chk.C) {
-	cli, err := NewBasicClient("foo", "YmFy")
+	cli, err := NewBasicClient(dummyStorageAccount, dummyMiniStorageKey)
 	c.Assert(err, chk.IsNil)
 
 	type test struct {
@@ -63,19 +63,19 @@ func (a *AuthorizationSuite) Test_buildCanonicalizedResource(c *chk.C) {
 	}
 	tests := []test{
 		// Shared Key
-		{"https://foo.blob.core.windows.net/path?a=b&c=d", sharedKey, "/foo/path\na:b\nc:d"},
-		{"https://foo.blob.core.windows.net/?comp=list", sharedKey, "/foo/\ncomp:list"},
-		{"https://foo.blob.core.windows.net/cnt/blob", sharedKey, "/foo/cnt/blob"},
-		{"https://foo.blob.core.windows.net/cnt/bl ob", sharedKey, "/foo/cnt/bl%20ob"},
-		{"https://foo.blob.core.windows.net/c nt/blob", sharedKey, "/foo/c%20nt/blob"},
-		{"https://foo.blob.core.windows.net/cnt/blob%3F%23%5B%5D%21$&%27%28%29%2A blob", sharedKey, "/foo/cnt/blob%3F%23%5B%5D%21$&%27%28%29%2A%20blob"},
-		{"https://foo.blob.core.windows.net/cnt/blob-._~:,@;+=blob", sharedKey, "/foo/cnt/blob-._~:,@;+=blob"},
-		{"https://foo.blob.core.windows.net/c nt/blob-._~:%3F%23%5B%5D@%21$&%27%28%29%2A,;+=/blob", sharedKey, "/foo/c%20nt/blob-._~:%3F%23%5B%5D@%21$&%27%28%29%2A,;+=/blob"},
+		{"https://golangrocksonazure.blob.core.windows.net/path?a=b&c=d", sharedKey, "/golangrocksonazure/path\na:b\nc:d"},
+		{"https://golangrocksonazure.blob.core.windows.net/?comp=list", sharedKey, "/golangrocksonazure/\ncomp:list"},
+		{"https://golangrocksonazure.blob.core.windows.net/cnt/blob", sharedKey, "/golangrocksonazure/cnt/blob"},
+		{"https://golangrocksonazure.blob.core.windows.net/cnt/bl ob", sharedKey, "/golangrocksonazure/cnt/bl%20ob"},
+		{"https://golangrocksonazure.blob.core.windows.net/c nt/blob", sharedKey, "/golangrocksonazure/c%20nt/blob"},
+		{"https://golangrocksonazure.blob.core.windows.net/cnt/blob%3F%23%5B%5D%21$&%27%28%29%2A blob", sharedKey, "/golangrocksonazure/cnt/blob%3F%23%5B%5D%21$&%27%28%29%2A%20blob"},
+		{"https://golangrocksonazure.blob.core.windows.net/cnt/blob-._~:,@;+=blob", sharedKey, "/golangrocksonazure/cnt/blob-._~:,@;+=blob"},
+		{"https://golangrocksonazure.blob.core.windows.net/c nt/blob-._~:%3F%23%5B%5D@%21$&%27%28%29%2A,;+=/blob", sharedKey, "/golangrocksonazure/c%20nt/blob-._~:%3F%23%5B%5D@%21$&%27%28%29%2A,;+=/blob"},
 		// Shared Key Lite for Table
-		{"https://foo.table.core.windows.net/mytable", sharedKeyLiteForTable, "/foo/mytable"},
-		{"https://foo.table.core.windows.net/mytable?comp=acl", sharedKeyLiteForTable, "/foo/mytable?comp=acl"},
-		{"https://foo.table.core.windows.net/mytable?comp=acl&timeout=10", sharedKeyForTable, "/foo/mytable?comp=acl"},
-		{"https://foo.table.core.windows.net/mytable(PartitionKey='pkey',RowKey='rowkey%3D')", sharedKeyForTable, "/foo/mytable(PartitionKey='pkey',RowKey='rowkey%3D')"},
+		{"https://golangrocksonazure.table.core.windows.net/mytable", sharedKeyLiteForTable, "/golangrocksonazure/mytable"},
+		{"https://golangrocksonazure.table.core.windows.net/mytable?comp=acl", sharedKeyLiteForTable, "/golangrocksonazure/mytable?comp=acl"},
+		{"https://golangrocksonazure.table.core.windows.net/mytable?comp=acl&timeout=10", sharedKeyForTable, "/golangrocksonazure/mytable?comp=acl"},
+		{"https://golangrocksonazure.table.core.windows.net/mytable(PartitionKey='pkey',RowKey='rowkey%3D')", sharedKeyForTable, "/golangrocksonazure/mytable(PartitionKey='pkey',RowKey='rowkey%3D')"},
 	}
 
 	for _, t := range tests {
@@ -156,15 +156,15 @@ func (a *AuthorizationSuite) Test_buildCanonicalizedHeader(c *chk.C) {
 		{map[string]string{},
 			""},
 		{map[string]string{
-			"x-ms-foo": "bar"},
-			"x-ms-foo:bar"},
+			"x-ms-lol": "rofl"},
+			"x-ms-lol:rofl"},
 		{map[string]string{
-			"foo:": "bar"},
+			"lol:": "rofl"},
 			""},
 		{map[string]string{
-			"foo:":     "bar",
-			"x-ms-foo": "bar"},
-			"x-ms-foo:bar"},
+			"lol:":     "rofl",
+			"x-ms-lol": "rofl"},
+			"x-ms-lol:rofl"},
 		{map[string]string{
 			"x-ms-version":   "9999-99-99",
 			"x-ms-blob-type": "BlockBlob"},
@@ -176,15 +176,15 @@ func (a *AuthorizationSuite) Test_buildCanonicalizedHeader(c *chk.C) {
 }
 
 func (a *AuthorizationSuite) Test_createAuthorizationHeader(c *chk.C) {
-	cli, err := NewBasicClient("foo", base64.StdEncoding.EncodeToString([]byte("bar")))
+	cli, err := NewBasicClient(dummyStorageAccount, base64.StdEncoding.EncodeToString([]byte("bar")))
 	c.Assert(err, chk.IsNil)
 
 	canonicalizedString := `foobarzoo`
 
 	c.Assert(cli.createAuthorizationHeader(canonicalizedString, sharedKey),
-		chk.Equals, `SharedKey foo:h5U0ATVX6SpbFX1H6GNuxIMeXXCILLoIvhflPtuQZ30=`)
+		chk.Equals, `SharedKey golangrocksonazure:h5U0ATVX6SpbFX1H6GNuxIMeXXCILLoIvhflPtuQZ30=`)
 	c.Assert(cli.createAuthorizationHeader(canonicalizedString, sharedKeyLite),
-		chk.Equals, `SharedKeyLite foo:h5U0ATVX6SpbFX1H6GNuxIMeXXCILLoIvhflPtuQZ30=`)
+		chk.Equals, `SharedKeyLite golangrocksonazure:h5U0ATVX6SpbFX1H6GNuxIMeXXCILLoIvhflPtuQZ30=`)
 }
 
 func (a *AuthorizationSuite) Test_allSharedKeys(c *chk.C) {

@@ -329,7 +329,7 @@ func (c QueueServiceClient) UpdateMessage(queue string, messageID string, messag
 		return err
 	}
 	headers := c.client.getStandardHeaders()
-	headers["Content-Length"] = fmt.Sprintf("%d", nn)
+	headers["Content-Length"] = strconv.Itoa(nn)
 	resp, err := c.client.exec(http.MethodPut, uri, headers, body, c.auth)
 	if err != nil {
 		return err

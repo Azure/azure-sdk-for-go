@@ -44,7 +44,7 @@ func (s *StorageQueueSuite) Test_GetMetadata_GetApproximateCount(c *chk.C) {
 	c.Assert(qm.ApproximateMessageCount, chk.Equals, 0)
 
 	for ix := 0; ix < 3; ix++ {
-		err = cli.PutMessage(name, "foobar", PutMessageParameters{})
+		err = cli.PutMessage(name, "lolrofl", PutMessageParameters{})
 		c.Assert(err, chk.IsNil)
 	}
 	time.Sleep(1 * time.Second)
@@ -61,15 +61,15 @@ func (s *StorageQueueSuite) Test_SetMetadataGetMetadata_Roundtrips(c *chk.C) {
 	defer cli.DeleteQueue(name)
 
 	metadata := make(map[string]string)
-	metadata["Foo1"] = "bar1"
-	metadata["fooBaz"] = "bar"
+	metadata["Lol1"] = "rofl1"
+	metadata["lolBaz"] = "rofl"
 	err := cli.SetMetadata(name, metadata)
 	c.Assert(err, chk.IsNil)
 
 	qm, err := cli.GetMetadata(name)
 	c.Assert(err, chk.IsNil)
-	c.Assert(qm.UserDefinedMetadata["foo1"], chk.Equals, "bar1")
-	c.Assert(qm.UserDefinedMetadata["foobaz"], chk.Equals, "bar")
+	c.Assert(qm.UserDefinedMetadata["lol1"], chk.Equals, "rofl1")
+	c.Assert(qm.UserDefinedMetadata["lolbaz"], chk.Equals, "rofl")
 }
 
 func (s *StorageQueueSuite) TestQueueExists(c *chk.C) {

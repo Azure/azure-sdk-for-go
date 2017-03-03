@@ -14,8 +14,8 @@ var _ = chk.Suite(&ContainerSuite{})
 
 func (s *ContainerSuite) Test_containerBuildPath(c *chk.C) {
 	cli := getBlobClient(c)
-	cnt := cli.GetContainerReference("foo")
-	c.Assert(cnt.buildPath(), chk.Equals, "/foo")
+	cnt := cli.GetContainerReference("lol")
+	c.Assert(cnt.buildPath(), chk.Equals, "/lol")
 }
 
 func (s *ContainerSuite) TestListContainersPagination(c *chk.C) {
@@ -138,7 +138,8 @@ func (s *ContainerSuite) TestListBlobsPagination(c *chk.C) {
 	const pageSize = 2
 	for i := 0; i < n; i++ {
 		name := randName(5)
-		c.Assert(cli.putSingleBlockBlob(cnt.Name, name, []byte("Hello, world!")), chk.IsNil)
+		b := cnt.GetBlobReference(name)
+		c.Assert(b.putSingleBlockBlob([]byte("Hello, world!")), chk.IsNil)
 		blobs = append(blobs, name)
 	}
 	sort.Strings(blobs)
@@ -255,7 +256,8 @@ func (s *ContainerSuite) TestListBlobsTraversal(c *chk.C) {
 
 	// Create the above blobs
 	for _, blobName := range blobsToCreate {
-		err := cli.CreateBlockBlob(cnt.Name, blobName)
+		b := cnt.GetBlobReference(blobName)
+		err := b.CreateBlockBlob()
 		c.Assert(err, chk.IsNil)
 	}
 
@@ -305,21 +307,23 @@ func (s *ContainerSuite) TestListBlobsWithMetadata(c *chk.C) {
 	// Put 4 blobs with metadata
 	for i := 0; i < 4; i++ {
 		name := randName(5)
-		c.Assert(cli.putSingleBlockBlob(cnt.Name, name, []byte("Hello, world!")), chk.IsNil)
-		c.Assert(cli.SetBlobMetadata(cnt.Name, name, map[string]string{
-			"Foo":     name,
-			"Bar_BAZ": "Waz Qux",
-		}, nil), chk.IsNil)
+		b := cnt.GetBlobReference(name)
+		c.Assert(b.putSingleBlockBlob([]byte("Hello, world!")), chk.IsNil)
+		b.Metadata = BlobMetadata{
+			"Lol":      name,
+			"Rofl_BAZ": "Waz Qux",
+		}
+		c.Assert(b.SetMetadata(nil), chk.IsNil)
 		expectMeta[name] = BlobMetadata{
-			"foo":     name,
-			"bar_baz": "Waz Qux",
+			"lol":      name,
+			"rofl_baz": "Waz Qux",
 		}
 	}
 
 	// Put one more blob with no metadata
-	blobWithoutMetadata := randName(5)
-	c.Assert(cli.putSingleBlockBlob(cnt.Name, blobWithoutMetadata, []byte("Hello, world!")), chk.IsNil)
-	expectMeta[blobWithoutMetadata] = nil
+	b := cnt.GetBlobReference(randName(5))
+	c.Assert(b.putSingleBlockBlob([]byte("Hello, world!")), chk.IsNil)
+	expectMeta[b.Name] = nil
 
 	// Get ListBlobs with include:"metadata"
 	resp, err := cnt.ListBlobs(ListBlobsParameters{

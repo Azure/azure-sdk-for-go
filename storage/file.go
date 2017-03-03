@@ -65,7 +65,7 @@ func (p FileRequestOptions) getParameters() url.Values {
 	out := url.Values{}
 
 	if p.Timeout != 0 {
-		out.Set("timeout", fmt.Sprintf("%v", p.Timeout))
+		out.Set("timeout", strconv.FormatUint(uint64(p.Timeout), 10))
 	}
 
 	return out

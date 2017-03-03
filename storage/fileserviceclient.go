@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"net/http"
 	"net/url"
+	"strconv"
 	"strings"
 )
 
@@ -79,10 +80,10 @@ func (p ListSharesParameters) getParameters() url.Values {
 		out.Set("include", p.Include)
 	}
 	if p.MaxResults != 0 {
-		out.Set("maxresults", fmt.Sprintf("%v", p.MaxResults))
+		out.Set("maxresults", strconv.FormatUint(uint64(p.MaxResults), 10))
 	}
 	if p.Timeout != 0 {
-		out.Set("timeout", fmt.Sprintf("%v", p.Timeout))
+		out.Set("timeout", strconv.FormatUint(uint64(p.Timeout), 10))
 	}
 
 	return out
@@ -95,10 +96,10 @@ func (p ListDirsAndFilesParameters) getParameters() url.Values {
 		out.Set("marker", p.Marker)
 	}
 	if p.MaxResults != 0 {
-		out.Set("maxresults", fmt.Sprintf("%v", p.MaxResults))
+		out.Set("maxresults", strconv.FormatUint(uint64(p.MaxResults), 10))
 	}
 	if p.Timeout != 0 {
-		out.Set("timeout", fmt.Sprintf("%v", p.Timeout))
+		out.Set("timeout", strconv.FormatUint(uint64(p.Timeout), 10))
 	}
 
 	return out
@@ -348,12 +349,12 @@ func getMetadataFromHeaders(header http.Header) map[string]string {
 		// ...but "_" is considered invalid by
 		// CanonicalMIMEHeaderKey in
 		// https://golang.org/src/net/textproto/reader.go?s=14615:14659#L542
-		// so k can be "X-Ms-Meta-Foo" or "x-ms-meta-foo_bar".
+		// so k can be "X-Ms-Meta-Lol" or "x-ms-meta-lol_rofl".
 		k = strings.ToLower(k)
 		if len(v) == 0 || !strings.HasPrefix(k, strings.ToLower(userDefinedMetadataHeaderPrefix)) {
 			continue
 		}
-		// metadata["foo"] = content of the last X-Ms-Meta-Foo header
+		// metadata["lol"] = content of the last X-Ms-Meta-Lol header
 		k = k[len(userDefinedMetadataHeaderPrefix):]
 		metadata[k] = v[len(v)-1]
 	}

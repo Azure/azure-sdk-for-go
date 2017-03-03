@@ -98,10 +98,10 @@ func (p ListBlobsParameters) getParameters() url.Values {
 		out.Set("include", p.Include)
 	}
 	if p.MaxResults != 0 {
-		out.Set("maxresults", fmt.Sprintf("%v", p.MaxResults))
+		out.Set("maxresults", strconv.FormatUint(uint64(p.MaxResults), 10))
 	}
 	if p.Timeout != 0 {
-		out.Set("timeout", fmt.Sprintf("%v", p.Timeout))
+		out.Set("timeout", strconv.FormatUint(uint64(p.Timeout), 10))
 	}
 
 	return out
@@ -142,6 +142,14 @@ const (
 	ContainerAccessHeader string = "x-ms-blob-public-access"
 )
 
+// GetBlobReference returns a Blob object for the specified container name.
+func (c *Container) GetBlobReference(name string) Blob {
+	return Blob{
+		Container: c,
+		Name:      name,
+	}
+}
+
 // Create creates a blob container within the storage account
 // with given name and access level. Returns error if container already exists.
 //
@@ -151,7 +159,7 @@ func (c *Container) Create() error {
 	if err != nil {
 		return err
 	}
-	defer readAndCloseBody(resp.body)
+	readAndCloseBody(resp.body)
 	return checkRespCode(resp.statusCode, []int{http.StatusCreated})
 }
 
@@ -293,7 +301,7 @@ func (c *Container) Delete() error {
 	if err != nil {
 		return err
 	}
-	defer readAndCloseBody(resp.body)
+	readAndCloseBody(resp.body)
 	return checkRespCode(resp.statusCode, []int{http.StatusAccepted})
 }
 

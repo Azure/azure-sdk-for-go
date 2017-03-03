@@ -99,7 +99,7 @@ func (c *TableServiceClient) CreateTable(table AzureTable) error {
 		return err
 	}
 
-	headers["Content-Length"] = fmt.Sprintf("%d", buf.Len())
+	headers["Content-Length"] = strconv.Itoa(buf.Len())
 
 	resp, err := c.client.execInternalJSON(http.MethodPost, uri, headers, buf, c.auth)
 
@@ -156,7 +156,7 @@ func (c *TableServiceClient) SetTablePermissions(table AzureTable, policies []Ta
 	if err != nil {
 		return err
 	}
-	headers["Content-Length"] = fmt.Sprintf("%v", length)
+	headers["Content-Length"] = strconv.Itoa(length)
 
 	resp, err := c.client.execInternalJSON(http.MethodPut, uri, headers, body, c.auth)
 	if err != nil {

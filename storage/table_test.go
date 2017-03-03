@@ -7,6 +7,7 @@ import (
 	"time"
 
 	chk "gopkg.in/check.v1"
+	"strconv"
 )
 
 type StorageTableSuite struct{}
@@ -74,7 +75,7 @@ func (s *StorageTableSuite) Test_InsertEntities(c *chk.C) {
 	ce := &CustomEntity{Name: "Luke", Surname: "Skywalker", Number: 1543, PKey: "pkey"}
 
 	for i := 0; i < 12; i++ {
-		ce.SetRowKey(fmt.Sprintf("%d", i))
+		ce.SetRowKey(strconv.Itoa(i))
 
 		err = cli.InsertEntity(tn, ce)
 		c.Assert(err, chk.IsNil)

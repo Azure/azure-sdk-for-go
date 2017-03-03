@@ -52,24 +52,24 @@ func (s *StorageClientSuite) TestNewEmulatorClient(c *chk.C) {
 }
 
 func (s *StorageClientSuite) TestMalformedKeyError(c *chk.C) {
-	_, err := NewBasicClient("foo", "malformed")
+	_, err := NewBasicClient(dummyStorageAccount, "malformed")
 	c.Assert(err, chk.ErrorMatches, "azure: malformed storage account key: .*")
 }
 
 func (s *StorageClientSuite) TestGetBaseURL_Basic_Https(c *chk.C) {
-	cli, err := NewBasicClient("foo", "YmFy")
+	cli, err := NewBasicClient(dummyStorageAccount, dummyMiniStorageKey)
 	c.Assert(err, chk.IsNil)
 	c.Assert(cli.apiVersion, chk.Equals, DefaultAPIVersion)
 	c.Assert(err, chk.IsNil)
-	c.Assert(cli.getBaseURL("table"), chk.Equals, "https://foo.table.core.windows.net")
+	c.Assert(cli.getBaseURL("table"), chk.Equals, "https://golangrocksonazure.table.core.windows.net")
 }
 
 func (s *StorageClientSuite) TestGetBaseURL_Custom_NoHttps(c *chk.C) {
 	apiVersion := "2015-01-01" // a non existing one
-	cli, err := NewClient("foo", "YmFy", "core.chinacloudapi.cn", apiVersion, false)
+	cli, err := NewClient(dummyStorageAccount, dummyMiniStorageKey, "core.chinacloudapi.cn", apiVersion, false)
 	c.Assert(err, chk.IsNil)
 	c.Assert(cli.apiVersion, chk.Equals, apiVersion)
-	c.Assert(cli.getBaseURL("table"), chk.Equals, "http://foo.table.core.chinacloudapi.cn")
+	c.Assert(cli.getBaseURL("table"), chk.Equals, "http://golangrocksonazure.table.core.chinacloudapi.cn")
 }
 
 func (s *StorageClientSuite) TestGetBaseURL_StorageEmulator(c *chk.C) {
@@ -89,37 +89,37 @@ func (s *StorageClientSuite) TestGetBaseURL_StorageEmulator(c *chk.C) {
 }
 
 func (s *StorageClientSuite) TestGetEndpoint_None(c *chk.C) {
-	cli, err := NewBasicClient("foo", "YmFy")
+	cli, err := NewBasicClient(dummyStorageAccount, "YmFy")
 	c.Assert(err, chk.IsNil)
 	output := cli.getEndpoint(blobServiceName, "", url.Values{})
-	c.Assert(output, chk.Equals, "https://foo.blob.core.windows.net/")
+	c.Assert(output, chk.Equals, "https://golangrocksonazure.blob.core.windows.net/")
 }
 
 func (s *StorageClientSuite) TestGetEndpoint_PathOnly(c *chk.C) {
-	cli, err := NewBasicClient("foo", "YmFy")
+	cli, err := NewBasicClient(dummyStorageAccount, "YmFy")
 	c.Assert(err, chk.IsNil)
 	output := cli.getEndpoint(blobServiceName, "path", url.Values{})
-	c.Assert(output, chk.Equals, "https://foo.blob.core.windows.net/path")
+	c.Assert(output, chk.Equals, "https://golangrocksonazure.blob.core.windows.net/path")
 }
 
 func (s *StorageClientSuite) TestGetEndpoint_ParamsOnly(c *chk.C) {
-	cli, err := NewBasicClient("foo", "YmFy")
+	cli, err := NewBasicClient(dummyStorageAccount, "YmFy")
 	c.Assert(err, chk.IsNil)
 	params := url.Values{}
 	params.Set("a", "b")
 	params.Set("c", "d")
 	output := cli.getEndpoint(blobServiceName, "", params)
-	c.Assert(output, chk.Equals, "https://foo.blob.core.windows.net/?a=b&c=d")
+	c.Assert(output, chk.Equals, "https://golangrocksonazure.blob.core.windows.net/?a=b&c=d")
 }
 
 func (s *StorageClientSuite) TestGetEndpoint_Mixed(c *chk.C) {
-	cli, err := NewBasicClient("foo", "YmFy")
+	cli, err := NewBasicClient(dummyStorageAccount, "YmFy")
 	c.Assert(err, chk.IsNil)
 	params := url.Values{}
 	params.Set("a", "b")
 	params.Set("c", "d")
 	output := cli.getEndpoint(blobServiceName, "path", params)
-	c.Assert(output, chk.Equals, "https://foo.blob.core.windows.net/path?a=b&c=d")
+	c.Assert(output, chk.Equals, "https://golangrocksonazure.blob.core.windows.net/path?a=b&c=d")
 }
 
 func (s *StorageClientSuite) TestGetEndpoint_StorageEmulator(c *chk.C) {
@@ -139,7 +139,7 @@ func (s *StorageClientSuite) TestGetEndpoint_StorageEmulator(c *chk.C) {
 }
 
 func (s *StorageClientSuite) Test_getStandardHeaders(c *chk.C) {
-	cli, err := NewBasicClient("foo", "YmFy")
+	cli, err := NewBasicClient(dummyStorageAccount, "YmFy")
 	c.Assert(err, chk.IsNil)
 
 	headers := cli.getStandardHeaders()
@@ -168,7 +168,10 @@ func (s *StorageClientSuite) TestReturnsStorageServiceError(c *chk.C) {
 
 func (s *StorageClientSuite) TestReturnsStorageServiceError_withoutResponseBody(c *chk.C) {
 	// HEAD on non-existing blob
-	_, err := getBlobClient(c).GetBlobProperties("non-existing-blob", "non-existing-container")
+	cli := getBlobClient(c)
+	cnt := cli.GetContainerReference("non-existing-container")
+	b := cnt.GetBlobReference("non-existing-blob")
+	err := b.GetProperties()
 
 	c.Assert(err, chk.NotNil)
 	c.Assert(err, chk.FitsTypeOf, AzureStorageServiceError{})
@@ -182,7 +185,7 @@ func (s *StorageClientSuite) TestReturnsStorageServiceError_withoutResponseBody(
 }
 
 func (s *StorageClientSuite) Test_createServiceClients(c *chk.C) {
-	cli, err := NewBasicClient("foo", "YmFy")
+	cli, err := NewBasicClient(dummyStorageAccount, "YmFy")
 	c.Assert(err, chk.IsNil)
 
 	ua := cli.getDefaultUserAgent()
@@ -209,14 +212,14 @@ func (s *StorageClientSuite) Test_createServiceClients(c *chk.C) {
 }
 
 func (s *StorageClientSuite) TestAddToUserAgent(c *chk.C) {
-	cli, err := NewBasicClient("foo", "YmFy")
+	cli, err := NewBasicClient(dummyStorageAccount, "YmFy")
 	c.Assert(err, chk.IsNil)
 
 	ua := cli.getDefaultUserAgent()
 
-	err = cli.AddToUserAgent("bar")
+	err = cli.AddToUserAgent("rofl")
 	c.Assert(err, chk.IsNil)
-	c.Assert(cli.userAgent, chk.Equals, ua+" bar")
+	c.Assert(cli.userAgent, chk.Equals, ua+" rofl")
 
 	err = cli.AddToUserAgent("")
 	c.Assert(err, chk.NotNil)
@@ -230,7 +233,7 @@ func (s *StorageClientSuite) Test_protectUserAgent(c *chk.C) {
 		userAgentHeader: "four",
 	}
 
-	cli, err := NewBasicClient("foo", "YmFy")
+	cli, err := NewBasicClient(dummyStorageAccount, "YmFy")
 	c.Assert(err, chk.IsNil)
 
 	ua := cli.getDefaultUserAgent()

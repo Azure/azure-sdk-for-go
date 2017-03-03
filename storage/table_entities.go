@@ -8,6 +8,7 @@ import (
 	"net/http"
 	"net/url"
 	"reflect"
+	"strconv"
 )
 
 // Annotating as secure for gas scanning
@@ -146,7 +147,7 @@ func (c *TableServiceClient) execTable(table AzureTable, entity TableEntity, spe
 		return 0, err
 	}
 
-	headers["Content-Length"] = fmt.Sprintf("%d", buf.Len())
+	headers["Content-Length"] = strconv.Itoa(buf.Len())
 
 	resp, err := c.client.execInternalJSON(method, uri, headers, &buf, c.auth)
 

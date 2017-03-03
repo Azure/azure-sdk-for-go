@@ -23,7 +23,7 @@ func (s *StorageDirSuite) TestListDirsAndFiles(c *chk.C) {
 
 	// create a directory and a file
 	dir := root.GetDirectoryReference("SomeDirectory")
-	file := root.GetFileReference("foo.file")
+	file := root.GetFileReference("lol.file")
 	c.Assert(dir.Create(), chk.IsNil)
 	c.Assert(file.Create(512), chk.IsNil)
 

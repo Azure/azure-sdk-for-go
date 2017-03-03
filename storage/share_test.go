@@ -137,8 +137,8 @@ func (s *StorageShareSuite) TestGetAndSetShareMetadata(c *chk.C) {
 	c.Assert(share2.Metadata, chk.IsNil)
 
 	mPut := map[string]string{
-		"foo":     "bar",
-		"bar_baz": "waz qux",
+		"lol":      "rofl",
+		"rofl_baz": "waz qux",
 	}
 
 	share2.Metadata = mPut
@@ -151,12 +151,12 @@ func (s *StorageShareSuite) TestGetAndSetShareMetadata(c *chk.C) {
 	// Case munging
 
 	mPutUpper := map[string]string{
-		"Foo":     "different bar",
-		"bar_BAZ": "different waz qux",
+		"Lol":      "different rofl",
+		"rofl_BAZ": "different waz qux",
 	}
 	mExpectLower := map[string]string{
-		"foo":     "different bar",
-		"bar_baz": "different waz qux",
+		"lol":      "different rofl",
+		"rofl_baz": "different waz qux",
 	}
 
 	share2.Metadata = mPutUpper

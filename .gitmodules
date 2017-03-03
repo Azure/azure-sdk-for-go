@@ -1,3 +1,4 @@
 [submodule "storage"]
 	path = storage
 	url = https://github.com/Azure/azure-storage-go
+	branch = v0.1.0

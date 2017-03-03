@@ -463,7 +463,7 @@ func initAndAddService(service *service, inputPrefix, plane string) {
 }
 
 func tasks(p *do.Project) {
-	p.Task("default", do.S{"setvars", "generate:all", "storage"}, nil)
+	p.Task("default", do.S{"setvars", "generate:all", "management"}, nil)
 	p.Task("setvars", nil, setVars)
 	p.Use("generate", generateTasks)
 	p.Use("gofmt", formatTasks)
@@ -471,7 +471,7 @@ func tasks(p *do.Project) {
 	p.Use("golint", lintTasks)
 	p.Use("govet", vetTasks)
 	p.Use("delete", deleteTasks)
-	p.Task("storage", do.S{"setvars"}, storageVersion)
+	p.Task("management", do.S{"setvars"}, managementVersion)
 }
 
 func setVars(c *do.Context) {
@@ -507,7 +507,7 @@ func generate(service *service) {
 		"-OutputDirectory", service.Output,
 		"-Modeler", "Swagger",
 		"-pv", sdkVersion,
-		"-SkipValidation",
+		"-SkipValidation")
 	autorest.Dir = filepath.Join(autorestDir, "autorest")
 	err = runner(autorest)
 	if err != nil {
@@ -584,8 +584,12 @@ func vet(service *service) {
 	}
 }
 
-func storageVersion(c *do.Context) {
-	versionFile := "storage/version.go"
+func managementVersion(c *do.Context) {
+	version("management")
+}
+
+func version(packageName string) {
+	versionFile := filepath.Join(packageName, "version.go")
 	os.Remove(versionFile)
 	template := `package storage
 

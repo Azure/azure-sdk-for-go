@@ -192,7 +192,7 @@ func IsValidStorageAccount(account string) bool {
 }
 
 func (c Client) getDefaultUserAgent() string {
-	return fmt.Sprintf("Go/%s (%s-%s) Azure-SDK-For-Go/%s storage-dataplane/%s",
+	return fmt.Sprintf("Go/%s (%s-%s) azure-storage-go/%s api-version/%s",
 		runtime.Version(),
 		runtime.GOARCH,
 		runtime.GOOS,

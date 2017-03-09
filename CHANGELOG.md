@@ -1,5 +1,76 @@
 # CHANGELOG
 
+## `v9.0.0-beta`
+### ARM
+#### Overview
+| api                                 | version            | note                               |
+|:------------------------------------|:-------------------|:-----------------------------------|
+| arm/authorization                   | 2015-07-01         | refactor                           |
+| arm/batch                           | 2017-01-01         | update to latest swagger           |
+| arm/cdn                             | 2016-10-02         | update to latest swagger           |
+| arm/dns                             | 2016-04-01         | refactor                           |
+| arm/eventhub                        | 2015-08-01         | update to latest swagger           |
+| arm/logic                           | 2016-06-01         | update to latest swagger           |
+
+Most of the changes to the 
+
+#### Details
+##### Authorization
+  - `ProviderOperationsMetadataOperations` renamed to `ProviderOperationsMetadata`
+##### Batch
+  - Updating from Azure API Version 2015-12-01 to 2017-01-01
+  - Adding type `PoolAllocationMode`
+  - Updating `AccountProperties` and `AccountBaseProperties` to both have new fields `PoolAllocationMode PoolAllocationMode` and `KeyVaultReference *KeyVaultReference`
+  - Consolidating `ErrorBody` and `ErrorDetail` into one type: `CloudError`
+##### CDN
+  - Adding type `CustomHTTPSProvisioningState`
+  - Updating `CustomDomainProperties` to have new field `CustomHTTPProvisioningState CustomHTTPSProvisioningState`
+  - Updating `EdgenodeResult` to include new field `NextLink *string`
+  - Adding new method for `EdgenodeResult`: `EdgenodeResultPreparer() (*http.Request, error)`
+##### DNS
+  - Changing field names of type `RecordSetProperties`:
+    - AAAARecords -> AaaaRecords
+    - MXRecords -> MxRecords
+    - NSRecords -> NsRecords
+    - PTRRecords -> PtrRecords
+    - SRVRecords -> SrvRecords
+    - TXTRecords -> TxtRecords
+    - CNAMERecord -> CnameRecord
+    - SOARecord -> SoaRecord
+##### EventHub
+  - Removing type `NamespaceState`
+  - For type `SkuName` removing value `"Premium"` as an allowable option.
+  - For type `CreateOrUpdateParameters` moving field of type `*Properties` from an anonymous member to a named member: `Properties *Properties`
+  - For type `NamespaceProperties` removing fields:
+    - `Status NamespaceState`
+    - `CreateACSNamespace *bool`
+    - `Enabled *bool`
+##### Logic
+  - Adding `ManagementClient` methods:
+    - `ListOperations() (result OperationListResult, err error)`
+    - `ListOperationsPreparer() (*http.Request, error)`
+    - `ListOperationsSender(req *http.Request) (*http.Response, error)`
+    - `ListOperationsResponder(resp *http.Response) (result OperationListResult, err error)`
+    - `ListOperationsNextResults(lastResults OpeartionListResult) (result OperationListResult, err error)`
+  - Adding type `EdifactCharacterSet`
+    - There are too many combinations to enumerate here
+  - Adding type `EdifactDecimalIndicator`
+  - Adding type `EncryptionAlgorithm`
+  - Adding type `HashingAlgorithm`
+  - Adding type `IntegrationAccountSkuName`
+  - Adding type `PartnerType`
+  - Updating names of the following `logic` package consts:
+    - `NotSpecified` -> `KeyTypeNotSpecified`
+    - `Primary` -> `KeyTypePrimary`
+    - `Secondary` -> `KeyTypeSecondary`
+  - Adding the following `logic` package consts:
+    - `MessageFilterTypeExclude MessageFilterType`
+    - `MessageFilterTypeInclude MessageFilterType`
+    - `MessageFilterTypeNotSpecified MessageFilterType`
+    - `
+### Storage
+As of this release, the storage package is being distributed via its own repository which can be found at [Azure/azure-storage-go](https://github.com/Azure/azure-storage-go). Consuming it out of this repository is deprecated. However, for convenience a submodule has been added and will be incremented to the most recent storage release when this repository releases.
+
 -----
 
 ## `v8.1.0-beta`

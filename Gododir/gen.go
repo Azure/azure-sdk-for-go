@@ -59,31 +59,31 @@ var (
 					Version: "2016-07-07",
 					Input:   "apimanagement",
 				},
-				// {
-				// 	Name:    "authorization",
-				// 	Version: "2015-07-01",
-				// },
-				// {
-				// 	Name:    "batch",
-				// 	Version: "2017-01-01",
-				// 	Swagger: "BatchManagement",
-				// },
+				{
+					Name:    "authorization",
+					Version: "2015-07-01",
+				},
+				{
+					Name:    "batch",
+					Version: "2017-01-01",
+					Swagger: "BatchManagement",
+				},
 				{
 					Name:    "billing",
 					Version: "2017-02-27-preview",
 				},
-				// {
-				// 	Name:    "cdn",
-				// 	Version: "2016-10-02",
-				// },
+				{
+					Name:    "cdn",
+					Version: "2016-10-02",
+				},
 				{
 					Name:    "cognitiveservices",
 					Version: "2016-02-01-preview",
 				},
-				// {
-				// 	Name:    "commerce",
-				// 	Version: "2015-06-01-preview",
-				// },
+				{
+					Name:    "commerce",
+					Version: "2015-06-01-preview",
+				},
 				{
 					Name:    "compute",
 					Version: "2016-04-30-preview",
@@ -120,30 +120,30 @@ var (
 						},
 					},
 				},
-				// {
-				// 	Name:    "devtestlabs",
-				// 	Version: "2016-05-15",
-				// 	Swagger: "DTL",
-				// },
+				{
+					Name:    "devtestlabs",
+					Version: "2016-05-15",
+					Swagger: "DTL",
+				},
 				{
 					Name:    "disk",
 					Version: "2016-04-30-preview",
 					Swagger: "disk",
 					Input:   "compute",
 				},
-				// {
-				// 	Name:    "dns",
-				// 	Version: "2016-04-01",
-				// },
+				{
+					Name:    "dns",
+					Version: "2016-04-01",
+				},
 				{
 					Name:    "documentdb",
 					Version: "2015-04-08",
 				},
-				// {
-				// 	Name:    "eventhub",
-				// 	Version: "2015-08-01",
-				// 	Swagger: "EventHub",
-				// },
+				{
+					Name:    "eventhub",
+					Version: "2015-08-01",
+					Swagger: "EventHub",
+				},
 				{
 					Name:    "graphrbac",
 					Version: "1.6",
@@ -165,11 +165,11 @@ var (
 					Name:    "keyvault",
 					Version: "2015-06-01",
 				},
-				// {
-				// 	Name:    "logic",
-				// 	Version: "2016-06-01",
-				// 	// composite swagger
-				// },
+				{
+					Name:    "logic",
+					Version: "2016-06-01",
+					// composite swagger
+				},
 				{
 					Name: "machinelearning",
 					SubServices: []service{
@@ -206,10 +206,10 @@ var (
 					Swagger: "networkWatcher",
 					Input:   "network",
 				},
-				// {
-				// 	Name:    "notificationhubs",
-				// 	Version: "2016-03-01",
-				// },
+				{
+					Name:    "notificationhubs",
+					Version: "2016-03-01",
+				},
 				{
 					Name:    "operationalinsights",
 					Version: "2015-11-01-preview",
@@ -228,17 +228,17 @@ var (
 				// 	Version: "2016-06-01",
 				// 	// composite swagger
 				// },
-				// {
-				// 	Name:    "redis",
-				// 	Version: "2016-04-01",
-				// },
+				{
+					Name:    "redis",
+					Version: "2016-04-01",
+				},
 				{
 					Name: "resources",
 					SubServices: []service{
-						// {
-						// 	Name:    "features",
-						// 	Version: "2015-12-01",
-						// },
+						{
+							Name:    "features",
+							Version: "2015-12-01",
+						},
 						{
 							Name:    "links",
 							Version: "2016-09-01",
@@ -255,10 +255,10 @@ var (
 							Name:    "resources",
 							Version: "2016-09-01",
 						},
-						// {
-						// 	Name:    "subscriptions",
-						// 	Version: "2016-06-01",
-						// },
+						{
+							Name:    "subscriptions",
+							Version: "2016-06-01",
+						},
 					},
 				},
 				{
@@ -273,10 +273,10 @@ var (
 					Name:    "servermanagement",
 					Version: "2016-07-01-preview",
 				},
-				// {
-				// 	Name:    "servicebus",
-				// 	Version: "2015-08-01",
-				// },
+				{
+					Name:    "servicebus",
+					Version: "2015-08-01",
+				},
 				{
 					Name:    "service-map",
 					Version: "2015-11-01-preview",
@@ -287,14 +287,14 @@ var (
 				// 	Version: "2014-04-01",
 				// 	Swagger: "sql.core",
 				// },
-				// {
-				// 	Name:    "storage",
-				// 	Version: "2016-12-01",
-				// },
-				// {
-				// 	Name:    "storageimportexport",
-				// 	Version: "2016-11-01",
-				// },
+				{
+					Name:    "storage",
+					Version: "2016-12-01",
+				},
+				{
+					Name:    "storageimportexport",
+					Version: "2016-11-01",
+				},
 				{
 					Name:    "trafficmanager",
 					Version: "2015-11-01",

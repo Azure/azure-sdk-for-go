@@ -1,5 +1,5 @@
 // Package compute implements the Azure ARM Compute service API version
-// 2016-04-30-preview.
+// 2016-03-30.
 //
 // The Compute Management Client.
 package compute
@@ -28,7 +28,7 @@ import (
 
 const (
 	// APIVersion is the version of the Compute
-	APIVersion = "2016-04-30-preview"
+	APIVersion = "2016-03-30"
 
 	// DefaultBaseURI is the default URI used for the service Compute
 	DefaultBaseURI = "https://management.azure.com"

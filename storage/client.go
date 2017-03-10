@@ -444,12 +444,14 @@ func readAndCloseBody(body io.ReadCloser) ([]byte, error) {
 }
 
 func serviceErrFromXML(body []byte, statusCode int, requestID string) (AzureStorageServiceError, error) {
-	var storageErr AzureStorageServiceError
+	storageErr := AzureStorageServiceError{
+		StatusCode: statusCode,
+		RequestID:  requestID,
+	}
 	if err := xml.Unmarshal(body, &storageErr); err != nil {
+		storageErr.Message = fmt.Sprintf("Response body could no be unmarshaled: %v. Body: %v.", err, string(body))
 		return storageErr, err
 	}
-	storageErr.StatusCode = statusCode
-	storageErr.RequestID = requestID
 	return storageErr, nil
 }
 

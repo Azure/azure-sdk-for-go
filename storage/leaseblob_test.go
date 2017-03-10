@@ -10,12 +10,12 @@ func (s *LeaseBlobSuite) TestAcquireLeaseWithNoProposedLeaseID(c *chk.C) {
 	cli := getBlobClient(c)
 	cnt := cli.GetContainerReference(randContainer())
 	b := cnt.GetBlobReference(randName(5))
-	c.Assert(cnt.Create(), chk.IsNil)
-	defer cnt.Delete()
+	c.Assert(cnt.Create(nil), chk.IsNil)
+	defer cnt.Delete(nil)
 
 	c.Assert(b.putSingleBlockBlob([]byte{}), chk.IsNil)
 
-	_, err := b.AcquireLease(30, "")
+	_, err := b.AcquireLease(30, "", nil)
 	c.Assert(err, chk.IsNil)
 }
 
@@ -23,13 +23,13 @@ func (s *LeaseBlobSuite) TestAcquireLeaseWithProposedLeaseID(c *chk.C) {
 	cli := getBlobClient(c)
 	cnt := cli.GetContainerReference(randContainer())
 	b := cnt.GetBlobReference(randName(5))
-	c.Assert(cnt.Create(), chk.IsNil)
-	defer cnt.Delete()
+	c.Assert(cnt.Create(nil), chk.IsNil)
+	defer cnt.Delete(nil)
 
 	c.Assert(b.putSingleBlockBlob([]byte{}), chk.IsNil)
 
 	proposedLeaseID := "dfe6dde8-68d5-4910-9248-c97c61768fea"
-	leaseID, err := b.AcquireLease(30, proposedLeaseID)
+	leaseID, err := b.AcquireLease(30, proposedLeaseID, nil)
 	c.Assert(err, chk.IsNil)
 	c.Assert(leaseID, chk.Equals, proposedLeaseID)
 }
@@ -38,13 +38,13 @@ func (s *LeaseBlobSuite) TestAcquireLeaseWithBadProposedLeaseID(c *chk.C) {
 	cli := getBlobClient(c)
 	cnt := cli.GetContainerReference(randContainer())
 	b := cnt.GetBlobReference(randName(5))
-	c.Assert(cnt.Create(), chk.IsNil)
-	defer cnt.Delete()
+	c.Assert(cnt.Create(nil), chk.IsNil)
+	defer cnt.Delete(nil)
 
 	c.Assert(b.putSingleBlockBlob([]byte{}), chk.IsNil)
 
 	proposedLeaseID := "badbadbad"
-	_, err := b.AcquireLease(30, proposedLeaseID)
+	_, err := b.AcquireLease(30, proposedLeaseID, nil)
 	c.Assert(err, chk.NotNil)
 }
 
@@ -52,16 +52,16 @@ func (s *LeaseBlobSuite) TestRenewLeaseSuccessful(c *chk.C) {
 	cli := getBlobClient(c)
 	cnt := cli.GetContainerReference(randContainer())
 	b := cnt.GetBlobReference(randName(5))
-	c.Assert(cnt.Create(), chk.IsNil)
-	defer cnt.Delete()
+	c.Assert(cnt.Create(nil), chk.IsNil)
+	defer cnt.Delete(nil)
 
 	c.Assert(b.putSingleBlockBlob([]byte{}), chk.IsNil)
 
 	proposedLeaseID := "dfe6dde8-68d5-4910-9248-c97c61768fea"
-	leaseID, err := b.AcquireLease(30, proposedLeaseID)
+	leaseID, err := b.AcquireLease(30, proposedLeaseID, nil)
 	c.Assert(err, chk.IsNil)
 
-	err = b.RenewLease(leaseID)
+	err = b.RenewLease(leaseID, nil)
 	c.Assert(err, chk.IsNil)
 }
 
@@ -69,13 +69,13 @@ func (s *LeaseBlobSuite) TestRenewLeaseAgainstNoCurrentLease(c *chk.C) {
 	cli := getBlobClient(c)
 	cnt := cli.GetContainerReference(randContainer())
 	b := cnt.GetBlobReference(randName(5))
-	c.Assert(cnt.Create(), chk.IsNil)
-	defer cnt.Delete()
+	c.Assert(cnt.Create(nil), chk.IsNil)
+	defer cnt.Delete(nil)
 
 	c.Assert(b.putSingleBlockBlob([]byte{}), chk.IsNil)
 
 	badLeaseID := "Golang rocks on Azure"
-	err := b.RenewLease(badLeaseID)
+	err := b.RenewLease(badLeaseID, nil)
 	c.Assert(err, chk.NotNil)
 }
 
@@ -83,16 +83,16 @@ func (s *LeaseBlobSuite) TestChangeLeaseSuccessful(c *chk.C) {
 	cli := getBlobClient(c)
 	cnt := cli.GetContainerReference(randContainer())
 	b := cnt.GetBlobReference(randName(5))
-	c.Assert(cnt.Create(), chk.IsNil)
-	defer cnt.Delete()
+	c.Assert(cnt.Create(nil), chk.IsNil)
+	defer cnt.Delete(nil)
 
 	c.Assert(b.putSingleBlockBlob([]byte{}), chk.IsNil)
 	proposedLeaseID := "dfe6dde8-68d5-4910-9248-c97c61768fea"
-	leaseID, err := b.AcquireLease(30, proposedLeaseID)
+	leaseID, err := b.AcquireLease(30, proposedLeaseID, nil)
 	c.Assert(err, chk.IsNil)
 
 	newProposedLeaseID := "dfe6dde8-68d5-4910-9248-c97c61768fbb"
-	newLeaseID, err := b.ChangeLease(leaseID, newProposedLeaseID)
+	newLeaseID, err := b.ChangeLease(leaseID, newProposedLeaseID, nil)
 	c.Assert(err, chk.IsNil)
 	c.Assert(newLeaseID, chk.Equals, newProposedLeaseID)
 }
@@ -101,16 +101,16 @@ func (s *LeaseBlobSuite) TestChangeLeaseNotSuccessfulbadProposedLeaseID(c *chk.C
 	cli := getBlobClient(c)
 	cnt := cli.GetContainerReference(randContainer())
 	b := cnt.GetBlobReference(randName(5))
-	c.Assert(cnt.Create(), chk.IsNil)
-	defer cnt.Delete()
+	c.Assert(cnt.Create(nil), chk.IsNil)
+	defer cnt.Delete(nil)
 
 	c.Assert(b.putSingleBlockBlob([]byte{}), chk.IsNil)
 	proposedLeaseID := "dfe6dde8-68d5-4910-9248-c97c61768fea"
-	leaseID, err := b.AcquireLease(30, proposedLeaseID)
+	leaseID, err := b.AcquireLease(30, proposedLeaseID, nil)
 	c.Assert(err, chk.IsNil)
 
 	newProposedLeaseID := "1f812371-a41d-49e6-b123-f4b542e"
-	_, err = b.ChangeLease(leaseID, newProposedLeaseID)
+	_, err = b.ChangeLease(leaseID, newProposedLeaseID, nil)
 	c.Assert(err, chk.NotNil)
 }
 
@@ -118,15 +118,15 @@ func (s *LeaseBlobSuite) TestReleaseLeaseSuccessful(c *chk.C) {
 	cli := getBlobClient(c)
 	cnt := cli.GetContainerReference(randContainer())
 	b := cnt.GetBlobReference(randName(5))
-	c.Assert(cnt.Create(), chk.IsNil)
-	defer cnt.Delete()
+	c.Assert(cnt.Create(nil), chk.IsNil)
+	defer cnt.Delete(nil)
 
 	c.Assert(b.putSingleBlockBlob([]byte{}), chk.IsNil)
 	proposedLeaseID := "dfe6dde8-68d5-4910-9248-c97c61768fea"
-	leaseID, err := b.AcquireLease(30, proposedLeaseID)
+	leaseID, err := b.AcquireLease(30, proposedLeaseID, nil)
 	c.Assert(err, chk.IsNil)
 
-	err = b.ReleaseLease(leaseID)
+	err = b.ReleaseLease(leaseID, nil)
 	c.Assert(err, chk.IsNil)
 }
 
@@ -134,15 +134,15 @@ func (s *LeaseBlobSuite) TestReleaseLeaseNotSuccessfulBadLeaseID(c *chk.C) {
 	cli := getBlobClient(c)
 	cnt := cli.GetContainerReference(randContainer())
 	b := cnt.GetBlobReference(randName(5))
-	c.Assert(cnt.Create(), chk.IsNil)
-	defer cnt.Delete()
+	c.Assert(cnt.Create(nil), chk.IsNil)
+	defer cnt.Delete(nil)
 
 	c.Assert(b.putSingleBlockBlob([]byte{}), chk.IsNil)
 	proposedLeaseID := "dfe6dde8-68d5-4910-9248-c97c61768fea"
-	_, err := b.AcquireLease(30, proposedLeaseID)
+	_, err := b.AcquireLease(30, proposedLeaseID, nil)
 	c.Assert(err, chk.IsNil)
 
-	err = b.ReleaseLease("badleaseid")
+	err = b.ReleaseLease("badleaseid", nil)
 	c.Assert(err, chk.NotNil)
 }
 
@@ -150,15 +150,15 @@ func (s *LeaseBlobSuite) TestBreakLeaseSuccessful(c *chk.C) {
 	cli := getBlobClient(c)
 	cnt := cli.GetContainerReference(randContainer())
 	b := cnt.GetBlobReference(randName(5))
-	c.Assert(cnt.Create(), chk.IsNil)
-	defer cnt.Delete()
+	c.Assert(cnt.Create(nil), chk.IsNil)
+	defer cnt.Delete(nil)
 
 	c.Assert(b.putSingleBlockBlob([]byte{}), chk.IsNil)
 
 	proposedLeaseID := "dfe6dde8-68d5-4910-9248-c97c61768fea"
-	_, err := b.AcquireLease(30, proposedLeaseID)
+	_, err := b.AcquireLease(30, proposedLeaseID, nil)
 	c.Assert(err, chk.IsNil)
 
-	_, err = b.BreakLease()
+	_, err = b.BreakLease(nil)
 	c.Assert(err, chk.IsNil)
 }

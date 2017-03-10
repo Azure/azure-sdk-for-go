@@ -70,14 +70,47 @@ func (s *StorageClientSuite) Test_xmlMarshal(c *chk.C) {
 
 func (s *StorageClientSuite) Test_headersFromStruct(c *chk.C) {
 	type t struct {
-		header1 string `header:"HEADER1"`
-		header2 string `header:"HEADER2"`
+		Header1        string     `header:"HEADER1"`
+		Header2        string     `header:"HEADER2"`
+		TimePtr        *time.Time `header:"ptr-time-header"`
+		TimeHeader     time.Time  `header:"time-header"`
+		UintPtr        *uint      `header:"ptr-uint-header"`
+		UintHeader     uint       `header:"uint-header"`
+		IntPtr         *int       `header:"ptr-int-header"`
+		IntHeader      int        `header:"int-header"`
+		StringAliasPtr *BlobType  `header:"ptr-string-alias-header"`
+		StringAlias    BlobType   `header:"string-alias-header"`
+		NilPtr         *time.Time `header:"nil-ptr"`
+		EmptyString    string     `header:"empty-string"`
 	}
 
-	h := t{header1: "value1", header2: "value2"}
+	timeHeader := time.Date(1985, time.February, 23, 10, 0, 0, 0, time.Local)
+	uintHeader := uint(15)
+	intHeader := 30
+	alias := BlobTypeAppend
+	h := t{
+		Header1:        "value1",
+		Header2:        "value2",
+		TimePtr:        &timeHeader,
+		TimeHeader:     timeHeader,
+		UintPtr:        &uintHeader,
+		UintHeader:     uintHeader,
+		IntPtr:         &intHeader,
+		IntHeader:      intHeader,
+		StringAliasPtr: &alias,
+		StringAlias:    alias,
+	}
 	expected := map[string]string{
-		"HEADER1": "value1",
-		"HEADER2": "value2",
+		"HEADER1":                 "value1",
+		"HEADER2":                 "value2",
+		"ptr-time-header":         "Sat, 23 Feb 1985 10:00:00 GMT",
+		"time-header":             "Sat, 23 Feb 1985 10:00:00 GMT",
+		"ptr-uint-header":         "15",
+		"uint-header":             "15",
+		"ptr-int-header":          "30",
+		"int-header":              "30",
+		"ptr-string-alias-header": "AppendBlob",
+		"string-alias-header":     "AppendBlob",
 	}
 
 	out := headersFromStruct(h)

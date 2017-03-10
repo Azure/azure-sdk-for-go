@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"net/url"
 	"strconv"
+	"time"
 )
 
 // lease constants.
@@ -25,8 +26,14 @@ const (
 )
 
 // leasePut is common PUT code for the various acquire/release/break etc functions.
-func (b *Blob) leaseCommonPut(headers map[string]string, expectedStatus int) (http.Header, error) {
-	uri := b.Container.bsc.client.getEndpoint(blobServiceName, b.buildPath(), url.Values{"comp": {"lease"}})
+func (b *Blob) leaseCommonPut(headers map[string]string, expectedStatus int, options *LeaseOptions) (http.Header, error) {
+	params := url.Values{"comp": {"lease"}}
+
+	if options != nil {
+		params = addTimeout(params, options.Timeout)
+		headers = mergeHeaders(headers, headersFromStruct(*options))
+	}
+	uri := b.Container.bsc.client.getEndpoint(blobServiceName, b.buildPath(), params)
 
 	resp, err := b.Container.bsc.client.exec(http.MethodPut, uri, headers, nil, b.Container.bsc.auth)
 	if err != nil {
@@ -41,11 +48,23 @@ func (b *Blob) leaseCommonPut(headers map[string]string, expectedStatus int) (ht
 	return resp.headers, nil
 }
 
-// AcquireLease creates a lease for a blob as per https://msdn.microsoft.com/en-us/library/azure/ee691972.aspx
+// LeaseOptions includes options for all operations regarding leasing blobs
+type LeaseOptions struct {
+	Timeout           uint
+	Origin            string     `header:"Origin"`
+	IfMatch           string     `header:"If-Match"`
+	IfNoneMatch       string     `header:"If-None-Match"`
+	IfModifiedSince   *time.Time `header:"If-Modified-Since"`
+	IfUnmodifiedSince *time.Time `header:"If-Unmodified-Since"`
+	RequestID         string     `header:"x-ms-client-request-id"`
+}
+
+// AcquireLease creates a lease for a blob
 // returns leaseID acquired
 // In API Versions starting on 2012-02-12, the minimum leaseTimeInSeconds is 15, the maximum
 // non-infinite leaseTimeInSeconds is 60. To specify an infinite lease, provide the value -1.
-func (b *Blob) AcquireLease(leaseTimeInSeconds int, proposedLeaseID string) (returnedLeaseID string, err error) {
+// See https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/Lease-Blob
+func (b *Blob) AcquireLease(leaseTimeInSeconds int, proposedLeaseID string, options *LeaseOptions) (returnedLeaseID string, err error) {
 	headers := b.Container.bsc.client.getStandardHeaders()
 	headers[leaseAction] = acquireLease
 
@@ -63,7 +82,7 @@ func (b *Blob) AcquireLease(leaseTimeInSeconds int, proposedLeaseID string) (ret
 		headers[leaseProposedID] = proposedLeaseID
 	}
 
-	respHeaders, err := b.leaseCommonPut(headers, http.StatusCreated)
+	respHeaders, err := b.leaseCommonPut(headers, http.StatusCreated, options)
 	if err != nil {
 		return "", err
 	}
@@ -77,28 +96,30 @@ func (b *Blob) AcquireLease(leaseTimeInSeconds int, proposedLeaseID string) (ret
 	return "", errors.New("LeaseID not returned")
 }
 
-// BreakLease breaks the lease for a blob as per https://msdn.microsoft.com/en-us/library/azure/ee691972.aspx
+// BreakLease breaks the lease for a blob
 // Returns the timeout remaining in the lease in seconds
-func (b *Blob) BreakLease() (breakTimeout int, err error) {
+// See https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/Lease-Blob
+func (b *Blob) BreakLease(options *LeaseOptions) (breakTimeout int, err error) {
 	headers := b.Container.bsc.client.getStandardHeaders()
 	headers[leaseAction] = breakLease
-	return b.breakLeaseCommon(headers)
+	return b.breakLeaseCommon(headers, options)
 }
 
-// BreakLeaseWithBreakPeriod breaks the lease for a blob as per https://msdn.microsoft.com/en-us/library/azure/ee691972.aspx
+// BreakLeaseWithBreakPeriod breaks the lease for a blob
 // breakPeriodInSeconds is used to determine how long until new lease can be created.
 // Returns the timeout remaining in the lease in seconds
-func (b *Blob) BreakLeaseWithBreakPeriod(breakPeriodInSeconds int) (breakTimeout int, err error) {
+// See https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/Lease-Blob
+func (b *Blob) BreakLeaseWithBreakPeriod(breakPeriodInSeconds int, options *LeaseOptions) (breakTimeout int, err error) {
 	headers := b.Container.bsc.client.getStandardHeaders()
 	headers[leaseAction] = breakLease
 	headers[leaseBreakPeriod] = strconv.Itoa(breakPeriodInSeconds)
-	return b.breakLeaseCommon(headers)
+	return b.breakLeaseCommon(headers, options)
 }
 
 // breakLeaseCommon is common code for both version of BreakLease (with and without break period)
-func (b *Blob) breakLeaseCommon(headers map[string]string) (breakTimeout int, err error) {
+func (b *Blob) breakLeaseCommon(headers map[string]string, options *LeaseOptions) (breakTimeout int, err error) {
 
-	respHeaders, err := b.leaseCommonPut(headers, http.StatusAccepted)
+	respHeaders, err := b.leaseCommonPut(headers, http.StatusAccepted, options)
 	if err != nil {
 		return 0, err
 	}
@@ -114,15 +135,16 @@ func (b *Blob) breakLeaseCommon(headers map[string]string) (breakTimeout int, er
 	return breakTimeout, nil
 }
 
-// ChangeLease changes a lease ID for a blob as per https://msdn.microsoft.com/en-us/library/azure/ee691972.aspx
+// ChangeLease changes a lease ID for a blob
 // Returns the new LeaseID acquired
-func (b *Blob) ChangeLease(currentLeaseID string, proposedLeaseID string) (newLeaseID string, err error) {
+// See https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/Lease-Blob
+func (b *Blob) ChangeLease(currentLeaseID string, proposedLeaseID string, options *LeaseOptions) (newLeaseID string, err error) {
 	headers := b.Container.bsc.client.getStandardHeaders()
 	headers[leaseAction] = changeLease
 	headers[headerLeaseID] = currentLeaseID
 	headers[leaseProposedID] = proposedLeaseID
 
-	respHeaders, err := b.leaseCommonPut(headers, http.StatusOK)
+	respHeaders, err := b.leaseCommonPut(headers, http.StatusOK, options)
 	if err != nil {
 		return "", err
 	}
@@ -135,13 +157,14 @@ func (b *Blob) ChangeLease(currentLeaseID string, proposedLeaseID string) (newLe
 	return "", errors.New("LeaseID not returned")
 }
 
-// ReleaseLease releases the lease for a blob as per https://msdn.microsoft.com/en-us/library/azure/ee691972.aspx
-func (b *Blob) ReleaseLease(currentLeaseID string) error {
+// ReleaseLease releases the lease for a blob
+// See https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/Lease-Blob
+func (b *Blob) ReleaseLease(currentLeaseID string, options *LeaseOptions) error {
 	headers := b.Container.bsc.client.getStandardHeaders()
 	headers[leaseAction] = releaseLease
 	headers[headerLeaseID] = currentLeaseID
 
-	_, err := b.leaseCommonPut(headers, http.StatusOK)
+	_, err := b.leaseCommonPut(headers, http.StatusOK, options)
 	if err != nil {
 		return err
 	}
@@ -150,12 +173,12 @@ func (b *Blob) ReleaseLease(currentLeaseID string) error {
 }
 
 // RenewLease renews the lease for a blob as per https://msdn.microsoft.com/en-us/library/azure/ee691972.aspx
-func (b *Blob) RenewLease(currentLeaseID string) error {
+func (b *Blob) RenewLease(currentLeaseID string, options *LeaseOptions) error {
 	headers := b.Container.bsc.client.getStandardHeaders()
 	headers[leaseAction] = renewLease
 	headers[headerLeaseID] = currentLeaseID
 
-	_, err := b.leaseCommonPut(headers, http.StatusOK)
+	_, err := b.leaseCommonPut(headers, http.StatusOK, options)
 	if err != nil {
 		return err
 	}

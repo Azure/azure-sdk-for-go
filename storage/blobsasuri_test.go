@@ -135,9 +135,9 @@ func (s *BlobSASURISuite) TestGetBlobSASURIWithSignedIPAndProtocolUsingOldAPIVer
 func (s *BlobSASURISuite) TestBlobSASURICorrectness(c *chk.C) {
 	cli := getBlobClient(c)
 	cnt := cli.GetContainerReference(randContainer())
-	c.Assert(cnt.Create(), chk.IsNil)
+	c.Assert(cnt.Create(nil), chk.IsNil)
 	b := cnt.GetBlobReference(randNameWithSpecialChars(5))
-	defer cnt.Delete()
+	defer cnt.Delete(nil)
 
 	body := []byte(randString(100))
 	expiry := now.UTC().Add(time.Hour)

@@ -8,9 +8,9 @@ import (
 	"io"
 	"io/ioutil"
 	"net/http"
+	"strconv"
 
 	chk "gopkg.in/check.v1"
-	"strconv"
 )
 
 type StorageBlobSuite struct{}
@@ -43,9 +43,9 @@ func (s *StorageBlobSuite) Test_pathForResource(c *chk.C) {
 func (s *StorageBlobSuite) TestBlobExists(c *chk.C) {
 	cli := getBlobClient(c)
 	cnt := cli.GetContainerReference(randContainer())
-	c.Assert(cnt.Create(), chk.IsNil)
+	c.Assert(cnt.Create(nil), chk.IsNil)
 	b := cnt.GetBlobReference(randName(5))
-	defer cnt.Delete()
+	defer cnt.Delete(nil)
 
 	c.Assert(b.putSingleBlockBlob([]byte("Hello!")), chk.IsNil)
 	defer b.Delete(nil)
@@ -53,7 +53,6 @@ func (s *StorageBlobSuite) TestBlobExists(c *chk.C) {
 	ok, err := b.Exists()
 	c.Assert(err, chk.IsNil)
 	c.Assert(ok, chk.Equals, true)
-
 	b.Name += ".lol"
 	ok, err = b.Exists()
 	c.Assert(err, chk.IsNil)
@@ -85,7 +84,6 @@ func (s *StorageBlobSuite) TestGetBlobContainerURL(c *chk.C) {
 
 	cnt := blobCli.GetContainerReference("c")
 	b := cnt.GetBlobReference("")
-
 	c.Assert(b.GetURL(), chk.Equals, "https://golangrocksonazure.blob.core.windows.net/c")
 
 	cnt.Name = ""
@@ -96,8 +94,8 @@ func (s *StorageBlobSuite) TestDeleteBlobIfExists(c *chk.C) {
 	cli := getBlobClient(c)
 	cnt := cli.GetContainerReference(randContainer())
 	b := cnt.GetBlobReference(randName(5))
-	c.Assert(cnt.Create(), chk.IsNil)
-	defer cnt.Delete()
+	c.Assert(cnt.Create(nil), chk.IsNil)
+	defer cnt.Delete(nil)
 
 	c.Assert(b.Delete(nil), chk.NotNil)
 
@@ -110,24 +108,25 @@ func (s *StorageBlobSuite) TestDeleteBlobWithConditions(c *chk.C) {
 	cli := getBlobClient(c)
 	cnt := cli.GetContainerReference(randContainer())
 	b := cnt.GetBlobReference(randName(5))
-	c.Assert(cnt.Create(), chk.IsNil)
-	defer cnt.Delete()
+	c.Assert(cnt.Create(nil), chk.IsNil)
+	defer cnt.Delete(nil)
 
-	c.Assert(b.CreateBlockBlob(), chk.IsNil)
-	err := b.GetProperties()
+	c.Assert(b.CreateBlockBlob(nil), chk.IsNil)
+	err := b.GetProperties(nil)
 	c.Assert(err, chk.IsNil)
 	oldProps := b.Properties
 
 	// Update metadata, so Etag changes
 	c.Assert(b.SetMetadata(nil), chk.IsNil)
-	err = b.GetProperties()
+	err = b.GetProperties(nil)
 	c.Assert(err, chk.IsNil)
 	newProps := b.Properties
 
 	// "Delete if matches old Etag" should fail without deleting.
-	err = b.Delete(map[string]string{
-		"If-Match": oldProps.Etag,
-	})
+	options := DeleteBlobOptions{
+		IfMatch: oldProps.Etag,
+	}
+	err = b.Delete(&options)
 	c.Assert(err, chk.FitsTypeOf, AzureStorageServiceError{})
 	c.Assert(err.(AzureStorageServiceError).StatusCode, chk.Equals, http.StatusPreconditionFailed)
 	ok, err := b.Exists()
@@ -135,9 +134,8 @@ func (s *StorageBlobSuite) TestDeleteBlobWithConditions(c *chk.C) {
 	c.Assert(ok, chk.Equals, true)
 
 	// "Delete if matches new Etag" should succeed.
-	err = b.Delete(map[string]string{
-		"If-Match": newProps.Etag,
-	})
+	options.IfMatch = newProps.Etag
+	err = b.Delete(&options)
 	c.Assert(err, chk.IsNil)
 	ok, err = b.Exists()
 	c.Assert(err, chk.IsNil)
@@ -150,18 +148,18 @@ func (s *StorageBlobSuite) TestGetBlobProperties(c *chk.C) {
 	cli := getBlobClient(c)
 	cnt := cli.GetContainerReference(randContainer())
 	b := cnt.GetBlobReference(randName(5))
-	c.Assert(cnt.Create(), chk.IsNil)
-	defer cnt.Delete()
+	c.Assert(cnt.Create(nil), chk.IsNil)
+	defer cnt.Delete(nil)
 
 	// Nonexisting blob
-	err := b.GetProperties()
+	err := b.GetProperties(nil)
 	c.Assert(err, chk.NotNil)
 
 	// Put the blob
 	c.Assert(b.putSingleBlockBlob([]byte(contents)), chk.IsNil)
 
 	// Get blob properties
-	err = b.GetProperties()
+	err = b.GetProperties(nil)
 	c.Assert(err, chk.IsNil)
 
 	c.Assert(b.Properties.ContentLength, chk.Equals, int64(len(contents)))
@@ -187,12 +185,12 @@ func (s *StorageBlobSuite) TestGetAndSetMetadata(c *chk.C) {
 	cli := getBlobClient(c)
 	cnt := cli.GetContainerReference(randContainer())
 	b := cnt.GetBlobReference(randName(5))
-	c.Assert(cnt.Create(), chk.IsNil)
-	defer cnt.Delete()
+	c.Assert(cnt.Create(nil), chk.IsNil)
+	defer cnt.Delete(nil)
 
 	c.Assert(b.putSingleBlockBlob([]byte{}), chk.IsNil)
 
-	err := b.GetMetadata()
+	err := b.GetMetadata(nil)
 	c.Assert(err, chk.IsNil)
 	c.Assert(b.Metadata, chk.HasLen, 0)
 
@@ -205,7 +203,7 @@ func (s *StorageBlobSuite) TestGetAndSetMetadata(c *chk.C) {
 	err = b.SetMetadata(nil)
 	c.Assert(err, chk.IsNil)
 
-	err = b.GetMetadata()
+	err = b.GetMetadata(nil)
 	c.Assert(err, chk.IsNil)
 	c.Check(b.Metadata, chk.DeepEquals, metaPut)
 
@@ -223,7 +221,7 @@ func (s *StorageBlobSuite) TestGetAndSetMetadata(c *chk.C) {
 	err = b.SetMetadata(nil)
 	c.Assert(err, chk.IsNil)
 
-	err = b.GetMetadata()
+	err = b.GetMetadata(nil)
 	c.Assert(err, chk.IsNil)
 	c.Check(b.Metadata, chk.DeepEquals, metaExpectLower)
 }
@@ -232,8 +230,8 @@ func (s *StorageBlobSuite) TestSetMetadataWithExtraHeaders(c *chk.C) {
 	cli := getBlobClient(c)
 	cnt := cli.GetContainerReference(randContainer())
 	b := cnt.GetBlobReference(randName(5))
-	c.Assert(cnt.Create(), chk.IsNil)
-	defer cnt.Delete()
+	c.Assert(cnt.Create(nil), chk.IsNil)
+	defer cnt.Delete(nil)
 
 	c.Assert(b.putSingleBlockBlob([]byte{}), chk.IsNil)
 
@@ -242,22 +240,20 @@ func (s *StorageBlobSuite) TestSetMetadataWithExtraHeaders(c *chk.C) {
 		"rofl_baz": "waz qux",
 	}
 
-	extraHeaders := map[string]string{
-		"If-Match": "incorrect-etag",
+	options := SetBlobMetadataOptions{
+		IfMatch: "incorrect-etag",
 	}
 
 	// Set with incorrect If-Match in extra headers should result in error
-	err := b.SetMetadata(extraHeaders)
+	err := b.SetMetadata(&options)
 	c.Assert(err, chk.NotNil)
 
-	err = b.GetProperties()
-	extraHeaders = map[string]string{
-		"If-Match": b.Properties.Etag,
-	}
+	err = b.GetProperties(nil)
 	c.Assert(err, chk.IsNil)
 
 	// Set with matching If-Match in extra headers should succeed
-	err = b.SetMetadata(extraHeaders)
+	options.IfMatch = b.Properties.Etag
+	err = b.SetMetadata(&options)
 	c.Assert(err, chk.IsNil)
 }
 
@@ -265,23 +261,24 @@ func (s *StorageBlobSuite) TestSetBlobProperties(c *chk.C) {
 	cli := getBlobClient(c)
 	cnt := cli.GetContainerReference(randContainer())
 	b := cnt.GetBlobReference(randName(5))
-	c.Assert(cnt.Create(), chk.IsNil)
-	defer cnt.Delete()
+	c.Assert(cnt.Create(nil), chk.IsNil)
+	defer cnt.Delete(nil)
 
 	c.Assert(b.putSingleBlockBlob([]byte{}), chk.IsNil)
 
-	input := BlobHeaders{
+	input := BlobProperties{
 		CacheControl:    "private, max-age=0, no-cache",
 		ContentMD5:      "oBATU+oaDduHWbVZLuzIJw==",
 		ContentType:     "application/json",
 		ContentEncoding: "gzip",
 		ContentLanguage: "de-DE",
 	}
+	b.Properties = input
 
-	err := b.SetProperties(input)
+	err := b.SetProperties(nil)
 	c.Assert(err, chk.IsNil)
 
-	err = b.GetProperties()
+	err = b.GetProperties(nil)
 	c.Assert(err, chk.IsNil)
 
 	c.Check(b.Properties.CacheControl, chk.Equals, input.CacheControl)
@@ -295,12 +292,12 @@ func (s *StorageBlobSuite) TestSnapshotBlob(c *chk.C) {
 	cli := getBlobClient(c)
 	cnt := cli.GetContainerReference(randContainer())
 	b := cnt.GetBlobReference(randName(5))
-	c.Assert(cnt.Create(), chk.IsNil)
-	defer cnt.Delete()
+	c.Assert(cnt.Create(nil), chk.IsNil)
+	defer cnt.Delete(nil)
 
 	c.Assert(b.putSingleBlockBlob([]byte{}), chk.IsNil)
 
-	snapshotTime, err := b.Snapshot(0, nil)
+	snapshotTime, err := b.Snapshot(nil)
 	c.Assert(err, chk.IsNil)
 	c.Assert(snapshotTime, chk.NotNil)
 }
@@ -309,12 +306,15 @@ func (s *StorageBlobSuite) TestSnapshotBlobWithTimeout(c *chk.C) {
 	cli := getBlobClient(c)
 	cnt := cli.GetContainerReference(randContainer())
 	b := cnt.GetBlobReference(randName(5))
-	c.Assert(cnt.Create(), chk.IsNil)
-	defer cnt.Delete()
+	c.Assert(cnt.Create(nil), chk.IsNil)
+	defer cnt.Delete(nil)
 
 	c.Assert(b.putSingleBlockBlob([]byte{}), chk.IsNil)
 
-	snapshotTime, err := b.Snapshot(30, nil)
+	options := SnapshotOptions{
+		Timeout: 0,
+	}
+	snapshotTime, err := b.Snapshot(&options)
 	c.Assert(err, chk.IsNil)
 	c.Assert(snapshotTime, chk.NotNil)
 }
@@ -323,20 +323,19 @@ func (s *StorageBlobSuite) TestSnapshotBlobWithValidLease(c *chk.C) {
 	cli := getBlobClient(c)
 	cnt := cli.GetContainerReference(randContainer())
 	b := cnt.GetBlobReference(randName(5))
-	c.Assert(cnt.Create(), chk.IsNil)
-	defer cnt.Delete()
+	c.Assert(cnt.Create(nil), chk.IsNil)
+	defer cnt.Delete(nil)
 
 	c.Assert(b.putSingleBlockBlob([]byte{}), chk.IsNil)
 
 	// generate lease.
-	currentLeaseID, err := b.AcquireLease(30, "")
+	currentLeaseID, err := b.AcquireLease(30, "", nil)
 	c.Assert(err, chk.IsNil)
 
-	extraHeaders := map[string]string{
-		headerLeaseID: currentLeaseID,
+	options := SnapshotOptions{
+		LeaseID: currentLeaseID,
 	}
-
-	snapshotTime, err := b.Snapshot(0, extraHeaders)
+	snapshotTime, err := b.Snapshot(&options)
 	c.Assert(err, chk.IsNil)
 	c.Assert(snapshotTime, chk.NotNil)
 }
@@ -345,21 +344,20 @@ func (s *StorageBlobSuite) TestSnapshotBlobWithInvalidLease(c *chk.C) {
 	cli := getBlobClient(c)
 	cnt := cli.GetContainerReference(randContainer())
 	b := cnt.GetBlobReference(randName(5))
-	c.Assert(cnt.Create(), chk.IsNil)
-	defer cnt.Delete()
+	c.Assert(cnt.Create(nil), chk.IsNil)
+	defer cnt.Delete(nil)
 
 	c.Assert(b.putSingleBlockBlob([]byte{}), chk.IsNil)
 
 	// generate lease.
-	leaseID, err := b.AcquireLease(30, "")
+	leaseID, err := b.AcquireLease(30, "", nil)
 	c.Assert(err, chk.IsNil)
 	c.Assert(leaseID, chk.Not(chk.Equals), "")
 
-	extraHeaders := map[string]string{
-		headerLeaseID: "GolangRocksOnAzure",
+	options := SnapshotOptions{
+		LeaseID: "GolangRocksOnAzure",
 	}
-
-	snapshotTime, err := b.Snapshot(0, extraHeaders)
+	snapshotTime, err := b.Snapshot(&options)
 	c.Assert(err, chk.NotNil)
 	c.Assert(snapshotTime, chk.IsNil)
 }
@@ -370,22 +368,48 @@ func (s *StorageBlobSuite) TestGetBlobRange(c *chk.C) {
 	cli := getBlobClient(c)
 	cnt := cli.GetContainerReference(randContainer())
 	b := cnt.GetBlobReference(randName(5))
-	c.Assert(cnt.Create(), chk.IsNil)
-	defer cnt.Delete()
+	c.Assert(cnt.Create(nil), chk.IsNil)
+	defer cnt.Delete(nil)
 
 	c.Assert(b.putSingleBlockBlob([]byte(body)), chk.IsNil)
 	defer b.Delete(nil)
 
-	// Read 1-3
-	for _, r := range []struct {
-		rangeStr string
+	cases := []struct {
+		options  GetBlobRangeOptions
 		expected string
 	}{
-		{"0-", body},
-		{"1-3", body[1 : 3+1]},
-		{"3-", body[3:]},
-	} {
-		resp, err := b.GetRange(r.rangeStr, nil)
+		{
+			options: GetBlobRangeOptions{
+				Range: &BlobRange{
+					Start: 0,
+					End:   uint64(len(body)),
+				},
+			},
+			expected: body,
+		},
+		{
+			options: GetBlobRangeOptions{
+				Range: &BlobRange{
+					Start: 1,
+					End:   3,
+				},
+			},
+			expected: body[1 : 3+1],
+		},
+		{
+			options: GetBlobRangeOptions{
+				Range: &BlobRange{
+					Start: 3,
+					End:   uint64(len(body)),
+				},
+			},
+			expected: body[3:],
+		},
+	}
+
+	// Read 1-3
+	for _, r := range cases {
+		resp, err := b.GetRange(&(r.options))
 		c.Assert(err, chk.IsNil)
 		blobBody, err := ioutil.ReadAll(resp)
 		c.Assert(err, chk.IsNil)

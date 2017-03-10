@@ -1,14 +1,13 @@
 package storage
 
 import (
-	"bytes"
 	"encoding/xml"
 	"errors"
 	"fmt"
 	"io"
 	"net/http"
 	"net/url"
-	"strconv"
+	"time"
 )
 
 // GetPageRangesResponse contains the response fields from
@@ -34,56 +33,98 @@ var (
 	errBlobCopyIDMismatch = errors.New("storage: blob copy id is a mismatch")
 )
 
-// PageWriteType defines the type updates that are going to be
-// done on the page blob.
-type PageWriteType string
-
-// Types of operations on page blobs
-const (
-	PageWriteTypeUpdate PageWriteType = "update"
-	PageWriteTypeClear  PageWriteType = "clear"
-)
+// PutPageOptions includes the options for a put page operation
+type PutPageOptions struct {
+	Timeout                           uint
+	LeaseID                           string     `header:"x-ms-lease-id"`
+	IfSequenceNumberLessThanOrEqualTo *int       `header:"x-ms-if-sequence-number-le"`
+	IfSequenceNumberLessThan          *int       `header:"x-ms-if-sequence-number-lt"`
+	IfSequenceNumberEqualTo           *int       `header:"x-ms-if-sequence-number-eq"`
+	IfModifiedSince                   *time.Time `header:"If-Modified-Since"`
+	IfUnmodifiedSince                 *time.Time `header:"If-Unmodified-Since"`
+	IfMatch                           string     `header:"If-Match"`
+	IfNoneMatch                       string     `header:"If-None-Match"`
+	RequestID                         string     `header:"x-ms-client-request-id"`
+}
 
 // PutPage writes a range of pages to a page blob or clears the given range.
 // In case of 'clear' writes, given chunk is discarded. Ranges must be aligned
 // with 512-byte boundaries and chunk must be of size multiplies by 512.
 //
-// See https://msdn.microsoft.com/en-us/library/ee691975.aspx
-func (b *Blob) PutPage(startByte, endByte int64, writeType PageWriteType, chunk []byte, extraHeaders map[string]string) error {
-	uri := b.Container.bsc.client.getEndpoint(blobServiceName, b.buildPath(), url.Values{"comp": {"page"}})
-	extraHeaders = b.Container.bsc.client.protectUserAgent(extraHeaders)
+// See https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/Put-Page
+func (b *Blob) PutPage(blobRange BlobRange, bytes io.Reader, options *PutPageOptions) error {
+	if blobRange.End < blobRange.Start {
+		return errors.New("the value for rangeEnd must be greater than or equal to rangeStart")
+	}
+	if blobRange.Start%512 != 0 {
+		return errors.New("the value for rangeStart must be a modulus of 512")
+	}
+	if blobRange.End%512 != 511 {
+		return errors.New("the value for rangeEnd must be a modulus of 511")
+	}
+
+	params := url.Values{"comp": {"page"}}
+
+	// default to clear
+	write := "clear"
+	var cl uint64
+
+	// if bytes is not nil then this is an update operation
+	if bytes != nil {
+		write = "update"
+		cl = (blobRange.End - blobRange.Start) + 1
+	}
+
 	headers := b.Container.bsc.client.getStandardHeaders()
 	headers["x-ms-blob-type"] = string(BlobTypePage)
-	headers["x-ms-page-write"] = string(writeType)
-	headers["x-ms-range"] = fmt.Sprintf("bytes=%v-%v", startByte, endByte)
-	for k, v := range extraHeaders {
-		headers[k] = v
-	}
-	var contentLength int64
-	var data io.Reader
-	if writeType == PageWriteTypeClear {
-		contentLength = 0
-		data = bytes.NewReader([]byte{})
-	} else {
-		contentLength = int64(len(chunk))
-		data = bytes.NewReader(chunk)
-	}
-	headers["Content-Length"] = strconv.FormatInt(contentLength, 10)
+	headers["x-ms-page-write"] = write
+	headers["x-ms-range"] = blobRange.String()
+	headers["Content-Length"] = fmt.Sprintf("%v", cl)
 
-	resp, err := b.Container.bsc.client.exec(http.MethodPut, uri, headers, data, b.Container.bsc.auth)
+	if options != nil {
+		params = addTimeout(params, options.Timeout)
+		headers = mergeHeaders(headers, headersFromStruct(*options))
+	}
+	uri := b.Container.bsc.client.getEndpoint(blobServiceName, b.buildPath(), params)
+
+	resp, err := b.Container.bsc.client.exec(http.MethodPut, uri, headers, bytes, b.Container.bsc.auth)
 	if err != nil {
 		return err
 	}
 	readAndCloseBody(resp.body)
+
 	return checkRespCode(resp.statusCode, []int{http.StatusCreated})
+}
+
+// GetPageRangesOptions includes the options for a get page ranges operation
+type GetPageRangesOptions struct {
+	Timeout          uint
+	Snapshot         *time.Time
+	PreviousSnapshot *time.Time
+	Range            *BlobRange
+	LeaseID          string `header:"x-ms-lease-id"`
+	RequestID        string `header:"x-ms-client-request-id"`
 }
 
 // GetPageRanges returns the list of valid page ranges for a page blob.
 //
-// See https://msdn.microsoft.com/en-us/library/azure/ee691973.aspx
-func (b *Blob) GetPageRanges() (GetPageRangesResponse, error) {
-	uri := b.Container.bsc.client.getEndpoint(blobServiceName, b.buildPath(), url.Values{"comp": {"pagelist"}})
+// See https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/Get-Page-Ranges
+func (b *Blob) GetPageRanges(options *GetPageRangesOptions) (GetPageRangesResponse, error) {
+	params := url.Values{"comp": {"pagelist"}}
 	headers := b.Container.bsc.client.getStandardHeaders()
+
+	if options != nil {
+		params = addTimeout(params, options.Timeout)
+		params = addSnapshot(params, options.Snapshot)
+		if options.PreviousSnapshot != nil {
+			params.Add("prevsnapshot", timeRfc1123Formatted(*options.PreviousSnapshot))
+		}
+		if options.Range != nil {
+			headers["Range"] = options.Range.String()
+		}
+		headers = mergeHeaders(headers, headersFromStruct(*options))
+	}
+	uri := b.Container.bsc.client.getEndpoint(blobServiceName, b.buildPath(), params)
 
 	var out GetPageRangesResponse
 	resp, err := b.Container.bsc.client.exec(http.MethodGet, uri, headers, nil, b.Container.bsc.auth)
@@ -103,17 +144,25 @@ func (b *Blob) GetPageRanges() (GetPageRangesResponse, error) {
 // size in bytes (size must be aligned to a 512-byte boundary). A page blob must
 // be created using this method before writing pages.
 //
-// See https://msdn.microsoft.com/en-us/library/azure/dd179451.aspx
-func (b *Blob) PutPageBlob(size int64, extraHeaders map[string]string) error {
-	uri := b.Container.bsc.client.getEndpoint(blobServiceName, b.buildPath(), nil)
-	extraHeaders = b.Container.bsc.client.protectUserAgent(extraHeaders)
+// See https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/Put-Blob
+func (b *Blob) PutPageBlob(options *PutBlobOptions) error {
+	if b.Properties.ContentLength%512 != 0 {
+		return errors.New("Content length must be aligned to a 512-byte boundary")
+	}
+
+	params := url.Values{}
 	headers := b.Container.bsc.client.getStandardHeaders()
 	headers["x-ms-blob-type"] = string(BlobTypePage)
-	headers["x-ms-blob-content-length"] = strconv.FormatInt(size, 10)
+	headers["x-ms-blob-content-length"] = fmt.Sprintf("%v", b.Properties.ContentLength)
+	headers["x-ms-blob-sequence-number"] = fmt.Sprintf("%v", b.Properties.SequenceNumber)
+	headers = mergeHeaders(headers, headersFromStruct(b.Properties))
+	headers = b.Container.bsc.client.addMetadataToHeaders(headers, b.Metadata)
 
-	for k, v := range extraHeaders {
-		headers[k] = v
+	if options != nil {
+		params = addTimeout(params, options.Timeout)
+		headers = mergeHeaders(headers, headersFromStruct(*options))
 	}
+	uri := b.Container.bsc.client.getEndpoint(blobServiceName, b.buildPath(), params)
 
 	resp, err := b.Container.bsc.client.exec(http.MethodPut, uri, headers, nil, b.Container.bsc.auth)
 	if err != nil {

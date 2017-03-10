@@ -6,7 +6,6 @@ import (
 	"net/url"
 	"os"
 	"testing"
-	"time"
 
 	chk "gopkg.in/check.v1"
 )
@@ -17,8 +16,6 @@ func Test(t *testing.T) { chk.TestingT(t) }
 type StorageClientSuite struct{}
 
 var _ = chk.Suite(&StorageClientSuite{})
-
-var now = time.Now()
 
 // getBasicClient returns a test client from storage credentials in the env
 func getBasicClient(c *chk.C) Client {
@@ -174,7 +171,7 @@ func (s *StorageClientSuite) TestReturnsStorageServiceError(c *chk.C) {
 	// attempt to delete a nonexisting container
 	cli := getBlobClient(c)
 	cnt := cli.GetContainerReference(randContainer())
-	_, err := cnt.delete()
+	_, err := cnt.delete(nil)
 	c.Assert(err, chk.NotNil)
 
 	v, ok := err.(AzureStorageServiceError)
@@ -190,7 +187,7 @@ func (s *StorageClientSuite) TestReturnsStorageServiceError_withoutResponseBody(
 	cli := getBlobClient(c)
 	cnt := cli.GetContainerReference("non-existing-container")
 	b := cnt.GetBlobReference("non-existing-blob")
-	err := b.GetProperties()
+	err := b.GetProperties(nil)
 
 	c.Assert(err, chk.NotNil)
 	c.Assert(err, chk.FitsTypeOf, AzureStorageServiceError{})

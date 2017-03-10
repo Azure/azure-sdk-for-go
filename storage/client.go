@@ -486,3 +486,11 @@ func checkRespCode(respCode int, allowed []int) error {
 	}
 	return UnexpectedStatusCodeError{allowed, respCode}
 }
+
+func (c Client) addMetadataToHeaders(h map[string]string, metadata map[string]string) map[string]string {
+	metadata = c.protectUserAgent(metadata)
+	for k, v := range metadata {
+		h[userDefinedMetadataHeaderPrefix+k] = v
+	}
+	return h
+}

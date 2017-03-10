@@ -20,6 +20,19 @@ type Blob struct {
 	Metadata   BlobMetadata   `xml:"Metadata"`
 }
 
+// PutBlobOptions includes the options any put blob operation
+// (page, block, append)
+type PutBlobOptions struct {
+	Timeout           uint
+	LeaseID           string     `header:"x-ms-lease-id"`
+	Origin            string     `header:"Origin"`
+	IfModifiedSince   *time.Time `header:"If-Modified-Since"`
+	IfUnmodifiedSince *time.Time `header:"If-Unmodified-Since"`
+	IfMatch           string     `header:"If-Match"`
+	IfNoneMatch       string     `header:"If-None-Match"`
+	RequestID         string     `header:"x-ms-client-request-id"`
+}
+
 // BlobMetadata is a set of custom name/value pairs.
 //
 // See https://msdn.microsoft.com/en-us/library/azure/dd179404.aspx
@@ -67,34 +80,28 @@ func (bm BlobMetadata) MarshalXML(enc *xml.Encoder, start xml.StartElement) erro
 // BlobProperties contains various properties of a blob
 // returned in various endpoints like ListBlobs or GetBlobProperties.
 type BlobProperties struct {
-	LastModified          string   `xml:"Last-Modified"`
-	Etag                  string   `xml:"Etag"`
-	ContentMD5            string   `xml:"Content-MD5"`
-	ContentLength         int64    `xml:"Content-Length"`
-	ContentType           string   `xml:"Content-Type"`
-	ContentEncoding       string   `xml:"Content-Encoding"`
-	CacheControl          string   `xml:"Cache-Control"`
-	ContentLanguage       string   `xml:"Cache-Language"`
-	BlobType              BlobType `xml:"x-ms-blob-blob-type"`
-	SequenceNumber        int64    `xml:"x-ms-blob-sequence-number"`
-	CopyID                string   `xml:"CopyId"`
-	CopyStatus            string   `xml:"CopyStatus"`
-	CopySource            string   `xml:"CopySource"`
-	CopyProgress          string   `xml:"CopyProgress"`
-	CopyCompletionTime    string   `xml:"CopyCompletionTime"`
-	CopyStatusDescription string   `xml:"CopyStatusDescription"`
-	LeaseStatus           string   `xml:"LeaseStatus"`
-	LeaseState            string   `xml:"LeaseState"`
-}
-
-// BlobHeaders contains various properties of a blob and is an entry
-// in SetBlobProperties
-type BlobHeaders struct {
-	ContentMD5      string `header:"x-ms-blob-content-md5"`
-	ContentLanguage string `header:"x-ms-blob-content-language"`
-	ContentEncoding string `header:"x-ms-blob-content-encoding"`
-	ContentType     string `header:"x-ms-blob-content-type"`
-	CacheControl    string `header:"x-ms-blob-cache-control"`
+	LastModified          TimeRFC1123 `xml:"Last-Modified"`
+	Etag                  string      `xml:"Etag"`
+	ContentMD5            string      `xml:"Content-MD5" header:"x-ms-blob-content-md5"`
+	ContentLength         int64       `xml:"Content-Length"`
+	ContentType           string      `xml:"Content-Type" header:"x-ms-blob-content-type"`
+	ContentEncoding       string      `xml:"Content-Encoding" header:"x-ms-blob-content-encoding"`
+	CacheControl          string      `xml:"Cache-Control" header:"x-ms-blob-cache-control"`
+	ContentLanguage       string      `xml:"Cache-Language" header:"x-ms-blob-content-language"`
+	ContentDisposition    string      `xml:"Content-Disposition" header:"x-ms-blob-content-disposition"`
+	BlobType              BlobType    `xml:"x-ms-blob-blob-type"`
+	SequenceNumber        int64       `xml:"x-ms-blob-sequence-number"`
+	CopyID                string      `xml:"CopyId"`
+	CopyStatus            string      `xml:"CopyStatus"`
+	CopySource            string      `xml:"CopySource"`
+	CopyProgress          string      `xml:"CopyProgress"`
+	CopyCompletionTime    TimeRFC1123 `xml:"CopyCompletionTime"`
+	CopyStatusDescription string      `xml:"CopyStatusDescription"`
+	LeaseStatus           string      `xml:"LeaseStatus"`
+	LeaseState            string      `xml:"LeaseState"`
+	LeaseDuration         string      `xml:"LeaseDuration"`
+	ServerEncrypted       bool        `xml:"ServerEncrypted"`
+	IncrementalCopy       bool        `xml:"IncrementalCopy"`
 }
 
 // BlobType defines the type of the Azure Blob.
@@ -139,11 +146,44 @@ func (b *Blob) GetURL() string {
 	return b.Container.bsc.client.getEndpoint(blobServiceName, pathForResource(container, b.Name), nil)
 }
 
+// GetBlobRangeOptions includes the options for a get blob range operation
+type GetBlobRangeOptions struct {
+	Range              *BlobRange
+	GetRangeContentMD5 bool
+	*GetBlobOptions
+}
+
+// GetBlobOptions includes the options for a get blob operation
+type GetBlobOptions struct {
+	Timeout           uint
+	Snapshot          *time.Time
+	LeaseID           string     `header:"x-ms-lease-id"`
+	Origin            string     `header:"Origin"`
+	IfModifiedSince   *time.Time `header:"If-Modified-Since"`
+	IfUnmodifiedSince *time.Time `header:"If-Unmodified-Since"`
+	IfMatch           string     `header:"If-Match"`
+	IfNoneMatch       string     `header:"If-None-Match"`
+	RequestID         string     `header:"x-ms-client-request-id"`
+}
+
+// BlobRange represents the bytes range to be get
+type BlobRange struct {
+	Start uint64
+	End   uint64
+}
+
+func (br BlobRange) String() string {
+	return fmt.Sprintf("bytes=%d-%d", br.Start, br.End)
+}
+
 // Get returns a stream to read the blob. Caller must call both Read and Close()
 // to correctly close the underlying connection.
-// See https://msdn.microsoft.com/en-us/library/azure/dd179440.aspx
-func (b *Blob) Get() (io.ReadCloser, error) {
-	resp, err := b.getRange("", nil)
+// See https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/Get-Blob
+func (b *Blob) Get(options *GetBlobOptions) (io.ReadCloser, error) {
+	rangeOptions := GetBlobRangeOptions{
+		GetBlobOptions: options,
+	}
+	resp, err := b.getRange(&rangeOptions)
 	if err != nil {
 		return nil, err
 	}
@@ -158,9 +198,9 @@ func (b *Blob) Get() (io.ReadCloser, error) {
 // string must be in a format like "0-", "10-100" as defined in HTTP 1.1 spec.
 // Caller must call both Read and Close()// to correctly close the underlying
 // connection.
-// See https://msdn.microsoft.com/en-us/library/azure/dd179440.aspx
-func (b *Blob) GetRange(bytesRange string, extraHeaders map[string]string) (io.ReadCloser, error) {
-	resp, err := b.getRange(bytesRange, extraHeaders)
+// See https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/Get-Blob
+func (b *Blob) GetRange(options *GetBlobRangeOptions) (io.ReadCloser, error) {
+	resp, err := b.getRange(options)
 	if err != nil {
 		return nil, err
 	}
@@ -171,18 +211,23 @@ func (b *Blob) GetRange(bytesRange string, extraHeaders map[string]string) (io.R
 	return resp.body, nil
 }
 
-func (b *Blob) getRange(bytesRange string, extraHeaders map[string]string) (*storageResponse, error) {
-	uri := b.Container.bsc.client.getEndpoint(blobServiceName, b.buildPath(), nil)
-
-	extraHeaders = b.Container.bsc.client.protectUserAgent(extraHeaders)
+func (b *Blob) getRange(options *GetBlobRangeOptions) (*storageResponse, error) {
+	params := url.Values{}
 	headers := b.Container.bsc.client.getStandardHeaders()
-	if bytesRange != "" {
-		headers["Range"] = fmt.Sprintf("bytes=%s", bytesRange)
-	}
 
-	for k, v := range extraHeaders {
-		headers[k] = v
+	if options != nil {
+		if options.Range != nil {
+			headers["Range"] = options.Range.String()
+			headers["x-ms-range-get-content-md5"] = fmt.Sprintf("%v", options.GetRangeContentMD5)
+		}
+		if options.GetBlobOptions != nil {
+			headers = mergeHeaders(headers, headersFromStruct(*options.GetBlobOptions))
+			params = addTimeout(params, options.Timeout)
+			params = addSnapshot(params, options.Snapshot)
+		}
 	}
+	uri := b.Container.bsc.client.getEndpoint(blobServiceName, b.buildPath(), params)
+
 	resp, err := b.Container.bsc.client.exec(http.MethodGet, uri, headers, nil, b.Container.bsc.auth)
 	if err != nil {
 		return nil, err
@@ -190,27 +235,34 @@ func (b *Blob) getRange(bytesRange string, extraHeaders map[string]string) (*sto
 	return resp, err
 }
 
+// SnapshotOptions includes the options for a snapshot blob operation
+type SnapshotOptions struct {
+	Timeout           uint
+	LeaseID           string     `header:"x-ms-lease-id"`
+	IfModifiedSince   *time.Time `header:"If-Modified-Since"`
+	IfUnmodifiedSince *time.Time `header:"If-Unmodified-Since"`
+	IfMatch           string     `header:"If-Match"`
+	IfNoneMatch       string     `header:"If-None-Match"`
+	RequestID         string     `header:"x-ms-client-request-id"`
+}
+
 // Snapshot creates a snapshot for a blob
 // See https://msdn.microsoft.com/en-us/library/azure/ee691971.aspx
-func (b *Blob) Snapshot(timeout int, extraHeaders map[string]string) (snapshotTimestamp *time.Time, err error) {
-	extraHeaders = b.Container.bsc.client.protectUserAgent(extraHeaders)
-	headers := b.Container.bsc.client.getStandardHeaders()
+func (b *Blob) Snapshot(options *SnapshotOptions) (snapshotTimestamp *time.Time, err error) {
 	params := url.Values{"comp": {"snapshot"}}
+	headers := b.Container.bsc.client.getStandardHeaders()
+	headers = b.Container.bsc.client.addMetadataToHeaders(headers, b.Metadata)
 
-	if timeout > 0 {
-		params.Add("timeout", strconv.Itoa(timeout))
+	if options != nil {
+		params = addTimeout(params, options.Timeout)
+		headers = mergeHeaders(headers, headersFromStruct(*options))
 	}
-
-	for k, v := range extraHeaders {
-		headers[k] = v
-	}
-
 	uri := b.Container.bsc.client.getEndpoint(blobServiceName, b.buildPath(), params)
+
 	resp, err := b.Container.bsc.client.exec(http.MethodPut, uri, headers, nil, b.Container.bsc.auth)
 	if err != nil || resp == nil {
 		return nil, err
 	}
-
 	defer readAndCloseBody(resp.body)
 
 	if err := checkRespCode(resp.statusCode, []int{http.StatusCreated}); err != nil {
@@ -223,19 +275,37 @@ func (b *Blob) Snapshot(timeout int, extraHeaders map[string]string) (snapshotTi
 		if err != nil {
 			return nil, err
 		}
-
 		return &snapshotTimestamp, nil
 	}
 
 	return nil, errors.New("Snapshot not created")
 }
 
+// GetBlobPropertiesOptions includes the options for a get blob properties operation
+type GetBlobPropertiesOptions struct {
+	Timeout           uint
+	Snapshot          *time.Time
+	LeaseID           string     `header:"x-ms-lease-id"`
+	IfModifiedSince   *time.Time `header:"If-Modified-Since"`
+	IfUnmodifiedSince *time.Time `header:"If-Unmodified-Since"`
+	IfMatch           string     `header:"If-Match"`
+	IfNoneMatch       string     `header:"If-None-Match"`
+	RequestID         string     `header:"x-ms-client-request-id"`
+}
+
 // GetProperties provides various information about the specified blob.
 // See https://msdn.microsoft.com/en-us/library/azure/dd179394.aspx
-func (b *Blob) GetProperties() error {
-	uri := b.Container.bsc.client.getEndpoint(blobServiceName, b.buildPath(), nil)
-
+func (b *Blob) GetProperties(options *GetBlobPropertiesOptions) error {
+	params := url.Values{}
 	headers := b.Container.bsc.client.getStandardHeaders()
+
+	if options != nil {
+		params = addTimeout(params, options.Timeout)
+		params = addSnapshot(params, options.Snapshot)
+		headers = mergeHeaders(headers, headersFromStruct(*options))
+	}
+	uri := b.Container.bsc.client.getEndpoint(blobServiceName, b.buildPath(), params)
+
 	resp, err := b.Container.bsc.client.exec(http.MethodHead, uri, headers, nil, b.Container.bsc.auth)
 	if err != nil {
 		return err
@@ -264,8 +334,18 @@ func (b *Blob) GetProperties() error {
 		}
 	}
 
+	lastModified, err := getTimeFromHeaders(resp.headers, "Last-Modified")
+	if err != nil {
+		return err
+	}
+
+	copyCompletionTime, err := getTimeFromHeaders(resp.headers, "x-ms-copy-completion-time")
+	if err != nil {
+		return err
+	}
+
 	b.Properties = BlobProperties{
-		LastModified:          resp.headers.Get("Last-Modified"),
+		LastModified:          TimeRFC1123(*lastModified),
 		Etag:                  resp.headers.Get("Etag"),
 		ContentMD5:            resp.headers.Get("Content-MD5"),
 		ContentLength:         contentLength,
@@ -274,7 +354,7 @@ func (b *Blob) GetProperties() error {
 		CacheControl:          resp.headers.Get("Cache-Control"),
 		ContentLanguage:       resp.headers.Get("Content-Language"),
 		SequenceNumber:        sequenceNum,
-		CopyCompletionTime:    resp.headers.Get("x-ms-copy-completion-time"),
+		CopyCompletionTime:    TimeRFC1123(*copyCompletionTime),
 		CopyStatusDescription: resp.headers.Get("x-ms-copy-status-description"),
 		CopyID:                resp.headers.Get("x-ms-copy-id"),
 		CopyProgress:          resp.headers.Get("x-ms-copy-progress"),
@@ -287,6 +367,30 @@ func (b *Blob) GetProperties() error {
 	return nil
 }
 
+// SetBlobPropertiesOptions contains various properties of a blob and is an entry
+// in SetProperties
+type SetBlobPropertiesOptions struct {
+	Timeout              uint
+	LeaseID              string     `header:"x-ms-lease-id"`
+	Origin               string     `header:"Origin"`
+	IfModifiedSince      *time.Time `header:"If-Modified-Since"`
+	IfUnmodifiedSince    *time.Time `header:"If-Unmodified-Since"`
+	IfMatch              string     `header:"If-Match"`
+	IfNoneMatch          string     `header:"If-None-Match"`
+	SequenceNumberAction *SequenceNumberAction
+	RequestID            string `header:"x-ms-client-request-id"`
+}
+
+// SequenceNumberAction defines how the blob's sequence number should be modified
+type SequenceNumberAction string
+
+// Options for sequence number action
+const (
+	SequenceNumberActionMax       SequenceNumberAction = "max"
+	SequenceNumberActionUpdate    SequenceNumberAction = "update"
+	SequenceNumberActionIncrement SequenceNumberAction = "increment"
+)
+
 // SetProperties replaces the BlobHeaders for the specified blob.
 //
 // Some keys may be converted to Camel-Case before sending. All keys
@@ -294,15 +398,26 @@ func (b *Blob) GetProperties() error {
 // are case-insensitive so case munging should not matter to other
 // applications either.
 //
-// See https://msdn.microsoft.com/en-us/library/azure/ee691966.aspx
-func (b *Blob) SetProperties(blobHeaders BlobHeaders) error {
-	uri := b.Container.bsc.client.getEndpoint(blobServiceName, b.buildPath(), url.Values{"comp": {"properties"}})
+// See https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/Set-Blob-Properties
+func (b *Blob) SetProperties(options *SetBlobPropertiesOptions) error {
+	params := url.Values{"comp": {"properties"}}
 	headers := b.Container.bsc.client.getStandardHeaders()
+	headers = mergeHeaders(headers, headersFromStruct(b.Properties))
 
-	extraHeaders := headersFromStruct(blobHeaders)
+	if options != nil {
+		params = addTimeout(params, options.Timeout)
+		headers = mergeHeaders(headers, headersFromStruct(*options))
+	}
+	uri := b.Container.bsc.client.getEndpoint(blobServiceName, b.buildPath(), params)
 
-	for k, v := range extraHeaders {
-		headers[k] = v
+	if b.Properties.BlobType == BlobTypePage {
+		headers = addToHeaders(headers, "x-ms-blob-content-length", fmt.Sprintf("byte %v", b.Properties.ContentLength))
+		if options != nil || options.SequenceNumberAction != nil {
+			headers = addToHeaders(headers, "x-ms-sequence-number-action", string(*options.SequenceNumberAction))
+			if *options.SequenceNumberAction != SequenceNumberActionIncrement {
+				headers = addToHeaders(headers, "x-ms-blob-sequence-number", fmt.Sprintf("%v", b.Properties.SequenceNumber))
+			}
+		}
 	}
 
 	resp, err := b.Container.bsc.client.exec(http.MethodPut, uri, headers, nil, b.Container.bsc.auth)
@@ -311,6 +426,17 @@ func (b *Blob) SetProperties(blobHeaders BlobHeaders) error {
 	}
 	readAndCloseBody(resp.body)
 	return checkRespCode(resp.statusCode, []int{http.StatusOK})
+}
+
+// SetBlobMetadataOptions includes the options for a set blob metadata operation
+type SetBlobMetadataOptions struct {
+	Timeout           uint
+	LeaseID           string     `header:"x-ms-lease-id"`
+	IfModifiedSince   *time.Time `header:"If-Modified-Since"`
+	IfUnmodifiedSince *time.Time `header:"If-Unmodified-Since"`
+	IfMatch           string     `header:"If-Match"`
+	IfNoneMatch       string     `header:"If-None-Match"`
+	RequestID         string     `header:"x-ms-client-request-id"`
 }
 
 // SetMetadata replaces the metadata for the specified blob.
@@ -321,18 +447,16 @@ func (b *Blob) SetProperties(blobHeaders BlobHeaders) error {
 // applications either.
 //
 // See https://msdn.microsoft.com/en-us/library/azure/dd179414.aspx
-func (b *Blob) SetMetadata(extraHeaders map[string]string) error {
-	uri := b.Container.bsc.client.getEndpoint(blobServiceName, b.buildPath(), url.Values{"comp": {"metadata"}})
-	metadata := b.Container.bsc.client.protectUserAgent(b.Metadata)
-	extraHeaders = b.Container.bsc.client.protectUserAgent(extraHeaders)
+func (b *Blob) SetMetadata(options *SetBlobMetadataOptions) error {
+	params := url.Values{"comp": {"metadata"}}
 	headers := b.Container.bsc.client.getStandardHeaders()
-	for k, v := range metadata {
-		headers[userDefinedMetadataHeaderPrefix+k] = v
-	}
+	headers = b.Container.bsc.client.addMetadataToHeaders(headers, b.Metadata)
 
-	for k, v := range extraHeaders {
-		headers[k] = v
+	if options != nil {
+		params = addTimeout(params, options.Timeout)
+		headers = mergeHeaders(headers, headersFromStruct(*options))
 	}
+	uri := b.Container.bsc.client.getEndpoint(blobServiceName, b.buildPath(), params)
 
 	resp, err := b.Container.bsc.client.exec(http.MethodPut, uri, headers, nil, b.Container.bsc.auth)
 	if err != nil {
@@ -342,15 +466,34 @@ func (b *Blob) SetMetadata(extraHeaders map[string]string) error {
 	return checkRespCode(resp.statusCode, []int{http.StatusOK})
 }
 
+// GetBlobMetadataOptions includes the options for a get blob metadata operation
+type GetBlobMetadataOptions struct {
+	Timeout           uint
+	Snapshot          *time.Time
+	LeaseID           string     `header:"x-ms-lease-id"`
+	IfModifiedSince   *time.Time `header:"If-Modified-Since"`
+	IfUnmodifiedSince *time.Time `header:"If-Unmodified-Since"`
+	IfMatch           string     `header:"If-Match"`
+	IfNoneMatch       string     `header:"If-None-Match"`
+	RequestID         string     `header:"x-ms-client-request-id"`
+}
+
 // GetMetadata returns all user-defined metadata for the specified blob.
 //
 // All metadata keys will be returned in lower case. (HTTP header
 // names are case-insensitive.)
 //
 // See https://msdn.microsoft.com/en-us/library/azure/dd179414.aspx
-func (b *Blob) GetMetadata() error {
-	uri := b.Container.bsc.client.getEndpoint(blobServiceName, b.buildPath(), url.Values{"comp": {"metadata"}})
+func (b *Blob) GetMetadata(options *GetBlobMetadataOptions) error {
+	params := url.Values{"comp": {"metadata"}}
 	headers := b.Container.bsc.client.getStandardHeaders()
+
+	if options != nil {
+		params = addTimeout(params, options.Timeout)
+		params = addSnapshot(params, options.Snapshot)
+		headers = mergeHeaders(headers, headersFromStruct(*options))
+	}
+	uri := b.Container.bsc.client.getEndpoint(blobServiceName, b.buildPath(), params)
 
 	resp, err := b.Container.bsc.client.exec(http.MethodGet, uri, headers, nil, b.Container.bsc.auth)
 	if err != nil {
@@ -386,11 +529,25 @@ func (b *Blob) GetMetadata() error {
 	return nil
 }
 
+// DeleteBlobOptions includes the options for a delete blob operation
+type DeleteBlobOptions struct {
+	Timeout           uint
+	Snapshot          *time.Time
+	LeaseID           string `header:"x-ms-lease-id"`
+	DeleteSnapshots   *bool
+	IfModifiedSince   *time.Time `header:"If-Modified-Since"`
+	IfUnmodifiedSince *time.Time `header:"If-Unmodified-Since"`
+	IfMatch           string     `header:"If-Match"`
+	IfNoneMatch       string     `header:"If-None-Match"`
+	RequestID         string     `header:"x-ms-client-request-id"`
+}
+
 // Delete deletes the given blob from the specified container.
 // If the blob does not exists at the time of the Delete Blob operation, it
-// returns error. See https://msdn.microsoft.com/en-us/library/azure/dd179413.aspx
-func (b *Blob) Delete(extraHeaders map[string]string) error {
-	resp, err := b.delete(extraHeaders)
+// returns error.
+// See https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/Delete-Blob
+func (b *Blob) Delete(options *DeleteBlobOptions) error {
+	resp, err := b.delete(options)
 	if err != nil {
 		return err
 	}
@@ -401,9 +558,9 @@ func (b *Blob) Delete(extraHeaders map[string]string) error {
 // DeleteIfExists deletes the given blob from the specified container If the
 // blob is deleted with this call, returns true. Otherwise returns false.
 //
-// See https://msdn.microsoft.com/en-us/library/azure/dd179413.aspx
-func (b *Blob) DeleteIfExists(extraHeaders map[string]string) (bool, error) {
-	resp, err := b.delete(extraHeaders)
+// See https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/Delete-Blob
+func (b *Blob) DeleteIfExists(options *DeleteBlobOptions) (bool, error) {
+	resp, err := b.delete(options)
 	if resp != nil {
 		defer readAndCloseBody(resp.body)
 		if resp.statusCode == http.StatusAccepted || resp.statusCode == http.StatusNotFound {
@@ -413,14 +570,23 @@ func (b *Blob) DeleteIfExists(extraHeaders map[string]string) (bool, error) {
 	return false, err
 }
 
-func (b *Blob) delete(extraHeaders map[string]string) (*storageResponse, error) {
-	uri := b.Container.bsc.client.getEndpoint(blobServiceName, b.buildPath(), nil)
-	extraHeaders = b.Container.bsc.client.protectUserAgent(extraHeaders)
+func (b *Blob) delete(options *DeleteBlobOptions) (*storageResponse, error) {
+	params := url.Values{}
 	headers := b.Container.bsc.client.getStandardHeaders()
-	for k, v := range extraHeaders {
-		headers[k] = v
-	}
 
+	if options != nil {
+		params = addTimeout(params, options.Timeout)
+		params = addSnapshot(params, options.Snapshot)
+		headers = mergeHeaders(headers, headersFromStruct(*options))
+		if options.DeleteSnapshots != nil {
+			if *options.DeleteSnapshots {
+				headers["x-ms-delete-snapshots"] = "include"
+			} else {
+				headers["x-ms-delete-snapshots"] = "only"
+			}
+		}
+	}
+	uri := b.Container.bsc.client.getEndpoint(blobServiceName, b.buildPath(), params)
 	return b.Container.bsc.client.exec(http.MethodDelete, uri, headers, nil, b.Container.bsc.auth)
 }
 

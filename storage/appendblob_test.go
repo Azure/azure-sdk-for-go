@@ -1,7 +1,6 @@
 package storage
 
 import (
-	"fmt"
 	"io/ioutil"
 
 	chk "gopkg.in/check.v1"
@@ -15,13 +14,13 @@ func (s *AppendBlobSuite) TestPutAppendBlob(c *chk.C) {
 	cli := getBlobClient(c)
 	cnt := cli.GetContainerReference(randContainer())
 	b := cnt.GetBlobReference(randName(5))
-	c.Assert(cnt.Create(), chk.IsNil)
-	defer cnt.Delete()
+	c.Assert(cnt.Create(nil), chk.IsNil)
+	defer cnt.Delete(nil)
 
 	c.Assert(b.PutAppendBlob(nil), chk.IsNil)
 
 	// Verify
-	err := b.GetProperties()
+	err := b.GetProperties(nil)
 	c.Assert(err, chk.IsNil)
 	c.Assert(b.Properties.ContentLength, chk.Equals, int64(0))
 	c.Assert(b.Properties.BlobType, chk.Equals, BlobTypeAppend)
@@ -31,8 +30,8 @@ func (s *AppendBlobSuite) TestPutAppendBlobAppendBlocks(c *chk.C) {
 	cli := getBlobClient(c)
 	cnt := cli.GetContainerReference(randContainer())
 	b := cnt.GetBlobReference(randName(5))
-	c.Assert(cnt.Create(), chk.IsNil)
-	defer cnt.Delete()
+	c.Assert(cnt.Create(nil), chk.IsNil)
+	defer cnt.Delete(nil)
 
 	c.Assert(b.PutAppendBlob(nil), chk.IsNil)
 
@@ -43,7 +42,13 @@ func (s *AppendBlobSuite) TestPutAppendBlobAppendBlocks(c *chk.C) {
 	c.Assert(b.AppendBlock(chunk1, nil), chk.IsNil)
 
 	// Verify contents
-	out, err := b.GetRange(fmt.Sprintf("%v-%v", 0, len(chunk1)-1), nil)
+	options := GetBlobRangeOptions{
+		Range: &BlobRange{
+			Start: 0,
+			End:   uint64(len(chunk1) - 1),
+		},
+	}
+	out, err := b.GetRange(&options)
 	c.Assert(err, chk.IsNil)
 	defer out.Close()
 	blobContents, err := ioutil.ReadAll(out)
@@ -54,7 +59,8 @@ func (s *AppendBlobSuite) TestPutAppendBlobAppendBlocks(c *chk.C) {
 	c.Assert(b.AppendBlock(chunk2, nil), chk.IsNil)
 
 	// Verify contents
-	out, err = b.GetRange(fmt.Sprintf("%v-%v", 0, len(chunk1)+len(chunk2)-1), nil)
+	options.Range.End = uint64(len(chunk1) + len(chunk2) - 1)
+	out, err = b.GetRange(&options)
 	c.Assert(err, chk.IsNil)
 	defer out.Close()
 	blobContents, err = ioutil.ReadAll(out)
@@ -66,13 +72,13 @@ func (s *StorageBlobSuite) TestPutAppendBlobSpecialChars(c *chk.C) {
 	cli := getBlobClient(c)
 	cnt := cli.GetContainerReference(randContainer())
 	b := cnt.GetBlobReference(randName(5))
-	c.Assert(cnt.Create(), chk.IsNil)
-	defer cnt.Delete()
+	c.Assert(cnt.Create(nil), chk.IsNil)
+	defer cnt.Delete(nil)
 
 	c.Assert(b.PutAppendBlob(nil), chk.IsNil)
 
 	// Verify metadata
-	err := b.GetProperties()
+	err := b.GetProperties(nil)
 	c.Assert(err, chk.IsNil)
 	c.Assert(b.Properties.ContentLength, chk.Equals, int64(0))
 	c.Assert(b.Properties.BlobType, chk.Equals, BlobTypeAppend)
@@ -84,7 +90,13 @@ func (s *StorageBlobSuite) TestPutAppendBlobSpecialChars(c *chk.C) {
 	c.Assert(b.AppendBlock(chunk1, nil), chk.IsNil)
 
 	// Verify contents
-	out, err := b.GetRange(fmt.Sprintf("%v-%v", 0, len(chunk1)-1), nil)
+	options := GetBlobRangeOptions{
+		Range: &BlobRange{
+			Start: 0,
+			End:   uint64(len(chunk1) - 1),
+		},
+	}
+	out, err := b.GetRange(&options)
 	c.Assert(err, chk.IsNil)
 	defer out.Close()
 	blobContents, err := ioutil.ReadAll(out)
@@ -95,7 +107,8 @@ func (s *StorageBlobSuite) TestPutAppendBlobSpecialChars(c *chk.C) {
 	c.Assert(b.AppendBlock(chunk2, nil), chk.IsNil)
 
 	// Verify contents
-	out, err = b.GetRange(fmt.Sprintf("%v-%v", 0, len(chunk1)+len(chunk2)-1), nil)
+	options.Range.End = uint64(len(chunk1) + len(chunk2) - 1)
+	out, err = b.GetRange(&options)
 	c.Assert(err, chk.IsNil)
 	defer out.Close()
 	blobContents, err = ioutil.ReadAll(out)

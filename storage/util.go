@@ -12,7 +12,12 @@ import (
 	"net/http"
 	"net/url"
 	"reflect"
+	"strconv"
 	"time"
+)
+
+var (
+	now = time.Now()
 )
 
 func (c Client) computeHmac256(message string) string {
@@ -76,10 +81,89 @@ func headersFromStruct(v interface{}) map[string]string {
 	value := reflect.ValueOf(v)
 	for i := 0; i < value.NumField(); i++ {
 		key := value.Type().Field(i).Tag.Get("header")
-		val := value.Field(i).String()
-		if key != "" && val != "" {
-			headers[key] = val
+		if key != "" {
+			reflectedValue := reflect.Indirect(value.Field(i))
+			var val string
+			if reflectedValue.IsValid() {
+				switch reflectedValue.Type() {
+				case reflect.TypeOf(now):
+					val = timeRfc1123Formatted(reflectedValue.Interface().(time.Time))
+				case reflect.TypeOf(uint(0)):
+					val = strconv.FormatUint(reflectedValue.Uint(), 10)
+				case reflect.TypeOf(int(0)):
+					val = strconv.FormatInt(reflectedValue.Int(), 10)
+				default:
+					val = reflectedValue.String()
+				}
+			}
+			if val != "" {
+				headers[key] = val
+			}
 		}
 	}
 	return headers
+}
+
+// merges extraHeaders into headers and returns headers
+func mergeHeaders(headers, extraHeaders map[string]string) map[string]string {
+	for k, v := range extraHeaders {
+		headers[k] = v
+	}
+	return headers
+}
+
+func addToHeaders(h map[string]string, key, value string) map[string]string {
+	if value != "" {
+		h[key] = value
+	}
+	return h
+}
+
+func addTimeToHeaders(h map[string]string, key string, value *time.Time) map[string]string {
+	if value != nil {
+		h = addToHeaders(h, key, timeRfc1123Formatted(*value))
+	}
+	return h
+}
+
+func addTimeout(params url.Values, timeout uint) url.Values {
+	if timeout > 0 {
+		params.Add("timeout", fmt.Sprintf("%v", timeout))
+	}
+	return params
+}
+
+func addSnapshot(params url.Values, snapshot *time.Time) url.Values {
+	if snapshot != nil {
+		params.Add("snapshot", timeRfc1123Formatted(*snapshot))
+	}
+	return params
+}
+
+func getTimeFromHeaders(h http.Header, key string) (*time.Time, error) {
+	var out time.Time
+	var err error
+	outStr := h.Get(key)
+	if outStr != "" {
+		out, err = time.Parse(time.RFC1123, outStr)
+		if err != nil {
+			return nil, err
+		}
+	}
+	return &out, nil
+}
+
+// TimeRFC1123 is an alias for time.Time needed for custom Unmarshalling
+type TimeRFC1123 time.Time
+
+// UnmarshalXML is a custom unmarshaller that overrides the default time unmarshal which uses a different time layout.
+func (t *TimeRFC1123) UnmarshalXML(d *xml.Decoder, start xml.StartElement) error {
+	var value string
+	d.DecodeElement(&value, &start)
+	parse, err := time.Parse(time.RFC1123, value)
+	if err != nil {
+		return err
+	}
+	*t = TimeRFC1123(parse)
+	return nil
 }

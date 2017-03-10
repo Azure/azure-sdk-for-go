@@ -295,14 +295,6 @@ func mergeMDIntoExtraHeaders(metadata, extraHeaders map[string]string) map[strin
 	return extraHeaders
 }
 
-// merges extraHeaders into headers and returns headers
-func mergeHeaders(headers, extraHeaders map[string]string) map[string]string {
-	for k, v := range extraHeaders {
-		headers[k] = v
-	}
-	return headers
-}
-
 // sets extra header data for the specified resource
 func (f FileServiceClient) setResourceHeaders(path string, comp compType, res resourceType, extraHeaders map[string]string) (http.Header, error) {
 	if err := f.checkForStorageEmulator(); err != nil {

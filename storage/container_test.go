@@ -35,9 +35,9 @@ func (s *ContainerSuite) TestListContainersPagination(c *chk.C) {
 	created := []Container{}
 	for i := 0; i < n; i++ {
 		cnt := cli.GetContainerReference(cntNames[i])
-		c.Assert(cnt.Create(), chk.IsNil)
+		c.Assert(cnt.Create(nil), chk.IsNil)
 		created = append(created, cnt)
-		defer cnt.Delete()
+		defer cnt.Delete(nil)
 	}
 
 	// Paginate results
@@ -77,8 +77,8 @@ func (s *ContainerSuite) TestContainerExists(c *chk.C) {
 	c.Assert(err, chk.IsNil)
 	c.Assert(ok, chk.Equals, false)
 
-	c.Assert(cnt.Create(), chk.IsNil)
-	defer cnt.Delete()
+	c.Assert(cnt.Create(nil), chk.IsNil)
+	defer cnt.Delete(nil)
 
 	ok, err = cnt.Exists()
 	c.Assert(err, chk.IsNil)
@@ -88,22 +88,22 @@ func (s *ContainerSuite) TestContainerExists(c *chk.C) {
 func (s *ContainerSuite) TestCreateContainerDeleteContainer(c *chk.C) {
 	cli := getBlobClient(c)
 	cnt := cli.GetContainerReference(randContainer())
-	c.Assert(cnt.Create(), chk.IsNil)
-	c.Assert(cnt.Delete(), chk.IsNil)
+	c.Assert(cnt.Create(nil), chk.IsNil)
+	c.Assert(cnt.Delete(nil), chk.IsNil)
 }
 
 func (s *ContainerSuite) TestCreateContainerIfNotExists(c *chk.C) {
 	cli := getBlobClient(c)
 	cnt := cli.GetContainerReference(randContainer())
-	defer cnt.Delete()
+	defer cnt.Delete(nil)
 
 	// First create
-	ok, err := cnt.CreateIfNotExists()
+	ok, err := cnt.CreateIfNotExists(nil)
 	c.Assert(err, chk.IsNil)
 	c.Assert(ok, chk.Equals, true)
 
 	// Second create, should not give errors
-	ok, err = cnt.CreateIfNotExists()
+	ok, err = cnt.CreateIfNotExists(nil)
 	c.Assert(err, chk.IsNil)
 	c.Assert(ok, chk.Equals, false)
 }
@@ -113,15 +113,15 @@ func (s *ContainerSuite) TestDeleteContainerIfExists(c *chk.C) {
 	cnt := cli.GetContainerReference(randContainer())
 
 	// Nonexisting container
-	c.Assert(cnt.Delete(), chk.NotNil)
+	c.Assert(cnt.Delete(nil), chk.NotNil)
 
-	ok, err := cnt.DeleteIfExists()
+	ok, err := cnt.DeleteIfExists(nil)
 	c.Assert(err, chk.IsNil)
 	c.Assert(ok, chk.Equals, false)
 
 	// Existing container
-	c.Assert(cnt.Create(), chk.IsNil)
-	ok, err = cnt.DeleteIfExists()
+	c.Assert(cnt.Create(nil), chk.IsNil)
+	ok, err = cnt.DeleteIfExists(nil)
 	c.Assert(err, chk.IsNil)
 	c.Assert(ok, chk.Equals, true)
 }
@@ -130,8 +130,8 @@ func (s *ContainerSuite) TestListBlobsPagination(c *chk.C) {
 	cli := getBlobClient(c)
 	cnt := cli.GetContainerReference(randContainer())
 
-	c.Assert(cnt.Create(), chk.IsNil)
-	defer cnt.Delete()
+	c.Assert(cnt.Create(nil), chk.IsNil)
+	defer cnt.Delete(nil)
 
 	blobs := []string{}
 	const n = 5
@@ -242,8 +242,8 @@ func listBlobsAsFiles(cli BlobStorageClient, cnt Container, parentDir string) (f
 func (s *ContainerSuite) TestListBlobsTraversal(c *chk.C) {
 	cli := getBlobClient(c)
 	cnt := cli.GetContainerReference(randContainer())
-	c.Assert(cnt.Create(), chk.IsNil)
-	defer cnt.Delete()
+	c.Assert(cnt.Create(nil), chk.IsNil)
+	defer cnt.Delete(nil)
 
 	// Note use of leading forward slash as per naming rules.
 	blobsToCreate := []string{
@@ -257,7 +257,7 @@ func (s *ContainerSuite) TestListBlobsTraversal(c *chk.C) {
 	// Create the above blobs
 	for _, blobName := range blobsToCreate {
 		b := cnt.GetBlobReference(blobName)
-		err := b.CreateBlockBlob()
+		err := b.CreateBlockBlob(nil)
 		c.Assert(err, chk.IsNil)
 	}
 
@@ -299,8 +299,8 @@ func (s *ContainerSuite) TestListBlobsTraversal(c *chk.C) {
 func (s *ContainerSuite) TestListBlobsWithMetadata(c *chk.C) {
 	cli := getBlobClient(c)
 	cnt := cli.GetContainerReference(randContainer())
-	c.Assert(cnt.Create(), chk.IsNil)
-	defer cnt.Delete()
+	c.Assert(cnt.Create(nil), chk.IsNil)
+	defer cnt.Delete(nil)
 
 	expectMeta := make(map[string]BlobMetadata)
 
@@ -365,44 +365,47 @@ func appendContainerPermission(perms ContainerPermissions, accessType ContainerA
 func (s *ContainerSuite) TestSetContainerPermissionsWithTimeoutSuccessfully(c *chk.C) {
 	cli := getBlobClient(c)
 	cnt := cli.GetContainerReference(randContainer())
-	c.Assert(cnt.Create(), chk.IsNil)
-	defer cnt.Delete()
+	c.Assert(cnt.Create(nil), chk.IsNil)
+	defer cnt.Delete(nil)
 
 	perms := ContainerPermissions{}
 	perms = appendContainerPermission(perms, ContainerAccessTypeBlob, "GolangRocksOnAzure", now, now.Add(10*time.Hour), true, true, true)
 
-	err := cnt.SetPermissions(perms, 30, "")
+	options := SetContainerPermissionOptions{
+		Timeout: 30,
+	}
+	err := cnt.SetPermissions(perms, &options)
 	c.Assert(err, chk.IsNil)
 }
 
 func (s *ContainerSuite) TestSetContainerPermissionsSuccessfully(c *chk.C) {
 	cli := getBlobClient(c)
 	cnt := cli.GetContainerReference(randContainer())
-	c.Assert(cnt.Create(), chk.IsNil)
-	defer cnt.Delete()
+	c.Assert(cnt.Create(nil), chk.IsNil)
+	defer cnt.Delete(nil)
 
 	perms := ContainerPermissions{}
 	perms = appendContainerPermission(perms, ContainerAccessTypeBlob, "GolangRocksOnAzure", now, now.Add(10*time.Hour), true, true, true)
 
-	err := cnt.SetPermissions(perms, 0, "")
+	err := cnt.SetPermissions(perms, nil)
 	c.Assert(err, chk.IsNil)
 }
 
 func (s *ContainerSuite) TestSetThenGetContainerPermissionsSuccessfully(c *chk.C) {
 	cli := getBlobClient(c)
 	cnt := cli.GetContainerReference(randContainer())
-	c.Assert(cnt.Create(), chk.IsNil)
-	defer cnt.delete()
+	c.Assert(cnt.Create(nil), chk.IsNil)
+	defer cnt.delete(nil)
 
 	perms := ContainerPermissions{}
 	perms = appendContainerPermission(perms, ContainerAccessTypeBlob, "AutoRestIsSuperCool", now, now.Add(10*time.Hour), true, true, true)
 	perms = appendContainerPermission(perms, ContainerAccessTypeBlob, "GolangRocksOnAzure", now.Add(20*time.Hour), now.Add(30*time.Hour), true, false, false)
 	c.Assert(perms.AccessPolicies, chk.HasLen, 2)
 
-	err := cnt.SetPermissions(perms, 0, "")
+	err := cnt.SetPermissions(perms, nil)
 	c.Assert(err, chk.IsNil)
 
-	newPerms, err := cnt.GetPermissions(0, "")
+	newPerms, err := cnt.GetPermissions(nil)
 	c.Assert(err, chk.IsNil)
 
 	// check container permissions itself.
@@ -432,29 +435,29 @@ func (s *ContainerSuite) TestSetThenGetContainerPermissionsSuccessfully(c *chk.C
 func (s *ContainerSuite) TestSetContainerPermissionsOnlySuccessfully(c *chk.C) {
 	cli := getBlobClient(c)
 	cnt := cli.GetContainerReference(randContainer())
-	c.Assert(cnt.Create(), chk.IsNil)
-	defer cnt.Delete()
+	c.Assert(cnt.Create(nil), chk.IsNil)
+	defer cnt.Delete(nil)
 
 	perms := ContainerPermissions{}
 	perms = appendContainerPermission(perms, ContainerAccessTypeBlob, "GolangRocksOnAzure", now, now.Add(10*time.Hour), true, true, true)
 
-	err := cnt.SetPermissions(perms, 0, "")
+	err := cnt.SetPermissions(perms, nil)
 	c.Assert(err, chk.IsNil)
 }
 
 func (s *ContainerSuite) TestSetThenGetContainerPermissionsOnlySuccessfully(c *chk.C) {
 	cli := getBlobClient(c)
 	cnt := cli.GetContainerReference(randContainer())
-	c.Assert(cnt.Create(), chk.IsNil)
-	defer cnt.Delete()
+	c.Assert(cnt.Create(nil), chk.IsNil)
+	defer cnt.Delete(nil)
 
 	perms := ContainerPermissions{}
 	perms = appendContainerPermission(perms, ContainerAccessTypeBlob, "", now, now.Add(10*time.Hour), true, true, true)
 
-	err := cnt.SetPermissions(perms, 0, "")
+	err := cnt.SetPermissions(perms, nil)
 	c.Assert(err, chk.IsNil)
 
-	newPerms, err := cnt.GetPermissions(0, "")
+	newPerms, err := cnt.GetPermissions(nil)
 	c.Assert(err, chk.IsNil)
 
 	// check container permissions itself.
@@ -474,7 +477,7 @@ func deleteTestContainers(cli BlobStorageClient) error {
 			break
 		}
 		for _, c := range resp.Containers {
-			err = c.Delete()
+			err = c.Delete(nil)
 			if err != nil {
 				return err
 			}

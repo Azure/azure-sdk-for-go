@@ -19,8 +19,8 @@ func (s *CopyBlobSuite) TestBlobCopy(c *chk.C) {
 
 	cli := getBlobClient(c)
 	cnt := cli.GetContainerReference(randContainer())
-	c.Assert(cnt.Create(), chk.IsNil)
-	defer cnt.Delete()
+	c.Assert(cnt.Create(nil), chk.IsNil)
+	defer cnt.Delete(nil)
 
 	srcBlob := cnt.GetBlobReference(randName(5))
 	dstBlob := cnt.GetBlobReference(randName(5))
@@ -29,10 +29,10 @@ func (s *CopyBlobSuite) TestBlobCopy(c *chk.C) {
 	c.Assert(srcBlob.putSingleBlockBlob(body), chk.IsNil)
 	defer srcBlob.Delete(nil)
 
-	c.Assert(dstBlob.Copy(srcBlob.GetURL()), chk.IsNil)
+	c.Assert(dstBlob.Copy(srcBlob.GetURL(), nil), chk.IsNil)
 	defer dstBlob.Delete(nil)
 
-	resp, err := dstBlob.Get()
+	resp, err := dstBlob.Get(nil)
 	c.Assert(err, chk.IsNil)
 
 	b, err := ioutil.ReadAll(resp)
@@ -48,8 +48,8 @@ func (s *CopyBlobSuite) TestStartBlobCopy(c *chk.C) {
 
 	cli := getBlobClient(c)
 	cnt := cli.GetContainerReference(randContainer())
-	c.Assert(cnt.Create(), chk.IsNil)
-	defer cnt.Delete()
+	c.Assert(cnt.Create(nil), chk.IsNil)
+	defer cnt.Delete(nil)
 
 	srcBlob := cnt.GetBlobReference(randName(5))
 	dstBlob := cnt.GetBlobReference(randName(5))
@@ -60,7 +60,7 @@ func (s *CopyBlobSuite) TestStartBlobCopy(c *chk.C) {
 
 	// given we dont know when it will start, can we even test destination creation?
 	// will just test that an error wasn't thrown for now.
-	copyID, err := dstBlob.StartCopy(srcBlob.GetURL())
+	copyID, err := dstBlob.StartCopy(srcBlob.GetURL(), nil)
 	c.Assert(copyID, chk.NotNil)
 	c.Assert(err, chk.IsNil)
 }
@@ -75,8 +75,8 @@ func (s *CopyBlobSuite) TestAbortBlobCopy(c *chk.C) {
 
 	cli := getBlobClient(c)
 	cnt := cli.GetContainerReference(randContainer())
-	c.Assert(cnt.Create(), chk.IsNil)
-	defer cnt.Delete()
+	c.Assert(cnt.Create(nil), chk.IsNil)
+	defer cnt.Delete(nil)
 
 	srcBlob := cnt.GetBlobReference(randName(5))
 	dstBlob := cnt.GetBlobReference(randName(5))
@@ -87,7 +87,7 @@ func (s *CopyBlobSuite) TestAbortBlobCopy(c *chk.C) {
 
 	// given we dont know when it will start, can we even test destination creation?
 	// will just test that an error wasn't thrown for now.
-	copyID, err := dstBlob.StartCopy(srcBlob.GetURL())
+	copyID, err := dstBlob.StartCopy(srcBlob.GetURL(), nil)
 	c.Assert(copyID, chk.NotNil)
 	c.Assert(err, chk.IsNil)
 
@@ -95,7 +95,7 @@ func (s *CopyBlobSuite) TestAbortBlobCopy(c *chk.C) {
 	c.Assert(err, chk.IsNil)
 
 	// abort abort abort, but we *know* its already completed.
-	err = dstBlob.AbortCopy(copyID, "", 0)
+	err = dstBlob.AbortCopy(copyID, nil)
 
 	// abort should fail (over already)
 	c.Assert(err.(AzureStorageServiceError).StatusCode, chk.Equals, http.StatusConflict)

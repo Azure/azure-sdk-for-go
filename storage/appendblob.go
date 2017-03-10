@@ -2,24 +2,28 @@ package storage
 
 import (
 	"bytes"
+	"fmt"
 	"net/http"
 	"net/url"
-	"strconv"
+	"time"
 )
 
 // PutAppendBlob initializes an empty append blob with specified name. An
 // append blob must be created using this method before appending blocks.
 //
-// See https://msdn.microsoft.com/en-us/library/azure/dd179451.aspx
-func (b *Blob) PutAppendBlob(extraHeaders map[string]string) error {
-	uri := b.Container.bsc.client.getEndpoint(blobServiceName, b.buildPath(), nil)
-	extraHeaders = b.Container.bsc.client.protectUserAgent(extraHeaders)
+// See https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/Put-Blob
+func (b *Blob) PutAppendBlob(options *PutBlobOptions) error {
+	params := url.Values{}
 	headers := b.Container.bsc.client.getStandardHeaders()
 	headers["x-ms-blob-type"] = string(BlobTypeAppend)
+	headers = mergeHeaders(headers, headersFromStruct(b.Properties))
+	headers = b.Container.bsc.client.addMetadataToHeaders(headers, b.Metadata)
 
-	for k, v := range extraHeaders {
-		headers[k] = v
+	if options != nil {
+		params = addTimeout(params, options.Timeout)
+		headers = mergeHeaders(headers, headersFromStruct(*options))
 	}
+	uri := b.Container.bsc.client.getEndpoint(blobServiceName, b.buildPath(), params)
 
 	resp, err := b.Container.bsc.client.exec(http.MethodPut, uri, headers, nil, b.Container.bsc.auth)
 	if err != nil {
@@ -29,19 +33,33 @@ func (b *Blob) PutAppendBlob(extraHeaders map[string]string) error {
 	return checkRespCode(resp.statusCode, []int{http.StatusCreated})
 }
 
+// AppendBlockOptions includes the options for an append block operation
+type AppendBlockOptions struct {
+	Timeout           uint
+	LeaseID           string     `header:"x-ms-lease-id"`
+	MaxSize           *uint      `header:"x-ms-blob-condition-maxsize"`
+	AppendPosition    *uint      `header:"x-ms-blob-condition-appendpos"`
+	IfModifiedSince   *time.Time `header:"If-Modified-Since"`
+	IfUnmodifiedSince *time.Time `header:"If-Unmodified-Since"`
+	IfMatch           string     `header:"If-Match"`
+	IfNoneMatch       string     `header:"If-None-Match"`
+	RequestID         string     `header:"x-ms-client-request-id"`
+}
+
 // AppendBlock appends a block to an append blob.
 //
-// See https://msdn.microsoft.com/en-us/library/azure/mt427365.aspx
-func (b *Blob) AppendBlock(chunk []byte, extraHeaders map[string]string) error {
-	uri := b.Container.bsc.client.getEndpoint(blobServiceName, b.buildPath(), url.Values{"comp": {"appendblock"}})
-	extraHeaders = b.Container.bsc.client.protectUserAgent(extraHeaders)
+// See https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/Append-Block
+func (b *Blob) AppendBlock(chunk []byte, options *AppendBlockOptions) error {
+	params := url.Values{"comp": {"appendblock"}}
 	headers := b.Container.bsc.client.getStandardHeaders()
 	headers["x-ms-blob-type"] = string(BlobTypeAppend)
-	headers["Content-Length"] = strconv.Itoa(len(chunk))
+	headers["Content-Length"] = fmt.Sprintf("%v", len(chunk))
 
-	for k, v := range extraHeaders {
-		headers[k] = v
+	if options != nil {
+		params = addTimeout(params, options.Timeout)
+		headers = mergeHeaders(headers, headersFromStruct(*options))
 	}
+	uri := b.Container.bsc.client.getEndpoint(blobServiceName, b.buildPath(), params)
 
 	resp, err := b.Container.bsc.client.exec(http.MethodPut, uri, headers, bytes.NewReader(chunk), b.Container.bsc.auth)
 	if err != nil {

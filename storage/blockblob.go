@@ -3,11 +3,12 @@ package storage
 import (
 	"bytes"
 	"encoding/xml"
+	"fmt"
 	"io"
 	"net/http"
 	"net/url"
-	"strconv"
 	"strings"
+	"time"
 )
 
 // BlockListType is used to filter out types of blocks in a Get Blocks List call
@@ -66,9 +67,9 @@ type BlockResponse struct {
 
 // CreateBlockBlob initializes an empty block blob with no blocks.
 //
-// See https://msdn.microsoft.com/en-us/library/azure/dd179451.aspx
-func (b *Blob) CreateBlockBlob() error {
-	return b.CreateBlockBlobFromReader(0, nil, nil)
+// See https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/Put-Blob
+func (b *Blob) CreateBlockBlob(options *PutBlobOptions) error {
+	return b.CreateBlockBlobFromReader(nil, options)
 }
 
 // CreateBlockBlobFromReader initializes a block blob using data from
@@ -79,17 +80,20 @@ func (b *Blob) CreateBlockBlob() error {
 // checked by the SDK). To write a larger blob, use CreateBlockBlob,
 // PutBlock, and PutBlockList.
 //
-// See https://msdn.microsoft.com/en-us/library/azure/dd179451.aspx
-func (b *Blob) CreateBlockBlobFromReader(size uint64, blob io.Reader, extraHeaders map[string]string) error {
-	uri := b.Container.bsc.client.getEndpoint(blobServiceName, b.buildPath(), nil)
-	extraHeaders = b.Container.bsc.client.protectUserAgent(extraHeaders)
+// See https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/Put-Blob
+func (b *Blob) CreateBlockBlobFromReader(blob io.Reader, options *PutBlobOptions) error {
+	params := url.Values{}
 	headers := b.Container.bsc.client.getStandardHeaders()
 	headers["x-ms-blob-type"] = string(BlobTypeBlock)
-	headers["Content-Length"] = strconv.FormatUint(size, 10)
+	headers["Content-Length"] = fmt.Sprintf("%d", b.Properties.ContentLength)
+	headers = mergeHeaders(headers, headersFromStruct(b.Properties))
+	headers = b.Container.bsc.client.addMetadataToHeaders(headers, b.Metadata)
 
-	for k, v := range extraHeaders {
-		headers[k] = v
+	if options != nil {
+		params = addTimeout(params, options.Timeout)
+		headers = mergeHeaders(headers, headersFromStruct(*options))
 	}
+	uri := b.Container.bsc.client.getEndpoint(blobServiceName, b.buildPath(), params)
 
 	resp, err := b.Container.bsc.client.exec(http.MethodPut, uri, headers, blob, b.Container.bsc.auth)
 	if err != nil {
@@ -99,58 +103,82 @@ func (b *Blob) CreateBlockBlobFromReader(size uint64, blob io.Reader, extraHeade
 	return checkRespCode(resp.statusCode, []int{http.StatusCreated})
 }
 
+// PutBlockOptions includes the options for a put block operation
+type PutBlockOptions struct {
+	Timeout    uint
+	LeaseID    string `header:"x-ms-lease-id"`
+	ContentMD5 string `header:"Content-MD5"`
+	RequestID  string `header:"x-ms-client-request-id"`
+}
+
 // PutBlock saves the given data chunk to the specified block blob with
 // given ID.
 //
-// The API rejects chunks larger than 100 MB (but this limit is not
+// The API rejects chunks larger than 100 MiB (but this limit is not
 // checked by the SDK).
 //
-// See https://msdn.microsoft.com/en-us/library/azure/dd135726.aspx
-func (b *Blob) PutBlock(blockID string, chunk []byte) error {
-	return b.PutBlockWithLength(blockID, uint64(len(chunk)), bytes.NewReader(chunk), nil)
+// See https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/Put-Block
+func (b *Blob) PutBlock(blockID string, chunk []byte, options *PutBlockOptions) error {
+	return b.PutBlockWithLength(blockID, uint64(len(chunk)), bytes.NewReader(chunk), options)
 }
 
 // PutBlockWithLength saves the given data stream of exactly specified size to
 // the block blob with given ID. It is an alternative to PutBlocks where data
 // comes as stream but the length is known in advance.
 //
-// The API rejects requests with size > 100 MB (but this limit is not
+// The API rejects requests with size > 100 MiB (but this limit is not
 // checked by the SDK).
 //
-// See https://msdn.microsoft.com/en-us/library/azure/dd135726.aspx
-func (b *Blob) PutBlockWithLength(blockID string, size uint64, blob io.Reader, extraHeaders map[string]string) error {
+// See https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/Put-Block
+func (b *Blob) PutBlockWithLength(blockID string, size uint64, blob io.Reader, options *PutBlockOptions) error {
 	query := url.Values{
 		"comp":    {"block"},
 		"blockid": {blockID},
 	}
-	uri := b.Container.bsc.client.getEndpoint(blobServiceName, b.buildPath(), query)
-	extraHeaders = b.Container.bsc.client.protectUserAgent(extraHeaders)
 	headers := b.Container.bsc.client.getStandardHeaders()
-	headers["x-ms-blob-type"] = string(BlobTypeBlock)
-	headers["Content-Length"] = strconv.FormatUint(size, 10)
+	headers["Content-Length"] = fmt.Sprintf("%v", size)
 
-	for k, v := range extraHeaders {
-		headers[k] = v
+	if options != nil {
+		query = addTimeout(query, options.Timeout)
+		headers = mergeHeaders(headers, headersFromStruct(*options))
 	}
+	uri := b.Container.bsc.client.getEndpoint(blobServiceName, b.buildPath(), query)
 
 	resp, err := b.Container.bsc.client.exec(http.MethodPut, uri, headers, blob, b.Container.bsc.auth)
 	if err != nil {
 		return err
 	}
-
 	readAndCloseBody(resp.body)
 	return checkRespCode(resp.statusCode, []int{http.StatusCreated})
 }
 
+// PutBlockListOptions includes the options for a put block list operation
+type PutBlockListOptions struct {
+	Timeout           uint
+	LeaseID           string     `header:"x-ms-lease-id"`
+	IfModifiedSince   *time.Time `header:"If-Modified-Since"`
+	IfUnmodifiedSince *time.Time `header:"If-Unmodified-Since"`
+	IfMatch           string     `header:"If-Match"`
+	IfNoneMatch       string     `header:"If-None-Match"`
+	RequestID         string     `header:"x-ms-client-request-id"`
+}
+
 // PutBlockList saves list of blocks to the specified block blob.
 //
-// See https://msdn.microsoft.com/en-us/library/azure/dd179467.aspx
-func (b *Blob) PutBlockList(blocks []Block) error {
+// See https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/Put-Block-List
+func (b *Blob) PutBlockList(blocks []Block, options *PutBlockListOptions) error {
+	params := url.Values{"comp": {"blocklist"}}
 	blockListXML := prepareBlockListRequest(blocks)
-
-	uri := b.Container.bsc.client.getEndpoint(blobServiceName, b.buildPath(), url.Values{"comp": {"blocklist"}})
 	headers := b.Container.bsc.client.getStandardHeaders()
-	headers["Content-Length"] = strconv.Itoa(len(blockListXML))
+	headers["Content-Length"] = fmt.Sprintf("%v", len(blockListXML))
+	headers = mergeHeaders(headers, headersFromStruct(b.Properties))
+	headers = b.Container.bsc.client.addMetadataToHeaders(headers, b.Metadata)
+
+	if options != nil {
+		params = addTimeout(params, options.Timeout)
+		headers = mergeHeaders(headers, headersFromStruct(*options))
+	}
+	uri := b.Container.bsc.client.getEndpoint(blobServiceName, b.buildPath(), params)
 
 	resp, err := b.Container.bsc.client.exec(http.MethodPut, uri, headers, strings.NewReader(blockListXML), b.Container.bsc.auth)
 	if err != nil {
@@ -160,16 +188,30 @@ func (b *Blob) PutBlockList(blocks []Block) error {
 	return checkRespCode(resp.statusCode, []int{http.StatusCreated})
 }
 
+// GetBlockListOptions includes the options for a get block list operation
+type GetBlockListOptions struct {
+	Timeout   uint
+	Snapshot  *time.Time
+	LeaseID   string `header:"x-ms-lease-id"`
+	RequestID string `header:"x-ms-client-request-id"`
+}
+
 // GetBlockList retrieves list of blocks in the specified block blob.
 //
-// See https://msdn.microsoft.com/en-us/library/azure/dd179400.aspx
-func (b *Blob) GetBlockList(blockType BlockListType) (BlockListResponse, error) {
+// See https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/Get-Block-List
+func (b *Blob) GetBlockList(blockType BlockListType, options *GetBlockListOptions) (BlockListResponse, error) {
 	params := url.Values{
 		"comp":          {"blocklist"},
 		"blocklisttype": {string(blockType)},
 	}
-	uri := b.Container.bsc.client.getEndpoint(blobServiceName, b.buildPath(), params)
 	headers := b.Container.bsc.client.getStandardHeaders()
+
+	if options != nil {
+		params = addTimeout(params, options.Timeout)
+		params = addSnapshot(params, options.Snapshot)
+		headers = mergeHeaders(headers, headersFromStruct(*options))
+	}
+	uri := b.Container.bsc.client.getEndpoint(blobServiceName, b.buildPath(), params)
 
 	var out BlockListResponse
 	resp, err := b.Container.bsc.client.exec(http.MethodGet, uri, headers, nil, b.Container.bsc.auth)

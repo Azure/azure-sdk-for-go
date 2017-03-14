@@ -47,10 +47,10 @@ func (s *PageBlobSuite) TestPutPagesUpdate(c *chk.C) {
 	blobRange := BlobRange{
 		End: uint64(len(chunk1) - 1),
 	}
-	c.Assert(b.PutPage(blobRange, bytes.NewReader(chunk1), nil), chk.IsNil)
+	c.Assert(b.WriteRange(blobRange, bytes.NewReader(chunk1), nil), chk.IsNil)
 	blobRange.Start = uint64(len(chunk1))
 	blobRange.End = uint64(len(chunk1) + len(chunk2) - 1)
-	c.Assert(b.PutPage(blobRange, bytes.NewReader(chunk2), nil), chk.IsNil)
+	c.Assert(b.WriteRange(blobRange, bytes.NewReader(chunk2), nil), chk.IsNil)
 
 	// Verify contents
 	options := GetBlobRangeOptions{
@@ -69,7 +69,7 @@ func (s *PageBlobSuite) TestPutPagesUpdate(c *chk.C) {
 	chunk0 := []byte(randString(512))
 	blobRange.Start = 0
 	blobRange.End = uint64(len(chunk0) - 1)
-	c.Assert(b.PutPage(blobRange, bytes.NewReader(chunk0), nil), chk.IsNil)
+	c.Assert(b.WriteRange(blobRange, bytes.NewReader(chunk0), nil), chk.IsNil)
 
 	// Verify contents
 	out, err = b.GetRange(&options)
@@ -96,12 +96,12 @@ func (s *PageBlobSuite) TestPutPagesClear(c *chk.C) {
 	blobRange := BlobRange{
 		End: 2047,
 	}
-	c.Assert(b.PutPage(blobRange, bytes.NewReader(chunk), nil), chk.IsNil)
+	c.Assert(b.WriteRange(blobRange, bytes.NewReader(chunk), nil), chk.IsNil)
 
 	// Clear 512-1023
 	blobRange.Start = 512
 	blobRange.End = 1023
-	c.Assert(b.PutPage(blobRange, nil, nil), chk.IsNil)
+	c.Assert(b.ClearRange(blobRange, nil), chk.IsNil)
 
 	// Verify contents
 	options := GetBlobRangeOptions{
@@ -138,7 +138,7 @@ func (s *PageBlobSuite) TestGetPageRanges(c *chk.C) {
 	blobRange := BlobRange{
 		End: 511,
 	}
-	c.Assert(b.PutPage(blobRange, bytes.NewReader([]byte(randString(512))), nil), chk.IsNil)
+	c.Assert(b.WriteRange(blobRange, bytes.NewReader([]byte(randString(512))), nil), chk.IsNil)
 
 	out, err = b.GetPageRanges(nil)
 	c.Assert(err, chk.IsNil)
@@ -147,7 +147,7 @@ func (s *PageBlobSuite) TestGetPageRanges(c *chk.C) {
 	// Add 1024-2048
 	blobRange.Start = 1024
 	blobRange.End = 2047
-	c.Assert(b.PutPage(blobRange, bytes.NewReader([]byte(randString(1024))), nil), chk.IsNil)
+	c.Assert(b.WriteRange(blobRange, bytes.NewReader([]byte(randString(1024))), nil), chk.IsNil)
 
 	out, err = b.GetPageRanges(nil)
 	c.Assert(err, chk.IsNil)

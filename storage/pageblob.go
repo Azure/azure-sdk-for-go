@@ -47,12 +47,28 @@ type PutPageOptions struct {
 	RequestID                         string     `header:"x-ms-client-request-id"`
 }
 
-// PutPage writes a range of pages to a page blob or clears the given range.
-// In case of 'clear' writes, given chunk is discarded. Ranges must be aligned
-// with 512-byte boundaries and chunk must be of size multiplies by 512.
+// WriteRange writes a range of pages to a page blob.
+// Ranges must be aligned with 512-byte boundaries and chunk must be of size
+// multiplies by 512.
 //
 // See https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/Put-Page
-func (b *Blob) PutPage(blobRange BlobRange, bytes io.Reader, options *PutPageOptions) error {
+func (b *Blob) WriteRange(blobRange BlobRange, bytes io.Reader, options *PutPageOptions) error {
+	if bytes == nil {
+		return errors.New("bytes cannot be nil")
+	}
+	return b.modifyRange(blobRange, bytes, options)
+}
+
+// ClearRange clears the given range in a page blob.
+// Ranges must be aligned with 512-byte boundaries and chunk must be of size
+// multiplies by 512.
+//
+// See https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/Put-Page
+func (b *Blob) ClearRange(blobRange BlobRange, options *PutPageOptions) error {
+	return b.modifyRange(blobRange, nil, options)
+}
+
+func (b *Blob) modifyRange(blobRange BlobRange, bytes io.Reader, options *PutPageOptions) error {
 	if blobRange.End < blobRange.Start {
 		return errors.New("the value for rangeEnd must be greater than or equal to rangeStart")
 	}

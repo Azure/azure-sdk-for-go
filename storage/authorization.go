@@ -20,6 +20,7 @@ const (
 	sharedKeyLiteForTable authentication = "sharedKeyLiteTable"
 
 	// headers
+	headerAcceptCharset     = "Accept-Charset"
 	headerAuthorization     = "Authorization"
 	headerContentLength     = "Content-Length"
 	headerDate              = "Date"

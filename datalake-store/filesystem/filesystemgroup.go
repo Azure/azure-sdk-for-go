@@ -22,6 +22,7 @@ import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
 	"github.com/Azure/go-autorest/autorest/validation"
+	"github.com/satori/uuid"
 	"io"
 	"net/http"
 )
@@ -36,26 +37,35 @@ func NewGroupClient() GroupClient {
 	return GroupClient{New()}
 }
 
-// Append appends to the specified file. NOTE: The target must not contain data
-// added by ConcurrentAppend. ConcurrentAppend and Append cannot be used
-// interchangeably; once a target file has been modified using either of these
-// append options, the other append option cannot be used on the target file.
+// Append used for serial appends to the specified file. NOTE: The target must
+// not contain data added by ConcurrentAppend. ConcurrentAppend and Append
+// cannot be used interchangeably; once a target file has been modified using
+// either of these append options, the other append option cannot be used on
+// the target file.
 //
 // accountName is the Azure Data Lake Store account to execute filesystem
 // operations on. directFilePath is the Data Lake Store path (starting with
 // '/') of the file to which to append. streamContents is the file contents to
 // include when appending to the file. streamContents will be closed upon
 // successful return. Callers should ensure closure when receiving an error.op
-// is the constant value for the operation. appendParameter is the constant
-// value for the operation. offset is the optional offset in the stream to
-// begin the append operation. Default is to append at the end of the stream.
-// syncFlag is optionally indicates what to do after completion of the append.
-// DATA indicates more data is coming so no sync takes place, METADATA
-// indicates a sync should be done to refresh metadata of the file only. CLOSE
-// indicates that both the stream and metadata should be refreshed upon append
-// completion.
-func (client GroupClient) Append(accountName string, directFilePath string, streamContents io.ReadCloser, op string, appendParameter string, offset *int64, syncFlag SyncFlag) (result autorest.Response, err error) {
-	req, err := client.AppendPreparer(accountName, directFilePath, streamContents, op, appendParameter, offset, syncFlag)
+// is the constant value for the operation. appendParameter is flag to skip
+// redirection. When append=false or not specified, the request is redirected.
+// Submit another HTTP PUT request using the URL in the Location header with
+// the file data to be written. When append=true, this redirection is skipped.
+// offset is the optional offset in the stream to begin the append operation.
+// Default is to append at the end of the stream. syncFlag is optionally
+// indicates what to do after completion of the append. DATA indicates more
+// data is coming so no sync takes place, METADATA indicates a sync should be
+// done to refresh metadata of the file only. CLOSE indicates that both the
+// stream and metadata should be refreshed upon append completion. leaseID is
+// optional unique GUID per file to ensure single writer semantics, meaning
+// that only clients that append to the file with the same leaseId will be
+// allowed to do so. fileSessionID is optional unique GUID per file indicating
+// all the appends with the same fileSessionId are from the same client and
+// same session. This will give a performance benefit when syncFlag is DATA or
+// METADATA.
+func (client GroupClient) Append(accountName string, directFilePath string, streamContents io.ReadCloser, op string, appendParameter string, offset *int64, syncFlag SyncFlag, leaseID *uuid.UUID, fileSessionID *uuid.UUID) (result autorest.Response, err error) {
+	req, err := client.AppendPreparer(accountName, directFilePath, streamContents, op, appendParameter, offset, syncFlag, leaseID, fileSessionID)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "filesystem.GroupClient", "Append", nil, "Failure preparing request")
 	}
@@ -75,7 +85,7 @@ func (client GroupClient) Append(accountName string, directFilePath string, stre
 }
 
 // AppendPreparer prepares the Append request.
-func (client GroupClient) AppendPreparer(accountName string, directFilePath string, streamContents io.ReadCloser, op string, appendParameter string, offset *int64, syncFlag SyncFlag) (*http.Request, error) {
+func (client GroupClient) AppendPreparer(accountName string, directFilePath string, streamContents io.ReadCloser, op string, appendParameter string, offset *int64, syncFlag SyncFlag, leaseID *uuid.UUID, fileSessionID *uuid.UUID) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
 		"accountName":             accountName,
 		"adlsFileSystemDnsSuffix": client.AdlsFileSystemDNSSuffix,
@@ -95,6 +105,12 @@ func (client GroupClient) AppendPreparer(accountName string, directFilePath stri
 	}
 	if len(string(syncFlag)) > 0 {
 		queryParameters["syncFlag"] = autorest.Encode("query", syncFlag)
+	}
+	if leaseID != nil {
+		queryParameters["leaseId"] = autorest.Encode("query", *leaseID)
+	}
+	if fileSessionID != nil {
+		queryParameters["fileSessionId"] = autorest.Encode("query", *fileSessionID)
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -128,11 +144,11 @@ func (client GroupClient) AppendResponder(resp *http.Response) (result autorest.
 //
 // accountName is the Azure Data Lake Store account to execute filesystem
 // operations on. pathParameter is the Data Lake Store path (starting with '/')
-// of the file or directory for which to check access. op is the constant value
-// for the operation. fsaction is file system operation read/write/execute in
-// string form, matching regex pattern '[rwx-]{3}'
-func (client GroupClient) CheckAccess(accountName string, pathParameter string, op string, fsaction string) (result autorest.Response, err error) {
-	req, err := client.CheckAccessPreparer(accountName, pathParameter, op, fsaction)
+// of the file or directory for which to check access. fsaction is file system
+// operation read/write/execute in string form, matching regex pattern
+// '[rwx-]{3}' op is the constant value for the operation.
+func (client GroupClient) CheckAccess(accountName string, pathParameter string, fsaction string, op string) (result autorest.Response, err error) {
+	req, err := client.CheckAccessPreparer(accountName, pathParameter, fsaction, op)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "filesystem.GroupClient", "CheckAccess", nil, "Failure preparing request")
 	}
@@ -152,7 +168,7 @@ func (client GroupClient) CheckAccess(accountName string, pathParameter string, 
 }
 
 // CheckAccessPreparer prepares the CheckAccess request.
-func (client GroupClient) CheckAccessPreparer(accountName string, pathParameter string, op string, fsaction string) (*http.Request, error) {
+func (client GroupClient) CheckAccessPreparer(accountName string, pathParameter string, fsaction string, op string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
 		"accountName":             accountName,
 		"adlsFileSystemDnsSuffix": client.AdlsFileSystemDNSSuffix,
@@ -164,10 +180,8 @@ func (client GroupClient) CheckAccessPreparer(accountName string, pathParameter 
 
 	queryParameters := map[string]interface{}{
 		"api-version": client.APIVersion,
+		"fsaction":    autorest.Encode("query", fsaction),
 		"op":          autorest.Encode("query", op),
-	}
-	if len(fsaction) > 0 {
-		queryParameters["fsaction"] = autorest.Encode("query", fsaction)
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -202,7 +216,7 @@ func (client GroupClient) CheckAccessResponder(resp *http.Response) (result auto
 // accountName is the Azure Data Lake Store account to execute filesystem
 // operations on. destinationPath is the Data Lake Store path (starting with
 // '/') of the destination file resulting from the concatenation. sources is a
-// list of comma seperated Data Lake Store paths (starting with '/') of the
+// list of comma separated Data Lake Store paths (starting with '/') of the
 // files to concatenate, in the order in which they should be concatenated. op
 // is the constant value for the operation.
 func (client GroupClient) Concat(accountName string, destinationPath string, sources []string, op string) (result autorest.Response, err error) {
@@ -373,18 +387,25 @@ func (client GroupClient) ConcurrentAppendResponder(resp *http.Response) (result
 // accountName is the Azure Data Lake Store account to execute filesystem
 // operations on. directFilePath is the Data Lake Store path (starting with
 // '/') of the file to create. op is the constant value for the operation.
-// write is the constant value for the operation. streamContents is the file
-// contents to include when creating the file. This parameter is optional,
-// resulting in an empty file if not specified. streamContents will be closed
-// upon successful return. Callers should ensure closure when receiving an
-// error.overwrite is the indication of if the file should be overwritten.
-// syncFlag is optionally indicates what to do after completion of the append.
-// DATA indicates more data is coming so no sync takes place, METADATA
-// indicates a sync should be done to refresh metadata of the file only. CLOSE
-// indicates that both the stream and metadata should be refreshed upon append
-// completion.
-func (client GroupClient) Create(accountName string, directFilePath string, op string, write string, streamContents io.ReadCloser, overwrite *bool, syncFlag SyncFlag) (result autorest.Response, err error) {
-	req, err := client.CreatePreparer(accountName, directFilePath, op, write, streamContents, overwrite, syncFlag)
+// write is flag to skip redirection. When write=false or not specified, the
+// request is redirected. Submit another HTTP PUT request using the URL in the
+// Location header with the file data to be written. When write=true, this
+// redirection is skipped. streamContents is the file contents to include when
+// creating the file. This parameter is optional, resulting in an empty file if
+// not specified. streamContents will be closed upon successful return. Callers
+// should ensure closure when receiving an error.overwrite is the indication of
+// if the file should be overwritten. syncFlag is optionally indicates what to
+// do after completion of the append. DATA indicates more data is coming so no
+// sync takes place, METADATA indicates a sync should be done to refresh
+// metadata of the file only. CLOSE indicates that both the stream and metadata
+// should be refreshed upon create completion. leaseID is optional unique GUID
+// per file to ensure single writer semantics, meaning that only clients that
+// append to the file with the same leaseId will be allowed to do so.
+// permission is the octal representation of the unnamed user, mask and other
+// permissions that should be set for the file when created. If not specified,
+// it inherits these from the container.
+func (client GroupClient) Create(accountName string, directFilePath string, op string, write string, streamContents io.ReadCloser, overwrite *bool, syncFlag SyncFlag, leaseID *uuid.UUID, permission *int32) (result autorest.Response, err error) {
+	req, err := client.CreatePreparer(accountName, directFilePath, op, write, streamContents, overwrite, syncFlag, leaseID, permission)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "filesystem.GroupClient", "Create", nil, "Failure preparing request")
 	}
@@ -404,7 +425,7 @@ func (client GroupClient) Create(accountName string, directFilePath string, op s
 }
 
 // CreatePreparer prepares the Create request.
-func (client GroupClient) CreatePreparer(accountName string, directFilePath string, op string, write string, streamContents io.ReadCloser, overwrite *bool, syncFlag SyncFlag) (*http.Request, error) {
+func (client GroupClient) CreatePreparer(accountName string, directFilePath string, op string, write string, streamContents io.ReadCloser, overwrite *bool, syncFlag SyncFlag, leaseID *uuid.UUID, permission *int32) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
 		"accountName":             accountName,
 		"adlsFileSystemDnsSuffix": client.AdlsFileSystemDNSSuffix,
@@ -424,6 +445,12 @@ func (client GroupClient) CreatePreparer(accountName string, directFilePath stri
 	}
 	if len(string(syncFlag)) > 0 {
 		queryParameters["syncFlag"] = autorest.Encode("query", syncFlag)
+	}
+	if leaseID != nil {
+		queryParameters["leaseId"] = autorest.Encode("query", *leaseID)
+	}
+	if permission != nil {
+		queryParameters["permission"] = autorest.Encode("query", *permission)
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -535,9 +562,12 @@ func (client GroupClient) DeleteResponder(resp *http.Response) (result FileOpera
 // accountName is the Azure Data Lake Store account to execute filesystem
 // operations on. aclFilePath is the Data Lake Store path (starting with '/')
 // of the file or directory for which to get the ACL. op is the constant value
-// for the operation.
-func (client GroupClient) GetACLStatus(accountName string, aclFilePath string, op string) (result ACLStatusResult, err error) {
-	req, err := client.GetACLStatusPreparer(accountName, aclFilePath, op)
+// for the operation. tooID is an optional switch to return friendly names in
+// place of object ID for ACL entries. tooid=false returns friendly names
+// instead of the AAD Object ID. Default value is true, returning AAD object
+// IDs.
+func (client GroupClient) GetACLStatus(accountName string, aclFilePath string, op string, tooID *bool) (result ACLStatusResult, err error) {
+	req, err := client.GetACLStatusPreparer(accountName, aclFilePath, op, tooID)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "filesystem.GroupClient", "GetACLStatus", nil, "Failure preparing request")
 	}
@@ -557,7 +587,7 @@ func (client GroupClient) GetACLStatus(accountName string, aclFilePath string, o
 }
 
 // GetACLStatusPreparer prepares the GetACLStatus request.
-func (client GroupClient) GetACLStatusPreparer(accountName string, aclFilePath string, op string) (*http.Request, error) {
+func (client GroupClient) GetACLStatusPreparer(accountName string, aclFilePath string, op string, tooID *bool) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
 		"accountName":             accountName,
 		"adlsFileSystemDnsSuffix": client.AdlsFileSystemDNSSuffix,
@@ -570,6 +600,9 @@ func (client GroupClient) GetACLStatusPreparer(accountName string, aclFilePath s
 	queryParameters := map[string]interface{}{
 		"api-version": client.APIVersion,
 		"op":          autorest.Encode("query", op),
+	}
+	if tooID != nil {
+		queryParameters["tooId"] = autorest.Encode("query", *tooID)
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -674,9 +707,12 @@ func (client GroupClient) GetContentSummaryResponder(resp *http.Response) (resul
 // accountName is the Azure Data Lake Store account to execute filesystem
 // operations on. getFilePath is the Data Lake Store path (starting with '/')
 // of the file or directory for which to retrieve the status. op is the
-// constant value for the operation.
-func (client GroupClient) GetFileStatus(accountName string, getFilePath string, op string) (result FileStatusResult, err error) {
-	req, err := client.GetFileStatusPreparer(accountName, getFilePath, op)
+// constant value for the operation. tooID is an optional switch to return
+// friendly names in place of owner and group. tooid=false returns friendly
+// names instead of the AAD Object ID. Default value is true, returning AAD
+// object IDs.
+func (client GroupClient) GetFileStatus(accountName string, getFilePath string, op string, tooID *bool) (result FileStatusResult, err error) {
+	req, err := client.GetFileStatusPreparer(accountName, getFilePath, op, tooID)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "filesystem.GroupClient", "GetFileStatus", nil, "Failure preparing request")
 	}
@@ -696,7 +732,7 @@ func (client GroupClient) GetFileStatus(accountName string, getFilePath string, 
 }
 
 // GetFileStatusPreparer prepares the GetFileStatus request.
-func (client GroupClient) GetFileStatusPreparer(accountName string, getFilePath string, op string) (*http.Request, error) {
+func (client GroupClient) GetFileStatusPreparer(accountName string, getFilePath string, op string, tooID *bool) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
 		"accountName":             accountName,
 		"adlsFileSystemDnsSuffix": client.AdlsFileSystemDNSSuffix,
@@ -709,6 +745,9 @@ func (client GroupClient) GetFileStatusPreparer(accountName string, getFilePath 
 	queryParameters := map[string]interface{}{
 		"api-version": client.APIVersion,
 		"op":          autorest.Encode("query", op),
+	}
+	if tooID != nil {
+		queryParameters["tooId"] = autorest.Encode("query", *tooID)
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -751,9 +790,11 @@ func (client GroupClient) GetFileStatusResponder(resp *http.Response) (result Fi
 // listBefore is gets or sets the item or lexographical index before which to
 // begin returning results. For example, a file list of 'a','b','d' and
 // listBefore='d' will return 'a','b', and a listBefore='c' will also return
-// 'a','b'. Optional.
-func (client GroupClient) ListFileStatus(accountName string, listFilePath string, op string, listSize *int32, listAfter string, listBefore string) (result FileStatusesResult, err error) {
-	req, err := client.ListFileStatusPreparer(accountName, listFilePath, op, listSize, listAfter, listBefore)
+// 'a','b'. Optional. tooID is an optional switch to return friendly names in
+// place of owner and group. tooid=false returns friendly names instead of the
+// AAD Object ID. Default value is true, returning AAD object IDs.
+func (client GroupClient) ListFileStatus(accountName string, listFilePath string, op string, listSize *int32, listAfter string, listBefore string, tooID *bool) (result FileStatusesResult, err error) {
+	req, err := client.ListFileStatusPreparer(accountName, listFilePath, op, listSize, listAfter, listBefore, tooID)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "filesystem.GroupClient", "ListFileStatus", nil, "Failure preparing request")
 	}
@@ -773,7 +814,7 @@ func (client GroupClient) ListFileStatus(accountName string, listFilePath string
 }
 
 // ListFileStatusPreparer prepares the ListFileStatus request.
-func (client GroupClient) ListFileStatusPreparer(accountName string, listFilePath string, op string, listSize *int32, listAfter string, listBefore string) (*http.Request, error) {
+func (client GroupClient) ListFileStatusPreparer(accountName string, listFilePath string, op string, listSize *int32, listAfter string, listBefore string, tooID *bool) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
 		"accountName":             accountName,
 		"adlsFileSystemDnsSuffix": client.AdlsFileSystemDNSSuffix,
@@ -795,6 +836,9 @@ func (client GroupClient) ListFileStatusPreparer(accountName string, listFilePat
 	}
 	if len(listBefore) > 0 {
 		queryParameters["listBefore"] = autorest.Encode("query", listBefore)
+	}
+	if tooID != nil {
+		queryParameters["tooId"] = autorest.Encode("query", *tooID)
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -829,8 +873,10 @@ func (client GroupClient) ListFileStatusResponder(resp *http.Response) (result F
 // accountName is the Azure Data Lake Store account to execute filesystem
 // operations on. pathParameter is the Data Lake Store path (starting with '/')
 // of the directory to create. op is the constant value for the operation.
-func (client GroupClient) Mkdirs(accountName string, pathParameter string, op string) (result FileOperationResult, err error) {
-	req, err := client.MkdirsPreparer(accountName, pathParameter, op)
+// permission is optional octal permission with which the directory should be
+// created.
+func (client GroupClient) Mkdirs(accountName string, pathParameter string, op string, permission *int32) (result FileOperationResult, err error) {
+	req, err := client.MkdirsPreparer(accountName, pathParameter, op, permission)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "filesystem.GroupClient", "Mkdirs", nil, "Failure preparing request")
 	}
@@ -850,7 +896,7 @@ func (client GroupClient) Mkdirs(accountName string, pathParameter string, op st
 }
 
 // MkdirsPreparer prepares the Mkdirs request.
-func (client GroupClient) MkdirsPreparer(accountName string, pathParameter string, op string) (*http.Request, error) {
+func (client GroupClient) MkdirsPreparer(accountName string, pathParameter string, op string, permission *int32) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
 		"accountName":             accountName,
 		"adlsFileSystemDnsSuffix": client.AdlsFileSystemDNSSuffix,
@@ -863,6 +909,9 @@ func (client GroupClient) MkdirsPreparer(accountName string, pathParameter strin
 	queryParameters := map[string]interface{}{
 		"api-version": client.APIVersion,
 		"op":          autorest.Encode("query", op),
+	}
+	if permission != nil {
+		queryParameters["permission"] = autorest.Encode("query", *permission)
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -1055,11 +1104,16 @@ func (client GroupClient) MsConcatResponder(resp *http.Response) (result autores
 // accountName is the Azure Data Lake Store account to execute filesystem
 // operations on. directFilePath is the Data Lake Store path (starting with
 // '/') of the file to open. op is the constant value for the operation. read
-// is the constant value for the operation. length is the number of bytes that
-// the server will attempt to retrieve. It will retrieve <= length bytes.
-// offset is the byte offset to start reading data from.
-func (client GroupClient) Open(accountName string, directFilePath string, op string, read string, length *int64, offset *int64) (result ReadCloser, err error) {
-	req, err := client.OpenPreparer(accountName, directFilePath, op, read, length, offset)
+// is flag to skip redirection. When read=false or not specified, the request
+// is redirected. Submit another HTTP PUT request using the URL in the Location
+// header with the file data to be read. When read=true, this redirection is
+// skipped. length is the number of bytes that the server will attempt to
+// retrieve. It will retrieve <= length bytes. offset is the byte offset to
+// start reading data from. fileSessionID is optional unique GUID per file
+// indicating all the reads with the same fileSessionId are from the same
+// client and same session. This will give a performance benefit.
+func (client GroupClient) Open(accountName string, directFilePath string, op string, read string, length *int64, offset *int64, fileSessionID *uuid.UUID) (result ReadCloser, err error) {
+	req, err := client.OpenPreparer(accountName, directFilePath, op, read, length, offset, fileSessionID)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "filesystem.GroupClient", "Open", nil, "Failure preparing request")
 	}
@@ -1079,7 +1133,7 @@ func (client GroupClient) Open(accountName string, directFilePath string, op str
 }
 
 // OpenPreparer prepares the Open request.
-func (client GroupClient) OpenPreparer(accountName string, directFilePath string, op string, read string, length *int64, offset *int64) (*http.Request, error) {
+func (client GroupClient) OpenPreparer(accountName string, directFilePath string, op string, read string, length *int64, offset *int64, fileSessionID *uuid.UUID) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
 		"accountName":             accountName,
 		"adlsFileSystemDnsSuffix": client.AdlsFileSystemDNSSuffix,
@@ -1099,6 +1153,9 @@ func (client GroupClient) OpenPreparer(accountName string, directFilePath string
 	}
 	if offset != nil {
 		queryParameters["offset"] = autorest.Encode("query", *offset)
+	}
+	if fileSessionID != nil {
+		queryParameters["fileSessionId"] = autorest.Encode("query", *fileSessionID)
 	}
 
 	preparer := autorest.CreatePreparer(

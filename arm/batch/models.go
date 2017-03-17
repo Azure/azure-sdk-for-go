@@ -145,10 +145,15 @@ type AccountRegenerateKeyParameters struct {
 	KeyName AccountKeyType `json:"keyName,omitempty"`
 }
 
+// AccountUpdateBaseProperties is the properties for a Batch account update.
+type AccountUpdateBaseProperties struct {
+	AutoStorage *AutoStorageBaseProperties `json:"autoStorage,omitempty"`
+}
+
 // AccountUpdateParameters is parameters supplied to the Update operation.
 type AccountUpdateParameters struct {
-	Tags                   *map[string]*string `json:"tags,omitempty"`
-	*AccountBaseProperties `json:"properties,omitempty"`
+	Tags                         *map[string]*string `json:"tags,omitempty"`
+	*AccountUpdateBaseProperties `json:"properties,omitempty"`
 }
 
 // ActivateApplicationPackageParameters is parameters for an

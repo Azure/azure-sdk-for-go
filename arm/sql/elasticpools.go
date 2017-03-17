@@ -380,7 +380,7 @@ func (client ElasticPoolsClient) ListActivityResponder(resp *http.Response) (res
 	return
 }
 
-// ListByServer returns elastic pools.
+// ListByServer returns a list of elastic pools in a server.
 //
 // resourceGroupName is the name of the resource group that contains the
 // resource. You can obtain this value from the Azure Resource Manager API or
@@ -511,7 +511,7 @@ func (client ElasticPoolsClient) ListDatabaseActivityResponder(resp *http.Respon
 	return
 }
 
-// ListDatabases returns a database inside of an elastic pool.
+// ListDatabases returns a list of databases in an elastic pool.
 //
 // resourceGroupName is the name of the resource group that contains the
 // resource. You can obtain this value from the Azure Resource Manager API or

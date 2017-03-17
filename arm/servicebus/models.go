@@ -95,6 +95,42 @@ const (
 	SkuTierStandard SkuTier = "Standard"
 )
 
+// UnavailableReason enumerates the values for unavailable reason.
+type UnavailableReason string
+
+const (
+	// InvalidName specifies the invalid name state for unavailable reason.
+	InvalidName UnavailableReason = "InvalidName"
+	// NameInLockdown specifies the name in lockdown state for unavailable
+	// reason.
+	NameInLockdown UnavailableReason = "NameInLockdown"
+	// NameInUse specifies the name in use state for unavailable reason.
+	NameInUse UnavailableReason = "NameInUse"
+	// None specifies the none state for unavailable reason.
+	None UnavailableReason = "None"
+	// SubscriptionIsDisabled specifies the subscription is disabled state for
+	// unavailable reason.
+	SubscriptionIsDisabled UnavailableReason = "SubscriptionIsDisabled"
+	// TooManyNamespaceInCurrentSubscription specifies the too many namespace
+	// in current subscription state for unavailable reason.
+	TooManyNamespaceInCurrentSubscription UnavailableReason = "TooManyNamespaceInCurrentSubscription"
+)
+
+// CheckNameAvailability is description of a Check Name availability request
+// properties.
+type CheckNameAvailability struct {
+	Name *string `json:"name,omitempty"`
+}
+
+// CheckNameAvailabilityResult is description of a Check Name availability
+// request properties.
+type CheckNameAvailabilityResult struct {
+	autorest.Response `json:"-"`
+	NameAvailable     *bool             `json:"nameAvailable,omitempty"`
+	Reason            UnavailableReason `json:"reason,omitempty"`
+	Message           *string           `json:"message,omitempty"`
+}
+
 // MessageCountDetails is message Count Details.
 type MessageCountDetails struct {
 	ActiveMessageCount             *int64 `json:"activeMessageCount,omitempty"`
@@ -104,20 +140,23 @@ type MessageCountDetails struct {
 	TransferMessageCount           *int64 `json:"transferMessageCount,omitempty"`
 }
 
-// NamespaceCreateOrUpdateParameters is parameters supplied to the Create Or
-// Update Namespace operation.
-type NamespaceCreateOrUpdateParameters struct {
+// Namespace is description of a namespace resource.
+type Namespace struct {
+	autorest.Response    `json:"-"`
+	ID                   *string             `json:"id,omitempty"`
+	Name                 *string             `json:"name,omitempty"`
+	Type                 *string             `json:"type,omitempty"`
 	Location             *string             `json:"location,omitempty"`
-	Sku                  *Sku                `json:"sku,omitempty"`
 	Tags                 *map[string]*string `json:"tags,omitempty"`
+	Sku                  *Sku                `json:"sku,omitempty"`
 	*NamespaceProperties `json:"properties,omitempty"`
 }
 
 // NamespaceListResult is the response of the List Namespace operation.
 type NamespaceListResult struct {
 	autorest.Response `json:"-"`
-	Value             *[]NamespaceResource `json:"value,omitempty"`
-	NextLink          *string              `json:"nextLink,omitempty"`
+	Value             *[]Namespace `json:"value,omitempty"`
+	NextLink          *string      `json:"nextLink,omitempty"`
 }
 
 // NamespaceListResultPreparer prepares a request to retrieve the next set of results. It returns
@@ -138,33 +177,64 @@ type NamespaceProperties struct {
 	CreatedAt          *date.Time `json:"createdAt,omitempty"`
 	UpdatedAt          *date.Time `json:"updatedAt,omitempty"`
 	ServiceBusEndpoint *string    `json:"serviceBusEndpoint,omitempty"`
+	MetricID           *string    `json:"metricId,omitempty"`
 }
 
-// NamespaceResource is description of a namespace resource.
-type NamespaceResource struct {
-	autorest.Response    `json:"-"`
-	ID                   *string             `json:"id,omitempty"`
-	Name                 *string             `json:"name,omitempty"`
-	Type                 *string             `json:"type,omitempty"`
-	Location             *string             `json:"location,omitempty"`
-	Tags                 *map[string]*string `json:"tags,omitempty"`
-	Sku                  *Sku                `json:"sku,omitempty"`
-	*NamespaceProperties `json:"properties,omitempty"`
+// NamespaceUpdateParameters is parameters supplied to the Patch Namespace
+// operation.
+type NamespaceUpdateParameters struct {
+	Tags *map[string]*string `json:"tags,omitempty"`
+	Sku  *Sku                `json:"sku,omitempty"`
 }
 
-// QueueCreateOrUpdateParameters is parameters supplied to the Create Or Update
-// Queue operation.
-type QueueCreateOrUpdateParameters struct {
-	Name             *string `json:"name,omitempty"`
-	Location         *string `json:"location,omitempty"`
-	*QueueProperties `json:"properties,omitempty"`
+// Operation is a ServiceBus REST API operation
+type Operation struct {
+	Name    *string           `json:"name,omitempty"`
+	Display *OperationDisplay `json:"display,omitempty"`
+}
+
+// OperationDisplay is the object that represents the operation.
+type OperationDisplay struct {
+	Provider  *string `json:"provider,omitempty"`
+	Resource  *string `json:"resource,omitempty"`
+	Operation *string `json:"operation,omitempty"`
+}
+
+// OperationListResult is result of the request to list ServiceBus operations.
+// It contains a list of operations and a URL link to get the next set of
+// results.
+type OperationListResult struct {
+	autorest.Response `json:"-"`
+	Value             *[]Operation `json:"value,omitempty"`
+	NextLink          *string      `json:"nextLink,omitempty"`
+}
+
+// OperationListResultPreparer prepares a request to retrieve the next set of results. It returns
+// nil if no more results exist.
+func (client OperationListResult) OperationListResultPreparer() (*http.Request, error) {
+	if client.NextLink == nil || len(to.String(client.NextLink)) <= 0 {
+		return nil, nil
+	}
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(client.NextLink)))
+}
+
+// Queue is description of queue Resource.
+type Queue struct {
+	autorest.Response `json:"-"`
+	ID                *string `json:"id,omitempty"`
+	Name              *string `json:"name,omitempty"`
+	Type              *string `json:"type,omitempty"`
+	*QueueProperties  `json:"properties,omitempty"`
 }
 
 // QueueListResult is the response to the List Queues operation.
 type QueueListResult struct {
 	autorest.Response `json:"-"`
-	Value             *[]QueueResource `json:"value,omitempty"`
-	NextLink          *string          `json:"nextLink,omitempty"`
+	Value             *[]Queue `json:"value,omitempty"`
+	NextLink          *string  `json:"nextLink,omitempty"`
 }
 
 // QueueListResultPreparer prepares a request to retrieve the next set of results. It returns
@@ -203,30 +273,17 @@ type QueueProperties struct {
 	UpdatedAt                           *date.Time           `json:"updatedAt,omitempty"`
 }
 
-// QueueResource is description of queue Resource.
-type QueueResource struct {
-	autorest.Response `json:"-"`
-	ID                *string             `json:"id,omitempty"`
-	Name              *string             `json:"name,omitempty"`
-	Type              *string             `json:"type,omitempty"`
-	Location          *string             `json:"location,omitempty"`
-	Tags              *map[string]*string `json:"tags,omitempty"`
-	*QueueProperties  `json:"properties,omitempty"`
-}
-
 // RegenerateKeysParameters is parameters supplied to the Regenerate
 // Authorization Rule operation.
 type RegenerateKeysParameters struct {
-	Policykey Policykey `json:"Policykey,omitempty"`
+	Policykey Policykey `json:"policykey,omitempty"`
 }
 
-// Resource is the Resource definition.
+// Resource is the Resource definition for other than namespace.
 type Resource struct {
-	ID       *string             `json:"id,omitempty"`
-	Name     *string             `json:"name,omitempty"`
-	Type     *string             `json:"type,omitempty"`
-	Location *string             `json:"location,omitempty"`
-	Tags     *map[string]*string `json:"tags,omitempty"`
+	ID   *string `json:"id,omitempty"`
+	Name *string `json:"name,omitempty"`
+	Type *string `json:"type,omitempty"`
 }
 
 // ResourceListKeys is namespace/ServiceBus Connection String
@@ -239,11 +296,13 @@ type ResourceListKeys struct {
 	KeyName                   *string `json:"keyName,omitempty"`
 }
 
-// SharedAccessAuthorizationRuleCreateOrUpdateParameters is parameters supplied
-// to the Create Or Update Authorization Rules operation.
-type SharedAccessAuthorizationRuleCreateOrUpdateParameters struct {
-	Location                                 *string `json:"location,omitempty"`
+// SharedAccessAuthorizationRule is description of a namespace authorization
+// rule.
+type SharedAccessAuthorizationRule struct {
+	autorest.Response                        `json:"-"`
+	ID                                       *string `json:"id,omitempty"`
 	Name                                     *string `json:"name,omitempty"`
+	Type                                     *string `json:"type,omitempty"`
 	*SharedAccessAuthorizationRuleProperties `json:"properties,omitempty"`
 }
 
@@ -251,8 +310,8 @@ type SharedAccessAuthorizationRuleCreateOrUpdateParameters struct {
 // Namespace operation.
 type SharedAccessAuthorizationRuleListResult struct {
 	autorest.Response `json:"-"`
-	Value             *[]SharedAccessAuthorizationRuleResource `json:"value,omitempty"`
-	NextLink          *string                                  `json:"nextLink,omitempty"`
+	Value             *[]SharedAccessAuthorizationRule `json:"value,omitempty"`
+	NextLink          *string                          `json:"nextLink,omitempty"`
 }
 
 // SharedAccessAuthorizationRuleListResultPreparer prepares a request to retrieve the next set of results. It returns
@@ -273,18 +332,6 @@ type SharedAccessAuthorizationRuleProperties struct {
 	Rights *[]AccessRights `json:"rights,omitempty"`
 }
 
-// SharedAccessAuthorizationRuleResource is description of a namespace
-// authorization rule.
-type SharedAccessAuthorizationRuleResource struct {
-	autorest.Response                        `json:"-"`
-	ID                                       *string             `json:"id,omitempty"`
-	Name                                     *string             `json:"name,omitempty"`
-	Type                                     *string             `json:"type,omitempty"`
-	Location                                 *string             `json:"location,omitempty"`
-	Tags                                     *map[string]*string `json:"tags,omitempty"`
-	*SharedAccessAuthorizationRuleProperties `json:"properties,omitempty"`
-}
-
 // Sku is sKU of the namespace.
 type Sku struct {
 	Name     SkuName `json:"name,omitempty"`
@@ -292,10 +339,11 @@ type Sku struct {
 	Capacity *int32  `json:"capacity,omitempty"`
 }
 
-// SubscriptionCreateOrUpdateParameters is parameters supplied to the Create Or
-// Update Subscription operation.
-type SubscriptionCreateOrUpdateParameters struct {
-	Location                *string `json:"location,omitempty"`
+// Subscription is description of subscription resource.
+type Subscription struct {
+	autorest.Response       `json:"-"`
+	ID                      *string `json:"id,omitempty"`
+	Name                    *string `json:"name,omitempty"`
 	Type                    *string `json:"type,omitempty"`
 	*SubscriptionProperties `json:"properties,omitempty"`
 }
@@ -303,8 +351,8 @@ type SubscriptionCreateOrUpdateParameters struct {
 // SubscriptionListResult is the response to the List Subscriptions operation.
 type SubscriptionListResult struct {
 	autorest.Response `json:"-"`
-	Value             *[]SubscriptionResource `json:"value,omitempty"`
-	NextLink          *string                 `json:"nextLink,omitempty"`
+	Value             *[]Subscription `json:"value,omitempty"`
+	NextLink          *string         `json:"nextLink,omitempty"`
 }
 
 // SubscriptionListResultPreparer prepares a request to retrieve the next set of results. It returns
@@ -337,30 +385,20 @@ type SubscriptionProperties struct {
 	UpdatedAt                                 *date.Time           `json:"updatedAt,omitempty"`
 }
 
-// SubscriptionResource is description of subscription resource.
-type SubscriptionResource struct {
-	autorest.Response       `json:"-"`
-	ID                      *string             `json:"id,omitempty"`
-	Name                    *string             `json:"name,omitempty"`
-	Type                    *string             `json:"type,omitempty"`
-	Location                *string             `json:"location,omitempty"`
-	Tags                    *map[string]*string `json:"tags,omitempty"`
-	*SubscriptionProperties `json:"properties,omitempty"`
-}
-
-// TopicCreateOrUpdateParameters is parameters supplied to the Create Or Update
-// Topic operation.
-type TopicCreateOrUpdateParameters struct {
-	Name             *string `json:"name,omitempty"`
-	Location         *string `json:"location,omitempty"`
-	*TopicProperties `json:"properties,omitempty"`
+// Topic is description of topic resource.
+type Topic struct {
+	autorest.Response `json:"-"`
+	ID                *string `json:"id,omitempty"`
+	Name              *string `json:"name,omitempty"`
+	Type              *string `json:"type,omitempty"`
+	*TopicProperties  `json:"properties,omitempty"`
 }
 
 // TopicListResult is the response to the List Topics operation.
 type TopicListResult struct {
 	autorest.Response `json:"-"`
-	Value             *[]TopicResource `json:"value,omitempty"`
-	NextLink          *string          `json:"nextLink,omitempty"`
+	Value             *[]Topic `json:"value,omitempty"`
+	NextLink          *string  `json:"nextLink,omitempty"`
 }
 
 // TopicListResultPreparer prepares a request to retrieve the next set of results. It returns
@@ -395,13 +433,11 @@ type TopicProperties struct {
 	UpdatedAt                           *date.Time           `json:"updatedAt,omitempty"`
 }
 
-// TopicResource is description of topic resource.
-type TopicResource struct {
-	autorest.Response `json:"-"`
-	ID                *string             `json:"id,omitempty"`
-	Name              *string             `json:"name,omitempty"`
-	Type              *string             `json:"type,omitempty"`
-	Location          *string             `json:"location,omitempty"`
-	Tags              *map[string]*string `json:"tags,omitempty"`
-	*TopicProperties  `json:"properties,omitempty"`
+// TrackedResource is the Resource definition.
+type TrackedResource struct {
+	ID       *string             `json:"id,omitempty"`
+	Name     *string             `json:"name,omitempty"`
+	Type     *string             `json:"type,omitempty"`
+	Location *string             `json:"location,omitempty"`
+	Tags     *map[string]*string `json:"tags,omitempty"`
 }

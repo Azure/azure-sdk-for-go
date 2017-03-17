@@ -127,6 +127,43 @@ type ExportRDBParameters struct {
 	Container *string `json:"container,omitempty"`
 }
 
+// FirewallRule is a firewall rule on a redis cache has a name, and describes a
+// contiguous range of IP addresses permitted to connect
+type FirewallRule struct {
+	autorest.Response       `json:"-"`
+	ID                      *string `json:"id,omitempty"`
+	Name                    *string `json:"name,omitempty"`
+	Type                    *string `json:"type,omitempty"`
+	*FirewallRuleProperties `json:"properties,omitempty"`
+}
+
+// FirewallRuleListResult is the response of list firewall rules Redis
+// operation.
+type FirewallRuleListResult struct {
+	autorest.Response `json:"-"`
+	Value             *[]FirewallRule `json:"value,omitempty"`
+	NextLink          *string         `json:"nextLink,omitempty"`
+}
+
+// FirewallRuleListResultPreparer prepares a request to retrieve the next set of results. It returns
+// nil if no more results exist.
+func (client FirewallRuleListResult) FirewallRuleListResultPreparer() (*http.Request, error) {
+	if client.NextLink == nil || len(to.String(client.NextLink)) <= 0 {
+		return nil, nil
+	}
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(client.NextLink)))
+}
+
+// FirewallRuleProperties is specifies a range of IP addresses permitted to
+// connect to the cache
+type FirewallRuleProperties struct {
+	StartIP *string `json:"startIP,omitempty"`
+	EndIP   *string `json:"endIP,omitempty"`
+}
+
 // ForceRebootResponse is response to force reboot for Redis cache.
 type ForceRebootResponse struct {
 	autorest.Response `json:"-"`
@@ -149,6 +186,41 @@ type ListResult struct {
 // ListResultPreparer prepares a request to retrieve the next set of results. It returns
 // nil if no more results exist.
 func (client ListResult) ListResultPreparer() (*http.Request, error) {
+	if client.NextLink == nil || len(to.String(client.NextLink)) <= 0 {
+		return nil, nil
+	}
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(client.NextLink)))
+}
+
+// Operation is rEST API operation
+type Operation struct {
+	Name    *string           `json:"name,omitempty"`
+	Display *OperationDisplay `json:"display,omitempty"`
+}
+
+// OperationDisplay is the object that describes the operation.
+type OperationDisplay struct {
+	Provider    *string `json:"provider,omitempty"`
+	Operation   *string `json:"operation,omitempty"`
+	Resource    *string `json:"resource,omitempty"`
+	Description *string `json:"description,omitempty"`
+}
+
+// OperationListResult is result of the request to list REST API operations. It
+// contains a list of operations and a URL nextLink to get the next set of
+// results.
+type OperationListResult struct {
+	autorest.Response `json:"-"`
+	Value             *[]Operation `json:"value,omitempty"`
+	NextLink          *string      `json:"nextLink,omitempty"`
+}
+
+// OperationListResultPreparer prepares a request to retrieve the next set of results. It returns
+// nil if no more results exist.
+func (client OperationListResult) OperationListResultPreparer() (*http.Request, error) {
 	if client.NextLink == nil || len(to.String(client.NextLink)) <= 0 {
 		return nil, nil
 	}

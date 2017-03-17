@@ -44,14 +44,24 @@ func NewSubscriptionsClientWithBaseURI(baseURI string, subscriptionID string) Su
 
 // CreateOrUpdate creates a topic subscription.
 //
-// resourceGroupName is the name of the resource group. namespaceName is the
-// namespace name. topicName is the topic name. subscriptionName is the
-// subscription name. parameters is parameters supplied to create a
-// subscription resource.
-func (client SubscriptionsClient) CreateOrUpdate(resourceGroupName string, namespaceName string, topicName string, subscriptionName string, parameters SubscriptionCreateOrUpdateParameters) (result SubscriptionResource, err error) {
+// resourceGroupName is name of the Resource group within the Azure
+// subscription. namespaceName is the namespace name topicName is the topic
+// name. subscriptionName is the subscription name. parameters is parameters
+// supplied to create a subscription resource.
+func (client SubscriptionsClient) CreateOrUpdate(resourceGroupName string, namespaceName string, topicName string, subscriptionName string, parameters Subscription) (result Subscription, err error) {
 	if err := validation.Validate([]validation.Validation{
-		{TargetValue: parameters,
-			Constraints: []validation.Constraint{{Target: "parameters.Location", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}},
+		{TargetValue: namespaceName,
+			Constraints: []validation.Constraint{{Target: "namespaceName", Name: validation.MaxLength, Rule: 50, Chain: nil},
+				{Target: "namespaceName", Name: validation.MinLength, Rule: 6, Chain: nil}}},
+		{TargetValue: topicName,
+			Constraints: []validation.Constraint{{Target: "topicName", Name: validation.MaxLength, Rule: 50, Chain: nil},
+				{Target: "topicName", Name: validation.MinLength, Rule: 1, Chain: nil}}},
+		{TargetValue: subscriptionName,
+			Constraints: []validation.Constraint{{Target: "subscriptionName", Name: validation.MaxLength, Rule: 50, Chain: nil},
+				{Target: "subscriptionName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
 		return result, validation.NewErrorWithValidationError(err, "servicebus.SubscriptionsClient", "CreateOrUpdate")
 	}
 
@@ -75,7 +85,7 @@ func (client SubscriptionsClient) CreateOrUpdate(resourceGroupName string, names
 }
 
 // CreateOrUpdatePreparer prepares the CreateOrUpdate request.
-func (client SubscriptionsClient) CreateOrUpdatePreparer(resourceGroupName string, namespaceName string, topicName string, subscriptionName string, parameters SubscriptionCreateOrUpdateParameters) (*http.Request, error) {
+func (client SubscriptionsClient) CreateOrUpdatePreparer(resourceGroupName string, namespaceName string, topicName string, subscriptionName string, parameters Subscription) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"namespaceName":     autorest.Encode("path", namespaceName),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
@@ -106,7 +116,7 @@ func (client SubscriptionsClient) CreateOrUpdateSender(req *http.Request) (*http
 
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
 // closes the http.Response Body.
-func (client SubscriptionsClient) CreateOrUpdateResponder(resp *http.Response) (result SubscriptionResource, err error) {
+func (client SubscriptionsClient) CreateOrUpdateResponder(resp *http.Response) (result Subscription, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -119,10 +129,26 @@ func (client SubscriptionsClient) CreateOrUpdateResponder(resp *http.Response) (
 
 // Delete deletes a subscription from the specified topic.
 //
-// resourceGroupName is the name of the resource group. namespaceName is the
-// namespace name. topicName is the topic name. subscriptionName is the
-// subscription name.
+// resourceGroupName is name of the Resource group within the Azure
+// subscription. namespaceName is the namespace name topicName is the topic
+// name. subscriptionName is the subscription name.
 func (client SubscriptionsClient) Delete(resourceGroupName string, namespaceName string, topicName string, subscriptionName string) (result autorest.Response, err error) {
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}},
+		{TargetValue: namespaceName,
+			Constraints: []validation.Constraint{{Target: "namespaceName", Name: validation.MaxLength, Rule: 50, Chain: nil},
+				{Target: "namespaceName", Name: validation.MinLength, Rule: 6, Chain: nil}}},
+		{TargetValue: topicName,
+			Constraints: []validation.Constraint{{Target: "topicName", Name: validation.MaxLength, Rule: 50, Chain: nil},
+				{Target: "topicName", Name: validation.MinLength, Rule: 1, Chain: nil}}},
+		{TargetValue: subscriptionName,
+			Constraints: []validation.Constraint{{Target: "subscriptionName", Name: validation.MaxLength, Rule: 50, Chain: nil},
+				{Target: "subscriptionName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewErrorWithValidationError(err, "servicebus.SubscriptionsClient", "Delete")
+	}
+
 	req, err := client.DeletePreparer(resourceGroupName, namespaceName, topicName, subscriptionName)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "servicebus.SubscriptionsClient", "Delete", nil, "Failure preparing request")
@@ -184,10 +210,26 @@ func (client SubscriptionsClient) DeleteResponder(resp *http.Response) (result a
 
 // Get returns a subscription description for the specified topic.
 //
-// resourceGroupName is the name of the resource group. namespaceName is the
-// namespace name. topicName is the topic name. subscriptionName is the
-// subscription name.
-func (client SubscriptionsClient) Get(resourceGroupName string, namespaceName string, topicName string, subscriptionName string) (result SubscriptionResource, err error) {
+// resourceGroupName is name of the Resource group within the Azure
+// subscription. namespaceName is the namespace name topicName is the topic
+// name. subscriptionName is the subscription name.
+func (client SubscriptionsClient) Get(resourceGroupName string, namespaceName string, topicName string, subscriptionName string) (result Subscription, err error) {
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}},
+		{TargetValue: namespaceName,
+			Constraints: []validation.Constraint{{Target: "namespaceName", Name: validation.MaxLength, Rule: 50, Chain: nil},
+				{Target: "namespaceName", Name: validation.MinLength, Rule: 6, Chain: nil}}},
+		{TargetValue: topicName,
+			Constraints: []validation.Constraint{{Target: "topicName", Name: validation.MaxLength, Rule: 50, Chain: nil},
+				{Target: "topicName", Name: validation.MinLength, Rule: 1, Chain: nil}}},
+		{TargetValue: subscriptionName,
+			Constraints: []validation.Constraint{{Target: "subscriptionName", Name: validation.MaxLength, Rule: 50, Chain: nil},
+				{Target: "subscriptionName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewErrorWithValidationError(err, "servicebus.SubscriptionsClient", "Get")
+	}
+
 	req, err := client.GetPreparer(resourceGroupName, namespaceName, topicName, subscriptionName)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "servicebus.SubscriptionsClient", "Get", nil, "Failure preparing request")
@@ -237,7 +279,7 @@ func (client SubscriptionsClient) GetSender(req *http.Request) (*http.Response, 
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
-func (client SubscriptionsClient) GetResponder(resp *http.Response) (result SubscriptionResource, err error) {
+func (client SubscriptionsClient) GetResponder(resp *http.Response) (result Subscription, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -248,32 +290,46 @@ func (client SubscriptionsClient) GetResponder(resp *http.Response) (result Subs
 	return
 }
 
-// ListAll lsit all the subscriptions under a specified topic.
+// ListByTopic list all the subscriptions under a specified topic.
 //
-// resourceGroupName is the name of the resource group. namespaceName is the
-// namespace name. topicName is the topic name.
-func (client SubscriptionsClient) ListAll(resourceGroupName string, namespaceName string, topicName string) (result SubscriptionListResult, err error) {
-	req, err := client.ListAllPreparer(resourceGroupName, namespaceName, topicName)
-	if err != nil {
-		return result, autorest.NewErrorWithError(err, "servicebus.SubscriptionsClient", "ListAll", nil, "Failure preparing request")
+// resourceGroupName is name of the Resource group within the Azure
+// subscription. namespaceName is the namespace name topicName is the topic
+// name.
+func (client SubscriptionsClient) ListByTopic(resourceGroupName string, namespaceName string, topicName string) (result SubscriptionListResult, err error) {
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}},
+		{TargetValue: namespaceName,
+			Constraints: []validation.Constraint{{Target: "namespaceName", Name: validation.MaxLength, Rule: 50, Chain: nil},
+				{Target: "namespaceName", Name: validation.MinLength, Rule: 6, Chain: nil}}},
+		{TargetValue: topicName,
+			Constraints: []validation.Constraint{{Target: "topicName", Name: validation.MaxLength, Rule: 50, Chain: nil},
+				{Target: "topicName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewErrorWithValidationError(err, "servicebus.SubscriptionsClient", "ListByTopic")
 	}
 
-	resp, err := client.ListAllSender(req)
+	req, err := client.ListByTopicPreparer(resourceGroupName, namespaceName, topicName)
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "servicebus.SubscriptionsClient", "ListByTopic", nil, "Failure preparing request")
+	}
+
+	resp, err := client.ListByTopicSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "servicebus.SubscriptionsClient", "ListAll", resp, "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "servicebus.SubscriptionsClient", "ListByTopic", resp, "Failure sending request")
 	}
 
-	result, err = client.ListAllResponder(resp)
+	result, err = client.ListByTopicResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "servicebus.SubscriptionsClient", "ListAll", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "servicebus.SubscriptionsClient", "ListByTopic", resp, "Failure responding to request")
 	}
 
 	return
 }
 
-// ListAllPreparer prepares the ListAll request.
-func (client SubscriptionsClient) ListAllPreparer(resourceGroupName string, namespaceName string, topicName string) (*http.Request, error) {
+// ListByTopicPreparer prepares the ListByTopic request.
+func (client SubscriptionsClient) ListByTopicPreparer(resourceGroupName string, namespaceName string, topicName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"namespaceName":     autorest.Encode("path", namespaceName),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
@@ -293,15 +349,15 @@ func (client SubscriptionsClient) ListAllPreparer(resourceGroupName string, name
 	return preparer.Prepare(&http.Request{})
 }
 
-// ListAllSender sends the ListAll request. The method will close the
+// ListByTopicSender sends the ListByTopic request. The method will close the
 // http.Response Body if it receives an error.
-func (client SubscriptionsClient) ListAllSender(req *http.Request) (*http.Response, error) {
+func (client SubscriptionsClient) ListByTopicSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req)
 }
 
-// ListAllResponder handles the response to the ListAll request. The method always
+// ListByTopicResponder handles the response to the ListByTopic request. The method always
 // closes the http.Response Body.
-func (client SubscriptionsClient) ListAllResponder(resp *http.Response) (result SubscriptionListResult, err error) {
+func (client SubscriptionsClient) ListByTopicResponder(resp *http.Response) (result SubscriptionListResult, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -312,25 +368,25 @@ func (client SubscriptionsClient) ListAllResponder(resp *http.Response) (result 
 	return
 }
 
-// ListAllNextResults retrieves the next set of results, if any.
-func (client SubscriptionsClient) ListAllNextResults(lastResults SubscriptionListResult) (result SubscriptionListResult, err error) {
+// ListByTopicNextResults retrieves the next set of results, if any.
+func (client SubscriptionsClient) ListByTopicNextResults(lastResults SubscriptionListResult) (result SubscriptionListResult, err error) {
 	req, err := lastResults.SubscriptionListResultPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "servicebus.SubscriptionsClient", "ListAll", nil, "Failure preparing next results request")
+		return result, autorest.NewErrorWithError(err, "servicebus.SubscriptionsClient", "ListByTopic", nil, "Failure preparing next results request")
 	}
 	if req == nil {
 		return
 	}
 
-	resp, err := client.ListAllSender(req)
+	resp, err := client.ListByTopicSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "servicebus.SubscriptionsClient", "ListAll", resp, "Failure sending next results request")
+		return result, autorest.NewErrorWithError(err, "servicebus.SubscriptionsClient", "ListByTopic", resp, "Failure sending next results request")
 	}
 
-	result, err = client.ListAllResponder(resp)
+	result, err = client.ListByTopicResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "servicebus.SubscriptionsClient", "ListAll", resp, "Failure responding to next results request")
+		err = autorest.NewErrorWithError(err, "servicebus.SubscriptionsClient", "ListByTopic", resp, "Failure responding to next results request")
 	}
 
 	return

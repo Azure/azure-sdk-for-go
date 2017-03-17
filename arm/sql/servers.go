@@ -359,7 +359,7 @@ func (client ServersClient) ListResponder(resp *http.Response) (result ServerLis
 	return
 }
 
-// ListByResourceGroup returns a server.
+// ListByResourceGroup returns a list of servers in a resource group.
 //
 // resourceGroupName is the name of the resource group that contains the
 // resource. You can obtain this value from the Azure Resource Manager API or

@@ -257,7 +257,7 @@ func (client DatabasesClient) DeleteResponder(resp *http.Response) (result autor
 // resourceGroupName is the name of the resource group that contains the
 // resource. You can obtain this value from the Azure Resource Manager API or
 // the portal. serverName is the name of the server. databaseName is the name
-// of the database to be retrieved. expand is the comma separated list of child
+// of the database to be retrieved. expand is a comma separated list of child
 // objects to expand in the response. Possible properties: serviceTierAdvisors,
 // upgradeHint, transparentDataEncryption.
 func (client DatabasesClient) Get(resourceGroupName string, serverName string, databaseName string, expand string) (result Database, err error) {
@@ -457,13 +457,14 @@ func (client DatabasesClient) GetTransparentDataEncryptionConfigurationResponder
 	return
 }
 
-// ListByServer returns a list of databases by server.
+// ListByServer returns a list of databases in a server.
 //
 // resourceGroupName is the name of the resource group that contains the
 // resource. You can obtain this value from the Azure Resource Manager API or
-// the portal. serverName is the name of the server.
-func (client DatabasesClient) ListByServer(resourceGroupName string, serverName string) (result DatabaseListResult, err error) {
-	req, err := client.ListByServerPreparer(resourceGroupName, serverName)
+// the portal. serverName is the name of the server. filter is an OData filter
+// expression that describes a subset of databases to return.
+func (client DatabasesClient) ListByServer(resourceGroupName string, serverName string, filter string) (result DatabaseListResult, err error) {
+	req, err := client.ListByServerPreparer(resourceGroupName, serverName, filter)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "sql.DatabasesClient", "ListByServer", nil, "Failure preparing request")
 	}
@@ -483,7 +484,7 @@ func (client DatabasesClient) ListByServer(resourceGroupName string, serverName 
 }
 
 // ListByServerPreparer prepares the ListByServer request.
-func (client DatabasesClient) ListByServerPreparer(resourceGroupName string, serverName string) (*http.Request, error) {
+func (client DatabasesClient) ListByServerPreparer(resourceGroupName string, serverName string, filter string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"serverName":        autorest.Encode("path", serverName),
@@ -492,6 +493,9 @@ func (client DatabasesClient) ListByServerPreparer(resourceGroupName string, ser
 
 	queryParameters := map[string]interface{}{
 		"api-version": client.APIVersion,
+	}
+	if len(filter) > 0 {
+		queryParameters["$filter"] = autorest.Encode("query", filter)
 	}
 
 	preparer := autorest.CreatePreparer(

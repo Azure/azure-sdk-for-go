@@ -183,7 +183,7 @@ func (client SessionsClient) DeleteResponder(resp *http.Response) (result autore
 // resourceGroupName is the resource group name. integrationAccountName is the
 // integration account name. sessionName is the integration account session
 // name.
-func (client SessionsClient) Get(resourceGroupName string, integrationAccountName string, sessionName string) (result SetObject, err error) {
+func (client SessionsClient) Get(resourceGroupName string, integrationAccountName string, sessionName string) (result IntegrationAccountSession, err error) {
 	req, err := client.GetPreparer(resourceGroupName, integrationAccountName, sessionName)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "logic.SessionsClient", "Get", nil, "Failure preparing request")
@@ -232,12 +232,12 @@ func (client SessionsClient) GetSender(req *http.Request) (*http.Response, error
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
-func (client SessionsClient) GetResponder(resp *http.Response) (result SetObject, err error) {
+func (client SessionsClient) GetResponder(resp *http.Response) (result IntegrationAccountSession, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNotFound),
-		autorest.ByUnmarshallingJSON(&result.Value),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
 	return

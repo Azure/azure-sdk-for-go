@@ -217,7 +217,7 @@ type FileStatusProperties struct {
 	AccessTime       *int64   `json:"accessTime,omitempty"`
 	BlockSize        *int64   `json:"blockSize,omitempty"`
 	ChildrenNum      *int64   `json:"childrenNum,omitempty"`
-	ExpirationTime   *int64   `json:"expirationTime,omitempty"`
+	ExpirationTime   *int64   `json:"msExpirationTime,omitempty"`
 	Group            *string  `json:"group,omitempty"`
 	Length           *int64   `json:"length,omitempty"`
 	ModificationTime *int64   `json:"modificationTime,omitempty"`
@@ -225,6 +225,7 @@ type FileStatusProperties struct {
 	PathSuffix       *string  `json:"pathSuffix,omitempty"`
 	Permission       *string  `json:"permission,omitempty"`
 	Type             FileType `json:"type,omitempty"`
+	ACLBit           *bool    `json:"aclBit,omitempty"`
 }
 
 // FileStatusResult is data Lake Store filesystem file status information

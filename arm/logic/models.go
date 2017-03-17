@@ -684,9 +684,9 @@ const (
 
 // AgreementContent is the integration account agreement content.
 type AgreementContent struct {
-	AS2     *AS2AgreementContent     `json:"AS2,omitempty"`
-	X12     *X12AgreementContent     `json:"X12,omitempty"`
-	Edifact *EdifactAgreementContent `json:"Edifact,omitempty"`
+	AS2     *AS2AgreementContent     `json:"aS2,omitempty"`
+	X12     *X12AgreementContent     `json:"x12,omitempty"`
+	Edifact *EdifactAgreementContent `json:"edifact,omitempty"`
 }
 
 // AS2AcknowledgementConnectionSettings is the AS2 agreement acknowledegment
@@ -995,8 +995,8 @@ type EdifactSchemaReference struct {
 type EdifactValidationOverride struct {
 	MessageID                              *string                 `json:"messageId,omitempty"`
 	EnforceCharacterSet                    *bool                   `json:"enforceCharacterSet,omitempty"`
-	ValidateEDITypes                       *bool                   `json:"validateEDITypes,omitempty"`
-	ValidateXSDTypes                       *bool                   `json:"validateXSDTypes,omitempty"`
+	ValidateEdiTypes                       *bool                   `json:"validateEdiTypes,omitempty"`
+	ValidateXsdTypes                       *bool                   `json:"validateXsdTypes,omitempty"`
 	AllowLeadingAndTrailingSpacesAndZeroes *bool                   `json:"allowLeadingAndTrailingSpacesAndZeroes,omitempty"`
 	TrailingSeparatorPolicy                TrailingSeparatorPolicy `json:"trailingSeparatorPolicy,omitempty"`
 	TrimLeadingAndTrailingSpacesAndZeroes  *bool                   `json:"trimLeadingAndTrailingSpacesAndZeroes,omitempty"`
@@ -1009,8 +1009,8 @@ type EdifactValidationSettings struct {
 	InterchangeControlNumberValidityDays      *int32                  `json:"interchangeControlNumberValidityDays,omitempty"`
 	CheckDuplicateGroupControlNumber          *bool                   `json:"checkDuplicateGroupControlNumber,omitempty"`
 	CheckDuplicateTransactionSetControlNumber *bool                   `json:"checkDuplicateTransactionSetControlNumber,omitempty"`
-	ValidateEDITypes                          *bool                   `json:"validateEDITypes,omitempty"`
-	ValidateXSDTypes                          *bool                   `json:"validateXSDTypes,omitempty"`
+	ValidateEdiTypes                          *bool                   `json:"validateEdiTypes,omitempty"`
+	ValidateXsdTypes                          *bool                   `json:"validateXsdTypes,omitempty"`
 	AllowLeadingAndTrailingSpacesAndZeroes    *bool                   `json:"allowLeadingAndTrailingSpacesAndZeroes,omitempty"`
 	TrimLeadingAndTrailingSpacesAndZeroes     *bool                   `json:"trimLeadingAndTrailingSpacesAndZeroes,omitempty"`
 	TrailingSeparatorPolicy                   TrailingSeparatorPolicy `json:"trailingSeparatorPolicy,omitempty"`
@@ -1207,7 +1207,7 @@ type IntegrationAccountMapProperties struct {
 	ParametersSchema *IntegrationAccountMapPropertiesParametersSchema `json:"parametersSchema,omitempty"`
 	CreatedTime      *date.Time                                       `json:"createdTime,omitempty"`
 	ChangedTime      *date.Time                                       `json:"changedTime,omitempty"`
-	Content          *map[string]interface{}                          `json:"content,omitempty"`
+	Content          *string                                          `json:"content,omitempty"`
 	ContentType      *string                                          `json:"contentType,omitempty"`
 	ContentLink      *ContentLink                                     `json:"contentLink,omitempty"`
 	Metadata         *map[string]interface{}                          `json:"metadata,omitempty"`
@@ -1313,7 +1313,7 @@ type IntegrationAccountSchemaProperties struct {
 	CreatedTime     *date.Time              `json:"createdTime,omitempty"`
 	ChangedTime     *date.Time              `json:"changedTime,omitempty"`
 	Metadata        *map[string]interface{} `json:"metadata,omitempty"`
-	Content         *map[string]interface{} `json:"content,omitempty"`
+	Content         *string                 `json:"content,omitempty"`
 	ContentType     *string                 `json:"contentType,omitempty"`
 	ContentLink     *ContentLink            `json:"contentLink,omitempty"`
 }
@@ -1951,8 +1951,8 @@ type X12SecuritySettings struct {
 // X12ValidationOverride is the X12 validation override settings.
 type X12ValidationOverride struct {
 	MessageID                              *string                 `json:"messageId,omitempty"`
-	ValidateEDITypes                       *bool                   `json:"validateEDITypes,omitempty"`
-	ValidateXSDTypes                       *bool                   `json:"validateXSDTypes,omitempty"`
+	ValidateEdiTypes                       *bool                   `json:"validateEdiTypes,omitempty"`
+	ValidateXsdTypes                       *bool                   `json:"validateXsdTypes,omitempty"`
 	AllowLeadingAndTrailingSpacesAndZeroes *bool                   `json:"allowLeadingAndTrailingSpacesAndZeroes,omitempty"`
 	ValidateCharacterSet                   *bool                   `json:"validateCharacterSet,omitempty"`
 	TrimLeadingAndTrailingSpacesAndZeroes  *bool                   `json:"trimLeadingAndTrailingSpacesAndZeroes,omitempty"`
@@ -1966,8 +1966,8 @@ type X12ValidationSettings struct {
 	InterchangeControlNumberValidityDays      *int32                  `json:"interchangeControlNumberValidityDays,omitempty"`
 	CheckDuplicateGroupControlNumber          *bool                   `json:"checkDuplicateGroupControlNumber,omitempty"`
 	CheckDuplicateTransactionSetControlNumber *bool                   `json:"checkDuplicateTransactionSetControlNumber,omitempty"`
-	ValidateEDITypes                          *bool                   `json:"validateEDITypes,omitempty"`
-	ValidateXSDTypes                          *bool                   `json:"validateXSDTypes,omitempty"`
+	ValidateEdiTypes                          *bool                   `json:"validateEdiTypes,omitempty"`
+	ValidateXsdTypes                          *bool                   `json:"validateXsdTypes,omitempty"`
 	AllowLeadingAndTrailingSpacesAndZeroes    *bool                   `json:"allowLeadingAndTrailingSpacesAndZeroes,omitempty"`
 	TrimLeadingAndTrailingSpacesAndZeroes     *bool                   `json:"trimLeadingAndTrailingSpacesAndZeroes,omitempty"`
 	TrailingSeparatorPolicy                   TrailingSeparatorPolicy `json:"trailingSeparatorPolicy,omitempty"`

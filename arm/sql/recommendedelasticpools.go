@@ -241,7 +241,7 @@ func (client RecommendedElasticPoolsClient) ListResponder(resp *http.Response) (
 	return
 }
 
-// ListDatabases returns a database inside of a recommented elastic pool.
+// ListDatabases returns a list of databases inside a recommented elastic pool.
 //
 // resourceGroupName is the name of the resource group that contains the
 // resource. You can obtain this value from the Azure Resource Manager API or

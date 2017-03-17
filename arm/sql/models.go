@@ -44,6 +44,9 @@ const (
 	Recovery CreateMode = "Recovery"
 	// Restore specifies the restore state for create mode.
 	Restore CreateMode = "Restore"
+	// RestoreLongTermRetentionBackup specifies the restore long term retention
+	// backup state for create mode.
+	RestoreLongTermRetentionBackup CreateMode = "RestoreLongTermRetentionBackup"
 )
 
 // DatabaseEditions enumerates the values for database editions.
@@ -361,30 +364,32 @@ type DatabaseMetricListResult struct {
 
 // DatabaseProperties is represents the properties of a database.
 type DatabaseProperties struct {
-	Collation                     *string                      `json:"collation,omitempty"`
-	CreationDate                  *date.Time                   `json:"creationDate,omitempty"`
-	ContainmentState              *int64                       `json:"containmentState,omitempty"`
-	CurrentServiceObjectiveID     *uuid.UUID                   `json:"currentServiceObjectiveId,omitempty"`
-	DatabaseID                    *string                      `json:"databaseId,omitempty"`
-	EarliestRestoreDate           *date.Time                   `json:"earliestRestoreDate,omitempty"`
-	CreateMode                    CreateMode                   `json:"createMode,omitempty"`
-	SourceDatabaseID              *string                      `json:"sourceDatabaseId,omitempty"`
-	RestorePointInTime            *date.Time                   `json:"restorePointInTime,omitempty"`
-	Edition                       DatabaseEditions             `json:"edition,omitempty"`
-	MaxSizeBytes                  *string                      `json:"maxSizeBytes,omitempty"`
-	RequestedServiceObjectiveID   *uuid.UUID                   `json:"requestedServiceObjectiveId,omitempty"`
-	RequestedServiceObjectiveName ServiceObjectiveName         `json:"requestedServiceObjectiveName,omitempty"`
-	ServiceLevelObjective         ServiceObjectiveName         `json:"serviceLevelObjective,omitempty"`
-	Status                        *string                      `json:"status,omitempty"`
-	ElasticPoolName               *string                      `json:"elasticPoolName,omitempty"`
-	DefaultSecondaryLocation      *string                      `json:"defaultSecondaryLocation,omitempty"`
-	ServiceTierAdvisors           *[]ServiceTierAdvisor        `json:"serviceTierAdvisors,omitempty"`
-	Schemas                       *[]Schema                    `json:"schemas,omitempty"`
-	TransparentDataEncryption     *[]TransparentDataEncryption `json:"transparentDataEncryption,omitempty"`
-	RecommendedIndex              *[]RecommendedIndex          `json:"recommendedIndex,omitempty"`
-	FailoverGroupID               *uuid.UUID                   `json:"failoverGroupId,omitempty"`
-	ReadScale                     ReadScale                    `json:"readScale,omitempty"`
-	SampleName                    SampleName                   `json:"sampleName,omitempty"`
+	Collation                               *string                      `json:"collation,omitempty"`
+	CreationDate                            *date.Time                   `json:"creationDate,omitempty"`
+	ContainmentState                        *int64                       `json:"containmentState,omitempty"`
+	CurrentServiceObjectiveID               *uuid.UUID                   `json:"currentServiceObjectiveId,omitempty"`
+	DatabaseID                              *string                      `json:"databaseId,omitempty"`
+	EarliestRestoreDate                     *date.Time                   `json:"earliestRestoreDate,omitempty"`
+	CreateMode                              CreateMode                   `json:"createMode,omitempty"`
+	SourceDatabaseID                        *string                      `json:"sourceDatabaseId,omitempty"`
+	SourceDatabaseDeletionDate              *date.Time                   `json:"sourceDatabaseDeletionDate,omitempty"`
+	RestorePointInTime                      *date.Time                   `json:"restorePointInTime,omitempty"`
+	RecoveryServicesRecoveryPointResourceID *date.Time                   `json:"recoveryServicesRecoveryPointResourceId,omitempty"`
+	Edition                                 DatabaseEditions             `json:"edition,omitempty"`
+	MaxSizeBytes                            *string                      `json:"maxSizeBytes,omitempty"`
+	RequestedServiceObjectiveID             *uuid.UUID                   `json:"requestedServiceObjectiveId,omitempty"`
+	RequestedServiceObjectiveName           ServiceObjectiveName         `json:"requestedServiceObjectiveName,omitempty"`
+	ServiceLevelObjective                   ServiceObjectiveName         `json:"serviceLevelObjective,omitempty"`
+	Status                                  *string                      `json:"status,omitempty"`
+	ElasticPoolName                         *string                      `json:"elasticPoolName,omitempty"`
+	DefaultSecondaryLocation                *string                      `json:"defaultSecondaryLocation,omitempty"`
+	ServiceTierAdvisors                     *[]ServiceTierAdvisor        `json:"serviceTierAdvisors,omitempty"`
+	Schemas                                 *[]Schema                    `json:"schemas,omitempty"`
+	TransparentDataEncryption               *[]TransparentDataEncryption `json:"transparentDataEncryption,omitempty"`
+	RecommendedIndex                        *[]RecommendedIndex          `json:"recommendedIndex,omitempty"`
+	FailoverGroupID                         *uuid.UUID                   `json:"failoverGroupId,omitempty"`
+	ReadScale                               ReadScale                    `json:"readScale,omitempty"`
+	SampleName                              SampleName                   `json:"sampleName,omitempty"`
 }
 
 // ElasticPool is represents a database elastic pool.
@@ -826,6 +831,13 @@ type TransparentDataEncryptionActivityProperties struct {
 // database transparent data encryption.
 type TransparentDataEncryptionProperties struct {
 	Status TransparentDataEncryptionStates `json:"status,omitempty"`
+}
+
+// TypedSubResource is subresource properties
+type TypedSubResource struct {
+	Name *string `json:"name,omitempty"`
+	ID   *string `json:"id,omitempty"`
+	Type *string `json:"type,omitempty"`
 }
 
 // UpgradeHint is represents a Upgrade Hint.

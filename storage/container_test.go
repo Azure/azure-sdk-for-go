@@ -318,6 +318,8 @@ func (s *ContainerSuite) TestListBlobsWithMetadata(c *chk.C) {
 			"lol":      name,
 			"rofl_baz": "Waz Qux",
 		}
+		_, err := b.CreateSnapshot(nil)
+		c.Assert(err, chk.IsNil)
 	}
 
 	// Put one more blob with no metadata
@@ -325,20 +327,32 @@ func (s *ContainerSuite) TestListBlobsWithMetadata(c *chk.C) {
 	c.Assert(b.putSingleBlockBlob([]byte("Hello, world!")), chk.IsNil)
 	expectMeta[b.Name] = nil
 
-	// Get ListBlobs with include:"metadata"
+	// Get ListBlobs with include: metadata and snapshots
 	resp, err := cnt.ListBlobs(ListBlobsParameters{
-		MaxResults: 5,
-		Include:    "metadata"})
+		Include: &IncludeBlobDataset{
+			Metadata:  true,
+			Snapshots: true,
+		},
+	})
 	c.Assert(err, chk.IsNil)
 
-	respBlobs := make(map[string]Blob)
+	originalBlobs := make(map[string]Blob)
+	snapshotBlobs := make(map[string]Blob)
 	for _, v := range resp.Blobs {
-		respBlobs[v.Name] = v
+		if v.Snapshot == (time.Time{}) {
+			originalBlobs[v.Name] = v
+		} else {
+			snapshotBlobs[v.Name] = v
+
+		}
 	}
+	c.Assert(originalBlobs, chk.HasLen, 5)
+	c.Assert(snapshotBlobs, chk.HasLen, 4)
 
 	// Verify the metadata is as expected
 	for name := range expectMeta {
-		c.Check(respBlobs[name].Metadata, chk.DeepEquals, expectMeta[name])
+		c.Check(originalBlobs[name].Metadata, chk.DeepEquals, expectMeta[name])
+		c.Check(snapshotBlobs[name].Metadata, chk.DeepEquals, expectMeta[name])
 	}
 }
 

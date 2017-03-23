@@ -297,7 +297,7 @@ func (s *StorageBlobSuite) TestSnapshotBlob(c *chk.C) {
 
 	c.Assert(b.putSingleBlockBlob([]byte{}), chk.IsNil)
 
-	snapshotTime, err := b.Snapshot(nil)
+	snapshotTime, err := b.CreateSnapshot(nil)
 	c.Assert(err, chk.IsNil)
 	c.Assert(snapshotTime, chk.NotNil)
 }
@@ -314,7 +314,7 @@ func (s *StorageBlobSuite) TestSnapshotBlobWithTimeout(c *chk.C) {
 	options := SnapshotOptions{
 		Timeout: 0,
 	}
-	snapshotTime, err := b.Snapshot(&options)
+	snapshotTime, err := b.CreateSnapshot(&options)
 	c.Assert(err, chk.IsNil)
 	c.Assert(snapshotTime, chk.NotNil)
 }
@@ -335,7 +335,7 @@ func (s *StorageBlobSuite) TestSnapshotBlobWithValidLease(c *chk.C) {
 	options := SnapshotOptions{
 		LeaseID: currentLeaseID,
 	}
-	snapshotTime, err := b.Snapshot(&options)
+	snapshotTime, err := b.CreateSnapshot(&options)
 	c.Assert(err, chk.IsNil)
 	c.Assert(snapshotTime, chk.NotNil)
 }
@@ -357,7 +357,7 @@ func (s *StorageBlobSuite) TestSnapshotBlobWithInvalidLease(c *chk.C) {
 	options := SnapshotOptions{
 		LeaseID: "GolangRocksOnAzure",
 	}
-	snapshotTime, err := b.Snapshot(&options)
+	snapshotTime, err := b.CreateSnapshot(&options)
 	c.Assert(err, chk.NotNil)
 	c.Assert(snapshotTime, chk.IsNil)
 }

@@ -16,6 +16,7 @@ import (
 type Blob struct {
 	Container  *Container
 	Name       string         `xml:"Name"`
+	Snapshot   time.Time      `xml:"Snapshot"`
 	Properties BlobProperties `xml:"Properties"`
 	Metadata   BlobMetadata   `xml:"Metadata"`
 }
@@ -246,9 +247,9 @@ type SnapshotOptions struct {
 	RequestID         string     `header:"x-ms-client-request-id"`
 }
 
-// Snapshot creates a snapshot for a blob
+// CreateSnapshot creates a snapshot for a blob
 // See https://msdn.microsoft.com/en-us/library/azure/ee691971.aspx
-func (b *Blob) Snapshot(options *SnapshotOptions) (snapshotTimestamp *time.Time, err error) {
+func (b *Blob) CreateSnapshot(options *SnapshotOptions) (snapshotTimestamp *time.Time, err error) {
 	params := url.Values{"comp": {"snapshot"}}
 	headers := b.Container.bsc.client.getStandardHeaders()
 	headers = b.Container.bsc.client.addMetadataToHeaders(headers, b.Metadata)

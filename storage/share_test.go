@@ -23,8 +23,8 @@ func getFileClient(c *chk.C) FileServiceClient {
 func (s *StorageShareSuite) TestCreateShareDeleteShare(c *chk.C) {
 	cli := getFileClient(c)
 	share := cli.GetShareReference(randShare())
-	c.Assert(share.Create(), chk.IsNil)
-	c.Assert(share.Delete(), chk.IsNil)
+	c.Assert(share.Create(nil), chk.IsNil)
+	c.Assert(share.Delete(nil), chk.IsNil)
 }
 
 func (s *StorageShareSuite) TestCreateShareIfNotExists(c *chk.C) {
@@ -32,17 +32,17 @@ func (s *StorageShareSuite) TestCreateShareIfNotExists(c *chk.C) {
 	share := cli.GetShareReference(randShare())
 
 	// First create
-	ok, err := share.CreateIfNotExists()
+	ok, err := share.CreateIfNotExists(nil)
 	c.Assert(err, chk.IsNil)
 	c.Assert(ok, chk.Equals, true)
 
 	// Second create, should not give errors
-	ok, err = share.CreateIfNotExists()
+	ok, err = share.CreateIfNotExists(nil)
 	c.Assert(err, chk.IsNil)
 	c.Assert(ok, chk.Equals, false)
 
 	// cleanup
-	share.Delete()
+	share.Delete(nil)
 }
 
 func (s *StorageShareSuite) TestDeleteShareIfNotExists(c *chk.C) {
@@ -50,14 +50,14 @@ func (s *StorageShareSuite) TestDeleteShareIfNotExists(c *chk.C) {
 	share := cli.GetShareReference(randShare())
 
 	// delete non-existing share
-	ok, err := share.DeleteIfExists()
+	ok, err := share.DeleteIfExists(nil)
 	c.Assert(err, chk.IsNil)
 	c.Assert(ok, chk.Equals, false)
 
-	c.Assert(share.Create(), chk.IsNil)
+	c.Assert(share.Create(nil), chk.IsNil)
 
 	// delete existing share
-	ok, err = share.DeleteIfExists()
+	ok, err = share.DeleteIfExists(nil)
 	c.Assert(err, chk.IsNil)
 	c.Assert(ok, chk.Equals, true)
 }
@@ -69,7 +69,7 @@ func (s *StorageShareSuite) TestListShares(c *chk.C) {
 	name := randShare()
 	share := cli.GetShareReference(name)
 
-	c.Assert(share.Create(), chk.IsNil)
+	c.Assert(share.Create(nil), chk.IsNil)
 
 	resp, err := cli.ListShares(ListSharesParameters{
 		MaxResults: 5,
@@ -80,7 +80,7 @@ func (s *StorageShareSuite) TestListShares(c *chk.C) {
 	c.Check(resp.Shares[0].Name, chk.Equals, name)
 
 	// clean up via the retrieved share object
-	resp.Shares[0].Delete()
+	resp.Shares[0].Delete(nil)
 }
 
 func (s *StorageShareSuite) TestShareExists(c *chk.C) {
@@ -91,8 +91,8 @@ func (s *StorageShareSuite) TestShareExists(c *chk.C) {
 	c.Assert(err, chk.IsNil)
 	c.Assert(ok, chk.Equals, false)
 
-	c.Assert(share.Create(), chk.IsNil)
-	defer share.Delete()
+	c.Assert(share.Create(nil), chk.IsNil)
+	defer share.Delete(nil)
 
 	ok, err = share.Exists()
 	c.Assert(err, chk.IsNil)
@@ -104,15 +104,15 @@ func (s *StorageShareSuite) TestGetAndSetShareProperties(c *chk.C) {
 	share := cli.GetShareReference(randShare())
 	quota := rand.Intn(5120)
 
-	c.Assert(share.Create(), chk.IsNil)
-	defer share.Delete()
+	c.Assert(share.Create(nil), chk.IsNil)
+	defer share.Delete(nil)
 	c.Assert(share.Properties.LastModified, chk.Not(chk.Equals), "")
 
 	share.Properties.Quota = quota
-	err := share.SetProperties()
+	err := share.SetProperties(nil)
 	c.Assert(err, chk.IsNil)
 
-	err = share.FetchAttributes()
+	err = share.FetchAttributes(nil)
 	c.Assert(err, chk.IsNil)
 
 	c.Assert(share.Properties.Quota, chk.Equals, quota)
@@ -122,17 +122,17 @@ func (s *StorageShareSuite) TestGetAndSetShareMetadata(c *chk.C) {
 	cli := getFileClient(c)
 	share1 := cli.GetShareReference(randShare())
 
-	c.Assert(share1.Create(), chk.IsNil)
-	defer share1.Delete()
+	c.Assert(share1.Create(nil), chk.IsNil)
+	defer share1.Delete(nil)
 
 	// by default there should be no metadata
 	c.Assert(share1.Metadata, chk.IsNil)
-	c.Assert(share1.FetchAttributes(), chk.IsNil)
+	c.Assert(share1.FetchAttributes(nil), chk.IsNil)
 	c.Assert(share1.Metadata, chk.IsNil)
 
 	share2 := cli.GetShareReference(randShare())
-	c.Assert(share2.Create(), chk.IsNil)
-	defer share2.Delete()
+	c.Assert(share2.Create(nil), chk.IsNil)
+	defer share2.Delete(nil)
 
 	c.Assert(share2.Metadata, chk.IsNil)
 
@@ -142,10 +142,10 @@ func (s *StorageShareSuite) TestGetAndSetShareMetadata(c *chk.C) {
 	}
 
 	share2.Metadata = mPut
-	c.Assert(share2.SetMetadata(), chk.IsNil)
+	c.Assert(share2.SetMetadata(nil), chk.IsNil)
 	c.Check(share2.Metadata, chk.DeepEquals, mPut)
 
-	c.Assert(share2.FetchAttributes(), chk.IsNil)
+	c.Assert(share2.FetchAttributes(nil), chk.IsNil)
 	c.Check(share2.Metadata, chk.DeepEquals, mPut)
 
 	// Case munging
@@ -160,10 +160,10 @@ func (s *StorageShareSuite) TestGetAndSetShareMetadata(c *chk.C) {
 	}
 
 	share2.Metadata = mPutUpper
-	c.Assert(share2.SetMetadata(), chk.IsNil)
+	c.Assert(share2.SetMetadata(nil), chk.IsNil)
 
 	c.Check(share2.Metadata, chk.DeepEquals, mPutUpper)
-	c.Assert(share2.FetchAttributes(), chk.IsNil)
+	c.Assert(share2.FetchAttributes(nil), chk.IsNil)
 	c.Check(share2.Metadata, chk.DeepEquals, mExpectLower)
 }
 
@@ -178,7 +178,7 @@ func deleteTestShares(cli FileServiceClient) error {
 		}
 		for _, c := range resp.Shares {
 			share := cli.GetShareReference(c.Name)
-			err = share.Delete()
+			err = share.Delete(nil)
 			if err != nil {
 				return err
 			}

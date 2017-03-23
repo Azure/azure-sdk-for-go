@@ -88,7 +88,7 @@ func headersFromStruct(v interface{}) map[string]string {
 				switch reflectedValue.Type() {
 				case reflect.TypeOf(now):
 					val = timeRfc1123Formatted(reflectedValue.Interface().(time.Time))
-				case reflect.TypeOf(uint(0)):
+				case reflect.TypeOf(uint64(0)), reflect.TypeOf(uint(0)):
 					val = strconv.FormatUint(reflectedValue.Uint(), 10)
 				case reflect.TypeOf(int(0)):
 					val = strconv.FormatInt(reflectedValue.Int(), 10)

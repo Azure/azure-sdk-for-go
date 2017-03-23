@@ -11,8 +11,8 @@ func (s *StorageDirSuite) TestListDirsAndFiles(c *chk.C) {
 	cli := getFileClient(c)
 	share := cli.GetShareReference(randShare())
 
-	c.Assert(share.Create(), chk.IsNil)
-	defer share.Delete()
+	c.Assert(share.Create(nil), chk.IsNil)
+	defer share.Delete(nil)
 	root := share.GetRootDirectoryReference()
 
 	// list contents, should be empty
@@ -24,8 +24,8 @@ func (s *StorageDirSuite) TestListDirsAndFiles(c *chk.C) {
 	// create a directory and a file
 	dir := root.GetDirectoryReference("SomeDirectory")
 	file := root.GetFileReference("lol.file")
-	c.Assert(dir.Create(), chk.IsNil)
-	c.Assert(file.Create(512), chk.IsNil)
+	c.Assert(dir.Create(nil), chk.IsNil)
+	c.Assert(file.Create(512, nil), chk.IsNil)
 
 	// list contents
 	resp, err = root.ListDirsAndFiles(ListDirsAndFilesParameters{})
@@ -36,12 +36,12 @@ func (s *StorageDirSuite) TestListDirsAndFiles(c *chk.C) {
 	c.Assert(resp.Files[0].Name, chk.Equals, file.Name)
 
 	// delete file
-	del, err := file.DeleteIfExists()
+	del, err := file.DeleteIfExists(nil)
 	c.Assert(err, chk.IsNil)
 	c.Assert(del, chk.Equals, true)
 
 	// attempt to delete again
-	del, err = file.DeleteIfExists()
+	del, err = file.DeleteIfExists(nil)
 	c.Assert(err, chk.IsNil)
 	c.Assert(del, chk.Equals, false)
 }
@@ -51,8 +51,8 @@ func (s *StorageDirSuite) TestCreateDirectory(c *chk.C) {
 	cli := getFileClient(c)
 	share := cli.GetShareReference(randShare())
 
-	c.Assert(share.Create(), chk.IsNil)
-	defer share.Delete()
+	c.Assert(share.Create(nil), chk.IsNil)
+	defer share.Delete(nil)
 	root := share.GetRootDirectoryReference()
 
 	// directory shouldn't exist
@@ -62,13 +62,13 @@ func (s *StorageDirSuite) TestCreateDirectory(c *chk.C) {
 	c.Assert(exists, chk.Equals, false)
 
 	// create directory
-	exists, err = dir.CreateIfNotExists()
+	exists, err = dir.CreateIfNotExists(nil)
 	c.Assert(err, chk.IsNil)
 	c.Assert(exists, chk.Equals, true)
 
 	// try to create again, should fail
-	c.Assert(dir.Create(), chk.NotNil)
-	exists, err = dir.CreateIfNotExists()
+	c.Assert(dir.Create(nil), chk.NotNil)
+	exists, err = dir.CreateIfNotExists(nil)
 	c.Assert(err, chk.IsNil)
 	c.Assert(exists, chk.Equals, false)
 
@@ -77,7 +77,7 @@ func (s *StorageDirSuite) TestCreateDirectory(c *chk.C) {
 	c.Assert(dir.Properties.LastModified, chk.Not(chk.Equals), "")
 
 	// delete directory and verify
-	c.Assert(dir.Delete(), chk.IsNil)
+	c.Assert(dir.Delete(nil), chk.IsNil)
 	exists, err = dir.Exists()
 	c.Assert(err, chk.IsNil)
 	c.Assert(exists, chk.Equals, false)
@@ -88,12 +88,12 @@ func (s *StorageDirSuite) TestDirectoryMetadata(c *chk.C) {
 	cli := getFileClient(c)
 	share := cli.GetShareReference(randShare())
 
-	c.Assert(share.Create(), chk.IsNil)
-	defer share.Delete()
+	c.Assert(share.Create(nil), chk.IsNil)
+	defer share.Delete(nil)
 	root := share.GetRootDirectoryReference()
 
 	dir := root.GetDirectoryReference("testdir")
-	c.Assert(dir.Create(), chk.IsNil)
+	c.Assert(dir.Create(nil), chk.IsNil)
 
 	// get metadata, shouldn't be any
 	c.Assert(dir.Metadata, chk.IsNil)
@@ -104,9 +104,9 @@ func (s *StorageDirSuite) TestDirectoryMetadata(c *chk.C) {
 		"another":   "anothervalue",
 	}
 	dir.Metadata = md
-	c.Assert(dir.SetMetadata(), chk.IsNil)
+	c.Assert(dir.SetMetadata(nil), chk.IsNil)
 
 	// retrieve and verify
-	c.Assert(dir.FetchAttributes(), chk.IsNil)
+	c.Assert(dir.FetchAttributes(nil), chk.IsNil)
 	c.Assert(dir.Metadata, chk.DeepEquals, md)
 }

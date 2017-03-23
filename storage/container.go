@@ -8,6 +8,7 @@ import (
 	"net/http"
 	"net/url"
 	"strconv"
+	"strings"
 	"time"
 )
 
@@ -70,6 +71,14 @@ type BlobListResponse struct {
 	Delimiter string `xml:"Delimiter"`
 }
 
+// IncludeBlobDataset has options to include in a list blobs operation
+type IncludeBlobDataset struct {
+	Snapshots        bool
+	Metadata         bool
+	UncommittedBlobs bool
+	Copy             bool
+}
+
 // ListBlobsParameters defines the set of customizable
 // parameters to make a List Blobs call.
 //
@@ -78,7 +87,7 @@ type ListBlobsParameters struct {
 	Prefix     string
 	Delimiter  string
 	Marker     string
-	Include    string
+	Include    *IncludeBlobDataset
 	MaxResults uint
 	Timeout    uint
 	RequestID  string
@@ -96,8 +105,14 @@ func (p ListBlobsParameters) getParameters() url.Values {
 	if p.Marker != "" {
 		out.Set("marker", p.Marker)
 	}
-	if p.Include != "" {
-		out.Set("include", p.Include)
+	if p.Include != nil {
+		include := []string{}
+		include = addString(include, p.Include.Snapshots, "snapshots")
+		include = addString(include, p.Include.Metadata, "metadata")
+		include = addString(include, p.Include.UncommittedBlobs, "uncommittedblobs")
+		include = addString(include, p.Include.Copy, "copy")
+		fullInclude := strings.Join(include, ",")
+		out.Set("include", fullInclude)
 	}
 	if p.MaxResults != 0 {
 		out.Set("maxresults", strconv.FormatUint(uint64(p.MaxResults), 10))
@@ -107,6 +122,13 @@ func (p ListBlobsParameters) getParameters() url.Values {
 	}
 
 	return out
+}
+
+func addString(datasets []string, include bool, text string) []string {
+	if include {
+		datasets = append(datasets, text)
+	}
+	return datasets
 }
 
 // ContainerAccessType defines the access level to the container from a public

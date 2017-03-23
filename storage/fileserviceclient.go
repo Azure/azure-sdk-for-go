@@ -18,7 +18,7 @@ type FileServiceClient struct {
 // ListSharesParameters defines the set of customizable parameters to make a
 // List Shares call.
 //
-// See https://msdn.microsoft.com/en-us/library/azure/dn167009.aspx
+// See https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/List-Shares
 type ListSharesParameters struct {
 	Prefix     string
 	Marker     string
@@ -30,7 +30,7 @@ type ListSharesParameters struct {
 // ShareListResponse contains the response fields from
 // ListShares call.
 //
-// See https://msdn.microsoft.com/en-us/library/azure/dn167009.aspx
+// See https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/List-Shares
 type ShareListResponse struct {
 	XMLName    xml.Name `xml:"EnumerationResults"`
 	Xmlns      string   `xml:"xmlns,attr"`
@@ -92,15 +92,16 @@ func (p ListSharesParameters) getParameters() url.Values {
 func (p ListDirsAndFilesParameters) getParameters() url.Values {
 	out := url.Values{}
 
+	if p.Prefix != "" {
+		out.Set("prefix", p.Prefix)
+	}
 	if p.Marker != "" {
 		out.Set("marker", p.Marker)
 	}
 	if p.MaxResults != 0 {
 		out.Set("maxresults", strconv.FormatUint(uint64(p.MaxResults), 10))
 	}
-	if p.Timeout != 0 {
-		out.Set("timeout", strconv.FormatUint(uint64(p.Timeout), 10))
-	}
+	out = addTimeout(out, p.Timeout)
 
 	return out
 }
@@ -131,7 +132,7 @@ func (f FileServiceClient) GetShareReference(name string) Share {
 // ListShares returns the list of shares in a storage account along with
 // pagination token and other response details.
 //
-// See https://msdn.microsoft.com/en-us/library/azure/dd179352.aspx
+// See https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/list-shares
 func (f FileServiceClient) ListShares(params ListSharesParameters) (*ShareListResponse, error) {
 	q := mergeParams(params.getParameters(), url.Values{"comp": {"list"}})
 
@@ -232,8 +233,8 @@ func (f FileServiceClient) createResourceNoClose(path string, res resourceType, 
 }
 
 // returns HTTP header data for the specified directory or share
-func (f FileServiceClient) getResourceHeaders(path string, comp compType, res resourceType, verb string) (http.Header, error) {
-	resp, err := f.getResourceNoClose(path, comp, res, verb, nil)
+func (f FileServiceClient) getResourceHeaders(path string, comp compType, res resourceType, params url.Values, verb string) (http.Header, error) {
+	resp, err := f.getResourceNoClose(path, comp, res, params, verb, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -247,22 +248,21 @@ func (f FileServiceClient) getResourceHeaders(path string, comp compType, res re
 }
 
 // gets the specified resource, doesn't close the response body
-func (f FileServiceClient) getResourceNoClose(path string, comp compType, res resourceType, verb string, extraHeaders map[string]string) (*storageResponse, error) {
+func (f FileServiceClient) getResourceNoClose(path string, comp compType, res resourceType, params url.Values, verb string, extraHeaders map[string]string) (*storageResponse, error) {
 	if err := f.checkForStorageEmulator(); err != nil {
 		return nil, err
 	}
 
-	params := getURLInitValues(comp, res)
+	params = mergeParams(params, getURLInitValues(comp, res))
 	uri := f.client.getEndpoint(fileServiceName, path, params)
-	extraHeaders = f.client.protectUserAgent(extraHeaders)
 	headers := mergeHeaders(f.client.getStandardHeaders(), extraHeaders)
 
 	return f.client.exec(verb, uri, headers, nil, f.auth)
 }
 
 // deletes the resource and returns the response
-func (f FileServiceClient) deleteResource(path string, res resourceType) error {
-	resp, err := f.deleteResourceNoClose(path, res)
+func (f FileServiceClient) deleteResource(path string, res resourceType, options *FileRequestOptions) error {
+	resp, err := f.deleteResourceNoClose(path, res, options)
 	if err != nil {
 		return err
 	}
@@ -271,12 +271,12 @@ func (f FileServiceClient) deleteResource(path string, res resourceType) error {
 }
 
 // deletes the resource and returns the response, doesn't close the response body
-func (f FileServiceClient) deleteResourceNoClose(path string, res resourceType) (*storageResponse, error) {
+func (f FileServiceClient) deleteResourceNoClose(path string, res resourceType, options *FileRequestOptions) (*storageResponse, error) {
 	if err := f.checkForStorageEmulator(); err != nil {
 		return nil, err
 	}
 
-	values := getURLInitValues(compNone, res)
+	values := mergeParams(getURLInitValues(compNone, res), prepareOptions(options))
 	uri := f.client.getEndpoint(fileServiceName, path, values)
 	return f.client.exec(http.MethodDelete, uri, f.client.getStandardHeaders(), nil, f.auth)
 }
@@ -296,12 +296,12 @@ func mergeMDIntoExtraHeaders(metadata, extraHeaders map[string]string) map[strin
 }
 
 // sets extra header data for the specified resource
-func (f FileServiceClient) setResourceHeaders(path string, comp compType, res resourceType, extraHeaders map[string]string) (http.Header, error) {
+func (f FileServiceClient) setResourceHeaders(path string, comp compType, res resourceType, extraHeaders map[string]string, options *FileRequestOptions) (http.Header, error) {
 	if err := f.checkForStorageEmulator(); err != nil {
 		return nil, err
 	}
 
-	params := getURLInitValues(comp, res)
+	params := mergeParams(getURLInitValues(comp, res), prepareOptions(options))
 	uri := f.client.getEndpoint(fileServiceName, path, params)
 	extraHeaders = f.client.protectUserAgent(extraHeaders)
 	headers := mergeHeaders(f.client.getStandardHeaders(), extraHeaders)
@@ -313,20 +313,6 @@ func (f FileServiceClient) setResourceHeaders(path string, comp compType, res re
 	defer readAndCloseBody(resp.body)
 
 	return resp.headers, checkRespCode(resp.statusCode, []int{http.StatusOK})
-}
-
-// gets metadata for the specified resource
-func (f FileServiceClient) getMetadata(path string, res resourceType) (map[string]string, error) {
-	if err := f.checkForStorageEmulator(); err != nil {
-		return nil, err
-	}
-
-	headers, err := f.getResourceHeaders(path, compMetadata, res, http.MethodGet)
-	if err != nil {
-		return nil, err
-	}
-
-	return getMetadataFromHeaders(headers), nil
 }
 
 // returns a map of custom metadata values from the specified HTTP header

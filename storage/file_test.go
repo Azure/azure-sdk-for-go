@@ -13,20 +13,35 @@ type StorageFileSuite struct{}
 
 var _ = chk.Suite(&StorageFileSuite{})
 
+func deleteAllShares(c *chk.C) {
+	cli := getBasicClient(c).GetFileService()
+	list, err := cli.ListShares(ListSharesParameters{})
+	c.Assert(err, chk.IsNil)
+
+	for _, share := range list.Shares {
+		err := share.Delete(nil)
+		c.Assert(err, chk.IsNil)
+	}
+}
+
+func (s *StorageFileSuite) SetUpSuite(c *chk.C) {
+	deleteAllShares(c)
+}
+
 func (s *StorageFileSuite) TestCreateFile(c *chk.C) {
 	// create share
 	cli := getFileClient(c)
 	share := cli.GetShareReference(randShare())
 
-	c.Assert(share.Create(), chk.IsNil)
-	defer share.Delete()
+	c.Assert(share.Create(nil), chk.IsNil)
+	defer share.Delete(nil)
 	root := share.GetRootDirectoryReference()
 
 	// create directory structure
 	dir1 := root.GetDirectoryReference("one")
-	c.Assert(dir1.Create(), chk.IsNil)
+	c.Assert(dir1.Create(nil), chk.IsNil)
 	dir2 := dir1.GetDirectoryReference("two")
-	c.Assert(dir2.Create(), chk.IsNil)
+	c.Assert(dir2.Create(nil), chk.IsNil)
 
 	// verify file doesn't exist
 	file := dir2.GetFileReference("some.file")
@@ -35,13 +50,13 @@ func (s *StorageFileSuite) TestCreateFile(c *chk.C) {
 	c.Assert(exists, chk.Equals, false)
 
 	// create file
-	c.Assert(file.Create(1024), chk.IsNil)
+	c.Assert(file.Create(1024, nil), chk.IsNil)
 	exists, err = file.Exists()
 	c.Assert(err, chk.IsNil)
 	c.Assert(exists, chk.Equals, true)
 
 	// delete file and verify
-	c.Assert(file.Delete(), chk.IsNil)
+	c.Assert(file.Delete(nil), chk.IsNil)
 	exists, err = file.Exists()
 	c.Assert(err, chk.IsNil)
 	c.Assert(exists, chk.Equals, false)
@@ -52,15 +67,15 @@ func (s *StorageFileSuite) TestGetFile(c *chk.C) {
 	cli := getFileClient(c)
 	share := cli.GetShareReference(randShare())
 
-	c.Assert(share.Create(), chk.IsNil)
-	defer share.Delete()
+	c.Assert(share.Create(nil), chk.IsNil)
+	defer share.Delete(nil)
 	root := share.GetRootDirectoryReference()
 
 	// create file
 	const size = uint64(1024)
 	byteStream, _ := newByteStream(size)
 	file := root.GetFileReference("some.file")
-	c.Assert(file.Create(size), chk.IsNil)
+	c.Assert(file.Create(size, nil), chk.IsNil)
 
 	// fill file with some data
 	c.Assert(file.WriteRange(byteStream, FileRange{End: size - 1}, nil), chk.IsNil)
@@ -71,10 +86,13 @@ func (s *StorageFileSuite) TestGetFile(c *chk.C) {
 		"another":   "anothervalue",
 	}
 	file.Metadata = md
-	c.Assert(file.SetMetadata(), chk.IsNil)
+	c.Assert(file.SetMetadata(nil), chk.IsNil)
 
+	options := GetFileOptions{
+		GetContentMD5: false,
+	}
 	// retrieve full file content and verify
-	stream, err := file.DownloadRangeToStream(FileRange{Start: 0, End: size - 1}, false)
+	stream, err := file.DownloadRangeToStream(FileRange{Start: 0, End: size - 1}, &options)
 	c.Assert(err, chk.IsNil)
 	defer stream.Body.Close()
 	var b1 [size]byte
@@ -86,7 +104,7 @@ func (s *StorageFileSuite) TestGetFile(c *chk.C) {
 	c.Assert(b1, chk.DeepEquals, c1)
 
 	// retrieve partial file content and verify
-	stream, err = file.DownloadRangeToStream(FileRange{Start: size / 2, End: size - 1}, false)
+	stream, err = file.DownloadRangeToStream(FileRange{Start: size / 2, End: size - 1}, &options)
 	c.Assert(err, chk.IsNil)
 	defer stream.Body.Close()
 	var b2 [size / 2]byte
@@ -103,15 +121,15 @@ func (s *StorageFileSuite) TestFileRanges(c *chk.C) {
 	cli := getFileClient(c)
 	share := cli.GetShareReference(randShare())
 
-	c.Assert(share.Create(), chk.IsNil)
-	defer share.Delete()
+	c.Assert(share.Create(nil), chk.IsNil)
+	defer share.Delete(nil)
 	root := share.GetRootDirectoryReference()
 
 	// create file
 	fileSize := uint64(4096)
 	byteStream, _ := newByteStream(fileSize)
 	file := root.GetFileReference("test.dat")
-	c.Assert(file.Create(fileSize), chk.IsNil)
+	c.Assert(file.Create(fileSize, nil), chk.IsNil)
 
 	// verify there are no valid ranges
 	ranges, err := file.ListRanges(nil)
@@ -127,7 +145,7 @@ func (s *StorageFileSuite) TestFileRanges(c *chk.C) {
 	c.Assert((ranges.FileRanges[0].End-ranges.FileRanges[0].Start)+1, chk.Equals, fileSize)
 
 	// clear entire range and validate
-	c.Assert(file.ClearRange(FileRange{End: fileSize - 1}), chk.IsNil)
+	c.Assert(file.ClearRange(FileRange{End: fileSize - 1}, nil), chk.IsNil)
 	ranges, err = file.ListRanges(nil)
 	c.Assert(err, chk.IsNil)
 	c.Assert(ranges.FileRanges, chk.IsNil)
@@ -151,14 +169,20 @@ func (s *StorageFileSuite) TestFileRanges(c *chk.C) {
 	c.Assert(err, chk.IsNil)
 	c.Assert(ranges.FileRanges, chk.DeepEquals, putRanges)
 
+	options := ListRangesOptions{
+		ListRange: &FileRange{
+			Start: 1000,
+			End:   3000,
+		},
+	}
 	// validate sub-ranges
-	ranges, err = file.ListRanges(&FileRange{Start: 1000, End: 3000})
+	ranges, err = file.ListRanges(&options)
 	c.Assert(err, chk.IsNil)
 	c.Assert(ranges.FileRanges, chk.DeepEquals, putRanges[1:3])
 
 	// clear partial range and validate
-	c.Assert(file.ClearRange(putRanges[0]), chk.IsNil)
-	c.Assert(file.ClearRange(putRanges[2]), chk.IsNil)
+	c.Assert(file.ClearRange(putRanges[0], nil), chk.IsNil)
+	c.Assert(file.ClearRange(putRanges[2], nil), chk.IsNil)
 	ranges, err = file.ListRanges(nil)
 	c.Assert(err, chk.IsNil)
 	c.Assert(ranges.FileRanges, chk.HasLen, 2)
@@ -171,13 +195,13 @@ func (s *StorageFileSuite) TestFileProperties(c *chk.C) {
 	cli := getFileClient(c)
 	share := cli.GetShareReference(randShare())
 
-	c.Assert(share.Create(), chk.IsNil)
-	defer share.Delete()
+	c.Assert(share.Create(nil), chk.IsNil)
+	defer share.Delete(nil)
 	root := share.GetRootDirectoryReference()
 
 	fileSize := uint64(512)
 	file := root.GetFileReference("test.dat")
-	c.Assert(file.Create(fileSize), chk.IsNil)
+	c.Assert(file.Create(fileSize, nil), chk.IsNil)
 
 	// get initial set of properties
 	c.Assert(file.Properties.Length, chk.Equals, fileSize)
@@ -194,10 +218,10 @@ func (s *StorageFileSuite) TestFileProperties(c *chk.C) {
 	file.Properties.Disposition = disp
 	file.Properties.Encoding = enc
 	file.Properties.Language = lang
-	c.Assert(file.SetProperties(), chk.IsNil)
+	c.Assert(file.SetProperties(nil), chk.IsNil)
 
 	// retrieve and verify
-	c.Assert(file.FetchAttributes(), chk.IsNil)
+	c.Assert(file.FetchAttributes(nil), chk.IsNil)
 	c.Assert(file.Properties.CacheControl, chk.Equals, cc)
 	c.Assert(file.Properties.Type, chk.Equals, ct)
 	c.Assert(file.Properties.Disposition, chk.Equals, disp)
@@ -210,13 +234,13 @@ func (s *StorageFileSuite) TestFileMetadata(c *chk.C) {
 	cli := getFileClient(c)
 	share := cli.GetShareReference(randShare())
 
-	c.Assert(share.Create(), chk.IsNil)
-	defer share.Delete()
+	c.Assert(share.Create(nil), chk.IsNil)
+	defer share.Delete(nil)
 	root := share.GetRootDirectoryReference()
 
 	fileSize := uint64(512)
 	file := root.GetFileReference("test.dat")
-	c.Assert(file.Create(fileSize), chk.IsNil)
+	c.Assert(file.Create(fileSize, nil), chk.IsNil)
 
 	// get metadata, shouldn't be any
 	c.Assert(file.Metadata, chk.HasLen, 0)
@@ -227,10 +251,10 @@ func (s *StorageFileSuite) TestFileMetadata(c *chk.C) {
 		"another":   "anothervalue",
 	}
 	file.Metadata = md
-	c.Assert(file.SetMetadata(), chk.IsNil)
+	c.Assert(file.SetMetadata(nil), chk.IsNil)
 
 	// retrieve and verify
-	c.Assert(file.FetchAttributes(), chk.IsNil)
+	c.Assert(file.FetchAttributes(nil), chk.IsNil)
 	c.Assert(file.Metadata, chk.DeepEquals, md)
 }
 
@@ -239,22 +263,28 @@ func (s *StorageFileSuite) TestFileMD5(c *chk.C) {
 	cli := getFileClient(c)
 	share := cli.GetShareReference(randShare())
 
-	c.Assert(share.Create(), chk.IsNil)
-	defer share.Delete()
+	c.Assert(share.Create(nil), chk.IsNil)
+	defer share.Delete(nil)
 	root := share.GetRootDirectoryReference()
 
 	// create file
 	const size = uint64(1024)
 	fileSize := uint64(size)
 	file := root.GetFileReference("test.dat")
-	c.Assert(file.Create(fileSize), chk.IsNil)
+	c.Assert(file.Create(fileSize, nil), chk.IsNil)
 
 	// fill file with some data and MD5 hash
 	byteStream, contentMD5 := newByteStream(size)
-	c.Assert(file.WriteRange(byteStream, FileRange{End: size - 1}, &contentMD5), chk.IsNil)
+	options := WriteRangeOptions{
+		ContentMD5: contentMD5,
+	}
+	c.Assert(file.WriteRange(byteStream, FileRange{End: size - 1}, &options), chk.IsNil)
 
 	// download file and verify
-	stream, err := file.DownloadRangeToStream(FileRange{Start: 0, End: size - 1}, true)
+	downloadOptions := GetFileOptions{
+		GetContentMD5: true,
+	}
+	stream, err := file.DownloadRangeToStream(FileRange{Start: 0, End: size - 1}, &downloadOptions)
 	c.Assert(err, chk.IsNil)
 	defer stream.Body.Close()
 	c.Assert(stream.ContentMD5, chk.Equals, contentMD5)
@@ -279,15 +309,15 @@ func (s *StorageFileSuite) TestCopyFileSameAccountNoMetaData(c *chk.C) {
 	cli := getFileClient(c)
 	share := cli.GetShareReference(randShare())
 
-	c.Assert(share.Create(), chk.IsNil)
-	defer share.Delete()
+	c.Assert(share.Create(nil), chk.IsNil)
+	defer share.Delete(nil)
 	root := share.GetRootDirectoryReference()
 
 	// create directory structure
 	dir1 := root.GetDirectoryReference("one")
-	c.Assert(dir1.Create(), chk.IsNil)
+	c.Assert(dir1.Create(nil), chk.IsNil)
 	dir2 := dir1.GetDirectoryReference("two")
-	c.Assert(dir2.Create(), chk.IsNil)
+	c.Assert(dir2.Create(nil), chk.IsNil)
 
 	// verify file doesn't exist
 	file := dir2.GetFileReference("some.file")
@@ -296,7 +326,7 @@ func (s *StorageFileSuite) TestCopyFileSameAccountNoMetaData(c *chk.C) {
 	c.Assert(exists, chk.Equals, false)
 
 	// create file
-	c.Assert(file.Create(1024), chk.IsNil)
+	c.Assert(file.Create(1024, nil), chk.IsNil)
 	exists, err = file.Exists()
 	c.Assert(err, chk.IsNil)
 	c.Assert(exists, chk.Equals, true)
@@ -308,8 +338,8 @@ func (s *StorageFileSuite) TestCopyFileSameAccountNoMetaData(c *chk.C) {
 	c.Assert(err, chk.IsNil)
 
 	// delete file and verify
-	c.Assert(file.Delete(), chk.IsNil)
-	c.Assert(otherFile.Delete(), chk.IsNil)
+	c.Assert(file.Delete(nil), chk.IsNil)
+	c.Assert(otherFile.Delete(nil), chk.IsNil)
 	exists, err = file.Exists()
 	c.Assert(err, chk.IsNil)
 	c.Assert(exists, chk.Equals, false)
@@ -325,15 +355,15 @@ func (s *StorageFileSuite) TestCopyFileSameAccountTimeout(c *chk.C) {
 	cli := getFileClient(c)
 	share := cli.GetShareReference(randShare())
 
-	c.Assert(share.Create(), chk.IsNil)
-	defer share.Delete()
+	c.Assert(share.Create(nil), chk.IsNil)
+	defer share.Delete(nil)
 	root := share.GetRootDirectoryReference()
 
 	// create directory structure
 	dir1 := root.GetDirectoryReference("one")
-	c.Assert(dir1.Create(), chk.IsNil)
+	c.Assert(dir1.Create(nil), chk.IsNil)
 	dir2 := dir1.GetDirectoryReference("two")
-	c.Assert(dir2.Create(), chk.IsNil)
+	c.Assert(dir2.Create(nil), chk.IsNil)
 
 	// verify file doesn't exist
 	file := dir2.GetFileReference("some.file")
@@ -342,7 +372,7 @@ func (s *StorageFileSuite) TestCopyFileSameAccountTimeout(c *chk.C) {
 	c.Assert(exists, chk.Equals, false)
 
 	// create file
-	c.Assert(file.Create(1024), chk.IsNil)
+	c.Assert(file.Create(1024, nil), chk.IsNil)
 	exists, err = file.Exists()
 	c.Assert(err, chk.IsNil)
 	c.Assert(exists, chk.Equals, true)
@@ -357,8 +387,8 @@ func (s *StorageFileSuite) TestCopyFileSameAccountTimeout(c *chk.C) {
 	c.Assert(err, chk.IsNil)
 
 	// delete file and verify
-	c.Assert(file.Delete(), chk.IsNil)
-	c.Assert(otherFile.Delete(), chk.IsNil)
+	c.Assert(file.Delete(nil), chk.IsNil)
+	c.Assert(otherFile.Delete(nil), chk.IsNil)
 	exists, err = file.Exists()
 	c.Assert(err, chk.IsNil)
 	c.Assert(exists, chk.Equals, false)
@@ -375,13 +405,13 @@ func (s *StorageFileSuite) TestCopyFileMissingFile(c *chk.C) {
 	cli := getFileClient(c)
 	share := cli.GetShareReference(randShare())
 
-	c.Assert(share.Create(), chk.IsNil)
-	defer share.Delete()
+	c.Assert(share.Create(nil), chk.IsNil)
+	defer share.Delete(nil)
 	root := share.GetRootDirectoryReference()
 
 	// create directory structure
 	dir1 := root.GetDirectoryReference("one")
-	c.Assert(dir1.Create(), chk.IsNil)
+	c.Assert(dir1.Create(nil), chk.IsNil)
 
 	otherFile := dir1.GetFileReference("someother.file")
 

@@ -26,7 +26,15 @@ type service struct {
 	Output      string
 	Swagger     string
 	SubServices []service
+	Modeler     modeler
 }
+
+type modeler string
+
+const (
+	swagger     modeler = "Swagger"
+	compSwagger modeler = "CompositeSwagger"
+)
 
 type mapping struct {
 	Plane       string
@@ -272,9 +280,8 @@ var (
 				},
 				{
 					Name:    "web",
-					Version: "2015-08-01",
-					Swagger: "service",
-					// enormous composite swagger
+					Swagger: "compositeWebAppClient",
+					Modeler: compSwagger,
 				},
 			},
 		},
@@ -365,10 +372,15 @@ func initAndAddService(service *service, inputPrefix, plane string) {
 	packages := append(service.Packages, service.Name)
 	service.TaskName = fmt.Sprintf("%s>%s", plane, strings.Join(packages, ">"))
 	service.Fullname = filepath.Join(plane, strings.Join(packages, "/"))
-	if service.Input == "" {
-		service.Input = filepath.Join(inputPrefix+strings.Join(packages, "/"), service.Version, "swagger", service.Swagger)
+	if service.Modeler == compSwagger {
+		service.Input = filepath.Join(inputPrefix+strings.Join(packages, "/"), service.Swagger)
 	} else {
-		service.Input = filepath.Join(inputPrefix+service.Input, service.Version, "swagger", service.Swagger)
+		if service.Input == "" {
+			service.Input = filepath.Join(inputPrefix+strings.Join(packages, "/"), service.Version, "swagger", service.Swagger)
+		} else {
+			service.Input = filepath.Join(inputPrefix+service.Input, service.Version, "swagger", service.Swagger)
+		}
+		service.Modeler = swagger
 	}
 	service.Namespace = filepath.Join("github.com", "Azure", "azure-sdk-for-go", service.Fullname)
 	service.Output = filepath.Join(gopath, "src", service.Namespace)
@@ -427,7 +439,7 @@ func generate(service *service) {
 		"-Header", "MICROSOFT_APACHE",
 		"-Namespace", service.Name,
 		"-OutputDirectory", service.Output,
-		"-Modeler", "Swagger",
+		"-Modeler", string(service.Modeler),
 		"-pv", sdkVersion)
 	autorest.Dir = filepath.Join(autorestDir, "autorest")
 	err = runner(autorest)

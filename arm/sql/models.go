@@ -49,43 +49,45 @@ const (
 	RestoreLongTermRetentionBackup CreateMode = "RestoreLongTermRetentionBackup"
 )
 
-// DatabaseEditions enumerates the values for database editions.
-type DatabaseEditions string
+// DatabaseEdition enumerates the values for database edition.
+type DatabaseEdition string
 
 const (
-	// Basic specifies the basic state for database editions.
-	Basic DatabaseEditions = "Basic"
-	// Business specifies the business state for database editions.
-	Business DatabaseEditions = "Business"
-	// DataWarehouse specifies the data warehouse state for database editions.
-	DataWarehouse DatabaseEditions = "DataWarehouse"
-	// Free specifies the free state for database editions.
-	Free DatabaseEditions = "Free"
-	// Premium specifies the premium state for database editions.
-	Premium DatabaseEditions = "Premium"
-	// Standard specifies the standard state for database editions.
-	Standard DatabaseEditions = "Standard"
-	// Stretch specifies the stretch state for database editions.
-	Stretch DatabaseEditions = "Stretch"
-	// System specifies the system state for database editions.
-	System DatabaseEditions = "System"
-	// Web specifies the web state for database editions.
-	Web DatabaseEditions = "Web"
+	// Basic specifies the basic state for database edition.
+	Basic DatabaseEdition = "Basic"
+	// Business specifies the business state for database edition.
+	Business DatabaseEdition = "Business"
+	// DataWarehouse specifies the data warehouse state for database edition.
+	DataWarehouse DatabaseEdition = "DataWarehouse"
+	// Free specifies the free state for database edition.
+	Free DatabaseEdition = "Free"
+	// Premium specifies the premium state for database edition.
+	Premium DatabaseEdition = "Premium"
+	// Standard specifies the standard state for database edition.
+	Standard DatabaseEdition = "Standard"
+	// Stretch specifies the stretch state for database edition.
+	Stretch DatabaseEdition = "Stretch"
+	// System specifies the system state for database edition.
+	System DatabaseEdition = "System"
+	// System2 specifies the system 2 state for database edition.
+	System2 DatabaseEdition = "System2"
+	// Web specifies the web state for database edition.
+	Web DatabaseEdition = "Web"
 )
 
-// ElasticPoolEditions enumerates the values for elastic pool editions.
-type ElasticPoolEditions string
+// ElasticPoolEdition enumerates the values for elastic pool edition.
+type ElasticPoolEdition string
 
 const (
-	// ElasticPoolEditionsBasic specifies the elastic pool editions basic state
-	// for elastic pool editions.
-	ElasticPoolEditionsBasic ElasticPoolEditions = "Basic"
-	// ElasticPoolEditionsPremium specifies the elastic pool editions premium
-	// state for elastic pool editions.
-	ElasticPoolEditionsPremium ElasticPoolEditions = "Premium"
-	// ElasticPoolEditionsStandard specifies the elastic pool editions standard
-	// state for elastic pool editions.
-	ElasticPoolEditionsStandard ElasticPoolEditions = "Standard"
+	// ElasticPoolEditionBasic specifies the elastic pool edition basic state
+	// for elastic pool edition.
+	ElasticPoolEditionBasic ElasticPoolEdition = "Basic"
+	// ElasticPoolEditionPremium specifies the elastic pool edition premium
+	// state for elastic pool edition.
+	ElasticPoolEditionPremium ElasticPoolEdition = "Premium"
+	// ElasticPoolEditionStandard specifies the elastic pool edition standard
+	// state for elastic pool edition.
+	ElasticPoolEditionStandard ElasticPoolEdition = "Standard"
 )
 
 // ElasticPoolState enumerates the values for elastic pool state.
@@ -111,61 +113,61 @@ const (
 	ReadScaleEnabled ReadScale = "Enabled"
 )
 
-// RecommendedIndexActions enumerates the values for recommended index actions.
-type RecommendedIndexActions string
+// RecommendedIndexAction enumerates the values for recommended index action.
+type RecommendedIndexAction string
 
 const (
-	// Create specifies the create state for recommended index actions.
-	Create RecommendedIndexActions = "Create"
-	// Drop specifies the drop state for recommended index actions.
-	Drop RecommendedIndexActions = "Drop"
-	// Rebuild specifies the rebuild state for recommended index actions.
-	Rebuild RecommendedIndexActions = "Rebuild"
+	// Create specifies the create state for recommended index action.
+	Create RecommendedIndexAction = "Create"
+	// Drop specifies the drop state for recommended index action.
+	Drop RecommendedIndexAction = "Drop"
+	// Rebuild specifies the rebuild state for recommended index action.
+	Rebuild RecommendedIndexAction = "Rebuild"
 )
 
-// RecommendedIndexStates enumerates the values for recommended index states.
-type RecommendedIndexStates string
+// RecommendedIndexState enumerates the values for recommended index state.
+type RecommendedIndexState string
 
 const (
-	// Active specifies the active state for recommended index states.
-	Active RecommendedIndexStates = "Active"
-	// Blocked specifies the blocked state for recommended index states.
-	Blocked RecommendedIndexStates = "Blocked"
-	// Executing specifies the executing state for recommended index states.
-	Executing RecommendedIndexStates = "Executing"
-	// Expired specifies the expired state for recommended index states.
-	Expired RecommendedIndexStates = "Expired"
-	// Ignored specifies the ignored state for recommended index states.
-	Ignored RecommendedIndexStates = "Ignored"
-	// Pending specifies the pending state for recommended index states.
-	Pending RecommendedIndexStates = "Pending"
+	// Active specifies the active state for recommended index state.
+	Active RecommendedIndexState = "Active"
+	// Blocked specifies the blocked state for recommended index state.
+	Blocked RecommendedIndexState = "Blocked"
+	// Executing specifies the executing state for recommended index state.
+	Executing RecommendedIndexState = "Executing"
+	// Expired specifies the expired state for recommended index state.
+	Expired RecommendedIndexState = "Expired"
+	// Ignored specifies the ignored state for recommended index state.
+	Ignored RecommendedIndexState = "Ignored"
+	// Pending specifies the pending state for recommended index state.
+	Pending RecommendedIndexState = "Pending"
 	// PendingRevert specifies the pending revert state for recommended index
-	// states.
-	PendingRevert RecommendedIndexStates = "Pending Revert"
-	// Reverted specifies the reverted state for recommended index states.
-	Reverted RecommendedIndexStates = "Reverted"
-	// Reverting specifies the reverting state for recommended index states.
-	Reverting RecommendedIndexStates = "Reverting"
-	// Success specifies the success state for recommended index states.
-	Success RecommendedIndexStates = "Success"
-	// Verifying specifies the verifying state for recommended index states.
-	Verifying RecommendedIndexStates = "Verifying"
+	// state.
+	PendingRevert RecommendedIndexState = "Pending Revert"
+	// Reverted specifies the reverted state for recommended index state.
+	Reverted RecommendedIndexState = "Reverted"
+	// Reverting specifies the reverting state for recommended index state.
+	Reverting RecommendedIndexState = "Reverting"
+	// Success specifies the success state for recommended index state.
+	Success RecommendedIndexState = "Success"
+	// Verifying specifies the verifying state for recommended index state.
+	Verifying RecommendedIndexState = "Verifying"
 )
 
-// RecommendedIndexTypes enumerates the values for recommended index types.
-type RecommendedIndexTypes string
+// RecommendedIndexType enumerates the values for recommended index type.
+type RecommendedIndexType string
 
 const (
-	// CLUSTERED specifies the clustered state for recommended index types.
-	CLUSTERED RecommendedIndexTypes = "CLUSTERED"
+	// CLUSTERED specifies the clustered state for recommended index type.
+	CLUSTERED RecommendedIndexType = "CLUSTERED"
 	// CLUSTEREDCOLUMNSTORE specifies the clusteredcolumnstore state for
-	// recommended index types.
-	CLUSTEREDCOLUMNSTORE RecommendedIndexTypes = "CLUSTERED COLUMNSTORE"
-	// COLUMNSTORE specifies the columnstore state for recommended index types.
-	COLUMNSTORE RecommendedIndexTypes = "COLUMNSTORE"
+	// recommended index type.
+	CLUSTEREDCOLUMNSTORE RecommendedIndexType = "CLUSTERED COLUMNSTORE"
+	// COLUMNSTORE specifies the columnstore state for recommended index type.
+	COLUMNSTORE RecommendedIndexType = "COLUMNSTORE"
 	// NONCLUSTERED specifies the nonclustered state for recommended index
-	// types.
-	NONCLUSTERED RecommendedIndexTypes = "NONCLUSTERED"
+	// type.
+	NONCLUSTERED RecommendedIndexType = "NONCLUSTERED"
 )
 
 // RestorePointTypes enumerates the values for restore point types.
@@ -256,83 +258,45 @@ const (
 	// ServiceObjectiveNameSystem specifies the service objective name system
 	// state for service objective name.
 	ServiceObjectiveNameSystem ServiceObjectiveName = "System"
+	// ServiceObjectiveNameSystem2 specifies the service objective name system
+	// 2 state for service objective name.
+	ServiceObjectiveNameSystem2 ServiceObjectiveName = "System2"
 )
 
-// TableType enumerates the values for table type.
-type TableType string
-
-const (
-	// BaseTable specifies the base table state for table type.
-	BaseTable TableType = "BaseTable"
-	// View specifies the view state for table type.
-	View TableType = "View"
-)
-
-// TargetElasticPoolEditions enumerates the values for target elastic pool
-// editions.
-type TargetElasticPoolEditions string
-
-const (
-	// TargetElasticPoolEditionsBasic specifies the target elastic pool
-	// editions basic state for target elastic pool editions.
-	TargetElasticPoolEditionsBasic TargetElasticPoolEditions = "Basic"
-	// TargetElasticPoolEditionsPremium specifies the target elastic pool
-	// editions premium state for target elastic pool editions.
-	TargetElasticPoolEditionsPremium TargetElasticPoolEditions = "Premium"
-	// TargetElasticPoolEditionsStandard specifies the target elastic pool
-	// editions standard state for target elastic pool editions.
-	TargetElasticPoolEditionsStandard TargetElasticPoolEditions = "Standard"
-)
-
-// TransparentDataEncryptionActivityStates enumerates the values for
-// transparent data encryption activity states.
-type TransparentDataEncryptionActivityStates string
+// TransparentDataEncryptionActivityStatus enumerates the values for
+// transparent data encryption activity status.
+type TransparentDataEncryptionActivityStatus string
 
 const (
 	// Decrypting specifies the decrypting state for transparent data
-	// encryption activity states.
-	Decrypting TransparentDataEncryptionActivityStates = "Decrypting"
+	// encryption activity status.
+	Decrypting TransparentDataEncryptionActivityStatus = "Decrypting"
 	// Encrypting specifies the encrypting state for transparent data
-	// encryption activity states.
-	Encrypting TransparentDataEncryptionActivityStates = "Encrypting"
+	// encryption activity status.
+	Encrypting TransparentDataEncryptionActivityStatus = "Encrypting"
 )
 
-// TransparentDataEncryptionStates enumerates the values for transparent data
-// encryption states.
-type TransparentDataEncryptionStates string
+// TransparentDataEncryptionStatus enumerates the values for transparent data
+// encryption status.
+type TransparentDataEncryptionStatus string
 
 const (
-	// TransparentDataEncryptionStatesDisabled specifies the transparent data
-	// encryption states disabled state for transparent data encryption states.
-	TransparentDataEncryptionStatesDisabled TransparentDataEncryptionStates = "Disabled"
-	// TransparentDataEncryptionStatesEnabled specifies the transparent data
-	// encryption states enabled state for transparent data encryption states.
-	TransparentDataEncryptionStatesEnabled TransparentDataEncryptionStates = "Enabled"
+	// TransparentDataEncryptionStatusDisabled specifies the transparent data
+	// encryption status disabled state for transparent data encryption status.
+	TransparentDataEncryptionStatusDisabled TransparentDataEncryptionStatus = "Disabled"
+	// TransparentDataEncryptionStatusEnabled specifies the transparent data
+	// encryption status enabled state for transparent data encryption status.
+	TransparentDataEncryptionStatusEnabled TransparentDataEncryptionStatus = "Enabled"
 )
-
-// Column is represents a database table column.
-type Column struct {
-	Name              *string             `json:"name,omitempty"`
-	ID                *string             `json:"id,omitempty"`
-	Type              *string             `json:"type,omitempty"`
-	Location          *string             `json:"location,omitempty"`
-	Tags              *map[string]*string `json:"tags,omitempty"`
-	*ColumnProperties `json:"properties,omitempty"`
-}
-
-// ColumnProperties is represents the properties of a database table column.
-type ColumnProperties struct {
-	ColumnType *string `json:"columnType,omitempty"`
-}
 
 // Database is represents a database.
 type Database struct {
 	autorest.Response   `json:"-"`
-	Name                *string             `json:"name,omitempty"`
 	ID                  *string             `json:"id,omitempty"`
+	Name                *string             `json:"name,omitempty"`
 	Type                *string             `json:"type,omitempty"`
-	Location            *string             `json:"location,omitempty"`
 	Tags                *map[string]*string `json:"tags,omitempty"`
+	Location            *string             `json:"location,omitempty"`
 	Kind                *string             `json:"kind,omitempty"`
 	*DatabaseProperties `json:"properties,omitempty"`
 }
@@ -375,7 +339,7 @@ type DatabaseProperties struct {
 	SourceDatabaseDeletionDate              *date.Time                   `json:"sourceDatabaseDeletionDate,omitempty"`
 	RestorePointInTime                      *date.Time                   `json:"restorePointInTime,omitempty"`
 	RecoveryServicesRecoveryPointResourceID *date.Time                   `json:"recoveryServicesRecoveryPointResourceId,omitempty"`
-	Edition                                 DatabaseEditions             `json:"edition,omitempty"`
+	Edition                                 DatabaseEdition              `json:"edition,omitempty"`
 	MaxSizeBytes                            *string                      `json:"maxSizeBytes,omitempty"`
 	RequestedServiceObjectiveID             *uuid.UUID                   `json:"requestedServiceObjectiveId,omitempty"`
 	RequestedServiceObjectiveName           ServiceObjectiveName         `json:"requestedServiceObjectiveName,omitempty"`
@@ -384,7 +348,6 @@ type DatabaseProperties struct {
 	ElasticPoolName                         *string                      `json:"elasticPoolName,omitempty"`
 	DefaultSecondaryLocation                *string                      `json:"defaultSecondaryLocation,omitempty"`
 	ServiceTierAdvisors                     *[]ServiceTierAdvisor        `json:"serviceTierAdvisors,omitempty"`
-	Schemas                                 *[]Schema                    `json:"schemas,omitempty"`
 	TransparentDataEncryption               *[]TransparentDataEncryption `json:"transparentDataEncryption,omitempty"`
 	RecommendedIndex                        *[]RecommendedIndex          `json:"recommendedIndex,omitempty"`
 	FailoverGroupID                         *uuid.UUID                   `json:"failoverGroupId,omitempty"`
@@ -395,22 +358,21 @@ type DatabaseProperties struct {
 // ElasticPool is represents a database elastic pool.
 type ElasticPool struct {
 	autorest.Response      `json:"-"`
-	Name                   *string             `json:"name,omitempty"`
 	ID                     *string             `json:"id,omitempty"`
+	Name                   *string             `json:"name,omitempty"`
 	Type                   *string             `json:"type,omitempty"`
-	Location               *string             `json:"location,omitempty"`
 	Tags                   *map[string]*string `json:"tags,omitempty"`
+	Location               *string             `json:"location,omitempty"`
 	*ElasticPoolProperties `json:"properties,omitempty"`
 	Kind                   *string `json:"kind,omitempty"`
 }
 
 // ElasticPoolActivity is represents the activity on an elastic pool.
 type ElasticPoolActivity struct {
-	Name                           *string             `json:"name,omitempty"`
-	ID                             *string             `json:"id,omitempty"`
-	Type                           *string             `json:"type,omitempty"`
-	Location                       *string             `json:"location,omitempty"`
-	Tags                           *map[string]*string `json:"tags,omitempty"`
+	ID                             *string `json:"id,omitempty"`
+	Name                           *string `json:"name,omitempty"`
+	Type                           *string `json:"type,omitempty"`
+	Location                       *string `json:"location,omitempty"`
 	*ElasticPoolActivityProperties `json:"properties,omitempty"`
 }
 
@@ -448,11 +410,10 @@ type ElasticPoolActivityProperties struct {
 
 // ElasticPoolDatabaseActivity is represents the activity on an elastic pool.
 type ElasticPoolDatabaseActivity struct {
-	Name                                   *string             `json:"name,omitempty"`
-	ID                                     *string             `json:"id,omitempty"`
-	Type                                   *string             `json:"type,omitempty"`
-	Location                               *string             `json:"location,omitempty"`
-	Tags                                   *map[string]*string `json:"tags,omitempty"`
+	ID                                     *string `json:"id,omitempty"`
+	Name                                   *string `json:"name,omitempty"`
+	Type                                   *string `json:"type,omitempty"`
+	Location                               *string `json:"location,omitempty"`
 	*ElasticPoolDatabaseActivityProperties `json:"properties,omitempty"`
 }
 
@@ -472,7 +433,7 @@ type ElasticPoolDatabaseActivityProperties struct {
 	ErrorMessage              *string    `json:"errorMessage,omitempty"`
 	ErrorSeverity             *int32     `json:"errorSeverity,omitempty"`
 	Operation                 *string    `json:"operation,omitempty"`
-	OperationID               *string    `json:"operationId,omitempty"`
+	OperationID               *uuid.UUID `json:"operationId,omitempty"`
 	PercentComplete           *int32     `json:"percentComplete,omitempty"`
 	RequestedElasticPoolName  *string    `json:"requestedElasticPoolName,omitempty"`
 	CurrentElasticPoolName    *string    `json:"currentElasticPoolName,omitempty"`
@@ -492,13 +453,13 @@ type ElasticPoolListResult struct {
 
 // ElasticPoolProperties is represents the properties of an elastic pool.
 type ElasticPoolProperties struct {
-	CreationDate   *date.Time          `json:"creationDate,omitempty"`
-	State          ElasticPoolState    `json:"state,omitempty"`
-	Edition        ElasticPoolEditions `json:"edition,omitempty"`
-	Dtu            *int32              `json:"dtu,omitempty"`
-	DatabaseDtuMax *int32              `json:"databaseDtuMax,omitempty"`
-	DatabaseDtuMin *int32              `json:"databaseDtuMin,omitempty"`
-	StorageMB      *int32              `json:"storageMB,omitempty"`
+	CreationDate   *date.Time         `json:"creationDate,omitempty"`
+	State          ElasticPoolState   `json:"state,omitempty"`
+	Edition        ElasticPoolEdition `json:"edition,omitempty"`
+	Dtu            *int32             `json:"dtu,omitempty"`
+	DatabaseDtuMax *int32             `json:"databaseDtuMax,omitempty"`
+	DatabaseDtuMin *int32             `json:"databaseDtuMin,omitempty"`
+	StorageMB      *int32             `json:"storageMB,omitempty"`
 }
 
 // Operation is sQL REST API operation definition.
@@ -531,14 +492,19 @@ type OperationListResult struct {
 	NextLink          *string      `json:"nextLink,omitempty"`
 }
 
+// ProxyResource is aRM proxy resource.
+type ProxyResource struct {
+	ID   *string `json:"id,omitempty"`
+	Name *string `json:"name,omitempty"`
+	Type *string `json:"type,omitempty"`
+}
+
 // RecommendedElasticPool is represents a recommented elastic pool.
 type RecommendedElasticPool struct {
 	autorest.Response                 `json:"-"`
-	Name                              *string             `json:"name,omitempty"`
-	ID                                *string             `json:"id,omitempty"`
-	Type                              *string             `json:"type,omitempty"`
-	Location                          *string             `json:"location,omitempty"`
-	Tags                              *map[string]*string `json:"tags,omitempty"`
+	ID                                *string `json:"id,omitempty"`
+	Name                              *string `json:"name,omitempty"`
+	Type                              *string `json:"type,omitempty"`
 	*RecommendedElasticPoolProperties `json:"properties,omitempty"`
 }
 
@@ -566,7 +532,7 @@ type RecommendedElasticPoolMetric struct {
 // RecommendedElasticPoolProperties is represents the properties of a
 // recommented elastic pool.
 type RecommendedElasticPoolProperties struct {
-	DatabaseEdition        ElasticPoolEditions             `json:"databaseEdition,omitempty"`
+	DatabaseEdition        ElasticPoolEdition              `json:"databaseEdition,omitempty"`
 	Dtu                    *float64                        `json:"dtu,omitempty"`
 	DatabaseDtuMin         *float64                        `json:"databaseDtuMin,omitempty"`
 	DatabaseDtuMax         *float64                        `json:"databaseDtuMax,omitempty"`
@@ -581,47 +547,41 @@ type RecommendedElasticPoolProperties struct {
 
 // RecommendedIndex is represents a database recommended index.
 type RecommendedIndex struct {
-	Name                        *string             `json:"name,omitempty"`
-	ID                          *string             `json:"id,omitempty"`
-	Type                        *string             `json:"type,omitempty"`
-	Location                    *string             `json:"location,omitempty"`
-	Tags                        *map[string]*string `json:"tags,omitempty"`
+	ID                          *string `json:"id,omitempty"`
+	Name                        *string `json:"name,omitempty"`
+	Type                        *string `json:"type,omitempty"`
 	*RecommendedIndexProperties `json:"properties,omitempty"`
 }
 
 // RecommendedIndexProperties is represents the properties of a database
 // recommended index.
 type RecommendedIndexProperties struct {
-	Action          RecommendedIndexActions `json:"action,omitempty"`
-	State           RecommendedIndexStates  `json:"state,omitempty"`
-	Created         *date.Time              `json:"created,omitempty"`
-	LastModified    *date.Time              `json:"lastModified,omitempty"`
-	IndexType       RecommendedIndexTypes   `json:"indexType,omitempty"`
-	Schema          *string                 `json:"schema,omitempty"`
-	Table           *string                 `json:"table,omitempty"`
-	Columns         *[]string               `json:"columns,omitempty"`
-	IncludedColumns *[]string               `json:"includedColumns,omitempty"`
-	IndexScript     *string                 `json:"indexScript,omitempty"`
-	EstimatedImpact *[]OperationImpact      `json:"estimatedImpact,omitempty"`
-	ReportedImpact  *[]OperationImpact      `json:"reportedImpact,omitempty"`
+	Action          RecommendedIndexAction `json:"action,omitempty"`
+	State           RecommendedIndexState  `json:"state,omitempty"`
+	Created         *date.Time             `json:"created,omitempty"`
+	LastModified    *date.Time             `json:"lastModified,omitempty"`
+	IndexType       RecommendedIndexType   `json:"indexType,omitempty"`
+	Schema          *string                `json:"schema,omitempty"`
+	Table           *string                `json:"table,omitempty"`
+	Columns         *[]string              `json:"columns,omitempty"`
+	IncludedColumns *[]string              `json:"includedColumns,omitempty"`
+	IndexScript     *string                `json:"indexScript,omitempty"`
+	EstimatedImpact *[]OperationImpact     `json:"estimatedImpact,omitempty"`
+	ReportedImpact  *[]OperationImpact     `json:"reportedImpact,omitempty"`
 }
 
-// Resource is resource properties
+// Resource is aRM resource.
 type Resource struct {
-	Name     *string             `json:"name,omitempty"`
-	ID       *string             `json:"id,omitempty"`
-	Type     *string             `json:"type,omitempty"`
-	Location *string             `json:"location,omitempty"`
-	Tags     *map[string]*string `json:"tags,omitempty"`
+	ID   *string `json:"id,omitempty"`
+	Name *string `json:"name,omitempty"`
+	Type *string `json:"type,omitempty"`
 }
 
 // RestorePoint is represents a database restore point.
 type RestorePoint struct {
-	Name                    *string             `json:"name,omitempty"`
-	ID                      *string             `json:"id,omitempty"`
-	Type                    *string             `json:"type,omitempty"`
-	Location                *string             `json:"location,omitempty"`
-	Tags                    *map[string]*string `json:"tags,omitempty"`
+	ID                      *string `json:"id,omitempty"`
+	Name                    *string `json:"name,omitempty"`
+	Type                    *string `json:"type,omitempty"`
 	*RestorePointProperties `json:"properties,omitempty"`
 }
 
@@ -640,29 +600,14 @@ type RestorePointProperties struct {
 	EarliestRestoreDate      *date.Time        `json:"earliestRestoreDate,omitempty"`
 }
 
-// Schema is represents a database schema.
-type Schema struct {
-	Name              *string             `json:"name,omitempty"`
-	ID                *string             `json:"id,omitempty"`
-	Type              *string             `json:"type,omitempty"`
-	Location          *string             `json:"location,omitempty"`
-	Tags              *map[string]*string `json:"tags,omitempty"`
-	*SchemaProperties `json:"properties,omitempty"`
-}
-
-// SchemaProperties is represents the properties of a database schema.
-type SchemaProperties struct {
-	Tables *[]Table `json:"tables,omitempty"`
-}
-
 // Server is represents a server.
 type Server struct {
 	autorest.Response `json:"-"`
-	Name              *string             `json:"name,omitempty"`
 	ID                *string             `json:"id,omitempty"`
+	Name              *string             `json:"name,omitempty"`
 	Type              *string             `json:"type,omitempty"`
-	Location          *string             `json:"location,omitempty"`
 	Tags              *map[string]*string `json:"tags,omitempty"`
+	Location          *string             `json:"location,omitempty"`
 	Kind              *string             `json:"kind,omitempty"`
 	*ServerProperties `json:"properties,omitempty"`
 }
@@ -779,21 +724,13 @@ type SubResource struct {
 	ID   *string `json:"id,omitempty"`
 }
 
-// Table is represents a database table.
-type Table struct {
-	Name             *string             `json:"name,omitempty"`
-	ID               *string             `json:"id,omitempty"`
-	Type             *string             `json:"type,omitempty"`
-	Location         *string             `json:"location,omitempty"`
-	Tags             *map[string]*string `json:"tags,omitempty"`
-	*TableProperties `json:"properties,omitempty"`
-}
-
-// TableProperties is represents the properties of a database table.
-type TableProperties struct {
-	TableType          TableType           `json:"tableType,omitempty"`
-	Columns            *[]Column           `json:"columns,omitempty"`
-	RecommendedIndexes *[]RecommendedIndex `json:"recommendedIndexes,omitempty"`
+// TrackedResource is aRM tracked top level resource.
+type TrackedResource struct {
+	ID       *string             `json:"id,omitempty"`
+	Name     *string             `json:"name,omitempty"`
+	Type     *string             `json:"type,omitempty"`
+	Tags     *map[string]*string `json:"tags,omitempty"`
+	Location *string             `json:"location,omitempty"`
 }
 
 // TransparentDataEncryption is represents a database transparent data
@@ -823,38 +760,12 @@ type TransparentDataEncryptionActivityListResult struct {
 // TransparentDataEncryptionActivityProperties is represents the properties of
 // a database transparent data encryption Scan.
 type TransparentDataEncryptionActivityProperties struct {
-	Status          TransparentDataEncryptionActivityStates `json:"status,omitempty"`
+	Status          TransparentDataEncryptionActivityStatus `json:"status,omitempty"`
 	PercentComplete *float64                                `json:"percentComplete,omitempty"`
 }
 
 // TransparentDataEncryptionProperties is represents the properties of a
 // database transparent data encryption.
 type TransparentDataEncryptionProperties struct {
-	Status TransparentDataEncryptionStates `json:"status,omitempty"`
-}
-
-// TypedSubResource is subresource properties
-type TypedSubResource struct {
-	Name *string `json:"name,omitempty"`
-	ID   *string `json:"id,omitempty"`
-	Type *string `json:"type,omitempty"`
-}
-
-// UpgradeHint is represents a Upgrade Hint.
-type UpgradeHint struct {
-	TargetServiceLevelObjective   *string    `json:"targetServiceLevelObjective,omitempty"`
-	TargetServiceLevelObjectiveID *uuid.UUID `json:"targetServiceLevelObjectiveId,omitempty"`
-}
-
-// UpgradeRecommendedElasticPoolProperties is represents the properties of a
-// recommended elastic pool being upgraded.
-type UpgradeRecommendedElasticPoolProperties struct {
-	Name                *string                   `json:"Name,omitempty"`
-	Edition             TargetElasticPoolEditions `json:"Edition,omitempty"`
-	Dtu                 *int32                    `json:"Dtu,omitempty"`
-	StorageMb           *int32                    `json:"StorageMb,omitempty"`
-	DatabaseDtuMin      *int32                    `json:"DatabaseDtuMin,omitempty"`
-	DatabaseDtuMax      *int32                    `json:"DatabaseDtuMax,omitempty"`
-	DatabaseCollection  *[]string                 `json:"DatabaseCollection,omitempty"`
-	IncludeAllDatabases *bool                     `json:"IncludeAllDatabases,omitempty"`
+	Status TransparentDataEncryptionStatus `json:"status,omitempty"`
 }

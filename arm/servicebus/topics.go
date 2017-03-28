@@ -45,7 +45,7 @@ func NewTopicsClientWithBaseURI(baseURI string, subscriptionID string) TopicsCli
 // resourceGroupName is name of the Resource group within the Azure
 // subscription. namespaceName is the namespace name topicName is the topic
 // name. parameters is parameters supplied to create a topic resource.
-func (client TopicsClient) CreateOrUpdate(resourceGroupName string, namespaceName string, topicName string, parameters Topic) (result Topic, err error) {
+func (client TopicsClient) CreateOrUpdate(resourceGroupName string, namespaceName string, topicName string, parameters TopicCreateOrUpdateParameters) (result TopicResource, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
@@ -55,7 +55,9 @@ func (client TopicsClient) CreateOrUpdate(resourceGroupName string, namespaceNam
 				{Target: "namespaceName", Name: validation.MinLength, Rule: 6, Chain: nil}}},
 		{TargetValue: topicName,
 			Constraints: []validation.Constraint{{Target: "topicName", Name: validation.MaxLength, Rule: 50, Chain: nil},
-				{Target: "topicName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+				{Target: "topicName", Name: validation.MinLength, Rule: 1, Chain: nil}}},
+		{TargetValue: parameters,
+			Constraints: []validation.Constraint{{Target: "parameters.Location", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
 		return result, validation.NewErrorWithValidationError(err, "servicebus.TopicsClient", "CreateOrUpdate")
 	}
 
@@ -79,7 +81,7 @@ func (client TopicsClient) CreateOrUpdate(resourceGroupName string, namespaceNam
 }
 
 // CreateOrUpdatePreparer prepares the CreateOrUpdate request.
-func (client TopicsClient) CreateOrUpdatePreparer(resourceGroupName string, namespaceName string, topicName string, parameters Topic) (*http.Request, error) {
+func (client TopicsClient) CreateOrUpdatePreparer(resourceGroupName string, namespaceName string, topicName string, parameters TopicCreateOrUpdateParameters) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"namespaceName":     autorest.Encode("path", namespaceName),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
@@ -110,7 +112,7 @@ func (client TopicsClient) CreateOrUpdateSender(req *http.Request) (*http.Respon
 
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
 // closes the http.Response Body.
-func (client TopicsClient) CreateOrUpdateResponder(resp *http.Response) (result Topic, err error) {
+func (client TopicsClient) CreateOrUpdateResponder(resp *http.Response) (result TopicResource, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -128,7 +130,7 @@ func (client TopicsClient) CreateOrUpdateResponder(resp *http.Response) (result 
 // subscription. namespaceName is the namespace name topicName is the topic
 // name. authorizationRuleName is the authorizationrule name. parameters is the
 // shared access authorization rule.
-func (client TopicsClient) CreateOrUpdateAuthorizationRule(resourceGroupName string, namespaceName string, topicName string, authorizationRuleName string, parameters SharedAccessAuthorizationRule) (result SharedAccessAuthorizationRule, err error) {
+func (client TopicsClient) CreateOrUpdateAuthorizationRule(resourceGroupName string, namespaceName string, topicName string, authorizationRuleName string, parameters SharedAccessAuthorizationRuleCreateOrUpdateParameters) (result SharedAccessAuthorizationRuleResource, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
@@ -168,7 +170,7 @@ func (client TopicsClient) CreateOrUpdateAuthorizationRule(resourceGroupName str
 }
 
 // CreateOrUpdateAuthorizationRulePreparer prepares the CreateOrUpdateAuthorizationRule request.
-func (client TopicsClient) CreateOrUpdateAuthorizationRulePreparer(resourceGroupName string, namespaceName string, topicName string, authorizationRuleName string, parameters SharedAccessAuthorizationRule) (*http.Request, error) {
+func (client TopicsClient) CreateOrUpdateAuthorizationRulePreparer(resourceGroupName string, namespaceName string, topicName string, authorizationRuleName string, parameters SharedAccessAuthorizationRuleCreateOrUpdateParameters) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"authorizationRuleName": autorest.Encode("path", authorizationRuleName),
 		"namespaceName":         autorest.Encode("path", namespaceName),
@@ -200,7 +202,7 @@ func (client TopicsClient) CreateOrUpdateAuthorizationRuleSender(req *http.Reque
 
 // CreateOrUpdateAuthorizationRuleResponder handles the response to the CreateOrUpdateAuthorizationRule request. The method always
 // closes the http.Response Body.
-func (client TopicsClient) CreateOrUpdateAuthorizationRuleResponder(resp *http.Response) (result SharedAccessAuthorizationRule, err error) {
+func (client TopicsClient) CreateOrUpdateAuthorizationRuleResponder(resp *http.Response) (result SharedAccessAuthorizationRuleResource, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -376,7 +378,7 @@ func (client TopicsClient) DeleteAuthorizationRuleResponder(resp *http.Response)
 // resourceGroupName is name of the Resource group within the Azure
 // subscription. namespaceName is the namespace name topicName is the topic
 // name.
-func (client TopicsClient) Get(resourceGroupName string, namespaceName string, topicName string) (result Topic, err error) {
+func (client TopicsClient) Get(resourceGroupName string, namespaceName string, topicName string) (result TopicResource, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
@@ -439,7 +441,7 @@ func (client TopicsClient) GetSender(req *http.Request) (*http.Response, error) 
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
-func (client TopicsClient) GetResponder(resp *http.Response) (result Topic, err error) {
+func (client TopicsClient) GetResponder(resp *http.Response) (result TopicResource, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -455,7 +457,7 @@ func (client TopicsClient) GetResponder(resp *http.Response) (result Topic, err 
 // resourceGroupName is name of the Resource group within the Azure
 // subscription. namespaceName is the namespace name topicName is the topic
 // name. authorizationRuleName is the authorizationrule name.
-func (client TopicsClient) GetAuthorizationRule(resourceGroupName string, namespaceName string, topicName string, authorizationRuleName string) (result SharedAccessAuthorizationRule, err error) {
+func (client TopicsClient) GetAuthorizationRule(resourceGroupName string, namespaceName string, topicName string, authorizationRuleName string) (result SharedAccessAuthorizationRuleResource, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
@@ -522,7 +524,7 @@ func (client TopicsClient) GetAuthorizationRuleSender(req *http.Request) (*http.
 
 // GetAuthorizationRuleResponder handles the response to the GetAuthorizationRule request. The method always
 // closes the http.Response Body.
-func (client TopicsClient) GetAuthorizationRuleResponder(resp *http.Response) (result SharedAccessAuthorizationRule, err error) {
+func (client TopicsClient) GetAuthorizationRuleResponder(resp *http.Response) (result SharedAccessAuthorizationRuleResource, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -530,6 +532,104 @@ func (client TopicsClient) GetAuthorizationRuleResponder(resp *http.Response) (r
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// ListAll gets all the topics in a namespace.
+//
+// resourceGroupName is name of the Resource group within the Azure
+// subscription. namespaceName is the namespace name
+func (client TopicsClient) ListAll(resourceGroupName string, namespaceName string) (result TopicListResult, err error) {
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}},
+		{TargetValue: namespaceName,
+			Constraints: []validation.Constraint{{Target: "namespaceName", Name: validation.MaxLength, Rule: 50, Chain: nil},
+				{Target: "namespaceName", Name: validation.MinLength, Rule: 6, Chain: nil}}}}); err != nil {
+		return result, validation.NewErrorWithValidationError(err, "servicebus.TopicsClient", "ListAll")
+	}
+
+	req, err := client.ListAllPreparer(resourceGroupName, namespaceName)
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "servicebus.TopicsClient", "ListAll", nil, "Failure preparing request")
+	}
+
+	resp, err := client.ListAllSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "servicebus.TopicsClient", "ListAll", resp, "Failure sending request")
+	}
+
+	result, err = client.ListAllResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "servicebus.TopicsClient", "ListAll", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// ListAllPreparer prepares the ListAll request.
+func (client TopicsClient) ListAllPreparer(resourceGroupName string, namespaceName string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"namespaceName":     autorest.Encode("path", namespaceName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2015-08-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceBus/namespaces/{namespaceName}/topics", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare(&http.Request{})
+}
+
+// ListAllSender sends the ListAll request. The method will close the
+// http.Response Body if it receives an error.
+func (client TopicsClient) ListAllSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req)
+}
+
+// ListAllResponder handles the response to the ListAll request. The method always
+// closes the http.Response Body.
+func (client TopicsClient) ListAllResponder(resp *http.Response) (result TopicListResult, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// ListAllNextResults retrieves the next set of results, if any.
+func (client TopicsClient) ListAllNextResults(lastResults TopicListResult) (result TopicListResult, err error) {
+	req, err := lastResults.TopicListResultPreparer()
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "servicebus.TopicsClient", "ListAll", nil, "Failure preparing next results request")
+	}
+	if req == nil {
+		return
+	}
+
+	resp, err := client.ListAllSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "servicebus.TopicsClient", "ListAll", resp, "Failure sending next results request")
+	}
+
+	result, err = client.ListAllResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "servicebus.TopicsClient", "ListAll", resp, "Failure responding to next results request")
+	}
+
 	return
 }
 
@@ -631,104 +731,6 @@ func (client TopicsClient) ListAuthorizationRulesNextResults(lastResults SharedA
 	result, err = client.ListAuthorizationRulesResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicebus.TopicsClient", "ListAuthorizationRules", resp, "Failure responding to next results request")
-	}
-
-	return
-}
-
-// ListByNamespace gets all the topics in a namespace.
-//
-// resourceGroupName is name of the Resource group within the Azure
-// subscription. namespaceName is the namespace name
-func (client TopicsClient) ListByNamespace(resourceGroupName string, namespaceName string) (result TopicListResult, err error) {
-	if err := validation.Validate([]validation.Validation{
-		{TargetValue: resourceGroupName,
-			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}},
-		{TargetValue: namespaceName,
-			Constraints: []validation.Constraint{{Target: "namespaceName", Name: validation.MaxLength, Rule: 50, Chain: nil},
-				{Target: "namespaceName", Name: validation.MinLength, Rule: 6, Chain: nil}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "servicebus.TopicsClient", "ListByNamespace")
-	}
-
-	req, err := client.ListByNamespacePreparer(resourceGroupName, namespaceName)
-	if err != nil {
-		return result, autorest.NewErrorWithError(err, "servicebus.TopicsClient", "ListByNamespace", nil, "Failure preparing request")
-	}
-
-	resp, err := client.ListByNamespaceSender(req)
-	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "servicebus.TopicsClient", "ListByNamespace", resp, "Failure sending request")
-	}
-
-	result, err = client.ListByNamespaceResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "servicebus.TopicsClient", "ListByNamespace", resp, "Failure responding to request")
-	}
-
-	return
-}
-
-// ListByNamespacePreparer prepares the ListByNamespace request.
-func (client TopicsClient) ListByNamespacePreparer(resourceGroupName string, namespaceName string) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"namespaceName":     autorest.Encode("path", namespaceName),
-		"resourceGroupName": autorest.Encode("path", resourceGroupName),
-		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
-	}
-
-	const APIVersion = "2015-08-01"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsGet(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceBus/namespaces/{namespaceName}/topics", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare(&http.Request{})
-}
-
-// ListByNamespaceSender sends the ListByNamespace request. The method will close the
-// http.Response Body if it receives an error.
-func (client TopicsClient) ListByNamespaceSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
-}
-
-// ListByNamespaceResponder handles the response to the ListByNamespace request. The method always
-// closes the http.Response Body.
-func (client TopicsClient) ListByNamespaceResponder(resp *http.Response) (result TopicListResult, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
-}
-
-// ListByNamespaceNextResults retrieves the next set of results, if any.
-func (client TopicsClient) ListByNamespaceNextResults(lastResults TopicListResult) (result TopicListResult, err error) {
-	req, err := lastResults.TopicListResultPreparer()
-	if err != nil {
-		return result, autorest.NewErrorWithError(err, "servicebus.TopicsClient", "ListByNamespace", nil, "Failure preparing next results request")
-	}
-	if req == nil {
-		return
-	}
-
-	resp, err := client.ListByNamespaceSender(req)
-	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "servicebus.TopicsClient", "ListByNamespace", resp, "Failure sending next results request")
-	}
-
-	result, err = client.ListByNamespaceResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "servicebus.TopicsClient", "ListByNamespace", resp, "Failure responding to next results request")
 	}
 
 	return

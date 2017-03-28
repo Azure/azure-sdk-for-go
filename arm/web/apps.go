@@ -1018,10 +1018,8 @@ func (client AppsClient) CreateOrUpdate(resourceGroupName string, name string, s
 		{TargetValue: siteEnvelope,
 			Constraints: []validation.Constraint{{Target: "siteEnvelope.SiteProperties", Name: validation.Null, Rule: false,
 				Chain: []validation.Constraint{{Target: "siteEnvelope.SiteProperties.SiteConfig", Name: validation.Null, Rule: false,
-					Chain: []validation.Constraint{{Target: "siteEnvelope.SiteProperties.SiteConfig.SiteConfigProperties", Name: validation.Null, Rule: false,
-						Chain: []validation.Constraint{{Target: "siteEnvelope.SiteProperties.SiteConfig.SiteConfigProperties.Push", Name: validation.Null, Rule: false,
-							Chain: []validation.Constraint{{Target: "siteEnvelope.SiteProperties.SiteConfig.SiteConfigProperties.Push.IsPushEnabled", Name: validation.Null, Rule: true, Chain: nil}}},
-						}},
+					Chain: []validation.Constraint{{Target: "siteEnvelope.SiteProperties.SiteConfig.Push", Name: validation.Null, Rule: false,
+						Chain: []validation.Constraint{{Target: "siteEnvelope.SiteProperties.SiteConfig.Push.IsPushEnabled", Name: validation.Null, Rule: true, Chain: nil}}},
 					}},
 					{Target: "siteEnvelope.SiteProperties.CloningInfo", Name: validation.Null, Rule: false,
 						Chain: []validation.Constraint{{Target: "siteEnvelope.SiteProperties.CloningInfo.SourceWebAppID", Name: validation.Null, Rule: true, Chain: nil}}},
@@ -1108,16 +1106,16 @@ func (client AppsClient) CreateOrUpdateResponder(resp *http.Response) (result au
 // resourceGroupName is name of the resource group to which the resource
 // belongs. name is name of the app. siteConfig is jSON representation of a
 // SiteConfig object. See example.
-func (client AppsClient) CreateOrUpdateConfiguration(resourceGroupName string, name string, siteConfig SiteConfig) (result SiteConfig, err error) {
+func (client AppsClient) CreateOrUpdateConfiguration(resourceGroupName string, name string, siteConfig SiteConfigResource) (result SiteConfigResource, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+[^\.]$`, Chain: nil}}},
 		{TargetValue: siteConfig,
-			Constraints: []validation.Constraint{{Target: "siteConfig.SiteConfigProperties", Name: validation.Null, Rule: false,
-				Chain: []validation.Constraint{{Target: "siteConfig.SiteConfigProperties.Push", Name: validation.Null, Rule: false,
-					Chain: []validation.Constraint{{Target: "siteConfig.SiteConfigProperties.Push.IsPushEnabled", Name: validation.Null, Rule: true, Chain: nil}}},
+			Constraints: []validation.Constraint{{Target: "siteConfig.SiteConfig", Name: validation.Null, Rule: false,
+				Chain: []validation.Constraint{{Target: "siteConfig.SiteConfig.Push", Name: validation.Null, Rule: false,
+					Chain: []validation.Constraint{{Target: "siteConfig.SiteConfig.Push.IsPushEnabled", Name: validation.Null, Rule: true, Chain: nil}}},
 				}}}}}); err != nil {
 		return result, validation.NewErrorWithValidationError(err, "web.AppsClient", "CreateOrUpdateConfiguration")
 	}
@@ -1142,7 +1140,7 @@ func (client AppsClient) CreateOrUpdateConfiguration(resourceGroupName string, n
 }
 
 // CreateOrUpdateConfigurationPreparer prepares the CreateOrUpdateConfiguration request.
-func (client AppsClient) CreateOrUpdateConfigurationPreparer(resourceGroupName string, name string, siteConfig SiteConfig) (*http.Request, error) {
+func (client AppsClient) CreateOrUpdateConfigurationPreparer(resourceGroupName string, name string, siteConfig SiteConfigResource) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"name":              autorest.Encode("path", name),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
@@ -1172,7 +1170,7 @@ func (client AppsClient) CreateOrUpdateConfigurationSender(req *http.Request) (*
 
 // CreateOrUpdateConfigurationResponder handles the response to the CreateOrUpdateConfiguration request. The method always
 // closes the http.Response Body.
-func (client AppsClient) CreateOrUpdateConfigurationResponder(resp *http.Response) (result SiteConfig, err error) {
+func (client AppsClient) CreateOrUpdateConfigurationResponder(resp *http.Response) (result SiteConfigResource, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -1190,16 +1188,16 @@ func (client AppsClient) CreateOrUpdateConfigurationResponder(resp *http.Respons
 // SiteConfig object. See example. slot is name of the deployment slot. If a
 // slot is not specified, the API will update configuration for the production
 // slot.
-func (client AppsClient) CreateOrUpdateConfigurationSlot(resourceGroupName string, name string, siteConfig SiteConfig, slot string) (result SiteConfig, err error) {
+func (client AppsClient) CreateOrUpdateConfigurationSlot(resourceGroupName string, name string, siteConfig SiteConfigResource, slot string) (result SiteConfigResource, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+[^\.]$`, Chain: nil}}},
 		{TargetValue: siteConfig,
-			Constraints: []validation.Constraint{{Target: "siteConfig.SiteConfigProperties", Name: validation.Null, Rule: false,
-				Chain: []validation.Constraint{{Target: "siteConfig.SiteConfigProperties.Push", Name: validation.Null, Rule: false,
-					Chain: []validation.Constraint{{Target: "siteConfig.SiteConfigProperties.Push.IsPushEnabled", Name: validation.Null, Rule: true, Chain: nil}}},
+			Constraints: []validation.Constraint{{Target: "siteConfig.SiteConfig", Name: validation.Null, Rule: false,
+				Chain: []validation.Constraint{{Target: "siteConfig.SiteConfig.Push", Name: validation.Null, Rule: false,
+					Chain: []validation.Constraint{{Target: "siteConfig.SiteConfig.Push.IsPushEnabled", Name: validation.Null, Rule: true, Chain: nil}}},
 				}}}}}); err != nil {
 		return result, validation.NewErrorWithValidationError(err, "web.AppsClient", "CreateOrUpdateConfigurationSlot")
 	}
@@ -1224,7 +1222,7 @@ func (client AppsClient) CreateOrUpdateConfigurationSlot(resourceGroupName strin
 }
 
 // CreateOrUpdateConfigurationSlotPreparer prepares the CreateOrUpdateConfigurationSlot request.
-func (client AppsClient) CreateOrUpdateConfigurationSlotPreparer(resourceGroupName string, name string, siteConfig SiteConfig, slot string) (*http.Request, error) {
+func (client AppsClient) CreateOrUpdateConfigurationSlotPreparer(resourceGroupName string, name string, siteConfig SiteConfigResource, slot string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"name":              autorest.Encode("path", name),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
@@ -1255,7 +1253,7 @@ func (client AppsClient) CreateOrUpdateConfigurationSlotSender(req *http.Request
 
 // CreateOrUpdateConfigurationSlotResponder handles the response to the CreateOrUpdateConfigurationSlot request. The method always
 // closes the http.Response Body.
-func (client AppsClient) CreateOrUpdateConfigurationSlotResponder(resp *http.Response) (result SiteConfig, err error) {
+func (client AppsClient) CreateOrUpdateConfigurationSlotResponder(resp *http.Response) (result SiteConfigResource, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -1927,10 +1925,8 @@ func (client AppsClient) CreateOrUpdateSlot(resourceGroupName string, name strin
 		{TargetValue: siteEnvelope,
 			Constraints: []validation.Constraint{{Target: "siteEnvelope.SiteProperties", Name: validation.Null, Rule: false,
 				Chain: []validation.Constraint{{Target: "siteEnvelope.SiteProperties.SiteConfig", Name: validation.Null, Rule: false,
-					Chain: []validation.Constraint{{Target: "siteEnvelope.SiteProperties.SiteConfig.SiteConfigProperties", Name: validation.Null, Rule: false,
-						Chain: []validation.Constraint{{Target: "siteEnvelope.SiteProperties.SiteConfig.SiteConfigProperties.Push", Name: validation.Null, Rule: false,
-							Chain: []validation.Constraint{{Target: "siteEnvelope.SiteProperties.SiteConfig.SiteConfigProperties.Push.IsPushEnabled", Name: validation.Null, Rule: true, Chain: nil}}},
-						}},
+					Chain: []validation.Constraint{{Target: "siteEnvelope.SiteProperties.SiteConfig.Push", Name: validation.Null, Rule: false,
+						Chain: []validation.Constraint{{Target: "siteEnvelope.SiteProperties.SiteConfig.Push.IsPushEnabled", Name: validation.Null, Rule: true, Chain: nil}}},
 					}},
 					{Target: "siteEnvelope.SiteProperties.CloningInfo", Name: validation.Null, Rule: false,
 						Chain: []validation.Constraint{{Target: "siteEnvelope.SiteProperties.CloningInfo.SourceWebAppID", Name: validation.Null, Rule: true, Chain: nil}}},
@@ -5124,7 +5120,7 @@ func (client AppsClient) GetBackupStatusSlotResponder(resp *http.Response) (resu
 //
 // resourceGroupName is name of the resource group to which the resource
 // belongs. name is name of the app.
-func (client AppsClient) GetConfiguration(resourceGroupName string, name string) (result SiteConfig, err error) {
+func (client AppsClient) GetConfiguration(resourceGroupName string, name string) (result SiteConfigResource, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
@@ -5181,7 +5177,7 @@ func (client AppsClient) GetConfigurationSender(req *http.Request) (*http.Respon
 
 // GetConfigurationResponder handles the response to the GetConfiguration request. The method always
 // closes the http.Response Body.
-func (client AppsClient) GetConfigurationResponder(resp *http.Response) (result SiteConfig, err error) {
+func (client AppsClient) GetConfigurationResponder(resp *http.Response) (result SiteConfigResource, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -5200,7 +5196,7 @@ func (client AppsClient) GetConfigurationResponder(resp *http.Response) (result 
 // belongs. name is name of the app. slot is name of the deployment slot. If a
 // slot is not specified, the API will return configuration for the production
 // slot.
-func (client AppsClient) GetConfigurationSlot(resourceGroupName string, name string, slot string) (result SiteConfig, err error) {
+func (client AppsClient) GetConfigurationSlot(resourceGroupName string, name string, slot string) (result SiteConfigResource, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
@@ -5258,7 +5254,7 @@ func (client AppsClient) GetConfigurationSlotSender(req *http.Request) (*http.Re
 
 // GetConfigurationSlotResponder handles the response to the GetConfigurationSlot request. The method always
 // closes the http.Response Body.
-func (client AppsClient) GetConfigurationSlotResponder(resp *http.Response) (result SiteConfig, err error) {
+func (client AppsClient) GetConfigurationSlotResponder(resp *http.Response) (result SiteConfigResource, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -5275,7 +5271,7 @@ func (client AppsClient) GetConfigurationSlotResponder(resp *http.Response) (res
 // resourceGroupName is name of the resource group to which the resource
 // belongs. name is name of the app. snapshotID is the ID of the snapshot to
 // read.
-func (client AppsClient) GetConfigurationSnapshot(resourceGroupName string, name string, snapshotID string) (result SiteConfig, err error) {
+func (client AppsClient) GetConfigurationSnapshot(resourceGroupName string, name string, snapshotID string) (result SiteConfigResource, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
@@ -5333,7 +5329,7 @@ func (client AppsClient) GetConfigurationSnapshotSender(req *http.Request) (*htt
 
 // GetConfigurationSnapshotResponder handles the response to the GetConfigurationSnapshot request. The method always
 // closes the http.Response Body.
-func (client AppsClient) GetConfigurationSnapshotResponder(resp *http.Response) (result SiteConfig, err error) {
+func (client AppsClient) GetConfigurationSnapshotResponder(resp *http.Response) (result SiteConfigResource, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -5351,7 +5347,7 @@ func (client AppsClient) GetConfigurationSnapshotResponder(resp *http.Response) 
 // belongs. name is name of the app. snapshotID is the ID of the snapshot to
 // read. slot is name of the deployment slot. If a slot is not specified, the
 // API will return configuration for the production slot.
-func (client AppsClient) GetConfigurationSnapshotSlot(resourceGroupName string, name string, snapshotID string, slot string) (result SiteConfig, err error) {
+func (client AppsClient) GetConfigurationSnapshotSlot(resourceGroupName string, name string, snapshotID string, slot string) (result SiteConfigResource, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
@@ -5410,7 +5406,7 @@ func (client AppsClient) GetConfigurationSnapshotSlotSender(req *http.Request) (
 
 // GetConfigurationSnapshotSlotResponder handles the response to the GetConfigurationSnapshotSlot request. The method always
 // closes the http.Response Body.
-func (client AppsClient) GetConfigurationSnapshotSlotResponder(resp *http.Response) (result SiteConfig, err error) {
+func (client AppsClient) GetConfigurationSnapshotSlotResponder(resp *http.Response) (result SiteConfigResource, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -6334,6 +6330,153 @@ func (client AppsClient) GetInstanceDeploymentSlotResponder(resp *http.Response)
 	return
 }
 
+// GetMigrateMySQLStatus returns the status of MySql in app migration, if one
+// is active, and whether or not MySql in app is enabled
+//
+// resourceGroupName is name of the resource group to which the resource
+// belongs. name is name of web app
+func (client AppsClient) GetMigrateMySQLStatus(resourceGroupName string, name string) (result MigrateMySQLStatus, err error) {
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+[^\.]$`, Chain: nil}}}}); err != nil {
+		return result, validation.NewErrorWithValidationError(err, "web.AppsClient", "GetMigrateMySQLStatus")
+	}
+
+	req, err := client.GetMigrateMySQLStatusPreparer(resourceGroupName, name)
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "web.AppsClient", "GetMigrateMySQLStatus", nil, "Failure preparing request")
+	}
+
+	resp, err := client.GetMigrateMySQLStatusSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "web.AppsClient", "GetMigrateMySQLStatus", resp, "Failure sending request")
+	}
+
+	result, err = client.GetMigrateMySQLStatusResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "GetMigrateMySQLStatus", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// GetMigrateMySQLStatusPreparer prepares the GetMigrateMySQLStatus request.
+func (client AppsClient) GetMigrateMySQLStatusPreparer(resourceGroupName string, name string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"name":              autorest.Encode("path", name),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2016-08-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/migratemysql/status", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare(&http.Request{})
+}
+
+// GetMigrateMySQLStatusSender sends the GetMigrateMySQLStatus request. The method will close the
+// http.Response Body if it receives an error.
+func (client AppsClient) GetMigrateMySQLStatusSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req)
+}
+
+// GetMigrateMySQLStatusResponder handles the response to the GetMigrateMySQLStatus request. The method always
+// closes the http.Response Body.
+func (client AppsClient) GetMigrateMySQLStatusResponder(resp *http.Response) (result MigrateMySQLStatus, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// GetMigrateMySQLStatusSlot returns the status of MySql in app migration, if
+// one is active, and whether or not MySql in app is enabled
+//
+// resourceGroupName is name of the resource group to which the resource
+// belongs. name is name of web app slot is name of the deployment slot
+func (client AppsClient) GetMigrateMySQLStatusSlot(resourceGroupName string, name string, slot string) (result MigrateMySQLStatus, err error) {
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+[^\.]$`, Chain: nil}}}}); err != nil {
+		return result, validation.NewErrorWithValidationError(err, "web.AppsClient", "GetMigrateMySQLStatusSlot")
+	}
+
+	req, err := client.GetMigrateMySQLStatusSlotPreparer(resourceGroupName, name, slot)
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "web.AppsClient", "GetMigrateMySQLStatusSlot", nil, "Failure preparing request")
+	}
+
+	resp, err := client.GetMigrateMySQLStatusSlotSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "web.AppsClient", "GetMigrateMySQLStatusSlot", resp, "Failure sending request")
+	}
+
+	result, err = client.GetMigrateMySQLStatusSlotResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "GetMigrateMySQLStatusSlot", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// GetMigrateMySQLStatusSlotPreparer prepares the GetMigrateMySQLStatusSlot request.
+func (client AppsClient) GetMigrateMySQLStatusSlotPreparer(resourceGroupName string, name string, slot string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"name":              autorest.Encode("path", name),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"slot":              autorest.Encode("path", slot),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2016-08-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/migratemysql/status", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare(&http.Request{})
+}
+
+// GetMigrateMySQLStatusSlotSender sends the GetMigrateMySQLStatusSlot request. The method will close the
+// http.Response Body if it receives an error.
+func (client AppsClient) GetMigrateMySQLStatusSlotSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req)
+}
+
+// GetMigrateMySQLStatusSlotResponder handles the response to the GetMigrateMySQLStatusSlot request. The method always
+// closes the http.Response Body.
+func (client AppsClient) GetMigrateMySQLStatusSlotResponder(resp *http.Response) (result MigrateMySQLStatus, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
 // GetPremierAddOn gets a named add-on of an app.
 //
 // resourceGroupName is name of the resource group to which the resource
@@ -6852,214 +6995,6 @@ func (client AppsClient) GetSlotResponder(resp *http.Response) (result Site, err
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
-	return
-}
-
-// GetSlotsDifferencesFromProduction get the difference in configuration
-// settings between two web app slots.
-//
-// resourceGroupName is name of the resource group to which the resource
-// belongs. name is name of the app. slotSwapEntity is jSON object that
-// contains the target slot name. See example.
-func (client AppsClient) GetSlotsDifferencesFromProduction(resourceGroupName string, name string, slotSwapEntity CsmSlotEntity) (result SlotDifferenceCollection, err error) {
-	if err := validation.Validate([]validation.Validation{
-		{TargetValue: resourceGroupName,
-			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+[^\.]$`, Chain: nil}}},
-		{TargetValue: slotSwapEntity,
-			Constraints: []validation.Constraint{{Target: "slotSwapEntity.TargetSlot", Name: validation.Null, Rule: true, Chain: nil},
-				{Target: "slotSwapEntity.PreserveVnet", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "web.AppsClient", "GetSlotsDifferencesFromProduction")
-	}
-
-	req, err := client.GetSlotsDifferencesFromProductionPreparer(resourceGroupName, name, slotSwapEntity)
-	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "GetSlotsDifferencesFromProduction", nil, "Failure preparing request")
-	}
-
-	resp, err := client.GetSlotsDifferencesFromProductionSender(req)
-	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "GetSlotsDifferencesFromProduction", resp, "Failure sending request")
-	}
-
-	result, err = client.GetSlotsDifferencesFromProductionResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "web.AppsClient", "GetSlotsDifferencesFromProduction", resp, "Failure responding to request")
-	}
-
-	return
-}
-
-// GetSlotsDifferencesFromProductionPreparer prepares the GetSlotsDifferencesFromProduction request.
-func (client AppsClient) GetSlotsDifferencesFromProductionPreparer(resourceGroupName string, name string, slotSwapEntity CsmSlotEntity) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"name":              autorest.Encode("path", name),
-		"resourceGroupName": autorest.Encode("path", resourceGroupName),
-		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
-	}
-
-	const APIVersion = "2016-08-01"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsJSON(),
-		autorest.AsPost(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slotsdiffs", pathParameters),
-		autorest.WithJSON(slotSwapEntity),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare(&http.Request{})
-}
-
-// GetSlotsDifferencesFromProductionSender sends the GetSlotsDifferencesFromProduction request. The method will close the
-// http.Response Body if it receives an error.
-func (client AppsClient) GetSlotsDifferencesFromProductionSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
-}
-
-// GetSlotsDifferencesFromProductionResponder handles the response to the GetSlotsDifferencesFromProduction request. The method always
-// closes the http.Response Body.
-func (client AppsClient) GetSlotsDifferencesFromProductionResponder(resp *http.Response) (result SlotDifferenceCollection, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
-}
-
-// GetSlotsDifferencesFromProductionNextResults retrieves the next set of results, if any.
-func (client AppsClient) GetSlotsDifferencesFromProductionNextResults(lastResults SlotDifferenceCollection) (result SlotDifferenceCollection, err error) {
-	req, err := lastResults.SlotDifferenceCollectionPreparer()
-	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "GetSlotsDifferencesFromProduction", nil, "Failure preparing next results request")
-	}
-	if req == nil {
-		return
-	}
-
-	resp, err := client.GetSlotsDifferencesFromProductionSender(req)
-	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "GetSlotsDifferencesFromProduction", resp, "Failure sending next results request")
-	}
-
-	result, err = client.GetSlotsDifferencesFromProductionResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "web.AppsClient", "GetSlotsDifferencesFromProduction", resp, "Failure responding to next results request")
-	}
-
-	return
-}
-
-// GetSlotsDifferencesSlot get the difference in configuration settings between
-// two web app slots.
-//
-// resourceGroupName is name of the resource group to which the resource
-// belongs. name is name of the app. slotSwapEntity is jSON object that
-// contains the target slot name. See example. slot is name of the source slot.
-// If a slot is not specified, the production slot is used as the source slot.
-func (client AppsClient) GetSlotsDifferencesSlot(resourceGroupName string, name string, slotSwapEntity CsmSlotEntity, slot string) (result SlotDifferenceCollection, err error) {
-	if err := validation.Validate([]validation.Validation{
-		{TargetValue: resourceGroupName,
-			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+[^\.]$`, Chain: nil}}},
-		{TargetValue: slotSwapEntity,
-			Constraints: []validation.Constraint{{Target: "slotSwapEntity.TargetSlot", Name: validation.Null, Rule: true, Chain: nil},
-				{Target: "slotSwapEntity.PreserveVnet", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "web.AppsClient", "GetSlotsDifferencesSlot")
-	}
-
-	req, err := client.GetSlotsDifferencesSlotPreparer(resourceGroupName, name, slotSwapEntity, slot)
-	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "GetSlotsDifferencesSlot", nil, "Failure preparing request")
-	}
-
-	resp, err := client.GetSlotsDifferencesSlotSender(req)
-	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "GetSlotsDifferencesSlot", resp, "Failure sending request")
-	}
-
-	result, err = client.GetSlotsDifferencesSlotResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "web.AppsClient", "GetSlotsDifferencesSlot", resp, "Failure responding to request")
-	}
-
-	return
-}
-
-// GetSlotsDifferencesSlotPreparer prepares the GetSlotsDifferencesSlot request.
-func (client AppsClient) GetSlotsDifferencesSlotPreparer(resourceGroupName string, name string, slotSwapEntity CsmSlotEntity, slot string) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"name":              autorest.Encode("path", name),
-		"resourceGroupName": autorest.Encode("path", resourceGroupName),
-		"slot":              autorest.Encode("path", slot),
-		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
-	}
-
-	const APIVersion = "2016-08-01"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsJSON(),
-		autorest.AsPost(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/slotsdiffs", pathParameters),
-		autorest.WithJSON(slotSwapEntity),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare(&http.Request{})
-}
-
-// GetSlotsDifferencesSlotSender sends the GetSlotsDifferencesSlot request. The method will close the
-// http.Response Body if it receives an error.
-func (client AppsClient) GetSlotsDifferencesSlotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
-}
-
-// GetSlotsDifferencesSlotResponder handles the response to the GetSlotsDifferencesSlot request. The method always
-// closes the http.Response Body.
-func (client AppsClient) GetSlotsDifferencesSlotResponder(resp *http.Response) (result SlotDifferenceCollection, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
-}
-
-// GetSlotsDifferencesSlotNextResults retrieves the next set of results, if any.
-func (client AppsClient) GetSlotsDifferencesSlotNextResults(lastResults SlotDifferenceCollection) (result SlotDifferenceCollection, err error) {
-	req, err := lastResults.SlotDifferenceCollectionPreparer()
-	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "GetSlotsDifferencesSlot", nil, "Failure preparing next results request")
-	}
-	if req == nil {
-		return
-	}
-
-	resp, err := client.GetSlotsDifferencesSlotSender(req)
-	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "GetSlotsDifferencesSlot", resp, "Failure sending next results request")
-	}
-
-	result, err = client.GetSlotsDifferencesSlotResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "web.AppsClient", "GetSlotsDifferencesSlot", resp, "Failure responding to next results request")
-	}
-
 	return
 }
 
@@ -11697,6 +11632,214 @@ func (client AppsClient) ListSlotConfigurationNamesResponder(resp *http.Response
 	return
 }
 
+// ListSlotDifferencesFromProduction get the difference in configuration
+// settings between two web app slots.
+//
+// resourceGroupName is name of the resource group to which the resource
+// belongs. name is name of the app. slotSwapEntity is jSON object that
+// contains the target slot name. See example.
+func (client AppsClient) ListSlotDifferencesFromProduction(resourceGroupName string, name string, slotSwapEntity CsmSlotEntity) (result SlotDifferenceCollection, err error) {
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+[^\.]$`, Chain: nil}}},
+		{TargetValue: slotSwapEntity,
+			Constraints: []validation.Constraint{{Target: "slotSwapEntity.TargetSlot", Name: validation.Null, Rule: true, Chain: nil},
+				{Target: "slotSwapEntity.PreserveVnet", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
+		return result, validation.NewErrorWithValidationError(err, "web.AppsClient", "ListSlotDifferencesFromProduction")
+	}
+
+	req, err := client.ListSlotDifferencesFromProductionPreparer(resourceGroupName, name, slotSwapEntity)
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "web.AppsClient", "ListSlotDifferencesFromProduction", nil, "Failure preparing request")
+	}
+
+	resp, err := client.ListSlotDifferencesFromProductionSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "web.AppsClient", "ListSlotDifferencesFromProduction", resp, "Failure sending request")
+	}
+
+	result, err = client.ListSlotDifferencesFromProductionResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListSlotDifferencesFromProduction", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// ListSlotDifferencesFromProductionPreparer prepares the ListSlotDifferencesFromProduction request.
+func (client AppsClient) ListSlotDifferencesFromProductionPreparer(resourceGroupName string, name string, slotSwapEntity CsmSlotEntity) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"name":              autorest.Encode("path", name),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2016-08-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsJSON(),
+		autorest.AsPost(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slotsdiffs", pathParameters),
+		autorest.WithJSON(slotSwapEntity),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare(&http.Request{})
+}
+
+// ListSlotDifferencesFromProductionSender sends the ListSlotDifferencesFromProduction request. The method will close the
+// http.Response Body if it receives an error.
+func (client AppsClient) ListSlotDifferencesFromProductionSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req)
+}
+
+// ListSlotDifferencesFromProductionResponder handles the response to the ListSlotDifferencesFromProduction request. The method always
+// closes the http.Response Body.
+func (client AppsClient) ListSlotDifferencesFromProductionResponder(resp *http.Response) (result SlotDifferenceCollection, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// ListSlotDifferencesFromProductionNextResults retrieves the next set of results, if any.
+func (client AppsClient) ListSlotDifferencesFromProductionNextResults(lastResults SlotDifferenceCollection) (result SlotDifferenceCollection, err error) {
+	req, err := lastResults.SlotDifferenceCollectionPreparer()
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "web.AppsClient", "ListSlotDifferencesFromProduction", nil, "Failure preparing next results request")
+	}
+	if req == nil {
+		return
+	}
+
+	resp, err := client.ListSlotDifferencesFromProductionSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "web.AppsClient", "ListSlotDifferencesFromProduction", resp, "Failure sending next results request")
+	}
+
+	result, err = client.ListSlotDifferencesFromProductionResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListSlotDifferencesFromProduction", resp, "Failure responding to next results request")
+	}
+
+	return
+}
+
+// ListSlotDifferencesSlot get the difference in configuration settings between
+// two web app slots.
+//
+// resourceGroupName is name of the resource group to which the resource
+// belongs. name is name of the app. slotSwapEntity is jSON object that
+// contains the target slot name. See example. slot is name of the source slot.
+// If a slot is not specified, the production slot is used as the source slot.
+func (client AppsClient) ListSlotDifferencesSlot(resourceGroupName string, name string, slotSwapEntity CsmSlotEntity, slot string) (result SlotDifferenceCollection, err error) {
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+[^\.]$`, Chain: nil}}},
+		{TargetValue: slotSwapEntity,
+			Constraints: []validation.Constraint{{Target: "slotSwapEntity.TargetSlot", Name: validation.Null, Rule: true, Chain: nil},
+				{Target: "slotSwapEntity.PreserveVnet", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
+		return result, validation.NewErrorWithValidationError(err, "web.AppsClient", "ListSlotDifferencesSlot")
+	}
+
+	req, err := client.ListSlotDifferencesSlotPreparer(resourceGroupName, name, slotSwapEntity, slot)
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "web.AppsClient", "ListSlotDifferencesSlot", nil, "Failure preparing request")
+	}
+
+	resp, err := client.ListSlotDifferencesSlotSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "web.AppsClient", "ListSlotDifferencesSlot", resp, "Failure sending request")
+	}
+
+	result, err = client.ListSlotDifferencesSlotResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListSlotDifferencesSlot", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// ListSlotDifferencesSlotPreparer prepares the ListSlotDifferencesSlot request.
+func (client AppsClient) ListSlotDifferencesSlotPreparer(resourceGroupName string, name string, slotSwapEntity CsmSlotEntity, slot string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"name":              autorest.Encode("path", name),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"slot":              autorest.Encode("path", slot),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2016-08-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsJSON(),
+		autorest.AsPost(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/slotsdiffs", pathParameters),
+		autorest.WithJSON(slotSwapEntity),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare(&http.Request{})
+}
+
+// ListSlotDifferencesSlotSender sends the ListSlotDifferencesSlot request. The method will close the
+// http.Response Body if it receives an error.
+func (client AppsClient) ListSlotDifferencesSlotSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req)
+}
+
+// ListSlotDifferencesSlotResponder handles the response to the ListSlotDifferencesSlot request. The method always
+// closes the http.Response Body.
+func (client AppsClient) ListSlotDifferencesSlotResponder(resp *http.Response) (result SlotDifferenceCollection, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// ListSlotDifferencesSlotNextResults retrieves the next set of results, if any.
+func (client AppsClient) ListSlotDifferencesSlotNextResults(lastResults SlotDifferenceCollection) (result SlotDifferenceCollection, err error) {
+	req, err := lastResults.SlotDifferenceCollectionPreparer()
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "web.AppsClient", "ListSlotDifferencesSlot", nil, "Failure preparing next results request")
+	}
+	if req == nil {
+		return
+	}
+
+	resp, err := client.ListSlotDifferencesSlotSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "web.AppsClient", "ListSlotDifferencesSlot", resp, "Failure sending next results request")
+	}
+
+	result, err = client.ListSlotDifferencesSlotResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListSlotDifferencesSlot", resp, "Failure responding to next results request")
+	}
+
+	return
+}
+
 // ListSlots gets an app's deployment slots.
 //
 // resourceGroupName is name of the resource group to which the resource
@@ -13434,9 +13577,10 @@ func (client AppsClient) StartSlotResponder(resp *http.Response) (result autores
 // StartWebSiteNetworkTrace start capturing network packets for the site.
 //
 // resourceGroupName is name of the resource group to which the resource
-// belongs. name is the name of the web app durationInSeconds is the duration
-// to keep capturing in seconds
-func (client AppsClient) StartWebSiteNetworkTrace(resourceGroupName string, name string, durationInSeconds *int32) (result String, err error) {
+// belongs. name is the name of the web app. durationInSeconds is the duration
+// to keep capturing in seconds. maxFrameLength is the maximum frame length in
+// bytes (Optional). sasURL is the Blob URL to store capture file.
+func (client AppsClient) StartWebSiteNetworkTrace(resourceGroupName string, name string, durationInSeconds *int32, maxFrameLength *int32, sasURL string) (result String, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
@@ -13445,7 +13589,7 @@ func (client AppsClient) StartWebSiteNetworkTrace(resourceGroupName string, name
 		return result, validation.NewErrorWithValidationError(err, "web.AppsClient", "StartWebSiteNetworkTrace")
 	}
 
-	req, err := client.StartWebSiteNetworkTracePreparer(resourceGroupName, name, durationInSeconds)
+	req, err := client.StartWebSiteNetworkTracePreparer(resourceGroupName, name, durationInSeconds, maxFrameLength, sasURL)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web.AppsClient", "StartWebSiteNetworkTrace", nil, "Failure preparing request")
 	}
@@ -13465,7 +13609,7 @@ func (client AppsClient) StartWebSiteNetworkTrace(resourceGroupName string, name
 }
 
 // StartWebSiteNetworkTracePreparer prepares the StartWebSiteNetworkTrace request.
-func (client AppsClient) StartWebSiteNetworkTracePreparer(resourceGroupName string, name string, durationInSeconds *int32) (*http.Request, error) {
+func (client AppsClient) StartWebSiteNetworkTracePreparer(resourceGroupName string, name string, durationInSeconds *int32, maxFrameLength *int32, sasURL string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"name":              autorest.Encode("path", name),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
@@ -13478,6 +13622,12 @@ func (client AppsClient) StartWebSiteNetworkTracePreparer(resourceGroupName stri
 	}
 	if durationInSeconds != nil {
 		queryParameters["durationInSeconds"] = autorest.Encode("query", *durationInSeconds)
+	}
+	if maxFrameLength != nil {
+		queryParameters["maxFrameLength"] = autorest.Encode("query", *maxFrameLength)
+	}
+	if len(sasURL) > 0 {
+		queryParameters["sasUrl"] = autorest.Encode("query", sasURL)
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -13510,9 +13660,11 @@ func (client AppsClient) StartWebSiteNetworkTraceResponder(resp *http.Response) 
 // StartWebSiteNetworkTraceSlot start capturing network packets for the site.
 //
 // resourceGroupName is name of the resource group to which the resource
-// belongs. name is the name of the web app slot is the name of the slot for
-// this web app. durationInSeconds is the duration to keep capturing in seconds
-func (client AppsClient) StartWebSiteNetworkTraceSlot(resourceGroupName string, name string, slot string, durationInSeconds *int32) (result String, err error) {
+// belongs. name is the name of the web app. slot is the name of the slot for
+// this web app. durationInSeconds is the duration to keep capturing in
+// seconds. maxFrameLength is the maximum frame length in bytes (Optional).
+// sasURL is the Blob URL to store capture file.
+func (client AppsClient) StartWebSiteNetworkTraceSlot(resourceGroupName string, name string, slot string, durationInSeconds *int32, maxFrameLength *int32, sasURL string) (result String, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
@@ -13521,7 +13673,7 @@ func (client AppsClient) StartWebSiteNetworkTraceSlot(resourceGroupName string, 
 		return result, validation.NewErrorWithValidationError(err, "web.AppsClient", "StartWebSiteNetworkTraceSlot")
 	}
 
-	req, err := client.StartWebSiteNetworkTraceSlotPreparer(resourceGroupName, name, slot, durationInSeconds)
+	req, err := client.StartWebSiteNetworkTraceSlotPreparer(resourceGroupName, name, slot, durationInSeconds, maxFrameLength, sasURL)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web.AppsClient", "StartWebSiteNetworkTraceSlot", nil, "Failure preparing request")
 	}
@@ -13541,7 +13693,7 @@ func (client AppsClient) StartWebSiteNetworkTraceSlot(resourceGroupName string, 
 }
 
 // StartWebSiteNetworkTraceSlotPreparer prepares the StartWebSiteNetworkTraceSlot request.
-func (client AppsClient) StartWebSiteNetworkTraceSlotPreparer(resourceGroupName string, name string, slot string, durationInSeconds *int32) (*http.Request, error) {
+func (client AppsClient) StartWebSiteNetworkTraceSlotPreparer(resourceGroupName string, name string, slot string, durationInSeconds *int32, maxFrameLength *int32, sasURL string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"name":              autorest.Encode("path", name),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
@@ -13555,6 +13707,12 @@ func (client AppsClient) StartWebSiteNetworkTraceSlotPreparer(resourceGroupName 
 	}
 	if durationInSeconds != nil {
 		queryParameters["durationInSeconds"] = autorest.Encode("query", *durationInSeconds)
+	}
+	if maxFrameLength != nil {
+		queryParameters["maxFrameLength"] = autorest.Encode("query", *maxFrameLength)
+	}
+	if len(sasURL) > 0 {
+		queryParameters["sasUrl"] = autorest.Encode("query", sasURL)
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -13731,7 +13889,7 @@ func (client AppsClient) StopSlotResponder(resp *http.Response) (result autorest
 // StopWebSiteNetworkTrace stop ongoing capturing network packets for the site.
 //
 // resourceGroupName is name of the resource group to which the resource
-// belongs. name is the name of the web app
+// belongs. name is the name of the web app.
 func (client AppsClient) StopWebSiteNetworkTrace(resourceGroupName string, name string) (result String, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
@@ -13804,7 +13962,7 @@ func (client AppsClient) StopWebSiteNetworkTraceResponder(resp *http.Response) (
 // site.
 //
 // resourceGroupName is name of the resource group to which the resource
-// belongs. name is the name of the web app slot is the name of the slot for
+// belongs. name is the name of the web app. slot is the name of the slot for
 // this web app.
 func (client AppsClient) StopWebSiteNetworkTraceSlot(resourceGroupName string, name string, slot string) (result String, err error) {
 	if err := validation.Validate([]validation.Validation{
@@ -14663,7 +14821,7 @@ func (client AppsClient) UpdateBackupConfigurationSlotResponder(resp *http.Respo
 // resourceGroupName is name of the resource group to which the resource
 // belongs. name is name of the app. siteConfig is jSON representation of a
 // SiteConfig object. See example.
-func (client AppsClient) UpdateConfiguration(resourceGroupName string, name string, siteConfig SiteConfig) (result SiteConfig, err error) {
+func (client AppsClient) UpdateConfiguration(resourceGroupName string, name string, siteConfig SiteConfigResource) (result SiteConfigResource, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
@@ -14692,7 +14850,7 @@ func (client AppsClient) UpdateConfiguration(resourceGroupName string, name stri
 }
 
 // UpdateConfigurationPreparer prepares the UpdateConfiguration request.
-func (client AppsClient) UpdateConfigurationPreparer(resourceGroupName string, name string, siteConfig SiteConfig) (*http.Request, error) {
+func (client AppsClient) UpdateConfigurationPreparer(resourceGroupName string, name string, siteConfig SiteConfigResource) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"name":              autorest.Encode("path", name),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
@@ -14722,7 +14880,7 @@ func (client AppsClient) UpdateConfigurationSender(req *http.Request) (*http.Res
 
 // UpdateConfigurationResponder handles the response to the UpdateConfiguration request. The method always
 // closes the http.Response Body.
-func (client AppsClient) UpdateConfigurationResponder(resp *http.Response) (result SiteConfig, err error) {
+func (client AppsClient) UpdateConfigurationResponder(resp *http.Response) (result SiteConfigResource, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -14740,7 +14898,7 @@ func (client AppsClient) UpdateConfigurationResponder(resp *http.Response) (resu
 // SiteConfig object. See example. slot is name of the deployment slot. If a
 // slot is not specified, the API will update configuration for the production
 // slot.
-func (client AppsClient) UpdateConfigurationSlot(resourceGroupName string, name string, siteConfig SiteConfig, slot string) (result SiteConfig, err error) {
+func (client AppsClient) UpdateConfigurationSlot(resourceGroupName string, name string, siteConfig SiteConfigResource, slot string) (result SiteConfigResource, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
@@ -14769,7 +14927,7 @@ func (client AppsClient) UpdateConfigurationSlot(resourceGroupName string, name 
 }
 
 // UpdateConfigurationSlotPreparer prepares the UpdateConfigurationSlot request.
-func (client AppsClient) UpdateConfigurationSlotPreparer(resourceGroupName string, name string, siteConfig SiteConfig, slot string) (*http.Request, error) {
+func (client AppsClient) UpdateConfigurationSlotPreparer(resourceGroupName string, name string, siteConfig SiteConfigResource, slot string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"name":              autorest.Encode("path", name),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
@@ -14800,7 +14958,7 @@ func (client AppsClient) UpdateConfigurationSlotSender(req *http.Request) (*http
 
 // UpdateConfigurationSlotResponder handles the response to the UpdateConfigurationSlot request. The method always
 // closes the http.Response Body.
-func (client AppsClient) UpdateConfigurationSlotResponder(resp *http.Response) (result SiteConfig, err error) {
+func (client AppsClient) UpdateConfigurationSlotResponder(resp *http.Response) (result SiteConfigResource, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

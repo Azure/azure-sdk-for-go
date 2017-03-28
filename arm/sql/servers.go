@@ -173,33 +173,33 @@ func (client ServersClient) DeleteResponder(resp *http.Response) (result autores
 	return
 }
 
-// GetByResourceGroup gets a server.
+// Get gets a server.
 //
 // resourceGroupName is the name of the resource group that contains the
 // resource. You can obtain this value from the Azure Resource Manager API or
 // the portal. serverName is the name of the server.
-func (client ServersClient) GetByResourceGroup(resourceGroupName string, serverName string) (result Server, err error) {
-	req, err := client.GetByResourceGroupPreparer(resourceGroupName, serverName)
+func (client ServersClient) Get(resourceGroupName string, serverName string) (result Server, err error) {
+	req, err := client.GetPreparer(resourceGroupName, serverName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "sql.ServersClient", "GetByResourceGroup", nil, "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "sql.ServersClient", "Get", nil, "Failure preparing request")
 	}
 
-	resp, err := client.GetByResourceGroupSender(req)
+	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "sql.ServersClient", "GetByResourceGroup", resp, "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "sql.ServersClient", "Get", resp, "Failure sending request")
 	}
 
-	result, err = client.GetByResourceGroupResponder(resp)
+	result, err = client.GetResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.ServersClient", "GetByResourceGroup", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "sql.ServersClient", "Get", resp, "Failure responding to request")
 	}
 
 	return
 }
 
-// GetByResourceGroupPreparer prepares the GetByResourceGroup request.
-func (client ServersClient) GetByResourceGroupPreparer(resourceGroupName string, serverName string) (*http.Request, error) {
+// GetPreparer prepares the Get request.
+func (client ServersClient) GetPreparer(resourceGroupName string, serverName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"serverName":        autorest.Encode("path", serverName),
@@ -219,15 +219,15 @@ func (client ServersClient) GetByResourceGroupPreparer(resourceGroupName string,
 	return preparer.Prepare(&http.Request{})
 }
 
-// GetByResourceGroupSender sends the GetByResourceGroup request. The method will close the
+// GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
-func (client ServersClient) GetByResourceGroupSender(req *http.Request) (*http.Response, error) {
+func (client ServersClient) GetSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req)
 }
 
-// GetByResourceGroupResponder handles the response to the GetByResourceGroup request. The method always
+// GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
-func (client ServersClient) GetByResourceGroupResponder(resp *http.Response) (result Server, err error) {
+func (client ServersClient) GetResponder(resp *http.Response) (result Server, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

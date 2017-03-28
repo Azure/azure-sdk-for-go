@@ -179,33 +179,33 @@ func (client RecommendedElasticPoolsClient) GetDatabasesResponder(resp *http.Res
 	return
 }
 
-// List returns recommended elastic pools.
+// ListByServer returns recommended elastic pools.
 //
 // resourceGroupName is the name of the resource group that contains the
 // resource. You can obtain this value from the Azure Resource Manager API or
 // the portal. serverName is the name of the server.
-func (client RecommendedElasticPoolsClient) List(resourceGroupName string, serverName string) (result RecommendedElasticPoolListResult, err error) {
-	req, err := client.ListPreparer(resourceGroupName, serverName)
+func (client RecommendedElasticPoolsClient) ListByServer(resourceGroupName string, serverName string) (result RecommendedElasticPoolListResult, err error) {
+	req, err := client.ListByServerPreparer(resourceGroupName, serverName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "sql.RecommendedElasticPoolsClient", "List", nil, "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "sql.RecommendedElasticPoolsClient", "ListByServer", nil, "Failure preparing request")
 	}
 
-	resp, err := client.ListSender(req)
+	resp, err := client.ListByServerSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "sql.RecommendedElasticPoolsClient", "List", resp, "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "sql.RecommendedElasticPoolsClient", "ListByServer", resp, "Failure sending request")
 	}
 
-	result, err = client.ListResponder(resp)
+	result, err = client.ListByServerResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.RecommendedElasticPoolsClient", "List", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "sql.RecommendedElasticPoolsClient", "ListByServer", resp, "Failure responding to request")
 	}
 
 	return
 }
 
-// ListPreparer prepares the List request.
-func (client RecommendedElasticPoolsClient) ListPreparer(resourceGroupName string, serverName string) (*http.Request, error) {
+// ListByServerPreparer prepares the ListByServer request.
+func (client RecommendedElasticPoolsClient) ListByServerPreparer(resourceGroupName string, serverName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"serverName":        autorest.Encode("path", serverName),
@@ -225,15 +225,15 @@ func (client RecommendedElasticPoolsClient) ListPreparer(resourceGroupName strin
 	return preparer.Prepare(&http.Request{})
 }
 
-// ListSender sends the List request. The method will close the
+// ListByServerSender sends the ListByServer request. The method will close the
 // http.Response Body if it receives an error.
-func (client RecommendedElasticPoolsClient) ListSender(req *http.Request) (*http.Response, error) {
+func (client RecommendedElasticPoolsClient) ListByServerSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req)
 }
 
-// ListResponder handles the response to the List request. The method always
+// ListByServerResponder handles the response to the ListByServer request. The method always
 // closes the http.Response Body.
-func (client RecommendedElasticPoolsClient) ListResponder(resp *http.Response) (result RecommendedElasticPoolListResult, err error) {
+func (client RecommendedElasticPoolsClient) ListByServerResponder(resp *http.Response) (result RecommendedElasticPoolListResult, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

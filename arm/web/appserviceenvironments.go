@@ -52,12 +52,19 @@ func NewAppServiceEnvironmentsClientWithBaseURI(baseURI string, subscriptionID s
 // belongs. name is name of the App Service Environment.
 // hostingEnvironmentEnvelope is configuration details of the App Service
 // Environment.
-func (client AppServiceEnvironmentsClient) CreateOrUpdate(resourceGroupName string, name string, hostingEnvironmentEnvelope AppServiceEnvironment, cancel <-chan struct{}) (result autorest.Response, err error) {
+func (client AppServiceEnvironmentsClient) CreateOrUpdate(resourceGroupName string, name string, hostingEnvironmentEnvelope AppServiceEnvironmentResource, cancel <-chan struct{}) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+[^\.]$`, Chain: nil}}}}); err != nil {
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+[^\.]$`, Chain: nil}}},
+		{TargetValue: hostingEnvironmentEnvelope,
+			Constraints: []validation.Constraint{{Target: "hostingEnvironmentEnvelope.AppServiceEnvironment", Name: validation.Null, Rule: false,
+				Chain: []validation.Constraint{{Target: "hostingEnvironmentEnvelope.AppServiceEnvironment.Name", Name: validation.Null, Rule: true, Chain: nil},
+					{Target: "hostingEnvironmentEnvelope.AppServiceEnvironment.Location", Name: validation.Null, Rule: true, Chain: nil},
+					{Target: "hostingEnvironmentEnvelope.AppServiceEnvironment.VirtualNetwork", Name: validation.Null, Rule: true, Chain: nil},
+					{Target: "hostingEnvironmentEnvelope.AppServiceEnvironment.WorkerPools", Name: validation.Null, Rule: true, Chain: nil},
+				}}}}}); err != nil {
 		return result, validation.NewErrorWithValidationError(err, "web.AppServiceEnvironmentsClient", "CreateOrUpdate")
 	}
 
@@ -81,7 +88,7 @@ func (client AppServiceEnvironmentsClient) CreateOrUpdate(resourceGroupName stri
 }
 
 // CreateOrUpdatePreparer prepares the CreateOrUpdate request.
-func (client AppServiceEnvironmentsClient) CreateOrUpdatePreparer(resourceGroupName string, name string, hostingEnvironmentEnvelope AppServiceEnvironment, cancel <-chan struct{}) (*http.Request, error) {
+func (client AppServiceEnvironmentsClient) CreateOrUpdatePreparer(resourceGroupName string, name string, hostingEnvironmentEnvelope AppServiceEnvironmentResource, cancel <-chan struct{}) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"name":              autorest.Encode("path", name),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
@@ -131,7 +138,7 @@ func (client AppServiceEnvironmentsClient) CreateOrUpdateResponder(resp *http.Re
 // resourceGroupName is name of the resource group to which the resource
 // belongs. name is name of the App Service Environment. multiRolePoolEnvelope
 // is properties of the multi-role pool.
-func (client AppServiceEnvironmentsClient) CreateOrUpdateMultiRolePool(resourceGroupName string, name string, multiRolePoolEnvelope WorkerPool, cancel <-chan struct{}) (result autorest.Response, err error) {
+func (client AppServiceEnvironmentsClient) CreateOrUpdateMultiRolePool(resourceGroupName string, name string, multiRolePoolEnvelope WorkerPoolResource, cancel <-chan struct{}) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
@@ -160,7 +167,7 @@ func (client AppServiceEnvironmentsClient) CreateOrUpdateMultiRolePool(resourceG
 }
 
 // CreateOrUpdateMultiRolePoolPreparer prepares the CreateOrUpdateMultiRolePool request.
-func (client AppServiceEnvironmentsClient) CreateOrUpdateMultiRolePoolPreparer(resourceGroupName string, name string, multiRolePoolEnvelope WorkerPool, cancel <-chan struct{}) (*http.Request, error) {
+func (client AppServiceEnvironmentsClient) CreateOrUpdateMultiRolePoolPreparer(resourceGroupName string, name string, multiRolePoolEnvelope WorkerPoolResource, cancel <-chan struct{}) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"name":              autorest.Encode("path", name),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
@@ -210,7 +217,7 @@ func (client AppServiceEnvironmentsClient) CreateOrUpdateMultiRolePoolResponder(
 // resourceGroupName is name of the resource group to which the resource
 // belongs. name is name of the App Service Environment. workerPoolName is name
 // of the worker pool. workerPoolEnvelope is properties of the worker pool.
-func (client AppServiceEnvironmentsClient) CreateOrUpdateWorkerPool(resourceGroupName string, name string, workerPoolName string, workerPoolEnvelope WorkerPool, cancel <-chan struct{}) (result autorest.Response, err error) {
+func (client AppServiceEnvironmentsClient) CreateOrUpdateWorkerPool(resourceGroupName string, name string, workerPoolName string, workerPoolEnvelope WorkerPoolResource, cancel <-chan struct{}) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
@@ -239,7 +246,7 @@ func (client AppServiceEnvironmentsClient) CreateOrUpdateWorkerPool(resourceGrou
 }
 
 // CreateOrUpdateWorkerPoolPreparer prepares the CreateOrUpdateWorkerPool request.
-func (client AppServiceEnvironmentsClient) CreateOrUpdateWorkerPoolPreparer(resourceGroupName string, name string, workerPoolName string, workerPoolEnvelope WorkerPool, cancel <-chan struct{}) (*http.Request, error) {
+func (client AppServiceEnvironmentsClient) CreateOrUpdateWorkerPoolPreparer(resourceGroupName string, name string, workerPoolName string, workerPoolEnvelope WorkerPoolResource, cancel <-chan struct{}) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"name":              autorest.Encode("path", name),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
@@ -367,7 +374,7 @@ func (client AppServiceEnvironmentsClient) DeleteResponder(resp *http.Response) 
 //
 // resourceGroupName is name of the resource group to which the resource
 // belongs. name is name of the App Service Environment.
-func (client AppServiceEnvironmentsClient) Get(resourceGroupName string, name string) (result AppServiceEnvironment, err error) {
+func (client AppServiceEnvironmentsClient) Get(resourceGroupName string, name string) (result AppServiceEnvironmentResource, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
@@ -424,7 +431,7 @@ func (client AppServiceEnvironmentsClient) GetSender(req *http.Request) (*http.R
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
-func (client AppServiceEnvironmentsClient) GetResponder(resp *http.Response) (result AppServiceEnvironment, err error) {
+func (client AppServiceEnvironmentsClient) GetResponder(resp *http.Response) (result AppServiceEnvironmentResource, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -513,7 +520,7 @@ func (client AppServiceEnvironmentsClient) GetDiagnosticsItemResponder(resp *htt
 //
 // resourceGroupName is name of the resource group to which the resource
 // belongs. name is name of the App Service Environment.
-func (client AppServiceEnvironmentsClient) GetMultiRolePool(resourceGroupName string, name string) (result WorkerPool, err error) {
+func (client AppServiceEnvironmentsClient) GetMultiRolePool(resourceGroupName string, name string) (result WorkerPoolResource, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
@@ -570,7 +577,7 @@ func (client AppServiceEnvironmentsClient) GetMultiRolePoolSender(req *http.Requ
 
 // GetMultiRolePoolResponder handles the response to the GetMultiRolePool request. The method always
 // closes the http.Response Body.
-func (client AppServiceEnvironmentsClient) GetMultiRolePoolResponder(resp *http.Response) (result WorkerPool, err error) {
+func (client AppServiceEnvironmentsClient) GetMultiRolePoolResponder(resp *http.Response) (result WorkerPoolResource, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -586,7 +593,7 @@ func (client AppServiceEnvironmentsClient) GetMultiRolePoolResponder(resp *http.
 // resourceGroupName is name of the resource group to which the resource
 // belongs. name is name of the App Service Environment. workerPoolName is name
 // of the worker pool.
-func (client AppServiceEnvironmentsClient) GetWorkerPool(resourceGroupName string, name string, workerPoolName string) (result WorkerPool, err error) {
+func (client AppServiceEnvironmentsClient) GetWorkerPool(resourceGroupName string, name string, workerPoolName string) (result WorkerPoolResource, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
@@ -644,7 +651,7 @@ func (client AppServiceEnvironmentsClient) GetWorkerPoolSender(req *http.Request
 
 // GetWorkerPoolResponder handles the response to the GetWorkerPool request. The method always
 // closes the http.Response Body.
-func (client AppServiceEnvironmentsClient) GetWorkerPoolResponder(resp *http.Response) (result WorkerPool, err error) {
+func (client AppServiceEnvironmentsClient) GetWorkerPoolResponder(resp *http.Response) (result WorkerPoolResource, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

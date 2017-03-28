@@ -37,28 +37,99 @@ const (
 	Send AccessRights = "Send"
 )
 
+// EntityAvailabilityStatus enumerates the values for entity availability
+// status.
+type EntityAvailabilityStatus string
+
+const (
+	// Available specifies the available state for entity availability status.
+	Available EntityAvailabilityStatus = "Available"
+	// Limited specifies the limited state for entity availability status.
+	Limited EntityAvailabilityStatus = "Limited"
+	// Renaming specifies the renaming state for entity availability status.
+	Renaming EntityAvailabilityStatus = "Renaming"
+	// Restoring specifies the restoring state for entity availability status.
+	Restoring EntityAvailabilityStatus = "Restoring"
+	// Unknown specifies the unknown state for entity availability status.
+	Unknown EntityAvailabilityStatus = "Unknown"
+)
+
 // EntityStatus enumerates the values for entity status.
 type EntityStatus string
 
 const (
-	// Active specifies the active state for entity status.
-	Active EntityStatus = "Active"
-	// Creating specifies the creating state for entity status.
-	Creating EntityStatus = "Creating"
-	// Deleting specifies the deleting state for entity status.
-	Deleting EntityStatus = "Deleting"
-	// Disabled specifies the disabled state for entity status.
-	Disabled EntityStatus = "Disabled"
-	// ReceiveDisabled specifies the receive disabled state for entity status.
-	ReceiveDisabled EntityStatus = "ReceiveDisabled"
-	// Renaming specifies the renaming state for entity status.
-	Renaming EntityStatus = "Renaming"
-	// Restoring specifies the restoring state for entity status.
-	Restoring EntityStatus = "Restoring"
-	// SendDisabled specifies the send disabled state for entity status.
-	SendDisabled EntityStatus = "SendDisabled"
-	// Unknown specifies the unknown state for entity status.
-	Unknown EntityStatus = "Unknown"
+	// EntityStatusActive specifies the entity status active state for entity
+	// status.
+	EntityStatusActive EntityStatus = "Active"
+	// EntityStatusCreating specifies the entity status creating state for
+	// entity status.
+	EntityStatusCreating EntityStatus = "Creating"
+	// EntityStatusDeleting specifies the entity status deleting state for
+	// entity status.
+	EntityStatusDeleting EntityStatus = "Deleting"
+	// EntityStatusDisabled specifies the entity status disabled state for
+	// entity status.
+	EntityStatusDisabled EntityStatus = "Disabled"
+	// EntityStatusReceiveDisabled specifies the entity status receive disabled
+	// state for entity status.
+	EntityStatusReceiveDisabled EntityStatus = "ReceiveDisabled"
+	// EntityStatusRenaming specifies the entity status renaming state for
+	// entity status.
+	EntityStatusRenaming EntityStatus = "Renaming"
+	// EntityStatusRestoring specifies the entity status restoring state for
+	// entity status.
+	EntityStatusRestoring EntityStatus = "Restoring"
+	// EntityStatusSendDisabled specifies the entity status send disabled state
+	// for entity status.
+	EntityStatusSendDisabled EntityStatus = "SendDisabled"
+	// EntityStatusUnknown specifies the entity status unknown state for entity
+	// status.
+	EntityStatusUnknown EntityStatus = "Unknown"
+)
+
+// NamespaceState enumerates the values for namespace state.
+type NamespaceState string
+
+const (
+	// NamespaceStateActivating specifies the namespace state activating state
+	// for namespace state.
+	NamespaceStateActivating NamespaceState = "Activating"
+	// NamespaceStateActive specifies the namespace state active state for
+	// namespace state.
+	NamespaceStateActive NamespaceState = "Active"
+	// NamespaceStateCreated specifies the namespace state created state for
+	// namespace state.
+	NamespaceStateCreated NamespaceState = "Created"
+	// NamespaceStateCreating specifies the namespace state creating state for
+	// namespace state.
+	NamespaceStateCreating NamespaceState = "Creating"
+	// NamespaceStateDisabled specifies the namespace state disabled state for
+	// namespace state.
+	NamespaceStateDisabled NamespaceState = "Disabled"
+	// NamespaceStateDisabling specifies the namespace state disabling state
+	// for namespace state.
+	NamespaceStateDisabling NamespaceState = "Disabling"
+	// NamespaceStateEnabling specifies the namespace state enabling state for
+	// namespace state.
+	NamespaceStateEnabling NamespaceState = "Enabling"
+	// NamespaceStateFailed specifies the namespace state failed state for
+	// namespace state.
+	NamespaceStateFailed NamespaceState = "Failed"
+	// NamespaceStateRemoved specifies the namespace state removed state for
+	// namespace state.
+	NamespaceStateRemoved NamespaceState = "Removed"
+	// NamespaceStateRemoving specifies the namespace state removing state for
+	// namespace state.
+	NamespaceStateRemoving NamespaceState = "Removing"
+	// NamespaceStateSoftDeleted specifies the namespace state soft deleted
+	// state for namespace state.
+	NamespaceStateSoftDeleted NamespaceState = "SoftDeleted"
+	// NamespaceStateSoftDeleting specifies the namespace state soft deleting
+	// state for namespace state.
+	NamespaceStateSoftDeleting NamespaceState = "SoftDeleting"
+	// NamespaceStateUnknown specifies the namespace state unknown state for
+	// namespace state.
+	NamespaceStateUnknown NamespaceState = "Unknown"
 )
 
 // Policykey enumerates the values for policykey.
@@ -140,23 +211,20 @@ type MessageCountDetails struct {
 	TransferMessageCount           *int64 `json:"transferMessageCount,omitempty"`
 }
 
-// Namespace is description of a namespace resource.
-type Namespace struct {
-	autorest.Response    `json:"-"`
-	ID                   *string             `json:"id,omitempty"`
-	Name                 *string             `json:"name,omitempty"`
-	Type                 *string             `json:"type,omitempty"`
+// NamespaceCreateOrUpdateParameters is parameters supplied to the Create Or
+// Update Namespace operation.
+type NamespaceCreateOrUpdateParameters struct {
 	Location             *string             `json:"location,omitempty"`
-	Tags                 *map[string]*string `json:"tags,omitempty"`
 	Sku                  *Sku                `json:"sku,omitempty"`
+	Tags                 *map[string]*string `json:"tags,omitempty"`
 	*NamespaceProperties `json:"properties,omitempty"`
 }
 
 // NamespaceListResult is the response of the List Namespace operation.
 type NamespaceListResult struct {
 	autorest.Response `json:"-"`
-	Value             *[]Namespace `json:"value,omitempty"`
-	NextLink          *string      `json:"nextLink,omitempty"`
+	Value             *[]NamespaceResource `json:"value,omitempty"`
+	NextLink          *string              `json:"nextLink,omitempty"`
 }
 
 // NamespaceListResultPreparer prepares a request to retrieve the next set of results. It returns
@@ -173,11 +241,25 @@ func (client NamespaceListResult) NamespaceListResultPreparer() (*http.Request, 
 
 // NamespaceProperties is properties of the namespace.
 type NamespaceProperties struct {
-	ProvisioningState  *string    `json:"provisioningState,omitempty"`
-	CreatedAt          *date.Time `json:"createdAt,omitempty"`
-	UpdatedAt          *date.Time `json:"updatedAt,omitempty"`
-	ServiceBusEndpoint *string    `json:"serviceBusEndpoint,omitempty"`
-	MetricID           *string    `json:"metricId,omitempty"`
+	ProvisioningState  *string        `json:"provisioningState,omitempty"`
+	Status             NamespaceState `json:"status,omitempty"`
+	CreatedAt          *date.Time     `json:"createdAt,omitempty"`
+	UpdatedAt          *date.Time     `json:"updatedAt,omitempty"`
+	ServiceBusEndpoint *string        `json:"serviceBusEndpoint,omitempty"`
+	CreateACSNamespace *bool          `json:"createACSNamespace,omitempty"`
+	Enabled            *bool          `json:"enabled,omitempty"`
+}
+
+// NamespaceResource is description of a namespace resource.
+type NamespaceResource struct {
+	autorest.Response    `json:"-"`
+	ID                   *string             `json:"id,omitempty"`
+	Name                 *string             `json:"name,omitempty"`
+	Type                 *string             `json:"type,omitempty"`
+	Location             *string             `json:"location,omitempty"`
+	Tags                 *map[string]*string `json:"tags,omitempty"`
+	Sku                  *Sku                `json:"sku,omitempty"`
+	*NamespaceProperties `json:"properties,omitempty"`
 }
 
 // NamespaceUpdateParameters is parameters supplied to the Patch Namespace
@@ -221,20 +303,19 @@ func (client OperationListResult) OperationListResultPreparer() (*http.Request, 
 		autorest.WithBaseURL(to.String(client.NextLink)))
 }
 
-// Queue is description of queue Resource.
-type Queue struct {
-	autorest.Response `json:"-"`
-	ID                *string `json:"id,omitempty"`
-	Name              *string `json:"name,omitempty"`
-	Type              *string `json:"type,omitempty"`
-	*QueueProperties  `json:"properties,omitempty"`
+// QueueCreateOrUpdateParameters is parameters supplied to the Create Or Update
+// Queue operation.
+type QueueCreateOrUpdateParameters struct {
+	Name             *string `json:"name,omitempty"`
+	Location         *string `json:"location,omitempty"`
+	*QueueProperties `json:"properties,omitempty"`
 }
 
 // QueueListResult is the response to the List Queues operation.
 type QueueListResult struct {
 	autorest.Response `json:"-"`
-	Value             *[]Queue `json:"value,omitempty"`
-	NextLink          *string  `json:"nextLink,omitempty"`
+	Value             *[]QueueResource `json:"value,omitempty"`
+	NextLink          *string          `json:"nextLink,omitempty"`
 }
 
 // QueueListResultPreparer prepares a request to retrieve the next set of results. It returns
@@ -251,32 +332,43 @@ func (client QueueListResult) QueueListResultPreparer() (*http.Request, error) {
 
 // QueueProperties is the Queue Properties definition.
 type QueueProperties struct {
-	LockDuration                        *string              `json:"lockDuration,omitempty"`
-	AccessedAt                          *date.Time           `json:"accessedAt,omitempty"`
-	AutoDeleteOnIdle                    *string              `json:"autoDeleteOnIdle,omitempty"`
-	CreatedAt                           *date.Time           `json:"createdAt,omitempty"`
-	DefaultMessageTimeToLive            *string              `json:"defaultMessageTimeToLive,omitempty"`
-	DuplicateDetectionHistoryTimeWindow *string              `json:"duplicateDetectionHistoryTimeWindow,omitempty"`
-	EnableBatchedOperations             *bool                `json:"enableBatchedOperations,omitempty"`
-	DeadLetteringOnMessageExpiration    *bool                `json:"deadLetteringOnMessageExpiration,omitempty"`
-	EnableExpress                       *bool                `json:"enableExpress,omitempty"`
-	EnablePartitioning                  *bool                `json:"enablePartitioning,omitempty"`
-	MaxDeliveryCount                    *int32               `json:"maxDeliveryCount,omitempty"`
-	MaxSizeInMegabytes                  *int64               `json:"maxSizeInMegabytes,omitempty"`
-	MessageCount                        *int64               `json:"messageCount,omitempty"`
-	CountDetails                        *MessageCountDetails `json:"countDetails,omitempty"`
-	RequiresDuplicateDetection          *bool                `json:"requiresDuplicateDetection,omitempty"`
-	RequiresSession                     *bool                `json:"requiresSession,omitempty"`
-	SizeInBytes                         *int64               `json:"sizeInBytes,omitempty"`
-	Status                              EntityStatus         `json:"status,omitempty"`
-	SupportOrdering                     *bool                `json:"supportOrdering,omitempty"`
-	UpdatedAt                           *date.Time           `json:"updatedAt,omitempty"`
+	LockDuration                        *string                  `json:"lockDuration,omitempty"`
+	AccessedAt                          *date.Time               `json:"accessedAt,omitempty"`
+	AutoDeleteOnIdle                    *string                  `json:"autoDeleteOnIdle,omitempty"`
+	EntityAvailabilityStatus            EntityAvailabilityStatus `json:"entityAvailabilityStatus,omitempty"`
+	CreatedAt                           *date.Time               `json:"createdAt,omitempty"`
+	DefaultMessageTimeToLive            *string                  `json:"defaultMessageTimeToLive,omitempty"`
+	DuplicateDetectionHistoryTimeWindow *string                  `json:"duplicateDetectionHistoryTimeWindow,omitempty"`
+	EnableBatchedOperations             *bool                    `json:"enableBatchedOperations,omitempty"`
+	DeadLetteringOnMessageExpiration    *bool                    `json:"deadLetteringOnMessageExpiration,omitempty"`
+	EnableExpress                       *bool                    `json:"enableExpress,omitempty"`
+	EnablePartitioning                  *bool                    `json:"enablePartitioning,omitempty"`
+	IsAnonymousAccessible               *bool                    `json:"isAnonymousAccessible,omitempty"`
+	MaxDeliveryCount                    *int32                   `json:"maxDeliveryCount,omitempty"`
+	MaxSizeInMegabytes                  *int64                   `json:"maxSizeInMegabytes,omitempty"`
+	MessageCount                        *int64                   `json:"messageCount,omitempty"`
+	CountDetails                        *MessageCountDetails     `json:"countDetails,omitempty"`
+	RequiresDuplicateDetection          *bool                    `json:"requiresDuplicateDetection,omitempty"`
+	RequiresSession                     *bool                    `json:"requiresSession,omitempty"`
+	SizeInBytes                         *int64                   `json:"sizeInBytes,omitempty"`
+	Status                              EntityStatus             `json:"status,omitempty"`
+	SupportOrdering                     *bool                    `json:"supportOrdering,omitempty"`
+	UpdatedAt                           *date.Time               `json:"updatedAt,omitempty"`
+}
+
+// QueueResource is description of queue Resource.
+type QueueResource struct {
+	autorest.Response `json:"-"`
+	ID                *string `json:"id,omitempty"`
+	Name              *string `json:"name,omitempty"`
+	Type              *string `json:"type,omitempty"`
+	*QueueProperties  `json:"properties,omitempty"`
 }
 
 // RegenerateKeysParameters is parameters supplied to the Regenerate
 // Authorization Rule operation.
 type RegenerateKeysParameters struct {
-	Policykey Policykey `json:"policykey,omitempty"`
+	Policykey Policykey `json:"Policykey,omitempty"`
 }
 
 // Resource is the Resource definition for other than namespace.
@@ -296,13 +388,11 @@ type ResourceListKeys struct {
 	KeyName                   *string `json:"keyName,omitempty"`
 }
 
-// SharedAccessAuthorizationRule is description of a namespace authorization
-// rule.
-type SharedAccessAuthorizationRule struct {
-	autorest.Response                        `json:"-"`
-	ID                                       *string `json:"id,omitempty"`
+// SharedAccessAuthorizationRuleCreateOrUpdateParameters is parameters supplied
+// to the Create Or Update Authorization Rules operation.
+type SharedAccessAuthorizationRuleCreateOrUpdateParameters struct {
+	Location                                 *string `json:"location,omitempty"`
 	Name                                     *string `json:"name,omitempty"`
-	Type                                     *string `json:"type,omitempty"`
 	*SharedAccessAuthorizationRuleProperties `json:"properties,omitempty"`
 }
 
@@ -310,8 +400,8 @@ type SharedAccessAuthorizationRule struct {
 // Namespace operation.
 type SharedAccessAuthorizationRuleListResult struct {
 	autorest.Response `json:"-"`
-	Value             *[]SharedAccessAuthorizationRule `json:"value,omitempty"`
-	NextLink          *string                          `json:"nextLink,omitempty"`
+	Value             *[]SharedAccessAuthorizationRuleResource `json:"value,omitempty"`
+	NextLink          *string                                  `json:"nextLink,omitempty"`
 }
 
 // SharedAccessAuthorizationRuleListResultPreparer prepares a request to retrieve the next set of results. It returns
@@ -332,6 +422,16 @@ type SharedAccessAuthorizationRuleProperties struct {
 	Rights *[]AccessRights `json:"rights,omitempty"`
 }
 
+// SharedAccessAuthorizationRuleResource is description of a namespace
+// authorization rule.
+type SharedAccessAuthorizationRuleResource struct {
+	autorest.Response                        `json:"-"`
+	ID                                       *string `json:"id,omitempty"`
+	Name                                     *string `json:"name,omitempty"`
+	Type                                     *string `json:"type,omitempty"`
+	*SharedAccessAuthorizationRuleProperties `json:"properties,omitempty"`
+}
+
 // Sku is sKU of the namespace.
 type Sku struct {
 	Name     SkuName `json:"name,omitempty"`
@@ -339,11 +439,10 @@ type Sku struct {
 	Capacity *int32  `json:"capacity,omitempty"`
 }
 
-// Subscription is description of subscription resource.
-type Subscription struct {
-	autorest.Response       `json:"-"`
-	ID                      *string `json:"id,omitempty"`
-	Name                    *string `json:"name,omitempty"`
+// SubscriptionCreateOrUpdateParameters is parameters supplied to the Create Or
+// Update Subscription operation.
+type SubscriptionCreateOrUpdateParameters struct {
+	Location                *string `json:"location,omitempty"`
 	Type                    *string `json:"type,omitempty"`
 	*SubscriptionProperties `json:"properties,omitempty"`
 }
@@ -351,8 +450,8 @@ type Subscription struct {
 // SubscriptionListResult is the response to the List Subscriptions operation.
 type SubscriptionListResult struct {
 	autorest.Response `json:"-"`
-	Value             *[]Subscription `json:"value,omitempty"`
-	NextLink          *string         `json:"nextLink,omitempty"`
+	Value             *[]SubscriptionResource `json:"value,omitempty"`
+	NextLink          *string                 `json:"nextLink,omitempty"`
 }
 
 // SubscriptionListResultPreparer prepares a request to retrieve the next set of results. It returns
@@ -369,36 +468,46 @@ func (client SubscriptionListResult) SubscriptionListResultPreparer() (*http.Req
 
 // SubscriptionProperties is description of Subscription Resource.
 type SubscriptionProperties struct {
-	AccessedAt                                *date.Time           `json:"accessedAt,omitempty"`
-	AutoDeleteOnIdle                          *string              `json:"autoDeleteOnIdle,omitempty"`
-	CountDetails                              *MessageCountDetails `json:"countDetails,omitempty"`
-	CreatedAt                                 *date.Time           `json:"createdAt,omitempty"`
-	DefaultMessageTimeToLive                  *string              `json:"defaultMessageTimeToLive,omitempty"`
-	DeadLetteringOnFilterEvaluationExceptions *bool                `json:"deadLetteringOnFilterEvaluationExceptions,omitempty"`
-	DeadLetteringOnMessageExpiration          *bool                `json:"deadLetteringOnMessageExpiration,omitempty"`
-	EnableBatchedOperations                   *bool                `json:"enableBatchedOperations,omitempty"`
-	LockDuration                              *string              `json:"lockDuration,omitempty"`
-	MaxDeliveryCount                          *int32               `json:"maxDeliveryCount,omitempty"`
-	MessageCount                              *int64               `json:"messageCount,omitempty"`
-	RequiresSession                           *bool                `json:"requiresSession,omitempty"`
-	Status                                    EntityStatus         `json:"status,omitempty"`
-	UpdatedAt                                 *date.Time           `json:"updatedAt,omitempty"`
+	AccessedAt                                *date.Time               `json:"accessedAt,omitempty"`
+	AutoDeleteOnIdle                          *string                  `json:"autoDeleteOnIdle,omitempty"`
+	CountDetails                              *MessageCountDetails     `json:"countDetails,omitempty"`
+	CreatedAt                                 *date.Time               `json:"createdAt,omitempty"`
+	DefaultMessageTimeToLive                  *string                  `json:"defaultMessageTimeToLive,omitempty"`
+	DeadLetteringOnFilterEvaluationExceptions *bool                    `json:"deadLetteringOnFilterEvaluationExceptions,omitempty"`
+	DeadLetteringOnMessageExpiration          *bool                    `json:"deadLetteringOnMessageExpiration,omitempty"`
+	EnableBatchedOperations                   *bool                    `json:"enableBatchedOperations,omitempty"`
+	EntityAvailabilityStatus                  EntityAvailabilityStatus `json:"entityAvailabilityStatus,omitempty"`
+	IsReadOnly                                *bool                    `json:"isReadOnly,omitempty"`
+	LockDuration                              *string                  `json:"lockDuration,omitempty"`
+	MaxDeliveryCount                          *int32                   `json:"maxDeliveryCount,omitempty"`
+	MessageCount                              *int64                   `json:"messageCount,omitempty"`
+	RequiresSession                           *bool                    `json:"requiresSession,omitempty"`
+	Status                                    EntityStatus             `json:"status,omitempty"`
+	UpdatedAt                                 *date.Time               `json:"updatedAt,omitempty"`
 }
 
-// Topic is description of topic resource.
-type Topic struct {
-	autorest.Response `json:"-"`
-	ID                *string `json:"id,omitempty"`
-	Name              *string `json:"name,omitempty"`
-	Type              *string `json:"type,omitempty"`
-	*TopicProperties  `json:"properties,omitempty"`
+// SubscriptionResource is description of subscription resource.
+type SubscriptionResource struct {
+	autorest.Response       `json:"-"`
+	ID                      *string `json:"id,omitempty"`
+	Name                    *string `json:"name,omitempty"`
+	Type                    *string `json:"type,omitempty"`
+	*SubscriptionProperties `json:"properties,omitempty"`
+}
+
+// TopicCreateOrUpdateParameters is parameters supplied to the Create Or Update
+// Topic operation.
+type TopicCreateOrUpdateParameters struct {
+	Name             *string `json:"name,omitempty"`
+	Location         *string `json:"location,omitempty"`
+	*TopicProperties `json:"properties,omitempty"`
 }
 
 // TopicListResult is the response to the List Topics operation.
 type TopicListResult struct {
 	autorest.Response `json:"-"`
-	Value             *[]Topic `json:"value,omitempty"`
-	NextLink          *string  `json:"nextLink,omitempty"`
+	Value             *[]TopicResource `json:"value,omitempty"`
+	NextLink          *string          `json:"nextLink,omitempty"`
 }
 
 // TopicListResultPreparer prepares a request to retrieve the next set of results. It returns
@@ -415,22 +524,36 @@ func (client TopicListResult) TopicListResultPreparer() (*http.Request, error) {
 
 // TopicProperties is the Tpoic Properties definition.
 type TopicProperties struct {
-	AccessedAt                          *date.Time           `json:"accessedAt,omitempty"`
-	AutoDeleteOnIdle                    *string              `json:"autoDeleteOnIdle,omitempty"`
-	CreatedAt                           *date.Time           `json:"createdAt,omitempty"`
-	CountDetails                        *MessageCountDetails `json:"countDetails,omitempty"`
-	DefaultMessageTimeToLive            *string              `json:"defaultMessageTimeToLive,omitempty"`
-	DuplicateDetectionHistoryTimeWindow *string              `json:"duplicateDetectionHistoryTimeWindow,omitempty"`
-	EnableBatchedOperations             *bool                `json:"enableBatchedOperations,omitempty"`
-	EnableExpress                       *bool                `json:"enableExpress,omitempty"`
-	EnablePartitioning                  *bool                `json:"enablePartitioning,omitempty"`
-	MaxSizeInMegabytes                  *int64               `json:"maxSizeInMegabytes,omitempty"`
-	RequiresDuplicateDetection          *bool                `json:"requiresDuplicateDetection,omitempty"`
-	SizeInBytes                         *int64               `json:"sizeInBytes,omitempty"`
-	Status                              EntityStatus         `json:"status,omitempty"`
-	SubscriptionCount                   *int32               `json:"subscriptionCount,omitempty"`
-	SupportOrdering                     *bool                `json:"supportOrdering,omitempty"`
-	UpdatedAt                           *date.Time           `json:"updatedAt,omitempty"`
+	AccessedAt                          *date.Time               `json:"accessedAt,omitempty"`
+	AutoDeleteOnIdle                    *string                  `json:"autoDeleteOnIdle,omitempty"`
+	EntityAvailabilityStatus            EntityAvailabilityStatus `json:"entityAvailabilityStatus,omitempty"`
+	CreatedAt                           *date.Time               `json:"createdAt,omitempty"`
+	CountDetails                        *MessageCountDetails     `json:"countDetails,omitempty"`
+	DefaultMessageTimeToLive            *string                  `json:"defaultMessageTimeToLive,omitempty"`
+	DuplicateDetectionHistoryTimeWindow *string                  `json:"duplicateDetectionHistoryTimeWindow,omitempty"`
+	EnableBatchedOperations             *bool                    `json:"enableBatchedOperations,omitempty"`
+	EnableExpress                       *bool                    `json:"enableExpress,omitempty"`
+	EnablePartitioning                  *bool                    `json:"enablePartitioning,omitempty"`
+	EnableSubscriptionPartitioning      *bool                    `json:"enableSubscriptionPartitioning,omitempty"`
+	FilteringMessagesBeforePublishing   *bool                    `json:"filteringMessagesBeforePublishing,omitempty"`
+	IsAnonymousAccessible               *bool                    `json:"isAnonymousAccessible,omitempty"`
+	IsExpress                           *bool                    `json:"isExpress,omitempty"`
+	MaxSizeInMegabytes                  *int64                   `json:"maxSizeInMegabytes,omitempty"`
+	RequiresDuplicateDetection          *bool                    `json:"requiresDuplicateDetection,omitempty"`
+	SizeInBytes                         *int64                   `json:"sizeInBytes,omitempty"`
+	Status                              EntityStatus             `json:"status,omitempty"`
+	SubscriptionCount                   *int32                   `json:"subscriptionCount,omitempty"`
+	SupportOrdering                     *bool                    `json:"supportOrdering,omitempty"`
+	UpdatedAt                           *date.Time               `json:"updatedAt,omitempty"`
+}
+
+// TopicResource is description of topic resource.
+type TopicResource struct {
+	autorest.Response `json:"-"`
+	ID                *string `json:"id,omitempty"`
+	Name              *string `json:"name,omitempty"`
+	Type              *string `json:"type,omitempty"`
+	*TopicProperties  `json:"properties,omitempty"`
 }
 
 // TrackedResource is the Resource definition.

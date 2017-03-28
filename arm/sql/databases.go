@@ -262,7 +262,7 @@ func (client DatabasesClient) DeleteResponder(resp *http.Response) (result autor
 // the portal. serverName is the name of the server. databaseName is the name
 // of the database to be retrieved. expand is a comma separated list of child
 // objects to expand in the response. Possible properties: serviceTierAdvisors,
-// upgradeHint, transparentDataEncryption.
+// transparentDataEncryption.
 func (client DatabasesClient) Get(resourceGroupName string, serverName string, databaseName string, expand string) (result Database, err error) {
 	req, err := client.GetPreparer(resourceGroupName, serverName, databaseName, expand)
 	if err != nil {
@@ -467,10 +467,12 @@ func (client DatabasesClient) GetTransparentDataEncryptionConfigurationResponder
 //
 // resourceGroupName is the name of the resource group that contains the
 // resource. You can obtain this value from the Azure Resource Manager API or
-// the portal. serverName is the name of the server. filter is an OData filter
-// expression that describes a subset of databases to return.
-func (client DatabasesClient) ListByServer(resourceGroupName string, serverName string, filter string) (result DatabaseListResult, err error) {
-	req, err := client.ListByServerPreparer(resourceGroupName, serverName, filter)
+// the portal. serverName is the name of the server. expand is a comma
+// separated list of child objects to expand in the response. Possible
+// properties: serviceTierAdvisors, transparentDataEncryption. filter is an
+// OData filter expression that describes a subset of databases to return.
+func (client DatabasesClient) ListByServer(resourceGroupName string, serverName string, expand string, filter string) (result DatabaseListResult, err error) {
+	req, err := client.ListByServerPreparer(resourceGroupName, serverName, expand, filter)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "sql.DatabasesClient", "ListByServer", nil, "Failure preparing request")
 	}
@@ -490,7 +492,7 @@ func (client DatabasesClient) ListByServer(resourceGroupName string, serverName 
 }
 
 // ListByServerPreparer prepares the ListByServer request.
-func (client DatabasesClient) ListByServerPreparer(resourceGroupName string, serverName string, filter string) (*http.Request, error) {
+func (client DatabasesClient) ListByServerPreparer(resourceGroupName string, serverName string, expand string, filter string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"serverName":        autorest.Encode("path", serverName),
@@ -500,6 +502,9 @@ func (client DatabasesClient) ListByServerPreparer(resourceGroupName string, ser
 	const APIVersion = "2014-04-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
+	}
+	if len(expand) > 0 {
+		queryParameters["$expand"] = autorest.Encode("query", expand)
 	}
 	if len(filter) > 0 {
 		queryParameters["$filter"] = autorest.Encode("query", filter)
@@ -802,37 +807,36 @@ func (client DatabasesClient) ListUsagesResponder(resp *http.Response) (result D
 	return
 }
 
-// PauseDataWarehouse pauses a data warehouse. This method may poll for
-// completion. Polling can be canceled by passing the cancel channel argument.
-// The channel will be used to cancel polling and any outstanding HTTP
-// requests.
+// Pause pauses a data warehouse. This method may poll for completion. Polling
+// can be canceled by passing the cancel channel argument. The channel will be
+// used to cancel polling and any outstanding HTTP requests.
 //
 // resourceGroupName is the name of the resource group that contains the
 // resource. You can obtain this value from the Azure Resource Manager API or
 // the portal. serverName is the name of the server. databaseName is the name
 // of the data warehouse to pause.
-func (client DatabasesClient) PauseDataWarehouse(resourceGroupName string, serverName string, databaseName string, cancel <-chan struct{}) (result autorest.Response, err error) {
-	req, err := client.PauseDataWarehousePreparer(resourceGroupName, serverName, databaseName, cancel)
+func (client DatabasesClient) Pause(resourceGroupName string, serverName string, databaseName string, cancel <-chan struct{}) (result autorest.Response, err error) {
+	req, err := client.PausePreparer(resourceGroupName, serverName, databaseName, cancel)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "sql.DatabasesClient", "PauseDataWarehouse", nil, "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "sql.DatabasesClient", "Pause", nil, "Failure preparing request")
 	}
 
-	resp, err := client.PauseDataWarehouseSender(req)
+	resp, err := client.PauseSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "sql.DatabasesClient", "PauseDataWarehouse", resp, "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "sql.DatabasesClient", "Pause", resp, "Failure sending request")
 	}
 
-	result, err = client.PauseDataWarehouseResponder(resp)
+	result, err = client.PauseResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.DatabasesClient", "PauseDataWarehouse", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "sql.DatabasesClient", "Pause", resp, "Failure responding to request")
 	}
 
 	return
 }
 
-// PauseDataWarehousePreparer prepares the PauseDataWarehouse request.
-func (client DatabasesClient) PauseDataWarehousePreparer(resourceGroupName string, serverName string, databaseName string, cancel <-chan struct{}) (*http.Request, error) {
+// PausePreparer prepares the Pause request.
+func (client DatabasesClient) PausePreparer(resourceGroupName string, serverName string, databaseName string, cancel <-chan struct{}) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"databaseName":      autorest.Encode("path", databaseName),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
@@ -853,17 +857,17 @@ func (client DatabasesClient) PauseDataWarehousePreparer(resourceGroupName strin
 	return preparer.Prepare(&http.Request{Cancel: cancel})
 }
 
-// PauseDataWarehouseSender sends the PauseDataWarehouse request. The method will close the
+// PauseSender sends the Pause request. The method will close the
 // http.Response Body if it receives an error.
-func (client DatabasesClient) PauseDataWarehouseSender(req *http.Request) (*http.Response, error) {
+func (client DatabasesClient) PauseSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client,
 		req,
 		azure.DoPollForAsynchronous(client.PollingDelay))
 }
 
-// PauseDataWarehouseResponder handles the response to the PauseDataWarehouse request. The method always
+// PauseResponder handles the response to the Pause request. The method always
 // closes the http.Response Body.
-func (client DatabasesClient) PauseDataWarehouseResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client DatabasesClient) PauseResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -873,37 +877,36 @@ func (client DatabasesClient) PauseDataWarehouseResponder(resp *http.Response) (
 	return
 }
 
-// ResumeDataWarehouse resumes a data warehouse. This method may poll for
-// completion. Polling can be canceled by passing the cancel channel argument.
-// The channel will be used to cancel polling and any outstanding HTTP
-// requests.
+// Resume resumes a data warehouse. This method may poll for completion.
+// Polling can be canceled by passing the cancel channel argument. The channel
+// will be used to cancel polling and any outstanding HTTP requests.
 //
 // resourceGroupName is the name of the resource group that contains the
 // resource. You can obtain this value from the Azure Resource Manager API or
 // the portal. serverName is the name of the server. databaseName is the name
 // of the data warehouse to resume.
-func (client DatabasesClient) ResumeDataWarehouse(resourceGroupName string, serverName string, databaseName string, cancel <-chan struct{}) (result autorest.Response, err error) {
-	req, err := client.ResumeDataWarehousePreparer(resourceGroupName, serverName, databaseName, cancel)
+func (client DatabasesClient) Resume(resourceGroupName string, serverName string, databaseName string, cancel <-chan struct{}) (result autorest.Response, err error) {
+	req, err := client.ResumePreparer(resourceGroupName, serverName, databaseName, cancel)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "sql.DatabasesClient", "ResumeDataWarehouse", nil, "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "sql.DatabasesClient", "Resume", nil, "Failure preparing request")
 	}
 
-	resp, err := client.ResumeDataWarehouseSender(req)
+	resp, err := client.ResumeSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "sql.DatabasesClient", "ResumeDataWarehouse", resp, "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "sql.DatabasesClient", "Resume", resp, "Failure sending request")
 	}
 
-	result, err = client.ResumeDataWarehouseResponder(resp)
+	result, err = client.ResumeResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.DatabasesClient", "ResumeDataWarehouse", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "sql.DatabasesClient", "Resume", resp, "Failure responding to request")
 	}
 
 	return
 }
 
-// ResumeDataWarehousePreparer prepares the ResumeDataWarehouse request.
-func (client DatabasesClient) ResumeDataWarehousePreparer(resourceGroupName string, serverName string, databaseName string, cancel <-chan struct{}) (*http.Request, error) {
+// ResumePreparer prepares the Resume request.
+func (client DatabasesClient) ResumePreparer(resourceGroupName string, serverName string, databaseName string, cancel <-chan struct{}) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"databaseName":      autorest.Encode("path", databaseName),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
@@ -924,17 +927,17 @@ func (client DatabasesClient) ResumeDataWarehousePreparer(resourceGroupName stri
 	return preparer.Prepare(&http.Request{Cancel: cancel})
 }
 
-// ResumeDataWarehouseSender sends the ResumeDataWarehouse request. The method will close the
+// ResumeSender sends the Resume request. The method will close the
 // http.Response Body if it receives an error.
-func (client DatabasesClient) ResumeDataWarehouseSender(req *http.Request) (*http.Response, error) {
+func (client DatabasesClient) ResumeSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client,
 		req,
 		azure.DoPollForAsynchronous(client.PollingDelay))
 }
 
-// ResumeDataWarehouseResponder handles the response to the ResumeDataWarehouse request. The method always
+// ResumeResponder handles the response to the Resume request. The method always
 // closes the http.Response Body.
-func (client DatabasesClient) ResumeDataWarehouseResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client DatabasesClient) ResumeResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

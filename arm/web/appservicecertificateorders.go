@@ -139,7 +139,7 @@ func (client AppServiceCertificateOrdersClient) CreateOrUpdateResponder(resp *ht
 // belongs. certificateOrderName is name of the certificate order. name is name
 // of the certificate. keyVaultCertificate is key vault certificate resource
 // Id.
-func (client AppServiceCertificateOrdersClient) CreateOrUpdateCertificate(resourceGroupName string, certificateOrderName string, name string, keyVaultCertificate AppServiceCertificate, cancel <-chan struct{}) (result autorest.Response, err error) {
+func (client AppServiceCertificateOrdersClient) CreateOrUpdateCertificate(resourceGroupName string, certificateOrderName string, name string, keyVaultCertificate AppServiceCertificateResource, cancel <-chan struct{}) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
@@ -168,7 +168,7 @@ func (client AppServiceCertificateOrdersClient) CreateOrUpdateCertificate(resour
 }
 
 // CreateOrUpdateCertificatePreparer prepares the CreateOrUpdateCertificate request.
-func (client AppServiceCertificateOrdersClient) CreateOrUpdateCertificatePreparer(resourceGroupName string, certificateOrderName string, name string, keyVaultCertificate AppServiceCertificate, cancel <-chan struct{}) (*http.Request, error) {
+func (client AppServiceCertificateOrdersClient) CreateOrUpdateCertificatePreparer(resourceGroupName string, certificateOrderName string, name string, keyVaultCertificate AppServiceCertificateResource, cancel <-chan struct{}) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"certificateOrderName": autorest.Encode("path", certificateOrderName),
 		"name":                 autorest.Encode("path", name),
@@ -206,6 +206,77 @@ func (client AppServiceCertificateOrdersClient) CreateOrUpdateCertificateRespond
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
+		autorest.ByClosing())
+	result.Response = resp
+	return
+}
+
+// Delete delete an existing certificate order.
+//
+// resourceGroupName is name of the resource group to which the resource
+// belongs. certificateOrderName is name of the certificate order.
+func (client AppServiceCertificateOrdersClient) Delete(resourceGroupName string, certificateOrderName string) (result autorest.Response, err error) {
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+[^\.]$`, Chain: nil}}}}); err != nil {
+		return result, validation.NewErrorWithValidationError(err, "web.AppServiceCertificateOrdersClient", "Delete")
+	}
+
+	req, err := client.DeletePreparer(resourceGroupName, certificateOrderName)
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "web.AppServiceCertificateOrdersClient", "Delete", nil, "Failure preparing request")
+	}
+
+	resp, err := client.DeleteSender(req)
+	if err != nil {
+		result.Response = resp
+		return result, autorest.NewErrorWithError(err, "web.AppServiceCertificateOrdersClient", "Delete", resp, "Failure sending request")
+	}
+
+	result, err = client.DeleteResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.AppServiceCertificateOrdersClient", "Delete", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// DeletePreparer prepares the Delete request.
+func (client AppServiceCertificateOrdersClient) DeletePreparer(resourceGroupName string, certificateOrderName string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"certificateOrderName": autorest.Encode("path", certificateOrderName),
+		"resourceGroupName":    autorest.Encode("path", resourceGroupName),
+		"subscriptionId":       autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2015-08-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsDelete(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CertificateRegistration/certificateOrders/{certificateOrderName}", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare(&http.Request{})
+}
+
+// DeleteSender sends the Delete request. The method will close the
+// http.Response Body if it receives an error.
+func (client AppServiceCertificateOrdersClient) DeleteSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req)
+}
+
+// DeleteResponder handles the response to the Delete request. The method always
+// closes the http.Response Body.
+func (client AppServiceCertificateOrdersClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
 	return
@@ -285,81 +356,10 @@ func (client AppServiceCertificateOrdersClient) DeleteCertificateResponder(resp 
 	return
 }
 
-// DeleteCertificateOrder delete an existing certificate order.
-//
-// resourceGroupName is name of the resource group to which the resource
-// belongs. certificateOrderName is name of the certificate order.
-func (client AppServiceCertificateOrdersClient) DeleteCertificateOrder(resourceGroupName string, certificateOrderName string) (result autorest.Response, err error) {
-	if err := validation.Validate([]validation.Validation{
-		{TargetValue: resourceGroupName,
-			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+[^\.]$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "web.AppServiceCertificateOrdersClient", "DeleteCertificateOrder")
-	}
-
-	req, err := client.DeleteCertificateOrderPreparer(resourceGroupName, certificateOrderName)
-	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppServiceCertificateOrdersClient", "DeleteCertificateOrder", nil, "Failure preparing request")
-	}
-
-	resp, err := client.DeleteCertificateOrderSender(req)
-	if err != nil {
-		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "web.AppServiceCertificateOrdersClient", "DeleteCertificateOrder", resp, "Failure sending request")
-	}
-
-	result, err = client.DeleteCertificateOrderResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "web.AppServiceCertificateOrdersClient", "DeleteCertificateOrder", resp, "Failure responding to request")
-	}
-
-	return
-}
-
-// DeleteCertificateOrderPreparer prepares the DeleteCertificateOrder request.
-func (client AppServiceCertificateOrdersClient) DeleteCertificateOrderPreparer(resourceGroupName string, certificateOrderName string) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"certificateOrderName": autorest.Encode("path", certificateOrderName),
-		"resourceGroupName":    autorest.Encode("path", resourceGroupName),
-		"subscriptionId":       autorest.Encode("path", client.SubscriptionID),
-	}
-
-	const APIVersion = "2015-08-01"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsDelete(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CertificateRegistration/certificateOrders/{certificateOrderName}", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare(&http.Request{})
-}
-
-// DeleteCertificateOrderSender sends the DeleteCertificateOrder request. The method will close the
-// http.Response Body if it receives an error.
-func (client AppServiceCertificateOrdersClient) DeleteCertificateOrderSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
-}
-
-// DeleteCertificateOrderResponder handles the response to the DeleteCertificateOrder request. The method always
-// closes the http.Response Body.
-func (client AppServiceCertificateOrdersClient) DeleteCertificateOrderResponder(resp *http.Response) (result autorest.Response, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
-		autorest.ByClosing())
-	result.Response = resp
-	return
-}
-
 // Get get a certificate order.
 //
 // resourceGroupName is name of the resource group to which the resource
-// belongs. certificateOrderName is name of the certificate order.
+// belongs. certificateOrderName is name of the certificate order..
 func (client AppServiceCertificateOrdersClient) Get(resourceGroupName string, certificateOrderName string) (result AppServiceCertificateOrder, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
@@ -433,7 +433,7 @@ func (client AppServiceCertificateOrdersClient) GetResponder(resp *http.Response
 // resourceGroupName is name of the resource group to which the resource
 // belongs. certificateOrderName is name of the certificate order. name is name
 // of the certificate.
-func (client AppServiceCertificateOrdersClient) GetCertificate(resourceGroupName string, certificateOrderName string, name string) (result AppServiceCertificate, err error) {
+func (client AppServiceCertificateOrdersClient) GetCertificate(resourceGroupName string, certificateOrderName string, name string) (result AppServiceCertificateResource, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
@@ -491,7 +491,7 @@ func (client AppServiceCertificateOrdersClient) GetCertificateSender(req *http.R
 
 // GetCertificateResponder handles the response to the GetCertificate request. The method always
 // closes the http.Response Body.
-func (client AppServiceCertificateOrdersClient) GetCertificateResponder(resp *http.Response) (result AppServiceCertificate, err error) {
+func (client AppServiceCertificateOrdersClient) GetCertificateResponder(resp *http.Response) (result AppServiceCertificateResource, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -927,7 +927,7 @@ func (client AppServiceCertificateOrdersClient) RenewResponder(resp *http.Respon
 // ResendEmail resend certificate email.
 //
 // resourceGroupName is name of the resource group to which the resource
-// belongs. certificateOrderName is name of the certificate order
+// belongs. certificateOrderName is name of the certificate order.
 func (client AppServiceCertificateOrdersClient) ResendEmail(resourceGroupName string, certificateOrderName string) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
@@ -1072,8 +1072,8 @@ func (client AppServiceCertificateOrdersClient) ResendRequestEmailsResponder(res
 // RetrieveCertificateActions retrieve the list of certificate actions.
 //
 // resourceGroupName is name of the resource group to which the resource
-// belongs. certificateOrderName is name of the certificate order.
-func (client AppServiceCertificateOrdersClient) RetrieveCertificateActions(resourceGroupName string, certificateOrderName string) (result ListCertificateOrderAction, err error) {
+// belongs. name is name of the certificate order.
+func (client AppServiceCertificateOrdersClient) RetrieveCertificateActions(resourceGroupName string, name string) (result ListCertificateOrderAction, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
@@ -1082,7 +1082,7 @@ func (client AppServiceCertificateOrdersClient) RetrieveCertificateActions(resou
 		return result, validation.NewErrorWithValidationError(err, "web.AppServiceCertificateOrdersClient", "RetrieveCertificateActions")
 	}
 
-	req, err := client.RetrieveCertificateActionsPreparer(resourceGroupName, certificateOrderName)
+	req, err := client.RetrieveCertificateActionsPreparer(resourceGroupName, name)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web.AppServiceCertificateOrdersClient", "RetrieveCertificateActions", nil, "Failure preparing request")
 	}
@@ -1102,11 +1102,11 @@ func (client AppServiceCertificateOrdersClient) RetrieveCertificateActions(resou
 }
 
 // RetrieveCertificateActionsPreparer prepares the RetrieveCertificateActions request.
-func (client AppServiceCertificateOrdersClient) RetrieveCertificateActionsPreparer(resourceGroupName string, certificateOrderName string) (*http.Request, error) {
+func (client AppServiceCertificateOrdersClient) RetrieveCertificateActionsPreparer(resourceGroupName string, name string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"certificateOrderName": autorest.Encode("path", certificateOrderName),
-		"resourceGroupName":    autorest.Encode("path", resourceGroupName),
-		"subscriptionId":       autorest.Encode("path", client.SubscriptionID),
+		"name":              autorest.Encode("path", name),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
 	const APIVersion = "2015-08-01"
@@ -1117,7 +1117,7 @@ func (client AppServiceCertificateOrdersClient) RetrieveCertificateActionsPrepar
 	preparer := autorest.CreatePreparer(
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CertificateRegistration/certificateOrders/{certificateOrderName}/retrieveCertificateActions", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CertificateRegistration/certificateOrders/{name}/retrieveCertificateActions", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare(&http.Request{})
 }
@@ -1144,8 +1144,8 @@ func (client AppServiceCertificateOrdersClient) RetrieveCertificateActionsRespon
 // RetrieveCertificateEmailHistory retrieve email history.
 //
 // resourceGroupName is name of the resource group to which the resource
-// belongs. certificateOrderName is name of the certificate order.
-func (client AppServiceCertificateOrdersClient) RetrieveCertificateEmailHistory(resourceGroupName string, certificateOrderName string) (result ListCertificateEmail, err error) {
+// belongs. name is name of the certificate order.
+func (client AppServiceCertificateOrdersClient) RetrieveCertificateEmailHistory(resourceGroupName string, name string) (result ListCertificateEmail, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
@@ -1154,7 +1154,7 @@ func (client AppServiceCertificateOrdersClient) RetrieveCertificateEmailHistory(
 		return result, validation.NewErrorWithValidationError(err, "web.AppServiceCertificateOrdersClient", "RetrieveCertificateEmailHistory")
 	}
 
-	req, err := client.RetrieveCertificateEmailHistoryPreparer(resourceGroupName, certificateOrderName)
+	req, err := client.RetrieveCertificateEmailHistoryPreparer(resourceGroupName, name)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web.AppServiceCertificateOrdersClient", "RetrieveCertificateEmailHistory", nil, "Failure preparing request")
 	}
@@ -1174,11 +1174,11 @@ func (client AppServiceCertificateOrdersClient) RetrieveCertificateEmailHistory(
 }
 
 // RetrieveCertificateEmailHistoryPreparer prepares the RetrieveCertificateEmailHistory request.
-func (client AppServiceCertificateOrdersClient) RetrieveCertificateEmailHistoryPreparer(resourceGroupName string, certificateOrderName string) (*http.Request, error) {
+func (client AppServiceCertificateOrdersClient) RetrieveCertificateEmailHistoryPreparer(resourceGroupName string, name string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"certificateOrderName": autorest.Encode("path", certificateOrderName),
-		"resourceGroupName":    autorest.Encode("path", resourceGroupName),
-		"subscriptionId":       autorest.Encode("path", client.SubscriptionID),
+		"name":              autorest.Encode("path", name),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
 	const APIVersion = "2015-08-01"
@@ -1189,7 +1189,7 @@ func (client AppServiceCertificateOrdersClient) RetrieveCertificateEmailHistoryP
 	preparer := autorest.CreatePreparer(
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CertificateRegistration/certificateOrders/{certificateOrderName}/retrieveEmailHistory", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CertificateRegistration/certificateOrders/{name}/retrieveEmailHistory", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare(&http.Request{})
 }
@@ -1217,7 +1217,7 @@ func (client AppServiceCertificateOrdersClient) RetrieveCertificateEmailHistoryR
 //
 // resourceGroupName is name of the resource group to which the resource
 // belongs. certificateOrderName is name of the certificate order.
-// siteSealRequest is site seal request
+// siteSealRequest is site seal request.
 func (client AppServiceCertificateOrdersClient) RetrieveSiteSeal(resourceGroupName string, certificateOrderName string, siteSealRequest SiteSealRequest) (result SiteSeal, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,

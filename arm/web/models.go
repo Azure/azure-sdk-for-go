@@ -921,18 +921,6 @@ type ApplicationLogsConfig struct {
 // AppServiceCertificate is key Vault container for a certificate that is
 // purchased through Azure.
 type AppServiceCertificate struct {
-	autorest.Response                `json:"-"`
-	ID                               *string             `json:"id,omitempty"`
-	Name                             *string             `json:"name,omitempty"`
-	Kind                             *string             `json:"kind,omitempty"`
-	Location                         *string             `json:"location,omitempty"`
-	Type                             *string             `json:"type,omitempty"`
-	Tags                             *map[string]*string `json:"tags,omitempty"`
-	*AppServiceCertificateProperties `json:"properties,omitempty"`
-}
-
-// AppServiceCertificateProperties is aRM envelope properties
-type AppServiceCertificateProperties struct {
 	KeyVaultID         *string              `json:"keyVaultId,omitempty"`
 	KeyVaultSecretName *string              `json:"keyVaultSecretName,omitempty"`
 	ProvisioningState  KeyVaultSecretStatus `json:"provisioningState,omitempty"`
@@ -942,8 +930,8 @@ type AppServiceCertificateProperties struct {
 // certificates.
 type AppServiceCertificateCollection struct {
 	autorest.Response `json:"-"`
-	Value             *[]AppServiceCertificate `json:"value,omitempty"`
-	NextLink          *string                  `json:"nextLink,omitempty"`
+	Value             *[]AppServiceCertificateResource `json:"value,omitempty"`
+	NextLink          *string                          `json:"nextLink,omitempty"`
 }
 
 // AppServiceCertificateCollectionPreparer prepares a request to retrieve the next set of results. It returns
@@ -970,25 +958,27 @@ type AppServiceCertificateOrder struct {
 	*AppServiceCertificateOrderProperties `json:"properties,omitempty"`
 }
 
-// AppServiceCertificateOrderProperties is aRM envelope properties
+// AppServiceCertificateOrderProperties is appServiceCertificateOrder resource
+// specific properties
 type AppServiceCertificateOrderProperties struct {
-	Certificates                *map[string]*AppServiceCertificate `json:"certificates,omitempty"`
-	DistinguishedName           *string                            `json:"distinguishedName,omitempty"`
-	DomainVerificationToken     *string                            `json:"domainVerificationToken,omitempty"`
-	ValidityInYears             *int32                             `json:"validityInYears,omitempty"`
-	KeySize                     *int32                             `json:"keySize,omitempty"`
-	ProductType                 CertificateProductType             `json:"productType,omitempty"`
-	AutoRenew                   *bool                              `json:"autoRenew,omitempty"`
-	ProvisioningState           ProvisioningState                  `json:"provisioningState,omitempty"`
-	Status                      CertificateOrderStatus             `json:"status,omitempty"`
-	SignedCertificate           *CertificateDetails                `json:"signedCertificate,omitempty"`
-	Csr                         *string                            `json:"csr,omitempty"`
-	Intermediate                *CertificateDetails                `json:"intermediate,omitempty"`
-	Root                        *CertificateDetails                `json:"root,omitempty"`
-	SerialNumber                *string                            `json:"serialNumber,omitempty"`
-	LastCertificateIssuanceTime *date.Time                         `json:"lastCertificateIssuanceTime,omitempty"`
-	ExpirationTime              *date.Time                         `json:"expirationTime,omitempty"`
-	IsPrivateKeyExternal        *bool                              `json:"isPrivateKeyExternal,omitempty"`
+	Certificates                             *map[string]*AppServiceCertificate `json:"certificates,omitempty"`
+	DistinguishedName                        *string                            `json:"distinguishedName,omitempty"`
+	DomainVerificationToken                  *string                            `json:"domainVerificationToken,omitempty"`
+	ValidityInYears                          *int32                             `json:"validityInYears,omitempty"`
+	KeySize                                  *int32                             `json:"keySize,omitempty"`
+	ProductType                              CertificateProductType             `json:"productType,omitempty"`
+	AutoRenew                                *bool                              `json:"autoRenew,omitempty"`
+	ProvisioningState                        ProvisioningState                  `json:"provisioningState,omitempty"`
+	Status                                   CertificateOrderStatus             `json:"status,omitempty"`
+	SignedCertificate                        *CertificateDetails                `json:"signedCertificate,omitempty"`
+	Csr                                      *string                            `json:"csr,omitempty"`
+	Intermediate                             *CertificateDetails                `json:"intermediate,omitempty"`
+	Root                                     *CertificateDetails                `json:"root,omitempty"`
+	SerialNumber                             *string                            `json:"serialNumber,omitempty"`
+	LastCertificateIssuanceTime              *date.Time                         `json:"lastCertificateIssuanceTime,omitempty"`
+	ExpirationTime                           *date.Time                         `json:"expirationTime,omitempty"`
+	IsPrivateKeyExternal                     *bool                              `json:"isPrivateKeyExternal,omitempty"`
+	AppServiceCertificateNotRenewableReasons *[]string                          `json:"appServiceCertificateNotRenewableReasons,omitempty"`
 }
 
 // AppServiceCertificateOrderCollection is collection of certitificate orders.
@@ -1010,20 +1000,21 @@ func (client AppServiceCertificateOrderCollection) AppServiceCertificateOrderCol
 		autorest.WithBaseURL(to.String(client.NextLink)))
 }
 
-// AppServiceEnvironment is description of an App Service Environment.
-type AppServiceEnvironment struct {
-	autorest.Response                `json:"-"`
-	ID                               *string             `json:"id,omitempty"`
-	Name                             *string             `json:"name,omitempty"`
-	Kind                             *string             `json:"kind,omitempty"`
-	Location                         *string             `json:"location,omitempty"`
-	Type                             *string             `json:"type,omitempty"`
-	Tags                             *map[string]*string `json:"tags,omitempty"`
-	*AppServiceEnvironmentProperties `json:"properties,omitempty"`
+// AppServiceCertificateResource is key Vault container ARM resource for a
+// certificate that is purchased through Azure.
+type AppServiceCertificateResource struct {
+	autorest.Response      `json:"-"`
+	ID                     *string             `json:"id,omitempty"`
+	Name                   *string             `json:"name,omitempty"`
+	Kind                   *string             `json:"kind,omitempty"`
+	Location               *string             `json:"location,omitempty"`
+	Type                   *string             `json:"type,omitempty"`
+	Tags                   *map[string]*string `json:"tags,omitempty"`
+	*AppServiceCertificate `json:"properties,omitempty"`
 }
 
-// AppServiceEnvironmentProperties is aRM envelope properties
-type AppServiceEnvironmentProperties struct {
+// AppServiceEnvironment is description of an App Service Environment.
+type AppServiceEnvironment struct {
 	Name                       *string                      `json:"name,omitempty"`
 	Location                   *string                      `json:"location,omitempty"`
 	ProvisioningState          ProvisioningState            `json:"provisioningState,omitempty"`
@@ -1052,6 +1043,7 @@ type AppServiceEnvironmentProperties struct {
 	NetworkAccessControlList   *[]NetworkAccessControlEntry `json:"networkAccessControlList,omitempty"`
 	EnvironmentIsHealthy       *bool                        `json:"environmentIsHealthy,omitempty"`
 	EnvironmentStatus          *string                      `json:"environmentStatus,omitempty"`
+	Kind                       *string                      `json:"kind,omitempty"`
 	ResourceGroup              *string                      `json:"resourceGroup,omitempty"`
 	FrontEndScaleFactor        *int32                       `json:"frontEndScaleFactor,omitempty"`
 	DefaultFrontEndScaleFactor *int32                       `json:"defaultFrontEndScaleFactor,omitempty"`
@@ -1080,6 +1072,18 @@ func (client AppServiceEnvironmentCollection) AppServiceEnvironmentCollectionPre
 		autorest.WithBaseURL(to.String(client.NextLink)))
 }
 
+// AppServiceEnvironmentResource is app Service Environment ARM resource.
+type AppServiceEnvironmentResource struct {
+	autorest.Response      `json:"-"`
+	ID                     *string             `json:"id,omitempty"`
+	Name                   *string             `json:"name,omitempty"`
+	Kind                   *string             `json:"kind,omitempty"`
+	Location               *string             `json:"location,omitempty"`
+	Type                   *string             `json:"type,omitempty"`
+	Tags                   *map[string]*string `json:"tags,omitempty"`
+	*AppServiceEnvironment `json:"properties,omitempty"`
+}
+
 // AppServicePlan is app Service plan.
 type AppServicePlan struct {
 	autorest.Response         `json:"-"`
@@ -1093,7 +1097,7 @@ type AppServicePlan struct {
 	Sku                       *SkuDescription `json:"sku,omitempty"`
 }
 
-// AppServicePlanProperties is aRM envelope properties
+// AppServicePlanProperties is appServicePlan resource specific properties
 type AppServicePlanProperties struct {
 	Name                      *string                    `json:"name,omitempty"`
 	WorkerTierName            *string                    `json:"workerTierName,omitempty"`
@@ -1195,7 +1199,7 @@ type BackupItem struct {
 	*BackupItemProperties `json:"properties,omitempty"`
 }
 
-// BackupItemProperties is aRM envelope properties
+// BackupItemProperties is backupItem resource specific properties
 type BackupItemProperties struct {
 	BackupID             *int32                   `json:"id,omitempty"`
 	StorageAccountURL    *string                  `json:"storageAccountUrl,omitempty"`
@@ -1244,7 +1248,7 @@ type BackupRequest struct {
 	*BackupRequestProperties `json:"properties,omitempty"`
 }
 
-// BackupRequestProperties is aRM envelope properties
+// BackupRequestProperties is backupRequest resource specific properties
 type BackupRequestProperties struct {
 	BackupRequestName *string                    `json:"name,omitempty"`
 	Enabled           *bool                      `json:"enabled,omitempty"`
@@ -1285,7 +1289,7 @@ type Certificate struct {
 	*CertificateProperties `json:"properties,omitempty"`
 }
 
-// CertificateProperties is aRM envelope properties
+// CertificateProperties is certificate resource specific properties
 type CertificateProperties struct {
 	FriendlyName              *string                    `json:"friendlyName,omitempty"`
 	SubjectName               *string                    `json:"subjectName,omitempty"`
@@ -1351,7 +1355,7 @@ type CertificateEmail struct {
 	*CertificateEmailProperties `json:"properties,omitempty"`
 }
 
-// CertificateEmailProperties is aRM envelope properties
+// CertificateEmailProperties is certificateEmail resource specific properties
 type CertificateEmailProperties struct {
 	EmailID   *string    `json:"emailId,omitempty"`
 	TimeStamp *date.Time `json:"timeStamp,omitempty"`
@@ -1368,7 +1372,8 @@ type CertificateOrderAction struct {
 	*CertificateOrderActionProperties `json:"properties,omitempty"`
 }
 
-// CertificateOrderActionProperties is aRM envelope properties
+// CertificateOrderActionProperties is certificateOrderAction resource specific
+// properties
 type CertificateOrderActionProperties struct {
 	Type      CertificateOrderActionType `json:"type,omitempty"`
 	CreatedAt *date.Time                 `json:"createdAt,omitempty"`
@@ -1499,7 +1504,7 @@ type Csr struct {
 	*CsrProperties    `json:"properties,omitempty"`
 }
 
-// CsrProperties is aRM envelope properties
+// CsrProperties is csr resource specific properties
 type CsrProperties struct {
 	Name               *string `json:"name,omitempty"`
 	DistinguishedName  *string `json:"distinguishedName,omitempty"`
@@ -1541,7 +1546,8 @@ type CustomHostnameAnalysisResult struct {
 	*CustomHostnameAnalysisResultProperties `json:"properties,omitempty"`
 }
 
-// CustomHostnameAnalysisResultProperties is aRM envelope properties
+// CustomHostnameAnalysisResultProperties is customHostnameAnalysisResult
+// resource specific properties
 type CustomHostnameAnalysisResultProperties struct {
 	IsHostnameAlreadyVerified           *bool                     `json:"isHostnameAlreadyVerified,omitempty"`
 	CustomDomainVerificationTest        DNSVerificationTestResult `json:"customDomainVerificationTest,omitempty"`
@@ -1575,7 +1581,7 @@ type DeletedSite struct {
 	*DeletedSiteProperties `json:"properties,omitempty"`
 }
 
-// DeletedSiteProperties is aRM envelope properties
+// DeletedSiteProperties is deletedSite resource specific properties
 type DeletedSiteProperties struct {
 	DeletedTimestamp          *date.Time                 `json:"deletedTimestamp,omitempty"`
 	State                     *string                    `json:"state,omitempty"`
@@ -1643,7 +1649,7 @@ type Deployment struct {
 	*DeploymentProperties `json:"properties,omitempty"`
 }
 
-// DeploymentProperties is aRM envelope properties
+// DeploymentProperties is deployment resource specific properties
 type DeploymentProperties struct {
 	ID          *string    `json:"id,omitempty"`
 	Status      *int32     `json:"status,omitempty"`
@@ -1688,7 +1694,7 @@ type Domain struct {
 	*DomainProperties `json:"properties,omitempty"`
 }
 
-// DomainProperties is aRM envelope properties
+// DomainProperties is domain resource specific properties
 type DomainProperties struct {
 	ContactAdmin                *Contact               `json:"contactAdmin,omitempty"`
 	ContactBilling              *Contact               `json:"contactBilling,omitempty"`
@@ -1756,7 +1762,8 @@ type DomainOwnershipIdentifier struct {
 	*DomainOwnershipIdentifierProperties `json:"properties,omitempty"`
 }
 
-// DomainOwnershipIdentifierProperties is aRM envelope properties
+// DomainOwnershipIdentifierProperties is domainOwnershipIdentifier resource
+// specific properties
 type DomainOwnershipIdentifierProperties struct {
 	OwnershipID *string `json:"ownershipId,omitempty"`
 }
@@ -1803,12 +1810,12 @@ type EnabledConfig struct {
 
 // ErrorEntity is body of the error response returned from the API.
 type ErrorEntity struct {
-	Code            *string        `json:"code,omitempty"`
-	Message         *string        `json:"message,omitempty"`
 	ExtendedCode    *string        `json:"extendedCode,omitempty"`
 	MessageTemplate *string        `json:"messageTemplate,omitempty"`
 	Parameters      *[]string      `json:"parameters,omitempty"`
 	InnerErrors     *[]ErrorEntity `json:"innerErrors,omitempty"`
+	Code            *string        `json:"code,omitempty"`
+	Message         *string        `json:"message,omitempty"`
 }
 
 // Experiments is routing rules in production experiments.
@@ -1840,7 +1847,7 @@ type GeoRegion struct {
 	*GeoRegionProperties `json:"properties,omitempty"`
 }
 
-// GeoRegionProperties is aRM envelope properties
+// GeoRegionProperties is geoRegion resource specific properties
 type GeoRegionProperties struct {
 	Name        *string `json:"name,omitempty"`
 	Description *string `json:"description,omitempty"`
@@ -1922,7 +1929,7 @@ type HostNameBinding struct {
 	*HostNameBindingProperties `json:"properties,omitempty"`
 }
 
-// HostNameBindingProperties is aRM envelope properties
+// HostNameBindingProperties is hostNameBinding resource specific properties
 type HostNameBindingProperties struct {
 	Name                        *string                     `json:"name,omitempty"`
 	SiteName                    *string                     `json:"siteName,omitempty"`
@@ -1984,7 +1991,7 @@ type HybridConnection struct {
 	*HybridConnectionProperties `json:"properties,omitempty"`
 }
 
-// HybridConnectionProperties is aRM envelope properties
+// HybridConnectionProperties is hybridConnection resource specific properties
 type HybridConnectionProperties struct {
 	ServiceBusNamespace *string `json:"serviceBusNamespace,omitempty"`
 	RelayName           *string `json:"relayName,omitempty"`
@@ -2027,7 +2034,8 @@ type HybridConnectionKey struct {
 	*HybridConnectionKeyProperties `json:"properties,omitempty"`
 }
 
-// HybridConnectionKeyProperties is aRM envelope properties
+// HybridConnectionKeyProperties is hybridConnectionKey resource specific
+// properties
 type HybridConnectionKeyProperties struct {
 	SendKeyName  *string `json:"sendKeyName,omitempty"`
 	SendKeyValue *string `json:"sendKeyValue,omitempty"`
@@ -2046,7 +2054,8 @@ type HybridConnectionLimits struct {
 	*HybridConnectionLimitsProperties `json:"properties,omitempty"`
 }
 
-// HybridConnectionLimitsProperties is aRM envelope properties
+// HybridConnectionLimitsProperties is hybridConnectionLimits resource specific
+// properties
 type HybridConnectionLimitsProperties struct {
 	Current *int32 `json:"current,omitempty"`
 	Maximum *int32 `json:"maximum,omitempty"`
@@ -2064,7 +2073,7 @@ type Identifier struct {
 	*IdentifierProperties `json:"properties,omitempty"`
 }
 
-// IdentifierProperties is aRM envelope properties
+// IdentifierProperties is identifier resource specific properties
 type IdentifierProperties struct {
 	ID *string `json:"id,omitempty"`
 }
@@ -2173,7 +2182,7 @@ type MetricDefinition struct {
 	*MetricDefinitionProperties `json:"properties,omitempty"`
 }
 
-// MetricDefinitionProperties is aRM envelope properties
+// MetricDefinitionProperties is metricDefinition resource specific properties
 type MetricDefinitionProperties struct {
 	Name                   *string               `json:"name,omitempty"`
 	Unit                   *string               `json:"unit,omitempty"`
@@ -2193,9 +2202,30 @@ type MigrateMySQLRequest struct {
 	*MigrateMySQLRequestProperties `json:"properties,omitempty"`
 }
 
-// MigrateMySQLRequestProperties is aRM envelope properties
+// MigrateMySQLRequestProperties is migrateMySqlRequest resource specific
+// properties
 type MigrateMySQLRequestProperties struct {
 	ConnectionString *string `json:"connectionString,omitempty"`
+}
+
+// MigrateMySQLStatus is mySQL migration status.
+type MigrateMySQLStatus struct {
+	autorest.Response             `json:"-"`
+	ID                            *string             `json:"id,omitempty"`
+	Name                          *string             `json:"name,omitempty"`
+	Kind                          *string             `json:"kind,omitempty"`
+	Location                      *string             `json:"location,omitempty"`
+	Type                          *string             `json:"type,omitempty"`
+	Tags                          *map[string]*string `json:"tags,omitempty"`
+	*MigrateMySQLStatusProperties `json:"properties,omitempty"`
+}
+
+// MigrateMySQLStatusProperties is migrateMySqlStatus resource specific
+// properties
+type MigrateMySQLStatusProperties struct {
+	MigrationOperationStatus OperationStatus `json:"migrationOperationStatus,omitempty"`
+	OperationID              *string         `json:"operationId,omitempty"`
+	LocalMySQLEnabled        *bool           `json:"localMySqlEnabled,omitempty"`
 }
 
 // NameIdentifier is identifies an object.
@@ -2249,7 +2279,7 @@ type NetworkFeatures struct {
 	*NetworkFeaturesProperties `json:"properties,omitempty"`
 }
 
-// NetworkFeaturesProperties is aRM envelope properties
+// NetworkFeaturesProperties is networkFeatures resource specific properties
 type NetworkFeaturesProperties struct {
 	VirtualNetworkName       *string                         `json:"virtualNetworkName,omitempty"`
 	VirtualNetworkConnection *VnetInfo                       `json:"virtualNetworkConnection,omitempty"`
@@ -2324,7 +2354,7 @@ type PremierAddOn struct {
 	*PremierAddOnProperties `json:"properties,omitempty"`
 }
 
-// PremierAddOnProperties is aRM envelope properties
+// PremierAddOnProperties is premierAddOn resource specific properties
 type PremierAddOnProperties struct {
 	Sku                  *string             `json:"sku,omitempty"`
 	Product              *string             `json:"product,omitempty"`
@@ -2347,7 +2377,8 @@ type PremierAddOnOffer struct {
 	*PremierAddOnOfferProperties `json:"properties,omitempty"`
 }
 
-// PremierAddOnOfferProperties is aRM envelope properties
+// PremierAddOnOfferProperties is premierAddOnOffer resource specific
+// properties
 type PremierAddOnOfferProperties struct {
 	Sku                        *string                    `json:"sku,omitempty"`
 	Product                    *string                    `json:"product,omitempty"`
@@ -2459,7 +2490,7 @@ type RecoverResponse struct {
 	*RecoverResponseProperties `json:"properties,omitempty"`
 }
 
-// RecoverResponseProperties is aRM envelope properties
+// RecoverResponseProperties is recoverResponse resource specific properties
 type RecoverResponseProperties struct {
 	OperationID *string `json:"operationId,omitempty"`
 }
@@ -2476,7 +2507,8 @@ type ReissueCertificateOrderRequest struct {
 	*ReissueCertificateOrderRequestProperties `json:"properties,omitempty"`
 }
 
-// ReissueCertificateOrderRequestProperties is aRM envelope properties
+// ReissueCertificateOrderRequestProperties is reissueCertificateOrderRequest
+// resource specific properties
 type ReissueCertificateOrderRequestProperties struct {
 	KeySize                    *int32  `json:"keySize,omitempty"`
 	DelayExistingRevokeInHours *int32  `json:"delayExistingRevokeInHours,omitempty"`
@@ -2496,7 +2528,8 @@ type RelayServiceConnectionEntity struct {
 	*RelayServiceConnectionEntityProperties `json:"properties,omitempty"`
 }
 
-// RelayServiceConnectionEntityProperties is aRM envelope properties
+// RelayServiceConnectionEntityProperties is relayServiceConnectionEntity
+// resource specific properties
 type RelayServiceConnectionEntityProperties struct {
 	EntityName               *string `json:"entityName,omitempty"`
 	EntityConnectionString   *string `json:"entityConnectionString,omitempty"`
@@ -2519,7 +2552,8 @@ type RenewCertificateOrderRequest struct {
 	*RenewCertificateOrderRequestProperties `json:"properties,omitempty"`
 }
 
-// RenewCertificateOrderRequestProperties is aRM envelope properties
+// RenewCertificateOrderRequestProperties is renewCertificateOrderRequest
+// resource specific properties
 type RenewCertificateOrderRequestProperties struct {
 	KeySize              *int32  `json:"keySize,omitempty"`
 	Csr                  *string `json:"csr,omitempty"`
@@ -2610,7 +2644,8 @@ type ResourceMetricDefinition struct {
 	*ResourceMetricDefinitionProperties `json:"properties,omitempty"`
 }
 
-// ResourceMetricDefinitionProperties is aRM envelope properties
+// ResourceMetricDefinitionProperties is resourceMetricDefinition resource
+// specific properties
 type ResourceMetricDefinitionProperties struct {
 	Name                   *ResourceMetricName           `json:"name,omitempty"`
 	Unit                   *string                       `json:"unit,omitempty"`
@@ -2692,7 +2727,7 @@ type RestoreRequest struct {
 	*RestoreRequestProperties `json:"properties,omitempty"`
 }
 
-// RestoreRequestProperties is aRM envelope properties
+// RestoreRequestProperties is restoreRequest resource specific properties
 type RestoreRequestProperties struct {
 	StorageAccountURL          *string                    `json:"storageAccountUrl,omitempty"`
 	BlobName                   *string                    `json:"blobName,omitempty"`
@@ -2717,7 +2752,7 @@ type RestoreResponse struct {
 	*RestoreResponseProperties `json:"properties,omitempty"`
 }
 
-// RestoreResponseProperties is aRM envelope properties
+// RestoreResponseProperties is restoreResponse resource specific properties
 type RestoreResponseProperties struct {
 	OperationID *string `json:"operationId,omitempty"`
 }
@@ -2734,7 +2769,7 @@ type Site struct {
 	*SiteProperties   `json:"properties,omitempty"`
 }
 
-// SiteProperties is aRM envelope properties
+// SiteProperties is site resource specific properties
 type SiteProperties struct {
 	State                     *string                    `json:"state,omitempty"`
 	HostNames                 *[]string                  `json:"hostNames,omitempty"`
@@ -2773,7 +2808,18 @@ type SiteProperties struct {
 // SiteAuthSettings is configuration settings for the Azure App Service
 // Authentication / Authorization feature.
 type SiteAuthSettings struct {
-	autorest.Response            `json:"-"`
+	autorest.Response           `json:"-"`
+	ID                          *string             `json:"id,omitempty"`
+	Name                        *string             `json:"name,omitempty"`
+	Kind                        *string             `json:"kind,omitempty"`
+	Location                    *string             `json:"location,omitempty"`
+	Type                        *string             `json:"type,omitempty"`
+	Tags                        *map[string]*string `json:"tags,omitempty"`
+	*SiteAuthSettingsProperties `json:"properties,omitempty"`
+}
+
+// SiteAuthSettingsProperties is siteAuthSettings resource specific properties
+type SiteAuthSettingsProperties struct {
 	Enabled                      *bool                         `json:"enabled,omitempty"`
 	RuntimeVersion               *string                       `json:"runtimeVersion,omitempty"`
 	UnauthenticatedClientAction  UnauthenticatedClientAction   `json:"unauthenticatedClientAction,omitempty"`
@@ -2816,18 +2862,6 @@ type SiteCloneabilityCriterion struct {
 
 // SiteConfig is configuration of an App Service app.
 type SiteConfig struct {
-	autorest.Response     `json:"-"`
-	ID                    *string             `json:"id,omitempty"`
-	Name                  *string             `json:"name,omitempty"`
-	Kind                  *string             `json:"kind,omitempty"`
-	Location              *string             `json:"location,omitempty"`
-	Type                  *string             `json:"type,omitempty"`
-	Tags                  *map[string]*string `json:"tags,omitempty"`
-	*SiteConfigProperties `json:"properties,omitempty"`
-}
-
-// SiteConfigProperties is aRM envelope properties
-type SiteConfigProperties struct {
 	NumberOfWorkers              *int32                   `json:"numberOfWorkers,omitempty"`
 	DefaultDocuments             *[]string                `json:"defaultDocuments,omitempty"`
 	NetFrameworkVersion          *string                  `json:"netFrameworkVersion,omitempty"`
@@ -2873,6 +2907,18 @@ type SiteConfigProperties struct {
 	IPSecurityRestrictions       *[]IPSecurityRestriction `json:"ipSecurityRestrictions,omitempty"`
 }
 
+// SiteConfigResource is web app configuration ARM resource.
+type SiteConfigResource struct {
+	autorest.Response `json:"-"`
+	ID                *string             `json:"id,omitempty"`
+	Name              *string             `json:"name,omitempty"`
+	Kind              *string             `json:"kind,omitempty"`
+	Location          *string             `json:"location,omitempty"`
+	Type              *string             `json:"type,omitempty"`
+	Tags              *map[string]*string `json:"tags,omitempty"`
+	*SiteConfig       `json:"properties,omitempty"`
+}
+
 // SiteConfigurationSnapshotInfo is a snapshot of a web app configuration.
 type SiteConfigurationSnapshotInfo struct {
 	ID                                       *string             `json:"id,omitempty"`
@@ -2884,7 +2930,8 @@ type SiteConfigurationSnapshotInfo struct {
 	*SiteConfigurationSnapshotInfoProperties `json:"properties,omitempty"`
 }
 
-// SiteConfigurationSnapshotInfoProperties is aRM envelope properties
+// SiteConfigurationSnapshotInfoProperties is siteConfigurationSnapshotInfo
+// resource specific properties
 type SiteConfigurationSnapshotInfoProperties struct {
 	Time *date.Time `json:"time,omitempty"`
 	ID   *int32     `json:"id,omitempty"`
@@ -2901,7 +2948,7 @@ type SiteInstance struct {
 	*SiteInstanceProperties `json:"properties,omitempty"`
 }
 
-// SiteInstanceProperties is aRM envelope properties
+// SiteInstanceProperties is siteInstance resource specific properties
 type SiteInstanceProperties struct {
 	Name *string `json:"name,omitempty"`
 }
@@ -2925,7 +2972,7 @@ type SiteLogsConfig struct {
 	*SiteLogsConfigProperties `json:"properties,omitempty"`
 }
 
-// SiteLogsConfigProperties is aRM envelope properties
+// SiteLogsConfigProperties is siteLogsConfig resource specific properties
 type SiteLogsConfigProperties struct {
 	ApplicationLogs       *ApplicationLogsConfig `json:"applicationLogs,omitempty"`
 	HTTPLogs              *HTTPLogsConfig        `json:"httpLogs,omitempty"`
@@ -2953,7 +3000,8 @@ type SitePhpErrorLogFlag struct {
 	*SitePhpErrorLogFlagProperties `json:"properties,omitempty"`
 }
 
-// SitePhpErrorLogFlagProperties is aRM envelope properties
+// SitePhpErrorLogFlagProperties is sitePhpErrorLogFlag resource specific
+// properties
 type SitePhpErrorLogFlagProperties struct {
 	LocalLogErrors           *string `json:"localLogErrors,omitempty"`
 	MasterLogErrors          *string `json:"masterLogErrors,omitempty"`
@@ -2985,7 +3033,8 @@ type SiteSourceControl struct {
 	*SiteSourceControlProperties `json:"properties,omitempty"`
 }
 
-// SiteSourceControlProperties is aRM envelope properties
+// SiteSourceControlProperties is siteSourceControl resource specific
+// properties
 type SiteSourceControlProperties struct {
 	RepoURL                   *string `json:"repoUrl,omitempty"`
 	Branch                    *string `json:"branch,omitempty"`
@@ -3047,22 +3096,25 @@ type SkuInfos struct {
 	Skus              *[]GlobalCsmSkuDescription `json:"skus,omitempty"`
 }
 
-// SlotConfigNamesResource is slot Config names azure resource.
-type SlotConfigNamesResource struct {
-	autorest.Response                  `json:"-"`
-	ID                                 *string             `json:"id,omitempty"`
-	Name                               *string             `json:"name,omitempty"`
-	Kind                               *string             `json:"kind,omitempty"`
-	Location                           *string             `json:"location,omitempty"`
-	Type                               *string             `json:"type,omitempty"`
-	Tags                               *map[string]*string `json:"tags,omitempty"`
-	*SlotConfigNamesResourceProperties `json:"properties,omitempty"`
-}
-
-// SlotConfigNamesResourceProperties is aRM envelope properties
-type SlotConfigNamesResourceProperties struct {
+// SlotConfigNames is names for connection strings and application settings to
+// be marked as sticky to the deployment slot and not moved during a swap
+// operation.
+// This is valid for all deployment slots in an app.
+type SlotConfigNames struct {
 	ConnectionStringNames *[]string `json:"connectionStringNames,omitempty"`
 	AppSettingNames       *[]string `json:"appSettingNames,omitempty"`
+}
+
+// SlotConfigNamesResource is slot Config names azure resource.
+type SlotConfigNamesResource struct {
+	autorest.Response `json:"-"`
+	ID                *string             `json:"id,omitempty"`
+	Name              *string             `json:"name,omitempty"`
+	Kind              *string             `json:"kind,omitempty"`
+	Location          *string             `json:"location,omitempty"`
+	Type              *string             `json:"type,omitempty"`
+	Tags              *map[string]*string `json:"tags,omitempty"`
+	*SlotConfigNames  `json:"properties,omitempty"`
 }
 
 // SlotDifference is a setting difference between two deployment slots of an
@@ -3077,7 +3129,7 @@ type SlotDifference struct {
 	*SlotDifferenceProperties `json:"properties,omitempty"`
 }
 
-// SlotDifferenceProperties is aRM envelope properties
+// SlotDifferenceProperties is slotDifference resource specific properties
 type SlotDifferenceProperties struct {
 	Type               *string `json:"type,omitempty"`
 	SettingType        *string `json:"settingType,omitempty"`
@@ -3132,7 +3184,7 @@ type Snapshot struct {
 	*SnapshotProperties `json:"properties,omitempty"`
 }
 
-// SnapshotProperties is aRM envelope properties
+// SnapshotProperties is snapshot resource specific properties
 type SnapshotProperties struct {
 	Time *date.Time `json:"time,omitempty"`
 }
@@ -3169,7 +3221,7 @@ type SourceControl struct {
 	*SourceControlProperties `json:"properties,omitempty"`
 }
 
-// SourceControlProperties is aRM envelope properties
+// SourceControlProperties is sourceControl resource specific properties
 type SourceControlProperties struct {
 	Name           *string    `json:"name,omitempty"`
 	Token          *string    `json:"token,omitempty"`
@@ -3250,7 +3302,8 @@ type StorageMigrationOptions struct {
 	*StorageMigrationOptionsProperties `json:"properties,omitempty"`
 }
 
-// StorageMigrationOptionsProperties is aRM envelope properties
+// StorageMigrationOptionsProperties is storageMigrationOptions resource
+// specific properties
 type StorageMigrationOptionsProperties struct {
 	AzurefilesConnectionString *string `json:"azurefilesConnectionString,omitempty"`
 	AzurefilesShare            *string `json:"azurefilesShare,omitempty"`
@@ -3270,7 +3323,8 @@ type StorageMigrationResponse struct {
 	*StorageMigrationResponseProperties `json:"properties,omitempty"`
 }
 
-// StorageMigrationResponseProperties is aRM envelope properties
+// StorageMigrationResponseProperties is storageMigrationResponse resource
+// specific properties
 type StorageMigrationResponseProperties struct {
 	OperationID *string `json:"operationId,omitempty"`
 }
@@ -3333,7 +3387,7 @@ type TopLevelDomain struct {
 	*TopLevelDomainProperties `json:"properties,omitempty"`
 }
 
-// TopLevelDomainProperties is aRM envelope properties
+// TopLevelDomainProperties is topLevelDomain resource specific properties
 type TopLevelDomainProperties struct {
 	DomainName *string `json:"name,omitempty"`
 	Privacy    *bool   `json:"privacy,omitempty"`
@@ -3375,7 +3429,7 @@ type Usage struct {
 	*UsageProperties `json:"properties,omitempty"`
 }
 
-// UsageProperties is aRM envelope properties
+// UsageProperties is usage resource specific properties
 type UsageProperties struct {
 	DisplayName   *string            `json:"displayName,omitempty"`
 	Name          *string            `json:"name,omitempty"`
@@ -3419,7 +3473,7 @@ type User struct {
 	*UserProperties   `json:"properties,omitempty"`
 }
 
-// UserProperties is aRM envelope properties
+// UserProperties is user resource specific properties
 type UserProperties struct {
 	UserName                   *string `json:"name,omitempty"`
 	PublishingUserName         *string `json:"publishingUserName,omitempty"`
@@ -3501,7 +3555,7 @@ type VnetGateway struct {
 	*VnetGatewayProperties `json:"properties,omitempty"`
 }
 
-// VnetGatewayProperties is aRM envelope properties
+// VnetGatewayProperties is vnetGateway resource specific properties
 type VnetGatewayProperties struct {
 	VnetName      *string `json:"vnetName,omitempty"`
 	VpnPackageURI *string `json:"vpnPackageUri,omitempty"`
@@ -3509,24 +3563,13 @@ type VnetGatewayProperties struct {
 
 // VnetInfo is virtual Network information contract.
 type VnetInfo struct {
-	autorest.Response   `json:"-"`
-	ID                  *string             `json:"id,omitempty"`
-	Name                *string             `json:"name,omitempty"`
-	Kind                *string             `json:"kind,omitempty"`
-	Location            *string             `json:"location,omitempty"`
-	Type                *string             `json:"type,omitempty"`
-	Tags                *map[string]*string `json:"tags,omitempty"`
-	*VnetInfoProperties `json:"properties,omitempty"`
-}
-
-// VnetInfoProperties is aRM envelope properties
-type VnetInfoProperties struct {
-	VnetResourceID *string      `json:"vnetResourceId,omitempty"`
-	CertThumbprint *string      `json:"certThumbprint,omitempty"`
-	CertBlob       *string      `json:"certBlob,omitempty"`
-	Routes         *[]VnetRoute `json:"routes,omitempty"`
-	ResyncRequired *bool        `json:"resyncRequired,omitempty"`
-	DNSServers     *string      `json:"dnsServers,omitempty"`
+	autorest.Response `json:"-"`
+	VnetResourceID    *string      `json:"vnetResourceId,omitempty"`
+	CertThumbprint    *string      `json:"certThumbprint,omitempty"`
+	CertBlob          *string      `json:"certBlob,omitempty"`
+	Routes            *[]VnetRoute `json:"routes,omitempty"`
+	ResyncRequired    *bool        `json:"resyncRequired,omitempty"`
+	DNSServers        *string      `json:"dnsServers,omitempty"`
 }
 
 // VnetRoute is virtual Network route contract used to pass routing information
@@ -3542,7 +3585,7 @@ type VnetRoute struct {
 	*VnetRouteProperties `json:"properties,omitempty"`
 }
 
-// VnetRouteProperties is aRM envelope properties
+// VnetRouteProperties is vnetRoute resource specific properties
 type VnetRouteProperties struct {
 	VnetRouteName *string   `json:"name,omitempty"`
 	StartAddress  *string   `json:"startAddress,omitempty"`
@@ -3552,19 +3595,6 @@ type VnetRouteProperties struct {
 
 // WorkerPool is worker pool of an App Service Environment.
 type WorkerPool struct {
-	autorest.Response     `json:"-"`
-	ID                    *string             `json:"id,omitempty"`
-	Name                  *string             `json:"name,omitempty"`
-	Kind                  *string             `json:"kind,omitempty"`
-	Location              *string             `json:"location,omitempty"`
-	Type                  *string             `json:"type,omitempty"`
-	Tags                  *map[string]*string `json:"tags,omitempty"`
-	*WorkerPoolProperties `json:"properties,omitempty"`
-	Sku                   *SkuDescription `json:"sku,omitempty"`
-}
-
-// WorkerPoolProperties is aRM envelope properties
-type WorkerPoolProperties struct {
 	WorkerSizeID  *int32             `json:"workerSizeId,omitempty"`
 	ComputeMode   ComputeModeOptions `json:"computeMode,omitempty"`
 	WorkerSize    *string            `json:"workerSize,omitempty"`
@@ -3575,8 +3605,8 @@ type WorkerPoolProperties struct {
 // WorkerPoolCollection is collection of worker pools.
 type WorkerPoolCollection struct {
 	autorest.Response `json:"-"`
-	Value             *[]WorkerPool `json:"value,omitempty"`
-	NextLink          *string       `json:"nextLink,omitempty"`
+	Value             *[]WorkerPoolResource `json:"value,omitempty"`
+	NextLink          *string               `json:"nextLink,omitempty"`
 }
 
 // WorkerPoolCollectionPreparer prepares a request to retrieve the next set of results. It returns
@@ -3589,4 +3619,18 @@ func (client WorkerPoolCollection) WorkerPoolCollectionPreparer() (*http.Request
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(to.String(client.NextLink)))
+}
+
+// WorkerPoolResource is worker pool of an App Service Environment ARM
+// resource.
+type WorkerPoolResource struct {
+	autorest.Response `json:"-"`
+	ID                *string             `json:"id,omitempty"`
+	Name              *string             `json:"name,omitempty"`
+	Kind              *string             `json:"kind,omitempty"`
+	Location          *string             `json:"location,omitempty"`
+	Type              *string             `json:"type,omitempty"`
+	Tags              *map[string]*string `json:"tags,omitempty"`
+	*WorkerPool       `json:"properties,omitempty"`
+	Sku               *SkuDescription `json:"sku,omitempty"`
 }

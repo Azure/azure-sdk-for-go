@@ -1,11 +1,5 @@
 package storage
 
-import (
-	"fmt"
-	"net/url"
-	"strings"
-)
-
 // MetadataLevel determines if operations should return a paylod,
 // and it level of detail.
 type MetadataLevel string
@@ -37,17 +31,3 @@ const (
 	MinimalMetadata MetadataLevel = "application/json;odata=minimalmetadata"
 	FullMetadata    MetadataLevel = "application/json;odata=fullmetadata"
 )
-
-func fixOdataQuery(odataQuery url.Values) url.Values {
-	if odataQuery == nil {
-		return url.Values{}
-	}
-	for k, v := range odataQuery {
-		if !strings.HasPrefix(k, "$") {
-			newkey := fmt.Sprintf("$%v", k)
-			odataQuery[newkey] = v
-			odataQuery.Del(k)
-		}
-	}
-	return odataQuery
-}

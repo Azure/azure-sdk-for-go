@@ -2,7 +2,6 @@ package storage
 
 import (
 	"crypto/rand"
-	"net/url"
 	"time"
 
 	chk "gopkg.in/check.v1"
@@ -18,11 +17,11 @@ func getTableClient(c *chk.C) TableServiceClient {
 
 func deleteAllTables(c *chk.C) {
 	cli := getBasicClient(c).GetTableService()
-	result, err := cli.QueryTables(url.Values{})
+	result, err := cli.QueryTables(MinimalMetadata, nil)
 	c.Assert(err, chk.IsNil)
 
 	for _, t := range result.Tables {
-		err := t.Delete(30)
+		err := t.Delete(30, nil)
 		c.Assert(err, chk.IsNil)
 	}
 }
@@ -31,12 +30,12 @@ func (s *StorageTableSuite) Test_CreateAndDeleteTable(c *chk.C) {
 	cli := getBasicClient(c).GetTableService()
 	table := cli.GetTableReference(randTable())
 
-	err := table.Create(EmptyPayload, 30)
+	err := table.Create(30, EmptyPayload, nil)
 	c.Assert(err, chk.IsNil)
 	// update table metadata
 	table2 := cli.GetTableReference(randTable())
-	err = table2.Create(FullMetadata, 30)
-	defer table2.Delete(30)
+	err = table2.Create(30, FullMetadata, nil)
+	defer table2.Delete(30, nil)
 	c.Assert(err, chk.IsNil)
 	// Check not empty values
 	c.Assert(table2.OdataEditLink, chk.Not(chk.Equals), "")
@@ -44,7 +43,7 @@ func (s *StorageTableSuite) Test_CreateAndDeleteTable(c *chk.C) {
 	c.Assert(table2.OdataMetadata, chk.Not(chk.Equals), "")
 	c.Assert(table2.OdataType, chk.Not(chk.Equals), "")
 
-	err = table.Delete(30)
+	err = table.Delete(30, nil)
 	c.Assert(err, chk.IsNil)
 }
 
@@ -59,8 +58,8 @@ func (s *StorageTableSuite) Test_CreateTableWithAllResponsePayloadLeves(c *chk.C
 
 func createAndDeleteTable(cli TableServiceClient, ml MetadataLevel, c *chk.C) {
 	table := cli.GetTableReference(randTable())
-	c.Assert(table.Create(ml, 30), chk.IsNil)
-	c.Assert(table.Delete(30), chk.IsNil)
+	c.Assert(table.Create(30, ml, nil), chk.IsNil)
+	c.Assert(table.Delete(30, nil), chk.IsNil)
 }
 
 func (s *StorageTableSuite) TestQueryTablesNextResults(c *chk.C) {
@@ -69,22 +68,25 @@ func (s *StorageTableSuite) TestQueryTablesNextResults(c *chk.C) {
 
 	for i := 0; i < 3; i++ {
 		table := cli.GetTableReference(randTable())
-		err := table.Create(EmptyPayload, 30)
+		err := table.Create(30, EmptyPayload, nil)
 		c.Assert(err, chk.IsNil)
-		defer table.Delete(30)
+		defer table.Delete(30, nil)
 	}
 
-	result, err := cli.QueryTables(url.Values{"top": {"2"}})
+	options := QueryTablesOptions{
+		Top: 2,
+	}
+	result, err := cli.QueryTables(MinimalMetadata, &options)
 	c.Assert(err, chk.IsNil)
 	c.Assert(result.Tables, chk.HasLen, 2)
 	c.Assert(result.NextLink, chk.NotNil)
 
-	result, err = cli.QueryTablesNextResults(result)
+	result, err = result.NextResults(nil)
 	c.Assert(err, chk.IsNil)
 	c.Assert(result.Tables, chk.HasLen, 1)
 	c.Assert(result.NextLink, chk.IsNil)
 
-	result, err = cli.QueryTablesNextResults(result)
+	result, err = result.NextResults(nil)
 	c.Assert(result, chk.IsNil)
 	c.Assert(err, chk.NotNil)
 }
@@ -119,13 +121,13 @@ func appendTablePermission(policies []TableAccessPolicy, ID string,
 func (s *StorageTableSuite) TestSetPermissionsSuccessfully(c *chk.C) {
 	cli := getTableClient(c)
 	table := cli.GetTableReference(randTable())
-	c.Assert(table.Create(EmptyPayload, 30), chk.IsNil)
-	defer table.Delete(30)
+	c.Assert(table.Create(30, EmptyPayload, nil), chk.IsNil)
+	defer table.Delete(30, nil)
 
 	policies := []TableAccessPolicy{}
 	policies = appendTablePermission(policies, "GolangRocksOnAzure", true, true, true, true, now, now.Add(10*time.Hour))
 
-	err := table.SetPermissions(policies, 30)
+	err := table.SetPermissions(policies, 30, nil)
 	c.Assert(err, chk.IsNil)
 }
 
@@ -136,24 +138,24 @@ func (s *StorageTableSuite) TestSetPermissionsUnsuccessfully(c *chk.C) {
 	policies := []TableAccessPolicy{}
 	policies = appendTablePermission(policies, "GolangRocksOnAzure", true, true, true, true, now, now.Add(10*time.Hour))
 
-	err := table.SetPermissions(policies, 30)
+	err := table.SetPermissions(policies, 30, nil)
 	c.Assert(err, chk.NotNil)
 }
 
 func (s *StorageTableSuite) TestSetThenGetPermissionsSuccessfully(c *chk.C) {
 	cli := getTableClient(c)
 	table := cli.GetTableReference(randTable())
-	c.Assert(table.Create(EmptyPayload, 30), chk.IsNil)
-	defer table.Delete(30)
+	c.Assert(table.Create(30, EmptyPayload, nil), chk.IsNil)
+	defer table.Delete(30, nil)
 
 	policies := []TableAccessPolicy{}
 	policies = appendTablePermission(policies, "GolangRocksOnAzure", true, true, true, true, now, now.Add(10*time.Hour))
 	policies = appendTablePermission(policies, "AutoRestIsSuperCool", true, true, false, true, now.Add(20*time.Hour), now.Add(30*time.Hour))
 
-	err := table.SetPermissions(policies, 30)
+	err := table.SetPermissions(policies, 30, nil)
 	c.Assert(err, chk.IsNil)
 
-	newPolicies, err := table.GetPermissions(30)
+	newPolicies, err := table.GetPermissions(30, nil)
 	c.Assert(err, chk.IsNil)
 
 	// now check policy set.

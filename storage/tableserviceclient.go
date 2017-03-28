@@ -2,11 +2,11 @@ package storage
 
 import (
 	"encoding/json"
-	"errors"
 	"fmt"
 	"io/ioutil"
 	"net/http"
 	"net/url"
+	"strconv"
 )
 
 const (
@@ -23,12 +23,23 @@ type TableServiceClient struct {
 	auth   authentication
 }
 
-// TableQueryResult contains the response from
-// QueryTables and QueryTablesNextResults functions.
-type TableQueryResult struct {
-	OdataMetadata string  `json:"odata.metadata"`
-	Tables        []Table `json:"value"`
-	NextLink      *string
+// TableOptions includes options for some table operations
+type TableOptions struct {
+	RequestID string
+}
+
+func (options *TableOptions) addToHeaders(h map[string]string) map[string]string {
+	if options != nil {
+		h = addToHeaders(h, "x-ms-client-request-id", options.RequestID)
+	}
+	return h
+}
+
+// QueryNextLink includes information for getting the next page of
+// results in query operations
+type QueryNextLink struct {
+	NextLink *string
+	ml       MetadataLevel
 }
 
 // GetServiceProperties gets the properties of your storage account's table service.
@@ -51,31 +62,71 @@ func (t *TableServiceClient) GetTableReference(name string) Table {
 	}
 }
 
+// QueryTablesOptions includes options for some table operations
+type QueryTablesOptions struct {
+	Top       uint
+	Filter    string
+	RequestID string
+}
+
+func (options *QueryTablesOptions) getParameters() (url.Values, map[string]string) {
+	query := url.Values{}
+	headers := map[string]string{}
+	if options != nil {
+		if options.Top > 0 {
+			query.Add(OdataTop, strconv.FormatUint(uint64(options.Top), 10))
+		}
+		if options.Filter != "" {
+			query.Add(OdataFilter, options.Filter)
+		}
+		headers = addToHeaders(headers, "x-ms-client-request-id", options.RequestID)
+	}
+	return query, headers
+}
+
 // QueryTables returns the tables in the storage account.
 // You can use query options defined by the OData Protocol specification.
 //
 // See https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/query-tables
-func (t *TableServiceClient) QueryTables(odataQuery url.Values) (*TableQueryResult, error) {
-	uri := t.client.getEndpoint(tableServiceName, tablesURIPath, fixOdataQuery(odataQuery))
-	return t.queryTables(uri)
+func (t *TableServiceClient) QueryTables(ml MetadataLevel, options *QueryTablesOptions) (*TableQueryResult, error) {
+	query, headers := options.getParameters()
+	uri := t.client.getEndpoint(tableServiceName, tablesURIPath, query)
+	return t.queryTables(uri, headers, ml)
 
 }
 
-// QueryTablesNextResults returns the next page of results
-// from a QueryTables or a QueryTablesNextResults operation.
+// NextResults returns the next page of results
+// from a QueryTables or a NextResults operation.
 //
 // See https://docs.microsoft.com/rest/api/storageservices/fileservices/query-tables
 // See https://docs.microsoft.com/rest/api/storageservices/fileservices/query-timeout-and-pagination
-func (t *TableServiceClient) QueryTablesNextResults(results *TableQueryResult) (*TableQueryResult, error) {
-	if results.NextLink == nil {
-		return nil, errors.New("There are no more pages in this query results")
+func (tqr *TableQueryResult) NextResults(options *TableOptions) (*TableQueryResult, error) {
+	if tqr == nil {
+		return nil, errNilPreviousResult
 	}
-	return t.queryTables(*results.NextLink)
+	if tqr.NextLink == nil {
+		return nil, errNilNextLink
+	}
+	headers := options.addToHeaders(map[string]string{})
+
+	return tqr.tsc.queryTables(*tqr.NextLink, headers, tqr.ml)
 }
 
-func (t *TableServiceClient) queryTables(uri string) (*TableQueryResult, error) {
-	headers := t.client.getStandardHeaders()
-	headers[headerAccept] = "application/json;odata=fullmetadata"
+// TableQueryResult contains the response from
+// QueryTables and QueryTablesNextResults functions.
+type TableQueryResult struct {
+	OdataMetadata string  `json:"odata.metadata"`
+	Tables        []Table `json:"value"`
+	QueryNextLink
+	tsc *TableServiceClient
+}
+
+func (t *TableServiceClient) queryTables(uri string, headers map[string]string, ml MetadataLevel) (*TableQueryResult, error) {
+	if ml == EmptyPayload {
+		return nil, errEmptyPayload
+	}
+	headers = mergeHeaders(headers, t.client.getStandardHeaders())
+	headers[headerAccept] = string(ml)
 
 	resp, err := t.client.exec(http.MethodGet, uri, headers, nil, t.auth)
 	if err != nil {
@@ -100,6 +151,7 @@ func (t *TableServiceClient) queryTables(uri string) (*TableQueryResult, error) 
 	for i := range out.Tables {
 		out.Tables[i].tsc = t
 	}
+	out.tsc = t
 
 	nextLink := resp.headers.Get(http.CanonicalHeaderKey(headerXmsContinuation))
 	if nextLink == "" {
@@ -113,6 +165,7 @@ func (t *TableServiceClient) queryTables(uri string) (*TableQueryResult, error) 
 		v.Set(nextTableQueryParameter, nextLink)
 		newURI := t.client.getEndpoint(tableServiceName, tablesURIPath, v)
 		out.NextLink = &newURI
+		out.ml = ml
 	}
 
 	return &out, nil

@@ -3,9 +3,11 @@ package storage
 import (
 	"bytes"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"io/ioutil"
 	"net/http"
+	"net/url"
 	"strconv"
 	"strings"
 	"time"
@@ -19,6 +21,12 @@ const (
 	partitionKeyNode  = "PartitionKey"
 	rowKeyNode        = "RowKey"
 	etagErrorTemplate = "Etag didn't match: %v"
+)
+
+var (
+	errEmptyPayload      = errors.New("Empty payload is not a valid metadata level for this operation")
+	errNilPreviousResult = errors.New("The previous results page is nil")
+	errNilNextLink       = errors.New("There are no more pages in this query results")
 )
 
 // Entity represents an entity inside an Azure table.
@@ -45,24 +53,30 @@ func (t *Table) GetEntityReference(partitionKey, rowKey string) Entity {
 	}
 }
 
+// EntityOptions includes options for entity operations.
+type EntityOptions struct {
+	Timeout   uint
+	RequestID string `header:"x-ms-client-request-id"`
+}
+
 // Insert inserts the referenced entity in its table.
 // The function fails if there is an entity with the same
 // PartitionKey and RowKey in the table.
 // ml determines the level of detail of metadata in the operation response,
 // or no data at all.
 // See: https://docs.microsoft.com/rest/api/storageservices/fileservices/insert-entity
-func (e *Entity) Insert(ml MetadataLevel) error {
-	uri := e.Table.tsc.client.getEndpoint(tableServiceName, e.Table.buildPath(), nil)
+func (e *Entity) Insert(ml MetadataLevel, options *EntityOptions) error {
+	query, headers := options.getParameters()
+	headers = mergeHeaders(headers, e.Table.tsc.client.getStandardHeaders())
 
 	body, err := json.Marshal(e)
 	if err != nil {
 		return err
 	}
-
-	headers := e.Table.tsc.client.getStandardHeaders()
 	headers = addBodyRelatedHeaders(headers, len(body))
 	headers = addReturnContentHeaders(headers, ml)
 
+	uri := e.Table.tsc.client.getEndpoint(tableServiceName, e.Table.buildPath(), query)
 	resp, err := e.Table.tsc.client.exec(http.MethodPost, uri, headers, bytes.NewReader(body), e.Table.tsc.auth)
 	if err != nil {
 		return err
@@ -94,8 +108,8 @@ func (e *Entity) Insert(ml MetadataLevel) error {
 // with the same PartitionKey and RowKey in the table or if the ETag is different
 // than the one in Azure.
 // See: https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/update-entity2
-func (e *Entity) Update(force bool) error {
-	return e.updateMerge(force, http.MethodPut)
+func (e *Entity) Update(force bool, options *EntityOptions) error {
+	return e.updateMerge(force, http.MethodPut, options)
 }
 
 // Merge merges the contents of entity specified with PartitionKey and RowKey
@@ -103,21 +117,22 @@ func (e *Entity) Update(force bool) error {
 // The function fails if there is no entity with the same PartitionKey and
 // RowKey in the table or if the ETag is different than the one in Azure.
 // Read more: https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/merge-entity
-func (e *Entity) Merge(force bool) error {
-	return e.updateMerge(force, "MERGE")
+func (e *Entity) Merge(force bool, options *EntityOptions) error {
+	return e.updateMerge(force, "MERGE", options)
 }
 
 // Delete deletes the entity.
 // The function fails if there is no entity with the same PartitionKey and
 // RowKey in the table or if the ETag is different than the one in Azure.
 // See: https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/delete-entity1
-func (e *Entity) Delete(force bool) error {
-	uri := e.Table.tsc.client.getEndpoint(tableServiceName, e.buildPath(), nil)
+func (e *Entity) Delete(force bool, options *EntityOptions) error {
+	query, headers := options.getParameters()
+	headers = mergeHeaders(headers, e.Table.tsc.client.getStandardHeaders())
 
-	headers := e.Table.tsc.client.getStandardHeaders()
 	headers = addIfMatchHeader(headers, force, e.OdataEtag)
 	headers = addReturnContentHeaders(headers, EmptyPayload)
 
+	uri := e.Table.tsc.client.getEndpoint(tableServiceName, e.buildPath(), query)
 	resp, err := e.Table.tsc.client.exec(http.MethodDelete, uri, headers, nil, e.Table.tsc.auth)
 	if err != nil {
 		if resp.statusCode == http.StatusPreconditionFailed {
@@ -136,14 +151,14 @@ func (e *Entity) Delete(force bool) error {
 
 // InsertOrReplace inserts an entity or replaces the existing one.
 // Read more: https://docs.microsoft.com/rest/api/storageservices/fileservices/insert-or-replace-entity
-func (e *Entity) InsertOrReplace() error {
-	return e.insertOr(http.MethodPut)
+func (e *Entity) InsertOrReplace(options *EntityOptions) error {
+	return e.insertOr(http.MethodPut, options)
 }
 
 // InsertOrMerge inserts an entity or merges the existing one.
 // Read more: https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/insert-or-merge-entity
-func (e *Entity) InsertOrMerge() error {
-	return e.insertOr("MERGE")
+func (e *Entity) InsertOrMerge(options *EntityOptions) error {
+	return e.insertOr("MERGE", options)
 }
 
 func (e *Entity) buildPath() string {
@@ -290,18 +305,18 @@ func (e *Entity) updateTimestamp(headers http.Header) error {
 	return nil
 }
 
-func (e *Entity) insertOr(verb string) error {
-	uri := e.Table.tsc.client.getEndpoint(tableServiceName, e.buildPath(), nil)
+func (e *Entity) insertOr(verb string, options *EntityOptions) error {
+	query, headers := options.getParameters()
+	headers = mergeHeaders(headers, e.Table.tsc.client.getStandardHeaders())
 
 	body, err := json.Marshal(e)
 	if err != nil {
 		return err
 	}
-
-	headers := e.Table.tsc.client.getStandardHeaders()
 	headers = addBodyRelatedHeaders(headers, len(body))
 	headers = addReturnContentHeaders(headers, EmptyPayload)
 
+	uri := e.Table.tsc.client.getEndpoint(tableServiceName, e.buildPath(), query)
 	resp, err := e.Table.tsc.client.exec(verb, uri, headers, bytes.NewReader(body), e.Table.tsc.auth)
 	if err != nil {
 		return err
@@ -315,19 +330,19 @@ func (e *Entity) insertOr(verb string) error {
 	return e.updateEtagAndTimestamp(resp.headers)
 }
 
-func (e *Entity) updateMerge(force bool, verb string) error {
-	uri := e.Table.tsc.client.getEndpoint(tableServiceName, e.buildPath(), nil)
+func (e *Entity) updateMerge(force bool, verb string, options *EntityOptions) error {
+	query, headers := options.getParameters()
+	headers = mergeHeaders(headers, e.Table.tsc.client.getStandardHeaders())
 
 	body, err := json.Marshal(e)
 	if err != nil {
 		return err
 	}
-
-	headers := e.Table.tsc.client.getStandardHeaders()
 	headers = addBodyRelatedHeaders(headers, len(body))
 	headers = addIfMatchHeader(headers, force, e.OdataEtag)
 	headers = addReturnContentHeaders(headers, EmptyPayload)
 
+	uri := e.Table.tsc.client.getEndpoint(tableServiceName, e.buildPath(), query)
 	resp, err := e.Table.tsc.client.exec(verb, uri, headers, bytes.NewReader(body), e.Table.tsc.auth)
 	if err != nil {
 		if resp.statusCode == http.StatusPreconditionFailed {
@@ -350,4 +365,14 @@ func stringFromMap(props map[string]interface{}, key string) string {
 		return value.(string)
 	}
 	return ""
+}
+
+func (options *EntityOptions) getParameters() (url.Values, map[string]string) {
+	query := url.Values{}
+	headers := map[string]string{}
+	if options != nil {
+		query = addTimeout(query, options.Timeout)
+		headers = headersFromStruct(*options)
+	}
+	return query, headers
 }

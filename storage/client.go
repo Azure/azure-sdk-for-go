@@ -87,6 +87,8 @@ type AzureStorageServiceError struct {
 	Reason                    string `xml:"Reason"`
 	StatusCode                int
 	RequestID                 string
+	Date                      string
+	APIVersion                string
 }
 
 type odataErrorMessageMessage struct {
@@ -362,13 +364,13 @@ func (c Client) exec(verb, url string, headers map[string]string, body io.Reader
 			return nil, err
 		}
 
-		requestID := resp.Header.Get("x-ms-request-id")
+		requestID, date, version := getDebugHeaders(resp.Header)
 		if len(respBody) == 0 {
 			// no error in response body, might happen in HEAD requests
-			err = serviceErrFromStatusCode(resp.StatusCode, resp.Status, requestID)
+			err = serviceErrFromStatusCode(resp.StatusCode, resp.Status, requestID, date, version)
 		} else {
 			// response contains storage service error object, unmarshal
-			storageErr, errIn := serviceErrFromXML(respBody, resp.StatusCode, requestID)
+			storageErr, errIn := serviceErrFromXML(respBody, resp.StatusCode, requestID, date, version)
 			if err != nil { // error unmarshaling the error response
 				err = errIn
 			}
@@ -421,9 +423,10 @@ func (c Client) execInternalJSON(verb, url string, headers map[string]string, bo
 			return nil, err
 		}
 
+		requestID, date, version := getDebugHeaders(resp.Header)
 		if len(respBody) == 0 {
 			// no error in response body, might happen in HEAD requests
-			err = serviceErrFromStatusCode(resp.StatusCode, resp.Status, resp.Header.Get("x-ms-request-id"))
+			err = serviceErrFromStatusCode(resp.StatusCode, resp.Status, requestID, date, version)
 			return respToRet, err
 		}
 		// try unmarshal as odata.error json
@@ -443,10 +446,12 @@ func readAndCloseBody(body io.ReadCloser) ([]byte, error) {
 	return out, err
 }
 
-func serviceErrFromXML(body []byte, statusCode int, requestID string) (AzureStorageServiceError, error) {
+func serviceErrFromXML(body []byte, statusCode int, requestID, date, version string) (AzureStorageServiceError, error) {
 	storageErr := AzureStorageServiceError{
 		StatusCode: statusCode,
 		RequestID:  requestID,
+		Date:       date,
+		APIVersion: version,
 	}
 	if err := xml.Unmarshal(body, &storageErr); err != nil {
 		storageErr.Message = fmt.Sprintf("Response body could no be unmarshaled: %v. Body: %v.", err, string(body))
@@ -455,18 +460,20 @@ func serviceErrFromXML(body []byte, statusCode int, requestID string) (AzureStor
 	return storageErr, nil
 }
 
-func serviceErrFromStatusCode(code int, status string, requestID string) AzureStorageServiceError {
+func serviceErrFromStatusCode(code int, status string, requestID, date, version string) AzureStorageServiceError {
 	return AzureStorageServiceError{
 		StatusCode: code,
 		Code:       status,
 		RequestID:  requestID,
+		Date:       date,
+		APIVersion: version,
 		Message:    "no response body was available for error status code",
 	}
 }
 
 func (e AzureStorageServiceError) Error() string {
-	return fmt.Sprintf("storage: service returned error: StatusCode=%d, ErrorCode=%s, ErrorMessage=%s, RequestId=%s, QueryParameterName=%s, QueryParameterValue=%s",
-		e.StatusCode, e.Code, e.Message, e.RequestID, e.QueryParameterName, e.QueryParameterValue)
+	return fmt.Sprintf("storage: service returned error: StatusCode=%d, ErrorCode=%s, ErrorMessage=%s, RequestInitiated=%s, RequestId=%s, API Version=%s, QueryParameterName=%s, QueryParameterValue=%s",
+		e.StatusCode, e.Code, e.Message, e.Date, e.RequestID, e.APIVersion, e.QueryParameterName, e.QueryParameterValue)
 }
 
 // checkRespCode returns UnexpectedStatusError if the given response code is not
@@ -486,4 +493,11 @@ func (c Client) addMetadataToHeaders(h map[string]string, metadata map[string]st
 		h[userDefinedMetadataHeaderPrefix+k] = v
 	}
 	return h
+}
+
+func getDebugHeaders(h http.Header) (requestID, date, version string) {
+	requestID = h.Get("x-ms-request-id")
+	version = h.Get("x-ms-version")
+	date = h.Get("Date")
+	return
 }

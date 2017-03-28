@@ -3,13 +3,13 @@ package storage
 import (
 	"bytes"
 	"encoding/json"
-	"errors"
 	"fmt"
 	"io"
 	"io/ioutil"
 	"net/http"
 	"net/url"
 	"strconv"
+	"strings"
 	"time"
 )
 
@@ -48,7 +48,8 @@ type Table struct {
 type EntityQueryResult struct {
 	OdataMetadata string   `json:"odata.metadata"`
 	Entities      []Entity `json:"value"`
-	NextLink      *string
+	QueryNextLink
+	table *Table
 }
 
 type continuationToken struct {
@@ -66,7 +67,7 @@ func (t *Table) buildPath() string {
 // ml determines the level of detail of metadata in the operation response,
 // or no data at all.
 // See https://docs.microsoft.com/rest/api/storageservices/fileservices/create-table
-func (t *Table) Create(ml MetadataLevel, timeout uint) error {
+func (t *Table) Create(timeout uint, ml MetadataLevel, options *TableOptions) error {
 	uri := t.tsc.client.getEndpoint(tableServiceName, tablesURIPath, url.Values{
 		"timeout": {strconv.FormatUint(uint64(timeout), 10)},
 	})
@@ -83,6 +84,7 @@ func (t *Table) Create(ml MetadataLevel, timeout uint) error {
 	headers := t.tsc.client.getStandardHeaders()
 	headers = addReturnContentHeaders(headers, ml)
 	headers = addBodyRelatedHeaders(headers, buf.Len())
+	headers = options.addToHeaders(headers)
 
 	resp, err := t.tsc.client.exec(http.MethodPost, uri, headers, buf, t.tsc.auth)
 	if err != nil {
@@ -118,7 +120,7 @@ func (t *Table) Create(ml MetadataLevel, timeout uint) error {
 // This function fails if the table is not present.
 // Be advised: Delete deletes all the entries that may be present.
 // See https://docs.microsoft.com/rest/api/storageservices/fileservices/delete-table
-func (t *Table) Delete(timeout uint) error {
+func (t *Table) Delete(timeout uint, options *TableOptions) error {
 	path := bytes.NewBufferString(tablesURIPath)
 	path.WriteString("('")
 	path.WriteString(t.Name)
@@ -130,6 +132,7 @@ func (t *Table) Delete(timeout uint) error {
 
 	headers := t.tsc.client.getStandardHeaders()
 	headers = addReturnContentHeaders(headers, EmptyPayload)
+	headers = options.addToHeaders(headers)
 
 	resp, err := t.tsc.client.exec(http.MethodDelete, uri, headers, nil, t.tsc.auth)
 	if err != nil {
@@ -144,38 +147,73 @@ func (t *Table) Delete(timeout uint) error {
 	return nil
 }
 
-// ExecuteQuery returns the entities in the table.
+// QueryOptions includes options for a query entities operation.
+// Top, filter and select are OData query options.
+type QueryOptions struct {
+	Top       uint
+	Filter    string
+	Select    []string
+	RequestID string
+}
+
+func (options *QueryOptions) getParameters() (url.Values, map[string]string) {
+	query := url.Values{}
+	headers := map[string]string{}
+	if options != nil {
+		if options.Top > 0 {
+			query.Add(OdataTop, strconv.FormatUint(uint64(options.Top), 10))
+		}
+		if options.Filter != "" {
+			query.Add(OdataFilter, options.Filter)
+		}
+		if len(options.Select) > 0 {
+			query.Add(OdataSelect, strings.Join(options.Select, ","))
+		}
+		headers = addToHeaders(headers, "x-ms-client-request-id", options.RequestID)
+	}
+	return query, headers
+}
+
+// QueryEntities returns the entities in the table.
 // You can use query options defined by the OData Protocol specification.
 //
 // See: https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/query-entities
-func (t *Table) ExecuteQuery(odataQuery url.Values, timeout uint) (*EntityQueryResult, error) {
-	query := fixOdataQuery(odataQuery)
-	query.Add("timeout", strconv.Itoa(int(timeout)))
-	uri := t.tsc.client.getEndpoint(tableServiceName, t.buildPath(), fixOdataQuery(odataQuery))
-	return t.executeQuery(uri)
+func (t *Table) QueryEntities(timeout uint, ml MetadataLevel, options *QueryOptions) (*EntityQueryResult, error) {
+	if ml == EmptyPayload {
+		return nil, errEmptyPayload
+	}
+	query, headers := options.getParameters()
+	query = addTimeout(query, timeout)
+	uri := t.tsc.client.getEndpoint(tableServiceName, t.buildPath(), query)
+	return t.queryEntities(uri, headers, ml)
 }
 
-// ExecuteQueryNextResults returns the next page of results
-// from a ExecuteQuery or ExecuteQueryNextResults operation.
+// NextResults returns the next page of results
+// from a QueryEntities or NextResults operation.
 //
 // See: https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/query-entities
 // See https://docs.microsoft.com/rest/api/storageservices/fileservices/query-timeout-and-pagination
-func (t *Table) ExecuteQueryNextResults(results *EntityQueryResult) (*EntityQueryResult, error) {
-	if results.NextLink == nil {
-		return nil, errors.New("There are no more pages in this query results")
+func (eqr *EntityQueryResult) NextResults(options *TableOptions) (*EntityQueryResult, error) {
+	if eqr == nil {
+		return nil, errNilPreviousResult
 	}
-	return t.executeQuery(*results.NextLink)
+	if eqr.NextLink == nil {
+		return nil, errNilNextLink
+	}
+	headers := options.addToHeaders(map[string]string{})
+	return eqr.table.queryEntities(*eqr.NextLink, headers, eqr.ml)
 }
 
 // SetPermissions sets up table ACL permissions
 // See https://docs.microsoft.com/rest/api/storageservices/fileservices/Set-Table-ACL
-func (t *Table) SetPermissions(tap []TableAccessPolicy, timeout uint) error {
+func (t *Table) SetPermissions(tap []TableAccessPolicy, timeout uint, options *TableOptions) error {
 	params := url.Values{"comp": {"acl"},
 		"timeout": {strconv.Itoa(int(timeout))},
 	}
 
 	uri := t.tsc.client.getEndpoint(tableServiceName, t.Name, params)
 	headers := t.tsc.client.getStandardHeaders()
+	headers = options.addToHeaders(headers)
 
 	body, length, err := generateTableACLPayload(tap)
 	if err != nil {
@@ -209,13 +247,14 @@ func generateTableACLPayload(policies []TableAccessPolicy) (io.Reader, int, erro
 
 // GetPermissions gets the table ACL permissions
 // See https://docs.microsoft.com/rest/api/storageservices/fileservices/get-table-acl
-func (t *Table) GetPermissions(timeout int) ([]TableAccessPolicy, error) {
+func (t *Table) GetPermissions(timeout int, options *TableOptions) ([]TableAccessPolicy, error) {
 	params := url.Values{"comp": {"acl"},
 		"timeout": {strconv.Itoa(int(timeout))},
 	}
 
 	uri := t.tsc.client.getEndpoint(tableServiceName, t.Name, params)
 	headers := t.tsc.client.getStandardHeaders()
+	headers = options.addToHeaders(headers)
 
 	resp, err := t.tsc.client.exec(http.MethodGet, uri, headers, nil, t.tsc.auth)
 	if err != nil {
@@ -235,9 +274,11 @@ func (t *Table) GetPermissions(timeout int) ([]TableAccessPolicy, error) {
 	return updateTableAccessPolicy(ap), nil
 }
 
-func (t *Table) executeQuery(uri string) (*EntityQueryResult, error) {
-	headers := t.tsc.client.getStandardHeaders()
-	headers[headerAccept] = "application/json;odata=fullmetadata"
+func (t *Table) queryEntities(uri string, headers map[string]string, ml MetadataLevel) (*EntityQueryResult, error) {
+	headers = mergeHeaders(headers, t.tsc.client.getStandardHeaders())
+	if ml != EmptyPayload {
+		headers[headerAccept] = string(ml)
+	}
 
 	resp, err := t.tsc.client.exec(http.MethodGet, uri, headers, nil, t.tsc.auth)
 	if err != nil {
@@ -262,6 +303,7 @@ func (t *Table) executeQuery(uri string) (*EntityQueryResult, error) {
 	for i := range entities.Entities {
 		entities.Entities[i].Table = t
 	}
+	entities.table = t
 
 	contToken := extractContinuationTokenFromHeaders(resp.headers)
 	if contToken == nil {
@@ -276,6 +318,7 @@ func (t *Table) executeQuery(uri string) (*EntityQueryResult, error) {
 		v.Set(nextRowKeyQueryParameter, contToken.NextRowKey)
 		newURI := t.tsc.client.getEndpoint(tableServiceName, t.buildPath(), v)
 		entities.NextLink = &newURI
+		entities.ml = ml
 	}
 
 	return &entities, nil

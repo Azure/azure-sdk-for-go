@@ -110,8 +110,9 @@ func (client GroupClient) CreateOrUpdatePreparer(resourceGroupName string, webSe
 		"webServiceName":    autorest.Encode("path", webServiceName),
 	}
 
+	const APIVersion = "2016-05-01-preview"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -179,8 +180,9 @@ func (client GroupClient) GetPreparer(resourceGroupName string, webServiceName s
 		"webServiceName":    autorest.Encode("path", webServiceName),
 	}
 
+	const APIVersion = "2016-05-01-preview"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -239,8 +241,9 @@ func (client GroupClient) ListPreparer(skiptoken string) (*http.Request, error) 
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
 
+	const APIVersion = "2016-05-01-preview"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 	if len(skiptoken) > 0 {
 		queryParameters["$skiptoken"] = autorest.Encode("query", skiptoken)
@@ -328,8 +331,9 @@ func (client GroupClient) ListByResourceGroupPreparer(resourceGroupName string, 
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
+	const APIVersion = "2016-05-01-preview"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 	if len(skiptoken) > 0 {
 		queryParameters["$skiptoken"] = autorest.Encode("query", skiptoken)
@@ -418,8 +422,9 @@ func (client GroupClient) ListKeysPreparer(resourceGroupName string, webServiceN
 		"webServiceName":    autorest.Encode("path", webServiceName),
 	}
 
+	const APIVersion = "2016-05-01-preview"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -486,8 +491,9 @@ func (client GroupClient) PatchPreparer(resourceGroupName string, webServiceName
 		"webServiceName":    autorest.Encode("path", webServiceName),
 	}
 
+	const APIVersion = "2016-05-01-preview"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -555,8 +561,9 @@ func (client GroupClient) RemovePreparer(resourceGroupName string, webServiceNam
 		"webServiceName":    autorest.Encode("path", webServiceName),
 	}
 
+	const APIVersion = "2016-05-01-preview"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(

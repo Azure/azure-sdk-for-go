@@ -31,9 +31,6 @@ import (
 )
 
 const (
-	// APIVersion is the version of the Cdn
-	APIVersion = "2016-10-02"
-
 	// DefaultBaseURI is the default URI used for the service Cdn
 	DefaultBaseURI = "https://management.azure.com"
 )
@@ -42,7 +39,6 @@ const (
 type ManagementClient struct {
 	autorest.Client
 	BaseURI        string
-	APIVersion     string
 	SubscriptionID string
 }
 
@@ -56,7 +52,6 @@ func NewWithBaseURI(baseURI string, subscriptionID string) ManagementClient {
 	return ManagementClient{
 		Client:         autorest.NewClientWithUserAgent(UserAgent()),
 		BaseURI:        baseURI,
-		APIVersion:     APIVersion,
 		SubscriptionID: subscriptionID,
 	}
 }
@@ -94,8 +89,9 @@ func (client ManagementClient) CheckNameAvailability(checkNameAvailabilityInput 
 
 // CheckNameAvailabilityPreparer prepares the CheckNameAvailability request.
 func (client ManagementClient) CheckNameAvailabilityPreparer(checkNameAvailabilityInput CheckNameAvailabilityInput) (*http.Request, error) {
+	const APIVersion = "2016-10-02"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -150,8 +146,9 @@ func (client ManagementClient) ListOperations() (result OperationListResult, err
 
 // ListOperationsPreparer prepares the ListOperations request.
 func (client ManagementClient) ListOperationsPreparer() (*http.Request, error) {
+	const APIVersion = "2016-10-02"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -233,8 +230,9 @@ func (client ManagementClient) ListResourceUsagePreparer() (*http.Request, error
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
 
+	const APIVersion = "2016-10-02"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(

@@ -73,8 +73,9 @@ func (client FirewallRulesClient) ListPreparer(resourceGroupName string, cacheNa
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
+	const APIVersion = "2016-04-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(

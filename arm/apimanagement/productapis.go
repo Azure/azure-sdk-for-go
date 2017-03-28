@@ -95,8 +95,9 @@ func (client ProductApisClient) AddPreparer(resourceGroupName string, serviceNam
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
+	const APIVersion = "2016-07-07"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -190,8 +191,9 @@ func (client ProductApisClient) ListByProductPreparer(resourceGroupName string, 
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
+	const APIVersion = "2016-07-07"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 	if len(filter) > 0 {
 		queryParameters["$filter"] = autorest.Encode("query", filter)
@@ -306,8 +308,9 @@ func (client ProductApisClient) RemovePreparer(resourceGroupName string, service
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
+	const APIVersion = "2016-07-07"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(

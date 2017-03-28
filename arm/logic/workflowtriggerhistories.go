@@ -76,8 +76,9 @@ func (client WorkflowTriggerHistoriesClient) GetPreparer(resourceGroupName strin
 		"workflowName":      autorest.Encode("path", workflowName),
 	}
 
+	const APIVersion = "2016-06-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -142,8 +143,9 @@ func (client WorkflowTriggerHistoriesClient) ListPreparer(resourceGroupName stri
 		"workflowName":      autorest.Encode("path", workflowName),
 	}
 
+	const APIVersion = "2016-06-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 	if top != nil {
 		queryParameters["$top"] = autorest.Encode("query", *top)

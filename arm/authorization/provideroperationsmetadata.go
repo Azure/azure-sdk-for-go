@@ -76,8 +76,9 @@ func (client ProviderOperationsMetadataClient) GetPreparer(resourceProviderNames
 		"resourceProviderNamespace": autorest.Encode("path", resourceProviderNamespace),
 	}
 
+	const APIVersion = "2015-07-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 	if len(expand) > 0 {
 		queryParameters["$expand"] = autorest.Encode("query", expand)
@@ -135,8 +136,9 @@ func (client ProviderOperationsMetadataClient) List(expand string) (result Provi
 
 // ListPreparer prepares the List request.
 func (client ProviderOperationsMetadataClient) ListPreparer(expand string) (*http.Request, error) {
+	const APIVersion = "2015-07-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 	if len(expand) > 0 {
 		queryParameters["$expand"] = autorest.Encode("query", expand)

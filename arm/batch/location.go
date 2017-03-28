@@ -71,8 +71,9 @@ func (client LocationClient) GetQuotasPreparer(locationName string) (*http.Reque
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
 
+	const APIVersion = "2017-01-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(

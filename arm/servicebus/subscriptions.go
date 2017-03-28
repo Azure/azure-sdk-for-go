@@ -94,8 +94,9 @@ func (client SubscriptionsClient) CreateOrUpdatePreparer(resourceGroupName strin
 		"topicName":         autorest.Encode("path", topicName),
 	}
 
+	const APIVersion = "2015-08-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -178,8 +179,9 @@ func (client SubscriptionsClient) DeletePreparer(resourceGroupName string, names
 		"topicName":         autorest.Encode("path", topicName),
 	}
 
+	const APIVersion = "2015-08-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -259,8 +261,9 @@ func (client SubscriptionsClient) GetPreparer(resourceGroupName string, namespac
 		"topicName":         autorest.Encode("path", topicName),
 	}
 
+	const APIVersion = "2015-08-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -337,8 +340,9 @@ func (client SubscriptionsClient) ListByTopicPreparer(resourceGroupName string, 
 		"topicName":         autorest.Encode("path", topicName),
 	}
 
+	const APIVersion = "2015-08-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(

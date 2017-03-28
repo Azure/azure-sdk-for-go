@@ -90,8 +90,9 @@ func (client UserIdentitiesClient) ListByUserPreparer(resourceGroupName string, 
 		"uid":               autorest.Encode("path", uid),
 	}
 
+	const APIVersion = "2016-07-07"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(

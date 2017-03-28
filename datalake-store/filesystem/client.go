@@ -27,8 +27,6 @@ import (
 )
 
 const (
-	// APIVersion is the version of the Filesystem
-	APIVersion = "2016-11-01"
 	// DefaultAdlsFileSystemDNSSuffix is the default value for adls file system dns suffix
 	DefaultAdlsFileSystemDNSSuffix = "azuredatalakestore.net"
 )
@@ -36,7 +34,6 @@ const (
 // ManagementClient is the base client for Filesystem.
 type ManagementClient struct {
 	autorest.Client
-	APIVersion              string
 	AdlsFileSystemDNSSuffix string
 }
 
@@ -49,7 +46,6 @@ func New() ManagementClient {
 func NewWithoutDefaults(adlsFileSystemDNSSuffix string) ManagementClient {
 	return ManagementClient{
 		Client:                  autorest.NewClientWithUserAgent(UserAgent()),
-		APIVersion:              APIVersion,
 		AdlsFileSystemDNSSuffix: adlsFileSystemDNSSuffix,
 	}
 }

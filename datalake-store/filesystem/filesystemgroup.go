@@ -95,8 +95,9 @@ func (client GroupClient) AppendPreparer(accountName string, directFilePath stri
 		"directFilePath": autorest.Encode("path", directFilePath),
 	}
 
+	const APIVersion = "2016-11-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 		"append":      autorest.Encode("query", appendParameter),
 		"op":          autorest.Encode("query", op),
 	}
@@ -178,8 +179,9 @@ func (client GroupClient) CheckAccessPreparer(accountName string, pathParameter 
 		"path": autorest.Encode("path", pathParameter),
 	}
 
+	const APIVersion = "2016-11-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 		"fsaction":    autorest.Encode("query", fsaction),
 		"op":          autorest.Encode("query", op),
 	}
@@ -256,8 +258,9 @@ func (client GroupClient) ConcatPreparer(accountName string, destinationPath str
 		"destinationPath": autorest.Encode("path", destinationPath),
 	}
 
+	const APIVersion = "2016-11-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 		"op":          autorest.Encode("query", op),
 		"sources":     autorest.Encode("query", sources, ","),
 	}
@@ -342,8 +345,9 @@ func (client GroupClient) ConcurrentAppendPreparer(accountName string, filePath 
 		"filePath": autorest.Encode("path", filePath),
 	}
 
+	const APIVersion = "2016-11-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 		"op":          autorest.Encode("query", op),
 	}
 	if len(string(appendMode)) > 0 {
@@ -435,8 +439,9 @@ func (client GroupClient) CreatePreparer(accountName string, directFilePath stri
 		"directFilePath": autorest.Encode("path", directFilePath),
 	}
 
+	const APIVersion = "2016-11-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 		"op":          autorest.Encode("query", op),
 		"write":       autorest.Encode("query", write),
 	}
@@ -521,8 +526,9 @@ func (client GroupClient) DeletePreparer(accountName string, filePath string, op
 		"filePath": autorest.Encode("path", filePath),
 	}
 
+	const APIVersion = "2016-11-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 		"op":          autorest.Encode("query", op),
 	}
 	if recursive != nil {
@@ -597,8 +603,9 @@ func (client GroupClient) GetACLStatusPreparer(accountName string, aclFilePath s
 		"aclFilePath": autorest.Encode("path", aclFilePath),
 	}
 
+	const APIVersion = "2016-11-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 		"op":          autorest.Encode("query", op),
 	}
 	if tooID != nil {
@@ -670,8 +677,9 @@ func (client GroupClient) GetContentSummaryPreparer(accountName string, getConte
 		"getContentSummaryFilePath": autorest.Encode("path", getContentSummaryFilePath),
 	}
 
+	const APIVersion = "2016-11-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 		"op":          autorest.Encode("query", op),
 	}
 
@@ -742,8 +750,9 @@ func (client GroupClient) GetFileStatusPreparer(accountName string, getFilePath 
 		"getFilePath": autorest.Encode("path", getFilePath),
 	}
 
+	const APIVersion = "2016-11-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 		"op":          autorest.Encode("query", op),
 	}
 	if tooID != nil {
@@ -824,8 +833,9 @@ func (client GroupClient) ListFileStatusPreparer(accountName string, listFilePat
 		"listFilePath": autorest.Encode("path", listFilePath),
 	}
 
+	const APIVersion = "2016-11-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 		"op":          autorest.Encode("query", op),
 	}
 	if listSize != nil {
@@ -906,8 +916,9 @@ func (client GroupClient) MkdirsPreparer(accountName string, pathParameter strin
 		"path": autorest.Encode("path", pathParameter),
 	}
 
+	const APIVersion = "2016-11-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 		"op":          autorest.Encode("query", op),
 	}
 	if permission != nil {
@@ -981,9 +992,10 @@ func (client GroupClient) ModifyACLEntriesPreparer(accountName string, modifyACL
 		"modifyAclFilePath": autorest.Encode("path", modifyACLFilePath),
 	}
 
+	const APIVersion = "2016-11-01"
 	queryParameters := map[string]interface{}{
 		"aclspec":     autorest.Encode("query", aclspec),
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 		"op":          autorest.Encode("query", op),
 	}
 
@@ -1064,8 +1076,9 @@ func (client GroupClient) MsConcatPreparer(accountName string, msConcatDestinati
 		"msConcatDestinationPath": autorest.Encode("path", msConcatDestinationPath),
 	}
 
+	const APIVersion = "2016-11-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 		"op":          autorest.Encode("query", op),
 	}
 	if deleteSourceDirectory != nil {
@@ -1143,8 +1156,9 @@ func (client GroupClient) OpenPreparer(accountName string, directFilePath string
 		"directFilePath": autorest.Encode("path", directFilePath),
 	}
 
+	const APIVersion = "2016-11-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 		"op":          autorest.Encode("query", op),
 		"read":        autorest.Encode("query", read),
 	}
@@ -1222,8 +1236,9 @@ func (client GroupClient) RemoveACLPreparer(accountName string, aclFilePath stri
 		"aclFilePath": autorest.Encode("path", aclFilePath),
 	}
 
+	const APIVersion = "2016-11-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 		"op":          autorest.Encode("query", op),
 	}
 
@@ -1292,9 +1307,10 @@ func (client GroupClient) RemoveACLEntriesPreparer(accountName string, removeACL
 		"removeAclFilePath": autorest.Encode("path", removeACLFilePath),
 	}
 
+	const APIVersion = "2016-11-01"
 	queryParameters := map[string]interface{}{
 		"aclspec":     autorest.Encode("query", aclspec),
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 		"op":          autorest.Encode("query", op),
 	}
 
@@ -1362,8 +1378,9 @@ func (client GroupClient) RemoveDefaultACLPreparer(accountName string, defaultAC
 		"defaultAclFilePath": autorest.Encode("path", defaultACLFilePath),
 	}
 
+	const APIVersion = "2016-11-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 		"op":          autorest.Encode("query", op),
 	}
 
@@ -1431,8 +1448,9 @@ func (client GroupClient) RenamePreparer(accountName string, renameFilePath stri
 		"renameFilePath": autorest.Encode("path", renameFilePath),
 	}
 
+	const APIVersion = "2016-11-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 		"destination": autorest.Encode("query", destination),
 		"op":          autorest.Encode("query", op),
 	}
@@ -1503,9 +1521,10 @@ func (client GroupClient) SetACLPreparer(accountName string, setACLFilePath stri
 		"setAclFilePath": autorest.Encode("path", setACLFilePath),
 	}
 
+	const APIVersion = "2016-11-01"
 	queryParameters := map[string]interface{}{
 		"aclspec":     autorest.Encode("query", aclspec),
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 		"op":          autorest.Encode("query", op),
 	}
 
@@ -1582,8 +1601,9 @@ func (client GroupClient) SetFileExpiryPreparer(accountName string, filePath str
 		"filePath": autorest.Encode("path", filePath),
 	}
 
+	const APIVersion = "2016-11-01"
 	queryParameters := map[string]interface{}{
-		"api-version":  client.APIVersion,
+		"api-version":  APIVersion,
 		"expiryOption": autorest.Encode("query", expiryOption),
 		"op":           autorest.Encode("query", op),
 	}
@@ -1657,8 +1677,9 @@ func (client GroupClient) SetOwnerPreparer(accountName string, setOwnerFilePath 
 		"setOwnerFilePath": autorest.Encode("path", setOwnerFilePath),
 	}
 
+	const APIVersion = "2016-11-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 		"op":          autorest.Encode("query", op),
 	}
 	if len(owner) > 0 {
@@ -1732,8 +1753,9 @@ func (client GroupClient) SetPermissionPreparer(accountName string, setPermissio
 		"setPermissionFilePath": autorest.Encode("path", setPermissionFilePath),
 	}
 
+	const APIVersion = "2016-11-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 		"op":          autorest.Encode("query", op),
 	}
 	if len(permission) > 0 {

@@ -510,8 +510,9 @@ func (client AgreementsClient) CreateOrUpdatePreparer(resourceGroupName string, 
 		"subscriptionId":         autorest.Encode("path", client.SubscriptionID),
 	}
 
+	const APIVersion = "2016-06-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -577,8 +578,9 @@ func (client AgreementsClient) DeletePreparer(resourceGroupName string, integrat
 		"subscriptionId":         autorest.Encode("path", client.SubscriptionID),
 	}
 
+	const APIVersion = "2016-06-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -641,8 +643,9 @@ func (client AgreementsClient) GetPreparer(resourceGroupName string, integration
 		"subscriptionId":         autorest.Encode("path", client.SubscriptionID),
 	}
 
+	const APIVersion = "2016-06-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -705,8 +708,9 @@ func (client AgreementsClient) ListByIntegrationAccountsPreparer(resourceGroupNa
 		"subscriptionId":         autorest.Encode("path", client.SubscriptionID),
 	}
 
+	const APIVersion = "2016-06-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 	if top != nil {
 		queryParameters["$top"] = autorest.Encode("query", *top)

@@ -78,8 +78,9 @@ func (client RecommendedElasticPoolsClient) GetPreparer(resourceGroupName string
 		"subscriptionId":             autorest.Encode("path", client.SubscriptionID),
 	}
 
+	const APIVersion = "2014-04-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -146,8 +147,9 @@ func (client RecommendedElasticPoolsClient) GetDatabasesPreparer(resourceGroupNa
 		"subscriptionId":             autorest.Encode("path", client.SubscriptionID),
 	}
 
+	const APIVersion = "2014-04-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -210,8 +212,9 @@ func (client RecommendedElasticPoolsClient) ListPreparer(resourceGroupName strin
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
+	const APIVersion = "2014-04-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -276,8 +279,9 @@ func (client RecommendedElasticPoolsClient) ListDatabasesPreparer(resourceGroupN
 		"subscriptionId":             autorest.Encode("path", client.SubscriptionID),
 	}
 
+	const APIVersion = "2014-04-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -342,8 +346,9 @@ func (client RecommendedElasticPoolsClient) ListMetricsPreparer(resourceGroupNam
 		"subscriptionId":             autorest.Encode("path", client.SubscriptionID),
 	}
 
+	const APIVersion = "2014-04-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(

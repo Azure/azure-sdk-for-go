@@ -28,9 +28,6 @@ import (
 )
 
 const (
-	// APIVersion is the version of the Logic
-	APIVersion = "2016-06-01"
-
 	// DefaultBaseURI is the default URI used for the service Logic
 	DefaultBaseURI = "https://management.azure.com"
 )
@@ -39,7 +36,6 @@ const (
 type ManagementClient struct {
 	autorest.Client
 	BaseURI        string
-	APIVersion     string
 	SubscriptionID string
 }
 
@@ -53,7 +49,6 @@ func NewWithBaseURI(baseURI string, subscriptionID string) ManagementClient {
 	return ManagementClient{
 		Client:         autorest.NewClientWithUserAgent(UserAgent()),
 		BaseURI:        baseURI,
-		APIVersion:     APIVersion,
 		SubscriptionID: subscriptionID,
 	}
 }
@@ -81,8 +76,9 @@ func (client ManagementClient) ListOperations() (result OperationListResult, err
 
 // ListOperationsPreparer prepares the ListOperations request.
 func (client ManagementClient) ListOperationsPreparer() (*http.Request, error) {
+	const APIVersion = "2016-06-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(

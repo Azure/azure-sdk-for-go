@@ -80,8 +80,9 @@ func (client DataLakeStoreAccountsClient) AddPreparer(resourceGroupName string, 
 		"subscriptionId":           autorest.Encode("path", client.SubscriptionID),
 	}
 
+	const APIVersion = "2016-11-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -152,8 +153,9 @@ func (client DataLakeStoreAccountsClient) DeletePreparer(resourceGroupName strin
 		"subscriptionId":           autorest.Encode("path", client.SubscriptionID),
 	}
 
+	const APIVersion = "2016-11-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -219,8 +221,9 @@ func (client DataLakeStoreAccountsClient) GetPreparer(resourceGroupName string, 
 		"subscriptionId":           autorest.Encode("path", client.SubscriptionID),
 	}
 
+	const APIVersion = "2016-11-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -305,8 +308,9 @@ func (client DataLakeStoreAccountsClient) ListByAccountPreparer(resourceGroupNam
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
+	const APIVersion = "2016-11-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 	if len(filter) > 0 {
 		queryParameters["$filter"] = autorest.Encode("query", filter)

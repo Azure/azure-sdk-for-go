@@ -74,8 +74,9 @@ func (client WorkflowTriggersClient) GetPreparer(resourceGroupName string, workf
 		"workflowName":      autorest.Encode("path", workflowName),
 	}
 
+	const APIVersion = "2016-06-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -138,8 +139,9 @@ func (client WorkflowTriggersClient) ListPreparer(resourceGroupName string, work
 		"workflowName":      autorest.Encode("path", workflowName),
 	}
 
+	const APIVersion = "2016-06-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 	if top != nil {
 		queryParameters["$top"] = autorest.Encode("query", *top)
@@ -232,8 +234,9 @@ func (client WorkflowTriggersClient) ListCallbackURLPreparer(resourceGroupName s
 		"workflowName":      autorest.Encode("path", workflowName),
 	}
 
+	const APIVersion = "2016-06-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -296,8 +299,9 @@ func (client WorkflowTriggersClient) RunPreparer(resourceGroupName string, workf
 		"workflowName":      autorest.Encode("path", workflowName),
 	}
 
+	const APIVersion = "2016-06-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(

@@ -87,8 +87,9 @@ func (client TopicsClient) CreateOrUpdatePreparer(resourceGroupName string, name
 		"topicName":         autorest.Encode("path", topicName),
 	}
 
+	const APIVersion = "2015-08-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -176,8 +177,9 @@ func (client TopicsClient) CreateOrUpdateAuthorizationRulePreparer(resourceGroup
 		"topicName":             autorest.Encode("path", topicName),
 	}
 
+	const APIVersion = "2015-08-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -256,8 +258,9 @@ func (client TopicsClient) DeletePreparer(resourceGroupName string, namespaceNam
 		"topicName":         autorest.Encode("path", topicName),
 	}
 
+	const APIVersion = "2015-08-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -337,8 +340,9 @@ func (client TopicsClient) DeleteAuthorizationRulePreparer(resourceGroupName str
 		"topicName":             autorest.Encode("path", topicName),
 	}
 
+	const APIVersion = "2015-08-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -414,8 +418,9 @@ func (client TopicsClient) GetPreparer(resourceGroupName string, namespaceName s
 		"topicName":         autorest.Encode("path", topicName),
 	}
 
+	const APIVersion = "2015-08-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -496,8 +501,9 @@ func (client TopicsClient) GetAuthorizationRulePreparer(resourceGroupName string
 		"topicName":             autorest.Encode("path", topicName),
 	}
 
+	const APIVersion = "2015-08-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -574,8 +580,9 @@ func (client TopicsClient) ListAuthorizationRulesPreparer(resourceGroupName stri
 		"topicName":         autorest.Encode("path", topicName),
 	}
 
+	const APIVersion = "2015-08-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -671,8 +678,9 @@ func (client TopicsClient) ListByNamespacePreparer(resourceGroupName string, nam
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
+	const APIVersion = "2015-08-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -777,8 +785,9 @@ func (client TopicsClient) ListKeysPreparer(resourceGroupName string, namespaceN
 		"topicName":             autorest.Encode("path", topicName),
 	}
 
+	const APIVersion = "2015-08-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -861,8 +870,9 @@ func (client TopicsClient) RegenerateKeysPreparer(resourceGroupName string, name
 		"topicName":             autorest.Encode("path", topicName),
 	}
 
+	const APIVersion = "2015-08-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(

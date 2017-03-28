@@ -73,8 +73,9 @@ func (client WorkflowRunsClient) CancelPreparer(resourceGroupName string, workfl
 		"workflowName":      autorest.Encode("path", workflowName),
 	}
 
+	const APIVersion = "2016-06-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -136,8 +137,9 @@ func (client WorkflowRunsClient) GetPreparer(resourceGroupName string, workflowN
 		"workflowName":      autorest.Encode("path", workflowName),
 	}
 
+	const APIVersion = "2016-06-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -200,8 +202,9 @@ func (client WorkflowRunsClient) ListPreparer(resourceGroupName string, workflow
 		"workflowName":      autorest.Encode("path", workflowName),
 	}
 
+	const APIVersion = "2016-06-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 	if top != nil {
 		queryParameters["$top"] = autorest.Encode("query", *top)

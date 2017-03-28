@@ -91,8 +91,9 @@ func (client ManagementLocksClient) CreateOrUpdateAtResourceGroupLevelPreparer(r
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
+	const APIVersion = "2016-09-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -180,8 +181,9 @@ func (client ManagementLocksClient) CreateOrUpdateAtResourceLevelPreparer(resour
 		"subscriptionId":            autorest.Encode("path", client.SubscriptionID),
 	}
 
+	const APIVersion = "2016-09-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -255,8 +257,9 @@ func (client ManagementLocksClient) CreateOrUpdateAtSubscriptionLevelPreparer(lo
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
 
+	const APIVersion = "2016-09-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -330,8 +333,9 @@ func (client ManagementLocksClient) CreateOrUpdateByScopePreparer(scope string, 
 		"scope":    autorest.Encode("path", scope),
 	}
 
+	const APIVersion = "2016-09-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -406,8 +410,9 @@ func (client ManagementLocksClient) DeleteAtResourceGroupLevelPreparer(resourceG
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
+	const APIVersion = "2016-09-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -487,8 +492,9 @@ func (client ManagementLocksClient) DeleteAtResourceLevelPreparer(resourceGroupN
 		"subscriptionId":            autorest.Encode("path", client.SubscriptionID),
 	}
 
+	const APIVersion = "2016-09-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -550,8 +556,9 @@ func (client ManagementLocksClient) DeleteAtSubscriptionLevelPreparer(lockName s
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
 
+	const APIVersion = "2016-09-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -610,8 +617,9 @@ func (client ManagementLocksClient) DeleteByScopePreparer(scope string, lockName
 		"scope":    autorest.Encode("path", scope),
 	}
 
+	const APIVersion = "2016-09-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -680,8 +688,9 @@ func (client ManagementLocksClient) GetAtResourceGroupLevelPreparer(resourceGrou
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
+	const APIVersion = "2016-09-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -759,8 +768,9 @@ func (client ManagementLocksClient) GetAtResourceLevelPreparer(resourceGroupName
 		"subscriptionId":            autorest.Encode("path", client.SubscriptionID),
 	}
 
+	const APIVersion = "2016-09-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -820,8 +830,9 @@ func (client ManagementLocksClient) GetAtSubscriptionLevelPreparer(lockName stri
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
 
+	const APIVersion = "2016-09-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -881,8 +892,9 @@ func (client ManagementLocksClient) GetByScopePreparer(scope string, lockName st
 		"scope":    autorest.Encode("path", scope),
 	}
 
+	const APIVersion = "2016-09-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -951,8 +963,9 @@ func (client ManagementLocksClient) ListAtResourceGroupLevelPreparer(resourceGro
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
+	const APIVersion = "2016-09-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 	if len(filter) > 0 {
 		queryParameters["$filter"] = autorest.Encode("query", filter)
@@ -1057,8 +1070,9 @@ func (client ManagementLocksClient) ListAtResourceLevelPreparer(resourceGroupNam
 		"subscriptionId":            autorest.Encode("path", client.SubscriptionID),
 	}
 
+	const APIVersion = "2016-09-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 	if len(filter) > 0 {
 		queryParameters["$filter"] = autorest.Encode("query", filter)
@@ -1144,8 +1158,9 @@ func (client ManagementLocksClient) ListAtSubscriptionLevelPreparer(filter strin
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
 
+	const APIVersion = "2016-09-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 	if len(filter) > 0 {
 		queryParameters["$filter"] = autorest.Encode("query", filter)

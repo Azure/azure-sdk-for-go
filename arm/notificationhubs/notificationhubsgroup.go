@@ -80,8 +80,9 @@ func (client GroupClient) CheckAvailabilityPreparer(resourceGroupName string, na
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
+	const APIVersion = "2016-03-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -153,8 +154,9 @@ func (client GroupClient) CreateOrUpdatePreparer(resourceGroupName string, names
 		"subscriptionId":      autorest.Encode("path", client.SubscriptionID),
 	}
 
+	const APIVersion = "2016-03-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -229,8 +231,9 @@ func (client GroupClient) CreateOrUpdateAuthorizationRulePreparer(resourceGroupN
 		"subscriptionId":        autorest.Encode("path", client.SubscriptionID),
 	}
 
+	const APIVersion = "2016-03-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -295,8 +298,9 @@ func (client GroupClient) DeletePreparer(resourceGroupName string, namespaceName
 		"subscriptionId":      autorest.Encode("path", client.SubscriptionID),
 	}
 
+	const APIVersion = "2016-03-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -360,8 +364,9 @@ func (client GroupClient) DeleteAuthorizationRulePreparer(resourceGroupName stri
 		"subscriptionId":        autorest.Encode("path", client.SubscriptionID),
 	}
 
+	const APIVersion = "2016-03-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -423,8 +428,9 @@ func (client GroupClient) GetPreparer(resourceGroupName string, namespaceName st
 		"subscriptionId":      autorest.Encode("path", client.SubscriptionID),
 	}
 
+	const APIVersion = "2016-03-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -490,8 +496,9 @@ func (client GroupClient) GetAuthorizationRulePreparer(resourceGroupName string,
 		"subscriptionId":        autorest.Encode("path", client.SubscriptionID),
 	}
 
+	const APIVersion = "2016-03-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -555,8 +562,9 @@ func (client GroupClient) GetPnsCredentialsPreparer(resourceGroupName string, na
 		"subscriptionId":      autorest.Encode("path", client.SubscriptionID),
 	}
 
+	const APIVersion = "2016-03-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -618,8 +626,9 @@ func (client GroupClient) ListPreparer(resourceGroupName string, namespaceName s
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
+	const APIVersion = "2016-03-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -706,8 +715,9 @@ func (client GroupClient) ListAuthorizationRulesPreparer(resourceGroupName strin
 		"subscriptionId":      autorest.Encode("path", client.SubscriptionID),
 	}
 
+	const APIVersion = "2016-03-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -798,8 +808,9 @@ func (client GroupClient) ListKeysPreparer(resourceGroupName string, namespaceNa
 		"subscriptionId":        autorest.Encode("path", client.SubscriptionID),
 	}
 
+	const APIVersion = "2016-03-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -867,8 +878,9 @@ func (client GroupClient) RegenerateKeysPreparer(resourceGroupName string, names
 		"subscriptionId":        autorest.Encode("path", client.SubscriptionID),
 	}
 
+	const APIVersion = "2016-03-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(

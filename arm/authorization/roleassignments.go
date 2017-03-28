@@ -84,8 +84,9 @@ func (client RoleAssignmentsClient) CreatePreparer(scope string, roleAssignmentN
 		"scope":              scope,
 	}
 
+	const APIVersion = "2015-07-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -147,8 +148,9 @@ func (client RoleAssignmentsClient) CreateByIDPreparer(roleAssignmentID string, 
 		"roleAssignmentId": roleAssignmentID,
 	}
 
+	const APIVersion = "2015-07-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -211,8 +213,9 @@ func (client RoleAssignmentsClient) DeletePreparer(scope string, roleAssignmentN
 		"scope":              scope,
 	}
 
+	const APIVersion = "2015-07-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -271,8 +274,9 @@ func (client RoleAssignmentsClient) DeleteByIDPreparer(roleAssignmentID string) 
 		"roleAssignmentId": roleAssignmentID,
 	}
 
+	const APIVersion = "2015-07-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -333,8 +337,9 @@ func (client RoleAssignmentsClient) GetPreparer(scope string, roleAssignmentName
 		"scope":              scope,
 	}
 
+	const APIVersion = "2015-07-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -393,8 +398,9 @@ func (client RoleAssignmentsClient) GetByIDPreparer(roleAssignmentID string) (*h
 		"roleAssignmentId": roleAssignmentID,
 	}
 
+	const APIVersion = "2015-07-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -456,8 +462,9 @@ func (client RoleAssignmentsClient) ListPreparer(filter string) (*http.Request, 
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
 
+	const APIVersion = "2015-07-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 	if len(filter) > 0 {
 		queryParameters["$filter"] = autorest.Encode("query", filter)
@@ -555,8 +562,9 @@ func (client RoleAssignmentsClient) ListForResourcePreparer(resourceGroupName st
 		"subscriptionId":            autorest.Encode("path", client.SubscriptionID),
 	}
 
+	const APIVersion = "2015-07-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 	if len(filter) > 0 {
 		queryParameters["$filter"] = autorest.Encode("query", filter)
@@ -646,8 +654,9 @@ func (client RoleAssignmentsClient) ListForResourceGroupPreparer(resourceGroupNa
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
+	const APIVersion = "2015-07-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 	if len(filter) > 0 {
 		queryParameters["$filter"] = autorest.Encode("query", filter)
@@ -736,8 +745,9 @@ func (client RoleAssignmentsClient) ListForScopePreparer(scope string, filter st
 		"scope": scope,
 	}
 
+	const APIVersion = "2015-07-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 	if len(filter) > 0 {
 		queryParameters["$filter"] = autorest.Encode("query", filter)

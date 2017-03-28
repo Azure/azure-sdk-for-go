@@ -74,8 +74,9 @@ func (client ImportTasksClient) CreatePreparer(resourceGroupName string, appColl
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
+	const APIVersion = "2014-12-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -143,8 +144,9 @@ func (client ImportTasksClient) GetPreparer(id string, resourceGroupName string,
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
+	const APIVersion = "2014-12-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -235,8 +237,9 @@ func (client ImportTasksClient) ListPreparer(resourceGroupName string, appCollec
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
+	const APIVersion = "2014-12-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 	if skip != nil {
 		queryParameters["$skip"] = autorest.Encode("query", *skip)

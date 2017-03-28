@@ -91,8 +91,9 @@ func (client ApplicationPackageClient) ActivatePreparer(resourceGroupName string
 		"version":           autorest.Encode("path", version),
 	}
 
+	const APIVersion = "2017-01-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -168,8 +169,9 @@ func (client ApplicationPackageClient) CreatePreparer(resourceGroupName string, 
 		"version":           autorest.Encode("path", version),
 	}
 
+	const APIVersion = "2017-01-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -244,8 +246,9 @@ func (client ApplicationPackageClient) DeletePreparer(resourceGroupName string, 
 		"version":           autorest.Encode("path", version),
 	}
 
+	const APIVersion = "2017-01-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -319,8 +322,9 @@ func (client ApplicationPackageClient) GetPreparer(resourceGroupName string, acc
 		"version":           autorest.Encode("path", version),
 	}
 
+	const APIVersion = "2017-01-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(

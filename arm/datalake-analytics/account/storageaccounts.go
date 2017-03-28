@@ -88,8 +88,9 @@ func (client StorageAccountsClient) AddPreparer(resourceGroupName string, accoun
 		"subscriptionId":     autorest.Encode("path", client.SubscriptionID),
 	}
 
+	const APIVersion = "2016-11-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -156,8 +157,9 @@ func (client StorageAccountsClient) DeletePreparer(resourceGroupName string, acc
 		"subscriptionId":     autorest.Encode("path", client.SubscriptionID),
 	}
 
+	const APIVersion = "2016-11-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -223,8 +225,9 @@ func (client StorageAccountsClient) GetPreparer(resourceGroupName string, accoun
 		"subscriptionId":     autorest.Encode("path", client.SubscriptionID),
 	}
 
+	const APIVersion = "2016-11-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -293,8 +296,9 @@ func (client StorageAccountsClient) GetStorageContainerPreparer(resourceGroupNam
 		"subscriptionId":     autorest.Encode("path", client.SubscriptionID),
 	}
 
+	const APIVersion = "2016-11-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -379,8 +383,9 @@ func (client StorageAccountsClient) ListByAccountPreparer(resourceGroupName stri
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
+	const APIVersion = "2016-11-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 	if len(filter) > 0 {
 		queryParameters["$filter"] = autorest.Encode("query", filter)
@@ -491,8 +496,9 @@ func (client StorageAccountsClient) ListSasTokensPreparer(resourceGroupName stri
 		"subscriptionId":     autorest.Encode("path", client.SubscriptionID),
 	}
 
+	const APIVersion = "2016-11-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -585,8 +591,9 @@ func (client StorageAccountsClient) ListStorageContainersPreparer(resourceGroupN
 		"subscriptionId":     autorest.Encode("path", client.SubscriptionID),
 	}
 
+	const APIVersion = "2016-11-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -678,8 +685,9 @@ func (client StorageAccountsClient) UpdatePreparer(resourceGroupName string, acc
 		"subscriptionId":     autorest.Encode("path", client.SubscriptionID),
 	}
 
+	const APIVersion = "2016-11-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(

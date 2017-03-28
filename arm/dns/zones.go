@@ -77,8 +77,9 @@ func (client ZonesClient) CreateOrUpdatePreparer(resourceGroupName string, zoneN
 		"zoneName":          autorest.Encode("path", zoneName),
 	}
 
+	const APIVersion = "2016-04-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -157,8 +158,9 @@ func (client ZonesClient) DeletePreparer(resourceGroupName string, zoneName stri
 		"zoneName":          autorest.Encode("path", zoneName),
 	}
 
+	const APIVersion = "2016-04-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -226,8 +228,9 @@ func (client ZonesClient) GetPreparer(resourceGroupName string, zoneName string)
 		"zoneName":          autorest.Encode("path", zoneName),
 	}
 
+	const APIVersion = "2016-04-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -287,8 +290,9 @@ func (client ZonesClient) ListPreparer(top *int32) (*http.Request, error) {
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
 
+	const APIVersion = "2016-04-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 	if top != nil {
 		queryParameters["$top"] = autorest.Encode("query", *top)
@@ -377,8 +381,9 @@ func (client ZonesClient) ListByResourceGroupPreparer(resourceGroupName string, 
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
+	const APIVersion = "2016-04-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 	if top != nil {
 		queryParameters["$top"] = autorest.Encode("query", *top)

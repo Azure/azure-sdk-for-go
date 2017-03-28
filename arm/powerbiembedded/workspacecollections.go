@@ -74,8 +74,9 @@ func (client WorkspaceCollectionsClient) CheckNameAvailabilityPreparer(location 
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
 
+	const APIVersion = "2016-01-29"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -152,8 +153,9 @@ func (client WorkspaceCollectionsClient) CreatePreparer(resourceGroupName string
 		"workspaceCollectionName": autorest.Encode("path", workspaceCollectionName),
 	}
 
+	const APIVersion = "2016-01-29"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -220,8 +222,9 @@ func (client WorkspaceCollectionsClient) DeletePreparer(resourceGroupName string
 		"workspaceCollectionName": autorest.Encode("path", workspaceCollectionName),
 	}
 
+	const APIVersion = "2016-01-29"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -285,8 +288,9 @@ func (client WorkspaceCollectionsClient) GetAccessKeysPreparer(resourceGroupName
 		"workspaceCollectionName": autorest.Encode("path", workspaceCollectionName),
 	}
 
+	const APIVersion = "2016-01-29"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -348,8 +352,9 @@ func (client WorkspaceCollectionsClient) GetByNamePreparer(resourceGroupName str
 		"workspaceCollectionName": autorest.Encode("path", workspaceCollectionName),
 	}
 
+	const APIVersion = "2016-01-29"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -410,8 +415,9 @@ func (client WorkspaceCollectionsClient) ListByResourceGroupPreparer(resourceGro
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
+	const APIVersion = "2016-01-29"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -469,8 +475,9 @@ func (client WorkspaceCollectionsClient) ListBySubscriptionPreparer() (*http.Req
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
 
+	const APIVersion = "2016-01-29"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -532,8 +539,9 @@ func (client WorkspaceCollectionsClient) MigratePreparer(resourceGroupName strin
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
+	const APIVersion = "2016-01-29"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -597,8 +605,9 @@ func (client WorkspaceCollectionsClient) RegenerateKeyPreparer(resourceGroupName
 		"workspaceCollectionName": autorest.Encode("path", workspaceCollectionName),
 	}
 
+	const APIVersion = "2016-01-29"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -664,8 +673,9 @@ func (client WorkspaceCollectionsClient) UpdatePreparer(resourceGroupName string
 		"workspaceCollectionName": autorest.Encode("path", workspaceCollectionName),
 	}
 
+	const APIVersion = "2016-01-29"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(

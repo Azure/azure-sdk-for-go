@@ -77,8 +77,9 @@ func (client RoleDefinitionsClient) CreateOrUpdatePreparer(scope string, roleDef
 		"scope":            scope,
 	}
 
+	const APIVersion = "2015-07-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -141,8 +142,9 @@ func (client RoleDefinitionsClient) DeletePreparer(scope string, roleDefinitionI
 		"scope":            scope,
 	}
 
+	const APIVersion = "2015-07-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -203,8 +205,9 @@ func (client RoleDefinitionsClient) GetPreparer(scope string, roleDefinitionID s
 		"scope":            scope,
 	}
 
+	const APIVersion = "2015-07-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -263,8 +266,9 @@ func (client RoleDefinitionsClient) GetByIDPreparer(roleDefinitionID string) (*h
 		"roleDefinitionId": roleDefinitionID,
 	}
 
+	const APIVersion = "2015-07-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -325,8 +329,9 @@ func (client RoleDefinitionsClient) ListPreparer(scope string, filter string) (*
 		"scope": scope,
 	}
 
+	const APIVersion = "2015-07-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 	if len(filter) > 0 {
 		queryParameters["$filter"] = autorest.Encode("query", filter)

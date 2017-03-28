@@ -65,8 +65,9 @@ func (client EdgeNodesClient) List() (result EdgenodeResult, err error) {
 
 // ListPreparer prepares the List request.
 func (client EdgeNodesClient) ListPreparer() (*http.Request, error) {
+	const APIVersion = "2016-10-02"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(

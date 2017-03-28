@@ -30,9 +30,6 @@ import (
 )
 
 const (
-	// APIVersion is the version of the Powerbiembedded
-	APIVersion = "2016-01-29"
-
 	// DefaultBaseURI is the default URI used for the service Powerbiembedded
 	DefaultBaseURI = "https://management.azure.com"
 )
@@ -41,7 +38,6 @@ const (
 type ManagementClient struct {
 	autorest.Client
 	BaseURI        string
-	APIVersion     string
 	SubscriptionID string
 }
 
@@ -55,7 +51,6 @@ func NewWithBaseURI(baseURI string, subscriptionID string) ManagementClient {
 	return ManagementClient{
 		Client:         autorest.NewClientWithUserAgent(UserAgent()),
 		BaseURI:        baseURI,
-		APIVersion:     APIVersion,
 		SubscriptionID: subscriptionID,
 	}
 }
@@ -84,8 +79,9 @@ func (client ManagementClient) GetAvailableOperations() (result OperationList, e
 
 // GetAvailableOperationsPreparer prepares the GetAvailableOperations request.
 func (client ManagementClient) GetAvailableOperationsPreparer() (*http.Request, error) {
+	const APIVersion = "2016-01-29"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(

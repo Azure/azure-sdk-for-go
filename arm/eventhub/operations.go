@@ -63,8 +63,9 @@ func (client OperationsClient) List() (result OperationListResult, err error) {
 
 // ListPreparer prepares the List request.
 func (client OperationsClient) ListPreparer() (*http.Request, error) {
+	const APIVersion = "2015-08-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(

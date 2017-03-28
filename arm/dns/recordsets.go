@@ -83,8 +83,9 @@ func (client RecordSetsClient) CreateOrUpdatePreparer(resourceGroupName string, 
 		"zoneName":              autorest.Encode("path", zoneName),
 	}
 
+	const APIVersion = "2016-04-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -165,8 +166,9 @@ func (client RecordSetsClient) DeletePreparer(resourceGroupName string, zoneName
 		"zoneName":              autorest.Encode("path", zoneName),
 	}
 
+	const APIVersion = "2016-04-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -235,8 +237,9 @@ func (client RecordSetsClient) GetPreparer(resourceGroupName string, zoneName st
 		"zoneName":              autorest.Encode("path", zoneName),
 	}
 
+	const APIVersion = "2016-04-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -299,8 +302,9 @@ func (client RecordSetsClient) ListByDNSZonePreparer(resourceGroupName string, z
 		"zoneName":          autorest.Encode("path", zoneName),
 	}
 
+	const APIVersion = "2016-04-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 	if top != nil {
 		queryParameters["$top"] = autorest.Encode("query", *top)
@@ -392,8 +396,9 @@ func (client RecordSetsClient) ListByTypePreparer(resourceGroupName string, zone
 		"zoneName":          autorest.Encode("path", zoneName),
 	}
 
+	const APIVersion = "2016-04-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 	if top != nil {
 		queryParameters["$top"] = autorest.Encode("query", *top)
@@ -489,8 +494,9 @@ func (client RecordSetsClient) UpdatePreparer(resourceGroupName string, zoneName
 		"zoneName":              autorest.Encode("path", zoneName),
 	}
 
+	const APIVersion = "2016-04-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(

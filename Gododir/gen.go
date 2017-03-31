@@ -26,7 +26,15 @@ type service struct {
 	Output      string
 	Swagger     string
 	SubServices []service
+	Modeler     modeler
 }
+
+type modeler string
+
+const (
+	swagger     modeler = "Swagger"
+	compSwagger modeler = "CompositeSwagger"
+)
 
 type mapping struct {
 	Plane       string
@@ -301,9 +309,8 @@ var (
 				},
 				{
 					Name:    "web",
-					Version: "2015-08-01",
-					Swagger: "service",
-					// enormous composite swagger
+					Swagger: "compositeWebAppClient",
+					Modeler: compSwagger,
 				},
 			},
 		},
@@ -442,10 +449,15 @@ func initAndAddService(service *service, inputPrefix, plane string) {
 	packages := append(service.Packages, service.Name)
 	service.TaskName = fmt.Sprintf("%s>%s", plane, strings.Join(packages, ">"))
 	service.Fullname = filepath.Join(plane, strings.Join(packages, "/"))
-	if service.Input == "" {
-		service.Input = filepath.Join(inputPrefix+strings.Join(packages, "/"), service.Version, "swagger", service.Swagger)
+	if service.Modeler == compSwagger {
+		service.Input = filepath.Join(inputPrefix+strings.Join(packages, "/"), service.Swagger)
 	} else {
-		service.Input = filepath.Join(inputPrefix+service.Input, service.Version, "swagger", service.Swagger)
+		if service.Input == "" {
+			service.Input = filepath.Join(inputPrefix+strings.Join(packages, "/"), service.Version, "swagger", service.Swagger)
+		} else {
+			service.Input = filepath.Join(inputPrefix+service.Input, service.Version, "swagger", service.Swagger)
+		}
+		service.Modeler = swagger
 	}
 	service.Namespace = filepath.Join("github.com", "Azure", "azure-sdk-for-go", service.Fullname)
 	service.Output = filepath.Join(gopath, "src", service.Namespace)
@@ -492,25 +504,17 @@ func generate(service *service) {
 	fmt.Printf("Generating %s...\n\n", service.Fullname)
 	delete(service)
 
-	fmt.Println("Running AutoRest...")
-	_, err := exec.LookPath("gulp")
-	if err != nil {
-		panic("You need gulp (and some other tools) to run AutoRest. See https://github.com/Azure/autorest/pull/1827")
-	}
-
-	autorest := exec.Command("gulp",
+	autorest := exec.Command(
 		"autorest",
 		"-Input", filepath.Join(swaggersDir, "azure-rest-api-specs", service.Input+".json"),
 		"-CodeGenerator", "Go",
 		"-Header", "MICROSOFT_APACHE",
 		"-Namespace", service.Name,
 		"-OutputDirectory", service.Output,
-		"-Modeler", "Swagger",
-		"-pv", sdkVersion,
-		"-SkipValidation")
+		"-Modeler", string(service.Modeler),
+		"-pv", sdkVersion)
 	autorest.Dir = filepath.Join(autorestDir, "autorest")
-	err = runner(autorest)
-	if err != nil {
+	if err := runner(autorest); err != nil {
 		panic(fmt.Errorf("Autorest error: %s", err))
 	}
 
@@ -591,13 +595,13 @@ func managementVersion(c *do.Context) {
 func version(packageName string) {
 	versionFile := filepath.Join(packageName, "version.go")
 	os.Remove(versionFile)
-	template := `package storage
+	template := `package %s
 
 var (
 	sdkVersion = "%s"
 )
-	`
-	data := []byte(fmt.Sprintf(template, sdkVersion))
+`
+	data := []byte(fmt.Sprintf(template, packageName, sdkVersion))
 	ioutil.WriteFile(versionFile, data, 0644)
 }
 

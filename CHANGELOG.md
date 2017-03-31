@@ -1,6 +1,39 @@
 # CHANGELOG
 
 -----
+## `v9.0.0-beta`
+### ARM
+In addition to the tabulated changes below, each package had the following updates:
+ - API Version is now associated with individual methods, instead of the client. This was done to
+   support composite swaggers, which logically may contain more than one API Version.
+ - Version numbers are now calculated in the generator instead of at runtime. This keeps us from
+   adding new allocations, while removing the race-conditions that were added.
+
+| api                                 | version            | note                               |
+|:------------------------------------|:-------------------|:-----------------------------------|
+| arm/analysisservices                | 2016-05-16         | update to latest swagger           |
+| arm/authorization                   | 2015-07-01         | refactoring                        |
+| arm/batch                           | 2017-01-01         | update to latest swagger &refactor |
+| arm/cdn                             | 2016-10-02         | update to latest swagger           |
+| arm/compute                         | 2016-04-30-preview | update to latest swagger           |
+| arm/dns                             | 2016-04-01         | update to latest swagger &refactor |
+| arm/eventhub                        | 2015-08-01         | refactoring                        |
+| arm/logic                           | 2016-06-01         | update to latest swagger &refactor |
+| arm/notificationshub                | 2016-03-01         | update to latest swagger &refactor |
+| arm/redis                           | 2016-04-01         | update to latest swagger &refactor |
+| arm/resources/resources             | 2016-09-01         | update to latest swagger           |
+| arm/servicebus                      | 2015-08-01         | update to latest swagger           |
+| arm/sql                             | 2014-04-01         | update to latest swagger           |
+| arm/web                             | multiple           | generating from composite          |
+| datalake-analytics/account          | 2016-11-01         | update to latest swagger           |
+| datalake-store/filesystem           | 2016-11-01         | update to latest swagger           |
+
+### Storage
+Storage has been moved to its own repository which can be found here:
+https://github.com/Azure/azure-storage-go
+
+For backwards compatibility, a submodule has been added to this repo. However, consuming storage
+via this repository is deprecated and may be deleted in future versions. 
 
 ## `v8.1.0-beta`
 ### ARM

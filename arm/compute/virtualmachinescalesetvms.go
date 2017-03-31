@@ -80,7 +80,7 @@ func (client VirtualMachineScaleSetVMsClient) DeallocatePreparer(resourceGroupNa
 		"vmScaleSetName":    autorest.Encode("path", vmScaleSetName),
 	}
 
-	const APIVersion = "2016-03-30"
+	const APIVersion = "2016-04-30-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -150,7 +150,7 @@ func (client VirtualMachineScaleSetVMsClient) DeletePreparer(resourceGroupName s
 		"vmScaleSetName":    autorest.Encode("path", vmScaleSetName),
 	}
 
-	const APIVersion = "2016-03-30"
+	const APIVersion = "2016-04-30-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -217,7 +217,7 @@ func (client VirtualMachineScaleSetVMsClient) GetPreparer(resourceGroupName stri
 		"vmScaleSetName":    autorest.Encode("path", vmScaleSetName),
 	}
 
-	const APIVersion = "2016-03-30"
+	const APIVersion = "2016-04-30-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -283,7 +283,7 @@ func (client VirtualMachineScaleSetVMsClient) GetInstanceViewPreparer(resourceGr
 		"vmScaleSetName":    autorest.Encode("path", vmScaleSetName),
 	}
 
-	const APIVersion = "2016-03-30"
+	const APIVersion = "2016-04-30-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -349,7 +349,7 @@ func (client VirtualMachineScaleSetVMsClient) ListPreparer(resourceGroupName str
 		"virtualMachineScaleSetName": autorest.Encode("path", virtualMachineScaleSetName),
 	}
 
-	const APIVersion = "2016-03-30"
+	const APIVersion = "2016-04-30-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -453,7 +453,7 @@ func (client VirtualMachineScaleSetVMsClient) PowerOffPreparer(resourceGroupName
 		"vmScaleSetName":    autorest.Encode("path", vmScaleSetName),
 	}
 
-	const APIVersion = "2016-03-30"
+	const APIVersion = "2016-04-30-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -523,7 +523,7 @@ func (client VirtualMachineScaleSetVMsClient) ReimagePreparer(resourceGroupName 
 		"vmScaleSetName":    autorest.Encode("path", vmScaleSetName),
 	}
 
-	const APIVersion = "2016-03-30"
+	const APIVersion = "2016-04-30-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -547,6 +547,77 @@ func (client VirtualMachineScaleSetVMsClient) ReimageSender(req *http.Request) (
 // ReimageResponder handles the response to the Reimage request. The method always
 // closes the http.Response Body.
 func (client VirtualMachineScaleSetVMsClient) ReimageResponder(resp *http.Response) (result autorest.Response, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
+		autorest.ByClosing())
+	result.Response = resp
+	return
+}
+
+// ReimageAll allows you to re-image all the disks ( including data disks ) in
+// the a virtual machine scale set instance. This operation is only supported
+// for managed disks. This method may poll for completion. Polling can be
+// canceled by passing the cancel channel argument. The channel will be used to
+// cancel polling and any outstanding HTTP requests.
+//
+// resourceGroupName is the name of the resource group. vmScaleSetName is the
+// name of the VM scale set. instanceID is the instance ID of the virtual
+// machine.
+func (client VirtualMachineScaleSetVMsClient) ReimageAll(resourceGroupName string, vmScaleSetName string, instanceID string, cancel <-chan struct{}) (result autorest.Response, err error) {
+	req, err := client.ReimageAllPreparer(resourceGroupName, vmScaleSetName, instanceID, cancel)
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "compute.VirtualMachineScaleSetVMsClient", "ReimageAll", nil, "Failure preparing request")
+	}
+
+	resp, err := client.ReimageAllSender(req)
+	if err != nil {
+		result.Response = resp
+		return result, autorest.NewErrorWithError(err, "compute.VirtualMachineScaleSetVMsClient", "ReimageAll", resp, "Failure sending request")
+	}
+
+	result, err = client.ReimageAllResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "compute.VirtualMachineScaleSetVMsClient", "ReimageAll", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// ReimageAllPreparer prepares the ReimageAll request.
+func (client VirtualMachineScaleSetVMsClient) ReimageAllPreparer(resourceGroupName string, vmScaleSetName string, instanceID string, cancel <-chan struct{}) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"instanceId":        autorest.Encode("path", instanceID),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+		"vmScaleSetName":    autorest.Encode("path", vmScaleSetName),
+	}
+
+	const APIVersion = "2016-04-30-preview"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsPost(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{vmScaleSetName}/virtualmachines/{instanceId}/reimageall", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare(&http.Request{Cancel: cancel})
+}
+
+// ReimageAllSender sends the ReimageAll request. The method will close the
+// http.Response Body if it receives an error.
+func (client VirtualMachineScaleSetVMsClient) ReimageAllSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoPollForAsynchronous(client.PollingDelay))
+}
+
+// ReimageAllResponder handles the response to the ReimageAll request. The method always
+// closes the http.Response Body.
+func (client VirtualMachineScaleSetVMsClient) ReimageAllResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -593,7 +664,7 @@ func (client VirtualMachineScaleSetVMsClient) RestartPreparer(resourceGroupName 
 		"vmScaleSetName":    autorest.Encode("path", vmScaleSetName),
 	}
 
-	const APIVersion = "2016-03-30"
+	const APIVersion = "2016-04-30-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -663,7 +734,7 @@ func (client VirtualMachineScaleSetVMsClient) StartPreparer(resourceGroupName st
 		"vmScaleSetName":    autorest.Encode("path", vmScaleSetName),
 	}
 
-	const APIVersion = "2016-03-30"
+	const APIVersion = "2016-04-30-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}

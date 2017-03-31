@@ -87,7 +87,7 @@ func (client VirtualMachinesClient) CapturePreparer(resourceGroupName string, vm
 		"vmName":            autorest.Encode("path", vmName),
 	}
 
-	const APIVersion = "2016-03-30"
+	const APIVersion = "2016-04-30-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -122,6 +122,75 @@ func (client VirtualMachinesClient) CaptureResponder(resp *http.Response) (resul
 	return
 }
 
+// ConvertToManagedDisks converts virtual machine disks from blob-based to
+// managed disks. Virtual machine must be stop-deallocated before invoking this
+// operation. This method may poll for completion. Polling can be canceled by
+// passing the cancel channel argument. The channel will be used to cancel
+// polling and any outstanding HTTP requests.
+//
+// resourceGroupName is the name of the resource group. vmName is the name of
+// the virtual machine.
+func (client VirtualMachinesClient) ConvertToManagedDisks(resourceGroupName string, vmName string, cancel <-chan struct{}) (result autorest.Response, err error) {
+	req, err := client.ConvertToManagedDisksPreparer(resourceGroupName, vmName, cancel)
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "compute.VirtualMachinesClient", "ConvertToManagedDisks", nil, "Failure preparing request")
+	}
+
+	resp, err := client.ConvertToManagedDisksSender(req)
+	if err != nil {
+		result.Response = resp
+		return result, autorest.NewErrorWithError(err, "compute.VirtualMachinesClient", "ConvertToManagedDisks", resp, "Failure sending request")
+	}
+
+	result, err = client.ConvertToManagedDisksResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "compute.VirtualMachinesClient", "ConvertToManagedDisks", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// ConvertToManagedDisksPreparer prepares the ConvertToManagedDisks request.
+func (client VirtualMachinesClient) ConvertToManagedDisksPreparer(resourceGroupName string, vmName string, cancel <-chan struct{}) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+		"vmName":            autorest.Encode("path", vmName),
+	}
+
+	const APIVersion = "2016-04-30-preview"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsPost(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachines/{vmName}/convertToManagedDisks", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare(&http.Request{Cancel: cancel})
+}
+
+// ConvertToManagedDisksSender sends the ConvertToManagedDisks request. The method will close the
+// http.Response Body if it receives an error.
+func (client VirtualMachinesClient) ConvertToManagedDisksSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoPollForAsynchronous(client.PollingDelay))
+}
+
+// ConvertToManagedDisksResponder handles the response to the ConvertToManagedDisks request. The method always
+// closes the http.Response Body.
+func (client VirtualMachinesClient) ConvertToManagedDisksResponder(resp *http.Response) (result autorest.Response, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
+		autorest.ByClosing())
+	result.Response = resp
+	return
+}
+
 // CreateOrUpdate the operation to create or update a virtual machine. This
 // method may poll for completion. Polling can be canceled by passing the
 // cancel channel argument. The channel will be used to cancel polling and any
@@ -146,8 +215,6 @@ func (client VirtualMachinesClient) CreateOrUpdate(resourceGroupName string, vmN
 										{Target: "parameters.VirtualMachineProperties.StorageProfile.OsDisk.EncryptionSettings.KeyEncryptionKey.SourceVault", Name: validation.Null, Rule: true, Chain: nil},
 									}},
 							}},
-							{Target: "parameters.VirtualMachineProperties.StorageProfile.OsDisk.Name", Name: validation.Null, Rule: true, Chain: nil},
-							{Target: "parameters.VirtualMachineProperties.StorageProfile.OsDisk.Vhd", Name: validation.Null, Rule: true, Chain: nil},
 						}},
 					}},
 				}}}}}); err != nil {
@@ -181,7 +248,7 @@ func (client VirtualMachinesClient) CreateOrUpdatePreparer(resourceGroupName str
 		"vmName":            autorest.Encode("path", vmName),
 	}
 
-	const APIVersion = "2016-03-30"
+	const APIVersion = "2016-04-30-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -252,7 +319,7 @@ func (client VirtualMachinesClient) DeallocatePreparer(resourceGroupName string,
 		"vmName":            autorest.Encode("path", vmName),
 	}
 
-	const APIVersion = "2016-03-30"
+	const APIVersion = "2016-04-30-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -320,7 +387,7 @@ func (client VirtualMachinesClient) DeletePreparer(resourceGroupName string, vmN
 		"vmName":            autorest.Encode("path", vmName),
 	}
 
-	const APIVersion = "2016-03-30"
+	const APIVersion = "2016-04-30-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -385,7 +452,7 @@ func (client VirtualMachinesClient) GeneralizePreparer(resourceGroupName string,
 		"vmName":            autorest.Encode("path", vmName),
 	}
 
-	const APIVersion = "2016-03-30"
+	const APIVersion = "2016-04-30-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -451,7 +518,7 @@ func (client VirtualMachinesClient) GetPreparer(resourceGroupName string, vmName
 		"vmName":            autorest.Encode("path", vmName),
 	}
 
-	const APIVersion = "2016-03-30"
+	const APIVersion = "2016-04-30-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -518,7 +585,7 @@ func (client VirtualMachinesClient) ListPreparer(resourceGroupName string) (*htt
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2016-03-30"
+	const APIVersion = "2016-04-30-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -603,7 +670,7 @@ func (client VirtualMachinesClient) ListAllPreparer() (*http.Request, error) {
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2016-03-30"
+	const APIVersion = "2016-04-30-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -692,7 +759,7 @@ func (client VirtualMachinesClient) ListAvailableSizesPreparer(resourceGroupName
 		"vmName":            autorest.Encode("path", vmName),
 	}
 
-	const APIVersion = "2016-03-30"
+	const APIVersion = "2016-04-30-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -760,7 +827,7 @@ func (client VirtualMachinesClient) PowerOffPreparer(resourceGroupName string, v
 		"vmName":            autorest.Encode("path", vmName),
 	}
 
-	const APIVersion = "2016-03-30"
+	const APIVersion = "2016-04-30-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -828,7 +895,7 @@ func (client VirtualMachinesClient) RedeployPreparer(resourceGroupName string, v
 		"vmName":            autorest.Encode("path", vmName),
 	}
 
-	const APIVersion = "2016-03-30"
+	const APIVersion = "2016-04-30-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -896,7 +963,7 @@ func (client VirtualMachinesClient) RestartPreparer(resourceGroupName string, vm
 		"vmName":            autorest.Encode("path", vmName),
 	}
 
-	const APIVersion = "2016-03-30"
+	const APIVersion = "2016-04-30-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -964,7 +1031,7 @@ func (client VirtualMachinesClient) StartPreparer(resourceGroupName string, vmNa
 		"vmName":            autorest.Encode("path", vmName),
 	}
 
-	const APIVersion = "2016-03-30"
+	const APIVersion = "2016-04-30-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}

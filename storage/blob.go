@@ -755,6 +755,8 @@ func (b BlobStorageClient) AcquireLease(container string, name string, leaseTime
 
 	if leaseTimeInSeconds > 0 {
 		headers[leaseDuration] = strconv.Itoa(leaseTimeInSeconds)
+	} else {
+		headers[leaseDuration] = "-1"
 	}
 
 	if proposedLeaseID != "" {

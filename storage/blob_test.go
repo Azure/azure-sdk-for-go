@@ -1046,6 +1046,20 @@ func (s *StorageBlobSuite) TestAcquireLeaseWithBadProposedLeaseID(c *chk.C) {
 	c.Assert(err, chk.NotNil)
 }
 
+func (s *StorageBlobSuite) TestAcquireLeaseWithInfiniteLeaseTime(c *chk.C) {
+	cli := getBlobClient(c)
+	cnt := randContainer()
+
+	c.Assert(cli.CreateContainer(cnt, ContainerAccessTypePrivate), chk.IsNil)
+	defer cli.deleteContainer(cnt)
+
+	blob := randName(5)
+	c.Assert(cli.putSingleBlockBlob(cnt, blob, []byte{}), chk.IsNil)
+
+	_, err := cli.AcquireLease(cnt, blob, -1, "")
+	c.Assert(err, chk.IsNil)
+}
+
 func (s *StorageBlobSuite) TestRenewLeaseSuccessful(c *chk.C) {
 	cli := getBlobClient(c)
 	cnt := randContainer()

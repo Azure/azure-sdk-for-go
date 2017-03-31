@@ -21,16 +21,11 @@ package web
 import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
+	"github.com/Azure/go-autorest/autorest/validation"
 	"net/http"
 )
 
-// DomainsClient is the use these APIs to manage Azure Websites resources
-// through the Azure Resource Manager. All task operations conform to the
-// HTTP/1.1 protocol specification and each operation returns an
-// x-ms-request-id header that can be used to obtain information about the
-// request. You must make sure that requests made to these resources are
-// secure. For more information, see
-// https://msdn.microsoft.com/en-us/library/azure/dn790557.aspx.
+// DomainsClient is the composite Swagger for WebSite Management Client
 type DomainsClient struct {
 	ManagementClient
 }
@@ -45,40 +40,173 @@ func NewDomainsClientWithBaseURI(baseURI string, subscriptionID string) DomainsC
 	return DomainsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// CreateOrUpdateDomain sends the create or update domain request.
+// CheckAvailability check if a domain is available for registration.
 //
-// resourceGroupName is &gt;Name of the resource group domainName is name of
-// the domain domain is domain registration information
-func (client DomainsClient) CreateOrUpdateDomain(resourceGroupName string, domainName string, domain Domain) (result Domain, err error) {
-	req, err := client.CreateOrUpdateDomainPreparer(resourceGroupName, domainName, domain)
+// identifier is name of the domain.
+func (client DomainsClient) CheckAvailability(identifier NameIdentifier) (result DomainAvailablilityCheckResult, err error) {
+	req, err := client.CheckAvailabilityPreparer(identifier)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.DomainsClient", "CreateOrUpdateDomain", nil, "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "web.DomainsClient", "CheckAvailability", nil, "Failure preparing request")
 	}
 
-	resp, err := client.CreateOrUpdateDomainSender(req)
+	resp, err := client.CheckAvailabilitySender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.DomainsClient", "CreateOrUpdateDomain", resp, "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "web.DomainsClient", "CheckAvailability", resp, "Failure sending request")
 	}
 
-	result, err = client.CreateOrUpdateDomainResponder(resp)
+	result, err = client.CheckAvailabilityResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "web.DomainsClient", "CreateOrUpdateDomain", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "web.DomainsClient", "CheckAvailability", resp, "Failure responding to request")
 	}
 
 	return
 }
 
-// CreateOrUpdateDomainPreparer prepares the CreateOrUpdateDomain request.
-func (client DomainsClient) CreateOrUpdateDomainPreparer(resourceGroupName string, domainName string, domain Domain) (*http.Request, error) {
+// CheckAvailabilityPreparer prepares the CheckAvailability request.
+func (client DomainsClient) CheckAvailabilityPreparer(identifier NameIdentifier) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2015-04-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsJSON(),
+		autorest.AsPost(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/providers/Microsoft.DomainRegistration/checkDomainAvailability", pathParameters),
+		autorest.WithJSON(identifier),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare(&http.Request{})
+}
+
+// CheckAvailabilitySender sends the CheckAvailability request. The method will close the
+// http.Response Body if it receives an error.
+func (client DomainsClient) CheckAvailabilitySender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req)
+}
+
+// CheckAvailabilityResponder handles the response to the CheckAvailability request. The method always
+// closes the http.Response Body.
+func (client DomainsClient) CheckAvailabilityResponder(resp *http.Response) (result DomainAvailablilityCheckResult, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// CreateOrUpdate creates or updates a domain. This method may poll for
+// completion. Polling can be canceled by passing the cancel channel argument.
+// The channel will be used to cancel polling and any outstanding HTTP
+// requests.
+//
+// resourceGroupName is name of the resource group to which the resource
+// belongs. domainName is name of the domain. domain is domain registration
+// information.
+func (client DomainsClient) CreateOrUpdate(resourceGroupName string, domainName string, domain Domain, cancel <-chan struct{}) (result autorest.Response, err error) {
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+[^\.]$`, Chain: nil}}},
+		{TargetValue: domainName,
+			Constraints: []validation.Constraint{{Target: "domainName", Name: validation.Pattern, Rule: `[a-zA-Z0-9][a-zA-Z0-9\.-]+`, Chain: nil}}},
+		{TargetValue: domain,
+			Constraints: []validation.Constraint{{Target: "domain.DomainProperties", Name: validation.Null, Rule: false,
+				Chain: []validation.Constraint{{Target: "domain.DomainProperties.ContactAdmin", Name: validation.Null, Rule: false,
+					Chain: []validation.Constraint{{Target: "domain.DomainProperties.ContactAdmin.AddressMailing", Name: validation.Null, Rule: false,
+						Chain: []validation.Constraint{{Target: "domain.DomainProperties.ContactAdmin.AddressMailing.Address1", Name: validation.Null, Rule: true, Chain: nil},
+							{Target: "domain.DomainProperties.ContactAdmin.AddressMailing.City", Name: validation.Null, Rule: true, Chain: nil},
+							{Target: "domain.DomainProperties.ContactAdmin.AddressMailing.Country", Name: validation.Null, Rule: true, Chain: nil},
+							{Target: "domain.DomainProperties.ContactAdmin.AddressMailing.PostalCode", Name: validation.Null, Rule: true, Chain: nil},
+							{Target: "domain.DomainProperties.ContactAdmin.AddressMailing.State", Name: validation.Null, Rule: true, Chain: nil},
+						}},
+						{Target: "domain.DomainProperties.ContactAdmin.Email", Name: validation.Null, Rule: true, Chain: nil},
+						{Target: "domain.DomainProperties.ContactAdmin.NameFirst", Name: validation.Null, Rule: true, Chain: nil},
+						{Target: "domain.DomainProperties.ContactAdmin.NameLast", Name: validation.Null, Rule: true, Chain: nil},
+						{Target: "domain.DomainProperties.ContactAdmin.Phone", Name: validation.Null, Rule: true, Chain: nil},
+					}},
+					{Target: "domain.DomainProperties.ContactBilling", Name: validation.Null, Rule: false,
+						Chain: []validation.Constraint{{Target: "domain.DomainProperties.ContactBilling.AddressMailing", Name: validation.Null, Rule: false,
+							Chain: []validation.Constraint{{Target: "domain.DomainProperties.ContactBilling.AddressMailing.Address1", Name: validation.Null, Rule: true, Chain: nil},
+								{Target: "domain.DomainProperties.ContactBilling.AddressMailing.City", Name: validation.Null, Rule: true, Chain: nil},
+								{Target: "domain.DomainProperties.ContactBilling.AddressMailing.Country", Name: validation.Null, Rule: true, Chain: nil},
+								{Target: "domain.DomainProperties.ContactBilling.AddressMailing.PostalCode", Name: validation.Null, Rule: true, Chain: nil},
+								{Target: "domain.DomainProperties.ContactBilling.AddressMailing.State", Name: validation.Null, Rule: true, Chain: nil},
+							}},
+							{Target: "domain.DomainProperties.ContactBilling.Email", Name: validation.Null, Rule: true, Chain: nil},
+							{Target: "domain.DomainProperties.ContactBilling.NameFirst", Name: validation.Null, Rule: true, Chain: nil},
+							{Target: "domain.DomainProperties.ContactBilling.NameLast", Name: validation.Null, Rule: true, Chain: nil},
+							{Target: "domain.DomainProperties.ContactBilling.Phone", Name: validation.Null, Rule: true, Chain: nil},
+						}},
+					{Target: "domain.DomainProperties.ContactRegistrant", Name: validation.Null, Rule: false,
+						Chain: []validation.Constraint{{Target: "domain.DomainProperties.ContactRegistrant.AddressMailing", Name: validation.Null, Rule: false,
+							Chain: []validation.Constraint{{Target: "domain.DomainProperties.ContactRegistrant.AddressMailing.Address1", Name: validation.Null, Rule: true, Chain: nil},
+								{Target: "domain.DomainProperties.ContactRegistrant.AddressMailing.City", Name: validation.Null, Rule: true, Chain: nil},
+								{Target: "domain.DomainProperties.ContactRegistrant.AddressMailing.Country", Name: validation.Null, Rule: true, Chain: nil},
+								{Target: "domain.DomainProperties.ContactRegistrant.AddressMailing.PostalCode", Name: validation.Null, Rule: true, Chain: nil},
+								{Target: "domain.DomainProperties.ContactRegistrant.AddressMailing.State", Name: validation.Null, Rule: true, Chain: nil},
+							}},
+							{Target: "domain.DomainProperties.ContactRegistrant.Email", Name: validation.Null, Rule: true, Chain: nil},
+							{Target: "domain.DomainProperties.ContactRegistrant.NameFirst", Name: validation.Null, Rule: true, Chain: nil},
+							{Target: "domain.DomainProperties.ContactRegistrant.NameLast", Name: validation.Null, Rule: true, Chain: nil},
+							{Target: "domain.DomainProperties.ContactRegistrant.Phone", Name: validation.Null, Rule: true, Chain: nil},
+						}},
+					{Target: "domain.DomainProperties.ContactTech", Name: validation.Null, Rule: false,
+						Chain: []validation.Constraint{{Target: "domain.DomainProperties.ContactTech.AddressMailing", Name: validation.Null, Rule: false,
+							Chain: []validation.Constraint{{Target: "domain.DomainProperties.ContactTech.AddressMailing.Address1", Name: validation.Null, Rule: true, Chain: nil},
+								{Target: "domain.DomainProperties.ContactTech.AddressMailing.City", Name: validation.Null, Rule: true, Chain: nil},
+								{Target: "domain.DomainProperties.ContactTech.AddressMailing.Country", Name: validation.Null, Rule: true, Chain: nil},
+								{Target: "domain.DomainProperties.ContactTech.AddressMailing.PostalCode", Name: validation.Null, Rule: true, Chain: nil},
+								{Target: "domain.DomainProperties.ContactTech.AddressMailing.State", Name: validation.Null, Rule: true, Chain: nil},
+							}},
+							{Target: "domain.DomainProperties.ContactTech.Email", Name: validation.Null, Rule: true, Chain: nil},
+							{Target: "domain.DomainProperties.ContactTech.NameFirst", Name: validation.Null, Rule: true, Chain: nil},
+							{Target: "domain.DomainProperties.ContactTech.NameLast", Name: validation.Null, Rule: true, Chain: nil},
+							{Target: "domain.DomainProperties.ContactTech.Phone", Name: validation.Null, Rule: true, Chain: nil},
+						}},
+				}}}}}); err != nil {
+		return result, validation.NewErrorWithValidationError(err, "web.DomainsClient", "CreateOrUpdate")
+	}
+
+	req, err := client.CreateOrUpdatePreparer(resourceGroupName, domainName, domain, cancel)
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "web.DomainsClient", "CreateOrUpdate", nil, "Failure preparing request")
+	}
+
+	resp, err := client.CreateOrUpdateSender(req)
+	if err != nil {
+		result.Response = resp
+		return result, autorest.NewErrorWithError(err, "web.DomainsClient", "CreateOrUpdate", resp, "Failure sending request")
+	}
+
+	result, err = client.CreateOrUpdateResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.DomainsClient", "CreateOrUpdate", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// CreateOrUpdatePreparer prepares the CreateOrUpdate request.
+func (client DomainsClient) CreateOrUpdatePreparer(resourceGroupName string, domainName string, domain Domain, cancel <-chan struct{}) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"domainName":        autorest.Encode("path", domainName),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
+	const APIVersion = "2015-04-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -88,63 +216,152 @@ func (client DomainsClient) CreateOrUpdateDomainPreparer(resourceGroupName strin
 		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DomainRegistration/domains/{domainName}", pathParameters),
 		autorest.WithJSON(domain),
 		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare(&http.Request{})
+	return preparer.Prepare(&http.Request{Cancel: cancel})
 }
 
-// CreateOrUpdateDomainSender sends the CreateOrUpdateDomain request. The method will close the
+// CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
 // http.Response Body if it receives an error.
-func (client DomainsClient) CreateOrUpdateDomainSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+func (client DomainsClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoPollForAsynchronous(client.PollingDelay))
 }
 
-// CreateOrUpdateDomainResponder handles the response to the CreateOrUpdateDomain request. The method always
+// CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
 // closes the http.Response Body.
-func (client DomainsClient) CreateOrUpdateDomainResponder(resp *http.Response) (result Domain, err error) {
+func (client DomainsClient) CreateOrUpdateResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusAccepted, http.StatusOK),
+		autorest.ByClosing())
+	result.Response = resp
+	return
+}
+
+// CreateOrUpdateOwnershipIdentifier creates an ownership identifier for a
+// domain or updates identifier details for an existing identifer
+//
+// resourceGroupName is name of the resource group to which the resource
+// belongs. domainName is name of domain. name is name of identifier.
+// domainOwnershipIdentifier is a JSON representation of the domain ownership
+// properties.
+func (client DomainsClient) CreateOrUpdateOwnershipIdentifier(resourceGroupName string, domainName string, name string, domainOwnershipIdentifier DomainOwnershipIdentifier) (result DomainOwnershipIdentifier, err error) {
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+[^\.]$`, Chain: nil}}}}); err != nil {
+		return result, validation.NewErrorWithValidationError(err, "web.DomainsClient", "CreateOrUpdateOwnershipIdentifier")
+	}
+
+	req, err := client.CreateOrUpdateOwnershipIdentifierPreparer(resourceGroupName, domainName, name, domainOwnershipIdentifier)
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "web.DomainsClient", "CreateOrUpdateOwnershipIdentifier", nil, "Failure preparing request")
+	}
+
+	resp, err := client.CreateOrUpdateOwnershipIdentifierSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "web.DomainsClient", "CreateOrUpdateOwnershipIdentifier", resp, "Failure sending request")
+	}
+
+	result, err = client.CreateOrUpdateOwnershipIdentifierResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.DomainsClient", "CreateOrUpdateOwnershipIdentifier", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// CreateOrUpdateOwnershipIdentifierPreparer prepares the CreateOrUpdateOwnershipIdentifier request.
+func (client DomainsClient) CreateOrUpdateOwnershipIdentifierPreparer(resourceGroupName string, domainName string, name string, domainOwnershipIdentifier DomainOwnershipIdentifier) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"domainName":        autorest.Encode("path", domainName),
+		"name":              autorest.Encode("path", name),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2015-04-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsJSON(),
+		autorest.AsPut(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DomainRegistration/domains/{domainName}/domainOwnershipIdentifiers/{name}", pathParameters),
+		autorest.WithJSON(domainOwnershipIdentifier),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare(&http.Request{})
+}
+
+// CreateOrUpdateOwnershipIdentifierSender sends the CreateOrUpdateOwnershipIdentifier request. The method will close the
+// http.Response Body if it receives an error.
+func (client DomainsClient) CreateOrUpdateOwnershipIdentifierSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req)
+}
+
+// CreateOrUpdateOwnershipIdentifierResponder handles the response to the CreateOrUpdateOwnershipIdentifier request. The method always
+// closes the http.Response Body.
+func (client DomainsClient) CreateOrUpdateOwnershipIdentifierResponder(resp *http.Response) (result DomainOwnershipIdentifier, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
 	return
 }
 
-// DeleteDomain sends the delete domain request.
+// Delete delete a domain.
 //
-// resourceGroupName is name of the resource group domainName is name of the
-// domain forceHardDeleteDomain is if true then the domain will be deleted
-// immediately instead of after 24 hours
-func (client DomainsClient) DeleteDomain(resourceGroupName string, domainName string, forceHardDeleteDomain *bool) (result SetObject, err error) {
-	req, err := client.DeleteDomainPreparer(resourceGroupName, domainName, forceHardDeleteDomain)
-	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.DomainsClient", "DeleteDomain", nil, "Failure preparing request")
+// resourceGroupName is name of the resource group to which the resource
+// belongs. domainName is name of the domain. forceHardDeleteDomain is specify
+// <code>true</code> to delete the domain immediately. The default is
+// <code>false</code> which deletes the domain after 24 hours.
+func (client DomainsClient) Delete(resourceGroupName string, domainName string, forceHardDeleteDomain *bool) (result autorest.Response, err error) {
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+[^\.]$`, Chain: nil}}}}); err != nil {
+		return result, validation.NewErrorWithValidationError(err, "web.DomainsClient", "Delete")
 	}
 
-	resp, err := client.DeleteDomainSender(req)
+	req, err := client.DeletePreparer(resourceGroupName, domainName, forceHardDeleteDomain)
 	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.DomainsClient", "DeleteDomain", resp, "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "web.DomainsClient", "Delete", nil, "Failure preparing request")
 	}
 
-	result, err = client.DeleteDomainResponder(resp)
+	resp, err := client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "web.DomainsClient", "DeleteDomain", resp, "Failure responding to request")
+		result.Response = resp
+		return result, autorest.NewErrorWithError(err, "web.DomainsClient", "Delete", resp, "Failure sending request")
+	}
+
+	result, err = client.DeleteResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.DomainsClient", "Delete", resp, "Failure responding to request")
 	}
 
 	return
 }
 
-// DeleteDomainPreparer prepares the DeleteDomain request.
-func (client DomainsClient) DeleteDomainPreparer(resourceGroupName string, domainName string, forceHardDeleteDomain *bool) (*http.Request, error) {
+// DeletePreparer prepares the Delete request.
+func (client DomainsClient) DeletePreparer(resourceGroupName string, domainName string, forceHardDeleteDomain *bool) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"domainName":        autorest.Encode("path", domainName),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
+	const APIVersion = "2015-04-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 	if forceHardDeleteDomain != nil {
 		queryParameters["forceHardDeleteDomain"] = autorest.Encode("query", *forceHardDeleteDomain)
@@ -158,59 +375,139 @@ func (client DomainsClient) DeleteDomainPreparer(resourceGroupName string, domai
 	return preparer.Prepare(&http.Request{})
 }
 
-// DeleteDomainSender sends the DeleteDomain request. The method will close the
+// DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
-func (client DomainsClient) DeleteDomainSender(req *http.Request) (*http.Response, error) {
+func (client DomainsClient) DeleteSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req)
 }
 
-// DeleteDomainResponder handles the response to the DeleteDomain request. The method always
+// DeleteResponder handles the response to the Delete request. The method always
 // closes the http.Response Body.
-func (client DomainsClient) DeleteDomainResponder(resp *http.Response) (result SetObject, err error) {
+func (client DomainsClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
-		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
+	result.Response = resp
 	return
 }
 
-// GetDomain sends the get domain request.
+// DeleteOwnershipIdentifier delete ownership identifier for domain
 //
-// resourceGroupName is name of the resource group domainName is name of the
-// domain
-func (client DomainsClient) GetDomain(resourceGroupName string, domainName string) (result Domain, err error) {
-	req, err := client.GetDomainPreparer(resourceGroupName, domainName)
-	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.DomainsClient", "GetDomain", nil, "Failure preparing request")
+// resourceGroupName is name of the resource group to which the resource
+// belongs. domainName is name of domain. name is name of identifier.
+func (client DomainsClient) DeleteOwnershipIdentifier(resourceGroupName string, domainName string, name string) (result autorest.Response, err error) {
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+[^\.]$`, Chain: nil}}}}); err != nil {
+		return result, validation.NewErrorWithValidationError(err, "web.DomainsClient", "DeleteOwnershipIdentifier")
 	}
 
-	resp, err := client.GetDomainSender(req)
+	req, err := client.DeleteOwnershipIdentifierPreparer(resourceGroupName, domainName, name)
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "web.DomainsClient", "DeleteOwnershipIdentifier", nil, "Failure preparing request")
+	}
+
+	resp, err := client.DeleteOwnershipIdentifierSender(req)
+	if err != nil {
+		result.Response = resp
+		return result, autorest.NewErrorWithError(err, "web.DomainsClient", "DeleteOwnershipIdentifier", resp, "Failure sending request")
+	}
+
+	result, err = client.DeleteOwnershipIdentifierResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.DomainsClient", "DeleteOwnershipIdentifier", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// DeleteOwnershipIdentifierPreparer prepares the DeleteOwnershipIdentifier request.
+func (client DomainsClient) DeleteOwnershipIdentifierPreparer(resourceGroupName string, domainName string, name string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"domainName":        autorest.Encode("path", domainName),
+		"name":              autorest.Encode("path", name),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2015-04-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsDelete(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DomainRegistration/domains/{domainName}/domainOwnershipIdentifiers/{name}", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare(&http.Request{})
+}
+
+// DeleteOwnershipIdentifierSender sends the DeleteOwnershipIdentifier request. The method will close the
+// http.Response Body if it receives an error.
+func (client DomainsClient) DeleteOwnershipIdentifierSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req)
+}
+
+// DeleteOwnershipIdentifierResponder handles the response to the DeleteOwnershipIdentifier request. The method always
+// closes the http.Response Body.
+func (client DomainsClient) DeleteOwnershipIdentifierResponder(resp *http.Response) (result autorest.Response, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
+		autorest.ByClosing())
+	result.Response = resp
+	return
+}
+
+// Get get a domain.
+//
+// resourceGroupName is name of the resource group to which the resource
+// belongs. domainName is name of the domain.
+func (client DomainsClient) Get(resourceGroupName string, domainName string) (result Domain, err error) {
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+[^\.]$`, Chain: nil}}}}); err != nil {
+		return result, validation.NewErrorWithValidationError(err, "web.DomainsClient", "Get")
+	}
+
+	req, err := client.GetPreparer(resourceGroupName, domainName)
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "web.DomainsClient", "Get", nil, "Failure preparing request")
+	}
+
+	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.DomainsClient", "GetDomain", resp, "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "web.DomainsClient", "Get", resp, "Failure sending request")
 	}
 
-	result, err = client.GetDomainResponder(resp)
+	result, err = client.GetResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "web.DomainsClient", "GetDomain", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "web.DomainsClient", "Get", resp, "Failure responding to request")
 	}
 
 	return
 }
 
-// GetDomainPreparer prepares the GetDomain request.
-func (client DomainsClient) GetDomainPreparer(resourceGroupName string, domainName string) (*http.Request, error) {
+// GetPreparer prepares the Get request.
+func (client DomainsClient) GetPreparer(resourceGroupName string, domainName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"domainName":        autorest.Encode("path", domainName),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
+	const APIVersion = "2015-04-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -221,15 +518,15 @@ func (client DomainsClient) GetDomainPreparer(resourceGroupName string, domainNa
 	return preparer.Prepare(&http.Request{})
 }
 
-// GetDomainSender sends the GetDomain request. The method will close the
+// GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
-func (client DomainsClient) GetDomainSender(req *http.Request) (*http.Response, error) {
+func (client DomainsClient) GetSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req)
 }
 
-// GetDomainResponder handles the response to the GetDomain request. The method always
+// GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
-func (client DomainsClient) GetDomainResponder(resp *http.Response) (result Domain, err error) {
+func (client DomainsClient) GetResponder(resp *http.Response) (result Domain, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -240,102 +537,264 @@ func (client DomainsClient) GetDomainResponder(resp *http.Response) (result Doma
 	return
 }
 
-// GetDomainOperation sends the get domain operation request.
-//
-// resourceGroupName is name of the resource group domainName is name of the
-// domain operationID is domain purchase operation Id
-func (client DomainsClient) GetDomainOperation(resourceGroupName string, domainName string, operationID string) (result Domain, err error) {
-	req, err := client.GetDomainOperationPreparer(resourceGroupName, domainName, operationID)
+// GetControlCenterSsoRequest generate a single sign-on request for the domain
+// management portal.
+func (client DomainsClient) GetControlCenterSsoRequest() (result DomainControlCenterSsoRequest, err error) {
+	req, err := client.GetControlCenterSsoRequestPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.DomainsClient", "GetDomainOperation", nil, "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "web.DomainsClient", "GetControlCenterSsoRequest", nil, "Failure preparing request")
 	}
 
-	resp, err := client.GetDomainOperationSender(req)
+	resp, err := client.GetControlCenterSsoRequestSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.DomainsClient", "GetDomainOperation", resp, "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "web.DomainsClient", "GetControlCenterSsoRequest", resp, "Failure sending request")
 	}
 
-	result, err = client.GetDomainOperationResponder(resp)
+	result, err = client.GetControlCenterSsoRequestResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "web.DomainsClient", "GetDomainOperation", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "web.DomainsClient", "GetControlCenterSsoRequest", resp, "Failure responding to request")
 	}
 
 	return
 }
 
-// GetDomainOperationPreparer prepares the GetDomainOperation request.
-func (client DomainsClient) GetDomainOperationPreparer(resourceGroupName string, domainName string, operationID string) (*http.Request, error) {
+// GetControlCenterSsoRequestPreparer prepares the GetControlCenterSsoRequest request.
+func (client DomainsClient) GetControlCenterSsoRequestPreparer() (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"domainName":        autorest.Encode("path", domainName),
-		"operationId":       autorest.Encode("path", operationID),
-		"resourceGroupName": autorest.Encode("path", resourceGroupName),
-		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
 
+	const APIVersion = "2015-04-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
-		autorest.AsGet(),
+		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DomainRegistration/domains/{domainName}/operationresults/{operationId}", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/providers/Microsoft.DomainRegistration/generateSsoRequest", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare(&http.Request{})
 }
 
-// GetDomainOperationSender sends the GetDomainOperation request. The method will close the
+// GetControlCenterSsoRequestSender sends the GetControlCenterSsoRequest request. The method will close the
 // http.Response Body if it receives an error.
-func (client DomainsClient) GetDomainOperationSender(req *http.Request) (*http.Response, error) {
+func (client DomainsClient) GetControlCenterSsoRequestSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req)
 }
 
-// GetDomainOperationResponder handles the response to the GetDomainOperation request. The method always
+// GetControlCenterSsoRequestResponder handles the response to the GetControlCenterSsoRequest request. The method always
 // closes the http.Response Body.
-func (client DomainsClient) GetDomainOperationResponder(resp *http.Response) (result Domain, err error) {
+func (client DomainsClient) GetControlCenterSsoRequestResponder(resp *http.Response) (result DomainControlCenterSsoRequest, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusAccepted, http.StatusOK, http.StatusInternalServerError),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
 	return
 }
 
-// GetDomains sends the get domains request.
+// GetOwnershipIdentifier get ownership identifier for domain
 //
-// resourceGroupName is name of the resource group
-func (client DomainsClient) GetDomains(resourceGroupName string) (result DomainCollection, err error) {
-	req, err := client.GetDomainsPreparer(resourceGroupName)
-	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.DomainsClient", "GetDomains", nil, "Failure preparing request")
+// resourceGroupName is name of the resource group to which the resource
+// belongs. domainName is name of domain. name is name of identifier.
+func (client DomainsClient) GetOwnershipIdentifier(resourceGroupName string, domainName string, name string) (result DomainOwnershipIdentifier, err error) {
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+[^\.]$`, Chain: nil}}}}); err != nil {
+		return result, validation.NewErrorWithValidationError(err, "web.DomainsClient", "GetOwnershipIdentifier")
 	}
 
-	resp, err := client.GetDomainsSender(req)
+	req, err := client.GetOwnershipIdentifierPreparer(resourceGroupName, domainName, name)
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "web.DomainsClient", "GetOwnershipIdentifier", nil, "Failure preparing request")
+	}
+
+	resp, err := client.GetOwnershipIdentifierSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.DomainsClient", "GetDomains", resp, "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "web.DomainsClient", "GetOwnershipIdentifier", resp, "Failure sending request")
 	}
 
-	result, err = client.GetDomainsResponder(resp)
+	result, err = client.GetOwnershipIdentifierResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "web.DomainsClient", "GetDomains", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "web.DomainsClient", "GetOwnershipIdentifier", resp, "Failure responding to request")
 	}
 
 	return
 }
 
-// GetDomainsPreparer prepares the GetDomains request.
-func (client DomainsClient) GetDomainsPreparer(resourceGroupName string) (*http.Request, error) {
+// GetOwnershipIdentifierPreparer prepares the GetOwnershipIdentifier request.
+func (client DomainsClient) GetOwnershipIdentifierPreparer(resourceGroupName string, domainName string, name string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"domainName":        autorest.Encode("path", domainName),
+		"name":              autorest.Encode("path", name),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2015-04-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DomainRegistration/domains/{domainName}/domainOwnershipIdentifiers/{name}", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare(&http.Request{})
+}
+
+// GetOwnershipIdentifierSender sends the GetOwnershipIdentifier request. The method will close the
+// http.Response Body if it receives an error.
+func (client DomainsClient) GetOwnershipIdentifierSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req)
+}
+
+// GetOwnershipIdentifierResponder handles the response to the GetOwnershipIdentifier request. The method always
+// closes the http.Response Body.
+func (client DomainsClient) GetOwnershipIdentifierResponder(resp *http.Response) (result DomainOwnershipIdentifier, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// List get all domains in a subscription.
+func (client DomainsClient) List() (result DomainCollection, err error) {
+	req, err := client.ListPreparer()
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "web.DomainsClient", "List", nil, "Failure preparing request")
+	}
+
+	resp, err := client.ListSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "web.DomainsClient", "List", resp, "Failure sending request")
+	}
+
+	result, err = client.ListResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.DomainsClient", "List", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// ListPreparer prepares the List request.
+func (client DomainsClient) ListPreparer() (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2015-04-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/providers/Microsoft.DomainRegistration/domains", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare(&http.Request{})
+}
+
+// ListSender sends the List request. The method will close the
+// http.Response Body if it receives an error.
+func (client DomainsClient) ListSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req)
+}
+
+// ListResponder handles the response to the List request. The method always
+// closes the http.Response Body.
+func (client DomainsClient) ListResponder(resp *http.Response) (result DomainCollection, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// ListNextResults retrieves the next set of results, if any.
+func (client DomainsClient) ListNextResults(lastResults DomainCollection) (result DomainCollection, err error) {
+	req, err := lastResults.DomainCollectionPreparer()
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "web.DomainsClient", "List", nil, "Failure preparing next results request")
+	}
+	if req == nil {
+		return
+	}
+
+	resp, err := client.ListSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "web.DomainsClient", "List", resp, "Failure sending next results request")
+	}
+
+	result, err = client.ListResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.DomainsClient", "List", resp, "Failure responding to next results request")
+	}
+
+	return
+}
+
+// ListByResourceGroup get all domains in a resource group.
+//
+// resourceGroupName is name of the resource group to which the resource
+// belongs.
+func (client DomainsClient) ListByResourceGroup(resourceGroupName string) (result DomainCollection, err error) {
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+[^\.]$`, Chain: nil}}}}); err != nil {
+		return result, validation.NewErrorWithValidationError(err, "web.DomainsClient", "ListByResourceGroup")
+	}
+
+	req, err := client.ListByResourceGroupPreparer(resourceGroupName)
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "web.DomainsClient", "ListByResourceGroup", nil, "Failure preparing request")
+	}
+
+	resp, err := client.ListByResourceGroupSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "web.DomainsClient", "ListByResourceGroup", resp, "Failure sending request")
+	}
+
+	result, err = client.ListByResourceGroupResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.DomainsClient", "ListByResourceGroup", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// ListByResourceGroupPreparer prepares the ListByResourceGroup request.
+func (client DomainsClient) ListByResourceGroupPreparer(resourceGroupName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
+	const APIVersion = "2015-04-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -346,15 +805,15 @@ func (client DomainsClient) GetDomainsPreparer(resourceGroupName string) (*http.
 	return preparer.Prepare(&http.Request{})
 }
 
-// GetDomainsSender sends the GetDomains request. The method will close the
+// ListByResourceGroupSender sends the ListByResourceGroup request. The method will close the
 // http.Response Body if it receives an error.
-func (client DomainsClient) GetDomainsSender(req *http.Request) (*http.Response, error) {
+func (client DomainsClient) ListByResourceGroupSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req)
 }
 
-// GetDomainsResponder handles the response to the GetDomains request. The method always
+// ListByResourceGroupResponder handles the response to the ListByResourceGroup request. The method always
 // closes the http.Response Body.
-func (client DomainsClient) GetDomainsResponder(resp *http.Response) (result DomainCollection, err error) {
+func (client DomainsClient) ListByResourceGroupResponder(resp *http.Response) (result DomainCollection, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -365,89 +824,285 @@ func (client DomainsClient) GetDomainsResponder(resp *http.Response) (result Dom
 	return
 }
 
-// GetDomainsNextResults retrieves the next set of results, if any.
-func (client DomainsClient) GetDomainsNextResults(lastResults DomainCollection) (result DomainCollection, err error) {
+// ListByResourceGroupNextResults retrieves the next set of results, if any.
+func (client DomainsClient) ListByResourceGroupNextResults(lastResults DomainCollection) (result DomainCollection, err error) {
 	req, err := lastResults.DomainCollectionPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.DomainsClient", "GetDomains", nil, "Failure preparing next results request")
+		return result, autorest.NewErrorWithError(err, "web.DomainsClient", "ListByResourceGroup", nil, "Failure preparing next results request")
 	}
 	if req == nil {
 		return
 	}
 
-	resp, err := client.GetDomainsSender(req)
+	resp, err := client.ListByResourceGroupSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.DomainsClient", "GetDomains", resp, "Failure sending next results request")
+		return result, autorest.NewErrorWithError(err, "web.DomainsClient", "ListByResourceGroup", resp, "Failure sending next results request")
 	}
 
-	result, err = client.GetDomainsResponder(resp)
+	result, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "web.DomainsClient", "GetDomains", resp, "Failure responding to next results request")
+		err = autorest.NewErrorWithError(err, "web.DomainsClient", "ListByResourceGroup", resp, "Failure responding to next results request")
 	}
 
 	return
 }
 
-// UpdateDomain sends the update domain request.
+// ListOwnershipIdentifiers lists domain ownership identifiers.
 //
-// resourceGroupName is &gt;Name of the resource group domainName is name of
-// the domain domain is domain registration information
-func (client DomainsClient) UpdateDomain(resourceGroupName string, domainName string, domain Domain) (result Domain, err error) {
-	req, err := client.UpdateDomainPreparer(resourceGroupName, domainName, domain)
-	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.DomainsClient", "UpdateDomain", nil, "Failure preparing request")
+// resourceGroupName is name of the resource group to which the resource
+// belongs. domainName is name of domain.
+func (client DomainsClient) ListOwnershipIdentifiers(resourceGroupName string, domainName string) (result DomainOwnershipIdentifierCollection, err error) {
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+[^\.]$`, Chain: nil}}}}); err != nil {
+		return result, validation.NewErrorWithValidationError(err, "web.DomainsClient", "ListOwnershipIdentifiers")
 	}
 
-	resp, err := client.UpdateDomainSender(req)
+	req, err := client.ListOwnershipIdentifiersPreparer(resourceGroupName, domainName)
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "web.DomainsClient", "ListOwnershipIdentifiers", nil, "Failure preparing request")
+	}
+
+	resp, err := client.ListOwnershipIdentifiersSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.DomainsClient", "UpdateDomain", resp, "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "web.DomainsClient", "ListOwnershipIdentifiers", resp, "Failure sending request")
 	}
 
-	result, err = client.UpdateDomainResponder(resp)
+	result, err = client.ListOwnershipIdentifiersResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "web.DomainsClient", "UpdateDomain", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "web.DomainsClient", "ListOwnershipIdentifiers", resp, "Failure responding to request")
 	}
 
 	return
 }
 
-// UpdateDomainPreparer prepares the UpdateDomain request.
-func (client DomainsClient) UpdateDomainPreparer(resourceGroupName string, domainName string, domain Domain) (*http.Request, error) {
+// ListOwnershipIdentifiersPreparer prepares the ListOwnershipIdentifiers request.
+func (client DomainsClient) ListOwnershipIdentifiersPreparer(resourceGroupName string, domainName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"domainName":        autorest.Encode("path", domainName),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
+	const APIVersion = "2015-04-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DomainRegistration/domains/{domainName}/domainOwnershipIdentifiers", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare(&http.Request{})
+}
+
+// ListOwnershipIdentifiersSender sends the ListOwnershipIdentifiers request. The method will close the
+// http.Response Body if it receives an error.
+func (client DomainsClient) ListOwnershipIdentifiersSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req)
+}
+
+// ListOwnershipIdentifiersResponder handles the response to the ListOwnershipIdentifiers request. The method always
+// closes the http.Response Body.
+func (client DomainsClient) ListOwnershipIdentifiersResponder(resp *http.Response) (result DomainOwnershipIdentifierCollection, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// ListOwnershipIdentifiersNextResults retrieves the next set of results, if any.
+func (client DomainsClient) ListOwnershipIdentifiersNextResults(lastResults DomainOwnershipIdentifierCollection) (result DomainOwnershipIdentifierCollection, err error) {
+	req, err := lastResults.DomainOwnershipIdentifierCollectionPreparer()
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "web.DomainsClient", "ListOwnershipIdentifiers", nil, "Failure preparing next results request")
+	}
+	if req == nil {
+		return
+	}
+
+	resp, err := client.ListOwnershipIdentifiersSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "web.DomainsClient", "ListOwnershipIdentifiers", resp, "Failure sending next results request")
+	}
+
+	result, err = client.ListOwnershipIdentifiersResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.DomainsClient", "ListOwnershipIdentifiers", resp, "Failure responding to next results request")
+	}
+
+	return
+}
+
+// ListRecommendations get domain name recommendations based on keywords.
+//
+// parameters is search parameters for domain name recommendations.
+func (client DomainsClient) ListRecommendations(parameters DomainRecommendationSearchParameters) (result NameIdentifierCollection, err error) {
+	req, err := client.ListRecommendationsPreparer(parameters)
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "web.DomainsClient", "ListRecommendations", nil, "Failure preparing request")
+	}
+
+	resp, err := client.ListRecommendationsSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "web.DomainsClient", "ListRecommendations", resp, "Failure sending request")
+	}
+
+	result, err = client.ListRecommendationsResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.DomainsClient", "ListRecommendations", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// ListRecommendationsPreparer prepares the ListRecommendations request.
+func (client DomainsClient) ListRecommendationsPreparer(parameters DomainRecommendationSearchParameters) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2015-04-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsJSON(),
+		autorest.AsPost(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/providers/Microsoft.DomainRegistration/listDomainRecommendations", pathParameters),
+		autorest.WithJSON(parameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare(&http.Request{})
+}
+
+// ListRecommendationsSender sends the ListRecommendations request. The method will close the
+// http.Response Body if it receives an error.
+func (client DomainsClient) ListRecommendationsSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req)
+}
+
+// ListRecommendationsResponder handles the response to the ListRecommendations request. The method always
+// closes the http.Response Body.
+func (client DomainsClient) ListRecommendationsResponder(resp *http.Response) (result NameIdentifierCollection, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// ListRecommendationsNextResults retrieves the next set of results, if any.
+func (client DomainsClient) ListRecommendationsNextResults(lastResults NameIdentifierCollection) (result NameIdentifierCollection, err error) {
+	req, err := lastResults.NameIdentifierCollectionPreparer()
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "web.DomainsClient", "ListRecommendations", nil, "Failure preparing next results request")
+	}
+	if req == nil {
+		return
+	}
+
+	resp, err := client.ListRecommendationsSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "web.DomainsClient", "ListRecommendations", resp, "Failure sending next results request")
+	}
+
+	result, err = client.ListRecommendationsResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.DomainsClient", "ListRecommendations", resp, "Failure responding to next results request")
+	}
+
+	return
+}
+
+// UpdateOwnershipIdentifier creates an ownership identifier for a domain or
+// updates identifier details for an existing identifer
+//
+// resourceGroupName is name of the resource group to which the resource
+// belongs. domainName is name of domain. name is name of identifier.
+// domainOwnershipIdentifier is a JSON representation of the domain ownership
+// properties.
+func (client DomainsClient) UpdateOwnershipIdentifier(resourceGroupName string, domainName string, name string, domainOwnershipIdentifier DomainOwnershipIdentifier) (result DomainOwnershipIdentifier, err error) {
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+[^\.]$`, Chain: nil}}}}); err != nil {
+		return result, validation.NewErrorWithValidationError(err, "web.DomainsClient", "UpdateOwnershipIdentifier")
+	}
+
+	req, err := client.UpdateOwnershipIdentifierPreparer(resourceGroupName, domainName, name, domainOwnershipIdentifier)
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "web.DomainsClient", "UpdateOwnershipIdentifier", nil, "Failure preparing request")
+	}
+
+	resp, err := client.UpdateOwnershipIdentifierSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "web.DomainsClient", "UpdateOwnershipIdentifier", resp, "Failure sending request")
+	}
+
+	result, err = client.UpdateOwnershipIdentifierResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.DomainsClient", "UpdateOwnershipIdentifier", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// UpdateOwnershipIdentifierPreparer prepares the UpdateOwnershipIdentifier request.
+func (client DomainsClient) UpdateOwnershipIdentifierPreparer(resourceGroupName string, domainName string, name string, domainOwnershipIdentifier DomainOwnershipIdentifier) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"domainName":        autorest.Encode("path", domainName),
+		"name":              autorest.Encode("path", name),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2015-04-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsJSON(),
 		autorest.AsPatch(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DomainRegistration/domains/{domainName}", pathParameters),
-		autorest.WithJSON(domain),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DomainRegistration/domains/{domainName}/domainOwnershipIdentifiers/{name}", pathParameters),
+		autorest.WithJSON(domainOwnershipIdentifier),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare(&http.Request{})
 }
 
-// UpdateDomainSender sends the UpdateDomain request. The method will close the
+// UpdateOwnershipIdentifierSender sends the UpdateOwnershipIdentifier request. The method will close the
 // http.Response Body if it receives an error.
-func (client DomainsClient) UpdateDomainSender(req *http.Request) (*http.Response, error) {
+func (client DomainsClient) UpdateOwnershipIdentifierSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req)
 }
 
-// UpdateDomainResponder handles the response to the UpdateDomain request. The method always
+// UpdateOwnershipIdentifierResponder handles the response to the UpdateOwnershipIdentifier request. The method always
 // closes the http.Response Body.
-func (client DomainsClient) UpdateDomainResponder(resp *http.Response) (result Domain, err error) {
+func (client DomainsClient) UpdateOwnershipIdentifierResponder(resp *http.Response) (result DomainOwnershipIdentifier, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusAccepted, http.StatusOK),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}

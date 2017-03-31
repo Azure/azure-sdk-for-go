@@ -106,6 +106,13 @@ const (
 	StateUpdating State = "Updating"
 )
 
+// BackupConfiguration is an object that represents backup configurations
+type BackupConfiguration struct {
+	StorageAccount *string `json:"storageAccount,omitempty"`
+	BlobContainer  *string `json:"blobContainer,omitempty"`
+	AccessKey      *string `json:"accessKey,omitempty"`
+}
+
 // Resource is represents an instance of an Analysis Services resource.
 type Resource struct {
 	ID       *string             `json:"id,omitempty"`
@@ -143,15 +150,17 @@ type ServerAdministrators struct {
 // ServerMutableProperties is an object that represents a set of mutable
 // Analysis Services resource properties.
 type ServerMutableProperties struct {
-	AsAdministrators *ServerAdministrators `json:"asAdministrators,omitempty"`
+	AsAdministrators    *ServerAdministrators `json:"asAdministrators,omitempty"`
+	BackupConfiguration *BackupConfiguration  `json:"backupConfiguration,omitempty"`
 }
 
 // ServerProperties is properties of Analysis Services resource.
 type ServerProperties struct {
-	AsAdministrators  *ServerAdministrators `json:"asAdministrators,omitempty"`
-	State             State                 `json:"state,omitempty"`
-	ProvisioningState ProvisioningState     `json:"provisioningState,omitempty"`
-	ServerFullName    *string               `json:"serverFullName,omitempty"`
+	AsAdministrators    *ServerAdministrators `json:"asAdministrators,omitempty"`
+	BackupConfiguration *BackupConfiguration  `json:"backupConfiguration,omitempty"`
+	State               State                 `json:"state,omitempty"`
+	ProvisioningState   ProvisioningState     `json:"provisioningState,omitempty"`
+	ServerFullName      *string               `json:"serverFullName,omitempty"`
 }
 
 // Servers is an array of Analysis Services resources.

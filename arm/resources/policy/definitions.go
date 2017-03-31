@@ -72,8 +72,9 @@ func (client DefinitionsClient) CreateOrUpdatePreparer(policyDefinitionName stri
 		"subscriptionId":       autorest.Encode("path", client.SubscriptionID),
 	}
 
+	const APIVersion = "2016-12-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -135,8 +136,9 @@ func (client DefinitionsClient) DeletePreparer(policyDefinitionName string) (*ht
 		"subscriptionId":       autorest.Encode("path", client.SubscriptionID),
 	}
 
+	const APIVersion = "2016-12-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -195,8 +197,9 @@ func (client DefinitionsClient) GetPreparer(policyDefinitionName string) (*http.
 		"subscriptionId":       autorest.Encode("path", client.SubscriptionID),
 	}
 
+	const APIVersion = "2016-12-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -255,8 +258,9 @@ func (client DefinitionsClient) ListPreparer(filter string) (*http.Request, erro
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
 
+	const APIVersion = "2016-12-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 	if len(filter) > 0 {
 		queryParameters["$filter"] = autorest.Encode("query", filter)

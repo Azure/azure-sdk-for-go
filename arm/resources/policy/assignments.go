@@ -76,8 +76,9 @@ func (client AssignmentsClient) CreatePreparer(scope string, policyAssignmentNam
 		"scope":                scope,
 	}
 
+	const APIVersion = "2016-12-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -148,8 +149,9 @@ func (client AssignmentsClient) CreateByIDPreparer(policyAssignmentID string, pa
 		"policyAssignmentId": policyAssignmentID,
 	}
 
+	const APIVersion = "2016-12-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -212,8 +214,9 @@ func (client AssignmentsClient) DeletePreparer(scope string, policyAssignmentNam
 		"scope":                scope,
 	}
 
+	const APIVersion = "2016-12-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -279,8 +282,9 @@ func (client AssignmentsClient) DeleteByIDPreparer(policyAssignmentID string) (*
 		"policyAssignmentId": policyAssignmentID,
 	}
 
+	const APIVersion = "2016-12-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -341,8 +345,9 @@ func (client AssignmentsClient) GetPreparer(scope string, policyAssignmentName s
 		"scope":                scope,
 	}
 
+	const APIVersion = "2016-12-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -407,8 +412,9 @@ func (client AssignmentsClient) GetByIDPreparer(policyAssignmentID string) (*htt
 		"policyAssignmentId": policyAssignmentID,
 	}
 
+	const APIVersion = "2016-12-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -467,8 +473,9 @@ func (client AssignmentsClient) ListPreparer(filter string) (*http.Request, erro
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
 
+	const APIVersion = "2016-12-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 	if len(filter) > 0 {
 		queryParameters["$filter"] = autorest.Encode("query", filter)
@@ -571,8 +578,9 @@ func (client AssignmentsClient) ListForResourcePreparer(resourceGroupName string
 		"subscriptionId":            autorest.Encode("path", client.SubscriptionID),
 	}
 
+	const APIVersion = "2016-12-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 	if len(filter) > 0 {
 		queryParameters["$filter"] = autorest.Encode("query", filter)
@@ -668,8 +676,9 @@ func (client AssignmentsClient) ListForResourceGroupPreparer(resourceGroupName s
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
+	const APIVersion = "2016-12-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 	if len(filter) > 0 {
 		queryParameters["$filter"] = filter

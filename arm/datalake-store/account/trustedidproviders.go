@@ -89,8 +89,9 @@ func (client TrustedIDProvidersClient) CreateOrUpdatePreparer(resourceGroupName 
 		"trustedIdProviderName": autorest.Encode("path", trustedIDProviderName),
 	}
 
+	const APIVersion = "2016-11-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -159,8 +160,9 @@ func (client TrustedIDProvidersClient) DeletePreparer(resourceGroupName string, 
 		"trustedIdProviderName": autorest.Encode("path", trustedIDProviderName),
 	}
 
+	const APIVersion = "2016-11-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -225,8 +227,9 @@ func (client TrustedIDProvidersClient) GetPreparer(resourceGroupName string, acc
 		"trustedIdProviderName": autorest.Encode("path", trustedIDProviderName),
 	}
 
+	const APIVersion = "2016-11-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -290,8 +293,9 @@ func (client TrustedIDProvidersClient) ListByAccountPreparer(resourceGroupName s
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
+	const APIVersion = "2016-11-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -382,8 +386,9 @@ func (client TrustedIDProvidersClient) UpdatePreparer(resourceGroupName string, 
 		"trustedIdProviderName": autorest.Encode("path", trustedIDProviderName),
 	}
 
+	const APIVersion = "2016-11-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(

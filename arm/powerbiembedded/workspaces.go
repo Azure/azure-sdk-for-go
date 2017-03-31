@@ -74,8 +74,9 @@ func (client WorkspacesClient) ListPreparer(resourceGroupName string, workspaceC
 		"workspaceCollectionName": autorest.Encode("path", workspaceCollectionName),
 	}
 
+	const APIVersion = "2016-01-29"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(

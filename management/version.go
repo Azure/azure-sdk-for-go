@@ -1,5 +1,5 @@
 package management
 
 var (
-	sdkVersion = "8.0.0-beta"
+	sdkVersion = "9.0.0-beta"
 )

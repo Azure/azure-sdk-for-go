@@ -35,14 +35,15 @@ have adopted SemVer.org's recommendations.
 ## Azure Versions
 Azure services _mostly_ do not use SemVer based versions. Rather, they use profiles identified by dates. One will often
 see this casually referred to as an "APIVersion". At the moment, our SDK only supports the most recent profiles. In
-order to lock to an API version, one must also lock to an SDK version. However, as discussed in #517, our objective is
-to reorganize and publish independent packages for each profile. In that way, we'll be able to have parallel support in
-a single SDK version for all APIVersions supported by Azure.
+order to lock to an API version, one must also lock to an SDK version. However, as discussed in 
+[#517](https://github.com/Azure/azure-sdk-for-go/issues/517), our objective is to reorganize and publish independent
+packages for each profile. In that way, we'll be able to have parallel support in a single SDK version for all
+APIVersions supported by Azure.
 
 # Documentation
 
 - Azure SDK for Go Documentation is available at [GoDoc.org](http://godoc.org/github.com/Azure/azure-sdk-for-go/).
-- Azure REST APIs used by packages in this repository, are documented at [Microsoft Docs, Azure REST](https://docs.microsoft.com/en-us/rest/api/).
+- Azure REST APIs used by packages in this repository are documented at [Microsoft Docs, Azure REST](https://docs.microsoft.com/en-us/rest/api/).
 - Azure Services are discussed in detail at [Microsoft Docs, Azure Services](https://docs.microsoft.com/en-us/azure/#pivot=services).
 
 # License

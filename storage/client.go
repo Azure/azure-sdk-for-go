@@ -46,6 +46,8 @@ const (
 	storageEmulatorQueue = "127.0.0.1:10001"
 
 	userAgentHeader = "User-Agent"
+
+	userDefinedMetadataHeaderPrefix = "x-ms-meta-"
 )
 
 // Client is the object that needs to be constructed to perform

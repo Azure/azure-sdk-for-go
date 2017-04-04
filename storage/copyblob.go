@@ -23,9 +23,24 @@ type CopyOptions struct {
 	RequestID string
 }
 
+// IncrementalCopyOptions includes the options for an incremental copy blob operation
+type IncrementalCopyOptions struct {
+	Timeout     uint
+	Destination IncrementalCopyOptionsConditions
+	RequestID   string
+}
+
 // CopyOptionsConditions includes some conditional options in a copy blob operation
 type CopyOptionsConditions struct {
 	LeaseID           string
+	IfModifiedSince   *time.Time
+	IfUnmodifiedSince *time.Time
+	IfMatch           string
+	IfNoneMatch       string
+}
+
+// IncrementalCopyOptionsConditions includes some conditional options in a copy blob operation
+type IncrementalCopyOptionsConditions struct {
 	IfModifiedSince   *time.Time
 	IfUnmodifiedSince *time.Time
 	IfMatch           string
@@ -151,4 +166,47 @@ func (b *Blob) WaitForCopy(copyID string) error {
 			return fmt.Errorf("storage: unhandled blob copy status: '%s'", b.Properties.CopyStatus)
 		}
 	}
+}
+
+// IncrementalCopyBlob copies a snapshot of a source blob and copies to referring blob
+// sourceBlob parameter must be a valid snapshot URL of the original blob.
+//
+// See https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/incremental-copy-blob .
+func (b *Blob) IncrementalCopyBlob(sourceBlobURL string, snapshotTime time.Time, options *IncrementalCopyOptions) (string, error) {
+	params := url.Values{"comp": {"incrementalcopy"}}
+
+	// need formatting to 7 decical places so it's friendly to Windows and *nix
+	snapshotTimeFormatted := snapshotTime.Format("2006-01-02T15:04:05.0000000Z")
+	snapshotURL := fmt.Sprintf("%s&snapshot=%s", sourceBlobURL, snapshotTimeFormatted)
+
+	headers := b.Container.bsc.client.getStandardHeaders()
+	headers["x-ms-copy-source"] = snapshotURL
+
+	if options != nil {
+		addTimeout(params, options.Timeout)
+		headers = addToHeaders(headers, "x-ms-client-request-id", options.RequestID)
+		headers = addTimeToHeaders(headers, "x-ms-if-modified-since", options.Destination.IfModifiedSince)
+		headers = addTimeToHeaders(headers, "x-ms-if-unmodified-since", options.Destination.IfUnmodifiedSince)
+		headers = addToHeaders(headers, "x-ms-if-match", options.Destination.IfMatch)
+		headers = addToHeaders(headers, "x-ms-if-none-match", options.Destination.IfNoneMatch)
+	}
+
+	// get URI of destination blob
+	uri := b.Container.bsc.client.getEndpoint(blobServiceName, b.buildPath(), params)
+
+	resp, err := b.Container.bsc.client.exec(http.MethodPut, uri, headers, nil, b.Container.bsc.auth)
+	if err != nil {
+		return "", err
+	}
+	defer readAndCloseBody(resp.body)
+
+	if err := checkRespCode(resp.statusCode, []int{http.StatusAccepted}); err != nil {
+		return "", err
+	}
+
+	copyID := resp.headers.Get("x-ms-copy-id")
+	if copyID == "" {
+		return "", errors.New("Got empty copy id header")
+	}
+	return copyID, nil
 }

@@ -47,6 +47,8 @@ const (
 	storageEmulatorQueue = "127.0.0.1:10001"
 
 	userAgentHeader = "User-Agent"
+
+	userDefinedMetadataHeaderPrefix = "x-ms-meta-"
 )
 
 var (

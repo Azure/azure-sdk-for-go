@@ -166,7 +166,7 @@ const (
 	ContainerAccessHeader string = "x-ms-blob-public-access"
 )
 
-// GetBlobReference returns a Blob object for the specified container name.
+// GetBlobReference returns a Blob object for the specified blob name.
 func (c *Container) GetBlobReference(name string) Blob {
 	return Blob{
 		Container: c,

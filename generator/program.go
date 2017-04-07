@@ -13,7 +13,6 @@ import (
 	"path/filepath"
 	"regexp"
 	"strings"
-	"time"
 )
 
 const (
@@ -21,11 +20,15 @@ const (
 	defaultAzureRESTAPIBranch          = "master"
 )
 
-// ExitCode
+// ExitCode gives a hint to the end user about why the program exited without relying on seeing stderr.
 const (
 	ExitCodeOkay int = iota
 	ExitCodeMissingRequirements
 	ExitCodeFailedToClone
+)
+
+const (
+	autorestTool = "autorest"
 )
 
 var (
@@ -58,7 +61,7 @@ func init() {
 	}
 
 	optionalTools := []string{"gofmt", "golint"}
-	requiredTools := []string{"autorest", "git", "gulp"}
+	requiredTools := []string{autorestTool, "git", "gulp"}
 
 	for _, tool := range optionalTools {
 		if _, err := exec.LookPath(tool); err != nil {
@@ -219,10 +222,21 @@ func getSwaggers(dir string, statusLog *log.Logger, errLog *log.Logger) <-chan s
 		defer close(retval)
 
 		type foo struct {
-			version time.Time
+			version string
 			path    string
 		}
-		maxVersion := map[string]foo{}
+		seen := map[string][]string{}
+
+		seenContains := func(needle foo) bool {
+			if versions, ok := seen[needle.path]; ok {
+				for _, version := range versions {
+					if version == needle.version {
+						return true
+					}
+				}
+			}
+			return false
+		}
 
 		filepath.Walk(dir, func(path string, info os.FileInfo, err error) (result error) {
 			if err != nil {
@@ -249,29 +263,22 @@ func getSwaggers(dir string, statusLog *log.Logger, errLog *log.Logger) <-chan s
 				}
 
 				current := foo{
-					path: path,
+					path:    path,
+					version: manifest.Info.Version,
 				}
 
-				if currentTime, err := time.Parse("2006-01-02", strings.TrimSuffix(strings.ToLower(manifest.Info.Version), "-preview")); err == nil {
-					current.version = currentTime
-				} else {
-					statusLog.Printf("skipping '%s' because:\n%v", path, err)
+				if seenContains(current) {
 					return
+				} else if versions, ok := seen[current.path]; ok {
+					seen[current.path] = append(versions, current.version)
+				} else {
+					seen[current.path] = []string{current.version}
 				}
 
-				if curMax, ok := maxVersion[title]; !ok || current.version.After(curMax.version) {
-					statusLog.Printf("taking version \"%s\" for \"%s\"", manifest.Info.Version, title)
-					maxVersion[title] = current
-				} else {
-					statusLog.Printf("skipping version \"%s\", it is not the most recent known version.", manifest.Info.Version)
-				}
+				retval <- current.path
 			}
 			return
 		})
-
-		for _, v := range maxVersion {
-			retval <- v.path
-		}
 	}()
 
 	return retval
@@ -290,7 +297,7 @@ func generate(swaggerPath, repoPath, outputRootPath string) error {
 	finalOutputDir := path.Clean(filepath.Join(outputRootPath, namespace))
 
 	autorest := exec.Command(
-		"autorest",
+		autorestTool,
 		"-Input", swaggerPath,
 		"-CodeGenerator", "Go",
 		"-Header", "MICROSOFT_APACHE",
@@ -317,19 +324,22 @@ func generateAll(swaggers <-chan string, repoPath, outputRootPath string) <-chan
 	return retval
 }
 
-var getNamespace = setupGetNamespace()
-
-func setupGetNamespace() func(string, string) (string, error) {
+// getNamespace takes a swagger
+var getNamespace = func() func(string, string) (string, error) {
 	baseNamespace := []string{"github.com", "Azure", "azure-sdk-for-go"}
-	namespacePattern := regexp.MustCompile("(\\w+)-(.*)[/\\\\]\\d{4}-\\d{2}-\\d{2}[\\w\\d\\-\\.]*[/\\\\]swagger[/\\\\].*\\.json")
+	namespacePattern := regexp.MustCompile("(?P<plane>\\w+)-(?P<package>.*)[/\\\\](?P<version>\\d{4}-\\d{2}-\\d{2}[\\w\\d\\-\\.]*)[/\\\\]swagger[/\\\\].*\\.json")
+
 	return func(swaggerPath, repoPath string) (string, error) {
 		swaggerPath = strings.TrimPrefix(swaggerPath, repoPath)
 		results := namespacePattern.FindAllStringSubmatch(swaggerPath, -1)
 		if len(results) == 0 {
 			return "", fmt.Errorf("%s is not in a recognized namespace format", swaggerPath)
 		}
-		namespace := append(baseNamespace, results[0][1:]...)
+		plane := results[0][1]
+		pkg := results[0][2]
+		version := results[0][3]
+		namespace := append(baseNamespace, []string{plane, version, pkg}...)
 
 		return strings.Replace(strings.Join(namespace, "/"), "\\", "/", -1), nil
 	}
-}
+}()

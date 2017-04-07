@@ -1,8 +1,22 @@
 hash: 5a5e74f8be7a721d3ea9c2e36d994d2754f15087f89ba8342c4ec9ed4cbedf7b
-updated: 2017-03-01T16:08:43.5505724-08:00
+updated: 2017-04-26T14:34:34.6552906-07:00
 imports:
+- name: github.com/Azure/azure-sdk-for-go
+  version: 8dd1f3ff407c300cff0a4bfedd969111ca5a7903
+  subpackages:
+  - arm/examples/helpers
+  - arm/storage
+  - management
+  - management/virtualmachinedisk
+  - management/location
+  - management/virtualmachine
+  - management/testutils
+  - management/hostedservice
+  - management/osimage
+  - management/storageservice
+  - management/virtualmachineimage
 - name: github.com/Azure/go-autorest
-  version: ec5f4903f77ed9927ac95b19ab8e44ada64c1356
+  version: a2fdd780c9a50455cecd249b00bdc3eb73a78e31
   subpackages:
   - autorest
   - autorest/azure
@@ -14,9 +28,9 @@ imports:
 - name: github.com/howeyc/gopass
   version: bf9dde6d0d2c004a008c27aaee91170c786f6db8
 - name: github.com/mattn/go-colorable
-  version: d898aa9fb31c91f35dd28ca75db377eff023c076
+  version: ded68f7a9561c023e790de24279db7ebf473ea80
 - name: github.com/mattn/go-isatty
-  version: dda3de49cbfcec471bd7a70e6cc01fcc3ff90109
+  version: fc9e8d8ef48496124e79ae0df75490096eccf6fe
 - name: github.com/mgutz/ansi
   version: 9520e82c474b0a04dd04f8a40959027271bab992
 - name: github.com/mgutz/minimist
@@ -30,17 +44,17 @@ imports:
 - name: github.com/nozzle/throttler
   version: d9b45f19996c645d38c9266d1f5cf1990e930119
 - name: github.com/satori/uuid
-  version: b061729afc07e77a8aa4fad0a2fd840958f1942a
+  version: 5bf94b69c6b68ee1b541973bb8e1144db23a194b
 - name: github.com/shopspring/decimal
   version: 3526cd0bdb7f64e1178943b7dee81a0cc3d86a69
 - name: golang.org/x/crypto
-  version: 453249f01cfeb54c3d549ddb75ff152ca243f9d8
+  version: c7af5bf2638a1164f2eb5467c39c6cffbd13a02e
   subpackages:
   - pkcs12
   - pkcs12/internal/rc2
   - ssh/terminal
 - name: golang.org/x/sys
-  version: 76cc09b634294339fa19ec41b5f2a0b3932cea8b
+  version: 9f30dcbe5be197894515a338a9bda9253567ea8f
   subpackages:
   - unix
 - name: gopkg.in/check.v1

@@ -12,8 +12,11 @@ var _ = chk.Suite(&AppendBlobSuite{})
 
 func (s *AppendBlobSuite) TestPutAppendBlob(c *chk.C) {
 	cli := getBlobClient(c)
-	cnt := cli.GetContainerReference(randContainer())
-	b := cnt.GetBlobReference(randName(5))
+	rec := cli.client.appendRecorder(c)
+	defer rec.Stop()
+
+	cnt := cli.GetContainerReference(containerName(c))
+	b := cnt.GetBlobReference(blobName(c))
 	c.Assert(cnt.Create(nil), chk.IsNil)
 	defer cnt.Delete(nil)
 
@@ -28,15 +31,18 @@ func (s *AppendBlobSuite) TestPutAppendBlob(c *chk.C) {
 
 func (s *AppendBlobSuite) TestPutAppendBlobAppendBlocks(c *chk.C) {
 	cli := getBlobClient(c)
-	cnt := cli.GetContainerReference(randContainer())
-	b := cnt.GetBlobReference(randName(5))
+	rec := cli.client.appendRecorder(c)
+	defer rec.Stop()
+
+	cnt := cli.GetContainerReference(containerName(c))
+	b := cnt.GetBlobReference(blobName(c))
 	c.Assert(cnt.Create(nil), chk.IsNil)
 	defer cnt.Delete(nil)
 
 	c.Assert(b.PutAppendBlob(nil), chk.IsNil)
 
-	chunk1 := []byte(randString(1024))
-	chunk2 := []byte(randString(512))
+	chunk1 := content(1024)
+	chunk2 := content(512)
 
 	// Append first block
 	c.Assert(b.AppendBlock(chunk1, nil), chk.IsNil)
@@ -70,8 +76,11 @@ func (s *AppendBlobSuite) TestPutAppendBlobAppendBlocks(c *chk.C) {
 
 func (s *StorageBlobSuite) TestPutAppendBlobSpecialChars(c *chk.C) {
 	cli := getBlobClient(c)
-	cnt := cli.GetContainerReference(randContainer())
-	b := cnt.GetBlobReference(randName(5))
+	rec := cli.client.appendRecorder(c)
+	defer rec.Stop()
+
+	cnt := cli.GetContainerReference(containerName(c))
+	b := cnt.GetBlobReference(blobName(c))
 	c.Assert(cnt.Create(nil), chk.IsNil)
 	defer cnt.Delete(nil)
 
@@ -83,8 +92,8 @@ func (s *StorageBlobSuite) TestPutAppendBlobSpecialChars(c *chk.C) {
 	c.Assert(b.Properties.ContentLength, chk.Equals, int64(0))
 	c.Assert(b.Properties.BlobType, chk.Equals, BlobTypeAppend)
 
-	chunk1 := []byte(randString(1024))
-	chunk2 := []byte(randString(512))
+	chunk1 := content(1024)
+	chunk2 := content(512)
 
 	// Append first block
 	c.Assert(b.AppendBlock(chunk1, nil), chk.IsNil)

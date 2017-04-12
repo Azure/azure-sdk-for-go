@@ -18,7 +18,7 @@ import (
 )
 
 var (
-	now = time.Now()
+	fixedTime = time.Date(2050, time.December, 20, 21, 55, 0, 0, time.FixedZone("GMT", -6))
 )
 
 func (c Client) computeHmac256(message string) string {
@@ -87,7 +87,7 @@ func headersFromStruct(v interface{}) map[string]string {
 			var val string
 			if reflectedValue.IsValid() {
 				switch reflectedValue.Type() {
-				case reflect.TypeOf(now):
+				case reflect.TypeOf(fixedTime):
 					val = timeRfc1123Formatted(reflectedValue.Interface().(time.Time))
 				case reflect.TypeOf(uint64(0)), reflect.TypeOf(uint(0)):
 					val = strconv.FormatUint(reflectedValue.Uint(), 10)

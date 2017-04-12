@@ -447,9 +447,11 @@ func (c Client) execInternalJSON(verb, url string, headers map[string]string, bo
 }
 
 func (c Client) execBatchOperationJSON(verb, url string, headers map[string]string, body io.Reader, auth authentication) (*odataResponse, error) {
-
 	// execute common query, get back generated request, response etc... for more processing.
 	respToRet, req, resp, err := c.execInternalJSONCommon(verb, url, headers, body, auth)
+	if err != nil {
+		return nil, err
+	}
 
 	// return the OData in the case of executing batch commands.
 	// In this case we need to read the outer batch boundary and contents.

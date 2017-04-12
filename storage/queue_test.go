@@ -28,83 +28,123 @@ func (s *StorageQueueSuite) Test_pathForQueueMessages(c *chk.C) {
 }
 
 func (s *StorageQueueSuite) TestCreateQueue_DeleteQueue(c *chk.C) {
-	q := getQueueClient(c).GetQueueReference(randString(20))
+	cli := getQueueClient(c)
+	rec := cli.client.appendRecorder(c)
+	defer rec.Stop()
+
+	q := cli.GetQueueReference(queueName(c))
 	c.Assert(q.Create(nil), chk.IsNil)
 	c.Assert(q.Delete(nil), chk.IsNil)
 }
 
 func (s *StorageQueueSuite) Test_GetMetadata_GetApproximateCount(c *chk.C) {
 	cli := getQueueClient(c)
-	q := cli.GetQueueReference(randString(20))
-	c.Assert(q.Create(nil), chk.IsNil)
-	defer q.Delete(nil)
+	rec := cli.client.appendRecorder(c)
+	defer rec.Stop()
 
-	err := q.GetMetadata(nil)
+	queue1 := cli.GetQueueReference(queueName(c, "1"))
+	c.Assert(queue1.Create(nil), chk.IsNil)
+	defer queue1.Delete(nil)
+
+	err := queue1.GetMetadata(nil)
 	c.Assert(err, chk.IsNil)
-	c.Assert(q.AproxMessageCount, chk.Equals, uint64(0))
+	c.Assert(queue1.AproxMessageCount, chk.Equals, uint64(0))
 
-	m := q.GetMessageReference("lolrofl")
+	queue2 := cli.GetQueueReference(queueName(c, "2"))
+	c.Assert(queue2.Create(nil), chk.IsNil)
+	defer queue2.Delete(nil)
 	for ix := 0; ix < 3; ix++ {
-		err = m.Put(nil)
+		msg := queue2.GetMessageReference("lolrofl")
+		err = msg.Put(nil)
 		c.Assert(err, chk.IsNil)
 	}
 	time.Sleep(1 * time.Second)
 
-	err = q.GetMetadata(nil)
+	err = queue2.GetMetadata(nil)
 	c.Assert(err, chk.IsNil)
-	c.Assert(q.AproxMessageCount, chk.Equals, uint64(3))
+	c.Assert(queue2.AproxMessageCount, chk.Equals, uint64(3))
 }
 
-func (s *StorageQueueSuite) Test_SetAndGetMetadata(c *chk.C) {
-	q := getQueueClient(c).GetQueueReference(randString(20))
-	c.Assert(q.Create(nil), chk.IsNil)
-	defer q.Delete(nil)
+func (s *StorageQueueSuite) Test_SetMetadataGetMetadata_Roundtrips(c *chk.C) {
+	cli := getQueueClient(c)
+	rec := cli.client.appendRecorder(c)
+	defer rec.Stop()
 
-	metadata := map[string]string{
-		"Lol1":   "rofl1",
-		"lolBaz": "rofl",
-	}
-	q.Metadata = metadata
-	err := q.SetMetadata(nil)
+	queue1 := cli.GetQueueReference(queueName(c, "1"))
+	c.Assert(queue1.Create(nil), chk.IsNil)
+	defer queue1.Delete(nil)
+
+	metadata := make(map[string]string)
+	metadata["Lol1"] = "rofl1"
+	metadata["lolBaz"] = "rofl"
+	queue1.Metadata = metadata
+	err := queue1.SetMetadata(nil)
 	c.Assert(err, chk.IsNil)
 
-	err = q.GetMetadata(nil)
+	err = queue1.GetMetadata(nil)
 	c.Assert(err, chk.IsNil)
-	c.Assert(q.Metadata["lol1"], chk.Equals, metadata["Lol1"])
-	c.Assert(q.Metadata["lolbaz"], chk.Equals, metadata["lolBaz"])
+	c.Assert(queue1.Metadata["lol1"], chk.Equals, metadata["Lol1"])
+	c.Assert(queue1.Metadata["lolbaz"], chk.Equals, metadata["lolBaz"])
 }
 
 func (s *StorageQueueSuite) TestQueueExists(c *chk.C) {
-	q := getQueueClient(c).GetQueueReference("nonexistent-queue")
-	ok, err := q.Exists()
+	cli := getQueueClient(c)
+	rec := cli.client.appendRecorder(c)
+	defer rec.Stop()
+
+	queue1 := cli.GetQueueReference(queueName(c, "nonexistent"))
+	ok, err := queue1.Exists()
 	c.Assert(err, chk.IsNil)
 	c.Assert(ok, chk.Equals, false)
 
-	q.Name = randString(20)
-	c.Assert(q.Create(nil), chk.IsNil)
-	defer q.Delete(nil)
+	queue2 := cli.GetQueueReference(queueName(c, "exisiting"))
+	c.Assert(queue2.Create(nil), chk.IsNil)
+	defer queue2.Delete(nil)
 
-	ok, err = q.Exists()
+	ok, err = queue2.Exists()
 	c.Assert(err, chk.IsNil)
 	c.Assert(ok, chk.Equals, true)
 }
 
 func (s *StorageQueueSuite) TestGetMessages(c *chk.C) {
 	cli := getQueueClient(c)
-	q := cli.GetQueueReference(randString(20))
-	c.Assert(q.Create(nil), chk.IsNil)
-	defer q.Delete(nil)
+	rec := cli.client.appendRecorder(c)
+	defer rec.Stop()
 
-	m := q.GetMessageReference("message")
+	queue := cli.GetQueueReference(queueName(c))
+	c.Assert(queue.Create(nil), chk.IsNil)
+	defer queue.Delete(nil)
+
+	msg := queue.GetMessageReference("message")
 	n := 4
 	for i := 0; i < n; i++ {
-		c.Assert(m.Put(nil), chk.IsNil)
+		c.Assert(msg.Put(nil), chk.IsNil)
 	}
 
-	options := GetMessagesOptions{
-		NumOfMessages: n,
-	}
-	list, err := q.GetMessages(&options)
+	list, err := queue.GetMessages(&GetMessagesOptions{NumOfMessages: n})
 	c.Assert(err, chk.IsNil)
-	c.Assert(list, chk.HasLen, n)
+	c.Assert(len(list), chk.Equals, n)
+}
+
+func (s *StorageQueueSuite) TestDeleteMessages(c *chk.C) {
+	cli := getQueueClient(c)
+	rec := cli.client.appendRecorder(c)
+	defer rec.Stop()
+
+	queue := cli.GetQueueReference(queueName(c))
+	c.Assert(queue.Create(nil), chk.IsNil)
+	defer queue.Delete(nil)
+
+	msg := queue.GetMessageReference("message")
+	c.Assert(msg.Put(nil), chk.IsNil)
+	list, err := queue.GetMessages(&GetMessagesOptions{VisibilityTimeout: 1})
+	c.Assert(err, chk.IsNil)
+	c.Assert(len(list), chk.Equals, 1)
+	msg = &(list[0])
+	c.Assert(msg.Delete(nil), chk.IsNil)
+}
+
+func queueName(c *chk.C, extras ...string) string {
+	// 63 is the max len for shares
+	return nameGenerator(63, "queue-", alphanum, c, extras)
 }

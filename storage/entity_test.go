@@ -13,10 +13,16 @@ type StorageEntitySuite struct{}
 
 var _ = chk.Suite(&StorageEntitySuite{})
 
-func (s *StorageEntitySuite) TestInsert(c *chk.C) {
-	cli := getBasicClient(c).GetTableService()
-	table := cli.GetTableReference(randTable())
+const (
+	validEtag = "W/\"datetime''2017-04-01T01%3A07%3A23.8881885Z''\""
+)
 
+func (s *StorageEntitySuite) TestInsert(c *chk.C) {
+	cli := getTableClient(c)
+	rec := cli.client.appendRecorder(c)
+	defer rec.Stop()
+
+	table := cli.GetTableReference(tableName(c))
 	err := table.Create(30, EmptyPayload, nil)
 	c.Assert(err, chk.IsNil)
 	defer table.Delete(30, nil)
@@ -56,9 +62,11 @@ func (s *StorageEntitySuite) TestInsert(c *chk.C) {
 }
 
 func (s *StorageEntitySuite) TestUpdate(c *chk.C) {
-	cli := getBasicClient(c).GetTableService()
-	table := cli.GetTableReference(randTable())
+	cli := getTableClient(c)
+	rec := cli.client.appendRecorder(c)
+	defer rec.Stop()
 
+	table := cli.GetTableReference(tableName(c))
 	err := table.Create(30, EmptyPayload, nil)
 	c.Assert(err, chk.IsNil)
 	defer table.Delete(30, nil)
@@ -93,7 +101,7 @@ func (s *StorageEntitySuite) TestUpdate(c *chk.C) {
 	c.Assert(entity.TimeStamp, chk.Not(chk.Equals), timestamp)
 
 	// Try to update with old etag
-	entity.OdataEtag = etag
+	entity.OdataEtag = validEtag
 	err = entity.Update(false, nil)
 	c.Assert(err, chk.NotNil)
 	c.Assert(err, chk.ErrorMatches, "Etag didn't match: .*")
@@ -111,9 +119,11 @@ func (s *StorageEntitySuite) TestUpdate(c *chk.C) {
 }
 
 func (s *StorageEntitySuite) TestMerge(c *chk.C) {
-	cli := getBasicClient(c).GetTableService()
-	table := cli.GetTableReference(randTable())
+	cli := getTableClient(c)
+	rec := cli.client.appendRecorder(c)
+	defer rec.Stop()
 
+	table := cli.GetTableReference(tableName(c))
 	err := table.Create(30, EmptyPayload, nil)
 	c.Assert(err, chk.IsNil)
 	defer table.Delete(30, nil)
@@ -137,8 +147,8 @@ func (s *StorageEntitySuite) TestMerge(c *chk.C) {
 	c.Assert(entity.OdataEtag, chk.Not(chk.Equals), etag)
 	c.Assert(entity.TimeStamp, chk.Not(chk.Equals), timestamp)
 
-	// Try to merge with old etag
-	entity.OdataEtag = etag
+	// Try to merge with incorrect etag
+	entity.OdataEtag = validEtag
 	err = entity.Merge(false, nil)
 	c.Assert(err, chk.NotNil)
 	c.Assert(err, chk.ErrorMatches, "Etag didn't match: .*")
@@ -153,26 +163,28 @@ func (s *StorageEntitySuite) TestMerge(c *chk.C) {
 }
 
 func (s *StorageEntitySuite) TestDelete(c *chk.C) {
-	cli := getBasicClient(c).GetTableService()
-	table := cli.GetTableReference(randTable())
+	cli := getTableClient(c)
+	rec := cli.client.appendRecorder(c)
+	defer rec.Stop()
 
+	table := cli.GetTableReference(tableName(c))
 	err := table.Create(30, EmptyPayload, nil)
 	c.Assert(err, chk.IsNil)
 	defer table.Delete(30, nil)
 
 	// Delete providing etag
-	entity1 := table.GetEntityReference("mypartitionkey", "myrowkey")
+	entity1 := table.GetEntityReference("pkey1", "rowkey1")
 	c.Assert(entity1.Insert(FullMetadata, nil), chk.IsNil)
 
 	err = entity1.Delete(false, nil)
 	c.Assert(err, chk.IsNil)
 
 	// Try to delete with incorrect etag
-	entity2 := table.GetEntityReference("mypartitionkey", "myrowkey")
+	entity2 := table.GetEntityReference("pkey2", "rowkey2")
 	c.Assert(entity2.Insert(EmptyPayload, nil), chk.IsNil)
 	entity2.OdataEtag = "GolangRocksOnAzure"
 
-	err = entity1.Delete(false, nil)
+	err = entity2.Delete(false, nil)
 	c.Assert(err, chk.NotNil)
 
 	// Force delete
@@ -181,9 +193,11 @@ func (s *StorageEntitySuite) TestDelete(c *chk.C) {
 }
 
 func (s *StorageEntitySuite) TestInsertOrReplace(c *chk.C) {
-	cli := getBasicClient(c).GetTableService()
-	table := cli.GetTableReference(randTable())
+	cli := getTableClient(c)
+	rec := cli.client.appendRecorder(c)
+	defer rec.Stop()
 
+	table := cli.GetTableReference(tableName(c))
 	err := table.Create(30, EmptyPayload, nil)
 	c.Assert(err, chk.IsNil)
 	defer table.Delete(30, nil)
@@ -208,9 +222,11 @@ func (s *StorageEntitySuite) TestInsertOrReplace(c *chk.C) {
 }
 
 func (s *StorageEntitySuite) TestInsertOrMerge(c *chk.C) {
-	cli := getBasicClient(c).GetTableService()
-	table := cli.GetTableReference(randTable())
+	cli := getTableClient(c)
+	rec := cli.client.appendRecorder(c)
+	defer rec.Stop()
 
+	table := cli.GetTableReference(tableName(c))
 	err := table.Create(30, EmptyPayload, nil)
 	c.Assert(err, chk.IsNil)
 	defer table.Delete(30, nil)
@@ -233,9 +249,11 @@ func (s *StorageEntitySuite) TestInsertOrMerge(c *chk.C) {
 }
 
 func (s *StorageEntitySuite) Test_InsertAndGetEntities(c *chk.C) {
-	cli := getBasicClient(c).GetTableService()
-	table := cli.GetTableReference(randTable())
+	cli := getTableClient(c)
+	rec := cli.client.appendRecorder(c)
+	defer rec.Stop()
 
+	table := cli.GetTableReference(tableName(c))
 	err := table.Create(30, EmptyPayload, nil)
 	c.Assert(err, chk.IsNil)
 	defer table.Delete(30, nil)
@@ -261,9 +279,11 @@ func (s *StorageEntitySuite) Test_InsertAndGetEntities(c *chk.C) {
 }
 
 func (s *StorageEntitySuite) Test_InsertAndExecuteQuery(c *chk.C) {
-	cli := getBasicClient(c).GetTableService()
-	table := cli.GetTableReference(randTable())
+	cli := getTableClient(c)
+	rec := cli.client.appendRecorder(c)
+	defer rec.Stop()
 
+	table := cli.GetTableReference(tableName(c))
 	err := table.Create(30, EmptyPayload, nil)
 	c.Assert(err, chk.IsNil)
 	defer table.Delete(30, nil)
@@ -291,9 +311,11 @@ func (s *StorageEntitySuite) Test_InsertAndExecuteQuery(c *chk.C) {
 }
 
 func (s *StorageEntitySuite) Test_InsertAndDeleteEntities(c *chk.C) {
-	cli := getBasicClient(c).GetTableService()
-	table := cli.GetTableReference(randTable())
+	cli := getTableClient(c)
+	rec := cli.client.appendRecorder(c)
+	defer rec.Stop()
 
+	table := cli.GetTableReference(tableName(c))
 	err := table.Create(30, EmptyPayload, nil)
 	c.Assert(err, chk.IsNil)
 	defer table.Delete(30, nil)
@@ -330,9 +352,11 @@ func (s *StorageEntitySuite) Test_InsertAndDeleteEntities(c *chk.C) {
 }
 
 func (s *StorageEntitySuite) TestExecuteQueryNextResults(c *chk.C) {
-	cli := getBasicClient(c).GetTableService()
-	table := cli.GetTableReference(randTable())
+	cli := getTableClient(c)
+	rec := cli.client.appendRecorder(c)
+	defer rec.Stop()
 
+	table := cli.GetTableReference(tableName(c))
 	err := table.Create(30, EmptyPayload, nil)
 	c.Assert(err, chk.IsNil)
 	defer table.Delete(30, nil)

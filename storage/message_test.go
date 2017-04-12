@@ -14,7 +14,10 @@ func (s *StorageMessageSuite) Test_pathForMessage(c *chk.C) {
 
 func (s *StorageMessageSuite) TestDeleteMessages(c *chk.C) {
 	cli := getQueueClient(c)
-	q := cli.GetQueueReference(randString(20))
+	rec := cli.client.appendRecorder(c)
+	defer rec.Stop()
+
+	q := cli.GetQueueReference(queueName(c))
 	c.Assert(q.Create(nil), chk.IsNil)
 	defer q.Delete(nil)
 
@@ -31,36 +34,46 @@ func (s *StorageMessageSuite) TestDeleteMessages(c *chk.C) {
 	c.Assert(list[0].Delete(nil), chk.IsNil)
 }
 
-func (s *StorageMessageSuite) TestPutMessage_PeekMessage_UpdateMessage_DeleteMessage(c *chk.C) {
+func (s *StorageMessageSuite) TestPutMessage_Peek(c *chk.C) {
 	cli := getQueueClient(c)
-	q := cli.GetQueueReference(randString(20))
-	c.Assert(q.Create(nil), chk.IsNil)
-	defer q.Delete(nil)
+	rec := cli.client.appendRecorder(c)
+	defer rec.Stop()
 
-	m := q.GetMessageReference(randString(64 * 1024)) // exercise max length
-	c.Assert(m.Put(nil), chk.IsNil)
+	queue := cli.GetQueueReference(queueName(c))
+	c.Assert(queue.Create(nil), chk.IsNil)
+	defer queue.Delete(nil)
 
-	list, err := q.PeekMessages(nil)
+	msg := queue.GetMessageReference(string(content(64 * 1024))) // exercise max length
+	c.Assert(msg.Put(nil), chk.IsNil)
+
+	list, err := queue.PeekMessages(nil)
 	c.Assert(err, chk.IsNil)
-	c.Assert(list, chk.HasLen, 1)
-	c.Assert(list[0].Text, chk.Equals, m.Text)
+	c.Assert(len(list), chk.Equals, 1)
+	c.Assert(list[0].Text, chk.Equals, msg.Text)
+}
 
-	getOptions := GetMessagesOptions{
-		NumOfMessages:     1,
-		VisibilityTimeout: 2,
-	}
-	list, gerr := q.GetMessages(&getOptions)
-	c.Assert(gerr, chk.IsNil)
+func (s *StorageMessageSuite) TestPutMessage_Peek_Update_Delete(c *chk.C) {
+	cli := getQueueClient(c)
+	rec := cli.client.appendRecorder(c)
+	defer rec.Stop()
 
-	m = &(list[0])
-	m.Text = "Test Message"
+	queue := cli.GetQueueReference(queueName(c))
+	c.Assert(queue.Create(nil), chk.IsNil)
+	defer queue.Delete(nil)
 
-	updateOptions := UpdateMessageOptions{
-		VisibilityTimeout: 2,
-	}
-	c.Assert(m.Update(&updateOptions), chk.IsNil)
+	msg1 := queue.GetMessageReference(string(content(64 * 1024))) // exercise max length
+	msg2 := queue.GetMessageReference("and other message")
+	c.Assert(msg1.Put(nil), chk.IsNil)
+	c.Assert(msg2.Put(nil), chk.IsNil)
 
-	list, err = q.PeekMessages(nil)
+	list, err := queue.GetMessages(&GetMessagesOptions{NumOfMessages: 2, VisibilityTimeout: 2})
 	c.Assert(err, chk.IsNil)
-	c.Assert(list, chk.HasLen, 0)
+	c.Assert(len(list), chk.Equals, 2)
+	c.Assert(list[0].Text, chk.Equals, msg1.Text)
+	c.Assert(list[1].Text, chk.Equals, msg2.Text)
+
+	list[0].Text = "updated message"
+	c.Assert(list[0].Update(&UpdateMessageOptions{VisibilityTimeout: 2}), chk.IsNil)
+
+	c.Assert(list[1].Delete(nil), chk.IsNil)
 }

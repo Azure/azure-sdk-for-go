@@ -10,6 +10,9 @@ var _ = chk.Suite(&StorageSuite{})
 
 func (s *StorageSuite) TestGetServiceProperties(c *chk.C) {
 	cli := getTableClient(c)
+	rec := cli.client.appendRecorder(c)
+	defer rec.Stop()
+
 	sp, err := cli.GetServiceProperties()
 	c.Assert(err, chk.IsNil)
 	c.Assert(sp, chk.NotNil)
@@ -17,6 +20,7 @@ func (s *StorageSuite) TestGetServiceProperties(c *chk.C) {
 
 func (s *StorageSuite) TestSetServiceProperties(c *chk.C) {
 	cli := getTableClient(c)
+	rec := cli.client.appendRecorder(c)
 
 	t := true
 	num := 7
@@ -61,6 +65,8 @@ func (s *StorageSuite) TestSetServiceProperties(c *chk.C) {
 	c.Assert(spOutput, chk.NotNil)
 	c.Assert(*spOutput, chk.DeepEquals, spInput)
 
+	rec.Stop()
+
 	// Back to defaults
 	defaultRP := RetentionPolicy{
 		Enabled: false,
@@ -75,11 +81,5 @@ func (s *StorageSuite) TestSetServiceProperties(c *chk.C) {
 	spInput.Logging.RetentionPolicy = &defaultRP
 	spInput.Cors = &Cors{nil}
 
-	err = cli.SetServiceProperties(spInput)
-	c.Assert(err, chk.IsNil)
-
-	spOutput, err = cli.GetServiceProperties()
-	c.Assert(err, chk.IsNil)
-	c.Assert(spOutput, chk.NotNil)
-	c.Assert(*spOutput, chk.DeepEquals, spInput)
+	cli.SetServiceProperties(spInput)
 }

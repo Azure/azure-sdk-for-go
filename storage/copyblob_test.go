@@ -4,7 +4,6 @@ import (
 	"io/ioutil"
 	"net/http"
 	"testing"
-	"time"
 
 	chk "gopkg.in/check.v1"
 )
@@ -19,13 +18,16 @@ func (s *CopyBlobSuite) TestBlobCopy(c *chk.C) {
 	}
 
 	cli := getBlobClient(c)
-	cnt := cli.GetContainerReference(randContainer())
+	rec := cli.client.appendRecorder(c)
+	defer rec.Stop()
+
+	cnt := cli.GetContainerReference(containerName(c))
 	c.Assert(cnt.Create(nil), chk.IsNil)
 	defer cnt.Delete(nil)
 
-	srcBlob := cnt.GetBlobReference(randName(5))
-	dstBlob := cnt.GetBlobReference(randName(5))
-	body := []byte(randString(1024))
+	srcBlob := cnt.GetBlobReference(blobName(c, "src"))
+	dstBlob := cnt.GetBlobReference(blobName(c, "dst"))
+	body := content(1024)
 
 	c.Assert(srcBlob.putSingleBlockBlob(body), chk.IsNil)
 	defer srcBlob.Delete(nil)
@@ -48,13 +50,16 @@ func (s *CopyBlobSuite) TestStartBlobCopy(c *chk.C) {
 	}
 
 	cli := getBlobClient(c)
-	cnt := cli.GetContainerReference(randContainer())
+	rec := cli.client.appendRecorder(c)
+	defer rec.Stop()
+
+	cnt := cli.GetContainerReference(containerName(c))
 	c.Assert(cnt.Create(nil), chk.IsNil)
 	defer cnt.Delete(nil)
 
-	srcBlob := cnt.GetBlobReference(randName(5))
-	dstBlob := cnt.GetBlobReference(randName(5))
-	body := []byte(randString(1024))
+	srcBlob := cnt.GetBlobReference(blobName(c, "src"))
+	dstBlob := cnt.GetBlobReference(blobName(c, "dst"))
+	body := content(1024)
 
 	c.Assert(srcBlob.putSingleBlockBlob(body), chk.IsNil)
 	defer srcBlob.Delete(nil)
@@ -75,13 +80,16 @@ func (s *CopyBlobSuite) TestAbortBlobCopy(c *chk.C) {
 	}
 
 	cli := getBlobClient(c)
-	cnt := cli.GetContainerReference(randContainer())
+	rec := cli.client.appendRecorder(c)
+	defer rec.Stop()
+
+	cnt := cli.GetContainerReference(containerName(c))
 	c.Assert(cnt.Create(nil), chk.IsNil)
 	defer cnt.Delete(nil)
 
-	srcBlob := cnt.GetBlobReference(randName(5))
-	dstBlob := cnt.GetBlobReference(randName(5))
-	body := []byte(randString(1024))
+	srcBlob := cnt.GetBlobReference(blobName(c, "src"))
+	dstBlob := cnt.GetBlobReference(blobName(c, "dst"))
+	body := content(1024)
 
 	c.Assert(srcBlob.putSingleBlockBlob(body), chk.IsNil)
 	defer srcBlob.Delete(nil)
@@ -102,18 +110,23 @@ func (s *CopyBlobSuite) TestAbortBlobCopy(c *chk.C) {
 	c.Assert(err.(AzureStorageServiceError).StatusCode, chk.Equals, http.StatusConflict)
 }
 
-func (s *StorageBlobSuite) TestIncrementalCopyBlobNoTimeout(c *chk.C) {
-
+func (s *CopyBlobSuite) TestIncrementalCopyBlobNoTimeout(c *chk.C) {
 	if testing.Short() {
 		c.Skip("skipping blob copy in short mode, no SLA on async operation")
 	}
 
 	cli := getBlobClient(c)
-	cnt := cli.GetContainerReference(randContainer())
-	c.Assert(cnt.Create(nil), chk.IsNil)
+	rec := cli.client.appendRecorder(c)
+	defer rec.Stop()
+
+	cnt := cli.GetContainerReference(containerName(c))
+	options := CreateContainerOptions{
+		Access: ContainerAccessTypeBlob,
+	}
+	c.Assert(cnt.Create(&options), chk.IsNil)
 	defer cnt.Delete(nil)
 
-	b := cnt.GetBlobReference(randName(5))
+	b := cnt.GetBlobReference(blobName(c, "src"))
 	size := int64(10 * 1024 * 1024)
 	b.Properties.ContentLength = size
 	c.Assert(b.PutPageBlob(nil), chk.IsNil)
@@ -122,23 +135,26 @@ func (s *StorageBlobSuite) TestIncrementalCopyBlobNoTimeout(c *chk.C) {
 	c.Assert(err, chk.IsNil)
 	c.Assert(snapshotTime, chk.NotNil)
 
-	expiry := now.UTC().Add(time.Hour)
-	u, err := b.GetSASURI(expiry, "r")
-	c.Assert(err, chk.IsNil)
-
-	destBlob := cnt.GetBlobReference(randName(5))
+	u := b.GetURL()
+	destBlob := cnt.GetBlobReference(blobName(c, "dst"))
 	copyID, err := destBlob.IncrementalCopyBlob(u, *snapshotTime, nil)
 	c.Assert(copyID, chk.NotNil)
 	c.Assert(err, chk.IsNil)
 }
 
-func (s *StorageBlobSuite) TestIncrementalCopyBlobWithTimeout(c *chk.C) {
+func (s *CopyBlobSuite) TestIncrementalCopyBlobWithTimeout(c *chk.C) {
 	cli := getBlobClient(c)
-	cnt := cli.GetContainerReference(randContainer())
-	c.Assert(cnt.Create(nil), chk.IsNil)
+	rec := cli.client.appendRecorder(c)
+	defer rec.Stop()
+
+	cnt := cli.GetContainerReference(containerName(c))
+	options := CreateContainerOptions{
+		Access: ContainerAccessTypeBlob,
+	}
+	c.Assert(cnt.Create(&options), chk.IsNil)
 	defer cnt.Delete(nil)
 
-	b := cnt.GetBlobReference(randName(5))
+	b := cnt.GetBlobReference(blobName(c, "src"))
 	size := int64(10 * 1024 * 1024)
 	b.Properties.ContentLength = size
 	c.Assert(b.PutPageBlob(nil), chk.IsNil)
@@ -147,13 +163,9 @@ func (s *StorageBlobSuite) TestIncrementalCopyBlobWithTimeout(c *chk.C) {
 	c.Assert(err, chk.IsNil)
 	c.Assert(snapshotTime, chk.NotNil)
 
-	expiry := now.UTC().Add(time.Hour)
-	u, err := b.GetSASURI(expiry, "r")
-	c.Assert(err, chk.IsNil)
-
-	destBlob := cnt.GetBlobReference(randName(5))
+	u := b.GetURL()
+	destBlob := cnt.GetBlobReference(blobName(c, "dst"))
 	copyID, err := destBlob.IncrementalCopyBlob(u, *snapshotTime, &IncrementalCopyOptions{Timeout: 30})
 	c.Assert(copyID, chk.NotNil)
 	c.Assert(err, chk.IsNil)
-
 }

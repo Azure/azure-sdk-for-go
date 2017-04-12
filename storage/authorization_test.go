@@ -189,12 +189,14 @@ func (a *AuthorizationSuite) Test_createAuthorizationHeader(c *chk.C) {
 
 func (a *AuthorizationSuite) Test_allSharedKeys(c *chk.C) {
 	cli := getBasicClient(c)
+	rec := cli.appendRecorder(c)
+	defer rec.Stop()
 
 	blobCli := cli.GetBlobService()
 	tableCli := cli.GetTableService()
 
-	cnt1 := blobCli.GetContainerReference(randContainer())
-	cnt2 := blobCli.GetContainerReference(randContainer())
+	cnt1 := blobCli.GetContainerReference(containerName(c, "1"))
+	cnt2 := blobCli.GetContainerReference(containerName(c, "2"))
 
 	// Shared Key
 	c.Assert(blobCli.auth, chk.Equals, sharedKey)
@@ -203,7 +205,7 @@ func (a *AuthorizationSuite) Test_allSharedKeys(c *chk.C) {
 
 	// Shared Key for Tables
 	c.Assert(tableCli.auth, chk.Equals, sharedKeyForTable)
-	table1 := tableCli.GetTableReference(randTable())
+	table1 := tableCli.GetTableReference(tableName(c, "1"))
 	c.Assert(table1.tsc.auth, chk.Equals, sharedKeyForTable)
 	c.Assert(table1.Create(30, EmptyPayload, nil), chk.IsNil)
 	c.Assert(table1.Delete(30, nil), chk.IsNil)
@@ -221,7 +223,7 @@ func (a *AuthorizationSuite) Test_allSharedKeys(c *chk.C) {
 	// Shared Key Lite for Tables
 	tableCli = cli.GetTableService()
 	c.Assert(tableCli.auth, chk.Equals, sharedKeyLiteForTable)
-	table2 := tableCli.GetTableReference(randTable())
+	table2 := tableCli.GetTableReference(tableName(c, "2"))
 	c.Assert(table2.tsc.auth, chk.Equals, sharedKeyLiteForTable)
 	c.Assert(table2.Create(30, EmptyPayload, nil), chk.IsNil)
 	c.Assert(table2.Delete(30, nil), chk.IsNil)

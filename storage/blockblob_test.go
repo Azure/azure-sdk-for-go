@@ -14,12 +14,15 @@ var _ = chk.Suite(&BlockBlobSuite{})
 
 func (s *BlockBlobSuite) TestCreateBlockBlobFromReader(c *chk.C) {
 	cli := getBlobClient(c)
-	cnt := cli.GetContainerReference(randContainer())
-	b := cnt.GetBlobReference(randName(5))
+	rec := cli.client.appendRecorder(c)
+	defer rec.Stop()
+
+	cnt := cli.GetContainerReference(containerName(c))
+	b := cnt.GetBlobReference(blobName(c))
 	c.Assert(cnt.Create(nil), chk.IsNil)
 	defer cnt.Delete(nil)
 
-	data := randBytes(8888)
+	data := content(8888)
 	b.Properties.ContentLength = int64(len(data))
 	c.Assert(b.CreateBlockBlobFromReader(bytes.NewReader(data), nil), chk.IsNil)
 
@@ -34,12 +37,15 @@ func (s *BlockBlobSuite) TestCreateBlockBlobFromReader(c *chk.C) {
 
 func (s *BlockBlobSuite) TestCreateBlockBlobFromReaderWithShortData(c *chk.C) {
 	cli := getBlobClient(c)
-	cnt := cli.GetContainerReference(randContainer())
-	b := cnt.GetBlobReference(randName(5))
+	rec := cli.client.appendRecorder(c)
+	defer rec.Stop()
+
+	cnt := cli.GetContainerReference(containerName(c))
+	b := cnt.GetBlobReference(blobName(c))
 	c.Assert(cnt.Create(nil), chk.IsNil)
 	defer cnt.Delete(nil)
 
-	data := randBytes(8888)
+	data := content(8888)
 	b.Properties.ContentLength = 9999
 	err := b.CreateBlockBlobFromReader(bytes.NewReader(data), nil)
 	c.Assert(err, chk.NotNil)
@@ -51,24 +57,30 @@ func (s *BlockBlobSuite) TestCreateBlockBlobFromReaderWithShortData(c *chk.C) {
 
 func (s *BlockBlobSuite) TestPutBlock(c *chk.C) {
 	cli := getBlobClient(c)
-	cnt := cli.GetContainerReference(randContainer())
-	b := cnt.GetBlobReference(randName(5))
+	rec := cli.client.appendRecorder(c)
+	defer rec.Stop()
+
+	cnt := cli.GetContainerReference(containerName(c))
+	b := cnt.GetBlobReference(blobName(c))
 	c.Assert(cnt.Create(nil), chk.IsNil)
 	defer cnt.Delete(nil)
 
-	chunk := []byte(randString(1024))
+	chunk := content(1024)
 	blockID := base64.StdEncoding.EncodeToString([]byte("lol"))
 	c.Assert(b.PutBlock(blockID, chunk, nil), chk.IsNil)
 }
 
 func (s *BlockBlobSuite) TestGetBlockList_PutBlockList(c *chk.C) {
 	cli := getBlobClient(c)
-	cnt := cli.GetContainerReference(randContainer())
-	b := cnt.GetBlobReference(randName(5))
+	rec := cli.client.appendRecorder(c)
+	defer rec.Stop()
+
+	cnt := cli.GetContainerReference(containerName(c))
+	b := cnt.GetBlobReference(blobName(c))
 	c.Assert(cnt.Create(nil), chk.IsNil)
 	defer cnt.Delete(nil)
 
-	chunk := []byte(randString(1024))
+	chunk := content(1024)
 	blockID := base64.StdEncoding.EncodeToString([]byte("lol"))
 
 	// Put one block
@@ -105,8 +117,11 @@ func (s *BlockBlobSuite) TestGetBlockList_PutBlockList(c *chk.C) {
 
 func (s *BlockBlobSuite) TestCreateBlockBlob(c *chk.C) {
 	cli := getBlobClient(c)
-	cnt := cli.GetContainerReference(randContainer())
-	b := cnt.GetBlobReference(randName(5))
+	rec := cli.client.appendRecorder(c)
+	defer rec.Stop()
+
+	cnt := cli.GetContainerReference(containerName(c))
+	b := cnt.GetBlobReference(blobName(c))
 	c.Assert(cnt.Create(nil), chk.IsNil)
 	defer cnt.Delete(nil)
 
@@ -121,12 +136,15 @@ func (s *BlockBlobSuite) TestCreateBlockBlob(c *chk.C) {
 
 func (s *BlockBlobSuite) TestPutEmptyBlockBlob(c *chk.C) {
 	cli := getBlobClient(c)
-	cnt := cli.GetContainerReference(randContainer())
-	b := cnt.GetBlobReference(randName(5))
+	rec := cli.client.appendRecorder(c)
+	defer rec.Stop()
+
+	cnt := cli.GetContainerReference(containerName(c))
+	b := cnt.GetBlobReference(blobName(c))
 	c.Assert(cnt.Create(nil), chk.IsNil)
 	defer cnt.Delete(nil)
 
-	c.Assert(b.putSingleBlockBlob([]byte{}), chk.IsNil)
+	c.Assert(b.putSingleBlockBlob([]byte("Hello!")), chk.IsNil)
 
 	err := b.GetProperties(nil)
 	c.Assert(err, chk.IsNil)

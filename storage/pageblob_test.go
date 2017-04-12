@@ -13,8 +13,11 @@ var _ = chk.Suite(&PageBlobSuite{})
 
 func (s *PageBlobSuite) TestPutPageBlob(c *chk.C) {
 	cli := getBlobClient(c)
-	cnt := cli.GetContainerReference(randContainer())
-	b := cnt.GetBlobReference(randName(5))
+	rec := cli.client.appendRecorder(c)
+	defer rec.Stop()
+
+	cnt := cli.GetContainerReference(containerName(c))
+	b := cnt.GetBlobReference(blobName(c))
 	c.Assert(cnt.Create(nil), chk.IsNil)
 	defer cnt.Delete(nil)
 
@@ -31,8 +34,11 @@ func (s *PageBlobSuite) TestPutPageBlob(c *chk.C) {
 
 func (s *PageBlobSuite) TestPutPagesUpdate(c *chk.C) {
 	cli := getBlobClient(c)
-	cnt := cli.GetContainerReference(randContainer())
-	b := cnt.GetBlobReference(randName(5))
+	rec := cli.client.appendRecorder(c)
+	defer rec.Stop()
+
+	cnt := cli.GetContainerReference(containerName(c))
+	b := cnt.GetBlobReference(blobName(c))
 	c.Assert(cnt.Create(nil), chk.IsNil)
 	defer cnt.Delete(nil)
 
@@ -40,8 +46,8 @@ func (s *PageBlobSuite) TestPutPagesUpdate(c *chk.C) {
 	b.Properties.ContentLength = size
 	c.Assert(b.PutPageBlob(nil), chk.IsNil)
 
-	chunk1 := []byte(randString(1024))
-	chunk2 := []byte(randString(512))
+	chunk1 := content(1024)
+	chunk2 := content(512)
 
 	// Append chunks
 	blobRange := BlobRange{
@@ -66,7 +72,7 @@ func (s *PageBlobSuite) TestPutPagesUpdate(c *chk.C) {
 	c.Assert(blobContents, chk.DeepEquals, append(chunk1, chunk2...))
 
 	// Overwrite first half of chunk1
-	chunk0 := []byte(randString(512))
+	chunk0 := content(512)
 	blobRange.Start = 0
 	blobRange.End = uint64(len(chunk0) - 1)
 	c.Assert(b.WriteRange(blobRange, bytes.NewReader(chunk0), nil), chk.IsNil)
@@ -82,8 +88,11 @@ func (s *PageBlobSuite) TestPutPagesUpdate(c *chk.C) {
 
 func (s *PageBlobSuite) TestPutPagesClear(c *chk.C) {
 	cli := getBlobClient(c)
-	cnt := cli.GetContainerReference(randContainer())
-	b := cnt.GetBlobReference(randName(5))
+	rec := cli.client.appendRecorder(c)
+	defer rec.Stop()
+
+	cnt := cli.GetContainerReference(containerName(c))
+	b := cnt.GetBlobReference(blobName(c))
 	c.Assert(cnt.Create(nil), chk.IsNil)
 	defer cnt.Delete(nil)
 
@@ -92,7 +101,7 @@ func (s *PageBlobSuite) TestPutPagesClear(c *chk.C) {
 	c.Assert(b.PutPageBlob(nil), chk.IsNil)
 
 	// Put 0-2047
-	chunk := []byte(randString(2048))
+	chunk := content(2048)
 	blobRange := BlobRange{
 		End: 2047,
 	}
@@ -120,36 +129,51 @@ func (s *PageBlobSuite) TestPutPagesClear(c *chk.C) {
 
 func (s *PageBlobSuite) TestGetPageRanges(c *chk.C) {
 	cli := getBlobClient(c)
-	cnt := cli.GetContainerReference(randContainer())
-	b := cnt.GetBlobReference(randName(5))
+	rec := cli.client.appendRecorder(c)
+	defer rec.Stop()
+
+	cnt := cli.GetContainerReference(containerName(c))
 	c.Assert(cnt.Create(nil), chk.IsNil)
 	defer cnt.Delete(nil)
 
-	size := int64(10 * 1024 * 1024) // larger than we'll use
-	b.Properties.ContentLength = size
-	c.Assert(b.PutPageBlob(nil), chk.IsNil)
+	size := int64(10 * 1024) // larger than we'll use
 
 	// Get page ranges on empty blob
-	out, err := b.GetPageRanges(nil)
+	blob1 := cnt.GetBlobReference(blobName(c, "1"))
+	blob1.Properties.ContentLength = size
+	c.Assert(blob1.PutPageBlob(nil), chk.IsNil)
+	out, err := blob1.GetPageRanges(nil)
 	c.Assert(err, chk.IsNil)
 	c.Assert(len(out.PageList), chk.Equals, 0)
 
-	// Add 0-512 page
-	blobRange := BlobRange{
-		End: 511,
+	// Get page ranges with just one range
+	blob2 := cnt.GetBlobReference(blobName(c, "2"))
+	blob2.Properties.ContentLength = size
+	c.Assert(blob2.PutPageBlob(nil), chk.IsNil)
+	blobRange := []BlobRange{
+		{End: 511},
+		{Start: 1024, End: 2047},
 	}
-	c.Assert(b.WriteRange(blobRange, bytes.NewReader([]byte(randString(512))), nil), chk.IsNil)
+	c.Assert(blob2.WriteRange(blobRange[0], bytes.NewReader(content(512)), nil), chk.IsNil)
 
-	out, err = b.GetPageRanges(nil)
+	out, err = blob2.GetPageRanges(nil)
 	c.Assert(err, chk.IsNil)
 	c.Assert(len(out.PageList), chk.Equals, 1)
+	expected := []PageRange{
+		{End: 511},
+		{Start: 1024, End: 2047},
+	}
+	c.Assert(out.PageList[0], chk.Equals, expected[0])
 
-	// Add 1024-2048
-	blobRange.Start = 1024
-	blobRange.End = 2047
-	c.Assert(b.WriteRange(blobRange, bytes.NewReader([]byte(randString(1024))), nil), chk.IsNil)
-
-	out, err = b.GetPageRanges(nil)
+	// Get page ranges with just two range
+	blob3 := cnt.GetBlobReference(blobName(c, "3"))
+	blob3.Properties.ContentLength = size
+	c.Assert(blob3.PutPageBlob(nil), chk.IsNil)
+	for _, br := range blobRange {
+		c.Assert(blob3.WriteRange(br, bytes.NewReader(content(int(br.End-br.Start+1))), nil), chk.IsNil)
+	}
+	out, err = blob3.GetPageRanges(nil)
 	c.Assert(err, chk.IsNil)
 	c.Assert(len(out.PageList), chk.Equals, 2)
+	c.Assert(out.PageList, chk.DeepEquals, expected)
 }

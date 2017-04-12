@@ -1,5 +1,5 @@
 hash: 5a5e74f8be7a721d3ea9c2e36d994d2754f15087f89ba8342c4ec9ed4cbedf7b
-updated: 2017-04-26T14:34:34.6552906-07:00
+updated: 2017-04-26T14:49:24.0346028-07:00
 imports:
 - name: github.com/Azure/azure-sdk-for-go
   version: 8dd1f3ff407c300cff0a4bfedd969111ca5a7903
@@ -66,4 +66,11 @@ imports:
   - util
   - watcher
   - watcher/fswatch
-testImports: []
+testImports:
+- name: github.com/dnaeon/go-vcr
+  version: 87d4990451a858cc210399285be976e63bc3c364
+  subpackages:
+  - cassette
+  - recorder
+- name: gopkg.in/yaml.v2
+  version: cd8b52f8269e0feb286dfeef29f8fe4d5b397e0b

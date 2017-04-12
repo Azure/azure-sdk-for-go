@@ -5,9 +5,11 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"io"
 	"mime/multipart"
 	"net/http"
 	"net/textproto"
+	"sort"
 	"strings"
 
 	"github.com/satori/uuid"
@@ -115,7 +117,6 @@ func (t *TableBatch) MergeEntity(entity *Entity) {
 // the changesets.
 // As per document https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/performing-entity-group-transactions
 func (t *TableBatch) ExecuteBatch() error {
-
 	changesetBoundary := fmt.Sprintf("changeset_%s", uuid.NewV1())
 	uri := t.Table.tsc.client.getEndpoint(tableServiceName, "$batch", nil)
 	changesetBody, err := t.generateChangesetBody(changesetBoundary)
@@ -178,7 +179,10 @@ func generateBody(changeSetBody *bytes.Buffer, changesetBoundary string, boundar
 	writer.SetBoundary(boundary)
 	h := make(textproto.MIMEHeader)
 	h.Set(headerContentType, fmt.Sprintf("multipart/mixed; boundary=%s\r\n", changesetBoundary))
-	batchWriter, _ := writer.CreatePart(h)
+	batchWriter, err := writer.CreatePart(h)
+	if err != nil {
+		return nil, err
+	}
 	batchWriter.Write(changeSetBody.Bytes())
 	writer.Close()
 	return body, nil
@@ -262,13 +266,14 @@ func (t *TableBatch) generateEntitySubset(batchEntity *BatchEntity, writer *mult
 	queryPath := t.generateQueryPath(batchEntity.Op, batchEntity.Entity)
 	uri := t.Table.tsc.client.getEndpoint(tableServiceName, queryPath, nil)
 
-	operationWriter, _ := writer.CreatePart(h)
+	operationWriter, err := writer.CreatePart(h)
+	if err != nil {
+		return err
+	}
 
 	urlAndVerb := fmt.Sprintf("%s %s HTTP/1.1\r\n", verb, uri)
 	operationWriter.Write([]byte(urlAndVerb))
-	for k, v := range genericOpHeadersMap {
-		operationWriter.Write([]byte(fmt.Sprintf("%s: %s\r\n", k, v)))
-	}
+	writeHeaders(genericOpHeadersMap, &operationWriter)
 	operationWriter.Write([]byte("\r\n")) // additional \r\n is needed per changeset separating the "headers" and the body.
 
 	// delete operation doesn't need a body.
@@ -282,4 +287,16 @@ func (t *TableBatch) generateEntitySubset(batchEntity *BatchEntity, writer *mult
 	}
 
 	return nil
+}
+
+func writeHeaders(h map[string]string, writer *io.Writer) {
+	// This way it is guaranteed the headers will be written in a sorted order
+	var keys []string
+	for k := range h {
+		keys = append(keys, k)
+	}
+	sort.Strings(keys)
+	for _, k := range keys {
+		(*writer).Write([]byte(fmt.Sprintf("%s: %s\r\n", k, h[k])))
+	}
 }

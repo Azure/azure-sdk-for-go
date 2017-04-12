@@ -1,13 +1,81 @@
 package storage
 
 import (
+	"bytes"
+	"encoding/hex"
 	"encoding/xml"
+	"fmt"
 	"io/ioutil"
 	"net/url"
+	"os"
+	"path/filepath"
 	"strings"
+	"testing"
 	"time"
 
 	chk "gopkg.in/check.v1"
+)
+
+func TestMain(m *testing.M) {
+	exitStatus := m.Run()
+	err := fixRecordings()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "After test run, fixing recordings failed with error: %v\n", err)
+		exitStatus = 1
+	}
+	os.Exit(exitStatus)
+}
+
+func fixRecordings() error {
+	err := filepath.Walk(recordingsFolder, func(path string, file os.FileInfo, err error) error {
+		if strings.ToLower(filepath.Ext(path)) == ".yaml" {
+			recording, err := ioutil.ReadFile(path)
+			if err != nil {
+				fmt.Fprintf(os.Stderr, "Error reading file '%s': %v", path, err)
+			}
+
+			fixedRecording := replaceStorageAccount(string(recording))
+
+			err = ioutil.WriteFile(path, []byte(fixedRecording), 0)
+			if err != nil {
+				fmt.Fprintf(os.Stderr, "Error writing file '%s': %v", path, err)
+			}
+		}
+		return err
+	})
+	return err
+}
+
+func replaceStorageAccount(recording string) string {
+	name := os.Getenv("ACCOUNT_NAME")
+	if name == "" {
+		// do nothing
+		return recording
+	}
+
+	nameHex := getHex(name)
+	dummyHex := getHex(dummyStorageAccount)
+
+	r := strings.NewReplacer(name, dummyStorageAccount,
+		nameHex, dummyHex)
+
+	return r.Replace(string(recording))
+}
+
+func getHex(input string) string {
+	encoded := strings.ToUpper(hex.EncodeToString([]byte(input)))
+	formatted := bytes.Buffer{}
+	for i := 0; i < len(encoded); i += 2 {
+		formatted.WriteString(`\x`)
+		formatted.WriteString(encoded[i : i+2])
+	}
+	return formatted.String()
+}
+
+const (
+	dummyStorageAccount = "golangrocksonazure"
+	dummyMiniStorageKey = "YmFy"
+	recordingsFolder    = "recordings"
 )
 
 func (s *StorageClientSuite) Test_timeRfc1123Formatted(c *chk.C) {

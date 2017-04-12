@@ -134,13 +134,23 @@ func (s *BlobSASURISuite) TestGetBlobSASURIWithSignedIPAndProtocolUsingOldAPIVer
 
 func (s *BlobSASURISuite) TestBlobSASURICorrectness(c *chk.C) {
 	cli := getBlobClient(c)
-	cnt := cli.GetContainerReference(randContainer())
+
+	if cli.client.usesDummies() {
+		c.Skip("As GetSASURI result depends on the account key, it is not practical to test it with a dummy key.")
+	}
+
+	simpleClient := &http.Client{}
+	rec := cli.client.appendRecorder(c)
+	simpleClient.Transport = rec
+	defer rec.Stop()
+
+	cnt := cli.GetContainerReference(containerName(c))
 	c.Assert(cnt.Create(nil), chk.IsNil)
-	b := cnt.GetBlobReference(randNameWithSpecialChars(5))
+	b := cnt.GetBlobReference(contentWithSpecialChars(5))
 	defer cnt.Delete(nil)
 
-	body := []byte(randString(100))
-	expiry := now.UTC().Add(time.Hour)
+	body := content(100)
+	expiry := fixedTime.UTC().Add(time.Hour)
 	permissions := "r"
 
 	c.Assert(b.putSingleBlockBlob(body), chk.IsNil)
@@ -148,7 +158,7 @@ func (s *BlobSASURISuite) TestBlobSASURICorrectness(c *chk.C) {
 	sasURI, err := b.GetSASURI(expiry, permissions)
 	c.Assert(err, chk.IsNil)
 
-	resp, err := http.Get(sasURI)
+	resp, err := simpleClient.Get(sasURI)
 	c.Assert(err, chk.IsNil)
 
 	blobResp, err := ioutil.ReadAll(resp.Body)
@@ -156,10 +166,11 @@ func (s *BlobSASURISuite) TestBlobSASURICorrectness(c *chk.C) {
 	c.Assert(err, chk.IsNil)
 
 	c.Assert(resp.StatusCode, chk.Equals, http.StatusOK)
-	c.Assert(len(blobResp), chk.Equals, len(body))
+	c.Assert(string(blobResp), chk.Equals, string(body))
+
 }
 
-func (s *StorageBlobSuite) Test_blobSASStringToSign(c *chk.C) {
+func (s *BlobSASURISuite) Test_blobSASStringToSign(c *chk.C) {
 	_, err := blobSASStringToSign("2012-02-12", "CS", "SE", "SP", "", "")
 	c.Assert(err, chk.NotNil) // not implemented SAS for versions earlier than 2013-08-15
 

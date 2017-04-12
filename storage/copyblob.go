@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"net/http"
 	"net/url"
+	"strings"
 	"time"
 )
 
@@ -170,14 +171,24 @@ func (b *Blob) WaitForCopy(copyID string) error {
 
 // IncrementalCopyBlob copies a snapshot of a source blob and copies to referring blob
 // sourceBlob parameter must be a valid snapshot URL of the original blob.
+// THe original blob mut be public, or use a Shared Access Signature.
 //
 // See https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/incremental-copy-blob .
 func (b *Blob) IncrementalCopyBlob(sourceBlobURL string, snapshotTime time.Time, options *IncrementalCopyOptions) (string, error) {
 	params := url.Values{"comp": {"incrementalcopy"}}
 
-	// need formatting to 7 decical places so it's friendly to Windows and *nix
+	// need formatting to 7 decimal places so it's friendly to Windows and *nix
 	snapshotTimeFormatted := snapshotTime.Format("2006-01-02T15:04:05.0000000Z")
-	snapshotURL := fmt.Sprintf("%s&snapshot=%s", sourceBlobURL, snapshotTimeFormatted)
+	u, err := url.Parse(sourceBlobURL)
+	if err != nil {
+		return "", err
+	}
+	query := u.Query()
+	query.Add("snapshot", snapshotTimeFormatted)
+	encodedQuery := query.Encode()
+	encodedQuery = strings.Replace(encodedQuery, "%3A", ":", -1)
+	u.RawQuery = encodedQuery
+	snapshotURL := u.String()
 
 	headers := b.Container.bsc.client.getStandardHeaders()
 	headers["x-ms-copy-source"] = snapshotURL

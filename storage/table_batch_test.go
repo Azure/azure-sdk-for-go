@@ -4,14 +4,19 @@ import (
 	"time"
 
 	"github.com/satori/uuid"
-
 	chk "gopkg.in/check.v1"
 )
 
-func (s *StorageTableSuite) Test_BatchInsertMultipleEntities(c *chk.C) {
-	cli := getBasicClient(c).GetTableService()
-	table := cli.GetTableReference(randTable())
+type TableBatchSuite struct{}
 
+var _ = chk.Suite(&TableBatchSuite{})
+
+func (s *TableBatchSuite) Test_BatchInsertMultipleEntities(c *chk.C) {
+	cli := getBasicClient(c).GetTableService()
+	rec := cli.client.appendRecorder(c)
+	defer rec.Stop()
+
+	table := cli.GetTableReference(tableName(c, "me"))
 	err := table.Create(30, EmptyPayload, nil)
 	c.Assert(err, chk.IsNil)
 	defer table.Delete(30, nil)
@@ -52,10 +57,12 @@ func (s *StorageTableSuite) Test_BatchInsertMultipleEntities(c *chk.C) {
 	c.Assert(results.Entities, chk.HasLen, 2)
 }
 
-func (s *StorageTableSuite) Test_BatchInsertSameEntryMultipleTimes(c *chk.C) {
+func (s *TableBatchSuite) Test_BatchInsertSameEntryMultipleTimes(c *chk.C) {
 	cli := getBasicClient(c).GetTableService()
-	table := cli.GetTableReference(randTable())
+	rec := cli.client.appendRecorder(c)
+	defer rec.Stop()
 
+	table := cli.GetTableReference(tableName(c))
 	err := table.Create(30, EmptyPayload, nil)
 	c.Assert(err, chk.IsNil)
 	defer table.Delete(30, nil)
@@ -82,10 +89,12 @@ func (s *StorageTableSuite) Test_BatchInsertSameEntryMultipleTimes(c *chk.C) {
 	}
 }
 
-func (s *StorageTableSuite) Test_BatchInsertDeleteSameEntity(c *chk.C) {
+func (s *TableBatchSuite) Test_BatchInsertDeleteSameEntity(c *chk.C) {
 	cli := getBasicClient(c).GetTableService()
-	table := cli.GetTableReference(randTable())
+	rec := cli.client.appendRecorder(c)
+	defer rec.Stop()
 
+	table := cli.GetTableReference(tableName(c))
 	err := table.Create(30, EmptyPayload, nil)
 	c.Assert(err, chk.IsNil)
 	defer table.Delete(30, nil)
@@ -113,10 +122,12 @@ func (s *StorageTableSuite) Test_BatchInsertDeleteSameEntity(c *chk.C) {
 	}
 }
 
-func (s *StorageTableSuite) Test_BatchInsertThenDeleteDifferentBatches(c *chk.C) {
+func (s *TableBatchSuite) Test_BatchInsertThenDeleteDifferentBatches(c *chk.C) {
 	cli := getBasicClient(c).GetTableService()
-	table := cli.GetTableReference(randTable())
+	rec := cli.client.appendRecorder(c)
+	defer rec.Stop()
 
+	table := cli.GetTableReference(tableName(c))
 	err := table.Create(30, EmptyPayload, nil)
 	c.Assert(err, chk.IsNil)
 	defer table.Delete(30, nil)
@@ -149,15 +160,18 @@ func (s *StorageTableSuite) Test_BatchInsertThenDeleteDifferentBatches(c *chk.C)
 	err = batch.ExecuteBatch()
 	c.Assert(err, chk.IsNil)
 
-	results, err = table.QueryEntities(30, FullMetadata, &options)
+	// Timeout set to 15 for this test to work propwrly with the recordings
+	results, err = table.QueryEntities(15, FullMetadata, &options)
 	c.Assert(err, chk.IsNil)
 	c.Assert(results.Entities, chk.HasLen, 0)
 }
 
-func (s *StorageTableSuite) Test_BatchInsertThenMergeDifferentBatches(c *chk.C) {
+func (s *TableBatchSuite) Test_BatchInsertThenMergeDifferentBatches(c *chk.C) {
 	cli := getBasicClient(c).GetTableService()
-	table := cli.GetTableReference(randTable())
+	rec := cli.client.appendRecorder(c)
+	defer rec.Stop()
 
+	table := cli.GetTableReference(tableName(c))
 	err := table.Create(30, EmptyPayload, nil)
 	c.Assert(err, chk.IsNil)
 	defer table.Delete(30, nil)

@@ -6,29 +6,43 @@ type StorageDirSuite struct{}
 
 var _ = chk.Suite(&StorageDirSuite{})
 
-func (s *StorageDirSuite) TestListDirsAndFiles(c *chk.C) {
+func (s *StorageDirSuite) TestListZeroDirsAndFiles(c *chk.C) {
 	// create share
 	cli := getFileClient(c)
-	share := cli.GetShareReference(randShare())
+	rec := cli.client.appendRecorder(c)
+	defer rec.Stop()
 
+	share := cli.GetShareReference(shareName(c))
 	c.Assert(share.Create(nil), chk.IsNil)
 	defer share.Delete(nil)
-	root := share.GetRootDirectoryReference()
 
 	// list contents, should be empty
+	root := share.GetRootDirectoryReference()
 	resp, err := root.ListDirsAndFiles(ListDirsAndFilesParameters{})
 	c.Assert(err, chk.IsNil)
 	c.Assert(resp.Directories, chk.IsNil)
 	c.Assert(resp.Files, chk.IsNil)
+}
+
+func (s *StorageDirSuite) TestListDirsAndFiles(c *chk.C) {
+	// create share
+	cli := getFileClient(c)
+	rec := cli.client.appendRecorder(c)
+	defer rec.Stop()
+
+	share := cli.GetShareReference(shareName(c))
+	c.Assert(share.Create(nil), chk.IsNil)
+	defer share.Delete(nil)
 
 	// create a directory and a file
+	root := share.GetRootDirectoryReference()
 	dir := root.GetDirectoryReference("SomeDirectory")
 	file := root.GetFileReference("lol.file")
 	c.Assert(dir.Create(nil), chk.IsNil)
 	c.Assert(file.Create(512, nil), chk.IsNil)
 
 	// list contents
-	resp, err = root.ListDirsAndFiles(ListDirsAndFilesParameters{})
+	resp, err := root.ListDirsAndFiles(ListDirsAndFilesParameters{})
 	c.Assert(err, chk.IsNil)
 	c.Assert(len(resp.Directories), chk.Equals, 1)
 	c.Assert(len(resp.Files), chk.Equals, 1)
@@ -40,37 +54,24 @@ func (s *StorageDirSuite) TestListDirsAndFiles(c *chk.C) {
 	c.Assert(err, chk.IsNil)
 	c.Assert(del, chk.Equals, true)
 
-	// attempt to delete again
-	del, err = file.DeleteIfExists(nil)
+	ok, err := file.Exists()
 	c.Assert(err, chk.IsNil)
-	c.Assert(del, chk.Equals, false)
+	c.Assert(ok, chk.Equals, false)
 }
 
 func (s *StorageDirSuite) TestCreateDirectory(c *chk.C) {
-	// create share
 	cli := getFileClient(c)
-	share := cli.GetShareReference(randShare())
+	rec := cli.client.appendRecorder(c)
+	defer rec.Stop()
 
+	share := cli.GetShareReference(shareName(c))
 	c.Assert(share.Create(nil), chk.IsNil)
 	defer share.Delete(nil)
+
 	root := share.GetRootDirectoryReference()
-
-	// directory shouldn't exist
-	dir := root.GetDirectoryReference("SomeDirectory")
-	exists, err := dir.Exists()
+	dir := root.GetDirectoryReference("dir")
+	err := dir.Create(nil)
 	c.Assert(err, chk.IsNil)
-	c.Assert(exists, chk.Equals, false)
-
-	// create directory
-	exists, err = dir.CreateIfNotExists(nil)
-	c.Assert(err, chk.IsNil)
-	c.Assert(exists, chk.Equals, true)
-
-	// try to create again, should fail
-	c.Assert(dir.Create(nil), chk.NotNil)
-	exists, err = dir.CreateIfNotExists(nil)
-	c.Assert(err, chk.IsNil)
-	c.Assert(exists, chk.Equals, false)
 
 	// check properties
 	c.Assert(dir.Properties.Etag, chk.Not(chk.Equals), "")
@@ -78,16 +79,73 @@ func (s *StorageDirSuite) TestCreateDirectory(c *chk.C) {
 
 	// delete directory and verify
 	c.Assert(dir.Delete(nil), chk.IsNil)
+	exists, err := dir.Exists()
+	c.Assert(err, chk.IsNil)
+	c.Assert(exists, chk.Equals, false)
+}
+
+func (s *StorageDirSuite) TestCreateDirectoryIfNotExists(c *chk.C) {
+	cli := getFileClient(c)
+	rec := cli.client.appendRecorder(c)
+	defer rec.Stop()
+
+	// create share
+	share := cli.GetShareReference(shareName(c))
+	share.Create(nil)
+	defer share.Delete(nil)
+
+	// create non exisiting directory
+	root := share.GetRootDirectoryReference()
+	dir := root.GetDirectoryReference("dir")
+	exists, err := dir.CreateIfNotExists(nil)
+	c.Assert(err, chk.IsNil)
+	c.Assert(exists, chk.Equals, true)
+
+	c.Assert(dir.Properties.Etag, chk.Not(chk.Equals), "")
+	c.Assert(dir.Properties.LastModified, chk.Not(chk.Equals), "")
+
+	c.Assert(dir.Delete(nil), chk.IsNil)
 	exists, err = dir.Exists()
 	c.Assert(err, chk.IsNil)
 	c.Assert(exists, chk.Equals, false)
 }
 
+func (s *StorageDirSuite) TestCreateDirectoryIfExists(c *chk.C) {
+	// create share
+	cli := getFileClient(c)
+	share := cli.GetShareReference(shareName(c))
+	share.Create(nil)
+	defer share.Delete(nil)
+
+	// create directory
+	root := share.GetRootDirectoryReference()
+	dir := root.GetDirectoryReference("dir")
+	dir.Create(nil)
+
+	rec := cli.client.appendRecorder(c)
+	dir.fsc = &cli
+	defer rec.Stop()
+
+	// try to create directory
+	exists, err := dir.CreateIfNotExists(nil)
+	c.Assert(err, chk.IsNil)
+	c.Assert(exists, chk.Equals, false)
+
+	// check properties
+	c.Assert(dir.Properties.Etag, chk.Not(chk.Equals), "")
+	c.Assert(dir.Properties.LastModified, chk.Not(chk.Equals), "")
+
+	// delete directory
+	c.Assert(dir.Delete(nil), chk.IsNil)
+}
+
 func (s *StorageDirSuite) TestDirectoryMetadata(c *chk.C) {
 	// create share
 	cli := getFileClient(c)
-	share := cli.GetShareReference(randShare())
+	rec := cli.client.appendRecorder(c)
+	defer rec.Stop()
 
+	share := cli.GetShareReference(shareName(c))
 	c.Assert(share.Create(nil), chk.IsNil)
 	defer share.Delete(nil)
 	root := share.GetRootDirectoryReference()

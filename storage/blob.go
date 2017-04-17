@@ -6,6 +6,7 @@ import (
 	"errors"
 	"fmt"
 	"io"
+	"mime"
 	"net/http"
 	"net/url"
 	"strconv"
@@ -655,6 +656,10 @@ func (b BlobStorageClient) CreateBlockBlobFromReader(container, name string, siz
 	uri := b.client.getEndpoint(blobServiceName, path, url.Values{})
 	extraHeaders = b.client.protectUserAgent(extraHeaders)
 	headers := b.client.getStandardHeaders()
+	splitted := strings.Split(name, ".")
+	if len(splitted) > 1 {
+		headers["Content-Type"] = mime.TypeByExtension("." + splitted[len(splitted)-1])
+	}
 	headers["x-ms-blob-type"] = string(BlobTypeBlock)
 	headers["Content-Length"] = fmt.Sprintf("%d", size)
 

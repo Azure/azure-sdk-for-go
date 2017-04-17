@@ -15,9 +15,19 @@ const (
 	userDefinedMetadataHeaderPrefix = "X-Ms-Meta-"
 )
 
-func pathForQueue(queue string) string         { return fmt.Sprintf("/%s", queue) }
-func pathForQueueMessages(queue string) string { return fmt.Sprintf("/%s/messages", queue) }
-func pathForMessage(queue, name string) string { return fmt.Sprintf("/%s/messages/%s", queue, name) }
+func pathForQueue(queue string) string         				{ return fmt.Sprintf("/%s", queue) }
+func pathForQueueMessages(queue string) string 				{ return fmt.Sprintf("/%s/messages", queue) }
+func pathForMessage(queue, name string) string 				{ return fmt.Sprintf("/%s/messages/%s", queue, name) }
+func pathForQueueList(param ListQueuesParameters) string	{ 
+	var path string
+	switch param.MatchPrefix { 
+		case false: 
+			path = fmt.Sprintf("?comp=list")
+		case true: 
+			path = fmt.Sprintf("?comp=list&prefix=%s", param.Prefix)
+	}
+	return path 
+}
 
 type putMessageRequest struct {
 	XMLName     xml.Name `xml:"QueueMessage"`
@@ -29,6 +39,11 @@ type putMessageRequest struct {
 type PutMessageParameters struct {
 	VisibilityTimeout int
 	MessageTTL        int
+}
+
+type ListQueuesParameters struct {
+	MatchPrefix bool
+	Prefix string
 }
 
 func (p PutMessageParameters) getParameters() url.Values {
@@ -99,6 +114,19 @@ func (p UpdateMessageParameters) getParameters() url.Values {
 type GetMessagesResponse struct {
 	XMLName           xml.Name             `xml:"QueueMessagesList"`
 	QueueMessagesList []GetMessageResponse `xml:"QueueMessage"`
+}
+
+type Queue struct {
+	Name 		string `xml:"Name"`
+}
+
+//FetchQueuesResponse represents a list of Queues returned from the Get
+//QueueLists operation response.
+type ListQueuesResponse struct {
+	Prefix		string `xml:"Prefix"`
+	Marker		string `xml:"Marker"`
+	MaxResults	string `xml:"MaxResults`
+	Queues     	[]Queue `xml:"Queues"`
 }
 
 // GetMessageResponse represents a QueueMessage object returned from Get
@@ -237,6 +265,19 @@ func (c QueueServiceClient) QueueExists(name string) (bool, error) {
 	}
 
 	return false, err
+}
+
+// Get a list of Queues that match some/no criteria
+func (c QueueServiceClient) ListQueues(param ListQueuesParameters) (ListQueuesResponse, error) {
+	var r ListQueuesResponse
+	uri := c.client.getEndpoint(queueServiceName, pathForQueueList(param), url.Values{})
+	resp, err := c.client.exec("GET", uri, c.client.getStandardHeaders(), nil)
+	if err != nil {
+		return r, err
+	}
+	defer resp.body.Close()
+	err = xmlUnmarshal(resp.body, &r)
+	return r, err
 }
 
 // PutMessage operation adds a new message to the back of the message queue.

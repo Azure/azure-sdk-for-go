@@ -104,7 +104,7 @@ var (
 				},
 				{
 					Name:    "containerregistry",
-					Version: "2016-06-27-preview",
+					Version: "2017-03-01",
 				},
 				{
 					Name:    "customer-insights",
@@ -158,7 +158,7 @@ var (
 					// Composite swagger
 				},
 				// {
-				// 	Name:    "insights",
+				// 	Name: "insights",
 				// 	// Composite swagger
 				// },
 				{
@@ -290,11 +290,11 @@ var (
 					Version: "2015-11-01-preview",
 					Swagger: "arm-service-map",
 				},
-				// {
-				// 	Name:    "sql",
-				// 	Version: "2014-04-01",
-				// 	Swagger: "sql.core",
-				// },
+				{
+					Name:    "sql",
+					Version: "2014-04-01",
+					Swagger: "sql.core",
+				},
 				{
 					Name:    "storage",
 					Version: "2016-12-01",

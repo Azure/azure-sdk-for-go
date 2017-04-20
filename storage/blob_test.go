@@ -254,10 +254,11 @@ func (s *StorageBlobSuite) TestSetMetadataWithExtraHeaders(c *chk.C) {
 
 	c.Assert(b.putSingleBlockBlob([]byte("Hello!")), chk.IsNil)
 
-	b.Metadata = BlobMetadata{
+	meta := BlobMetadata{
 		"lol":      "rofl",
 		"rofl_baz": "waz qux",
 	}
+	b.Metadata = meta
 
 	options := SetBlobMetadataOptions{
 		IfMatch: "incorrect-etag",
@@ -272,6 +273,7 @@ func (s *StorageBlobSuite) TestSetMetadataWithExtraHeaders(c *chk.C) {
 
 	// Set with matching If-Match in extra headers should succeed
 	options.IfMatch = b.Properties.Etag
+	b.Metadata = meta
 	err = b.SetMetadata(&options)
 	c.Assert(err, chk.IsNil)
 }
@@ -452,6 +454,9 @@ func (s *StorageBlobSuite) TestGetBlobRange(c *chk.C) {
 
 		str := string(blobBody)
 		c.Assert(str, chk.Equals, r.expected)
+
+		// Was content lenght properly updated...?
+		c.Assert(b.Properties.ContentLength, chk.Equals, int64(len(r.expected)))
 	}
 }
 

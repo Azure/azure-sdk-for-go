@@ -192,6 +192,9 @@ func (b *Blob) Get(options *GetBlobOptions) (io.ReadCloser, error) {
 	if err := checkRespCode(resp.statusCode, []int{http.StatusOK}); err != nil {
 		return nil, err
 	}
+	if err := b.writePropoerties(resp.headers); err != nil {
+		return resp.body, err
+	}
 	return resp.body, nil
 }
 
@@ -208,6 +211,9 @@ func (b *Blob) GetRange(options *GetBlobRangeOptions) (io.ReadCloser, error) {
 
 	if err := checkRespCode(resp.statusCode, []int{http.StatusPartialContent}); err != nil {
 		return nil, err
+	}
+	if err := b.writePropoerties(resp.headers); err != nil {
+		return resp.body, err
 	}
 	return resp.body, nil
 }
@@ -316,9 +322,14 @@ func (b *Blob) GetProperties(options *GetBlobPropertiesOptions) error {
 	if err = checkRespCode(resp.statusCode, []int{http.StatusOK}); err != nil {
 		return err
 	}
+	return b.writePropoerties(resp.headers)
+}
+
+func (b *Blob) writePropoerties(h http.Header) error {
+	var err error
 
 	var contentLength int64
-	contentLengthStr := resp.headers.Get("Content-Length")
+	contentLengthStr := h.Get("Content-Length")
 	if contentLengthStr != "" {
 		contentLength, err = strconv.ParseInt(contentLengthStr, 0, 64)
 		if err != nil {
@@ -327,7 +338,7 @@ func (b *Blob) GetProperties(options *GetBlobPropertiesOptions) error {
 	}
 
 	var sequenceNum int64
-	sequenceNumStr := resp.headers.Get("x-ms-blob-sequence-number")
+	sequenceNumStr := h.Get("x-ms-blob-sequence-number")
 	if sequenceNumStr != "" {
 		sequenceNum, err = strconv.ParseInt(sequenceNumStr, 0, 64)
 		if err != nil {
@@ -335,36 +346,38 @@ func (b *Blob) GetProperties(options *GetBlobPropertiesOptions) error {
 		}
 	}
 
-	lastModified, err := getTimeFromHeaders(resp.headers, "Last-Modified")
+	lastModified, err := getTimeFromHeaders(h, "Last-Modified")
 	if err != nil {
 		return err
 	}
 
-	copyCompletionTime, err := getTimeFromHeaders(resp.headers, "x-ms-copy-completion-time")
+	copyCompletionTime, err := getTimeFromHeaders(h, "x-ms-copy-completion-time")
 	if err != nil {
 		return err
 	}
 
 	b.Properties = BlobProperties{
 		LastModified:          TimeRFC1123(*lastModified),
-		Etag:                  resp.headers.Get("Etag"),
-		ContentMD5:            resp.headers.Get("Content-MD5"),
+		Etag:                  h.Get("Etag"),
+		ContentMD5:            h.Get("Content-MD5"),
 		ContentLength:         contentLength,
-		ContentEncoding:       resp.headers.Get("Content-Encoding"),
-		ContentType:           resp.headers.Get("Content-Type"),
-		CacheControl:          resp.headers.Get("Cache-Control"),
-		ContentLanguage:       resp.headers.Get("Content-Language"),
+		ContentEncoding:       h.Get("Content-Encoding"),
+		ContentType:           h.Get("Content-Type"),
+		ContentDisposition:    h.Get("Content-Disposition"),
+		CacheControl:          h.Get("Cache-Control"),
+		ContentLanguage:       h.Get("Content-Language"),
 		SequenceNumber:        sequenceNum,
 		CopyCompletionTime:    TimeRFC1123(*copyCompletionTime),
-		CopyStatusDescription: resp.headers.Get("x-ms-copy-status-description"),
-		CopyID:                resp.headers.Get("x-ms-copy-id"),
-		CopyProgress:          resp.headers.Get("x-ms-copy-progress"),
-		CopySource:            resp.headers.Get("x-ms-copy-source"),
-		CopyStatus:            resp.headers.Get("x-ms-copy-status"),
-		BlobType:              BlobType(resp.headers.Get("x-ms-blob-type")),
-		LeaseStatus:           resp.headers.Get("x-ms-lease-status"),
-		LeaseState:            resp.headers.Get("x-ms-lease-state"),
+		CopyStatusDescription: h.Get("x-ms-copy-status-description"),
+		CopyID:                h.Get("x-ms-copy-id"),
+		CopyProgress:          h.Get("x-ms-copy-progress"),
+		CopySource:            h.Get("x-ms-copy-source"),
+		CopyStatus:            h.Get("x-ms-copy-status"),
+		BlobType:              BlobType(h.Get("x-ms-blob-type")),
+		LeaseStatus:           h.Get("x-ms-lease-status"),
+		LeaseState:            h.Get("x-ms-lease-state"),
 	}
+	b.writeMetadata(h)
 	return nil
 }
 
@@ -506,8 +519,13 @@ func (b *Blob) GetMetadata(options *GetBlobMetadataOptions) error {
 		return err
 	}
 
+	b.writeMetadata(resp.headers)
+	return nil
+}
+
+func (b *Blob) writeMetadata(h http.Header) {
 	metadata := make(map[string]string)
-	for k, v := range resp.headers {
+	for k, v := range h {
 		// Can't trust CanonicalHeaderKey() to munge case
 		// reliably. "_" is allowed in identifiers:
 		// https://msdn.microsoft.com/en-us/library/azure/dd179414.aspx
@@ -527,7 +545,6 @@ func (b *Blob) GetMetadata(options *GetBlobMetadataOptions) error {
 	}
 
 	b.Metadata = BlobMetadata(metadata)
-	return nil
 }
 
 // DeleteBlobOptions includes the options for a delete blob operation

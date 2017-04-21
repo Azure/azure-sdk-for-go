@@ -59,6 +59,64 @@ type EntityOptions struct {
 	RequestID string `header:"x-ms-client-request-id"`
 }
 
+// GetEntityOptions includes options for a get entity operation
+type GetEntityOptions struct {
+	Select    []string
+	RequestID string `header:"x-ms-client-request-id"`
+}
+
+// Get gets the referenced entity. Which properties to get can be
+// specified using the select option.
+// See:
+// https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/query-entities
+// https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/querying-tables-and-entities
+func (e *Entity) Get(timeout uint, ml MetadataLevel, options *GetEntityOptions) error {
+	if ml == EmptyPayload {
+		return errEmptyPayload
+	}
+	// RowKey and PartitionKey could be lost if not included in the query
+	// As those are the entity identifiers, it is best if they are not lost
+	rk := e.RowKey
+	pk := e.PartitionKey
+
+	query := url.Values{
+		"timeout": {strconv.FormatUint(uint64(timeout), 10)},
+	}
+	headers := e.Table.tsc.client.getStandardHeaders()
+	headers[headerAccept] = string(ml)
+
+	if options != nil {
+		if len(options.Select) > 0 {
+			query.Add("$select", strings.Join(options.Select, ","))
+		}
+		headers = mergeHeaders(headers, headersFromStruct(*options))
+	}
+
+	uri := e.Table.tsc.client.getEndpoint(tableServiceName, e.buildPath(), query)
+	resp, err := e.Table.tsc.client.exec(http.MethodGet, uri, headers, nil, e.Table.tsc.auth)
+	if err != nil {
+		return err
+	}
+	defer readAndCloseBody(resp.body)
+
+	if err = checkRespCode(resp.statusCode, []int{http.StatusOK}); err != nil {
+		return err
+	}
+
+	respBody, err := ioutil.ReadAll(resp.body)
+	if err != nil {
+		return err
+	}
+	err = json.Unmarshal(respBody, e)
+	if err != nil {
+		return err
+	}
+	e.PartitionKey = pk
+	e.RowKey = rk
+
+	return nil
+}
+
 // Insert inserts the referenced entity in its table.
 // The function fails if there is an entity with the same
 // PartitionKey and RowKey in the table.
@@ -224,15 +282,18 @@ func (e *Entity) UnmarshalJSON(data []byte) error {
 	e.RowKey = stringFromMap(props, rowKeyNode)
 
 	// deserialize timestamp
-	str, ok := props["Timestamp"].(string)
-	if !ok {
-		return fmt.Errorf(errorTemplate, "Timestamp casting error")
+	timeStamp, ok := props["Timestamp"]
+	if ok {
+		str, ok := timeStamp.(string)
+		if !ok {
+			return fmt.Errorf(errorTemplate, "Timestamp casting error")
+		}
+		t, err := time.Parse(time.RFC3339Nano, str)
+		if err != nil {
+			return fmt.Errorf(errorTemplate, err)
+		}
+		e.TimeStamp = t
 	}
-	t, err := time.Parse(time.RFC3339Nano, str)
-	if err != nil {
-		return fmt.Errorf(errorTemplate, err)
-	}
-	e.TimeStamp = t
 	delete(props, "Timestamp")
 	delete(props, "Timestamp@odata.type")
 

@@ -92,7 +92,6 @@ func (t *TableServiceClient) QueryTables(ml MetadataLevel, options *QueryTablesO
 	query, headers := options.getParameters()
 	uri := t.client.getEndpoint(tableServiceName, tablesURIPath, query)
 	return t.queryTables(uri, headers, ml)
-
 }
 
 // NextResults returns the next page of results

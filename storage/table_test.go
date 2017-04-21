@@ -59,6 +59,26 @@ func (s *StorageTableSuite) Test_CreateTableWithAllResponsePayloadLevels(c *chk.
 	createAndDeleteTable(cli, FullMetadata, c, "full")
 }
 
+func (s *StorageTableSuite) TestGet(c *chk.C) {
+	cli := getTableClient(c)
+	rec := cli.client.appendRecorder(c)
+	defer rec.Stop()
+
+	tn := tableName(c)
+	table := cli.GetTableReference(tn)
+	err := table.Create(30, EmptyPayload, nil)
+	c.Assert(err, chk.IsNil)
+	defer table.Delete(30, nil)
+
+	err = table.Get(30, FullMetadata)
+	c.Assert(err, chk.IsNil)
+	c.Assert(table.Name, chk.Equals, tn)
+	c.Assert(table.OdataEditLink, chk.Not(chk.Equals), "")
+	c.Assert(table.OdataID, chk.Not(chk.Equals), "")
+	c.Assert(table.OdataMetadata, chk.Not(chk.Equals), "")
+	c.Assert(table.OdataType, chk.Not(chk.Equals), "")
+}
+
 func createAndDeleteTable(cli TableServiceClient, ml MetadataLevel, c *chk.C, extra string) {
 	table := cli.GetTableReference(tableName(c, extra))
 	c.Assert(table.Create(30, ml, nil), chk.IsNil)

@@ -51,6 +51,11 @@ func (s *StorageClientSuite) TestNewEmulatorClient(c *chk.C) {
 	c.Assert(cli.accountKey, chk.DeepEquals, expectedKey)
 }
 
+func (s *StorageClientSuite) TestNewClientWithInvalidAccount(c *chk.C) {
+	_, err := NewBasicClient("GolangRocksOnAzure", "YmFy")
+	c.Assert(err, chk.NotNil)
+}
+
 func (s *StorageClientSuite) TestMalformedKeyError(c *chk.C) {
 	_, err := NewBasicClient("foo", "malformed")
 	c.Assert(err, chk.ErrorMatches, "azure: malformed storage account key: .*")

@@ -12,6 +12,7 @@ import (
 	"io/ioutil"
 	"net/http"
 	"net/url"
+	"regexp"
 	"runtime"
 	"strconv"
 	"strings"
@@ -46,6 +47,10 @@ const (
 	storageEmulatorQueue = "127.0.0.1:10001"
 
 	userAgentHeader = "User-Agent"
+)
+
+var (
+	validStorageAccount = regexp.MustCompile("^[0-9a-z]{3,24}$")
 )
 
 // Client is the object that needs to be constructed to perform
@@ -161,6 +166,10 @@ func NewClient(accountName, accountKey, blobServiceBaseURL, apiVersion string, u
 		return c, fmt.Errorf("azure: account key required")
 	} else if blobServiceBaseURL == "" {
 		return c, fmt.Errorf("azure: base storage service url required")
+	}
+
+	if !validStorageAccount.MatchString(accountName) {
+		return c, fmt.Errorf("azure: account name is not valid: it must be between 3 and 24 characters, and only may contain numbers and lowercase letters: %v", accountName)
 	}
 
 	key, err := base64.StdEncoding.DecodeString(accountKey)

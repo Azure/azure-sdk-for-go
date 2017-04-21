@@ -80,7 +80,7 @@ func (s *StorageClientSuite) TestGetBaseURL_Basic_Https(c *chk.C) {
 	c.Assert(err, chk.IsNil)
 	c.Assert(cli.apiVersion, chk.Equals, DefaultAPIVersion)
 	c.Assert(err, chk.IsNil)
-	c.Assert(cli.getBaseURL("table"), chk.Equals, "https://foo.table.core.windows.net")
+	c.Assert(cli.getBaseURL("table").String(), chk.Equals, "https://foo.table.core.windows.net")
 }
 
 func (s *StorageClientSuite) TestGetBaseURL_Custom_NoHttps(c *chk.C) {
@@ -88,7 +88,7 @@ func (s *StorageClientSuite) TestGetBaseURL_Custom_NoHttps(c *chk.C) {
 	cli, err := NewClient("foo", "YmFy", "core.chinacloudapi.cn", apiVersion, false)
 	c.Assert(err, chk.IsNil)
 	c.Assert(cli.apiVersion, chk.Equals, apiVersion)
-	c.Assert(cli.getBaseURL("table"), chk.Equals, "http://foo.table.core.chinacloudapi.cn")
+	c.Assert(cli.getBaseURL("table").String(), chk.Equals, "http://foo.table.core.chinacloudapi.cn")
 }
 
 func (s *StorageClientSuite) TestGetBaseURL_StorageEmulator(c *chk.C) {
@@ -103,7 +103,7 @@ func (s *StorageClientSuite) TestGetBaseURL_StorageEmulator(c *chk.C) {
 	}
 	for _, i := range tests {
 		baseURL := cli.getBaseURL(i.service)
-		c.Assert(baseURL, chk.Equals, i.expected)
+		c.Assert(baseURL.String(), chk.Equals, i.expected)
 	}
 }
 

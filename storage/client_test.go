@@ -51,6 +51,25 @@ func (s *StorageClientSuite) TestNewEmulatorClient(c *chk.C) {
 	c.Assert(cli.accountKey, chk.DeepEquals, expectedKey)
 }
 
+func (s *StorageClientSuite) TestIsValidStorageAccount(c *chk.C) {
+	type test struct {
+		account  string
+		expected bool
+	}
+	testCases := []test{
+		{"name1", true},
+		{"Name2", false},
+		{"reallyLongName1234567891011", false},
+		{"", false},
+		{"concated&name", false},
+		{"formatted name", false},
+	}
+
+	for _, tc := range testCases {
+		c.Assert(IsValidStorageAccount(tc.account), chk.Equals, tc.expected)
+	}
+}
+
 func (s *StorageClientSuite) TestMalformedKeyError(c *chk.C) {
 	_, err := NewBasicClient("foo", "malformed")
 	c.Assert(err, chk.ErrorMatches, "azure: malformed storage account key: .*")

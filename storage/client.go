@@ -12,6 +12,7 @@ import (
 	"io/ioutil"
 	"net/http"
 	"net/url"
+	"regexp"
 	"runtime"
 	"strconv"
 	"strings"
@@ -46,6 +47,10 @@ const (
 	storageEmulatorQueue = "127.0.0.1:10001"
 
 	userAgentHeader = "User-Agent"
+)
+
+var (
+	validStorageAccount = regexp.MustCompile("^[0-9a-z]{3,24}$")
 )
 
 // Client is the object that needs to be constructed to perform
@@ -155,8 +160,8 @@ func NewEmulatorClient() (Client, error) {
 // storage endpoint than Azure Public Cloud.
 func NewClient(accountName, accountKey, blobServiceBaseURL, apiVersion string, useHTTPS bool) (Client, error) {
 	var c Client
-	if accountName == "" {
-		return c, fmt.Errorf("azure: account name required")
+	if !IsValidStorageAccount(accountName) {
+		return c, fmt.Errorf("azure: account name is not valid: it must be between 3 and 24 characters, and only may contain numbers and lowercase letters: %v", accountName)
 	} else if accountKey == "" {
 		return c, fmt.Errorf("azure: account key required")
 	} else if blobServiceBaseURL == "" {
@@ -178,6 +183,12 @@ func NewClient(accountName, accountKey, blobServiceBaseURL, apiVersion string, u
 	}
 	c.userAgent = c.getDefaultUserAgent()
 	return c, nil
+}
+
+// IsValidStorageAccount checks if the storage account name is valid.
+// See https://docs.microsoft.com/en-us/azure/storage/storage-create-storage-account
+func IsValidStorageAccount(account string) bool {
+	return validStorageAccount.MatchString(account)
 }
 
 func (c Client) getDefaultUserAgent() string {

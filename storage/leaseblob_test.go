@@ -57,6 +57,23 @@ func (s *LeaseBlobSuite) TestAcquireLeaseWithBadProposedLeaseID(c *chk.C) {
 	c.Assert(err, chk.NotNil)
 }
 
+func (s *LeaseBlobSuite) TestAcquireInfiniteLease(c *chk.C) {
+	cli := getBlobClient(c)
+	rec := cli.client.appendRecorder(c)
+	defer rec.Stop()
+
+	cnt := cli.GetContainerReference(containerName(c))
+	b := cnt.GetBlobReference(blobName(c))
+	c.Assert(cnt.Create(nil), chk.IsNil)
+	defer cnt.Delete(nil)
+
+	c.Assert(b.putSingleBlockBlob([]byte("Hello!")), chk.IsNil)
+
+	proposedLeaseID := "dfe6dde8-68d5-4910-9248-c97c61768fea"
+	_, err := b.AcquireLease(-1, proposedLeaseID, nil)
+	c.Assert(err, chk.IsNil)
+}
+
 func (s *LeaseBlobSuite) TestRenewLeaseSuccessful(c *chk.C) {
 	cli := getBlobClient(c)
 	rec := cli.client.appendRecorder(c)

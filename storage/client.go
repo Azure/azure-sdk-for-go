@@ -221,7 +221,7 @@ func (c *Client) protectUserAgent(extraheaders map[string]string) map[string]str
 	return extraheaders
 }
 
-func (c Client) getBaseURL(service string) string {
+func (c Client) getBaseURL(service string) *url.URL {
 	scheme := "http"
 	if c.useHTTPS {
 		scheme = "https"
@@ -240,18 +240,14 @@ func (c Client) getBaseURL(service string) string {
 		host = fmt.Sprintf("%s.%s.%s", c.accountName, service, c.baseURL)
 	}
 
-	u := &url.URL{
+	return &url.URL{
 		Scheme: scheme,
-		Host:   host}
-	return u.String()
+		Host:   host,
+	}
 }
 
 func (c Client) getEndpoint(service, path string, params url.Values) string {
-	u, err := url.Parse(c.getBaseURL(service))
-	if err != nil {
-		// really should not be happening
-		panic(err)
-	}
+	u := c.getBaseURL(service)
 
 	// API doesn't accept path segments not starting with '/'
 	if !strings.HasPrefix(path, "/") {

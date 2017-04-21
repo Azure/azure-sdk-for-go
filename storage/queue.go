@@ -2,16 +2,41 @@ package storage
 
 import (
 	"encoding/xml"
+	"errors"
 	"fmt"
+	"io"
 	"net/http"
 	"net/url"
 	"strconv"
+	"time"
 )
 
 const (
 	// casing is per Golang's http.Header canonicalizing the header names.
 	approximateMessagesCountHeader = "X-Ms-Approximate-Messages-Count"
 )
+
+// QueueAccessPolicy represents each access policy in the queue ACL.
+type QueueAccessPolicy struct {
+	ID         string
+	StartTime  time.Time
+	ExpiryTime time.Time
+	CanRead    bool
+	CanAdd     bool
+	CanUpdate  bool
+	CanProcess bool
+}
+
+// QueuePermissions represents the queue ACLs.
+type QueuePermissions struct {
+	AccessPolicies []QueueAccessPolicy
+}
+
+// SetQueuePermissionOptions includes options for a set queue permissions operation
+type SetQueuePermissionOptions struct {
+	Timeout   uint
+	RequestID string `header:"x-ms-client-request-id"`
+}
 
 // Queue represents an Azure queue.
 type Queue struct {
@@ -277,4 +302,126 @@ func (q *Queue) ClearMessages(options *QueueServiceOptions) error {
 	}
 	readAndCloseBody(resp.body)
 	return checkRespCode(resp.statusCode, []int{http.StatusNoContent})
+}
+
+// SetPermissions sets up queue permissions
+// See https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/set-queue-acl
+func (q *Queue) SetPermissions(permissions QueuePermissions, options *SetQueuePermissionOptions) error {
+	body, length, err := generateQueueACLpayload(permissions.AccessPolicies)
+	if err != nil {
+		return err
+	}
+
+	params := url.Values{
+		"comp": {"acl"},
+	}
+	headers := q.qsc.client.getStandardHeaders()
+	headers["Content-Length"] = strconv.Itoa(length)
+
+	if options != nil {
+		params = addTimeout(params, options.Timeout)
+		headers = mergeHeaders(headers, headersFromStruct(*options))
+	}
+	uri := q.qsc.client.getEndpoint(queueServiceName, q.buildPath(), params)
+	resp, err := q.qsc.client.exec(http.MethodPut, uri, headers, body, q.qsc.auth)
+	if err != nil {
+		return err
+	}
+	defer readAndCloseBody(resp.body)
+
+	if err := checkRespCode(resp.statusCode, []int{http.StatusNoContent}); err != nil {
+		return errors.New("Unable to set permissions")
+	}
+
+	return nil
+}
+
+func generateQueueACLpayload(policies []QueueAccessPolicy) (io.Reader, int, error) {
+	sil := SignedIdentifiers{
+		SignedIdentifiers: []SignedIdentifier{},
+	}
+	for _, qapd := range policies {
+		permission := qapd.generateQueuePermissions()
+		signedIdentifier := convertAccessPolicyToXMLStructs(qapd.ID, qapd.StartTime, qapd.ExpiryTime, permission)
+		sil.SignedIdentifiers = append(sil.SignedIdentifiers, signedIdentifier)
+	}
+	return xmlMarshal(sil)
+}
+
+func (qapd *QueueAccessPolicy) generateQueuePermissions() (permissions string) {
+	// generate the permissions string (raup).
+	// still want the end user API to have bool flags.
+	permissions = ""
+
+	if qapd.CanRead {
+		permissions += "r"
+	}
+
+	if qapd.CanAdd {
+		permissions += "a"
+	}
+
+	if qapd.CanUpdate {
+		permissions += "u"
+	}
+
+	if qapd.CanProcess {
+		permissions += "p"
+	}
+
+	return permissions
+}
+
+// GetQueuePermissionOptions includes options for a get queue permissions operation
+type GetQueuePermissionOptions struct {
+	Timeout   uint
+	RequestID string `header:"x-ms-client-request-id"`
+}
+
+// GetPermissions gets the queue permissions as per https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/get-queue-acl
+// If timeout is 0 then it will not be passed to Azure
+func (q *Queue) GetPermissions(options *GetQueuePermissionOptions) (*QueuePermissions, error) {
+	params := url.Values{
+		"comp": {"acl"},
+	}
+	headers := q.qsc.client.getStandardHeaders()
+
+	if options != nil {
+		params = addTimeout(params, options.Timeout)
+		headers = mergeHeaders(headers, headersFromStruct(*options))
+	}
+	uri := q.qsc.client.getEndpoint(queueServiceName, q.buildPath(), params)
+	resp, err := q.qsc.client.exec(http.MethodGet, uri, headers, nil, q.qsc.auth)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.body.Close()
+
+	var ap AccessPolicy
+	err = xmlUnmarshal(resp.body, &ap.SignedIdentifiersList)
+	if err != nil {
+		return nil, err
+	}
+	return buildQueueAccessPolicy(ap, &resp.headers), nil
+}
+
+func buildQueueAccessPolicy(ap AccessPolicy, headers *http.Header) *QueuePermissions {
+	permissions := QueuePermissions{
+		AccessPolicies: []QueueAccessPolicy{},
+	}
+
+	for _, policy := range ap.SignedIdentifiersList.SignedIdentifiers {
+		qapd := QueueAccessPolicy{
+			ID:         policy.ID,
+			StartTime:  policy.AccessPolicy.StartTime,
+			ExpiryTime: policy.AccessPolicy.ExpiryTime,
+		}
+		qapd.CanRead = updatePermissions(policy.AccessPolicy.Permission, "r")
+		qapd.CanAdd = updatePermissions(policy.AccessPolicy.Permission, "a")
+		qapd.CanUpdate = updatePermissions(policy.AccessPolicy.Permission, "u")
+		qapd.CanProcess = updatePermissions(policy.AccessPolicy.Permission, "p")
+
+		permissions.AccessPolicies = append(permissions.AccessPolicies, qapd)
+	}
+	return &permissions
 }

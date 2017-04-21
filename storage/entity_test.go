@@ -13,6 +13,52 @@ type StorageEntitySuite struct{}
 
 var _ = chk.Suite(&StorageEntitySuite{})
 
+func (s *StorageEntitySuite) TestGet(c *chk.C) {
+	cli := getTableClient(c)
+	rec := cli.client.appendRecorder(c)
+	defer rec.Stop()
+
+	table := cli.GetTableReference(tableName(c))
+
+	err := table.Create(30, EmptyPayload, nil)
+	c.Assert(err, chk.IsNil)
+	defer table.Delete(30, nil)
+
+	entity := table.GetEntityReference("mypartitionkey", "myrowkey")
+
+	props := map[string]interface{}{
+		"AmountDue":      200.23,
+		"CustomerCode":   uuid.FromStringOrNil("c9da6455-213d-42c9-9a79-3e9149a57833"),
+		"CustomerSince":  time.Date(1992, time.December, 20, 21, 55, 0, 0, time.UTC),
+		"IsActive":       true,
+		"NumberOfOrders": int64(255),
+	}
+	entity.Properties = props
+	err = entity.Insert(EmptyPayload, nil)
+	c.Assert(err, chk.IsNil)
+
+	err = entity.Get(30, FullMetadata, &GetEntityOptions{
+		Select: []string{"IsActive"},
+	})
+	c.Assert(err, chk.IsNil)
+	c.Assert(entity.Properties, chk.HasLen, 1)
+
+	err = entity.Get(30, FullMetadata, &GetEntityOptions{
+		Select: []string{
+			"AmountDue",
+			"CustomerCode",
+			"CustomerSince",
+			"IsActive",
+			"NumberOfOrders",
+		}})
+	c.Assert(err, chk.IsNil)
+	c.Assert(entity.Properties, chk.HasLen, 5)
+
+	err = entity.Get(30, FullMetadata, nil)
+	c.Assert(err, chk.IsNil)
+	c.Assert(entity.Properties, chk.HasLen, 5)
+}
+
 const (
 	validEtag = "W/\"datetime''2017-04-01T01%3A07%3A23.8881885Z''\""
 )

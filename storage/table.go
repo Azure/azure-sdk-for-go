@@ -61,6 +61,45 @@ func (t *Table) buildPath() string {
 	return fmt.Sprintf("/%s", t.Name)
 }
 
+func (t *Table) buildSpecificPath() string {
+	return fmt.Sprintf("%s('%s')", tablesURIPath, t.Name)
+}
+
+// Get gets the referenced table.
+// See: https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/querying-tables-and-entities
+func (t *Table) Get(timeout uint, ml MetadataLevel) error {
+	if ml == EmptyPayload {
+		return errEmptyPayload
+	}
+
+	query := url.Values{
+		"timeout": {strconv.FormatUint(uint64(timeout), 10)},
+	}
+	headers := t.tsc.client.getStandardHeaders()
+	headers[headerAccept] = string(ml)
+
+	uri := t.tsc.client.getEndpoint(tableServiceName, t.buildSpecificPath(), query)
+	resp, err := t.tsc.client.exec(http.MethodGet, uri, headers, nil, t.tsc.auth)
+	if err != nil {
+		return err
+	}
+	defer readAndCloseBody(resp.body)
+
+	if err = checkRespCode(resp.statusCode, []int{http.StatusOK}); err != nil {
+		return err
+	}
+
+	respBody, err := ioutil.ReadAll(resp.body)
+	if err != nil {
+		return err
+	}
+	err = json.Unmarshal(respBody, t)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
 // Create creates the referenced table.
 // This function fails if the name is not compliant
 // with the specification or the tables already exists.
@@ -126,7 +165,7 @@ func (t *Table) Delete(timeout uint, options *TableOptions) error {
 	path.WriteString(t.Name)
 	path.WriteString("')")
 
-	uri := t.tsc.client.getEndpoint(tableServiceName, string(path.Bytes()), url.Values{
+	uri := t.tsc.client.getEndpoint(tableServiceName, t.buildSpecificPath(), url.Values{
 		"timeout": {strconv.Itoa(int(timeout))},
 	})
 

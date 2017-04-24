@@ -261,6 +261,57 @@ func (b BlobStorageClient) GetBlob(container, name string) (io.ReadCloser, error
 	return resp.body, nil
 }
 
+// GetBlob returns a stream to read the blob. Caller must call Close() the
+// reader to close on the underlying connection.
+//
+// See https://msdn.microsoft.com/en-us/library/azure/dd179440.aspx
+func (b BlobStorageClient) GetBlobAndProperties(container, name string) (io.ReadCloser, *BlobProperties, error) {
+	resp, err := b.getBlobRange(container, name, "", nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	if err := checkRespCode(resp.statusCode, []int{http.StatusOK}); err != nil {
+		return nil, nil, err
+	}
+
+	var contentLength int64
+	contentLengthStr := resp.headers.Get("Content-Length")
+	if contentLengthStr != "" {
+		contentLength, err = strconv.ParseInt(contentLengthStr, 0, 64)
+		if err != nil {
+			return nil, nil, err
+		}
+	}
+
+	var sequenceNum int64
+	sequenceNumStr := resp.headers.Get("x-ms-blob-sequence-number")
+	if sequenceNumStr != "" {
+		sequenceNum, err = strconv.ParseInt(sequenceNumStr, 0, 64)
+		if err != nil {
+			return nil, nil, err
+		}
+	}
+
+	bp := &BlobProperties{
+		LastModified:          resp.headers.Get("Last-Modified"),
+		Etag:                  resp.headers.Get("Etag"),
+		ContentMD5:            resp.headers.Get("Content-MD5"),
+		ContentLength:         contentLength,
+		ContentEncoding:       resp.headers.Get("Content-Encoding"),
+		SequenceNumber:        sequenceNum,
+		CopyCompletionTime:    resp.headers.Get("x-ms-copy-completion-time"),
+		CopyStatusDescription: resp.headers.Get("x-ms-copy-status-description"),
+		CopyID:                resp.headers.Get("x-ms-copy-id"),
+		CopyProgress:          resp.headers.Get("x-ms-copy-progress"),
+		CopySource:            resp.headers.Get("x-ms-copy-source"),
+		CopyStatus:            resp.headers.Get("x-ms-copy-status"),
+		BlobType:              BlobType(resp.headers.Get("x-ms-blob-type")),
+		LeaseStatus:           resp.headers.Get("x-ms-lease-status"),
+	}
+	return resp.body, bp, nil
+}
+
 // GetBlobRange reads the specified range of a blob to a stream. The bytesRange
 // string must be in a format like "0-", "10-100" as defined in HTTP 1.1 spec.
 //

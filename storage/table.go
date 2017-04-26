@@ -160,11 +160,6 @@ func (t *Table) Create(timeout uint, ml MetadataLevel, options *TableOptions) er
 // Be advised: Delete deletes all the entries that may be present.
 // See https://docs.microsoft.com/rest/api/storageservices/fileservices/delete-table
 func (t *Table) Delete(timeout uint, options *TableOptions) error {
-	path := bytes.NewBufferString(tablesURIPath)
-	path.WriteString("('")
-	path.WriteString(t.Name)
-	path.WriteString("')")
-
 	uri := t.tsc.client.getEndpoint(tableServiceName, t.buildSpecificPath(), url.Values{
 		"timeout": {strconv.Itoa(int(timeout))},
 	})

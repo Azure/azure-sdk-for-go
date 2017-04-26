@@ -19,7 +19,9 @@ import (
 	"runtime"
 	"strconv"
 	"strings"
+	"time"
 
+	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
 )
 
@@ -58,12 +60,57 @@ var (
 	validStorageAccount = regexp.MustCompile("^[0-9a-z]{3,24}$")
 )
 
+// Sender sends a request
+type Sender interface {
+	Send(*Client, *http.Request) (*http.Response, error)
+}
+
+// DefaultSender is the default sender for the client. It implements
+// an automatic retry strategy.
+type DefaultSender struct {
+	RetryAttempts    int
+	RetryDuration    time.Duration
+	ValidStatusCodes []int
+	attempts         int // used for testing
+}
+
+// Send is the default retry strategy in the client
+func (ds *DefaultSender) Send(c *Client, req *http.Request) (resp *http.Response, err error) {
+	b := []byte{}
+	if req.Body != nil {
+		b, err = ioutil.ReadAll(req.Body)
+		if err != nil {
+			return resp, err
+		}
+	}
+
+	for attempts := 0; attempts < ds.RetryAttempts; attempts++ {
+		if len(b) > 0 {
+			req.Body = ioutil.NopCloser(bytes.NewBuffer(b))
+		}
+		resp, err = c.HTTPClient.Do(req)
+		if err != nil || !autorest.ResponseHasStatusCode(resp, ds.ValidStatusCodes...) {
+			return resp, err
+		}
+		autorest.DelayForBackoff(ds.RetryDuration, attempts, req.Cancel)
+		ds.attempts = attempts
+	}
+	ds.attempts++
+	return resp, err
+}
+
 // Client is the object that needs to be constructed to perform
 // operations on the storage account.
 type Client struct {
 	// HTTPClient is the http.Client used to initiate API
-	// requests.  If it is nil, http.DefaultClient is used.
+	// requests. http.DefaultClient is used when creating a
+	// client.
 	HTTPClient *http.Client
+
+	// Sender is an interface that sends the request. Clients are
+	// created with a DefaultSender. The DefaultSender has an
+	// automatic retry strategy built in. The Sender can be customized.
+	Sender Sender
 
 	accountName      string
 	accountKey       []byte
@@ -181,12 +228,24 @@ func NewClient(accountName, accountKey, blobServiceBaseURL, apiVersion string, u
 	}
 
 	c = Client{
+		HTTPClient:       http.DefaultClient,
 		accountName:      accountName,
 		accountKey:       key,
 		useHTTPS:         useHTTPS,
 		baseURL:          blobServiceBaseURL,
 		apiVersion:       apiVersion,
 		UseSharedKeyLite: false,
+		Sender: &DefaultSender{
+			RetryAttempts: 5,
+			ValidStatusCodes: []int{
+				http.StatusRequestTimeout,      // 408
+				http.StatusInternalServerError, // 500
+				http.StatusBadGateway,          // 502
+				http.StatusServiceUnavailable,  // 503
+				http.StatusGatewayTimeout,      // 504
+			},
+			RetryDuration: time.Second * 5,
+		},
 	}
 	c.userAgent = c.getDefaultUserAgent()
 	return c, nil
@@ -359,11 +418,7 @@ func (c Client) exec(verb, url string, headers map[string]string, body io.Reader
 		req.Header.Add(k, v)
 	}
 
-	httpClient := c.HTTPClient
-	if httpClient == nil {
-		httpClient = http.DefaultClient
-	}
-	resp, err := httpClient.Do(req)
+	resp, err := c.Sender.Send(&c, req)
 	if err != nil {
 		return nil, err
 	}
@@ -412,12 +467,7 @@ func (c Client) execInternalJSONCommon(verb, url string, headers map[string]stri
 		req.Header.Add(k, v)
 	}
 
-	httpClient := c.HTTPClient
-	if httpClient == nil {
-		httpClient = http.DefaultClient
-	}
-
-	resp, err := httpClient.Do(req)
+	resp, err := c.Sender.Send(&c, req)
 	if err != nil {
 		return nil, nil, nil, err
 	}

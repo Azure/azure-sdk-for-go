@@ -4,14 +4,17 @@ import (
 	"bytes"
 	"encoding/base64"
 	"io/ioutil"
+	"math"
 	"net/http"
 	"net/url"
 	"os"
 	"path/filepath"
 	"reflect"
 	"regexp"
+	"strconv"
 	"strings"
 	"testing"
+	"time"
 
 	"github.com/Azure/go-autorest/autorest/azure"
 	"github.com/dnaeon/go-vcr/cassette"
@@ -403,4 +406,48 @@ func (s *StorageClientSuite) Test_protectUserAgent(c *chk.C) {
 		"2": "two",
 		"3": "three",
 	})
+}
+
+func (s *StorageClientSuite) Test_doRetry(c *chk.C) {
+	cli := getBasicClient(c)
+	rec := cli.appendRecorder(c)
+	defer rec.Stop()
+
+	// Prepare request that will fail with 404 (delete non extising table)
+	uri, err := url.Parse(cli.getEndpoint(tableServiceName, "(retry)", url.Values{"timeout": {strconv.Itoa(30)}}))
+	c.Assert(err, chk.IsNil)
+	req := http.Request{
+		Method: http.MethodDelete,
+		URL:    uri,
+		Header: http.Header{
+			"Accept":       {"application/json;odata=nometadata"},
+			"Prefer":       {"return-no-content"},
+			"X-Ms-Version": {"2016-05-31"},
+		},
+	}
+
+	ds, ok := cli.Sender.(*DefaultSender)
+	c.Assert(ok, chk.Equals, true)
+	// Modify sender so it retries quickly
+	ds.RetryAttempts = 3
+	ds.RetryDuration = time.Second
+	// include 404 as a valid status code for retries
+	ds.ValidStatusCodes = []int{http.StatusNotFound}
+	cli.Sender = ds
+
+	now := time.Now()
+	resp, err := cli.Sender.Send(cli, &req)
+	afterRetries := time.Since(now)
+	c.Assert(err, chk.IsNil)
+	c.Assert(resp.StatusCode, chk.Equals, http.StatusNotFound)
+
+	// Was it the correct amount of retries... ?
+	c.Assert(cli.Sender.(*DefaultSender).attempts, chk.Equals, cli.Sender.(*DefaultSender).RetryAttempts)
+	// What about time... ?
+	// Note, seconds are rounded
+	sum := 0
+	for i := 0; i < ds.RetryAttempts; i++ {
+		sum += int(ds.RetryDuration.Seconds() * math.Pow(2, float64(i))) // same formula used in autorest.DelayForBackoff
+	}
+	c.Assert(int(afterRetries.Seconds()), chk.Equals, sum)
 }

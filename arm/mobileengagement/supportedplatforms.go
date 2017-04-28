@@ -45,13 +45,15 @@ func NewSupportedPlatformsClientWithBaseURI(baseURI string, subscriptionID strin
 func (client SupportedPlatformsClient) List() (result SupportedPlatformsListResult, err error) {
 	req, err := client.ListPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "mobileengagement.SupportedPlatformsClient", "List", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "mobileengagement.SupportedPlatformsClient", "List", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "mobileengagement.SupportedPlatformsClient", "List", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "mobileengagement.SupportedPlatformsClient", "List", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListResponder(resp)

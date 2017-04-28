@@ -24,9 +24,10 @@ import (
 	"net/http"
 )
 
-// RecommendedElasticPoolsClient is the provides create, read, update and
-// delete functionality for Azure SQL Database resources including servers,
-// databases, elastic pools, recommendations, operations, and usage metrics.
+// RecommendedElasticPoolsClient is the the Azure SQL Database management API
+// provides a RESTful set of web services that interact with Azure SQL Database
+// services to manage your databases. The API enables you to create, retrieve,
+// update, and delete databases.
 type RecommendedElasticPoolsClient struct {
 	ManagementClient
 }
@@ -52,13 +53,15 @@ func NewRecommendedElasticPoolsClientWithBaseURI(baseURI string, subscriptionID 
 func (client RecommendedElasticPoolsClient) Get(resourceGroupName string, serverName string, recommendedElasticPoolName string) (result RecommendedElasticPool, err error) {
 	req, err := client.GetPreparer(resourceGroupName, serverName, recommendedElasticPoolName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "sql.RecommendedElasticPoolsClient", "Get", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "sql.RecommendedElasticPoolsClient", "Get", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "sql.RecommendedElasticPoolsClient", "Get", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "sql.RecommendedElasticPoolsClient", "Get", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetResponder(resp)
@@ -120,13 +123,15 @@ func (client RecommendedElasticPoolsClient) GetResponder(resp *http.Response) (r
 func (client RecommendedElasticPoolsClient) GetDatabases(resourceGroupName string, serverName string, recommendedElasticPoolName string, databaseName string) (result Database, err error) {
 	req, err := client.GetDatabasesPreparer(resourceGroupName, serverName, recommendedElasticPoolName, databaseName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "sql.RecommendedElasticPoolsClient", "GetDatabases", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "sql.RecommendedElasticPoolsClient", "GetDatabases", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetDatabasesSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "sql.RecommendedElasticPoolsClient", "GetDatabases", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "sql.RecommendedElasticPoolsClient", "GetDatabases", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetDatabasesResponder(resp)
@@ -187,13 +192,15 @@ func (client RecommendedElasticPoolsClient) GetDatabasesResponder(resp *http.Res
 func (client RecommendedElasticPoolsClient) ListByServer(resourceGroupName string, serverName string) (result RecommendedElasticPoolListResult, err error) {
 	req, err := client.ListByServerPreparer(resourceGroupName, serverName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "sql.RecommendedElasticPoolsClient", "ListByServer", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "sql.RecommendedElasticPoolsClient", "ListByServer", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListByServerSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "sql.RecommendedElasticPoolsClient", "ListByServer", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "sql.RecommendedElasticPoolsClient", "ListByServer", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListByServerResponder(resp)
@@ -253,13 +260,15 @@ func (client RecommendedElasticPoolsClient) ListByServerResponder(resp *http.Res
 func (client RecommendedElasticPoolsClient) ListDatabases(resourceGroupName string, serverName string, recommendedElasticPoolName string) (result DatabaseListResult, err error) {
 	req, err := client.ListDatabasesPreparer(resourceGroupName, serverName, recommendedElasticPoolName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "sql.RecommendedElasticPoolsClient", "ListDatabases", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "sql.RecommendedElasticPoolsClient", "ListDatabases", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListDatabasesSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "sql.RecommendedElasticPoolsClient", "ListDatabases", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "sql.RecommendedElasticPoolsClient", "ListDatabases", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListDatabasesResponder(resp)
@@ -320,13 +329,15 @@ func (client RecommendedElasticPoolsClient) ListDatabasesResponder(resp *http.Re
 func (client RecommendedElasticPoolsClient) ListMetrics(resourceGroupName string, serverName string, recommendedElasticPoolName string) (result RecommendedElasticPoolListMetricsResult, err error) {
 	req, err := client.ListMetricsPreparer(resourceGroupName, serverName, recommendedElasticPoolName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "sql.RecommendedElasticPoolsClient", "ListMetrics", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "sql.RecommendedElasticPoolsClient", "ListMetrics", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListMetricsSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "sql.RecommendedElasticPoolsClient", "ListMetrics", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "sql.RecommendedElasticPoolsClient", "ListMetrics", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListMetricsResponder(resp)

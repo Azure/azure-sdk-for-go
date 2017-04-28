@@ -24,6 +24,45 @@ import (
 	"github.com/satori/uuid"
 )
 
+// AuthenticationType enumerates the values for authentication type.
+type AuthenticationType string
+
+const (
+	// ADPassword specifies the ad password state for authentication type.
+	ADPassword AuthenticationType = "ADPassword"
+	// SQL specifies the sql state for authentication type.
+	SQL AuthenticationType = "SQL"
+)
+
+// BlobAuditingPolicyState enumerates the values for blob auditing policy
+// state.
+type BlobAuditingPolicyState string
+
+const (
+	// Disabled specifies the disabled state for blob auditing policy state.
+	Disabled BlobAuditingPolicyState = "Disabled"
+	// Enabled specifies the enabled state for blob auditing policy state.
+	Enabled BlobAuditingPolicyState = "Enabled"
+)
+
+// CapabilityStatus enumerates the values for capability status.
+type CapabilityStatus string
+
+const (
+	// CapabilityStatusAvailable specifies the capability status available
+	// state for capability status.
+	CapabilityStatusAvailable CapabilityStatus = "Available"
+	// CapabilityStatusDefault specifies the capability status default state
+	// for capability status.
+	CapabilityStatusDefault CapabilityStatus = "Default"
+	// CapabilityStatusDisabled specifies the capability status disabled state
+	// for capability status.
+	CapabilityStatusDisabled CapabilityStatus = "Disabled"
+	// CapabilityStatusVisible specifies the capability status visible state
+	// for capability status.
+	CapabilityStatusVisible CapabilityStatus = "Visible"
+)
+
 // CreateMode enumerates the values for create mode.
 type CreateMode string
 
@@ -94,12 +133,37 @@ const (
 type ElasticPoolState string
 
 const (
-	// Creating specifies the creating state for elastic pool state.
-	Creating ElasticPoolState = "Creating"
-	// Disabled specifies the disabled state for elastic pool state.
-	Disabled ElasticPoolState = "Disabled"
-	// Ready specifies the ready state for elastic pool state.
-	Ready ElasticPoolState = "Ready"
+	// ElasticPoolStateCreating specifies the elastic pool state creating state
+	// for elastic pool state.
+	ElasticPoolStateCreating ElasticPoolState = "Creating"
+	// ElasticPoolStateDisabled specifies the elastic pool state disabled state
+	// for elastic pool state.
+	ElasticPoolStateDisabled ElasticPoolState = "Disabled"
+	// ElasticPoolStateReady specifies the elastic pool state ready state for
+	// elastic pool state.
+	ElasticPoolStateReady ElasticPoolState = "Ready"
+)
+
+// MaxSizeUnits enumerates the values for max size units.
+type MaxSizeUnits string
+
+const (
+	// Gigabytes specifies the gigabytes state for max size units.
+	Gigabytes MaxSizeUnits = "Gigabytes"
+	// Megabytes specifies the megabytes state for max size units.
+	Megabytes MaxSizeUnits = "Megabytes"
+	// Petabytes specifies the petabytes state for max size units.
+	Petabytes MaxSizeUnits = "Petabytes"
+	// Terabytes specifies the terabytes state for max size units.
+	Terabytes MaxSizeUnits = "Terabytes"
+)
+
+// PerformanceLevelUnit enumerates the values for performance level unit.
+type PerformanceLevelUnit string
+
+const (
+	// DTU specifies the dtu state for performance level unit.
+	DTU PerformanceLevelUnit = "DTU"
 )
 
 // ReadScale enumerates the values for read scale.
@@ -170,6 +234,41 @@ const (
 	NONCLUSTERED RecommendedIndexType = "NONCLUSTERED"
 )
 
+// ReplicationRole enumerates the values for replication role.
+type ReplicationRole string
+
+const (
+	// ReplicationRoleCopy specifies the replication role copy state for
+	// replication role.
+	ReplicationRoleCopy ReplicationRole = "Copy"
+	// ReplicationRoleNonReadableSecondary specifies the replication role non
+	// readable secondary state for replication role.
+	ReplicationRoleNonReadableSecondary ReplicationRole = "NonReadableSecondary"
+	// ReplicationRolePrimary specifies the replication role primary state for
+	// replication role.
+	ReplicationRolePrimary ReplicationRole = "Primary"
+	// ReplicationRoleSecondary specifies the replication role secondary state
+	// for replication role.
+	ReplicationRoleSecondary ReplicationRole = "Secondary"
+	// ReplicationRoleSource specifies the replication role source state for
+	// replication role.
+	ReplicationRoleSource ReplicationRole = "Source"
+)
+
+// ReplicationState enumerates the values for replication state.
+type ReplicationState string
+
+const (
+	// CATCHUP specifies the catchup state for replication state.
+	CATCHUP ReplicationState = "CATCH_UP"
+	// PENDING specifies the pending state for replication state.
+	PENDING ReplicationState = "PENDING"
+	// SEEDING specifies the seeding state for replication state.
+	SEEDING ReplicationState = "SEEDING"
+	// SUSPENDED specifies the suspended state for replication state.
+	SUSPENDED ReplicationState = "SUSPENDED"
+)
+
 // RestorePointTypes enumerates the values for restore point types.
 type RestorePointTypes string
 
@@ -186,6 +285,52 @@ type SampleName string
 const (
 	// AdventureWorksLT specifies the adventure works lt state for sample name.
 	AdventureWorksLT SampleName = "AdventureWorksLT"
+)
+
+// SecurityAlertPolicyEmailAccountAdmins enumerates the values for security
+// alert policy email account admins.
+type SecurityAlertPolicyEmailAccountAdmins string
+
+const (
+	// SecurityAlertPolicyEmailAccountAdminsDisabled specifies the security
+	// alert policy email account admins disabled state for security alert
+	// policy email account admins.
+	SecurityAlertPolicyEmailAccountAdminsDisabled SecurityAlertPolicyEmailAccountAdmins = "Disabled"
+	// SecurityAlertPolicyEmailAccountAdminsEnabled specifies the security
+	// alert policy email account admins enabled state for security alert
+	// policy email account admins.
+	SecurityAlertPolicyEmailAccountAdminsEnabled SecurityAlertPolicyEmailAccountAdmins = "Enabled"
+)
+
+// SecurityAlertPolicyState enumerates the values for security alert policy
+// state.
+type SecurityAlertPolicyState string
+
+const (
+	// SecurityAlertPolicyStateDisabled specifies the security alert policy
+	// state disabled state for security alert policy state.
+	SecurityAlertPolicyStateDisabled SecurityAlertPolicyState = "Disabled"
+	// SecurityAlertPolicyStateEnabled specifies the security alert policy
+	// state enabled state for security alert policy state.
+	SecurityAlertPolicyStateEnabled SecurityAlertPolicyState = "Enabled"
+	// SecurityAlertPolicyStateNew specifies the security alert policy state
+	// new state for security alert policy state.
+	SecurityAlertPolicyStateNew SecurityAlertPolicyState = "New"
+)
+
+// SecurityAlertPolicyUseServerDefault enumerates the values for security alert
+// policy use server default.
+type SecurityAlertPolicyUseServerDefault string
+
+const (
+	// SecurityAlertPolicyUseServerDefaultDisabled specifies the security alert
+	// policy use server default disabled state for security alert policy use
+	// server default.
+	SecurityAlertPolicyUseServerDefaultDisabled SecurityAlertPolicyUseServerDefault = "Disabled"
+	// SecurityAlertPolicyUseServerDefaultEnabled specifies the security alert
+	// policy use server default enabled state for security alert policy use
+	// server default.
+	SecurityAlertPolicyUseServerDefaultEnabled SecurityAlertPolicyUseServerDefault = "Enabled"
 )
 
 // ServerState enumerates the values for server state.
@@ -263,6 +408,18 @@ const (
 	ServiceObjectiveNameSystem2 ServiceObjectiveName = "System2"
 )
 
+// StorageKeyType enumerates the values for storage key type.
+type StorageKeyType string
+
+const (
+	// SharedAccessKey specifies the shared access key state for storage key
+	// type.
+	SharedAccessKey StorageKeyType = "SharedAccessKey"
+	// StorageAccessKey specifies the storage access key state for storage key
+	// type.
+	StorageAccessKey StorageKeyType = "StorageAccessKey"
+)
+
 // TransparentDataEncryptionActivityStatus enumerates the values for
 // transparent data encryption activity status.
 type TransparentDataEncryptionActivityStatus string
@@ -301,6 +458,30 @@ type Database struct {
 	*DatabaseProperties `json:"properties,omitempty"`
 }
 
+// DatabaseBlobAuditingPolicy is contains information about a database Blob
+// Auditing policy.
+type DatabaseBlobAuditingPolicy struct {
+	autorest.Response                     `json:"-"`
+	ID                                    *string `json:"id,omitempty"`
+	Name                                  *string `json:"name,omitempty"`
+	Type                                  *string `json:"type,omitempty"`
+	Location                              *string `json:"location,omitempty"`
+	Kind                                  *string `json:"kind,omitempty"`
+	*DatabaseBlobAuditingPolicyProperties `json:"properties,omitempty"`
+}
+
+// DatabaseBlobAuditingPolicyProperties is properties for a database Blob
+// Auditing policy.
+type DatabaseBlobAuditingPolicyProperties struct {
+	State                        BlobAuditingPolicyState `json:"state,omitempty"`
+	StorageEndpoint              *string                 `json:"storageEndpoint,omitempty"`
+	StorageAccountAccessKey      *string                 `json:"storageAccountAccessKey,omitempty"`
+	RetentionDays                *int32                  `json:"retentionDays,omitempty"`
+	AuditActionsAndGroups        *[]string               `json:"auditActionsAndGroups,omitempty"`
+	StorageAccountSubscriptionID *string                 `json:"storageAccountSubscriptionId,omitempty"`
+	IsStorageSecondaryKeyInUse   *bool                   `json:"isStorageSecondaryKeyInUse,omitempty"`
+}
+
 // DatabaseListResult is represents the response to a list database request.
 type DatabaseListResult struct {
 	autorest.Response `json:"-"`
@@ -332,13 +513,13 @@ type DatabaseProperties struct {
 	CreationDate                            *date.Time                   `json:"creationDate,omitempty"`
 	ContainmentState                        *int64                       `json:"containmentState,omitempty"`
 	CurrentServiceObjectiveID               *uuid.UUID                   `json:"currentServiceObjectiveId,omitempty"`
-	DatabaseID                              *string                      `json:"databaseId,omitempty"`
+	DatabaseID                              *uuid.UUID                   `json:"databaseId,omitempty"`
 	EarliestRestoreDate                     *date.Time                   `json:"earliestRestoreDate,omitempty"`
 	CreateMode                              CreateMode                   `json:"createMode,omitempty"`
 	SourceDatabaseID                        *string                      `json:"sourceDatabaseId,omitempty"`
 	SourceDatabaseDeletionDate              *date.Time                   `json:"sourceDatabaseDeletionDate,omitempty"`
 	RestorePointInTime                      *date.Time                   `json:"restorePointInTime,omitempty"`
-	RecoveryServicesRecoveryPointResourceID *date.Time                   `json:"recoveryServicesRecoveryPointResourceId,omitempty"`
+	RecoveryServicesRecoveryPointResourceID *string                      `json:"recoveryServicesRecoveryPointResourceId,omitempty"`
 	Edition                                 DatabaseEdition              `json:"edition,omitempty"`
 	MaxSizeBytes                            *string                      `json:"maxSizeBytes,omitempty"`
 	RequestedServiceObjectiveID             *uuid.UUID                   `json:"requestedServiceObjectiveId,omitempty"`
@@ -353,6 +534,38 @@ type DatabaseProperties struct {
 	FailoverGroupID                         *uuid.UUID                   `json:"failoverGroupId,omitempty"`
 	ReadScale                               ReadScale                    `json:"readScale,omitempty"`
 	SampleName                              SampleName                   `json:"sampleName,omitempty"`
+}
+
+// DatabaseSecurityAlertPolicy is contains information about a database Threat
+// Detection policy.
+type DatabaseSecurityAlertPolicy struct {
+	autorest.Response                      `json:"-"`
+	ID                                     *string `json:"id,omitempty"`
+	Name                                   *string `json:"name,omitempty"`
+	Type                                   *string `json:"type,omitempty"`
+	Location                               *string `json:"location,omitempty"`
+	Kind                                   *string `json:"kind,omitempty"`
+	*DatabaseSecurityAlertPolicyProperties `json:"properties,omitempty"`
+}
+
+// DatabaseSecurityAlertPolicyProperties is properties for a database Threat
+// Detection policy.
+type DatabaseSecurityAlertPolicyProperties struct {
+	State                   SecurityAlertPolicyState              `json:"state,omitempty"`
+	DisabledAlerts          *string                               `json:"disabledAlerts,omitempty"`
+	EmailAddresses          *string                               `json:"emailAddresses,omitempty"`
+	EmailAccountAdmins      SecurityAlertPolicyEmailAccountAdmins `json:"emailAccountAdmins,omitempty"`
+	StorageEndpoint         *string                               `json:"storageEndpoint,omitempty"`
+	StorageAccountAccessKey *string                               `json:"storageAccountAccessKey,omitempty"`
+	RetentionDays           *int32                                `json:"retentionDays,omitempty"`
+	UseServerDefault        SecurityAlertPolicyUseServerDefault   `json:"useServerDefault,omitempty"`
+}
+
+// EditionCapability is the database edition capabilities.
+type EditionCapability struct {
+	Name                            *string                       `json:"name,omitempty"`
+	Status                          CapabilityStatus              `json:"status,omitempty"`
+	SupportedServiceLevelObjectives *[]ServiceObjectiveCapability `json:"supportedServiceLevelObjectives,omitempty"`
 }
 
 // ElasticPool is represents a database elastic pool.
@@ -391,7 +604,7 @@ type ElasticPoolActivityProperties struct {
 	ErrorMessage                  *string    `json:"errorMessage,omitempty"`
 	ErrorSeverity                 *int32     `json:"errorSeverity,omitempty"`
 	Operation                     *string    `json:"operation,omitempty"`
-	OperationID                   *string    `json:"operationId,omitempty"`
+	OperationID                   *uuid.UUID `json:"operationId,omitempty"`
 	PercentComplete               *int32     `json:"percentComplete,omitempty"`
 	RequestedDatabaseDtuMax       *int32     `json:"requestedDatabaseDtuMax,omitempty"`
 	RequestedDatabaseDtuMin       *int32     `json:"requestedDatabaseDtuMin,omitempty"`
@@ -444,11 +657,44 @@ type ElasticPoolDatabaseActivityProperties struct {
 	State                     *string    `json:"state,omitempty"`
 }
 
+// ElasticPoolDtuCapability is the Elastic Pool DTU capability.
+type ElasticPoolDtuCapability struct {
+	Limit                        *int64                                    `json:"limit,omitempty"`
+	MaxDatabaseCount             *int64                                    `json:"maxDatabaseCount,omitempty"`
+	Status                       CapabilityStatus                          `json:"status,omitempty"`
+	SupportedMaxSizes            *[]MaxSizeCapability                      `json:"supportedMaxSizes,omitempty"`
+	IncludedMaxSize              *MaxSizeCapability                        `json:"includedMaxSize,omitempty"`
+	SupportedPerDatabaseMaxSizes *[]MaxSizeCapability                      `json:"supportedPerDatabaseMaxSizes,omitempty"`
+	SupportedPerDatabaseMaxDtus  *[]ElasticPoolPerDatabaseMaxDtuCapability `json:"supportedPerDatabaseMaxDtus,omitempty"`
+}
+
+// ElasticPoolEditionCapability is the elastic pool edition capabilities.
+type ElasticPoolEditionCapability struct {
+	Name                     *string                     `json:"name,omitempty"`
+	Status                   CapabilityStatus            `json:"status,omitempty"`
+	SupportedElasticPoolDtus *[]ElasticPoolDtuCapability `json:"supportedElasticPoolDtus,omitempty"`
+}
+
 // ElasticPoolListResult is represents the response to a list elastic pool
 // request.
 type ElasticPoolListResult struct {
 	autorest.Response `json:"-"`
 	Value             *[]ElasticPool `json:"value,omitempty"`
+}
+
+// ElasticPoolPerDatabaseMaxDtuCapability is the max per-database DTU
+// capability.
+type ElasticPoolPerDatabaseMaxDtuCapability struct {
+	Limit                       *int64                                    `json:"limit,omitempty"`
+	Status                      CapabilityStatus                          `json:"status,omitempty"`
+	SupportedPerDatabaseMinDtus *[]ElasticPoolPerDatabaseMinDtuCapability `json:"supportedPerDatabaseMinDtus,omitempty"`
+}
+
+// ElasticPoolPerDatabaseMinDtuCapability is the minimum per-database DTU
+// capability.
+type ElasticPoolPerDatabaseMinDtuCapability struct {
+	Limit  *int64           `json:"limit,omitempty"`
+	Status CapabilityStatus `json:"status,omitempty"`
 }
 
 // ElasticPoolProperties is represents the properties of an elastic pool.
@@ -460,6 +706,112 @@ type ElasticPoolProperties struct {
 	DatabaseDtuMax *int32             `json:"databaseDtuMax,omitempty"`
 	DatabaseDtuMin *int32             `json:"databaseDtuMin,omitempty"`
 	StorageMB      *int32             `json:"storageMB,omitempty"`
+}
+
+// ExportRequest is export database parameters.
+type ExportRequest struct {
+	StorageKeyType             StorageKeyType     `json:"storageKeyType,omitempty"`
+	StorageKey                 *string            `json:"storageKey,omitempty"`
+	StorageURI                 *string            `json:"storageUri,omitempty"`
+	AdministratorLogin         *string            `json:"administratorLogin,omitempty"`
+	AdministratorLoginPassword *string            `json:"administratorLoginPassword,omitempty"`
+	AuthenticationType         AuthenticationType `json:"authenticationType,omitempty"`
+}
+
+// FirewallRule is represents a server firewall rule.
+type FirewallRule struct {
+	autorest.Response       `json:"-"`
+	Name                    *string `json:"name,omitempty"`
+	ID                      *string `json:"id,omitempty"`
+	Kind                    *string `json:"kind,omitempty"`
+	Location                *string `json:"location,omitempty"`
+	Type                    *string `json:"type,omitempty"`
+	*FirewallRuleProperties `json:"properties,omitempty"`
+}
+
+// FirewallRuleListResult is represents the response to a List Firewall Rules
+// request.
+type FirewallRuleListResult struct {
+	autorest.Response `json:"-"`
+	Value             *[]FirewallRule `json:"value,omitempty"`
+}
+
+// FirewallRuleProperties is represents the properties of a server firewall
+// rule.
+type FirewallRuleProperties struct {
+	StartIPAddress *string `json:"startIpAddress,omitempty"`
+	EndIPAddress   *string `json:"endIpAddress,omitempty"`
+}
+
+// ImportExportResponse is response for Import/Export Get operation.
+type ImportExportResponse struct {
+	autorest.Response               `json:"-"`
+	ID                              *string `json:"id,omitempty"`
+	Name                            *string `json:"name,omitempty"`
+	Type                            *string `json:"type,omitempty"`
+	*ImportExportResponseProperties `json:"properties,omitempty"`
+}
+
+// ImportExportResponseProperties is response for Import/Export Status
+// operation.
+type ImportExportResponseProperties struct {
+	RequestType      *string    `json:"requestType,omitempty"`
+	RequestID        *uuid.UUID `json:"requestId,omitempty"`
+	ServerName       *string    `json:"serverName,omitempty"`
+	DatabaseName     *string    `json:"databaseName,omitempty"`
+	Status           *string    `json:"status,omitempty"`
+	LastModifiedTime *string    `json:"lastModifiedTime,omitempty"`
+	QueuedTime       *string    `json:"queuedTime,omitempty"`
+	BlobURI          *string    `json:"blobUri,omitempty"`
+	ErrorMessage     *string    `json:"errorMessage,omitempty"`
+}
+
+// ImportExtensionProperties is represents the properties for an import
+// operation
+type ImportExtensionProperties struct {
+	StorageKeyType             StorageKeyType     `json:"storageKeyType,omitempty"`
+	StorageKey                 *string            `json:"storageKey,omitempty"`
+	StorageURI                 *string            `json:"storageUri,omitempty"`
+	AdministratorLogin         *string            `json:"administratorLogin,omitempty"`
+	AdministratorLoginPassword *string            `json:"administratorLoginPassword,omitempty"`
+	AuthenticationType         AuthenticationType `json:"authenticationType,omitempty"`
+	OperationMode              *string            `json:"operationMode,omitempty"`
+}
+
+// ImportExtensionRequest is import database parameters.
+type ImportExtensionRequest struct {
+	Name                       *string `json:"name,omitempty"`
+	Type                       *string `json:"type,omitempty"`
+	*ImportExtensionProperties `json:"properties,omitempty"`
+}
+
+// ImportRequest is import database parameters.
+type ImportRequest struct {
+	StorageKeyType             StorageKeyType       `json:"storageKeyType,omitempty"`
+	StorageKey                 *string              `json:"storageKey,omitempty"`
+	StorageURI                 *string              `json:"storageUri,omitempty"`
+	AdministratorLogin         *string              `json:"administratorLogin,omitempty"`
+	AdministratorLoginPassword *string              `json:"administratorLoginPassword,omitempty"`
+	AuthenticationType         AuthenticationType   `json:"authenticationType,omitempty"`
+	DatabaseName               *string              `json:"databaseName,omitempty"`
+	Edition                    DatabaseEdition      `json:"edition,omitempty"`
+	ServiceObjectiveName       ServiceObjectiveName `json:"serviceObjectiveName,omitempty"`
+	MaxSizeBytes               *string              `json:"maxSizeBytes,omitempty"`
+}
+
+// LocationCapabilities is the capabilities for a location.
+type LocationCapabilities struct {
+	autorest.Response       `json:"-"`
+	Name                    *string                    `json:"name,omitempty"`
+	Status                  CapabilityStatus           `json:"status,omitempty"`
+	SupportedServerVersions *[]ServerVersionCapability `json:"supportedServerVersions,omitempty"`
+}
+
+// MaxSizeCapability is the maximum size limits for a database.
+type MaxSizeCapability struct {
+	Limit  *int64           `json:"limit,omitempty"`
+	Unit   MaxSizeUnits     `json:"unit,omitempty"`
+	Status CapabilityStatus `json:"status,omitempty"`
 }
 
 // Operation is sQL REST API operation definition.
@@ -490,6 +842,13 @@ type OperationListResult struct {
 	autorest.Response `json:"-"`
 	Value             *[]Operation `json:"value,omitempty"`
 	NextLink          *string      `json:"nextLink,omitempty"`
+}
+
+// PerformanceLevel is a possible performance level of a service objective
+// capability.
+type PerformanceLevel struct {
+	Unit  PerformanceLevelUnit `json:"unit,omitempty"`
+	Value *int32               `json:"value,omitempty"`
 }
 
 // ProxyResource is aRM proxy resource.
@@ -570,6 +929,38 @@ type RecommendedIndexProperties struct {
 	ReportedImpact  *[]OperationImpact     `json:"reportedImpact,omitempty"`
 }
 
+// ReplicationLink is represents a database replication link.
+type ReplicationLink struct {
+	autorest.Response          `json:"-"`
+	Name                       *string `json:"name,omitempty"`
+	ID                         *string `json:"id,omitempty"`
+	Location                   *string `json:"location,omitempty"`
+	Type                       *string `json:"type,omitempty"`
+	*ReplicationLinkProperties `json:"properties,omitempty"`
+}
+
+// ReplicationLinkListResult is represents the response to a List database
+// replication link request.
+type ReplicationLinkListResult struct {
+	autorest.Response `json:"-"`
+	Value             *[]ReplicationLink `json:"value,omitempty"`
+}
+
+// ReplicationLinkProperties is represents the properties of a database
+// replication link.
+type ReplicationLinkProperties struct {
+	IsTerminationAllowed *bool            `json:"isTerminationAllowed,omitempty"`
+	ReplicationMode      *string          `json:"replicationMode,omitempty"`
+	PartnerServer        *string          `json:"partnerServer,omitempty"`
+	PartnerDatabase      *string          `json:"partnerDatabase,omitempty"`
+	PartnerLocation      *string          `json:"partnerLocation,omitempty"`
+	Role                 ReplicationRole  `json:"role,omitempty"`
+	PartnerRole          ReplicationRole  `json:"partnerRole,omitempty"`
+	StartTime            *date.Time       `json:"startTime,omitempty"`
+	PercentComplete      *int32           `json:"percentComplete,omitempty"`
+	ReplicationState     ReplicationState `json:"replicationState,omitempty"`
+}
+
 // Resource is aRM resource.
 type Resource struct {
 	ID   *string `json:"id,omitempty"`
@@ -647,12 +1038,30 @@ type ServerProperties struct {
 	State                      ServerState   `json:"state,omitempty"`
 }
 
+// ServerVersionCapability is the server capabilities.
+type ServerVersionCapability struct {
+	Name                         *string                         `json:"name,omitempty"`
+	Status                       CapabilityStatus                `json:"status,omitempty"`
+	SupportedEditions            *[]EditionCapability            `json:"supportedEditions,omitempty"`
+	SupportedElasticPoolEditions *[]ElasticPoolEditionCapability `json:"supportedElasticPoolEditions,omitempty"`
+}
+
 // ServiceObjective is represents a database service objective.
 type ServiceObjective struct {
 	autorest.Response           `json:"-"`
 	Name                        *string `json:"name,omitempty"`
 	ID                          *string `json:"id,omitempty"`
 	*ServiceObjectiveProperties `json:"properties,omitempty"`
+}
+
+// ServiceObjectiveCapability is the service objectives capability.
+type ServiceObjectiveCapability struct {
+	Name              *string          `json:"name,omitempty"`
+	Status            CapabilityStatus `json:"status,omitempty"`
+	*PerformanceLevel `json:"performanceLevel,omitempty"`
+	ID                *uuid.UUID           `json:"id,omitempty"`
+	SupportedMaxSizes *[]MaxSizeCapability `json:"supportedMaxSizes,omitempty"`
+	IncludedMaxSize   *MaxSizeCapability   `json:"includedMaxSize,omitempty"`
 }
 
 // ServiceObjectiveListResult is represents the response to a get database

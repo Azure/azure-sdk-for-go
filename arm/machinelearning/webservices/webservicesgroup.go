@@ -57,7 +57,9 @@ func NewGroupClientWithBaseURI(baseURI string, subscriptionID string) GroupClien
 // located. webServiceName is the name of the web service.
 // createOrUpdatePayload is the payload that is used to create or update the
 // web service.
-func (client GroupClient) CreateOrUpdate(resourceGroupName string, webServiceName string, createOrUpdatePayload WebService, cancel <-chan struct{}) (result autorest.Response, err error) {
+func (client GroupClient) CreateOrUpdate(resourceGroupName string, webServiceName string, createOrUpdatePayload WebService, cancel <-chan struct{}) (<-chan WebService, <-chan error) {
+	resultChan := make(chan WebService, 1)
+	errChan := make(chan error, 1)
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: createOrUpdatePayload,
 			Constraints: []validation.Constraint{{Target: "createOrUpdatePayload.Properties", Name: validation.Null, Rule: true,
@@ -79,27 +81,43 @@ func (client GroupClient) CreateOrUpdate(resourceGroupName string, webServiceNam
 						Chain: []validation.Constraint{{Target: "createOrUpdatePayload.Properties.Output.Type", Name: validation.Null, Rule: true, Chain: nil},
 							{Target: "createOrUpdatePayload.Properties.Output.Properties", Name: validation.Null, Rule: true, Chain: nil},
 						}},
+					{Target: "createOrUpdatePayload.Properties.PayloadsLocation", Name: validation.Null, Rule: false,
+						Chain: []validation.Constraint{{Target: "createOrUpdatePayload.Properties.PayloadsLocation.URI", Name: validation.Null, Rule: true, Chain: nil}}},
 				}}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "webservices.GroupClient", "CreateOrUpdate")
+		errChan <- validation.NewErrorWithValidationError(err, "webservices.GroupClient", "CreateOrUpdate")
+		close(errChan)
+		close(resultChan)
+		return resultChan, errChan
 	}
 
-	req, err := client.CreateOrUpdatePreparer(resourceGroupName, webServiceName, createOrUpdatePayload, cancel)
-	if err != nil {
-		return result, autorest.NewErrorWithError(err, "webservices.GroupClient", "CreateOrUpdate", nil, "Failure preparing request")
-	}
+	go func() {
+		var err error
+		var result WebService
+		defer func() {
+			resultChan <- result
+			errChan <- err
+			close(resultChan)
+			close(errChan)
+		}()
+		req, err := client.CreateOrUpdatePreparer(resourceGroupName, webServiceName, createOrUpdatePayload, cancel)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "webservices.GroupClient", "CreateOrUpdate", nil, "Failure preparing request")
+			return
+		}
 
-	resp, err := client.CreateOrUpdateSender(req)
-	if err != nil {
-		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "webservices.GroupClient", "CreateOrUpdate", resp, "Failure sending request")
-	}
+		resp, err := client.CreateOrUpdateSender(req)
+		if err != nil {
+			result.Response = autorest.Response{Response: resp}
+			err = autorest.NewErrorWithError(err, "webservices.GroupClient", "CreateOrUpdate", resp, "Failure sending request")
+			return
+		}
 
-	result, err = client.CreateOrUpdateResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "webservices.GroupClient", "CreateOrUpdate", resp, "Failure responding to request")
-	}
-
-	return
+		result, err = client.CreateOrUpdateResponder(resp)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "webservices.GroupClient", "CreateOrUpdate", resp, "Failure responding to request")
+		}
+	}()
+	return resultChan, errChan
 }
 
 // CreateOrUpdatePreparer prepares the CreateOrUpdate request.
@@ -110,7 +128,7 @@ func (client GroupClient) CreateOrUpdatePreparer(resourceGroupName string, webSe
 		"webServiceName":    autorest.Encode("path", webServiceName),
 	}
 
-	const APIVersion = "2016-05-01-preview"
+	const APIVersion = "2017-01-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -135,33 +153,125 @@ func (client GroupClient) CreateOrUpdateSender(req *http.Request) (*http.Respons
 
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
 // closes the http.Response Body.
-func (client GroupClient) CreateOrUpdateResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client GroupClient) CreateOrUpdateResponder(resp *http.Response) (result WebService, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = resp
+	result.Response = autorest.Response{Response: resp}
 	return
 }
 
-// Get gets the Web Service Definiton as specified by a subscription, resource
+// CreateRegionalProperties creates an encrypted credentials parameter blob for
+// the specified region. To get the web service from a region other than the
+// region in which it has been created, you must first call Create Regional Web
+// Services Properties to create a copy of the encrypted credential parameter
+// blob in that region. You only need to do this before the first time that you
+// get the web service in the new region. This method may poll for completion.
+// Polling can be canceled by passing the cancel channel argument. The channel
+// will be used to cancel polling and any outstanding HTTP requests.
+//
+// resourceGroupName is name of the resource group in which the web service is
+// located. webServiceName is the name of the web service. region is the region
+// for which encrypted credential parameters are created.
+func (client GroupClient) CreateRegionalProperties(resourceGroupName string, webServiceName string, region string, cancel <-chan struct{}) (<-chan AsyncOperationStatus, <-chan error) {
+	resultChan := make(chan AsyncOperationStatus, 1)
+	errChan := make(chan error, 1)
+	go func() {
+		var err error
+		var result AsyncOperationStatus
+		defer func() {
+			resultChan <- result
+			errChan <- err
+			close(resultChan)
+			close(errChan)
+		}()
+		req, err := client.CreateRegionalPropertiesPreparer(resourceGroupName, webServiceName, region, cancel)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "webservices.GroupClient", "CreateRegionalProperties", nil, "Failure preparing request")
+			return
+		}
+
+		resp, err := client.CreateRegionalPropertiesSender(req)
+		if err != nil {
+			result.Response = autorest.Response{Response: resp}
+			err = autorest.NewErrorWithError(err, "webservices.GroupClient", "CreateRegionalProperties", resp, "Failure sending request")
+			return
+		}
+
+		result, err = client.CreateRegionalPropertiesResponder(resp)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "webservices.GroupClient", "CreateRegionalProperties", resp, "Failure responding to request")
+		}
+	}()
+	return resultChan, errChan
+}
+
+// CreateRegionalPropertiesPreparer prepares the CreateRegionalProperties request.
+func (client GroupClient) CreateRegionalPropertiesPreparer(resourceGroupName string, webServiceName string, region string, cancel <-chan struct{}) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+		"webServiceName":    autorest.Encode("path", webServiceName),
+	}
+
+	const APIVersion = "2017-01-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+		"region":      autorest.Encode("query", region),
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsPost(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearning/webServices/{webServiceName}/CreateRegionalBlob", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare(&http.Request{Cancel: cancel})
+}
+
+// CreateRegionalPropertiesSender sends the CreateRegionalProperties request. The method will close the
+// http.Response Body if it receives an error.
+func (client GroupClient) CreateRegionalPropertiesSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoPollForAsynchronous(client.PollingDelay))
+}
+
+// CreateRegionalPropertiesResponder handles the response to the CreateRegionalProperties request. The method always
+// closes the http.Response Body.
+func (client GroupClient) CreateRegionalPropertiesResponder(resp *http.Response) (result AsyncOperationStatus, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusAccepted, http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// Get gets the Web Service Definition as specified by a subscription, resource
 // group, and name. Note that the storage credentials and web service keys are
 // not returned by this call. To get the web service access keys, call List
 // Keys.
 //
 // resourceGroupName is name of the resource group in which the web service is
-// located. webServiceName is the name of the web service.
-func (client GroupClient) Get(resourceGroupName string, webServiceName string) (result WebService, err error) {
-	req, err := client.GetPreparer(resourceGroupName, webServiceName)
+// located. webServiceName is the name of the web service. region is the region
+// for which encrypted credential parameters are valid.
+func (client GroupClient) Get(resourceGroupName string, webServiceName string, region string) (result WebService, err error) {
+	req, err := client.GetPreparer(resourceGroupName, webServiceName, region)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "webservices.GroupClient", "Get", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "webservices.GroupClient", "Get", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "webservices.GroupClient", "Get", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "webservices.GroupClient", "Get", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetResponder(resp)
@@ -173,16 +283,19 @@ func (client GroupClient) Get(resourceGroupName string, webServiceName string) (
 }
 
 // GetPreparer prepares the Get request.
-func (client GroupClient) GetPreparer(resourceGroupName string, webServiceName string) (*http.Request, error) {
+func (client GroupClient) GetPreparer(resourceGroupName string, webServiceName string, region string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 		"webServiceName":    autorest.Encode("path", webServiceName),
 	}
 
-	const APIVersion = "2016-05-01-preview"
+	const APIVersion = "2017-01-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
+	}
+	if len(region) > 0 {
+		queryParameters["region"] = autorest.Encode("query", region)
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -212,94 +325,6 @@ func (client GroupClient) GetResponder(resp *http.Response) (result WebService, 
 	return
 }
 
-// List gets the web services in the specified subscription.
-//
-// skiptoken is continuation token for pagination.
-func (client GroupClient) List(skiptoken string) (result PaginatedWebServicesList, err error) {
-	req, err := client.ListPreparer(skiptoken)
-	if err != nil {
-		return result, autorest.NewErrorWithError(err, "webservices.GroupClient", "List", nil, "Failure preparing request")
-	}
-
-	resp, err := client.ListSender(req)
-	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "webservices.GroupClient", "List", resp, "Failure sending request")
-	}
-
-	result, err = client.ListResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "webservices.GroupClient", "List", resp, "Failure responding to request")
-	}
-
-	return
-}
-
-// ListPreparer prepares the List request.
-func (client GroupClient) ListPreparer(skiptoken string) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
-	}
-
-	const APIVersion = "2016-05-01-preview"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-	if len(skiptoken) > 0 {
-		queryParameters["$skiptoken"] = autorest.Encode("query", skiptoken)
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsGet(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/providers/Microsoft.MachineLearning/webServices", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare(&http.Request{})
-}
-
-// ListSender sends the List request. The method will close the
-// http.Response Body if it receives an error.
-func (client GroupClient) ListSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
-}
-
-// ListResponder handles the response to the List request. The method always
-// closes the http.Response Body.
-func (client GroupClient) ListResponder(resp *http.Response) (result PaginatedWebServicesList, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
-}
-
-// ListNextResults retrieves the next set of results, if any.
-func (client GroupClient) ListNextResults(lastResults PaginatedWebServicesList) (result PaginatedWebServicesList, err error) {
-	req, err := lastResults.PaginatedWebServicesListPreparer()
-	if err != nil {
-		return result, autorest.NewErrorWithError(err, "webservices.GroupClient", "List", nil, "Failure preparing next results request")
-	}
-	if req == nil {
-		return
-	}
-
-	resp, err := client.ListSender(req)
-	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "webservices.GroupClient", "List", resp, "Failure sending next results request")
-	}
-
-	result, err = client.ListResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "webservices.GroupClient", "List", resp, "Failure responding to next results request")
-	}
-
-	return
-}
-
 // ListByResourceGroup gets the web services in the specified resource group.
 //
 // resourceGroupName is name of the resource group in which the web service is
@@ -307,13 +332,15 @@ func (client GroupClient) ListNextResults(lastResults PaginatedWebServicesList) 
 func (client GroupClient) ListByResourceGroup(resourceGroupName string, skiptoken string) (result PaginatedWebServicesList, err error) {
 	req, err := client.ListByResourceGroupPreparer(resourceGroupName, skiptoken)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "webservices.GroupClient", "ListByResourceGroup", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "webservices.GroupClient", "ListByResourceGroup", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListByResourceGroupSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "webservices.GroupClient", "ListByResourceGroup", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "webservices.GroupClient", "ListByResourceGroup", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListByResourceGroupResponder(resp)
@@ -331,7 +358,7 @@ func (client GroupClient) ListByResourceGroupPreparer(resourceGroupName string, 
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2016-05-01-preview"
+	const APIVersion = "2017-01-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -390,6 +417,96 @@ func (client GroupClient) ListByResourceGroupNextResults(lastResults PaginatedWe
 	return
 }
 
+// ListBySubscriptionID gets the web services in the specified subscription.
+//
+// skiptoken is continuation token for pagination.
+func (client GroupClient) ListBySubscriptionID(skiptoken string) (result PaginatedWebServicesList, err error) {
+	req, err := client.ListBySubscriptionIDPreparer(skiptoken)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "webservices.GroupClient", "ListBySubscriptionID", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.ListBySubscriptionIDSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "webservices.GroupClient", "ListBySubscriptionID", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.ListBySubscriptionIDResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "webservices.GroupClient", "ListBySubscriptionID", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// ListBySubscriptionIDPreparer prepares the ListBySubscriptionID request.
+func (client GroupClient) ListBySubscriptionIDPreparer(skiptoken string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2017-01-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+	if len(skiptoken) > 0 {
+		queryParameters["$skiptoken"] = autorest.Encode("query", skiptoken)
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/providers/Microsoft.MachineLearning/webServices", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare(&http.Request{})
+}
+
+// ListBySubscriptionIDSender sends the ListBySubscriptionID request. The method will close the
+// http.Response Body if it receives an error.
+func (client GroupClient) ListBySubscriptionIDSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req)
+}
+
+// ListBySubscriptionIDResponder handles the response to the ListBySubscriptionID request. The method always
+// closes the http.Response Body.
+func (client GroupClient) ListBySubscriptionIDResponder(resp *http.Response) (result PaginatedWebServicesList, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// ListBySubscriptionIDNextResults retrieves the next set of results, if any.
+func (client GroupClient) ListBySubscriptionIDNextResults(lastResults PaginatedWebServicesList) (result PaginatedWebServicesList, err error) {
+	req, err := lastResults.PaginatedWebServicesListPreparer()
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "webservices.GroupClient", "ListBySubscriptionID", nil, "Failure preparing next results request")
+	}
+	if req == nil {
+		return
+	}
+
+	resp, err := client.ListBySubscriptionIDSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "webservices.GroupClient", "ListBySubscriptionID", resp, "Failure sending next results request")
+	}
+
+	result, err = client.ListBySubscriptionIDResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "webservices.GroupClient", "ListBySubscriptionID", resp, "Failure responding to next results request")
+	}
+
+	return
+}
+
 // ListKeys gets the access keys for the specified web service.
 //
 // resourceGroupName is name of the resource group in which the web service is
@@ -397,13 +514,15 @@ func (client GroupClient) ListByResourceGroupNextResults(lastResults PaginatedWe
 func (client GroupClient) ListKeys(resourceGroupName string, webServiceName string) (result Keys, err error) {
 	req, err := client.ListKeysPreparer(resourceGroupName, webServiceName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "webservices.GroupClient", "ListKeys", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "webservices.GroupClient", "ListKeys", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListKeysSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "webservices.GroupClient", "ListKeys", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "webservices.GroupClient", "ListKeys", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListKeysResponder(resp)
@@ -422,7 +541,7 @@ func (client GroupClient) ListKeysPreparer(resourceGroupName string, webServiceN
 		"webServiceName":    autorest.Encode("path", webServiceName),
 	}
 
-	const APIVersion = "2016-05-01-preview"
+	const APIVersion = "2017-01-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -463,24 +582,37 @@ func (client GroupClient) ListKeysResponder(resp *http.Response) (result Keys, e
 // resourceGroupName is name of the resource group in which the web service is
 // located. webServiceName is the name of the web service. patchPayload is the
 // payload to use to patch the web service.
-func (client GroupClient) Patch(resourceGroupName string, webServiceName string, patchPayload WebService, cancel <-chan struct{}) (result autorest.Response, err error) {
-	req, err := client.PatchPreparer(resourceGroupName, webServiceName, patchPayload, cancel)
-	if err != nil {
-		return result, autorest.NewErrorWithError(err, "webservices.GroupClient", "Patch", nil, "Failure preparing request")
-	}
+func (client GroupClient) Patch(resourceGroupName string, webServiceName string, patchPayload WebService, cancel <-chan struct{}) (<-chan WebService, <-chan error) {
+	resultChan := make(chan WebService, 1)
+	errChan := make(chan error, 1)
+	go func() {
+		var err error
+		var result WebService
+		defer func() {
+			resultChan <- result
+			errChan <- err
+			close(resultChan)
+			close(errChan)
+		}()
+		req, err := client.PatchPreparer(resourceGroupName, webServiceName, patchPayload, cancel)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "webservices.GroupClient", "Patch", nil, "Failure preparing request")
+			return
+		}
 
-	resp, err := client.PatchSender(req)
-	if err != nil {
-		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "webservices.GroupClient", "Patch", resp, "Failure sending request")
-	}
+		resp, err := client.PatchSender(req)
+		if err != nil {
+			result.Response = autorest.Response{Response: resp}
+			err = autorest.NewErrorWithError(err, "webservices.GroupClient", "Patch", resp, "Failure sending request")
+			return
+		}
 
-	result, err = client.PatchResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "webservices.GroupClient", "Patch", resp, "Failure responding to request")
-	}
-
-	return
+		result, err = client.PatchResponder(resp)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "webservices.GroupClient", "Patch", resp, "Failure responding to request")
+		}
+	}()
+	return resultChan, errChan
 }
 
 // PatchPreparer prepares the Patch request.
@@ -491,7 +623,7 @@ func (client GroupClient) PatchPreparer(resourceGroupName string, webServiceName
 		"webServiceName":    autorest.Encode("path", webServiceName),
 	}
 
-	const APIVersion = "2016-05-01-preview"
+	const APIVersion = "2017-01-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -516,13 +648,14 @@ func (client GroupClient) PatchSender(req *http.Request) (*http.Response, error)
 
 // PatchResponder handles the response to the Patch request. The method always
 // closes the http.Response Body.
-func (client GroupClient) PatchResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client GroupClient) PatchResponder(resp *http.Response) (result WebService, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = resp
+	result.Response = autorest.Response{Response: resp}
 	return
 }
 
@@ -533,24 +666,37 @@ func (client GroupClient) PatchResponder(resp *http.Response) (result autorest.R
 //
 // resourceGroupName is name of the resource group in which the web service is
 // located. webServiceName is the name of the web service.
-func (client GroupClient) Remove(resourceGroupName string, webServiceName string, cancel <-chan struct{}) (result autorest.Response, err error) {
-	req, err := client.RemovePreparer(resourceGroupName, webServiceName, cancel)
-	if err != nil {
-		return result, autorest.NewErrorWithError(err, "webservices.GroupClient", "Remove", nil, "Failure preparing request")
-	}
+func (client GroupClient) Remove(resourceGroupName string, webServiceName string, cancel <-chan struct{}) (<-chan autorest.Response, <-chan error) {
+	resultChan := make(chan autorest.Response, 1)
+	errChan := make(chan error, 1)
+	go func() {
+		var err error
+		var result autorest.Response
+		defer func() {
+			resultChan <- result
+			errChan <- err
+			close(resultChan)
+			close(errChan)
+		}()
+		req, err := client.RemovePreparer(resourceGroupName, webServiceName, cancel)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "webservices.GroupClient", "Remove", nil, "Failure preparing request")
+			return
+		}
 
-	resp, err := client.RemoveSender(req)
-	if err != nil {
-		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "webservices.GroupClient", "Remove", resp, "Failure sending request")
-	}
+		resp, err := client.RemoveSender(req)
+		if err != nil {
+			result.Response = resp
+			err = autorest.NewErrorWithError(err, "webservices.GroupClient", "Remove", resp, "Failure sending request")
+			return
+		}
 
-	result, err = client.RemoveResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "webservices.GroupClient", "Remove", resp, "Failure responding to request")
-	}
-
-	return
+		result, err = client.RemoveResponder(resp)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "webservices.GroupClient", "Remove", resp, "Failure responding to request")
+		}
+	}()
+	return resultChan, errChan
 }
 
 // RemovePreparer prepares the Remove request.
@@ -561,7 +707,7 @@ func (client GroupClient) RemovePreparer(resourceGroupName string, webServiceNam
 		"webServiceName":    autorest.Encode("path", webServiceName),
 	}
 
-	const APIVersion = "2016-05-01-preview"
+	const APIVersion = "2017-01-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}

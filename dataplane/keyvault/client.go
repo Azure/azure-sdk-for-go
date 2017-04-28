@@ -30,15 +30,11 @@ import (
 	"net/http"
 )
 
-const (
-	// APIVersion is the version of the Keyvault
-	APIVersion = "2016-10-01"
-)
+const ()
 
 // ManagementClient is the base client for Keyvault.
 type ManagementClient struct {
 	autorest.Client
-	APIVersion string
 }
 
 // New creates an instance of the ManagementClient client.
@@ -49,26 +45,38 @@ func New() ManagementClient {
 // NewWithoutDefaults creates an instance of the ManagementClient client.
 func NewWithoutDefaults() ManagementClient {
 	return ManagementClient{
-		Client:     autorest.NewClientWithUserAgent(UserAgent()),
-		APIVersion: APIVersion,
+		Client: autorest.NewClientWithUserAgent(UserAgent()),
 	}
 }
 
-// BackupKey requests that a backup of the specified key be downloaded to the
-// client.
+// BackupKey the Key Backup operation exports a key from Azure Key Vault in a
+// protected form. Note that this operation does NOT return key material in a
+// form that can be used outside the Azure Key Vault system, the returned key
+// material is either protected to a Azure Key Vault HSM or to Azure Key Vault
+// itself. The intent of this operation is to allow a client to GENERATE a key
+// in one Azure Key Vault instance, BACKUP the key, and then RESTORE it into
+// another Azure Key Vault instance. The BACKUP operation may be used to
+// export, in protected form, any key type from Azure Key Vault. Individual
+// versions of a key cannot be backed up. BACKUP / RESTORE can be performed
+// within geographical boundaries only; meaning that a BACKUP from one
+// geographical area cannot be restored to another geographical area. For
+// example, a backup from the US geographical area cannot be restored in an EU
+// geographical area.
 //
 // vaultBaseURL is the vault name, for example https://myvault.vault.azure.net.
 // keyName is the name of the key.
 func (client ManagementClient) BackupKey(vaultBaseURL string, keyName string) (result BackupKeyResult, err error) {
 	req, err := client.BackupKeyPreparer(vaultBaseURL, keyName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "keyvault.ManagementClient", "BackupKey", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "keyvault.ManagementClient", "BackupKey", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.BackupKeySender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "keyvault.ManagementClient", "BackupKey", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "keyvault.ManagementClient", "BackupKey", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.BackupKeyResponder(resp)
@@ -89,8 +97,9 @@ func (client ManagementClient) BackupKeyPreparer(vaultBaseURL string, keyName st
 		"key-name": autorest.Encode("path", keyName),
 	}
 
+	const APIVersion = "2016-10-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -120,8 +129,8 @@ func (client ManagementClient) BackupKeyResponder(resp *http.Response) (result B
 	return
 }
 
-// CreateCertificate creates a new certificate. If this is the first version,
-// the certificate resource is created.
+// CreateCertificate if this is the first version, the certificate resource is
+// created.
 //
 // vaultBaseURL is the vault name, for example https://myvault.vault.azure.net.
 // certificateName is the name of the certificate. parameters is the parameters
@@ -142,13 +151,15 @@ func (client ManagementClient) CreateCertificate(vaultBaseURL string, certificat
 
 	req, err := client.CreateCertificatePreparer(vaultBaseURL, certificateName, parameters)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "keyvault.ManagementClient", "CreateCertificate", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "keyvault.ManagementClient", "CreateCertificate", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.CreateCertificateSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "keyvault.ManagementClient", "CreateCertificate", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "keyvault.ManagementClient", "CreateCertificate", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.CreateCertificateResponder(resp)
@@ -169,8 +180,9 @@ func (client ManagementClient) CreateCertificatePreparer(vaultBaseURL string, ce
 		"certificate-name": autorest.Encode("path", certificateName),
 	}
 
+	const APIVersion = "2016-10-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -202,11 +214,9 @@ func (client ManagementClient) CreateCertificateResponder(resp *http.Response) (
 	return
 }
 
-// CreateKey creates a new key, stores it, then returns key parameters and
-// attributes to the client. The create key operation can be used to create any
-// key type in Azure Key Vault. If the named key already exists, Azure Key
-// Vault creates a new version of the key. Authorization: Requires the
-// keys/create permission.
+// CreateKey the create key operation can be used to create any key type in
+// Azure Key Vault. If the named key already exists, Azure Key Vault creates a
+// new version of the key.
 //
 // vaultBaseURL is the vault name, for example https://myvault.vault.azure.net.
 // keyName is the name for the new key. The system will generate the version
@@ -220,13 +230,15 @@ func (client ManagementClient) CreateKey(vaultBaseURL string, keyName string, pa
 
 	req, err := client.CreateKeyPreparer(vaultBaseURL, keyName, parameters)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "keyvault.ManagementClient", "CreateKey", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "keyvault.ManagementClient", "CreateKey", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.CreateKeySender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "keyvault.ManagementClient", "CreateKey", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "keyvault.ManagementClient", "CreateKey", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.CreateKeyResponder(resp)
@@ -247,8 +259,9 @@ func (client ManagementClient) CreateKeyPreparer(vaultBaseURL string, keyName st
 		"key-name": autorest.Encode("path", keyName),
 	}
 
+	const APIVersion = "2016-10-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -280,7 +293,13 @@ func (client ManagementClient) CreateKeyResponder(resp *http.Response) (result K
 	return
 }
 
-// Decrypt decrypts a single block of encrypted data.
+// Decrypt the DECRYPT operation decrypts a well-formed block of ciphertext
+// using the target encryption key and specified algorithm. This operation is
+// the reverse of the ENCRYPT operation; only a single block of data may be
+// decrypted, the size of this block is dependent on the target key and the
+// algorithm to be used. The DECRYPT operation applies to asymmetric and
+// symmetric keys stored in Azure Key Vault since it uses the private portion
+// of the key.
 //
 // vaultBaseURL is the vault name, for example https://myvault.vault.azure.net.
 // keyName is the name of the key. keyVersion is the version of the key.
@@ -294,13 +313,15 @@ func (client ManagementClient) Decrypt(vaultBaseURL string, keyName string, keyV
 
 	req, err := client.DecryptPreparer(vaultBaseURL, keyName, keyVersion, parameters)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "keyvault.ManagementClient", "Decrypt", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "keyvault.ManagementClient", "Decrypt", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.DecryptSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "keyvault.ManagementClient", "Decrypt", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "keyvault.ManagementClient", "Decrypt", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.DecryptResponder(resp)
@@ -322,8 +343,9 @@ func (client ManagementClient) DecryptPreparer(vaultBaseURL string, keyName stri
 		"key-version": autorest.Encode("path", keyVersion),
 	}
 
+	const APIVersion = "2016-10-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -355,20 +377,24 @@ func (client ManagementClient) DecryptResponder(resp *http.Response) (result Key
 	return
 }
 
-// DeleteCertificate deletes a certificate from a specified key vault.
+// DeleteCertificate deletes all versions of a certificate object along with
+// its associated policy. Delete certificate cannot be used to remove
+// individual versions of a certificate object.
 //
 // vaultBaseURL is the vault name, for example https://myvault.vault.azure.net.
 // certificateName is the name of the certificate.
 func (client ManagementClient) DeleteCertificate(vaultBaseURL string, certificateName string) (result CertificateBundle, err error) {
 	req, err := client.DeleteCertificatePreparer(vaultBaseURL, certificateName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "keyvault.ManagementClient", "DeleteCertificate", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "keyvault.ManagementClient", "DeleteCertificate", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.DeleteCertificateSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "keyvault.ManagementClient", "DeleteCertificate", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "keyvault.ManagementClient", "DeleteCertificate", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.DeleteCertificateResponder(resp)
@@ -389,8 +415,9 @@ func (client ManagementClient) DeleteCertificatePreparer(vaultBaseURL string, ce
 		"certificate-name": autorest.Encode("path", certificateName),
 	}
 
+	const APIVersion = "2016-10-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -420,20 +447,21 @@ func (client ManagementClient) DeleteCertificateResponder(resp *http.Response) (
 	return
 }
 
-// DeleteCertificateContacts deletes the certificate contacts for a specified
-// key vault.
+// DeleteCertificateContacts
 //
 // vaultBaseURL is the vault name, for example https://myvault.vault.azure.net.
 func (client ManagementClient) DeleteCertificateContacts(vaultBaseURL string) (result Contacts, err error) {
 	req, err := client.DeleteCertificateContactsPreparer(vaultBaseURL)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "keyvault.ManagementClient", "DeleteCertificateContacts", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "keyvault.ManagementClient", "DeleteCertificateContacts", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.DeleteCertificateContactsSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "keyvault.ManagementClient", "DeleteCertificateContacts", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "keyvault.ManagementClient", "DeleteCertificateContacts", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.DeleteCertificateContactsResponder(resp)
@@ -450,8 +478,9 @@ func (client ManagementClient) DeleteCertificateContactsPreparer(vaultBaseURL st
 		"vaultBaseUrl": vaultBaseURL,
 	}
 
+	const APIVersion = "2016-10-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -481,20 +510,22 @@ func (client ManagementClient) DeleteCertificateContactsResponder(resp *http.Res
 	return
 }
 
-// DeleteCertificateIssuer deletes the specified certificate issuer.
+// DeleteCertificateIssuer
 //
 // vaultBaseURL is the vault name, for example https://myvault.vault.azure.net.
 // issuerName is the name of the issuer.
 func (client ManagementClient) DeleteCertificateIssuer(vaultBaseURL string, issuerName string) (result IssuerBundle, err error) {
 	req, err := client.DeleteCertificateIssuerPreparer(vaultBaseURL, issuerName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "keyvault.ManagementClient", "DeleteCertificateIssuer", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "keyvault.ManagementClient", "DeleteCertificateIssuer", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.DeleteCertificateIssuerSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "keyvault.ManagementClient", "DeleteCertificateIssuer", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "keyvault.ManagementClient", "DeleteCertificateIssuer", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.DeleteCertificateIssuerResponder(resp)
@@ -515,8 +546,9 @@ func (client ManagementClient) DeleteCertificateIssuerPreparer(vaultBaseURL stri
 		"issuer-name": autorest.Encode("path", issuerName),
 	}
 
+	const APIVersion = "2016-10-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -546,21 +578,22 @@ func (client ManagementClient) DeleteCertificateIssuerResponder(resp *http.Respo
 	return
 }
 
-// DeleteCertificateOperation deletes the operation for a specified
-// certificate.
+// DeleteCertificateOperation
 //
 // vaultBaseURL is the vault name, for example https://myvault.vault.azure.net.
 // certificateName is the name of the certificate.
 func (client ManagementClient) DeleteCertificateOperation(vaultBaseURL string, certificateName string) (result CertificateOperation, err error) {
 	req, err := client.DeleteCertificateOperationPreparer(vaultBaseURL, certificateName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "keyvault.ManagementClient", "DeleteCertificateOperation", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "keyvault.ManagementClient", "DeleteCertificateOperation", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.DeleteCertificateOperationSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "keyvault.ManagementClient", "DeleteCertificateOperation", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "keyvault.ManagementClient", "DeleteCertificateOperation", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.DeleteCertificateOperationResponder(resp)
@@ -581,8 +614,9 @@ func (client ManagementClient) DeleteCertificateOperationPreparer(vaultBaseURL s
 		"certificate-name": autorest.Encode("path", certificateName),
 	}
 
+	const APIVersion = "2016-10-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -612,25 +646,25 @@ func (client ManagementClient) DeleteCertificateOperationResponder(resp *http.Re
 	return
 }
 
-// DeleteKey deletes a key of any type from storage in Azure Key Vault. The
-// delete key operation cannot be used to remove individual versions of a key.
-// This operation removes the cryptographic material associated with the key,
-// which means the key is not usable for Sign/Verify, Wrap/Unwrap or
-// Encrypt/Decrypt operations. Authorization: Requires the keys/delete
-// permission.
+// DeleteKey the delete key operation cannot be used to remove individual
+// versions of a key. This operation removes the cryptographic material
+// associated with the key, which means the key is not usable for Sign/Verify,
+// Wrap/Unwrap or Encrypt/Decrypt operations.
 //
 // vaultBaseURL is the vault name, for example https://myvault.vault.azure.net.
 // keyName is the name of the key to delete.
 func (client ManagementClient) DeleteKey(vaultBaseURL string, keyName string) (result KeyBundle, err error) {
 	req, err := client.DeleteKeyPreparer(vaultBaseURL, keyName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "keyvault.ManagementClient", "DeleteKey", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "keyvault.ManagementClient", "DeleteKey", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.DeleteKeySender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "keyvault.ManagementClient", "DeleteKey", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "keyvault.ManagementClient", "DeleteKey", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.DeleteKeyResponder(resp)
@@ -651,8 +685,9 @@ func (client ManagementClient) DeleteKeyPreparer(vaultBaseURL string, keyName st
 		"key-name": autorest.Encode("path", keyName),
 	}
 
+	const APIVersion = "2016-10-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -682,20 +717,23 @@ func (client ManagementClient) DeleteKeyResponder(resp *http.Response) (result K
 	return
 }
 
-// DeleteSecret deletes a secret from a specified key vault.
+// DeleteSecret the DELETE operation applies to any secret stored in Azure Key
+// Vault. DELETE cannot be applied to an individual version of a secret.
 //
 // vaultBaseURL is the vault name, for example https://myvault.vault.azure.net.
 // secretName is the name of the secret.
 func (client ManagementClient) DeleteSecret(vaultBaseURL string, secretName string) (result SecretBundle, err error) {
 	req, err := client.DeleteSecretPreparer(vaultBaseURL, secretName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "keyvault.ManagementClient", "DeleteSecret", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "keyvault.ManagementClient", "DeleteSecret", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.DeleteSecretSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "keyvault.ManagementClient", "DeleteSecret", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "keyvault.ManagementClient", "DeleteSecret", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.DeleteSecretResponder(resp)
@@ -716,8 +754,9 @@ func (client ManagementClient) DeleteSecretPreparer(vaultBaseURL string, secretN
 		"secret-name": autorest.Encode("path", secretName),
 	}
 
+	const APIVersion = "2016-10-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -747,8 +786,15 @@ func (client ManagementClient) DeleteSecretResponder(resp *http.Response) (resul
 	return
 }
 
-// Encrypt encrypts an arbitrary sequence of bytes using an encryption key that
-// is stored in a key vault.
+// Encrypt the ENCRYPT operation encrypts an arbitrary sequence of bytes using
+// an encryption key that is stored in Azure Key Vault. Note that the ENCRYPT
+// operation only supports a single block of data, the size of which is
+// dependent on the target key and the encryption algorithm to be used. The
+// ENCRYPT operation is only strictly necessary for symmetric keys stored in
+// Azure Key Vault since protection with an asymmetric key can be performed
+// using public portion of the key. This operation is supported for asymmetric
+// keys as a convenience for callers that have a key-reference but do not have
+// access to the public key material.
 //
 // vaultBaseURL is the vault name, for example https://myvault.vault.azure.net.
 // keyName is the name of the key. keyVersion is the version of the key.
@@ -762,13 +808,15 @@ func (client ManagementClient) Encrypt(vaultBaseURL string, keyName string, keyV
 
 	req, err := client.EncryptPreparer(vaultBaseURL, keyName, keyVersion, parameters)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "keyvault.ManagementClient", "Encrypt", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "keyvault.ManagementClient", "Encrypt", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.EncryptSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "keyvault.ManagementClient", "Encrypt", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "keyvault.ManagementClient", "Encrypt", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.EncryptResponder(resp)
@@ -790,8 +838,9 @@ func (client ManagementClient) EncryptPreparer(vaultBaseURL string, keyName stri
 		"key-version": autorest.Encode("path", keyVersion),
 	}
 
+	const APIVersion = "2016-10-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -823,7 +872,8 @@ func (client ManagementClient) EncryptResponder(resp *http.Response) (result Key
 	return
 }
 
-// GetCertificate gets information about a specified certificate.
+// GetCertificate the GetCertificate operation returns information about a
+// specific certificate in the specified key vault
 //
 // vaultBaseURL is the vault name, for example https://myvault.vault.azure.net.
 // certificateName is the name of the certificate in the given vault.
@@ -831,13 +881,15 @@ func (client ManagementClient) EncryptResponder(resp *http.Response) (result Key
 func (client ManagementClient) GetCertificate(vaultBaseURL string, certificateName string, certificateVersion string) (result CertificateBundle, err error) {
 	req, err := client.GetCertificatePreparer(vaultBaseURL, certificateName, certificateVersion)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "keyvault.ManagementClient", "GetCertificate", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "keyvault.ManagementClient", "GetCertificate", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetCertificateSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "keyvault.ManagementClient", "GetCertificate", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "keyvault.ManagementClient", "GetCertificate", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetCertificateResponder(resp)
@@ -859,8 +911,9 @@ func (client ManagementClient) GetCertificatePreparer(vaultBaseURL string, certi
 		"certificate-version": autorest.Encode("path", certificateVersion),
 	}
 
+	const APIVersion = "2016-10-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -890,20 +943,22 @@ func (client ManagementClient) GetCertificateResponder(resp *http.Response) (res
 	return
 }
 
-// GetCertificateContacts lists the certificate contacts for a specified key
-// vault.
+// GetCertificateContacts the GetCertificateContacts operation returns the set
+// of certificate contact resources in the specified key vault.
 //
 // vaultBaseURL is the vault name, for example https://myvault.vault.azure.net.
 func (client ManagementClient) GetCertificateContacts(vaultBaseURL string) (result Contacts, err error) {
 	req, err := client.GetCertificateContactsPreparer(vaultBaseURL)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "keyvault.ManagementClient", "GetCertificateContacts", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "keyvault.ManagementClient", "GetCertificateContacts", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetCertificateContactsSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "keyvault.ManagementClient", "GetCertificateContacts", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "keyvault.ManagementClient", "GetCertificateContacts", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetCertificateContactsResponder(resp)
@@ -920,8 +975,9 @@ func (client ManagementClient) GetCertificateContactsPreparer(vaultBaseURL strin
 		"vaultBaseUrl": vaultBaseURL,
 	}
 
+	const APIVersion = "2016-10-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -951,20 +1007,23 @@ func (client ManagementClient) GetCertificateContactsResponder(resp *http.Respon
 	return
 }
 
-// GetCertificateIssuer lists the specified certificate issuer.
+// GetCertificateIssuer the GetCertificateIssuer operation returns the
+// specified certificate issuer resources in the specified key vault
 //
 // vaultBaseURL is the vault name, for example https://myvault.vault.azure.net.
 // issuerName is the name of the issuer.
 func (client ManagementClient) GetCertificateIssuer(vaultBaseURL string, issuerName string) (result IssuerBundle, err error) {
 	req, err := client.GetCertificateIssuerPreparer(vaultBaseURL, issuerName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "keyvault.ManagementClient", "GetCertificateIssuer", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "keyvault.ManagementClient", "GetCertificateIssuer", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetCertificateIssuerSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "keyvault.ManagementClient", "GetCertificateIssuer", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "keyvault.ManagementClient", "GetCertificateIssuer", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetCertificateIssuerResponder(resp)
@@ -985,8 +1044,9 @@ func (client ManagementClient) GetCertificateIssuerPreparer(vaultBaseURL string,
 		"issuer-name": autorest.Encode("path", issuerName),
 	}
 
+	const APIVersion = "2016-10-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -1016,7 +1076,8 @@ func (client ManagementClient) GetCertificateIssuerResponder(resp *http.Response
 	return
 }
 
-// GetCertificateIssuers list certificate issuers for a specified key vault.
+// GetCertificateIssuers the GetCertificateIssuers operation returns the set of
+// certificate issuer resources in the specified key vault
 //
 // vaultBaseURL is the vault name, for example https://myvault.vault.azure.net.
 // maxresults is maximum number of results to return in a page. If not
@@ -1033,13 +1094,15 @@ func (client ManagementClient) GetCertificateIssuers(vaultBaseURL string, maxres
 
 	req, err := client.GetCertificateIssuersPreparer(vaultBaseURL, maxresults)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "keyvault.ManagementClient", "GetCertificateIssuers", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "keyvault.ManagementClient", "GetCertificateIssuers", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetCertificateIssuersSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "keyvault.ManagementClient", "GetCertificateIssuers", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "keyvault.ManagementClient", "GetCertificateIssuers", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetCertificateIssuersResponder(resp)
@@ -1056,8 +1119,9 @@ func (client ManagementClient) GetCertificateIssuersPreparer(vaultBaseURL string
 		"vaultBaseUrl": vaultBaseURL,
 	}
 
+	const APIVersion = "2016-10-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 	if maxresults != nil {
 		queryParameters["maxresults"] = autorest.Encode("query", *maxresults)
@@ -1114,21 +1178,23 @@ func (client ManagementClient) GetCertificateIssuersNextResults(lastResults Cert
 	return
 }
 
-// GetCertificateOperation gets the operation associated with a specified
-// certificate.
+// GetCertificateOperation the GetCertificateOperation operation returns the
+// certificate operation associated with the certificate.
 //
 // vaultBaseURL is the vault name, for example https://myvault.vault.azure.net.
 // certificateName is the name of the certificate.
 func (client ManagementClient) GetCertificateOperation(vaultBaseURL string, certificateName string) (result CertificateOperation, err error) {
 	req, err := client.GetCertificateOperationPreparer(vaultBaseURL, certificateName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "keyvault.ManagementClient", "GetCertificateOperation", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "keyvault.ManagementClient", "GetCertificateOperation", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetCertificateOperationSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "keyvault.ManagementClient", "GetCertificateOperation", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "keyvault.ManagementClient", "GetCertificateOperation", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetCertificateOperationResponder(resp)
@@ -1149,8 +1215,9 @@ func (client ManagementClient) GetCertificateOperationPreparer(vaultBaseURL stri
 		"certificate-name": autorest.Encode("path", certificateName),
 	}
 
+	const APIVersion = "2016-10-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -1180,20 +1247,23 @@ func (client ManagementClient) GetCertificateOperationResponder(resp *http.Respo
 	return
 }
 
-// GetCertificatePolicy lists the policy for a certificate.
+// GetCertificatePolicy the GetCertificatePolicy operation returns the
+// specified certificate policy resources in the specified key vault
 //
 // vaultBaseURL is the vault name, for example https://myvault.vault.azure.net.
 // certificateName is the name of the certificate in a given key vault.
 func (client ManagementClient) GetCertificatePolicy(vaultBaseURL string, certificateName string) (result CertificatePolicy, err error) {
 	req, err := client.GetCertificatePolicyPreparer(vaultBaseURL, certificateName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "keyvault.ManagementClient", "GetCertificatePolicy", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "keyvault.ManagementClient", "GetCertificatePolicy", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetCertificatePolicySender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "keyvault.ManagementClient", "GetCertificatePolicy", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "keyvault.ManagementClient", "GetCertificatePolicy", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetCertificatePolicyResponder(resp)
@@ -1214,8 +1284,9 @@ func (client ManagementClient) GetCertificatePolicyPreparer(vaultBaseURL string,
 		"certificate-name": autorest.Encode("path", certificateName),
 	}
 
+	const APIVersion = "2016-10-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -1245,7 +1316,8 @@ func (client ManagementClient) GetCertificatePolicyResponder(resp *http.Response
 	return
 }
 
-// GetCertificates list certificates in a specified key vault
+// GetCertificates the GetCertificates operation returns the set of
+// certificates resources in the specified key vault.
 //
 // vaultBaseURL is the vault name, for example https://myvault.vault.azure.net.
 // maxresults is maximum number of results to return in a page. If not
@@ -1262,13 +1334,15 @@ func (client ManagementClient) GetCertificates(vaultBaseURL string, maxresults *
 
 	req, err := client.GetCertificatesPreparer(vaultBaseURL, maxresults)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "keyvault.ManagementClient", "GetCertificates", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "keyvault.ManagementClient", "GetCertificates", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetCertificatesSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "keyvault.ManagementClient", "GetCertificates", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "keyvault.ManagementClient", "GetCertificates", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetCertificatesResponder(resp)
@@ -1285,8 +1359,9 @@ func (client ManagementClient) GetCertificatesPreparer(vaultBaseURL string, maxr
 		"vaultBaseUrl": vaultBaseURL,
 	}
 
+	const APIVersion = "2016-10-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 	if maxresults != nil {
 		queryParameters["maxresults"] = autorest.Encode("query", *maxresults)
@@ -1343,7 +1418,8 @@ func (client ManagementClient) GetCertificatesNextResults(lastResults Certificat
 	return
 }
 
-// GetCertificateVersions list the versions of a certificate.
+// GetCertificateVersions the GetCertificateVersions operation returns the
+// versions of a certificate in the specified key vault
 //
 // vaultBaseURL is the vault name, for example https://myvault.vault.azure.net.
 // certificateName is the name of the certificate. maxresults is maximum number
@@ -1361,13 +1437,15 @@ func (client ManagementClient) GetCertificateVersions(vaultBaseURL string, certi
 
 	req, err := client.GetCertificateVersionsPreparer(vaultBaseURL, certificateName, maxresults)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "keyvault.ManagementClient", "GetCertificateVersions", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "keyvault.ManagementClient", "GetCertificateVersions", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetCertificateVersionsSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "keyvault.ManagementClient", "GetCertificateVersions", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "keyvault.ManagementClient", "GetCertificateVersions", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetCertificateVersionsResponder(resp)
@@ -1388,8 +1466,9 @@ func (client ManagementClient) GetCertificateVersionsPreparer(vaultBaseURL strin
 		"certificate-name": autorest.Encode("path", certificateName),
 	}
 
+	const APIVersion = "2016-10-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 	if maxresults != nil {
 		queryParameters["maxresults"] = autorest.Encode("query", *maxresults)
@@ -1446,10 +1525,9 @@ func (client ManagementClient) GetCertificateVersionsNextResults(lastResults Cer
 	return
 }
 
-// GetKey gets the public part of a stored key. The get key operation is
-// applicable to all key types. If the requested key is symmetric, then no key
-// material is released in the response. Authorization: Requires the keys/get
-// permission.
+// GetKey the get key operation is applicable to all key types. If the
+// requested key is symmetric, then no key material is released in the
+// response.
 //
 // vaultBaseURL is the vault name, for example https://myvault.vault.azure.net.
 // keyName is the name of the key to get. keyVersion is adding the version
@@ -1457,13 +1535,15 @@ func (client ManagementClient) GetCertificateVersionsNextResults(lastResults Cer
 func (client ManagementClient) GetKey(vaultBaseURL string, keyName string, keyVersion string) (result KeyBundle, err error) {
 	req, err := client.GetKeyPreparer(vaultBaseURL, keyName, keyVersion)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "keyvault.ManagementClient", "GetKey", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "keyvault.ManagementClient", "GetKey", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetKeySender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "keyvault.ManagementClient", "GetKey", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "keyvault.ManagementClient", "GetKey", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetKeyResponder(resp)
@@ -1485,8 +1565,9 @@ func (client ManagementClient) GetKeyPreparer(vaultBaseURL string, keyName strin
 		"key-version": autorest.Encode("path", keyVersion),
 	}
 
+	const APIVersion = "2016-10-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -1516,7 +1597,12 @@ func (client ManagementClient) GetKeyResponder(resp *http.Response) (result KeyB
 	return
 }
 
-// GetKeys list keys in the specified vault.
+// GetKeys retrieves a list of the keys in the Key Vault as JSON Web Key
+// structures that contain the public part of a stored key. The LIST operation
+// is applicable to all key types, however only the base key
+// identifier,attributes, and tags are provided in the response. Individual
+// versions of a key are not listed in the response. Authorization: Requires
+// the keys/list permission.
 //
 // vaultBaseURL is the vault name, for example https://myvault.vault.azure.net.
 // maxresults is maximum number of results to return in a page. If not
@@ -1533,13 +1619,15 @@ func (client ManagementClient) GetKeys(vaultBaseURL string, maxresults *int32) (
 
 	req, err := client.GetKeysPreparer(vaultBaseURL, maxresults)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "keyvault.ManagementClient", "GetKeys", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "keyvault.ManagementClient", "GetKeys", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetKeysSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "keyvault.ManagementClient", "GetKeys", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "keyvault.ManagementClient", "GetKeys", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetKeysResponder(resp)
@@ -1556,8 +1644,9 @@ func (client ManagementClient) GetKeysPreparer(vaultBaseURL string, maxresults *
 		"vaultBaseUrl": vaultBaseURL,
 	}
 
+	const APIVersion = "2016-10-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 	if maxresults != nil {
 		queryParameters["maxresults"] = autorest.Encode("query", *maxresults)
@@ -1614,9 +1703,8 @@ func (client ManagementClient) GetKeysNextResults(lastResults KeyListResult) (re
 	return
 }
 
-// GetKeyVersions retrieves a list of individual key versions with the same key
-// name. The full key identifier, attributes, and tags are provided in the
-// response. Authorization: Requires the keys/list permission.
+// GetKeyVersions the full key identifier, attributes, and tags are provided in
+// the response.
 //
 // vaultBaseURL is the vault name, for example https://myvault.vault.azure.net.
 // keyName is the name of the key. maxresults is maximum number of results to
@@ -1633,13 +1721,15 @@ func (client ManagementClient) GetKeyVersions(vaultBaseURL string, keyName strin
 
 	req, err := client.GetKeyVersionsPreparer(vaultBaseURL, keyName, maxresults)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "keyvault.ManagementClient", "GetKeyVersions", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "keyvault.ManagementClient", "GetKeyVersions", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetKeyVersionsSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "keyvault.ManagementClient", "GetKeyVersions", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "keyvault.ManagementClient", "GetKeyVersions", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetKeyVersionsResponder(resp)
@@ -1660,8 +1750,9 @@ func (client ManagementClient) GetKeyVersionsPreparer(vaultBaseURL string, keyNa
 		"key-name": autorest.Encode("path", keyName),
 	}
 
+	const APIVersion = "2016-10-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 	if maxresults != nil {
 		queryParameters["maxresults"] = autorest.Encode("query", *maxresults)
@@ -1718,7 +1809,8 @@ func (client ManagementClient) GetKeyVersionsNextResults(lastResults KeyListResu
 	return
 }
 
-// GetSecret get a specified secret from a given key vault.
+// GetSecret the GET operation is applicable to any secret stored in Azure Key
+// Vault.
 //
 // vaultBaseURL is the vault name, for example https://myvault.vault.azure.net.
 // secretName is the name of the secret. secretVersion is the version of the
@@ -1726,13 +1818,15 @@ func (client ManagementClient) GetKeyVersionsNextResults(lastResults KeyListResu
 func (client ManagementClient) GetSecret(vaultBaseURL string, secretName string, secretVersion string) (result SecretBundle, err error) {
 	req, err := client.GetSecretPreparer(vaultBaseURL, secretName, secretVersion)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "keyvault.ManagementClient", "GetSecret", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "keyvault.ManagementClient", "GetSecret", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetSecretSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "keyvault.ManagementClient", "GetSecret", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "keyvault.ManagementClient", "GetSecret", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetSecretResponder(resp)
@@ -1754,8 +1848,9 @@ func (client ManagementClient) GetSecretPreparer(vaultBaseURL string, secretName
 		"secret-version": autorest.Encode("path", secretVersion),
 	}
 
+	const APIVersion = "2016-10-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -1785,7 +1880,9 @@ func (client ManagementClient) GetSecretResponder(resp *http.Response) (result S
 	return
 }
 
-// GetSecrets list secrets in a specified key vault
+// GetSecrets the LIST operation is applicable to the entire vault, however
+// only the base secret identifier and attributes are provided in the response.
+// Individual secret versions are not listed in the response.
 //
 // vaultBaseURL is the vault name, for example https://myvault.vault.azure.net.
 // maxresults is maximum number of results to return in a page. If not
@@ -1802,13 +1899,15 @@ func (client ManagementClient) GetSecrets(vaultBaseURL string, maxresults *int32
 
 	req, err := client.GetSecretsPreparer(vaultBaseURL, maxresults)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "keyvault.ManagementClient", "GetSecrets", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "keyvault.ManagementClient", "GetSecrets", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetSecretsSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "keyvault.ManagementClient", "GetSecrets", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "keyvault.ManagementClient", "GetSecrets", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetSecretsResponder(resp)
@@ -1825,8 +1924,9 @@ func (client ManagementClient) GetSecretsPreparer(vaultBaseURL string, maxresult
 		"vaultBaseUrl": vaultBaseURL,
 	}
 
+	const APIVersion = "2016-10-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 	if maxresults != nil {
 		queryParameters["maxresults"] = autorest.Encode("query", *maxresults)
@@ -1883,7 +1983,10 @@ func (client ManagementClient) GetSecretsNextResults(lastResults SecretListResul
 	return
 }
 
-// GetSecretVersions list the versions of the specified secret.
+// GetSecretVersions the LIST VERSIONS operation can be applied to all versions
+// having the same secret name in the same key vault. The full secret
+// identifier and attributes are provided in the response. No values are
+// returned for the secrets and only current versions of a secret are listed.
 //
 // vaultBaseURL is the vault name, for example https://myvault.vault.azure.net.
 // secretName is the name of the secret. maxresults is maximum number of
@@ -1901,13 +2004,15 @@ func (client ManagementClient) GetSecretVersions(vaultBaseURL string, secretName
 
 	req, err := client.GetSecretVersionsPreparer(vaultBaseURL, secretName, maxresults)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "keyvault.ManagementClient", "GetSecretVersions", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "keyvault.ManagementClient", "GetSecretVersions", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetSecretVersionsSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "keyvault.ManagementClient", "GetSecretVersions", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "keyvault.ManagementClient", "GetSecretVersions", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetSecretVersionsResponder(resp)
@@ -1928,8 +2033,9 @@ func (client ManagementClient) GetSecretVersionsPreparer(vaultBaseURL string, se
 		"secret-name": autorest.Encode("path", secretName),
 	}
 
+	const APIVersion = "2016-10-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 	if maxresults != nil {
 		queryParameters["maxresults"] = autorest.Encode("query", *maxresults)
@@ -1986,7 +2092,10 @@ func (client ManagementClient) GetSecretVersionsNextResults(lastResults SecretLi
 	return
 }
 
-// ImportCertificate imports a certificate into a specified key vault.
+// ImportCertificate imports an existing valid certificate, containing a
+// private key, into Azure Key Vault. The certificate to be imported can be in
+// either PFX or PEM format. If the certificate is in PEM format the PEM file
+// must contain the key as well as x509 certificates.
 //
 // vaultBaseURL is the vault name, for example https://myvault.vault.azure.net.
 // certificateName is the name of the certificate. parameters is the parameters
@@ -2008,13 +2117,15 @@ func (client ManagementClient) ImportCertificate(vaultBaseURL string, certificat
 
 	req, err := client.ImportCertificatePreparer(vaultBaseURL, certificateName, parameters)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "keyvault.ManagementClient", "ImportCertificate", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "keyvault.ManagementClient", "ImportCertificate", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ImportCertificateSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "keyvault.ManagementClient", "ImportCertificate", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "keyvault.ManagementClient", "ImportCertificate", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ImportCertificateResponder(resp)
@@ -2035,8 +2146,9 @@ func (client ManagementClient) ImportCertificatePreparer(vaultBaseURL string, ce
 		"certificate-name": autorest.Encode("path", certificateName),
 	}
 
+	const APIVersion = "2016-10-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -2068,11 +2180,9 @@ func (client ManagementClient) ImportCertificateResponder(resp *http.Response) (
 	return
 }
 
-// ImportKey imports an externally created key, stores it, and returns key
-// parameters and attributes to the client. The import key operation may be
-// used to import any key type into an Azure Key Vault. If the named key
-// already exists, Azure Key Vault creates a new version of the key.
-// Authorization: requires the keys/import permission.
+// ImportKey the import key operation may be used to import any key type into
+// an Azure Key Vault. If the named key already exists, Azure Key Vault creates
+// a new version of the key.
 //
 // vaultBaseURL is the vault name, for example https://myvault.vault.azure.net.
 // keyName is name for the imported key. parameters is the parameters to import
@@ -2088,13 +2198,15 @@ func (client ManagementClient) ImportKey(vaultBaseURL string, keyName string, pa
 
 	req, err := client.ImportKeyPreparer(vaultBaseURL, keyName, parameters)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "keyvault.ManagementClient", "ImportKey", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "keyvault.ManagementClient", "ImportKey", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ImportKeySender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "keyvault.ManagementClient", "ImportKey", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "keyvault.ManagementClient", "ImportKey", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ImportKeyResponder(resp)
@@ -2115,8 +2227,9 @@ func (client ManagementClient) ImportKeyPreparer(vaultBaseURL string, keyName st
 		"key-name": autorest.Encode("path", keyName),
 	}
 
+	const APIVersion = "2016-10-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -2148,8 +2261,7 @@ func (client ManagementClient) ImportKeyResponder(resp *http.Response) (result K
 	return
 }
 
-// MergeCertificate merges a certificate or a certificate chain with a key pair
-// existing on the server.
+// MergeCertificate
 //
 // vaultBaseURL is the vault name, for example https://myvault.vault.azure.net.
 // certificateName is the name of the certificate. parameters is the parameters
@@ -2163,13 +2275,15 @@ func (client ManagementClient) MergeCertificate(vaultBaseURL string, certificate
 
 	req, err := client.MergeCertificatePreparer(vaultBaseURL, certificateName, parameters)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "keyvault.ManagementClient", "MergeCertificate", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "keyvault.ManagementClient", "MergeCertificate", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.MergeCertificateSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "keyvault.ManagementClient", "MergeCertificate", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "keyvault.ManagementClient", "MergeCertificate", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.MergeCertificateResponder(resp)
@@ -2190,8 +2304,9 @@ func (client ManagementClient) MergeCertificatePreparer(vaultBaseURL string, cer
 		"certificate-name": autorest.Encode("path", certificateName),
 	}
 
+	const APIVersion = "2016-10-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -2223,7 +2338,18 @@ func (client ManagementClient) MergeCertificateResponder(resp *http.Response) (r
 	return
 }
 
-// RestoreKey restores a backed up key to a vault.
+// RestoreKey imports a previously backed up key into Azure Key Vault,
+// restoring the key, its key identifier, attributes and access control
+// policies. The RESTORE operation may be used to import a previously backed up
+// key. Individual versions of a key cannot be restored. The key is restored in
+// its entirety with the same key name as it had when it was backed up. If the
+// key name is not available in the target Key Vault, the RESTORE operation
+// will be rejected. While the key name is retained during restore, the final
+// key identifier will change if the key is restored to a different vault.
+// Restore will restore all versions and preserve version identifiers. The
+// RESTORE operation is subject to security constraints: The target Key Vault
+// must be owned by the same Microsoft Azure Subscription as the source Key
+// Vault The user must have RESTORE permission in the target Key Vault.
 //
 // vaultBaseURL is the vault name, for example https://myvault.vault.azure.net.
 // parameters is the parameters to restore the key.
@@ -2236,13 +2362,15 @@ func (client ManagementClient) RestoreKey(vaultBaseURL string, parameters KeyRes
 
 	req, err := client.RestoreKeyPreparer(vaultBaseURL, parameters)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "keyvault.ManagementClient", "RestoreKey", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "keyvault.ManagementClient", "RestoreKey", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.RestoreKeySender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "keyvault.ManagementClient", "RestoreKey", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "keyvault.ManagementClient", "RestoreKey", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.RestoreKeyResponder(resp)
@@ -2259,8 +2387,9 @@ func (client ManagementClient) RestoreKeyPreparer(vaultBaseURL string, parameter
 		"vaultBaseUrl": vaultBaseURL,
 	}
 
+	const APIVersion = "2016-10-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -2292,21 +2421,22 @@ func (client ManagementClient) RestoreKeyResponder(resp *http.Response) (result 
 	return
 }
 
-// SetCertificateContacts sets the certificate contacts for the specified key
-// vault.
+// SetCertificateContacts
 //
 // vaultBaseURL is the vault name, for example https://myvault.vault.azure.net.
 // contacts is the contacts for the key vault certificate.
 func (client ManagementClient) SetCertificateContacts(vaultBaseURL string, contacts Contacts) (result Contacts, err error) {
 	req, err := client.SetCertificateContactsPreparer(vaultBaseURL, contacts)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "keyvault.ManagementClient", "SetCertificateContacts", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "keyvault.ManagementClient", "SetCertificateContacts", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.SetCertificateContactsSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "keyvault.ManagementClient", "SetCertificateContacts", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "keyvault.ManagementClient", "SetCertificateContacts", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.SetCertificateContactsResponder(resp)
@@ -2323,8 +2453,9 @@ func (client ManagementClient) SetCertificateContactsPreparer(vaultBaseURL strin
 		"vaultBaseUrl": vaultBaseURL,
 	}
 
+	const APIVersion = "2016-10-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -2356,7 +2487,7 @@ func (client ManagementClient) SetCertificateContactsResponder(resp *http.Respon
 	return
 }
 
-// SetCertificateIssuer sets the specified certificate issuer.
+// SetCertificateIssuer
 //
 // vaultBaseURL is the vault name, for example https://myvault.vault.azure.net.
 // issuerName is the name of the issuer. parameter is certificate issuer set
@@ -2370,13 +2501,15 @@ func (client ManagementClient) SetCertificateIssuer(vaultBaseURL string, issuerN
 
 	req, err := client.SetCertificateIssuerPreparer(vaultBaseURL, issuerName, parameter)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "keyvault.ManagementClient", "SetCertificateIssuer", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "keyvault.ManagementClient", "SetCertificateIssuer", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.SetCertificateIssuerSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "keyvault.ManagementClient", "SetCertificateIssuer", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "keyvault.ManagementClient", "SetCertificateIssuer", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.SetCertificateIssuerResponder(resp)
@@ -2397,8 +2530,9 @@ func (client ManagementClient) SetCertificateIssuerPreparer(vaultBaseURL string,
 		"issuer-name": autorest.Encode("path", issuerName),
 	}
 
+	const APIVersion = "2016-10-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -2430,7 +2564,9 @@ func (client ManagementClient) SetCertificateIssuerResponder(resp *http.Response
 	return
 }
 
-// SetSecret sets a secret in a specified key vault.
+// SetSecret the SET operation adds a secret to the Azure Key Vault. If the
+// named secret already exists, Azure Key Vault creates a new version of that
+// secret.
 //
 // vaultBaseURL is the vault name, for example https://myvault.vault.azure.net.
 // secretName is the name of the secret. parameters is the parameters for
@@ -2446,13 +2582,15 @@ func (client ManagementClient) SetSecret(vaultBaseURL string, secretName string,
 
 	req, err := client.SetSecretPreparer(vaultBaseURL, secretName, parameters)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "keyvault.ManagementClient", "SetSecret", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "keyvault.ManagementClient", "SetSecret", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.SetSecretSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "keyvault.ManagementClient", "SetSecret", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "keyvault.ManagementClient", "SetSecret", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.SetSecretResponder(resp)
@@ -2473,8 +2611,9 @@ func (client ManagementClient) SetSecretPreparer(vaultBaseURL string, secretName
 		"secret-name": autorest.Encode("path", secretName),
 	}
 
+	const APIVersion = "2016-10-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -2506,7 +2645,9 @@ func (client ManagementClient) SetSecretResponder(resp *http.Response) (result S
 	return
 }
 
-// Sign creates a signature from a digest using the specified key.
+// Sign the SIGN operation is applicable to asymmetric and symmetric keys
+// stored in Azure Key Vault since this operation uses the private portion of
+// the key.
 //
 // vaultBaseURL is the vault name, for example https://myvault.vault.azure.net.
 // keyName is the name of the key. keyVersion is the version of the key.
@@ -2520,13 +2661,15 @@ func (client ManagementClient) Sign(vaultBaseURL string, keyName string, keyVers
 
 	req, err := client.SignPreparer(vaultBaseURL, keyName, keyVersion, parameters)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "keyvault.ManagementClient", "Sign", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "keyvault.ManagementClient", "Sign", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.SignSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "keyvault.ManagementClient", "Sign", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "keyvault.ManagementClient", "Sign", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.SignResponder(resp)
@@ -2548,8 +2691,9 @@ func (client ManagementClient) SignPreparer(vaultBaseURL string, keyName string,
 		"key-version": autorest.Encode("path", keyVersion),
 	}
 
+	const APIVersion = "2016-10-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -2581,8 +2725,10 @@ func (client ManagementClient) SignResponder(resp *http.Response) (result KeyOpe
 	return
 }
 
-// UnwrapKey unwraps a symmetric key using the specified key that was initially
-// used for wrapping that key.
+// UnwrapKey the UNWRAP operation supports decryption of a symmetric key using
+// the target key encryption key. This operation is the reverse of the WRAP
+// operation. The UNWRAP operation applies to asymmetric and symmetric keys
+// stored in Azure Key Vault since it uses the private portion of the key.
 //
 // vaultBaseURL is the vault name, for example https://myvault.vault.azure.net.
 // keyName is the name of the key. keyVersion is the version of the key.
@@ -2596,13 +2742,15 @@ func (client ManagementClient) UnwrapKey(vaultBaseURL string, keyName string, ke
 
 	req, err := client.UnwrapKeyPreparer(vaultBaseURL, keyName, keyVersion, parameters)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "keyvault.ManagementClient", "UnwrapKey", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "keyvault.ManagementClient", "UnwrapKey", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.UnwrapKeySender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "keyvault.ManagementClient", "UnwrapKey", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "keyvault.ManagementClient", "UnwrapKey", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.UnwrapKeyResponder(resp)
@@ -2624,8 +2772,9 @@ func (client ManagementClient) UnwrapKeyPreparer(vaultBaseURL string, keyName st
 		"key-version": autorest.Encode("path", keyVersion),
 	}
 
+	const APIVersion = "2016-10-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -2657,8 +2806,7 @@ func (client ManagementClient) UnwrapKeyResponder(resp *http.Response) (result K
 	return
 }
 
-// UpdateCertificate updates the specified attributes associated with the given
-// certificate.
+// UpdateCertificate
 //
 // vaultBaseURL is the vault name, for example https://myvault.vault.azure.net.
 // certificateName is the name of the certificate in the given key vault.
@@ -2667,13 +2815,15 @@ func (client ManagementClient) UnwrapKeyResponder(resp *http.Response) (result K
 func (client ManagementClient) UpdateCertificate(vaultBaseURL string, certificateName string, certificateVersion string, parameters CertificateUpdateParameters) (result CertificateBundle, err error) {
 	req, err := client.UpdateCertificatePreparer(vaultBaseURL, certificateName, certificateVersion, parameters)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "keyvault.ManagementClient", "UpdateCertificate", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "keyvault.ManagementClient", "UpdateCertificate", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.UpdateCertificateSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "keyvault.ManagementClient", "UpdateCertificate", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "keyvault.ManagementClient", "UpdateCertificate", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.UpdateCertificateResponder(resp)
@@ -2695,8 +2845,9 @@ func (client ManagementClient) UpdateCertificatePreparer(vaultBaseURL string, ce
 		"certificate-version": autorest.Encode("path", certificateVersion),
 	}
 
+	const APIVersion = "2016-10-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -2728,7 +2879,7 @@ func (client ManagementClient) UpdateCertificateResponder(resp *http.Response) (
 	return
 }
 
-// UpdateCertificateIssuer updates the specified certificate issuer.
+// UpdateCertificateIssuer
 //
 // vaultBaseURL is the vault name, for example https://myvault.vault.azure.net.
 // issuerName is the name of the issuer. parameter is certificate issuer update
@@ -2736,13 +2887,15 @@ func (client ManagementClient) UpdateCertificateResponder(resp *http.Response) (
 func (client ManagementClient) UpdateCertificateIssuer(vaultBaseURL string, issuerName string, parameter CertificateIssuerUpdateParameters) (result IssuerBundle, err error) {
 	req, err := client.UpdateCertificateIssuerPreparer(vaultBaseURL, issuerName, parameter)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "keyvault.ManagementClient", "UpdateCertificateIssuer", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "keyvault.ManagementClient", "UpdateCertificateIssuer", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.UpdateCertificateIssuerSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "keyvault.ManagementClient", "UpdateCertificateIssuer", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "keyvault.ManagementClient", "UpdateCertificateIssuer", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.UpdateCertificateIssuerResponder(resp)
@@ -2763,8 +2916,9 @@ func (client ManagementClient) UpdateCertificateIssuerPreparer(vaultBaseURL stri
 		"issuer-name": autorest.Encode("path", issuerName),
 	}
 
+	const APIVersion = "2016-10-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -2796,7 +2950,7 @@ func (client ManagementClient) UpdateCertificateIssuerResponder(resp *http.Respo
 	return
 }
 
-// UpdateCertificateOperation updates a certificate operation.
+// UpdateCertificateOperation
 //
 // vaultBaseURL is the vault name, for example https://myvault.vault.azure.net.
 // certificateName is the name of the certificate. certificateOperation is the
@@ -2804,13 +2958,15 @@ func (client ManagementClient) UpdateCertificateIssuerResponder(resp *http.Respo
 func (client ManagementClient) UpdateCertificateOperation(vaultBaseURL string, certificateName string, certificateOperation CertificateOperationUpdateParameter) (result CertificateOperation, err error) {
 	req, err := client.UpdateCertificateOperationPreparer(vaultBaseURL, certificateName, certificateOperation)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "keyvault.ManagementClient", "UpdateCertificateOperation", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "keyvault.ManagementClient", "UpdateCertificateOperation", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.UpdateCertificateOperationSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "keyvault.ManagementClient", "UpdateCertificateOperation", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "keyvault.ManagementClient", "UpdateCertificateOperation", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.UpdateCertificateOperationResponder(resp)
@@ -2831,8 +2987,9 @@ func (client ManagementClient) UpdateCertificateOperationPreparer(vaultBaseURL s
 		"certificate-name": autorest.Encode("path", certificateName),
 	}
 
+	const APIVersion = "2016-10-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -2864,8 +3021,8 @@ func (client ManagementClient) UpdateCertificateOperationResponder(resp *http.Re
 	return
 }
 
-// UpdateCertificatePolicy updates the policy for a certificate. Set specified
-// members in the certificate policy. Leave others as null.
+// UpdateCertificatePolicy set specified members in the certificate policy.
+// Leave others as null.
 //
 // vaultBaseURL is the vault name, for example https://myvault.vault.azure.net.
 // certificateName is the name of the certificate in the given vault.
@@ -2873,13 +3030,15 @@ func (client ManagementClient) UpdateCertificateOperationResponder(resp *http.Re
 func (client ManagementClient) UpdateCertificatePolicy(vaultBaseURL string, certificateName string, certificatePolicy CertificatePolicy) (result CertificatePolicy, err error) {
 	req, err := client.UpdateCertificatePolicyPreparer(vaultBaseURL, certificateName, certificatePolicy)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "keyvault.ManagementClient", "UpdateCertificatePolicy", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "keyvault.ManagementClient", "UpdateCertificatePolicy", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.UpdateCertificatePolicySender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "keyvault.ManagementClient", "UpdateCertificatePolicy", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "keyvault.ManagementClient", "UpdateCertificatePolicy", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.UpdateCertificatePolicyResponder(resp)
@@ -2900,8 +3059,9 @@ func (client ManagementClient) UpdateCertificatePolicyPreparer(vaultBaseURL stri
 		"certificate-name": autorest.Encode("path", certificateName),
 	}
 
+	const APIVersion = "2016-10-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -2933,25 +3093,25 @@ func (client ManagementClient) UpdateCertificatePolicyResponder(resp *http.Respo
 	return
 }
 
-// UpdateKey the update key operation changes specified attributes of a stored
-// key and can be applied to any key type and key version stored in Azure Key
-// Vault. The cryptographic material of a key itself cannot be changed. In
-// order to perform this operation, the key must already exist in the Key
-// Vault. Authorization: requires the keys/update permission.
+// UpdateKey in order to perform this operation, the key must already exist in
+// the Key Vault. Note: The cryptographic material of a key itself cannot be
+// changed.
 //
 // vaultBaseURL is the vault name, for example https://myvault.vault.azure.net.
 // keyName is the name of key to update. keyVersion is the version of the key
-// to update. parameters is the parameters for the key to update.
+// to update. parameters is the parameters of the key to update.
 func (client ManagementClient) UpdateKey(vaultBaseURL string, keyName string, keyVersion string, parameters KeyUpdateParameters) (result KeyBundle, err error) {
 	req, err := client.UpdateKeyPreparer(vaultBaseURL, keyName, keyVersion, parameters)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "keyvault.ManagementClient", "UpdateKey", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "keyvault.ManagementClient", "UpdateKey", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.UpdateKeySender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "keyvault.ManagementClient", "UpdateKey", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "keyvault.ManagementClient", "UpdateKey", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.UpdateKeyResponder(resp)
@@ -2973,8 +3133,9 @@ func (client ManagementClient) UpdateKeyPreparer(vaultBaseURL string, keyName st
 		"key-version": autorest.Encode("path", keyVersion),
 	}
 
+	const APIVersion = "2016-10-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -3006,8 +3167,9 @@ func (client ManagementClient) UpdateKeyResponder(resp *http.Response) (result K
 	return
 }
 
-// UpdateSecret updates the attributes associated with a specified secret in a
-// given key vault.
+// UpdateSecret the UPDATE operation changes specified attributes of an
+// existing stored secret. Attributes that are not specified in the request are
+// left unchanged. The value of a secret itself cannot be changed.
 //
 // vaultBaseURL is the vault name, for example https://myvault.vault.azure.net.
 // secretName is the name of the secret. secretVersion is the version of the
@@ -3015,13 +3177,15 @@ func (client ManagementClient) UpdateKeyResponder(resp *http.Response) (result K
 func (client ManagementClient) UpdateSecret(vaultBaseURL string, secretName string, secretVersion string, parameters SecretUpdateParameters) (result SecretBundle, err error) {
 	req, err := client.UpdateSecretPreparer(vaultBaseURL, secretName, secretVersion, parameters)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "keyvault.ManagementClient", "UpdateSecret", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "keyvault.ManagementClient", "UpdateSecret", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.UpdateSecretSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "keyvault.ManagementClient", "UpdateSecret", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "keyvault.ManagementClient", "UpdateSecret", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.UpdateSecretResponder(resp)
@@ -3043,8 +3207,9 @@ func (client ManagementClient) UpdateSecretPreparer(vaultBaseURL string, secretN
 		"secret-version": autorest.Encode("path", secretVersion),
 	}
 
+	const APIVersion = "2016-10-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -3076,7 +3241,12 @@ func (client ManagementClient) UpdateSecretResponder(resp *http.Response) (resul
 	return
 }
 
-// Verify verifies a signature using a specified key.
+// Verify the VERIFY operation is applicable to symmetric keys stored in Azure
+// Key Vault. VERIFY is not strictly necessary for asymmetric keys stored in
+// Azure Key Vault since signature verification can be performed using the
+// public portion of the key but this operation is supported as a convenience
+// for callers that only have a key-reference and not the public portion of the
+// key.
 //
 // vaultBaseURL is the vault name, for example https://myvault.vault.azure.net.
 // keyName is the name of the key. keyVersion is the version of the key.
@@ -3091,13 +3261,15 @@ func (client ManagementClient) Verify(vaultBaseURL string, keyName string, keyVe
 
 	req, err := client.VerifyPreparer(vaultBaseURL, keyName, keyVersion, parameters)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "keyvault.ManagementClient", "Verify", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "keyvault.ManagementClient", "Verify", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.VerifySender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "keyvault.ManagementClient", "Verify", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "keyvault.ManagementClient", "Verify", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.VerifyResponder(resp)
@@ -3119,8 +3291,9 @@ func (client ManagementClient) VerifyPreparer(vaultBaseURL string, keyName strin
 		"key-version": autorest.Encode("path", keyVersion),
 	}
 
+	const APIVersion = "2016-10-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -3152,7 +3325,13 @@ func (client ManagementClient) VerifyResponder(resp *http.Response) (result KeyV
 	return
 }
 
-// WrapKey wraps a symmetric key using a specified key.
+// WrapKey the WRAP operation supports encryption of a symmetric key using a
+// key encryption key that has previously been stored in an Azure Key Vault.
+// The WRAP operation is only strictly necessary for symmetric keys stored in
+// Azure Key Vault since protection with an asymmetric key can be performed
+// using the public portion of the key. This operation is supported for
+// asymmetric keys as a convenience for callers that have a key-reference but
+// do not have access to the public key material.
 //
 // vaultBaseURL is the vault name, for example https://myvault.vault.azure.net.
 // keyName is the name of the key. keyVersion is the version of the key.
@@ -3166,13 +3345,15 @@ func (client ManagementClient) WrapKey(vaultBaseURL string, keyName string, keyV
 
 	req, err := client.WrapKeyPreparer(vaultBaseURL, keyName, keyVersion, parameters)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "keyvault.ManagementClient", "WrapKey", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "keyvault.ManagementClient", "WrapKey", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.WrapKeySender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "keyvault.ManagementClient", "WrapKey", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "keyvault.ManagementClient", "WrapKey", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.WrapKeyResponder(resp)
@@ -3194,8 +3375,9 @@ func (client ManagementClient) WrapKeyPreparer(vaultBaseURL string, keyName stri
 		"key-version": autorest.Encode("path", keyVersion),
 	}
 
+	const APIVersion = "2016-10-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(

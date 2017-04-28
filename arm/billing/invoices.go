@@ -51,13 +51,15 @@ func NewInvoicesClientWithBaseURI(baseURI string, subscriptionID string) Invoice
 func (client InvoicesClient) Get(invoiceName string) (result Invoice, err error) {
 	req, err := client.GetPreparer(invoiceName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "billing.InvoicesClient", "Get", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "billing.InvoicesClient", "Get", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "billing.InvoicesClient", "Get", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "billing.InvoicesClient", "Get", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetResponder(resp)
@@ -75,8 +77,9 @@ func (client InvoicesClient) GetPreparer(invoiceName string) (*http.Request, err
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
 
+	const APIVersion = "2017-04-24-preview"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -111,13 +114,15 @@ func (client InvoicesClient) GetResponder(resp *http.Response) (result Invoice, 
 func (client InvoicesClient) GetLatest() (result Invoice, err error) {
 	req, err := client.GetLatestPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "billing.InvoicesClient", "GetLatest", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "billing.InvoicesClient", "GetLatest", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetLatestSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "billing.InvoicesClient", "GetLatest", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "billing.InvoicesClient", "GetLatest", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetLatestResponder(resp)
@@ -134,8 +139,9 @@ func (client InvoicesClient) GetLatestPreparer() (*http.Request, error) {
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
 
+	const APIVersion = "2017-04-24-preview"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -168,14 +174,14 @@ func (client InvoicesClient) GetLatestResponder(resp *http.Response) (result Inv
 // List lists the available invoices for a subscription in reverse
 // chronological order beginning with the most recent invoice. In preview,
 // invoices are available via this API only for invoice periods which end
-// December 1, 2016 or later
+// December 1, 2016 or later.
 //
 // expand is may be used to expand the downloadUrl property within a list of
 // invoices. This enables download links to be generated for multiple invoices
 // at once. By default, downloadURLs are not included when listing invoices.
 // filter is may be used to filter invoices by invoicePeriodEndDate. The filter
 // supports 'eq', 'lt', 'gt', 'le', 'ge', and 'and'. It does not currently
-// support 'ne', 'or', or 'not' skiptoken is skiptoken is only used if a
+// support 'ne', 'or', or 'not'. skiptoken is skiptoken is only used if a
 // previous operation returned a partial result. If a previous response
 // contains a nextLink element, the value of the nextLink element will include
 // a skiptoken parameter that specifies a starting point to use for subsequent
@@ -193,13 +199,15 @@ func (client InvoicesClient) List(expand string, filter string, skiptoken string
 
 	req, err := client.ListPreparer(expand, filter, skiptoken, top)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "billing.InvoicesClient", "List", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "billing.InvoicesClient", "List", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "billing.InvoicesClient", "List", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "billing.InvoicesClient", "List", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListResponder(resp)
@@ -216,8 +224,9 @@ func (client InvoicesClient) ListPreparer(expand string, filter string, skiptoke
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
 
+	const APIVersion = "2017-04-24-preview"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 	if len(expand) > 0 {
 		queryParameters["$expand"] = autorest.Encode("query", expand)

@@ -25,9 +25,7 @@ import (
 	"net/http"
 )
 
-// PolicySnippetsClient is the use these REST APIs for performing operations on
-// entities like API, Product, and Subscription associated with your Azure API
-// Management deployment.
+// PolicySnippetsClient is the composite Swagger for ApiManagement Client
 type PolicySnippetsClient struct {
 	ManagementClient
 }
@@ -48,7 +46,7 @@ func NewPolicySnippetsClientWithBaseURI(baseURI string, subscriptionID string) P
 //
 // resourceGroupName is the name of the resource group. serviceName is the name
 // of the API Management service. scope is policy scope.
-func (client PolicySnippetsClient) ListByService(resourceGroupName string, serviceName string, scope PolicyScopeContract) (result ListPolicySnippetContract, err error) {
+func (client PolicySnippetsClient) ListByService(resourceGroupName string, serviceName string, scope PolicyScopeContract) (result PolicySnippetsCollection, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,
 			Constraints: []validation.Constraint{{Target: "serviceName", Name: validation.MaxLength, Rule: 50, Chain: nil},
@@ -59,13 +57,15 @@ func (client PolicySnippetsClient) ListByService(resourceGroupName string, servi
 
 	req, err := client.ListByServicePreparer(resourceGroupName, serviceName, scope)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "apimanagement.PolicySnippetsClient", "ListByService", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "apimanagement.PolicySnippetsClient", "ListByService", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListByServiceSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "apimanagement.PolicySnippetsClient", "ListByService", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "apimanagement.PolicySnippetsClient", "ListByService", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListByServiceResponder(resp)
@@ -84,7 +84,7 @@ func (client PolicySnippetsClient) ListByServicePreparer(resourceGroupName strin
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2016-07-07"
+	const APIVersion = "2016-10-10"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -108,12 +108,12 @@ func (client PolicySnippetsClient) ListByServiceSender(req *http.Request) (*http
 
 // ListByServiceResponder handles the response to the ListByService request. The method always
 // closes the http.Response Body.
-func (client PolicySnippetsClient) ListByServiceResponder(resp *http.Response) (result ListPolicySnippetContract, err error) {
+func (client PolicySnippetsClient) ListByServiceResponder(resp *http.Response) (result PolicySnippetsCollection, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result.Value),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
 	return

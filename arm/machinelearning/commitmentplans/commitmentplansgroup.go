@@ -52,13 +52,15 @@ func NewGroupClientWithBaseURI(baseURI string, subscriptionID string) GroupClien
 func (client GroupClient) CreateOrUpdate(createOrUpdatePayload CommitmentPlan, resourceGroupName string, commitmentPlanName string) (result CommitmentPlan, err error) {
 	req, err := client.CreateOrUpdatePreparer(createOrUpdatePayload, resourceGroupName, commitmentPlanName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "commitmentplans.GroupClient", "CreateOrUpdate", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "commitmentplans.GroupClient", "CreateOrUpdate", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.CreateOrUpdateSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "commitmentplans.GroupClient", "CreateOrUpdate", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "commitmentplans.GroupClient", "CreateOrUpdate", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.CreateOrUpdateResponder(resp)
@@ -77,8 +79,9 @@ func (client GroupClient) CreateOrUpdatePreparer(createOrUpdatePayload Commitmen
 		"subscriptionId":     autorest.Encode("path", client.SubscriptionID),
 	}
 
+	const APIVersion = "2016-05-01-preview"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -118,13 +121,15 @@ func (client GroupClient) CreateOrUpdateResponder(resp *http.Response) (result C
 func (client GroupClient) Get(resourceGroupName string, commitmentPlanName string) (result CommitmentPlan, err error) {
 	req, err := client.GetPreparer(resourceGroupName, commitmentPlanName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "commitmentplans.GroupClient", "Get", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "commitmentplans.GroupClient", "Get", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "commitmentplans.GroupClient", "Get", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "commitmentplans.GroupClient", "Get", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetResponder(resp)
@@ -143,8 +148,9 @@ func (client GroupClient) GetPreparer(resourceGroupName string, commitmentPlanNa
 		"subscriptionId":     autorest.Encode("path", client.SubscriptionID),
 	}
 
+	const APIVersion = "2016-05-01-preview"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -180,13 +186,15 @@ func (client GroupClient) GetResponder(resp *http.Response) (result CommitmentPl
 func (client GroupClient) List(skipToken string) (result ListResult, err error) {
 	req, err := client.ListPreparer(skipToken)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "commitmentplans.GroupClient", "List", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "commitmentplans.GroupClient", "List", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "commitmentplans.GroupClient", "List", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "commitmentplans.GroupClient", "List", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListResponder(resp)
@@ -203,8 +211,9 @@ func (client GroupClient) ListPreparer(skipToken string) (*http.Request, error) 
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
 
+	const APIVersion = "2016-05-01-preview"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 	if len(skipToken) > 0 {
 		queryParameters["$skipToken"] = autorest.Encode("query", skipToken)
@@ -269,13 +278,15 @@ func (client GroupClient) ListNextResults(lastResults ListResult) (result ListRe
 func (client GroupClient) ListInResourceGroup(resourceGroupName string, skipToken string) (result ListResult, err error) {
 	req, err := client.ListInResourceGroupPreparer(resourceGroupName, skipToken)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "commitmentplans.GroupClient", "ListInResourceGroup", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "commitmentplans.GroupClient", "ListInResourceGroup", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListInResourceGroupSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "commitmentplans.GroupClient", "ListInResourceGroup", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "commitmentplans.GroupClient", "ListInResourceGroup", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListInResourceGroupResponder(resp)
@@ -293,8 +304,9 @@ func (client GroupClient) ListInResourceGroupPreparer(resourceGroupName string, 
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
+	const APIVersion = "2016-05-01-preview"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 	if len(skipToken) > 0 {
 		queryParameters["$skipToken"] = autorest.Encode("query", skipToken)
@@ -360,13 +372,15 @@ func (client GroupClient) ListInResourceGroupNextResults(lastResults ListResult)
 func (client GroupClient) Patch(patchPayload PatchPayload, resourceGroupName string, commitmentPlanName string) (result CommitmentPlan, err error) {
 	req, err := client.PatchPreparer(patchPayload, resourceGroupName, commitmentPlanName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "commitmentplans.GroupClient", "Patch", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "commitmentplans.GroupClient", "Patch", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.PatchSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "commitmentplans.GroupClient", "Patch", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "commitmentplans.GroupClient", "Patch", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.PatchResponder(resp)
@@ -385,8 +399,9 @@ func (client GroupClient) PatchPreparer(patchPayload PatchPayload, resourceGroup
 		"subscriptionId":     autorest.Encode("path", client.SubscriptionID),
 	}
 
+	const APIVersion = "2016-05-01-preview"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -425,13 +440,15 @@ func (client GroupClient) PatchResponder(resp *http.Response) (result Commitment
 func (client GroupClient) Remove(resourceGroupName string, commitmentPlanName string) (result autorest.Response, err error) {
 	req, err := client.RemovePreparer(resourceGroupName, commitmentPlanName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "commitmentplans.GroupClient", "Remove", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "commitmentplans.GroupClient", "Remove", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.RemoveSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "commitmentplans.GroupClient", "Remove", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "commitmentplans.GroupClient", "Remove", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.RemoveResponder(resp)
@@ -450,8 +467,9 @@ func (client GroupClient) RemovePreparer(resourceGroupName string, commitmentPla
 		"subscriptionId":     autorest.Encode("path", client.SubscriptionID),
 	}
 
+	const APIVersion = "2016-05-01-preview"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(

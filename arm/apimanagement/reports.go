@@ -25,9 +25,7 @@ import (
 	"net/http"
 )
 
-// ReportsClient is the use these REST APIs for performing operations on
-// entities like API, Product, and Subscription associated with your Azure API
-// Management deployment.
+// ReportsClient is the composite Swagger for ApiManagement Client
 type ReportsClient struct {
 	ManagementClient
 }
@@ -53,7 +51,7 @@ func NewReportsClientWithBaseURI(baseURI string, subscriptionID string) ReportsC
 // (http://en.wikipedia.org/wiki/ISO_8601#Durations).This code can be used to
 // convert TimSpan to a valid interval string: XmlConvert.ToString(new
 // TimeSpan(hours, minutes, secconds))
-func (client ReportsClient) ListByService(resourceGroupName string, serviceName string, aggregation ReportsAggregation, filter string, top *int32, skip *int32, interval string) (result ReportCollection, err error) {
+func (client ReportsClient) ListByService(resourceGroupName string, serviceName string, aggregation ReportsAggregation, filter string, top *int32, skip *int32, interval *string) (result ReportCollection, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,
 			Constraints: []validation.Constraint{{Target: "serviceName", Name: validation.MaxLength, Rule: 50, Chain: nil},
@@ -70,13 +68,15 @@ func (client ReportsClient) ListByService(resourceGroupName string, serviceName 
 
 	req, err := client.ListByServicePreparer(resourceGroupName, serviceName, aggregation, filter, top, skip, interval)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "apimanagement.ReportsClient", "ListByService", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "apimanagement.ReportsClient", "ListByService", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListByServiceSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "apimanagement.ReportsClient", "ListByService", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "apimanagement.ReportsClient", "ListByService", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListByServiceResponder(resp)
@@ -88,7 +88,7 @@ func (client ReportsClient) ListByService(resourceGroupName string, serviceName 
 }
 
 // ListByServicePreparer prepares the ListByService request.
-func (client ReportsClient) ListByServicePreparer(resourceGroupName string, serviceName string, aggregation ReportsAggregation, filter string, top *int32, skip *int32, interval string) (*http.Request, error) {
+func (client ReportsClient) ListByServicePreparer(resourceGroupName string, serviceName string, aggregation ReportsAggregation, filter string, top *int32, skip *int32, interval *string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"aggregation":       autorest.Encode("path", aggregation),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
@@ -96,7 +96,7 @@ func (client ReportsClient) ListByServicePreparer(resourceGroupName string, serv
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2016-07-07"
+	const APIVersion = "2016-10-10"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -109,8 +109,8 @@ func (client ReportsClient) ListByServicePreparer(resourceGroupName string, serv
 	if skip != nil {
 		queryParameters["$skip"] = autorest.Encode("query", *skip)
 	}
-	if len(interval) > 0 {
-		queryParameters["interval"] = autorest.Encode("query", interval)
+	if interval != nil {
+		queryParameters["interval"] = autorest.Encode("query", *interval)
 	}
 
 	preparer := autorest.CreatePreparer(

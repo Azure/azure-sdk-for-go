@@ -60,13 +60,15 @@ func (client CertificatesClient) CreateOrUpdate(resourceGroupName string, integr
 
 	req, err := client.CreateOrUpdatePreparer(resourceGroupName, integrationAccountName, certificateName, certificate)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "logic.CertificatesClient", "CreateOrUpdate", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "logic.CertificatesClient", "CreateOrUpdate", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.CreateOrUpdateSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "logic.CertificatesClient", "CreateOrUpdate", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "logic.CertificatesClient", "CreateOrUpdate", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.CreateOrUpdateResponder(resp)
@@ -128,13 +130,15 @@ func (client CertificatesClient) CreateOrUpdateResponder(resp *http.Response) (r
 func (client CertificatesClient) Delete(resourceGroupName string, integrationAccountName string, certificateName string) (result autorest.Response, err error) {
 	req, err := client.DeletePreparer(resourceGroupName, integrationAccountName, certificateName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "logic.CertificatesClient", "Delete", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "logic.CertificatesClient", "Delete", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.DeleteSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "logic.CertificatesClient", "Delete", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "logic.CertificatesClient", "Delete", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.DeleteResponder(resp)
@@ -193,13 +197,15 @@ func (client CertificatesClient) DeleteResponder(resp *http.Response) (result au
 func (client CertificatesClient) Get(resourceGroupName string, integrationAccountName string, certificateName string) (result IntegrationAccountCertificate, err error) {
 	req, err := client.GetPreparer(resourceGroupName, integrationAccountName, certificateName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "logic.CertificatesClient", "Get", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "logic.CertificatesClient", "Get", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "logic.CertificatesClient", "Get", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "logic.CertificatesClient", "Get", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetResponder(resp)
@@ -259,13 +265,15 @@ func (client CertificatesClient) GetResponder(resp *http.Response) (result Integ
 func (client CertificatesClient) ListByIntegrationAccounts(resourceGroupName string, integrationAccountName string, top *int32) (result IntegrationAccountCertificateListResult, err error) {
 	req, err := client.ListByIntegrationAccountsPreparer(resourceGroupName, integrationAccountName, top)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "logic.CertificatesClient", "ListByIntegrationAccounts", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "logic.CertificatesClient", "ListByIntegrationAccounts", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListByIntegrationAccountsSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "logic.CertificatesClient", "ListByIntegrationAccounts", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "logic.CertificatesClient", "ListByIntegrationAccounts", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListByIntegrationAccountsResponder(resp)

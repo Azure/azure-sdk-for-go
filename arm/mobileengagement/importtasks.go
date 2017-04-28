@@ -48,13 +48,15 @@ func NewImportTasksClientWithBaseURI(baseURI string, subscriptionID string) Impo
 func (client ImportTasksClient) Create(resourceGroupName string, appCollection string, appName string, parameters ImportTask) (result ImportTaskResult, err error) {
 	req, err := client.CreatePreparer(resourceGroupName, appCollection, appName, parameters)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "mobileengagement.ImportTasksClient", "Create", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "mobileengagement.ImportTasksClient", "Create", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.CreateSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "mobileengagement.ImportTasksClient", "Create", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "mobileengagement.ImportTasksClient", "Create", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.CreateResponder(resp)
@@ -117,13 +119,15 @@ func (client ImportTasksClient) CreateResponder(resp *http.Response) (result Imp
 func (client ImportTasksClient) Get(id string, resourceGroupName string, appCollection string, appName string) (result ImportTaskResult, err error) {
 	req, err := client.GetPreparer(id, resourceGroupName, appCollection, appName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "mobileengagement.ImportTasksClient", "Get", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "mobileengagement.ImportTasksClient", "Get", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "mobileengagement.ImportTasksClient", "Get", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "mobileengagement.ImportTasksClient", "Get", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetResponder(resp)
@@ -211,13 +215,15 @@ func (client ImportTasksClient) List(resourceGroupName string, appCollection str
 
 	req, err := client.ListPreparer(resourceGroupName, appCollection, appName, skip, top, orderby)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "mobileengagement.ImportTasksClient", "List", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "mobileengagement.ImportTasksClient", "List", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "mobileengagement.ImportTasksClient", "List", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "mobileengagement.ImportTasksClient", "List", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListResponder(resp)

@@ -54,13 +54,15 @@ func NewAdminKeysClientWithBaseURI(baseURI string, subscriptionID string) AdminK
 func (client AdminKeysClient) Get(resourceGroupName string, searchServiceName string, clientRequestID *uuid.UUID) (result AdminKeyResult, err error) {
 	req, err := client.GetPreparer(resourceGroupName, searchServiceName, clientRequestID)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "search.AdminKeysClient", "Get", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "search.AdminKeysClient", "Get", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "search.AdminKeysClient", "Get", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "search.AdminKeysClient", "Get", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetResponder(resp)
@@ -129,13 +131,15 @@ func (client AdminKeysClient) GetResponder(resp *http.Response) (result AdminKey
 func (client AdminKeysClient) Regenerate(resourceGroupName string, searchServiceName string, keyKind AdminKeyKind, clientRequestID *uuid.UUID) (result AdminKeyResult, err error) {
 	req, err := client.RegeneratePreparer(resourceGroupName, searchServiceName, keyKind, clientRequestID)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "search.AdminKeysClient", "Regenerate", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "search.AdminKeysClient", "Regenerate", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.RegenerateSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "search.AdminKeysClient", "Regenerate", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "search.AdminKeysClient", "Regenerate", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.RegenerateResponder(resp)

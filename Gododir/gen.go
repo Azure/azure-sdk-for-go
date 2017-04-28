@@ -27,6 +27,7 @@ type service struct {
 	Swagger     string
 	SubServices []service
 	Modeler     modeler
+	Extension   extension
 }
 
 type modeler string
@@ -34,6 +35,13 @@ type modeler string
 const (
 	swagger     modeler = "Swagger"
 	compSwagger modeler = "CompositeSwagger"
+)
+
+type extension string
+
+const (
+	md   extension = "md"
+	json extension = "json"
 )
 
 type mapping struct {
@@ -55,21 +63,31 @@ var (
 			InputPrefix: "arm-",
 			Services: []service{
 				{
+					Name:    "advisor",
+					Version: "2017-04-19",
+				},
+				{
 					Name:    "analysisservices",
 					Version: "2016-05-16",
 				},
 				{
 					Name:    "apimanagement",
-					Version: "2016-07-07",
+					Swagger: "compositeApiManagementClient",
+					Modeler: compSwagger,
 				},
 				{
-					Name:    "apimdeployment",
-					Version: "2016-07-07",
-					Input:   "apimanagement",
+					Name:    "appinsights",
+					Swagger: "compositeAppInsightsManagementClient",
+					Modeler: compSwagger,
 				},
 				{
 					Name:    "authorization",
 					Version: "2015-07-01",
+				},
+				{
+					Name:    "automation",
+					Swagger: "compositeAutomation",
+					Modeler: compSwagger,
 				},
 				{
 					Name:    "batch",
@@ -78,14 +96,16 @@ var (
 				},
 				{
 					Name:    "billing",
-					Version: "2017-02-27-preview",
+					Version: "2017-04-24-preview",
 				},
 				{
 					Name:    "cdn",
 					Version: "2016-10-02",
 				},
 				{
-					Name:    "cognitiveservices",
+					// bug in AutoRest (duplicated files)
+					Name: "cognitiveservices",
+					// Version: "2017-04-18",
 					Version: "2016-02-01-preview",
 				},
 				{
@@ -103,22 +123,26 @@ var (
 					Input:   "compute",
 				},
 				{
+					Name:    "consumption",
+					Version: "2017-04-24-preview",
+				},
+				{
 					Name:    "containerregistry",
-					Version: "2017-03-01",
+					Version: "2017-06-01-preview",
 				},
 				{
 					Name:    "customer-insights",
 					Version: "2017-01-01",
 				},
-				// {
-				// 	Name: "datalake-analytics",
-				// 	SubServices: []service{
-				// 		{
-				// 			Name:    "account",
-				// 			Version: "2016-11-01",
-				// 		},
-				// 	},
-				// },
+				{
+					Name: "datalake-analytics",
+					SubServices: []service{
+						{
+							Name:    "account",
+							Version: "2016-11-01",
+						},
+					},
+				},
 				{
 					Name: "datalake-store",
 					SubServices: []service{
@@ -154,13 +178,19 @@ var (
 				},
 				{
 					Name:    "graphrbac",
-					Version: "1.6",
-					// Composite swagger
+					Swagger: "compositeGraphRbacManagementClient",
+					Modeler: compSwagger,
 				},
-				// {
-				// 	Name: "insights",
-				// 	// Composite swagger
-				// },
+				{
+					Name:    "hdinsight",
+					Swagger: "compositeHDInsight",
+					Modeler: compSwagger,
+				},
+				{
+					Name:    "insights",
+					Swagger: "compositeInsightsManagementClient",
+					Modeler: compSwagger,
+				},
 				{
 					Name:    "intune",
 					Version: "2015-01-14-preview",
@@ -176,7 +206,6 @@ var (
 				{
 					Name:    "logic",
 					Version: "2016-06-01",
-					// composite swagger
 				},
 				{
 					Name: "machinelearning",
@@ -189,7 +218,7 @@ var (
 						},
 						{
 							Name:    "webservices",
-							Version: "2016-05-01-preview",
+							Version: "2017-01-01",
 							Input:   "machinelearning",
 						},
 					},
@@ -204,41 +233,58 @@ var (
 					Version: "2014-12-01",
 					Swagger: "mobile-engagement",
 				},
-				// {
-				// 	Name:    "network",
-				// 	Version: "2016-09-01",
-				// },
 				{
-					Name:    "networkwatcher",
-					Version: "2016-12-01",
-					Swagger: "networkWatcher",
-					Input:   "network",
+					Name:    "monitor",
+					Swagger: "compositeMonitorManagementClient",
+					Modeler: compSwagger,
+				},
+				{
+					Name:    "network",
+					Swagger: "compositeNetworkClient",
+					Modeler: compSwagger,
 				},
 				{
 					Name:    "notificationhubs",
-					Version: "2016-03-01",
+					Version: "2017-04-01",
 				},
 				{
-					Name:    "operationalinsights",
+					// bug in the Go generator https://github.com/Azure/autorest/issues/2219
+					Name: "operationalinsights",
+					// Swagger: "compositeOperationalInsights",
+					// Modeler: compSwagger,
 					Version: "2015-11-01-preview",
-					Swagger: "OperationalInsights",
 				},
 				{
 					Name:    "powerbiembedded",
 					Version: "2016-01-29",
 				},
 				{
-					Name:    "recoveryservices",
+					// bug in the go generator
+					Name: "recoveryservices",
+					// 	Swagger: "compositeRecoveryServicesClient",
+					// 	Modeler: compSwagger,
 					Version: "2016-06-01",
+					Swagger: "vaults",
 				},
-				// {
-				// 	Name:    "recoveryservicesbackup",
-				// 	Version: "2016-06-01",
-				// 	// composite swagger
-				// },
+				{
+					// When using the readme.md, there is an exception in the modeler
+					Name:    "recoveryservicesbackup",
+					Version: "2016-12-01",
+					// Swagger:   "readme",
+					// Extension: md,
+					Swagger: "backupManagement",
+				},
 				{
 					Name:    "redis",
 					Version: "2016-04-01",
+				},
+				{
+					Name:    "relay",
+					Version: "2016-07-01",
+				},
+				{
+					Name:    "resourcehealth",
+					Version: "2015-01-01",
 				},
 				{
 					Name: "resources",
@@ -262,6 +308,7 @@ var (
 						{
 							Name:    "resources",
 							Version: "2016-09-01",
+							// Version: "2017-05-10",
 						},
 						{
 							Name:    "subscriptions",
@@ -282,18 +329,22 @@ var (
 					Version: "2016-07-01-preview",
 				},
 				{
-					Name:    "servicebus",
-					Version: "2015-08-01",
-				},
-				{
 					Name:    "service-map",
 					Version: "2015-11-01-preview",
 					Swagger: "arm-service-map",
 				},
 				{
+					Name:    "servicebus",
+					Version: "2015-08-01",
+				},
+				{
+					Name:    "servicefabric",
+					Version: "2016-09-01",
+				},
+				{
 					Name:    "sql",
-					Version: "2014-04-01",
-					Swagger: "sql.core",
+					Swagger: "compositeSql",
+					Modeler: compSwagger,
 				},
 				{
 					Name:    "storage",
@@ -303,6 +354,17 @@ var (
 					Name:    "storageimportexport",
 					Version: "2016-11-01",
 				},
+				// {
+				// Too soon to release
+				// 	Name: "storsimple8000series",
+				// 	Version: "2017-06-01".
+				// 	Swagger: "storsimple",
+				// },
+				// {
+				// error in the modeler
+				// 	Name:    "timeseriesinsights",
+				// 	Version: "2017-02-28-preview",
+				// },
 				{
 					Name:    "trafficmanager",
 					Version: "2015-11-01",
@@ -314,74 +376,63 @@ var (
 				},
 			},
 		},
-		//{
-		// Plane:       "dataplane",
-		// InputPrefix: "",
-		// Services: []service{
-		// 	{
-		// 		Name:    "batch",
-		// 		Version: "2016-07-01.3.1",
-		// 		Swagger: "BatchService",
-		// 	},
-		// 	{
-		// 		Name: "insights",
-		// 		// composite swagger
-		// 	},
-		// 	{
-		// 		Name:    "keyvault",
-		// 		Version: "2015-06-01",
-		// 	},
-		// 	{
-		// 		Name: "search",
-		// 		SubServices: []service{
-		// 			{
-		// 				Name:    "searchindex",
-		// 				Version: "2015-02-28",
-		// 				Input:   "search",
-		// 			},
-		// 			{
-		// 				Name:    "searchservice",
-		// 				Version: "2015-02-28",
-		// 				Input:   "search",
-		// 			},
-		// 		},
-		// 	},
-		// 	{
-		// 		Name:    "servicefabric",
-		// 		Version: "2016-01-28",
-		// 	},
-		// },
-		//},
 		{
-			Plane:       "",
-			InputPrefix: "arm-",
+			Plane:       "dataplane",
+			InputPrefix: "",
 			Services: []service{
-				// 	{
-				// 		Name:    "batch",
-				// 		Version: "2016-07-01.3.1",
-				// 		Swagger: "BatchService",
-				// 	},
-				// 	{
-				// 		Name: "insights",
-				// 		// composite swagger
-				// 	},
+				// {
+				// 	Name:    "batch",
+				// 	Version: "2017-01-01.4.0",
+				// 	Swagger: "BatchService",
+				// },
+				// {
+				// 	Name:    "insights",
+				// 	Swagger: "compositeInsightsClient",
+				// 	Modeler: compSwagger,
+				// },
 				{
 					Name:    "keyvault",
 					Version: "2016-10-01",
 				},
+				// {
+				// 	Name:    "monitor",
+				// 	Swagger: "compositeMonitorClient",
+				// 	Modeler: compSwagger,
+				// },
 				// 	{
 				// 		Name: "search",
 				// 		SubServices: []service{
 				// 			{
 				// 				Name:    "searchindex",
-				// 				Version: "2015-02-28",
+				// 				Version: "2016-09-01",
 				// 				Input:   "search",
 				// 			},
 				// 			{
 				// 				Name:    "searchservice",
-				// 				Version: "2015-02-28",
+				// 				Version: "2016-09-01",
 				// 				Input:   "search",
 				// 			},
+				// 		},
+				// 	},
+				// 	{
+				// 		Name:    "servicefabric",
+				// 		Version: "2016-01-28",
+				// 	},
+			},
+		},
+		{
+			Plane:       "",
+			InputPrefix: "arm-",
+			Services: []service{
+				{
+					Name: "datalake-store",
+					SubServices: []service{
+						{
+							Name:    "filesystem",
+							Version: "2016-11-01",
+						},
+					},
+				},
 				// {
 				// 	Name: "datalake-analytics",
 				// 	SubServices: []service{
@@ -394,40 +445,9 @@ var (
 				// 			Version: "2016-11-01",
 				// 		},
 				// 	},
-				// 	{
-				// 		Name:    "servicefabric",
-				// 		Version: "2016-01-28",
-				// 	},
+				// },
 			},
 		},
-		// {
-		// 	Plane:       "",
-		// 	InputPrefix: "arm-",
-		// 	Services: []service{
-		// 		{
-		// 			Name: "datalake-store",
-		// 			SubServices: []service{
-		// 				{
-		// 					Name:    "filesystem",
-		// 					Version: "2016-11-01",
-		// 				},
-		// 			},
-		// 		},
-		// {
-		// 	Name: "datalake-analytics",
-		// 	SubServices: []service{
-		// 		{
-		// 			Name:    "catalog",
-		// 			Version: "2016-11-01",
-		// 		},
-		// 		{
-		// 			Name:    "job",
-		// 			Version: "2016-11-01",
-		// 		},
-		// 	},
-		// },
-		// 	},
-		// },
 	}
 )
 
@@ -446,17 +466,27 @@ func initAndAddService(service *service, inputPrefix, plane string) {
 	if service.Swagger == "" {
 		service.Swagger = service.Name
 	}
+	if service.Extension == "" {
+		service.Extension = json
+	}
 	packages := append(service.Packages, service.Name)
 	service.TaskName = fmt.Sprintf("%s>%s", plane, strings.Join(packages, ">"))
 	service.Fullname = filepath.Join(plane, strings.Join(packages, "/"))
 	if service.Modeler == compSwagger {
 		service.Input = filepath.Join(inputPrefix+strings.Join(packages, "/"), service.Swagger)
 	} else {
+		input := []string{}
 		if service.Input == "" {
-			service.Input = filepath.Join(inputPrefix+strings.Join(packages, "/"), service.Version, "swagger", service.Swagger)
+			input = append(input, inputPrefix+strings.Join(packages, "/"))
 		} else {
-			service.Input = filepath.Join(inputPrefix+service.Input, service.Version, "swagger", service.Swagger)
+			input = append(input, inputPrefix+service.Input)
 		}
+		input = append(input, service.Version)
+		if service.Extension == json {
+			input = append(input, "swagger")
+		}
+		input = append(input, service.Swagger)
+		service.Input = filepath.Join(input...)
 		service.Modeler = swagger
 	}
 	service.Namespace = filepath.Join("github.com", "Azure", "azure-sdk-for-go", service.Fullname)
@@ -504,9 +534,9 @@ func generate(service *service) {
 	fmt.Printf("Generating %s...\n\n", service.Fullname)
 	delete(service)
 
-	autorest := exec.Command(
+	autorest := exec.Command("gulp",
 		"autorest",
-		"-Input", filepath.Join(swaggersDir, "azure-rest-api-specs", service.Input+".json"),
+		"-Input", filepath.Join(swaggersDir, "azure-rest-api-specs", service.Input+"."+string(service.Extension)),
 		"-CodeGenerator", "Go",
 		"-Header", "MICROSOFT_APACHE",
 		"-Namespace", service.Name,

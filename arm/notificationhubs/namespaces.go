@@ -56,13 +56,15 @@ func (client NamespacesClient) CheckAvailability(parameters CheckAvailabilityPar
 
 	req, err := client.CheckAvailabilityPreparer(parameters)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "notificationhubs.NamespacesClient", "CheckAvailability", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "notificationhubs.NamespacesClient", "CheckAvailability", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.CheckAvailabilitySender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "notificationhubs.NamespacesClient", "CheckAvailability", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "notificationhubs.NamespacesClient", "CheckAvailability", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.CheckAvailabilityResponder(resp)
@@ -79,7 +81,7 @@ func (client NamespacesClient) CheckAvailabilityPreparer(parameters CheckAvailab
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2016-03-01"
+	const APIVersion = "2017-04-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -122,13 +124,15 @@ func (client NamespacesClient) CheckAvailabilityResponder(resp *http.Response) (
 func (client NamespacesClient) CreateOrUpdate(resourceGroupName string, namespaceName string, parameters NamespaceCreateOrUpdateParameters) (result NamespaceResource, err error) {
 	req, err := client.CreateOrUpdatePreparer(resourceGroupName, namespaceName, parameters)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "notificationhubs.NamespacesClient", "CreateOrUpdate", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "notificationhubs.NamespacesClient", "CreateOrUpdate", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.CreateOrUpdateSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "notificationhubs.NamespacesClient", "CreateOrUpdate", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "notificationhubs.NamespacesClient", "CreateOrUpdate", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.CreateOrUpdateResponder(resp)
@@ -147,7 +151,7 @@ func (client NamespacesClient) CreateOrUpdatePreparer(resourceGroupName string, 
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2016-03-01"
+	const APIVersion = "2017-04-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -196,13 +200,15 @@ func (client NamespacesClient) CreateOrUpdateAuthorizationRule(resourceGroupName
 
 	req, err := client.CreateOrUpdateAuthorizationRulePreparer(resourceGroupName, namespaceName, authorizationRuleName, parameters)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "notificationhubs.NamespacesClient", "CreateOrUpdateAuthorizationRule", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "notificationhubs.NamespacesClient", "CreateOrUpdateAuthorizationRule", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.CreateOrUpdateAuthorizationRuleSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "notificationhubs.NamespacesClient", "CreateOrUpdateAuthorizationRule", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "notificationhubs.NamespacesClient", "CreateOrUpdateAuthorizationRule", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.CreateOrUpdateAuthorizationRuleResponder(resp)
@@ -222,7 +228,7 @@ func (client NamespacesClient) CreateOrUpdateAuthorizationRulePreparer(resourceG
 		"subscriptionId":        autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2016-03-01"
+	const APIVersion = "2017-04-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -264,24 +270,37 @@ func (client NamespacesClient) CreateOrUpdateAuthorizationRuleResponder(resp *ht
 //
 // resourceGroupName is the name of the resource group. namespaceName is the
 // namespace name.
-func (client NamespacesClient) Delete(resourceGroupName string, namespaceName string, cancel <-chan struct{}) (result autorest.Response, err error) {
-	req, err := client.DeletePreparer(resourceGroupName, namespaceName, cancel)
-	if err != nil {
-		return result, autorest.NewErrorWithError(err, "notificationhubs.NamespacesClient", "Delete", nil, "Failure preparing request")
-	}
+func (client NamespacesClient) Delete(resourceGroupName string, namespaceName string, cancel <-chan struct{}) (<-chan autorest.Response, <-chan error) {
+	resultChan := make(chan autorest.Response, 1)
+	errChan := make(chan error, 1)
+	go func() {
+		var err error
+		var result autorest.Response
+		defer func() {
+			resultChan <- result
+			errChan <- err
+			close(resultChan)
+			close(errChan)
+		}()
+		req, err := client.DeletePreparer(resourceGroupName, namespaceName, cancel)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "notificationhubs.NamespacesClient", "Delete", nil, "Failure preparing request")
+			return
+		}
 
-	resp, err := client.DeleteSender(req)
-	if err != nil {
-		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "notificationhubs.NamespacesClient", "Delete", resp, "Failure sending request")
-	}
+		resp, err := client.DeleteSender(req)
+		if err != nil {
+			result.Response = resp
+			err = autorest.NewErrorWithError(err, "notificationhubs.NamespacesClient", "Delete", resp, "Failure sending request")
+			return
+		}
 
-	result, err = client.DeleteResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "notificationhubs.NamespacesClient", "Delete", resp, "Failure responding to request")
-	}
-
-	return
+		result, err = client.DeleteResponder(resp)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "notificationhubs.NamespacesClient", "Delete", resp, "Failure responding to request")
+		}
+	}()
+	return resultChan, errChan
 }
 
 // DeletePreparer prepares the Delete request.
@@ -292,7 +311,7 @@ func (client NamespacesClient) DeletePreparer(resourceGroupName string, namespac
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2016-03-01"
+	const APIVersion = "2017-04-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -332,13 +351,15 @@ func (client NamespacesClient) DeleteResponder(resp *http.Response) (result auto
 func (client NamespacesClient) DeleteAuthorizationRule(resourceGroupName string, namespaceName string, authorizationRuleName string) (result autorest.Response, err error) {
 	req, err := client.DeleteAuthorizationRulePreparer(resourceGroupName, namespaceName, authorizationRuleName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "notificationhubs.NamespacesClient", "DeleteAuthorizationRule", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "notificationhubs.NamespacesClient", "DeleteAuthorizationRule", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.DeleteAuthorizationRuleSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "notificationhubs.NamespacesClient", "DeleteAuthorizationRule", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "notificationhubs.NamespacesClient", "DeleteAuthorizationRule", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.DeleteAuthorizationRuleResponder(resp)
@@ -358,7 +379,7 @@ func (client NamespacesClient) DeleteAuthorizationRulePreparer(resourceGroupName
 		"subscriptionId":        autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2016-03-01"
+	const APIVersion = "2017-04-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -396,13 +417,15 @@ func (client NamespacesClient) DeleteAuthorizationRuleResponder(resp *http.Respo
 func (client NamespacesClient) Get(resourceGroupName string, namespaceName string) (result NamespaceResource, err error) {
 	req, err := client.GetPreparer(resourceGroupName, namespaceName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "notificationhubs.NamespacesClient", "Get", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "notificationhubs.NamespacesClient", "Get", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "notificationhubs.NamespacesClient", "Get", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "notificationhubs.NamespacesClient", "Get", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetResponder(resp)
@@ -421,7 +444,7 @@ func (client NamespacesClient) GetPreparer(resourceGroupName string, namespaceNa
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2016-03-01"
+	const APIVersion = "2017-04-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -460,13 +483,15 @@ func (client NamespacesClient) GetResponder(resp *http.Response) (result Namespa
 func (client NamespacesClient) GetAuthorizationRule(resourceGroupName string, namespaceName string, authorizationRuleName string) (result SharedAccessAuthorizationRuleResource, err error) {
 	req, err := client.GetAuthorizationRulePreparer(resourceGroupName, namespaceName, authorizationRuleName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "notificationhubs.NamespacesClient", "GetAuthorizationRule", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "notificationhubs.NamespacesClient", "GetAuthorizationRule", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetAuthorizationRuleSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "notificationhubs.NamespacesClient", "GetAuthorizationRule", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "notificationhubs.NamespacesClient", "GetAuthorizationRule", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetAuthorizationRuleResponder(resp)
@@ -486,7 +511,7 @@ func (client NamespacesClient) GetAuthorizationRulePreparer(resourceGroupName st
 		"subscriptionId":        autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2016-03-01"
+	const APIVersion = "2017-04-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -525,13 +550,15 @@ func (client NamespacesClient) GetAuthorizationRuleResponder(resp *http.Response
 func (client NamespacesClient) List(resourceGroupName string) (result NamespaceListResult, err error) {
 	req, err := client.ListPreparer(resourceGroupName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "notificationhubs.NamespacesClient", "List", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "notificationhubs.NamespacesClient", "List", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "notificationhubs.NamespacesClient", "List", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "notificationhubs.NamespacesClient", "List", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListResponder(resp)
@@ -549,7 +576,7 @@ func (client NamespacesClient) ListPreparer(resourceGroupName string) (*http.Req
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2016-03-01"
+	const APIVersion = "2017-04-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -610,13 +637,15 @@ func (client NamespacesClient) ListNextResults(lastResults NamespaceListResult) 
 func (client NamespacesClient) ListAll() (result NamespaceListResult, err error) {
 	req, err := client.ListAllPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "notificationhubs.NamespacesClient", "ListAll", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "notificationhubs.NamespacesClient", "ListAll", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListAllSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "notificationhubs.NamespacesClient", "ListAll", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "notificationhubs.NamespacesClient", "ListAll", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListAllResponder(resp)
@@ -633,7 +662,7 @@ func (client NamespacesClient) ListAllPreparer() (*http.Request, error) {
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2016-03-01"
+	const APIVersion = "2017-04-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -696,13 +725,15 @@ func (client NamespacesClient) ListAllNextResults(lastResults NamespaceListResul
 func (client NamespacesClient) ListAuthorizationRules(resourceGroupName string, namespaceName string) (result SharedAccessAuthorizationRuleListResult, err error) {
 	req, err := client.ListAuthorizationRulesPreparer(resourceGroupName, namespaceName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "notificationhubs.NamespacesClient", "ListAuthorizationRules", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "notificationhubs.NamespacesClient", "ListAuthorizationRules", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListAuthorizationRulesSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "notificationhubs.NamespacesClient", "ListAuthorizationRules", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "notificationhubs.NamespacesClient", "ListAuthorizationRules", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListAuthorizationRulesResponder(resp)
@@ -721,7 +752,7 @@ func (client NamespacesClient) ListAuthorizationRulesPreparer(resourceGroupName 
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2016-03-01"
+	const APIVersion = "2017-04-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -785,13 +816,15 @@ func (client NamespacesClient) ListAuthorizationRulesNextResults(lastResults Sha
 func (client NamespacesClient) ListKeys(resourceGroupName string, namespaceName string, authorizationRuleName string) (result ResourceListKeys, err error) {
 	req, err := client.ListKeysPreparer(resourceGroupName, namespaceName, authorizationRuleName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "notificationhubs.NamespacesClient", "ListKeys", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "notificationhubs.NamespacesClient", "ListKeys", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListKeysSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "notificationhubs.NamespacesClient", "ListKeys", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "notificationhubs.NamespacesClient", "ListKeys", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListKeysResponder(resp)
@@ -811,7 +844,7 @@ func (client NamespacesClient) ListKeysPreparer(resourceGroupName string, namesp
 		"subscriptionId":        autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2016-03-01"
+	const APIVersion = "2017-04-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -851,13 +884,15 @@ func (client NamespacesClient) ListKeysResponder(resp *http.Response) (result Re
 func (client NamespacesClient) Patch(resourceGroupName string, namespaceName string, parameters NamespacePatchParameters) (result NamespaceResource, err error) {
 	req, err := client.PatchPreparer(resourceGroupName, namespaceName, parameters)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "notificationhubs.NamespacesClient", "Patch", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "notificationhubs.NamespacesClient", "Patch", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.PatchSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "notificationhubs.NamespacesClient", "Patch", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "notificationhubs.NamespacesClient", "Patch", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.PatchResponder(resp)
@@ -876,7 +911,7 @@ func (client NamespacesClient) PatchPreparer(resourceGroupName string, namespace
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2016-03-01"
+	const APIVersion = "2017-04-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -920,13 +955,15 @@ func (client NamespacesClient) PatchResponder(resp *http.Response) (result Names
 func (client NamespacesClient) RegenerateKeys(resourceGroupName string, namespaceName string, authorizationRuleName string, parameters PolicykeyResource) (result ResourceListKeys, err error) {
 	req, err := client.RegenerateKeysPreparer(resourceGroupName, namespaceName, authorizationRuleName, parameters)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "notificationhubs.NamespacesClient", "RegenerateKeys", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "notificationhubs.NamespacesClient", "RegenerateKeys", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.RegenerateKeysSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "notificationhubs.NamespacesClient", "RegenerateKeys", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "notificationhubs.NamespacesClient", "RegenerateKeys", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.RegenerateKeysResponder(resp)
@@ -946,7 +983,7 @@ func (client NamespacesClient) RegenerateKeysPreparer(resourceGroupName string, 
 		"subscriptionId":        autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2016-03-01"
+	const APIVersion = "2017-04-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}

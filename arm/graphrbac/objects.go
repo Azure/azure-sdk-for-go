@@ -21,10 +21,12 @@ package graphrbac
 import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
+	"github.com/Azure/go-autorest/autorest/validation"
 	"net/http"
 )
 
-// ObjectsClient is the the Graph RBAC Management Client
+// ObjectsClient is the composite Swagger specification for Azure Active
+// Directory Graph RBAC management client.
 type ObjectsClient struct {
 	ManagementClient
 }
@@ -43,13 +45,15 @@ func NewObjectsClientWithBaseURI(baseURI string, tenantID string) ObjectsClient 
 func (client ObjectsClient) GetCurrentUser() (result AADObject, err error) {
 	req, err := client.GetCurrentUserPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "graphrbac.ObjectsClient", "GetCurrentUser", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "graphrbac.ObjectsClient", "GetCurrentUser", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetCurrentUserSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "graphrbac.ObjectsClient", "GetCurrentUser", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "graphrbac.ObjectsClient", "GetCurrentUser", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetCurrentUserResponder(resp)
@@ -66,8 +70,9 @@ func (client ObjectsClient) GetCurrentUserPreparer() (*http.Request, error) {
 		"tenantID": autorest.Encode("path", client.TenantID),
 	}
 
+	const APIVersion = "1.6"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -87,6 +92,143 @@ func (client ObjectsClient) GetCurrentUserSender(req *http.Request) (*http.Respo
 // GetCurrentUserResponder handles the response to the GetCurrentUser request. The method always
 // closes the http.Response Body.
 func (client ObjectsClient) GetCurrentUserResponder(resp *http.Response) (result AADObject, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// GetObjectsByObjectIds gets AD group membership for the specified AD object
+// IDs.
+//
+// parameters is objects filtering parameters.
+func (client ObjectsClient) GetObjectsByObjectIds(parameters GetObjectsParameters) (result GetObjectsResult, err error) {
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: parameters,
+			Constraints: []validation.Constraint{{Target: "parameters.IncludeDirectoryObjectReferences", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
+		return result, validation.NewErrorWithValidationError(err, "graphrbac.ObjectsClient", "GetObjectsByObjectIds")
+	}
+
+	req, err := client.GetObjectsByObjectIdsPreparer(parameters)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "graphrbac.ObjectsClient", "GetObjectsByObjectIds", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.GetObjectsByObjectIdsSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "graphrbac.ObjectsClient", "GetObjectsByObjectIds", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.GetObjectsByObjectIdsResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "graphrbac.ObjectsClient", "GetObjectsByObjectIds", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// GetObjectsByObjectIdsPreparer prepares the GetObjectsByObjectIds request.
+func (client ObjectsClient) GetObjectsByObjectIdsPreparer(parameters GetObjectsParameters) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"tenantID": autorest.Encode("path", client.TenantID),
+	}
+
+	const APIVersion = "1.6"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsJSON(),
+		autorest.AsPost(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/{tenantID}/getObjectsByObjectIds", pathParameters),
+		autorest.WithJSON(parameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare(&http.Request{})
+}
+
+// GetObjectsByObjectIdsSender sends the GetObjectsByObjectIds request. The method will close the
+// http.Response Body if it receives an error.
+func (client ObjectsClient) GetObjectsByObjectIdsSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req)
+}
+
+// GetObjectsByObjectIdsResponder handles the response to the GetObjectsByObjectIds request. The method always
+// closes the http.Response Body.
+func (client ObjectsClient) GetObjectsByObjectIdsResponder(resp *http.Response) (result GetObjectsResult, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// GetObjectsByObjectIdsNext gets AD group membership for the specified AD
+// object IDs.
+//
+// nextLink is next link for the list operation.
+func (client ObjectsClient) GetObjectsByObjectIdsNext(nextLink string) (result GetObjectsResult, err error) {
+	req, err := client.GetObjectsByObjectIdsNextPreparer(nextLink)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "graphrbac.ObjectsClient", "GetObjectsByObjectIdsNext", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.GetObjectsByObjectIdsNextSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "graphrbac.ObjectsClient", "GetObjectsByObjectIdsNext", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.GetObjectsByObjectIdsNextResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "graphrbac.ObjectsClient", "GetObjectsByObjectIdsNext", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// GetObjectsByObjectIdsNextPreparer prepares the GetObjectsByObjectIdsNext request.
+func (client ObjectsClient) GetObjectsByObjectIdsNextPreparer(nextLink string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"nextLink": nextLink,
+		"tenantID": autorest.Encode("path", client.TenantID),
+	}
+
+	const APIVersion = "1.6"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsPost(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/{tenantID}/{nextLink}", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare(&http.Request{})
+}
+
+// GetObjectsByObjectIdsNextSender sends the GetObjectsByObjectIdsNext request. The method will close the
+// http.Response Body if it receives an error.
+func (client ObjectsClient) GetObjectsByObjectIdsNextSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req)
+}
+
+// GetObjectsByObjectIdsNextResponder handles the response to the GetObjectsByObjectIdsNext request. The method always
+// closes the http.Response Body.
+func (client ObjectsClient) GetObjectsByObjectIdsNextResponder(resp *http.Response) (result GetObjectsResult, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

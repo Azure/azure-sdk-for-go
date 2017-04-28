@@ -30,9 +30,6 @@ import (
 )
 
 const (
-	// APIVersion is the version of the Intune
-	APIVersion = "2015-01-14-preview"
-
 	// DefaultBaseURI is the default URI used for the service Intune
 	DefaultBaseURI = "https://management.azure.com"
 )
@@ -40,8 +37,7 @@ const (
 // ManagementClient is the base client for Intune.
 type ManagementClient struct {
 	autorest.Client
-	BaseURI    string
-	APIVersion string
+	BaseURI string
 }
 
 // New creates an instance of the ManagementClient client.
@@ -52,9 +48,8 @@ func New() ManagementClient {
 // NewWithBaseURI creates an instance of the ManagementClient client.
 func NewWithBaseURI(baseURI string) ManagementClient {
 	return ManagementClient{
-		Client:     autorest.NewClientWithUserAgent(UserAgent()),
-		BaseURI:    baseURI,
-		APIVersion: APIVersion,
+		Client:  autorest.NewClientWithUserAgent(UserAgent()),
+		BaseURI: baseURI,
 	}
 }
 
@@ -65,13 +60,15 @@ func NewWithBaseURI(baseURI string) ManagementClient {
 func (client ManagementClient) GetApps(hostName string, filter string, top *int32, selectParameter string) (result ApplicationCollection, err error) {
 	req, err := client.GetAppsPreparer(hostName, filter, top, selectParameter)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "intune.ManagementClient", "GetApps", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "intune.ManagementClient", "GetApps", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetAppsSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "intune.ManagementClient", "GetApps", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "intune.ManagementClient", "GetApps", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetAppsResponder(resp)
@@ -88,8 +85,9 @@ func (client ManagementClient) GetAppsPreparer(hostName string, filter string, t
 		"hostName": autorest.Encode("path", hostName),
 	}
 
+	const APIVersion = "2015-01-14-preview"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 	if len(filter) > 0 {
 		queryParameters["$filter"] = autorest.Encode("query", filter)
@@ -156,13 +154,15 @@ func (client ManagementClient) GetAppsNextResults(lastResults ApplicationCollect
 func (client ManagementClient) GetLocationByHostName() (result Location, err error) {
 	req, err := client.GetLocationByHostNamePreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "intune.ManagementClient", "GetLocationByHostName", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "intune.ManagementClient", "GetLocationByHostName", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetLocationByHostNameSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "intune.ManagementClient", "GetLocationByHostName", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "intune.ManagementClient", "GetLocationByHostName", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetLocationByHostNameResponder(resp)
@@ -175,8 +175,9 @@ func (client ManagementClient) GetLocationByHostName() (result Location, err err
 
 // GetLocationByHostNamePreparer prepares the GetLocationByHostName request.
 func (client ManagementClient) GetLocationByHostNamePreparer() (*http.Request, error) {
+	const APIVersion = "2015-01-14-preview"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -210,13 +211,15 @@ func (client ManagementClient) GetLocationByHostNameResponder(resp *http.Respons
 func (client ManagementClient) GetLocations() (result LocationCollection, err error) {
 	req, err := client.GetLocationsPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "intune.ManagementClient", "GetLocations", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "intune.ManagementClient", "GetLocations", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetLocationsSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "intune.ManagementClient", "GetLocations", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "intune.ManagementClient", "GetLocations", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetLocationsResponder(resp)
@@ -229,8 +232,9 @@ func (client ManagementClient) GetLocations() (result LocationCollection, err er
 
 // GetLocationsPreparer prepares the GetLocations request.
 func (client ManagementClient) GetLocationsPreparer() (*http.Request, error) {
+	const APIVersion = "2015-01-14-preview"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -291,13 +295,15 @@ func (client ManagementClient) GetLocationsNextResults(lastResults LocationColle
 func (client ManagementClient) GetMAMFlaggedUserByName(hostName string, userName string, selectParameter string) (result FlaggedUser, err error) {
 	req, err := client.GetMAMFlaggedUserByNamePreparer(hostName, userName, selectParameter)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "intune.ManagementClient", "GetMAMFlaggedUserByName", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "intune.ManagementClient", "GetMAMFlaggedUserByName", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetMAMFlaggedUserByNameSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "intune.ManagementClient", "GetMAMFlaggedUserByName", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "intune.ManagementClient", "GetMAMFlaggedUserByName", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetMAMFlaggedUserByNameResponder(resp)
@@ -315,8 +321,9 @@ func (client ManagementClient) GetMAMFlaggedUserByNamePreparer(hostName string, 
 		"userName": autorest.Encode("path", userName),
 	}
 
+	const APIVersion = "2015-01-14-preview"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 	if len(selectParameter) > 0 {
 		queryParameters["$select"] = autorest.Encode("query", selectParameter)
@@ -356,13 +363,15 @@ func (client ManagementClient) GetMAMFlaggedUserByNameResponder(resp *http.Respo
 func (client ManagementClient) GetMAMFlaggedUsers(hostName string, filter string, top *int32, selectParameter string) (result FlaggedUserCollection, err error) {
 	req, err := client.GetMAMFlaggedUsersPreparer(hostName, filter, top, selectParameter)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "intune.ManagementClient", "GetMAMFlaggedUsers", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "intune.ManagementClient", "GetMAMFlaggedUsers", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetMAMFlaggedUsersSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "intune.ManagementClient", "GetMAMFlaggedUsers", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "intune.ManagementClient", "GetMAMFlaggedUsers", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetMAMFlaggedUsersResponder(resp)
@@ -379,8 +388,9 @@ func (client ManagementClient) GetMAMFlaggedUsersPreparer(hostName string, filte
 		"hostName": autorest.Encode("path", hostName),
 	}
 
+	const APIVersion = "2015-01-14-preview"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 	if len(filter) > 0 {
 		queryParameters["$filter"] = autorest.Encode("query", filter)
@@ -449,13 +459,15 @@ func (client ManagementClient) GetMAMFlaggedUsersNextResults(lastResults Flagged
 func (client ManagementClient) GetMAMStatuses(hostName string) (result StatusesDefault, err error) {
 	req, err := client.GetMAMStatusesPreparer(hostName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "intune.ManagementClient", "GetMAMStatuses", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "intune.ManagementClient", "GetMAMStatuses", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetMAMStatusesSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "intune.ManagementClient", "GetMAMStatuses", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "intune.ManagementClient", "GetMAMStatuses", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetMAMStatusesResponder(resp)
@@ -472,8 +484,9 @@ func (client ManagementClient) GetMAMStatusesPreparer(hostName string) (*http.Re
 		"hostName": autorest.Encode("path", hostName),
 	}
 
+	const APIVersion = "2015-01-14-preview"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -535,13 +548,15 @@ func (client ManagementClient) GetMAMStatusesNextResults(lastResults StatusesDef
 func (client ManagementClient) GetMAMUserDeviceByDeviceName(hostName string, userName string, deviceName string, selectParameter string) (result Device, err error) {
 	req, err := client.GetMAMUserDeviceByDeviceNamePreparer(hostName, userName, deviceName, selectParameter)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "intune.ManagementClient", "GetMAMUserDeviceByDeviceName", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "intune.ManagementClient", "GetMAMUserDeviceByDeviceName", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetMAMUserDeviceByDeviceNameSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "intune.ManagementClient", "GetMAMUserDeviceByDeviceName", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "intune.ManagementClient", "GetMAMUserDeviceByDeviceName", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetMAMUserDeviceByDeviceNameResponder(resp)
@@ -560,8 +575,9 @@ func (client ManagementClient) GetMAMUserDeviceByDeviceNamePreparer(hostName str
 		"userName":   autorest.Encode("path", userName),
 	}
 
+	const APIVersion = "2015-01-14-preview"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 	if len(selectParameter) > 0 {
 		queryParameters["$select"] = autorest.Encode("query", selectParameter)
@@ -602,13 +618,15 @@ func (client ManagementClient) GetMAMUserDeviceByDeviceNameResponder(resp *http.
 func (client ManagementClient) GetMAMUserDevices(hostName string, userName string, filter string, top *int32, selectParameter string) (result DeviceCollection, err error) {
 	req, err := client.GetMAMUserDevicesPreparer(hostName, userName, filter, top, selectParameter)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "intune.ManagementClient", "GetMAMUserDevices", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "intune.ManagementClient", "GetMAMUserDevices", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetMAMUserDevicesSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "intune.ManagementClient", "GetMAMUserDevices", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "intune.ManagementClient", "GetMAMUserDevices", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetMAMUserDevicesResponder(resp)
@@ -626,8 +644,9 @@ func (client ManagementClient) GetMAMUserDevicesPreparer(hostName string, userNa
 		"userName": autorest.Encode("path", userName),
 	}
 
+	const APIVersion = "2015-01-14-preview"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 	if len(filter) > 0 {
 		queryParameters["$filter"] = autorest.Encode("query", filter)
@@ -699,13 +718,15 @@ func (client ManagementClient) GetMAMUserDevicesNextResults(lastResults DeviceCo
 func (client ManagementClient) GetMAMUserFlaggedEnrolledApps(hostName string, userName string, filter string, top *int32, selectParameter string) (result FlaggedEnrolledAppCollection, err error) {
 	req, err := client.GetMAMUserFlaggedEnrolledAppsPreparer(hostName, userName, filter, top, selectParameter)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "intune.ManagementClient", "GetMAMUserFlaggedEnrolledApps", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "intune.ManagementClient", "GetMAMUserFlaggedEnrolledApps", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetMAMUserFlaggedEnrolledAppsSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "intune.ManagementClient", "GetMAMUserFlaggedEnrolledApps", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "intune.ManagementClient", "GetMAMUserFlaggedEnrolledApps", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetMAMUserFlaggedEnrolledAppsResponder(resp)
@@ -723,8 +744,9 @@ func (client ManagementClient) GetMAMUserFlaggedEnrolledAppsPreparer(hostName st
 		"userName": autorest.Encode("path", userName),
 	}
 
+	const APIVersion = "2015-01-14-preview"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 	if len(filter) > 0 {
 		queryParameters["$filter"] = autorest.Encode("query", filter)
@@ -794,13 +816,15 @@ func (client ManagementClient) GetMAMUserFlaggedEnrolledAppsNextResults(lastResu
 func (client ManagementClient) GetOperationResults(hostName string, filter string, top *int32, selectParameter string) (result OperationResultCollection, err error) {
 	req, err := client.GetOperationResultsPreparer(hostName, filter, top, selectParameter)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "intune.ManagementClient", "GetOperationResults", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "intune.ManagementClient", "GetOperationResults", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetOperationResultsSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "intune.ManagementClient", "GetOperationResults", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "intune.ManagementClient", "GetOperationResults", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetOperationResultsResponder(resp)
@@ -817,8 +841,9 @@ func (client ManagementClient) GetOperationResultsPreparer(hostName string, filt
 		"hostName": autorest.Encode("path", hostName),
 	}
 
+	const APIVersion = "2015-01-14-preview"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 	if len(filter) > 0 {
 		queryParameters["$filter"] = autorest.Encode("query", filter)
@@ -888,13 +913,15 @@ func (client ManagementClient) GetOperationResultsNextResults(lastResults Operat
 func (client ManagementClient) WipeMAMUserDevice(hostName string, userName string, deviceName string) (result WipeDeviceOperationResult, err error) {
 	req, err := client.WipeMAMUserDevicePreparer(hostName, userName, deviceName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "intune.ManagementClient", "WipeMAMUserDevice", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "intune.ManagementClient", "WipeMAMUserDevice", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.WipeMAMUserDeviceSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "intune.ManagementClient", "WipeMAMUserDevice", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "intune.ManagementClient", "WipeMAMUserDevice", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.WipeMAMUserDeviceResponder(resp)
@@ -913,8 +940,9 @@ func (client ManagementClient) WipeMAMUserDevicePreparer(hostName string, userNa
 		"userName":   autorest.Encode("path", userName),
 	}
 
+	const APIVersion = "2015-01-14-preview"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(

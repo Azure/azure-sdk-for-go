@@ -25,9 +25,7 @@ import (
 	"net/http"
 )
 
-// GroupUsersClient is the use these REST APIs for performing operations on
-// entities like API, Product, and Subscription associated with your Azure API
-// Management deployment.
+// GroupUsersClient is the composite Swagger for ApiManagement Client
 type GroupUsersClient struct {
 	ManagementClient
 }
@@ -43,13 +41,13 @@ func NewGroupUsersClientWithBaseURI(baseURI string, subscriptionID string) Group
 	return GroupUsersClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// Add adds a user to the specified group.
+// Create adds a user to the specified group.
 //
 // resourceGroupName is the name of the resource group. serviceName is the name
 // of the API Management service. groupID is group identifier. Must be unique
 // in the current API Management service instance. uid is user identifier. Must
 // be unique in the current API Management service instance.
-func (client GroupUsersClient) Add(resourceGroupName string, serviceName string, groupID string, uid string) (result ErrorBodyContract, err error) {
+func (client GroupUsersClient) Create(resourceGroupName string, serviceName string, groupID string, uid string) (result ErrorBodyContract, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,
 			Constraints: []validation.Constraint{{Target: "serviceName", Name: validation.MaxLength, Rule: 50, Chain: nil},
@@ -63,30 +61,32 @@ func (client GroupUsersClient) Add(resourceGroupName string, serviceName string,
 			Constraints: []validation.Constraint{{Target: "uid", Name: validation.MaxLength, Rule: 256, Chain: nil},
 				{Target: "uid", Name: validation.MinLength, Rule: 1, Chain: nil},
 				{Target: "uid", Name: validation.Pattern, Rule: `^[^*#&+:<>?]+$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "apimanagement.GroupUsersClient", "Add")
+		return result, validation.NewErrorWithValidationError(err, "apimanagement.GroupUsersClient", "Create")
 	}
 
-	req, err := client.AddPreparer(resourceGroupName, serviceName, groupID, uid)
+	req, err := client.CreatePreparer(resourceGroupName, serviceName, groupID, uid)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "apimanagement.GroupUsersClient", "Add", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "apimanagement.GroupUsersClient", "Create", nil, "Failure preparing request")
+		return
 	}
 
-	resp, err := client.AddSender(req)
+	resp, err := client.CreateSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "apimanagement.GroupUsersClient", "Add", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "apimanagement.GroupUsersClient", "Create", resp, "Failure sending request")
+		return
 	}
 
-	result, err = client.AddResponder(resp)
+	result, err = client.CreateResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "apimanagement.GroupUsersClient", "Add", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "apimanagement.GroupUsersClient", "Create", resp, "Failure responding to request")
 	}
 
 	return
 }
 
-// AddPreparer prepares the Add request.
-func (client GroupUsersClient) AddPreparer(resourceGroupName string, serviceName string, groupID string, uid string) (*http.Request, error) {
+// CreatePreparer prepares the Create request.
+func (client GroupUsersClient) CreatePreparer(resourceGroupName string, serviceName string, groupID string, uid string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"groupId":           autorest.Encode("path", groupID),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
@@ -95,7 +95,7 @@ func (client GroupUsersClient) AddPreparer(resourceGroupName string, serviceName
 		"uid":               autorest.Encode("path", uid),
 	}
 
-	const APIVersion = "2016-07-07"
+	const APIVersion = "2016-10-10"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -108,15 +108,15 @@ func (client GroupUsersClient) AddPreparer(resourceGroupName string, serviceName
 	return preparer.Prepare(&http.Request{})
 }
 
-// AddSender sends the Add request. The method will close the
+// CreateSender sends the Create request. The method will close the
 // http.Response Body if it receives an error.
-func (client GroupUsersClient) AddSender(req *http.Request) (*http.Response, error) {
+func (client GroupUsersClient) CreateSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req)
 }
 
-// AddResponder handles the response to the Add request. The method always
+// CreateResponder handles the response to the Create request. The method always
 // closes the http.Response Body.
-func (client GroupUsersClient) AddResponder(resp *http.Response) (result ErrorBodyContract, err error) {
+func (client GroupUsersClient) CreateResponder(resp *http.Response) (result ErrorBodyContract, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -127,8 +127,94 @@ func (client GroupUsersClient) AddResponder(resp *http.Response) (result ErrorBo
 	return
 }
 
-// ListByGroup lists a collection of the members of the group, specified by its
-// identifier.
+// Delete remove existing user from existing group.
+//
+// resourceGroupName is the name of the resource group. serviceName is the name
+// of the API Management service. groupID is group identifier. Must be unique
+// in the current API Management service instance. uid is user identifier. Must
+// be unique in the current API Management service instance.
+func (client GroupUsersClient) Delete(resourceGroupName string, serviceName string, groupID string, uid string) (result ErrorBodyContract, err error) {
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: serviceName,
+			Constraints: []validation.Constraint{{Target: "serviceName", Name: validation.MaxLength, Rule: 50, Chain: nil},
+				{Target: "serviceName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "serviceName", Name: validation.Pattern, Rule: `^[a-zA-Z](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?$`, Chain: nil}}},
+		{TargetValue: groupID,
+			Constraints: []validation.Constraint{{Target: "groupID", Name: validation.MaxLength, Rule: 256, Chain: nil},
+				{Target: "groupID", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "groupID", Name: validation.Pattern, Rule: `^[^*#&+:<>?]+$`, Chain: nil}}},
+		{TargetValue: uid,
+			Constraints: []validation.Constraint{{Target: "uid", Name: validation.MaxLength, Rule: 256, Chain: nil},
+				{Target: "uid", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "uid", Name: validation.Pattern, Rule: `^[^*#&+:<>?]+$`, Chain: nil}}}}); err != nil {
+		return result, validation.NewErrorWithValidationError(err, "apimanagement.GroupUsersClient", "Delete")
+	}
+
+	req, err := client.DeletePreparer(resourceGroupName, serviceName, groupID, uid)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "apimanagement.GroupUsersClient", "Delete", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.DeleteSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "apimanagement.GroupUsersClient", "Delete", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.DeleteResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "apimanagement.GroupUsersClient", "Delete", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// DeletePreparer prepares the Delete request.
+func (client GroupUsersClient) DeletePreparer(resourceGroupName string, serviceName string, groupID string, uid string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"groupId":           autorest.Encode("path", groupID),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"serviceName":       autorest.Encode("path", serviceName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+		"uid":               autorest.Encode("path", uid),
+	}
+
+	const APIVersion = "2016-10-10"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsDelete(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/groups/{groupId}/users/{uid}", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare(&http.Request{})
+}
+
+// DeleteSender sends the Delete request. The method will close the
+// http.Response Body if it receives an error.
+func (client GroupUsersClient) DeleteSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req)
+}
+
+// DeleteResponder handles the response to the Delete request. The method always
+// closes the http.Response Body.
+func (client GroupUsersClient) DeleteResponder(resp *http.Response) (result ErrorBodyContract, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent, http.StatusMethodNotAllowed),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// ListByGroups lists a collection of the members of the group, specified by
+// its identifier.
 //
 // resourceGroupName is the name of the resource group. serviceName is the name
 // of the API Management service. groupID is group identifier. Must be unique
@@ -150,7 +236,7 @@ func (client GroupUsersClient) AddResponder(resp *http.Response) (result ErrorBo
 // | note             | ge, le, eq, ne, gt, lt | substringof, contains,
 // startswith, endswith | top is number of records to return. skip is number of
 // records to skip.
-func (client GroupUsersClient) ListByGroup(resourceGroupName string, serviceName string, groupID string, filter string, top *int32, skip *int32) (result UserCollection, err error) {
+func (client GroupUsersClient) ListByGroups(resourceGroupName string, serviceName string, groupID string, filter string, top *int32, skip *int32) (result UserCollection, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,
 			Constraints: []validation.Constraint{{Target: "serviceName", Name: validation.MaxLength, Rule: 50, Chain: nil},
@@ -166,30 +252,32 @@ func (client GroupUsersClient) ListByGroup(resourceGroupName string, serviceName
 		{TargetValue: skip,
 			Constraints: []validation.Constraint{{Target: "skip", Name: validation.Null, Rule: false,
 				Chain: []validation.Constraint{{Target: "skip", Name: validation.InclusiveMinimum, Rule: 0, Chain: nil}}}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "apimanagement.GroupUsersClient", "ListByGroup")
+		return result, validation.NewErrorWithValidationError(err, "apimanagement.GroupUsersClient", "ListByGroups")
 	}
 
-	req, err := client.ListByGroupPreparer(resourceGroupName, serviceName, groupID, filter, top, skip)
+	req, err := client.ListByGroupsPreparer(resourceGroupName, serviceName, groupID, filter, top, skip)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "apimanagement.GroupUsersClient", "ListByGroup", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "apimanagement.GroupUsersClient", "ListByGroups", nil, "Failure preparing request")
+		return
 	}
 
-	resp, err := client.ListByGroupSender(req)
+	resp, err := client.ListByGroupsSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "apimanagement.GroupUsersClient", "ListByGroup", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "apimanagement.GroupUsersClient", "ListByGroups", resp, "Failure sending request")
+		return
 	}
 
-	result, err = client.ListByGroupResponder(resp)
+	result, err = client.ListByGroupsResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "apimanagement.GroupUsersClient", "ListByGroup", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "apimanagement.GroupUsersClient", "ListByGroups", resp, "Failure responding to request")
 	}
 
 	return
 }
 
-// ListByGroupPreparer prepares the ListByGroup request.
-func (client GroupUsersClient) ListByGroupPreparer(resourceGroupName string, serviceName string, groupID string, filter string, top *int32, skip *int32) (*http.Request, error) {
+// ListByGroupsPreparer prepares the ListByGroups request.
+func (client GroupUsersClient) ListByGroupsPreparer(resourceGroupName string, serviceName string, groupID string, filter string, top *int32, skip *int32) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"groupId":           autorest.Encode("path", groupID),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
@@ -197,7 +285,7 @@ func (client GroupUsersClient) ListByGroupPreparer(resourceGroupName string, ser
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2016-07-07"
+	const APIVersion = "2016-10-10"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -219,15 +307,15 @@ func (client GroupUsersClient) ListByGroupPreparer(resourceGroupName string, ser
 	return preparer.Prepare(&http.Request{})
 }
 
-// ListByGroupSender sends the ListByGroup request. The method will close the
+// ListByGroupsSender sends the ListByGroups request. The method will close the
 // http.Response Body if it receives an error.
-func (client GroupUsersClient) ListByGroupSender(req *http.Request) (*http.Response, error) {
+func (client GroupUsersClient) ListByGroupsSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req)
 }
 
-// ListByGroupResponder handles the response to the ListByGroup request. The method always
+// ListByGroupsResponder handles the response to the ListByGroups request. The method always
 // closes the http.Response Body.
-func (client GroupUsersClient) ListByGroupResponder(resp *http.Response) (result UserCollection, err error) {
+func (client GroupUsersClient) ListByGroupsResponder(resp *http.Response) (result UserCollection, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -238,110 +326,26 @@ func (client GroupUsersClient) ListByGroupResponder(resp *http.Response) (result
 	return
 }
 
-// ListByGroupNextResults retrieves the next set of results, if any.
-func (client GroupUsersClient) ListByGroupNextResults(lastResults UserCollection) (result UserCollection, err error) {
+// ListByGroupsNextResults retrieves the next set of results, if any.
+func (client GroupUsersClient) ListByGroupsNextResults(lastResults UserCollection) (result UserCollection, err error) {
 	req, err := lastResults.UserCollectionPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "apimanagement.GroupUsersClient", "ListByGroup", nil, "Failure preparing next results request")
+		return result, autorest.NewErrorWithError(err, "apimanagement.GroupUsersClient", "ListByGroups", nil, "Failure preparing next results request")
 	}
 	if req == nil {
 		return
 	}
 
-	resp, err := client.ListByGroupSender(req)
+	resp, err := client.ListByGroupsSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "apimanagement.GroupUsersClient", "ListByGroup", resp, "Failure sending next results request")
+		return result, autorest.NewErrorWithError(err, "apimanagement.GroupUsersClient", "ListByGroups", resp, "Failure sending next results request")
 	}
 
-	result, err = client.ListByGroupResponder(resp)
+	result, err = client.ListByGroupsResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "apimanagement.GroupUsersClient", "ListByGroup", resp, "Failure responding to next results request")
+		err = autorest.NewErrorWithError(err, "apimanagement.GroupUsersClient", "ListByGroups", resp, "Failure responding to next results request")
 	}
 
-	return
-}
-
-// Remove remove existing user from existing group.
-//
-// resourceGroupName is the name of the resource group. serviceName is the name
-// of the API Management service. groupID is group identifier. Must be unique
-// in the current API Management service instance. uid is user identifier. Must
-// be unique in the current API Management service instance.
-func (client GroupUsersClient) Remove(resourceGroupName string, serviceName string, groupID string, uid string) (result ErrorBodyContract, err error) {
-	if err := validation.Validate([]validation.Validation{
-		{TargetValue: serviceName,
-			Constraints: []validation.Constraint{{Target: "serviceName", Name: validation.MaxLength, Rule: 50, Chain: nil},
-				{Target: "serviceName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "serviceName", Name: validation.Pattern, Rule: `^[a-zA-Z](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?$`, Chain: nil}}},
-		{TargetValue: groupID,
-			Constraints: []validation.Constraint{{Target: "groupID", Name: validation.MaxLength, Rule: 256, Chain: nil},
-				{Target: "groupID", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "groupID", Name: validation.Pattern, Rule: `^[^*#&+:<>?]+$`, Chain: nil}}},
-		{TargetValue: uid,
-			Constraints: []validation.Constraint{{Target: "uid", Name: validation.MaxLength, Rule: 256, Chain: nil},
-				{Target: "uid", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "uid", Name: validation.Pattern, Rule: `^[^*#&+:<>?]+$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "apimanagement.GroupUsersClient", "Remove")
-	}
-
-	req, err := client.RemovePreparer(resourceGroupName, serviceName, groupID, uid)
-	if err != nil {
-		return result, autorest.NewErrorWithError(err, "apimanagement.GroupUsersClient", "Remove", nil, "Failure preparing request")
-	}
-
-	resp, err := client.RemoveSender(req)
-	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "apimanagement.GroupUsersClient", "Remove", resp, "Failure sending request")
-	}
-
-	result, err = client.RemoveResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "apimanagement.GroupUsersClient", "Remove", resp, "Failure responding to request")
-	}
-
-	return
-}
-
-// RemovePreparer prepares the Remove request.
-func (client GroupUsersClient) RemovePreparer(resourceGroupName string, serviceName string, groupID string, uid string) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"groupId":           autorest.Encode("path", groupID),
-		"resourceGroupName": autorest.Encode("path", resourceGroupName),
-		"serviceName":       autorest.Encode("path", serviceName),
-		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
-		"uid":               autorest.Encode("path", uid),
-	}
-
-	const APIVersion = "2016-07-07"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsDelete(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/groups/{groupId}/users/{uid}", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare(&http.Request{})
-}
-
-// RemoveSender sends the Remove request. The method will close the
-// http.Response Body if it receives an error.
-func (client GroupUsersClient) RemoveSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
-}
-
-// RemoveResponder handles the response to the Remove request. The method always
-// closes the http.Response Body.
-func (client GroupUsersClient) RemoveResponder(resp *http.Response) (result ErrorBodyContract, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent, http.StatusMethodNotAllowed),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
 	return
 }

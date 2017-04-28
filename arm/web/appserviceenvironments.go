@@ -52,7 +52,9 @@ func NewAppServiceEnvironmentsClientWithBaseURI(baseURI string, subscriptionID s
 // belongs. name is name of the App Service Environment.
 // hostingEnvironmentEnvelope is configuration details of the App Service
 // Environment.
-func (client AppServiceEnvironmentsClient) CreateOrUpdate(resourceGroupName string, name string, hostingEnvironmentEnvelope AppServiceEnvironmentResource, cancel <-chan struct{}) (result autorest.Response, err error) {
+func (client AppServiceEnvironmentsClient) CreateOrUpdate(resourceGroupName string, name string, hostingEnvironmentEnvelope AppServiceEnvironmentResource, cancel <-chan struct{}) (<-chan AppServiceEnvironmentResource, <-chan error) {
+	resultChan := make(chan AppServiceEnvironmentResource, 1)
+	errChan := make(chan error, 1)
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
@@ -65,26 +67,40 @@ func (client AppServiceEnvironmentsClient) CreateOrUpdate(resourceGroupName stri
 					{Target: "hostingEnvironmentEnvelope.AppServiceEnvironment.VirtualNetwork", Name: validation.Null, Rule: true, Chain: nil},
 					{Target: "hostingEnvironmentEnvelope.AppServiceEnvironment.WorkerPools", Name: validation.Null, Rule: true, Chain: nil},
 				}}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "web.AppServiceEnvironmentsClient", "CreateOrUpdate")
+		errChan <- validation.NewErrorWithValidationError(err, "web.AppServiceEnvironmentsClient", "CreateOrUpdate")
+		close(errChan)
+		close(resultChan)
+		return resultChan, errChan
 	}
 
-	req, err := client.CreateOrUpdatePreparer(resourceGroupName, name, hostingEnvironmentEnvelope, cancel)
-	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "CreateOrUpdate", nil, "Failure preparing request")
-	}
+	go func() {
+		var err error
+		var result AppServiceEnvironmentResource
+		defer func() {
+			resultChan <- result
+			errChan <- err
+			close(resultChan)
+			close(errChan)
+		}()
+		req, err := client.CreateOrUpdatePreparer(resourceGroupName, name, hostingEnvironmentEnvelope, cancel)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "CreateOrUpdate", nil, "Failure preparing request")
+			return
+		}
 
-	resp, err := client.CreateOrUpdateSender(req)
-	if err != nil {
-		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "CreateOrUpdate", resp, "Failure sending request")
-	}
+		resp, err := client.CreateOrUpdateSender(req)
+		if err != nil {
+			result.Response = autorest.Response{Response: resp}
+			err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "CreateOrUpdate", resp, "Failure sending request")
+			return
+		}
 
-	result, err = client.CreateOrUpdateResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "CreateOrUpdate", resp, "Failure responding to request")
-	}
-
-	return
+		result, err = client.CreateOrUpdateResponder(resp)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "CreateOrUpdate", resp, "Failure responding to request")
+		}
+	}()
+	return resultChan, errChan
 }
 
 // CreateOrUpdatePreparer prepares the CreateOrUpdate request.
@@ -120,13 +136,14 @@ func (client AppServiceEnvironmentsClient) CreateOrUpdateSender(req *http.Reques
 
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
 // closes the http.Response Body.
-func (client AppServiceEnvironmentsClient) CreateOrUpdateResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client AppServiceEnvironmentsClient) CreateOrUpdateResponder(resp *http.Response) (result AppServiceEnvironmentResource, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusBadRequest, http.StatusNotFound, http.StatusConflict),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = resp
+	result.Response = autorest.Response{Response: resp}
 	return
 }
 
@@ -138,32 +155,48 @@ func (client AppServiceEnvironmentsClient) CreateOrUpdateResponder(resp *http.Re
 // resourceGroupName is name of the resource group to which the resource
 // belongs. name is name of the App Service Environment. multiRolePoolEnvelope
 // is properties of the multi-role pool.
-func (client AppServiceEnvironmentsClient) CreateOrUpdateMultiRolePool(resourceGroupName string, name string, multiRolePoolEnvelope WorkerPoolResource, cancel <-chan struct{}) (result autorest.Response, err error) {
+func (client AppServiceEnvironmentsClient) CreateOrUpdateMultiRolePool(resourceGroupName string, name string, multiRolePoolEnvelope WorkerPoolResource, cancel <-chan struct{}) (<-chan WorkerPoolResource, <-chan error) {
+	resultChan := make(chan WorkerPoolResource, 1)
+	errChan := make(chan error, 1)
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+[^\.]$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "web.AppServiceEnvironmentsClient", "CreateOrUpdateMultiRolePool")
+		errChan <- validation.NewErrorWithValidationError(err, "web.AppServiceEnvironmentsClient", "CreateOrUpdateMultiRolePool")
+		close(errChan)
+		close(resultChan)
+		return resultChan, errChan
 	}
 
-	req, err := client.CreateOrUpdateMultiRolePoolPreparer(resourceGroupName, name, multiRolePoolEnvelope, cancel)
-	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "CreateOrUpdateMultiRolePool", nil, "Failure preparing request")
-	}
+	go func() {
+		var err error
+		var result WorkerPoolResource
+		defer func() {
+			resultChan <- result
+			errChan <- err
+			close(resultChan)
+			close(errChan)
+		}()
+		req, err := client.CreateOrUpdateMultiRolePoolPreparer(resourceGroupName, name, multiRolePoolEnvelope, cancel)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "CreateOrUpdateMultiRolePool", nil, "Failure preparing request")
+			return
+		}
 
-	resp, err := client.CreateOrUpdateMultiRolePoolSender(req)
-	if err != nil {
-		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "CreateOrUpdateMultiRolePool", resp, "Failure sending request")
-	}
+		resp, err := client.CreateOrUpdateMultiRolePoolSender(req)
+		if err != nil {
+			result.Response = autorest.Response{Response: resp}
+			err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "CreateOrUpdateMultiRolePool", resp, "Failure sending request")
+			return
+		}
 
-	result, err = client.CreateOrUpdateMultiRolePoolResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "CreateOrUpdateMultiRolePool", resp, "Failure responding to request")
-	}
-
-	return
+		result, err = client.CreateOrUpdateMultiRolePoolResponder(resp)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "CreateOrUpdateMultiRolePool", resp, "Failure responding to request")
+		}
+	}()
+	return resultChan, errChan
 }
 
 // CreateOrUpdateMultiRolePoolPreparer prepares the CreateOrUpdateMultiRolePool request.
@@ -199,13 +232,14 @@ func (client AppServiceEnvironmentsClient) CreateOrUpdateMultiRolePoolSender(req
 
 // CreateOrUpdateMultiRolePoolResponder handles the response to the CreateOrUpdateMultiRolePool request. The method always
 // closes the http.Response Body.
-func (client AppServiceEnvironmentsClient) CreateOrUpdateMultiRolePoolResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client AppServiceEnvironmentsClient) CreateOrUpdateMultiRolePoolResponder(resp *http.Response) (result WorkerPoolResource, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusBadRequest, http.StatusNotFound, http.StatusConflict),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = resp
+	result.Response = autorest.Response{Response: resp}
 	return
 }
 
@@ -217,32 +251,48 @@ func (client AppServiceEnvironmentsClient) CreateOrUpdateMultiRolePoolResponder(
 // resourceGroupName is name of the resource group to which the resource
 // belongs. name is name of the App Service Environment. workerPoolName is name
 // of the worker pool. workerPoolEnvelope is properties of the worker pool.
-func (client AppServiceEnvironmentsClient) CreateOrUpdateWorkerPool(resourceGroupName string, name string, workerPoolName string, workerPoolEnvelope WorkerPoolResource, cancel <-chan struct{}) (result autorest.Response, err error) {
+func (client AppServiceEnvironmentsClient) CreateOrUpdateWorkerPool(resourceGroupName string, name string, workerPoolName string, workerPoolEnvelope WorkerPoolResource, cancel <-chan struct{}) (<-chan WorkerPoolResource, <-chan error) {
+	resultChan := make(chan WorkerPoolResource, 1)
+	errChan := make(chan error, 1)
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+[^\.]$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "web.AppServiceEnvironmentsClient", "CreateOrUpdateWorkerPool")
+		errChan <- validation.NewErrorWithValidationError(err, "web.AppServiceEnvironmentsClient", "CreateOrUpdateWorkerPool")
+		close(errChan)
+		close(resultChan)
+		return resultChan, errChan
 	}
 
-	req, err := client.CreateOrUpdateWorkerPoolPreparer(resourceGroupName, name, workerPoolName, workerPoolEnvelope, cancel)
-	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "CreateOrUpdateWorkerPool", nil, "Failure preparing request")
-	}
+	go func() {
+		var err error
+		var result WorkerPoolResource
+		defer func() {
+			resultChan <- result
+			errChan <- err
+			close(resultChan)
+			close(errChan)
+		}()
+		req, err := client.CreateOrUpdateWorkerPoolPreparer(resourceGroupName, name, workerPoolName, workerPoolEnvelope, cancel)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "CreateOrUpdateWorkerPool", nil, "Failure preparing request")
+			return
+		}
 
-	resp, err := client.CreateOrUpdateWorkerPoolSender(req)
-	if err != nil {
-		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "CreateOrUpdateWorkerPool", resp, "Failure sending request")
-	}
+		resp, err := client.CreateOrUpdateWorkerPoolSender(req)
+		if err != nil {
+			result.Response = autorest.Response{Response: resp}
+			err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "CreateOrUpdateWorkerPool", resp, "Failure sending request")
+			return
+		}
 
-	result, err = client.CreateOrUpdateWorkerPoolResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "CreateOrUpdateWorkerPool", resp, "Failure responding to request")
-	}
-
-	return
+		result, err = client.CreateOrUpdateWorkerPoolResponder(resp)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "CreateOrUpdateWorkerPool", resp, "Failure responding to request")
+		}
+	}()
+	return resultChan, errChan
 }
 
 // CreateOrUpdateWorkerPoolPreparer prepares the CreateOrUpdateWorkerPool request.
@@ -279,13 +329,14 @@ func (client AppServiceEnvironmentsClient) CreateOrUpdateWorkerPoolSender(req *h
 
 // CreateOrUpdateWorkerPoolResponder handles the response to the CreateOrUpdateWorkerPool request. The method always
 // closes the http.Response Body.
-func (client AppServiceEnvironmentsClient) CreateOrUpdateWorkerPoolResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client AppServiceEnvironmentsClient) CreateOrUpdateWorkerPoolResponder(resp *http.Response) (result WorkerPoolResource, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusBadRequest, http.StatusNotFound, http.StatusConflict),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = resp
+	result.Response = autorest.Response{Response: resp}
 	return
 }
 
@@ -298,32 +349,48 @@ func (client AppServiceEnvironmentsClient) CreateOrUpdateWorkerPoolResponder(res
 // belongs. name is name of the App Service Environment. forceDelete is specify
 // <code>true</code> to force the deletion even if the App Service Environment
 // contains resources. The default is <code>false</code>.
-func (client AppServiceEnvironmentsClient) Delete(resourceGroupName string, name string, forceDelete *bool, cancel <-chan struct{}) (result autorest.Response, err error) {
+func (client AppServiceEnvironmentsClient) Delete(resourceGroupName string, name string, forceDelete *bool, cancel <-chan struct{}) (<-chan autorest.Response, <-chan error) {
+	resultChan := make(chan autorest.Response, 1)
+	errChan := make(chan error, 1)
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+[^\.]$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "web.AppServiceEnvironmentsClient", "Delete")
+		errChan <- validation.NewErrorWithValidationError(err, "web.AppServiceEnvironmentsClient", "Delete")
+		close(errChan)
+		close(resultChan)
+		return resultChan, errChan
 	}
 
-	req, err := client.DeletePreparer(resourceGroupName, name, forceDelete, cancel)
-	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "Delete", nil, "Failure preparing request")
-	}
+	go func() {
+		var err error
+		var result autorest.Response
+		defer func() {
+			resultChan <- result
+			errChan <- err
+			close(resultChan)
+			close(errChan)
+		}()
+		req, err := client.DeletePreparer(resourceGroupName, name, forceDelete, cancel)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "Delete", nil, "Failure preparing request")
+			return
+		}
 
-	resp, err := client.DeleteSender(req)
-	if err != nil {
-		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "Delete", resp, "Failure sending request")
-	}
+		resp, err := client.DeleteSender(req)
+		if err != nil {
+			result.Response = resp
+			err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "Delete", resp, "Failure sending request")
+			return
+		}
 
-	result, err = client.DeleteResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "Delete", resp, "Failure responding to request")
-	}
-
-	return
+		result, err = client.DeleteResponder(resp)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "Delete", resp, "Failure responding to request")
+		}
+	}()
+	return resultChan, errChan
 }
 
 // DeletePreparer prepares the Delete request.
@@ -385,13 +452,15 @@ func (client AppServiceEnvironmentsClient) Get(resourceGroupName string, name st
 
 	req, err := client.GetPreparer(resourceGroupName, name)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "Get", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "Get", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "Get", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "Get", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetResponder(resp)
@@ -458,13 +527,15 @@ func (client AppServiceEnvironmentsClient) GetDiagnosticsItem(resourceGroupName 
 
 	req, err := client.GetDiagnosticsItemPreparer(resourceGroupName, name, diagnosticsName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "GetDiagnosticsItem", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "GetDiagnosticsItem", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetDiagnosticsItemSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "GetDiagnosticsItem", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "GetDiagnosticsItem", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetDiagnosticsItemResponder(resp)
@@ -531,13 +602,15 @@ func (client AppServiceEnvironmentsClient) GetMultiRolePool(resourceGroupName st
 
 	req, err := client.GetMultiRolePoolPreparer(resourceGroupName, name)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "GetMultiRolePool", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "GetMultiRolePool", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetMultiRolePoolSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "GetMultiRolePool", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "GetMultiRolePool", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetMultiRolePoolResponder(resp)
@@ -604,13 +677,15 @@ func (client AppServiceEnvironmentsClient) GetWorkerPool(resourceGroupName strin
 
 	req, err := client.GetWorkerPoolPreparer(resourceGroupName, name, workerPoolName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "GetWorkerPool", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "GetWorkerPool", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetWorkerPoolSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "GetWorkerPool", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "GetWorkerPool", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetWorkerPoolResponder(resp)
@@ -666,13 +741,15 @@ func (client AppServiceEnvironmentsClient) GetWorkerPoolResponder(resp *http.Res
 func (client AppServiceEnvironmentsClient) List() (result AppServiceEnvironmentCollection, err error) {
 	req, err := client.ListPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "List", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "List", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "List", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "List", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListResponder(resp)
@@ -760,13 +837,15 @@ func (client AppServiceEnvironmentsClient) ListAppServicePlans(resourceGroupName
 
 	req, err := client.ListAppServicePlansPreparer(resourceGroupName, name)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "ListAppServicePlans", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "ListAppServicePlans", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListAppServicePlansSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "ListAppServicePlans", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "ListAppServicePlans", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListAppServicePlansResponder(resp)
@@ -856,13 +935,15 @@ func (client AppServiceEnvironmentsClient) ListByResourceGroup(resourceGroupName
 
 	req, err := client.ListByResourceGroupPreparer(resourceGroupName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "ListByResourceGroup", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "ListByResourceGroup", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListByResourceGroupSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "ListByResourceGroup", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "ListByResourceGroup", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListByResourceGroupResponder(resp)
@@ -952,13 +1033,15 @@ func (client AppServiceEnvironmentsClient) ListCapacities(resourceGroupName stri
 
 	req, err := client.ListCapacitiesPreparer(resourceGroupName, name)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "ListCapacities", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "ListCapacities", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListCapacitiesSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "ListCapacities", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "ListCapacities", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListCapacitiesResponder(resp)
@@ -1048,13 +1131,15 @@ func (client AppServiceEnvironmentsClient) ListDiagnostics(resourceGroupName str
 
 	req, err := client.ListDiagnosticsPreparer(resourceGroupName, name)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "ListDiagnostics", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "ListDiagnostics", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListDiagnosticsSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "ListDiagnostics", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "ListDiagnostics", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListDiagnosticsResponder(resp)
@@ -1121,13 +1206,15 @@ func (client AppServiceEnvironmentsClient) ListMetricDefinitions(resourceGroupNa
 
 	req, err := client.ListMetricDefinitionsPreparer(resourceGroupName, name)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "ListMetricDefinitions", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "ListMetricDefinitions", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListMetricDefinitionsSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "ListMetricDefinitions", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "ListMetricDefinitions", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListMetricDefinitionsResponder(resp)
@@ -1199,13 +1286,15 @@ func (client AppServiceEnvironmentsClient) ListMetrics(resourceGroupName string,
 
 	req, err := client.ListMetricsPreparer(resourceGroupName, name, details, filter)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "ListMetrics", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "ListMetrics", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListMetricsSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "ListMetrics", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "ListMetrics", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListMetricsResponder(resp)
@@ -1302,13 +1391,15 @@ func (client AppServiceEnvironmentsClient) ListMultiRoleMetricDefinitions(resour
 
 	req, err := client.ListMultiRoleMetricDefinitionsPreparer(resourceGroupName, name)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "ListMultiRoleMetricDefinitions", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "ListMultiRoleMetricDefinitions", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListMultiRoleMetricDefinitionsSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "ListMultiRoleMetricDefinitions", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "ListMultiRoleMetricDefinitions", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListMultiRoleMetricDefinitionsResponder(resp)
@@ -1407,13 +1498,15 @@ func (client AppServiceEnvironmentsClient) ListMultiRoleMetrics(resourceGroupNam
 
 	req, err := client.ListMultiRoleMetricsPreparer(resourceGroupName, name, startTime, endTime, timeGrain, details, filter)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "ListMultiRoleMetrics", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "ListMultiRoleMetrics", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListMultiRoleMetricsSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "ListMultiRoleMetrics", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "ListMultiRoleMetrics", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListMultiRoleMetricsResponder(resp)
@@ -1520,13 +1613,15 @@ func (client AppServiceEnvironmentsClient) ListMultiRolePoolInstanceMetricDefini
 
 	req, err := client.ListMultiRolePoolInstanceMetricDefinitionsPreparer(resourceGroupName, name, instance)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "ListMultiRolePoolInstanceMetricDefinitions", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "ListMultiRolePoolInstanceMetricDefinitions", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListMultiRolePoolInstanceMetricDefinitionsSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "ListMultiRolePoolInstanceMetricDefinitions", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "ListMultiRolePoolInstanceMetricDefinitions", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListMultiRolePoolInstanceMetricDefinitionsResponder(resp)
@@ -1620,13 +1715,15 @@ func (client AppServiceEnvironmentsClient) ListMultiRolePoolInstanceMetrics(reso
 
 	req, err := client.ListMultiRolePoolInstanceMetricsPreparer(resourceGroupName, name, instance, details)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "ListMultiRolePoolInstanceMetrics", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "ListMultiRolePoolInstanceMetrics", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListMultiRolePoolInstanceMetricsSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "ListMultiRolePoolInstanceMetrics", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "ListMultiRolePoolInstanceMetrics", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListMultiRolePoolInstanceMetricsResponder(resp)
@@ -1720,13 +1817,15 @@ func (client AppServiceEnvironmentsClient) ListMultiRolePools(resourceGroupName 
 
 	req, err := client.ListMultiRolePoolsPreparer(resourceGroupName, name)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "ListMultiRolePools", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "ListMultiRolePools", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListMultiRolePoolsSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "ListMultiRolePools", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "ListMultiRolePools", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListMultiRolePoolsResponder(resp)
@@ -1816,13 +1915,15 @@ func (client AppServiceEnvironmentsClient) ListMultiRolePoolSkus(resourceGroupNa
 
 	req, err := client.ListMultiRolePoolSkusPreparer(resourceGroupName, name)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "ListMultiRolePoolSkus", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "ListMultiRolePoolSkus", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListMultiRolePoolSkusSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "ListMultiRolePoolSkus", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "ListMultiRolePoolSkus", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListMultiRolePoolSkusResponder(resp)
@@ -1913,13 +2014,15 @@ func (client AppServiceEnvironmentsClient) ListMultiRoleUsages(resourceGroupName
 
 	req, err := client.ListMultiRoleUsagesPreparer(resourceGroupName, name)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "ListMultiRoleUsages", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "ListMultiRoleUsages", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListMultiRoleUsagesSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "ListMultiRoleUsages", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "ListMultiRoleUsages", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListMultiRoleUsagesResponder(resp)
@@ -2010,13 +2113,15 @@ func (client AppServiceEnvironmentsClient) ListOperations(resourceGroupName stri
 
 	req, err := client.ListOperationsPreparer(resourceGroupName, name)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "ListOperations", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "ListOperations", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListOperationsSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "ListOperations", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "ListOperations", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListOperationsResponder(resp)
@@ -2086,13 +2191,15 @@ func (client AppServiceEnvironmentsClient) ListUsages(resourceGroupName string, 
 
 	req, err := client.ListUsagesPreparer(resourceGroupName, name, filter)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "ListUsages", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "ListUsages", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListUsagesSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "ListUsages", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "ListUsages", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListUsagesResponder(resp)
@@ -2185,13 +2292,15 @@ func (client AppServiceEnvironmentsClient) ListVips(resourceGroupName string, na
 
 	req, err := client.ListVipsPreparer(resourceGroupName, name)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "ListVips", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "ListVips", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListVipsSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "ListVips", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "ListVips", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListVipsResponder(resp)
@@ -2258,13 +2367,15 @@ func (client AppServiceEnvironmentsClient) ListWebApps(resourceGroupName string,
 
 	req, err := client.ListWebAppsPreparer(resourceGroupName, name, propertiesToInclude)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "ListWebApps", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "ListWebApps", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListWebAppsSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "ListWebApps", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "ListWebApps", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListWebAppsResponder(resp)
@@ -2359,13 +2470,15 @@ func (client AppServiceEnvironmentsClient) ListWebWorkerMetricDefinitions(resour
 
 	req, err := client.ListWebWorkerMetricDefinitionsPreparer(resourceGroupName, name, workerPoolName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "ListWebWorkerMetricDefinitions", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "ListWebWorkerMetricDefinitions", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListWebWorkerMetricDefinitionsSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "ListWebWorkerMetricDefinitions", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "ListWebWorkerMetricDefinitions", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListWebWorkerMetricDefinitionsResponder(resp)
@@ -2463,13 +2576,15 @@ func (client AppServiceEnvironmentsClient) ListWebWorkerMetrics(resourceGroupNam
 
 	req, err := client.ListWebWorkerMetricsPreparer(resourceGroupName, name, workerPoolName, details, filter)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "ListWebWorkerMetrics", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "ListWebWorkerMetrics", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListWebWorkerMetricsSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "ListWebWorkerMetrics", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "ListWebWorkerMetrics", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListWebWorkerMetricsResponder(resp)
@@ -2568,13 +2683,15 @@ func (client AppServiceEnvironmentsClient) ListWebWorkerUsages(resourceGroupName
 
 	req, err := client.ListWebWorkerUsagesPreparer(resourceGroupName, name, workerPoolName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "ListWebWorkerUsages", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "ListWebWorkerUsages", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListWebWorkerUsagesSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "ListWebWorkerUsages", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "ListWebWorkerUsages", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListWebWorkerUsagesResponder(resp)
@@ -2667,13 +2784,15 @@ func (client AppServiceEnvironmentsClient) ListWorkerPoolInstanceMetricDefinitio
 
 	req, err := client.ListWorkerPoolInstanceMetricDefinitionsPreparer(resourceGroupName, name, workerPoolName, instance)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "ListWorkerPoolInstanceMetricDefinitions", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "ListWorkerPoolInstanceMetricDefinitions", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListWorkerPoolInstanceMetricDefinitionsSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "ListWorkerPoolInstanceMetricDefinitions", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "ListWorkerPoolInstanceMetricDefinitions", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListWorkerPoolInstanceMetricDefinitionsResponder(resp)
@@ -2773,13 +2892,15 @@ func (client AppServiceEnvironmentsClient) ListWorkerPoolInstanceMetrics(resourc
 
 	req, err := client.ListWorkerPoolInstanceMetricsPreparer(resourceGroupName, name, workerPoolName, instance, details, filter)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "ListWorkerPoolInstanceMetrics", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "ListWorkerPoolInstanceMetrics", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListWorkerPoolInstanceMetricsSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "ListWorkerPoolInstanceMetrics", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "ListWorkerPoolInstanceMetrics", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListWorkerPoolInstanceMetricsResponder(resp)
@@ -2877,13 +2998,15 @@ func (client AppServiceEnvironmentsClient) ListWorkerPools(resourceGroupName str
 
 	req, err := client.ListWorkerPoolsPreparer(resourceGroupName, name)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "ListWorkerPools", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "ListWorkerPools", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListWorkerPoolsSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "ListWorkerPools", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "ListWorkerPools", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListWorkerPoolsResponder(resp)
@@ -2974,13 +3097,15 @@ func (client AppServiceEnvironmentsClient) ListWorkerPoolSkus(resourceGroupName 
 
 	req, err := client.ListWorkerPoolSkusPreparer(resourceGroupName, name, workerPoolName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "ListWorkerPoolSkus", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "ListWorkerPoolSkus", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListWorkerPoolSkusSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "ListWorkerPoolSkus", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "ListWorkerPoolSkus", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListWorkerPoolSkusResponder(resp)
@@ -3071,13 +3196,15 @@ func (client AppServiceEnvironmentsClient) Reboot(resourceGroupName string, name
 
 	req, err := client.RebootPreparer(resourceGroupName, name)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "Reboot", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "Reboot", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.RebootSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "Reboot", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "Reboot", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.RebootResponder(resp)
@@ -3134,7 +3261,7 @@ func (client AppServiceEnvironmentsClient) RebootResponder(resp *http.Response) 
 //
 // resourceGroupName is name of the resource group to which the resource
 // belongs. name is name of the App Service Environment.
-func (client AppServiceEnvironmentsClient) Resume(resourceGroupName string, name string, cancel <-chan struct{}) (result autorest.Response, err error) {
+func (client AppServiceEnvironmentsClient) Resume(resourceGroupName string, name string, cancel <-chan struct{}) (result AppCollection, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
@@ -3145,13 +3272,15 @@ func (client AppServiceEnvironmentsClient) Resume(resourceGroupName string, name
 
 	req, err := client.ResumePreparer(resourceGroupName, name, cancel)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "Resume", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "Resume", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ResumeSender(req)
 	if err != nil {
-		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "Resume", resp, "Failure sending request")
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "Resume", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ResumeResponder(resp)
@@ -3193,18 +3322,19 @@ func (client AppServiceEnvironmentsClient) ResumeSender(req *http.Request) (*htt
 
 // ResumeResponder handles the response to the Resume request. The method always
 // closes the http.Response Body.
-func (client AppServiceEnvironmentsClient) ResumeResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client AppServiceEnvironmentsClient) ResumeResponder(resp *http.Response) (result AppCollection, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = resp
+	result.Response = autorest.Response{Response: resp}
 	return
 }
 
 // ResumeNextResults retrieves the next set of results, if any.
-func (client AppServiceEnvironmentsClient) ResumeNextResults(lastResults AppCollection) (result autorest.Response, err error) {
+func (client AppServiceEnvironmentsClient) ResumeNextResults(lastResults AppCollection) (result AppCollection, err error) {
 	req, err := lastResults.AppCollectionPreparer()
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "Resume", nil, "Failure preparing next results request")
@@ -3215,7 +3345,7 @@ func (client AppServiceEnvironmentsClient) ResumeNextResults(lastResults AppColl
 
 	resp, err := client.ResumeSender(req)
 	if err != nil {
-		result.Response = resp
+		result.Response = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "Resume", resp, "Failure sending next results request")
 	}
 
@@ -3234,7 +3364,7 @@ func (client AppServiceEnvironmentsClient) ResumeNextResults(lastResults AppColl
 //
 // resourceGroupName is name of the resource group to which the resource
 // belongs. name is name of the App Service Environment.
-func (client AppServiceEnvironmentsClient) Suspend(resourceGroupName string, name string, cancel <-chan struct{}) (result autorest.Response, err error) {
+func (client AppServiceEnvironmentsClient) Suspend(resourceGroupName string, name string, cancel <-chan struct{}) (result AppCollection, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
@@ -3245,13 +3375,15 @@ func (client AppServiceEnvironmentsClient) Suspend(resourceGroupName string, nam
 
 	req, err := client.SuspendPreparer(resourceGroupName, name, cancel)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "Suspend", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "Suspend", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.SuspendSender(req)
 	if err != nil {
-		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "Suspend", resp, "Failure sending request")
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "Suspend", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.SuspendResponder(resp)
@@ -3293,18 +3425,19 @@ func (client AppServiceEnvironmentsClient) SuspendSender(req *http.Request) (*ht
 
 // SuspendResponder handles the response to the Suspend request. The method always
 // closes the http.Response Body.
-func (client AppServiceEnvironmentsClient) SuspendResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client AppServiceEnvironmentsClient) SuspendResponder(resp *http.Response) (result AppCollection, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = resp
+	result.Response = autorest.Response{Response: resp}
 	return
 }
 
 // SuspendNextResults retrieves the next set of results, if any.
-func (client AppServiceEnvironmentsClient) SuspendNextResults(lastResults AppCollection) (result autorest.Response, err error) {
+func (client AppServiceEnvironmentsClient) SuspendNextResults(lastResults AppCollection) (result AppCollection, err error) {
 	req, err := lastResults.AppCollectionPreparer()
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "Suspend", nil, "Failure preparing next results request")
@@ -3315,7 +3448,7 @@ func (client AppServiceEnvironmentsClient) SuspendNextResults(lastResults AppCol
 
 	resp, err := client.SuspendSender(req)
 	if err != nil {
-		result.Response = resp
+		result.Response = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "Suspend", resp, "Failure sending next results request")
 	}
 

@@ -49,13 +49,15 @@ func NewDevicesClientWithBaseURI(baseURI string, subscriptionID string) DevicesC
 func (client DevicesClient) GetByDeviceID(resourceGroupName string, appCollection string, appName string, deviceID string) (result Device, err error) {
 	req, err := client.GetByDeviceIDPreparer(resourceGroupName, appCollection, appName, deviceID)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "mobileengagement.DevicesClient", "GetByDeviceID", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "mobileengagement.DevicesClient", "GetByDeviceID", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetByDeviceIDSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "mobileengagement.DevicesClient", "GetByDeviceID", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "mobileengagement.DevicesClient", "GetByDeviceID", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetByDeviceIDResponder(resp)
@@ -117,13 +119,15 @@ func (client DevicesClient) GetByDeviceIDResponder(resp *http.Response) (result 
 func (client DevicesClient) GetByUserID(resourceGroupName string, appCollection string, appName string, userID string) (result Device, err error) {
 	req, err := client.GetByUserIDPreparer(resourceGroupName, appCollection, appName, userID)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "mobileengagement.DevicesClient", "GetByUserID", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "mobileengagement.DevicesClient", "GetByUserID", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetByUserIDSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "mobileengagement.DevicesClient", "GetByUserID", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "mobileengagement.DevicesClient", "GetByUserID", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetByUserIDResponder(resp)
@@ -223,13 +227,15 @@ func (client DevicesClient) GetByUserIDResponder(resp *http.Response) (result De
 func (client DevicesClient) List(resourceGroupName string, appCollection string, appName string, top *int32, selectParameter string, filter string) (result DevicesQueryResult, err error) {
 	req, err := client.ListPreparer(resourceGroupName, appCollection, appName, top, selectParameter, filter)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "mobileengagement.DevicesClient", "List", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "mobileengagement.DevicesClient", "List", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "mobileengagement.DevicesClient", "List", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "mobileengagement.DevicesClient", "List", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListResponder(resp)
@@ -330,13 +336,15 @@ func (client DevicesClient) TagByDeviceID(resourceGroupName string, appCollectio
 
 	req, err := client.TagByDeviceIDPreparer(resourceGroupName, appCollection, appName, parameters)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "mobileengagement.DevicesClient", "TagByDeviceID", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "mobileengagement.DevicesClient", "TagByDeviceID", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.TagByDeviceIDSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "mobileengagement.DevicesClient", "TagByDeviceID", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "mobileengagement.DevicesClient", "TagByDeviceID", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.TagByDeviceIDResponder(resp)
@@ -406,13 +414,15 @@ func (client DevicesClient) TagByUserID(resourceGroupName string, appCollection 
 
 	req, err := client.TagByUserIDPreparer(resourceGroupName, appCollection, appName, parameters)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "mobileengagement.DevicesClient", "TagByUserID", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "mobileengagement.DevicesClient", "TagByUserID", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.TagByUserIDSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "mobileengagement.DevicesClient", "TagByUserID", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "mobileengagement.DevicesClient", "TagByUserID", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.TagByUserIDResponder(resp)

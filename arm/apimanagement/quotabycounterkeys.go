@@ -25,9 +25,7 @@ import (
 	"net/http"
 )
 
-// QuotaByCounterKeysClient is the use these REST APIs for performing
-// operations on entities like API, Product, and Subscription associated with
-// your Azure API Management deployment.
+// QuotaByCounterKeysClient is the composite Swagger for ApiManagement Client
 type QuotaByCounterKeysClient struct {
 	ManagementClient
 }
@@ -62,13 +60,15 @@ func (client QuotaByCounterKeysClient) ListByService(resourceGroupName string, s
 
 	req, err := client.ListByServicePreparer(resourceGroupName, serviceName, quotaCounterKey)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "apimanagement.QuotaByCounterKeysClient", "ListByService", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "apimanagement.QuotaByCounterKeysClient", "ListByService", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListByServiceSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "apimanagement.QuotaByCounterKeysClient", "ListByService", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "apimanagement.QuotaByCounterKeysClient", "ListByService", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListByServiceResponder(resp)
@@ -88,7 +88,7 @@ func (client QuotaByCounterKeysClient) ListByServicePreparer(resourceGroupName s
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2016-07-07"
+	const APIVersion = "2016-10-10"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -139,13 +139,15 @@ func (client QuotaByCounterKeysClient) Update(resourceGroupName string, serviceN
 
 	req, err := client.UpdatePreparer(resourceGroupName, serviceName, quotaCounterKey, parameters)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "apimanagement.QuotaByCounterKeysClient", "Update", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "apimanagement.QuotaByCounterKeysClient", "Update", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.UpdateSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "apimanagement.QuotaByCounterKeysClient", "Update", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "apimanagement.QuotaByCounterKeysClient", "Update", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.UpdateResponder(resp)
@@ -165,7 +167,7 @@ func (client QuotaByCounterKeysClient) UpdatePreparer(resourceGroupName string, 
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2016-07-07"
+	const APIVersion = "2016-10-10"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}

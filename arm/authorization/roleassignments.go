@@ -60,13 +60,15 @@ func NewRoleAssignmentsClientWithBaseURI(baseURI string, subscriptionID string) 
 func (client RoleAssignmentsClient) Create(scope string, roleAssignmentName string, parameters RoleAssignmentCreateParameters) (result RoleAssignment, err error) {
 	req, err := client.CreatePreparer(scope, roleAssignmentName, parameters)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "authorization.RoleAssignmentsClient", "Create", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "authorization.RoleAssignmentsClient", "Create", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.CreateSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "authorization.RoleAssignmentsClient", "Create", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "authorization.RoleAssignmentsClient", "Create", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.CreateResponder(resp)
@@ -125,13 +127,15 @@ func (client RoleAssignmentsClient) CreateResponder(resp *http.Response) (result
 func (client RoleAssignmentsClient) CreateByID(roleAssignmentID string, parameters RoleAssignmentCreateParameters) (result RoleAssignment, err error) {
 	req, err := client.CreateByIDPreparer(roleAssignmentID, parameters)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "authorization.RoleAssignmentsClient", "CreateByID", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "authorization.RoleAssignmentsClient", "CreateByID", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.CreateByIDSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "authorization.RoleAssignmentsClient", "CreateByID", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "authorization.RoleAssignmentsClient", "CreateByID", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.CreateByIDResponder(resp)
@@ -189,13 +193,15 @@ func (client RoleAssignmentsClient) CreateByIDResponder(resp *http.Response) (re
 func (client RoleAssignmentsClient) Delete(scope string, roleAssignmentName string) (result RoleAssignment, err error) {
 	req, err := client.DeletePreparer(scope, roleAssignmentName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "authorization.RoleAssignmentsClient", "Delete", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "authorization.RoleAssignmentsClient", "Delete", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.DeleteSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "authorization.RoleAssignmentsClient", "Delete", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "authorization.RoleAssignmentsClient", "Delete", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.DeleteResponder(resp)
@@ -251,13 +257,15 @@ func (client RoleAssignmentsClient) DeleteResponder(resp *http.Response) (result
 func (client RoleAssignmentsClient) DeleteByID(roleAssignmentID string) (result RoleAssignment, err error) {
 	req, err := client.DeleteByIDPreparer(roleAssignmentID)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "authorization.RoleAssignmentsClient", "DeleteByID", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "authorization.RoleAssignmentsClient", "DeleteByID", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.DeleteByIDSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "authorization.RoleAssignmentsClient", "DeleteByID", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "authorization.RoleAssignmentsClient", "DeleteByID", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.DeleteByIDResponder(resp)
@@ -313,13 +321,15 @@ func (client RoleAssignmentsClient) DeleteByIDResponder(resp *http.Response) (re
 func (client RoleAssignmentsClient) Get(scope string, roleAssignmentName string) (result RoleAssignment, err error) {
 	req, err := client.GetPreparer(scope, roleAssignmentName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "authorization.RoleAssignmentsClient", "Get", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "authorization.RoleAssignmentsClient", "Get", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "authorization.RoleAssignmentsClient", "Get", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "authorization.RoleAssignmentsClient", "Get", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetResponder(resp)
@@ -375,13 +385,15 @@ func (client RoleAssignmentsClient) GetResponder(resp *http.Response) (result Ro
 func (client RoleAssignmentsClient) GetByID(roleAssignmentID string) (result RoleAssignment, err error) {
 	req, err := client.GetByIDPreparer(roleAssignmentID)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "authorization.RoleAssignmentsClient", "GetByID", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "authorization.RoleAssignmentsClient", "GetByID", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetByIDSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "authorization.RoleAssignmentsClient", "GetByID", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "authorization.RoleAssignmentsClient", "GetByID", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetByIDResponder(resp)
@@ -439,13 +451,15 @@ func (client RoleAssignmentsClient) GetByIDResponder(resp *http.Response) (resul
 func (client RoleAssignmentsClient) List(filter string) (result RoleAssignmentListResult, err error) {
 	req, err := client.ListPreparer(filter)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "authorization.RoleAssignmentsClient", "List", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "authorization.RoleAssignmentsClient", "List", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "authorization.RoleAssignmentsClient", "List", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "authorization.RoleAssignmentsClient", "List", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListResponder(resp)
@@ -534,13 +548,15 @@ func (client RoleAssignmentsClient) ListNextResults(lastResults RoleAssignmentLi
 func (client RoleAssignmentsClient) ListForResource(resourceGroupName string, resourceProviderNamespace string, parentResourcePath string, resourceType string, resourceName string, filter string) (result RoleAssignmentListResult, err error) {
 	req, err := client.ListForResourcePreparer(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, filter)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "authorization.RoleAssignmentsClient", "ListForResource", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "authorization.RoleAssignmentsClient", "ListForResource", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListForResourceSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "authorization.RoleAssignmentsClient", "ListForResource", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "authorization.RoleAssignmentsClient", "ListForResource", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListForResourceResponder(resp)
@@ -573,7 +589,7 @@ func (client RoleAssignmentsClient) ListForResourcePreparer(resourceGroupName st
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{parentResourcePath}/{resourceType}/{resourceName}providers/Microsoft.Authorization/roleAssignments", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{parentResourcePath}/{resourceType}/{resourceName}/providers/Microsoft.Authorization/roleAssignments", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare(&http.Request{})
 }
@@ -630,13 +646,15 @@ func (client RoleAssignmentsClient) ListForResourceNextResults(lastResults RoleA
 func (client RoleAssignmentsClient) ListForResourceGroup(resourceGroupName string, filter string) (result RoleAssignmentListResult, err error) {
 	req, err := client.ListForResourceGroupPreparer(resourceGroupName, filter)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "authorization.RoleAssignmentsClient", "ListForResourceGroup", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "authorization.RoleAssignmentsClient", "ListForResourceGroup", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListForResourceGroupSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "authorization.RoleAssignmentsClient", "ListForResourceGroup", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "authorization.RoleAssignmentsClient", "ListForResourceGroup", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListForResourceGroupResponder(resp)
@@ -722,13 +740,15 @@ func (client RoleAssignmentsClient) ListForResourceGroupNextResults(lastResults 
 func (client RoleAssignmentsClient) ListForScope(scope string, filter string) (result RoleAssignmentListResult, err error) {
 	req, err := client.ListForScopePreparer(scope, filter)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "authorization.RoleAssignmentsClient", "ListForScope", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "authorization.RoleAssignmentsClient", "ListForScope", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListForScopeSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "authorization.RoleAssignmentsClient", "ListForScope", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "authorization.RoleAssignmentsClient", "ListForScope", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListForScopeResponder(resp)

@@ -51,7 +51,9 @@ func NewLinksClientWithBaseURI(baseURI string, subscriptionID string) LinksClien
 // resourceGroupName is the name of the resource group. hubName is the name of
 // the hub. linkName is the name of the link. parameters is parameters supplied
 // to the CreateOrUpdate Link operation.
-func (client LinksClient) CreateOrUpdate(resourceGroupName string, hubName string, linkName string, parameters LinkResourceFormat, cancel <-chan struct{}) (result autorest.Response, err error) {
+func (client LinksClient) CreateOrUpdate(resourceGroupName string, hubName string, linkName string, parameters LinkResourceFormat, cancel <-chan struct{}) (<-chan LinkResourceFormat, <-chan error) {
+	resultChan := make(chan LinkResourceFormat, 1)
+	errChan := make(chan error, 1)
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: linkName,
 			Constraints: []validation.Constraint{{Target: "linkName", Name: validation.MaxLength, Rule: 512, Chain: nil},
@@ -63,26 +65,40 @@ func (client LinksClient) CreateOrUpdate(resourceGroupName string, hubName strin
 					{Target: "parameters.LinkDefinition.TargetProfileType", Name: validation.Null, Rule: true, Chain: nil},
 					{Target: "parameters.LinkDefinition.ParticipantPropertyReferences", Name: validation.Null, Rule: true, Chain: nil},
 				}}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "customerinsights.LinksClient", "CreateOrUpdate")
+		errChan <- validation.NewErrorWithValidationError(err, "customerinsights.LinksClient", "CreateOrUpdate")
+		close(errChan)
+		close(resultChan)
+		return resultChan, errChan
 	}
 
-	req, err := client.CreateOrUpdatePreparer(resourceGroupName, hubName, linkName, parameters, cancel)
-	if err != nil {
-		return result, autorest.NewErrorWithError(err, "customerinsights.LinksClient", "CreateOrUpdate", nil, "Failure preparing request")
-	}
+	go func() {
+		var err error
+		var result LinkResourceFormat
+		defer func() {
+			resultChan <- result
+			errChan <- err
+			close(resultChan)
+			close(errChan)
+		}()
+		req, err := client.CreateOrUpdatePreparer(resourceGroupName, hubName, linkName, parameters, cancel)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "customerinsights.LinksClient", "CreateOrUpdate", nil, "Failure preparing request")
+			return
+		}
 
-	resp, err := client.CreateOrUpdateSender(req)
-	if err != nil {
-		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "customerinsights.LinksClient", "CreateOrUpdate", resp, "Failure sending request")
-	}
+		resp, err := client.CreateOrUpdateSender(req)
+		if err != nil {
+			result.Response = autorest.Response{Response: resp}
+			err = autorest.NewErrorWithError(err, "customerinsights.LinksClient", "CreateOrUpdate", resp, "Failure sending request")
+			return
+		}
 
-	result, err = client.CreateOrUpdateResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "customerinsights.LinksClient", "CreateOrUpdate", resp, "Failure responding to request")
-	}
-
-	return
+		result, err = client.CreateOrUpdateResponder(resp)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "customerinsights.LinksClient", "CreateOrUpdate", resp, "Failure responding to request")
+		}
+	}()
+	return resultChan, errChan
 }
 
 // CreateOrUpdatePreparer prepares the CreateOrUpdate request.
@@ -94,8 +110,9 @@ func (client LinksClient) CreateOrUpdatePreparer(resourceGroupName string, hubNa
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
+	const APIVersion = "2017-01-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -118,13 +135,14 @@ func (client LinksClient) CreateOrUpdateSender(req *http.Request) (*http.Respons
 
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
 // closes the http.Response Body.
-func (client LinksClient) CreateOrUpdateResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client LinksClient) CreateOrUpdateResponder(resp *http.Response) (result LinkResourceFormat, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = resp
+	result.Response = autorest.Response{Response: resp}
 	return
 }
 
@@ -135,13 +153,15 @@ func (client LinksClient) CreateOrUpdateResponder(resp *http.Response) (result a
 func (client LinksClient) Delete(resourceGroupName string, hubName string, linkName string) (result autorest.Response, err error) {
 	req, err := client.DeletePreparer(resourceGroupName, hubName, linkName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "customerinsights.LinksClient", "Delete", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "customerinsights.LinksClient", "Delete", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.DeleteSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "customerinsights.LinksClient", "Delete", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "customerinsights.LinksClient", "Delete", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.DeleteResponder(resp)
@@ -161,8 +181,9 @@ func (client LinksClient) DeletePreparer(resourceGroupName string, hubName strin
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
+	const APIVersion = "2017-01-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -198,13 +219,15 @@ func (client LinksClient) DeleteResponder(resp *http.Response) (result autorest.
 func (client LinksClient) Get(resourceGroupName string, hubName string, linkName string) (result LinkResourceFormat, err error) {
 	req, err := client.GetPreparer(resourceGroupName, hubName, linkName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "customerinsights.LinksClient", "Get", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "customerinsights.LinksClient", "Get", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "customerinsights.LinksClient", "Get", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "customerinsights.LinksClient", "Get", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetResponder(resp)
@@ -224,8 +247,9 @@ func (client LinksClient) GetPreparer(resourceGroupName string, hubName string, 
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
+	const APIVersion = "2017-01-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -262,13 +286,15 @@ func (client LinksClient) GetResponder(resp *http.Response) (result LinkResource
 func (client LinksClient) ListByHub(resourceGroupName string, hubName string) (result LinkListResult, err error) {
 	req, err := client.ListByHubPreparer(resourceGroupName, hubName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "customerinsights.LinksClient", "ListByHub", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "customerinsights.LinksClient", "ListByHub", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListByHubSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "customerinsights.LinksClient", "ListByHub", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "customerinsights.LinksClient", "ListByHub", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListByHubResponder(resp)
@@ -287,8 +313,9 @@ func (client LinksClient) ListByHubPreparer(resourceGroupName string, hubName st
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
+	const APIVersion = "2017-01-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(

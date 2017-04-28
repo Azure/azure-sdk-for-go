@@ -45,17 +45,20 @@ func NewWorkflowTriggerHistoriesClientWithBaseURI(baseURI string, subscriptionID
 //
 // resourceGroupName is the resource group name. workflowName is the workflow
 // name. triggerName is the workflow trigger name. historyName is the workflow
-// trigger history name.
+// trigger history name. Corresponds to the run name for triggers that resulted
+// in a run.
 func (client WorkflowTriggerHistoriesClient) Get(resourceGroupName string, workflowName string, triggerName string, historyName string) (result WorkflowTriggerHistory, err error) {
 	req, err := client.GetPreparer(resourceGroupName, workflowName, triggerName, historyName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "logic.WorkflowTriggerHistoriesClient", "Get", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "logic.WorkflowTriggerHistoriesClient", "Get", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "logic.WorkflowTriggerHistoriesClient", "Get", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "logic.WorkflowTriggerHistoriesClient", "Get", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetResponder(resp)
@@ -117,13 +120,15 @@ func (client WorkflowTriggerHistoriesClient) GetResponder(resp *http.Response) (
 func (client WorkflowTriggerHistoriesClient) List(resourceGroupName string, workflowName string, triggerName string, top *int32, filter string) (result WorkflowTriggerHistoryListResult, err error) {
 	req, err := client.ListPreparer(resourceGroupName, workflowName, triggerName, top, filter)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "logic.WorkflowTriggerHistoriesClient", "List", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "logic.WorkflowTriggerHistoriesClient", "List", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "logic.WorkflowTriggerHistoriesClient", "List", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "logic.WorkflowTriggerHistoriesClient", "List", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListResponder(resp)
@@ -202,5 +207,74 @@ func (client WorkflowTriggerHistoriesClient) ListNextResults(lastResults Workflo
 		err = autorest.NewErrorWithError(err, "logic.WorkflowTriggerHistoriesClient", "List", resp, "Failure responding to next results request")
 	}
 
+	return
+}
+
+// Resubmit resubmits a workflow run based on the trigger history.
+//
+// resourceGroupName is the resource group name. workflowName is the workflow
+// name. triggerName is the workflow trigger name. historyName is the workflow
+// trigger history name. Corresponds to the run name for triggers that resulted
+// in a run.
+func (client WorkflowTriggerHistoriesClient) Resubmit(resourceGroupName string, workflowName string, triggerName string, historyName string) (result autorest.Response, err error) {
+	req, err := client.ResubmitPreparer(resourceGroupName, workflowName, triggerName, historyName)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "logic.WorkflowTriggerHistoriesClient", "Resubmit", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.ResubmitSender(req)
+	if err != nil {
+		result.Response = resp
+		err = autorest.NewErrorWithError(err, "logic.WorkflowTriggerHistoriesClient", "Resubmit", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.ResubmitResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "logic.WorkflowTriggerHistoriesClient", "Resubmit", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// ResubmitPreparer prepares the Resubmit request.
+func (client WorkflowTriggerHistoriesClient) ResubmitPreparer(resourceGroupName string, workflowName string, triggerName string, historyName string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"historyName":       autorest.Encode("path", historyName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+		"triggerName":       autorest.Encode("path", triggerName),
+		"workflowName":      autorest.Encode("path", workflowName),
+	}
+
+	const APIVersion = "2016-06-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsPost(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logic/workflows/{workflowName}/triggers/{triggerName}/histories/{historyName}/resubmit", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare(&http.Request{})
+}
+
+// ResubmitSender sends the Resubmit request. The method will close the
+// http.Response Body if it receives an error.
+func (client WorkflowTriggerHistoriesClient) ResubmitSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req)
+}
+
+// ResubmitResponder handles the response to the Resubmit request. The method always
+// closes the http.Response Body.
+func (client WorkflowTriggerHistoriesClient) ResubmitResponder(resp *http.Response) (result autorest.Response, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
+		autorest.ByClosing())
+	result.Response = resp
 	return
 }

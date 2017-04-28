@@ -25,9 +25,7 @@ import (
 	"net/http"
 )
 
-// UsersClient is the use these REST APIs for performing operations on entities
-// like API, Product, and Subscription associated with your Azure API
-// Management deployment.
+// UsersClient is the composite Swagger for ApiManagement Client
 type UsersClient struct {
 	ManagementClient
 }
@@ -77,13 +75,15 @@ func (client UsersClient) CreateOrUpdate(resourceGroupName string, serviceName s
 
 	req, err := client.CreateOrUpdatePreparer(resourceGroupName, serviceName, uid, parameters)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "apimanagement.UsersClient", "CreateOrUpdate", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "apimanagement.UsersClient", "CreateOrUpdate", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.CreateOrUpdateSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "apimanagement.UsersClient", "CreateOrUpdate", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "apimanagement.UsersClient", "CreateOrUpdate", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.CreateOrUpdateResponder(resp)
@@ -103,7 +103,7 @@ func (client UsersClient) CreateOrUpdatePreparer(resourceGroupName string, servi
 		"uid":               autorest.Encode("path", uid),
 	}
 
-	const APIVersion = "2016-07-07"
+	const APIVersion = "2016-10-10"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -159,13 +159,15 @@ func (client UsersClient) Delete(resourceGroupName string, serviceName string, u
 
 	req, err := client.DeletePreparer(resourceGroupName, serviceName, uid, ifMatch, deleteSubscriptions)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "apimanagement.UsersClient", "Delete", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "apimanagement.UsersClient", "Delete", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.DeleteSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "apimanagement.UsersClient", "Delete", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "apimanagement.UsersClient", "Delete", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.DeleteResponder(resp)
@@ -185,7 +187,7 @@ func (client UsersClient) DeletePreparer(resourceGroupName string, serviceName s
 		"uid":               autorest.Encode("path", uid),
 	}
 
-	const APIVersion = "2016-07-07"
+	const APIVersion = "2016-10-10"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -242,13 +244,15 @@ func (client UsersClient) GenerateSsoURL(resourceGroupName string, serviceName s
 
 	req, err := client.GenerateSsoURLPreparer(resourceGroupName, serviceName, uid)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "apimanagement.UsersClient", "GenerateSsoURL", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "apimanagement.UsersClient", "GenerateSsoURL", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GenerateSsoURLSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "apimanagement.UsersClient", "GenerateSsoURL", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "apimanagement.UsersClient", "GenerateSsoURL", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GenerateSsoURLResponder(resp)
@@ -268,7 +272,7 @@ func (client UsersClient) GenerateSsoURLPreparer(resourceGroupName string, servi
 		"uid":               autorest.Encode("path", uid),
 	}
 
-	const APIVersion = "2016-07-07"
+	const APIVersion = "2016-10-10"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -320,13 +324,15 @@ func (client UsersClient) Get(resourceGroupName string, serviceName string, uid 
 
 	req, err := client.GetPreparer(resourceGroupName, serviceName, uid)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "apimanagement.UsersClient", "Get", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "apimanagement.UsersClient", "Get", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "apimanagement.UsersClient", "Get", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "apimanagement.UsersClient", "Get", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetResponder(resp)
@@ -346,7 +352,7 @@ func (client UsersClient) GetPreparer(resourceGroupName string, serviceName stri
 		"uid":               autorest.Encode("path", uid),
 	}
 
-	const APIVersion = "2016-07-07"
+	const APIVersion = "2016-10-10"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -417,13 +423,15 @@ func (client UsersClient) ListByService(resourceGroupName string, serviceName st
 
 	req, err := client.ListByServicePreparer(resourceGroupName, serviceName, filter, top, skip)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "apimanagement.UsersClient", "ListByService", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "apimanagement.UsersClient", "ListByService", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListByServiceSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "apimanagement.UsersClient", "ListByService", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "apimanagement.UsersClient", "ListByService", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListByServiceResponder(resp)
@@ -442,7 +450,7 @@ func (client UsersClient) ListByServicePreparer(resourceGroupName string, servic
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2016-07-07"
+	const APIVersion = "2016-10-10"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -529,13 +537,15 @@ func (client UsersClient) Update(resourceGroupName string, serviceName string, u
 
 	req, err := client.UpdatePreparer(resourceGroupName, serviceName, uid, parameters, ifMatch)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "apimanagement.UsersClient", "Update", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "apimanagement.UsersClient", "Update", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.UpdateSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "apimanagement.UsersClient", "Update", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "apimanagement.UsersClient", "Update", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.UpdateResponder(resp)
@@ -555,7 +565,7 @@ func (client UsersClient) UpdatePreparer(resourceGroupName string, serviceName s
 		"uid":               autorest.Encode("path", uid),
 	}
 
-	const APIVersion = "2016-07-07"
+	const APIVersion = "2016-10-10"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}

@@ -54,13 +54,15 @@ func (client MapsClient) CreateOrUpdate(resourceGroupName string, integrationAcc
 
 	req, err := client.CreateOrUpdatePreparer(resourceGroupName, integrationAccountName, mapName, mapParameter)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "logic.MapsClient", "CreateOrUpdate", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "logic.MapsClient", "CreateOrUpdate", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.CreateOrUpdateSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "logic.MapsClient", "CreateOrUpdate", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "logic.MapsClient", "CreateOrUpdate", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.CreateOrUpdateResponder(resp)
@@ -121,13 +123,15 @@ func (client MapsClient) CreateOrUpdateResponder(resp *http.Response) (result In
 func (client MapsClient) Delete(resourceGroupName string, integrationAccountName string, mapName string) (result autorest.Response, err error) {
 	req, err := client.DeletePreparer(resourceGroupName, integrationAccountName, mapName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "logic.MapsClient", "Delete", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "logic.MapsClient", "Delete", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.DeleteSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "logic.MapsClient", "Delete", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "logic.MapsClient", "Delete", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.DeleteResponder(resp)
@@ -185,13 +189,15 @@ func (client MapsClient) DeleteResponder(resp *http.Response) (result autorest.R
 func (client MapsClient) Get(resourceGroupName string, integrationAccountName string, mapName string) (result IntegrationAccountMap, err error) {
 	req, err := client.GetPreparer(resourceGroupName, integrationAccountName, mapName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "logic.MapsClient", "Get", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "logic.MapsClient", "Get", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "logic.MapsClient", "Get", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "logic.MapsClient", "Get", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetResponder(resp)
@@ -251,13 +257,15 @@ func (client MapsClient) GetResponder(resp *http.Response) (result IntegrationAc
 func (client MapsClient) ListByIntegrationAccounts(resourceGroupName string, integrationAccountName string, top *int32, filter string) (result IntegrationAccountMapListResult, err error) {
 	req, err := client.ListByIntegrationAccountsPreparer(resourceGroupName, integrationAccountName, top, filter)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "logic.MapsClient", "ListByIntegrationAccounts", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "logic.MapsClient", "ListByIntegrationAccounts", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListByIntegrationAccountsSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "logic.MapsClient", "ListByIntegrationAccounts", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "logic.MapsClient", "ListByIntegrationAccounts", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListByIntegrationAccountsResponder(resp)

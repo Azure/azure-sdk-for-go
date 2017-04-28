@@ -66,13 +66,15 @@ func (client AccountsClient) Create(resourceGroupName string, accountName string
 
 	req, err := client.CreatePreparer(resourceGroupName, accountName, parameters)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "cognitiveservices.AccountsClient", "Create", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "cognitiveservices.AccountsClient", "Create", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.CreateSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "cognitiveservices.AccountsClient", "Create", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "cognitiveservices.AccountsClient", "Create", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.CreateResponder(resp)
@@ -143,13 +145,15 @@ func (client AccountsClient) Delete(resourceGroupName string, accountName string
 
 	req, err := client.DeletePreparer(resourceGroupName, accountName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "cognitiveservices.AccountsClient", "Delete", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "cognitiveservices.AccountsClient", "Delete", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.DeleteSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "cognitiveservices.AccountsClient", "Delete", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "cognitiveservices.AccountsClient", "Delete", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.DeleteResponder(resp)
@@ -218,13 +222,15 @@ func (client AccountsClient) GetProperties(resourceGroupName string, accountName
 
 	req, err := client.GetPropertiesPreparer(resourceGroupName, accountName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "cognitiveservices.AccountsClient", "GetProperties", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "cognitiveservices.AccountsClient", "GetProperties", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetPropertiesSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "cognitiveservices.AccountsClient", "GetProperties", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "cognitiveservices.AccountsClient", "GetProperties", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetPropertiesResponder(resp)
@@ -280,13 +286,15 @@ func (client AccountsClient) GetPropertiesResponder(resp *http.Response) (result
 func (client AccountsClient) List() (result AccountListResult, err error) {
 	req, err := client.ListPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "cognitiveservices.AccountsClient", "List", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "cognitiveservices.AccountsClient", "List", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "cognitiveservices.AccountsClient", "List", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "cognitiveservices.AccountsClient", "List", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListResponder(resp)
@@ -343,13 +351,15 @@ func (client AccountsClient) ListResponder(resp *http.Response) (result AccountL
 func (client AccountsClient) ListByResourceGroup(resourceGroupName string) (result AccountListResult, err error) {
 	req, err := client.ListByResourceGroupPreparer(resourceGroupName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "cognitiveservices.AccountsClient", "ListByResourceGroup", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "cognitiveservices.AccountsClient", "ListByResourceGroup", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListByResourceGroupSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "cognitiveservices.AccountsClient", "ListByResourceGroup", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "cognitiveservices.AccountsClient", "ListByResourceGroup", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListByResourceGroupResponder(resp)
@@ -418,13 +428,15 @@ func (client AccountsClient) ListKeys(resourceGroupName string, accountName stri
 
 	req, err := client.ListKeysPreparer(resourceGroupName, accountName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "cognitiveservices.AccountsClient", "ListKeys", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "cognitiveservices.AccountsClient", "ListKeys", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListKeysSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "cognitiveservices.AccountsClient", "ListKeys", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "cognitiveservices.AccountsClient", "ListKeys", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListKeysResponder(resp)
@@ -493,13 +505,15 @@ func (client AccountsClient) ListSkus(resourceGroupName string, accountName stri
 
 	req, err := client.ListSkusPreparer(resourceGroupName, accountName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "cognitiveservices.AccountsClient", "ListSkus", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "cognitiveservices.AccountsClient", "ListSkus", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListSkusSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "cognitiveservices.AccountsClient", "ListSkus", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "cognitiveservices.AccountsClient", "ListSkus", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListSkusResponder(resp)
@@ -569,13 +583,15 @@ func (client AccountsClient) RegenerateKey(resourceGroupName string, accountName
 
 	req, err := client.RegenerateKeyPreparer(resourceGroupName, accountName, body)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "cognitiveservices.AccountsClient", "RegenerateKey", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "cognitiveservices.AccountsClient", "RegenerateKey", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.RegenerateKeySender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "cognitiveservices.AccountsClient", "RegenerateKey", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "cognitiveservices.AccountsClient", "RegenerateKey", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.RegenerateKeyResponder(resp)
@@ -646,13 +662,15 @@ func (client AccountsClient) Update(resourceGroupName string, accountName string
 
 	req, err := client.UpdatePreparer(resourceGroupName, accountName, body)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "cognitiveservices.AccountsClient", "Update", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "cognitiveservices.AccountsClient", "Update", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.UpdateSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "cognitiveservices.AccountsClient", "Update", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "cognitiveservices.AccountsClient", "Update", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.UpdateResponder(resp)

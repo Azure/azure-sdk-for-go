@@ -56,13 +56,15 @@ func NewRecordSetsClientWithBaseURI(baseURI string, subscriptionID string) Recor
 func (client RecordSetsClient) CreateOrUpdate(resourceGroupName string, zoneName string, relativeRecordSetName string, recordType RecordType, parameters RecordSet, ifMatch string, ifNoneMatch string) (result RecordSet, err error) {
 	req, err := client.CreateOrUpdatePreparer(resourceGroupName, zoneName, relativeRecordSetName, recordType, parameters, ifMatch, ifNoneMatch)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "dns.RecordSetsClient", "CreateOrUpdate", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "dns.RecordSetsClient", "CreateOrUpdate", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.CreateOrUpdateSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "dns.RecordSetsClient", "CreateOrUpdate", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "dns.RecordSetsClient", "CreateOrUpdate", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.CreateOrUpdateResponder(resp)
@@ -139,13 +141,15 @@ func (client RecordSetsClient) CreateOrUpdateResponder(resp *http.Response) (res
 func (client RecordSetsClient) Delete(resourceGroupName string, zoneName string, relativeRecordSetName string, recordType RecordType, ifMatch string) (result autorest.Response, err error) {
 	req, err := client.DeletePreparer(resourceGroupName, zoneName, relativeRecordSetName, recordType, ifMatch)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "dns.RecordSetsClient", "Delete", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "dns.RecordSetsClient", "Delete", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.DeleteSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "dns.RecordSetsClient", "Delete", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "dns.RecordSetsClient", "Delete", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.DeleteResponder(resp)
@@ -210,13 +214,15 @@ func (client RecordSetsClient) DeleteResponder(resp *http.Response) (result auto
 func (client RecordSetsClient) Get(resourceGroupName string, zoneName string, relativeRecordSetName string, recordType RecordType) (result RecordSet, err error) {
 	req, err := client.GetPreparer(resourceGroupName, zoneName, relativeRecordSetName, recordType)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "dns.RecordSetsClient", "Get", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "dns.RecordSetsClient", "Get", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "dns.RecordSetsClient", "Get", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "dns.RecordSetsClient", "Get", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetResponder(resp)
@@ -277,13 +283,15 @@ func (client RecordSetsClient) GetResponder(resp *http.Response) (result RecordS
 func (client RecordSetsClient) ListByDNSZone(resourceGroupName string, zoneName string, top *int32) (result RecordSetListResult, err error) {
 	req, err := client.ListByDNSZonePreparer(resourceGroupName, zoneName, top)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "dns.RecordSetsClient", "ListByDNSZone", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "dns.RecordSetsClient", "ListByDNSZone", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListByDNSZoneSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "dns.RecordSetsClient", "ListByDNSZone", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "dns.RecordSetsClient", "ListByDNSZone", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListByDNSZoneResponder(resp)
@@ -370,13 +378,15 @@ func (client RecordSetsClient) ListByDNSZoneNextResults(lastResults RecordSetLis
 func (client RecordSetsClient) ListByType(resourceGroupName string, zoneName string, recordType RecordType, top *int32) (result RecordSetListResult, err error) {
 	req, err := client.ListByTypePreparer(resourceGroupName, zoneName, recordType, top)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "dns.RecordSetsClient", "ListByType", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "dns.RecordSetsClient", "ListByType", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListByTypeSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "dns.RecordSetsClient", "ListByType", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "dns.RecordSetsClient", "ListByType", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListByTypeResponder(resp)
@@ -467,13 +477,15 @@ func (client RecordSetsClient) ListByTypeNextResults(lastResults RecordSetListRe
 func (client RecordSetsClient) Update(resourceGroupName string, zoneName string, relativeRecordSetName string, recordType RecordType, parameters RecordSet, ifMatch string) (result RecordSet, err error) {
 	req, err := client.UpdatePreparer(resourceGroupName, zoneName, relativeRecordSetName, recordType, parameters, ifMatch)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "dns.RecordSetsClient", "Update", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "dns.RecordSetsClient", "Update", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.UpdateSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "dns.RecordSetsClient", "Update", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "dns.RecordSetsClient", "Update", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.UpdateResponder(resp)

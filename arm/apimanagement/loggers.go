@@ -25,9 +25,7 @@ import (
 	"net/http"
 )
 
-// LoggersClient is the use these REST APIs for performing operations on
-// entities like API, Product, and Subscription associated with your Azure API
-// Management deployment.
+// LoggersClient is the composite Swagger for ApiManagement Client
 type LoggersClient struct {
 	ManagementClient
 }
@@ -45,8 +43,8 @@ func NewLoggersClientWithBaseURI(baseURI string, subscriptionID string) LoggersC
 // CreateOrUpdate creates or Updates a logger.
 //
 // resourceGroupName is the name of the resource group. serviceName is the name
-// of the API Management service. loggerid is identifier of the logger.
-// parameters is create parameters.
+// of the API Management service. loggerid is logger identifier. Must be unique
+// in the API Management service instance. parameters is create parameters.
 func (client LoggersClient) CreateOrUpdate(resourceGroupName string, serviceName string, loggerid string, parameters LoggerCreateParameters) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,
@@ -64,13 +62,15 @@ func (client LoggersClient) CreateOrUpdate(resourceGroupName string, serviceName
 
 	req, err := client.CreateOrUpdatePreparer(resourceGroupName, serviceName, loggerid, parameters)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "apimanagement.LoggersClient", "CreateOrUpdate", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "apimanagement.LoggersClient", "CreateOrUpdate", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.CreateOrUpdateSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "apimanagement.LoggersClient", "CreateOrUpdate", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "apimanagement.LoggersClient", "CreateOrUpdate", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.CreateOrUpdateResponder(resp)
@@ -90,7 +90,7 @@ func (client LoggersClient) CreateOrUpdatePreparer(resourceGroupName string, ser
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2016-07-07"
+	const APIVersion = "2016-10-10"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -126,27 +126,33 @@ func (client LoggersClient) CreateOrUpdateResponder(resp *http.Response) (result
 // Delete deletes the specified logger.
 //
 // resourceGroupName is the name of the resource group. serviceName is the name
-// of the API Management service. loggerid is identifier of the logger. ifMatch
-// is the entity state (Etag) version of the logger to delete. A value of "*"
-// can be used for If-Match to unconditionally apply the operation.
+// of the API Management service. loggerid is logger identifier. Must be unique
+// in the API Management service instance. ifMatch is the entity state (Etag)
+// version of the logger to delete. A value of "*" can be used for If-Match to
+// unconditionally apply the operation.
 func (client LoggersClient) Delete(resourceGroupName string, serviceName string, loggerid string, ifMatch string) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,
 			Constraints: []validation.Constraint{{Target: "serviceName", Name: validation.MaxLength, Rule: 50, Chain: nil},
 				{Target: "serviceName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "serviceName", Name: validation.Pattern, Rule: `^[a-zA-Z](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?$`, Chain: nil}}}}); err != nil {
+				{Target: "serviceName", Name: validation.Pattern, Rule: `^[a-zA-Z](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?$`, Chain: nil}}},
+		{TargetValue: loggerid,
+			Constraints: []validation.Constraint{{Target: "loggerid", Name: validation.MaxLength, Rule: 256, Chain: nil},
+				{Target: "loggerid", Name: validation.Pattern, Rule: `^[^*#&+:<>?]+$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewErrorWithValidationError(err, "apimanagement.LoggersClient", "Delete")
 	}
 
 	req, err := client.DeletePreparer(resourceGroupName, serviceName, loggerid, ifMatch)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "apimanagement.LoggersClient", "Delete", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "apimanagement.LoggersClient", "Delete", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.DeleteSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "apimanagement.LoggersClient", "Delete", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "apimanagement.LoggersClient", "Delete", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.DeleteResponder(resp)
@@ -166,7 +172,7 @@ func (client LoggersClient) DeletePreparer(resourceGroupName string, serviceName
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2016-07-07"
+	const APIVersion = "2016-10-10"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -201,25 +207,31 @@ func (client LoggersClient) DeleteResponder(resp *http.Response) (result autores
 // Get gets the details of the logger specified by its identifier.
 //
 // resourceGroupName is the name of the resource group. serviceName is the name
-// of the API Management service. loggerid is identifier of the logger.
+// of the API Management service. loggerid is logger identifier. Must be unique
+// in the API Management service instance.
 func (client LoggersClient) Get(resourceGroupName string, serviceName string, loggerid string) (result LoggerResponse, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,
 			Constraints: []validation.Constraint{{Target: "serviceName", Name: validation.MaxLength, Rule: 50, Chain: nil},
 				{Target: "serviceName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "serviceName", Name: validation.Pattern, Rule: `^[a-zA-Z](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?$`, Chain: nil}}}}); err != nil {
+				{Target: "serviceName", Name: validation.Pattern, Rule: `^[a-zA-Z](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?$`, Chain: nil}}},
+		{TargetValue: loggerid,
+			Constraints: []validation.Constraint{{Target: "loggerid", Name: validation.MaxLength, Rule: 256, Chain: nil},
+				{Target: "loggerid", Name: validation.Pattern, Rule: `^[^*#&+:<>?]+$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewErrorWithValidationError(err, "apimanagement.LoggersClient", "Get")
 	}
 
 	req, err := client.GetPreparer(resourceGroupName, serviceName, loggerid)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "apimanagement.LoggersClient", "Get", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "apimanagement.LoggersClient", "Get", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "apimanagement.LoggersClient", "Get", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "apimanagement.LoggersClient", "Get", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetResponder(resp)
@@ -239,7 +251,7 @@ func (client LoggersClient) GetPreparer(resourceGroupName string, serviceName st
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2016-07-07"
+	const APIVersion = "2016-10-10"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -299,13 +311,15 @@ func (client LoggersClient) ListByService(resourceGroupName string, serviceName 
 
 	req, err := client.ListByServicePreparer(resourceGroupName, serviceName, filter, top, skip)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "apimanagement.LoggersClient", "ListByService", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "apimanagement.LoggersClient", "ListByService", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListByServiceSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "apimanagement.LoggersClient", "ListByService", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "apimanagement.LoggersClient", "ListByService", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListByServiceResponder(resp)
@@ -324,7 +338,7 @@ func (client LoggersClient) ListByServicePreparer(resourceGroupName string, serv
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2016-07-07"
+	const APIVersion = "2016-10-10"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -392,28 +406,33 @@ func (client LoggersClient) ListByServiceNextResults(lastResults LoggerCollectio
 // Update updates an existing logger.
 //
 // resourceGroupName is the name of the resource group. serviceName is the name
-// of the API Management service. loggerid is identifier of the logger.
-// parameters is update parameters. ifMatch is the entity state (Etag) version
-// of the logger to update. A value of "*" can be used for If-Match to
-// unconditionally apply the operation.
+// of the API Management service. loggerid is logger identifier. Must be unique
+// in the API Management service instance. parameters is update parameters.
+// ifMatch is the entity state (Etag) version of the logger to update. A value
+// of "*" can be used for If-Match to unconditionally apply the operation.
 func (client LoggersClient) Update(resourceGroupName string, serviceName string, loggerid string, parameters LoggerUpdateParameters, ifMatch string) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,
 			Constraints: []validation.Constraint{{Target: "serviceName", Name: validation.MaxLength, Rule: 50, Chain: nil},
 				{Target: "serviceName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "serviceName", Name: validation.Pattern, Rule: `^[a-zA-Z](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?$`, Chain: nil}}}}); err != nil {
+				{Target: "serviceName", Name: validation.Pattern, Rule: `^[a-zA-Z](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?$`, Chain: nil}}},
+		{TargetValue: loggerid,
+			Constraints: []validation.Constraint{{Target: "loggerid", Name: validation.MaxLength, Rule: 256, Chain: nil},
+				{Target: "loggerid", Name: validation.Pattern, Rule: `^[^*#&+:<>?]+$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewErrorWithValidationError(err, "apimanagement.LoggersClient", "Update")
 	}
 
 	req, err := client.UpdatePreparer(resourceGroupName, serviceName, loggerid, parameters, ifMatch)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "apimanagement.LoggersClient", "Update", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "apimanagement.LoggersClient", "Update", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.UpdateSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "apimanagement.LoggersClient", "Update", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "apimanagement.LoggersClient", "Update", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.UpdateResponder(resp)
@@ -433,7 +452,7 @@ func (client LoggersClient) UpdatePreparer(resourceGroupName string, serviceName
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2016-07-07"
+	const APIVersion = "2016-10-10"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}

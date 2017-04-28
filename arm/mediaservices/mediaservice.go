@@ -59,13 +59,15 @@ func (client Client) CheckNameAvailability(checkNameAvailabilityInput CheckNameA
 
 	req, err := client.CheckNameAvailabilityPreparer(checkNameAvailabilityInput)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "mediaservices.Client", "CheckNameAvailability", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "mediaservices.Client", "CheckNameAvailability", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.CheckNameAvailabilitySender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "mediaservices.Client", "CheckNameAvailability", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "mediaservices.Client", "CheckNameAvailability", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.CheckNameAvailabilityResponder(resp)
@@ -132,13 +134,15 @@ func (client Client) Create(resourceGroupName string, mediaServiceName string, m
 
 	req, err := client.CreatePreparer(resourceGroupName, mediaServiceName, mediaService)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "mediaservices.Client", "Create", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "mediaservices.Client", "Create", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.CreateSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "mediaservices.Client", "Create", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "mediaservices.Client", "Create", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.CreateResponder(resp)
@@ -206,13 +210,15 @@ func (client Client) Delete(resourceGroupName string, mediaServiceName string) (
 
 	req, err := client.DeletePreparer(resourceGroupName, mediaServiceName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "mediaservices.Client", "Delete", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "mediaservices.Client", "Delete", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.DeleteSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "mediaservices.Client", "Delete", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "mediaservices.Client", "Delete", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.DeleteResponder(resp)
@@ -277,13 +283,15 @@ func (client Client) Get(resourceGroupName string, mediaServiceName string) (res
 
 	req, err := client.GetPreparer(resourceGroupName, mediaServiceName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "mediaservices.Client", "Get", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "mediaservices.Client", "Get", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "mediaservices.Client", "Get", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "mediaservices.Client", "Get", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetResponder(resp)
@@ -341,13 +349,15 @@ func (client Client) GetResponder(resp *http.Response) (result MediaService, err
 func (client Client) ListByResourceGroup(resourceGroupName string) (result Collection, err error) {
 	req, err := client.ListByResourceGroupPreparer(resourceGroupName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "mediaservices.Client", "ListByResourceGroup", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "mediaservices.Client", "ListByResourceGroup", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListByResourceGroupSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "mediaservices.Client", "ListByResourceGroup", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "mediaservices.Client", "ListByResourceGroup", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListByResourceGroupResponder(resp)
@@ -412,13 +422,15 @@ func (client Client) ListKeys(resourceGroupName string, mediaServiceName string)
 
 	req, err := client.ListKeysPreparer(resourceGroupName, mediaServiceName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "mediaservices.Client", "ListKeys", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "mediaservices.Client", "ListKeys", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListKeysSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "mediaservices.Client", "ListKeys", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "mediaservices.Client", "ListKeys", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListKeysResponder(resp)
@@ -485,13 +497,15 @@ func (client Client) RegenerateKey(resourceGroupName string, mediaServiceName st
 
 	req, err := client.RegenerateKeyPreparer(resourceGroupName, mediaServiceName, regenerateKeyInput)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "mediaservices.Client", "RegenerateKey", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "mediaservices.Client", "RegenerateKey", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.RegenerateKeySender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "mediaservices.Client", "RegenerateKey", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "mediaservices.Client", "RegenerateKey", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.RegenerateKeyResponder(resp)
@@ -564,13 +578,15 @@ func (client Client) SyncStorageKeys(resourceGroupName string, mediaServiceName 
 
 	req, err := client.SyncStorageKeysPreparer(resourceGroupName, mediaServiceName, syncStorageKeysInput)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "mediaservices.Client", "SyncStorageKeys", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "mediaservices.Client", "SyncStorageKeys", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.SyncStorageKeysSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "mediaservices.Client", "SyncStorageKeys", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "mediaservices.Client", "SyncStorageKeys", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.SyncStorageKeysResponder(resp)
@@ -638,13 +654,15 @@ func (client Client) Update(resourceGroupName string, mediaServiceName string, m
 
 	req, err := client.UpdatePreparer(resourceGroupName, mediaServiceName, mediaService)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "mediaservices.Client", "Update", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "mediaservices.Client", "Update", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.UpdateSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "mediaservices.Client", "Update", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "mediaservices.Client", "Update", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.UpdateResponder(resp)

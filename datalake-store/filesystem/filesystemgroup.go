@@ -67,13 +67,15 @@ func NewGroupClient() GroupClient {
 func (client GroupClient) Append(accountName string, directFilePath string, streamContents io.ReadCloser, op string, appendParameter string, offset *int64, syncFlag SyncFlag, leaseID *uuid.UUID, fileSessionID *uuid.UUID) (result autorest.Response, err error) {
 	req, err := client.AppendPreparer(accountName, directFilePath, streamContents, op, appendParameter, offset, syncFlag, leaseID, fileSessionID)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "filesystem.GroupClient", "Append", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "filesystem.GroupClient", "Append", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.AppendSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "filesystem.GroupClient", "Append", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "filesystem.GroupClient", "Append", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.AppendResponder(resp)
@@ -151,13 +153,15 @@ func (client GroupClient) AppendResponder(resp *http.Response) (result autorest.
 func (client GroupClient) CheckAccess(accountName string, pathParameter string, fsaction string, op string) (result autorest.Response, err error) {
 	req, err := client.CheckAccessPreparer(accountName, pathParameter, fsaction, op)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "filesystem.GroupClient", "CheckAccess", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "filesystem.GroupClient", "CheckAccess", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.CheckAccessSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "filesystem.GroupClient", "CheckAccess", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "filesystem.GroupClient", "CheckAccess", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.CheckAccessResponder(resp)
@@ -230,13 +234,15 @@ func (client GroupClient) Concat(accountName string, destinationPath string, sou
 
 	req, err := client.ConcatPreparer(accountName, destinationPath, sources, op)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "filesystem.GroupClient", "Concat", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "filesystem.GroupClient", "Concat", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ConcatSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "filesystem.GroupClient", "Concat", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "filesystem.GroupClient", "Concat", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ConcatResponder(resp)
@@ -317,13 +323,15 @@ func (client GroupClient) ConcatResponder(resp *http.Response) (result autorest.
 func (client GroupClient) ConcurrentAppend(accountName string, filePath string, streamContents io.ReadCloser, op string, transferEncoding string, appendMode AppendModeType, syncFlag SyncFlag) (result autorest.Response, err error) {
 	req, err := client.ConcurrentAppendPreparer(accountName, filePath, streamContents, op, transferEncoding, appendMode, syncFlag)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "filesystem.GroupClient", "ConcurrentAppend", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "filesystem.GroupClient", "ConcurrentAppend", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ConcurrentAppendSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "filesystem.GroupClient", "ConcurrentAppend", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "filesystem.GroupClient", "ConcurrentAppend", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ConcurrentAppendResponder(resp)
@@ -411,13 +419,15 @@ func (client GroupClient) ConcurrentAppendResponder(resp *http.Response) (result
 func (client GroupClient) Create(accountName string, directFilePath string, op string, write string, streamContents io.ReadCloser, overwrite *bool, syncFlag SyncFlag, leaseID *uuid.UUID, permission *int32) (result autorest.Response, err error) {
 	req, err := client.CreatePreparer(accountName, directFilePath, op, write, streamContents, overwrite, syncFlag, leaseID, permission)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "filesystem.GroupClient", "Create", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "filesystem.GroupClient", "Create", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.CreateSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "filesystem.GroupClient", "Create", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "filesystem.GroupClient", "Create", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.CreateResponder(resp)
@@ -498,13 +508,15 @@ func (client GroupClient) CreateResponder(resp *http.Response) (result autorest.
 func (client GroupClient) Delete(accountName string, filePath string, op string, recursive *bool) (result FileOperationResult, err error) {
 	req, err := client.DeletePreparer(accountName, filePath, op, recursive)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "filesystem.GroupClient", "Delete", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "filesystem.GroupClient", "Delete", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.DeleteSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "filesystem.GroupClient", "Delete", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "filesystem.GroupClient", "Delete", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.DeleteResponder(resp)
@@ -575,13 +587,15 @@ func (client GroupClient) DeleteResponder(resp *http.Response) (result FileOpera
 func (client GroupClient) GetACLStatus(accountName string, aclFilePath string, op string, tooID *bool) (result ACLStatusResult, err error) {
 	req, err := client.GetACLStatusPreparer(accountName, aclFilePath, op, tooID)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "filesystem.GroupClient", "GetACLStatus", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "filesystem.GroupClient", "GetACLStatus", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetACLStatusSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "filesystem.GroupClient", "GetACLStatus", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "filesystem.GroupClient", "GetACLStatus", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetACLStatusResponder(resp)
@@ -649,13 +663,15 @@ func (client GroupClient) GetACLStatusResponder(resp *http.Response) (result ACL
 func (client GroupClient) GetContentSummary(accountName string, getContentSummaryFilePath string, op string) (result ContentSummaryResult, err error) {
 	req, err := client.GetContentSummaryPreparer(accountName, getContentSummaryFilePath, op)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "filesystem.GroupClient", "GetContentSummary", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "filesystem.GroupClient", "GetContentSummary", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetContentSummarySender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "filesystem.GroupClient", "GetContentSummary", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "filesystem.GroupClient", "GetContentSummary", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetContentSummaryResponder(resp)
@@ -722,13 +738,15 @@ func (client GroupClient) GetContentSummaryResponder(resp *http.Response) (resul
 func (client GroupClient) GetFileStatus(accountName string, getFilePath string, op string, tooID *bool) (result FileStatusResult, err error) {
 	req, err := client.GetFileStatusPreparer(accountName, getFilePath, op, tooID)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "filesystem.GroupClient", "GetFileStatus", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "filesystem.GroupClient", "GetFileStatus", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetFileStatusSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "filesystem.GroupClient", "GetFileStatus", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "filesystem.GroupClient", "GetFileStatus", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetFileStatusResponder(resp)
@@ -805,13 +823,15 @@ func (client GroupClient) GetFileStatusResponder(resp *http.Response) (result Fi
 func (client GroupClient) ListFileStatus(accountName string, listFilePath string, op string, listSize *int32, listAfter string, listBefore string, tooID *bool) (result FileStatusesResult, err error) {
 	req, err := client.ListFileStatusPreparer(accountName, listFilePath, op, listSize, listAfter, listBefore, tooID)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "filesystem.GroupClient", "ListFileStatus", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "filesystem.GroupClient", "ListFileStatus", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListFileStatusSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "filesystem.GroupClient", "ListFileStatus", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "filesystem.GroupClient", "ListFileStatus", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListFileStatusResponder(resp)
@@ -888,13 +908,15 @@ func (client GroupClient) ListFileStatusResponder(resp *http.Response) (result F
 func (client GroupClient) Mkdirs(accountName string, pathParameter string, op string, permission *int32) (result FileOperationResult, err error) {
 	req, err := client.MkdirsPreparer(accountName, pathParameter, op, permission)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "filesystem.GroupClient", "Mkdirs", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "filesystem.GroupClient", "Mkdirs", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.MkdirsSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "filesystem.GroupClient", "Mkdirs", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "filesystem.GroupClient", "Mkdirs", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.MkdirsResponder(resp)
@@ -964,13 +986,15 @@ func (client GroupClient) MkdirsResponder(resp *http.Response) (result FileOpera
 func (client GroupClient) ModifyACLEntries(accountName string, modifyACLFilePath string, aclspec string, op string) (result autorest.Response, err error) {
 	req, err := client.ModifyACLEntriesPreparer(accountName, modifyACLFilePath, aclspec, op)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "filesystem.GroupClient", "ModifyACLEntries", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "filesystem.GroupClient", "ModifyACLEntries", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ModifyACLEntriesSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "filesystem.GroupClient", "ModifyACLEntries", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "filesystem.GroupClient", "ModifyACLEntries", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ModifyACLEntriesResponder(resp)
@@ -1048,13 +1072,15 @@ func (client GroupClient) ModifyACLEntriesResponder(resp *http.Response) (result
 func (client GroupClient) MsConcat(accountName string, msConcatDestinationPath string, streamContents io.ReadCloser, op string, deleteSourceDirectory *bool) (result autorest.Response, err error) {
 	req, err := client.MsConcatPreparer(accountName, msConcatDestinationPath, streamContents, op, deleteSourceDirectory)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "filesystem.GroupClient", "MsConcat", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "filesystem.GroupClient", "MsConcat", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.MsConcatSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "filesystem.GroupClient", "MsConcat", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "filesystem.GroupClient", "MsConcat", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.MsConcatResponder(resp)
@@ -1128,13 +1154,15 @@ func (client GroupClient) MsConcatResponder(resp *http.Response) (result autores
 func (client GroupClient) Open(accountName string, directFilePath string, op string, read string, length *int64, offset *int64, fileSessionID *uuid.UUID) (result ReadCloser, err error) {
 	req, err := client.OpenPreparer(accountName, directFilePath, op, read, length, offset, fileSessionID)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "filesystem.GroupClient", "Open", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "filesystem.GroupClient", "Open", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.OpenSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "filesystem.GroupClient", "Open", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "filesystem.GroupClient", "Open", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.OpenResponder(resp)
@@ -1208,13 +1236,15 @@ func (client GroupClient) OpenResponder(resp *http.Response) (result ReadCloser,
 func (client GroupClient) RemoveACL(accountName string, aclFilePath string, op string) (result autorest.Response, err error) {
 	req, err := client.RemoveACLPreparer(accountName, aclFilePath, op)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "filesystem.GroupClient", "RemoveACL", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "filesystem.GroupClient", "RemoveACL", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.RemoveACLSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "filesystem.GroupClient", "RemoveACL", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "filesystem.GroupClient", "RemoveACL", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.RemoveACLResponder(resp)
@@ -1279,13 +1309,15 @@ func (client GroupClient) RemoveACLResponder(resp *http.Response) (result autore
 func (client GroupClient) RemoveACLEntries(accountName string, removeACLFilePath string, aclspec string, op string) (result autorest.Response, err error) {
 	req, err := client.RemoveACLEntriesPreparer(accountName, removeACLFilePath, aclspec, op)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "filesystem.GroupClient", "RemoveACLEntries", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "filesystem.GroupClient", "RemoveACLEntries", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.RemoveACLEntriesSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "filesystem.GroupClient", "RemoveACLEntries", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "filesystem.GroupClient", "RemoveACLEntries", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.RemoveACLEntriesResponder(resp)
@@ -1350,13 +1382,15 @@ func (client GroupClient) RemoveACLEntriesResponder(resp *http.Response) (result
 func (client GroupClient) RemoveDefaultACL(accountName string, defaultACLFilePath string, op string) (result autorest.Response, err error) {
 	req, err := client.RemoveDefaultACLPreparer(accountName, defaultACLFilePath, op)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "filesystem.GroupClient", "RemoveDefaultACL", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "filesystem.GroupClient", "RemoveDefaultACL", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.RemoveDefaultACLSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "filesystem.GroupClient", "RemoveDefaultACL", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "filesystem.GroupClient", "RemoveDefaultACL", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.RemoveDefaultACLResponder(resp)
@@ -1420,13 +1454,15 @@ func (client GroupClient) RemoveDefaultACLResponder(resp *http.Response) (result
 func (client GroupClient) Rename(accountName string, renameFilePath string, destination string, op string) (result FileOperationResult, err error) {
 	req, err := client.RenamePreparer(accountName, renameFilePath, destination, op)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "filesystem.GroupClient", "Rename", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "filesystem.GroupClient", "Rename", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.RenameSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "filesystem.GroupClient", "Rename", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "filesystem.GroupClient", "Rename", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.RenameResponder(resp)
@@ -1493,13 +1529,15 @@ func (client GroupClient) RenameResponder(resp *http.Response) (result FileOpera
 func (client GroupClient) SetACL(accountName string, setACLFilePath string, aclspec string, op string) (result autorest.Response, err error) {
 	req, err := client.SetACLPreparer(accountName, setACLFilePath, aclspec, op)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "filesystem.GroupClient", "SetACL", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "filesystem.GroupClient", "SetACL", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.SetACLSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "filesystem.GroupClient", "SetACL", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "filesystem.GroupClient", "SetACL", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.SetACLResponder(resp)
@@ -1573,13 +1611,15 @@ func (client GroupClient) SetACLResponder(resp *http.Response) (result autorest.
 func (client GroupClient) SetFileExpiry(accountName string, filePath string, expiryOption ExpiryOptionType, op string, expireTime *int64) (result autorest.Response, err error) {
 	req, err := client.SetFileExpiryPreparer(accountName, filePath, expiryOption, op, expireTime)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "filesystem.GroupClient", "SetFileExpiry", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "filesystem.GroupClient", "SetFileExpiry", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.SetFileExpirySender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "filesystem.GroupClient", "SetFileExpiry", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "filesystem.GroupClient", "SetFileExpiry", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.SetFileExpiryResponder(resp)
@@ -1649,13 +1689,15 @@ func (client GroupClient) SetFileExpiryResponder(resp *http.Response) (result au
 func (client GroupClient) SetOwner(accountName string, setOwnerFilePath string, op string, owner string, group string) (result autorest.Response, err error) {
 	req, err := client.SetOwnerPreparer(accountName, setOwnerFilePath, op, owner, group)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "filesystem.GroupClient", "SetOwner", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "filesystem.GroupClient", "SetOwner", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.SetOwnerSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "filesystem.GroupClient", "SetOwner", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "filesystem.GroupClient", "SetOwner", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.SetOwnerResponder(resp)
@@ -1725,13 +1767,15 @@ func (client GroupClient) SetOwnerResponder(resp *http.Response) (result autores
 func (client GroupClient) SetPermission(accountName string, setPermissionFilePath string, op string, permission string) (result autorest.Response, err error) {
 	req, err := client.SetPermissionPreparer(accountName, setPermissionFilePath, op, permission)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "filesystem.GroupClient", "SetPermission", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "filesystem.GroupClient", "SetPermission", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.SetPermissionSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "filesystem.GroupClient", "SetPermission", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "filesystem.GroupClient", "SetPermission", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.SetPermissionResponder(resp)

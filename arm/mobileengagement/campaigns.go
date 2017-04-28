@@ -50,13 +50,15 @@ func NewCampaignsClientWithBaseURI(baseURI string, subscriptionID string) Campai
 func (client CampaignsClient) Activate(resourceGroupName string, appCollection string, appName string, kind CampaignKinds, id int32) (result CampaignStateResult, err error) {
 	req, err := client.ActivatePreparer(resourceGroupName, appCollection, appName, kind, id)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "mobileengagement.CampaignsClient", "Activate", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "mobileengagement.CampaignsClient", "Activate", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ActivateSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "mobileengagement.CampaignsClient", "Activate", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "mobileengagement.CampaignsClient", "Activate", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ActivateResponder(resp)
@@ -129,13 +131,15 @@ func (client CampaignsClient) Create(resourceGroupName string, appCollection str
 
 	req, err := client.CreatePreparer(resourceGroupName, appCollection, appName, kind, parameters)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "mobileengagement.CampaignsClient", "Create", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "mobileengagement.CampaignsClient", "Create", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.CreateSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "mobileengagement.CampaignsClient", "Create", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "mobileengagement.CampaignsClient", "Create", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.CreateResponder(resp)
@@ -198,13 +202,15 @@ func (client CampaignsClient) CreateResponder(resp *http.Response) (result Campa
 func (client CampaignsClient) Delete(kind CampaignKinds, id int32, resourceGroupName string, appCollection string, appName string) (result autorest.Response, err error) {
 	req, err := client.DeletePreparer(kind, id, resourceGroupName, appCollection, appName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "mobileengagement.CampaignsClient", "Delete", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "mobileengagement.CampaignsClient", "Delete", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.DeleteSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "mobileengagement.CampaignsClient", "Delete", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "mobileengagement.CampaignsClient", "Delete", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.DeleteResponder(resp)
@@ -266,13 +272,15 @@ func (client CampaignsClient) DeleteResponder(resp *http.Response) (result autor
 func (client CampaignsClient) Finish(resourceGroupName string, appCollection string, appName string, kind CampaignKinds, id int32) (result CampaignStateResult, err error) {
 	req, err := client.FinishPreparer(resourceGroupName, appCollection, appName, kind, id)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "mobileengagement.CampaignsClient", "Finish", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "mobileengagement.CampaignsClient", "Finish", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.FinishSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "mobileengagement.CampaignsClient", "Finish", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "mobileengagement.CampaignsClient", "Finish", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.FinishResponder(resp)
@@ -335,13 +343,15 @@ func (client CampaignsClient) FinishResponder(resp *http.Response) (result Campa
 func (client CampaignsClient) Get(kind CampaignKinds, id int32, resourceGroupName string, appCollection string, appName string) (result CampaignResult, err error) {
 	req, err := client.GetPreparer(kind, id, resourceGroupName, appCollection, appName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "mobileengagement.CampaignsClient", "Get", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "mobileengagement.CampaignsClient", "Get", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "mobileengagement.CampaignsClient", "Get", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "mobileengagement.CampaignsClient", "Get", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetResponder(resp)
@@ -404,13 +414,15 @@ func (client CampaignsClient) GetResponder(resp *http.Response) (result Campaign
 func (client CampaignsClient) GetByName(resourceGroupName string, appCollection string, appName string, kind CampaignKinds, name string) (result CampaignResult, err error) {
 	req, err := client.GetByNamePreparer(resourceGroupName, appCollection, appName, kind, name)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "mobileengagement.CampaignsClient", "GetByName", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "mobileengagement.CampaignsClient", "GetByName", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetByNameSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "mobileengagement.CampaignsClient", "GetByName", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "mobileengagement.CampaignsClient", "GetByName", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetByNameResponder(resp)
@@ -472,13 +484,15 @@ func (client CampaignsClient) GetByNameResponder(resp *http.Response) (result Ca
 func (client CampaignsClient) GetStatistics(kind CampaignKinds, id int32, resourceGroupName string, appCollection string, appName string) (result CampaignStatisticsResult, err error) {
 	req, err := client.GetStatisticsPreparer(kind, id, resourceGroupName, appCollection, appName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "mobileengagement.CampaignsClient", "GetStatistics", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "mobileengagement.CampaignsClient", "GetStatistics", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetStatisticsSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "mobileengagement.CampaignsClient", "GetStatistics", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "mobileengagement.CampaignsClient", "GetStatistics", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetStatisticsResponder(resp)
@@ -558,13 +572,15 @@ func (client CampaignsClient) GetStatisticsResponder(resp *http.Response) (resul
 func (client CampaignsClient) List(resourceGroupName string, appCollection string, appName string, kind CampaignKinds, skip *int32, top *int32, filter string, orderby string, search string) (result CampaignsListResult, err error) {
 	req, err := client.ListPreparer(resourceGroupName, appCollection, appName, kind, skip, top, filter, orderby, search)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "mobileengagement.CampaignsClient", "List", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "mobileengagement.CampaignsClient", "List", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "mobileengagement.CampaignsClient", "List", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "mobileengagement.CampaignsClient", "List", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListResponder(resp)
@@ -678,13 +694,15 @@ func (client CampaignsClient) Push(resourceGroupName string, appCollection strin
 
 	req, err := client.PushPreparer(resourceGroupName, appCollection, appName, kind, id, parameters)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "mobileengagement.CampaignsClient", "Push", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "mobileengagement.CampaignsClient", "Push", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.PushSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "mobileengagement.CampaignsClient", "Push", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "mobileengagement.CampaignsClient", "Push", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.PushResponder(resp)
@@ -749,13 +767,15 @@ func (client CampaignsClient) PushResponder(resp *http.Response) (result Campaig
 func (client CampaignsClient) Suspend(resourceGroupName string, appCollection string, appName string, kind CampaignKinds, id int32) (result CampaignStateResult, err error) {
 	req, err := client.SuspendPreparer(resourceGroupName, appCollection, appName, kind, id)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "mobileengagement.CampaignsClient", "Suspend", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "mobileengagement.CampaignsClient", "Suspend", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.SuspendSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "mobileengagement.CampaignsClient", "Suspend", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "mobileengagement.CampaignsClient", "Suspend", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.SuspendResponder(resp)
@@ -829,13 +849,15 @@ func (client CampaignsClient) TestNew(resourceGroupName string, appCollection st
 
 	req, err := client.TestNewPreparer(resourceGroupName, appCollection, appName, kind, parameters)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "mobileengagement.CampaignsClient", "TestNew", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "mobileengagement.CampaignsClient", "TestNew", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.TestNewSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "mobileengagement.CampaignsClient", "TestNew", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "mobileengagement.CampaignsClient", "TestNew", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.TestNewResponder(resp)
@@ -906,13 +928,15 @@ func (client CampaignsClient) TestSaved(resourceGroupName string, appCollection 
 
 	req, err := client.TestSavedPreparer(resourceGroupName, appCollection, appName, kind, id, parameters)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "mobileengagement.CampaignsClient", "TestSaved", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "mobileengagement.CampaignsClient", "TestSaved", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.TestSavedSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "mobileengagement.CampaignsClient", "TestSaved", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "mobileengagement.CampaignsClient", "TestSaved", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.TestSavedResponder(resp)
@@ -987,13 +1011,15 @@ func (client CampaignsClient) Update(kind CampaignKinds, id int32, parameters Ca
 
 	req, err := client.UpdatePreparer(kind, id, parameters, resourceGroupName, appCollection, appName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "mobileengagement.CampaignsClient", "Update", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "mobileengagement.CampaignsClient", "Update", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.UpdateSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "mobileengagement.CampaignsClient", "Update", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "mobileengagement.CampaignsClient", "Update", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.UpdateResponder(resp)

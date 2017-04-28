@@ -82,6 +82,10 @@ type ApnsCredentialProperties struct {
 	CertificateKey  *string `json:"certificateKey,omitempty"`
 	Endpoint        *string `json:"endpoint,omitempty"`
 	Thumbprint      *string `json:"thumbprint,omitempty"`
+	KeyID           *string `json:"keyId,omitempty"`
+	AppName         *string `json:"appName,omitempty"`
+	AppID           *string `json:"appId,omitempty"`
+	Token           *string `json:"token,omitempty"`
 }
 
 // BaiduCredential is description of a NotificationHub BaiduCredential.

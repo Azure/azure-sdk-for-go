@@ -65,13 +65,15 @@ func (client ResourceLinksClient) CreateOrUpdate(linkID string, parameters Resou
 
 	req, err := client.CreateOrUpdatePreparer(linkID, parameters)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "links.ResourceLinksClient", "CreateOrUpdate", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "links.ResourceLinksClient", "CreateOrUpdate", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.CreateOrUpdateSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "links.ResourceLinksClient", "CreateOrUpdate", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "links.ResourceLinksClient", "CreateOrUpdate", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.CreateOrUpdateResponder(resp)
@@ -88,8 +90,9 @@ func (client ResourceLinksClient) CreateOrUpdatePreparer(linkID string, paramete
 		"linkId": linkID,
 	}
 
+	const APIVersion = "2016-09-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -130,13 +133,15 @@ func (client ResourceLinksClient) CreateOrUpdateResponder(resp *http.Response) (
 func (client ResourceLinksClient) Delete(linkID string) (result autorest.Response, err error) {
 	req, err := client.DeletePreparer(linkID)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "links.ResourceLinksClient", "Delete", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "links.ResourceLinksClient", "Delete", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.DeleteSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "links.ResourceLinksClient", "Delete", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "links.ResourceLinksClient", "Delete", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.DeleteResponder(resp)
@@ -153,8 +158,9 @@ func (client ResourceLinksClient) DeletePreparer(linkID string) (*http.Request, 
 		"linkId": linkID,
 	}
 
+	const APIVersion = "2016-09-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -190,13 +196,15 @@ func (client ResourceLinksClient) DeleteResponder(resp *http.Response) (result a
 func (client ResourceLinksClient) Get(linkID string) (result ResourceLink, err error) {
 	req, err := client.GetPreparer(linkID)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "links.ResourceLinksClient", "Get", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "links.ResourceLinksClient", "Get", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "links.ResourceLinksClient", "Get", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "links.ResourceLinksClient", "Get", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetResponder(resp)
@@ -213,8 +221,9 @@ func (client ResourceLinksClient) GetPreparer(linkID string) (*http.Request, err
 		"linkId": linkID,
 	}
 
+	const APIVersion = "2016-09-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -256,13 +265,15 @@ func (client ResourceLinksClient) GetResponder(resp *http.Response) (result Reso
 func (client ResourceLinksClient) ListAtSourceScope(scope string, filter Filter) (result ResourceLinkResult, err error) {
 	req, err := client.ListAtSourceScopePreparer(scope, filter)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "links.ResourceLinksClient", "ListAtSourceScope", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "links.ResourceLinksClient", "ListAtSourceScope", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListAtSourceScopeSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "links.ResourceLinksClient", "ListAtSourceScope", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "links.ResourceLinksClient", "ListAtSourceScope", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListAtSourceScopeResponder(resp)
@@ -279,8 +290,9 @@ func (client ResourceLinksClient) ListAtSourceScopePreparer(scope string, filter
 		"scope": scope,
 	}
 
+	const APIVersion = "2016-09-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 	if len(string(filter)) > 0 {
 		queryParameters["$filter"] = autorest.Encode("query", filter)
@@ -345,13 +357,15 @@ func (client ResourceLinksClient) ListAtSourceScopeNextResults(lastResults Resou
 func (client ResourceLinksClient) ListAtSubscription(filter string) (result ResourceLinkResult, err error) {
 	req, err := client.ListAtSubscriptionPreparer(filter)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "links.ResourceLinksClient", "ListAtSubscription", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "links.ResourceLinksClient", "ListAtSubscription", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListAtSubscriptionSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "links.ResourceLinksClient", "ListAtSubscription", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "links.ResourceLinksClient", "ListAtSubscription", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListAtSubscriptionResponder(resp)
@@ -368,8 +382,9 @@ func (client ResourceLinksClient) ListAtSubscriptionPreparer(filter string) (*ht
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
 
+	const APIVersion = "2016-09-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 	if len(filter) > 0 {
 		queryParameters["$filter"] = autorest.Encode("query", filter)

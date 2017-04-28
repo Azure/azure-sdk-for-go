@@ -69,13 +69,15 @@ func (client ClientGroupsClient) Get(resourceGroupName string, workspaceName str
 
 	req, err := client.GetPreparer(resourceGroupName, workspaceName, clientGroupName, startTime, endTime)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "servicemap.ClientGroupsClient", "Get", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "servicemap.ClientGroupsClient", "Get", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "servicemap.ClientGroupsClient", "Get", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "servicemap.ClientGroupsClient", "Get", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetResponder(resp)
@@ -95,8 +97,9 @@ func (client ClientGroupsClient) GetPreparer(resourceGroupName string, workspace
 		"workspaceName":     autorest.Encode("path", workspaceName),
 	}
 
+	const APIVersion = "2015-11-01-preview"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 	if startTime != nil {
 		queryParameters["startTime"] = autorest.Encode("query", *startTime)
@@ -160,13 +163,15 @@ func (client ClientGroupsClient) GetMembersCount(resourceGroupName string, works
 
 	req, err := client.GetMembersCountPreparer(resourceGroupName, workspaceName, clientGroupName, startTime, endTime)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "servicemap.ClientGroupsClient", "GetMembersCount", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "servicemap.ClientGroupsClient", "GetMembersCount", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetMembersCountSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "servicemap.ClientGroupsClient", "GetMembersCount", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "servicemap.ClientGroupsClient", "GetMembersCount", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetMembersCountResponder(resp)
@@ -186,8 +191,9 @@ func (client ClientGroupsClient) GetMembersCountPreparer(resourceGroupName strin
 		"workspaceName":     autorest.Encode("path", workspaceName),
 	}
 
+	const APIVersion = "2015-11-01-preview"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 	if startTime != nil {
 		queryParameters["startTime"] = autorest.Encode("query", *startTime)
@@ -257,13 +263,15 @@ func (client ClientGroupsClient) ListMembers(resourceGroupName string, workspace
 
 	req, err := client.ListMembersPreparer(resourceGroupName, workspaceName, clientGroupName, startTime, endTime, top)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "servicemap.ClientGroupsClient", "ListMembers", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "servicemap.ClientGroupsClient", "ListMembers", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListMembersSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "servicemap.ClientGroupsClient", "ListMembers", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "servicemap.ClientGroupsClient", "ListMembers", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListMembersResponder(resp)
@@ -283,8 +291,9 @@ func (client ClientGroupsClient) ListMembersPreparer(resourceGroupName string, w
 		"workspaceName":     autorest.Encode("path", workspaceName),
 	}
 
+	const APIVersion = "2015-11-01-preview"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 	if startTime != nil {
 		queryParameters["startTime"] = autorest.Encode("query", *startTime)

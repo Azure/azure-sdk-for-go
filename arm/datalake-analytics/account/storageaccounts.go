@@ -62,13 +62,15 @@ func (client StorageAccountsClient) Add(resourceGroupName string, accountName st
 
 	req, err := client.AddPreparer(resourceGroupName, accountName, storageAccountName, parameters)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "account.StorageAccountsClient", "Add", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "account.StorageAccountsClient", "Add", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.AddSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "account.StorageAccountsClient", "Add", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "account.StorageAccountsClient", "Add", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.AddResponder(resp)
@@ -131,13 +133,15 @@ func (client StorageAccountsClient) AddResponder(resp *http.Response) (result au
 func (client StorageAccountsClient) Delete(resourceGroupName string, accountName string, storageAccountName string) (result autorest.Response, err error) {
 	req, err := client.DeletePreparer(resourceGroupName, accountName, storageAccountName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "account.StorageAccountsClient", "Delete", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "account.StorageAccountsClient", "Delete", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.DeleteSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "account.StorageAccountsClient", "Delete", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "account.StorageAccountsClient", "Delete", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.DeleteResponder(resp)
@@ -199,13 +203,15 @@ func (client StorageAccountsClient) DeleteResponder(resp *http.Response) (result
 func (client StorageAccountsClient) Get(resourceGroupName string, accountName string, storageAccountName string) (result StorageAccountInfo, err error) {
 	req, err := client.GetPreparer(resourceGroupName, accountName, storageAccountName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "account.StorageAccountsClient", "Get", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "account.StorageAccountsClient", "Get", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "account.StorageAccountsClient", "Get", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "account.StorageAccountsClient", "Get", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetResponder(resp)
@@ -269,13 +275,15 @@ func (client StorageAccountsClient) GetResponder(resp *http.Response) (result St
 func (client StorageAccountsClient) GetStorageContainer(resourceGroupName string, accountName string, storageAccountName string, containerName string) (result StorageContainer, err error) {
 	req, err := client.GetStorageContainerPreparer(resourceGroupName, accountName, storageAccountName, containerName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "account.StorageAccountsClient", "GetStorageContainer", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "account.StorageAccountsClient", "GetStorageContainer", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetStorageContainerSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "account.StorageAccountsClient", "GetStorageContainer", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "account.StorageAccountsClient", "GetStorageContainer", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetStorageContainerResponder(resp)
@@ -358,13 +366,15 @@ func (client StorageAccountsClient) ListByAccount(resourceGroupName string, acco
 
 	req, err := client.ListByAccountPreparer(resourceGroupName, accountName, filter, top, skip, selectParameter, orderby, count)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "account.StorageAccountsClient", "ListByAccount", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "account.StorageAccountsClient", "ListByAccount", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListByAccountSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "account.StorageAccountsClient", "ListByAccount", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "account.StorageAccountsClient", "ListByAccount", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListByAccountResponder(resp)
@@ -469,13 +479,15 @@ func (client StorageAccountsClient) ListByAccountNextResults(lastResults DataLak
 func (client StorageAccountsClient) ListSasTokens(resourceGroupName string, accountName string, storageAccountName string, containerName string) (result ListSasTokensResult, err error) {
 	req, err := client.ListSasTokensPreparer(resourceGroupName, accountName, storageAccountName, containerName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "account.StorageAccountsClient", "ListSasTokens", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "account.StorageAccountsClient", "ListSasTokens", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListSasTokensSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "account.StorageAccountsClient", "ListSasTokens", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "account.StorageAccountsClient", "ListSasTokens", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListSasTokensResponder(resp)
@@ -565,13 +577,15 @@ func (client StorageAccountsClient) ListSasTokensNextResults(lastResults ListSas
 func (client StorageAccountsClient) ListStorageContainers(resourceGroupName string, accountName string, storageAccountName string) (result ListStorageContainersResult, err error) {
 	req, err := client.ListStorageContainersPreparer(resourceGroupName, accountName, storageAccountName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "account.StorageAccountsClient", "ListStorageContainers", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "account.StorageAccountsClient", "ListStorageContainers", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListStorageContainersSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "account.StorageAccountsClient", "ListStorageContainers", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "account.StorageAccountsClient", "ListStorageContainers", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListStorageContainersResponder(resp)
@@ -659,13 +673,15 @@ func (client StorageAccountsClient) ListStorageContainersNextResults(lastResults
 func (client StorageAccountsClient) Update(resourceGroupName string, accountName string, storageAccountName string, parameters *UpdateStorageAccountParameters) (result autorest.Response, err error) {
 	req, err := client.UpdatePreparer(resourceGroupName, accountName, storageAccountName, parameters)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "account.StorageAccountsClient", "Update", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "account.StorageAccountsClient", "Update", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.UpdateSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "account.StorageAccountsClient", "Update", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "account.StorageAccountsClient", "Update", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.UpdateResponder(resp)

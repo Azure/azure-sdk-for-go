@@ -48,13 +48,15 @@ func NewWorkflowVersionsClientWithBaseURI(baseURI string, subscriptionID string)
 func (client WorkflowVersionsClient) Get(resourceGroupName string, workflowName string, versionID string) (result WorkflowVersion, err error) {
 	req, err := client.GetPreparer(resourceGroupName, workflowName, versionID)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "logic.WorkflowVersionsClient", "Get", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "logic.WorkflowVersionsClient", "Get", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "logic.WorkflowVersionsClient", "Get", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "logic.WorkflowVersionsClient", "Get", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetResponder(resp)
@@ -113,13 +115,15 @@ func (client WorkflowVersionsClient) GetResponder(resp *http.Response) (result W
 func (client WorkflowVersionsClient) List(resourceGroupName string, workflowName string, top *int32) (result WorkflowVersionListResult, err error) {
 	req, err := client.ListPreparer(resourceGroupName, workflowName, top)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "logic.WorkflowVersionsClient", "List", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "logic.WorkflowVersionsClient", "List", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "logic.WorkflowVersionsClient", "List", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "logic.WorkflowVersionsClient", "List", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListResponder(resp)
@@ -194,5 +198,79 @@ func (client WorkflowVersionsClient) ListNextResults(lastResults WorkflowVersion
 		err = autorest.NewErrorWithError(err, "logic.WorkflowVersionsClient", "List", resp, "Failure responding to next results request")
 	}
 
+	return
+}
+
+// ListCallbackURL lists the callback URL for a trigger of a workflow version.
+//
+// resourceGroupName is the resource group name. workflowName is the workflow
+// name. versionID is the workflow versionId. triggerName is the workflow
+// trigger name. parameters is the callback URL parameters.
+func (client WorkflowVersionsClient) ListCallbackURL(resourceGroupName string, workflowName string, versionID string, triggerName string, parameters *GetCallbackURLParameters) (result WorkflowTriggerCallbackURL, err error) {
+	req, err := client.ListCallbackURLPreparer(resourceGroupName, workflowName, versionID, triggerName, parameters)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "logic.WorkflowVersionsClient", "ListCallbackURL", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.ListCallbackURLSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "logic.WorkflowVersionsClient", "ListCallbackURL", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.ListCallbackURLResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "logic.WorkflowVersionsClient", "ListCallbackURL", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// ListCallbackURLPreparer prepares the ListCallbackURL request.
+func (client WorkflowVersionsClient) ListCallbackURLPreparer(resourceGroupName string, workflowName string, versionID string, triggerName string, parameters *GetCallbackURLParameters) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+		"triggerName":       autorest.Encode("path", triggerName),
+		"versionId":         autorest.Encode("path", versionID),
+		"workflowName":      autorest.Encode("path", workflowName),
+	}
+
+	const APIVersion = "2016-06-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsJSON(),
+		autorest.AsPost(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logic/workflows/{workflowName}/versions/{versionId}/triggers/{triggerName}/listCallbackUrl", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	if parameters != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithJSON(parameters))
+	}
+	return preparer.Prepare(&http.Request{})
+}
+
+// ListCallbackURLSender sends the ListCallbackURL request. The method will close the
+// http.Response Body if it receives an error.
+func (client WorkflowVersionsClient) ListCallbackURLSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req)
+}
+
+// ListCallbackURLResponder handles the response to the ListCallbackURL request. The method always
+// closes the http.Response Body.
+func (client WorkflowVersionsClient) ListCallbackURLResponder(resp *http.Response) (result WorkflowTriggerCallbackURL, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
 	return
 }

@@ -60,13 +60,15 @@ func NewWithBaseURI(baseURI string, subscriptionID string) ManagementClient {
 func (client ManagementClient) GetAvailableOperations() (result OperationList, err error) {
 	req, err := client.GetAvailableOperationsPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "powerbiembedded.ManagementClient", "GetAvailableOperations", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "powerbiembedded.ManagementClient", "GetAvailableOperations", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetAvailableOperationsSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "powerbiembedded.ManagementClient", "GetAvailableOperations", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "powerbiembedded.ManagementClient", "GetAvailableOperations", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetAvailableOperationsResponder(resp)

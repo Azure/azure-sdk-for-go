@@ -54,13 +54,15 @@ func NewDataLakeStoreAccountsClientWithBaseURI(baseURI string, subscriptionID st
 func (client DataLakeStoreAccountsClient) Add(resourceGroupName string, accountName string, dataLakeStoreAccountName string, parameters *AddDataLakeStoreParameters) (result autorest.Response, err error) {
 	req, err := client.AddPreparer(resourceGroupName, accountName, dataLakeStoreAccountName, parameters)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "account.DataLakeStoreAccountsClient", "Add", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "account.DataLakeStoreAccountsClient", "Add", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.AddSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "account.DataLakeStoreAccountsClient", "Add", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "account.DataLakeStoreAccountsClient", "Add", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.AddResponder(resp)
@@ -127,13 +129,15 @@ func (client DataLakeStoreAccountsClient) AddResponder(resp *http.Response) (res
 func (client DataLakeStoreAccountsClient) Delete(resourceGroupName string, accountName string, dataLakeStoreAccountName string) (result autorest.Response, err error) {
 	req, err := client.DeletePreparer(resourceGroupName, accountName, dataLakeStoreAccountName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "account.DataLakeStoreAccountsClient", "Delete", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "account.DataLakeStoreAccountsClient", "Delete", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.DeleteSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "account.DataLakeStoreAccountsClient", "Delete", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "account.DataLakeStoreAccountsClient", "Delete", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.DeleteResponder(resp)
@@ -195,13 +199,15 @@ func (client DataLakeStoreAccountsClient) DeleteResponder(resp *http.Response) (
 func (client DataLakeStoreAccountsClient) Get(resourceGroupName string, accountName string, dataLakeStoreAccountName string) (result DataLakeStoreAccountInfo, err error) {
 	req, err := client.GetPreparer(resourceGroupName, accountName, dataLakeStoreAccountName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "account.DataLakeStoreAccountsClient", "Get", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "account.DataLakeStoreAccountsClient", "Get", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "account.DataLakeStoreAccountsClient", "Get", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "account.DataLakeStoreAccountsClient", "Get", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetResponder(resp)
@@ -283,13 +289,15 @@ func (client DataLakeStoreAccountsClient) ListByAccount(resourceGroupName string
 
 	req, err := client.ListByAccountPreparer(resourceGroupName, accountName, filter, top, skip, selectParameter, orderby, count)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "account.DataLakeStoreAccountsClient", "ListByAccount", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "account.DataLakeStoreAccountsClient", "ListByAccount", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListByAccountSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "account.DataLakeStoreAccountsClient", "ListByAccount", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "account.DataLakeStoreAccountsClient", "ListByAccount", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListByAccountResponder(resp)

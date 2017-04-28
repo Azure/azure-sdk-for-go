@@ -25,9 +25,7 @@ import (
 	"net/http"
 )
 
-// ProductsClient is the use these REST APIs for performing operations on
-// entities like API, Product, and Subscription associated with your Azure API
-// Management deployment.
+// ProductsClient is the composite Swagger for ApiManagement Client
 type ProductsClient struct {
 	ManagementClient
 }
@@ -73,13 +71,15 @@ func (client ProductsClient) CreateOrUpdate(resourceGroupName string, serviceNam
 
 	req, err := client.CreateOrUpdatePreparer(resourceGroupName, serviceName, productID, parameters)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "apimanagement.ProductsClient", "CreateOrUpdate", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "apimanagement.ProductsClient", "CreateOrUpdate", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.CreateOrUpdateSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "apimanagement.ProductsClient", "CreateOrUpdate", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "apimanagement.ProductsClient", "CreateOrUpdate", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.CreateOrUpdateResponder(resp)
@@ -99,7 +99,7 @@ func (client ProductsClient) CreateOrUpdatePreparer(resourceGroupName string, se
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2016-07-07"
+	const APIVersion = "2016-10-10"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -156,13 +156,15 @@ func (client ProductsClient) Delete(resourceGroupName string, serviceName string
 
 	req, err := client.DeletePreparer(resourceGroupName, serviceName, productID, ifMatch, deleteSubscriptions)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "apimanagement.ProductsClient", "Delete", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "apimanagement.ProductsClient", "Delete", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.DeleteSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "apimanagement.ProductsClient", "Delete", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "apimanagement.ProductsClient", "Delete", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.DeleteResponder(resp)
@@ -182,7 +184,7 @@ func (client ProductsClient) DeletePreparer(resourceGroupName string, serviceNam
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2016-07-07"
+	const APIVersion = "2016-10-10"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -237,13 +239,15 @@ func (client ProductsClient) Get(resourceGroupName string, serviceName string, p
 
 	req, err := client.GetPreparer(resourceGroupName, serviceName, productID)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "apimanagement.ProductsClient", "Get", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "apimanagement.ProductsClient", "Get", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "apimanagement.ProductsClient", "Get", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "apimanagement.ProductsClient", "Get", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetResponder(resp)
@@ -263,7 +267,7 @@ func (client ProductsClient) GetPreparer(resourceGroupName string, serviceName s
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2016-07-07"
+	const APIVersion = "2016-10-10"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -331,13 +335,15 @@ func (client ProductsClient) ListByService(resourceGroupName string, serviceName
 
 	req, err := client.ListByServicePreparer(resourceGroupName, serviceName, filter, top, skip, expandGroups)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "apimanagement.ProductsClient", "ListByService", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "apimanagement.ProductsClient", "ListByService", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListByServiceSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "apimanagement.ProductsClient", "ListByService", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "apimanagement.ProductsClient", "ListByService", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListByServiceResponder(resp)
@@ -356,7 +362,7 @@ func (client ProductsClient) ListByServicePreparer(resourceGroupName string, ser
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2016-07-07"
+	const APIVersion = "2016-10-10"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -447,13 +453,15 @@ func (client ProductsClient) Update(resourceGroupName string, serviceName string
 
 	req, err := client.UpdatePreparer(resourceGroupName, serviceName, productID, parameters, ifMatch)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "apimanagement.ProductsClient", "Update", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "apimanagement.ProductsClient", "Update", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.UpdateSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "apimanagement.ProductsClient", "Update", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "apimanagement.ProductsClient", "Update", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.UpdateResponder(resp)
@@ -473,7 +481,7 @@ func (client ProductsClient) UpdatePreparer(resourceGroupName string, serviceNam
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2016-07-07"
+	const APIVersion = "2016-10-10"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}

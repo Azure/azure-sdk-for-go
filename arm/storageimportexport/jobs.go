@@ -32,21 +32,23 @@ type JobsClient struct {
 }
 
 // NewJobsClient creates an instance of the JobsClient client.
-func NewJobsClient(subscriptionID string, resourceGroupName string) JobsClient {
-	return NewJobsClientWithBaseURI(DefaultBaseURI, subscriptionID, resourceGroupName)
+func NewJobsClient(subscriptionID string) JobsClient {
+	return NewJobsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewJobsClientWithBaseURI creates an instance of the JobsClient client.
-func NewJobsClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string) JobsClient {
-	return JobsClient{NewWithBaseURI(baseURI, subscriptionID, resourceGroupName)}
+func NewJobsClientWithBaseURI(baseURI string, subscriptionID string) JobsClient {
+	return JobsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // CreateOrUpdate creates a new import/export job or updates an existing
 // import/export job in the specified subscription.
 //
-// jobName is the name of the import/export job. jobProperties is properties of
-// the import/export job that need to be specified during creation.
-func (client JobsClient) CreateOrUpdate(jobName string, jobProperties Job) (result Job, err error) {
+// resourceGroupName is the resource group name uniquely identifies the
+// resource group within the user subscription. jobName is the name of the
+// import/export job. jobProperties is properties of the import/export job that
+// need to be specified during creation.
+func (client JobsClient) CreateOrUpdate(resourceGroupName string, jobName string, jobProperties Job) (result Job, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: jobProperties,
 			Constraints: []validation.Constraint{{Target: "jobProperties.JobProperties", Name: validation.Null, Rule: true,
@@ -89,15 +91,17 @@ func (client JobsClient) CreateOrUpdate(jobName string, jobProperties Job) (resu
 		return result, validation.NewErrorWithValidationError(err, "storageimportexport.JobsClient", "CreateOrUpdate")
 	}
 
-	req, err := client.CreateOrUpdatePreparer(jobName, jobProperties)
+	req, err := client.CreateOrUpdatePreparer(resourceGroupName, jobName, jobProperties)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "storageimportexport.JobsClient", "CreateOrUpdate", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "storageimportexport.JobsClient", "CreateOrUpdate", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.CreateOrUpdateSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "storageimportexport.JobsClient", "CreateOrUpdate", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "storageimportexport.JobsClient", "CreateOrUpdate", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.CreateOrUpdateResponder(resp)
@@ -109,15 +113,16 @@ func (client JobsClient) CreateOrUpdate(jobName string, jobProperties Job) (resu
 }
 
 // CreateOrUpdatePreparer prepares the CreateOrUpdate request.
-func (client JobsClient) CreateOrUpdatePreparer(jobName string, jobProperties Job) (*http.Request, error) {
+func (client JobsClient) CreateOrUpdatePreparer(resourceGroupName string, jobName string, jobProperties Job) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"jobName":           autorest.Encode("path", jobName),
-		"resourceGroupName": autorest.Encode("path", client.ResourceGroupName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
+	const APIVersion = "2016-11-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -126,7 +131,8 @@ func (client JobsClient) CreateOrUpdatePreparer(jobName string, jobProperties Jo
 		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ImportExport/jobs/{jobName}", pathParameters),
 		autorest.WithJSON(jobProperties),
-		autorest.WithQueryParameters(queryParameters))
+		autorest.WithQueryParameters(queryParameters),
+		autorest.WithHeader("Accept-Language", client.AcceptLanguage))
 	return preparer.Prepare(&http.Request{})
 }
 
@@ -152,17 +158,21 @@ func (client JobsClient) CreateOrUpdateResponder(resp *http.Response) (result Jo
 // Delete deletes an existing import/export job. Only import/export jobs in the
 // Creating or Completed states can be deleted.
 //
-// jobName is the name of the import/export job.
-func (client JobsClient) Delete(jobName string) (result autorest.Response, err error) {
-	req, err := client.DeletePreparer(jobName)
+// resourceGroupName is the resource group name uniquely identifies the
+// resource group within the user subscription. jobName is the name of the
+// import/export job.
+func (client JobsClient) Delete(resourceGroupName string, jobName string) (result autorest.Response, err error) {
+	req, err := client.DeletePreparer(resourceGroupName, jobName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "storageimportexport.JobsClient", "Delete", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "storageimportexport.JobsClient", "Delete", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.DeleteSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "storageimportexport.JobsClient", "Delete", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "storageimportexport.JobsClient", "Delete", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.DeleteResponder(resp)
@@ -174,22 +184,24 @@ func (client JobsClient) Delete(jobName string) (result autorest.Response, err e
 }
 
 // DeletePreparer prepares the Delete request.
-func (client JobsClient) DeletePreparer(jobName string) (*http.Request, error) {
+func (client JobsClient) DeletePreparer(resourceGroupName string, jobName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"jobName":           autorest.Encode("path", jobName),
-		"resourceGroupName": autorest.Encode("path", client.ResourceGroupName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
+	const APIVersion = "2016-11-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsDelete(),
 		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ImportExport/jobs/{jobName}", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
+		autorest.WithQueryParameters(queryParameters),
+		autorest.WithHeader("Accept-Language", client.AcceptLanguage))
 	return preparer.Prepare(&http.Request{})
 }
 
@@ -213,17 +225,21 @@ func (client JobsClient) DeleteResponder(resp *http.Response) (result autorest.R
 
 // Get gets information about an existing import/export job.
 //
-// jobName is the name of the import/export job.
-func (client JobsClient) Get(jobName string) (result Job, err error) {
-	req, err := client.GetPreparer(jobName)
+// resourceGroupName is the resource group name uniquely identifies the
+// resource group within the user subscription. jobName is the name of the
+// import/export job.
+func (client JobsClient) Get(resourceGroupName string, jobName string) (result Job, err error) {
+	req, err := client.GetPreparer(resourceGroupName, jobName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "storageimportexport.JobsClient", "Get", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "storageimportexport.JobsClient", "Get", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "storageimportexport.JobsClient", "Get", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "storageimportexport.JobsClient", "Get", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetResponder(resp)
@@ -235,22 +251,24 @@ func (client JobsClient) Get(jobName string) (result Job, err error) {
 }
 
 // GetPreparer prepares the Get request.
-func (client JobsClient) GetPreparer(jobName string) (*http.Request, error) {
+func (client JobsClient) GetPreparer(resourceGroupName string, jobName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"jobName":           autorest.Encode("path", jobName),
-		"resourceGroupName": autorest.Encode("path", client.ResourceGroupName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
+	const APIVersion = "2016-11-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ImportExport/jobs/{jobName}", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
+		autorest.WithQueryParameters(queryParameters),
+		autorest.WithHeader("Accept-Language", client.AcceptLanguage))
 	return preparer.Prepare(&http.Request{})
 }
 
@@ -296,13 +314,15 @@ func (client JobsClient) List(top *int32, filter string) (result JobListResult, 
 
 	req, err := client.ListPreparer(top, filter)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "storageimportexport.JobsClient", "List", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "storageimportexport.JobsClient", "List", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "storageimportexport.JobsClient", "List", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "storageimportexport.JobsClient", "List", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListResponder(resp)
@@ -319,8 +339,9 @@ func (client JobsClient) ListPreparer(top *int32, filter string) (*http.Request,
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
 
+	const APIVersion = "2016-11-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 	if top != nil {
 		queryParameters["$top"] = autorest.Encode("query", *top)
@@ -333,7 +354,8 @@ func (client JobsClient) ListPreparer(top *int32, filter string) (*http.Request,
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPathParameters("/subscriptions/{subscriptionId}/providers/Microsoft.ImportExport/jobs", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
+		autorest.WithQueryParameters(queryParameters),
+		autorest.WithHeader("Accept-Language", client.AcceptLanguage))
 	return preparer.Prepare(&http.Request{})
 }
 
@@ -383,17 +405,21 @@ func (client JobsClient) ListNextResults(lastResults JobListResult) (result JobL
 // ListBitLockerKeys lists the BitLocker keys for all drives in the specified
 // import/export job.
 //
-// jobName is the name of the import/export job.
-func (client JobsClient) ListBitLockerKeys(jobName string) (result BitLockerKeysListResult, err error) {
-	req, err := client.ListBitLockerKeysPreparer(jobName)
+// resourceGroupName is the resource group name uniquely identifies the
+// resource group within the user subscription. jobName is the name of the
+// import/export job.
+func (client JobsClient) ListBitLockerKeys(resourceGroupName string, jobName string) (result BitLockerKeysListResult, err error) {
+	req, err := client.ListBitLockerKeysPreparer(resourceGroupName, jobName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "storageimportexport.JobsClient", "ListBitLockerKeys", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "storageimportexport.JobsClient", "ListBitLockerKeys", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListBitLockerKeysSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "storageimportexport.JobsClient", "ListBitLockerKeys", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "storageimportexport.JobsClient", "ListBitLockerKeys", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListBitLockerKeysResponder(resp)
@@ -405,22 +431,24 @@ func (client JobsClient) ListBitLockerKeys(jobName string) (result BitLockerKeys
 }
 
 // ListBitLockerKeysPreparer prepares the ListBitLockerKeys request.
-func (client JobsClient) ListBitLockerKeysPreparer(jobName string) (*http.Request, error) {
+func (client JobsClient) ListBitLockerKeysPreparer(resourceGroupName string, jobName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"jobName":           autorest.Encode("path", jobName),
-		"resourceGroupName": autorest.Encode("path", client.ResourceGroupName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
+	const APIVersion = "2016-11-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ImportExport/jobs/{jobName}/listBitLockerKeys", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
+		autorest.WithQueryParameters(queryParameters),
+		autorest.WithHeader("Accept-Language", client.AcceptLanguage))
 	return preparer.Prepare(&http.Request{})
 }
 
@@ -446,16 +474,17 @@ func (client JobsClient) ListBitLockerKeysResponder(resp *http.Response) (result
 // ListByResourceGroup returns all active and completed import/export jobs in a
 // resource group.
 //
-// top is an integer value that specifies how many jobs at most should be
-// returned. The value cannot exceed 100. filter is can be used to restrict the
-// results to certain conditions. The following possible values can be used
-// with $filter: 1) $filter=type eq '{type}'; 2) $filter=trackingnumber eq
-// '{trackingnumber}'; 3) $filter=state eq '{state}'; 4) Logical and
-// combination of the above, for example: $filter=type eq 'Import' and state eq
-// 'Transferring'. Valid values for type are Import and Export. Valid values
-// for state are Creating, Shipping, Received, Transferring, Packaging, Closed,
-// and Completed.
-func (client JobsClient) ListByResourceGroup(top *int32, filter string) (result JobListResult, err error) {
+// resourceGroupName is the resource group name uniquely identifies the
+// resource group within the user subscription. top is an integer value that
+// specifies how many jobs at most should be returned. The value cannot exceed
+// 100. filter is can be used to restrict the results to certain conditions.
+// The following possible values can be used with $filter: 1) $filter=type eq
+// '{type}'; 2) $filter=trackingnumber eq '{trackingnumber}'; 3) $filter=state
+// eq '{state}'; 4) Logical and combination of the above, for example:
+// $filter=type eq 'Import' and state eq 'Transferring'. Valid values for type
+// are Import and Export. Valid values for state are Creating, Shipping,
+// Received, Transferring, Packaging, Closed, and Completed.
+func (client JobsClient) ListByResourceGroup(resourceGroupName string, top *int32, filter string) (result JobListResult, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: top,
 			Constraints: []validation.Constraint{{Target: "top", Name: validation.Null, Rule: false,
@@ -465,15 +494,17 @@ func (client JobsClient) ListByResourceGroup(top *int32, filter string) (result 
 		return result, validation.NewErrorWithValidationError(err, "storageimportexport.JobsClient", "ListByResourceGroup")
 	}
 
-	req, err := client.ListByResourceGroupPreparer(top, filter)
+	req, err := client.ListByResourceGroupPreparer(resourceGroupName, top, filter)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "storageimportexport.JobsClient", "ListByResourceGroup", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "storageimportexport.JobsClient", "ListByResourceGroup", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListByResourceGroupSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "storageimportexport.JobsClient", "ListByResourceGroup", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "storageimportexport.JobsClient", "ListByResourceGroup", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListByResourceGroupResponder(resp)
@@ -485,14 +516,15 @@ func (client JobsClient) ListByResourceGroup(top *int32, filter string) (result 
 }
 
 // ListByResourceGroupPreparer prepares the ListByResourceGroup request.
-func (client JobsClient) ListByResourceGroupPreparer(top *int32, filter string) (*http.Request, error) {
+func (client JobsClient) ListByResourceGroupPreparer(resourceGroupName string, top *int32, filter string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"resourceGroupName": autorest.Encode("path", client.ResourceGroupName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
+	const APIVersion = "2016-11-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 	if top != nil {
 		queryParameters["$top"] = autorest.Encode("query", *top)
@@ -505,7 +537,8 @@ func (client JobsClient) ListByResourceGroupPreparer(top *int32, filter string) 
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ImportExport/jobs", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
+		autorest.WithQueryParameters(queryParameters),
+		autorest.WithHeader("Accept-Language", client.AcceptLanguage))
 	return preparer.Prepare(&http.Request{})
 }
 
@@ -556,9 +589,10 @@ func (client JobsClient) ListByResourceGroupNextResults(lastResults JobListResul
 // target resource group. The target resource group may be in a different
 // subscription.
 //
-// moveJobsParameters is parameters to be provided to move a job from one
-// resource group to another.
-func (client JobsClient) Move(moveJobsParameters MoveJobParameters) (result autorest.Response, err error) {
+// resourceGroupName is the resource group name uniquely identifies the
+// resource group within the user subscription. moveJobsParameters is
+// parameters to be provided to move a job from one resource group to another.
+func (client JobsClient) Move(resourceGroupName string, moveJobsParameters MoveJobParameters) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: moveJobsParameters,
 			Constraints: []validation.Constraint{{Target: "moveJobsParameters.TargetResourceGroup", Name: validation.Null, Rule: true, Chain: nil},
@@ -566,15 +600,17 @@ func (client JobsClient) Move(moveJobsParameters MoveJobParameters) (result auto
 		return result, validation.NewErrorWithValidationError(err, "storageimportexport.JobsClient", "Move")
 	}
 
-	req, err := client.MovePreparer(moveJobsParameters)
+	req, err := client.MovePreparer(resourceGroupName, moveJobsParameters)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "storageimportexport.JobsClient", "Move", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "storageimportexport.JobsClient", "Move", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.MoveSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "storageimportexport.JobsClient", "Move", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "storageimportexport.JobsClient", "Move", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.MoveResponder(resp)
@@ -586,14 +622,15 @@ func (client JobsClient) Move(moveJobsParameters MoveJobParameters) (result auto
 }
 
 // MovePreparer prepares the Move request.
-func (client JobsClient) MovePreparer(moveJobsParameters MoveJobParameters) (*http.Request, error) {
+func (client JobsClient) MovePreparer(resourceGroupName string, moveJobsParameters MoveJobParameters) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"resourceGroupName": autorest.Encode("path", client.ResourceGroupName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
+	const APIVersion = "2016-11-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -602,7 +639,8 @@ func (client JobsClient) MovePreparer(moveJobsParameters MoveJobParameters) (*ht
 		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ImportExport/moveResources", pathParameters),
 		autorest.WithJSON(moveJobsParameters),
-		autorest.WithQueryParameters(queryParameters))
+		autorest.WithQueryParameters(queryParameters),
+		autorest.WithHeader("Accept-Language", client.AcceptLanguage))
 	return preparer.Prepare(&http.Request{})
 }
 
@@ -629,18 +667,22 @@ func (client JobsClient) MoveResponder(resp *http.Response) (result autorest.Res
 // comprising the import or export job have been shipped to the Microsoft data
 // center. It can also be used to cancel an existing job.
 //
-// jobName is the name of the import/export job. jobProperties is import/export
-// job properties that need to be updated.
-func (client JobsClient) Update(jobName string, jobProperties MutableJob) (result Job, err error) {
-	req, err := client.UpdatePreparer(jobName, jobProperties)
+// resourceGroupName is the resource group name uniquely identifies the
+// resource group within the user subscription. jobName is the name of the
+// import/export job. jobProperties is import/export job properties that need
+// to be updated.
+func (client JobsClient) Update(resourceGroupName string, jobName string, jobProperties MutableJob) (result Job, err error) {
+	req, err := client.UpdatePreparer(resourceGroupName, jobName, jobProperties)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "storageimportexport.JobsClient", "Update", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "storageimportexport.JobsClient", "Update", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.UpdateSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "storageimportexport.JobsClient", "Update", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "storageimportexport.JobsClient", "Update", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.UpdateResponder(resp)
@@ -652,15 +694,16 @@ func (client JobsClient) Update(jobName string, jobProperties MutableJob) (resul
 }
 
 // UpdatePreparer prepares the Update request.
-func (client JobsClient) UpdatePreparer(jobName string, jobProperties MutableJob) (*http.Request, error) {
+func (client JobsClient) UpdatePreparer(resourceGroupName string, jobName string, jobProperties MutableJob) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"jobName":           autorest.Encode("path", jobName),
-		"resourceGroupName": autorest.Encode("path", client.ResourceGroupName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
+	const APIVersion = "2016-11-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -669,7 +712,8 @@ func (client JobsClient) UpdatePreparer(jobName string, jobProperties MutableJob
 		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ImportExport/jobs/{jobName}", pathParameters),
 		autorest.WithJSON(jobProperties),
-		autorest.WithQueryParameters(queryParameters))
+		autorest.WithQueryParameters(queryParameters),
+		autorest.WithHeader("Accept-Language", client.AcceptLanguage))
 	return preparer.Prepare(&http.Request{})
 }
 

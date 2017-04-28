@@ -25,9 +25,7 @@ import (
 	"net/http"
 )
 
-// UserGroupsClient is the use these REST APIs for performing operations on
-// entities like API, Product, and Subscription associated with your Azure API
-// Management deployment.
+// UserGroupsClient is the composite Swagger for ApiManagement Client
 type UserGroupsClient struct {
 	ManagementClient
 }
@@ -43,7 +41,7 @@ func NewUserGroupsClientWithBaseURI(baseURI string, subscriptionID string) UserG
 	return UserGroupsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// ListByUser lists all user groups.
+// ListByUsers lists all user groups.
 //
 // resourceGroupName is the name of the resource group. serviceName is the name
 // of the API Management service. uid is user identifier. Must be unique in the
@@ -57,7 +55,7 @@ func NewUserGroupsClientWithBaseURI(baseURI string, subscriptionID string) UserG
 // | description | ge, le, eq, ne, gt, lt | substringof, contains, startswith,
 // endswith | top is number of records to return. skip is number of records to
 // skip.
-func (client UserGroupsClient) ListByUser(resourceGroupName string, serviceName string, uid string, filter string, top *int32, skip *int32) (result GroupCollection, err error) {
+func (client UserGroupsClient) ListByUsers(resourceGroupName string, serviceName string, uid string, filter string, top *int32, skip *int32) (result GroupCollection, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,
 			Constraints: []validation.Constraint{{Target: "serviceName", Name: validation.MaxLength, Rule: 50, Chain: nil},
@@ -73,30 +71,32 @@ func (client UserGroupsClient) ListByUser(resourceGroupName string, serviceName 
 		{TargetValue: skip,
 			Constraints: []validation.Constraint{{Target: "skip", Name: validation.Null, Rule: false,
 				Chain: []validation.Constraint{{Target: "skip", Name: validation.InclusiveMinimum, Rule: 0, Chain: nil}}}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "apimanagement.UserGroupsClient", "ListByUser")
+		return result, validation.NewErrorWithValidationError(err, "apimanagement.UserGroupsClient", "ListByUsers")
 	}
 
-	req, err := client.ListByUserPreparer(resourceGroupName, serviceName, uid, filter, top, skip)
+	req, err := client.ListByUsersPreparer(resourceGroupName, serviceName, uid, filter, top, skip)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "apimanagement.UserGroupsClient", "ListByUser", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "apimanagement.UserGroupsClient", "ListByUsers", nil, "Failure preparing request")
+		return
 	}
 
-	resp, err := client.ListByUserSender(req)
+	resp, err := client.ListByUsersSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "apimanagement.UserGroupsClient", "ListByUser", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "apimanagement.UserGroupsClient", "ListByUsers", resp, "Failure sending request")
+		return
 	}
 
-	result, err = client.ListByUserResponder(resp)
+	result, err = client.ListByUsersResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "apimanagement.UserGroupsClient", "ListByUser", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "apimanagement.UserGroupsClient", "ListByUsers", resp, "Failure responding to request")
 	}
 
 	return
 }
 
-// ListByUserPreparer prepares the ListByUser request.
-func (client UserGroupsClient) ListByUserPreparer(resourceGroupName string, serviceName string, uid string, filter string, top *int32, skip *int32) (*http.Request, error) {
+// ListByUsersPreparer prepares the ListByUsers request.
+func (client UserGroupsClient) ListByUsersPreparer(resourceGroupName string, serviceName string, uid string, filter string, top *int32, skip *int32) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"serviceName":       autorest.Encode("path", serviceName),
@@ -104,7 +104,7 @@ func (client UserGroupsClient) ListByUserPreparer(resourceGroupName string, serv
 		"uid":               autorest.Encode("path", uid),
 	}
 
-	const APIVersion = "2016-07-07"
+	const APIVersion = "2016-10-10"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -126,15 +126,15 @@ func (client UserGroupsClient) ListByUserPreparer(resourceGroupName string, serv
 	return preparer.Prepare(&http.Request{})
 }
 
-// ListByUserSender sends the ListByUser request. The method will close the
+// ListByUsersSender sends the ListByUsers request. The method will close the
 // http.Response Body if it receives an error.
-func (client UserGroupsClient) ListByUserSender(req *http.Request) (*http.Response, error) {
+func (client UserGroupsClient) ListByUsersSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req)
 }
 
-// ListByUserResponder handles the response to the ListByUser request. The method always
+// ListByUsersResponder handles the response to the ListByUsers request. The method always
 // closes the http.Response Body.
-func (client UserGroupsClient) ListByUserResponder(resp *http.Response) (result GroupCollection, err error) {
+func (client UserGroupsClient) ListByUsersResponder(resp *http.Response) (result GroupCollection, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -145,25 +145,25 @@ func (client UserGroupsClient) ListByUserResponder(resp *http.Response) (result 
 	return
 }
 
-// ListByUserNextResults retrieves the next set of results, if any.
-func (client UserGroupsClient) ListByUserNextResults(lastResults GroupCollection) (result GroupCollection, err error) {
+// ListByUsersNextResults retrieves the next set of results, if any.
+func (client UserGroupsClient) ListByUsersNextResults(lastResults GroupCollection) (result GroupCollection, err error) {
 	req, err := lastResults.GroupCollectionPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "apimanagement.UserGroupsClient", "ListByUser", nil, "Failure preparing next results request")
+		return result, autorest.NewErrorWithError(err, "apimanagement.UserGroupsClient", "ListByUsers", nil, "Failure preparing next results request")
 	}
 	if req == nil {
 		return
 	}
 
-	resp, err := client.ListByUserSender(req)
+	resp, err := client.ListByUsersSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "apimanagement.UserGroupsClient", "ListByUser", resp, "Failure sending next results request")
+		return result, autorest.NewErrorWithError(err, "apimanagement.UserGroupsClient", "ListByUsers", resp, "Failure sending next results request")
 	}
 
-	result, err = client.ListByUserResponder(resp)
+	result, err = client.ListByUsersResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "apimanagement.UserGroupsClient", "ListByUser", resp, "Failure responding to next results request")
+		err = autorest.NewErrorWithError(err, "apimanagement.UserGroupsClient", "ListByUsers", resp, "Failure responding to next results request")
 	}
 
 	return

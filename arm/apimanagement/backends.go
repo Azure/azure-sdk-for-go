@@ -25,9 +25,7 @@ import (
 	"net/http"
 )
 
-// BackendsClient is the use these REST APIs for performing operations on
-// entities like API, Product, and Subscription associated with your Azure API
-// Management deployment.
+// BackendsClient is the composite Swagger for ApiManagement Client
 type BackendsClient struct {
 	ManagementClient
 }
@@ -46,9 +44,9 @@ func NewBackendsClientWithBaseURI(baseURI string, subscriptionID string) Backend
 // CreateOrUpdate creates or Updates a backend.
 //
 // resourceGroupName is the name of the resource group. serviceName is the name
-// of the API Management service. backendid is user identifier. Must be unique
-// in the current API Management service instance. parameters is create
-// parameters.
+// of the API Management service. backendid is identifier of the Backend
+// entity. Must be unique in the current API Management service instance.
+// parameters is create parameters.
 func (client BackendsClient) CreateOrUpdate(resourceGroupName string, serviceName string, backendid string, parameters BackendContract) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,
@@ -58,24 +56,21 @@ func (client BackendsClient) CreateOrUpdate(resourceGroupName string, serviceNam
 		{TargetValue: backendid,
 			Constraints: []validation.Constraint{{Target: "backendid", Name: validation.MaxLength, Rule: 255, Chain: nil},
 				{Target: "backendid", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "backendid", Name: validation.Pattern, Rule: `^[^*#&+:<>?]+$`, Chain: nil}}},
-		{TargetValue: parameters,
-			Constraints: []validation.Constraint{{Target: "parameters.Host", Name: validation.Null, Rule: true,
-				Chain: []validation.Constraint{{Target: "parameters.Host", Name: validation.MaxLength, Rule: 255, Chain: nil},
-					{Target: "parameters.Host", Name: validation.MinLength, Rule: 1, Chain: nil},
-				}}}}}); err != nil {
+				{Target: "backendid", Name: validation.Pattern, Rule: `^[^*#&+:<>?]+$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewErrorWithValidationError(err, "apimanagement.BackendsClient", "CreateOrUpdate")
 	}
 
 	req, err := client.CreateOrUpdatePreparer(resourceGroupName, serviceName, backendid, parameters)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "apimanagement.BackendsClient", "CreateOrUpdate", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "apimanagement.BackendsClient", "CreateOrUpdate", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.CreateOrUpdateSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "apimanagement.BackendsClient", "CreateOrUpdate", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "apimanagement.BackendsClient", "CreateOrUpdate", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.CreateOrUpdateResponder(resp)
@@ -95,7 +90,7 @@ func (client BackendsClient) CreateOrUpdatePreparer(resourceGroupName string, se
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2016-07-07"
+	const APIVersion = "2016-10-10"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -131,10 +126,10 @@ func (client BackendsClient) CreateOrUpdateResponder(resp *http.Response) (resul
 // Delete deletes the specified backend.
 //
 // resourceGroupName is the name of the resource group. serviceName is the name
-// of the API Management service. backendid is user identifier. Must be unique
-// in the current API Management service instance. ifMatch is the entity state
-// (Etag) version of the backend to delete. A value of "*" can be used for
-// If-Match to unconditionally apply the operation.
+// of the API Management service. backendid is identifier of the Backend
+// entity. Must be unique in the current API Management service instance.
+// ifMatch is the entity state (Etag) version of the backend to delete. A value
+// of "*" can be used for If-Match to unconditionally apply the operation.
 func (client BackendsClient) Delete(resourceGroupName string, serviceName string, backendid string, ifMatch string) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,
@@ -150,13 +145,15 @@ func (client BackendsClient) Delete(resourceGroupName string, serviceName string
 
 	req, err := client.DeletePreparer(resourceGroupName, serviceName, backendid, ifMatch)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "apimanagement.BackendsClient", "Delete", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "apimanagement.BackendsClient", "Delete", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.DeleteSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "apimanagement.BackendsClient", "Delete", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "apimanagement.BackendsClient", "Delete", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.DeleteResponder(resp)
@@ -176,7 +173,7 @@ func (client BackendsClient) DeletePreparer(resourceGroupName string, serviceNam
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2016-07-07"
+	const APIVersion = "2016-10-10"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -211,8 +208,8 @@ func (client BackendsClient) DeleteResponder(resp *http.Response) (result autore
 // Get gets the details of the backend specified by its identifier.
 //
 // resourceGroupName is the name of the resource group. serviceName is the name
-// of the API Management service. backendid is user identifier. Must be unique
-// in the current API Management service instance.
+// of the API Management service. backendid is identifier of the Backend
+// entity. Must be unique in the current API Management service instance.
 func (client BackendsClient) Get(resourceGroupName string, serviceName string, backendid string) (result BackendResponse, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,
@@ -228,13 +225,15 @@ func (client BackendsClient) Get(resourceGroupName string, serviceName string, b
 
 	req, err := client.GetPreparer(resourceGroupName, serviceName, backendid)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "apimanagement.BackendsClient", "Get", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "apimanagement.BackendsClient", "Get", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "apimanagement.BackendsClient", "Get", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "apimanagement.BackendsClient", "Get", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetResponder(resp)
@@ -254,7 +253,7 @@ func (client BackendsClient) GetPreparer(resourceGroupName string, serviceName s
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2016-07-07"
+	const APIVersion = "2016-10-10"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -315,13 +314,15 @@ func (client BackendsClient) ListByService(resourceGroupName string, serviceName
 
 	req, err := client.ListByServicePreparer(resourceGroupName, serviceName, filter, top, skip)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "apimanagement.BackendsClient", "ListByService", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "apimanagement.BackendsClient", "ListByService", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListByServiceSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "apimanagement.BackendsClient", "ListByService", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "apimanagement.BackendsClient", "ListByService", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListByServiceResponder(resp)
@@ -340,7 +341,7 @@ func (client BackendsClient) ListByServicePreparer(resourceGroupName string, ser
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2016-07-07"
+	const APIVersion = "2016-10-10"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -408,11 +409,11 @@ func (client BackendsClient) ListByServiceNextResults(lastResults BackendCollect
 // Update updates an existing backend.
 //
 // resourceGroupName is the name of the resource group. serviceName is the name
-// of the API Management service. backendid is user identifier. Must be unique
-// in the current API Management service instance. parameters is update
-// parameters. ifMatch is the entity state (Etag) version of the backend to
-// update. A value of "*" can be used for If-Match to unconditionally apply the
-// operation.
+// of the API Management service. backendid is identifier of the Backend
+// entity. Must be unique in the current API Management service instance.
+// parameters is update parameters. ifMatch is the entity state (Etag) version
+// of the backend to update. A value of "*" can be used for If-Match to
+// unconditionally apply the operation.
 func (client BackendsClient) Update(resourceGroupName string, serviceName string, backendid string, parameters BackendUpdateParameters, ifMatch string) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,
@@ -428,13 +429,15 @@ func (client BackendsClient) Update(resourceGroupName string, serviceName string
 
 	req, err := client.UpdatePreparer(resourceGroupName, serviceName, backendid, parameters, ifMatch)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "apimanagement.BackendsClient", "Update", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "apimanagement.BackendsClient", "Update", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.UpdateSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "apimanagement.BackendsClient", "Update", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "apimanagement.BackendsClient", "Update", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.UpdateResponder(resp)
@@ -454,7 +457,7 @@ func (client BackendsClient) UpdatePreparer(resourceGroupName string, serviceNam
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2016-07-07"
+	const APIVersion = "2016-10-10"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}

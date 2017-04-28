@@ -20,6 +20,7 @@ package recoveryservices
 
 import (
 	"github.com/Azure/go-autorest/autorest"
+	"github.com/Azure/go-autorest/autorest/date"
 	"github.com/Azure/go-autorest/autorest/to"
 	"net/http"
 )
@@ -34,19 +35,116 @@ const (
 	Standard SkuName = "Standard"
 )
 
-// Resource is
+// TriggerType enumerates the values for trigger type.
+type TriggerType string
+
+const (
+	// ForcedUpgrade specifies the forced upgrade state for trigger type.
+	ForcedUpgrade TriggerType = "ForcedUpgrade"
+	// UserTriggered specifies the user triggered state for trigger type.
+	UserTriggered TriggerType = "UserTriggered"
+)
+
+// VaultUpgradeState enumerates the values for vault upgrade state.
+type VaultUpgradeState string
+
+const (
+	// Failed specifies the failed state for vault upgrade state.
+	Failed VaultUpgradeState = "Failed"
+	// InProgress specifies the in progress state for vault upgrade state.
+	InProgress VaultUpgradeState = "InProgress"
+	// Unknown specifies the unknown state for vault upgrade state.
+	Unknown VaultUpgradeState = "Unknown"
+	// Upgraded specifies the upgraded state for vault upgrade state.
+	Upgraded VaultUpgradeState = "Upgraded"
+)
+
+// ClientDiscoveryDisplay is localized display information of an operation.
+type ClientDiscoveryDisplay struct {
+	Provider    *string `json:"Provider,omitempty"`
+	Resource    *string `json:"Resource,omitempty"`
+	Operation   *string `json:"Operation,omitempty"`
+	Description *string `json:"Description,omitempty"`
+}
+
+// ClientDiscoveryForLogSpecification is log specification for the operation.
+type ClientDiscoveryForLogSpecification struct {
+	Name         *string    `json:"name,omitempty"`
+	DisplayName  *string    `json:"displayName,omitempty"`
+	BlobDuration *date.Time `json:"blobDuration,omitempty"`
+}
+
+// ClientDiscoveryForServiceSpecification is operation properties.
+type ClientDiscoveryForServiceSpecification struct {
+	LogSpecifications *[]ClientDiscoveryForLogSpecification `json:"logSpecifications,omitempty"`
+}
+
+// ClientDiscoveryProperties is operation properties.
+type ClientDiscoveryProperties struct {
+	ServiceSpecification *ClientDiscoveryForServiceSpecification `json:"serviceSpecification,omitempty"`
+}
+
+// ClientDiscoveryResponse is list of available operations.
+type ClientDiscoveryResponse struct {
+	autorest.Response `json:"-"`
+	Value             *[]ClientDiscoveryValueForSingleAPI `json:"Value,omitempty"`
+	NextLink          *string                             `json:"NextLink,omitempty"`
+}
+
+// ClientDiscoveryResponsePreparer prepares a request to retrieve the next set of results. It returns
+// nil if no more results exist.
+func (client ClientDiscoveryResponse) ClientDiscoveryResponsePreparer() (*http.Request, error) {
+	if client.NextLink == nil || len(to.String(client.NextLink)) <= 0 {
+		return nil, nil
+	}
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(client.NextLink)))
+}
+
+// ClientDiscoveryValueForSingleAPI is available operation details.
+type ClientDiscoveryValueForSingleAPI struct {
+	Name                       *string                 `json:"Name,omitempty"`
+	Display                    *ClientDiscoveryDisplay `json:"Display,omitempty"`
+	Origin                     *string                 `json:"Origin,omitempty"`
+	*ClientDiscoveryProperties `json:"Properties,omitempty"`
+}
+
+// Resource is aRM Resource.
 type Resource struct {
-	ID       *string             `json:"id,omitempty"`
-	Name     *string             `json:"name,omitempty"`
-	Type     *string             `json:"type,omitempty"`
-	Location *string             `json:"location,omitempty"`
-	Sku      *Sku                `json:"sku,omitempty"`
-	Tags     *map[string]*string `json:"tags,omitempty"`
+	ID   *string `json:"id,omitempty"`
+	Name *string `json:"name,omitempty"`
+	Type *string `json:"type,omitempty"`
+	ETag *string `json:"eTag,omitempty"`
 }
 
 // Sku is identifies the unique system identifier for each Azure resource.
 type Sku struct {
 	Name SkuName `json:"name,omitempty"`
+}
+
+// TrackedResource is tracked resource with location.
+type TrackedResource struct {
+	ID       *string             `json:"id,omitempty"`
+	Name     *string             `json:"name,omitempty"`
+	Type     *string             `json:"type,omitempty"`
+	ETag     *string             `json:"eTag,omitempty"`
+	Location *string             `json:"location,omitempty"`
+	Tags     *map[string]*string `json:"tags,omitempty"`
+}
+
+// UpgradeDetails is details for upgrading vault.
+type UpgradeDetails struct {
+	OperationID        *string           `json:"operationId,omitempty"`
+	StartTimeUtc       *date.Time        `json:"startTimeUtc,omitempty"`
+	LastUpdatedTimeUtc *date.Time        `json:"lastUpdatedTimeUtc,omitempty"`
+	EndTimeUtc         *date.Time        `json:"endTimeUtc,omitempty"`
+	Status             VaultUpgradeState `json:"status,omitempty"`
+	Message            *string           `json:"message,omitempty"`
+	TriggerType        TriggerType       `json:"triggerType,omitempty"`
+	UpgradedResourceID *string           `json:"upgradedResourceId,omitempty"`
+	PreviousResourceID *string           `json:"previousResourceId,omitempty"`
 }
 
 // Vault is resource information, as returned by the resource provider.
@@ -55,33 +153,40 @@ type Vault struct {
 	ID                *string             `json:"id,omitempty"`
 	Name              *string             `json:"name,omitempty"`
 	Type              *string             `json:"type,omitempty"`
+	ETag              *string             `json:"eTag,omitempty"`
 	Location          *string             `json:"location,omitempty"`
-	Sku               *Sku                `json:"sku,omitempty"`
 	Tags              *map[string]*string `json:"tags,omitempty"`
-	Etag              *string             `json:"etag,omitempty"`
 	Properties        *VaultProperties    `json:"properties,omitempty"`
+	Sku               *Sku                `json:"sku,omitempty"`
 }
 
-// VaultList is the response model for Vault.
+// VaultExtendedInfo is vault extended information.
+type VaultExtendedInfo struct {
+	IntegrityKey            *string `json:"integrityKey,omitempty"`
+	EncryptionKey           *string `json:"encryptionKey,omitempty"`
+	EncryptionKeyThumbprint *string `json:"encryptionKeyThumbprint,omitempty"`
+	Algorithm               *string `json:"algorithm,omitempty"`
+}
+
+// VaultExtendedInfoResource is vault extended information.
+type VaultExtendedInfoResource struct {
+	autorest.Response  `json:"-"`
+	ID                 *string `json:"id,omitempty"`
+	Name               *string `json:"name,omitempty"`
+	Type               *string `json:"type,omitempty"`
+	ETag               *string `json:"eTag,omitempty"`
+	*VaultExtendedInfo `json:"properties,omitempty"`
+}
+
+// VaultList is the response model for a list of Vaults.
 type VaultList struct {
 	autorest.Response `json:"-"`
 	Value             *[]Vault `json:"value,omitempty"`
-	Null              *string  `json:",omitempty"`
-}
-
-// VaultListPreparer prepares a request to retrieve the next set of results. It returns
-// nil if no more results exist.
-func (client VaultList) VaultListPreparer() (*http.Request, error) {
-	if client.Null == nil || len(to.String(client.Null)) <= 0 {
-		return nil, nil
-	}
-	return autorest.Prepare(&http.Request{},
-		autorest.AsJSON(),
-		autorest.AsGet(),
-		autorest.WithBaseURL(to.String(client.Null)))
+	NextLink          *string  `json:"nextLink,omitempty"`
 }
 
 // VaultProperties is properties of the vault.
 type VaultProperties struct {
-	ProvisioningState *string `json:"provisioningState,omitempty"`
+	ProvisioningState *string         `json:"provisioningState,omitempty"`
+	UpgradeDetails    *UpgradeDetails `json:"upgradeDetails,omitempty"`
 }

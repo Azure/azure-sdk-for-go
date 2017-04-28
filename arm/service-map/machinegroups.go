@@ -69,13 +69,15 @@ func (client MachineGroupsClient) Create(resourceGroupName string, workspaceName
 
 	req, err := client.CreatePreparer(resourceGroupName, workspaceName, machineGroup)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "servicemap.MachineGroupsClient", "Create", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "servicemap.MachineGroupsClient", "Create", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.CreateSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "servicemap.MachineGroupsClient", "Create", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "servicemap.MachineGroupsClient", "Create", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.CreateResponder(resp)
@@ -94,8 +96,9 @@ func (client MachineGroupsClient) CreatePreparer(resourceGroupName string, works
 		"workspaceName":     autorest.Encode("path", workspaceName),
 	}
 
+	const APIVersion = "2015-11-01-preview"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -150,13 +153,15 @@ func (client MachineGroupsClient) Delete(resourceGroupName string, workspaceName
 
 	req, err := client.DeletePreparer(resourceGroupName, workspaceName, machineGroupName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "servicemap.MachineGroupsClient", "Delete", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "servicemap.MachineGroupsClient", "Delete", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.DeleteSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "servicemap.MachineGroupsClient", "Delete", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "servicemap.MachineGroupsClient", "Delete", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.DeleteResponder(resp)
@@ -176,8 +181,9 @@ func (client MachineGroupsClient) DeletePreparer(resourceGroupName string, works
 		"workspaceName":     autorest.Encode("path", workspaceName),
 	}
 
+	const APIVersion = "2015-11-01-preview"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -229,13 +235,15 @@ func (client MachineGroupsClient) Get(resourceGroupName string, workspaceName st
 
 	req, err := client.GetPreparer(resourceGroupName, workspaceName, machineGroupName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "servicemap.MachineGroupsClient", "Get", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "servicemap.MachineGroupsClient", "Get", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "servicemap.MachineGroupsClient", "Get", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "servicemap.MachineGroupsClient", "Get", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetResponder(resp)
@@ -255,8 +263,9 @@ func (client MachineGroupsClient) GetPreparer(resourceGroupName string, workspac
 		"workspaceName":     autorest.Encode("path", workspaceName),
 	}
 
+	const APIVersion = "2015-11-01-preview"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -306,13 +315,15 @@ func (client MachineGroupsClient) ListByWorkspace(resourceGroupName string, work
 
 	req, err := client.ListByWorkspacePreparer(resourceGroupName, workspaceName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "servicemap.MachineGroupsClient", "ListByWorkspace", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "servicemap.MachineGroupsClient", "ListByWorkspace", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListByWorkspaceSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "servicemap.MachineGroupsClient", "ListByWorkspace", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "servicemap.MachineGroupsClient", "ListByWorkspace", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListByWorkspaceResponder(resp)
@@ -331,8 +342,9 @@ func (client MachineGroupsClient) ListByWorkspacePreparer(resourceGroupName stri
 		"workspaceName":     autorest.Encode("path", workspaceName),
 	}
 
+	const APIVersion = "2015-11-01-preview"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -417,13 +429,15 @@ func (client MachineGroupsClient) Update(resourceGroupName string, workspaceName
 
 	req, err := client.UpdatePreparer(resourceGroupName, workspaceName, machineGroupName, machineGroup)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "servicemap.MachineGroupsClient", "Update", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "servicemap.MachineGroupsClient", "Update", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.UpdateSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "servicemap.MachineGroupsClient", "Update", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "servicemap.MachineGroupsClient", "Update", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.UpdateResponder(resp)
@@ -443,8 +457,9 @@ func (client MachineGroupsClient) UpdatePreparer(resourceGroupName string, works
 		"workspaceName":     autorest.Encode("path", workspaceName),
 	}
 
+	const APIVersion = "2015-11-01-preview"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(

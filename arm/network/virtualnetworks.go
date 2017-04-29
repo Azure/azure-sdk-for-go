@@ -45,10 +45,10 @@ func NewVirtualNetworksClientWithBaseURI(baseURI string, subscriptionID string) 
 // for use.
 //
 // resourceGroupName is the name of the resource group. virtualNetworkName is
-// the name of the virtual network. ipAddress is the private IP address to be
+// the name of the virtual network. IPAddress is the private IP address to be
 // verified.
-func (client VirtualNetworksClient) CheckIPAddressAvailability(resourceGroupName string, virtualNetworkName string, ipAddress string) (result IPAddressAvailabilityResult, err error) {
-	req, err := client.CheckIPAddressAvailabilityPreparer(resourceGroupName, virtualNetworkName, ipAddress)
+func (client VirtualNetworksClient) CheckIPAddressAvailability(resourceGroupName string, virtualNetworkName string, IPAddress string) (result IPAddressAvailabilityResult, err error) {
+	req, err := client.CheckIPAddressAvailabilityPreparer(resourceGroupName, virtualNetworkName, IPAddress)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.VirtualNetworksClient", "CheckIPAddressAvailability", nil, "Failure preparing request")
 		return
@@ -70,7 +70,7 @@ func (client VirtualNetworksClient) CheckIPAddressAvailability(resourceGroupName
 }
 
 // CheckIPAddressAvailabilityPreparer prepares the CheckIPAddressAvailability request.
-func (client VirtualNetworksClient) CheckIPAddressAvailabilityPreparer(resourceGroupName string, virtualNetworkName string, ipAddress string) (*http.Request, error) {
+func (client VirtualNetworksClient) CheckIPAddressAvailabilityPreparer(resourceGroupName string, virtualNetworkName string, IPAddress string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName":  autorest.Encode("path", resourceGroupName),
 		"subscriptionId":     autorest.Encode("path", client.SubscriptionID),
@@ -81,8 +81,8 @@ func (client VirtualNetworksClient) CheckIPAddressAvailabilityPreparer(resourceG
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
-	if len(ipAddress) > 0 {
-		queryParameters["ipAddress"] = autorest.Encode("query", ipAddress)
+	if len(IPAddress) > 0 {
+		queryParameters["ipAddress"] = autorest.Encode("query", IPAddress)
 	}
 
 	preparer := autorest.CreatePreparer(

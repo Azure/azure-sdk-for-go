@@ -694,9 +694,9 @@ func (client AppsClient) BackupSlotResponder(resp *http.Response) (result Backup
 // and/or a specific scaled-out instance.
 //
 // resourceGroupName is name of the resource group to which the resource
-// belongs. name is name of the app. id is iD of an existing deployment.
+// belongs. name is name of the app. ID is iD of an existing deployment.
 // deployment is deployment details.
-func (client AppsClient) CreateDeployment(resourceGroupName string, name string, id string, deployment Deployment) (result Deployment, err error) {
+func (client AppsClient) CreateDeployment(resourceGroupName string, name string, ID string, deployment Deployment) (result Deployment, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
@@ -705,7 +705,7 @@ func (client AppsClient) CreateDeployment(resourceGroupName string, name string,
 		return result, validation.NewErrorWithValidationError(err, "web.AppsClient", "CreateDeployment")
 	}
 
-	req, err := client.CreateDeploymentPreparer(resourceGroupName, name, id, deployment)
+	req, err := client.CreateDeploymentPreparer(resourceGroupName, name, ID, deployment)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.AppsClient", "CreateDeployment", nil, "Failure preparing request")
 		return
@@ -727,9 +727,9 @@ func (client AppsClient) CreateDeployment(resourceGroupName string, name string,
 }
 
 // CreateDeploymentPreparer prepares the CreateDeployment request.
-func (client AppsClient) CreateDeploymentPreparer(resourceGroupName string, name string, id string, deployment Deployment) (*http.Request, error) {
+func (client AppsClient) CreateDeploymentPreparer(resourceGroupName string, name string, ID string, deployment Deployment) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"id":                autorest.Encode("path", id),
+		"id":                autorest.Encode("path", ID),
 		"name":              autorest.Encode("path", name),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
@@ -773,10 +773,10 @@ func (client AppsClient) CreateDeploymentResponder(resp *http.Response) (result 
 // slot, and/or a specific scaled-out instance.
 //
 // resourceGroupName is name of the resource group to which the resource
-// belongs. name is name of the app. id is iD of an existing deployment. slot
+// belongs. name is name of the app. ID is iD of an existing deployment. slot
 // is name of the deployment slot. If a slot is not specified, the API creates
 // a deployment for the production slot. deployment is deployment details.
-func (client AppsClient) CreateDeploymentSlot(resourceGroupName string, name string, id string, slot string, deployment Deployment) (result Deployment, err error) {
+func (client AppsClient) CreateDeploymentSlot(resourceGroupName string, name string, ID string, slot string, deployment Deployment) (result Deployment, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
@@ -785,7 +785,7 @@ func (client AppsClient) CreateDeploymentSlot(resourceGroupName string, name str
 		return result, validation.NewErrorWithValidationError(err, "web.AppsClient", "CreateDeploymentSlot")
 	}
 
-	req, err := client.CreateDeploymentSlotPreparer(resourceGroupName, name, id, slot, deployment)
+	req, err := client.CreateDeploymentSlotPreparer(resourceGroupName, name, ID, slot, deployment)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.AppsClient", "CreateDeploymentSlot", nil, "Failure preparing request")
 		return
@@ -807,9 +807,9 @@ func (client AppsClient) CreateDeploymentSlot(resourceGroupName string, name str
 }
 
 // CreateDeploymentSlotPreparer prepares the CreateDeploymentSlot request.
-func (client AppsClient) CreateDeploymentSlotPreparer(resourceGroupName string, name string, id string, slot string, deployment Deployment) (*http.Request, error) {
+func (client AppsClient) CreateDeploymentSlotPreparer(resourceGroupName string, name string, ID string, slot string, deployment Deployment) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"id":                autorest.Encode("path", id),
+		"id":                autorest.Encode("path", ID),
 		"name":              autorest.Encode("path", name),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"slot":              autorest.Encode("path", slot),
@@ -854,11 +854,11 @@ func (client AppsClient) CreateDeploymentSlotResponder(resp *http.Response) (res
 // deployment slot, and/or a specific scaled-out instance.
 //
 // resourceGroupName is name of the resource group to which the resource
-// belongs. name is name of the app. id is iD of an existing deployment.
+// belongs. name is name of the app. ID is iD of an existing deployment.
 // instanceID is iD of a specific scaled-out instance. This is the value of the
 // name property in the JSON response from "GET api/sites/{siteName}/instances"
 // deployment is deployment details.
-func (client AppsClient) CreateInstanceDeployment(resourceGroupName string, name string, id string, instanceID string, deployment Deployment) (result Deployment, err error) {
+func (client AppsClient) CreateInstanceDeployment(resourceGroupName string, name string, ID string, instanceID string, deployment Deployment) (result Deployment, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
@@ -867,7 +867,7 @@ func (client AppsClient) CreateInstanceDeployment(resourceGroupName string, name
 		return result, validation.NewErrorWithValidationError(err, "web.AppsClient", "CreateInstanceDeployment")
 	}
 
-	req, err := client.CreateInstanceDeploymentPreparer(resourceGroupName, name, id, instanceID, deployment)
+	req, err := client.CreateInstanceDeploymentPreparer(resourceGroupName, name, ID, instanceID, deployment)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.AppsClient", "CreateInstanceDeployment", nil, "Failure preparing request")
 		return
@@ -889,9 +889,9 @@ func (client AppsClient) CreateInstanceDeployment(resourceGroupName string, name
 }
 
 // CreateInstanceDeploymentPreparer prepares the CreateInstanceDeployment request.
-func (client AppsClient) CreateInstanceDeploymentPreparer(resourceGroupName string, name string, id string, instanceID string, deployment Deployment) (*http.Request, error) {
+func (client AppsClient) CreateInstanceDeploymentPreparer(resourceGroupName string, name string, ID string, instanceID string, deployment Deployment) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"id":                autorest.Encode("path", id),
+		"id":                autorest.Encode("path", ID),
 		"instanceId":        autorest.Encode("path", instanceID),
 		"name":              autorest.Encode("path", name),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
@@ -936,13 +936,13 @@ func (client AppsClient) CreateInstanceDeploymentResponder(resp *http.Response) 
 // deployment slot, and/or a specific scaled-out instance.
 //
 // resourceGroupName is name of the resource group to which the resource
-// belongs. name is name of the app. id is iD of an existing deployment. slot
+// belongs. name is name of the app. ID is iD of an existing deployment. slot
 // is name of the deployment slot. If a slot is not specified, the API creates
 // a deployment for the production slot. instanceID is iD of a specific
 // scaled-out instance. This is the value of the name property in the JSON
 // response from "GET api/sites/{siteName}/instances" deployment is deployment
 // details.
-func (client AppsClient) CreateInstanceDeploymentSlot(resourceGroupName string, name string, id string, slot string, instanceID string, deployment Deployment) (result Deployment, err error) {
+func (client AppsClient) CreateInstanceDeploymentSlot(resourceGroupName string, name string, ID string, slot string, instanceID string, deployment Deployment) (result Deployment, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
@@ -951,7 +951,7 @@ func (client AppsClient) CreateInstanceDeploymentSlot(resourceGroupName string, 
 		return result, validation.NewErrorWithValidationError(err, "web.AppsClient", "CreateInstanceDeploymentSlot")
 	}
 
-	req, err := client.CreateInstanceDeploymentSlotPreparer(resourceGroupName, name, id, slot, instanceID, deployment)
+	req, err := client.CreateInstanceDeploymentSlotPreparer(resourceGroupName, name, ID, slot, instanceID, deployment)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.AppsClient", "CreateInstanceDeploymentSlot", nil, "Failure preparing request")
 		return
@@ -973,9 +973,9 @@ func (client AppsClient) CreateInstanceDeploymentSlot(resourceGroupName string, 
 }
 
 // CreateInstanceDeploymentSlotPreparer prepares the CreateInstanceDeploymentSlot request.
-func (client AppsClient) CreateInstanceDeploymentSlotPreparer(resourceGroupName string, name string, id string, slot string, instanceID string, deployment Deployment) (*http.Request, error) {
+func (client AppsClient) CreateInstanceDeploymentSlotPreparer(resourceGroupName string, name string, ID string, slot string, instanceID string, deployment Deployment) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"id":                autorest.Encode("path", id),
+		"id":                autorest.Encode("path", ID),
 		"instanceId":        autorest.Encode("path", instanceID),
 		"name":              autorest.Encode("path", name),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
@@ -1031,9 +1031,9 @@ func (client AppsClient) CreateInstanceDeploymentSlotResponder(resp *http.Respon
 // only used for app creation skipCustomDomainVerification is if true, custom
 // (non *.azurewebsites.net) domains associated with web app are not verified.
 // forceDNSRegistration is if true, web app hostname is force registered with
-// DNS ttlInSeconds is time to live in seconds for web app's default domain
+// DNS TTLInSeconds is time to live in seconds for web app's default domain
 // name
-func (client AppsClient) CreateOrUpdate(resourceGroupName string, name string, siteEnvelope Site, skipDNSRegistration *bool, skipCustomDomainVerification *bool, forceDNSRegistration *bool, ttlInSeconds string, cancel <-chan struct{}) (<-chan Site, <-chan error) {
+func (client AppsClient) CreateOrUpdate(resourceGroupName string, name string, siteEnvelope Site, skipDNSRegistration *bool, skipCustomDomainVerification *bool, forceDNSRegistration *bool, TTLInSeconds string, cancel <-chan struct{}) (<-chan Site, <-chan error) {
 	resultChan := make(chan Site, 1)
 	errChan := make(chan error, 1)
 	if err := validation.Validate([]validation.Validation{
@@ -1065,7 +1065,7 @@ func (client AppsClient) CreateOrUpdate(resourceGroupName string, name string, s
 			close(resultChan)
 			close(errChan)
 		}()
-		req, err := client.CreateOrUpdatePreparer(resourceGroupName, name, siteEnvelope, skipDNSRegistration, skipCustomDomainVerification, forceDNSRegistration, ttlInSeconds, cancel)
+		req, err := client.CreateOrUpdatePreparer(resourceGroupName, name, siteEnvelope, skipDNSRegistration, skipCustomDomainVerification, forceDNSRegistration, TTLInSeconds, cancel)
 		if err != nil {
 			err = autorest.NewErrorWithError(err, "web.AppsClient", "CreateOrUpdate", nil, "Failure preparing request")
 			return
@@ -1087,7 +1087,7 @@ func (client AppsClient) CreateOrUpdate(resourceGroupName string, name string, s
 }
 
 // CreateOrUpdatePreparer prepares the CreateOrUpdate request.
-func (client AppsClient) CreateOrUpdatePreparer(resourceGroupName string, name string, siteEnvelope Site, skipDNSRegistration *bool, skipCustomDomainVerification *bool, forceDNSRegistration *bool, ttlInSeconds string, cancel <-chan struct{}) (*http.Request, error) {
+func (client AppsClient) CreateOrUpdatePreparer(resourceGroupName string, name string, siteEnvelope Site, skipDNSRegistration *bool, skipCustomDomainVerification *bool, forceDNSRegistration *bool, TTLInSeconds string, cancel <-chan struct{}) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"name":              autorest.Encode("path", name),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
@@ -1107,8 +1107,8 @@ func (client AppsClient) CreateOrUpdatePreparer(resourceGroupName string, name s
 	if forceDNSRegistration != nil {
 		queryParameters["forceDnsRegistration"] = autorest.Encode("query", *forceDNSRegistration)
 	}
-	if len(ttlInSeconds) > 0 {
-		queryParameters["ttlInSeconds"] = autorest.Encode("query", ttlInSeconds)
+	if len(TTLInSeconds) > 0 {
+		queryParameters["ttlInSeconds"] = autorest.Encode("query", TTLInSeconds)
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -1975,9 +1975,9 @@ func (client AppsClient) CreateOrUpdateRelayServiceConnectionSlotResponder(resp 
 // only used for app creation skipCustomDomainVerification is if true, custom
 // (non *.azurewebsites.net) domains associated with web app are not verified.
 // forceDNSRegistration is if true, web app hostname is force registered with
-// DNS ttlInSeconds is time to live in seconds for web app's default domain
+// DNS TTLInSeconds is time to live in seconds for web app's default domain
 // name
-func (client AppsClient) CreateOrUpdateSlot(resourceGroupName string, name string, siteEnvelope Site, slot string, skipDNSRegistration *bool, skipCustomDomainVerification *bool, forceDNSRegistration *bool, ttlInSeconds string, cancel <-chan struct{}) (<-chan Site, <-chan error) {
+func (client AppsClient) CreateOrUpdateSlot(resourceGroupName string, name string, siteEnvelope Site, slot string, skipDNSRegistration *bool, skipCustomDomainVerification *bool, forceDNSRegistration *bool, TTLInSeconds string, cancel <-chan struct{}) (<-chan Site, <-chan error) {
 	resultChan := make(chan Site, 1)
 	errChan := make(chan error, 1)
 	if err := validation.Validate([]validation.Validation{
@@ -2009,7 +2009,7 @@ func (client AppsClient) CreateOrUpdateSlot(resourceGroupName string, name strin
 			close(resultChan)
 			close(errChan)
 		}()
-		req, err := client.CreateOrUpdateSlotPreparer(resourceGroupName, name, siteEnvelope, slot, skipDNSRegistration, skipCustomDomainVerification, forceDNSRegistration, ttlInSeconds, cancel)
+		req, err := client.CreateOrUpdateSlotPreparer(resourceGroupName, name, siteEnvelope, slot, skipDNSRegistration, skipCustomDomainVerification, forceDNSRegistration, TTLInSeconds, cancel)
 		if err != nil {
 			err = autorest.NewErrorWithError(err, "web.AppsClient", "CreateOrUpdateSlot", nil, "Failure preparing request")
 			return
@@ -2031,7 +2031,7 @@ func (client AppsClient) CreateOrUpdateSlot(resourceGroupName string, name strin
 }
 
 // CreateOrUpdateSlotPreparer prepares the CreateOrUpdateSlot request.
-func (client AppsClient) CreateOrUpdateSlotPreparer(resourceGroupName string, name string, siteEnvelope Site, slot string, skipDNSRegistration *bool, skipCustomDomainVerification *bool, forceDNSRegistration *bool, ttlInSeconds string, cancel <-chan struct{}) (*http.Request, error) {
+func (client AppsClient) CreateOrUpdateSlotPreparer(resourceGroupName string, name string, siteEnvelope Site, slot string, skipDNSRegistration *bool, skipCustomDomainVerification *bool, forceDNSRegistration *bool, TTLInSeconds string, cancel <-chan struct{}) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"name":              autorest.Encode("path", name),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
@@ -2052,8 +2052,8 @@ func (client AppsClient) CreateOrUpdateSlotPreparer(resourceGroupName string, na
 	if forceDNSRegistration != nil {
 		queryParameters["forceDnsRegistration"] = autorest.Encode("query", *forceDNSRegistration)
 	}
-	if len(ttlInSeconds) > 0 {
-		queryParameters["ttlInSeconds"] = autorest.Encode("query", ttlInSeconds)
+	if len(TTLInSeconds) > 0 {
+		queryParameters["ttlInSeconds"] = autorest.Encode("query", TTLInSeconds)
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -2999,8 +2999,8 @@ func (client AppsClient) DeleteBackupSlotResponder(resp *http.Response) (result 
 // deployment slot, and/or a specific scaled-out instance.
 //
 // resourceGroupName is name of the resource group to which the resource
-// belongs. name is name of the app. id is deployment ID.
-func (client AppsClient) DeleteDeployment(resourceGroupName string, name string, id string) (result autorest.Response, err error) {
+// belongs. name is name of the app. ID is deployment ID.
+func (client AppsClient) DeleteDeployment(resourceGroupName string, name string, ID string) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
@@ -3009,7 +3009,7 @@ func (client AppsClient) DeleteDeployment(resourceGroupName string, name string,
 		return result, validation.NewErrorWithValidationError(err, "web.AppsClient", "DeleteDeployment")
 	}
 
-	req, err := client.DeleteDeploymentPreparer(resourceGroupName, name, id)
+	req, err := client.DeleteDeploymentPreparer(resourceGroupName, name, ID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.AppsClient", "DeleteDeployment", nil, "Failure preparing request")
 		return
@@ -3031,9 +3031,9 @@ func (client AppsClient) DeleteDeployment(resourceGroupName string, name string,
 }
 
 // DeleteDeploymentPreparer prepares the DeleteDeployment request.
-func (client AppsClient) DeleteDeploymentPreparer(resourceGroupName string, name string, id string) (*http.Request, error) {
+func (client AppsClient) DeleteDeploymentPreparer(resourceGroupName string, name string, ID string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"id":                autorest.Encode("path", id),
+		"id":                autorest.Encode("path", ID),
 		"name":              autorest.Encode("path", name),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
@@ -3074,10 +3074,10 @@ func (client AppsClient) DeleteDeploymentResponder(resp *http.Response) (result 
 // deployment slot, and/or a specific scaled-out instance.
 //
 // resourceGroupName is name of the resource group to which the resource
-// belongs. name is name of the app. id is deployment ID. slot is name of the
+// belongs. name is name of the app. ID is deployment ID. slot is name of the
 // deployment slot. If a slot is not specified, the API deletes a deployment
 // for the production slot.
-func (client AppsClient) DeleteDeploymentSlot(resourceGroupName string, name string, id string, slot string) (result autorest.Response, err error) {
+func (client AppsClient) DeleteDeploymentSlot(resourceGroupName string, name string, ID string, slot string) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
@@ -3086,7 +3086,7 @@ func (client AppsClient) DeleteDeploymentSlot(resourceGroupName string, name str
 		return result, validation.NewErrorWithValidationError(err, "web.AppsClient", "DeleteDeploymentSlot")
 	}
 
-	req, err := client.DeleteDeploymentSlotPreparer(resourceGroupName, name, id, slot)
+	req, err := client.DeleteDeploymentSlotPreparer(resourceGroupName, name, ID, slot)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.AppsClient", "DeleteDeploymentSlot", nil, "Failure preparing request")
 		return
@@ -3108,9 +3108,9 @@ func (client AppsClient) DeleteDeploymentSlot(resourceGroupName string, name str
 }
 
 // DeleteDeploymentSlotPreparer prepares the DeleteDeploymentSlot request.
-func (client AppsClient) DeleteDeploymentSlotPreparer(resourceGroupName string, name string, id string, slot string) (*http.Request, error) {
+func (client AppsClient) DeleteDeploymentSlotPreparer(resourceGroupName string, name string, ID string, slot string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"id":                autorest.Encode("path", id),
+		"id":                autorest.Encode("path", ID),
 		"name":              autorest.Encode("path", name),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"slot":              autorest.Encode("path", slot),
@@ -3613,10 +3613,10 @@ func (client AppsClient) DeleteHybridConnectionSlotResponder(resp *http.Response
 // specific deployment slot, and/or a specific scaled-out instance.
 //
 // resourceGroupName is name of the resource group to which the resource
-// belongs. name is name of the app. id is deployment ID. instanceID is iD of a
+// belongs. name is name of the app. ID is deployment ID. instanceID is iD of a
 // specific scaled-out instance. This is the value of the name property in the
 // JSON response from "GET api/sites/{siteName}/instances"
-func (client AppsClient) DeleteInstanceDeployment(resourceGroupName string, name string, id string, instanceID string) (result autorest.Response, err error) {
+func (client AppsClient) DeleteInstanceDeployment(resourceGroupName string, name string, ID string, instanceID string) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
@@ -3625,7 +3625,7 @@ func (client AppsClient) DeleteInstanceDeployment(resourceGroupName string, name
 		return result, validation.NewErrorWithValidationError(err, "web.AppsClient", "DeleteInstanceDeployment")
 	}
 
-	req, err := client.DeleteInstanceDeploymentPreparer(resourceGroupName, name, id, instanceID)
+	req, err := client.DeleteInstanceDeploymentPreparer(resourceGroupName, name, ID, instanceID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.AppsClient", "DeleteInstanceDeployment", nil, "Failure preparing request")
 		return
@@ -3647,9 +3647,9 @@ func (client AppsClient) DeleteInstanceDeployment(resourceGroupName string, name
 }
 
 // DeleteInstanceDeploymentPreparer prepares the DeleteInstanceDeployment request.
-func (client AppsClient) DeleteInstanceDeploymentPreparer(resourceGroupName string, name string, id string, instanceID string) (*http.Request, error) {
+func (client AppsClient) DeleteInstanceDeploymentPreparer(resourceGroupName string, name string, ID string, instanceID string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"id":                autorest.Encode("path", id),
+		"id":                autorest.Encode("path", ID),
 		"instanceId":        autorest.Encode("path", instanceID),
 		"name":              autorest.Encode("path", name),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
@@ -3691,12 +3691,12 @@ func (client AppsClient) DeleteInstanceDeploymentResponder(resp *http.Response) 
 // specific deployment slot, and/or a specific scaled-out instance.
 //
 // resourceGroupName is name of the resource group to which the resource
-// belongs. name is name of the app. id is deployment ID. slot is name of the
+// belongs. name is name of the app. ID is deployment ID. slot is name of the
 // deployment slot. If a slot is not specified, the API deletes a deployment
 // for the production slot. instanceID is iD of a specific scaled-out instance.
 // This is the value of the name property in the JSON response from "GET
 // api/sites/{siteName}/instances"
-func (client AppsClient) DeleteInstanceDeploymentSlot(resourceGroupName string, name string, id string, slot string, instanceID string) (result autorest.Response, err error) {
+func (client AppsClient) DeleteInstanceDeploymentSlot(resourceGroupName string, name string, ID string, slot string, instanceID string) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
@@ -3705,7 +3705,7 @@ func (client AppsClient) DeleteInstanceDeploymentSlot(resourceGroupName string, 
 		return result, validation.NewErrorWithValidationError(err, "web.AppsClient", "DeleteInstanceDeploymentSlot")
 	}
 
-	req, err := client.DeleteInstanceDeploymentSlotPreparer(resourceGroupName, name, id, slot, instanceID)
+	req, err := client.DeleteInstanceDeploymentSlotPreparer(resourceGroupName, name, ID, slot, instanceID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.AppsClient", "DeleteInstanceDeploymentSlot", nil, "Failure preparing request")
 		return
@@ -3727,9 +3727,9 @@ func (client AppsClient) DeleteInstanceDeploymentSlot(resourceGroupName string, 
 }
 
 // DeleteInstanceDeploymentSlotPreparer prepares the DeleteInstanceDeploymentSlot request.
-func (client AppsClient) DeleteInstanceDeploymentSlotPreparer(resourceGroupName string, name string, id string, slot string, instanceID string) (*http.Request, error) {
+func (client AppsClient) DeleteInstanceDeploymentSlotPreparer(resourceGroupName string, name string, ID string, slot string, instanceID string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"id":                autorest.Encode("path", id),
+		"id":                autorest.Encode("path", ID),
 		"instanceId":        autorest.Encode("path", instanceID),
 		"name":              autorest.Encode("path", name),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
@@ -5619,8 +5619,8 @@ func (client AppsClient) GetConfigurationSnapshotSlotResponder(resp *http.Respon
 // slot, and/or a specific scaled-out instance.
 //
 // resourceGroupName is name of the resource group to which the resource
-// belongs. name is name of the app. id is deployment ID.
-func (client AppsClient) GetDeployment(resourceGroupName string, name string, id string) (result Deployment, err error) {
+// belongs. name is name of the app. ID is deployment ID.
+func (client AppsClient) GetDeployment(resourceGroupName string, name string, ID string) (result Deployment, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
@@ -5629,7 +5629,7 @@ func (client AppsClient) GetDeployment(resourceGroupName string, name string, id
 		return result, validation.NewErrorWithValidationError(err, "web.AppsClient", "GetDeployment")
 	}
 
-	req, err := client.GetDeploymentPreparer(resourceGroupName, name, id)
+	req, err := client.GetDeploymentPreparer(resourceGroupName, name, ID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.AppsClient", "GetDeployment", nil, "Failure preparing request")
 		return
@@ -5651,9 +5651,9 @@ func (client AppsClient) GetDeployment(resourceGroupName string, name string, id
 }
 
 // GetDeploymentPreparer prepares the GetDeployment request.
-func (client AppsClient) GetDeploymentPreparer(resourceGroupName string, name string, id string) (*http.Request, error) {
+func (client AppsClient) GetDeploymentPreparer(resourceGroupName string, name string, ID string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"id":                autorest.Encode("path", id),
+		"id":                autorest.Encode("path", ID),
 		"name":              autorest.Encode("path", name),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
@@ -5695,10 +5695,10 @@ func (client AppsClient) GetDeploymentResponder(resp *http.Response) (result Dep
 // deployment slot, and/or a specific scaled-out instance.
 //
 // resourceGroupName is name of the resource group to which the resource
-// belongs. name is name of the app. id is deployment ID. slot is name of the
+// belongs. name is name of the app. ID is deployment ID. slot is name of the
 // deployment slot. If a slot is not specified, the API gets a deployment for
 // the production slot.
-func (client AppsClient) GetDeploymentSlot(resourceGroupName string, name string, id string, slot string) (result Deployment, err error) {
+func (client AppsClient) GetDeploymentSlot(resourceGroupName string, name string, ID string, slot string) (result Deployment, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
@@ -5707,7 +5707,7 @@ func (client AppsClient) GetDeploymentSlot(resourceGroupName string, name string
 		return result, validation.NewErrorWithValidationError(err, "web.AppsClient", "GetDeploymentSlot")
 	}
 
-	req, err := client.GetDeploymentSlotPreparer(resourceGroupName, name, id, slot)
+	req, err := client.GetDeploymentSlotPreparer(resourceGroupName, name, ID, slot)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.AppsClient", "GetDeploymentSlot", nil, "Failure preparing request")
 		return
@@ -5729,9 +5729,9 @@ func (client AppsClient) GetDeploymentSlot(resourceGroupName string, name string
 }
 
 // GetDeploymentSlotPreparer prepares the GetDeploymentSlot request.
-func (client AppsClient) GetDeploymentSlotPreparer(resourceGroupName string, name string, id string, slot string) (*http.Request, error) {
+func (client AppsClient) GetDeploymentSlotPreparer(resourceGroupName string, name string, ID string, slot string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"id":                autorest.Encode("path", id),
+		"id":                autorest.Encode("path", ID),
 		"name":              autorest.Encode("path", name),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"slot":              autorest.Encode("path", slot),
@@ -6395,10 +6395,10 @@ func (client AppsClient) GetHybridConnectionSlotResponder(resp *http.Response) (
 // deployment slot, and/or a specific scaled-out instance.
 //
 // resourceGroupName is name of the resource group to which the resource
-// belongs. name is name of the app. id is deployment ID. instanceID is iD of a
+// belongs. name is name of the app. ID is deployment ID. instanceID is iD of a
 // specific scaled-out instance. This is the value of the name property in the
 // JSON response from "GET api/sites/{siteName}/instances"
-func (client AppsClient) GetInstanceDeployment(resourceGroupName string, name string, id string, instanceID string) (result Deployment, err error) {
+func (client AppsClient) GetInstanceDeployment(resourceGroupName string, name string, ID string, instanceID string) (result Deployment, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
@@ -6407,7 +6407,7 @@ func (client AppsClient) GetInstanceDeployment(resourceGroupName string, name st
 		return result, validation.NewErrorWithValidationError(err, "web.AppsClient", "GetInstanceDeployment")
 	}
 
-	req, err := client.GetInstanceDeploymentPreparer(resourceGroupName, name, id, instanceID)
+	req, err := client.GetInstanceDeploymentPreparer(resourceGroupName, name, ID, instanceID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.AppsClient", "GetInstanceDeployment", nil, "Failure preparing request")
 		return
@@ -6429,9 +6429,9 @@ func (client AppsClient) GetInstanceDeployment(resourceGroupName string, name st
 }
 
 // GetInstanceDeploymentPreparer prepares the GetInstanceDeployment request.
-func (client AppsClient) GetInstanceDeploymentPreparer(resourceGroupName string, name string, id string, instanceID string) (*http.Request, error) {
+func (client AppsClient) GetInstanceDeploymentPreparer(resourceGroupName string, name string, ID string, instanceID string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"id":                autorest.Encode("path", id),
+		"id":                autorest.Encode("path", ID),
 		"instanceId":        autorest.Encode("path", instanceID),
 		"name":              autorest.Encode("path", name),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
@@ -6474,12 +6474,12 @@ func (client AppsClient) GetInstanceDeploymentResponder(resp *http.Response) (re
 // deployment slot, and/or a specific scaled-out instance.
 //
 // resourceGroupName is name of the resource group to which the resource
-// belongs. name is name of the app. id is deployment ID. slot is name of the
+// belongs. name is name of the app. ID is deployment ID. slot is name of the
 // deployment slot. If a slot is not specified, the API gets a deployment for
 // the production slot. instanceID is iD of a specific scaled-out instance.
 // This is the value of the name property in the JSON response from "GET
 // api/sites/{siteName}/instances"
-func (client AppsClient) GetInstanceDeploymentSlot(resourceGroupName string, name string, id string, slot string, instanceID string) (result Deployment, err error) {
+func (client AppsClient) GetInstanceDeploymentSlot(resourceGroupName string, name string, ID string, slot string, instanceID string) (result Deployment, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
@@ -6488,7 +6488,7 @@ func (client AppsClient) GetInstanceDeploymentSlot(resourceGroupName string, nam
 		return result, validation.NewErrorWithValidationError(err, "web.AppsClient", "GetInstanceDeploymentSlot")
 	}
 
-	req, err := client.GetInstanceDeploymentSlotPreparer(resourceGroupName, name, id, slot, instanceID)
+	req, err := client.GetInstanceDeploymentSlotPreparer(resourceGroupName, name, ID, slot, instanceID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.AppsClient", "GetInstanceDeploymentSlot", nil, "Failure preparing request")
 		return
@@ -6510,9 +6510,9 @@ func (client AppsClient) GetInstanceDeploymentSlot(resourceGroupName string, nam
 }
 
 // GetInstanceDeploymentSlotPreparer prepares the GetInstanceDeploymentSlot request.
-func (client AppsClient) GetInstanceDeploymentSlotPreparer(resourceGroupName string, name string, id string, slot string, instanceID string) (*http.Request, error) {
+func (client AppsClient) GetInstanceDeploymentSlotPreparer(resourceGroupName string, name string, ID string, slot string, instanceID string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"id":                autorest.Encode("path", id),
+		"id":                autorest.Encode("path", ID),
 		"instanceId":        autorest.Encode("path", instanceID),
 		"name":              autorest.Encode("path", name),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),

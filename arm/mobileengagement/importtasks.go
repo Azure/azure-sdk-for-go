@@ -113,11 +113,11 @@ func (client ImportTasksClient) CreateResponder(resp *http.Response) (result Imp
 // Get the Get import job operation retrieves information about a previously
 // created import job.
 //
-// id is import job identifier. resourceGroupName is the name of the resource
+// ID is import job identifier. resourceGroupName is the name of the resource
 // group. appCollection is application collection. appName is application
 // resource name.
-func (client ImportTasksClient) Get(id string, resourceGroupName string, appCollection string, appName string) (result ImportTaskResult, err error) {
-	req, err := client.GetPreparer(id, resourceGroupName, appCollection, appName)
+func (client ImportTasksClient) Get(ID string, resourceGroupName string, appCollection string, appName string) (result ImportTaskResult, err error) {
+	req, err := client.GetPreparer(ID, resourceGroupName, appCollection, appName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "mobileengagement.ImportTasksClient", "Get", nil, "Failure preparing request")
 		return
@@ -139,11 +139,11 @@ func (client ImportTasksClient) Get(id string, resourceGroupName string, appColl
 }
 
 // GetPreparer prepares the Get request.
-func (client ImportTasksClient) GetPreparer(id string, resourceGroupName string, appCollection string, appName string) (*http.Request, error) {
+func (client ImportTasksClient) GetPreparer(ID string, resourceGroupName string, appCollection string, appName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"appCollection":     autorest.Encode("path", appCollection),
 		"appName":           autorest.Encode("path", appName),
-		"id":                autorest.Encode("path", id),
+		"id":                autorest.Encode("path", ID),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}

@@ -44,23 +44,23 @@ func NewAPIProductsClientWithBaseURI(baseURI string, subscriptionID string) APIP
 // ListByApis lists all API associated products.
 //
 // resourceGroupName is the name of the resource group. serviceName is the name
-// of the API Management service. apiID is aPI identifier. Must be unique in
+// of the API Management service. aPIID is aPI identifier. Must be unique in
 // the current API Management service instance. filter is | Field | Supported
 // operators    | Supported functions                         |
 // |-------|------------------------|---------------------------------------------|
 // | name  | ge, le, eq, ne, gt, lt | substringof, contains, startswith,
 // endswith | top is number of records to return. skip is number of records to
 // skip.
-func (client APIProductsClient) ListByApis(resourceGroupName string, serviceName string, apiID string, filter string, top *int32, skip *int32) (result ProductCollection, err error) {
+func (client APIProductsClient) ListByApis(resourceGroupName string, serviceName string, aPIID string, filter string, top *int32, skip *int32) (result ProductCollection, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,
 			Constraints: []validation.Constraint{{Target: "serviceName", Name: validation.MaxLength, Rule: 50, Chain: nil},
 				{Target: "serviceName", Name: validation.MinLength, Rule: 1, Chain: nil},
 				{Target: "serviceName", Name: validation.Pattern, Rule: `^[a-zA-Z](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?$`, Chain: nil}}},
-		{TargetValue: apiID,
-			Constraints: []validation.Constraint{{Target: "apiID", Name: validation.MaxLength, Rule: 256, Chain: nil},
-				{Target: "apiID", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "apiID", Name: validation.Pattern, Rule: `^[^*#&+:<>?]+$`, Chain: nil}}},
+		{TargetValue: aPIID,
+			Constraints: []validation.Constraint{{Target: "aPIID", Name: validation.MaxLength, Rule: 256, Chain: nil},
+				{Target: "aPIID", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "aPIID", Name: validation.Pattern, Rule: `^[^*#&+:<>?]+$`, Chain: nil}}},
 		{TargetValue: top,
 			Constraints: []validation.Constraint{{Target: "top", Name: validation.Null, Rule: false,
 				Chain: []validation.Constraint{{Target: "top", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil}}}}},
@@ -70,7 +70,7 @@ func (client APIProductsClient) ListByApis(resourceGroupName string, serviceName
 		return result, validation.NewErrorWithValidationError(err, "apimanagement.APIProductsClient", "ListByApis")
 	}
 
-	req, err := client.ListByApisPreparer(resourceGroupName, serviceName, apiID, filter, top, skip)
+	req, err := client.ListByApisPreparer(resourceGroupName, serviceName, aPIID, filter, top, skip)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.APIProductsClient", "ListByApis", nil, "Failure preparing request")
 		return
@@ -92,9 +92,9 @@ func (client APIProductsClient) ListByApis(resourceGroupName string, serviceName
 }
 
 // ListByApisPreparer prepares the ListByApis request.
-func (client APIProductsClient) ListByApisPreparer(resourceGroupName string, serviceName string, apiID string, filter string, top *int32, skip *int32) (*http.Request, error) {
+func (client APIProductsClient) ListByApisPreparer(resourceGroupName string, serviceName string, aPIID string, filter string, top *int32, skip *int32) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"apiId":             autorest.Encode("path", apiID),
+		"apiId":             autorest.Encode("path", aPIID),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"serviceName":       autorest.Encode("path", serviceName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),

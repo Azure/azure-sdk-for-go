@@ -578,14 +578,14 @@ func (client GroupClient) DeleteResponder(resp *http.Response) (result FileOpera
 // or directory.
 //
 // accountName is the Azure Data Lake Store account to execute filesystem
-// operations on. aclFilePath is the Data Lake Store path (starting with '/')
+// operations on. ACLFilePath is the Data Lake Store path (starting with '/')
 // of the file or directory for which to get the ACL. op is the constant value
 // for the operation. tooID is an optional switch to return friendly names in
 // place of object ID for ACL entries. tooid=false returns friendly names
 // instead of the AAD Object ID. Default value is true, returning AAD object
 // IDs.
-func (client GroupClient) GetACLStatus(accountName string, aclFilePath string, op string, tooID *bool) (result ACLStatusResult, err error) {
-	req, err := client.GetACLStatusPreparer(accountName, aclFilePath, op, tooID)
+func (client GroupClient) GetACLStatus(accountName string, ACLFilePath string, op string, tooID *bool) (result ACLStatusResult, err error) {
+	req, err := client.GetACLStatusPreparer(accountName, ACLFilePath, op, tooID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "filesystem.GroupClient", "GetACLStatus", nil, "Failure preparing request")
 		return
@@ -607,14 +607,14 @@ func (client GroupClient) GetACLStatus(accountName string, aclFilePath string, o
 }
 
 // GetACLStatusPreparer prepares the GetACLStatus request.
-func (client GroupClient) GetACLStatusPreparer(accountName string, aclFilePath string, op string, tooID *bool) (*http.Request, error) {
+func (client GroupClient) GetACLStatusPreparer(accountName string, ACLFilePath string, op string, tooID *bool) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
 		"accountName":             accountName,
 		"adlsFileSystemDnsSuffix": client.AdlsFileSystemDNSSuffix,
 	}
 
 	pathParameters := map[string]interface{}{
-		"aclFilePath": autorest.Encode("path", aclFilePath),
+		"aclFilePath": autorest.Encode("path", ACLFilePath),
 	}
 
 	const APIVersion = "2016-11-01"
@@ -1230,11 +1230,11 @@ func (client GroupClient) OpenResponder(resp *http.Response) (result ReadCloser,
 // file or directory.
 //
 // accountName is the Azure Data Lake Store account to execute filesystem
-// operations on. aclFilePath is the Data Lake Store path (starting with '/')
+// operations on. ACLFilePath is the Data Lake Store path (starting with '/')
 // of the file or directory with the ACL being removed. op is the constant
 // value for the operation.
-func (client GroupClient) RemoveACL(accountName string, aclFilePath string, op string) (result autorest.Response, err error) {
-	req, err := client.RemoveACLPreparer(accountName, aclFilePath, op)
+func (client GroupClient) RemoveACL(accountName string, ACLFilePath string, op string) (result autorest.Response, err error) {
+	req, err := client.RemoveACLPreparer(accountName, ACLFilePath, op)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "filesystem.GroupClient", "RemoveACL", nil, "Failure preparing request")
 		return
@@ -1256,14 +1256,14 @@ func (client GroupClient) RemoveACL(accountName string, aclFilePath string, op s
 }
 
 // RemoveACLPreparer prepares the RemoveACL request.
-func (client GroupClient) RemoveACLPreparer(accountName string, aclFilePath string, op string) (*http.Request, error) {
+func (client GroupClient) RemoveACLPreparer(accountName string, ACLFilePath string, op string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
 		"accountName":             accountName,
 		"adlsFileSystemDnsSuffix": client.AdlsFileSystemDNSSuffix,
 	}
 
 	pathParameters := map[string]interface{}{
-		"aclFilePath": autorest.Encode("path", aclFilePath),
+		"aclFilePath": autorest.Encode("path", ACLFilePath),
 	}
 
 	const APIVersion = "2016-11-01"

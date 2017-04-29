@@ -45,20 +45,20 @@ func NewAPIOperationsClientWithBaseURI(baseURI string, subscriptionID string) AP
 // CreateOrUpdate creates a new API operation or updates an existing one.
 //
 // resourceGroupName is the name of the resource group. serviceName is the name
-// of the API Management service. apiID is aPI identifier. Must be unique in
+// of the API Management service. aPIID is aPI identifier. Must be unique in
 // the current API Management service instance. operationID is operation
 // identifier within an API. Must be unique in the current API Management
 // service instance. parameters is create parameters.
-func (client APIOperationsClient) CreateOrUpdate(resourceGroupName string, serviceName string, apiID string, operationID string, parameters OperationContract) (result autorest.Response, err error) {
+func (client APIOperationsClient) CreateOrUpdate(resourceGroupName string, serviceName string, aPIID string, operationID string, parameters OperationContract) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,
 			Constraints: []validation.Constraint{{Target: "serviceName", Name: validation.MaxLength, Rule: 50, Chain: nil},
 				{Target: "serviceName", Name: validation.MinLength, Rule: 1, Chain: nil},
 				{Target: "serviceName", Name: validation.Pattern, Rule: `^[a-zA-Z](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?$`, Chain: nil}}},
-		{TargetValue: apiID,
-			Constraints: []validation.Constraint{{Target: "apiID", Name: validation.MaxLength, Rule: 256, Chain: nil},
-				{Target: "apiID", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "apiID", Name: validation.Pattern, Rule: `^[^*#&+:<>?]+$`, Chain: nil}}},
+		{TargetValue: aPIID,
+			Constraints: []validation.Constraint{{Target: "aPIID", Name: validation.MaxLength, Rule: 256, Chain: nil},
+				{Target: "aPIID", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "aPIID", Name: validation.Pattern, Rule: `^[^*#&+:<>?]+$`, Chain: nil}}},
 		{TargetValue: operationID,
 			Constraints: []validation.Constraint{{Target: "operationID", Name: validation.MaxLength, Rule: 256, Chain: nil},
 				{Target: "operationID", Name: validation.MinLength, Rule: 1, Chain: nil},
@@ -76,7 +76,7 @@ func (client APIOperationsClient) CreateOrUpdate(resourceGroupName string, servi
 		return result, validation.NewErrorWithValidationError(err, "apimanagement.APIOperationsClient", "CreateOrUpdate")
 	}
 
-	req, err := client.CreateOrUpdatePreparer(resourceGroupName, serviceName, apiID, operationID, parameters)
+	req, err := client.CreateOrUpdatePreparer(resourceGroupName, serviceName, aPIID, operationID, parameters)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.APIOperationsClient", "CreateOrUpdate", nil, "Failure preparing request")
 		return
@@ -98,9 +98,9 @@ func (client APIOperationsClient) CreateOrUpdate(resourceGroupName string, servi
 }
 
 // CreateOrUpdatePreparer prepares the CreateOrUpdate request.
-func (client APIOperationsClient) CreateOrUpdatePreparer(resourceGroupName string, serviceName string, apiID string, operationID string, parameters OperationContract) (*http.Request, error) {
+func (client APIOperationsClient) CreateOrUpdatePreparer(resourceGroupName string, serviceName string, aPIID string, operationID string, parameters OperationContract) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"apiId":             autorest.Encode("path", apiID),
+		"apiId":             autorest.Encode("path", aPIID),
 		"operationId":       autorest.Encode("path", operationID),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"serviceName":       autorest.Encode("path", serviceName),
@@ -143,22 +143,22 @@ func (client APIOperationsClient) CreateOrUpdateResponder(resp *http.Response) (
 // Delete deletes the specified operation.
 //
 // resourceGroupName is the name of the resource group. serviceName is the name
-// of the API Management service. apiID is aPI identifier. Must be unique in
+// of the API Management service. aPIID is aPI identifier. Must be unique in
 // the current API Management service instance. operationID is operation
 // identifier within an API. Must be unique in the current API Management
 // service instance. ifMatch is eTag of the API Operation Entity. ETag should
 // match the current entity state from the header response of the GET request
 // or it should be * for unconditional update.
-func (client APIOperationsClient) Delete(resourceGroupName string, serviceName string, apiID string, operationID string, ifMatch string) (result autorest.Response, err error) {
+func (client APIOperationsClient) Delete(resourceGroupName string, serviceName string, aPIID string, operationID string, ifMatch string) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,
 			Constraints: []validation.Constraint{{Target: "serviceName", Name: validation.MaxLength, Rule: 50, Chain: nil},
 				{Target: "serviceName", Name: validation.MinLength, Rule: 1, Chain: nil},
 				{Target: "serviceName", Name: validation.Pattern, Rule: `^[a-zA-Z](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?$`, Chain: nil}}},
-		{TargetValue: apiID,
-			Constraints: []validation.Constraint{{Target: "apiID", Name: validation.MaxLength, Rule: 256, Chain: nil},
-				{Target: "apiID", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "apiID", Name: validation.Pattern, Rule: `^[^*#&+:<>?]+$`, Chain: nil}}},
+		{TargetValue: aPIID,
+			Constraints: []validation.Constraint{{Target: "aPIID", Name: validation.MaxLength, Rule: 256, Chain: nil},
+				{Target: "aPIID", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "aPIID", Name: validation.Pattern, Rule: `^[^*#&+:<>?]+$`, Chain: nil}}},
 		{TargetValue: operationID,
 			Constraints: []validation.Constraint{{Target: "operationID", Name: validation.MaxLength, Rule: 256, Chain: nil},
 				{Target: "operationID", Name: validation.MinLength, Rule: 1, Chain: nil},
@@ -166,7 +166,7 @@ func (client APIOperationsClient) Delete(resourceGroupName string, serviceName s
 		return result, validation.NewErrorWithValidationError(err, "apimanagement.APIOperationsClient", "Delete")
 	}
 
-	req, err := client.DeletePreparer(resourceGroupName, serviceName, apiID, operationID, ifMatch)
+	req, err := client.DeletePreparer(resourceGroupName, serviceName, aPIID, operationID, ifMatch)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.APIOperationsClient", "Delete", nil, "Failure preparing request")
 		return
@@ -188,9 +188,9 @@ func (client APIOperationsClient) Delete(resourceGroupName string, serviceName s
 }
 
 // DeletePreparer prepares the Delete request.
-func (client APIOperationsClient) DeletePreparer(resourceGroupName string, serviceName string, apiID string, operationID string, ifMatch string) (*http.Request, error) {
+func (client APIOperationsClient) DeletePreparer(resourceGroupName string, serviceName string, aPIID string, operationID string, ifMatch string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"apiId":             autorest.Encode("path", apiID),
+		"apiId":             autorest.Encode("path", aPIID),
 		"operationId":       autorest.Encode("path", operationID),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"serviceName":       autorest.Encode("path", serviceName),
@@ -232,20 +232,20 @@ func (client APIOperationsClient) DeleteResponder(resp *http.Response) (result a
 // Get gets the details of the API Operation specified by its identifier.
 //
 // resourceGroupName is the name of the resource group. serviceName is the name
-// of the API Management service. apiID is aPI identifier. Must be unique in
+// of the API Management service. aPIID is aPI identifier. Must be unique in
 // the current API Management service instance. operationID is operation
 // identifier within an API. Must be unique in the current API Management
 // service instance.
-func (client APIOperationsClient) Get(resourceGroupName string, serviceName string, apiID string, operationID string) (result OperationContract, err error) {
+func (client APIOperationsClient) Get(resourceGroupName string, serviceName string, aPIID string, operationID string) (result OperationContract, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,
 			Constraints: []validation.Constraint{{Target: "serviceName", Name: validation.MaxLength, Rule: 50, Chain: nil},
 				{Target: "serviceName", Name: validation.MinLength, Rule: 1, Chain: nil},
 				{Target: "serviceName", Name: validation.Pattern, Rule: `^[a-zA-Z](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?$`, Chain: nil}}},
-		{TargetValue: apiID,
-			Constraints: []validation.Constraint{{Target: "apiID", Name: validation.MaxLength, Rule: 256, Chain: nil},
-				{Target: "apiID", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "apiID", Name: validation.Pattern, Rule: `^[^*#&+:<>?]+$`, Chain: nil}}},
+		{TargetValue: aPIID,
+			Constraints: []validation.Constraint{{Target: "aPIID", Name: validation.MaxLength, Rule: 256, Chain: nil},
+				{Target: "aPIID", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "aPIID", Name: validation.Pattern, Rule: `^[^*#&+:<>?]+$`, Chain: nil}}},
 		{TargetValue: operationID,
 			Constraints: []validation.Constraint{{Target: "operationID", Name: validation.MaxLength, Rule: 256, Chain: nil},
 				{Target: "operationID", Name: validation.MinLength, Rule: 1, Chain: nil},
@@ -253,7 +253,7 @@ func (client APIOperationsClient) Get(resourceGroupName string, serviceName stri
 		return result, validation.NewErrorWithValidationError(err, "apimanagement.APIOperationsClient", "Get")
 	}
 
-	req, err := client.GetPreparer(resourceGroupName, serviceName, apiID, operationID)
+	req, err := client.GetPreparer(resourceGroupName, serviceName, aPIID, operationID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.APIOperationsClient", "Get", nil, "Failure preparing request")
 		return
@@ -275,9 +275,9 @@ func (client APIOperationsClient) Get(resourceGroupName string, serviceName stri
 }
 
 // GetPreparer prepares the Get request.
-func (client APIOperationsClient) GetPreparer(resourceGroupName string, serviceName string, apiID string, operationID string) (*http.Request, error) {
+func (client APIOperationsClient) GetPreparer(resourceGroupName string, serviceName string, aPIID string, operationID string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"apiId":             autorest.Encode("path", apiID),
+		"apiId":             autorest.Encode("path", aPIID),
 		"operationId":       autorest.Encode("path", operationID),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"serviceName":       autorest.Encode("path", serviceName),
@@ -319,7 +319,7 @@ func (client APIOperationsClient) GetResponder(resp *http.Response) (result Oper
 // ListByApis lists a collection of the operations for the specified API.
 //
 // resourceGroupName is the name of the resource group. serviceName is the name
-// of the API Management service. apiID is aPI identifier. Must be unique in
+// of the API Management service. aPIID is aPI identifier. Must be unique in
 // the current API Management service instance. filter is | Field       |
 // Supported operators    | Supported functions               |
 // |-------------|------------------------|-----------------------------------|
@@ -328,16 +328,16 @@ func (client APIOperationsClient) GetResponder(resp *http.Response) (result Oper
 // | description | ge, le, eq, ne, gt, lt | substringof, startswith, endswith |
 // | urlTemplate | ge, le, eq, ne, gt, lt | substringof, startswith, endswith |
 // top is number of records to return. skip is number of records to skip.
-func (client APIOperationsClient) ListByApis(resourceGroupName string, serviceName string, apiID string, filter string, top *int32, skip *int32) (result OperationCollection, err error) {
+func (client APIOperationsClient) ListByApis(resourceGroupName string, serviceName string, aPIID string, filter string, top *int32, skip *int32) (result OperationCollection, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,
 			Constraints: []validation.Constraint{{Target: "serviceName", Name: validation.MaxLength, Rule: 50, Chain: nil},
 				{Target: "serviceName", Name: validation.MinLength, Rule: 1, Chain: nil},
 				{Target: "serviceName", Name: validation.Pattern, Rule: `^[a-zA-Z](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?$`, Chain: nil}}},
-		{TargetValue: apiID,
-			Constraints: []validation.Constraint{{Target: "apiID", Name: validation.MaxLength, Rule: 256, Chain: nil},
-				{Target: "apiID", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "apiID", Name: validation.Pattern, Rule: `^[^*#&+:<>?]+$`, Chain: nil}}},
+		{TargetValue: aPIID,
+			Constraints: []validation.Constraint{{Target: "aPIID", Name: validation.MaxLength, Rule: 256, Chain: nil},
+				{Target: "aPIID", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "aPIID", Name: validation.Pattern, Rule: `^[^*#&+:<>?]+$`, Chain: nil}}},
 		{TargetValue: top,
 			Constraints: []validation.Constraint{{Target: "top", Name: validation.Null, Rule: false,
 				Chain: []validation.Constraint{{Target: "top", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil}}}}},
@@ -347,7 +347,7 @@ func (client APIOperationsClient) ListByApis(resourceGroupName string, serviceNa
 		return result, validation.NewErrorWithValidationError(err, "apimanagement.APIOperationsClient", "ListByApis")
 	}
 
-	req, err := client.ListByApisPreparer(resourceGroupName, serviceName, apiID, filter, top, skip)
+	req, err := client.ListByApisPreparer(resourceGroupName, serviceName, aPIID, filter, top, skip)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.APIOperationsClient", "ListByApis", nil, "Failure preparing request")
 		return
@@ -369,9 +369,9 @@ func (client APIOperationsClient) ListByApis(resourceGroupName string, serviceNa
 }
 
 // ListByApisPreparer prepares the ListByApis request.
-func (client APIOperationsClient) ListByApisPreparer(resourceGroupName string, serviceName string, apiID string, filter string, top *int32, skip *int32) (*http.Request, error) {
+func (client APIOperationsClient) ListByApisPreparer(resourceGroupName string, serviceName string, aPIID string, filter string, top *int32, skip *int32) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"apiId":             autorest.Encode("path", apiID),
+		"apiId":             autorest.Encode("path", aPIID),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"serviceName":       autorest.Encode("path", serviceName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
@@ -445,23 +445,23 @@ func (client APIOperationsClient) ListByApisNextResults(lastResults OperationCol
 // Update updates the details of the operation specified by its identifier.
 //
 // resourceGroupName is the name of the resource group. serviceName is the name
-// of the API Management service. apiID is aPI identifier. Must be unique in
+// of the API Management service. aPIID is aPI identifier. Must be unique in
 // the current API Management service instance. operationID is operation
 // identifier within an API. Must be unique in the current API Management
 // service instance. parameters is aPI Operation Update parameters. ifMatch is
 // eTag of the API Operation Entity. ETag should match the current entity state
 // from the header response of the GET request or it should be * for
 // unconditional update.
-func (client APIOperationsClient) Update(resourceGroupName string, serviceName string, apiID string, operationID string, parameters OperationUpdateContract, ifMatch string) (result autorest.Response, err error) {
+func (client APIOperationsClient) Update(resourceGroupName string, serviceName string, aPIID string, operationID string, parameters OperationUpdateContract, ifMatch string) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,
 			Constraints: []validation.Constraint{{Target: "serviceName", Name: validation.MaxLength, Rule: 50, Chain: nil},
 				{Target: "serviceName", Name: validation.MinLength, Rule: 1, Chain: nil},
 				{Target: "serviceName", Name: validation.Pattern, Rule: `^[a-zA-Z](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?$`, Chain: nil}}},
-		{TargetValue: apiID,
-			Constraints: []validation.Constraint{{Target: "apiID", Name: validation.MaxLength, Rule: 256, Chain: nil},
-				{Target: "apiID", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "apiID", Name: validation.Pattern, Rule: `^[^*#&+:<>?]+$`, Chain: nil}}},
+		{TargetValue: aPIID,
+			Constraints: []validation.Constraint{{Target: "aPIID", Name: validation.MaxLength, Rule: 256, Chain: nil},
+				{Target: "aPIID", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "aPIID", Name: validation.Pattern, Rule: `^[^*#&+:<>?]+$`, Chain: nil}}},
 		{TargetValue: operationID,
 			Constraints: []validation.Constraint{{Target: "operationID", Name: validation.MaxLength, Rule: 256, Chain: nil},
 				{Target: "operationID", Name: validation.MinLength, Rule: 1, Chain: nil},
@@ -469,7 +469,7 @@ func (client APIOperationsClient) Update(resourceGroupName string, serviceName s
 		return result, validation.NewErrorWithValidationError(err, "apimanagement.APIOperationsClient", "Update")
 	}
 
-	req, err := client.UpdatePreparer(resourceGroupName, serviceName, apiID, operationID, parameters, ifMatch)
+	req, err := client.UpdatePreparer(resourceGroupName, serviceName, aPIID, operationID, parameters, ifMatch)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.APIOperationsClient", "Update", nil, "Failure preparing request")
 		return
@@ -491,9 +491,9 @@ func (client APIOperationsClient) Update(resourceGroupName string, serviceName s
 }
 
 // UpdatePreparer prepares the Update request.
-func (client APIOperationsClient) UpdatePreparer(resourceGroupName string, serviceName string, apiID string, operationID string, parameters OperationUpdateContract, ifMatch string) (*http.Request, error) {
+func (client APIOperationsClient) UpdatePreparer(resourceGroupName string, serviceName string, aPIID string, operationID string, parameters OperationUpdateContract, ifMatch string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"apiId":             autorest.Encode("path", apiID),
+		"apiId":             autorest.Encode("path", aPIID),
 		"operationId":       autorest.Encode("path", operationID),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"serviceName":       autorest.Encode("path", serviceName),

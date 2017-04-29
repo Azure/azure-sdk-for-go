@@ -812,10 +812,10 @@ func (client ExportTasksClient) CreateTokensTaskResponder(resp *http.Response) (
 // Get retrieves information about a previously created export task.
 //
 // resourceGroupName is the name of the resource group. appCollection is
-// application collection. appName is application resource name. id is export
+// application collection. appName is application resource name. ID is export
 // task identifier.
-func (client ExportTasksClient) Get(resourceGroupName string, appCollection string, appName string, id string) (result ExportTaskResult, err error) {
-	req, err := client.GetPreparer(resourceGroupName, appCollection, appName, id)
+func (client ExportTasksClient) Get(resourceGroupName string, appCollection string, appName string, ID string) (result ExportTaskResult, err error) {
+	req, err := client.GetPreparer(resourceGroupName, appCollection, appName, ID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "mobileengagement.ExportTasksClient", "Get", nil, "Failure preparing request")
 		return
@@ -837,11 +837,11 @@ func (client ExportTasksClient) Get(resourceGroupName string, appCollection stri
 }
 
 // GetPreparer prepares the Get request.
-func (client ExportTasksClient) GetPreparer(resourceGroupName string, appCollection string, appName string, id string) (*http.Request, error) {
+func (client ExportTasksClient) GetPreparer(resourceGroupName string, appCollection string, appName string, ID string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"appCollection":     autorest.Encode("path", appCollection),
 		"appName":           autorest.Encode("path", appName),
-		"id":                autorest.Encode("path", id),
+		"id":                autorest.Encode("path", ID),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}

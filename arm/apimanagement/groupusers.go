@@ -45,9 +45,9 @@ func NewGroupUsersClientWithBaseURI(baseURI string, subscriptionID string) Group
 //
 // resourceGroupName is the name of the resource group. serviceName is the name
 // of the API Management service. groupID is group identifier. Must be unique
-// in the current API Management service instance. uid is user identifier. Must
+// in the current API Management service instance. UID is user identifier. Must
 // be unique in the current API Management service instance.
-func (client GroupUsersClient) Create(resourceGroupName string, serviceName string, groupID string, uid string) (result ErrorBodyContract, err error) {
+func (client GroupUsersClient) Create(resourceGroupName string, serviceName string, groupID string, UID string) (result ErrorBodyContract, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,
 			Constraints: []validation.Constraint{{Target: "serviceName", Name: validation.MaxLength, Rule: 50, Chain: nil},
@@ -57,14 +57,14 @@ func (client GroupUsersClient) Create(resourceGroupName string, serviceName stri
 			Constraints: []validation.Constraint{{Target: "groupID", Name: validation.MaxLength, Rule: 256, Chain: nil},
 				{Target: "groupID", Name: validation.MinLength, Rule: 1, Chain: nil},
 				{Target: "groupID", Name: validation.Pattern, Rule: `^[^*#&+:<>?]+$`, Chain: nil}}},
-		{TargetValue: uid,
-			Constraints: []validation.Constraint{{Target: "uid", Name: validation.MaxLength, Rule: 256, Chain: nil},
-				{Target: "uid", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "uid", Name: validation.Pattern, Rule: `^[^*#&+:<>?]+$`, Chain: nil}}}}); err != nil {
+		{TargetValue: UID,
+			Constraints: []validation.Constraint{{Target: "UID", Name: validation.MaxLength, Rule: 256, Chain: nil},
+				{Target: "UID", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "UID", Name: validation.Pattern, Rule: `^[^*#&+:<>?]+$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewErrorWithValidationError(err, "apimanagement.GroupUsersClient", "Create")
 	}
 
-	req, err := client.CreatePreparer(resourceGroupName, serviceName, groupID, uid)
+	req, err := client.CreatePreparer(resourceGroupName, serviceName, groupID, UID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.GroupUsersClient", "Create", nil, "Failure preparing request")
 		return
@@ -86,13 +86,13 @@ func (client GroupUsersClient) Create(resourceGroupName string, serviceName stri
 }
 
 // CreatePreparer prepares the Create request.
-func (client GroupUsersClient) CreatePreparer(resourceGroupName string, serviceName string, groupID string, uid string) (*http.Request, error) {
+func (client GroupUsersClient) CreatePreparer(resourceGroupName string, serviceName string, groupID string, UID string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"groupId":           autorest.Encode("path", groupID),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"serviceName":       autorest.Encode("path", serviceName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
-		"uid":               autorest.Encode("path", uid),
+		"uid":               autorest.Encode("path", UID),
 	}
 
 	const APIVersion = "2016-10-10"
@@ -131,9 +131,9 @@ func (client GroupUsersClient) CreateResponder(resp *http.Response) (result Erro
 //
 // resourceGroupName is the name of the resource group. serviceName is the name
 // of the API Management service. groupID is group identifier. Must be unique
-// in the current API Management service instance. uid is user identifier. Must
+// in the current API Management service instance. UID is user identifier. Must
 // be unique in the current API Management service instance.
-func (client GroupUsersClient) Delete(resourceGroupName string, serviceName string, groupID string, uid string) (result ErrorBodyContract, err error) {
+func (client GroupUsersClient) Delete(resourceGroupName string, serviceName string, groupID string, UID string) (result ErrorBodyContract, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,
 			Constraints: []validation.Constraint{{Target: "serviceName", Name: validation.MaxLength, Rule: 50, Chain: nil},
@@ -143,14 +143,14 @@ func (client GroupUsersClient) Delete(resourceGroupName string, serviceName stri
 			Constraints: []validation.Constraint{{Target: "groupID", Name: validation.MaxLength, Rule: 256, Chain: nil},
 				{Target: "groupID", Name: validation.MinLength, Rule: 1, Chain: nil},
 				{Target: "groupID", Name: validation.Pattern, Rule: `^[^*#&+:<>?]+$`, Chain: nil}}},
-		{TargetValue: uid,
-			Constraints: []validation.Constraint{{Target: "uid", Name: validation.MaxLength, Rule: 256, Chain: nil},
-				{Target: "uid", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "uid", Name: validation.Pattern, Rule: `^[^*#&+:<>?]+$`, Chain: nil}}}}); err != nil {
+		{TargetValue: UID,
+			Constraints: []validation.Constraint{{Target: "UID", Name: validation.MaxLength, Rule: 256, Chain: nil},
+				{Target: "UID", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "UID", Name: validation.Pattern, Rule: `^[^*#&+:<>?]+$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewErrorWithValidationError(err, "apimanagement.GroupUsersClient", "Delete")
 	}
 
-	req, err := client.DeletePreparer(resourceGroupName, serviceName, groupID, uid)
+	req, err := client.DeletePreparer(resourceGroupName, serviceName, groupID, UID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.GroupUsersClient", "Delete", nil, "Failure preparing request")
 		return
@@ -172,13 +172,13 @@ func (client GroupUsersClient) Delete(resourceGroupName string, serviceName stri
 }
 
 // DeletePreparer prepares the Delete request.
-func (client GroupUsersClient) DeletePreparer(resourceGroupName string, serviceName string, groupID string, uid string) (*http.Request, error) {
+func (client GroupUsersClient) DeletePreparer(resourceGroupName string, serviceName string, groupID string, UID string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"groupId":           autorest.Encode("path", groupID),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"serviceName":       autorest.Encode("path", serviceName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
-		"uid":               autorest.Encode("path", uid),
+		"uid":               autorest.Encode("path", UID),
 	}
 
 	const APIVersion = "2016-10-10"

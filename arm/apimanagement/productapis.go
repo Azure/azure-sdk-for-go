@@ -45,9 +45,9 @@ func NewProductApisClientWithBaseURI(baseURI string, subscriptionID string) Prod
 //
 // resourceGroupName is the name of the resource group. serviceName is the name
 // of the API Management service. productID is product identifier. Must be
-// unique in the current API Management service instance. apiID is aPI
+// unique in the current API Management service instance. aPIID is aPI
 // identifier. Must be unique in the current API Management service instance.
-func (client ProductApisClient) Create(resourceGroupName string, serviceName string, productID string, apiID string) (result autorest.Response, err error) {
+func (client ProductApisClient) Create(resourceGroupName string, serviceName string, productID string, aPIID string) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,
 			Constraints: []validation.Constraint{{Target: "serviceName", Name: validation.MaxLength, Rule: 50, Chain: nil},
@@ -57,14 +57,14 @@ func (client ProductApisClient) Create(resourceGroupName string, serviceName str
 			Constraints: []validation.Constraint{{Target: "productID", Name: validation.MaxLength, Rule: 256, Chain: nil},
 				{Target: "productID", Name: validation.MinLength, Rule: 1, Chain: nil},
 				{Target: "productID", Name: validation.Pattern, Rule: `^[^*#&+:<>?]+$`, Chain: nil}}},
-		{TargetValue: apiID,
-			Constraints: []validation.Constraint{{Target: "apiID", Name: validation.MaxLength, Rule: 256, Chain: nil},
-				{Target: "apiID", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "apiID", Name: validation.Pattern, Rule: `^[^*#&+:<>?]+$`, Chain: nil}}}}); err != nil {
+		{TargetValue: aPIID,
+			Constraints: []validation.Constraint{{Target: "aPIID", Name: validation.MaxLength, Rule: 256, Chain: nil},
+				{Target: "aPIID", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "aPIID", Name: validation.Pattern, Rule: `^[^*#&+:<>?]+$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewErrorWithValidationError(err, "apimanagement.ProductApisClient", "Create")
 	}
 
-	req, err := client.CreatePreparer(resourceGroupName, serviceName, productID, apiID)
+	req, err := client.CreatePreparer(resourceGroupName, serviceName, productID, aPIID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.ProductApisClient", "Create", nil, "Failure preparing request")
 		return
@@ -86,9 +86,9 @@ func (client ProductApisClient) Create(resourceGroupName string, serviceName str
 }
 
 // CreatePreparer prepares the Create request.
-func (client ProductApisClient) CreatePreparer(resourceGroupName string, serviceName string, productID string, apiID string) (*http.Request, error) {
+func (client ProductApisClient) CreatePreparer(resourceGroupName string, serviceName string, productID string, aPIID string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"apiId":             autorest.Encode("path", apiID),
+		"apiId":             autorest.Encode("path", aPIID),
 		"productId":         autorest.Encode("path", productID),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"serviceName":       autorest.Encode("path", serviceName),
@@ -130,9 +130,9 @@ func (client ProductApisClient) CreateResponder(resp *http.Response) (result aut
 //
 // resourceGroupName is the name of the resource group. serviceName is the name
 // of the API Management service. productID is product identifier. Must be
-// unique in the current API Management service instance. apiID is aPI
+// unique in the current API Management service instance. aPIID is aPI
 // identifier. Must be unique in the current API Management service instance.
-func (client ProductApisClient) Delete(resourceGroupName string, serviceName string, productID string, apiID string) (result autorest.Response, err error) {
+func (client ProductApisClient) Delete(resourceGroupName string, serviceName string, productID string, aPIID string) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,
 			Constraints: []validation.Constraint{{Target: "serviceName", Name: validation.MaxLength, Rule: 50, Chain: nil},
@@ -142,14 +142,14 @@ func (client ProductApisClient) Delete(resourceGroupName string, serviceName str
 			Constraints: []validation.Constraint{{Target: "productID", Name: validation.MaxLength, Rule: 256, Chain: nil},
 				{Target: "productID", Name: validation.MinLength, Rule: 1, Chain: nil},
 				{Target: "productID", Name: validation.Pattern, Rule: `^[^*#&+:<>?]+$`, Chain: nil}}},
-		{TargetValue: apiID,
-			Constraints: []validation.Constraint{{Target: "apiID", Name: validation.MaxLength, Rule: 256, Chain: nil},
-				{Target: "apiID", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "apiID", Name: validation.Pattern, Rule: `^[^*#&+:<>?]+$`, Chain: nil}}}}); err != nil {
+		{TargetValue: aPIID,
+			Constraints: []validation.Constraint{{Target: "aPIID", Name: validation.MaxLength, Rule: 256, Chain: nil},
+				{Target: "aPIID", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "aPIID", Name: validation.Pattern, Rule: `^[^*#&+:<>?]+$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewErrorWithValidationError(err, "apimanagement.ProductApisClient", "Delete")
 	}
 
-	req, err := client.DeletePreparer(resourceGroupName, serviceName, productID, apiID)
+	req, err := client.DeletePreparer(resourceGroupName, serviceName, productID, aPIID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.ProductApisClient", "Delete", nil, "Failure preparing request")
 		return
@@ -171,9 +171,9 @@ func (client ProductApisClient) Delete(resourceGroupName string, serviceName str
 }
 
 // DeletePreparer prepares the Delete request.
-func (client ProductApisClient) DeletePreparer(resourceGroupName string, serviceName string, productID string, apiID string) (*http.Request, error) {
+func (client ProductApisClient) DeletePreparer(resourceGroupName string, serviceName string, productID string, aPIID string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"apiId":             autorest.Encode("path", apiID),
+		"apiId":             autorest.Encode("path", aPIID),
 		"productId":         autorest.Encode("path", productID),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"serviceName":       autorest.Encode("path", serviceName),

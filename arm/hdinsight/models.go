@@ -531,7 +531,7 @@ type SecurityProfile struct {
 	LdapsUrls            *[]string     `json:"ldapsUrls,omitempty"`
 	DomainUsername       *string       `json:"domainUsername,omitempty"`
 	DomainUserPassword   *string       `json:"domainUserPassword,omitempty"`
-	ClusterUsersGroupDNs *[]string     `json:"clusterUsersGroupDNs,omitempty"`
+	ClusterUsersGroupDNS *[]string     `json:"clusterUsersGroupDNs,omitempty"`
 }
 
 // SSHProfile is the list of Ssh public keys.

@@ -44,22 +44,22 @@ func NewAPIExportClientWithBaseURI(baseURI string, subscriptionID string) APIExp
 // Get gets the details of the API specified by its identifier.
 //
 // resourceGroupName is the name of the resource group. serviceName is the name
-// of the API Management service. apiID is aPI identifier. Must be unique in
+// of the API Management service. aPIID is aPI identifier. Must be unique in
 // the current API Management service instance.
-func (client APIExportClient) Get(resourceGroupName string, serviceName string, apiID string) (result APIExportResult, err error) {
+func (client APIExportClient) Get(resourceGroupName string, serviceName string, aPIID string) (result APIExportResult, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,
 			Constraints: []validation.Constraint{{Target: "serviceName", Name: validation.MaxLength, Rule: 50, Chain: nil},
 				{Target: "serviceName", Name: validation.MinLength, Rule: 1, Chain: nil},
 				{Target: "serviceName", Name: validation.Pattern, Rule: `^[a-zA-Z](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?$`, Chain: nil}}},
-		{TargetValue: apiID,
-			Constraints: []validation.Constraint{{Target: "apiID", Name: validation.MaxLength, Rule: 256, Chain: nil},
-				{Target: "apiID", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "apiID", Name: validation.Pattern, Rule: `^[^*#&+:<>?]+$`, Chain: nil}}}}); err != nil {
+		{TargetValue: aPIID,
+			Constraints: []validation.Constraint{{Target: "aPIID", Name: validation.MaxLength, Rule: 256, Chain: nil},
+				{Target: "aPIID", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "aPIID", Name: validation.Pattern, Rule: `^[^*#&+:<>?]+$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewErrorWithValidationError(err, "apimanagement.APIExportClient", "Get")
 	}
 
-	req, err := client.GetPreparer(resourceGroupName, serviceName, apiID)
+	req, err := client.GetPreparer(resourceGroupName, serviceName, aPIID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.APIExportClient", "Get", nil, "Failure preparing request")
 		return
@@ -81,9 +81,9 @@ func (client APIExportClient) Get(resourceGroupName string, serviceName string, 
 }
 
 // GetPreparer prepares the Get request.
-func (client APIExportClient) GetPreparer(resourceGroupName string, serviceName string, apiID string) (*http.Request, error) {
+func (client APIExportClient) GetPreparer(resourceGroupName string, serviceName string, aPIID string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"apiId":             autorest.Encode("path", apiID),
+		"apiId":             autorest.Encode("path", aPIID),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"serviceName":       autorest.Encode("path", serviceName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),

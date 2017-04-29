@@ -45,26 +45,26 @@ func NewAPIPolicyClientWithBaseURI(baseURI string, subscriptionID string) APIPol
 // CreateOrUpdate creates or updates policy configuration for the API.
 //
 // resourceGroupName is the name of the resource group. serviceName is the name
-// of the API Management service. apiID is aPI identifier. Must be unique in
+// of the API Management service. aPIID is aPI identifier. Must be unique in
 // the current API Management service instance. parameters is the policy
 // contents to apply. parameters will be closed upon successful return. Callers
 // should ensure closure when receiving an error.ifMatch is the entity state
 // (Etag) version of the Api Policy to update. A value of "*" can be used for
 // If-Match to unconditionally apply the operation.
-func (client APIPolicyClient) CreateOrUpdate(resourceGroupName string, serviceName string, apiID string, parameters io.ReadCloser, ifMatch string) (result autorest.Response, err error) {
+func (client APIPolicyClient) CreateOrUpdate(resourceGroupName string, serviceName string, aPIID string, parameters io.ReadCloser, ifMatch string) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,
 			Constraints: []validation.Constraint{{Target: "serviceName", Name: validation.MaxLength, Rule: 50, Chain: nil},
 				{Target: "serviceName", Name: validation.MinLength, Rule: 1, Chain: nil},
 				{Target: "serviceName", Name: validation.Pattern, Rule: `^[a-zA-Z](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?$`, Chain: nil}}},
-		{TargetValue: apiID,
-			Constraints: []validation.Constraint{{Target: "apiID", Name: validation.MaxLength, Rule: 256, Chain: nil},
-				{Target: "apiID", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "apiID", Name: validation.Pattern, Rule: `^[^*#&+:<>?]+$`, Chain: nil}}}}); err != nil {
+		{TargetValue: aPIID,
+			Constraints: []validation.Constraint{{Target: "aPIID", Name: validation.MaxLength, Rule: 256, Chain: nil},
+				{Target: "aPIID", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "aPIID", Name: validation.Pattern, Rule: `^[^*#&+:<>?]+$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewErrorWithValidationError(err, "apimanagement.APIPolicyClient", "CreateOrUpdate")
 	}
 
-	req, err := client.CreateOrUpdatePreparer(resourceGroupName, serviceName, apiID, parameters, ifMatch)
+	req, err := client.CreateOrUpdatePreparer(resourceGroupName, serviceName, aPIID, parameters, ifMatch)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.APIPolicyClient", "CreateOrUpdate", nil, "Failure preparing request")
 		return
@@ -86,9 +86,9 @@ func (client APIPolicyClient) CreateOrUpdate(resourceGroupName string, serviceNa
 }
 
 // CreateOrUpdatePreparer prepares the CreateOrUpdate request.
-func (client APIPolicyClient) CreateOrUpdatePreparer(resourceGroupName string, serviceName string, apiID string, parameters io.ReadCloser, ifMatch string) (*http.Request, error) {
+func (client APIPolicyClient) CreateOrUpdatePreparer(resourceGroupName string, serviceName string, aPIID string, parameters io.ReadCloser, ifMatch string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"apiId":             autorest.Encode("path", apiID),
+		"apiId":             autorest.Encode("path", aPIID),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"serviceName":       autorest.Encode("path", serviceName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
@@ -130,24 +130,24 @@ func (client APIPolicyClient) CreateOrUpdateResponder(resp *http.Response) (resu
 // Delete deletes the policy configuration at the Api.
 //
 // resourceGroupName is the name of the resource group. serviceName is the name
-// of the API Management service. apiID is aPI identifier. Must be unique in
+// of the API Management service. aPIID is aPI identifier. Must be unique in
 // the current API Management service instance. ifMatch is the entity state
 // (Etag) version of the Api policy to update. A value of "*" can be used for
 // If-Match to unconditionally apply the operation.
-func (client APIPolicyClient) Delete(resourceGroupName string, serviceName string, apiID string, ifMatch string) (result autorest.Response, err error) {
+func (client APIPolicyClient) Delete(resourceGroupName string, serviceName string, aPIID string, ifMatch string) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,
 			Constraints: []validation.Constraint{{Target: "serviceName", Name: validation.MaxLength, Rule: 50, Chain: nil},
 				{Target: "serviceName", Name: validation.MinLength, Rule: 1, Chain: nil},
 				{Target: "serviceName", Name: validation.Pattern, Rule: `^[a-zA-Z](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?$`, Chain: nil}}},
-		{TargetValue: apiID,
-			Constraints: []validation.Constraint{{Target: "apiID", Name: validation.MaxLength, Rule: 256, Chain: nil},
-				{Target: "apiID", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "apiID", Name: validation.Pattern, Rule: `^[^*#&+:<>?]+$`, Chain: nil}}}}); err != nil {
+		{TargetValue: aPIID,
+			Constraints: []validation.Constraint{{Target: "aPIID", Name: validation.MaxLength, Rule: 256, Chain: nil},
+				{Target: "aPIID", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "aPIID", Name: validation.Pattern, Rule: `^[^*#&+:<>?]+$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewErrorWithValidationError(err, "apimanagement.APIPolicyClient", "Delete")
 	}
 
-	req, err := client.DeletePreparer(resourceGroupName, serviceName, apiID, ifMatch)
+	req, err := client.DeletePreparer(resourceGroupName, serviceName, aPIID, ifMatch)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.APIPolicyClient", "Delete", nil, "Failure preparing request")
 		return
@@ -169,9 +169,9 @@ func (client APIPolicyClient) Delete(resourceGroupName string, serviceName strin
 }
 
 // DeletePreparer prepares the Delete request.
-func (client APIPolicyClient) DeletePreparer(resourceGroupName string, serviceName string, apiID string, ifMatch string) (*http.Request, error) {
+func (client APIPolicyClient) DeletePreparer(resourceGroupName string, serviceName string, aPIID string, ifMatch string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"apiId":             autorest.Encode("path", apiID),
+		"apiId":             autorest.Encode("path", aPIID),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"serviceName":       autorest.Encode("path", serviceName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
@@ -212,22 +212,22 @@ func (client APIPolicyClient) DeleteResponder(resp *http.Response) (result autor
 // Get get the policy configuration at the API level.
 //
 // resourceGroupName is the name of the resource group. serviceName is the name
-// of the API Management service. apiID is aPI identifier. Must be unique in
+// of the API Management service. aPIID is aPI identifier. Must be unique in
 // the current API Management service instance.
-func (client APIPolicyClient) Get(resourceGroupName string, serviceName string, apiID string) (result ReadCloser, err error) {
+func (client APIPolicyClient) Get(resourceGroupName string, serviceName string, aPIID string) (result ReadCloser, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,
 			Constraints: []validation.Constraint{{Target: "serviceName", Name: validation.MaxLength, Rule: 50, Chain: nil},
 				{Target: "serviceName", Name: validation.MinLength, Rule: 1, Chain: nil},
 				{Target: "serviceName", Name: validation.Pattern, Rule: `^[a-zA-Z](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?$`, Chain: nil}}},
-		{TargetValue: apiID,
-			Constraints: []validation.Constraint{{Target: "apiID", Name: validation.MaxLength, Rule: 256, Chain: nil},
-				{Target: "apiID", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "apiID", Name: validation.Pattern, Rule: `^[^*#&+:<>?]+$`, Chain: nil}}}}); err != nil {
+		{TargetValue: aPIID,
+			Constraints: []validation.Constraint{{Target: "aPIID", Name: validation.MaxLength, Rule: 256, Chain: nil},
+				{Target: "aPIID", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "aPIID", Name: validation.Pattern, Rule: `^[^*#&+:<>?]+$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewErrorWithValidationError(err, "apimanagement.APIPolicyClient", "Get")
 	}
 
-	req, err := client.GetPreparer(resourceGroupName, serviceName, apiID)
+	req, err := client.GetPreparer(resourceGroupName, serviceName, aPIID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.APIPolicyClient", "Get", nil, "Failure preparing request")
 		return
@@ -249,9 +249,9 @@ func (client APIPolicyClient) Get(resourceGroupName string, serviceName string, 
 }
 
 // GetPreparer prepares the Get request.
-func (client APIPolicyClient) GetPreparer(resourceGroupName string, serviceName string, apiID string) (*http.Request, error) {
+func (client APIPolicyClient) GetPreparer(resourceGroupName string, serviceName string, aPIID string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"apiId":             autorest.Encode("path", apiID),
+		"apiId":             autorest.Encode("path", aPIID),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"serviceName":       autorest.Encode("path", serviceName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),

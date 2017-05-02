@@ -6,7 +6,7 @@
 In addition to the tabulated changes below, each package had the following updates:
 - Long running operations now run inside a goroutine and return channels for the response and the errors.
 - Some functions changed from returning `autorest.Response` to return the already unmarshaled struct.
-
+- Uses go-autorest v8.0.0.
 
 | api                                 | version            | note                                |
 |:------------------------------------|:-------------------|:------------------------------------|
@@ -69,20 +69,23 @@ In addition to the tabulated changes below, each package had the following updat
 ### Storage
 Storage has returned to this repo.
 It has also been refactored:
- - Blobs, containers, tables, etc are now method receivers. These structs are the ones being
-   updated with each operation.
- - When creating a client, the SDK checks if the storage account provided is valid.
- - Added retry logic. It provides the flexibility for user to provide their own retry logic.
- - Added operations:
-    - Get table
-    - Get entity
-    - Get and set queue ACL
-    - Table batch
-    - Page blob incremental copy
- - All operations that previously had `extraHeaders` as parameter now recieve a struct with well
-   defined possible headers and other options. Some functions are easier to use.
- - Storage tests now use HTTP recordings.
+- Blobs, containers, tables, etc are now method receivers. These structs are the ones being
+  updated with each operation.
+- When creating a client, the SDK checks if the storage account provided is valid.
+- Added retry logic. It provides the flexibility for user to provide their own retry logic.
+- Added operations:
+   - Get table
+   - Get entity
+   - Get and set queue ACL
+   - Table batch
+   - Page blob incremental copy
+- All operations that previously had `extraHeaders` as parameter now recieve a struct with well
+  defined possible headers and other options. Some functions are easier to use.
+- Storage tests now use HTTP recordings.
 
+### Generated code notes
+- [Azure REST API specs](https://github.com/Azure/azure-rest-api-specs) commit: 519980465d9c195622d466dc4601b1999a448ed5
+- [AutoRest](https://github.com/Azure/autorest) commit: 66f47280ba6c58c3842a268e48ee72aefdddee2c
 
 ## `v9.0.0-beta`
 ### ARM

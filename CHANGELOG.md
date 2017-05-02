@@ -1,6 +1,89 @@
 # CHANGELOG
 
 -----
+## `v10.0.0-beta`
+### ARM
+In addition to the tabulated changes below, each package had the following updates:
+- Long running operations now run inside a goroutine and return channels for the response and the errors.
+- Some functions changed from returning `autorest.Response` to return the already unmarshaled struct.
+
+
+| api                                 | version            | note                                |
+|:------------------------------------|:-------------------|:------------------------------------|
+| arm/advisor                         | 2017-04-19         | new                                 |
+| arm/analysisservices                | 2016-05-16         | refactor                            |
+| arm/apimanagement                   | 2016-10-10         | update to latest swagger & refactor |
+| arm/appinsights                     | 2015-05-01         | new                                 |
+| arm/automation                      | 2015-10-31         | new                                 |
+| arm/billing                         | 2017-04-24-preview | update to latest swagger & refactor |
+| arm/cdn                             | 2016-10-02         | refactor                            |
+| arm/commerce                        | 2015-06-01-preview | refactor                            |
+| arm/compute                         | 2016-04-30-preview | refactor                            |
+| arm/consumption                     | 2017-04-24-preview | new                                 |
+| arm/containerregistry               | 2017-06-01-preview | update to latest swagger & refactor |
+| arm/containerservice                | 2017-01-31         | update to latest swagger & refactor |
+| arm/customer-insights               | 2017-01-01         | refactor                            |
+| arm/datalake-analytics/account      | 2016-11-01         | refactor                            |
+| arm/datalake-store/account          | 2016-11-01         | refactor                            |
+| arm/devtestlabs                     | 2016-05-15         | refactor                            |
+| arm/disk                            | 2016-04-30-preview | refactor                            |
+| arm/dns                             | 2016-04-01         | refactor                            |
+| arm/documentdb                      | 2015-04-08         | refactor                            |
+| arm/eventhub                        | 2015-08-01         | refactor                            |
+| arm/graphrbac                       | 1.6                | refactor                            |
+| arm/hdinsight                       | 2015-03-01-preview | new                                 |
+| arm/insights                        | multiple           | new                                 |
+| arm/intune                          | 2015-01-14-preview | refactor                            |
+| arm/iothub                          | 2016-02-03         | refactor                            |
+| arm/machinelearning/commitmentplans | 2016-05-01-preview | refactor                            |
+| arm/machinelearning/webservices     | 2017-01-01         | update to latest swagger & refactor |
+| arm/monitor                         | multiple           | new                                 |
+| arm/network                         | 2017-03-01         | update to latest swagger & refactor |
+| arm/notificationhubs                | 2017-04-01         | update to latest swagger & refactor |
+| arm/operationalinsights             | 2015-11-01-preview | update to latest swagger & refactor |
+| arm/powerbiembedded                 | 2016-01-29         | refactor                            |
+| arm/recoveryservices                | 2016-12-01         | refactor                            |
+| arm/recoveryservicesbackup          | 2016-12-01         | new                                 |
+| arm/redis                           | 2016-04-01         | refactor                            |
+| arm/relay                           | 2016-07-01         | new                                 |
+| arm/resourcehealth                  | 2015-01-01         | new                                 |
+| arm/resources/features              | 2015-12-01         | refactor                            |
+| arm/resources/links                 | 2016-09-01         | refactor                            |
+| arm/resources/resources             | 2016-09-01         | refactor                            |
+| arm/resources/subscriptions         | 2016-06-01         | refactor                            |
+| arm/scheduler                       | 2016-03-01         | refactor                            |
+| arm/servermanagement                | 2016-07-01-preview | refactor                            |
+| arm/servicebus                      | 2015-08-01         | refactor                            |
+| arm/servicefabric                   | 2016-09-01         | new                                 |
+| arm/service-map                     | 2015-11-01-preview | refactor                            |
+| arm/sql                             | multiple           | update to latest swagger & refactor |
+| arm/storage                         | 2016-12-01         | update to latest swagger & refactor |
+| arm/storageimportexport             | 2016-11-01         | refactor                            |
+| arm/web                             | multiple           | refactor                            |
+
+### Data plane
+| api                                 | version            | note                                |
+|:------------------------------------|:-------------------|:------------------------------------|
+| dataplane/keyvault                  | 2016-10-01         | refactor                            |
+
+### Storage
+Storage has returned to this repo.
+It has also been refactored:
+ - Blobs, containers, tables, etc are now method receivers. These structs are the ones being
+   updated with each operation.
+ - When creating a client, the SDK checks if the storage account provided is valid.
+ - Added retry logic. It provides the flexibility for user to provide their own retry logic.
+ - Added operations:
+    - Get table
+    - Get entity
+    - Get and set queue ACL
+    - Table batch
+    - Page blob incremental copy
+ - All operations that previously had `extraHeaders` as parameter now recieve a struct with well
+   defined possible headers and other options. Some functions are easier to use.
+ - Storage tests now use HTTP recordings.
+
+
 ## `v9.0.0-beta`
 ### ARM
 In addition to the tabulated changes below, each package had the following updates:

@@ -534,8 +534,7 @@ func generate(service *service) {
 	fmt.Printf("Generating %s...\n\n", service.Fullname)
 	delete(service)
 
-	autorest := exec.Command("gulp",
-		"autorest",
+	autorest := exec.Command("autorest",
 		"-Input", filepath.Join(swaggersDir, "azure-rest-api-specs", service.Input+"."+string(service.Extension)),
 		"-CodeGenerator", "Go",
 		"-Header", "MICROSOFT_APACHE",

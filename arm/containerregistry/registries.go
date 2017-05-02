@@ -44,7 +44,7 @@ func NewRegistriesClientWithBaseURI(baseURI string, subscriptionID string) Regis
 
 // CheckNameAvailability checks whether the container registry name is
 // available for use. The name must contain only alphanumeric characters, be
-// globally unique, and between 5 and 50 characters in length.
+// globally unique, and between 5 and 60 characters in length.
 //
 // registryNameCheckRequest is the object containing information for the
 // availability request.
@@ -87,7 +87,7 @@ func (client RegistriesClient) CheckNameAvailabilityPreparer(registryNameCheckRe
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2017-06-01-preview"
+	const APIVersion = "2017-03-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -140,9 +140,10 @@ func (client RegistriesClient) Create(resourceGroupName string, registryName str
 				{Target: "registryName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9]*$`, Chain: nil}}},
 		{TargetValue: registryCreateParameters,
 			Constraints: []validation.Constraint{{Target: "registryCreateParameters.Location", Name: validation.Null, Rule: true, Chain: nil},
-				{Target: "registryCreateParameters.Sku", Name: validation.Null, Rule: true, Chain: nil},
+				{Target: "registryCreateParameters.Sku", Name: validation.Null, Rule: true,
+					Chain: []validation.Constraint{{Target: "registryCreateParameters.Sku.Name", Name: validation.Null, Rule: true, Chain: nil}}},
 				{Target: "registryCreateParameters.RegistryPropertiesCreateParameters", Name: validation.Null, Rule: false,
-					Chain: []validation.Constraint{{Target: "registryCreateParameters.RegistryPropertiesCreateParameters.StorageAccount", Name: validation.Null, Rule: false,
+					Chain: []validation.Constraint{{Target: "registryCreateParameters.RegistryPropertiesCreateParameters.StorageAccount", Name: validation.Null, Rule: true,
 						Chain: []validation.Constraint{{Target: "registryCreateParameters.RegistryPropertiesCreateParameters.StorageAccount.Name", Name: validation.Null, Rule: true, Chain: nil},
 							{Target: "registryCreateParameters.RegistryPropertiesCreateParameters.StorageAccount.AccessKey", Name: validation.Null, Rule: true, Chain: nil},
 						}},
@@ -191,7 +192,7 @@ func (client RegistriesClient) CreatePreparer(resourceGroupName string, registry
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2017-06-01-preview"
+	const APIVersion = "2017-03-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -227,65 +228,49 @@ func (client RegistriesClient) CreateResponder(resp *http.Response) (result Regi
 	return
 }
 
-// Delete deletes a container registry. This method may poll for completion.
-// Polling can be canceled by passing the cancel channel argument. The channel
-// will be used to cancel polling and any outstanding HTTP requests.
+// Delete deletes a container registry.
 //
 // resourceGroupName is the name of the resource group to which the container
 // registry belongs. registryName is the name of the container registry.
-func (client RegistriesClient) Delete(resourceGroupName string, registryName string, cancel <-chan struct{}) (<-chan autorest.Response, <-chan error) {
-	resultChan := make(chan autorest.Response, 1)
-	errChan := make(chan error, 1)
+func (client RegistriesClient) Delete(resourceGroupName string, registryName string) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: registryName,
 			Constraints: []validation.Constraint{{Target: "registryName", Name: validation.MaxLength, Rule: 50, Chain: nil},
 				{Target: "registryName", Name: validation.MinLength, Rule: 5, Chain: nil},
 				{Target: "registryName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9]*$`, Chain: nil}}}}); err != nil {
-		errChan <- validation.NewErrorWithValidationError(err, "containerregistry.RegistriesClient", "Delete")
-		close(errChan)
-		close(resultChan)
-		return resultChan, errChan
+		return result, validation.NewErrorWithValidationError(err, "containerregistry.RegistriesClient", "Delete")
 	}
 
-	go func() {
-		var err error
-		var result autorest.Response
-		defer func() {
-			resultChan <- result
-			errChan <- err
-			close(resultChan)
-			close(errChan)
-		}()
-		req, err := client.DeletePreparer(resourceGroupName, registryName, cancel)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "containerregistry.RegistriesClient", "Delete", nil, "Failure preparing request")
-			return
-		}
+	req, err := client.DeletePreparer(resourceGroupName, registryName)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "containerregistry.RegistriesClient", "Delete", nil, "Failure preparing request")
+		return
+	}
 
-		resp, err := client.DeleteSender(req)
-		if err != nil {
-			result.Response = resp
-			err = autorest.NewErrorWithError(err, "containerregistry.RegistriesClient", "Delete", resp, "Failure sending request")
-			return
-		}
+	resp, err := client.DeleteSender(req)
+	if err != nil {
+		result.Response = resp
+		err = autorest.NewErrorWithError(err, "containerregistry.RegistriesClient", "Delete", resp, "Failure sending request")
+		return
+	}
 
-		result, err = client.DeleteResponder(resp)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "containerregistry.RegistriesClient", "Delete", resp, "Failure responding to request")
-		}
-	}()
-	return resultChan, errChan
+	result, err = client.DeleteResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "containerregistry.RegistriesClient", "Delete", resp, "Failure responding to request")
+	}
+
+	return
 }
 
 // DeletePreparer prepares the Delete request.
-func (client RegistriesClient) DeletePreparer(resourceGroupName string, registryName string, cancel <-chan struct{}) (*http.Request, error) {
+func (client RegistriesClient) DeletePreparer(resourceGroupName string, registryName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"registryName":      autorest.Encode("path", registryName),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2017-06-01-preview"
+	const APIVersion = "2017-03-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -295,15 +280,13 @@ func (client RegistriesClient) DeletePreparer(resourceGroupName string, registry
 		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare(&http.Request{Cancel: cancel})
+	return preparer.Prepare(&http.Request{})
 }
 
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
 func (client RegistriesClient) DeleteSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client,
-		req,
-		azure.DoPollForAsynchronous(client.PollingDelay))
+	return autorest.SendWithSender(client, req)
 }
 
 // DeleteResponder handles the response to the Delete request. The method always
@@ -312,7 +295,7 @@ func (client RegistriesClient) DeleteResponder(resp *http.Response) (result auto
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
 	return
@@ -360,7 +343,7 @@ func (client RegistriesClient) GetPreparer(resourceGroupName string, registryNam
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2017-06-01-preview"
+	const APIVersion = "2017-03-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -421,7 +404,7 @@ func (client RegistriesClient) ListPreparer() (*http.Request, error) {
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2017-06-01-preview"
+	const APIVersion = "2017-03-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -511,7 +494,7 @@ func (client RegistriesClient) ListByResourceGroupPreparer(resourceGroupName str
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2017-06-01-preview"
+	const APIVersion = "2017-03-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -610,7 +593,7 @@ func (client RegistriesClient) ListCredentialsPreparer(resourceGroupName string,
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2017-06-01-preview"
+	const APIVersion = "2017-03-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -687,7 +670,7 @@ func (client RegistriesClient) RegenerateCredentialPreparer(resourceGroupName st
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2017-06-01-preview"
+	const APIVersion = "2017-03-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -765,7 +748,7 @@ func (client RegistriesClient) UpdatePreparer(resourceGroupName string, registry
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2017-06-01-preview"
+	const APIVersion = "2017-03-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}

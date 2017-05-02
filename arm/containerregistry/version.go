@@ -20,7 +20,7 @@ package containerregistry
 
 // UserAgent returns the UserAgent string to use when sending http.Requests.
 func UserAgent() string {
-	return "Azure-SDK-For-Go/v10.0.0-beta arm-containerregistry/2017-06-01-preview"
+	return "Azure-SDK-For-Go/v10.0.0-beta arm-containerregistry/2017-03-01"
 }
 
 // Version returns the semantic version (see http://semver.org) of the client.

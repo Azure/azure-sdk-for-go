@@ -20,7 +20,7 @@ In addition to the tabulated changes below, each package had the following updat
 | arm/commerce                        | 2015-06-01-preview | refactor                            |
 | arm/compute                         | 2016-04-30-preview | refactor                            |
 | arm/consumption                     | 2017-04-24-preview | new                                 |
-| arm/containerregistry               | 2017-06-01-preview | update to latest swagger & refactor |
+| arm/containerregistry               | 2017-03-01         | update to latest swagger & refactor |
 | arm/containerservice                | 2017-01-31         | update to latest swagger & refactor |
 | arm/customer-insights               | 2017-01-01         | refactor                            |
 | arm/datalake-analytics/account      | 2016-11-01         | refactor                            |

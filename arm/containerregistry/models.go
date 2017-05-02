@@ -45,117 +45,13 @@ const (
 	Succeeded ProvisioningState = "Succeeded"
 )
 
-// SkuName enumerates the values for sku name.
-type SkuName string
-
-const (
-	// Basic specifies the basic state for sku name.
-	Basic SkuName = "Basic"
-	// Premium specifies the premium state for sku name.
-	Premium SkuName = "Premium"
-	// Standard specifies the standard state for sku name.
-	Standard SkuName = "Standard"
-)
-
 // SkuTier enumerates the values for sku tier.
 type SkuTier string
 
 const (
-	// SkuTierBasic specifies the sku tier basic state for sku tier.
-	SkuTierBasic SkuTier = "Basic"
-	// SkuTierPremium specifies the sku tier premium state for sku tier.
-	SkuTierPremium SkuTier = "Premium"
-	// SkuTierStandard specifies the sku tier standard state for sku tier.
-	SkuTierStandard SkuTier = "Standard"
+	// Basic specifies the basic state for sku tier.
+	Basic SkuTier = "Basic"
 )
-
-// WebhookAction enumerates the values for webhook action.
-type WebhookAction string
-
-const (
-	// Delete specifies the delete state for webhook action.
-	Delete WebhookAction = "delete"
-	// Pull specifies the pull state for webhook action.
-	Pull WebhookAction = "pull"
-	// Push specifies the push state for webhook action.
-	Push WebhookAction = "push"
-)
-
-// Actor is the agent that initiated the event. For most situations, this could
-// be from the authorization context of the request.
-type Actor struct {
-	Name *string `json:"name,omitempty"`
-}
-
-// CallbackConfig is the configuration of service URI and custom headers for
-// the webhook.
-type CallbackConfig struct {
-	autorest.Response `json:"-"`
-	ServiceURI        *string             `json:"serviceUri,omitempty"`
-	CustomHeaders     *map[string]*string `json:"customHeaders,omitempty"`
-}
-
-// Event is the event for a webhook.
-type Event struct {
-	ID                   *string               `json:"id,omitempty"`
-	EventRequestMessage  *EventRequestMessage  `json:"eventRequestMessage,omitempty"`
-	EventResponseMessage *EventResponseMessage `json:"eventResponseMessage,omitempty"`
-}
-
-// EventContent is the content of the event request message.
-type EventContent struct {
-	ID        *string  `json:"id,omitempty"`
-	Timestamp *string  `json:"timestamp,omitempty"`
-	Action    *string  `json:"action,omitempty"`
-	Target    *Target  `json:"target,omitempty"`
-	Request   *Request `json:"request,omitempty"`
-	Actor     *Actor   `json:"actor,omitempty"`
-	Source    *Source  `json:"source,omitempty"`
-}
-
-// EventInfo is the basic information of an event.
-type EventInfo struct {
-	autorest.Response `json:"-"`
-	ID                *string `json:"id,omitempty"`
-}
-
-// EventListResult is the result of a request to list events for a webhook.
-type EventListResult struct {
-	autorest.Response `json:"-"`
-	Value             *[]Event `json:"value,omitempty"`
-	NextLink          *string  `json:"nextLink,omitempty"`
-}
-
-// EventListResultPreparer prepares a request to retrieve the next set of results. It returns
-// nil if no more results exist.
-func (client EventListResult) EventListResultPreparer() (*http.Request, error) {
-	if client.NextLink == nil || len(to.String(client.NextLink)) <= 0 {
-		return nil, nil
-	}
-	return autorest.Prepare(&http.Request{},
-		autorest.AsJSON(),
-		autorest.AsGet(),
-		autorest.WithBaseURL(to.String(client.NextLink)))
-}
-
-// EventRequestMessage is the event request message sent to the service URI.
-type EventRequestMessage struct {
-	Content    *EventContent       `json:"content,omitempty"`
-	Headers    *map[string]*string `json:"headers,omitempty"`
-	Method     *string             `json:"method,omitempty"`
-	RequestURI *string             `json:"requestUri,omitempty"`
-	Version    *string             `json:"version,omitempty"`
-}
-
-// EventResponseMessage is the event response message received from the service
-// URI.
-type EventResponseMessage struct {
-	Content      *string             `json:"content,omitempty"`
-	Headers      *map[string]*string `json:"headers,omitempty"`
-	ReasonPhrase *string             `json:"reasonPhrase,omitempty"`
-	StatusCode   *string             `json:"statusCode,omitempty"`
-	Version      *string             `json:"version,omitempty"`
-}
 
 // OperationDefinition is the definition of a container registry operation.
 type OperationDefinition struct {
@@ -298,52 +194,6 @@ type RegistryUpdateParameters struct {
 	*RegistryPropertiesUpdateParameters `json:"properties,omitempty"`
 }
 
-// Replication is an object that represents a replication for a container
-// registry.
-type Replication struct {
-	autorest.Response      `json:"-"`
-	ID                     *string             `json:"id,omitempty"`
-	Name                   *string             `json:"name,omitempty"`
-	Type                   *string             `json:"type,omitempty"`
-	Location               *string             `json:"location,omitempty"`
-	Tags                   *map[string]*string `json:"tags,omitempty"`
-	*ReplicationProperties `json:"properties,omitempty"`
-}
-
-// ReplicationListResult is the result of a request to list replications for a
-// container registry.
-type ReplicationListResult struct {
-	autorest.Response `json:"-"`
-	Value             *[]Replication `json:"value,omitempty"`
-	NextLink          *string        `json:"nextLink,omitempty"`
-}
-
-// ReplicationListResultPreparer prepares a request to retrieve the next set of results. It returns
-// nil if no more results exist.
-func (client ReplicationListResult) ReplicationListResultPreparer() (*http.Request, error) {
-	if client.NextLink == nil || len(to.String(client.NextLink)) <= 0 {
-		return nil, nil
-	}
-	return autorest.Prepare(&http.Request{},
-		autorest.AsJSON(),
-		autorest.AsGet(),
-		autorest.WithBaseURL(to.String(client.NextLink)))
-}
-
-// ReplicationProperties is the properties of a replication.
-type ReplicationProperties struct {
-	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
-}
-
-// Request is the request that generated the event.
-type Request struct {
-	ID        *string `json:"id,omitempty"`
-	Addr      *string `json:"addr,omitempty"`
-	Host      *string `json:"host,omitempty"`
-	Method    *string `json:"method,omitempty"`
-	Useragent *string `json:"useragent,omitempty"`
-}
-
 // Resource is an Azure resource.
 type Resource struct {
 	ID       *string             `json:"id,omitempty"`
@@ -355,108 +205,19 @@ type Resource struct {
 
 // Sku is the SKU of a container registry.
 type Sku struct {
-	Name SkuName `json:"name,omitempty"`
+	Name *string `json:"name,omitempty"`
 	Tier SkuTier `json:"tier,omitempty"`
 }
 
-// Source is the registry node that generated the event. Put differently, while
-// the actor initiates the event, the source generates it.
-type Source struct {
-	Addr       *string `json:"addr,omitempty"`
-	InstanceID *string `json:"instanceID,omitempty"`
-}
-
 // StorageAccountParameters is the parameters of a storage account for a
-// container registry. Only applicable to Basic SKU.
+// container registry.
 type StorageAccountParameters struct {
 	Name      *string `json:"name,omitempty"`
 	AccessKey *string `json:"accessKey,omitempty"`
 }
 
 // StorageAccountProperties is the properties of a storage account for a
-// container registry. Only applicable to Basic SKU.
+// container registry.
 type StorageAccountProperties struct {
 	Name *string `json:"name,omitempty"`
-}
-
-// Target is the target of the event.
-type Target struct {
-	MediaType  *string `json:"mediaType,omitempty"`
-	Size       *int64  `json:"size,omitempty"`
-	Digest     *string `json:"digest,omitempty"`
-	Length     *int64  `json:"length,omitempty"`
-	Repository *string `json:"repository,omitempty"`
-	URL        *string `json:"url,omitempty"`
-	Tag        *string `json:"tag,omitempty"`
-}
-
-// Webhook is an object that represents a webhook for a container registry.
-type Webhook struct {
-	autorest.Response  `json:"-"`
-	ID                 *string             `json:"id,omitempty"`
-	Name               *string             `json:"name,omitempty"`
-	Type               *string             `json:"type,omitempty"`
-	Location           *string             `json:"location,omitempty"`
-	Tags               *map[string]*string `json:"tags,omitempty"`
-	*WebhookProperties `json:"properties,omitempty"`
-}
-
-// WebhookCreateParameters is the parameters for creating a webhook.
-type WebhookCreateParameters struct {
-	Tags                               *map[string]*string `json:"tags,omitempty"`
-	Location                           *string             `json:"location,omitempty"`
-	*WebhookPropertiesCreateParameters `json:"properties,omitempty"`
-}
-
-// WebhookListResult is the result of a request to list webhooks for a
-// container registry.
-type WebhookListResult struct {
-	autorest.Response `json:"-"`
-	Value             *[]Webhook `json:"value,omitempty"`
-	NextLink          *string    `json:"nextLink,omitempty"`
-}
-
-// WebhookListResultPreparer prepares a request to retrieve the next set of results. It returns
-// nil if no more results exist.
-func (client WebhookListResult) WebhookListResultPreparer() (*http.Request, error) {
-	if client.NextLink == nil || len(to.String(client.NextLink)) <= 0 {
-		return nil, nil
-	}
-	return autorest.Prepare(&http.Request{},
-		autorest.AsJSON(),
-		autorest.AsGet(),
-		autorest.WithBaseURL(to.String(client.NextLink)))
-}
-
-// WebhookProperties is the properties of a webhook.
-type WebhookProperties struct {
-	IsEnabled *bool            `json:"isEnabled,omitempty"`
-	Scope     *string          `json:"scope,omitempty"`
-	Actions   *[]WebhookAction `json:"actions,omitempty"`
-}
-
-// WebhookPropertiesCreateParameters is the parameters for creating the
-// properties of a webhook.
-type WebhookPropertiesCreateParameters struct {
-	ServiceURI    *string             `json:"serviceUri,omitempty"`
-	CustomHeaders *map[string]*string `json:"customHeaders,omitempty"`
-	IsEnabled     *bool               `json:"isEnabled,omitempty"`
-	Scope         *string             `json:"scope,omitempty"`
-	Actions       *[]WebhookAction    `json:"actions,omitempty"`
-}
-
-// WebhookPropertiesUpdateParameters is the parameters for updating the
-// properties of a webhook.
-type WebhookPropertiesUpdateParameters struct {
-	ServiceURI    *string             `json:"serviceUri,omitempty"`
-	CustomHeaders *map[string]*string `json:"customHeaders,omitempty"`
-	IsEnabled     *bool               `json:"isEnabled,omitempty"`
-	Scope         *string             `json:"scope,omitempty"`
-	Actions       *[]WebhookAction    `json:"actions,omitempty"`
-}
-
-// WebhookUpdateParameters is the parameters for updating a webhook.
-type WebhookUpdateParameters struct {
-	Tags                               *map[string]*string `json:"tags,omitempty"`
-	*WebhookPropertiesUpdateParameters `json:"properties,omitempty"`
 }

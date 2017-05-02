@@ -128,7 +128,7 @@ var (
 				},
 				{
 					Name:    "containerregistry",
-					Version: "2017-06-01-preview",
+					Version: "2017-03-01",
 				},
 				{
 					Name:    "customer-insights",

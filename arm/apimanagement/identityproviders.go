@@ -67,13 +67,15 @@ func (client IdentityProvidersClient) CreateOrUpdate(resourceGroupName string, s
 
 	req, err := client.CreateOrUpdatePreparer(resourceGroupName, serviceName, identityProviderName, parameters)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "apimanagement.IdentityProvidersClient", "CreateOrUpdate", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "apimanagement.IdentityProvidersClient", "CreateOrUpdate", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.CreateOrUpdateSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "apimanagement.IdentityProvidersClient", "CreateOrUpdate", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "apimanagement.IdentityProvidersClient", "CreateOrUpdate", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.CreateOrUpdateResponder(resp)
@@ -144,13 +146,15 @@ func (client IdentityProvidersClient) Delete(resourceGroupName string, serviceNa
 
 	req, err := client.DeletePreparer(resourceGroupName, serviceName, identityProviderName, ifMatch)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "apimanagement.IdentityProvidersClient", "Delete", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "apimanagement.IdentityProvidersClient", "Delete", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.DeleteSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "apimanagement.IdentityProvidersClient", "Delete", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "apimanagement.IdentityProvidersClient", "Delete", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.DeleteResponder(resp)
@@ -219,13 +223,15 @@ func (client IdentityProvidersClient) Get(resourceGroupName string, serviceName 
 
 	req, err := client.GetPreparer(resourceGroupName, serviceName, identityProviderName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "apimanagement.IdentityProvidersClient", "Get", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "apimanagement.IdentityProvidersClient", "Get", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "apimanagement.IdentityProvidersClient", "Get", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "apimanagement.IdentityProvidersClient", "Get", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetResponder(resp)
@@ -293,13 +299,15 @@ func (client IdentityProvidersClient) ListByService(resourceGroupName string, se
 
 	req, err := client.ListByServicePreparer(resourceGroupName, serviceName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "apimanagement.IdentityProvidersClient", "ListByService", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "apimanagement.IdentityProvidersClient", "ListByService", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListByServiceSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "apimanagement.IdentityProvidersClient", "ListByService", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "apimanagement.IdentityProvidersClient", "ListByService", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListByServiceResponder(resp)
@@ -369,13 +377,15 @@ func (client IdentityProvidersClient) Update(resourceGroupName string, serviceNa
 
 	req, err := client.UpdatePreparer(resourceGroupName, serviceName, identityProviderName, parameters, ifMatch)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "apimanagement.IdentityProvidersClient", "Update", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "apimanagement.IdentityProvidersClient", "Update", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.UpdateSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "apimanagement.IdentityProvidersClient", "Update", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "apimanagement.IdentityProvidersClient", "Update", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.UpdateResponder(resp)

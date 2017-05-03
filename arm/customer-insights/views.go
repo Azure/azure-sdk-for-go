@@ -61,13 +61,15 @@ func (client ViewsClient) CreateOrUpdate(resourceGroupName string, hubName strin
 
 	req, err := client.CreateOrUpdatePreparer(resourceGroupName, hubName, viewName, parameters)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "customerinsights.ViewsClient", "CreateOrUpdate", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "customerinsights.ViewsClient", "CreateOrUpdate", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.CreateOrUpdateSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "customerinsights.ViewsClient", "CreateOrUpdate", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "customerinsights.ViewsClient", "CreateOrUpdate", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.CreateOrUpdateResponder(resp)
@@ -87,8 +89,9 @@ func (client ViewsClient) CreateOrUpdatePreparer(resourceGroupName string, hubNa
 		"viewName":          autorest.Encode("path", viewName),
 	}
 
+	const APIVersion = "2017-01-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -128,13 +131,15 @@ func (client ViewsClient) CreateOrUpdateResponder(resp *http.Response) (result V
 func (client ViewsClient) Delete(resourceGroupName string, hubName string, viewName string, userID string) (result autorest.Response, err error) {
 	req, err := client.DeletePreparer(resourceGroupName, hubName, viewName, userID)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "customerinsights.ViewsClient", "Delete", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "customerinsights.ViewsClient", "Delete", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.DeleteSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "customerinsights.ViewsClient", "Delete", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "customerinsights.ViewsClient", "Delete", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.DeleteResponder(resp)
@@ -154,8 +159,9 @@ func (client ViewsClient) DeletePreparer(resourceGroupName string, hubName strin
 		"viewName":          autorest.Encode("path", viewName),
 	}
 
+	const APIVersion = "2017-01-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 		"userId":      autorest.Encode("query", userID),
 	}
 
@@ -193,13 +199,15 @@ func (client ViewsClient) DeleteResponder(resp *http.Response) (result autorest.
 func (client ViewsClient) Get(resourceGroupName string, hubName string, viewName string, userID string) (result ViewResourceFormat, err error) {
 	req, err := client.GetPreparer(resourceGroupName, hubName, viewName, userID)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "customerinsights.ViewsClient", "Get", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "customerinsights.ViewsClient", "Get", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "customerinsights.ViewsClient", "Get", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "customerinsights.ViewsClient", "Get", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetResponder(resp)
@@ -219,8 +227,9 @@ func (client ViewsClient) GetPreparer(resourceGroupName string, hubName string, 
 		"viewName":          autorest.Encode("path", viewName),
 	}
 
+	const APIVersion = "2017-01-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 		"userId":      autorest.Encode("query", userID),
 	}
 
@@ -258,13 +267,15 @@ func (client ViewsClient) GetResponder(resp *http.Response) (result ViewResource
 func (client ViewsClient) ListByHub(resourceGroupName string, hubName string, userID string) (result ViewListResult, err error) {
 	req, err := client.ListByHubPreparer(resourceGroupName, hubName, userID)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "customerinsights.ViewsClient", "ListByHub", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "customerinsights.ViewsClient", "ListByHub", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListByHubSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "customerinsights.ViewsClient", "ListByHub", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "customerinsights.ViewsClient", "ListByHub", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListByHubResponder(resp)
@@ -283,8 +294,9 @@ func (client ViewsClient) ListByHubPreparer(resourceGroupName string, hubName st
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
+	const APIVersion = "2017-01-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 		"userId":      autorest.Encode("query", userID),
 	}
 

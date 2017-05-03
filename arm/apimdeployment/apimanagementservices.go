@@ -52,7 +52,9 @@ func NewAPIManagementServicesClientWithBaseURI(baseURI string, subscriptionID st
 // resourceGroupName is the name of the resource group. serviceName is the name
 // of the API Management service. parameters is parameters supplied to the
 // ApiManagementServices_Backup operation.
-func (client APIManagementServicesClient) Backup(resourceGroupName string, serviceName string, parameters APIManagementServiceBackupRestoreParameters, cancel <-chan struct{}) (result autorest.Response, err error) {
+func (client APIManagementServicesClient) Backup(resourceGroupName string, serviceName string, parameters APIManagementServiceBackupRestoreParameters, cancel <-chan struct{}) (<-chan APIManagementServiceResource, <-chan error) {
+	resultChan := make(chan APIManagementServiceResource, 1)
+	errChan := make(chan error, 1)
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,
 			Constraints: []validation.Constraint{{Target: "serviceName", Name: validation.MaxLength, Rule: 50, Chain: nil},
@@ -63,26 +65,40 @@ func (client APIManagementServicesClient) Backup(resourceGroupName string, servi
 				{Target: "parameters.AccessKey", Name: validation.Null, Rule: true, Chain: nil},
 				{Target: "parameters.ContainerName", Name: validation.Null, Rule: true, Chain: nil},
 				{Target: "parameters.BackupName", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "apimdeployment.APIManagementServicesClient", "Backup")
+		errChan <- validation.NewErrorWithValidationError(err, "apimdeployment.APIManagementServicesClient", "Backup")
+		close(errChan)
+		close(resultChan)
+		return resultChan, errChan
 	}
 
-	req, err := client.BackupPreparer(resourceGroupName, serviceName, parameters, cancel)
-	if err != nil {
-		return result, autorest.NewErrorWithError(err, "apimdeployment.APIManagementServicesClient", "Backup", nil, "Failure preparing request")
-	}
+	go func() {
+		var err error
+		var result APIManagementServiceResource
+		defer func() {
+			resultChan <- result
+			errChan <- err
+			close(resultChan)
+			close(errChan)
+		}()
+		req, err := client.BackupPreparer(resourceGroupName, serviceName, parameters, cancel)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "apimdeployment.APIManagementServicesClient", "Backup", nil, "Failure preparing request")
+			return
+		}
 
-	resp, err := client.BackupSender(req)
-	if err != nil {
-		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "apimdeployment.APIManagementServicesClient", "Backup", resp, "Failure sending request")
-	}
+		resp, err := client.BackupSender(req)
+		if err != nil {
+			result.Response = autorest.Response{Response: resp}
+			err = autorest.NewErrorWithError(err, "apimdeployment.APIManagementServicesClient", "Backup", resp, "Failure sending request")
+			return
+		}
 
-	result, err = client.BackupResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "apimdeployment.APIManagementServicesClient", "Backup", resp, "Failure responding to request")
-	}
-
-	return
+		result, err = client.BackupResponder(resp)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "apimdeployment.APIManagementServicesClient", "Backup", resp, "Failure responding to request")
+		}
+	}()
+	return resultChan, errChan
 }
 
 // BackupPreparer prepares the Backup request.
@@ -93,8 +109,9 @@ func (client APIManagementServicesClient) BackupPreparer(resourceGroupName strin
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
+	const APIVersion = "2016-07-07"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -117,13 +134,14 @@ func (client APIManagementServicesClient) BackupSender(req *http.Request) (*http
 
 // BackupResponder handles the response to the Backup request. The method always
 // closes the http.Response Body.
-func (client APIManagementServicesClient) BackupResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client APIManagementServicesClient) BackupResponder(resp *http.Response) (result APIManagementServiceResource, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = resp
+	result.Response = autorest.Response{Response: resp}
 	return
 }
 
@@ -140,13 +158,15 @@ func (client APIManagementServicesClient) CheckNameAvailability(parameters APIMa
 
 	req, err := client.CheckNameAvailabilityPreparer(parameters)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "apimdeployment.APIManagementServicesClient", "CheckNameAvailability", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "apimdeployment.APIManagementServicesClient", "CheckNameAvailability", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.CheckNameAvailabilitySender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "apimdeployment.APIManagementServicesClient", "CheckNameAvailability", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "apimdeployment.APIManagementServicesClient", "CheckNameAvailability", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.CheckNameAvailabilityResponder(resp)
@@ -163,8 +183,9 @@ func (client APIManagementServicesClient) CheckNameAvailabilityPreparer(paramete
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
 
+	const APIVersion = "2016-07-07"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -215,13 +236,15 @@ func (client APIManagementServicesClient) CreateOrUpdate(resourceGroupName strin
 
 	req, err := client.CreateOrUpdatePreparer(resourceGroupName, serviceName, parameters)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "apimdeployment.APIManagementServicesClient", "CreateOrUpdate", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "apimdeployment.APIManagementServicesClient", "CreateOrUpdate", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.CreateOrUpdateSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "apimdeployment.APIManagementServicesClient", "CreateOrUpdate", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "apimdeployment.APIManagementServicesClient", "CreateOrUpdate", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.CreateOrUpdateResponder(resp)
@@ -240,8 +263,9 @@ func (client APIManagementServicesClient) CreateOrUpdatePreparer(resourceGroupNa
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
+	const APIVersion = "2016-07-07"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -288,13 +312,15 @@ func (client APIManagementServicesClient) Delete(resourceGroupName string, servi
 
 	req, err := client.DeletePreparer(resourceGroupName, serviceName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "apimdeployment.APIManagementServicesClient", "Delete", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "apimdeployment.APIManagementServicesClient", "Delete", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.DeleteSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "apimdeployment.APIManagementServicesClient", "Delete", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "apimdeployment.APIManagementServicesClient", "Delete", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.DeleteResponder(resp)
@@ -313,8 +339,9 @@ func (client APIManagementServicesClient) DeletePreparer(resourceGroupName strin
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
+	const APIVersion = "2016-07-07"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -359,13 +386,15 @@ func (client APIManagementServicesClient) Get(resourceGroupName string, serviceN
 
 	req, err := client.GetPreparer(resourceGroupName, serviceName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "apimdeployment.APIManagementServicesClient", "Get", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "apimdeployment.APIManagementServicesClient", "Get", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "apimdeployment.APIManagementServicesClient", "Get", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "apimdeployment.APIManagementServicesClient", "Get", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetResponder(resp)
@@ -384,8 +413,9 @@ func (client APIManagementServicesClient) GetPreparer(resourceGroupName string, 
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
+	const APIVersion = "2016-07-07"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -431,13 +461,15 @@ func (client APIManagementServicesClient) GetSsoToken(resourceGroupName string, 
 
 	req, err := client.GetSsoTokenPreparer(resourceGroupName, serviceName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "apimdeployment.APIManagementServicesClient", "GetSsoToken", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "apimdeployment.APIManagementServicesClient", "GetSsoToken", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetSsoTokenSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "apimdeployment.APIManagementServicesClient", "GetSsoToken", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "apimdeployment.APIManagementServicesClient", "GetSsoToken", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetSsoTokenResponder(resp)
@@ -456,8 +488,9 @@ func (client APIManagementServicesClient) GetSsoTokenPreparer(resourceGroupName 
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
+	const APIVersion = "2016-07-07"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -491,13 +524,15 @@ func (client APIManagementServicesClient) GetSsoTokenResponder(resp *http.Respon
 func (client APIManagementServicesClient) List() (result APIManagementServiceListResult, err error) {
 	req, err := client.ListPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "apimdeployment.APIManagementServicesClient", "List", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "apimdeployment.APIManagementServicesClient", "List", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "apimdeployment.APIManagementServicesClient", "List", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "apimdeployment.APIManagementServicesClient", "List", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListResponder(resp)
@@ -514,8 +549,9 @@ func (client APIManagementServicesClient) ListPreparer() (*http.Request, error) 
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
 
+	const APIVersion = "2016-07-07"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -576,13 +612,15 @@ func (client APIManagementServicesClient) ListNextResults(lastResults APIManagem
 func (client APIManagementServicesClient) ListByResourceGroup(resourceGroupName string) (result APIManagementServiceListResult, err error) {
 	req, err := client.ListByResourceGroupPreparer(resourceGroupName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "apimdeployment.APIManagementServicesClient", "ListByResourceGroup", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "apimdeployment.APIManagementServicesClient", "ListByResourceGroup", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListByResourceGroupSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "apimdeployment.APIManagementServicesClient", "ListByResourceGroup", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "apimdeployment.APIManagementServicesClient", "ListByResourceGroup", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListByResourceGroupResponder(resp)
@@ -600,8 +638,9 @@ func (client APIManagementServicesClient) ListByResourceGroupPreparer(resourceGr
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
+	const APIVersion = "2016-07-07"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -666,7 +705,9 @@ func (client APIManagementServicesClient) ListByResourceGroupNextResults(lastRes
 // resourceGroupName is the name of the resource group. serviceName is the name
 // of the API Management service. parameters is parameters supplied to the
 // ManageDeployments operation.
-func (client APIManagementServicesClient) ManageDeployments(resourceGroupName string, serviceName string, parameters APIManagementServiceManageDeploymentsParameters, cancel <-chan struct{}) (result autorest.Response, err error) {
+func (client APIManagementServicesClient) ManageDeployments(resourceGroupName string, serviceName string, parameters APIManagementServiceManageDeploymentsParameters, cancel <-chan struct{}) (<-chan APIManagementServiceResource, <-chan error) {
+	resultChan := make(chan APIManagementServiceResource, 1)
+	errChan := make(chan error, 1)
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,
 			Constraints: []validation.Constraint{{Target: "serviceName", Name: validation.MaxLength, Rule: 50, Chain: nil},
@@ -674,26 +715,40 @@ func (client APIManagementServicesClient) ManageDeployments(resourceGroupName st
 				{Target: "serviceName", Name: validation.Pattern, Rule: `^[a-zA-Z](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?$`, Chain: nil}}},
 		{TargetValue: parameters,
 			Constraints: []validation.Constraint{{Target: "parameters.Location", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "apimdeployment.APIManagementServicesClient", "ManageDeployments")
+		errChan <- validation.NewErrorWithValidationError(err, "apimdeployment.APIManagementServicesClient", "ManageDeployments")
+		close(errChan)
+		close(resultChan)
+		return resultChan, errChan
 	}
 
-	req, err := client.ManageDeploymentsPreparer(resourceGroupName, serviceName, parameters, cancel)
-	if err != nil {
-		return result, autorest.NewErrorWithError(err, "apimdeployment.APIManagementServicesClient", "ManageDeployments", nil, "Failure preparing request")
-	}
+	go func() {
+		var err error
+		var result APIManagementServiceResource
+		defer func() {
+			resultChan <- result
+			errChan <- err
+			close(resultChan)
+			close(errChan)
+		}()
+		req, err := client.ManageDeploymentsPreparer(resourceGroupName, serviceName, parameters, cancel)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "apimdeployment.APIManagementServicesClient", "ManageDeployments", nil, "Failure preparing request")
+			return
+		}
 
-	resp, err := client.ManageDeploymentsSender(req)
-	if err != nil {
-		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "apimdeployment.APIManagementServicesClient", "ManageDeployments", resp, "Failure sending request")
-	}
+		resp, err := client.ManageDeploymentsSender(req)
+		if err != nil {
+			result.Response = autorest.Response{Response: resp}
+			err = autorest.NewErrorWithError(err, "apimdeployment.APIManagementServicesClient", "ManageDeployments", resp, "Failure sending request")
+			return
+		}
 
-	result, err = client.ManageDeploymentsResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "apimdeployment.APIManagementServicesClient", "ManageDeployments", resp, "Failure responding to request")
-	}
-
-	return
+		result, err = client.ManageDeploymentsResponder(resp)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "apimdeployment.APIManagementServicesClient", "ManageDeployments", resp, "Failure responding to request")
+		}
+	}()
+	return resultChan, errChan
 }
 
 // ManageDeploymentsPreparer prepares the ManageDeployments request.
@@ -704,8 +759,9 @@ func (client APIManagementServicesClient) ManageDeploymentsPreparer(resourceGrou
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
+	const APIVersion = "2016-07-07"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -728,13 +784,14 @@ func (client APIManagementServicesClient) ManageDeploymentsSender(req *http.Requ
 
 // ManageDeploymentsResponder handles the response to the ManageDeployments request. The method always
 // closes the http.Response Body.
-func (client APIManagementServicesClient) ManageDeploymentsResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client APIManagementServicesClient) ManageDeploymentsResponder(resp *http.Response) (result APIManagementServiceResource, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = resp
+	result.Response = autorest.Response{Response: resp}
 	return
 }
 
@@ -748,7 +805,9 @@ func (client APIManagementServicesClient) ManageDeploymentsResponder(resp *http.
 // resourceGroupName is the name of the resource group. serviceName is the name
 // of the API Management service. parameters is parameters supplied to the
 // Restore API Management service from backup operation.
-func (client APIManagementServicesClient) Restore(resourceGroupName string, serviceName string, parameters APIManagementServiceBackupRestoreParameters, cancel <-chan struct{}) (result autorest.Response, err error) {
+func (client APIManagementServicesClient) Restore(resourceGroupName string, serviceName string, parameters APIManagementServiceBackupRestoreParameters, cancel <-chan struct{}) (<-chan APIManagementServiceResource, <-chan error) {
+	resultChan := make(chan APIManagementServiceResource, 1)
+	errChan := make(chan error, 1)
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,
 			Constraints: []validation.Constraint{{Target: "serviceName", Name: validation.MaxLength, Rule: 50, Chain: nil},
@@ -759,26 +818,40 @@ func (client APIManagementServicesClient) Restore(resourceGroupName string, serv
 				{Target: "parameters.AccessKey", Name: validation.Null, Rule: true, Chain: nil},
 				{Target: "parameters.ContainerName", Name: validation.Null, Rule: true, Chain: nil},
 				{Target: "parameters.BackupName", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "apimdeployment.APIManagementServicesClient", "Restore")
+		errChan <- validation.NewErrorWithValidationError(err, "apimdeployment.APIManagementServicesClient", "Restore")
+		close(errChan)
+		close(resultChan)
+		return resultChan, errChan
 	}
 
-	req, err := client.RestorePreparer(resourceGroupName, serviceName, parameters, cancel)
-	if err != nil {
-		return result, autorest.NewErrorWithError(err, "apimdeployment.APIManagementServicesClient", "Restore", nil, "Failure preparing request")
-	}
+	go func() {
+		var err error
+		var result APIManagementServiceResource
+		defer func() {
+			resultChan <- result
+			errChan <- err
+			close(resultChan)
+			close(errChan)
+		}()
+		req, err := client.RestorePreparer(resourceGroupName, serviceName, parameters, cancel)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "apimdeployment.APIManagementServicesClient", "Restore", nil, "Failure preparing request")
+			return
+		}
 
-	resp, err := client.RestoreSender(req)
-	if err != nil {
-		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "apimdeployment.APIManagementServicesClient", "Restore", resp, "Failure sending request")
-	}
+		resp, err := client.RestoreSender(req)
+		if err != nil {
+			result.Response = autorest.Response{Response: resp}
+			err = autorest.NewErrorWithError(err, "apimdeployment.APIManagementServicesClient", "Restore", resp, "Failure sending request")
+			return
+		}
 
-	result, err = client.RestoreResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "apimdeployment.APIManagementServicesClient", "Restore", resp, "Failure responding to request")
-	}
-
-	return
+		result, err = client.RestoreResponder(resp)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "apimdeployment.APIManagementServicesClient", "Restore", resp, "Failure responding to request")
+		}
+	}()
+	return resultChan, errChan
 }
 
 // RestorePreparer prepares the Restore request.
@@ -789,8 +862,9 @@ func (client APIManagementServicesClient) RestorePreparer(resourceGroupName stri
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
+	const APIVersion = "2016-07-07"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -813,13 +887,14 @@ func (client APIManagementServicesClient) RestoreSender(req *http.Request) (*htt
 
 // RestoreResponder handles the response to the Restore request. The method always
 // closes the http.Response Body.
-func (client APIManagementServicesClient) RestoreResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client APIManagementServicesClient) RestoreResponder(resp *http.Response) (result APIManagementServiceResource, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = resp
+	result.Response = autorest.Response{Response: resp}
 	return
 }
 
@@ -831,32 +906,48 @@ func (client APIManagementServicesClient) RestoreResponder(resp *http.Response) 
 // resourceGroupName is the name of the resource group. serviceName is the name
 // of the API Management service. parameters is parameters supplied to the
 // CreateOrUpdate API Management service operation.
-func (client APIManagementServicesClient) Update(resourceGroupName string, serviceName string, parameters APIManagementServiceBaseParameters, cancel <-chan struct{}) (result autorest.Response, err error) {
+func (client APIManagementServicesClient) Update(resourceGroupName string, serviceName string, parameters APIManagementServiceBaseParameters, cancel <-chan struct{}) (<-chan APIManagementServiceResource, <-chan error) {
+	resultChan := make(chan APIManagementServiceResource, 1)
+	errChan := make(chan error, 1)
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,
 			Constraints: []validation.Constraint{{Target: "serviceName", Name: validation.MaxLength, Rule: 50, Chain: nil},
 				{Target: "serviceName", Name: validation.MinLength, Rule: 1, Chain: nil},
 				{Target: "serviceName", Name: validation.Pattern, Rule: `^[a-zA-Z](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "apimdeployment.APIManagementServicesClient", "Update")
+		errChan <- validation.NewErrorWithValidationError(err, "apimdeployment.APIManagementServicesClient", "Update")
+		close(errChan)
+		close(resultChan)
+		return resultChan, errChan
 	}
 
-	req, err := client.UpdatePreparer(resourceGroupName, serviceName, parameters, cancel)
-	if err != nil {
-		return result, autorest.NewErrorWithError(err, "apimdeployment.APIManagementServicesClient", "Update", nil, "Failure preparing request")
-	}
+	go func() {
+		var err error
+		var result APIManagementServiceResource
+		defer func() {
+			resultChan <- result
+			errChan <- err
+			close(resultChan)
+			close(errChan)
+		}()
+		req, err := client.UpdatePreparer(resourceGroupName, serviceName, parameters, cancel)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "apimdeployment.APIManagementServicesClient", "Update", nil, "Failure preparing request")
+			return
+		}
 
-	resp, err := client.UpdateSender(req)
-	if err != nil {
-		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "apimdeployment.APIManagementServicesClient", "Update", resp, "Failure sending request")
-	}
+		resp, err := client.UpdateSender(req)
+		if err != nil {
+			result.Response = autorest.Response{Response: resp}
+			err = autorest.NewErrorWithError(err, "apimdeployment.APIManagementServicesClient", "Update", resp, "Failure sending request")
+			return
+		}
 
-	result, err = client.UpdateResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "apimdeployment.APIManagementServicesClient", "Update", resp, "Failure responding to request")
-	}
-
-	return
+		result, err = client.UpdateResponder(resp)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "apimdeployment.APIManagementServicesClient", "Update", resp, "Failure responding to request")
+		}
+	}()
+	return resultChan, errChan
 }
 
 // UpdatePreparer prepares the Update request.
@@ -867,8 +958,9 @@ func (client APIManagementServicesClient) UpdatePreparer(resourceGroupName strin
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
+	const APIVersion = "2016-07-07"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -891,13 +983,14 @@ func (client APIManagementServicesClient) UpdateSender(req *http.Request) (*http
 
 // UpdateResponder handles the response to the Update request. The method always
 // closes the http.Response Body.
-func (client APIManagementServicesClient) UpdateResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client APIManagementServicesClient) UpdateResponder(resp *http.Response) (result APIManagementServiceResource, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = resp
+	result.Response = autorest.Response{Response: resp}
 	return
 }
 
@@ -911,32 +1004,48 @@ func (client APIManagementServicesClient) UpdateResponder(resp *http.Response) (
 // resourceGroupName is the name of the resource group. serviceName is the name
 // of the API Management service. parameters is parameters supplied to the
 // UpdateHostname operation.
-func (client APIManagementServicesClient) UpdateHostname(resourceGroupName string, serviceName string, parameters APIManagementServiceUpdateHostnameParameters, cancel <-chan struct{}) (result autorest.Response, err error) {
+func (client APIManagementServicesClient) UpdateHostname(resourceGroupName string, serviceName string, parameters APIManagementServiceUpdateHostnameParameters, cancel <-chan struct{}) (<-chan APIManagementServiceResource, <-chan error) {
+	resultChan := make(chan APIManagementServiceResource, 1)
+	errChan := make(chan error, 1)
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,
 			Constraints: []validation.Constraint{{Target: "serviceName", Name: validation.MaxLength, Rule: 50, Chain: nil},
 				{Target: "serviceName", Name: validation.MinLength, Rule: 1, Chain: nil},
 				{Target: "serviceName", Name: validation.Pattern, Rule: `^[a-zA-Z](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "apimdeployment.APIManagementServicesClient", "UpdateHostname")
+		errChan <- validation.NewErrorWithValidationError(err, "apimdeployment.APIManagementServicesClient", "UpdateHostname")
+		close(errChan)
+		close(resultChan)
+		return resultChan, errChan
 	}
 
-	req, err := client.UpdateHostnamePreparer(resourceGroupName, serviceName, parameters, cancel)
-	if err != nil {
-		return result, autorest.NewErrorWithError(err, "apimdeployment.APIManagementServicesClient", "UpdateHostname", nil, "Failure preparing request")
-	}
+	go func() {
+		var err error
+		var result APIManagementServiceResource
+		defer func() {
+			resultChan <- result
+			errChan <- err
+			close(resultChan)
+			close(errChan)
+		}()
+		req, err := client.UpdateHostnamePreparer(resourceGroupName, serviceName, parameters, cancel)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "apimdeployment.APIManagementServicesClient", "UpdateHostname", nil, "Failure preparing request")
+			return
+		}
 
-	resp, err := client.UpdateHostnameSender(req)
-	if err != nil {
-		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "apimdeployment.APIManagementServicesClient", "UpdateHostname", resp, "Failure sending request")
-	}
+		resp, err := client.UpdateHostnameSender(req)
+		if err != nil {
+			result.Response = autorest.Response{Response: resp}
+			err = autorest.NewErrorWithError(err, "apimdeployment.APIManagementServicesClient", "UpdateHostname", resp, "Failure sending request")
+			return
+		}
 
-	result, err = client.UpdateHostnameResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "apimdeployment.APIManagementServicesClient", "UpdateHostname", resp, "Failure responding to request")
-	}
-
-	return
+		result, err = client.UpdateHostnameResponder(resp)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "apimdeployment.APIManagementServicesClient", "UpdateHostname", resp, "Failure responding to request")
+		}
+	}()
+	return resultChan, errChan
 }
 
 // UpdateHostnamePreparer prepares the UpdateHostname request.
@@ -947,8 +1056,9 @@ func (client APIManagementServicesClient) UpdateHostnamePreparer(resourceGroupNa
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
+	const APIVersion = "2016-07-07"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -971,13 +1081,14 @@ func (client APIManagementServicesClient) UpdateHostnameSender(req *http.Request
 
 // UpdateHostnameResponder handles the response to the UpdateHostname request. The method always
 // closes the http.Response Body.
-func (client APIManagementServicesClient) UpdateHostnameResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client APIManagementServicesClient) UpdateHostnameResponder(resp *http.Response) (result APIManagementServiceResource, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = resp
+	result.Response = autorest.Response{Response: resp}
 	return
 }
 
@@ -1001,13 +1112,15 @@ func (client APIManagementServicesClient) UploadCertificate(resourceGroupName st
 
 	req, err := client.UploadCertificatePreparer(resourceGroupName, serviceName, parameters)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "apimdeployment.APIManagementServicesClient", "UploadCertificate", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "apimdeployment.APIManagementServicesClient", "UploadCertificate", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.UploadCertificateSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "apimdeployment.APIManagementServicesClient", "UploadCertificate", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "apimdeployment.APIManagementServicesClient", "UploadCertificate", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.UploadCertificateResponder(resp)
@@ -1026,8 +1139,9 @@ func (client APIManagementServicesClient) UploadCertificatePreparer(resourceGrou
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
+	const APIVersion = "2016-07-07"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(

@@ -64,13 +64,15 @@ func (client LoggersClient) CreateOrUpdate(resourceGroupName string, serviceName
 
 	req, err := client.CreateOrUpdatePreparer(resourceGroupName, serviceName, loggerid, parameters)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "apimanagement.LoggersClient", "CreateOrUpdate", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "apimanagement.LoggersClient", "CreateOrUpdate", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.CreateOrUpdateSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "apimanagement.LoggersClient", "CreateOrUpdate", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "apimanagement.LoggersClient", "CreateOrUpdate", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.CreateOrUpdateResponder(resp)
@@ -140,13 +142,15 @@ func (client LoggersClient) Delete(resourceGroupName string, serviceName string,
 
 	req, err := client.DeletePreparer(resourceGroupName, serviceName, loggerid, ifMatch)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "apimanagement.LoggersClient", "Delete", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "apimanagement.LoggersClient", "Delete", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.DeleteSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "apimanagement.LoggersClient", "Delete", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "apimanagement.LoggersClient", "Delete", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.DeleteResponder(resp)
@@ -213,13 +217,15 @@ func (client LoggersClient) Get(resourceGroupName string, serviceName string, lo
 
 	req, err := client.GetPreparer(resourceGroupName, serviceName, loggerid)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "apimanagement.LoggersClient", "Get", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "apimanagement.LoggersClient", "Get", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "apimanagement.LoggersClient", "Get", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "apimanagement.LoggersClient", "Get", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetResponder(resp)
@@ -299,13 +305,15 @@ func (client LoggersClient) ListByService(resourceGroupName string, serviceName 
 
 	req, err := client.ListByServicePreparer(resourceGroupName, serviceName, filter, top, skip)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "apimanagement.LoggersClient", "ListByService", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "apimanagement.LoggersClient", "ListByService", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListByServiceSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "apimanagement.LoggersClient", "ListByService", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "apimanagement.LoggersClient", "ListByService", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListByServiceResponder(resp)
@@ -407,13 +415,15 @@ func (client LoggersClient) Update(resourceGroupName string, serviceName string,
 
 	req, err := client.UpdatePreparer(resourceGroupName, serviceName, loggerid, parameters, ifMatch)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "apimanagement.LoggersClient", "Update", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "apimanagement.LoggersClient", "Update", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.UpdateSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "apimanagement.LoggersClient", "Update", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "apimanagement.LoggersClient", "Update", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.UpdateResponder(resp)

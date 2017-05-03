@@ -69,13 +69,15 @@ func (client BackendsClient) CreateOrUpdate(resourceGroupName string, serviceNam
 
 	req, err := client.CreateOrUpdatePreparer(resourceGroupName, serviceName, backendid, parameters)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "apimanagement.BackendsClient", "CreateOrUpdate", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "apimanagement.BackendsClient", "CreateOrUpdate", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.CreateOrUpdateSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "apimanagement.BackendsClient", "CreateOrUpdate", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "apimanagement.BackendsClient", "CreateOrUpdate", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.CreateOrUpdateResponder(resp)
@@ -150,13 +152,15 @@ func (client BackendsClient) Delete(resourceGroupName string, serviceName string
 
 	req, err := client.DeletePreparer(resourceGroupName, serviceName, backendid, ifMatch)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "apimanagement.BackendsClient", "Delete", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "apimanagement.BackendsClient", "Delete", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.DeleteSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "apimanagement.BackendsClient", "Delete", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "apimanagement.BackendsClient", "Delete", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.DeleteResponder(resp)
@@ -228,13 +232,15 @@ func (client BackendsClient) Get(resourceGroupName string, serviceName string, b
 
 	req, err := client.GetPreparer(resourceGroupName, serviceName, backendid)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "apimanagement.BackendsClient", "Get", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "apimanagement.BackendsClient", "Get", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "apimanagement.BackendsClient", "Get", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "apimanagement.BackendsClient", "Get", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetResponder(resp)
@@ -315,13 +321,15 @@ func (client BackendsClient) ListByService(resourceGroupName string, serviceName
 
 	req, err := client.ListByServicePreparer(resourceGroupName, serviceName, filter, top, skip)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "apimanagement.BackendsClient", "ListByService", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "apimanagement.BackendsClient", "ListByService", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListByServiceSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "apimanagement.BackendsClient", "ListByService", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "apimanagement.BackendsClient", "ListByService", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListByServiceResponder(resp)
@@ -428,13 +436,15 @@ func (client BackendsClient) Update(resourceGroupName string, serviceName string
 
 	req, err := client.UpdatePreparer(resourceGroupName, serviceName, backendid, parameters, ifMatch)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "apimanagement.BackendsClient", "Update", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "apimanagement.BackendsClient", "Update", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.UpdateSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "apimanagement.BackendsClient", "Update", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "apimanagement.BackendsClient", "Update", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.UpdateResponder(resp)

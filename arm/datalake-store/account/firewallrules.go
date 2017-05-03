@@ -64,13 +64,15 @@ func (client FirewallRulesClient) CreateOrUpdate(resourceGroupName string, accou
 
 	req, err := client.CreateOrUpdatePreparer(resourceGroupName, accountName, firewallRuleName, parameters)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "account.FirewallRulesClient", "CreateOrUpdate", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "account.FirewallRulesClient", "CreateOrUpdate", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.CreateOrUpdateSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "account.FirewallRulesClient", "CreateOrUpdate", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "account.FirewallRulesClient", "CreateOrUpdate", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.CreateOrUpdateResponder(resp)
@@ -134,13 +136,15 @@ func (client FirewallRulesClient) CreateOrUpdateResponder(resp *http.Response) (
 func (client FirewallRulesClient) Delete(resourceGroupName string, accountName string, firewallRuleName string) (result autorest.Response, err error) {
 	req, err := client.DeletePreparer(resourceGroupName, accountName, firewallRuleName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "account.FirewallRulesClient", "Delete", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "account.FirewallRulesClient", "Delete", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.DeleteSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "account.FirewallRulesClient", "Delete", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "account.FirewallRulesClient", "Delete", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.DeleteResponder(resp)
@@ -200,13 +204,15 @@ func (client FirewallRulesClient) DeleteResponder(resp *http.Response) (result a
 func (client FirewallRulesClient) Get(resourceGroupName string, accountName string, firewallRuleName string) (result FirewallRule, err error) {
 	req, err := client.GetPreparer(resourceGroupName, accountName, firewallRuleName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "account.FirewallRulesClient", "Get", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "account.FirewallRulesClient", "Get", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "account.FirewallRulesClient", "Get", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "account.FirewallRulesClient", "Get", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetResponder(resp)
@@ -267,13 +273,15 @@ func (client FirewallRulesClient) GetResponder(resp *http.Response) (result Fire
 func (client FirewallRulesClient) ListByAccount(resourceGroupName string, accountName string) (result DataLakeStoreFirewallRuleListResult, err error) {
 	req, err := client.ListByAccountPreparer(resourceGroupName, accountName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "account.FirewallRulesClient", "ListByAccount", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "account.FirewallRulesClient", "ListByAccount", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListByAccountSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "account.FirewallRulesClient", "ListByAccount", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "account.FirewallRulesClient", "ListByAccount", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListByAccountResponder(resp)
@@ -358,13 +366,15 @@ func (client FirewallRulesClient) ListByAccountNextResults(lastResults DataLakeS
 func (client FirewallRulesClient) Update(resourceGroupName string, accountName string, firewallRuleName string, parameters *UpdateFirewallRuleParameters) (result FirewallRule, err error) {
 	req, err := client.UpdatePreparer(resourceGroupName, accountName, firewallRuleName, parameters)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "account.FirewallRulesClient", "Update", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "account.FirewallRulesClient", "Update", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.UpdateSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "account.FirewallRulesClient", "Update", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "account.FirewallRulesClient", "Update", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.UpdateResponder(resp)

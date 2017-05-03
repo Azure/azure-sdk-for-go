@@ -47,9 +47,9 @@ func NewGroupUsersClientWithBaseURI(baseURI string, subscriptionID string) Group
 //
 // resourceGroupName is the name of the resource group. serviceName is the name
 // of the API Management service. groupID is group identifier. Must be unique
-// in the current API Management service instance. uid is user identifier. Must
+// in the current API Management service instance. UID is user identifier. Must
 // be unique in the current API Management service instance.
-func (client GroupUsersClient) Add(resourceGroupName string, serviceName string, groupID string, uid string) (result ErrorBodyContract, err error) {
+func (client GroupUsersClient) Add(resourceGroupName string, serviceName string, groupID string, UID string) (result ErrorBodyContract, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,
 			Constraints: []validation.Constraint{{Target: "serviceName", Name: validation.MaxLength, Rule: 50, Chain: nil},
@@ -59,22 +59,24 @@ func (client GroupUsersClient) Add(resourceGroupName string, serviceName string,
 			Constraints: []validation.Constraint{{Target: "groupID", Name: validation.MaxLength, Rule: 256, Chain: nil},
 				{Target: "groupID", Name: validation.MinLength, Rule: 1, Chain: nil},
 				{Target: "groupID", Name: validation.Pattern, Rule: `^[^*#&+:<>?]+$`, Chain: nil}}},
-		{TargetValue: uid,
-			Constraints: []validation.Constraint{{Target: "uid", Name: validation.MaxLength, Rule: 256, Chain: nil},
-				{Target: "uid", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "uid", Name: validation.Pattern, Rule: `^[^*#&+:<>?]+$`, Chain: nil}}}}); err != nil {
+		{TargetValue: UID,
+			Constraints: []validation.Constraint{{Target: "UID", Name: validation.MaxLength, Rule: 256, Chain: nil},
+				{Target: "UID", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "UID", Name: validation.Pattern, Rule: `^[^*#&+:<>?]+$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewErrorWithValidationError(err, "apimanagement.GroupUsersClient", "Add")
 	}
 
-	req, err := client.AddPreparer(resourceGroupName, serviceName, groupID, uid)
+	req, err := client.AddPreparer(resourceGroupName, serviceName, groupID, UID)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "apimanagement.GroupUsersClient", "Add", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "apimanagement.GroupUsersClient", "Add", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.AddSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "apimanagement.GroupUsersClient", "Add", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "apimanagement.GroupUsersClient", "Add", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.AddResponder(resp)
@@ -86,13 +88,13 @@ func (client GroupUsersClient) Add(resourceGroupName string, serviceName string,
 }
 
 // AddPreparer prepares the Add request.
-func (client GroupUsersClient) AddPreparer(resourceGroupName string, serviceName string, groupID string, uid string) (*http.Request, error) {
+func (client GroupUsersClient) AddPreparer(resourceGroupName string, serviceName string, groupID string, UID string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"groupId":           autorest.Encode("path", groupID),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"serviceName":       autorest.Encode("path", serviceName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
-		"uid":               autorest.Encode("path", uid),
+		"uid":               autorest.Encode("path", UID),
 	}
 
 	const APIVersion = "2016-07-07"
@@ -171,13 +173,15 @@ func (client GroupUsersClient) ListByGroup(resourceGroupName string, serviceName
 
 	req, err := client.ListByGroupPreparer(resourceGroupName, serviceName, groupID, filter, top, skip)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "apimanagement.GroupUsersClient", "ListByGroup", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "apimanagement.GroupUsersClient", "ListByGroup", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListByGroupSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "apimanagement.GroupUsersClient", "ListByGroup", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "apimanagement.GroupUsersClient", "ListByGroup", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListByGroupResponder(resp)
@@ -266,9 +270,9 @@ func (client GroupUsersClient) ListByGroupNextResults(lastResults UserCollection
 //
 // resourceGroupName is the name of the resource group. serviceName is the name
 // of the API Management service. groupID is group identifier. Must be unique
-// in the current API Management service instance. uid is user identifier. Must
+// in the current API Management service instance. UID is user identifier. Must
 // be unique in the current API Management service instance.
-func (client GroupUsersClient) Remove(resourceGroupName string, serviceName string, groupID string, uid string) (result ErrorBodyContract, err error) {
+func (client GroupUsersClient) Remove(resourceGroupName string, serviceName string, groupID string, UID string) (result ErrorBodyContract, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,
 			Constraints: []validation.Constraint{{Target: "serviceName", Name: validation.MaxLength, Rule: 50, Chain: nil},
@@ -278,22 +282,24 @@ func (client GroupUsersClient) Remove(resourceGroupName string, serviceName stri
 			Constraints: []validation.Constraint{{Target: "groupID", Name: validation.MaxLength, Rule: 256, Chain: nil},
 				{Target: "groupID", Name: validation.MinLength, Rule: 1, Chain: nil},
 				{Target: "groupID", Name: validation.Pattern, Rule: `^[^*#&+:<>?]+$`, Chain: nil}}},
-		{TargetValue: uid,
-			Constraints: []validation.Constraint{{Target: "uid", Name: validation.MaxLength, Rule: 256, Chain: nil},
-				{Target: "uid", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "uid", Name: validation.Pattern, Rule: `^[^*#&+:<>?]+$`, Chain: nil}}}}); err != nil {
+		{TargetValue: UID,
+			Constraints: []validation.Constraint{{Target: "UID", Name: validation.MaxLength, Rule: 256, Chain: nil},
+				{Target: "UID", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "UID", Name: validation.Pattern, Rule: `^[^*#&+:<>?]+$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewErrorWithValidationError(err, "apimanagement.GroupUsersClient", "Remove")
 	}
 
-	req, err := client.RemovePreparer(resourceGroupName, serviceName, groupID, uid)
+	req, err := client.RemovePreparer(resourceGroupName, serviceName, groupID, UID)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "apimanagement.GroupUsersClient", "Remove", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "apimanagement.GroupUsersClient", "Remove", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.RemoveSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "apimanagement.GroupUsersClient", "Remove", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "apimanagement.GroupUsersClient", "Remove", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.RemoveResponder(resp)
@@ -305,13 +311,13 @@ func (client GroupUsersClient) Remove(resourceGroupName string, serviceName stri
 }
 
 // RemovePreparer prepares the Remove request.
-func (client GroupUsersClient) RemovePreparer(resourceGroupName string, serviceName string, groupID string, uid string) (*http.Request, error) {
+func (client GroupUsersClient) RemovePreparer(resourceGroupName string, serviceName string, groupID string, UID string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"groupId":           autorest.Encode("path", groupID),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"serviceName":       autorest.Encode("path", serviceName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
-		"uid":               autorest.Encode("path", uid),
+		"uid":               autorest.Encode("path", UID),
 	}
 
 	const APIVersion = "2016-07-07"

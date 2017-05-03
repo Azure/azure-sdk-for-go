@@ -62,13 +62,15 @@ func (client QuotaByCounterKeysClient) ListByService(resourceGroupName string, s
 
 	req, err := client.ListByServicePreparer(resourceGroupName, serviceName, quotaCounterKey)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "apimanagement.QuotaByCounterKeysClient", "ListByService", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "apimanagement.QuotaByCounterKeysClient", "ListByService", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListByServiceSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "apimanagement.QuotaByCounterKeysClient", "ListByService", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "apimanagement.QuotaByCounterKeysClient", "ListByService", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListByServiceResponder(resp)
@@ -139,13 +141,15 @@ func (client QuotaByCounterKeysClient) Update(resourceGroupName string, serviceN
 
 	req, err := client.UpdatePreparer(resourceGroupName, serviceName, quotaCounterKey, parameters)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "apimanagement.QuotaByCounterKeysClient", "Update", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "apimanagement.QuotaByCounterKeysClient", "Update", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.UpdateSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "apimanagement.QuotaByCounterKeysClient", "Update", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "apimanagement.QuotaByCounterKeysClient", "Update", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.UpdateResponder(resp)

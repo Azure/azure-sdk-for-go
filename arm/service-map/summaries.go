@@ -65,13 +65,15 @@ func (client SummariesClient) GetMachines(resourceGroupName string, workspaceNam
 
 	req, err := client.GetMachinesPreparer(resourceGroupName, workspaceName, startTime, endTime)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "servicemap.SummariesClient", "GetMachines", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "servicemap.SummariesClient", "GetMachines", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetMachinesSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "servicemap.SummariesClient", "GetMachines", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "servicemap.SummariesClient", "GetMachines", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetMachinesResponder(resp)
@@ -90,8 +92,9 @@ func (client SummariesClient) GetMachinesPreparer(resourceGroupName string, work
 		"workspaceName":     autorest.Encode("path", workspaceName),
 	}
 
+	const APIVersion = "2015-11-01-preview"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 	if startTime != nil {
 		queryParameters["startTime"] = autorest.Encode("query", *startTime)

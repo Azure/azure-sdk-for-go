@@ -64,13 +64,15 @@ func (client ApplicationPackageClient) Activate(resourceGroupName string, accoun
 
 	req, err := client.ActivatePreparer(resourceGroupName, accountName, applicationID, version, parameters)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "batch.ApplicationPackageClient", "Activate", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "batch.ApplicationPackageClient", "Activate", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ActivateSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "batch.ApplicationPackageClient", "Activate", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "batch.ApplicationPackageClient", "Activate", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ActivateResponder(resp)
@@ -142,13 +144,15 @@ func (client ApplicationPackageClient) Create(resourceGroupName string, accountN
 
 	req, err := client.CreatePreparer(resourceGroupName, accountName, applicationID, version)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "batch.ApplicationPackageClient", "Create", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "batch.ApplicationPackageClient", "Create", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.CreateSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "batch.ApplicationPackageClient", "Create", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "batch.ApplicationPackageClient", "Create", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.CreateResponder(resp)
@@ -219,13 +223,15 @@ func (client ApplicationPackageClient) Delete(resourceGroupName string, accountN
 
 	req, err := client.DeletePreparer(resourceGroupName, accountName, applicationID, version)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "batch.ApplicationPackageClient", "Delete", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "batch.ApplicationPackageClient", "Delete", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.DeleteSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "batch.ApplicationPackageClient", "Delete", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "batch.ApplicationPackageClient", "Delete", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.DeleteResponder(resp)
@@ -295,13 +301,15 @@ func (client ApplicationPackageClient) Get(resourceGroupName string, accountName
 
 	req, err := client.GetPreparer(resourceGroupName, accountName, applicationID, version)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "batch.ApplicationPackageClient", "Get", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "batch.ApplicationPackageClient", "Get", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "batch.ApplicationPackageClient", "Get", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "batch.ApplicationPackageClient", "Get", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetResponder(resp)

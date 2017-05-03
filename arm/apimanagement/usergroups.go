@@ -46,7 +46,7 @@ func NewUserGroupsClientWithBaseURI(baseURI string, subscriptionID string) UserG
 // ListByUser lists all user groups.
 //
 // resourceGroupName is the name of the resource group. serviceName is the name
-// of the API Management service. uid is user identifier. Must be unique in the
+// of the API Management service. UID is user identifier. Must be unique in the
 // current API Management service instance. filter is | Field       | Supported
 // operators    | Supported functions                         |
 // |-------------|------------------------|---------------------------------------------|
@@ -57,16 +57,16 @@ func NewUserGroupsClientWithBaseURI(baseURI string, subscriptionID string) UserG
 // | description | ge, le, eq, ne, gt, lt | substringof, contains, startswith,
 // endswith | top is number of records to return. skip is number of records to
 // skip.
-func (client UserGroupsClient) ListByUser(resourceGroupName string, serviceName string, uid string, filter string, top *int32, skip *int32) (result GroupCollection, err error) {
+func (client UserGroupsClient) ListByUser(resourceGroupName string, serviceName string, UID string, filter string, top *int32, skip *int32) (result GroupCollection, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,
 			Constraints: []validation.Constraint{{Target: "serviceName", Name: validation.MaxLength, Rule: 50, Chain: nil},
 				{Target: "serviceName", Name: validation.MinLength, Rule: 1, Chain: nil},
 				{Target: "serviceName", Name: validation.Pattern, Rule: `^[a-zA-Z](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?$`, Chain: nil}}},
-		{TargetValue: uid,
-			Constraints: []validation.Constraint{{Target: "uid", Name: validation.MaxLength, Rule: 256, Chain: nil},
-				{Target: "uid", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "uid", Name: validation.Pattern, Rule: `^[^*#&+:<>?]+$`, Chain: nil}}},
+		{TargetValue: UID,
+			Constraints: []validation.Constraint{{Target: "UID", Name: validation.MaxLength, Rule: 256, Chain: nil},
+				{Target: "UID", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "UID", Name: validation.Pattern, Rule: `^[^*#&+:<>?]+$`, Chain: nil}}},
 		{TargetValue: top,
 			Constraints: []validation.Constraint{{Target: "top", Name: validation.Null, Rule: false,
 				Chain: []validation.Constraint{{Target: "top", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil}}}}},
@@ -76,15 +76,17 @@ func (client UserGroupsClient) ListByUser(resourceGroupName string, serviceName 
 		return result, validation.NewErrorWithValidationError(err, "apimanagement.UserGroupsClient", "ListByUser")
 	}
 
-	req, err := client.ListByUserPreparer(resourceGroupName, serviceName, uid, filter, top, skip)
+	req, err := client.ListByUserPreparer(resourceGroupName, serviceName, UID, filter, top, skip)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "apimanagement.UserGroupsClient", "ListByUser", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "apimanagement.UserGroupsClient", "ListByUser", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListByUserSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "apimanagement.UserGroupsClient", "ListByUser", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "apimanagement.UserGroupsClient", "ListByUser", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListByUserResponder(resp)
@@ -96,12 +98,12 @@ func (client UserGroupsClient) ListByUser(resourceGroupName string, serviceName 
 }
 
 // ListByUserPreparer prepares the ListByUser request.
-func (client UserGroupsClient) ListByUserPreparer(resourceGroupName string, serviceName string, uid string, filter string, top *int32, skip *int32) (*http.Request, error) {
+func (client UserGroupsClient) ListByUserPreparer(resourceGroupName string, serviceName string, UID string, filter string, top *int32, skip *int32) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"serviceName":       autorest.Encode("path", serviceName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
-		"uid":               autorest.Encode("path", uid),
+		"uid":               autorest.Encode("path", UID),
 	}
 
 	const APIVersion = "2016-07-07"

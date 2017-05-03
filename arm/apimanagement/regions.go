@@ -57,13 +57,15 @@ func (client RegionsClient) ListByService(resourceGroupName string, serviceName 
 
 	req, err := client.ListByServicePreparer(resourceGroupName, serviceName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "apimanagement.RegionsClient", "ListByService", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "apimanagement.RegionsClient", "ListByService", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListByServiceSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "apimanagement.RegionsClient", "ListByService", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "apimanagement.RegionsClient", "ListByService", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListByServiceResponder(resp)

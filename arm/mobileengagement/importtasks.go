@@ -48,13 +48,15 @@ func NewImportTasksClientWithBaseURI(baseURI string, subscriptionID string) Impo
 func (client ImportTasksClient) Create(resourceGroupName string, appCollection string, appName string, parameters ImportTask) (result ImportTaskResult, err error) {
 	req, err := client.CreatePreparer(resourceGroupName, appCollection, appName, parameters)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "mobileengagement.ImportTasksClient", "Create", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "mobileengagement.ImportTasksClient", "Create", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.CreateSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "mobileengagement.ImportTasksClient", "Create", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "mobileengagement.ImportTasksClient", "Create", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.CreateResponder(resp)
@@ -111,19 +113,21 @@ func (client ImportTasksClient) CreateResponder(resp *http.Response) (result Imp
 // Get the Get import job operation retrieves information about a previously
 // created import job.
 //
-// id is import job identifier. resourceGroupName is the name of the resource
+// ID is import job identifier. resourceGroupName is the name of the resource
 // group. appCollection is application collection. appName is application
 // resource name.
-func (client ImportTasksClient) Get(id string, resourceGroupName string, appCollection string, appName string) (result ImportTaskResult, err error) {
-	req, err := client.GetPreparer(id, resourceGroupName, appCollection, appName)
+func (client ImportTasksClient) Get(ID string, resourceGroupName string, appCollection string, appName string) (result ImportTaskResult, err error) {
+	req, err := client.GetPreparer(ID, resourceGroupName, appCollection, appName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "mobileengagement.ImportTasksClient", "Get", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "mobileengagement.ImportTasksClient", "Get", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "mobileengagement.ImportTasksClient", "Get", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "mobileengagement.ImportTasksClient", "Get", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetResponder(resp)
@@ -135,11 +139,11 @@ func (client ImportTasksClient) Get(id string, resourceGroupName string, appColl
 }
 
 // GetPreparer prepares the Get request.
-func (client ImportTasksClient) GetPreparer(id string, resourceGroupName string, appCollection string, appName string) (*http.Request, error) {
+func (client ImportTasksClient) GetPreparer(ID string, resourceGroupName string, appCollection string, appName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"appCollection":     autorest.Encode("path", appCollection),
 		"appName":           autorest.Encode("path", appName),
-		"id":                autorest.Encode("path", id),
+		"id":                autorest.Encode("path", ID),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
@@ -211,13 +215,15 @@ func (client ImportTasksClient) List(resourceGroupName string, appCollection str
 
 	req, err := client.ListPreparer(resourceGroupName, appCollection, appName, skip, top, orderby)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "mobileengagement.ImportTasksClient", "List", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "mobileengagement.ImportTasksClient", "List", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "mobileengagement.ImportTasksClient", "List", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "mobileengagement.ImportTasksClient", "List", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListResponder(resp)

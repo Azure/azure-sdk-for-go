@@ -50,7 +50,9 @@ func NewGroupClientWithBaseURI(baseURI string, subscriptionID string) GroupClien
 // Data Lake Store account. name is the name of the Data Lake Store account to
 // create. parameters is parameters supplied to create the Data Lake Store
 // account.
-func (client GroupClient) Create(resourceGroupName string, name string, parameters DataLakeStoreAccount, cancel <-chan struct{}) (result autorest.Response, err error) {
+func (client GroupClient) Create(resourceGroupName string, name string, parameters DataLakeStoreAccount, cancel <-chan struct{}) (<-chan DataLakeStoreAccount, <-chan error) {
+	resultChan := make(chan DataLakeStoreAccount, 1)
+	errChan := make(chan error, 1)
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: parameters,
 			Constraints: []validation.Constraint{{Target: "parameters.Identity", Name: validation.Null, Rule: false,
@@ -64,26 +66,40 @@ func (client GroupClient) Create(resourceGroupName string, name string, paramete
 							}},
 						}},
 					}}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "account.GroupClient", "Create")
+		errChan <- validation.NewErrorWithValidationError(err, "account.GroupClient", "Create")
+		close(errChan)
+		close(resultChan)
+		return resultChan, errChan
 	}
 
-	req, err := client.CreatePreparer(resourceGroupName, name, parameters, cancel)
-	if err != nil {
-		return result, autorest.NewErrorWithError(err, "account.GroupClient", "Create", nil, "Failure preparing request")
-	}
+	go func() {
+		var err error
+		var result DataLakeStoreAccount
+		defer func() {
+			resultChan <- result
+			errChan <- err
+			close(resultChan)
+			close(errChan)
+		}()
+		req, err := client.CreatePreparer(resourceGroupName, name, parameters, cancel)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "account.GroupClient", "Create", nil, "Failure preparing request")
+			return
+		}
 
-	resp, err := client.CreateSender(req)
-	if err != nil {
-		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "account.GroupClient", "Create", resp, "Failure sending request")
-	}
+		resp, err := client.CreateSender(req)
+		if err != nil {
+			result.Response = autorest.Response{Response: resp}
+			err = autorest.NewErrorWithError(err, "account.GroupClient", "Create", resp, "Failure sending request")
+			return
+		}
 
-	result, err = client.CreateResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "account.GroupClient", "Create", resp, "Failure responding to request")
-	}
-
-	return
+		result, err = client.CreateResponder(resp)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "account.GroupClient", "Create", resp, "Failure responding to request")
+		}
+	}()
+	return resultChan, errChan
 }
 
 // CreatePreparer prepares the Create request.
@@ -119,13 +135,14 @@ func (client GroupClient) CreateSender(req *http.Request) (*http.Response, error
 
 // CreateResponder handles the response to the Create request. The method always
 // closes the http.Response Body.
-func (client GroupClient) CreateResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client GroupClient) CreateResponder(resp *http.Response) (result DataLakeStoreAccount, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusCreated, http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = resp
+	result.Response = autorest.Response{Response: resp}
 	return
 }
 
@@ -137,24 +154,37 @@ func (client GroupClient) CreateResponder(resp *http.Response) (result autorest.
 // resourceGroupName is the name of the Azure resource group that contains the
 // Data Lake Store account. name is the name of the Data Lake Store account to
 // delete.
-func (client GroupClient) Delete(resourceGroupName string, name string, cancel <-chan struct{}) (result autorest.Response, err error) {
-	req, err := client.DeletePreparer(resourceGroupName, name, cancel)
-	if err != nil {
-		return result, autorest.NewErrorWithError(err, "account.GroupClient", "Delete", nil, "Failure preparing request")
-	}
+func (client GroupClient) Delete(resourceGroupName string, name string, cancel <-chan struct{}) (<-chan autorest.Response, <-chan error) {
+	resultChan := make(chan autorest.Response, 1)
+	errChan := make(chan error, 1)
+	go func() {
+		var err error
+		var result autorest.Response
+		defer func() {
+			resultChan <- result
+			errChan <- err
+			close(resultChan)
+			close(errChan)
+		}()
+		req, err := client.DeletePreparer(resourceGroupName, name, cancel)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "account.GroupClient", "Delete", nil, "Failure preparing request")
+			return
+		}
 
-	resp, err := client.DeleteSender(req)
-	if err != nil {
-		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "account.GroupClient", "Delete", resp, "Failure sending request")
-	}
+		resp, err := client.DeleteSender(req)
+		if err != nil {
+			result.Response = resp
+			err = autorest.NewErrorWithError(err, "account.GroupClient", "Delete", resp, "Failure sending request")
+			return
+		}
 
-	result, err = client.DeleteResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "account.GroupClient", "Delete", resp, "Failure responding to request")
-	}
-
-	return
+		result, err = client.DeleteResponder(resp)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "account.GroupClient", "Delete", resp, "Failure responding to request")
+		}
+	}()
+	return resultChan, errChan
 }
 
 // DeletePreparer prepares the Delete request.
@@ -207,13 +237,15 @@ func (client GroupClient) DeleteResponder(resp *http.Response) (result autorest.
 func (client GroupClient) EnableKeyVault(resourceGroupName string, accountName string) (result autorest.Response, err error) {
 	req, err := client.EnableKeyVaultPreparer(resourceGroupName, accountName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "account.GroupClient", "EnableKeyVault", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "account.GroupClient", "EnableKeyVault", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.EnableKeyVaultSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "account.GroupClient", "EnableKeyVault", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "account.GroupClient", "EnableKeyVault", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.EnableKeyVaultResponder(resp)
@@ -271,13 +303,15 @@ func (client GroupClient) EnableKeyVaultResponder(resp *http.Response) (result a
 func (client GroupClient) Get(resourceGroupName string, name string) (result DataLakeStoreAccount, err error) {
 	req, err := client.GetPreparer(resourceGroupName, name)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "account.GroupClient", "Get", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "account.GroupClient", "Get", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "account.GroupClient", "Get", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "account.GroupClient", "Get", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetResponder(resp)
@@ -354,13 +388,15 @@ func (client GroupClient) List(filter string, top *int32, skip *int32, selectPar
 
 	req, err := client.ListPreparer(filter, top, skip, selectParameter, orderby, count)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "account.GroupClient", "List", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "account.GroupClient", "List", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "account.GroupClient", "List", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "account.GroupClient", "List", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListResponder(resp)
@@ -479,13 +515,15 @@ func (client GroupClient) ListByResourceGroup(resourceGroupName string, filter s
 
 	req, err := client.ListByResourceGroupPreparer(resourceGroupName, filter, top, skip, selectParameter, orderby, count)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "account.GroupClient", "ListByResourceGroup", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "account.GroupClient", "ListByResourceGroup", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListByResourceGroupSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "account.GroupClient", "ListByResourceGroup", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "account.GroupClient", "ListByResourceGroup", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListByResourceGroupResponder(resp)
@@ -586,24 +624,37 @@ func (client GroupClient) ListByResourceGroupNextResults(lastResults DataLakeSto
 // Data Lake Store account. name is the name of the Data Lake Store account to
 // update. parameters is parameters supplied to update the Data Lake Store
 // account.
-func (client GroupClient) Update(resourceGroupName string, name string, parameters DataLakeStoreAccountUpdateParameters, cancel <-chan struct{}) (result autorest.Response, err error) {
-	req, err := client.UpdatePreparer(resourceGroupName, name, parameters, cancel)
-	if err != nil {
-		return result, autorest.NewErrorWithError(err, "account.GroupClient", "Update", nil, "Failure preparing request")
-	}
+func (client GroupClient) Update(resourceGroupName string, name string, parameters DataLakeStoreAccountUpdateParameters, cancel <-chan struct{}) (<-chan DataLakeStoreAccount, <-chan error) {
+	resultChan := make(chan DataLakeStoreAccount, 1)
+	errChan := make(chan error, 1)
+	go func() {
+		var err error
+		var result DataLakeStoreAccount
+		defer func() {
+			resultChan <- result
+			errChan <- err
+			close(resultChan)
+			close(errChan)
+		}()
+		req, err := client.UpdatePreparer(resourceGroupName, name, parameters, cancel)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "account.GroupClient", "Update", nil, "Failure preparing request")
+			return
+		}
 
-	resp, err := client.UpdateSender(req)
-	if err != nil {
-		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "account.GroupClient", "Update", resp, "Failure sending request")
-	}
+		resp, err := client.UpdateSender(req)
+		if err != nil {
+			result.Response = autorest.Response{Response: resp}
+			err = autorest.NewErrorWithError(err, "account.GroupClient", "Update", resp, "Failure sending request")
+			return
+		}
 
-	result, err = client.UpdateResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "account.GroupClient", "Update", resp, "Failure responding to request")
-	}
-
-	return
+		result, err = client.UpdateResponder(resp)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "account.GroupClient", "Update", resp, "Failure responding to request")
+		}
+	}()
+	return resultChan, errChan
 }
 
 // UpdatePreparer prepares the Update request.
@@ -639,12 +690,13 @@ func (client GroupClient) UpdateSender(req *http.Request) (*http.Response, error
 
 // UpdateResponder handles the response to the Update request. The method always
 // closes the http.Response Body.
-func (client GroupClient) UpdateResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client GroupClient) UpdateResponder(resp *http.Response) (result DataLakeStoreAccount, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = resp
+	result.Response = autorest.Response{Response: resp}
 	return
 }

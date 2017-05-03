@@ -70,13 +70,15 @@ func (client ProductGroupsClient) Add(resourceGroupName string, serviceName stri
 
 	req, err := client.AddPreparer(resourceGroupName, serviceName, productID, groupID)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "apimanagement.ProductGroupsClient", "Add", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "apimanagement.ProductGroupsClient", "Add", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.AddSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "apimanagement.ProductGroupsClient", "Add", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "apimanagement.ProductGroupsClient", "Add", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.AddResponder(resp)
@@ -165,13 +167,15 @@ func (client ProductGroupsClient) ListByProduct(resourceGroupName string, servic
 
 	req, err := client.ListByProductPreparer(resourceGroupName, serviceName, productID, filter, top, skip)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "apimanagement.ProductGroupsClient", "ListByProduct", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "apimanagement.ProductGroupsClient", "ListByProduct", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListByProductSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "apimanagement.ProductGroupsClient", "ListByProduct", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "apimanagement.ProductGroupsClient", "ListByProduct", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListByProductResponder(resp)
@@ -281,13 +285,15 @@ func (client ProductGroupsClient) Remove(resourceGroupName string, serviceName s
 
 	req, err := client.RemovePreparer(resourceGroupName, serviceName, productID, groupID)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "apimanagement.ProductGroupsClient", "Remove", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "apimanagement.ProductGroupsClient", "Remove", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.RemoveSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "apimanagement.ProductGroupsClient", "Remove", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "apimanagement.ProductGroupsClient", "Remove", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.RemoveResponder(resp)

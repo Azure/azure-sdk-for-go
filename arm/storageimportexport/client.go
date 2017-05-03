@@ -29,18 +29,16 @@ import (
 )
 
 const (
-	// APIVersion is the version of the Storageimportexport
-	APIVersion = "2016-11-01"
-
 	// DefaultBaseURI is the default URI used for the service Storageimportexport
 	DefaultBaseURI = "https://management.azure.com"
+	// DefaultAcceptLanguage is the default value for accept language
+	DefaultAcceptLanguage = "en-us"
 )
 
 // ManagementClient is the base client for Storageimportexport.
 type ManagementClient struct {
 	autorest.Client
 	BaseURI           string
-	APIVersion        string
 	SubscriptionID    string
 	ResourceGroupName string
 	AcceptLanguage    string
@@ -56,10 +54,9 @@ func NewWithBaseURI(baseURI string, subscriptionID string, resourceGroupName str
 	return ManagementClient{
 		Client:            autorest.NewClientWithUserAgent(UserAgent()),
 		BaseURI:           baseURI,
-		APIVersion:        APIVersion,
 		SubscriptionID:    subscriptionID,
 		ResourceGroupName: resourceGroupName,
-		AcceptLanguage:    acceptLanguage,
+		AcceptLanguage:    DefaultAcceptLanguage,
 	}
 }
 
@@ -71,13 +68,15 @@ func NewWithBaseURI(baseURI string, subscriptionID string, resourceGroupName str
 func (client ManagementClient) GetLocation(locationName string) (result Location, err error) {
 	req, err := client.GetLocationPreparer(locationName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "storageimportexport.ManagementClient", "GetLocation", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "storageimportexport.ManagementClient", "GetLocation", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetLocationSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "storageimportexport.ManagementClient", "GetLocation", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "storageimportexport.ManagementClient", "GetLocation", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetLocationResponder(resp)
@@ -94,15 +93,17 @@ func (client ManagementClient) GetLocationPreparer(locationName string) (*http.R
 		"locationName": autorest.Encode("path", locationName),
 	}
 
+	const APIVersion = "2016-11-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPathParameters("/providers/Microsoft.ImportExport/locations/{locationName}", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
+		autorest.WithQueryParameters(queryParameters),
+		autorest.WithHeader("Accept-Language", client.AcceptLanguage))
 	return preparer.Prepare(&http.Request{})
 }
 
@@ -131,13 +132,15 @@ func (client ManagementClient) GetLocationResponder(resp *http.Response) (result
 func (client ManagementClient) ListLocations() (result LocationsListResult, err error) {
 	req, err := client.ListLocationsPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "storageimportexport.ManagementClient", "ListLocations", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "storageimportexport.ManagementClient", "ListLocations", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListLocationsSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "storageimportexport.ManagementClient", "ListLocations", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "storageimportexport.ManagementClient", "ListLocations", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListLocationsResponder(resp)
@@ -150,15 +153,17 @@ func (client ManagementClient) ListLocations() (result LocationsListResult, err 
 
 // ListLocationsPreparer prepares the ListLocations request.
 func (client ManagementClient) ListLocationsPreparer() (*http.Request, error) {
+	const APIVersion = "2016-11-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPath("/providers/Microsoft.ImportExport/locations"),
-		autorest.WithQueryParameters(queryParameters))
+		autorest.WithQueryParameters(queryParameters),
+		autorest.WithHeader("Accept-Language", client.AcceptLanguage))
 	return preparer.Prepare(&http.Request{})
 }
 
@@ -186,13 +191,15 @@ func (client ManagementClient) ListLocationsResponder(resp *http.Response) (resu
 func (client ManagementClient) ListSupportedOperations() (result SupportedOperationsListResult, err error) {
 	req, err := client.ListSupportedOperationsPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "storageimportexport.ManagementClient", "ListSupportedOperations", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "storageimportexport.ManagementClient", "ListSupportedOperations", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListSupportedOperationsSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "storageimportexport.ManagementClient", "ListSupportedOperations", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "storageimportexport.ManagementClient", "ListSupportedOperations", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListSupportedOperationsResponder(resp)
@@ -205,15 +212,17 @@ func (client ManagementClient) ListSupportedOperations() (result SupportedOperat
 
 // ListSupportedOperationsPreparer prepares the ListSupportedOperations request.
 func (client ManagementClient) ListSupportedOperationsPreparer() (*http.Request, error) {
+	const APIVersion = "2016-11-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPath("/providers/Microsoft.ImportExport/operations"),
-		autorest.WithQueryParameters(queryParameters))
+		autorest.WithQueryParameters(queryParameters),
+		autorest.WithHeader("Accept-Language", client.AcceptLanguage))
 	return preparer.Prepare(&http.Request{})
 }
 

@@ -48,13 +48,15 @@ func NewIntegrationAccountsClientWithBaseURI(baseURI string, subscriptionID stri
 func (client IntegrationAccountsClient) CreateOrUpdate(resourceGroupName string, integrationAccountName string, integrationAccount IntegrationAccount) (result IntegrationAccount, err error) {
 	req, err := client.CreateOrUpdatePreparer(resourceGroupName, integrationAccountName, integrationAccount)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "logic.IntegrationAccountsClient", "CreateOrUpdate", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "logic.IntegrationAccountsClient", "CreateOrUpdate", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.CreateOrUpdateSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "logic.IntegrationAccountsClient", "CreateOrUpdate", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "logic.IntegrationAccountsClient", "CreateOrUpdate", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.CreateOrUpdateResponder(resp)
@@ -114,13 +116,15 @@ func (client IntegrationAccountsClient) CreateOrUpdateResponder(resp *http.Respo
 func (client IntegrationAccountsClient) Delete(resourceGroupName string, integrationAccountName string) (result autorest.Response, err error) {
 	req, err := client.DeletePreparer(resourceGroupName, integrationAccountName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "logic.IntegrationAccountsClient", "Delete", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "logic.IntegrationAccountsClient", "Delete", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.DeleteSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "logic.IntegrationAccountsClient", "Delete", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "logic.IntegrationAccountsClient", "Delete", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.DeleteResponder(resp)
@@ -177,13 +181,15 @@ func (client IntegrationAccountsClient) DeleteResponder(resp *http.Response) (re
 func (client IntegrationAccountsClient) Get(resourceGroupName string, integrationAccountName string) (result IntegrationAccount, err error) {
 	req, err := client.GetPreparer(resourceGroupName, integrationAccountName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "logic.IntegrationAccountsClient", "Get", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "logic.IntegrationAccountsClient", "Get", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "logic.IntegrationAccountsClient", "Get", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "logic.IntegrationAccountsClient", "Get", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetResponder(resp)
@@ -241,13 +247,15 @@ func (client IntegrationAccountsClient) GetResponder(resp *http.Response) (resul
 func (client IntegrationAccountsClient) GetCallbackURL(resourceGroupName string, integrationAccountName string, parameters GetCallbackURLParameters) (result CallbackURL, err error) {
 	req, err := client.GetCallbackURLPreparer(resourceGroupName, integrationAccountName, parameters)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "logic.IntegrationAccountsClient", "GetCallbackURL", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "logic.IntegrationAccountsClient", "GetCallbackURL", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetCallbackURLSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "logic.IntegrationAccountsClient", "GetCallbackURL", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "logic.IntegrationAccountsClient", "GetCallbackURL", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetCallbackURLResponder(resp)
@@ -307,13 +315,15 @@ func (client IntegrationAccountsClient) GetCallbackURLResponder(resp *http.Respo
 func (client IntegrationAccountsClient) ListByResourceGroup(resourceGroupName string, top *int32) (result IntegrationAccountListResult, err error) {
 	req, err := client.ListByResourceGroupPreparer(resourceGroupName, top)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "logic.IntegrationAccountsClient", "ListByResourceGroup", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "logic.IntegrationAccountsClient", "ListByResourceGroup", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListByResourceGroupSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "logic.IntegrationAccountsClient", "ListByResourceGroup", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "logic.IntegrationAccountsClient", "ListByResourceGroup", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListByResourceGroupResponder(resp)
@@ -396,13 +406,15 @@ func (client IntegrationAccountsClient) ListByResourceGroupNextResults(lastResul
 func (client IntegrationAccountsClient) ListBySubscription(top *int32) (result IntegrationAccountListResult, err error) {
 	req, err := client.ListBySubscriptionPreparer(top)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "logic.IntegrationAccountsClient", "ListBySubscription", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "logic.IntegrationAccountsClient", "ListBySubscription", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListBySubscriptionSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "logic.IntegrationAccountsClient", "ListBySubscription", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "logic.IntegrationAccountsClient", "ListBySubscription", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListBySubscriptionResponder(resp)
@@ -485,13 +497,15 @@ func (client IntegrationAccountsClient) ListBySubscriptionNextResults(lastResult
 func (client IntegrationAccountsClient) Update(resourceGroupName string, integrationAccountName string, integrationAccount IntegrationAccount) (result IntegrationAccount, err error) {
 	req, err := client.UpdatePreparer(resourceGroupName, integrationAccountName, integrationAccount)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "logic.IntegrationAccountsClient", "Update", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "logic.IntegrationAccountsClient", "Update", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.UpdateSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "logic.IntegrationAccountsClient", "Update", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "logic.IntegrationAccountsClient", "Update", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.UpdateResponder(resp)

@@ -55,13 +55,15 @@ func NewPermissionsClientWithBaseURI(baseURI string, subscriptionID string) Perm
 func (client PermissionsClient) ListForResource(resourceGroupName string, resourceProviderNamespace string, parentResourcePath string, resourceType string, resourceName string) (result PermissionGetResult, err error) {
 	req, err := client.ListForResourcePreparer(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "authorization.PermissionsClient", "ListForResource", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "authorization.PermissionsClient", "ListForResource", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListForResourceSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "authorization.PermissionsClient", "ListForResource", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "authorization.PermissionsClient", "ListForResource", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListForResourceResponder(resp)
@@ -147,13 +149,15 @@ func (client PermissionsClient) ListForResourceNextResults(lastResults Permissio
 func (client PermissionsClient) ListForResourceGroup(resourceGroupName string) (result PermissionGetResult, err error) {
 	req, err := client.ListForResourceGroupPreparer(resourceGroupName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "authorization.PermissionsClient", "ListForResourceGroup", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "authorization.PermissionsClient", "ListForResourceGroup", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListForResourceGroupSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "authorization.PermissionsClient", "ListForResourceGroup", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "authorization.PermissionsClient", "ListForResourceGroup", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListForResourceGroupResponder(resp)

@@ -73,13 +73,15 @@ func (client ProductsClient) CreateOrUpdate(resourceGroupName string, serviceNam
 
 	req, err := client.CreateOrUpdatePreparer(resourceGroupName, serviceName, productID, parameters)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "apimanagement.ProductsClient", "CreateOrUpdate", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "apimanagement.ProductsClient", "CreateOrUpdate", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.CreateOrUpdateSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "apimanagement.ProductsClient", "CreateOrUpdate", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "apimanagement.ProductsClient", "CreateOrUpdate", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.CreateOrUpdateResponder(resp)
@@ -156,13 +158,15 @@ func (client ProductsClient) Delete(resourceGroupName string, serviceName string
 
 	req, err := client.DeletePreparer(resourceGroupName, serviceName, productID, ifMatch, deleteSubscriptions)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "apimanagement.ProductsClient", "Delete", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "apimanagement.ProductsClient", "Delete", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.DeleteSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "apimanagement.ProductsClient", "Delete", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "apimanagement.ProductsClient", "Delete", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.DeleteResponder(resp)
@@ -237,13 +241,15 @@ func (client ProductsClient) Get(resourceGroupName string, serviceName string, p
 
 	req, err := client.GetPreparer(resourceGroupName, serviceName, productID)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "apimanagement.ProductsClient", "Get", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "apimanagement.ProductsClient", "Get", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "apimanagement.ProductsClient", "Get", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "apimanagement.ProductsClient", "Get", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetResponder(resp)
@@ -331,13 +337,15 @@ func (client ProductsClient) ListByService(resourceGroupName string, serviceName
 
 	req, err := client.ListByServicePreparer(resourceGroupName, serviceName, filter, top, skip, expandGroups)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "apimanagement.ProductsClient", "ListByService", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "apimanagement.ProductsClient", "ListByService", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListByServiceSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "apimanagement.ProductsClient", "ListByService", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "apimanagement.ProductsClient", "ListByService", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListByServiceResponder(resp)
@@ -447,13 +455,15 @@ func (client ProductsClient) Update(resourceGroupName string, serviceName string
 
 	req, err := client.UpdatePreparer(resourceGroupName, serviceName, productID, parameters, ifMatch)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "apimanagement.ProductsClient", "Update", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "apimanagement.ProductsClient", "Update", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.UpdateSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "apimanagement.ProductsClient", "Update", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "apimanagement.ProductsClient", "Update", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.UpdateResponder(resp)

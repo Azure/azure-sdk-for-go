@@ -27,9 +27,6 @@ import (
 )
 
 const (
-	// APIVersion is the version of the Graphrbac
-	APIVersion = "1.6"
-
 	// DefaultBaseURI is the default URI used for the service Graphrbac
 	DefaultBaseURI = "https://graph.windows.net"
 )
@@ -37,9 +34,8 @@ const (
 // ManagementClient is the base client for Graphrbac.
 type ManagementClient struct {
 	autorest.Client
-	BaseURI    string
-	APIVersion string
-	TenantID   string
+	BaseURI  string
+	TenantID string
 }
 
 // New creates an instance of the ManagementClient client.
@@ -50,9 +46,8 @@ func New(tenantID string) ManagementClient {
 // NewWithBaseURI creates an instance of the ManagementClient client.
 func NewWithBaseURI(baseURI string, tenantID string) ManagementClient {
 	return ManagementClient{
-		Client:     autorest.NewClientWithUserAgent(UserAgent()),
-		BaseURI:    baseURI,
-		APIVersion: APIVersion,
-		TenantID:   tenantID,
+		Client:   autorest.NewClientWithUserAgent(UserAgent()),
+		BaseURI:  baseURI,
+		TenantID: tenantID,
 	}
 }

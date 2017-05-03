@@ -73,13 +73,15 @@ func (client AuthorizationServersClient) CreateOrUpdate(resourceGroupName string
 
 	req, err := client.CreateOrUpdatePreparer(resourceGroupName, serviceName, authsid, parameters)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "apimanagement.AuthorizationServersClient", "CreateOrUpdate", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "apimanagement.AuthorizationServersClient", "CreateOrUpdate", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.CreateOrUpdateSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "apimanagement.AuthorizationServersClient", "CreateOrUpdate", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "apimanagement.AuthorizationServersClient", "CreateOrUpdate", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.CreateOrUpdateResponder(resp)
@@ -150,13 +152,15 @@ func (client AuthorizationServersClient) Delete(resourceGroupName string, servic
 
 	req, err := client.DeletePreparer(resourceGroupName, serviceName, authsid, ifMatch)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "apimanagement.AuthorizationServersClient", "Delete", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "apimanagement.AuthorizationServersClient", "Delete", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.DeleteSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "apimanagement.AuthorizationServersClient", "Delete", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "apimanagement.AuthorizationServersClient", "Delete", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.DeleteResponder(resp)
@@ -228,13 +232,15 @@ func (client AuthorizationServersClient) Get(resourceGroupName string, serviceNa
 
 	req, err := client.GetPreparer(resourceGroupName, serviceName, authsid)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "apimanagement.AuthorizationServersClient", "Get", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "apimanagement.AuthorizationServersClient", "Get", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "apimanagement.AuthorizationServersClient", "Get", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "apimanagement.AuthorizationServersClient", "Get", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetResponder(resp)
@@ -315,13 +321,15 @@ func (client AuthorizationServersClient) ListByService(resourceGroupName string,
 
 	req, err := client.ListByServicePreparer(resourceGroupName, serviceName, filter, top, skip)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "apimanagement.AuthorizationServersClient", "ListByService", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "apimanagement.AuthorizationServersClient", "ListByService", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListByServiceSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "apimanagement.AuthorizationServersClient", "ListByService", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "apimanagement.AuthorizationServersClient", "ListByService", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListByServiceResponder(resp)
@@ -425,13 +433,15 @@ func (client AuthorizationServersClient) Update(resourceGroupName string, servic
 
 	req, err := client.UpdatePreparer(resourceGroupName, serviceName, authsid, parameters, ifMatch)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "apimanagement.AuthorizationServersClient", "Update", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "apimanagement.AuthorizationServersClient", "Update", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.UpdateSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "apimanagement.AuthorizationServersClient", "Update", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "apimanagement.AuthorizationServersClient", "Update", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.UpdateResponder(resp)

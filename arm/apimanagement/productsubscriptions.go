@@ -85,13 +85,15 @@ func (client ProductSubscriptionsClient) ListByProduct(resourceGroupName string,
 
 	req, err := client.ListByProductPreparer(resourceGroupName, serviceName, productID, filter, top, skip)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "apimanagement.ProductSubscriptionsClient", "ListByProduct", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "apimanagement.ProductSubscriptionsClient", "ListByProduct", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListByProductSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "apimanagement.ProductSubscriptionsClient", "ListByProduct", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "apimanagement.ProductSubscriptionsClient", "ListByProduct", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListByProductResponder(resp)

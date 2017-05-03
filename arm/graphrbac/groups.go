@@ -54,13 +54,15 @@ func (client GroupsClient) AddMember(groupObjectID string, parameters GroupAddMe
 
 	req, err := client.AddMemberPreparer(groupObjectID, parameters)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "graphrbac.GroupsClient", "AddMember", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "graphrbac.GroupsClient", "AddMember", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.AddMemberSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "graphrbac.GroupsClient", "AddMember", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "graphrbac.GroupsClient", "AddMember", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.AddMemberResponder(resp)
@@ -78,8 +80,9 @@ func (client GroupsClient) AddMemberPreparer(groupObjectID string, parameters Gr
 		"tenantID":      autorest.Encode("path", client.TenantID),
 	}
 
+	const APIVersion = "1.6"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -125,13 +128,15 @@ func (client GroupsClient) Create(parameters GroupCreateParameters) (result ADGr
 
 	req, err := client.CreatePreparer(parameters)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "graphrbac.GroupsClient", "Create", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "graphrbac.GroupsClient", "Create", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.CreateSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "graphrbac.GroupsClient", "Create", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "graphrbac.GroupsClient", "Create", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.CreateResponder(resp)
@@ -148,8 +153,9 @@ func (client GroupsClient) CreatePreparer(parameters GroupCreateParameters) (*ht
 		"tenantID": autorest.Encode("path", client.TenantID),
 	}
 
+	const APIVersion = "1.6"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -187,13 +193,15 @@ func (client GroupsClient) CreateResponder(resp *http.Response) (result ADGroup,
 func (client GroupsClient) Delete(groupObjectID string) (result autorest.Response, err error) {
 	req, err := client.DeletePreparer(groupObjectID)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "graphrbac.GroupsClient", "Delete", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "graphrbac.GroupsClient", "Delete", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.DeleteSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "graphrbac.GroupsClient", "Delete", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "graphrbac.GroupsClient", "Delete", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.DeleteResponder(resp)
@@ -211,8 +219,9 @@ func (client GroupsClient) DeletePreparer(groupObjectID string) (*http.Request, 
 		"tenantID":      autorest.Encode("path", client.TenantID),
 	}
 
+	const APIVersion = "1.6"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -247,13 +256,15 @@ func (client GroupsClient) DeleteResponder(resp *http.Response) (result autorest
 func (client GroupsClient) Get(objectID string) (result ADGroup, err error) {
 	req, err := client.GetPreparer(objectID)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "graphrbac.GroupsClient", "Get", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "graphrbac.GroupsClient", "Get", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "graphrbac.GroupsClient", "Get", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "graphrbac.GroupsClient", "Get", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetResponder(resp)
@@ -271,8 +282,9 @@ func (client GroupsClient) GetPreparer(objectID string) (*http.Request, error) {
 		"tenantID": autorest.Encode("path", client.TenantID),
 	}
 
+	const APIVersion = "1.6"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -308,13 +320,15 @@ func (client GroupsClient) GetResponder(resp *http.Response) (result ADGroup, er
 func (client GroupsClient) GetGroupMembers(objectID string) (result GetObjectsResult, err error) {
 	req, err := client.GetGroupMembersPreparer(objectID)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "graphrbac.GroupsClient", "GetGroupMembers", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "graphrbac.GroupsClient", "GetGroupMembers", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetGroupMembersSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "graphrbac.GroupsClient", "GetGroupMembers", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "graphrbac.GroupsClient", "GetGroupMembers", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetGroupMembersResponder(resp)
@@ -332,8 +346,9 @@ func (client GroupsClient) GetGroupMembersPreparer(objectID string) (*http.Reque
 		"tenantID": autorest.Encode("path", client.TenantID),
 	}
 
+	const APIVersion = "1.6"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -369,13 +384,15 @@ func (client GroupsClient) GetGroupMembersResponder(resp *http.Response) (result
 func (client GroupsClient) GetGroupMembersNext(nextLink string) (result GetObjectsResult, err error) {
 	req, err := client.GetGroupMembersNextPreparer(nextLink)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "graphrbac.GroupsClient", "GetGroupMembersNext", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "graphrbac.GroupsClient", "GetGroupMembersNext", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetGroupMembersNextSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "graphrbac.GroupsClient", "GetGroupMembersNext", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "graphrbac.GroupsClient", "GetGroupMembersNext", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetGroupMembersNextResponder(resp)
@@ -393,8 +410,9 @@ func (client GroupsClient) GetGroupMembersNextPreparer(nextLink string) (*http.R
 		"tenantID": autorest.Encode("path", client.TenantID),
 	}
 
+	const APIVersion = "1.6"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -438,13 +456,15 @@ func (client GroupsClient) GetMemberGroups(objectID string, parameters GroupGetM
 
 	req, err := client.GetMemberGroupsPreparer(objectID, parameters)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "graphrbac.GroupsClient", "GetMemberGroups", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "graphrbac.GroupsClient", "GetMemberGroups", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetMemberGroupsSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "graphrbac.GroupsClient", "GetMemberGroups", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "graphrbac.GroupsClient", "GetMemberGroups", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetMemberGroupsResponder(resp)
@@ -462,8 +482,9 @@ func (client GroupsClient) GetMemberGroupsPreparer(objectID string, parameters G
 		"tenantID": autorest.Encode("path", client.TenantID),
 	}
 
+	const APIVersion = "1.6"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -509,13 +530,15 @@ func (client GroupsClient) IsMemberOf(parameters CheckGroupMembershipParameters)
 
 	req, err := client.IsMemberOfPreparer(parameters)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "graphrbac.GroupsClient", "IsMemberOf", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "graphrbac.GroupsClient", "IsMemberOf", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.IsMemberOfSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "graphrbac.GroupsClient", "IsMemberOf", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "graphrbac.GroupsClient", "IsMemberOf", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.IsMemberOfResponder(resp)
@@ -532,8 +555,9 @@ func (client GroupsClient) IsMemberOfPreparer(parameters CheckGroupMembershipPar
 		"tenantID": autorest.Encode("path", client.TenantID),
 	}
 
+	const APIVersion = "1.6"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -571,13 +595,15 @@ func (client GroupsClient) IsMemberOfResponder(resp *http.Response) (result Chec
 func (client GroupsClient) List(filter string) (result GroupListResult, err error) {
 	req, err := client.ListPreparer(filter)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "graphrbac.GroupsClient", "List", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "graphrbac.GroupsClient", "List", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "graphrbac.GroupsClient", "List", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "graphrbac.GroupsClient", "List", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListResponder(resp)
@@ -594,8 +620,9 @@ func (client GroupsClient) ListPreparer(filter string) (*http.Request, error) {
 		"tenantID": autorest.Encode("path", client.TenantID),
 	}
 
+	const APIVersion = "1.6"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 	if len(filter) > 0 {
 		queryParameters["$filter"] = autorest.Encode("query", filter)
@@ -634,13 +661,15 @@ func (client GroupsClient) ListResponder(resp *http.Response) (result GroupListR
 func (client GroupsClient) ListNext(nextLink string) (result GroupListResult, err error) {
 	req, err := client.ListNextPreparer(nextLink)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "graphrbac.GroupsClient", "ListNext", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "graphrbac.GroupsClient", "ListNext", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListNextSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "graphrbac.GroupsClient", "ListNext", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "graphrbac.GroupsClient", "ListNext", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListNextResponder(resp)
@@ -658,8 +687,9 @@ func (client GroupsClient) ListNextPreparer(nextLink string) (*http.Request, err
 		"tenantID": autorest.Encode("path", client.TenantID),
 	}
 
+	const APIVersion = "1.6"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -696,13 +726,15 @@ func (client GroupsClient) ListNextResponder(resp *http.Response) (result GroupL
 func (client GroupsClient) RemoveMember(groupObjectID string, memberObjectID string) (result autorest.Response, err error) {
 	req, err := client.RemoveMemberPreparer(groupObjectID, memberObjectID)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "graphrbac.GroupsClient", "RemoveMember", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "graphrbac.GroupsClient", "RemoveMember", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.RemoveMemberSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "graphrbac.GroupsClient", "RemoveMember", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "graphrbac.GroupsClient", "RemoveMember", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.RemoveMemberResponder(resp)
@@ -721,8 +753,9 @@ func (client GroupsClient) RemoveMemberPreparer(groupObjectID string, memberObje
 		"tenantID":       autorest.Encode("path", client.TenantID),
 	}
 
+	const APIVersion = "1.6"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(

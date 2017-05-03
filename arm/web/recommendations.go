@@ -57,13 +57,15 @@ func (client RecommendationsClient) DisableAllForWebApp(resourceGroupName string
 
 	req, err := client.DisableAllForWebAppPreparer(resourceGroupName, siteName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.RecommendationsClient", "DisableAllForWebApp", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.RecommendationsClient", "DisableAllForWebApp", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.DisableAllForWebAppSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "web.RecommendationsClient", "DisableAllForWebApp", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.RecommendationsClient", "DisableAllForWebApp", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.DisableAllForWebAppResponder(resp)
@@ -130,13 +132,15 @@ func (client RecommendationsClient) GetRuleDetailsByWebApp(resourceGroupName str
 
 	req, err := client.GetRuleDetailsByWebAppPreparer(resourceGroupName, siteName, name, updateSeen)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.RecommendationsClient", "GetRuleDetailsByWebApp", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.RecommendationsClient", "GetRuleDetailsByWebApp", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetRuleDetailsByWebAppSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.RecommendationsClient", "GetRuleDetailsByWebApp", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.RecommendationsClient", "GetRuleDetailsByWebApp", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetRuleDetailsByWebAppResponder(resp)
@@ -202,13 +206,15 @@ func (client RecommendationsClient) GetRuleDetailsByWebAppResponder(resp *http.R
 func (client RecommendationsClient) List(featured *bool, filter string) (result ListRecommendation, err error) {
 	req, err := client.ListPreparer(featured, filter)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.RecommendationsClient", "List", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.RecommendationsClient", "List", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.RecommendationsClient", "List", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.RecommendationsClient", "List", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListResponder(resp)
@@ -282,13 +288,15 @@ func (client RecommendationsClient) ListHistoryForWebApp(resourceGroupName strin
 
 	req, err := client.ListHistoryForWebAppPreparer(resourceGroupName, siteName, filter)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.RecommendationsClient", "ListHistoryForWebApp", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.RecommendationsClient", "ListHistoryForWebApp", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListHistoryForWebAppSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.RecommendationsClient", "ListHistoryForWebApp", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.RecommendationsClient", "ListHistoryForWebApp", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListHistoryForWebAppResponder(resp)
@@ -361,13 +369,15 @@ func (client RecommendationsClient) ListRecommendedRulesForWebApp(resourceGroupN
 
 	req, err := client.ListRecommendedRulesForWebAppPreparer(resourceGroupName, siteName, featured, filter)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.RecommendationsClient", "ListRecommendedRulesForWebApp", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.RecommendationsClient", "ListRecommendedRulesForWebApp", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListRecommendedRulesForWebAppSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.RecommendationsClient", "ListRecommendedRulesForWebApp", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.RecommendationsClient", "ListRecommendedRulesForWebApp", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListRecommendedRulesForWebAppResponder(resp)
@@ -429,13 +439,15 @@ func (client RecommendationsClient) ListRecommendedRulesForWebAppResponder(resp 
 func (client RecommendationsClient) ResetAllFilters() (result autorest.Response, err error) {
 	req, err := client.ResetAllFiltersPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.RecommendationsClient", "ResetAllFilters", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.RecommendationsClient", "ResetAllFilters", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ResetAllFiltersSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "web.RecommendationsClient", "ResetAllFilters", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.RecommendationsClient", "ResetAllFilters", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ResetAllFiltersResponder(resp)
@@ -499,13 +511,15 @@ func (client RecommendationsClient) ResetAllFiltersForWebApp(resourceGroupName s
 
 	req, err := client.ResetAllFiltersForWebAppPreparer(resourceGroupName, siteName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.RecommendationsClient", "ResetAllFiltersForWebApp", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.RecommendationsClient", "ResetAllFiltersForWebApp", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ResetAllFiltersForWebAppSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "web.RecommendationsClient", "ResetAllFiltersForWebApp", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.RecommendationsClient", "ResetAllFiltersForWebApp", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ResetAllFiltersForWebAppResponder(resp)

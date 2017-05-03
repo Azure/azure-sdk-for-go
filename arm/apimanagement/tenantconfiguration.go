@@ -53,7 +53,9 @@ func NewTenantConfigurationClientWithBaseURI(baseURI string, subscriptionID stri
 // resourceGroupName is the name of the resource group. serviceName is the name
 // of the API Management service. parameters is deploy Configuration
 // parameters.
-func (client TenantConfigurationClient) Deploy(resourceGroupName string, serviceName string, parameters DeployConfigurationParameters, cancel <-chan struct{}) (result autorest.Response, err error) {
+func (client TenantConfigurationClient) Deploy(resourceGroupName string, serviceName string, parameters DeployConfigurationParameters, cancel <-chan struct{}) (<-chan OperationResultContract, <-chan error) {
+	resultChan := make(chan OperationResultContract, 1)
+	errChan := make(chan error, 1)
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,
 			Constraints: []validation.Constraint{{Target: "serviceName", Name: validation.MaxLength, Rule: 50, Chain: nil},
@@ -61,26 +63,40 @@ func (client TenantConfigurationClient) Deploy(resourceGroupName string, service
 				{Target: "serviceName", Name: validation.Pattern, Rule: `^[a-zA-Z](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?$`, Chain: nil}}},
 		{TargetValue: parameters,
 			Constraints: []validation.Constraint{{Target: "parameters.Branch", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "apimanagement.TenantConfigurationClient", "Deploy")
+		errChan <- validation.NewErrorWithValidationError(err, "apimanagement.TenantConfigurationClient", "Deploy")
+		close(errChan)
+		close(resultChan)
+		return resultChan, errChan
 	}
 
-	req, err := client.DeployPreparer(resourceGroupName, serviceName, parameters, cancel)
-	if err != nil {
-		return result, autorest.NewErrorWithError(err, "apimanagement.TenantConfigurationClient", "Deploy", nil, "Failure preparing request")
-	}
+	go func() {
+		var err error
+		var result OperationResultContract
+		defer func() {
+			resultChan <- result
+			errChan <- err
+			close(resultChan)
+			close(errChan)
+		}()
+		req, err := client.DeployPreparer(resourceGroupName, serviceName, parameters, cancel)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "apimanagement.TenantConfigurationClient", "Deploy", nil, "Failure preparing request")
+			return
+		}
 
-	resp, err := client.DeploySender(req)
-	if err != nil {
-		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "apimanagement.TenantConfigurationClient", "Deploy", resp, "Failure sending request")
-	}
+		resp, err := client.DeploySender(req)
+		if err != nil {
+			result.Response = autorest.Response{Response: resp}
+			err = autorest.NewErrorWithError(err, "apimanagement.TenantConfigurationClient", "Deploy", resp, "Failure sending request")
+			return
+		}
 
-	result, err = client.DeployResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "apimanagement.TenantConfigurationClient", "Deploy", resp, "Failure responding to request")
-	}
-
-	return
+		result, err = client.DeployResponder(resp)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "apimanagement.TenantConfigurationClient", "Deploy", resp, "Failure responding to request")
+		}
+	}()
+	return resultChan, errChan
 }
 
 // DeployPreparer prepares the Deploy request.
@@ -116,13 +132,14 @@ func (client TenantConfigurationClient) DeploySender(req *http.Request) (*http.R
 
 // DeployResponder handles the response to the Deploy request. The method always
 // closes the http.Response Body.
-func (client TenantConfigurationClient) DeployResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client TenantConfigurationClient) DeployResponder(resp *http.Response) (result OperationResultContract, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = resp
+	result.Response = autorest.Response{Response: resp}
 	return
 }
 
@@ -135,7 +152,9 @@ func (client TenantConfigurationClient) DeployResponder(resp *http.Response) (re
 //
 // resourceGroupName is the name of the resource group. serviceName is the name
 // of the API Management service. parameters is save Configuration parameters.
-func (client TenantConfigurationClient) Save(resourceGroupName string, serviceName string, parameters SaveConfigurationParameter, cancel <-chan struct{}) (result autorest.Response, err error) {
+func (client TenantConfigurationClient) Save(resourceGroupName string, serviceName string, parameters SaveConfigurationParameter, cancel <-chan struct{}) (<-chan OperationResultContract, <-chan error) {
+	resultChan := make(chan OperationResultContract, 1)
+	errChan := make(chan error, 1)
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,
 			Constraints: []validation.Constraint{{Target: "serviceName", Name: validation.MaxLength, Rule: 50, Chain: nil},
@@ -143,26 +162,40 @@ func (client TenantConfigurationClient) Save(resourceGroupName string, serviceNa
 				{Target: "serviceName", Name: validation.Pattern, Rule: `^[a-zA-Z](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?$`, Chain: nil}}},
 		{TargetValue: parameters,
 			Constraints: []validation.Constraint{{Target: "parameters.Branch", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "apimanagement.TenantConfigurationClient", "Save")
+		errChan <- validation.NewErrorWithValidationError(err, "apimanagement.TenantConfigurationClient", "Save")
+		close(errChan)
+		close(resultChan)
+		return resultChan, errChan
 	}
 
-	req, err := client.SavePreparer(resourceGroupName, serviceName, parameters, cancel)
-	if err != nil {
-		return result, autorest.NewErrorWithError(err, "apimanagement.TenantConfigurationClient", "Save", nil, "Failure preparing request")
-	}
+	go func() {
+		var err error
+		var result OperationResultContract
+		defer func() {
+			resultChan <- result
+			errChan <- err
+			close(resultChan)
+			close(errChan)
+		}()
+		req, err := client.SavePreparer(resourceGroupName, serviceName, parameters, cancel)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "apimanagement.TenantConfigurationClient", "Save", nil, "Failure preparing request")
+			return
+		}
 
-	resp, err := client.SaveSender(req)
-	if err != nil {
-		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "apimanagement.TenantConfigurationClient", "Save", resp, "Failure sending request")
-	}
+		resp, err := client.SaveSender(req)
+		if err != nil {
+			result.Response = autorest.Response{Response: resp}
+			err = autorest.NewErrorWithError(err, "apimanagement.TenantConfigurationClient", "Save", resp, "Failure sending request")
+			return
+		}
 
-	result, err = client.SaveResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "apimanagement.TenantConfigurationClient", "Save", resp, "Failure responding to request")
-	}
-
-	return
+		result, err = client.SaveResponder(resp)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "apimanagement.TenantConfigurationClient", "Save", resp, "Failure responding to request")
+		}
+	}()
+	return resultChan, errChan
 }
 
 // SavePreparer prepares the Save request.
@@ -198,13 +231,14 @@ func (client TenantConfigurationClient) SaveSender(req *http.Request) (*http.Res
 
 // SaveResponder handles the response to the Save request. The method always
 // closes the http.Response Body.
-func (client TenantConfigurationClient) SaveResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client TenantConfigurationClient) SaveResponder(resp *http.Response) (result OperationResultContract, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = resp
+	result.Response = autorest.Response{Response: resp}
 	return
 }
 
@@ -217,7 +251,9 @@ func (client TenantConfigurationClient) SaveResponder(resp *http.Response) (resu
 // resourceGroupName is the name of the resource group. serviceName is the name
 // of the API Management service. parameters is validate Configuration
 // parameters.
-func (client TenantConfigurationClient) Validate(resourceGroupName string, serviceName string, parameters DeployConfigurationParameters, cancel <-chan struct{}) (result autorest.Response, err error) {
+func (client TenantConfigurationClient) Validate(resourceGroupName string, serviceName string, parameters DeployConfigurationParameters, cancel <-chan struct{}) (<-chan OperationResultContract, <-chan error) {
+	resultChan := make(chan OperationResultContract, 1)
+	errChan := make(chan error, 1)
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,
 			Constraints: []validation.Constraint{{Target: "serviceName", Name: validation.MaxLength, Rule: 50, Chain: nil},
@@ -225,26 +261,40 @@ func (client TenantConfigurationClient) Validate(resourceGroupName string, servi
 				{Target: "serviceName", Name: validation.Pattern, Rule: `^[a-zA-Z](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?$`, Chain: nil}}},
 		{TargetValue: parameters,
 			Constraints: []validation.Constraint{{Target: "parameters.Branch", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "apimanagement.TenantConfigurationClient", "Validate")
+		errChan <- validation.NewErrorWithValidationError(err, "apimanagement.TenantConfigurationClient", "Validate")
+		close(errChan)
+		close(resultChan)
+		return resultChan, errChan
 	}
 
-	req, err := client.ValidatePreparer(resourceGroupName, serviceName, parameters, cancel)
-	if err != nil {
-		return result, autorest.NewErrorWithError(err, "apimanagement.TenantConfigurationClient", "Validate", nil, "Failure preparing request")
-	}
+	go func() {
+		var err error
+		var result OperationResultContract
+		defer func() {
+			resultChan <- result
+			errChan <- err
+			close(resultChan)
+			close(errChan)
+		}()
+		req, err := client.ValidatePreparer(resourceGroupName, serviceName, parameters, cancel)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "apimanagement.TenantConfigurationClient", "Validate", nil, "Failure preparing request")
+			return
+		}
 
-	resp, err := client.ValidateSender(req)
-	if err != nil {
-		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "apimanagement.TenantConfigurationClient", "Validate", resp, "Failure sending request")
-	}
+		resp, err := client.ValidateSender(req)
+		if err != nil {
+			result.Response = autorest.Response{Response: resp}
+			err = autorest.NewErrorWithError(err, "apimanagement.TenantConfigurationClient", "Validate", resp, "Failure sending request")
+			return
+		}
 
-	result, err = client.ValidateResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "apimanagement.TenantConfigurationClient", "Validate", resp, "Failure responding to request")
-	}
-
-	return
+		result, err = client.ValidateResponder(resp)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "apimanagement.TenantConfigurationClient", "Validate", resp, "Failure responding to request")
+		}
+	}()
+	return resultChan, errChan
 }
 
 // ValidatePreparer prepares the Validate request.
@@ -280,12 +330,13 @@ func (client TenantConfigurationClient) ValidateSender(req *http.Request) (*http
 
 // ValidateResponder handles the response to the Validate request. The method always
 // closes the http.Response Body.
-func (client TenantConfigurationClient) ValidateResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client TenantConfigurationClient) ValidateResponder(resp *http.Response) (result OperationResultContract, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = resp
+	result.Response = autorest.Response{Response: resp}
 	return
 }

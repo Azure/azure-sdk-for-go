@@ -68,13 +68,15 @@ func (client ConsumerGroupsClient) CreateOrUpdate(resourceGroupName string, name
 
 	req, err := client.CreateOrUpdatePreparer(resourceGroupName, namespaceName, eventHubName, consumerGroupName, parameters)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "eventhub.ConsumerGroupsClient", "CreateOrUpdate", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "eventhub.ConsumerGroupsClient", "CreateOrUpdate", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.CreateOrUpdateSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "eventhub.ConsumerGroupsClient", "CreateOrUpdate", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "eventhub.ConsumerGroupsClient", "CreateOrUpdate", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.CreateOrUpdateResponder(resp)
@@ -154,13 +156,15 @@ func (client ConsumerGroupsClient) Delete(resourceGroupName string, namespaceNam
 
 	req, err := client.DeletePreparer(resourceGroupName, namespaceName, eventHubName, consumerGroupName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "eventhub.ConsumerGroupsClient", "Delete", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "eventhub.ConsumerGroupsClient", "Delete", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.DeleteSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "eventhub.ConsumerGroupsClient", "Delete", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "eventhub.ConsumerGroupsClient", "Delete", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.DeleteResponder(resp)
@@ -236,13 +240,15 @@ func (client ConsumerGroupsClient) Get(resourceGroupName string, namespaceName s
 
 	req, err := client.GetPreparer(resourceGroupName, namespaceName, eventHubName, consumerGroupName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "eventhub.ConsumerGroupsClient", "Get", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "eventhub.ConsumerGroupsClient", "Get", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "eventhub.ConsumerGroupsClient", "Get", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "eventhub.ConsumerGroupsClient", "Get", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetResponder(resp)
@@ -317,13 +323,15 @@ func (client ConsumerGroupsClient) ListByEventHub(resourceGroupName string, name
 
 	req, err := client.ListByEventHubPreparer(resourceGroupName, namespaceName, eventHubName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "eventhub.ConsumerGroupsClient", "ListByEventHub", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "eventhub.ConsumerGroupsClient", "ListByEventHub", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListByEventHubSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "eventhub.ConsumerGroupsClient", "ListByEventHub", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "eventhub.ConsumerGroupsClient", "ListByEventHub", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListByEventHubResponder(resp)

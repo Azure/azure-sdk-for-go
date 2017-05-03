@@ -45,19 +45,19 @@ func NewUsersClientWithBaseURI(baseURI string, subscriptionID string) UsersClien
 // CreateOrUpdate creates or Updates a user.
 //
 // resourceGroupName is the name of the resource group. serviceName is the name
-// of the API Management service. uid is user identifier. Must be unique in the
+// of the API Management service. UID is user identifier. Must be unique in the
 // current API Management service instance. parameters is create or update
 // parameters.
-func (client UsersClient) CreateOrUpdate(resourceGroupName string, serviceName string, uid string, parameters UserCreateParameters) (result autorest.Response, err error) {
+func (client UsersClient) CreateOrUpdate(resourceGroupName string, serviceName string, UID string, parameters UserCreateParameters) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,
 			Constraints: []validation.Constraint{{Target: "serviceName", Name: validation.MaxLength, Rule: 50, Chain: nil},
 				{Target: "serviceName", Name: validation.MinLength, Rule: 1, Chain: nil},
 				{Target: "serviceName", Name: validation.Pattern, Rule: `^[a-zA-Z](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?$`, Chain: nil}}},
-		{TargetValue: uid,
-			Constraints: []validation.Constraint{{Target: "uid", Name: validation.MaxLength, Rule: 256, Chain: nil},
-				{Target: "uid", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "uid", Name: validation.Pattern, Rule: `^[^*#&+:<>?]+$`, Chain: nil}}},
+		{TargetValue: UID,
+			Constraints: []validation.Constraint{{Target: "UID", Name: validation.MaxLength, Rule: 256, Chain: nil},
+				{Target: "UID", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "UID", Name: validation.Pattern, Rule: `^[^*#&+:<>?]+$`, Chain: nil}}},
 		{TargetValue: parameters,
 			Constraints: []validation.Constraint{{Target: "parameters.Email", Name: validation.Null, Rule: true,
 				Chain: []validation.Constraint{{Target: "parameters.Email", Name: validation.MaxLength, Rule: 254, Chain: nil},
@@ -75,15 +75,17 @@ func (client UsersClient) CreateOrUpdate(resourceGroupName string, serviceName s
 		return result, validation.NewErrorWithValidationError(err, "apimanagement.UsersClient", "CreateOrUpdate")
 	}
 
-	req, err := client.CreateOrUpdatePreparer(resourceGroupName, serviceName, uid, parameters)
+	req, err := client.CreateOrUpdatePreparer(resourceGroupName, serviceName, UID, parameters)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "apimanagement.UsersClient", "CreateOrUpdate", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "apimanagement.UsersClient", "CreateOrUpdate", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.CreateOrUpdateSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "apimanagement.UsersClient", "CreateOrUpdate", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "apimanagement.UsersClient", "CreateOrUpdate", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.CreateOrUpdateResponder(resp)
@@ -95,12 +97,12 @@ func (client UsersClient) CreateOrUpdate(resourceGroupName string, serviceName s
 }
 
 // CreateOrUpdatePreparer prepares the CreateOrUpdate request.
-func (client UsersClient) CreateOrUpdatePreparer(resourceGroupName string, serviceName string, uid string, parameters UserCreateParameters) (*http.Request, error) {
+func (client UsersClient) CreateOrUpdatePreparer(resourceGroupName string, serviceName string, UID string, parameters UserCreateParameters) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"serviceName":       autorest.Encode("path", serviceName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
-		"uid":               autorest.Encode("path", uid),
+		"uid":               autorest.Encode("path", UID),
 	}
 
 	const APIVersion = "2016-07-07"
@@ -139,33 +141,35 @@ func (client UsersClient) CreateOrUpdateResponder(resp *http.Response) (result a
 // Delete deletes specific user.
 //
 // resourceGroupName is the name of the resource group. serviceName is the name
-// of the API Management service. uid is user identifier. Must be unique in the
+// of the API Management service. UID is user identifier. Must be unique in the
 // current API Management service instance. ifMatch is the entity state (Etag)
 // version of the user to delete. A value of "*" can be used for If-Match to
 // unconditionally apply the operation. deleteSubscriptions is whether to
 // delete user's subscription or not.
-func (client UsersClient) Delete(resourceGroupName string, serviceName string, uid string, ifMatch string, deleteSubscriptions *bool) (result ErrorBodyContract, err error) {
+func (client UsersClient) Delete(resourceGroupName string, serviceName string, UID string, ifMatch string, deleteSubscriptions *bool) (result ErrorBodyContract, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,
 			Constraints: []validation.Constraint{{Target: "serviceName", Name: validation.MaxLength, Rule: 50, Chain: nil},
 				{Target: "serviceName", Name: validation.MinLength, Rule: 1, Chain: nil},
 				{Target: "serviceName", Name: validation.Pattern, Rule: `^[a-zA-Z](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?$`, Chain: nil}}},
-		{TargetValue: uid,
-			Constraints: []validation.Constraint{{Target: "uid", Name: validation.MaxLength, Rule: 256, Chain: nil},
-				{Target: "uid", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "uid", Name: validation.Pattern, Rule: `^[^*#&+:<>?]+$`, Chain: nil}}}}); err != nil {
+		{TargetValue: UID,
+			Constraints: []validation.Constraint{{Target: "UID", Name: validation.MaxLength, Rule: 256, Chain: nil},
+				{Target: "UID", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "UID", Name: validation.Pattern, Rule: `^[^*#&+:<>?]+$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewErrorWithValidationError(err, "apimanagement.UsersClient", "Delete")
 	}
 
-	req, err := client.DeletePreparer(resourceGroupName, serviceName, uid, ifMatch, deleteSubscriptions)
+	req, err := client.DeletePreparer(resourceGroupName, serviceName, UID, ifMatch, deleteSubscriptions)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "apimanagement.UsersClient", "Delete", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "apimanagement.UsersClient", "Delete", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.DeleteSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "apimanagement.UsersClient", "Delete", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "apimanagement.UsersClient", "Delete", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.DeleteResponder(resp)
@@ -177,12 +181,12 @@ func (client UsersClient) Delete(resourceGroupName string, serviceName string, u
 }
 
 // DeletePreparer prepares the Delete request.
-func (client UsersClient) DeletePreparer(resourceGroupName string, serviceName string, uid string, ifMatch string, deleteSubscriptions *bool) (*http.Request, error) {
+func (client UsersClient) DeletePreparer(resourceGroupName string, serviceName string, UID string, ifMatch string, deleteSubscriptions *bool) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"serviceName":       autorest.Encode("path", serviceName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
-		"uid":               autorest.Encode("path", uid),
+		"uid":               autorest.Encode("path", UID),
 	}
 
 	const APIVersion = "2016-07-07"
@@ -225,30 +229,32 @@ func (client UsersClient) DeleteResponder(resp *http.Response) (result ErrorBody
 // token for signing a given user into the developer portal.
 //
 // resourceGroupName is the name of the resource group. serviceName is the name
-// of the API Management service. uid is user identifier. Must be unique in the
+// of the API Management service. UID is user identifier. Must be unique in the
 // current API Management service instance.
-func (client UsersClient) GenerateSsoURL(resourceGroupName string, serviceName string, uid string) (result GenerateSsoURLResult, err error) {
+func (client UsersClient) GenerateSsoURL(resourceGroupName string, serviceName string, UID string) (result GenerateSsoURLResult, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,
 			Constraints: []validation.Constraint{{Target: "serviceName", Name: validation.MaxLength, Rule: 50, Chain: nil},
 				{Target: "serviceName", Name: validation.MinLength, Rule: 1, Chain: nil},
 				{Target: "serviceName", Name: validation.Pattern, Rule: `^[a-zA-Z](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?$`, Chain: nil}}},
-		{TargetValue: uid,
-			Constraints: []validation.Constraint{{Target: "uid", Name: validation.MaxLength, Rule: 256, Chain: nil},
-				{Target: "uid", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "uid", Name: validation.Pattern, Rule: `^[^*#&+:<>?]+$`, Chain: nil}}}}); err != nil {
+		{TargetValue: UID,
+			Constraints: []validation.Constraint{{Target: "UID", Name: validation.MaxLength, Rule: 256, Chain: nil},
+				{Target: "UID", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "UID", Name: validation.Pattern, Rule: `^[^*#&+:<>?]+$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewErrorWithValidationError(err, "apimanagement.UsersClient", "GenerateSsoURL")
 	}
 
-	req, err := client.GenerateSsoURLPreparer(resourceGroupName, serviceName, uid)
+	req, err := client.GenerateSsoURLPreparer(resourceGroupName, serviceName, UID)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "apimanagement.UsersClient", "GenerateSsoURL", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "apimanagement.UsersClient", "GenerateSsoURL", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GenerateSsoURLSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "apimanagement.UsersClient", "GenerateSsoURL", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "apimanagement.UsersClient", "GenerateSsoURL", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GenerateSsoURLResponder(resp)
@@ -260,12 +266,12 @@ func (client UsersClient) GenerateSsoURL(resourceGroupName string, serviceName s
 }
 
 // GenerateSsoURLPreparer prepares the GenerateSsoURL request.
-func (client UsersClient) GenerateSsoURLPreparer(resourceGroupName string, serviceName string, uid string) (*http.Request, error) {
+func (client UsersClient) GenerateSsoURLPreparer(resourceGroupName string, serviceName string, UID string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"serviceName":       autorest.Encode("path", serviceName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
-		"uid":               autorest.Encode("path", uid),
+		"uid":               autorest.Encode("path", UID),
 	}
 
 	const APIVersion = "2016-07-07"
@@ -303,30 +309,32 @@ func (client UsersClient) GenerateSsoURLResponder(resp *http.Response) (result G
 // Get gets the details of the user specified by its identifier.
 //
 // resourceGroupName is the name of the resource group. serviceName is the name
-// of the API Management service. uid is user identifier. Must be unique in the
+// of the API Management service. UID is user identifier. Must be unique in the
 // current API Management service instance.
-func (client UsersClient) Get(resourceGroupName string, serviceName string, uid string) (result UserContract, err error) {
+func (client UsersClient) Get(resourceGroupName string, serviceName string, UID string) (result UserContract, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,
 			Constraints: []validation.Constraint{{Target: "serviceName", Name: validation.MaxLength, Rule: 50, Chain: nil},
 				{Target: "serviceName", Name: validation.MinLength, Rule: 1, Chain: nil},
 				{Target: "serviceName", Name: validation.Pattern, Rule: `^[a-zA-Z](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?$`, Chain: nil}}},
-		{TargetValue: uid,
-			Constraints: []validation.Constraint{{Target: "uid", Name: validation.MaxLength, Rule: 256, Chain: nil},
-				{Target: "uid", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "uid", Name: validation.Pattern, Rule: `^[^*#&+:<>?]+$`, Chain: nil}}}}); err != nil {
+		{TargetValue: UID,
+			Constraints: []validation.Constraint{{Target: "UID", Name: validation.MaxLength, Rule: 256, Chain: nil},
+				{Target: "UID", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "UID", Name: validation.Pattern, Rule: `^[^*#&+:<>?]+$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewErrorWithValidationError(err, "apimanagement.UsersClient", "Get")
 	}
 
-	req, err := client.GetPreparer(resourceGroupName, serviceName, uid)
+	req, err := client.GetPreparer(resourceGroupName, serviceName, UID)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "apimanagement.UsersClient", "Get", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "apimanagement.UsersClient", "Get", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "apimanagement.UsersClient", "Get", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "apimanagement.UsersClient", "Get", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetResponder(resp)
@@ -338,12 +346,12 @@ func (client UsersClient) Get(resourceGroupName string, serviceName string, uid 
 }
 
 // GetPreparer prepares the Get request.
-func (client UsersClient) GetPreparer(resourceGroupName string, serviceName string, uid string) (*http.Request, error) {
+func (client UsersClient) GetPreparer(resourceGroupName string, serviceName string, UID string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"serviceName":       autorest.Encode("path", serviceName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
-		"uid":               autorest.Encode("path", uid),
+		"uid":               autorest.Encode("path", UID),
 	}
 
 	const APIVersion = "2016-07-07"
@@ -417,13 +425,15 @@ func (client UsersClient) ListByService(resourceGroupName string, serviceName st
 
 	req, err := client.ListByServicePreparer(resourceGroupName, serviceName, filter, top, skip)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "apimanagement.UsersClient", "ListByService", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "apimanagement.UsersClient", "ListByService", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListByServiceSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "apimanagement.UsersClient", "ListByService", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "apimanagement.UsersClient", "ListByService", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListByServiceResponder(resp)
@@ -510,32 +520,34 @@ func (client UsersClient) ListByServiceNextResults(lastResults UserCollection) (
 // Update updates the details of the user specified by its identifier.
 //
 // resourceGroupName is the name of the resource group. serviceName is the name
-// of the API Management service. uid is user identifier. Must be unique in the
+// of the API Management service. UID is user identifier. Must be unique in the
 // current API Management service instance. parameters is update parameters.
 // ifMatch is the entity state (Etag) version of the user to update. A value of
 // "*" can be used for If-Match to unconditionally apply the operation.
-func (client UsersClient) Update(resourceGroupName string, serviceName string, uid string, parameters UserUpdateParameters, ifMatch string) (result ErrorBodyContract, err error) {
+func (client UsersClient) Update(resourceGroupName string, serviceName string, UID string, parameters UserUpdateParameters, ifMatch string) (result ErrorBodyContract, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,
 			Constraints: []validation.Constraint{{Target: "serviceName", Name: validation.MaxLength, Rule: 50, Chain: nil},
 				{Target: "serviceName", Name: validation.MinLength, Rule: 1, Chain: nil},
 				{Target: "serviceName", Name: validation.Pattern, Rule: `^[a-zA-Z](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?$`, Chain: nil}}},
-		{TargetValue: uid,
-			Constraints: []validation.Constraint{{Target: "uid", Name: validation.MaxLength, Rule: 256, Chain: nil},
-				{Target: "uid", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "uid", Name: validation.Pattern, Rule: `^[^*#&+:<>?]+$`, Chain: nil}}}}); err != nil {
+		{TargetValue: UID,
+			Constraints: []validation.Constraint{{Target: "UID", Name: validation.MaxLength, Rule: 256, Chain: nil},
+				{Target: "UID", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "UID", Name: validation.Pattern, Rule: `^[^*#&+:<>?]+$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewErrorWithValidationError(err, "apimanagement.UsersClient", "Update")
 	}
 
-	req, err := client.UpdatePreparer(resourceGroupName, serviceName, uid, parameters, ifMatch)
+	req, err := client.UpdatePreparer(resourceGroupName, serviceName, UID, parameters, ifMatch)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "apimanagement.UsersClient", "Update", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "apimanagement.UsersClient", "Update", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.UpdateSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "apimanagement.UsersClient", "Update", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "apimanagement.UsersClient", "Update", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.UpdateResponder(resp)
@@ -547,12 +559,12 @@ func (client UsersClient) Update(resourceGroupName string, serviceName string, u
 }
 
 // UpdatePreparer prepares the Update request.
-func (client UsersClient) UpdatePreparer(resourceGroupName string, serviceName string, uid string, parameters UserUpdateParameters, ifMatch string) (*http.Request, error) {
+func (client UsersClient) UpdatePreparer(resourceGroupName string, serviceName string, UID string, parameters UserUpdateParameters, ifMatch string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"serviceName":       autorest.Encode("path", serviceName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
-		"uid":               autorest.Encode("path", uid),
+		"uid":               autorest.Encode("path", UID),
 	}
 
 	const APIVersion = "2016-07-07"

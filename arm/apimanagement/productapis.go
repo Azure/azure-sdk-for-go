@@ -47,9 +47,9 @@ func NewProductApisClientWithBaseURI(baseURI string, subscriptionID string) Prod
 //
 // resourceGroupName is the name of the resource group. serviceName is the name
 // of the API Management service. productID is product identifier. Must be
-// unique in the current API Management service instance. apiID is aPI
+// unique in the current API Management service instance. aPIID is aPI
 // identifier. Must be unique in the current API Management service instance.
-func (client ProductApisClient) Add(resourceGroupName string, serviceName string, productID string, apiID string) (result autorest.Response, err error) {
+func (client ProductApisClient) Add(resourceGroupName string, serviceName string, productID string, aPIID string) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,
 			Constraints: []validation.Constraint{{Target: "serviceName", Name: validation.MaxLength, Rule: 50, Chain: nil},
@@ -59,22 +59,24 @@ func (client ProductApisClient) Add(resourceGroupName string, serviceName string
 			Constraints: []validation.Constraint{{Target: "productID", Name: validation.MaxLength, Rule: 256, Chain: nil},
 				{Target: "productID", Name: validation.MinLength, Rule: 1, Chain: nil},
 				{Target: "productID", Name: validation.Pattern, Rule: `^[^*#&+:<>?]+$`, Chain: nil}}},
-		{TargetValue: apiID,
-			Constraints: []validation.Constraint{{Target: "apiID", Name: validation.MaxLength, Rule: 256, Chain: nil},
-				{Target: "apiID", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "apiID", Name: validation.Pattern, Rule: `^[^*#&+:<>?]+$`, Chain: nil}}}}); err != nil {
+		{TargetValue: aPIID,
+			Constraints: []validation.Constraint{{Target: "aPIID", Name: validation.MaxLength, Rule: 256, Chain: nil},
+				{Target: "aPIID", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "aPIID", Name: validation.Pattern, Rule: `^[^*#&+:<>?]+$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewErrorWithValidationError(err, "apimanagement.ProductApisClient", "Add")
 	}
 
-	req, err := client.AddPreparer(resourceGroupName, serviceName, productID, apiID)
+	req, err := client.AddPreparer(resourceGroupName, serviceName, productID, aPIID)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "apimanagement.ProductApisClient", "Add", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "apimanagement.ProductApisClient", "Add", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.AddSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "apimanagement.ProductApisClient", "Add", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "apimanagement.ProductApisClient", "Add", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.AddResponder(resp)
@@ -86,9 +88,9 @@ func (client ProductApisClient) Add(resourceGroupName string, serviceName string
 }
 
 // AddPreparer prepares the Add request.
-func (client ProductApisClient) AddPreparer(resourceGroupName string, serviceName string, productID string, apiID string) (*http.Request, error) {
+func (client ProductApisClient) AddPreparer(resourceGroupName string, serviceName string, productID string, aPIID string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"apiId":             autorest.Encode("path", apiID),
+		"apiId":             autorest.Encode("path", aPIID),
 		"productId":         autorest.Encode("path", productID),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"serviceName":       autorest.Encode("path", serviceName),
@@ -165,13 +167,15 @@ func (client ProductApisClient) ListByProduct(resourceGroupName string, serviceN
 
 	req, err := client.ListByProductPreparer(resourceGroupName, serviceName, productID, filter, top, skip)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "apimanagement.ProductApisClient", "ListByProduct", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "apimanagement.ProductApisClient", "ListByProduct", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListByProductSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "apimanagement.ProductApisClient", "ListByProduct", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "apimanagement.ProductApisClient", "ListByProduct", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListByProductResponder(resp)
@@ -260,9 +264,9 @@ func (client ProductApisClient) ListByProductNextResults(lastResults APICollecti
 //
 // resourceGroupName is the name of the resource group. serviceName is the name
 // of the API Management service. productID is product identifier. Must be
-// unique in the current API Management service instance. apiID is aPI
+// unique in the current API Management service instance. aPIID is aPI
 // identifier. Must be unique in the current API Management service instance.
-func (client ProductApisClient) Remove(resourceGroupName string, serviceName string, productID string, apiID string) (result autorest.Response, err error) {
+func (client ProductApisClient) Remove(resourceGroupName string, serviceName string, productID string, aPIID string) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,
 			Constraints: []validation.Constraint{{Target: "serviceName", Name: validation.MaxLength, Rule: 50, Chain: nil},
@@ -272,22 +276,24 @@ func (client ProductApisClient) Remove(resourceGroupName string, serviceName str
 			Constraints: []validation.Constraint{{Target: "productID", Name: validation.MaxLength, Rule: 256, Chain: nil},
 				{Target: "productID", Name: validation.MinLength, Rule: 1, Chain: nil},
 				{Target: "productID", Name: validation.Pattern, Rule: `^[^*#&+:<>?]+$`, Chain: nil}}},
-		{TargetValue: apiID,
-			Constraints: []validation.Constraint{{Target: "apiID", Name: validation.MaxLength, Rule: 256, Chain: nil},
-				{Target: "apiID", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "apiID", Name: validation.Pattern, Rule: `^[^*#&+:<>?]+$`, Chain: nil}}}}); err != nil {
+		{TargetValue: aPIID,
+			Constraints: []validation.Constraint{{Target: "aPIID", Name: validation.MaxLength, Rule: 256, Chain: nil},
+				{Target: "aPIID", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "aPIID", Name: validation.Pattern, Rule: `^[^*#&+:<>?]+$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewErrorWithValidationError(err, "apimanagement.ProductApisClient", "Remove")
 	}
 
-	req, err := client.RemovePreparer(resourceGroupName, serviceName, productID, apiID)
+	req, err := client.RemovePreparer(resourceGroupName, serviceName, productID, aPIID)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "apimanagement.ProductApisClient", "Remove", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "apimanagement.ProductApisClient", "Remove", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.RemoveSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "apimanagement.ProductApisClient", "Remove", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "apimanagement.ProductApisClient", "Remove", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.RemoveResponder(resp)
@@ -299,9 +305,9 @@ func (client ProductApisClient) Remove(resourceGroupName string, serviceName str
 }
 
 // RemovePreparer prepares the Remove request.
-func (client ProductApisClient) RemovePreparer(resourceGroupName string, serviceName string, productID string, apiID string) (*http.Request, error) {
+func (client ProductApisClient) RemovePreparer(resourceGroupName string, serviceName string, productID string, aPIID string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"apiId":             autorest.Encode("path", apiID),
+		"apiId":             autorest.Encode("path", aPIID),
 		"productId":         autorest.Encode("path", productID),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"serviceName":       autorest.Encode("path", serviceName),

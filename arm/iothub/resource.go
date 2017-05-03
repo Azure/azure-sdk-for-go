@@ -55,13 +55,15 @@ func (client ResourceClient) CheckNameAvailability(operationInputs OperationInpu
 
 	req, err := client.CheckNameAvailabilityPreparer(operationInputs)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "iothub.ResourceClient", "CheckNameAvailability", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "iothub.ResourceClient", "CheckNameAvailability", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.CheckNameAvailabilitySender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "iothub.ResourceClient", "CheckNameAvailability", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "iothub.ResourceClient", "CheckNameAvailability", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.CheckNameAvailabilityResponder(resp)
@@ -122,13 +124,15 @@ func (client ResourceClient) CheckNameAvailabilityResponder(resp *http.Response)
 func (client ResourceClient) CreateEventHubConsumerGroup(resourceGroupName string, resourceName string, eventHubEndpointName string, name string) (result EventHubConsumerGroupInfo, err error) {
 	req, err := client.CreateEventHubConsumerGroupPreparer(resourceGroupName, resourceName, eventHubEndpointName, name)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "iothub.ResourceClient", "CreateEventHubConsumerGroup", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "iothub.ResourceClient", "CreateEventHubConsumerGroup", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.CreateEventHubConsumerGroupSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "iothub.ResourceClient", "CreateEventHubConsumerGroup", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "iothub.ResourceClient", "CreateEventHubConsumerGroup", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.CreateEventHubConsumerGroupResponder(resp)
@@ -191,7 +195,9 @@ func (client ResourceClient) CreateEventHubConsumerGroupResponder(resp *http.Res
 // resourceGroupName is the name of the resource group that contains the IoT
 // hub. resourceName is the name of the IoT hub to create or update.
 // iotHubDescription is the IoT hub metadata and security metadata.
-func (client ResourceClient) CreateOrUpdate(resourceGroupName string, resourceName string, iotHubDescription Description, cancel <-chan struct{}) (result autorest.Response, err error) {
+func (client ResourceClient) CreateOrUpdate(resourceGroupName string, resourceName string, iotHubDescription Description, cancel <-chan struct{}) (<-chan Description, <-chan error) {
+	resultChan := make(chan Description, 1)
+	errChan := make(chan error, 1)
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: iotHubDescription,
 			Constraints: []validation.Constraint{{Target: "iotHubDescription.Subscriptionid", Name: validation.Null, Rule: true, Chain: nil},
@@ -212,26 +218,40 @@ func (client ResourceClient) CreateOrUpdate(resourceGroupName string, resourceNa
 					}},
 				{Target: "iotHubDescription.Sku", Name: validation.Null, Rule: true,
 					Chain: []validation.Constraint{{Target: "iotHubDescription.Sku.Capacity", Name: validation.Null, Rule: true, Chain: nil}}}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "iothub.ResourceClient", "CreateOrUpdate")
+		errChan <- validation.NewErrorWithValidationError(err, "iothub.ResourceClient", "CreateOrUpdate")
+		close(errChan)
+		close(resultChan)
+		return resultChan, errChan
 	}
 
-	req, err := client.CreateOrUpdatePreparer(resourceGroupName, resourceName, iotHubDescription, cancel)
-	if err != nil {
-		return result, autorest.NewErrorWithError(err, "iothub.ResourceClient", "CreateOrUpdate", nil, "Failure preparing request")
-	}
+	go func() {
+		var err error
+		var result Description
+		defer func() {
+			resultChan <- result
+			errChan <- err
+			close(resultChan)
+			close(errChan)
+		}()
+		req, err := client.CreateOrUpdatePreparer(resourceGroupName, resourceName, iotHubDescription, cancel)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "iothub.ResourceClient", "CreateOrUpdate", nil, "Failure preparing request")
+			return
+		}
 
-	resp, err := client.CreateOrUpdateSender(req)
-	if err != nil {
-		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "iothub.ResourceClient", "CreateOrUpdate", resp, "Failure sending request")
-	}
+		resp, err := client.CreateOrUpdateSender(req)
+		if err != nil {
+			result.Response = autorest.Response{Response: resp}
+			err = autorest.NewErrorWithError(err, "iothub.ResourceClient", "CreateOrUpdate", resp, "Failure sending request")
+			return
+		}
 
-	result, err = client.CreateOrUpdateResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "iothub.ResourceClient", "CreateOrUpdate", resp, "Failure responding to request")
-	}
-
-	return
+		result, err = client.CreateOrUpdateResponder(resp)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "iothub.ResourceClient", "CreateOrUpdate", resp, "Failure responding to request")
+		}
+	}()
+	return resultChan, errChan
 }
 
 // CreateOrUpdatePreparer prepares the CreateOrUpdate request.
@@ -267,13 +287,14 @@ func (client ResourceClient) CreateOrUpdateSender(req *http.Request) (*http.Resp
 
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
 // closes the http.Response Body.
-func (client ResourceClient) CreateOrUpdateResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client ResourceClient) CreateOrUpdateResponder(resp *http.Response) (result Description, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusCreated, http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = resp
+	result.Response = autorest.Response{Response: resp}
 	return
 }
 
@@ -283,24 +304,37 @@ func (client ResourceClient) CreateOrUpdateResponder(resp *http.Response) (resul
 //
 // resourceGroupName is the name of the resource group that contains the IoT
 // hub. resourceName is the name of the IoT hub to delete.
-func (client ResourceClient) Delete(resourceGroupName string, resourceName string, cancel <-chan struct{}) (result autorest.Response, err error) {
-	req, err := client.DeletePreparer(resourceGroupName, resourceName, cancel)
-	if err != nil {
-		return result, autorest.NewErrorWithError(err, "iothub.ResourceClient", "Delete", nil, "Failure preparing request")
-	}
+func (client ResourceClient) Delete(resourceGroupName string, resourceName string, cancel <-chan struct{}) (<-chan SetObject, <-chan error) {
+	resultChan := make(chan SetObject, 1)
+	errChan := make(chan error, 1)
+	go func() {
+		var err error
+		var result SetObject
+		defer func() {
+			resultChan <- result
+			errChan <- err
+			close(resultChan)
+			close(errChan)
+		}()
+		req, err := client.DeletePreparer(resourceGroupName, resourceName, cancel)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "iothub.ResourceClient", "Delete", nil, "Failure preparing request")
+			return
+		}
 
-	resp, err := client.DeleteSender(req)
-	if err != nil {
-		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "iothub.ResourceClient", "Delete", resp, "Failure sending request")
-	}
+		resp, err := client.DeleteSender(req)
+		if err != nil {
+			result.Response = autorest.Response{Response: resp}
+			err = autorest.NewErrorWithError(err, "iothub.ResourceClient", "Delete", resp, "Failure sending request")
+			return
+		}
 
-	result, err = client.DeleteResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "iothub.ResourceClient", "Delete", resp, "Failure responding to request")
-	}
-
-	return
+		result, err = client.DeleteResponder(resp)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "iothub.ResourceClient", "Delete", resp, "Failure responding to request")
+		}
+	}()
+	return resultChan, errChan
 }
 
 // DeletePreparer prepares the Delete request.
@@ -334,13 +368,14 @@ func (client ResourceClient) DeleteSender(req *http.Request) (*http.Response, er
 
 // DeleteResponder handles the response to the Delete request. The method always
 // closes the http.Response Body.
-func (client ResourceClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client ResourceClient) DeleteResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusAccepted, http.StatusOK, http.StatusNoContent, http.StatusNotFound),
+		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
-	result.Response = resp
+	result.Response = autorest.Response{Response: resp}
 	return
 }
 
@@ -354,13 +389,15 @@ func (client ResourceClient) DeleteResponder(resp *http.Response) (result autore
 func (client ResourceClient) DeleteEventHubConsumerGroup(resourceGroupName string, resourceName string, eventHubEndpointName string, name string) (result autorest.Response, err error) {
 	req, err := client.DeleteEventHubConsumerGroupPreparer(resourceGroupName, resourceName, eventHubEndpointName, name)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "iothub.ResourceClient", "DeleteEventHubConsumerGroup", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "iothub.ResourceClient", "DeleteEventHubConsumerGroup", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.DeleteEventHubConsumerGroupSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "iothub.ResourceClient", "DeleteEventHubConsumerGroup", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "iothub.ResourceClient", "DeleteEventHubConsumerGroup", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.DeleteEventHubConsumerGroupResponder(resp)
@@ -429,13 +466,15 @@ func (client ResourceClient) ExportDevices(resourceGroupName string, resourceNam
 
 	req, err := client.ExportDevicesPreparer(resourceGroupName, resourceName, exportDevicesParameters)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "iothub.ResourceClient", "ExportDevices", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "iothub.ResourceClient", "ExportDevices", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ExportDevicesSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "iothub.ResourceClient", "ExportDevices", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "iothub.ResourceClient", "ExportDevices", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ExportDevicesResponder(resp)
@@ -495,13 +534,15 @@ func (client ResourceClient) ExportDevicesResponder(resp *http.Response) (result
 func (client ResourceClient) Get(resourceGroupName string, resourceName string) (result Description, err error) {
 	req, err := client.GetPreparer(resourceGroupName, resourceName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "iothub.ResourceClient", "Get", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "iothub.ResourceClient", "Get", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "iothub.ResourceClient", "Get", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "iothub.ResourceClient", "Get", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetResponder(resp)
@@ -562,13 +603,15 @@ func (client ResourceClient) GetResponder(resp *http.Response) (result Descripti
 func (client ResourceClient) GetEventHubConsumerGroup(resourceGroupName string, resourceName string, eventHubEndpointName string, name string) (result EventHubConsumerGroupInfo, err error) {
 	req, err := client.GetEventHubConsumerGroupPreparer(resourceGroupName, resourceName, eventHubEndpointName, name)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "iothub.ResourceClient", "GetEventHubConsumerGroup", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "iothub.ResourceClient", "GetEventHubConsumerGroup", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetEventHubConsumerGroupSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "iothub.ResourceClient", "GetEventHubConsumerGroup", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "iothub.ResourceClient", "GetEventHubConsumerGroup", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetEventHubConsumerGroupResponder(resp)
@@ -629,13 +672,15 @@ func (client ResourceClient) GetEventHubConsumerGroupResponder(resp *http.Respon
 func (client ResourceClient) GetJob(resourceGroupName string, resourceName string, jobID string) (result JobResponse, err error) {
 	req, err := client.GetJobPreparer(resourceGroupName, resourceName, jobID)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "iothub.ResourceClient", "GetJob", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "iothub.ResourceClient", "GetJob", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetJobSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "iothub.ResourceClient", "GetJob", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "iothub.ResourceClient", "GetJob", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetJobResponder(resp)
@@ -697,13 +742,15 @@ func (client ResourceClient) GetJobResponder(resp *http.Response) (result JobRes
 func (client ResourceClient) GetKeysForKeyName(resourceGroupName string, resourceName string, keyName string) (result SharedAccessSignatureAuthorizationRule, err error) {
 	req, err := client.GetKeysForKeyNamePreparer(resourceGroupName, resourceName, keyName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "iothub.ResourceClient", "GetKeysForKeyName", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "iothub.ResourceClient", "GetKeysForKeyName", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetKeysForKeyNameSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "iothub.ResourceClient", "GetKeysForKeyName", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "iothub.ResourceClient", "GetKeysForKeyName", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetKeysForKeyNameResponder(resp)
@@ -762,13 +809,15 @@ func (client ResourceClient) GetKeysForKeyNameResponder(resp *http.Response) (re
 func (client ResourceClient) GetQuotaMetrics(resourceGroupName string, resourceName string) (result QuotaMetricInfoListResult, err error) {
 	req, err := client.GetQuotaMetricsPreparer(resourceGroupName, resourceName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "iothub.ResourceClient", "GetQuotaMetrics", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "iothub.ResourceClient", "GetQuotaMetrics", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetQuotaMetricsSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "iothub.ResourceClient", "GetQuotaMetrics", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "iothub.ResourceClient", "GetQuotaMetrics", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetQuotaMetricsResponder(resp)
@@ -850,13 +899,15 @@ func (client ResourceClient) GetQuotaMetricsNextResults(lastResults QuotaMetricI
 func (client ResourceClient) GetStats(resourceGroupName string, resourceName string) (result RegistryStatistics, err error) {
 	req, err := client.GetStatsPreparer(resourceGroupName, resourceName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "iothub.ResourceClient", "GetStats", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "iothub.ResourceClient", "GetStats", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetStatsSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "iothub.ResourceClient", "GetStats", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "iothub.ResourceClient", "GetStats", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetStatsResponder(resp)
@@ -914,13 +965,15 @@ func (client ResourceClient) GetStatsResponder(resp *http.Response) (result Regi
 func (client ResourceClient) GetValidSkus(resourceGroupName string, resourceName string) (result SkuDescriptionListResult, err error) {
 	req, err := client.GetValidSkusPreparer(resourceGroupName, resourceName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "iothub.ResourceClient", "GetValidSkus", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "iothub.ResourceClient", "GetValidSkus", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetValidSkusSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "iothub.ResourceClient", "GetValidSkus", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "iothub.ResourceClient", "GetValidSkus", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetValidSkusResponder(resp)
@@ -1012,13 +1065,15 @@ func (client ResourceClient) ImportDevices(resourceGroupName string, resourceNam
 
 	req, err := client.ImportDevicesPreparer(resourceGroupName, resourceName, importDevicesParameters)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "iothub.ResourceClient", "ImportDevices", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "iothub.ResourceClient", "ImportDevices", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ImportDevicesSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "iothub.ResourceClient", "ImportDevices", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "iothub.ResourceClient", "ImportDevices", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ImportDevicesResponder(resp)
@@ -1078,13 +1133,15 @@ func (client ResourceClient) ImportDevicesResponder(resp *http.Response) (result
 func (client ResourceClient) ListByResourceGroup(resourceGroupName string) (result DescriptionListResult, err error) {
 	req, err := client.ListByResourceGroupPreparer(resourceGroupName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "iothub.ResourceClient", "ListByResourceGroup", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "iothub.ResourceClient", "ListByResourceGroup", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListByResourceGroupSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "iothub.ResourceClient", "ListByResourceGroup", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "iothub.ResourceClient", "ListByResourceGroup", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListByResourceGroupResponder(resp)
@@ -1162,13 +1219,15 @@ func (client ResourceClient) ListByResourceGroupNextResults(lastResults Descript
 func (client ResourceClient) ListBySubscription() (result DescriptionListResult, err error) {
 	req, err := client.ListBySubscriptionPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "iothub.ResourceClient", "ListBySubscription", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "iothub.ResourceClient", "ListBySubscription", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListBySubscriptionSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "iothub.ResourceClient", "ListBySubscription", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "iothub.ResourceClient", "ListBySubscription", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListBySubscriptionResponder(resp)
@@ -1250,13 +1309,15 @@ func (client ResourceClient) ListBySubscriptionNextResults(lastResults Descripti
 func (client ResourceClient) ListEventHubConsumerGroups(resourceGroupName string, resourceName string, eventHubEndpointName string) (result EventHubConsumerGroupsListResult, err error) {
 	req, err := client.ListEventHubConsumerGroupsPreparer(resourceGroupName, resourceName, eventHubEndpointName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "iothub.ResourceClient", "ListEventHubConsumerGroups", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "iothub.ResourceClient", "ListEventHubConsumerGroups", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListEventHubConsumerGroupsSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "iothub.ResourceClient", "ListEventHubConsumerGroups", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "iothub.ResourceClient", "ListEventHubConsumerGroups", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListEventHubConsumerGroupsResponder(resp)
@@ -1341,13 +1402,15 @@ func (client ResourceClient) ListEventHubConsumerGroupsNextResults(lastResults E
 func (client ResourceClient) ListJobs(resourceGroupName string, resourceName string) (result JobResponseListResult, err error) {
 	req, err := client.ListJobsPreparer(resourceGroupName, resourceName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "iothub.ResourceClient", "ListJobs", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "iothub.ResourceClient", "ListJobs", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListJobsSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "iothub.ResourceClient", "ListJobs", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "iothub.ResourceClient", "ListJobs", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListJobsResponder(resp)
@@ -1430,13 +1493,15 @@ func (client ResourceClient) ListJobsNextResults(lastResults JobResponseListResu
 func (client ResourceClient) ListKeys(resourceGroupName string, resourceName string) (result SharedAccessSignatureAuthorizationRuleListResult, err error) {
 	req, err := client.ListKeysPreparer(resourceGroupName, resourceName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "iothub.ResourceClient", "ListKeys", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "iothub.ResourceClient", "ListKeys", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListKeysSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "iothub.ResourceClient", "ListKeys", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "iothub.ResourceClient", "ListKeys", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListKeysResponder(resp)

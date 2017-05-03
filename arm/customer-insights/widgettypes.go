@@ -50,13 +50,15 @@ func NewWidgetTypesClientWithBaseURI(baseURI string, subscriptionID string) Widg
 func (client WidgetTypesClient) Get(resourceGroupName string, hubName string, widgetTypeName string) (result WidgetTypeResourceFormat, err error) {
 	req, err := client.GetPreparer(resourceGroupName, hubName, widgetTypeName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "customerinsights.WidgetTypesClient", "Get", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "customerinsights.WidgetTypesClient", "Get", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "customerinsights.WidgetTypesClient", "Get", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "customerinsights.WidgetTypesClient", "Get", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetResponder(resp)
@@ -76,8 +78,9 @@ func (client WidgetTypesClient) GetPreparer(resourceGroupName string, hubName st
 		"widgetTypeName":    autorest.Encode("path", widgetTypeName),
 	}
 
+	const APIVersion = "2017-01-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -114,13 +117,15 @@ func (client WidgetTypesClient) GetResponder(resp *http.Response) (result Widget
 func (client WidgetTypesClient) ListByHub(resourceGroupName string, hubName string) (result WidgetTypeListResult, err error) {
 	req, err := client.ListByHubPreparer(resourceGroupName, hubName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "customerinsights.WidgetTypesClient", "ListByHub", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "customerinsights.WidgetTypesClient", "ListByHub", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListByHubSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "customerinsights.WidgetTypesClient", "ListByHub", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "customerinsights.WidgetTypesClient", "ListByHub", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListByHubResponder(resp)
@@ -139,8 +144,9 @@ func (client WidgetTypesClient) ListByHubPreparer(resourceGroupName string, hubN
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
+	const APIVersion = "2017-01-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(

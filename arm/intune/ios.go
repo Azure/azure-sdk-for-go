@@ -56,13 +56,15 @@ func (client IosClient) AddAppForMAMPolicy(hostName string, policyName string, a
 
 	req, err := client.AddAppForMAMPolicyPreparer(hostName, policyName, appName, parameters)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "intune.IosClient", "AddAppForMAMPolicy", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "intune.IosClient", "AddAppForMAMPolicy", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.AddAppForMAMPolicySender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "intune.IosClient", "AddAppForMAMPolicy", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "intune.IosClient", "AddAppForMAMPolicy", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.AddAppForMAMPolicyResponder(resp)
@@ -81,8 +83,9 @@ func (client IosClient) AddAppForMAMPolicyPreparer(hostName string, policyName s
 		"policyName": autorest.Encode("path", policyName),
 	}
 
+	const APIVersion = "2015-01-14-preview"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -128,13 +131,15 @@ func (client IosClient) AddGroupForMAMPolicy(hostName string, policyName string,
 
 	req, err := client.AddGroupForMAMPolicyPreparer(hostName, policyName, groupID, parameters)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "intune.IosClient", "AddGroupForMAMPolicy", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "intune.IosClient", "AddGroupForMAMPolicy", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.AddGroupForMAMPolicySender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "intune.IosClient", "AddGroupForMAMPolicy", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "intune.IosClient", "AddGroupForMAMPolicy", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.AddGroupForMAMPolicyResponder(resp)
@@ -153,8 +158,9 @@ func (client IosClient) AddGroupForMAMPolicyPreparer(hostName string, policyName
 		"policyName": autorest.Encode("path", policyName),
 	}
 
+	const APIVersion = "2015-01-14-preview"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -193,13 +199,15 @@ func (client IosClient) AddGroupForMAMPolicyResponder(resp *http.Response) (resu
 func (client IosClient) CreateOrUpdateMAMPolicy(hostName string, policyName string, parameters IOSMAMPolicy) (result IOSMAMPolicy, err error) {
 	req, err := client.CreateOrUpdateMAMPolicyPreparer(hostName, policyName, parameters)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "intune.IosClient", "CreateOrUpdateMAMPolicy", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "intune.IosClient", "CreateOrUpdateMAMPolicy", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.CreateOrUpdateMAMPolicySender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "intune.IosClient", "CreateOrUpdateMAMPolicy", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "intune.IosClient", "CreateOrUpdateMAMPolicy", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.CreateOrUpdateMAMPolicyResponder(resp)
@@ -217,8 +225,9 @@ func (client IosClient) CreateOrUpdateMAMPolicyPreparer(hostName string, policyN
 		"policyName": autorest.Encode("path", policyName),
 	}
 
+	const APIVersion = "2015-01-14-preview"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -257,13 +266,15 @@ func (client IosClient) CreateOrUpdateMAMPolicyResponder(resp *http.Response) (r
 func (client IosClient) DeleteAppForMAMPolicy(hostName string, policyName string, appName string) (result autorest.Response, err error) {
 	req, err := client.DeleteAppForMAMPolicyPreparer(hostName, policyName, appName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "intune.IosClient", "DeleteAppForMAMPolicy", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "intune.IosClient", "DeleteAppForMAMPolicy", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.DeleteAppForMAMPolicySender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "intune.IosClient", "DeleteAppForMAMPolicy", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "intune.IosClient", "DeleteAppForMAMPolicy", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.DeleteAppForMAMPolicyResponder(resp)
@@ -282,8 +293,9 @@ func (client IosClient) DeleteAppForMAMPolicyPreparer(hostName string, policyNam
 		"policyName": autorest.Encode("path", policyName),
 	}
 
+	const APIVersion = "2015-01-14-preview"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -319,13 +331,15 @@ func (client IosClient) DeleteAppForMAMPolicyResponder(resp *http.Response) (res
 func (client IosClient) DeleteGroupForMAMPolicy(hostName string, policyName string, groupID string) (result autorest.Response, err error) {
 	req, err := client.DeleteGroupForMAMPolicyPreparer(hostName, policyName, groupID)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "intune.IosClient", "DeleteGroupForMAMPolicy", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "intune.IosClient", "DeleteGroupForMAMPolicy", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.DeleteGroupForMAMPolicySender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "intune.IosClient", "DeleteGroupForMAMPolicy", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "intune.IosClient", "DeleteGroupForMAMPolicy", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.DeleteGroupForMAMPolicyResponder(resp)
@@ -344,8 +358,9 @@ func (client IosClient) DeleteGroupForMAMPolicyPreparer(hostName string, policyN
 		"policyName": autorest.Encode("path", policyName),
 	}
 
+	const APIVersion = "2015-01-14-preview"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -381,13 +396,15 @@ func (client IosClient) DeleteGroupForMAMPolicyResponder(resp *http.Response) (r
 func (client IosClient) DeleteMAMPolicy(hostName string, policyName string) (result autorest.Response, err error) {
 	req, err := client.DeleteMAMPolicyPreparer(hostName, policyName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "intune.IosClient", "DeleteMAMPolicy", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "intune.IosClient", "DeleteMAMPolicy", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.DeleteMAMPolicySender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "intune.IosClient", "DeleteMAMPolicy", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "intune.IosClient", "DeleteMAMPolicy", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.DeleteMAMPolicyResponder(resp)
@@ -405,8 +422,9 @@ func (client IosClient) DeleteMAMPolicyPreparer(hostName string, policyName stri
 		"policyName": autorest.Encode("path", policyName),
 	}
 
+	const APIVersion = "2015-01-14-preview"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -443,13 +461,15 @@ func (client IosClient) DeleteMAMPolicyResponder(resp *http.Response) (result au
 func (client IosClient) GetAppForMAMPolicy(hostName string, policyName string, filter string, top *int32, selectParameter string) (result ApplicationCollection, err error) {
 	req, err := client.GetAppForMAMPolicyPreparer(hostName, policyName, filter, top, selectParameter)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "intune.IosClient", "GetAppForMAMPolicy", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "intune.IosClient", "GetAppForMAMPolicy", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetAppForMAMPolicySender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "intune.IosClient", "GetAppForMAMPolicy", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "intune.IosClient", "GetAppForMAMPolicy", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetAppForMAMPolicyResponder(resp)
@@ -467,8 +487,9 @@ func (client IosClient) GetAppForMAMPolicyPreparer(hostName string, policyName s
 		"policyName": autorest.Encode("path", policyName),
 	}
 
+	const APIVersion = "2015-01-14-preview"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 	if len(filter) > 0 {
 		queryParameters["$filter"] = autorest.Encode("query", filter)
@@ -538,13 +559,15 @@ func (client IosClient) GetAppForMAMPolicyNextResults(lastResults ApplicationCol
 func (client IosClient) GetGroupsForMAMPolicy(hostName string, policyName string) (result GroupsCollection, err error) {
 	req, err := client.GetGroupsForMAMPolicyPreparer(hostName, policyName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "intune.IosClient", "GetGroupsForMAMPolicy", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "intune.IosClient", "GetGroupsForMAMPolicy", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetGroupsForMAMPolicySender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "intune.IosClient", "GetGroupsForMAMPolicy", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "intune.IosClient", "GetGroupsForMAMPolicy", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetGroupsForMAMPolicyResponder(resp)
@@ -562,8 +585,9 @@ func (client IosClient) GetGroupsForMAMPolicyPreparer(hostName string, policyNam
 		"policyName": autorest.Encode("path", policyName),
 	}
 
+	const APIVersion = "2015-01-14-preview"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -624,13 +648,15 @@ func (client IosClient) GetGroupsForMAMPolicyNextResults(lastResults GroupsColle
 func (client IosClient) GetMAMPolicies(hostName string, filter string, top *int32, selectParameter string) (result IOSMAMPolicyCollection, err error) {
 	req, err := client.GetMAMPoliciesPreparer(hostName, filter, top, selectParameter)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "intune.IosClient", "GetMAMPolicies", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "intune.IosClient", "GetMAMPolicies", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetMAMPoliciesSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "intune.IosClient", "GetMAMPolicies", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "intune.IosClient", "GetMAMPolicies", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetMAMPoliciesResponder(resp)
@@ -647,8 +673,9 @@ func (client IosClient) GetMAMPoliciesPreparer(hostName string, filter string, t
 		"hostName": autorest.Encode("path", hostName),
 	}
 
+	const APIVersion = "2015-01-14-preview"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 	if len(filter) > 0 {
 		queryParameters["$filter"] = autorest.Encode("query", filter)
@@ -718,13 +745,15 @@ func (client IosClient) GetMAMPoliciesNextResults(lastResults IOSMAMPolicyCollec
 func (client IosClient) GetMAMPolicyByName(hostName string, policyName string, selectParameter string) (result IOSMAMPolicy, err error) {
 	req, err := client.GetMAMPolicyByNamePreparer(hostName, policyName, selectParameter)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "intune.IosClient", "GetMAMPolicyByName", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "intune.IosClient", "GetMAMPolicyByName", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetMAMPolicyByNameSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "intune.IosClient", "GetMAMPolicyByName", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "intune.IosClient", "GetMAMPolicyByName", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetMAMPolicyByNameResponder(resp)
@@ -742,8 +771,9 @@ func (client IosClient) GetMAMPolicyByNamePreparer(hostName string, policyName s
 		"policyName": autorest.Encode("path", policyName),
 	}
 
+	const APIVersion = "2015-01-14-preview"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 	if len(selectParameter) > 0 {
 		queryParameters["$select"] = autorest.Encode("query", selectParameter)
@@ -784,13 +814,15 @@ func (client IosClient) GetMAMPolicyByNameResponder(resp *http.Response) (result
 func (client IosClient) PatchMAMPolicy(hostName string, policyName string, parameters IOSMAMPolicy) (result IOSMAMPolicy, err error) {
 	req, err := client.PatchMAMPolicyPreparer(hostName, policyName, parameters)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "intune.IosClient", "PatchMAMPolicy", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "intune.IosClient", "PatchMAMPolicy", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.PatchMAMPolicySender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "intune.IosClient", "PatchMAMPolicy", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "intune.IosClient", "PatchMAMPolicy", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.PatchMAMPolicyResponder(resp)
@@ -808,8 +840,9 @@ func (client IosClient) PatchMAMPolicyPreparer(hostName string, policyName strin
 		"policyName": autorest.Encode("path", policyName),
 	}
 
+	const APIVersion = "2015-01-14-preview"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(

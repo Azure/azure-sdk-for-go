@@ -54,7 +54,9 @@ func NewAccountClientWithBaseURI(baseURI string, subscriptionID string) AccountC
 // service in the region in which the account is created. For example:
 // http://accountname.region.batch.azure.com/. parameters is additional
 // parameters for account creation.
-func (client AccountClient) Create(resourceGroupName string, accountName string, parameters AccountCreateParameters, cancel <-chan struct{}) (result autorest.Response, err error) {
+func (client AccountClient) Create(resourceGroupName string, accountName string, parameters AccountCreateParameters, cancel <-chan struct{}) (<-chan Account, <-chan error) {
+	resultChan := make(chan Account, 1)
+	errChan := make(chan error, 1)
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}},
@@ -72,26 +74,40 @@ func (client AccountClient) Create(resourceGroupName string, accountName string,
 								{Target: "parameters.AccountBaseProperties.KeyVaultReference.URL", Name: validation.Null, Rule: true, Chain: nil},
 							}},
 					}}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "batch.AccountClient", "Create")
+		errChan <- validation.NewErrorWithValidationError(err, "batch.AccountClient", "Create")
+		close(errChan)
+		close(resultChan)
+		return resultChan, errChan
 	}
 
-	req, err := client.CreatePreparer(resourceGroupName, accountName, parameters, cancel)
-	if err != nil {
-		return result, autorest.NewErrorWithError(err, "batch.AccountClient", "Create", nil, "Failure preparing request")
-	}
+	go func() {
+		var err error
+		var result Account
+		defer func() {
+			resultChan <- result
+			errChan <- err
+			close(resultChan)
+			close(errChan)
+		}()
+		req, err := client.CreatePreparer(resourceGroupName, accountName, parameters, cancel)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "batch.AccountClient", "Create", nil, "Failure preparing request")
+			return
+		}
 
-	resp, err := client.CreateSender(req)
-	if err != nil {
-		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "batch.AccountClient", "Create", resp, "Failure sending request")
-	}
+		resp, err := client.CreateSender(req)
+		if err != nil {
+			result.Response = autorest.Response{Response: resp}
+			err = autorest.NewErrorWithError(err, "batch.AccountClient", "Create", resp, "Failure sending request")
+			return
+		}
 
-	result, err = client.CreateResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "batch.AccountClient", "Create", resp, "Failure responding to request")
-	}
-
-	return
+		result, err = client.CreateResponder(resp)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "batch.AccountClient", "Create", resp, "Failure responding to request")
+		}
+	}()
+	return resultChan, errChan
 }
 
 // CreatePreparer prepares the Create request.
@@ -127,13 +143,14 @@ func (client AccountClient) CreateSender(req *http.Request) (*http.Response, err
 
 // CreateResponder handles the response to the Create request. The method always
 // closes the http.Response Body.
-func (client AccountClient) CreateResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client AccountClient) CreateResponder(resp *http.Response) (result Account, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = resp
+	result.Response = autorest.Response{Response: resp}
 	return
 }
 
@@ -144,7 +161,9 @@ func (client AccountClient) CreateResponder(resp *http.Response) (result autores
 //
 // resourceGroupName is the name of the resource group that contains the Batch
 // account to be deleted. accountName is the name of the account to be deleted.
-func (client AccountClient) Delete(resourceGroupName string, accountName string, cancel <-chan struct{}) (result autorest.Response, err error) {
+func (client AccountClient) Delete(resourceGroupName string, accountName string, cancel <-chan struct{}) (<-chan autorest.Response, <-chan error) {
+	resultChan := make(chan autorest.Response, 1)
+	errChan := make(chan error, 1)
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}},
@@ -152,26 +171,40 @@ func (client AccountClient) Delete(resourceGroupName string, accountName string,
 			Constraints: []validation.Constraint{{Target: "accountName", Name: validation.MaxLength, Rule: 24, Chain: nil},
 				{Target: "accountName", Name: validation.MinLength, Rule: 3, Chain: nil},
 				{Target: "accountName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "batch.AccountClient", "Delete")
+		errChan <- validation.NewErrorWithValidationError(err, "batch.AccountClient", "Delete")
+		close(errChan)
+		close(resultChan)
+		return resultChan, errChan
 	}
 
-	req, err := client.DeletePreparer(resourceGroupName, accountName, cancel)
-	if err != nil {
-		return result, autorest.NewErrorWithError(err, "batch.AccountClient", "Delete", nil, "Failure preparing request")
-	}
+	go func() {
+		var err error
+		var result autorest.Response
+		defer func() {
+			resultChan <- result
+			errChan <- err
+			close(resultChan)
+			close(errChan)
+		}()
+		req, err := client.DeletePreparer(resourceGroupName, accountName, cancel)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "batch.AccountClient", "Delete", nil, "Failure preparing request")
+			return
+		}
 
-	resp, err := client.DeleteSender(req)
-	if err != nil {
-		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "batch.AccountClient", "Delete", resp, "Failure sending request")
-	}
+		resp, err := client.DeleteSender(req)
+		if err != nil {
+			result.Response = resp
+			err = autorest.NewErrorWithError(err, "batch.AccountClient", "Delete", resp, "Failure sending request")
+			return
+		}
 
-	result, err = client.DeleteResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "batch.AccountClient", "Delete", resp, "Failure responding to request")
-	}
-
-	return
+		result, err = client.DeleteResponder(resp)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "batch.AccountClient", "Delete", resp, "Failure responding to request")
+		}
+	}()
+	return resultChan, errChan
 }
 
 // DeletePreparer prepares the Delete request.
@@ -232,13 +265,15 @@ func (client AccountClient) Get(resourceGroupName string, accountName string) (r
 
 	req, err := client.GetPreparer(resourceGroupName, accountName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "batch.AccountClient", "Get", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "batch.AccountClient", "Get", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "batch.AccountClient", "Get", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "batch.AccountClient", "Get", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetResponder(resp)
@@ -310,13 +345,15 @@ func (client AccountClient) GetKeys(resourceGroupName string, accountName string
 
 	req, err := client.GetKeysPreparer(resourceGroupName, accountName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "batch.AccountClient", "GetKeys", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "batch.AccountClient", "GetKeys", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetKeysSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "batch.AccountClient", "GetKeys", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "batch.AccountClient", "GetKeys", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetKeysResponder(resp)
@@ -372,13 +409,15 @@ func (client AccountClient) GetKeysResponder(resp *http.Response) (result Accoun
 func (client AccountClient) List() (result AccountListResult, err error) {
 	req, err := client.ListPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "batch.AccountClient", "List", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "batch.AccountClient", "List", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "batch.AccountClient", "List", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "batch.AccountClient", "List", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListResponder(resp)
@@ -465,13 +504,15 @@ func (client AccountClient) ListByResourceGroup(resourceGroupName string) (resul
 
 	req, err := client.ListByResourceGroupPreparer(resourceGroupName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "batch.AccountClient", "ListByResourceGroup", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "batch.AccountClient", "ListByResourceGroup", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListByResourceGroupSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "batch.AccountClient", "ListByResourceGroup", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "batch.AccountClient", "ListByResourceGroup", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListByResourceGroupResponder(resp)
@@ -563,13 +604,15 @@ func (client AccountClient) RegenerateKey(resourceGroupName string, accountName 
 
 	req, err := client.RegenerateKeyPreparer(resourceGroupName, accountName, parameters)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "batch.AccountClient", "RegenerateKey", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "batch.AccountClient", "RegenerateKey", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.RegenerateKeySender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "batch.AccountClient", "RegenerateKey", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "batch.AccountClient", "RegenerateKey", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.RegenerateKeyResponder(resp)
@@ -640,13 +683,15 @@ func (client AccountClient) SynchronizeAutoStorageKeys(resourceGroupName string,
 
 	req, err := client.SynchronizeAutoStorageKeysPreparer(resourceGroupName, accountName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "batch.AccountClient", "SynchronizeAutoStorageKeys", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "batch.AccountClient", "SynchronizeAutoStorageKeys", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.SynchronizeAutoStorageKeysSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "batch.AccountClient", "SynchronizeAutoStorageKeys", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "batch.AccountClient", "SynchronizeAutoStorageKeys", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.SynchronizeAutoStorageKeysResponder(resp)
@@ -714,13 +759,15 @@ func (client AccountClient) Update(resourceGroupName string, accountName string,
 
 	req, err := client.UpdatePreparer(resourceGroupName, accountName, parameters)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "batch.AccountClient", "Update", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "batch.AccountClient", "Update", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.UpdateSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "batch.AccountClient", "Update", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "batch.AccountClient", "Update", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.UpdateResponder(resp)

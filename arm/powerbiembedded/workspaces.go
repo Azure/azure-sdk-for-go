@@ -49,13 +49,15 @@ func NewWorkspacesClientWithBaseURI(baseURI string, subscriptionID string) Works
 func (client WorkspacesClient) List(resourceGroupName string, workspaceCollectionName string) (result WorkspaceList, err error) {
 	req, err := client.ListPreparer(resourceGroupName, workspaceCollectionName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "powerbiembedded.WorkspacesClient", "List", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "powerbiembedded.WorkspacesClient", "List", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "powerbiembedded.WorkspacesClient", "List", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "powerbiembedded.WorkspacesClient", "List", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListResponder(resp)

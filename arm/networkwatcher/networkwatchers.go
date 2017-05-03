@@ -55,13 +55,15 @@ func NewNetworkWatchersClientWithBaseURI(baseURI string, subscriptionID string) 
 func (client NetworkWatchersClient) CreateOrUpdate(resourceGroupName string, networkWatcherName string, parameters NetworkWatcher) (result NetworkWatcher, err error) {
 	req, err := client.CreateOrUpdatePreparer(resourceGroupName, networkWatcherName, parameters)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "networkwatcher.NetworkWatchersClient", "CreateOrUpdate", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "networkwatcher.NetworkWatchersClient", "CreateOrUpdate", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.CreateOrUpdateSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "networkwatcher.NetworkWatchersClient", "CreateOrUpdate", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "networkwatcher.NetworkWatchersClient", "CreateOrUpdate", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.CreateOrUpdateResponder(resp)
@@ -80,8 +82,9 @@ func (client NetworkWatchersClient) CreateOrUpdatePreparer(resourceGroupName str
 		"subscriptionId":     autorest.Encode("path", client.SubscriptionID),
 	}
 
+	const APIVersion = "2016-12-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -120,24 +123,37 @@ func (client NetworkWatchersClient) CreateOrUpdateResponder(resp *http.Response)
 //
 // resourceGroupName is the name of the resource group. networkWatcherName is
 // the name of the network watcher.
-func (client NetworkWatchersClient) Delete(resourceGroupName string, networkWatcherName string, cancel <-chan struct{}) (result autorest.Response, err error) {
-	req, err := client.DeletePreparer(resourceGroupName, networkWatcherName, cancel)
-	if err != nil {
-		return result, autorest.NewErrorWithError(err, "networkwatcher.NetworkWatchersClient", "Delete", nil, "Failure preparing request")
-	}
+func (client NetworkWatchersClient) Delete(resourceGroupName string, networkWatcherName string, cancel <-chan struct{}) (<-chan autorest.Response, <-chan error) {
+	resultChan := make(chan autorest.Response, 1)
+	errChan := make(chan error, 1)
+	go func() {
+		var err error
+		var result autorest.Response
+		defer func() {
+			resultChan <- result
+			errChan <- err
+			close(resultChan)
+			close(errChan)
+		}()
+		req, err := client.DeletePreparer(resourceGroupName, networkWatcherName, cancel)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "networkwatcher.NetworkWatchersClient", "Delete", nil, "Failure preparing request")
+			return
+		}
 
-	resp, err := client.DeleteSender(req)
-	if err != nil {
-		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "networkwatcher.NetworkWatchersClient", "Delete", resp, "Failure sending request")
-	}
+		resp, err := client.DeleteSender(req)
+		if err != nil {
+			result.Response = resp
+			err = autorest.NewErrorWithError(err, "networkwatcher.NetworkWatchersClient", "Delete", resp, "Failure sending request")
+			return
+		}
 
-	result, err = client.DeleteResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "networkwatcher.NetworkWatchersClient", "Delete", resp, "Failure responding to request")
-	}
-
-	return
+		result, err = client.DeleteResponder(resp)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "networkwatcher.NetworkWatchersClient", "Delete", resp, "Failure responding to request")
+		}
+	}()
+	return resultChan, errChan
 }
 
 // DeletePreparer prepares the Delete request.
@@ -148,8 +164,9 @@ func (client NetworkWatchersClient) DeletePreparer(resourceGroupName string, net
 		"subscriptionId":     autorest.Encode("path", client.SubscriptionID),
 	}
 
+	const APIVersion = "2016-12-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -187,13 +204,15 @@ func (client NetworkWatchersClient) DeleteResponder(resp *http.Response) (result
 func (client NetworkWatchersClient) Get(resourceGroupName string, networkWatcherName string) (result NetworkWatcher, err error) {
 	req, err := client.GetPreparer(resourceGroupName, networkWatcherName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "networkwatcher.NetworkWatchersClient", "Get", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "networkwatcher.NetworkWatchersClient", "Get", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "networkwatcher.NetworkWatchersClient", "Get", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "networkwatcher.NetworkWatchersClient", "Get", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetResponder(resp)
@@ -212,8 +231,9 @@ func (client NetworkWatchersClient) GetPreparer(resourceGroupName string, networ
 		"subscriptionId":     autorest.Encode("path", client.SubscriptionID),
 	}
 
+	const APIVersion = "2016-12-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -251,30 +271,46 @@ func (client NetworkWatchersClient) GetResponder(resp *http.Response) (result Ne
 // resourceGroupName is the name of the network watcher resource group.
 // networkWatcherName is the name of the network watcher resource. parameters
 // is parameters that define a resource to query flow log status.
-func (client NetworkWatchersClient) GetFlowLogStatus(resourceGroupName string, networkWatcherName string, parameters FlowLogStatusParameters, cancel <-chan struct{}) (result autorest.Response, err error) {
+func (client NetworkWatchersClient) GetFlowLogStatus(resourceGroupName string, networkWatcherName string, parameters FlowLogStatusParameters, cancel <-chan struct{}) (<-chan FlowLogInformation, <-chan error) {
+	resultChan := make(chan FlowLogInformation, 1)
+	errChan := make(chan error, 1)
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: parameters,
 			Constraints: []validation.Constraint{{Target: "parameters.TargetResourceID", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "networkwatcher.NetworkWatchersClient", "GetFlowLogStatus")
+		errChan <- validation.NewErrorWithValidationError(err, "networkwatcher.NetworkWatchersClient", "GetFlowLogStatus")
+		close(errChan)
+		close(resultChan)
+		return resultChan, errChan
 	}
 
-	req, err := client.GetFlowLogStatusPreparer(resourceGroupName, networkWatcherName, parameters, cancel)
-	if err != nil {
-		return result, autorest.NewErrorWithError(err, "networkwatcher.NetworkWatchersClient", "GetFlowLogStatus", nil, "Failure preparing request")
-	}
+	go func() {
+		var err error
+		var result FlowLogInformation
+		defer func() {
+			resultChan <- result
+			errChan <- err
+			close(resultChan)
+			close(errChan)
+		}()
+		req, err := client.GetFlowLogStatusPreparer(resourceGroupName, networkWatcherName, parameters, cancel)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "networkwatcher.NetworkWatchersClient", "GetFlowLogStatus", nil, "Failure preparing request")
+			return
+		}
 
-	resp, err := client.GetFlowLogStatusSender(req)
-	if err != nil {
-		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "networkwatcher.NetworkWatchersClient", "GetFlowLogStatus", resp, "Failure sending request")
-	}
+		resp, err := client.GetFlowLogStatusSender(req)
+		if err != nil {
+			result.Response = autorest.Response{Response: resp}
+			err = autorest.NewErrorWithError(err, "networkwatcher.NetworkWatchersClient", "GetFlowLogStatus", resp, "Failure sending request")
+			return
+		}
 
-	result, err = client.GetFlowLogStatusResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "networkwatcher.NetworkWatchersClient", "GetFlowLogStatus", resp, "Failure responding to request")
-	}
-
-	return
+		result, err = client.GetFlowLogStatusResponder(resp)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "networkwatcher.NetworkWatchersClient", "GetFlowLogStatus", resp, "Failure responding to request")
+		}
+	}()
+	return resultChan, errChan
 }
 
 // GetFlowLogStatusPreparer prepares the GetFlowLogStatus request.
@@ -285,8 +321,9 @@ func (client NetworkWatchersClient) GetFlowLogStatusPreparer(resourceGroupName s
 		"subscriptionId":     autorest.Encode("path", client.SubscriptionID),
 	}
 
+	const APIVersion = "2016-12-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -309,13 +346,14 @@ func (client NetworkWatchersClient) GetFlowLogStatusSender(req *http.Request) (*
 
 // GetFlowLogStatusResponder handles the response to the GetFlowLogStatus request. The method always
 // closes the http.Response Body.
-func (client NetworkWatchersClient) GetFlowLogStatusResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client NetworkWatchersClient) GetFlowLogStatusResponder(resp *http.Response) (result FlowLogInformation, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = resp
+	result.Response = autorest.Response{Response: resp}
 	return
 }
 
@@ -327,32 +365,48 @@ func (client NetworkWatchersClient) GetFlowLogStatusResponder(resp *http.Respons
 // resourceGroupName is the name of the resource group. networkWatcherName is
 // the name of the network watcher. parameters is parameters that define the
 // source and destination endpoint.
-func (client NetworkWatchersClient) GetNextHop(resourceGroupName string, networkWatcherName string, parameters NextHopParameters, cancel <-chan struct{}) (result autorest.Response, err error) {
+func (client NetworkWatchersClient) GetNextHop(resourceGroupName string, networkWatcherName string, parameters NextHopParameters, cancel <-chan struct{}) (<-chan NextHopResult, <-chan error) {
+	resultChan := make(chan NextHopResult, 1)
+	errChan := make(chan error, 1)
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: parameters,
 			Constraints: []validation.Constraint{{Target: "parameters.TargetResourceID", Name: validation.Null, Rule: true, Chain: nil},
 				{Target: "parameters.SourceIPAddress", Name: validation.Null, Rule: true, Chain: nil},
 				{Target: "parameters.DestinationIPAddress", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "networkwatcher.NetworkWatchersClient", "GetNextHop")
+		errChan <- validation.NewErrorWithValidationError(err, "networkwatcher.NetworkWatchersClient", "GetNextHop")
+		close(errChan)
+		close(resultChan)
+		return resultChan, errChan
 	}
 
-	req, err := client.GetNextHopPreparer(resourceGroupName, networkWatcherName, parameters, cancel)
-	if err != nil {
-		return result, autorest.NewErrorWithError(err, "networkwatcher.NetworkWatchersClient", "GetNextHop", nil, "Failure preparing request")
-	}
+	go func() {
+		var err error
+		var result NextHopResult
+		defer func() {
+			resultChan <- result
+			errChan <- err
+			close(resultChan)
+			close(errChan)
+		}()
+		req, err := client.GetNextHopPreparer(resourceGroupName, networkWatcherName, parameters, cancel)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "networkwatcher.NetworkWatchersClient", "GetNextHop", nil, "Failure preparing request")
+			return
+		}
 
-	resp, err := client.GetNextHopSender(req)
-	if err != nil {
-		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "networkwatcher.NetworkWatchersClient", "GetNextHop", resp, "Failure sending request")
-	}
+		resp, err := client.GetNextHopSender(req)
+		if err != nil {
+			result.Response = autorest.Response{Response: resp}
+			err = autorest.NewErrorWithError(err, "networkwatcher.NetworkWatchersClient", "GetNextHop", resp, "Failure sending request")
+			return
+		}
 
-	result, err = client.GetNextHopResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "networkwatcher.NetworkWatchersClient", "GetNextHop", resp, "Failure responding to request")
-	}
-
-	return
+		result, err = client.GetNextHopResponder(resp)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "networkwatcher.NetworkWatchersClient", "GetNextHop", resp, "Failure responding to request")
+		}
+	}()
+	return resultChan, errChan
 }
 
 // GetNextHopPreparer prepares the GetNextHop request.
@@ -363,8 +417,9 @@ func (client NetworkWatchersClient) GetNextHopPreparer(resourceGroupName string,
 		"subscriptionId":     autorest.Encode("path", client.SubscriptionID),
 	}
 
+	const APIVersion = "2016-12-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -387,13 +442,14 @@ func (client NetworkWatchersClient) GetNextHopSender(req *http.Request) (*http.R
 
 // GetNextHopResponder handles the response to the GetNextHop request. The method always
 // closes the http.Response Body.
-func (client NetworkWatchersClient) GetNextHopResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client NetworkWatchersClient) GetNextHopResponder(resp *http.Response) (result NextHopResult, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = resp
+	result.Response = autorest.Response{Response: resp}
 	return
 }
 
@@ -411,13 +467,15 @@ func (client NetworkWatchersClient) GetTopology(resourceGroupName string, networ
 
 	req, err := client.GetTopologyPreparer(resourceGroupName, networkWatcherName, parameters)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "networkwatcher.NetworkWatchersClient", "GetTopology", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "networkwatcher.NetworkWatchersClient", "GetTopology", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetTopologySender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "networkwatcher.NetworkWatchersClient", "GetTopology", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "networkwatcher.NetworkWatchersClient", "GetTopology", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetTopologyResponder(resp)
@@ -436,8 +494,9 @@ func (client NetworkWatchersClient) GetTopologyPreparer(resourceGroupName string
 		"subscriptionId":     autorest.Encode("path", client.SubscriptionID),
 	}
 
+	const APIVersion = "2016-12-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -477,7 +536,9 @@ func (client NetworkWatchersClient) GetTopologyResponder(resp *http.Response) (r
 // resourceGroupName is the name of the resource group. networkWatcherName is
 // the name of the network watcher resource. parameters is parameters that
 // define the resource to troubleshoot.
-func (client NetworkWatchersClient) GetTroubleshooting(resourceGroupName string, networkWatcherName string, parameters TroubleshootingParameters, cancel <-chan struct{}) (result autorest.Response, err error) {
+func (client NetworkWatchersClient) GetTroubleshooting(resourceGroupName string, networkWatcherName string, parameters TroubleshootingParameters, cancel <-chan struct{}) (<-chan TroubleshootingResult, <-chan error) {
+	resultChan := make(chan TroubleshootingResult, 1)
+	errChan := make(chan error, 1)
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: parameters,
 			Constraints: []validation.Constraint{{Target: "parameters.TargetResourceID", Name: validation.Null, Rule: true, Chain: nil},
@@ -485,26 +546,40 @@ func (client NetworkWatchersClient) GetTroubleshooting(resourceGroupName string,
 					Chain: []validation.Constraint{{Target: "parameters.TroubleshootingProperties.StorageID", Name: validation.Null, Rule: true, Chain: nil},
 						{Target: "parameters.TroubleshootingProperties.StoragePath", Name: validation.Null, Rule: true, Chain: nil},
 					}}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "networkwatcher.NetworkWatchersClient", "GetTroubleshooting")
+		errChan <- validation.NewErrorWithValidationError(err, "networkwatcher.NetworkWatchersClient", "GetTroubleshooting")
+		close(errChan)
+		close(resultChan)
+		return resultChan, errChan
 	}
 
-	req, err := client.GetTroubleshootingPreparer(resourceGroupName, networkWatcherName, parameters, cancel)
-	if err != nil {
-		return result, autorest.NewErrorWithError(err, "networkwatcher.NetworkWatchersClient", "GetTroubleshooting", nil, "Failure preparing request")
-	}
+	go func() {
+		var err error
+		var result TroubleshootingResult
+		defer func() {
+			resultChan <- result
+			errChan <- err
+			close(resultChan)
+			close(errChan)
+		}()
+		req, err := client.GetTroubleshootingPreparer(resourceGroupName, networkWatcherName, parameters, cancel)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "networkwatcher.NetworkWatchersClient", "GetTroubleshooting", nil, "Failure preparing request")
+			return
+		}
 
-	resp, err := client.GetTroubleshootingSender(req)
-	if err != nil {
-		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "networkwatcher.NetworkWatchersClient", "GetTroubleshooting", resp, "Failure sending request")
-	}
+		resp, err := client.GetTroubleshootingSender(req)
+		if err != nil {
+			result.Response = autorest.Response{Response: resp}
+			err = autorest.NewErrorWithError(err, "networkwatcher.NetworkWatchersClient", "GetTroubleshooting", resp, "Failure sending request")
+			return
+		}
 
-	result, err = client.GetTroubleshootingResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "networkwatcher.NetworkWatchersClient", "GetTroubleshooting", resp, "Failure responding to request")
-	}
-
-	return
+		result, err = client.GetTroubleshootingResponder(resp)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "networkwatcher.NetworkWatchersClient", "GetTroubleshooting", resp, "Failure responding to request")
+		}
+	}()
+	return resultChan, errChan
 }
 
 // GetTroubleshootingPreparer prepares the GetTroubleshooting request.
@@ -515,8 +590,9 @@ func (client NetworkWatchersClient) GetTroubleshootingPreparer(resourceGroupName
 		"subscriptionId":     autorest.Encode("path", client.SubscriptionID),
 	}
 
+	const APIVersion = "2016-12-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -539,13 +615,14 @@ func (client NetworkWatchersClient) GetTroubleshootingSender(req *http.Request) 
 
 // GetTroubleshootingResponder handles the response to the GetTroubleshooting request. The method always
 // closes the http.Response Body.
-func (client NetworkWatchersClient) GetTroubleshootingResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client NetworkWatchersClient) GetTroubleshootingResponder(resp *http.Response) (result TroubleshootingResult, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = resp
+	result.Response = autorest.Response{Response: resp}
 	return
 }
 
@@ -557,30 +634,46 @@ func (client NetworkWatchersClient) GetTroubleshootingResponder(resp *http.Respo
 // resourceGroupName is the name of the resource group. networkWatcherName is
 // the name of the network watcher resource. parameters is parameters that
 // define the resource to query the troubleshooting result.
-func (client NetworkWatchersClient) GetTroubleshootingResult(resourceGroupName string, networkWatcherName string, parameters QueryTroubleshootingParameters, cancel <-chan struct{}) (result autorest.Response, err error) {
+func (client NetworkWatchersClient) GetTroubleshootingResult(resourceGroupName string, networkWatcherName string, parameters QueryTroubleshootingParameters, cancel <-chan struct{}) (<-chan TroubleshootingResult, <-chan error) {
+	resultChan := make(chan TroubleshootingResult, 1)
+	errChan := make(chan error, 1)
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: parameters,
 			Constraints: []validation.Constraint{{Target: "parameters.TargetResourceID", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "networkwatcher.NetworkWatchersClient", "GetTroubleshootingResult")
+		errChan <- validation.NewErrorWithValidationError(err, "networkwatcher.NetworkWatchersClient", "GetTroubleshootingResult")
+		close(errChan)
+		close(resultChan)
+		return resultChan, errChan
 	}
 
-	req, err := client.GetTroubleshootingResultPreparer(resourceGroupName, networkWatcherName, parameters, cancel)
-	if err != nil {
-		return result, autorest.NewErrorWithError(err, "networkwatcher.NetworkWatchersClient", "GetTroubleshootingResult", nil, "Failure preparing request")
-	}
+	go func() {
+		var err error
+		var result TroubleshootingResult
+		defer func() {
+			resultChan <- result
+			errChan <- err
+			close(resultChan)
+			close(errChan)
+		}()
+		req, err := client.GetTroubleshootingResultPreparer(resourceGroupName, networkWatcherName, parameters, cancel)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "networkwatcher.NetworkWatchersClient", "GetTroubleshootingResult", nil, "Failure preparing request")
+			return
+		}
 
-	resp, err := client.GetTroubleshootingResultSender(req)
-	if err != nil {
-		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "networkwatcher.NetworkWatchersClient", "GetTroubleshootingResult", resp, "Failure sending request")
-	}
+		resp, err := client.GetTroubleshootingResultSender(req)
+		if err != nil {
+			result.Response = autorest.Response{Response: resp}
+			err = autorest.NewErrorWithError(err, "networkwatcher.NetworkWatchersClient", "GetTroubleshootingResult", resp, "Failure sending request")
+			return
+		}
 
-	result, err = client.GetTroubleshootingResultResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "networkwatcher.NetworkWatchersClient", "GetTroubleshootingResult", resp, "Failure responding to request")
-	}
-
-	return
+		result, err = client.GetTroubleshootingResultResponder(resp)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "networkwatcher.NetworkWatchersClient", "GetTroubleshootingResult", resp, "Failure responding to request")
+		}
+	}()
+	return resultChan, errChan
 }
 
 // GetTroubleshootingResultPreparer prepares the GetTroubleshootingResult request.
@@ -591,8 +684,9 @@ func (client NetworkWatchersClient) GetTroubleshootingResultPreparer(resourceGro
 		"subscriptionId":     autorest.Encode("path", client.SubscriptionID),
 	}
 
+	const APIVersion = "2016-12-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -615,13 +709,14 @@ func (client NetworkWatchersClient) GetTroubleshootingResultSender(req *http.Req
 
 // GetTroubleshootingResultResponder handles the response to the GetTroubleshootingResult request. The method always
 // closes the http.Response Body.
-func (client NetworkWatchersClient) GetTroubleshootingResultResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client NetworkWatchersClient) GetTroubleshootingResultResponder(resp *http.Response) (result TroubleshootingResult, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = resp
+	result.Response = autorest.Response{Response: resp}
 	return
 }
 
@@ -633,30 +728,46 @@ func (client NetworkWatchersClient) GetTroubleshootingResultResponder(resp *http
 // resourceGroupName is the name of the resource group. networkWatcherName is
 // the name of the network watcher. parameters is parameters that define the VM
 // to check security groups for.
-func (client NetworkWatchersClient) GetVMSecurityRules(resourceGroupName string, networkWatcherName string, parameters SecurityGroupViewParameters, cancel <-chan struct{}) (result autorest.Response, err error) {
+func (client NetworkWatchersClient) GetVMSecurityRules(resourceGroupName string, networkWatcherName string, parameters SecurityGroupViewParameters, cancel <-chan struct{}) (<-chan SecurityGroupViewResult, <-chan error) {
+	resultChan := make(chan SecurityGroupViewResult, 1)
+	errChan := make(chan error, 1)
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: parameters,
 			Constraints: []validation.Constraint{{Target: "parameters.TargetResourceID", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "networkwatcher.NetworkWatchersClient", "GetVMSecurityRules")
+		errChan <- validation.NewErrorWithValidationError(err, "networkwatcher.NetworkWatchersClient", "GetVMSecurityRules")
+		close(errChan)
+		close(resultChan)
+		return resultChan, errChan
 	}
 
-	req, err := client.GetVMSecurityRulesPreparer(resourceGroupName, networkWatcherName, parameters, cancel)
-	if err != nil {
-		return result, autorest.NewErrorWithError(err, "networkwatcher.NetworkWatchersClient", "GetVMSecurityRules", nil, "Failure preparing request")
-	}
+	go func() {
+		var err error
+		var result SecurityGroupViewResult
+		defer func() {
+			resultChan <- result
+			errChan <- err
+			close(resultChan)
+			close(errChan)
+		}()
+		req, err := client.GetVMSecurityRulesPreparer(resourceGroupName, networkWatcherName, parameters, cancel)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "networkwatcher.NetworkWatchersClient", "GetVMSecurityRules", nil, "Failure preparing request")
+			return
+		}
 
-	resp, err := client.GetVMSecurityRulesSender(req)
-	if err != nil {
-		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "networkwatcher.NetworkWatchersClient", "GetVMSecurityRules", resp, "Failure sending request")
-	}
+		resp, err := client.GetVMSecurityRulesSender(req)
+		if err != nil {
+			result.Response = autorest.Response{Response: resp}
+			err = autorest.NewErrorWithError(err, "networkwatcher.NetworkWatchersClient", "GetVMSecurityRules", resp, "Failure sending request")
+			return
+		}
 
-	result, err = client.GetVMSecurityRulesResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "networkwatcher.NetworkWatchersClient", "GetVMSecurityRules", resp, "Failure responding to request")
-	}
-
-	return
+		result, err = client.GetVMSecurityRulesResponder(resp)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "networkwatcher.NetworkWatchersClient", "GetVMSecurityRules", resp, "Failure responding to request")
+		}
+	}()
+	return resultChan, errChan
 }
 
 // GetVMSecurityRulesPreparer prepares the GetVMSecurityRules request.
@@ -667,8 +778,9 @@ func (client NetworkWatchersClient) GetVMSecurityRulesPreparer(resourceGroupName
 		"subscriptionId":     autorest.Encode("path", client.SubscriptionID),
 	}
 
+	const APIVersion = "2016-12-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -691,13 +803,14 @@ func (client NetworkWatchersClient) GetVMSecurityRulesSender(req *http.Request) 
 
 // GetVMSecurityRulesResponder handles the response to the GetVMSecurityRules request. The method always
 // closes the http.Response Body.
-func (client NetworkWatchersClient) GetVMSecurityRulesResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client NetworkWatchersClient) GetVMSecurityRulesResponder(resp *http.Response) (result SecurityGroupViewResult, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = resp
+	result.Response = autorest.Response{Response: resp}
 	return
 }
 
@@ -707,13 +820,15 @@ func (client NetworkWatchersClient) GetVMSecurityRulesResponder(resp *http.Respo
 func (client NetworkWatchersClient) List(resourceGroupName string) (result ListResult, err error) {
 	req, err := client.ListPreparer(resourceGroupName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "networkwatcher.NetworkWatchersClient", "List", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "networkwatcher.NetworkWatchersClient", "List", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "networkwatcher.NetworkWatchersClient", "List", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "networkwatcher.NetworkWatchersClient", "List", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListResponder(resp)
@@ -731,8 +846,9 @@ func (client NetworkWatchersClient) ListPreparer(resourceGroupName string) (*htt
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
+	const APIVersion = "2016-12-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -766,13 +882,15 @@ func (client NetworkWatchersClient) ListResponder(resp *http.Response) (result L
 func (client NetworkWatchersClient) ListAll() (result ListResult, err error) {
 	req, err := client.ListAllPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "networkwatcher.NetworkWatchersClient", "ListAll", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "networkwatcher.NetworkWatchersClient", "ListAll", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListAllSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "networkwatcher.NetworkWatchersClient", "ListAll", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "networkwatcher.NetworkWatchersClient", "ListAll", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListAllResponder(resp)
@@ -789,8 +907,9 @@ func (client NetworkWatchersClient) ListAllPreparer() (*http.Request, error) {
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
 
+	const APIVersion = "2016-12-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -828,7 +947,9 @@ func (client NetworkWatchersClient) ListAllResponder(resp *http.Response) (resul
 // resourceGroupName is the name of the network watcher resource group.
 // networkWatcherName is the name of the network watcher resource. parameters
 // is parameters that define the configuration of flow log.
-func (client NetworkWatchersClient) SetFlowLogConfiguration(resourceGroupName string, networkWatcherName string, parameters FlowLogInformation, cancel <-chan struct{}) (result autorest.Response, err error) {
+func (client NetworkWatchersClient) SetFlowLogConfiguration(resourceGroupName string, networkWatcherName string, parameters FlowLogInformation, cancel <-chan struct{}) (<-chan FlowLogInformation, <-chan error) {
+	resultChan := make(chan FlowLogInformation, 1)
+	errChan := make(chan error, 1)
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: parameters,
 			Constraints: []validation.Constraint{{Target: "parameters.TargetResourceID", Name: validation.Null, Rule: true, Chain: nil},
@@ -836,26 +957,40 @@ func (client NetworkWatchersClient) SetFlowLogConfiguration(resourceGroupName st
 					Chain: []validation.Constraint{{Target: "parameters.FlowLogProperties.StorageID", Name: validation.Null, Rule: true, Chain: nil},
 						{Target: "parameters.FlowLogProperties.Enabled", Name: validation.Null, Rule: true, Chain: nil},
 					}}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "networkwatcher.NetworkWatchersClient", "SetFlowLogConfiguration")
+		errChan <- validation.NewErrorWithValidationError(err, "networkwatcher.NetworkWatchersClient", "SetFlowLogConfiguration")
+		close(errChan)
+		close(resultChan)
+		return resultChan, errChan
 	}
 
-	req, err := client.SetFlowLogConfigurationPreparer(resourceGroupName, networkWatcherName, parameters, cancel)
-	if err != nil {
-		return result, autorest.NewErrorWithError(err, "networkwatcher.NetworkWatchersClient", "SetFlowLogConfiguration", nil, "Failure preparing request")
-	}
+	go func() {
+		var err error
+		var result FlowLogInformation
+		defer func() {
+			resultChan <- result
+			errChan <- err
+			close(resultChan)
+			close(errChan)
+		}()
+		req, err := client.SetFlowLogConfigurationPreparer(resourceGroupName, networkWatcherName, parameters, cancel)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "networkwatcher.NetworkWatchersClient", "SetFlowLogConfiguration", nil, "Failure preparing request")
+			return
+		}
 
-	resp, err := client.SetFlowLogConfigurationSender(req)
-	if err != nil {
-		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "networkwatcher.NetworkWatchersClient", "SetFlowLogConfiguration", resp, "Failure sending request")
-	}
+		resp, err := client.SetFlowLogConfigurationSender(req)
+		if err != nil {
+			result.Response = autorest.Response{Response: resp}
+			err = autorest.NewErrorWithError(err, "networkwatcher.NetworkWatchersClient", "SetFlowLogConfiguration", resp, "Failure sending request")
+			return
+		}
 
-	result, err = client.SetFlowLogConfigurationResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "networkwatcher.NetworkWatchersClient", "SetFlowLogConfiguration", resp, "Failure responding to request")
-	}
-
-	return
+		result, err = client.SetFlowLogConfigurationResponder(resp)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "networkwatcher.NetworkWatchersClient", "SetFlowLogConfiguration", resp, "Failure responding to request")
+		}
+	}()
+	return resultChan, errChan
 }
 
 // SetFlowLogConfigurationPreparer prepares the SetFlowLogConfiguration request.
@@ -866,8 +1001,9 @@ func (client NetworkWatchersClient) SetFlowLogConfigurationPreparer(resourceGrou
 		"subscriptionId":     autorest.Encode("path", client.SubscriptionID),
 	}
 
+	const APIVersion = "2016-12-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -890,13 +1026,14 @@ func (client NetworkWatchersClient) SetFlowLogConfigurationSender(req *http.Requ
 
 // SetFlowLogConfigurationResponder handles the response to the SetFlowLogConfiguration request. The method always
 // closes the http.Response Body.
-func (client NetworkWatchersClient) SetFlowLogConfigurationResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client NetworkWatchersClient) SetFlowLogConfigurationResponder(resp *http.Response) (result FlowLogInformation, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = resp
+	result.Response = autorest.Response{Response: resp}
 	return
 }
 
@@ -908,7 +1045,9 @@ func (client NetworkWatchersClient) SetFlowLogConfigurationResponder(resp *http.
 // resourceGroupName is the name of the resource group. networkWatcherName is
 // the name of the network watcher. parameters is parameters that define the IP
 // flow to be verified.
-func (client NetworkWatchersClient) VerifyIPFlow(resourceGroupName string, networkWatcherName string, parameters VerificationIPFlowParameters, cancel <-chan struct{}) (result autorest.Response, err error) {
+func (client NetworkWatchersClient) VerifyIPFlow(resourceGroupName string, networkWatcherName string, parameters VerificationIPFlowParameters, cancel <-chan struct{}) (<-chan VerificationIPFlowResult, <-chan error) {
+	resultChan := make(chan VerificationIPFlowResult, 1)
+	errChan := make(chan error, 1)
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: parameters,
 			Constraints: []validation.Constraint{{Target: "parameters.TargetResourceID", Name: validation.Null, Rule: true, Chain: nil},
@@ -916,26 +1055,40 @@ func (client NetworkWatchersClient) VerifyIPFlow(resourceGroupName string, netwo
 				{Target: "parameters.RemotePort", Name: validation.Null, Rule: true, Chain: nil},
 				{Target: "parameters.LocalIPAddress", Name: validation.Null, Rule: true, Chain: nil},
 				{Target: "parameters.RemoteIPAddress", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "networkwatcher.NetworkWatchersClient", "VerifyIPFlow")
+		errChan <- validation.NewErrorWithValidationError(err, "networkwatcher.NetworkWatchersClient", "VerifyIPFlow")
+		close(errChan)
+		close(resultChan)
+		return resultChan, errChan
 	}
 
-	req, err := client.VerifyIPFlowPreparer(resourceGroupName, networkWatcherName, parameters, cancel)
-	if err != nil {
-		return result, autorest.NewErrorWithError(err, "networkwatcher.NetworkWatchersClient", "VerifyIPFlow", nil, "Failure preparing request")
-	}
+	go func() {
+		var err error
+		var result VerificationIPFlowResult
+		defer func() {
+			resultChan <- result
+			errChan <- err
+			close(resultChan)
+			close(errChan)
+		}()
+		req, err := client.VerifyIPFlowPreparer(resourceGroupName, networkWatcherName, parameters, cancel)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "networkwatcher.NetworkWatchersClient", "VerifyIPFlow", nil, "Failure preparing request")
+			return
+		}
 
-	resp, err := client.VerifyIPFlowSender(req)
-	if err != nil {
-		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "networkwatcher.NetworkWatchersClient", "VerifyIPFlow", resp, "Failure sending request")
-	}
+		resp, err := client.VerifyIPFlowSender(req)
+		if err != nil {
+			result.Response = autorest.Response{Response: resp}
+			err = autorest.NewErrorWithError(err, "networkwatcher.NetworkWatchersClient", "VerifyIPFlow", resp, "Failure sending request")
+			return
+		}
 
-	result, err = client.VerifyIPFlowResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "networkwatcher.NetworkWatchersClient", "VerifyIPFlow", resp, "Failure responding to request")
-	}
-
-	return
+		result, err = client.VerifyIPFlowResponder(resp)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "networkwatcher.NetworkWatchersClient", "VerifyIPFlow", resp, "Failure responding to request")
+		}
+	}()
+	return resultChan, errChan
 }
 
 // VerifyIPFlowPreparer prepares the VerifyIPFlow request.
@@ -946,8 +1099,9 @@ func (client NetworkWatchersClient) VerifyIPFlowPreparer(resourceGroupName strin
 		"subscriptionId":     autorest.Encode("path", client.SubscriptionID),
 	}
 
+	const APIVersion = "2016-12-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -970,12 +1124,13 @@ func (client NetworkWatchersClient) VerifyIPFlowSender(req *http.Request) (*http
 
 // VerifyIPFlowResponder handles the response to the VerifyIPFlow request. The method always
 // closes the http.Response Body.
-func (client NetworkWatchersClient) VerifyIPFlowResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client NetworkWatchersClient) VerifyIPFlowResponder(resp *http.Response) (result VerificationIPFlowResult, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = resp
+	result.Response = autorest.Response{Response: resp}
 	return
 }

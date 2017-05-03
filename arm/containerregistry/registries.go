@@ -58,13 +58,15 @@ func (client RegistriesClient) CheckNameAvailability(registryNameCheckRequest Re
 
 	req, err := client.CheckNameAvailabilityPreparer(registryNameCheckRequest)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "containerregistry.RegistriesClient", "CheckNameAvailability", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "containerregistry.RegistriesClient", "CheckNameAvailability", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.CheckNameAvailabilitySender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "containerregistry.RegistriesClient", "CheckNameAvailability", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "containerregistry.RegistriesClient", "CheckNameAvailability", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.CheckNameAvailabilityResponder(resp)
@@ -135,13 +137,15 @@ func (client RegistriesClient) CreateOrUpdate(resourceGroupName string, registry
 
 	req, err := client.CreateOrUpdatePreparer(resourceGroupName, registryName, registry)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "containerregistry.RegistriesClient", "CreateOrUpdate", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "containerregistry.RegistriesClient", "CreateOrUpdate", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.CreateOrUpdateSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "containerregistry.RegistriesClient", "CreateOrUpdate", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "containerregistry.RegistriesClient", "CreateOrUpdate", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.CreateOrUpdateResponder(resp)
@@ -201,13 +205,15 @@ func (client RegistriesClient) CreateOrUpdateResponder(resp *http.Response) (res
 func (client RegistriesClient) Delete(resourceGroupName string, registryName string) (result autorest.Response, err error) {
 	req, err := client.DeletePreparer(resourceGroupName, registryName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "containerregistry.RegistriesClient", "Delete", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "containerregistry.RegistriesClient", "Delete", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.DeleteSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "containerregistry.RegistriesClient", "Delete", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "containerregistry.RegistriesClient", "Delete", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.DeleteResponder(resp)
@@ -265,13 +271,15 @@ func (client RegistriesClient) DeleteResponder(resp *http.Response) (result auto
 func (client RegistriesClient) GetCredentials(resourceGroupName string, registryName string) (result RegistryCredentials, err error) {
 	req, err := client.GetCredentialsPreparer(resourceGroupName, registryName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "containerregistry.RegistriesClient", "GetCredentials", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "containerregistry.RegistriesClient", "GetCredentials", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetCredentialsSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "containerregistry.RegistriesClient", "GetCredentials", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "containerregistry.RegistriesClient", "GetCredentials", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetCredentialsResponder(resp)
@@ -329,13 +337,15 @@ func (client RegistriesClient) GetCredentialsResponder(resp *http.Response) (res
 func (client RegistriesClient) GetProperties(resourceGroupName string, registryName string) (result Registry, err error) {
 	req, err := client.GetPropertiesPreparer(resourceGroupName, registryName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "containerregistry.RegistriesClient", "GetProperties", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "containerregistry.RegistriesClient", "GetProperties", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetPropertiesSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "containerregistry.RegistriesClient", "GetProperties", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "containerregistry.RegistriesClient", "GetProperties", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetPropertiesResponder(resp)
@@ -391,13 +401,15 @@ func (client RegistriesClient) GetPropertiesResponder(resp *http.Response) (resu
 func (client RegistriesClient) List() (result RegistryListResult, err error) {
 	req, err := client.ListPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "containerregistry.RegistriesClient", "List", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "containerregistry.RegistriesClient", "List", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "containerregistry.RegistriesClient", "List", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "containerregistry.RegistriesClient", "List", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListResponder(resp)
@@ -478,13 +490,15 @@ func (client RegistriesClient) ListNextResults(lastResults RegistryListResult) (
 func (client RegistriesClient) ListByResourceGroup(resourceGroupName string) (result RegistryListResult, err error) {
 	req, err := client.ListByResourceGroupPreparer(resourceGroupName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "containerregistry.RegistriesClient", "ListByResourceGroup", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "containerregistry.RegistriesClient", "ListByResourceGroup", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListByResourceGroupSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "containerregistry.RegistriesClient", "ListByResourceGroup", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "containerregistry.RegistriesClient", "ListByResourceGroup", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListByResourceGroupResponder(resp)
@@ -566,13 +580,15 @@ func (client RegistriesClient) ListByResourceGroupNextResults(lastResults Regist
 func (client RegistriesClient) RegenerateCredentials(resourceGroupName string, registryName string) (result RegistryCredentials, err error) {
 	req, err := client.RegenerateCredentialsPreparer(resourceGroupName, registryName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "containerregistry.RegistriesClient", "RegenerateCredentials", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "containerregistry.RegistriesClient", "RegenerateCredentials", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.RegenerateCredentialsSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "containerregistry.RegistriesClient", "RegenerateCredentials", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "containerregistry.RegistriesClient", "RegenerateCredentials", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.RegenerateCredentialsResponder(resp)
@@ -632,13 +648,15 @@ func (client RegistriesClient) RegenerateCredentialsResponder(resp *http.Respons
 func (client RegistriesClient) Update(resourceGroupName string, registryName string, registryUpdateParameters RegistryUpdateParameters) (result Registry, err error) {
 	req, err := client.UpdatePreparer(resourceGroupName, registryName, registryUpdateParameters)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "containerregistry.RegistriesClient", "Update", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "containerregistry.RegistriesClient", "Update", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.UpdateSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "containerregistry.RegistriesClient", "Update", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "containerregistry.RegistriesClient", "Update", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.UpdateResponder(resp)

@@ -43,13 +43,15 @@ func NewObjectsClientWithBaseURI(baseURI string, tenantID string) ObjectsClient 
 func (client ObjectsClient) GetCurrentUser() (result AADObject, err error) {
 	req, err := client.GetCurrentUserPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "graphrbac.ObjectsClient", "GetCurrentUser", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "graphrbac.ObjectsClient", "GetCurrentUser", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetCurrentUserSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "graphrbac.ObjectsClient", "GetCurrentUser", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "graphrbac.ObjectsClient", "GetCurrentUser", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetCurrentUserResponder(resp)
@@ -66,8 +68,9 @@ func (client ObjectsClient) GetCurrentUserPreparer() (*http.Request, error) {
 		"tenantID": autorest.Encode("path", client.TenantID),
 	}
 
+	const APIVersion = "1.6"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(

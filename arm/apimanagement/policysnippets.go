@@ -59,13 +59,15 @@ func (client PolicySnippetsClient) ListByService(resourceGroupName string, servi
 
 	req, err := client.ListByServicePreparer(resourceGroupName, serviceName, scope)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "apimanagement.PolicySnippetsClient", "ListByService", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "apimanagement.PolicySnippetsClient", "ListByService", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListByServiceSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "apimanagement.PolicySnippetsClient", "ListByService", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "apimanagement.PolicySnippetsClient", "ListByService", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListByServiceResponder(resp)

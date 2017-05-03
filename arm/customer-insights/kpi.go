@@ -51,7 +51,9 @@ func NewKpiClientWithBaseURI(baseURI string, subscriptionID string) KpiClient {
 // resourceGroupName is the name of the resource group. hubName is the name of
 // the hub. kpiName is the name of the KPI. parameters is parameters supplied
 // to the create/update KPI operation.
-func (client KpiClient) CreateOrUpdate(resourceGroupName string, hubName string, kpiName string, parameters KpiResourceFormat, cancel <-chan struct{}) (result autorest.Response, err error) {
+func (client KpiClient) CreateOrUpdate(resourceGroupName string, hubName string, kpiName string, parameters KpiResourceFormat, cancel <-chan struct{}) (<-chan KpiResourceFormat, <-chan error) {
+	resultChan := make(chan KpiResourceFormat, 1)
+	errChan := make(chan error, 1)
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: kpiName,
 			Constraints: []validation.Constraint{{Target: "kpiName", Name: validation.MaxLength, Rule: 512, Chain: nil},
@@ -67,26 +69,40 @@ func (client KpiClient) CreateOrUpdate(resourceGroupName string, hubName string,
 							{Target: "parameters.KpiDefinition.ThresHolds.IncreasingKpi", Name: validation.Null, Rule: true, Chain: nil},
 						}},
 				}}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "customerinsights.KpiClient", "CreateOrUpdate")
+		errChan <- validation.NewErrorWithValidationError(err, "customerinsights.KpiClient", "CreateOrUpdate")
+		close(errChan)
+		close(resultChan)
+		return resultChan, errChan
 	}
 
-	req, err := client.CreateOrUpdatePreparer(resourceGroupName, hubName, kpiName, parameters, cancel)
-	if err != nil {
-		return result, autorest.NewErrorWithError(err, "customerinsights.KpiClient", "CreateOrUpdate", nil, "Failure preparing request")
-	}
+	go func() {
+		var err error
+		var result KpiResourceFormat
+		defer func() {
+			resultChan <- result
+			errChan <- err
+			close(resultChan)
+			close(errChan)
+		}()
+		req, err := client.CreateOrUpdatePreparer(resourceGroupName, hubName, kpiName, parameters, cancel)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "customerinsights.KpiClient", "CreateOrUpdate", nil, "Failure preparing request")
+			return
+		}
 
-	resp, err := client.CreateOrUpdateSender(req)
-	if err != nil {
-		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "customerinsights.KpiClient", "CreateOrUpdate", resp, "Failure sending request")
-	}
+		resp, err := client.CreateOrUpdateSender(req)
+		if err != nil {
+			result.Response = autorest.Response{Response: resp}
+			err = autorest.NewErrorWithError(err, "customerinsights.KpiClient", "CreateOrUpdate", resp, "Failure sending request")
+			return
+		}
 
-	result, err = client.CreateOrUpdateResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "customerinsights.KpiClient", "CreateOrUpdate", resp, "Failure responding to request")
-	}
-
-	return
+		result, err = client.CreateOrUpdateResponder(resp)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "customerinsights.KpiClient", "CreateOrUpdate", resp, "Failure responding to request")
+		}
+	}()
+	return resultChan, errChan
 }
 
 // CreateOrUpdatePreparer prepares the CreateOrUpdate request.
@@ -98,8 +114,9 @@ func (client KpiClient) CreateOrUpdatePreparer(resourceGroupName string, hubName
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
+	const APIVersion = "2017-01-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -122,13 +139,14 @@ func (client KpiClient) CreateOrUpdateSender(req *http.Request) (*http.Response,
 
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
 // closes the http.Response Body.
-func (client KpiClient) CreateOrUpdateResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client KpiClient) CreateOrUpdateResponder(resp *http.Response) (result KpiResourceFormat, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = resp
+	result.Response = autorest.Response{Response: resp}
 	return
 }
 
@@ -138,24 +156,37 @@ func (client KpiClient) CreateOrUpdateResponder(resp *http.Response) (result aut
 //
 // resourceGroupName is the name of the resource group. hubName is the name of
 // the hub. kpiName is the name of the KPI.
-func (client KpiClient) Delete(resourceGroupName string, hubName string, kpiName string, cancel <-chan struct{}) (result autorest.Response, err error) {
-	req, err := client.DeletePreparer(resourceGroupName, hubName, kpiName, cancel)
-	if err != nil {
-		return result, autorest.NewErrorWithError(err, "customerinsights.KpiClient", "Delete", nil, "Failure preparing request")
-	}
+func (client KpiClient) Delete(resourceGroupName string, hubName string, kpiName string, cancel <-chan struct{}) (<-chan autorest.Response, <-chan error) {
+	resultChan := make(chan autorest.Response, 1)
+	errChan := make(chan error, 1)
+	go func() {
+		var err error
+		var result autorest.Response
+		defer func() {
+			resultChan <- result
+			errChan <- err
+			close(resultChan)
+			close(errChan)
+		}()
+		req, err := client.DeletePreparer(resourceGroupName, hubName, kpiName, cancel)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "customerinsights.KpiClient", "Delete", nil, "Failure preparing request")
+			return
+		}
 
-	resp, err := client.DeleteSender(req)
-	if err != nil {
-		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "customerinsights.KpiClient", "Delete", resp, "Failure sending request")
-	}
+		resp, err := client.DeleteSender(req)
+		if err != nil {
+			result.Response = resp
+			err = autorest.NewErrorWithError(err, "customerinsights.KpiClient", "Delete", resp, "Failure sending request")
+			return
+		}
 
-	result, err = client.DeleteResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "customerinsights.KpiClient", "Delete", resp, "Failure responding to request")
-	}
-
-	return
+		result, err = client.DeleteResponder(resp)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "customerinsights.KpiClient", "Delete", resp, "Failure responding to request")
+		}
+	}()
+	return resultChan, errChan
 }
 
 // DeletePreparer prepares the Delete request.
@@ -167,8 +198,9 @@ func (client KpiClient) DeletePreparer(resourceGroupName string, hubName string,
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
+	const APIVersion = "2017-01-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -206,13 +238,15 @@ func (client KpiClient) DeleteResponder(resp *http.Response) (result autorest.Re
 func (client KpiClient) Get(resourceGroupName string, hubName string, kpiName string) (result KpiResourceFormat, err error) {
 	req, err := client.GetPreparer(resourceGroupName, hubName, kpiName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "customerinsights.KpiClient", "Get", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "customerinsights.KpiClient", "Get", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "customerinsights.KpiClient", "Get", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "customerinsights.KpiClient", "Get", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetResponder(resp)
@@ -232,8 +266,9 @@ func (client KpiClient) GetPreparer(resourceGroupName string, hubName string, kp
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
+	const APIVersion = "2017-01-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -270,13 +305,15 @@ func (client KpiClient) GetResponder(resp *http.Response) (result KpiResourceFor
 func (client KpiClient) ListByHub(resourceGroupName string, hubName string) (result KpiListResult, err error) {
 	req, err := client.ListByHubPreparer(resourceGroupName, hubName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "customerinsights.KpiClient", "ListByHub", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "customerinsights.KpiClient", "ListByHub", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListByHubSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "customerinsights.KpiClient", "ListByHub", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "customerinsights.KpiClient", "ListByHub", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListByHubResponder(resp)
@@ -295,8 +332,9 @@ func (client KpiClient) ListByHubPreparer(resourceGroupName string, hubName stri
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
+	const APIVersion = "2017-01-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -357,13 +395,15 @@ func (client KpiClient) ListByHubNextResults(lastResults KpiListResult) (result 
 func (client KpiClient) Reprocess(resourceGroupName string, hubName string, kpiName string) (result autorest.Response, err error) {
 	req, err := client.ReprocessPreparer(resourceGroupName, hubName, kpiName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "customerinsights.KpiClient", "Reprocess", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "customerinsights.KpiClient", "Reprocess", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ReprocessSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "customerinsights.KpiClient", "Reprocess", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "customerinsights.KpiClient", "Reprocess", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ReprocessResponder(resp)
@@ -383,8 +423,9 @@ func (client KpiClient) ReprocessPreparer(resourceGroupName string, hubName stri
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
+	const APIVersion = "2017-01-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(

@@ -30,9 +30,6 @@ import (
 )
 
 const (
-	// APIVersion is the version of the Networkwatcher
-	APIVersion = "2016-12-01"
-
 	// DefaultBaseURI is the default URI used for the service Networkwatcher
 	DefaultBaseURI = "https://management.azure.com"
 )
@@ -41,7 +38,6 @@ const (
 type ManagementClient struct {
 	autorest.Client
 	BaseURI        string
-	APIVersion     string
 	SubscriptionID string
 }
 
@@ -55,7 +51,6 @@ func NewWithBaseURI(baseURI string, subscriptionID string) ManagementClient {
 	return ManagementClient{
 		Client:         autorest.NewClientWithUserAgent(UserAgent()),
 		BaseURI:        baseURI,
-		APIVersion:     APIVersion,
 		SubscriptionID: subscriptionID,
 	}
 }

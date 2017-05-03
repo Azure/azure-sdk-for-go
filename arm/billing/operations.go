@@ -47,13 +47,15 @@ func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) Opera
 func (client OperationsClient) List() (result OperationListResult, err error) {
 	req, err := client.ListPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "billing.OperationsClient", "List", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "billing.OperationsClient", "List", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "billing.OperationsClient", "List", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "billing.OperationsClient", "List", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListResponder(resp)
@@ -66,8 +68,9 @@ func (client OperationsClient) List() (result OperationListResult, err error) {
 
 // ListPreparer prepares the List request.
 func (client OperationsClient) ListPreparer() (*http.Request, error) {
+	const APIVersion = "2017-02-27-preview"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(

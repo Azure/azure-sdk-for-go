@@ -55,13 +55,15 @@ func (client ServicePrincipalsClient) Create(parameters ServicePrincipalCreatePa
 
 	req, err := client.CreatePreparer(parameters)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "graphrbac.ServicePrincipalsClient", "Create", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "graphrbac.ServicePrincipalsClient", "Create", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.CreateSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "graphrbac.ServicePrincipalsClient", "Create", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "graphrbac.ServicePrincipalsClient", "Create", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.CreateResponder(resp)
@@ -78,8 +80,9 @@ func (client ServicePrincipalsClient) CreatePreparer(parameters ServicePrincipal
 		"tenantID": autorest.Encode("path", client.TenantID),
 	}
 
+	const APIVersion = "1.6"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -117,13 +120,15 @@ func (client ServicePrincipalsClient) CreateResponder(resp *http.Response) (resu
 func (client ServicePrincipalsClient) Delete(objectID string) (result autorest.Response, err error) {
 	req, err := client.DeletePreparer(objectID)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "graphrbac.ServicePrincipalsClient", "Delete", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "graphrbac.ServicePrincipalsClient", "Delete", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.DeleteSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "graphrbac.ServicePrincipalsClient", "Delete", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "graphrbac.ServicePrincipalsClient", "Delete", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.DeleteResponder(resp)
@@ -141,8 +146,9 @@ func (client ServicePrincipalsClient) DeletePreparer(objectID string) (*http.Req
 		"tenantID": autorest.Encode("path", client.TenantID),
 	}
 
+	const APIVersion = "1.6"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -177,13 +183,15 @@ func (client ServicePrincipalsClient) DeleteResponder(resp *http.Response) (resu
 func (client ServicePrincipalsClient) Get(objectID string) (result ServicePrincipal, err error) {
 	req, err := client.GetPreparer(objectID)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "graphrbac.ServicePrincipalsClient", "Get", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "graphrbac.ServicePrincipalsClient", "Get", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "graphrbac.ServicePrincipalsClient", "Get", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "graphrbac.ServicePrincipalsClient", "Get", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetResponder(resp)
@@ -201,8 +209,9 @@ func (client ServicePrincipalsClient) GetPreparer(objectID string) (*http.Reques
 		"tenantID": autorest.Encode("path", client.TenantID),
 	}
 
+	const APIVersion = "1.6"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -238,13 +247,15 @@ func (client ServicePrincipalsClient) GetResponder(resp *http.Response) (result 
 func (client ServicePrincipalsClient) List(filter string) (result ServicePrincipalListResult, err error) {
 	req, err := client.ListPreparer(filter)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "graphrbac.ServicePrincipalsClient", "List", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "graphrbac.ServicePrincipalsClient", "List", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "graphrbac.ServicePrincipalsClient", "List", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "graphrbac.ServicePrincipalsClient", "List", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListResponder(resp)
@@ -261,8 +272,9 @@ func (client ServicePrincipalsClient) ListPreparer(filter string) (*http.Request
 		"tenantID": autorest.Encode("path", client.TenantID),
 	}
 
+	const APIVersion = "1.6"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 	if len(filter) > 0 {
 		queryParameters["$filter"] = autorest.Encode("query", filter)
@@ -303,13 +315,15 @@ func (client ServicePrincipalsClient) ListResponder(resp *http.Response) (result
 func (client ServicePrincipalsClient) ListKeyCredentials(objectID string) (result KeyCredentialListResult, err error) {
 	req, err := client.ListKeyCredentialsPreparer(objectID)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "graphrbac.ServicePrincipalsClient", "ListKeyCredentials", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "graphrbac.ServicePrincipalsClient", "ListKeyCredentials", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListKeyCredentialsSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "graphrbac.ServicePrincipalsClient", "ListKeyCredentials", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "graphrbac.ServicePrincipalsClient", "ListKeyCredentials", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListKeyCredentialsResponder(resp)
@@ -327,8 +341,9 @@ func (client ServicePrincipalsClient) ListKeyCredentialsPreparer(objectID string
 		"tenantID": autorest.Encode("path", client.TenantID),
 	}
 
+	const APIVersion = "1.6"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -364,13 +379,15 @@ func (client ServicePrincipalsClient) ListKeyCredentialsResponder(resp *http.Res
 func (client ServicePrincipalsClient) ListNext(nextLink string) (result ServicePrincipalListResult, err error) {
 	req, err := client.ListNextPreparer(nextLink)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "graphrbac.ServicePrincipalsClient", "ListNext", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "graphrbac.ServicePrincipalsClient", "ListNext", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListNextSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "graphrbac.ServicePrincipalsClient", "ListNext", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "graphrbac.ServicePrincipalsClient", "ListNext", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListNextResponder(resp)
@@ -388,8 +405,9 @@ func (client ServicePrincipalsClient) ListNextPreparer(nextLink string) (*http.R
 		"tenantID": autorest.Encode("path", client.TenantID),
 	}
 
+	const APIVersion = "1.6"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -426,13 +444,15 @@ func (client ServicePrincipalsClient) ListNextResponder(resp *http.Response) (re
 func (client ServicePrincipalsClient) ListPasswordCredentials(objectID string) (result PasswordCredentialListResult, err error) {
 	req, err := client.ListPasswordCredentialsPreparer(objectID)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "graphrbac.ServicePrincipalsClient", "ListPasswordCredentials", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "graphrbac.ServicePrincipalsClient", "ListPasswordCredentials", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListPasswordCredentialsSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "graphrbac.ServicePrincipalsClient", "ListPasswordCredentials", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "graphrbac.ServicePrincipalsClient", "ListPasswordCredentials", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListPasswordCredentialsResponder(resp)
@@ -450,8 +470,9 @@ func (client ServicePrincipalsClient) ListPasswordCredentialsPreparer(objectID s
 		"tenantID": autorest.Encode("path", client.TenantID),
 	}
 
+	const APIVersion = "1.6"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -490,13 +511,15 @@ func (client ServicePrincipalsClient) ListPasswordCredentialsResponder(resp *htt
 func (client ServicePrincipalsClient) UpdateKeyCredentials(objectID string, parameters KeyCredentialsUpdateParameters) (result autorest.Response, err error) {
 	req, err := client.UpdateKeyCredentialsPreparer(objectID, parameters)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "graphrbac.ServicePrincipalsClient", "UpdateKeyCredentials", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "graphrbac.ServicePrincipalsClient", "UpdateKeyCredentials", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.UpdateKeyCredentialsSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "graphrbac.ServicePrincipalsClient", "UpdateKeyCredentials", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "graphrbac.ServicePrincipalsClient", "UpdateKeyCredentials", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.UpdateKeyCredentialsResponder(resp)
@@ -514,8 +537,9 @@ func (client ServicePrincipalsClient) UpdateKeyCredentialsPreparer(objectID stri
 		"tenantID": autorest.Encode("path", client.TenantID),
 	}
 
+	const APIVersion = "1.6"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -554,13 +578,15 @@ func (client ServicePrincipalsClient) UpdateKeyCredentialsResponder(resp *http.R
 func (client ServicePrincipalsClient) UpdatePasswordCredentials(objectID string, parameters PasswordCredentialsUpdateParameters) (result autorest.Response, err error) {
 	req, err := client.UpdatePasswordCredentialsPreparer(objectID, parameters)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "graphrbac.ServicePrincipalsClient", "UpdatePasswordCredentials", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "graphrbac.ServicePrincipalsClient", "UpdatePasswordCredentials", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.UpdatePasswordCredentialsSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "graphrbac.ServicePrincipalsClient", "UpdatePasswordCredentials", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "graphrbac.ServicePrincipalsClient", "UpdatePasswordCredentials", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.UpdatePasswordCredentialsResponder(resp)
@@ -578,8 +604,9 @@ func (client ServicePrincipalsClient) UpdatePasswordCredentialsPreparer(objectID
 		"tenantID": autorest.Encode("path", client.TenantID),
 	}
 
+	const APIVersion = "1.6"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(

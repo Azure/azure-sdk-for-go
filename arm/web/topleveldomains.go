@@ -47,13 +47,15 @@ func NewTopLevelDomainsClientWithBaseURI(baseURI string, subscriptionID string) 
 func (client TopLevelDomainsClient) Get(name string) (result TopLevelDomain, err error) {
 	req, err := client.GetPreparer(name)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.TopLevelDomainsClient", "Get", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.TopLevelDomainsClient", "Get", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.TopLevelDomainsClient", "Get", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.TopLevelDomainsClient", "Get", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetResponder(resp)
@@ -107,13 +109,15 @@ func (client TopLevelDomainsClient) GetResponder(resp *http.Response) (result To
 func (client TopLevelDomainsClient) List() (result TopLevelDomainCollection, err error) {
 	req, err := client.ListPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.TopLevelDomainsClient", "List", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.TopLevelDomainsClient", "List", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.TopLevelDomainsClient", "List", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.TopLevelDomainsClient", "List", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListResponder(resp)
@@ -194,13 +198,15 @@ func (client TopLevelDomainsClient) ListNextResults(lastResults TopLevelDomainCo
 func (client TopLevelDomainsClient) ListAgreements(name string, agreementOption TopLevelDomainAgreementOption) (result TldLegalAgreementCollection, err error) {
 	req, err := client.ListAgreementsPreparer(name, agreementOption)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.TopLevelDomainsClient", "ListAgreements", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.TopLevelDomainsClient", "ListAgreements", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListAgreementsSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.TopLevelDomainsClient", "ListAgreements", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.TopLevelDomainsClient", "ListAgreements", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListAgreementsResponder(resp)

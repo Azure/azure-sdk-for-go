@@ -57,13 +57,15 @@ func NewWithBaseURI(baseURI string, subscriptionID string) ManagementClient {
 func (client ManagementClient) ListOperations() (result OperationListResult, err error) {
 	req, err := client.ListOperationsPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "logic.ManagementClient", "ListOperations", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "logic.ManagementClient", "ListOperations", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListOperationsSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "logic.ManagementClient", "ListOperations", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "logic.ManagementClient", "ListOperations", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListOperationsResponder(resp)

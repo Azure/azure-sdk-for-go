@@ -48,13 +48,15 @@ func NewVaultsClientWithBaseURI(baseURI string, subscriptionID string) VaultsCli
 func (client VaultsClient) CreateOrUpdate(resourceGroupName string, vaultName string, vault Vault) (result Vault, err error) {
 	req, err := client.CreateOrUpdatePreparer(resourceGroupName, vaultName, vault)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "recoveryservices.VaultsClient", "CreateOrUpdate", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "recoveryservices.VaultsClient", "CreateOrUpdate", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.CreateOrUpdateSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "recoveryservices.VaultsClient", "CreateOrUpdate", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "recoveryservices.VaultsClient", "CreateOrUpdate", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.CreateOrUpdateResponder(resp)
@@ -115,13 +117,15 @@ func (client VaultsClient) CreateOrUpdateResponder(resp *http.Response) (result 
 func (client VaultsClient) Delete(resourceGroupName string, vaultName string) (result autorest.Response, err error) {
 	req, err := client.DeletePreparer(resourceGroupName, vaultName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "recoveryservices.VaultsClient", "Delete", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "recoveryservices.VaultsClient", "Delete", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.DeleteSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "recoveryservices.VaultsClient", "Delete", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "recoveryservices.VaultsClient", "Delete", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.DeleteResponder(resp)
@@ -179,13 +183,15 @@ func (client VaultsClient) DeleteResponder(resp *http.Response) (result autorest
 func (client VaultsClient) Get(resourceGroupName string, vaultName string) (result Vault, err error) {
 	req, err := client.GetPreparer(resourceGroupName, vaultName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "recoveryservices.VaultsClient", "Get", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "recoveryservices.VaultsClient", "Get", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "recoveryservices.VaultsClient", "Get", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "recoveryservices.VaultsClient", "Get", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetResponder(resp)
@@ -243,13 +249,15 @@ func (client VaultsClient) GetResponder(resp *http.Response) (result Vault, err 
 func (client VaultsClient) ListByResourceGroup(resourceGroupName string) (result VaultList, err error) {
 	req, err := client.ListByResourceGroupPreparer(resourceGroupName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "recoveryservices.VaultsClient", "ListByResourceGroup", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "recoveryservices.VaultsClient", "ListByResourceGroup", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListByResourceGroupSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "recoveryservices.VaultsClient", "ListByResourceGroup", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "recoveryservices.VaultsClient", "ListByResourceGroup", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListByResourceGroupResponder(resp)

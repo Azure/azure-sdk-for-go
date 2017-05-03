@@ -48,7 +48,9 @@ func NewSessionClientWithBaseURI(baseURI string, subscriptionID string) SessionC
 // resource group within the user subscriptionId. nodeName is the node name
 // (256 characters maximum). session is the sessionId from the user.
 // sessionParameters is parameters supplied to the CreateOrUpdate operation.
-func (client SessionClient) Create(resourceGroupName string, nodeName string, session string, sessionParameters SessionParameters, cancel <-chan struct{}) (result autorest.Response, err error) {
+func (client SessionClient) Create(resourceGroupName string, nodeName string, session string, sessionParameters SessionParameters, cancel <-chan struct{}) (<-chan SessionResource, <-chan error) {
+	resultChan := make(chan SessionResource, 1)
+	errChan := make(chan error, 1)
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MinLength, Rule: 3, Chain: nil},
@@ -57,26 +59,40 @@ func (client SessionClient) Create(resourceGroupName string, nodeName string, se
 			Constraints: []validation.Constraint{{Target: "nodeName", Name: validation.MaxLength, Rule: 256, Chain: nil},
 				{Target: "nodeName", Name: validation.MinLength, Rule: 1, Chain: nil},
 				{Target: "nodeName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9][a-zA-Z0-9_.-]*$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "servermanagement.SessionClient", "Create")
+		errChan <- validation.NewErrorWithValidationError(err, "servermanagement.SessionClient", "Create")
+		close(errChan)
+		close(resultChan)
+		return resultChan, errChan
 	}
 
-	req, err := client.CreatePreparer(resourceGroupName, nodeName, session, sessionParameters, cancel)
-	if err != nil {
-		return result, autorest.NewErrorWithError(err, "servermanagement.SessionClient", "Create", nil, "Failure preparing request")
-	}
+	go func() {
+		var err error
+		var result SessionResource
+		defer func() {
+			resultChan <- result
+			errChan <- err
+			close(resultChan)
+			close(errChan)
+		}()
+		req, err := client.CreatePreparer(resourceGroupName, nodeName, session, sessionParameters, cancel)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "servermanagement.SessionClient", "Create", nil, "Failure preparing request")
+			return
+		}
 
-	resp, err := client.CreateSender(req)
-	if err != nil {
-		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "servermanagement.SessionClient", "Create", resp, "Failure sending request")
-	}
+		resp, err := client.CreateSender(req)
+		if err != nil {
+			result.Response = autorest.Response{Response: resp}
+			err = autorest.NewErrorWithError(err, "servermanagement.SessionClient", "Create", resp, "Failure sending request")
+			return
+		}
 
-	result, err = client.CreateResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "servermanagement.SessionClient", "Create", resp, "Failure responding to request")
-	}
-
-	return
+		result, err = client.CreateResponder(resp)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "servermanagement.SessionClient", "Create", resp, "Failure responding to request")
+		}
+	}()
+	return resultChan, errChan
 }
 
 // CreatePreparer prepares the Create request.
@@ -113,13 +129,14 @@ func (client SessionClient) CreateSender(req *http.Request) (*http.Response, err
 
 // CreateResponder handles the response to the Create request. The method always
 // closes the http.Response Body.
-func (client SessionClient) CreateResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client SessionClient) CreateResponder(resp *http.Response) (result SessionResource, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated, http.StatusAccepted),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = resp
+	result.Response = autorest.Response{Response: resp}
 	return
 }
 
@@ -142,13 +159,15 @@ func (client SessionClient) Delete(resourceGroupName string, nodeName string, se
 
 	req, err := client.DeletePreparer(resourceGroupName, nodeName, session)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "servermanagement.SessionClient", "Delete", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "servermanagement.SessionClient", "Delete", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.DeleteSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "servermanagement.SessionClient", "Delete", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "servermanagement.SessionClient", "Delete", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.DeleteResponder(resp)
@@ -218,13 +237,15 @@ func (client SessionClient) Get(resourceGroupName string, nodeName string, sessi
 
 	req, err := client.GetPreparer(resourceGroupName, nodeName, session)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "servermanagement.SessionClient", "Get", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "servermanagement.SessionClient", "Get", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "servermanagement.SessionClient", "Get", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "servermanagement.SessionClient", "Get", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetResponder(resp)

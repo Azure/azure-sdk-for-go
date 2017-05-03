@@ -54,13 +54,15 @@ func (client SchemasClient) CreateOrUpdate(resourceGroupName string, integration
 
 	req, err := client.CreateOrUpdatePreparer(resourceGroupName, integrationAccountName, schemaName, schema)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "logic.SchemasClient", "CreateOrUpdate", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "logic.SchemasClient", "CreateOrUpdate", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.CreateOrUpdateSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "logic.SchemasClient", "CreateOrUpdate", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "logic.SchemasClient", "CreateOrUpdate", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.CreateOrUpdateResponder(resp)
@@ -121,13 +123,15 @@ func (client SchemasClient) CreateOrUpdateResponder(resp *http.Response) (result
 func (client SchemasClient) Delete(resourceGroupName string, integrationAccountName string, schemaName string) (result autorest.Response, err error) {
 	req, err := client.DeletePreparer(resourceGroupName, integrationAccountName, schemaName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "logic.SchemasClient", "Delete", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "logic.SchemasClient", "Delete", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.DeleteSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "logic.SchemasClient", "Delete", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "logic.SchemasClient", "Delete", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.DeleteResponder(resp)
@@ -185,13 +189,15 @@ func (client SchemasClient) DeleteResponder(resp *http.Response) (result autores
 func (client SchemasClient) Get(resourceGroupName string, integrationAccountName string, schemaName string) (result IntegrationAccountSchema, err error) {
 	req, err := client.GetPreparer(resourceGroupName, integrationAccountName, schemaName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "logic.SchemasClient", "Get", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "logic.SchemasClient", "Get", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "logic.SchemasClient", "Get", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "logic.SchemasClient", "Get", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetResponder(resp)
@@ -251,13 +257,15 @@ func (client SchemasClient) GetResponder(resp *http.Response) (result Integratio
 func (client SchemasClient) ListByIntegrationAccounts(resourceGroupName string, integrationAccountName string, top *int32, filter string) (result IntegrationAccountSchemaListResult, err error) {
 	req, err := client.ListByIntegrationAccountsPreparer(resourceGroupName, integrationAccountName, top, filter)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "logic.SchemasClient", "ListByIntegrationAccounts", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "logic.SchemasClient", "ListByIntegrationAccounts", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListByIntegrationAccountsSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "logic.SchemasClient", "ListByIntegrationAccounts", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "logic.SchemasClient", "ListByIntegrationAccounts", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListByIntegrationAccountsResponder(resp)

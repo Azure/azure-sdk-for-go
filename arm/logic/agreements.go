@@ -484,13 +484,15 @@ func (client AgreementsClient) CreateOrUpdate(resourceGroupName string, integrat
 
 	req, err := client.CreateOrUpdatePreparer(resourceGroupName, integrationAccountName, agreementName, agreement)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "logic.AgreementsClient", "CreateOrUpdate", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "logic.AgreementsClient", "CreateOrUpdate", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.CreateOrUpdateSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "logic.AgreementsClient", "CreateOrUpdate", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "logic.AgreementsClient", "CreateOrUpdate", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.CreateOrUpdateResponder(resp)
@@ -552,13 +554,15 @@ func (client AgreementsClient) CreateOrUpdateResponder(resp *http.Response) (res
 func (client AgreementsClient) Delete(resourceGroupName string, integrationAccountName string, agreementName string) (result autorest.Response, err error) {
 	req, err := client.DeletePreparer(resourceGroupName, integrationAccountName, agreementName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "logic.AgreementsClient", "Delete", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "logic.AgreementsClient", "Delete", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.DeleteSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "logic.AgreementsClient", "Delete", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "logic.AgreementsClient", "Delete", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.DeleteResponder(resp)
@@ -617,13 +621,15 @@ func (client AgreementsClient) DeleteResponder(resp *http.Response) (result auto
 func (client AgreementsClient) Get(resourceGroupName string, integrationAccountName string, agreementName string) (result IntegrationAccountAgreement, err error) {
 	req, err := client.GetPreparer(resourceGroupName, integrationAccountName, agreementName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "logic.AgreementsClient", "Get", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "logic.AgreementsClient", "Get", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "logic.AgreementsClient", "Get", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "logic.AgreementsClient", "Get", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetResponder(resp)
@@ -683,13 +689,15 @@ func (client AgreementsClient) GetResponder(resp *http.Response) (result Integra
 func (client AgreementsClient) ListByIntegrationAccounts(resourceGroupName string, integrationAccountName string, top *int32, filter string) (result IntegrationAccountAgreementListResult, err error) {
 	req, err := client.ListByIntegrationAccountsPreparer(resourceGroupName, integrationAccountName, top, filter)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "logic.AgreementsClient", "ListByIntegrationAccounts", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "logic.AgreementsClient", "ListByIntegrationAccounts", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListByIntegrationAccountsSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "logic.AgreementsClient", "ListByIntegrationAccounts", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "logic.AgreementsClient", "ListByIntegrationAccounts", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListByIntegrationAccountsResponder(resp)

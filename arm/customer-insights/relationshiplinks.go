@@ -55,7 +55,9 @@ func NewRelationshipLinksClientWithBaseURI(baseURI string, subscriptionID string
 // the hub. relationshipLinkName is the name of the relationship link.
 // parameters is parameters supplied to the CreateOrUpdate relationship link
 // operation.
-func (client RelationshipLinksClient) CreateOrUpdate(resourceGroupName string, hubName string, relationshipLinkName string, parameters RelationshipLinkResourceFormat, cancel <-chan struct{}) (result autorest.Response, err error) {
+func (client RelationshipLinksClient) CreateOrUpdate(resourceGroupName string, hubName string, relationshipLinkName string, parameters RelationshipLinkResourceFormat, cancel <-chan struct{}) (<-chan RelationshipLinkResourceFormat, <-chan error) {
+	resultChan := make(chan RelationshipLinkResourceFormat, 1)
+	errChan := make(chan error, 1)
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: relationshipLinkName,
 			Constraints: []validation.Constraint{{Target: "relationshipLinkName", Name: validation.MaxLength, Rule: 512, Chain: nil},
@@ -68,26 +70,40 @@ func (client RelationshipLinksClient) CreateOrUpdate(resourceGroupName string, h
 					{Target: "parameters.RelationshipLinkDefinition.RelatedProfilePropertyReferences", Name: validation.Null, Rule: true, Chain: nil},
 					{Target: "parameters.RelationshipLinkDefinition.RelationshipName", Name: validation.Null, Rule: true, Chain: nil},
 				}}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "customerinsights.RelationshipLinksClient", "CreateOrUpdate")
+		errChan <- validation.NewErrorWithValidationError(err, "customerinsights.RelationshipLinksClient", "CreateOrUpdate")
+		close(errChan)
+		close(resultChan)
+		return resultChan, errChan
 	}
 
-	req, err := client.CreateOrUpdatePreparer(resourceGroupName, hubName, relationshipLinkName, parameters, cancel)
-	if err != nil {
-		return result, autorest.NewErrorWithError(err, "customerinsights.RelationshipLinksClient", "CreateOrUpdate", nil, "Failure preparing request")
-	}
+	go func() {
+		var err error
+		var result RelationshipLinkResourceFormat
+		defer func() {
+			resultChan <- result
+			errChan <- err
+			close(resultChan)
+			close(errChan)
+		}()
+		req, err := client.CreateOrUpdatePreparer(resourceGroupName, hubName, relationshipLinkName, parameters, cancel)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "customerinsights.RelationshipLinksClient", "CreateOrUpdate", nil, "Failure preparing request")
+			return
+		}
 
-	resp, err := client.CreateOrUpdateSender(req)
-	if err != nil {
-		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "customerinsights.RelationshipLinksClient", "CreateOrUpdate", resp, "Failure sending request")
-	}
+		resp, err := client.CreateOrUpdateSender(req)
+		if err != nil {
+			result.Response = autorest.Response{Response: resp}
+			err = autorest.NewErrorWithError(err, "customerinsights.RelationshipLinksClient", "CreateOrUpdate", resp, "Failure sending request")
+			return
+		}
 
-	result, err = client.CreateOrUpdateResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "customerinsights.RelationshipLinksClient", "CreateOrUpdate", resp, "Failure responding to request")
-	}
-
-	return
+		result, err = client.CreateOrUpdateResponder(resp)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "customerinsights.RelationshipLinksClient", "CreateOrUpdate", resp, "Failure responding to request")
+		}
+	}()
+	return resultChan, errChan
 }
 
 // CreateOrUpdatePreparer prepares the CreateOrUpdate request.
@@ -99,8 +115,9 @@ func (client RelationshipLinksClient) CreateOrUpdatePreparer(resourceGroupName s
 		"subscriptionId":       autorest.Encode("path", client.SubscriptionID),
 	}
 
+	const APIVersion = "2017-01-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -123,13 +140,14 @@ func (client RelationshipLinksClient) CreateOrUpdateSender(req *http.Request) (*
 
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
 // closes the http.Response Body.
-func (client RelationshipLinksClient) CreateOrUpdateResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client RelationshipLinksClient) CreateOrUpdateResponder(resp *http.Response) (result RelationshipLinkResourceFormat, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = resp
+	result.Response = autorest.Response{Response: resp}
 	return
 }
 
@@ -140,24 +158,37 @@ func (client RelationshipLinksClient) CreateOrUpdateResponder(resp *http.Respons
 //
 // resourceGroupName is the name of the resource group. hubName is the name of
 // the hub. relationshipLinkName is the name of the relationship.
-func (client RelationshipLinksClient) Delete(resourceGroupName string, hubName string, relationshipLinkName string, cancel <-chan struct{}) (result autorest.Response, err error) {
-	req, err := client.DeletePreparer(resourceGroupName, hubName, relationshipLinkName, cancel)
-	if err != nil {
-		return result, autorest.NewErrorWithError(err, "customerinsights.RelationshipLinksClient", "Delete", nil, "Failure preparing request")
-	}
+func (client RelationshipLinksClient) Delete(resourceGroupName string, hubName string, relationshipLinkName string, cancel <-chan struct{}) (<-chan autorest.Response, <-chan error) {
+	resultChan := make(chan autorest.Response, 1)
+	errChan := make(chan error, 1)
+	go func() {
+		var err error
+		var result autorest.Response
+		defer func() {
+			resultChan <- result
+			errChan <- err
+			close(resultChan)
+			close(errChan)
+		}()
+		req, err := client.DeletePreparer(resourceGroupName, hubName, relationshipLinkName, cancel)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "customerinsights.RelationshipLinksClient", "Delete", nil, "Failure preparing request")
+			return
+		}
 
-	resp, err := client.DeleteSender(req)
-	if err != nil {
-		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "customerinsights.RelationshipLinksClient", "Delete", resp, "Failure sending request")
-	}
+		resp, err := client.DeleteSender(req)
+		if err != nil {
+			result.Response = resp
+			err = autorest.NewErrorWithError(err, "customerinsights.RelationshipLinksClient", "Delete", resp, "Failure sending request")
+			return
+		}
 
-	result, err = client.DeleteResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "customerinsights.RelationshipLinksClient", "Delete", resp, "Failure responding to request")
-	}
-
-	return
+		result, err = client.DeleteResponder(resp)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "customerinsights.RelationshipLinksClient", "Delete", resp, "Failure responding to request")
+		}
+	}()
+	return resultChan, errChan
 }
 
 // DeletePreparer prepares the Delete request.
@@ -169,8 +200,9 @@ func (client RelationshipLinksClient) DeletePreparer(resourceGroupName string, h
 		"subscriptionId":       autorest.Encode("path", client.SubscriptionID),
 	}
 
+	const APIVersion = "2017-01-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -208,13 +240,15 @@ func (client RelationshipLinksClient) DeleteResponder(resp *http.Response) (resu
 func (client RelationshipLinksClient) Get(resourceGroupName string, hubName string, relationshipLinkName string) (result RelationshipLinkResourceFormat, err error) {
 	req, err := client.GetPreparer(resourceGroupName, hubName, relationshipLinkName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "customerinsights.RelationshipLinksClient", "Get", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "customerinsights.RelationshipLinksClient", "Get", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "customerinsights.RelationshipLinksClient", "Get", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "customerinsights.RelationshipLinksClient", "Get", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetResponder(resp)
@@ -234,8 +268,9 @@ func (client RelationshipLinksClient) GetPreparer(resourceGroupName string, hubN
 		"subscriptionId":       autorest.Encode("path", client.SubscriptionID),
 	}
 
+	const APIVersion = "2017-01-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -272,13 +307,15 @@ func (client RelationshipLinksClient) GetResponder(resp *http.Response) (result 
 func (client RelationshipLinksClient) ListByHub(resourceGroupName string, hubName string) (result RelationshipLinkListResult, err error) {
 	req, err := client.ListByHubPreparer(resourceGroupName, hubName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "customerinsights.RelationshipLinksClient", "ListByHub", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "customerinsights.RelationshipLinksClient", "ListByHub", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListByHubSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "customerinsights.RelationshipLinksClient", "ListByHub", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "customerinsights.RelationshipLinksClient", "ListByHub", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListByHubResponder(resp)
@@ -297,8 +334,9 @@ func (client RelationshipLinksClient) ListByHubPreparer(resourceGroupName string
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
+	const APIVersion = "2017-01-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(

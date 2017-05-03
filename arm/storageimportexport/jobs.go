@@ -91,13 +91,15 @@ func (client JobsClient) CreateOrUpdate(jobName string, jobProperties Job) (resu
 
 	req, err := client.CreateOrUpdatePreparer(jobName, jobProperties)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "storageimportexport.JobsClient", "CreateOrUpdate", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "storageimportexport.JobsClient", "CreateOrUpdate", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.CreateOrUpdateSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "storageimportexport.JobsClient", "CreateOrUpdate", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "storageimportexport.JobsClient", "CreateOrUpdate", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.CreateOrUpdateResponder(resp)
@@ -116,8 +118,9 @@ func (client JobsClient) CreateOrUpdatePreparer(jobName string, jobProperties Jo
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
+	const APIVersion = "2016-11-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -126,7 +129,8 @@ func (client JobsClient) CreateOrUpdatePreparer(jobName string, jobProperties Jo
 		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ImportExport/jobs/{jobName}", pathParameters),
 		autorest.WithJSON(jobProperties),
-		autorest.WithQueryParameters(queryParameters))
+		autorest.WithQueryParameters(queryParameters),
+		autorest.WithHeader("Accept-Language", client.AcceptLanguage))
 	return preparer.Prepare(&http.Request{})
 }
 
@@ -156,13 +160,15 @@ func (client JobsClient) CreateOrUpdateResponder(resp *http.Response) (result Jo
 func (client JobsClient) Delete(jobName string) (result autorest.Response, err error) {
 	req, err := client.DeletePreparer(jobName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "storageimportexport.JobsClient", "Delete", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "storageimportexport.JobsClient", "Delete", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.DeleteSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "storageimportexport.JobsClient", "Delete", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "storageimportexport.JobsClient", "Delete", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.DeleteResponder(resp)
@@ -181,15 +187,17 @@ func (client JobsClient) DeletePreparer(jobName string) (*http.Request, error) {
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
+	const APIVersion = "2016-11-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsDelete(),
 		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ImportExport/jobs/{jobName}", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
+		autorest.WithQueryParameters(queryParameters),
+		autorest.WithHeader("Accept-Language", client.AcceptLanguage))
 	return preparer.Prepare(&http.Request{})
 }
 
@@ -217,13 +225,15 @@ func (client JobsClient) DeleteResponder(resp *http.Response) (result autorest.R
 func (client JobsClient) Get(jobName string) (result Job, err error) {
 	req, err := client.GetPreparer(jobName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "storageimportexport.JobsClient", "Get", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "storageimportexport.JobsClient", "Get", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "storageimportexport.JobsClient", "Get", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "storageimportexport.JobsClient", "Get", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetResponder(resp)
@@ -242,15 +252,17 @@ func (client JobsClient) GetPreparer(jobName string) (*http.Request, error) {
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
+	const APIVersion = "2016-11-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ImportExport/jobs/{jobName}", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
+		autorest.WithQueryParameters(queryParameters),
+		autorest.WithHeader("Accept-Language", client.AcceptLanguage))
 	return preparer.Prepare(&http.Request{})
 }
 
@@ -296,13 +308,15 @@ func (client JobsClient) List(top *int32, filter string) (result JobListResult, 
 
 	req, err := client.ListPreparer(top, filter)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "storageimportexport.JobsClient", "List", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "storageimportexport.JobsClient", "List", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "storageimportexport.JobsClient", "List", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "storageimportexport.JobsClient", "List", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListResponder(resp)
@@ -319,8 +333,9 @@ func (client JobsClient) ListPreparer(top *int32, filter string) (*http.Request,
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
 
+	const APIVersion = "2016-11-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 	if top != nil {
 		queryParameters["$top"] = autorest.Encode("query", *top)
@@ -333,7 +348,8 @@ func (client JobsClient) ListPreparer(top *int32, filter string) (*http.Request,
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPathParameters("/subscriptions/{subscriptionId}/providers/Microsoft.ImportExport/jobs", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
+		autorest.WithQueryParameters(queryParameters),
+		autorest.WithHeader("Accept-Language", client.AcceptLanguage))
 	return preparer.Prepare(&http.Request{})
 }
 
@@ -387,13 +403,15 @@ func (client JobsClient) ListNextResults(lastResults JobListResult) (result JobL
 func (client JobsClient) ListBitLockerKeys(jobName string) (result BitLockerKeysListResult, err error) {
 	req, err := client.ListBitLockerKeysPreparer(jobName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "storageimportexport.JobsClient", "ListBitLockerKeys", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "storageimportexport.JobsClient", "ListBitLockerKeys", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListBitLockerKeysSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "storageimportexport.JobsClient", "ListBitLockerKeys", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "storageimportexport.JobsClient", "ListBitLockerKeys", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListBitLockerKeysResponder(resp)
@@ -412,15 +430,17 @@ func (client JobsClient) ListBitLockerKeysPreparer(jobName string) (*http.Reques
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
+	const APIVersion = "2016-11-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ImportExport/jobs/{jobName}/listBitLockerKeys", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
+		autorest.WithQueryParameters(queryParameters),
+		autorest.WithHeader("Accept-Language", client.AcceptLanguage))
 	return preparer.Prepare(&http.Request{})
 }
 
@@ -467,13 +487,15 @@ func (client JobsClient) ListByResourceGroup(top *int32, filter string) (result 
 
 	req, err := client.ListByResourceGroupPreparer(top, filter)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "storageimportexport.JobsClient", "ListByResourceGroup", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "storageimportexport.JobsClient", "ListByResourceGroup", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListByResourceGroupSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "storageimportexport.JobsClient", "ListByResourceGroup", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "storageimportexport.JobsClient", "ListByResourceGroup", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListByResourceGroupResponder(resp)
@@ -491,8 +513,9 @@ func (client JobsClient) ListByResourceGroupPreparer(top *int32, filter string) 
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
+	const APIVersion = "2016-11-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 	if top != nil {
 		queryParameters["$top"] = autorest.Encode("query", *top)
@@ -505,7 +528,8 @@ func (client JobsClient) ListByResourceGroupPreparer(top *int32, filter string) 
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ImportExport/jobs", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
+		autorest.WithQueryParameters(queryParameters),
+		autorest.WithHeader("Accept-Language", client.AcceptLanguage))
 	return preparer.Prepare(&http.Request{})
 }
 
@@ -568,13 +592,15 @@ func (client JobsClient) Move(moveJobsParameters MoveJobParameters) (result auto
 
 	req, err := client.MovePreparer(moveJobsParameters)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "storageimportexport.JobsClient", "Move", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "storageimportexport.JobsClient", "Move", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.MoveSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "storageimportexport.JobsClient", "Move", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "storageimportexport.JobsClient", "Move", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.MoveResponder(resp)
@@ -592,8 +618,9 @@ func (client JobsClient) MovePreparer(moveJobsParameters MoveJobParameters) (*ht
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
+	const APIVersion = "2016-11-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -602,7 +629,8 @@ func (client JobsClient) MovePreparer(moveJobsParameters MoveJobParameters) (*ht
 		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ImportExport/moveResources", pathParameters),
 		autorest.WithJSON(moveJobsParameters),
-		autorest.WithQueryParameters(queryParameters))
+		autorest.WithQueryParameters(queryParameters),
+		autorest.WithHeader("Accept-Language", client.AcceptLanguage))
 	return preparer.Prepare(&http.Request{})
 }
 
@@ -634,13 +662,15 @@ func (client JobsClient) MoveResponder(resp *http.Response) (result autorest.Res
 func (client JobsClient) Update(jobName string, jobProperties MutableJob) (result Job, err error) {
 	req, err := client.UpdatePreparer(jobName, jobProperties)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "storageimportexport.JobsClient", "Update", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "storageimportexport.JobsClient", "Update", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.UpdateSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "storageimportexport.JobsClient", "Update", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "storageimportexport.JobsClient", "Update", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.UpdateResponder(resp)
@@ -659,8 +689,9 @@ func (client JobsClient) UpdatePreparer(jobName string, jobProperties MutableJob
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
+	const APIVersion = "2016-11-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -669,7 +700,8 @@ func (client JobsClient) UpdatePreparer(jobName string, jobProperties MutableJob
 		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ImportExport/jobs/{jobName}", pathParameters),
 		autorest.WithJSON(jobProperties),
-		autorest.WithQueryParameters(queryParameters))
+		autorest.WithQueryParameters(queryParameters),
+		autorest.WithHeader("Accept-Language", client.AcceptLanguage))
 	return preparer.Prepare(&http.Request{})
 }
 

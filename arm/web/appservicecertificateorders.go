@@ -52,7 +52,9 @@ func NewAppServiceCertificateOrdersClientWithBaseURI(baseURI string, subscriptio
 // belongs. certificateOrderName is name of the certificate order.
 // certificateDistinguishedName is distinguished name to to use for the
 // certificate order.
-func (client AppServiceCertificateOrdersClient) CreateOrUpdate(resourceGroupName string, certificateOrderName string, certificateDistinguishedName AppServiceCertificateOrder, cancel <-chan struct{}) (result autorest.Response, err error) {
+func (client AppServiceCertificateOrdersClient) CreateOrUpdate(resourceGroupName string, certificateOrderName string, certificateDistinguishedName AppServiceCertificateOrder, cancel <-chan struct{}) (<-chan AppServiceCertificateOrder, <-chan error) {
+	resultChan := make(chan AppServiceCertificateOrder, 1)
+	errChan := make(chan error, 1)
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
@@ -65,26 +67,40 @@ func (client AppServiceCertificateOrdersClient) CreateOrUpdate(resourceGroupName
 						{Target: "certificateDistinguishedName.AppServiceCertificateOrderProperties.ValidityInYears", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil},
 					}},
 				}}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "web.AppServiceCertificateOrdersClient", "CreateOrUpdate")
+		errChan <- validation.NewErrorWithValidationError(err, "web.AppServiceCertificateOrdersClient", "CreateOrUpdate")
+		close(errChan)
+		close(resultChan)
+		return resultChan, errChan
 	}
 
-	req, err := client.CreateOrUpdatePreparer(resourceGroupName, certificateOrderName, certificateDistinguishedName, cancel)
-	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppServiceCertificateOrdersClient", "CreateOrUpdate", nil, "Failure preparing request")
-	}
+	go func() {
+		var err error
+		var result AppServiceCertificateOrder
+		defer func() {
+			resultChan <- result
+			errChan <- err
+			close(resultChan)
+			close(errChan)
+		}()
+		req, err := client.CreateOrUpdatePreparer(resourceGroupName, certificateOrderName, certificateDistinguishedName, cancel)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "web.AppServiceCertificateOrdersClient", "CreateOrUpdate", nil, "Failure preparing request")
+			return
+		}
 
-	resp, err := client.CreateOrUpdateSender(req)
-	if err != nil {
-		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "web.AppServiceCertificateOrdersClient", "CreateOrUpdate", resp, "Failure sending request")
-	}
+		resp, err := client.CreateOrUpdateSender(req)
+		if err != nil {
+			result.Response = autorest.Response{Response: resp}
+			err = autorest.NewErrorWithError(err, "web.AppServiceCertificateOrdersClient", "CreateOrUpdate", resp, "Failure sending request")
+			return
+		}
 
-	result, err = client.CreateOrUpdateResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "web.AppServiceCertificateOrdersClient", "CreateOrUpdate", resp, "Failure responding to request")
-	}
-
-	return
+		result, err = client.CreateOrUpdateResponder(resp)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "web.AppServiceCertificateOrdersClient", "CreateOrUpdate", resp, "Failure responding to request")
+		}
+	}()
+	return resultChan, errChan
 }
 
 // CreateOrUpdatePreparer prepares the CreateOrUpdate request.
@@ -120,13 +136,14 @@ func (client AppServiceCertificateOrdersClient) CreateOrUpdateSender(req *http.R
 
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
 // closes the http.Response Body.
-func (client AppServiceCertificateOrdersClient) CreateOrUpdateResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client AppServiceCertificateOrdersClient) CreateOrUpdateResponder(resp *http.Response) (result AppServiceCertificateOrder, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = resp
+	result.Response = autorest.Response{Response: resp}
 	return
 }
 
@@ -139,32 +156,48 @@ func (client AppServiceCertificateOrdersClient) CreateOrUpdateResponder(resp *ht
 // belongs. certificateOrderName is name of the certificate order. name is name
 // of the certificate. keyVaultCertificate is key vault certificate resource
 // Id.
-func (client AppServiceCertificateOrdersClient) CreateOrUpdateCertificate(resourceGroupName string, certificateOrderName string, name string, keyVaultCertificate AppServiceCertificateResource, cancel <-chan struct{}) (result autorest.Response, err error) {
+func (client AppServiceCertificateOrdersClient) CreateOrUpdateCertificate(resourceGroupName string, certificateOrderName string, name string, keyVaultCertificate AppServiceCertificateResource, cancel <-chan struct{}) (<-chan AppServiceCertificateResource, <-chan error) {
+	resultChan := make(chan AppServiceCertificateResource, 1)
+	errChan := make(chan error, 1)
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+[^\.]$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "web.AppServiceCertificateOrdersClient", "CreateOrUpdateCertificate")
+		errChan <- validation.NewErrorWithValidationError(err, "web.AppServiceCertificateOrdersClient", "CreateOrUpdateCertificate")
+		close(errChan)
+		close(resultChan)
+		return resultChan, errChan
 	}
 
-	req, err := client.CreateOrUpdateCertificatePreparer(resourceGroupName, certificateOrderName, name, keyVaultCertificate, cancel)
-	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppServiceCertificateOrdersClient", "CreateOrUpdateCertificate", nil, "Failure preparing request")
-	}
+	go func() {
+		var err error
+		var result AppServiceCertificateResource
+		defer func() {
+			resultChan <- result
+			errChan <- err
+			close(resultChan)
+			close(errChan)
+		}()
+		req, err := client.CreateOrUpdateCertificatePreparer(resourceGroupName, certificateOrderName, name, keyVaultCertificate, cancel)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "web.AppServiceCertificateOrdersClient", "CreateOrUpdateCertificate", nil, "Failure preparing request")
+			return
+		}
 
-	resp, err := client.CreateOrUpdateCertificateSender(req)
-	if err != nil {
-		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "web.AppServiceCertificateOrdersClient", "CreateOrUpdateCertificate", resp, "Failure sending request")
-	}
+		resp, err := client.CreateOrUpdateCertificateSender(req)
+		if err != nil {
+			result.Response = autorest.Response{Response: resp}
+			err = autorest.NewErrorWithError(err, "web.AppServiceCertificateOrdersClient", "CreateOrUpdateCertificate", resp, "Failure sending request")
+			return
+		}
 
-	result, err = client.CreateOrUpdateCertificateResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "web.AppServiceCertificateOrdersClient", "CreateOrUpdateCertificate", resp, "Failure responding to request")
-	}
-
-	return
+		result, err = client.CreateOrUpdateCertificateResponder(resp)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "web.AppServiceCertificateOrdersClient", "CreateOrUpdateCertificate", resp, "Failure responding to request")
+		}
+	}()
+	return resultChan, errChan
 }
 
 // CreateOrUpdateCertificatePreparer prepares the CreateOrUpdateCertificate request.
@@ -201,13 +234,14 @@ func (client AppServiceCertificateOrdersClient) CreateOrUpdateCertificateSender(
 
 // CreateOrUpdateCertificateResponder handles the response to the CreateOrUpdateCertificate request. The method always
 // closes the http.Response Body.
-func (client AppServiceCertificateOrdersClient) CreateOrUpdateCertificateResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client AppServiceCertificateOrdersClient) CreateOrUpdateCertificateResponder(resp *http.Response) (result AppServiceCertificateResource, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = resp
+	result.Response = autorest.Response{Response: resp}
 	return
 }
 
@@ -226,13 +260,15 @@ func (client AppServiceCertificateOrdersClient) Delete(resourceGroupName string,
 
 	req, err := client.DeletePreparer(resourceGroupName, certificateOrderName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppServiceCertificateOrdersClient", "Delete", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppServiceCertificateOrdersClient", "Delete", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.DeleteSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "web.AppServiceCertificateOrdersClient", "Delete", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppServiceCertificateOrdersClient", "Delete", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.DeleteResponder(resp)
@@ -299,13 +335,15 @@ func (client AppServiceCertificateOrdersClient) DeleteCertificate(resourceGroupN
 
 	req, err := client.DeleteCertificatePreparer(resourceGroupName, certificateOrderName, name)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppServiceCertificateOrdersClient", "DeleteCertificate", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppServiceCertificateOrdersClient", "DeleteCertificate", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.DeleteCertificateSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "web.AppServiceCertificateOrdersClient", "DeleteCertificate", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppServiceCertificateOrdersClient", "DeleteCertificate", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.DeleteCertificateResponder(resp)
@@ -371,13 +409,15 @@ func (client AppServiceCertificateOrdersClient) Get(resourceGroupName string, ce
 
 	req, err := client.GetPreparer(resourceGroupName, certificateOrderName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppServiceCertificateOrdersClient", "Get", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppServiceCertificateOrdersClient", "Get", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppServiceCertificateOrdersClient", "Get", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppServiceCertificateOrdersClient", "Get", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetResponder(resp)
@@ -444,13 +484,15 @@ func (client AppServiceCertificateOrdersClient) GetCertificate(resourceGroupName
 
 	req, err := client.GetCertificatePreparer(resourceGroupName, certificateOrderName, name)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppServiceCertificateOrdersClient", "GetCertificate", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppServiceCertificateOrdersClient", "GetCertificate", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetCertificateSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppServiceCertificateOrdersClient", "GetCertificate", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppServiceCertificateOrdersClient", "GetCertificate", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetCertificateResponder(resp)
@@ -506,13 +548,15 @@ func (client AppServiceCertificateOrdersClient) GetCertificateResponder(resp *ht
 func (client AppServiceCertificateOrdersClient) List() (result AppServiceCertificateOrderCollection, err error) {
 	req, err := client.ListPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppServiceCertificateOrdersClient", "List", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppServiceCertificateOrdersClient", "List", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppServiceCertificateOrdersClient", "List", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppServiceCertificateOrdersClient", "List", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListResponder(resp)
@@ -600,13 +644,15 @@ func (client AppServiceCertificateOrdersClient) ListByResourceGroup(resourceGrou
 
 	req, err := client.ListByResourceGroupPreparer(resourceGroupName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppServiceCertificateOrdersClient", "ListByResourceGroup", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppServiceCertificateOrdersClient", "ListByResourceGroup", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListByResourceGroupSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppServiceCertificateOrdersClient", "ListByResourceGroup", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppServiceCertificateOrdersClient", "ListByResourceGroup", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListByResourceGroupResponder(resp)
@@ -695,13 +741,15 @@ func (client AppServiceCertificateOrdersClient) ListCertificates(resourceGroupNa
 
 	req, err := client.ListCertificatesPreparer(resourceGroupName, certificateOrderName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppServiceCertificateOrdersClient", "ListCertificates", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppServiceCertificateOrdersClient", "ListCertificates", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListCertificatesSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppServiceCertificateOrdersClient", "ListCertificates", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppServiceCertificateOrdersClient", "ListCertificates", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListCertificatesResponder(resp)
@@ -792,13 +840,15 @@ func (client AppServiceCertificateOrdersClient) Reissue(resourceGroupName string
 
 	req, err := client.ReissuePreparer(resourceGroupName, certificateOrderName, reissueCertificateOrderRequest)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppServiceCertificateOrdersClient", "Reissue", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppServiceCertificateOrdersClient", "Reissue", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ReissueSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "web.AppServiceCertificateOrdersClient", "Reissue", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppServiceCertificateOrdersClient", "Reissue", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ReissueResponder(resp)
@@ -866,13 +916,15 @@ func (client AppServiceCertificateOrdersClient) Renew(resourceGroupName string, 
 
 	req, err := client.RenewPreparer(resourceGroupName, certificateOrderName, renewCertificateOrderRequest)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppServiceCertificateOrdersClient", "Renew", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppServiceCertificateOrdersClient", "Renew", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.RenewSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "web.AppServiceCertificateOrdersClient", "Renew", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppServiceCertificateOrdersClient", "Renew", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.RenewResponder(resp)
@@ -939,13 +991,15 @@ func (client AppServiceCertificateOrdersClient) ResendEmail(resourceGroupName st
 
 	req, err := client.ResendEmailPreparer(resourceGroupName, certificateOrderName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppServiceCertificateOrdersClient", "ResendEmail", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppServiceCertificateOrdersClient", "ResendEmail", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ResendEmailSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "web.AppServiceCertificateOrdersClient", "ResendEmail", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppServiceCertificateOrdersClient", "ResendEmail", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ResendEmailResponder(resp)
@@ -1011,13 +1065,15 @@ func (client AppServiceCertificateOrdersClient) ResendRequestEmails(resourceGrou
 
 	req, err := client.ResendRequestEmailsPreparer(resourceGroupName, certificateOrderName, nameIdentifier)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppServiceCertificateOrdersClient", "ResendRequestEmails", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppServiceCertificateOrdersClient", "ResendRequestEmails", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ResendRequestEmailsSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "web.AppServiceCertificateOrdersClient", "ResendRequestEmails", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppServiceCertificateOrdersClient", "ResendRequestEmails", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ResendRequestEmailsResponder(resp)
@@ -1084,13 +1140,15 @@ func (client AppServiceCertificateOrdersClient) RetrieveCertificateActions(resou
 
 	req, err := client.RetrieveCertificateActionsPreparer(resourceGroupName, name)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppServiceCertificateOrdersClient", "RetrieveCertificateActions", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppServiceCertificateOrdersClient", "RetrieveCertificateActions", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.RetrieveCertificateActionsSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppServiceCertificateOrdersClient", "RetrieveCertificateActions", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppServiceCertificateOrdersClient", "RetrieveCertificateActions", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.RetrieveCertificateActionsResponder(resp)
@@ -1156,13 +1214,15 @@ func (client AppServiceCertificateOrdersClient) RetrieveCertificateEmailHistory(
 
 	req, err := client.RetrieveCertificateEmailHistoryPreparer(resourceGroupName, name)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppServiceCertificateOrdersClient", "RetrieveCertificateEmailHistory", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppServiceCertificateOrdersClient", "RetrieveCertificateEmailHistory", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.RetrieveCertificateEmailHistorySender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppServiceCertificateOrdersClient", "RetrieveCertificateEmailHistory", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppServiceCertificateOrdersClient", "RetrieveCertificateEmailHistory", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.RetrieveCertificateEmailHistoryResponder(resp)
@@ -1229,13 +1289,15 @@ func (client AppServiceCertificateOrdersClient) RetrieveSiteSeal(resourceGroupNa
 
 	req, err := client.RetrieveSiteSealPreparer(resourceGroupName, certificateOrderName, siteSealRequest)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppServiceCertificateOrdersClient", "RetrieveSiteSeal", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppServiceCertificateOrdersClient", "RetrieveSiteSeal", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.RetrieveSiteSealSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppServiceCertificateOrdersClient", "RetrieveSiteSeal", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppServiceCertificateOrdersClient", "RetrieveSiteSeal", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.RetrieveSiteSealResponder(resp)
@@ -1305,13 +1367,15 @@ func (client AppServiceCertificateOrdersClient) ValidatePurchaseInformation(appS
 
 	req, err := client.ValidatePurchaseInformationPreparer(appServiceCertificateOrder)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppServiceCertificateOrdersClient", "ValidatePurchaseInformation", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppServiceCertificateOrdersClient", "ValidatePurchaseInformation", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ValidatePurchaseInformationSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "web.AppServiceCertificateOrdersClient", "ValidatePurchaseInformation", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppServiceCertificateOrdersClient", "ValidatePurchaseInformation", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ValidatePurchaseInformationResponder(resp)
@@ -1376,13 +1440,15 @@ func (client AppServiceCertificateOrdersClient) VerifyDomainOwnership(resourceGr
 
 	req, err := client.VerifyDomainOwnershipPreparer(resourceGroupName, certificateOrderName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppServiceCertificateOrdersClient", "VerifyDomainOwnership", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppServiceCertificateOrdersClient", "VerifyDomainOwnership", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.VerifyDomainOwnershipSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "web.AppServiceCertificateOrdersClient", "VerifyDomainOwnership", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppServiceCertificateOrdersClient", "VerifyDomainOwnership", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.VerifyDomainOwnershipResponder(resp)

@@ -55,13 +55,15 @@ func (client SessionsClient) CreateOrUpdate(resourceGroupName string, integratio
 
 	req, err := client.CreateOrUpdatePreparer(resourceGroupName, integrationAccountName, sessionName, session)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "logic.SessionsClient", "CreateOrUpdate", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "logic.SessionsClient", "CreateOrUpdate", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.CreateOrUpdateSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "logic.SessionsClient", "CreateOrUpdate", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "logic.SessionsClient", "CreateOrUpdate", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.CreateOrUpdateResponder(resp)
@@ -123,13 +125,15 @@ func (client SessionsClient) CreateOrUpdateResponder(resp *http.Response) (resul
 func (client SessionsClient) Delete(resourceGroupName string, integrationAccountName string, sessionName string) (result autorest.Response, err error) {
 	req, err := client.DeletePreparer(resourceGroupName, integrationAccountName, sessionName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "logic.SessionsClient", "Delete", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "logic.SessionsClient", "Delete", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.DeleteSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "logic.SessionsClient", "Delete", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "logic.SessionsClient", "Delete", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.DeleteResponder(resp)
@@ -188,13 +192,15 @@ func (client SessionsClient) DeleteResponder(resp *http.Response) (result autore
 func (client SessionsClient) Get(resourceGroupName string, integrationAccountName string, sessionName string) (result IntegrationAccountSession, err error) {
 	req, err := client.GetPreparer(resourceGroupName, integrationAccountName, sessionName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "logic.SessionsClient", "Get", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "logic.SessionsClient", "Get", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "logic.SessionsClient", "Get", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "logic.SessionsClient", "Get", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetResponder(resp)
@@ -254,13 +260,15 @@ func (client SessionsClient) GetResponder(resp *http.Response) (result Integrati
 func (client SessionsClient) ListByIntegrationAccounts(resourceGroupName string, integrationAccountName string, top *int32, filter string) (result IntegrationAccountSessionListResult, err error) {
 	req, err := client.ListByIntegrationAccountsPreparer(resourceGroupName, integrationAccountName, top, filter)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "logic.SessionsClient", "ListByIntegrationAccounts", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "logic.SessionsClient", "ListByIntegrationAccounts", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListByIntegrationAccountsSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "logic.SessionsClient", "ListByIntegrationAccounts", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "logic.SessionsClient", "ListByIntegrationAccounts", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListByIntegrationAccountsResponder(resp)

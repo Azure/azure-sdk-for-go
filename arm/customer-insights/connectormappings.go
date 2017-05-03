@@ -77,13 +77,15 @@ func (client ConnectorMappingsClient) CreateOrUpdate(resourceGroupName string, h
 
 	req, err := client.CreateOrUpdatePreparer(resourceGroupName, hubName, connectorName, mappingName, parameters)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "customerinsights.ConnectorMappingsClient", "CreateOrUpdate", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "customerinsights.ConnectorMappingsClient", "CreateOrUpdate", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.CreateOrUpdateSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "customerinsights.ConnectorMappingsClient", "CreateOrUpdate", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "customerinsights.ConnectorMappingsClient", "CreateOrUpdate", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.CreateOrUpdateResponder(resp)
@@ -104,8 +106,9 @@ func (client ConnectorMappingsClient) CreateOrUpdatePreparer(resourceGroupName s
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
+	const APIVersion = "2017-01-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -145,13 +148,15 @@ func (client ConnectorMappingsClient) CreateOrUpdateResponder(resp *http.Respons
 func (client ConnectorMappingsClient) Delete(resourceGroupName string, hubName string, connectorName string, mappingName string) (result autorest.Response, err error) {
 	req, err := client.DeletePreparer(resourceGroupName, hubName, connectorName, mappingName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "customerinsights.ConnectorMappingsClient", "Delete", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "customerinsights.ConnectorMappingsClient", "Delete", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.DeleteSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "customerinsights.ConnectorMappingsClient", "Delete", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "customerinsights.ConnectorMappingsClient", "Delete", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.DeleteResponder(resp)
@@ -172,8 +177,9 @@ func (client ConnectorMappingsClient) DeletePreparer(resourceGroupName string, h
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
+	const APIVersion = "2017-01-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -210,13 +216,15 @@ func (client ConnectorMappingsClient) DeleteResponder(resp *http.Response) (resu
 func (client ConnectorMappingsClient) Get(resourceGroupName string, hubName string, connectorName string, mappingName string) (result ConnectorMappingResourceFormat, err error) {
 	req, err := client.GetPreparer(resourceGroupName, hubName, connectorName, mappingName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "customerinsights.ConnectorMappingsClient", "Get", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "customerinsights.ConnectorMappingsClient", "Get", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "customerinsights.ConnectorMappingsClient", "Get", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "customerinsights.ConnectorMappingsClient", "Get", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetResponder(resp)
@@ -237,8 +245,9 @@ func (client ConnectorMappingsClient) GetPreparer(resourceGroupName string, hubN
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
+	const APIVersion = "2017-01-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -275,13 +284,15 @@ func (client ConnectorMappingsClient) GetResponder(resp *http.Response) (result 
 func (client ConnectorMappingsClient) ListByConnector(resourceGroupName string, hubName string, connectorName string) (result ConnectorMappingListResult, err error) {
 	req, err := client.ListByConnectorPreparer(resourceGroupName, hubName, connectorName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "customerinsights.ConnectorMappingsClient", "ListByConnector", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "customerinsights.ConnectorMappingsClient", "ListByConnector", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListByConnectorSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "customerinsights.ConnectorMappingsClient", "ListByConnector", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "customerinsights.ConnectorMappingsClient", "ListByConnector", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListByConnectorResponder(resp)
@@ -301,8 +312,9 @@ func (client ConnectorMappingsClient) ListByConnectorPreparer(resourceGroupName 
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
+	const APIVersion = "2017-01-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(

@@ -54,13 +54,15 @@ func NewCommitmentAssociationsClientWithBaseURI(baseURI string, subscriptionID s
 func (client CommitmentAssociationsClient) Get(resourceGroupName string, commitmentPlanName string, commitmentAssociationName string) (result CommitmentAssociation, err error) {
 	req, err := client.GetPreparer(resourceGroupName, commitmentPlanName, commitmentAssociationName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "commitmentplans.CommitmentAssociationsClient", "Get", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "commitmentplans.CommitmentAssociationsClient", "Get", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "commitmentplans.CommitmentAssociationsClient", "Get", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "commitmentplans.CommitmentAssociationsClient", "Get", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetResponder(resp)
@@ -80,8 +82,9 @@ func (client CommitmentAssociationsClient) GetPreparer(resourceGroupName string,
 		"subscriptionId":            autorest.Encode("path", client.SubscriptionID),
 	}
 
+	const APIVersion = "2016-05-01-preview"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -119,13 +122,15 @@ func (client CommitmentAssociationsClient) GetResponder(resp *http.Response) (re
 func (client CommitmentAssociationsClient) List(resourceGroupName string, commitmentPlanName string, skipToken string) (result CommitmentAssociationListResult, err error) {
 	req, err := client.ListPreparer(resourceGroupName, commitmentPlanName, skipToken)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "commitmentplans.CommitmentAssociationsClient", "List", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "commitmentplans.CommitmentAssociationsClient", "List", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "commitmentplans.CommitmentAssociationsClient", "List", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "commitmentplans.CommitmentAssociationsClient", "List", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListResponder(resp)
@@ -144,8 +149,9 @@ func (client CommitmentAssociationsClient) ListPreparer(resourceGroupName string
 		"subscriptionId":     autorest.Encode("path", client.SubscriptionID),
 	}
 
+	const APIVersion = "2016-05-01-preview"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 	if len(skipToken) > 0 {
 		queryParameters["$skipToken"] = autorest.Encode("query", skipToken)
@@ -210,13 +216,15 @@ func (client CommitmentAssociationsClient) ListNextResults(lastResults Commitmen
 func (client CommitmentAssociationsClient) Move(resourceGroupName string, commitmentPlanName string, commitmentAssociationName string, movePayload MoveCommitmentAssociationRequest) (result CommitmentAssociation, err error) {
 	req, err := client.MovePreparer(resourceGroupName, commitmentPlanName, commitmentAssociationName, movePayload)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "commitmentplans.CommitmentAssociationsClient", "Move", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "commitmentplans.CommitmentAssociationsClient", "Move", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.MoveSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "commitmentplans.CommitmentAssociationsClient", "Move", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "commitmentplans.CommitmentAssociationsClient", "Move", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.MoveResponder(resp)
@@ -236,8 +244,9 @@ func (client CommitmentAssociationsClient) MovePreparer(resourceGroupName string
 		"subscriptionId":            autorest.Encode("path", client.SubscriptionID),
 	}
 
+	const APIVersion = "2016-05-01-preview"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(

@@ -66,13 +66,15 @@ func (client ManagementLocksClient) CreateOrUpdateAtResourceGroupLevel(resourceG
 
 	req, err := client.CreateOrUpdateAtResourceGroupLevelPreparer(resourceGroupName, lockName, parameters)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "locks.ManagementLocksClient", "CreateOrUpdateAtResourceGroupLevel", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "locks.ManagementLocksClient", "CreateOrUpdateAtResourceGroupLevel", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.CreateOrUpdateAtResourceGroupLevelSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "locks.ManagementLocksClient", "CreateOrUpdateAtResourceGroupLevel", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "locks.ManagementLocksClient", "CreateOrUpdateAtResourceGroupLevel", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.CreateOrUpdateAtResourceGroupLevelResponder(resp)
@@ -152,13 +154,15 @@ func (client ManagementLocksClient) CreateOrUpdateAtResourceLevel(resourceGroupN
 
 	req, err := client.CreateOrUpdateAtResourceLevelPreparer(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, lockName, parameters)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "locks.ManagementLocksClient", "CreateOrUpdateAtResourceLevel", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "locks.ManagementLocksClient", "CreateOrUpdateAtResourceLevel", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.CreateOrUpdateAtResourceLevelSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "locks.ManagementLocksClient", "CreateOrUpdateAtResourceLevel", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "locks.ManagementLocksClient", "CreateOrUpdateAtResourceLevel", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.CreateOrUpdateAtResourceLevelResponder(resp)
@@ -233,13 +237,15 @@ func (client ManagementLocksClient) CreateOrUpdateAtSubscriptionLevel(lockName s
 
 	req, err := client.CreateOrUpdateAtSubscriptionLevelPreparer(lockName, parameters)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "locks.ManagementLocksClient", "CreateOrUpdateAtSubscriptionLevel", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "locks.ManagementLocksClient", "CreateOrUpdateAtSubscriptionLevel", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.CreateOrUpdateAtSubscriptionLevelSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "locks.ManagementLocksClient", "CreateOrUpdateAtSubscriptionLevel", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "locks.ManagementLocksClient", "CreateOrUpdateAtSubscriptionLevel", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.CreateOrUpdateAtSubscriptionLevelResponder(resp)
@@ -309,13 +315,15 @@ func (client ManagementLocksClient) CreateOrUpdateByScope(scope string, lockName
 
 	req, err := client.CreateOrUpdateByScopePreparer(scope, lockName, parameters)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "locks.ManagementLocksClient", "CreateOrUpdateByScope", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "locks.ManagementLocksClient", "CreateOrUpdateByScope", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.CreateOrUpdateByScopeSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "locks.ManagementLocksClient", "CreateOrUpdateByScope", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "locks.ManagementLocksClient", "CreateOrUpdateByScope", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.CreateOrUpdateByScopeResponder(resp)
@@ -385,13 +393,15 @@ func (client ManagementLocksClient) DeleteAtResourceGroupLevel(resourceGroupName
 
 	req, err := client.DeleteAtResourceGroupLevelPreparer(resourceGroupName, lockName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "locks.ManagementLocksClient", "DeleteAtResourceGroupLevel", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "locks.ManagementLocksClient", "DeleteAtResourceGroupLevel", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.DeleteAtResourceGroupLevelSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "locks.ManagementLocksClient", "DeleteAtResourceGroupLevel", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "locks.ManagementLocksClient", "DeleteAtResourceGroupLevel", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.DeleteAtResourceGroupLevelResponder(resp)
@@ -463,13 +473,15 @@ func (client ManagementLocksClient) DeleteAtResourceLevel(resourceGroupName stri
 
 	req, err := client.DeleteAtResourceLevelPreparer(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, lockName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "locks.ManagementLocksClient", "DeleteAtResourceLevel", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "locks.ManagementLocksClient", "DeleteAtResourceLevel", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.DeleteAtResourceLevelSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "locks.ManagementLocksClient", "DeleteAtResourceLevel", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "locks.ManagementLocksClient", "DeleteAtResourceLevel", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.DeleteAtResourceLevelResponder(resp)
@@ -532,13 +544,15 @@ func (client ManagementLocksClient) DeleteAtResourceLevelResponder(resp *http.Re
 func (client ManagementLocksClient) DeleteAtSubscriptionLevel(lockName string) (result autorest.Response, err error) {
 	req, err := client.DeleteAtSubscriptionLevelPreparer(lockName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "locks.ManagementLocksClient", "DeleteAtSubscriptionLevel", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "locks.ManagementLocksClient", "DeleteAtSubscriptionLevel", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.DeleteAtSubscriptionLevelSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "locks.ManagementLocksClient", "DeleteAtSubscriptionLevel", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "locks.ManagementLocksClient", "DeleteAtSubscriptionLevel", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.DeleteAtSubscriptionLevelResponder(resp)
@@ -593,13 +607,15 @@ func (client ManagementLocksClient) DeleteAtSubscriptionLevelResponder(resp *htt
 func (client ManagementLocksClient) DeleteByScope(scope string, lockName string) (result autorest.Response, err error) {
 	req, err := client.DeleteByScopePreparer(scope, lockName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "locks.ManagementLocksClient", "DeleteByScope", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "locks.ManagementLocksClient", "DeleteByScope", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.DeleteByScopeSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "locks.ManagementLocksClient", "DeleteByScope", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "locks.ManagementLocksClient", "DeleteByScope", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.DeleteByScopeResponder(resp)
@@ -663,13 +679,15 @@ func (client ManagementLocksClient) GetAtResourceGroupLevel(resourceGroupName st
 
 	req, err := client.GetAtResourceGroupLevelPreparer(resourceGroupName, lockName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "locks.ManagementLocksClient", "GetAtResourceGroupLevel", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "locks.ManagementLocksClient", "GetAtResourceGroupLevel", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetAtResourceGroupLevelSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "locks.ManagementLocksClient", "GetAtResourceGroupLevel", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "locks.ManagementLocksClient", "GetAtResourceGroupLevel", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetAtResourceGroupLevelResponder(resp)
@@ -739,13 +757,15 @@ func (client ManagementLocksClient) GetAtResourceLevel(resourceGroupName string,
 
 	req, err := client.GetAtResourceLevelPreparer(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, lockName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "locks.ManagementLocksClient", "GetAtResourceLevel", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "locks.ManagementLocksClient", "GetAtResourceLevel", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetAtResourceLevelSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "locks.ManagementLocksClient", "GetAtResourceLevel", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "locks.ManagementLocksClient", "GetAtResourceLevel", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetAtResourceLevelResponder(resp)
@@ -806,13 +826,15 @@ func (client ManagementLocksClient) GetAtResourceLevelResponder(resp *http.Respo
 func (client ManagementLocksClient) GetAtSubscriptionLevel(lockName string) (result ManagementLockObject, err error) {
 	req, err := client.GetAtSubscriptionLevelPreparer(lockName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "locks.ManagementLocksClient", "GetAtSubscriptionLevel", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "locks.ManagementLocksClient", "GetAtSubscriptionLevel", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetAtSubscriptionLevelSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "locks.ManagementLocksClient", "GetAtSubscriptionLevel", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "locks.ManagementLocksClient", "GetAtSubscriptionLevel", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetAtSubscriptionLevelResponder(resp)
@@ -868,13 +890,15 @@ func (client ManagementLocksClient) GetAtSubscriptionLevelResponder(resp *http.R
 func (client ManagementLocksClient) GetByScope(scope string, lockName string) (result ManagementLockObject, err error) {
 	req, err := client.GetByScopePreparer(scope, lockName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "locks.ManagementLocksClient", "GetByScope", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "locks.ManagementLocksClient", "GetByScope", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetByScopeSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "locks.ManagementLocksClient", "GetByScope", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "locks.ManagementLocksClient", "GetByScope", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetByScopeResponder(resp)
@@ -939,13 +963,15 @@ func (client ManagementLocksClient) ListAtResourceGroupLevel(resourceGroupName s
 
 	req, err := client.ListAtResourceGroupLevelPreparer(resourceGroupName, filter)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "locks.ManagementLocksClient", "ListAtResourceGroupLevel", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "locks.ManagementLocksClient", "ListAtResourceGroupLevel", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListAtResourceGroupLevelSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "locks.ManagementLocksClient", "ListAtResourceGroupLevel", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "locks.ManagementLocksClient", "ListAtResourceGroupLevel", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListAtResourceGroupLevelResponder(resp)
@@ -1042,13 +1068,15 @@ func (client ManagementLocksClient) ListAtResourceLevel(resourceGroupName string
 
 	req, err := client.ListAtResourceLevelPreparer(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, filter)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "locks.ManagementLocksClient", "ListAtResourceLevel", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "locks.ManagementLocksClient", "ListAtResourceLevel", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListAtResourceLevelSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "locks.ManagementLocksClient", "ListAtResourceLevel", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "locks.ManagementLocksClient", "ListAtResourceLevel", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListAtResourceLevelResponder(resp)
@@ -1135,13 +1163,15 @@ func (client ManagementLocksClient) ListAtResourceLevelNextResults(lastResults M
 func (client ManagementLocksClient) ListAtSubscriptionLevel(filter string) (result ManagementLockListResult, err error) {
 	req, err := client.ListAtSubscriptionLevelPreparer(filter)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "locks.ManagementLocksClient", "ListAtSubscriptionLevel", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "locks.ManagementLocksClient", "ListAtSubscriptionLevel", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListAtSubscriptionLevelSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "locks.ManagementLocksClient", "ListAtSubscriptionLevel", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "locks.ManagementLocksClient", "ListAtSubscriptionLevel", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListAtSubscriptionLevelResponder(resp)

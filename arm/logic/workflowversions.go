@@ -48,13 +48,15 @@ func NewWorkflowVersionsClientWithBaseURI(baseURI string, subscriptionID string)
 func (client WorkflowVersionsClient) Get(resourceGroupName string, workflowName string, versionID string) (result WorkflowVersion, err error) {
 	req, err := client.GetPreparer(resourceGroupName, workflowName, versionID)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "logic.WorkflowVersionsClient", "Get", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "logic.WorkflowVersionsClient", "Get", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "logic.WorkflowVersionsClient", "Get", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "logic.WorkflowVersionsClient", "Get", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetResponder(resp)
@@ -113,13 +115,15 @@ func (client WorkflowVersionsClient) GetResponder(resp *http.Response) (result W
 func (client WorkflowVersionsClient) List(resourceGroupName string, workflowName string, top *int32) (result WorkflowVersionListResult, err error) {
 	req, err := client.ListPreparer(resourceGroupName, workflowName, top)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "logic.WorkflowVersionsClient", "List", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "logic.WorkflowVersionsClient", "List", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "logic.WorkflowVersionsClient", "List", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "logic.WorkflowVersionsClient", "List", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListResponder(resp)

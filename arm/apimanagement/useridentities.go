@@ -47,30 +47,32 @@ func NewUserIdentitiesClientWithBaseURI(baseURI string, subscriptionID string) U
 // ListByUser lists all user identities.
 //
 // resourceGroupName is the name of the resource group. serviceName is the name
-// of the API Management service. uid is user identifier. Must be unique in the
+// of the API Management service. UID is user identifier. Must be unique in the
 // current API Management service instance.
-func (client UserIdentitiesClient) ListByUser(resourceGroupName string, serviceName string, uid string) (result ListUserIdentityContract, err error) {
+func (client UserIdentitiesClient) ListByUser(resourceGroupName string, serviceName string, UID string) (result ListUserIdentityContract, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,
 			Constraints: []validation.Constraint{{Target: "serviceName", Name: validation.MaxLength, Rule: 50, Chain: nil},
 				{Target: "serviceName", Name: validation.MinLength, Rule: 1, Chain: nil},
 				{Target: "serviceName", Name: validation.Pattern, Rule: `^[a-zA-Z](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?$`, Chain: nil}}},
-		{TargetValue: uid,
-			Constraints: []validation.Constraint{{Target: "uid", Name: validation.MaxLength, Rule: 256, Chain: nil},
-				{Target: "uid", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "uid", Name: validation.Pattern, Rule: `^[^*#&+:<>?]+$`, Chain: nil}}}}); err != nil {
+		{TargetValue: UID,
+			Constraints: []validation.Constraint{{Target: "UID", Name: validation.MaxLength, Rule: 256, Chain: nil},
+				{Target: "UID", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "UID", Name: validation.Pattern, Rule: `^[^*#&+:<>?]+$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewErrorWithValidationError(err, "apimanagement.UserIdentitiesClient", "ListByUser")
 	}
 
-	req, err := client.ListByUserPreparer(resourceGroupName, serviceName, uid)
+	req, err := client.ListByUserPreparer(resourceGroupName, serviceName, UID)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "apimanagement.UserIdentitiesClient", "ListByUser", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "apimanagement.UserIdentitiesClient", "ListByUser", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListByUserSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "apimanagement.UserIdentitiesClient", "ListByUser", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "apimanagement.UserIdentitiesClient", "ListByUser", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListByUserResponder(resp)
@@ -82,12 +84,12 @@ func (client UserIdentitiesClient) ListByUser(resourceGroupName string, serviceN
 }
 
 // ListByUserPreparer prepares the ListByUser request.
-func (client UserIdentitiesClient) ListByUserPreparer(resourceGroupName string, serviceName string, uid string) (*http.Request, error) {
+func (client UserIdentitiesClient) ListByUserPreparer(resourceGroupName string, serviceName string, UID string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"serviceName":       autorest.Encode("path", serviceName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
-		"uid":               autorest.Encode("path", uid),
+		"uid":               autorest.Encode("path", UID),
 	}
 
 	const APIVersion = "2016-07-07"

@@ -56,13 +56,15 @@ func (client AppsClient) AddPremierAddOn(resourceGroupName string, name string, 
 
 	req, err := client.AddPremierAddOnPreparer(resourceGroupName, name, premierAddOnName, premierAddOn)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "AddPremierAddOn", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "AddPremierAddOn", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.AddPremierAddOnSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "AddPremierAddOn", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "AddPremierAddOn", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.AddPremierAddOnResponder(resp)
@@ -134,13 +136,15 @@ func (client AppsClient) AddPremierAddOnSlot(resourceGroupName string, name stri
 
 	req, err := client.AddPremierAddOnSlotPreparer(resourceGroupName, name, premierAddOnName, premierAddOn, slot)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "AddPremierAddOnSlot", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "AddPremierAddOnSlot", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.AddPremierAddOnSlotSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "AddPremierAddOnSlot", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "AddPremierAddOnSlot", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.AddPremierAddOnSlotResponder(resp)
@@ -210,13 +214,15 @@ func (client AppsClient) AnalyzeCustomHostname(resourceGroupName string, name st
 
 	req, err := client.AnalyzeCustomHostnamePreparer(resourceGroupName, name, hostName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "AnalyzeCustomHostname", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "AnalyzeCustomHostname", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.AnalyzeCustomHostnameSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "AnalyzeCustomHostname", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "AnalyzeCustomHostname", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.AnalyzeCustomHostnameResponder(resp)
@@ -286,13 +292,15 @@ func (client AppsClient) AnalyzeCustomHostnameSlot(resourceGroupName string, nam
 
 	req, err := client.AnalyzeCustomHostnameSlotPreparer(resourceGroupName, name, slot, hostName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "AnalyzeCustomHostnameSlot", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "AnalyzeCustomHostnameSlot", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.AnalyzeCustomHostnameSlotSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "AnalyzeCustomHostnameSlot", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "AnalyzeCustomHostnameSlot", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.AnalyzeCustomHostnameSlotResponder(resp)
@@ -367,13 +375,15 @@ func (client AppsClient) ApplySlotConfigToProduction(resourceGroupName string, n
 
 	req, err := client.ApplySlotConfigToProductionPreparer(resourceGroupName, name, slotSwapEntity)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "ApplySlotConfigToProduction", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "ApplySlotConfigToProduction", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ApplySlotConfigToProductionSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "ApplySlotConfigToProduction", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "ApplySlotConfigToProduction", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ApplySlotConfigToProductionResponder(resp)
@@ -446,13 +456,15 @@ func (client AppsClient) ApplySlotConfigurationSlot(resourceGroupName string, na
 
 	req, err := client.ApplySlotConfigurationSlotPreparer(resourceGroupName, name, slotSwapEntity, slot)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "ApplySlotConfigurationSlot", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "ApplySlotConfigurationSlot", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ApplySlotConfigurationSlotSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "ApplySlotConfigurationSlot", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "ApplySlotConfigurationSlot", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ApplySlotConfigurationSlotResponder(resp)
@@ -529,13 +541,15 @@ func (client AppsClient) Backup(resourceGroupName string, name string, request B
 
 	req, err := client.BackupPreparer(resourceGroupName, name, request)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "Backup", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "Backup", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.BackupSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "Backup", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "Backup", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.BackupResponder(resp)
@@ -614,13 +628,15 @@ func (client AppsClient) BackupSlot(resourceGroupName string, name string, reque
 
 	req, err := client.BackupSlotPreparer(resourceGroupName, name, request, slot)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "BackupSlot", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "BackupSlot", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.BackupSlotSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "BackupSlot", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "BackupSlot", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.BackupSlotResponder(resp)
@@ -678,9 +694,9 @@ func (client AppsClient) BackupSlotResponder(resp *http.Response) (result Backup
 // and/or a specific scaled-out instance.
 //
 // resourceGroupName is name of the resource group to which the resource
-// belongs. name is name of the app. id is iD of an existing deployment.
+// belongs. name is name of the app. ID is iD of an existing deployment.
 // deployment is deployment details.
-func (client AppsClient) CreateDeployment(resourceGroupName string, name string, id string, deployment Deployment) (result Deployment, err error) {
+func (client AppsClient) CreateDeployment(resourceGroupName string, name string, ID string, deployment Deployment) (result Deployment, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
@@ -689,15 +705,17 @@ func (client AppsClient) CreateDeployment(resourceGroupName string, name string,
 		return result, validation.NewErrorWithValidationError(err, "web.AppsClient", "CreateDeployment")
 	}
 
-	req, err := client.CreateDeploymentPreparer(resourceGroupName, name, id, deployment)
+	req, err := client.CreateDeploymentPreparer(resourceGroupName, name, ID, deployment)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "CreateDeployment", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "CreateDeployment", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.CreateDeploymentSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "CreateDeployment", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "CreateDeployment", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.CreateDeploymentResponder(resp)
@@ -709,9 +727,9 @@ func (client AppsClient) CreateDeployment(resourceGroupName string, name string,
 }
 
 // CreateDeploymentPreparer prepares the CreateDeployment request.
-func (client AppsClient) CreateDeploymentPreparer(resourceGroupName string, name string, id string, deployment Deployment) (*http.Request, error) {
+func (client AppsClient) CreateDeploymentPreparer(resourceGroupName string, name string, ID string, deployment Deployment) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"id":                autorest.Encode("path", id),
+		"id":                autorest.Encode("path", ID),
 		"name":              autorest.Encode("path", name),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
@@ -755,10 +773,10 @@ func (client AppsClient) CreateDeploymentResponder(resp *http.Response) (result 
 // slot, and/or a specific scaled-out instance.
 //
 // resourceGroupName is name of the resource group to which the resource
-// belongs. name is name of the app. id is iD of an existing deployment. slot
+// belongs. name is name of the app. ID is iD of an existing deployment. slot
 // is name of the deployment slot. If a slot is not specified, the API creates
 // a deployment for the production slot. deployment is deployment details.
-func (client AppsClient) CreateDeploymentSlot(resourceGroupName string, name string, id string, slot string, deployment Deployment) (result Deployment, err error) {
+func (client AppsClient) CreateDeploymentSlot(resourceGroupName string, name string, ID string, slot string, deployment Deployment) (result Deployment, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
@@ -767,15 +785,17 @@ func (client AppsClient) CreateDeploymentSlot(resourceGroupName string, name str
 		return result, validation.NewErrorWithValidationError(err, "web.AppsClient", "CreateDeploymentSlot")
 	}
 
-	req, err := client.CreateDeploymentSlotPreparer(resourceGroupName, name, id, slot, deployment)
+	req, err := client.CreateDeploymentSlotPreparer(resourceGroupName, name, ID, slot, deployment)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "CreateDeploymentSlot", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "CreateDeploymentSlot", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.CreateDeploymentSlotSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "CreateDeploymentSlot", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "CreateDeploymentSlot", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.CreateDeploymentSlotResponder(resp)
@@ -787,9 +807,9 @@ func (client AppsClient) CreateDeploymentSlot(resourceGroupName string, name str
 }
 
 // CreateDeploymentSlotPreparer prepares the CreateDeploymentSlot request.
-func (client AppsClient) CreateDeploymentSlotPreparer(resourceGroupName string, name string, id string, slot string, deployment Deployment) (*http.Request, error) {
+func (client AppsClient) CreateDeploymentSlotPreparer(resourceGroupName string, name string, ID string, slot string, deployment Deployment) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"id":                autorest.Encode("path", id),
+		"id":                autorest.Encode("path", ID),
 		"name":              autorest.Encode("path", name),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"slot":              autorest.Encode("path", slot),
@@ -834,11 +854,11 @@ func (client AppsClient) CreateDeploymentSlotResponder(resp *http.Response) (res
 // deployment slot, and/or a specific scaled-out instance.
 //
 // resourceGroupName is name of the resource group to which the resource
-// belongs. name is name of the app. id is iD of an existing deployment.
+// belongs. name is name of the app. ID is iD of an existing deployment.
 // instanceID is iD of a specific scaled-out instance. This is the value of the
 // name property in the JSON response from "GET api/sites/{siteName}/instances"
 // deployment is deployment details.
-func (client AppsClient) CreateInstanceDeployment(resourceGroupName string, name string, id string, instanceID string, deployment Deployment) (result Deployment, err error) {
+func (client AppsClient) CreateInstanceDeployment(resourceGroupName string, name string, ID string, instanceID string, deployment Deployment) (result Deployment, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
@@ -847,15 +867,17 @@ func (client AppsClient) CreateInstanceDeployment(resourceGroupName string, name
 		return result, validation.NewErrorWithValidationError(err, "web.AppsClient", "CreateInstanceDeployment")
 	}
 
-	req, err := client.CreateInstanceDeploymentPreparer(resourceGroupName, name, id, instanceID, deployment)
+	req, err := client.CreateInstanceDeploymentPreparer(resourceGroupName, name, ID, instanceID, deployment)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "CreateInstanceDeployment", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "CreateInstanceDeployment", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.CreateInstanceDeploymentSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "CreateInstanceDeployment", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "CreateInstanceDeployment", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.CreateInstanceDeploymentResponder(resp)
@@ -867,9 +889,9 @@ func (client AppsClient) CreateInstanceDeployment(resourceGroupName string, name
 }
 
 // CreateInstanceDeploymentPreparer prepares the CreateInstanceDeployment request.
-func (client AppsClient) CreateInstanceDeploymentPreparer(resourceGroupName string, name string, id string, instanceID string, deployment Deployment) (*http.Request, error) {
+func (client AppsClient) CreateInstanceDeploymentPreparer(resourceGroupName string, name string, ID string, instanceID string, deployment Deployment) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"id":                autorest.Encode("path", id),
+		"id":                autorest.Encode("path", ID),
 		"instanceId":        autorest.Encode("path", instanceID),
 		"name":              autorest.Encode("path", name),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
@@ -914,13 +936,13 @@ func (client AppsClient) CreateInstanceDeploymentResponder(resp *http.Response) 
 // deployment slot, and/or a specific scaled-out instance.
 //
 // resourceGroupName is name of the resource group to which the resource
-// belongs. name is name of the app. id is iD of an existing deployment. slot
+// belongs. name is name of the app. ID is iD of an existing deployment. slot
 // is name of the deployment slot. If a slot is not specified, the API creates
 // a deployment for the production slot. instanceID is iD of a specific
 // scaled-out instance. This is the value of the name property in the JSON
 // response from "GET api/sites/{siteName}/instances" deployment is deployment
 // details.
-func (client AppsClient) CreateInstanceDeploymentSlot(resourceGroupName string, name string, id string, slot string, instanceID string, deployment Deployment) (result Deployment, err error) {
+func (client AppsClient) CreateInstanceDeploymentSlot(resourceGroupName string, name string, ID string, slot string, instanceID string, deployment Deployment) (result Deployment, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
@@ -929,15 +951,17 @@ func (client AppsClient) CreateInstanceDeploymentSlot(resourceGroupName string, 
 		return result, validation.NewErrorWithValidationError(err, "web.AppsClient", "CreateInstanceDeploymentSlot")
 	}
 
-	req, err := client.CreateInstanceDeploymentSlotPreparer(resourceGroupName, name, id, slot, instanceID, deployment)
+	req, err := client.CreateInstanceDeploymentSlotPreparer(resourceGroupName, name, ID, slot, instanceID, deployment)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "CreateInstanceDeploymentSlot", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "CreateInstanceDeploymentSlot", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.CreateInstanceDeploymentSlotSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "CreateInstanceDeploymentSlot", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "CreateInstanceDeploymentSlot", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.CreateInstanceDeploymentSlotResponder(resp)
@@ -949,9 +973,9 @@ func (client AppsClient) CreateInstanceDeploymentSlot(resourceGroupName string, 
 }
 
 // CreateInstanceDeploymentSlotPreparer prepares the CreateInstanceDeploymentSlot request.
-func (client AppsClient) CreateInstanceDeploymentSlotPreparer(resourceGroupName string, name string, id string, slot string, instanceID string, deployment Deployment) (*http.Request, error) {
+func (client AppsClient) CreateInstanceDeploymentSlotPreparer(resourceGroupName string, name string, ID string, slot string, instanceID string, deployment Deployment) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"id":                autorest.Encode("path", id),
+		"id":                autorest.Encode("path", ID),
 		"instanceId":        autorest.Encode("path", instanceID),
 		"name":              autorest.Encode("path", name),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
@@ -1007,9 +1031,11 @@ func (client AppsClient) CreateInstanceDeploymentSlotResponder(resp *http.Respon
 // only used for app creation skipCustomDomainVerification is if true, custom
 // (non *.azurewebsites.net) domains associated with web app are not verified.
 // forceDNSRegistration is if true, web app hostname is force registered with
-// DNS ttlInSeconds is time to live in seconds for web app's default domain
+// DNS TTLInSeconds is time to live in seconds for web app's default domain
 // name
-func (client AppsClient) CreateOrUpdate(resourceGroupName string, name string, siteEnvelope Site, skipDNSRegistration *bool, skipCustomDomainVerification *bool, forceDNSRegistration *bool, ttlInSeconds string, cancel <-chan struct{}) (result autorest.Response, err error) {
+func (client AppsClient) CreateOrUpdate(resourceGroupName string, name string, siteEnvelope Site, skipDNSRegistration *bool, skipCustomDomainVerification *bool, forceDNSRegistration *bool, TTLInSeconds string, cancel <-chan struct{}) (<-chan Site, <-chan error) {
+	resultChan := make(chan Site, 1)
+	errChan := make(chan error, 1)
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
@@ -1024,30 +1050,44 @@ func (client AppsClient) CreateOrUpdate(resourceGroupName string, name string, s
 					{Target: "siteEnvelope.SiteProperties.CloningInfo", Name: validation.Null, Rule: false,
 						Chain: []validation.Constraint{{Target: "siteEnvelope.SiteProperties.CloningInfo.SourceWebAppID", Name: validation.Null, Rule: true, Chain: nil}}},
 				}}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "web.AppsClient", "CreateOrUpdate")
+		errChan <- validation.NewErrorWithValidationError(err, "web.AppsClient", "CreateOrUpdate")
+		close(errChan)
+		close(resultChan)
+		return resultChan, errChan
 	}
 
-	req, err := client.CreateOrUpdatePreparer(resourceGroupName, name, siteEnvelope, skipDNSRegistration, skipCustomDomainVerification, forceDNSRegistration, ttlInSeconds, cancel)
-	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "CreateOrUpdate", nil, "Failure preparing request")
-	}
+	go func() {
+		var err error
+		var result Site
+		defer func() {
+			resultChan <- result
+			errChan <- err
+			close(resultChan)
+			close(errChan)
+		}()
+		req, err := client.CreateOrUpdatePreparer(resourceGroupName, name, siteEnvelope, skipDNSRegistration, skipCustomDomainVerification, forceDNSRegistration, TTLInSeconds, cancel)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "web.AppsClient", "CreateOrUpdate", nil, "Failure preparing request")
+			return
+		}
 
-	resp, err := client.CreateOrUpdateSender(req)
-	if err != nil {
-		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "CreateOrUpdate", resp, "Failure sending request")
-	}
+		resp, err := client.CreateOrUpdateSender(req)
+		if err != nil {
+			result.Response = autorest.Response{Response: resp}
+			err = autorest.NewErrorWithError(err, "web.AppsClient", "CreateOrUpdate", resp, "Failure sending request")
+			return
+		}
 
-	result, err = client.CreateOrUpdateResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "web.AppsClient", "CreateOrUpdate", resp, "Failure responding to request")
-	}
-
-	return
+		result, err = client.CreateOrUpdateResponder(resp)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "web.AppsClient", "CreateOrUpdate", resp, "Failure responding to request")
+		}
+	}()
+	return resultChan, errChan
 }
 
 // CreateOrUpdatePreparer prepares the CreateOrUpdate request.
-func (client AppsClient) CreateOrUpdatePreparer(resourceGroupName string, name string, siteEnvelope Site, skipDNSRegistration *bool, skipCustomDomainVerification *bool, forceDNSRegistration *bool, ttlInSeconds string, cancel <-chan struct{}) (*http.Request, error) {
+func (client AppsClient) CreateOrUpdatePreparer(resourceGroupName string, name string, siteEnvelope Site, skipDNSRegistration *bool, skipCustomDomainVerification *bool, forceDNSRegistration *bool, TTLInSeconds string, cancel <-chan struct{}) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"name":              autorest.Encode("path", name),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
@@ -1067,8 +1107,8 @@ func (client AppsClient) CreateOrUpdatePreparer(resourceGroupName string, name s
 	if forceDNSRegistration != nil {
 		queryParameters["forceDnsRegistration"] = autorest.Encode("query", *forceDNSRegistration)
 	}
-	if len(ttlInSeconds) > 0 {
-		queryParameters["ttlInSeconds"] = autorest.Encode("query", ttlInSeconds)
+	if len(TTLInSeconds) > 0 {
+		queryParameters["ttlInSeconds"] = autorest.Encode("query", TTLInSeconds)
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -1091,13 +1131,14 @@ func (client AppsClient) CreateOrUpdateSender(req *http.Request) (*http.Response
 
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
 // closes the http.Response Body.
-func (client AppsClient) CreateOrUpdateResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client AppsClient) CreateOrUpdateResponder(resp *http.Response) (result Site, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = resp
+	result.Response = autorest.Response{Response: resp}
 	return
 }
 
@@ -1122,13 +1163,15 @@ func (client AppsClient) CreateOrUpdateConfiguration(resourceGroupName string, n
 
 	req, err := client.CreateOrUpdateConfigurationPreparer(resourceGroupName, name, siteConfig)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "CreateOrUpdateConfiguration", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "CreateOrUpdateConfiguration", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.CreateOrUpdateConfigurationSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "CreateOrUpdateConfiguration", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "CreateOrUpdateConfiguration", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.CreateOrUpdateConfigurationResponder(resp)
@@ -1204,13 +1247,15 @@ func (client AppsClient) CreateOrUpdateConfigurationSlot(resourceGroupName strin
 
 	req, err := client.CreateOrUpdateConfigurationSlotPreparer(resourceGroupName, name, siteConfig, slot)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "CreateOrUpdateConfigurationSlot", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "CreateOrUpdateConfigurationSlot", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.CreateOrUpdateConfigurationSlotSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "CreateOrUpdateConfigurationSlot", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "CreateOrUpdateConfigurationSlot", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.CreateOrUpdateConfigurationSlotResponder(resp)
@@ -1282,13 +1327,15 @@ func (client AppsClient) CreateOrUpdateDomainOwnershipIdentifier(resourceGroupNa
 
 	req, err := client.CreateOrUpdateDomainOwnershipIdentifierPreparer(resourceGroupName, name, domainOwnershipIdentifierName, domainOwnershipIdentifier)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "CreateOrUpdateDomainOwnershipIdentifier", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "CreateOrUpdateDomainOwnershipIdentifier", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.CreateOrUpdateDomainOwnershipIdentifierSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "CreateOrUpdateDomainOwnershipIdentifier", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "CreateOrUpdateDomainOwnershipIdentifier", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.CreateOrUpdateDomainOwnershipIdentifierResponder(resp)
@@ -1362,13 +1409,15 @@ func (client AppsClient) CreateOrUpdateDomainOwnershipIdentifierSlot(resourceGro
 
 	req, err := client.CreateOrUpdateDomainOwnershipIdentifierSlotPreparer(resourceGroupName, name, domainOwnershipIdentifierName, domainOwnershipIdentifier, slot)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "CreateOrUpdateDomainOwnershipIdentifierSlot", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "CreateOrUpdateDomainOwnershipIdentifierSlot", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.CreateOrUpdateDomainOwnershipIdentifierSlotSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "CreateOrUpdateDomainOwnershipIdentifierSlot", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "CreateOrUpdateDomainOwnershipIdentifierSlot", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.CreateOrUpdateDomainOwnershipIdentifierSlotResponder(resp)
@@ -1440,13 +1489,15 @@ func (client AppsClient) CreateOrUpdateHostNameBinding(resourceGroupName string,
 
 	req, err := client.CreateOrUpdateHostNameBindingPreparer(resourceGroupName, name, hostName, hostNameBinding)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "CreateOrUpdateHostNameBinding", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "CreateOrUpdateHostNameBinding", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.CreateOrUpdateHostNameBindingSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "CreateOrUpdateHostNameBinding", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "CreateOrUpdateHostNameBinding", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.CreateOrUpdateHostNameBindingResponder(resp)
@@ -1518,13 +1569,15 @@ func (client AppsClient) CreateOrUpdateHostNameBindingSlot(resourceGroupName str
 
 	req, err := client.CreateOrUpdateHostNameBindingSlotPreparer(resourceGroupName, name, hostName, hostNameBinding, slot)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "CreateOrUpdateHostNameBindingSlot", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "CreateOrUpdateHostNameBindingSlot", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.CreateOrUpdateHostNameBindingSlotSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "CreateOrUpdateHostNameBindingSlot", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "CreateOrUpdateHostNameBindingSlot", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.CreateOrUpdateHostNameBindingSlotResponder(resp)
@@ -1597,13 +1650,15 @@ func (client AppsClient) CreateOrUpdateHybridConnection(resourceGroupName string
 
 	req, err := client.CreateOrUpdateHybridConnectionPreparer(resourceGroupName, name, namespaceName, relayName, connectionEnvelope)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "CreateOrUpdateHybridConnection", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "CreateOrUpdateHybridConnection", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.CreateOrUpdateHybridConnectionSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "CreateOrUpdateHybridConnection", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "CreateOrUpdateHybridConnection", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.CreateOrUpdateHybridConnectionResponder(resp)
@@ -1677,13 +1732,15 @@ func (client AppsClient) CreateOrUpdateHybridConnectionSlot(resourceGroupName st
 
 	req, err := client.CreateOrUpdateHybridConnectionSlotPreparer(resourceGroupName, name, namespaceName, relayName, connectionEnvelope, slot)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "CreateOrUpdateHybridConnectionSlot", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "CreateOrUpdateHybridConnectionSlot", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.CreateOrUpdateHybridConnectionSlotSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "CreateOrUpdateHybridConnectionSlot", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "CreateOrUpdateHybridConnectionSlot", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.CreateOrUpdateHybridConnectionSlotResponder(resp)
@@ -1757,13 +1814,15 @@ func (client AppsClient) CreateOrUpdateRelayServiceConnection(resourceGroupName 
 
 	req, err := client.CreateOrUpdateRelayServiceConnectionPreparer(resourceGroupName, name, entityName, connectionEnvelope)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "CreateOrUpdateRelayServiceConnection", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "CreateOrUpdateRelayServiceConnection", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.CreateOrUpdateRelayServiceConnectionSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "CreateOrUpdateRelayServiceConnection", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "CreateOrUpdateRelayServiceConnection", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.CreateOrUpdateRelayServiceConnectionResponder(resp)
@@ -1837,13 +1896,15 @@ func (client AppsClient) CreateOrUpdateRelayServiceConnectionSlot(resourceGroupN
 
 	req, err := client.CreateOrUpdateRelayServiceConnectionSlotPreparer(resourceGroupName, name, entityName, connectionEnvelope, slot)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "CreateOrUpdateRelayServiceConnectionSlot", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "CreateOrUpdateRelayServiceConnectionSlot", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.CreateOrUpdateRelayServiceConnectionSlotSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "CreateOrUpdateRelayServiceConnectionSlot", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "CreateOrUpdateRelayServiceConnectionSlot", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.CreateOrUpdateRelayServiceConnectionSlotResponder(resp)
@@ -1914,9 +1975,11 @@ func (client AppsClient) CreateOrUpdateRelayServiceConnectionSlotResponder(resp 
 // only used for app creation skipCustomDomainVerification is if true, custom
 // (non *.azurewebsites.net) domains associated with web app are not verified.
 // forceDNSRegistration is if true, web app hostname is force registered with
-// DNS ttlInSeconds is time to live in seconds for web app's default domain
+// DNS TTLInSeconds is time to live in seconds for web app's default domain
 // name
-func (client AppsClient) CreateOrUpdateSlot(resourceGroupName string, name string, siteEnvelope Site, slot string, skipDNSRegistration *bool, skipCustomDomainVerification *bool, forceDNSRegistration *bool, ttlInSeconds string, cancel <-chan struct{}) (result autorest.Response, err error) {
+func (client AppsClient) CreateOrUpdateSlot(resourceGroupName string, name string, siteEnvelope Site, slot string, skipDNSRegistration *bool, skipCustomDomainVerification *bool, forceDNSRegistration *bool, TTLInSeconds string, cancel <-chan struct{}) (<-chan Site, <-chan error) {
+	resultChan := make(chan Site, 1)
+	errChan := make(chan error, 1)
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
@@ -1931,30 +1994,44 @@ func (client AppsClient) CreateOrUpdateSlot(resourceGroupName string, name strin
 					{Target: "siteEnvelope.SiteProperties.CloningInfo", Name: validation.Null, Rule: false,
 						Chain: []validation.Constraint{{Target: "siteEnvelope.SiteProperties.CloningInfo.SourceWebAppID", Name: validation.Null, Rule: true, Chain: nil}}},
 				}}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "web.AppsClient", "CreateOrUpdateSlot")
+		errChan <- validation.NewErrorWithValidationError(err, "web.AppsClient", "CreateOrUpdateSlot")
+		close(errChan)
+		close(resultChan)
+		return resultChan, errChan
 	}
 
-	req, err := client.CreateOrUpdateSlotPreparer(resourceGroupName, name, siteEnvelope, slot, skipDNSRegistration, skipCustomDomainVerification, forceDNSRegistration, ttlInSeconds, cancel)
-	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "CreateOrUpdateSlot", nil, "Failure preparing request")
-	}
+	go func() {
+		var err error
+		var result Site
+		defer func() {
+			resultChan <- result
+			errChan <- err
+			close(resultChan)
+			close(errChan)
+		}()
+		req, err := client.CreateOrUpdateSlotPreparer(resourceGroupName, name, siteEnvelope, slot, skipDNSRegistration, skipCustomDomainVerification, forceDNSRegistration, TTLInSeconds, cancel)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "web.AppsClient", "CreateOrUpdateSlot", nil, "Failure preparing request")
+			return
+		}
 
-	resp, err := client.CreateOrUpdateSlotSender(req)
-	if err != nil {
-		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "CreateOrUpdateSlot", resp, "Failure sending request")
-	}
+		resp, err := client.CreateOrUpdateSlotSender(req)
+		if err != nil {
+			result.Response = autorest.Response{Response: resp}
+			err = autorest.NewErrorWithError(err, "web.AppsClient", "CreateOrUpdateSlot", resp, "Failure sending request")
+			return
+		}
 
-	result, err = client.CreateOrUpdateSlotResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "web.AppsClient", "CreateOrUpdateSlot", resp, "Failure responding to request")
-	}
-
-	return
+		result, err = client.CreateOrUpdateSlotResponder(resp)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "web.AppsClient", "CreateOrUpdateSlot", resp, "Failure responding to request")
+		}
+	}()
+	return resultChan, errChan
 }
 
 // CreateOrUpdateSlotPreparer prepares the CreateOrUpdateSlot request.
-func (client AppsClient) CreateOrUpdateSlotPreparer(resourceGroupName string, name string, siteEnvelope Site, slot string, skipDNSRegistration *bool, skipCustomDomainVerification *bool, forceDNSRegistration *bool, ttlInSeconds string, cancel <-chan struct{}) (*http.Request, error) {
+func (client AppsClient) CreateOrUpdateSlotPreparer(resourceGroupName string, name string, siteEnvelope Site, slot string, skipDNSRegistration *bool, skipCustomDomainVerification *bool, forceDNSRegistration *bool, TTLInSeconds string, cancel <-chan struct{}) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"name":              autorest.Encode("path", name),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
@@ -1975,8 +2052,8 @@ func (client AppsClient) CreateOrUpdateSlotPreparer(resourceGroupName string, na
 	if forceDNSRegistration != nil {
 		queryParameters["forceDnsRegistration"] = autorest.Encode("query", *forceDNSRegistration)
 	}
-	if len(ttlInSeconds) > 0 {
-		queryParameters["ttlInSeconds"] = autorest.Encode("query", ttlInSeconds)
+	if len(TTLInSeconds) > 0 {
+		queryParameters["ttlInSeconds"] = autorest.Encode("query", TTLInSeconds)
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -1999,13 +2076,14 @@ func (client AppsClient) CreateOrUpdateSlotSender(req *http.Request) (*http.Resp
 
 // CreateOrUpdateSlotResponder handles the response to the CreateOrUpdateSlot request. The method always
 // closes the http.Response Body.
-func (client AppsClient) CreateOrUpdateSlotResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client AppsClient) CreateOrUpdateSlotResponder(resp *http.Response) (result Site, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = resp
+	result.Response = autorest.Response{Response: resp}
 	return
 }
 
@@ -2017,32 +2095,48 @@ func (client AppsClient) CreateOrUpdateSlotResponder(resp *http.Response) (resul
 // resourceGroupName is name of the resource group to which the resource
 // belongs. name is name of the app. siteSourceControl is jSON representation
 // of a SiteSourceControl object. See example.
-func (client AppsClient) CreateOrUpdateSourceControl(resourceGroupName string, name string, siteSourceControl SiteSourceControl, cancel <-chan struct{}) (result autorest.Response, err error) {
+func (client AppsClient) CreateOrUpdateSourceControl(resourceGroupName string, name string, siteSourceControl SiteSourceControl, cancel <-chan struct{}) (<-chan SiteSourceControl, <-chan error) {
+	resultChan := make(chan SiteSourceControl, 1)
+	errChan := make(chan error, 1)
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+[^\.]$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "web.AppsClient", "CreateOrUpdateSourceControl")
+		errChan <- validation.NewErrorWithValidationError(err, "web.AppsClient", "CreateOrUpdateSourceControl")
+		close(errChan)
+		close(resultChan)
+		return resultChan, errChan
 	}
 
-	req, err := client.CreateOrUpdateSourceControlPreparer(resourceGroupName, name, siteSourceControl, cancel)
-	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "CreateOrUpdateSourceControl", nil, "Failure preparing request")
-	}
+	go func() {
+		var err error
+		var result SiteSourceControl
+		defer func() {
+			resultChan <- result
+			errChan <- err
+			close(resultChan)
+			close(errChan)
+		}()
+		req, err := client.CreateOrUpdateSourceControlPreparer(resourceGroupName, name, siteSourceControl, cancel)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "web.AppsClient", "CreateOrUpdateSourceControl", nil, "Failure preparing request")
+			return
+		}
 
-	resp, err := client.CreateOrUpdateSourceControlSender(req)
-	if err != nil {
-		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "CreateOrUpdateSourceControl", resp, "Failure sending request")
-	}
+		resp, err := client.CreateOrUpdateSourceControlSender(req)
+		if err != nil {
+			result.Response = autorest.Response{Response: resp}
+			err = autorest.NewErrorWithError(err, "web.AppsClient", "CreateOrUpdateSourceControl", resp, "Failure sending request")
+			return
+		}
 
-	result, err = client.CreateOrUpdateSourceControlResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "web.AppsClient", "CreateOrUpdateSourceControl", resp, "Failure responding to request")
-	}
-
-	return
+		result, err = client.CreateOrUpdateSourceControlResponder(resp)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "web.AppsClient", "CreateOrUpdateSourceControl", resp, "Failure responding to request")
+		}
+	}()
+	return resultChan, errChan
 }
 
 // CreateOrUpdateSourceControlPreparer prepares the CreateOrUpdateSourceControl request.
@@ -2078,13 +2172,14 @@ func (client AppsClient) CreateOrUpdateSourceControlSender(req *http.Request) (*
 
 // CreateOrUpdateSourceControlResponder handles the response to the CreateOrUpdateSourceControl request. The method always
 // closes the http.Response Body.
-func (client AppsClient) CreateOrUpdateSourceControlResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client AppsClient) CreateOrUpdateSourceControlResponder(resp *http.Response) (result SiteSourceControl, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = resp
+	result.Response = autorest.Response{Response: resp}
 	return
 }
 
@@ -2098,32 +2193,48 @@ func (client AppsClient) CreateOrUpdateSourceControlResponder(resp *http.Respons
 // of a SiteSourceControl object. See example. slot is name of the deployment
 // slot. If a slot is not specified, the API will update the source control
 // configuration for the production slot.
-func (client AppsClient) CreateOrUpdateSourceControlSlot(resourceGroupName string, name string, siteSourceControl SiteSourceControl, slot string, cancel <-chan struct{}) (result autorest.Response, err error) {
+func (client AppsClient) CreateOrUpdateSourceControlSlot(resourceGroupName string, name string, siteSourceControl SiteSourceControl, slot string, cancel <-chan struct{}) (<-chan SiteSourceControl, <-chan error) {
+	resultChan := make(chan SiteSourceControl, 1)
+	errChan := make(chan error, 1)
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+[^\.]$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "web.AppsClient", "CreateOrUpdateSourceControlSlot")
+		errChan <- validation.NewErrorWithValidationError(err, "web.AppsClient", "CreateOrUpdateSourceControlSlot")
+		close(errChan)
+		close(resultChan)
+		return resultChan, errChan
 	}
 
-	req, err := client.CreateOrUpdateSourceControlSlotPreparer(resourceGroupName, name, siteSourceControl, slot, cancel)
-	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "CreateOrUpdateSourceControlSlot", nil, "Failure preparing request")
-	}
+	go func() {
+		var err error
+		var result SiteSourceControl
+		defer func() {
+			resultChan <- result
+			errChan <- err
+			close(resultChan)
+			close(errChan)
+		}()
+		req, err := client.CreateOrUpdateSourceControlSlotPreparer(resourceGroupName, name, siteSourceControl, slot, cancel)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "web.AppsClient", "CreateOrUpdateSourceControlSlot", nil, "Failure preparing request")
+			return
+		}
 
-	resp, err := client.CreateOrUpdateSourceControlSlotSender(req)
-	if err != nil {
-		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "CreateOrUpdateSourceControlSlot", resp, "Failure sending request")
-	}
+		resp, err := client.CreateOrUpdateSourceControlSlotSender(req)
+		if err != nil {
+			result.Response = autorest.Response{Response: resp}
+			err = autorest.NewErrorWithError(err, "web.AppsClient", "CreateOrUpdateSourceControlSlot", resp, "Failure sending request")
+			return
+		}
 
-	result, err = client.CreateOrUpdateSourceControlSlotResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "web.AppsClient", "CreateOrUpdateSourceControlSlot", resp, "Failure responding to request")
-	}
-
-	return
+		result, err = client.CreateOrUpdateSourceControlSlotResponder(resp)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "web.AppsClient", "CreateOrUpdateSourceControlSlot", resp, "Failure responding to request")
+		}
+	}()
+	return resultChan, errChan
 }
 
 // CreateOrUpdateSourceControlSlotPreparer prepares the CreateOrUpdateSourceControlSlot request.
@@ -2160,13 +2271,14 @@ func (client AppsClient) CreateOrUpdateSourceControlSlotSender(req *http.Request
 
 // CreateOrUpdateSourceControlSlotResponder handles the response to the CreateOrUpdateSourceControlSlot request. The method always
 // closes the http.Response Body.
-func (client AppsClient) CreateOrUpdateSourceControlSlotResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client AppsClient) CreateOrUpdateSourceControlSlotResponder(resp *http.Response) (result SiteSourceControl, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = resp
+	result.Response = autorest.Response{Response: resp}
 	return
 }
 
@@ -2188,13 +2300,15 @@ func (client AppsClient) CreateOrUpdateVnetConnection(resourceGroupName string, 
 
 	req, err := client.CreateOrUpdateVnetConnectionPreparer(resourceGroupName, name, vnetName, connectionEnvelope)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "CreateOrUpdateVnetConnection", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "CreateOrUpdateVnetConnection", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.CreateOrUpdateVnetConnectionSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "CreateOrUpdateVnetConnection", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "CreateOrUpdateVnetConnection", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.CreateOrUpdateVnetConnectionResponder(resp)
@@ -2266,13 +2380,15 @@ func (client AppsClient) CreateOrUpdateVnetConnectionGateway(resourceGroupName s
 
 	req, err := client.CreateOrUpdateVnetConnectionGatewayPreparer(resourceGroupName, name, vnetName, gatewayName, connectionEnvelope)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "CreateOrUpdateVnetConnectionGateway", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "CreateOrUpdateVnetConnectionGateway", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.CreateOrUpdateVnetConnectionGatewaySender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "CreateOrUpdateVnetConnectionGateway", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "CreateOrUpdateVnetConnectionGateway", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.CreateOrUpdateVnetConnectionGatewayResponder(resp)
@@ -2347,13 +2463,15 @@ func (client AppsClient) CreateOrUpdateVnetConnectionGatewaySlot(resourceGroupNa
 
 	req, err := client.CreateOrUpdateVnetConnectionGatewaySlotPreparer(resourceGroupName, name, vnetName, gatewayName, connectionEnvelope, slot)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "CreateOrUpdateVnetConnectionGatewaySlot", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "CreateOrUpdateVnetConnectionGatewaySlot", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.CreateOrUpdateVnetConnectionGatewaySlotSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "CreateOrUpdateVnetConnectionGatewaySlot", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "CreateOrUpdateVnetConnectionGatewaySlot", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.CreateOrUpdateVnetConnectionGatewaySlotResponder(resp)
@@ -2428,13 +2546,15 @@ func (client AppsClient) CreateOrUpdateVnetConnectionSlot(resourceGroupName stri
 
 	req, err := client.CreateOrUpdateVnetConnectionSlotPreparer(resourceGroupName, name, vnetName, connectionEnvelope, slot)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "CreateOrUpdateVnetConnectionSlot", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "CreateOrUpdateVnetConnectionSlot", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.CreateOrUpdateVnetConnectionSlotSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "CreateOrUpdateVnetConnectionSlot", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "CreateOrUpdateVnetConnectionSlot", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.CreateOrUpdateVnetConnectionSlotResponder(resp)
@@ -2508,13 +2628,15 @@ func (client AppsClient) Delete(resourceGroupName string, name string, deleteMet
 
 	req, err := client.DeletePreparer(resourceGroupName, name, deleteMetrics, deleteEmptyServerFarm, skipDNSRegistration)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "Delete", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "Delete", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.DeleteSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "Delete", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "Delete", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.DeleteResponder(resp)
@@ -2588,13 +2710,15 @@ func (client AppsClient) DeleteBackup(resourceGroupName string, name string, bac
 
 	req, err := client.DeleteBackupPreparer(resourceGroupName, name, backupID)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "DeleteBackup", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "DeleteBackup", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.DeleteBackupSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "DeleteBackup", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "DeleteBackup", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.DeleteBackupResponder(resp)
@@ -2660,13 +2784,15 @@ func (client AppsClient) DeleteBackupConfiguration(resourceGroupName string, nam
 
 	req, err := client.DeleteBackupConfigurationPreparer(resourceGroupName, name)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "DeleteBackupConfiguration", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "DeleteBackupConfiguration", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.DeleteBackupConfigurationSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "DeleteBackupConfiguration", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "DeleteBackupConfiguration", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.DeleteBackupConfigurationResponder(resp)
@@ -2733,13 +2859,15 @@ func (client AppsClient) DeleteBackupConfigurationSlot(resourceGroupName string,
 
 	req, err := client.DeleteBackupConfigurationSlotPreparer(resourceGroupName, name, slot)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "DeleteBackupConfigurationSlot", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "DeleteBackupConfigurationSlot", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.DeleteBackupConfigurationSlotSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "DeleteBackupConfigurationSlot", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "DeleteBackupConfigurationSlot", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.DeleteBackupConfigurationSlotResponder(resp)
@@ -2807,13 +2935,15 @@ func (client AppsClient) DeleteBackupSlot(resourceGroupName string, name string,
 
 	req, err := client.DeleteBackupSlotPreparer(resourceGroupName, name, backupID, slot)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "DeleteBackupSlot", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "DeleteBackupSlot", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.DeleteBackupSlotSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "DeleteBackupSlot", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "DeleteBackupSlot", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.DeleteBackupSlotResponder(resp)
@@ -2869,8 +2999,8 @@ func (client AppsClient) DeleteBackupSlotResponder(resp *http.Response) (result 
 // deployment slot, and/or a specific scaled-out instance.
 //
 // resourceGroupName is name of the resource group to which the resource
-// belongs. name is name of the app. id is deployment ID.
-func (client AppsClient) DeleteDeployment(resourceGroupName string, name string, id string) (result autorest.Response, err error) {
+// belongs. name is name of the app. ID is deployment ID.
+func (client AppsClient) DeleteDeployment(resourceGroupName string, name string, ID string) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
@@ -2879,15 +3009,17 @@ func (client AppsClient) DeleteDeployment(resourceGroupName string, name string,
 		return result, validation.NewErrorWithValidationError(err, "web.AppsClient", "DeleteDeployment")
 	}
 
-	req, err := client.DeleteDeploymentPreparer(resourceGroupName, name, id)
+	req, err := client.DeleteDeploymentPreparer(resourceGroupName, name, ID)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "DeleteDeployment", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "DeleteDeployment", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.DeleteDeploymentSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "DeleteDeployment", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "DeleteDeployment", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.DeleteDeploymentResponder(resp)
@@ -2899,9 +3031,9 @@ func (client AppsClient) DeleteDeployment(resourceGroupName string, name string,
 }
 
 // DeleteDeploymentPreparer prepares the DeleteDeployment request.
-func (client AppsClient) DeleteDeploymentPreparer(resourceGroupName string, name string, id string) (*http.Request, error) {
+func (client AppsClient) DeleteDeploymentPreparer(resourceGroupName string, name string, ID string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"id":                autorest.Encode("path", id),
+		"id":                autorest.Encode("path", ID),
 		"name":              autorest.Encode("path", name),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
@@ -2942,10 +3074,10 @@ func (client AppsClient) DeleteDeploymentResponder(resp *http.Response) (result 
 // deployment slot, and/or a specific scaled-out instance.
 //
 // resourceGroupName is name of the resource group to which the resource
-// belongs. name is name of the app. id is deployment ID. slot is name of the
+// belongs. name is name of the app. ID is deployment ID. slot is name of the
 // deployment slot. If a slot is not specified, the API deletes a deployment
 // for the production slot.
-func (client AppsClient) DeleteDeploymentSlot(resourceGroupName string, name string, id string, slot string) (result autorest.Response, err error) {
+func (client AppsClient) DeleteDeploymentSlot(resourceGroupName string, name string, ID string, slot string) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
@@ -2954,15 +3086,17 @@ func (client AppsClient) DeleteDeploymentSlot(resourceGroupName string, name str
 		return result, validation.NewErrorWithValidationError(err, "web.AppsClient", "DeleteDeploymentSlot")
 	}
 
-	req, err := client.DeleteDeploymentSlotPreparer(resourceGroupName, name, id, slot)
+	req, err := client.DeleteDeploymentSlotPreparer(resourceGroupName, name, ID, slot)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "DeleteDeploymentSlot", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "DeleteDeploymentSlot", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.DeleteDeploymentSlotSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "DeleteDeploymentSlot", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "DeleteDeploymentSlot", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.DeleteDeploymentSlotResponder(resp)
@@ -2974,9 +3108,9 @@ func (client AppsClient) DeleteDeploymentSlot(resourceGroupName string, name str
 }
 
 // DeleteDeploymentSlotPreparer prepares the DeleteDeploymentSlot request.
-func (client AppsClient) DeleteDeploymentSlotPreparer(resourceGroupName string, name string, id string, slot string) (*http.Request, error) {
+func (client AppsClient) DeleteDeploymentSlotPreparer(resourceGroupName string, name string, ID string, slot string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"id":                autorest.Encode("path", id),
+		"id":                autorest.Encode("path", ID),
 		"name":              autorest.Encode("path", name),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"slot":              autorest.Encode("path", slot),
@@ -3031,13 +3165,15 @@ func (client AppsClient) DeleteDomainOwnershipIdentifier(resourceGroupName strin
 
 	req, err := client.DeleteDomainOwnershipIdentifierPreparer(resourceGroupName, name, domainOwnershipIdentifierName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "DeleteDomainOwnershipIdentifier", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "DeleteDomainOwnershipIdentifier", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.DeleteDomainOwnershipIdentifierSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "DeleteDomainOwnershipIdentifier", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "DeleteDomainOwnershipIdentifier", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.DeleteDomainOwnershipIdentifierResponder(resp)
@@ -3106,13 +3242,15 @@ func (client AppsClient) DeleteDomainOwnershipIdentifierSlot(resourceGroupName s
 
 	req, err := client.DeleteDomainOwnershipIdentifierSlotPreparer(resourceGroupName, name, domainOwnershipIdentifierName, slot)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "DeleteDomainOwnershipIdentifierSlot", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "DeleteDomainOwnershipIdentifierSlot", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.DeleteDomainOwnershipIdentifierSlotSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "DeleteDomainOwnershipIdentifierSlot", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "DeleteDomainOwnershipIdentifierSlot", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.DeleteDomainOwnershipIdentifierSlotResponder(resp)
@@ -3180,13 +3318,15 @@ func (client AppsClient) DeleteHostNameBinding(resourceGroupName string, name st
 
 	req, err := client.DeleteHostNameBindingPreparer(resourceGroupName, name, hostName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "DeleteHostNameBinding", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "DeleteHostNameBinding", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.DeleteHostNameBindingSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "DeleteHostNameBinding", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "DeleteHostNameBinding", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.DeleteHostNameBindingResponder(resp)
@@ -3254,13 +3394,15 @@ func (client AppsClient) DeleteHostNameBindingSlot(resourceGroupName string, nam
 
 	req, err := client.DeleteHostNameBindingSlotPreparer(resourceGroupName, name, slot, hostName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "DeleteHostNameBindingSlot", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "DeleteHostNameBindingSlot", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.DeleteHostNameBindingSlotSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "DeleteHostNameBindingSlot", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "DeleteHostNameBindingSlot", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.DeleteHostNameBindingSlotResponder(resp)
@@ -3329,13 +3471,15 @@ func (client AppsClient) DeleteHybridConnection(resourceGroupName string, name s
 
 	req, err := client.DeleteHybridConnectionPreparer(resourceGroupName, name, namespaceName, relayName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "DeleteHybridConnection", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "DeleteHybridConnection", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.DeleteHybridConnectionSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "DeleteHybridConnection", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "DeleteHybridConnection", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.DeleteHybridConnectionResponder(resp)
@@ -3404,13 +3548,15 @@ func (client AppsClient) DeleteHybridConnectionSlot(resourceGroupName string, na
 
 	req, err := client.DeleteHybridConnectionSlotPreparer(resourceGroupName, name, namespaceName, relayName, slot)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "DeleteHybridConnectionSlot", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "DeleteHybridConnectionSlot", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.DeleteHybridConnectionSlotSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "DeleteHybridConnectionSlot", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "DeleteHybridConnectionSlot", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.DeleteHybridConnectionSlotResponder(resp)
@@ -3467,10 +3613,10 @@ func (client AppsClient) DeleteHybridConnectionSlotResponder(resp *http.Response
 // specific deployment slot, and/or a specific scaled-out instance.
 //
 // resourceGroupName is name of the resource group to which the resource
-// belongs. name is name of the app. id is deployment ID. instanceID is iD of a
+// belongs. name is name of the app. ID is deployment ID. instanceID is iD of a
 // specific scaled-out instance. This is the value of the name property in the
 // JSON response from "GET api/sites/{siteName}/instances"
-func (client AppsClient) DeleteInstanceDeployment(resourceGroupName string, name string, id string, instanceID string) (result autorest.Response, err error) {
+func (client AppsClient) DeleteInstanceDeployment(resourceGroupName string, name string, ID string, instanceID string) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
@@ -3479,15 +3625,17 @@ func (client AppsClient) DeleteInstanceDeployment(resourceGroupName string, name
 		return result, validation.NewErrorWithValidationError(err, "web.AppsClient", "DeleteInstanceDeployment")
 	}
 
-	req, err := client.DeleteInstanceDeploymentPreparer(resourceGroupName, name, id, instanceID)
+	req, err := client.DeleteInstanceDeploymentPreparer(resourceGroupName, name, ID, instanceID)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "DeleteInstanceDeployment", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "DeleteInstanceDeployment", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.DeleteInstanceDeploymentSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "DeleteInstanceDeployment", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "DeleteInstanceDeployment", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.DeleteInstanceDeploymentResponder(resp)
@@ -3499,9 +3647,9 @@ func (client AppsClient) DeleteInstanceDeployment(resourceGroupName string, name
 }
 
 // DeleteInstanceDeploymentPreparer prepares the DeleteInstanceDeployment request.
-func (client AppsClient) DeleteInstanceDeploymentPreparer(resourceGroupName string, name string, id string, instanceID string) (*http.Request, error) {
+func (client AppsClient) DeleteInstanceDeploymentPreparer(resourceGroupName string, name string, ID string, instanceID string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"id":                autorest.Encode("path", id),
+		"id":                autorest.Encode("path", ID),
 		"instanceId":        autorest.Encode("path", instanceID),
 		"name":              autorest.Encode("path", name),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
@@ -3543,12 +3691,12 @@ func (client AppsClient) DeleteInstanceDeploymentResponder(resp *http.Response) 
 // specific deployment slot, and/or a specific scaled-out instance.
 //
 // resourceGroupName is name of the resource group to which the resource
-// belongs. name is name of the app. id is deployment ID. slot is name of the
+// belongs. name is name of the app. ID is deployment ID. slot is name of the
 // deployment slot. If a slot is not specified, the API deletes a deployment
 // for the production slot. instanceID is iD of a specific scaled-out instance.
 // This is the value of the name property in the JSON response from "GET
 // api/sites/{siteName}/instances"
-func (client AppsClient) DeleteInstanceDeploymentSlot(resourceGroupName string, name string, id string, slot string, instanceID string) (result autorest.Response, err error) {
+func (client AppsClient) DeleteInstanceDeploymentSlot(resourceGroupName string, name string, ID string, slot string, instanceID string) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
@@ -3557,15 +3705,17 @@ func (client AppsClient) DeleteInstanceDeploymentSlot(resourceGroupName string, 
 		return result, validation.NewErrorWithValidationError(err, "web.AppsClient", "DeleteInstanceDeploymentSlot")
 	}
 
-	req, err := client.DeleteInstanceDeploymentSlotPreparer(resourceGroupName, name, id, slot, instanceID)
+	req, err := client.DeleteInstanceDeploymentSlotPreparer(resourceGroupName, name, ID, slot, instanceID)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "DeleteInstanceDeploymentSlot", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "DeleteInstanceDeploymentSlot", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.DeleteInstanceDeploymentSlotSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "DeleteInstanceDeploymentSlot", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "DeleteInstanceDeploymentSlot", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.DeleteInstanceDeploymentSlotResponder(resp)
@@ -3577,9 +3727,9 @@ func (client AppsClient) DeleteInstanceDeploymentSlot(resourceGroupName string, 
 }
 
 // DeleteInstanceDeploymentSlotPreparer prepares the DeleteInstanceDeploymentSlot request.
-func (client AppsClient) DeleteInstanceDeploymentSlotPreparer(resourceGroupName string, name string, id string, slot string, instanceID string) (*http.Request, error) {
+func (client AppsClient) DeleteInstanceDeploymentSlotPreparer(resourceGroupName string, name string, ID string, slot string, instanceID string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"id":                autorest.Encode("path", id),
+		"id":                autorest.Encode("path", ID),
 		"instanceId":        autorest.Encode("path", instanceID),
 		"name":              autorest.Encode("path", name),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
@@ -3633,13 +3783,15 @@ func (client AppsClient) DeletePremierAddOn(resourceGroupName string, name strin
 
 	req, err := client.DeletePremierAddOnPreparer(resourceGroupName, name, premierAddOnName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "DeletePremierAddOn", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "DeletePremierAddOn", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.DeletePremierAddOnSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "DeletePremierAddOn", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "DeletePremierAddOn", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.DeletePremierAddOnResponder(resp)
@@ -3707,13 +3859,15 @@ func (client AppsClient) DeletePremierAddOnSlot(resourceGroupName string, name s
 
 	req, err := client.DeletePremierAddOnSlotPreparer(resourceGroupName, name, premierAddOnName, slot)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "DeletePremierAddOnSlot", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "DeletePremierAddOnSlot", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.DeletePremierAddOnSlotSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "DeletePremierAddOnSlot", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "DeletePremierAddOnSlot", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.DeletePremierAddOnSlotResponder(resp)
@@ -3781,13 +3935,15 @@ func (client AppsClient) DeleteRelayServiceConnection(resourceGroupName string, 
 
 	req, err := client.DeleteRelayServiceConnectionPreparer(resourceGroupName, name, entityName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "DeleteRelayServiceConnection", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "DeleteRelayServiceConnection", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.DeleteRelayServiceConnectionSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "DeleteRelayServiceConnection", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "DeleteRelayServiceConnection", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.DeleteRelayServiceConnectionResponder(resp)
@@ -3857,13 +4013,15 @@ func (client AppsClient) DeleteRelayServiceConnectionSlot(resourceGroupName stri
 
 	req, err := client.DeleteRelayServiceConnectionSlotPreparer(resourceGroupName, name, entityName, slot)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "DeleteRelayServiceConnectionSlot", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "DeleteRelayServiceConnectionSlot", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.DeleteRelayServiceConnectionSlotSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "DeleteRelayServiceConnectionSlot", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "DeleteRelayServiceConnectionSlot", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.DeleteRelayServiceConnectionSlotResponder(resp)
@@ -3937,13 +4095,15 @@ func (client AppsClient) DeleteSlot(resourceGroupName string, name string, slot 
 
 	req, err := client.DeleteSlotPreparer(resourceGroupName, name, slot, deleteMetrics, deleteEmptyServerFarm, skipDNSRegistration)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "DeleteSlot", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "DeleteSlot", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.DeleteSlotSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "DeleteSlot", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "DeleteSlot", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.DeleteSlotResponder(resp)
@@ -4018,13 +4178,15 @@ func (client AppsClient) DeleteSourceControl(resourceGroupName string, name stri
 
 	req, err := client.DeleteSourceControlPreparer(resourceGroupName, name)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "DeleteSourceControl", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "DeleteSourceControl", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.DeleteSourceControlSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "DeleteSourceControl", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "DeleteSourceControl", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.DeleteSourceControlResponder(resp)
@@ -4091,13 +4253,15 @@ func (client AppsClient) DeleteSourceControlSlot(resourceGroupName string, name 
 
 	req, err := client.DeleteSourceControlSlotPreparer(resourceGroupName, name, slot)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "DeleteSourceControlSlot", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "DeleteSourceControlSlot", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.DeleteSourceControlSlotSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "DeleteSourceControlSlot", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "DeleteSourceControlSlot", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.DeleteSourceControlSlotResponder(resp)
@@ -4164,13 +4328,15 @@ func (client AppsClient) DeleteVnetConnection(resourceGroupName string, name str
 
 	req, err := client.DeleteVnetConnectionPreparer(resourceGroupName, name, vnetName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "DeleteVnetConnection", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "DeleteVnetConnection", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.DeleteVnetConnectionSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "DeleteVnetConnection", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "DeleteVnetConnection", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.DeleteVnetConnectionResponder(resp)
@@ -4239,13 +4405,15 @@ func (client AppsClient) DeleteVnetConnectionSlot(resourceGroupName string, name
 
 	req, err := client.DeleteVnetConnectionSlotPreparer(resourceGroupName, name, vnetName, slot)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "DeleteVnetConnectionSlot", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "DeleteVnetConnectionSlot", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.DeleteVnetConnectionSlotSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "DeleteVnetConnectionSlot", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "DeleteVnetConnectionSlot", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.DeleteVnetConnectionSlotResponder(resp)
@@ -4314,13 +4482,15 @@ func (client AppsClient) DiscoverRestore(resourceGroupName string, name string, 
 
 	req, err := client.DiscoverRestorePreparer(resourceGroupName, name, request)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "DiscoverRestore", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "DiscoverRestore", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.DiscoverRestoreSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "DiscoverRestore", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "DiscoverRestore", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.DiscoverRestoreResponder(resp)
@@ -4392,13 +4562,15 @@ func (client AppsClient) DiscoverRestoreSlot(resourceGroupName string, name stri
 
 	req, err := client.DiscoverRestoreSlotPreparer(resourceGroupName, name, request, slot)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "DiscoverRestoreSlot", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "DiscoverRestoreSlot", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.DiscoverRestoreSlotSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "DiscoverRestoreSlot", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "DiscoverRestoreSlot", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.DiscoverRestoreSlotResponder(resp)
@@ -4468,13 +4640,15 @@ func (client AppsClient) GenerateNewSitePublishingPassword(resourceGroupName str
 
 	req, err := client.GenerateNewSitePublishingPasswordPreparer(resourceGroupName, name)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "GenerateNewSitePublishingPassword", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "GenerateNewSitePublishingPassword", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GenerateNewSitePublishingPasswordSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "GenerateNewSitePublishingPassword", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "GenerateNewSitePublishingPassword", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GenerateNewSitePublishingPasswordResponder(resp)
@@ -4542,13 +4716,15 @@ func (client AppsClient) GenerateNewSitePublishingPasswordSlot(resourceGroupName
 
 	req, err := client.GenerateNewSitePublishingPasswordSlotPreparer(resourceGroupName, name, slot)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "GenerateNewSitePublishingPasswordSlot", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "GenerateNewSitePublishingPasswordSlot", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GenerateNewSitePublishingPasswordSlotSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "GenerateNewSitePublishingPasswordSlot", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "GenerateNewSitePublishingPasswordSlot", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GenerateNewSitePublishingPasswordSlotResponder(resp)
@@ -4614,13 +4790,15 @@ func (client AppsClient) Get(resourceGroupName string, name string) (result Site
 
 	req, err := client.GetPreparer(resourceGroupName, name)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "Get", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "Get", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "Get", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "Get", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetResponder(resp)
@@ -4686,13 +4864,15 @@ func (client AppsClient) GetAuthSettings(resourceGroupName string, name string) 
 
 	req, err := client.GetAuthSettingsPreparer(resourceGroupName, name)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "GetAuthSettings", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "GetAuthSettings", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetAuthSettingsSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "GetAuthSettings", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "GetAuthSettings", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetAuthSettingsResponder(resp)
@@ -4761,13 +4941,15 @@ func (client AppsClient) GetAuthSettingsSlot(resourceGroupName string, name stri
 
 	req, err := client.GetAuthSettingsSlotPreparer(resourceGroupName, name, slot)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "GetAuthSettingsSlot", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "GetAuthSettingsSlot", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetAuthSettingsSlotSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "GetAuthSettingsSlot", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "GetAuthSettingsSlot", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetAuthSettingsSlotResponder(resp)
@@ -4834,13 +5016,15 @@ func (client AppsClient) GetBackupConfiguration(resourceGroupName string, name s
 
 	req, err := client.GetBackupConfigurationPreparer(resourceGroupName, name)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "GetBackupConfiguration", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "GetBackupConfiguration", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetBackupConfigurationSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "GetBackupConfiguration", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "GetBackupConfiguration", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetBackupConfigurationResponder(resp)
@@ -4908,13 +5092,15 @@ func (client AppsClient) GetBackupConfigurationSlot(resourceGroupName string, na
 
 	req, err := client.GetBackupConfigurationSlotPreparer(resourceGroupName, name, slot)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "GetBackupConfigurationSlot", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "GetBackupConfigurationSlot", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetBackupConfigurationSlotSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "GetBackupConfigurationSlot", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "GetBackupConfigurationSlot", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetBackupConfigurationSlotResponder(resp)
@@ -4981,13 +5167,15 @@ func (client AppsClient) GetBackupStatus(resourceGroupName string, name string, 
 
 	req, err := client.GetBackupStatusPreparer(resourceGroupName, name, backupID)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "GetBackupStatus", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "GetBackupStatus", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetBackupStatusSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "GetBackupStatus", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "GetBackupStatus", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetBackupStatusResponder(resp)
@@ -5056,13 +5244,15 @@ func (client AppsClient) GetBackupStatusSlot(resourceGroupName string, name stri
 
 	req, err := client.GetBackupStatusSlotPreparer(resourceGroupName, name, backupID, slot)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "GetBackupStatusSlot", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "GetBackupStatusSlot", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetBackupStatusSlotSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "GetBackupStatusSlot", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "GetBackupStatusSlot", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetBackupStatusSlotResponder(resp)
@@ -5131,13 +5321,15 @@ func (client AppsClient) GetConfiguration(resourceGroupName string, name string)
 
 	req, err := client.GetConfigurationPreparer(resourceGroupName, name)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "GetConfiguration", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "GetConfiguration", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetConfigurationSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "GetConfiguration", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "GetConfiguration", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetConfigurationResponder(resp)
@@ -5207,13 +5399,15 @@ func (client AppsClient) GetConfigurationSlot(resourceGroupName string, name str
 
 	req, err := client.GetConfigurationSlotPreparer(resourceGroupName, name, slot)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "GetConfigurationSlot", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "GetConfigurationSlot", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetConfigurationSlotSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "GetConfigurationSlot", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "GetConfigurationSlot", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetConfigurationSlotResponder(resp)
@@ -5282,13 +5476,15 @@ func (client AppsClient) GetConfigurationSnapshot(resourceGroupName string, name
 
 	req, err := client.GetConfigurationSnapshotPreparer(resourceGroupName, name, snapshotID)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "GetConfigurationSnapshot", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "GetConfigurationSnapshot", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetConfigurationSnapshotSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "GetConfigurationSnapshot", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "GetConfigurationSnapshot", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetConfigurationSnapshotResponder(resp)
@@ -5358,13 +5554,15 @@ func (client AppsClient) GetConfigurationSnapshotSlot(resourceGroupName string, 
 
 	req, err := client.GetConfigurationSnapshotSlotPreparer(resourceGroupName, name, snapshotID, slot)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "GetConfigurationSnapshotSlot", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "GetConfigurationSnapshotSlot", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetConfigurationSnapshotSlotSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "GetConfigurationSnapshotSlot", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "GetConfigurationSnapshotSlot", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetConfigurationSnapshotSlotResponder(resp)
@@ -5421,8 +5619,8 @@ func (client AppsClient) GetConfigurationSnapshotSlotResponder(resp *http.Respon
 // slot, and/or a specific scaled-out instance.
 //
 // resourceGroupName is name of the resource group to which the resource
-// belongs. name is name of the app. id is deployment ID.
-func (client AppsClient) GetDeployment(resourceGroupName string, name string, id string) (result Deployment, err error) {
+// belongs. name is name of the app. ID is deployment ID.
+func (client AppsClient) GetDeployment(resourceGroupName string, name string, ID string) (result Deployment, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
@@ -5431,15 +5629,17 @@ func (client AppsClient) GetDeployment(resourceGroupName string, name string, id
 		return result, validation.NewErrorWithValidationError(err, "web.AppsClient", "GetDeployment")
 	}
 
-	req, err := client.GetDeploymentPreparer(resourceGroupName, name, id)
+	req, err := client.GetDeploymentPreparer(resourceGroupName, name, ID)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "GetDeployment", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "GetDeployment", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetDeploymentSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "GetDeployment", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "GetDeployment", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetDeploymentResponder(resp)
@@ -5451,9 +5651,9 @@ func (client AppsClient) GetDeployment(resourceGroupName string, name string, id
 }
 
 // GetDeploymentPreparer prepares the GetDeployment request.
-func (client AppsClient) GetDeploymentPreparer(resourceGroupName string, name string, id string) (*http.Request, error) {
+func (client AppsClient) GetDeploymentPreparer(resourceGroupName string, name string, ID string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"id":                autorest.Encode("path", id),
+		"id":                autorest.Encode("path", ID),
 		"name":              autorest.Encode("path", name),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
@@ -5495,10 +5695,10 @@ func (client AppsClient) GetDeploymentResponder(resp *http.Response) (result Dep
 // deployment slot, and/or a specific scaled-out instance.
 //
 // resourceGroupName is name of the resource group to which the resource
-// belongs. name is name of the app. id is deployment ID. slot is name of the
+// belongs. name is name of the app. ID is deployment ID. slot is name of the
 // deployment slot. If a slot is not specified, the API gets a deployment for
 // the production slot.
-func (client AppsClient) GetDeploymentSlot(resourceGroupName string, name string, id string, slot string) (result Deployment, err error) {
+func (client AppsClient) GetDeploymentSlot(resourceGroupName string, name string, ID string, slot string) (result Deployment, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
@@ -5507,15 +5707,17 @@ func (client AppsClient) GetDeploymentSlot(resourceGroupName string, name string
 		return result, validation.NewErrorWithValidationError(err, "web.AppsClient", "GetDeploymentSlot")
 	}
 
-	req, err := client.GetDeploymentSlotPreparer(resourceGroupName, name, id, slot)
+	req, err := client.GetDeploymentSlotPreparer(resourceGroupName, name, ID, slot)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "GetDeploymentSlot", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "GetDeploymentSlot", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetDeploymentSlotSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "GetDeploymentSlot", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "GetDeploymentSlot", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetDeploymentSlotResponder(resp)
@@ -5527,9 +5729,9 @@ func (client AppsClient) GetDeploymentSlot(resourceGroupName string, name string
 }
 
 // GetDeploymentSlotPreparer prepares the GetDeploymentSlot request.
-func (client AppsClient) GetDeploymentSlotPreparer(resourceGroupName string, name string, id string, slot string) (*http.Request, error) {
+func (client AppsClient) GetDeploymentSlotPreparer(resourceGroupName string, name string, ID string, slot string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"id":                autorest.Encode("path", id),
+		"id":                autorest.Encode("path", ID),
 		"name":              autorest.Encode("path", name),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"slot":              autorest.Encode("path", slot),
@@ -5583,13 +5785,15 @@ func (client AppsClient) GetDiagnosticLogsConfiguration(resourceGroupName string
 
 	req, err := client.GetDiagnosticLogsConfigurationPreparer(resourceGroupName, name)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "GetDiagnosticLogsConfiguration", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "GetDiagnosticLogsConfiguration", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetDiagnosticLogsConfigurationSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "GetDiagnosticLogsConfiguration", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "GetDiagnosticLogsConfiguration", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetDiagnosticLogsConfigurationResponder(resp)
@@ -5657,13 +5861,15 @@ func (client AppsClient) GetDiagnosticLogsConfigurationSlot(resourceGroupName st
 
 	req, err := client.GetDiagnosticLogsConfigurationSlotPreparer(resourceGroupName, name, slot)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "GetDiagnosticLogsConfigurationSlot", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "GetDiagnosticLogsConfigurationSlot", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetDiagnosticLogsConfigurationSlotSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "GetDiagnosticLogsConfigurationSlot", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "GetDiagnosticLogsConfigurationSlot", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetDiagnosticLogsConfigurationSlotResponder(resp)
@@ -5731,13 +5937,15 @@ func (client AppsClient) GetDomainOwnershipIdentifier(resourceGroupName string, 
 
 	req, err := client.GetDomainOwnershipIdentifierPreparer(resourceGroupName, name, domainOwnershipIdentifierName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "GetDomainOwnershipIdentifier", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "GetDomainOwnershipIdentifier", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetDomainOwnershipIdentifierSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "GetDomainOwnershipIdentifier", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "GetDomainOwnershipIdentifier", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetDomainOwnershipIdentifierResponder(resp)
@@ -5807,13 +6015,15 @@ func (client AppsClient) GetDomainOwnershipIdentifierSlot(resourceGroupName stri
 
 	req, err := client.GetDomainOwnershipIdentifierSlotPreparer(resourceGroupName, name, domainOwnershipIdentifierName, slot)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "GetDomainOwnershipIdentifierSlot", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "GetDomainOwnershipIdentifierSlot", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetDomainOwnershipIdentifierSlotSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "GetDomainOwnershipIdentifierSlot", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "GetDomainOwnershipIdentifierSlot", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetDomainOwnershipIdentifierSlotResponder(resp)
@@ -5883,13 +6093,15 @@ func (client AppsClient) GetHostNameBinding(resourceGroupName string, name strin
 
 	req, err := client.GetHostNameBindingPreparer(resourceGroupName, name, hostName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "GetHostNameBinding", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "GetHostNameBinding", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetHostNameBindingSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "GetHostNameBinding", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "GetHostNameBinding", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetHostNameBindingResponder(resp)
@@ -5959,13 +6171,15 @@ func (client AppsClient) GetHostNameBindingSlot(resourceGroupName string, name s
 
 	req, err := client.GetHostNameBindingSlotPreparer(resourceGroupName, name, slot, hostName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "GetHostNameBindingSlot", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "GetHostNameBindingSlot", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetHostNameBindingSlotSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "GetHostNameBindingSlot", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "GetHostNameBindingSlot", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetHostNameBindingSlotResponder(resp)
@@ -6036,13 +6250,15 @@ func (client AppsClient) GetHybridConnection(resourceGroupName string, name stri
 
 	req, err := client.GetHybridConnectionPreparer(resourceGroupName, name, namespaceName, relayName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "GetHybridConnection", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "GetHybridConnection", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetHybridConnectionSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "GetHybridConnection", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "GetHybridConnection", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetHybridConnectionResponder(resp)
@@ -6113,13 +6329,15 @@ func (client AppsClient) GetHybridConnectionSlot(resourceGroupName string, name 
 
 	req, err := client.GetHybridConnectionSlotPreparer(resourceGroupName, name, namespaceName, relayName, slot)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "GetHybridConnectionSlot", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "GetHybridConnectionSlot", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetHybridConnectionSlotSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "GetHybridConnectionSlot", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "GetHybridConnectionSlot", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetHybridConnectionSlotResponder(resp)
@@ -6177,10 +6395,10 @@ func (client AppsClient) GetHybridConnectionSlotResponder(resp *http.Response) (
 // deployment slot, and/or a specific scaled-out instance.
 //
 // resourceGroupName is name of the resource group to which the resource
-// belongs. name is name of the app. id is deployment ID. instanceID is iD of a
+// belongs. name is name of the app. ID is deployment ID. instanceID is iD of a
 // specific scaled-out instance. This is the value of the name property in the
 // JSON response from "GET api/sites/{siteName}/instances"
-func (client AppsClient) GetInstanceDeployment(resourceGroupName string, name string, id string, instanceID string) (result Deployment, err error) {
+func (client AppsClient) GetInstanceDeployment(resourceGroupName string, name string, ID string, instanceID string) (result Deployment, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
@@ -6189,15 +6407,17 @@ func (client AppsClient) GetInstanceDeployment(resourceGroupName string, name st
 		return result, validation.NewErrorWithValidationError(err, "web.AppsClient", "GetInstanceDeployment")
 	}
 
-	req, err := client.GetInstanceDeploymentPreparer(resourceGroupName, name, id, instanceID)
+	req, err := client.GetInstanceDeploymentPreparer(resourceGroupName, name, ID, instanceID)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "GetInstanceDeployment", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "GetInstanceDeployment", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetInstanceDeploymentSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "GetInstanceDeployment", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "GetInstanceDeployment", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetInstanceDeploymentResponder(resp)
@@ -6209,9 +6429,9 @@ func (client AppsClient) GetInstanceDeployment(resourceGroupName string, name st
 }
 
 // GetInstanceDeploymentPreparer prepares the GetInstanceDeployment request.
-func (client AppsClient) GetInstanceDeploymentPreparer(resourceGroupName string, name string, id string, instanceID string) (*http.Request, error) {
+func (client AppsClient) GetInstanceDeploymentPreparer(resourceGroupName string, name string, ID string, instanceID string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"id":                autorest.Encode("path", id),
+		"id":                autorest.Encode("path", ID),
 		"instanceId":        autorest.Encode("path", instanceID),
 		"name":              autorest.Encode("path", name),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
@@ -6254,12 +6474,12 @@ func (client AppsClient) GetInstanceDeploymentResponder(resp *http.Response) (re
 // deployment slot, and/or a specific scaled-out instance.
 //
 // resourceGroupName is name of the resource group to which the resource
-// belongs. name is name of the app. id is deployment ID. slot is name of the
+// belongs. name is name of the app. ID is deployment ID. slot is name of the
 // deployment slot. If a slot is not specified, the API gets a deployment for
 // the production slot. instanceID is iD of a specific scaled-out instance.
 // This is the value of the name property in the JSON response from "GET
 // api/sites/{siteName}/instances"
-func (client AppsClient) GetInstanceDeploymentSlot(resourceGroupName string, name string, id string, slot string, instanceID string) (result Deployment, err error) {
+func (client AppsClient) GetInstanceDeploymentSlot(resourceGroupName string, name string, ID string, slot string, instanceID string) (result Deployment, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
@@ -6268,15 +6488,17 @@ func (client AppsClient) GetInstanceDeploymentSlot(resourceGroupName string, nam
 		return result, validation.NewErrorWithValidationError(err, "web.AppsClient", "GetInstanceDeploymentSlot")
 	}
 
-	req, err := client.GetInstanceDeploymentSlotPreparer(resourceGroupName, name, id, slot, instanceID)
+	req, err := client.GetInstanceDeploymentSlotPreparer(resourceGroupName, name, ID, slot, instanceID)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "GetInstanceDeploymentSlot", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "GetInstanceDeploymentSlot", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetInstanceDeploymentSlotSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "GetInstanceDeploymentSlot", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "GetInstanceDeploymentSlot", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetInstanceDeploymentSlotResponder(resp)
@@ -6288,9 +6510,9 @@ func (client AppsClient) GetInstanceDeploymentSlot(resourceGroupName string, nam
 }
 
 // GetInstanceDeploymentSlotPreparer prepares the GetInstanceDeploymentSlot request.
-func (client AppsClient) GetInstanceDeploymentSlotPreparer(resourceGroupName string, name string, id string, slot string, instanceID string) (*http.Request, error) {
+func (client AppsClient) GetInstanceDeploymentSlotPreparer(resourceGroupName string, name string, ID string, slot string, instanceID string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"id":                autorest.Encode("path", id),
+		"id":                autorest.Encode("path", ID),
 		"instanceId":        autorest.Encode("path", instanceID),
 		"name":              autorest.Encode("path", name),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
@@ -6346,13 +6568,15 @@ func (client AppsClient) GetMigrateMySQLStatus(resourceGroupName string, name st
 
 	req, err := client.GetMigrateMySQLStatusPreparer(resourceGroupName, name)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "GetMigrateMySQLStatus", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "GetMigrateMySQLStatus", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetMigrateMySQLStatusSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "GetMigrateMySQLStatus", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "GetMigrateMySQLStatus", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetMigrateMySQLStatusResponder(resp)
@@ -6419,13 +6643,15 @@ func (client AppsClient) GetMigrateMySQLStatusSlot(resourceGroupName string, nam
 
 	req, err := client.GetMigrateMySQLStatusSlotPreparer(resourceGroupName, name, slot)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "GetMigrateMySQLStatusSlot", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "GetMigrateMySQLStatusSlot", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetMigrateMySQLStatusSlotSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "GetMigrateMySQLStatusSlot", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "GetMigrateMySQLStatusSlot", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetMigrateMySQLStatusSlotResponder(resp)
@@ -6492,13 +6718,15 @@ func (client AppsClient) GetPremierAddOn(resourceGroupName string, name string, 
 
 	req, err := client.GetPremierAddOnPreparer(resourceGroupName, name, premierAddOnName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "GetPremierAddOn", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "GetPremierAddOn", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetPremierAddOnSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "GetPremierAddOn", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "GetPremierAddOn", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetPremierAddOnResponder(resp)
@@ -6567,13 +6795,15 @@ func (client AppsClient) GetPremierAddOnSlot(resourceGroupName string, name stri
 
 	req, err := client.GetPremierAddOnSlotPreparer(resourceGroupName, name, premierAddOnName, slot)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "GetPremierAddOnSlot", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "GetPremierAddOnSlot", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetPremierAddOnSlotSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "GetPremierAddOnSlot", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "GetPremierAddOnSlot", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetPremierAddOnSlotResponder(resp)
@@ -6643,13 +6873,15 @@ func (client AppsClient) GetRelayServiceConnection(resourceGroupName string, nam
 
 	req, err := client.GetRelayServiceConnectionPreparer(resourceGroupName, name, entityName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "GetRelayServiceConnection", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "GetRelayServiceConnection", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetRelayServiceConnectionSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "GetRelayServiceConnection", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "GetRelayServiceConnection", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetRelayServiceConnectionResponder(resp)
@@ -6719,13 +6951,15 @@ func (client AppsClient) GetRelayServiceConnectionSlot(resourceGroupName string,
 
 	req, err := client.GetRelayServiceConnectionSlotPreparer(resourceGroupName, name, entityName, slot)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "GetRelayServiceConnectionSlot", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "GetRelayServiceConnectionSlot", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetRelayServiceConnectionSlotSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "GetRelayServiceConnectionSlot", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "GetRelayServiceConnectionSlot", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetRelayServiceConnectionSlotResponder(resp)
@@ -6793,13 +7027,15 @@ func (client AppsClient) GetSitePhpErrorLogFlag(resourceGroupName string, name s
 
 	req, err := client.GetSitePhpErrorLogFlagPreparer(resourceGroupName, name)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "GetSitePhpErrorLogFlag", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "GetSitePhpErrorLogFlag", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetSitePhpErrorLogFlagSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "GetSitePhpErrorLogFlag", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "GetSitePhpErrorLogFlag", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetSitePhpErrorLogFlagResponder(resp)
@@ -6866,13 +7102,15 @@ func (client AppsClient) GetSitePhpErrorLogFlagSlot(resourceGroupName string, na
 
 	req, err := client.GetSitePhpErrorLogFlagSlotPreparer(resourceGroupName, name, slot)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "GetSitePhpErrorLogFlagSlot", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "GetSitePhpErrorLogFlagSlot", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetSitePhpErrorLogFlagSlotSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "GetSitePhpErrorLogFlagSlot", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "GetSitePhpErrorLogFlagSlot", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetSitePhpErrorLogFlagSlotResponder(resp)
@@ -6940,13 +7178,15 @@ func (client AppsClient) GetSlot(resourceGroupName string, name string, slot str
 
 	req, err := client.GetSlotPreparer(resourceGroupName, name, slot)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "GetSlot", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "GetSlot", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetSlotSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "GetSlot", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "GetSlot", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetSlotResponder(resp)
@@ -7013,13 +7253,15 @@ func (client AppsClient) GetSourceControl(resourceGroupName string, name string)
 
 	req, err := client.GetSourceControlPreparer(resourceGroupName, name)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "GetSourceControl", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "GetSourceControl", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetSourceControlSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "GetSourceControl", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "GetSourceControl", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetSourceControlResponder(resp)
@@ -7087,13 +7329,15 @@ func (client AppsClient) GetSourceControlSlot(resourceGroupName string, name str
 
 	req, err := client.GetSourceControlSlotPreparer(resourceGroupName, name, slot)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "GetSourceControlSlot", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "GetSourceControlSlot", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetSourceControlSlotSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "GetSourceControlSlot", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "GetSourceControlSlot", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetSourceControlSlotResponder(resp)
@@ -7161,13 +7405,15 @@ func (client AppsClient) GetVnetConnection(resourceGroupName string, name string
 
 	req, err := client.GetVnetConnectionPreparer(resourceGroupName, name, vnetName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "GetVnetConnection", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "GetVnetConnection", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetVnetConnectionSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "GetVnetConnection", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "GetVnetConnection", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetVnetConnectionResponder(resp)
@@ -7236,13 +7482,15 @@ func (client AppsClient) GetVnetConnectionGateway(resourceGroupName string, name
 
 	req, err := client.GetVnetConnectionGatewayPreparer(resourceGroupName, name, vnetName, gatewayName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "GetVnetConnectionGateway", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "GetVnetConnectionGateway", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetVnetConnectionGatewaySender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "GetVnetConnectionGateway", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "GetVnetConnectionGateway", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetVnetConnectionGatewayResponder(resp)
@@ -7313,13 +7561,15 @@ func (client AppsClient) GetVnetConnectionGatewaySlot(resourceGroupName string, 
 
 	req, err := client.GetVnetConnectionGatewaySlotPreparer(resourceGroupName, name, vnetName, gatewayName, slot)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "GetVnetConnectionGatewaySlot", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "GetVnetConnectionGatewaySlot", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetVnetConnectionGatewaySlotSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "GetVnetConnectionGatewaySlot", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "GetVnetConnectionGatewaySlot", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetVnetConnectionGatewaySlotResponder(resp)
@@ -7391,13 +7641,15 @@ func (client AppsClient) GetVnetConnectionSlot(resourceGroupName string, name st
 
 	req, err := client.GetVnetConnectionSlotPreparer(resourceGroupName, name, vnetName, slot)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "GetVnetConnectionSlot", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "GetVnetConnectionSlot", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetVnetConnectionSlotSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "GetVnetConnectionSlot", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "GetVnetConnectionSlot", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetVnetConnectionSlotResponder(resp)
@@ -7466,13 +7718,15 @@ func (client AppsClient) IsCloneable(resourceGroupName string, name string) (res
 
 	req, err := client.IsCloneablePreparer(resourceGroupName, name)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "IsCloneable", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "IsCloneable", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.IsCloneableSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "IsCloneable", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "IsCloneable", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.IsCloneableResponder(resp)
@@ -7540,13 +7794,15 @@ func (client AppsClient) IsCloneableSlot(resourceGroupName string, name string, 
 
 	req, err := client.IsCloneableSlotPreparer(resourceGroupName, name, slot)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "IsCloneableSlot", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "IsCloneableSlot", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.IsCloneableSlotSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "IsCloneableSlot", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "IsCloneableSlot", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.IsCloneableSlotResponder(resp)
@@ -7602,13 +7858,15 @@ func (client AppsClient) IsCloneableSlotResponder(resp *http.Response) (result S
 func (client AppsClient) List() (result AppCollection, err error) {
 	req, err := client.ListPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "List", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "List", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "List", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "List", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListResponder(resp)
@@ -7696,13 +7954,15 @@ func (client AppsClient) ListApplicationSettings(resourceGroupName string, name 
 
 	req, err := client.ListApplicationSettingsPreparer(resourceGroupName, name)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "ListApplicationSettings", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListApplicationSettings", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListApplicationSettingsSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "ListApplicationSettings", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListApplicationSettings", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListApplicationSettingsResponder(resp)
@@ -7770,13 +8030,15 @@ func (client AppsClient) ListApplicationSettingsSlot(resourceGroupName string, n
 
 	req, err := client.ListApplicationSettingsSlotPreparer(resourceGroupName, name, slot)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "ListApplicationSettingsSlot", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListApplicationSettingsSlot", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListApplicationSettingsSlotSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "ListApplicationSettingsSlot", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListApplicationSettingsSlot", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListApplicationSettingsSlotResponder(resp)
@@ -7843,13 +8105,15 @@ func (client AppsClient) ListBackups(resourceGroupName string, name string) (res
 
 	req, err := client.ListBackupsPreparer(resourceGroupName, name)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "ListBackups", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListBackups", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListBackupsSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "ListBackups", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListBackups", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListBackupsResponder(resp)
@@ -7940,13 +8204,15 @@ func (client AppsClient) ListBackupsSlot(resourceGroupName string, name string, 
 
 	req, err := client.ListBackupsSlotPreparer(resourceGroupName, name, slot)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "ListBackupsSlot", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListBackupsSlot", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListBackupsSlotSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "ListBackupsSlot", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListBackupsSlot", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListBackupsSlotResponder(resp)
@@ -8049,13 +8315,15 @@ func (client AppsClient) ListBackupStatusSecrets(resourceGroupName string, name 
 
 	req, err := client.ListBackupStatusSecretsPreparer(resourceGroupName, name, backupID, request)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "ListBackupStatusSecrets", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListBackupStatusSecrets", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListBackupStatusSecretsSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "ListBackupStatusSecrets", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListBackupStatusSecrets", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListBackupStatusSecretsResponder(resp)
@@ -8137,13 +8405,15 @@ func (client AppsClient) ListBackupStatusSecretsSlot(resourceGroupName string, n
 
 	req, err := client.ListBackupStatusSecretsSlotPreparer(resourceGroupName, name, backupID, request, slot)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "ListBackupStatusSecretsSlot", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListBackupStatusSecretsSlot", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListBackupStatusSecretsSlotSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "ListBackupStatusSecretsSlot", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListBackupStatusSecretsSlot", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListBackupStatusSecretsSlotResponder(resp)
@@ -8216,13 +8486,15 @@ func (client AppsClient) ListByResourceGroup(resourceGroupName string, includeSl
 
 	req, err := client.ListByResourceGroupPreparer(resourceGroupName, includeSlots)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "ListByResourceGroup", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListByResourceGroup", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListByResourceGroupSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "ListByResourceGroup", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListByResourceGroup", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListByResourceGroupResponder(resp)
@@ -8316,13 +8588,15 @@ func (client AppsClient) ListConfigurationSnapshotInfo(resourceGroupName string,
 
 	req, err := client.ListConfigurationSnapshotInfoPreparer(resourceGroupName, name)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "ListConfigurationSnapshotInfo", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListConfigurationSnapshotInfo", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListConfigurationSnapshotInfoSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "ListConfigurationSnapshotInfo", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListConfigurationSnapshotInfo", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListConfigurationSnapshotInfoResponder(resp)
@@ -8392,13 +8666,15 @@ func (client AppsClient) ListConfigurationSnapshotInfoSlot(resourceGroupName str
 
 	req, err := client.ListConfigurationSnapshotInfoSlotPreparer(resourceGroupName, name, slot)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "ListConfigurationSnapshotInfoSlot", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListConfigurationSnapshotInfoSlot", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListConfigurationSnapshotInfoSlotSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "ListConfigurationSnapshotInfoSlot", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListConfigurationSnapshotInfoSlot", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListConfigurationSnapshotInfoSlotResponder(resp)
@@ -8465,13 +8741,15 @@ func (client AppsClient) ListConnectionStrings(resourceGroupName string, name st
 
 	req, err := client.ListConnectionStringsPreparer(resourceGroupName, name)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "ListConnectionStrings", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListConnectionStrings", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListConnectionStringsSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "ListConnectionStrings", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListConnectionStrings", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListConnectionStringsResponder(resp)
@@ -8539,13 +8817,15 @@ func (client AppsClient) ListConnectionStringsSlot(resourceGroupName string, nam
 
 	req, err := client.ListConnectionStringsSlotPreparer(resourceGroupName, name, slot)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "ListConnectionStringsSlot", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListConnectionStringsSlot", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListConnectionStringsSlotSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "ListConnectionStringsSlot", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListConnectionStringsSlot", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListConnectionStringsSlotResponder(resp)
@@ -8613,13 +8893,15 @@ func (client AppsClient) ListDeployments(resourceGroupName string, name string) 
 
 	req, err := client.ListDeploymentsPreparer(resourceGroupName, name)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "ListDeployments", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListDeployments", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListDeploymentsSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "ListDeployments", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListDeployments", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListDeploymentsResponder(resp)
@@ -8711,13 +8993,15 @@ func (client AppsClient) ListDeploymentsSlot(resourceGroupName string, name stri
 
 	req, err := client.ListDeploymentsSlotPreparer(resourceGroupName, name, slot)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "ListDeploymentsSlot", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListDeploymentsSlot", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListDeploymentsSlotSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "ListDeploymentsSlot", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListDeploymentsSlot", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListDeploymentsSlotResponder(resp)
@@ -8809,13 +9093,15 @@ func (client AppsClient) ListDomainOwnershipIdentifiers(resourceGroupName string
 
 	req, err := client.ListDomainOwnershipIdentifiersPreparer(resourceGroupName, name)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "ListDomainOwnershipIdentifiers", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListDomainOwnershipIdentifiers", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListDomainOwnershipIdentifiersSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "ListDomainOwnershipIdentifiers", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListDomainOwnershipIdentifiers", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListDomainOwnershipIdentifiersResponder(resp)
@@ -8908,13 +9194,15 @@ func (client AppsClient) ListDomainOwnershipIdentifiersSlot(resourceGroupName st
 
 	req, err := client.ListDomainOwnershipIdentifiersSlotPreparer(resourceGroupName, name, slot)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "ListDomainOwnershipIdentifiersSlot", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListDomainOwnershipIdentifiersSlot", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListDomainOwnershipIdentifiersSlotSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "ListDomainOwnershipIdentifiersSlot", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListDomainOwnershipIdentifiersSlot", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListDomainOwnershipIdentifiersSlotResponder(resp)
@@ -9005,13 +9293,15 @@ func (client AppsClient) ListHostNameBindings(resourceGroupName string, name str
 
 	req, err := client.ListHostNameBindingsPreparer(resourceGroupName, name)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "ListHostNameBindings", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListHostNameBindings", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListHostNameBindingsSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "ListHostNameBindings", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListHostNameBindings", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListHostNameBindingsResponder(resp)
@@ -9104,13 +9394,15 @@ func (client AppsClient) ListHostNameBindingsSlot(resourceGroupName string, name
 
 	req, err := client.ListHostNameBindingsSlotPreparer(resourceGroupName, name, slot)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "ListHostNameBindingsSlot", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListHostNameBindingsSlot", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListHostNameBindingsSlotSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "ListHostNameBindingsSlot", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListHostNameBindingsSlot", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListHostNameBindingsSlotResponder(resp)
@@ -9204,13 +9496,15 @@ func (client AppsClient) ListHybridConnectionKeys(resourceGroupName string, name
 
 	req, err := client.ListHybridConnectionKeysPreparer(resourceGroupName, name, namespaceName, relayName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "ListHybridConnectionKeys", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListHybridConnectionKeys", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListHybridConnectionKeysSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "ListHybridConnectionKeys", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListHybridConnectionKeys", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListHybridConnectionKeysResponder(resp)
@@ -9281,13 +9575,15 @@ func (client AppsClient) ListHybridConnectionKeysSlot(resourceGroupName string, 
 
 	req, err := client.ListHybridConnectionKeysSlotPreparer(resourceGroupName, name, namespaceName, relayName, slot)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "ListHybridConnectionKeysSlot", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListHybridConnectionKeysSlot", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListHybridConnectionKeysSlotSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "ListHybridConnectionKeysSlot", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListHybridConnectionKeysSlot", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListHybridConnectionKeysSlotResponder(resp)
@@ -9357,13 +9653,15 @@ func (client AppsClient) ListHybridConnections(resourceGroupName string, name st
 
 	req, err := client.ListHybridConnectionsPreparer(resourceGroupName, name)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "ListHybridConnections", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListHybridConnections", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListHybridConnectionsSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "ListHybridConnections", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListHybridConnections", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListHybridConnectionsResponder(resp)
@@ -9431,13 +9729,15 @@ func (client AppsClient) ListHybridConnectionsSlot(resourceGroupName string, nam
 
 	req, err := client.ListHybridConnectionsSlotPreparer(resourceGroupName, name, slot)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "ListHybridConnectionsSlot", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListHybridConnectionsSlot", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListHybridConnectionsSlotSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "ListHybridConnectionsSlot", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListHybridConnectionsSlot", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListHybridConnectionsSlotResponder(resp)
@@ -9507,13 +9807,15 @@ func (client AppsClient) ListInstanceDeployments(resourceGroupName string, name 
 
 	req, err := client.ListInstanceDeploymentsPreparer(resourceGroupName, name, instanceID)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "ListInstanceDeployments", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListInstanceDeployments", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListInstanceDeploymentsSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "ListInstanceDeployments", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListInstanceDeployments", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListInstanceDeploymentsResponder(resp)
@@ -9609,13 +9911,15 @@ func (client AppsClient) ListInstanceDeploymentsSlot(resourceGroupName string, n
 
 	req, err := client.ListInstanceDeploymentsSlotPreparer(resourceGroupName, name, slot, instanceID)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "ListInstanceDeploymentsSlot", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListInstanceDeploymentsSlot", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListInstanceDeploymentsSlotSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "ListInstanceDeploymentsSlot", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListInstanceDeploymentsSlot", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListInstanceDeploymentsSlotResponder(resp)
@@ -9707,13 +10011,15 @@ func (client AppsClient) ListInstanceIdentifiers(resourceGroupName string, name 
 
 	req, err := client.ListInstanceIdentifiersPreparer(resourceGroupName, name)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "ListInstanceIdentifiers", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListInstanceIdentifiers", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListInstanceIdentifiersSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "ListInstanceIdentifiers", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListInstanceIdentifiers", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListInstanceIdentifiersResponder(resp)
@@ -9804,13 +10110,15 @@ func (client AppsClient) ListInstanceIdentifiersSlot(resourceGroupName string, n
 
 	req, err := client.ListInstanceIdentifiersSlotPreparer(resourceGroupName, name, slot)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "ListInstanceIdentifiersSlot", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListInstanceIdentifiersSlot", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListInstanceIdentifiersSlotSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "ListInstanceIdentifiersSlot", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListInstanceIdentifiersSlot", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListInstanceIdentifiersSlotResponder(resp)
@@ -9901,13 +10209,15 @@ func (client AppsClient) ListMetadata(resourceGroupName string, name string) (re
 
 	req, err := client.ListMetadataPreparer(resourceGroupName, name)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "ListMetadata", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListMetadata", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListMetadataSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "ListMetadata", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListMetadata", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListMetadataResponder(resp)
@@ -9975,13 +10285,15 @@ func (client AppsClient) ListMetadataSlot(resourceGroupName string, name string,
 
 	req, err := client.ListMetadataSlotPreparer(resourceGroupName, name, slot)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "ListMetadataSlot", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListMetadataSlot", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListMetadataSlotSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "ListMetadataSlot", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListMetadataSlot", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListMetadataSlotResponder(resp)
@@ -10049,13 +10361,15 @@ func (client AppsClient) ListMetricDefinitions(resourceGroupName string, name st
 
 	req, err := client.ListMetricDefinitionsPreparer(resourceGroupName, name)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "ListMetricDefinitions", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListMetricDefinitions", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListMetricDefinitionsSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "ListMetricDefinitions", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListMetricDefinitions", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListMetricDefinitionsResponder(resp)
@@ -10148,13 +10462,15 @@ func (client AppsClient) ListMetricDefinitionsSlot(resourceGroupName string, nam
 
 	req, err := client.ListMetricDefinitionsSlotPreparer(resourceGroupName, name, slot)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "ListMetricDefinitionsSlot", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListMetricDefinitionsSlot", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListMetricDefinitionsSlotSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "ListMetricDefinitionsSlot", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListMetricDefinitionsSlot", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListMetricDefinitionsSlotResponder(resp)
@@ -10251,13 +10567,15 @@ func (client AppsClient) ListMetrics(resourceGroupName string, name string, deta
 
 	req, err := client.ListMetricsPreparer(resourceGroupName, name, details, filter)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "ListMetrics", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListMetrics", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListMetricsSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "ListMetrics", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListMetrics", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListMetricsResponder(resp)
@@ -10360,13 +10678,15 @@ func (client AppsClient) ListMetricsSlot(resourceGroupName string, name string, 
 
 	req, err := client.ListMetricsSlotPreparer(resourceGroupName, name, slot, details, filter)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "ListMetricsSlot", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListMetricsSlot", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListMetricsSlotSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "ListMetricsSlot", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListMetricsSlot", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListMetricsSlotResponder(resp)
@@ -10465,13 +10785,15 @@ func (client AppsClient) ListNetworkFeatures(resourceGroupName string, name stri
 
 	req, err := client.ListNetworkFeaturesPreparer(resourceGroupName, name, view)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "ListNetworkFeatures", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListNetworkFeatures", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListNetworkFeaturesSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "ListNetworkFeatures", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListNetworkFeatures", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListNetworkFeaturesResponder(resp)
@@ -10541,13 +10863,15 @@ func (client AppsClient) ListNetworkFeaturesSlot(resourceGroupName string, name 
 
 	req, err := client.ListNetworkFeaturesSlotPreparer(resourceGroupName, name, view, slot)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "ListNetworkFeaturesSlot", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListNetworkFeaturesSlot", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListNetworkFeaturesSlotSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "ListNetworkFeaturesSlot", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListNetworkFeaturesSlot", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListNetworkFeaturesSlotResponder(resp)
@@ -10618,13 +10942,15 @@ func (client AppsClient) ListPerfMonCounters(resourceGroupName string, name stri
 
 	req, err := client.ListPerfMonCountersPreparer(resourceGroupName, name, filter)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "ListPerfMonCounters", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListPerfMonCounters", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListPerfMonCountersSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "ListPerfMonCounters", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListPerfMonCounters", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListPerfMonCountersResponder(resp)
@@ -10722,13 +11048,15 @@ func (client AppsClient) ListPerfMonCountersSlot(resourceGroupName string, name 
 
 	req, err := client.ListPerfMonCountersSlotPreparer(resourceGroupName, name, slot, filter)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "ListPerfMonCountersSlot", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListPerfMonCountersSlot", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListPerfMonCountersSlotSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "ListPerfMonCountersSlot", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListPerfMonCountersSlot", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListPerfMonCountersSlotResponder(resp)
@@ -10822,13 +11150,15 @@ func (client AppsClient) ListPremierAddOns(resourceGroupName string, name string
 
 	req, err := client.ListPremierAddOnsPreparer(resourceGroupName, name)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "ListPremierAddOns", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListPremierAddOns", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListPremierAddOnsSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "ListPremierAddOns", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListPremierAddOns", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListPremierAddOnsResponder(resp)
@@ -10896,13 +11226,15 @@ func (client AppsClient) ListPremierAddOnsSlot(resourceGroupName string, name st
 
 	req, err := client.ListPremierAddOnsSlotPreparer(resourceGroupName, name, slot)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "ListPremierAddOnsSlot", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListPremierAddOnsSlot", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListPremierAddOnsSlotSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "ListPremierAddOnsSlot", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListPremierAddOnsSlot", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListPremierAddOnsSlotResponder(resp)
@@ -10961,32 +11293,48 @@ func (client AppsClient) ListPremierAddOnsSlotResponder(resp *http.Response) (re
 //
 // resourceGroupName is name of the resource group to which the resource
 // belongs. name is name of the app.
-func (client AppsClient) ListPublishingCredentials(resourceGroupName string, name string, cancel <-chan struct{}) (result autorest.Response, err error) {
+func (client AppsClient) ListPublishingCredentials(resourceGroupName string, name string, cancel <-chan struct{}) (<-chan User, <-chan error) {
+	resultChan := make(chan User, 1)
+	errChan := make(chan error, 1)
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+[^\.]$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "web.AppsClient", "ListPublishingCredentials")
+		errChan <- validation.NewErrorWithValidationError(err, "web.AppsClient", "ListPublishingCredentials")
+		close(errChan)
+		close(resultChan)
+		return resultChan, errChan
 	}
 
-	req, err := client.ListPublishingCredentialsPreparer(resourceGroupName, name, cancel)
-	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "ListPublishingCredentials", nil, "Failure preparing request")
-	}
+	go func() {
+		var err error
+		var result User
+		defer func() {
+			resultChan <- result
+			errChan <- err
+			close(resultChan)
+			close(errChan)
+		}()
+		req, err := client.ListPublishingCredentialsPreparer(resourceGroupName, name, cancel)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "web.AppsClient", "ListPublishingCredentials", nil, "Failure preparing request")
+			return
+		}
 
-	resp, err := client.ListPublishingCredentialsSender(req)
-	if err != nil {
-		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "ListPublishingCredentials", resp, "Failure sending request")
-	}
+		resp, err := client.ListPublishingCredentialsSender(req)
+		if err != nil {
+			result.Response = autorest.Response{Response: resp}
+			err = autorest.NewErrorWithError(err, "web.AppsClient", "ListPublishingCredentials", resp, "Failure sending request")
+			return
+		}
 
-	result, err = client.ListPublishingCredentialsResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListPublishingCredentials", resp, "Failure responding to request")
-	}
-
-	return
+		result, err = client.ListPublishingCredentialsResponder(resp)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "web.AppsClient", "ListPublishingCredentials", resp, "Failure responding to request")
+		}
+	}()
+	return resultChan, errChan
 }
 
 // ListPublishingCredentialsPreparer prepares the ListPublishingCredentials request.
@@ -11020,13 +11368,14 @@ func (client AppsClient) ListPublishingCredentialsSender(req *http.Request) (*ht
 
 // ListPublishingCredentialsResponder handles the response to the ListPublishingCredentials request. The method always
 // closes the http.Response Body.
-func (client AppsClient) ListPublishingCredentialsResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client AppsClient) ListPublishingCredentialsResponder(resp *http.Response) (result User, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = resp
+	result.Response = autorest.Response{Response: resp}
 	return
 }
 
@@ -11039,32 +11388,48 @@ func (client AppsClient) ListPublishingCredentialsResponder(resp *http.Response)
 // belongs. name is name of the app. slot is name of the deployment slot. If a
 // slot is not specified, the API will get the publishing credentials for the
 // production slot.
-func (client AppsClient) ListPublishingCredentialsSlot(resourceGroupName string, name string, slot string, cancel <-chan struct{}) (result autorest.Response, err error) {
+func (client AppsClient) ListPublishingCredentialsSlot(resourceGroupName string, name string, slot string, cancel <-chan struct{}) (<-chan User, <-chan error) {
+	resultChan := make(chan User, 1)
+	errChan := make(chan error, 1)
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+[^\.]$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "web.AppsClient", "ListPublishingCredentialsSlot")
+		errChan <- validation.NewErrorWithValidationError(err, "web.AppsClient", "ListPublishingCredentialsSlot")
+		close(errChan)
+		close(resultChan)
+		return resultChan, errChan
 	}
 
-	req, err := client.ListPublishingCredentialsSlotPreparer(resourceGroupName, name, slot, cancel)
-	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "ListPublishingCredentialsSlot", nil, "Failure preparing request")
-	}
+	go func() {
+		var err error
+		var result User
+		defer func() {
+			resultChan <- result
+			errChan <- err
+			close(resultChan)
+			close(errChan)
+		}()
+		req, err := client.ListPublishingCredentialsSlotPreparer(resourceGroupName, name, slot, cancel)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "web.AppsClient", "ListPublishingCredentialsSlot", nil, "Failure preparing request")
+			return
+		}
 
-	resp, err := client.ListPublishingCredentialsSlotSender(req)
-	if err != nil {
-		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "ListPublishingCredentialsSlot", resp, "Failure sending request")
-	}
+		resp, err := client.ListPublishingCredentialsSlotSender(req)
+		if err != nil {
+			result.Response = autorest.Response{Response: resp}
+			err = autorest.NewErrorWithError(err, "web.AppsClient", "ListPublishingCredentialsSlot", resp, "Failure sending request")
+			return
+		}
 
-	result, err = client.ListPublishingCredentialsSlotResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListPublishingCredentialsSlot", resp, "Failure responding to request")
-	}
-
-	return
+		result, err = client.ListPublishingCredentialsSlotResponder(resp)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "web.AppsClient", "ListPublishingCredentialsSlot", resp, "Failure responding to request")
+		}
+	}()
+	return resultChan, errChan
 }
 
 // ListPublishingCredentialsSlotPreparer prepares the ListPublishingCredentialsSlot request.
@@ -11099,13 +11464,14 @@ func (client AppsClient) ListPublishingCredentialsSlotSender(req *http.Request) 
 
 // ListPublishingCredentialsSlotResponder handles the response to the ListPublishingCredentialsSlot request. The method always
 // closes the http.Response Body.
-func (client AppsClient) ListPublishingCredentialsSlotResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client AppsClient) ListPublishingCredentialsSlotResponder(resp *http.Response) (result User, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = resp
+	result.Response = autorest.Response{Response: resp}
 	return
 }
 
@@ -11127,13 +11493,15 @@ func (client AppsClient) ListPublishingProfileXMLWithSecrets(resourceGroupName s
 
 	req, err := client.ListPublishingProfileXMLWithSecretsPreparer(resourceGroupName, name, publishingProfileOptions)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "ListPublishingProfileXMLWithSecrets", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListPublishingProfileXMLWithSecrets", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListPublishingProfileXMLWithSecretsSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "ListPublishingProfileXMLWithSecrets", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListPublishingProfileXMLWithSecrets", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListPublishingProfileXMLWithSecretsResponder(resp)
@@ -11205,13 +11573,15 @@ func (client AppsClient) ListPublishingProfileXMLWithSecretsSlot(resourceGroupNa
 
 	req, err := client.ListPublishingProfileXMLWithSecretsSlotPreparer(resourceGroupName, name, publishingProfileOptions, slot)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "ListPublishingProfileXMLWithSecretsSlot", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListPublishingProfileXMLWithSecretsSlot", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListPublishingProfileXMLWithSecretsSlotSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "ListPublishingProfileXMLWithSecretsSlot", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListPublishingProfileXMLWithSecretsSlot", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListPublishingProfileXMLWithSecretsSlotResponder(resp)
@@ -11280,13 +11650,15 @@ func (client AppsClient) ListRelayServiceConnections(resourceGroupName string, n
 
 	req, err := client.ListRelayServiceConnectionsPreparer(resourceGroupName, name)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "ListRelayServiceConnections", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListRelayServiceConnections", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListRelayServiceConnectionsSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "ListRelayServiceConnections", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListRelayServiceConnections", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListRelayServiceConnectionsResponder(resp)
@@ -11355,13 +11727,15 @@ func (client AppsClient) ListRelayServiceConnectionsSlot(resourceGroupName strin
 
 	req, err := client.ListRelayServiceConnectionsSlotPreparer(resourceGroupName, name, slot)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "ListRelayServiceConnectionsSlot", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListRelayServiceConnectionsSlot", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListRelayServiceConnectionsSlotSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "ListRelayServiceConnectionsSlot", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListRelayServiceConnectionsSlot", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListRelayServiceConnectionsSlotResponder(resp)
@@ -11428,13 +11802,15 @@ func (client AppsClient) ListSitePushSettings(resourceGroupName string, name str
 
 	req, err := client.ListSitePushSettingsPreparer(resourceGroupName, name)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "ListSitePushSettings", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListSitePushSettings", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListSitePushSettingsSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "ListSitePushSettings", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListSitePushSettings", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListSitePushSettingsResponder(resp)
@@ -11501,13 +11877,15 @@ func (client AppsClient) ListSitePushSettingsSlot(resourceGroupName string, name
 
 	req, err := client.ListSitePushSettingsSlotPreparer(resourceGroupName, name, slot)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "ListSitePushSettingsSlot", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListSitePushSettingsSlot", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListSitePushSettingsSlotSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "ListSitePushSettingsSlot", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListSitePushSettingsSlot", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListSitePushSettingsSlotResponder(resp)
@@ -11575,13 +11953,15 @@ func (client AppsClient) ListSlotConfigurationNames(resourceGroupName string, na
 
 	req, err := client.ListSlotConfigurationNamesPreparer(resourceGroupName, name)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "ListSlotConfigurationNames", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListSlotConfigurationNames", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListSlotConfigurationNamesSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "ListSlotConfigurationNames", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListSlotConfigurationNames", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListSlotConfigurationNamesResponder(resp)
@@ -11652,13 +12032,15 @@ func (client AppsClient) ListSlotDifferencesFromProduction(resourceGroupName str
 
 	req, err := client.ListSlotDifferencesFromProductionPreparer(resourceGroupName, name, slotSwapEntity)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "ListSlotDifferencesFromProduction", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListSlotDifferencesFromProduction", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListSlotDifferencesFromProductionSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "ListSlotDifferencesFromProduction", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListSlotDifferencesFromProduction", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListSlotDifferencesFromProductionResponder(resp)
@@ -11756,13 +12138,15 @@ func (client AppsClient) ListSlotDifferencesSlot(resourceGroupName string, name 
 
 	req, err := client.ListSlotDifferencesSlotPreparer(resourceGroupName, name, slotSwapEntity, slot)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "ListSlotDifferencesSlot", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListSlotDifferencesSlot", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListSlotDifferencesSlotSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "ListSlotDifferencesSlot", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListSlotDifferencesSlot", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListSlotDifferencesSlotResponder(resp)
@@ -11855,13 +12239,15 @@ func (client AppsClient) ListSlots(resourceGroupName string, name string) (resul
 
 	req, err := client.ListSlotsPreparer(resourceGroupName, name)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "ListSlots", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListSlots", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListSlotsSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "ListSlots", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListSlots", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListSlotsResponder(resp)
@@ -11951,13 +12337,15 @@ func (client AppsClient) ListSnapshots(resourceGroupName string, name string) (r
 
 	req, err := client.ListSnapshotsPreparer(resourceGroupName, name)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "ListSnapshots", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListSnapshots", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListSnapshotsSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "ListSnapshots", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListSnapshots", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListSnapshotsResponder(resp)
@@ -12047,13 +12435,15 @@ func (client AppsClient) ListSnapshotsSlot(resourceGroupName string, name string
 
 	req, err := client.ListSnapshotsSlotPreparer(resourceGroupName, name, slot)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "ListSnapshotsSlot", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListSnapshotsSlot", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListSnapshotsSlotSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "ListSnapshotsSlot", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListSnapshotsSlot", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListSnapshotsSlotResponder(resp)
@@ -12149,13 +12539,15 @@ func (client AppsClient) ListUsages(resourceGroupName string, name string, filte
 
 	req, err := client.ListUsagesPreparer(resourceGroupName, name, filter)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "ListUsages", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListUsages", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListUsagesSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "ListUsages", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListUsages", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListUsagesResponder(resp)
@@ -12254,13 +12646,15 @@ func (client AppsClient) ListUsagesSlot(resourceGroupName string, name string, s
 
 	req, err := client.ListUsagesSlotPreparer(resourceGroupName, name, slot, filter)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "ListUsagesSlot", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListUsagesSlot", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListUsagesSlotSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "ListUsagesSlot", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListUsagesSlot", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListUsagesSlotResponder(resp)
@@ -12355,13 +12749,15 @@ func (client AppsClient) ListVnetConnections(resourceGroupName string, name stri
 
 	req, err := client.ListVnetConnectionsPreparer(resourceGroupName, name)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "ListVnetConnections", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListVnetConnections", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListVnetConnectionsSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "ListVnetConnections", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListVnetConnections", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListVnetConnectionsResponder(resp)
@@ -12430,13 +12826,15 @@ func (client AppsClient) ListVnetConnectionsSlot(resourceGroupName string, name 
 
 	req, err := client.ListVnetConnectionsSlotPreparer(resourceGroupName, name, slot)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "ListVnetConnectionsSlot", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListVnetConnectionsSlot", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListVnetConnectionsSlotSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "ListVnetConnectionsSlot", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListVnetConnectionsSlot", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListVnetConnectionsSlotResponder(resp)
@@ -12496,32 +12894,48 @@ func (client AppsClient) ListVnetConnectionsSlotResponder(resp *http.Response) (
 // resourceGroupName is name of the resource group to which the resource
 // belongs. name is name of web app migrationRequestEnvelope is mySql migration
 // options
-func (client AppsClient) MigrateMySQL(resourceGroupName string, name string, migrationRequestEnvelope MigrateMySQLRequest, cancel <-chan struct{}) (result autorest.Response, err error) {
+func (client AppsClient) MigrateMySQL(resourceGroupName string, name string, migrationRequestEnvelope MigrateMySQLRequest, cancel <-chan struct{}) (<-chan Operation, <-chan error) {
+	resultChan := make(chan Operation, 1)
+	errChan := make(chan error, 1)
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+[^\.]$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "web.AppsClient", "MigrateMySQL")
+		errChan <- validation.NewErrorWithValidationError(err, "web.AppsClient", "MigrateMySQL")
+		close(errChan)
+		close(resultChan)
+		return resultChan, errChan
 	}
 
-	req, err := client.MigrateMySQLPreparer(resourceGroupName, name, migrationRequestEnvelope, cancel)
-	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "MigrateMySQL", nil, "Failure preparing request")
-	}
+	go func() {
+		var err error
+		var result Operation
+		defer func() {
+			resultChan <- result
+			errChan <- err
+			close(resultChan)
+			close(errChan)
+		}()
+		req, err := client.MigrateMySQLPreparer(resourceGroupName, name, migrationRequestEnvelope, cancel)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "web.AppsClient", "MigrateMySQL", nil, "Failure preparing request")
+			return
+		}
 
-	resp, err := client.MigrateMySQLSender(req)
-	if err != nil {
-		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "MigrateMySQL", resp, "Failure sending request")
-	}
+		resp, err := client.MigrateMySQLSender(req)
+		if err != nil {
+			result.Response = autorest.Response{Response: resp}
+			err = autorest.NewErrorWithError(err, "web.AppsClient", "MigrateMySQL", resp, "Failure sending request")
+			return
+		}
 
-	result, err = client.MigrateMySQLResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "web.AppsClient", "MigrateMySQL", resp, "Failure responding to request")
-	}
-
-	return
+		result, err = client.MigrateMySQLResponder(resp)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "web.AppsClient", "MigrateMySQL", resp, "Failure responding to request")
+		}
+	}()
+	return resultChan, errChan
 }
 
 // MigrateMySQLPreparer prepares the MigrateMySQL request.
@@ -12557,13 +12971,14 @@ func (client AppsClient) MigrateMySQLSender(req *http.Request) (*http.Response, 
 
 // MigrateMySQLResponder handles the response to the MigrateMySQL request. The method always
 // closes the http.Response Body.
-func (client AppsClient) MigrateMySQLResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client AppsClient) MigrateMySQLResponder(resp *http.Response) (result Operation, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = resp
+	result.Response = autorest.Response{Response: resp}
 	return
 }
 
@@ -12574,32 +12989,48 @@ func (client AppsClient) MigrateMySQLResponder(resp *http.Response) (result auto
 // subscriptionName is azure subscription resourceGroupName is name of the
 // resource group to which the resource belongs. name is name of web app
 // migrationOptions is migration migrationOptions
-func (client AppsClient) MigrateStorage(subscriptionName string, resourceGroupName string, name string, migrationOptions StorageMigrationOptions, cancel <-chan struct{}) (result autorest.Response, err error) {
+func (client AppsClient) MigrateStorage(subscriptionName string, resourceGroupName string, name string, migrationOptions StorageMigrationOptions, cancel <-chan struct{}) (<-chan StorageMigrationResponse, <-chan error) {
+	resultChan := make(chan StorageMigrationResponse, 1)
+	errChan := make(chan error, 1)
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+[^\.]$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "web.AppsClient", "MigrateStorage")
+		errChan <- validation.NewErrorWithValidationError(err, "web.AppsClient", "MigrateStorage")
+		close(errChan)
+		close(resultChan)
+		return resultChan, errChan
 	}
 
-	req, err := client.MigrateStoragePreparer(subscriptionName, resourceGroupName, name, migrationOptions, cancel)
-	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "MigrateStorage", nil, "Failure preparing request")
-	}
+	go func() {
+		var err error
+		var result StorageMigrationResponse
+		defer func() {
+			resultChan <- result
+			errChan <- err
+			close(resultChan)
+			close(errChan)
+		}()
+		req, err := client.MigrateStoragePreparer(subscriptionName, resourceGroupName, name, migrationOptions, cancel)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "web.AppsClient", "MigrateStorage", nil, "Failure preparing request")
+			return
+		}
 
-	resp, err := client.MigrateStorageSender(req)
-	if err != nil {
-		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "MigrateStorage", resp, "Failure sending request")
-	}
+		resp, err := client.MigrateStorageSender(req)
+		if err != nil {
+			result.Response = autorest.Response{Response: resp}
+			err = autorest.NewErrorWithError(err, "web.AppsClient", "MigrateStorage", resp, "Failure sending request")
+			return
+		}
 
-	result, err = client.MigrateStorageResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "web.AppsClient", "MigrateStorage", resp, "Failure responding to request")
-	}
-
-	return
+		result, err = client.MigrateStorageResponder(resp)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "web.AppsClient", "MigrateStorage", resp, "Failure responding to request")
+		}
+	}()
+	return resultChan, errChan
 }
 
 // MigrateStoragePreparer prepares the MigrateStorage request.
@@ -12636,13 +13067,14 @@ func (client AppsClient) MigrateStorageSender(req *http.Request) (*http.Response
 
 // MigrateStorageResponder handles the response to the MigrateStorage request. The method always
 // closes the http.Response Body.
-func (client AppsClient) MigrateStorageResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client AppsClient) MigrateStorageResponder(resp *http.Response) (result StorageMigrationResponse, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = resp
+	result.Response = autorest.Response{Response: resp}
 	return
 }
 
@@ -12654,32 +13086,48 @@ func (client AppsClient) MigrateStorageResponder(resp *http.Response) (result au
 // belongs. name is name of web app recoveryEntity is snapshot data used for
 // web app recovery. Snapshot information can be obtained by calling
 // GetDeletedSites or GetSiteSnapshots API.
-func (client AppsClient) Recover(resourceGroupName string, name string, recoveryEntity CsmSiteRecoveryEntity, cancel <-chan struct{}) (result autorest.Response, err error) {
+func (client AppsClient) Recover(resourceGroupName string, name string, recoveryEntity CsmSiteRecoveryEntity, cancel <-chan struct{}) (<-chan RecoverResponse, <-chan error) {
+	resultChan := make(chan RecoverResponse, 1)
+	errChan := make(chan error, 1)
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+[^\.]$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "web.AppsClient", "Recover")
+		errChan <- validation.NewErrorWithValidationError(err, "web.AppsClient", "Recover")
+		close(errChan)
+		close(resultChan)
+		return resultChan, errChan
 	}
 
-	req, err := client.RecoverPreparer(resourceGroupName, name, recoveryEntity, cancel)
-	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "Recover", nil, "Failure preparing request")
-	}
+	go func() {
+		var err error
+		var result RecoverResponse
+		defer func() {
+			resultChan <- result
+			errChan <- err
+			close(resultChan)
+			close(errChan)
+		}()
+		req, err := client.RecoverPreparer(resourceGroupName, name, recoveryEntity, cancel)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "web.AppsClient", "Recover", nil, "Failure preparing request")
+			return
+		}
 
-	resp, err := client.RecoverSender(req)
-	if err != nil {
-		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "Recover", resp, "Failure sending request")
-	}
+		resp, err := client.RecoverSender(req)
+		if err != nil {
+			result.Response = autorest.Response{Response: resp}
+			err = autorest.NewErrorWithError(err, "web.AppsClient", "Recover", resp, "Failure sending request")
+			return
+		}
 
-	result, err = client.RecoverResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "web.AppsClient", "Recover", resp, "Failure responding to request")
-	}
-
-	return
+		result, err = client.RecoverResponder(resp)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "web.AppsClient", "Recover", resp, "Failure responding to request")
+		}
+	}()
+	return resultChan, errChan
 }
 
 // RecoverPreparer prepares the Recover request.
@@ -12715,13 +13163,14 @@ func (client AppsClient) RecoverSender(req *http.Request) (*http.Response, error
 
 // RecoverResponder handles the response to the Recover request. The method always
 // closes the http.Response Body.
-func (client AppsClient) RecoverResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client AppsClient) RecoverResponder(resp *http.Response) (result RecoverResponse, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = resp
+	result.Response = autorest.Response{Response: resp}
 	return
 }
 
@@ -12742,13 +13191,15 @@ func (client AppsClient) RecoverSiteConfigurationSnapshot(resourceGroupName stri
 
 	req, err := client.RecoverSiteConfigurationSnapshotPreparer(resourceGroupName, name, snapshotID)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "RecoverSiteConfigurationSnapshot", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "RecoverSiteConfigurationSnapshot", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.RecoverSiteConfigurationSnapshotSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "RecoverSiteConfigurationSnapshot", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "RecoverSiteConfigurationSnapshot", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.RecoverSiteConfigurationSnapshotResponder(resp)
@@ -12817,13 +13268,15 @@ func (client AppsClient) RecoverSiteConfigurationSnapshotSlot(resourceGroupName 
 
 	req, err := client.RecoverSiteConfigurationSnapshotSlotPreparer(resourceGroupName, name, snapshotID, slot)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "RecoverSiteConfigurationSnapshotSlot", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "RecoverSiteConfigurationSnapshotSlot", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.RecoverSiteConfigurationSnapshotSlotSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "RecoverSiteConfigurationSnapshotSlot", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "RecoverSiteConfigurationSnapshotSlot", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.RecoverSiteConfigurationSnapshotSlotResponder(resp)
@@ -12884,32 +13337,48 @@ func (client AppsClient) RecoverSiteConfigurationSnapshotSlotResponder(resp *htt
 // web app recovery. Snapshot information can be obtained by calling
 // GetDeletedSites or GetSiteSnapshots API. slot is name of web app slot. If
 // not specified then will default to production slot.
-func (client AppsClient) RecoverSlot(resourceGroupName string, name string, recoveryEntity CsmSiteRecoveryEntity, slot string, cancel <-chan struct{}) (result autorest.Response, err error) {
+func (client AppsClient) RecoverSlot(resourceGroupName string, name string, recoveryEntity CsmSiteRecoveryEntity, slot string, cancel <-chan struct{}) (<-chan RecoverResponse, <-chan error) {
+	resultChan := make(chan RecoverResponse, 1)
+	errChan := make(chan error, 1)
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+[^\.]$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "web.AppsClient", "RecoverSlot")
+		errChan <- validation.NewErrorWithValidationError(err, "web.AppsClient", "RecoverSlot")
+		close(errChan)
+		close(resultChan)
+		return resultChan, errChan
 	}
 
-	req, err := client.RecoverSlotPreparer(resourceGroupName, name, recoveryEntity, slot, cancel)
-	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "RecoverSlot", nil, "Failure preparing request")
-	}
+	go func() {
+		var err error
+		var result RecoverResponse
+		defer func() {
+			resultChan <- result
+			errChan <- err
+			close(resultChan)
+			close(errChan)
+		}()
+		req, err := client.RecoverSlotPreparer(resourceGroupName, name, recoveryEntity, slot, cancel)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "web.AppsClient", "RecoverSlot", nil, "Failure preparing request")
+			return
+		}
 
-	resp, err := client.RecoverSlotSender(req)
-	if err != nil {
-		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "RecoverSlot", resp, "Failure sending request")
-	}
+		resp, err := client.RecoverSlotSender(req)
+		if err != nil {
+			result.Response = autorest.Response{Response: resp}
+			err = autorest.NewErrorWithError(err, "web.AppsClient", "RecoverSlot", resp, "Failure sending request")
+			return
+		}
 
-	result, err = client.RecoverSlotResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "web.AppsClient", "RecoverSlot", resp, "Failure responding to request")
-	}
-
-	return
+		result, err = client.RecoverSlotResponder(resp)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "web.AppsClient", "RecoverSlot", resp, "Failure responding to request")
+		}
+	}()
+	return resultChan, errChan
 }
 
 // RecoverSlotPreparer prepares the RecoverSlot request.
@@ -12946,13 +13415,14 @@ func (client AppsClient) RecoverSlotSender(req *http.Request) (*http.Response, e
 
 // RecoverSlotResponder handles the response to the RecoverSlot request. The method always
 // closes the http.Response Body.
-func (client AppsClient) RecoverSlotResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client AppsClient) RecoverSlotResponder(resp *http.Response) (result RecoverResponse, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = resp
+	result.Response = autorest.Response{Response: resp}
 	return
 }
 
@@ -12972,13 +13442,15 @@ func (client AppsClient) ResetProductionSlotConfig(resourceGroupName string, nam
 
 	req, err := client.ResetProductionSlotConfigPreparer(resourceGroupName, name)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "ResetProductionSlotConfig", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "ResetProductionSlotConfig", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ResetProductionSlotConfigSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "ResetProductionSlotConfig", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "ResetProductionSlotConfig", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ResetProductionSlotConfigResponder(resp)
@@ -13046,13 +13518,15 @@ func (client AppsClient) ResetSlotConfigurationSlot(resourceGroupName string, na
 
 	req, err := client.ResetSlotConfigurationSlotPreparer(resourceGroupName, name, slot)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "ResetSlotConfigurationSlot", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "ResetSlotConfigurationSlot", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ResetSlotConfigurationSlotSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "ResetSlotConfigurationSlot", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "ResetSlotConfigurationSlot", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ResetSlotConfigurationSlotResponder(resp)
@@ -13122,13 +13596,15 @@ func (client AppsClient) Restart(resourceGroupName string, name string, softRest
 
 	req, err := client.RestartPreparer(resourceGroupName, name, softRestart, synchronous)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "Restart", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "Restart", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.RestartSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "Restart", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "Restart", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.RestartResponder(resp)
@@ -13205,13 +13681,15 @@ func (client AppsClient) RestartSlot(resourceGroupName string, name string, slot
 
 	req, err := client.RestartSlotPreparer(resourceGroupName, name, slot, softRestart, synchronous)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "RestartSlot", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "RestartSlot", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.RestartSlotSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "RestartSlot", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "RestartSlot", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.RestartSlotResponder(resp)
@@ -13276,32 +13754,48 @@ func (client AppsClient) RestartSlotResponder(resp *http.Response) (result autor
 // resourceGroupName is name of the resource group to which the resource
 // belongs. name is name of the app. backupID is iD of the backup. request is
 // information on restore request
-func (client AppsClient) Restore(resourceGroupName string, name string, backupID string, request RestoreRequest, cancel <-chan struct{}) (result autorest.Response, err error) {
+func (client AppsClient) Restore(resourceGroupName string, name string, backupID string, request RestoreRequest, cancel <-chan struct{}) (<-chan RestoreResponse, <-chan error) {
+	resultChan := make(chan RestoreResponse, 1)
+	errChan := make(chan error, 1)
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+[^\.]$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "web.AppsClient", "Restore")
+		errChan <- validation.NewErrorWithValidationError(err, "web.AppsClient", "Restore")
+		close(errChan)
+		close(resultChan)
+		return resultChan, errChan
 	}
 
-	req, err := client.RestorePreparer(resourceGroupName, name, backupID, request, cancel)
-	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "Restore", nil, "Failure preparing request")
-	}
+	go func() {
+		var err error
+		var result RestoreResponse
+		defer func() {
+			resultChan <- result
+			errChan <- err
+			close(resultChan)
+			close(errChan)
+		}()
+		req, err := client.RestorePreparer(resourceGroupName, name, backupID, request, cancel)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "web.AppsClient", "Restore", nil, "Failure preparing request")
+			return
+		}
 
-	resp, err := client.RestoreSender(req)
-	if err != nil {
-		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "Restore", resp, "Failure sending request")
-	}
+		resp, err := client.RestoreSender(req)
+		if err != nil {
+			result.Response = autorest.Response{Response: resp}
+			err = autorest.NewErrorWithError(err, "web.AppsClient", "Restore", resp, "Failure sending request")
+			return
+		}
 
-	result, err = client.RestoreResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "web.AppsClient", "Restore", resp, "Failure responding to request")
-	}
-
-	return
+		result, err = client.RestoreResponder(resp)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "web.AppsClient", "Restore", resp, "Failure responding to request")
+		}
+	}()
+	return resultChan, errChan
 }
 
 // RestorePreparer prepares the Restore request.
@@ -13338,13 +13832,14 @@ func (client AppsClient) RestoreSender(req *http.Request) (*http.Response, error
 
 // RestoreResponder handles the response to the Restore request. The method always
 // closes the http.Response Body.
-func (client AppsClient) RestoreResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client AppsClient) RestoreResponder(resp *http.Response) (result RestoreResponse, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = resp
+	result.Response = autorest.Response{Response: resp}
 	return
 }
 
@@ -13357,32 +13852,48 @@ func (client AppsClient) RestoreResponder(resp *http.Response) (result autorest.
 // belongs. name is name of the app. backupID is iD of the backup. request is
 // information on restore request slot is name of the deployment slot. If a
 // slot is not specified, the API will restore a backup of the production slot.
-func (client AppsClient) RestoreSlot(resourceGroupName string, name string, backupID string, request RestoreRequest, slot string, cancel <-chan struct{}) (result autorest.Response, err error) {
+func (client AppsClient) RestoreSlot(resourceGroupName string, name string, backupID string, request RestoreRequest, slot string, cancel <-chan struct{}) (<-chan RestoreResponse, <-chan error) {
+	resultChan := make(chan RestoreResponse, 1)
+	errChan := make(chan error, 1)
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+[^\.]$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "web.AppsClient", "RestoreSlot")
+		errChan <- validation.NewErrorWithValidationError(err, "web.AppsClient", "RestoreSlot")
+		close(errChan)
+		close(resultChan)
+		return resultChan, errChan
 	}
 
-	req, err := client.RestoreSlotPreparer(resourceGroupName, name, backupID, request, slot, cancel)
-	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "RestoreSlot", nil, "Failure preparing request")
-	}
+	go func() {
+		var err error
+		var result RestoreResponse
+		defer func() {
+			resultChan <- result
+			errChan <- err
+			close(resultChan)
+			close(errChan)
+		}()
+		req, err := client.RestoreSlotPreparer(resourceGroupName, name, backupID, request, slot, cancel)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "web.AppsClient", "RestoreSlot", nil, "Failure preparing request")
+			return
+		}
 
-	resp, err := client.RestoreSlotSender(req)
-	if err != nil {
-		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "RestoreSlot", resp, "Failure sending request")
-	}
+		resp, err := client.RestoreSlotSender(req)
+		if err != nil {
+			result.Response = autorest.Response{Response: resp}
+			err = autorest.NewErrorWithError(err, "web.AppsClient", "RestoreSlot", resp, "Failure sending request")
+			return
+		}
 
-	result, err = client.RestoreSlotResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "web.AppsClient", "RestoreSlot", resp, "Failure responding to request")
-	}
-
-	return
+		result, err = client.RestoreSlotResponder(resp)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "web.AppsClient", "RestoreSlot", resp, "Failure responding to request")
+		}
+	}()
+	return resultChan, errChan
 }
 
 // RestoreSlotPreparer prepares the RestoreSlot request.
@@ -13420,13 +13931,14 @@ func (client AppsClient) RestoreSlotSender(req *http.Request) (*http.Response, e
 
 // RestoreSlotResponder handles the response to the RestoreSlot request. The method always
 // closes the http.Response Body.
-func (client AppsClient) RestoreSlotResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client AppsClient) RestoreSlotResponder(resp *http.Response) (result RestoreResponse, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = resp
+	result.Response = autorest.Response{Response: resp}
 	return
 }
 
@@ -13445,13 +13957,15 @@ func (client AppsClient) Start(resourceGroupName string, name string) (result au
 
 	req, err := client.StartPreparer(resourceGroupName, name)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "Start", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "Start", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.StartSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "Start", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "Start", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.StartResponder(resp)
@@ -13517,13 +14031,15 @@ func (client AppsClient) StartSlot(resourceGroupName string, name string, slot s
 
 	req, err := client.StartSlotPreparer(resourceGroupName, name, slot)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "StartSlot", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "StartSlot", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.StartSlotSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "StartSlot", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "StartSlot", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.StartSlotResponder(resp)
@@ -13591,13 +14107,15 @@ func (client AppsClient) StartWebSiteNetworkTrace(resourceGroupName string, name
 
 	req, err := client.StartWebSiteNetworkTracePreparer(resourceGroupName, name, durationInSeconds, maxFrameLength, sasURL)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "StartWebSiteNetworkTrace", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "StartWebSiteNetworkTrace", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.StartWebSiteNetworkTraceSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "StartWebSiteNetworkTrace", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "StartWebSiteNetworkTrace", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.StartWebSiteNetworkTraceResponder(resp)
@@ -13675,13 +14193,15 @@ func (client AppsClient) StartWebSiteNetworkTraceSlot(resourceGroupName string, 
 
 	req, err := client.StartWebSiteNetworkTraceSlotPreparer(resourceGroupName, name, slot, durationInSeconds, maxFrameLength, sasURL)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "StartWebSiteNetworkTraceSlot", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "StartWebSiteNetworkTraceSlot", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.StartWebSiteNetworkTraceSlotSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "StartWebSiteNetworkTraceSlot", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "StartWebSiteNetworkTraceSlot", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.StartWebSiteNetworkTraceSlotResponder(resp)
@@ -13757,13 +14277,15 @@ func (client AppsClient) Stop(resourceGroupName string, name string) (result aut
 
 	req, err := client.StopPreparer(resourceGroupName, name)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "Stop", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "Stop", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.StopSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "Stop", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "Stop", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.StopResponder(resp)
@@ -13829,13 +14351,15 @@ func (client AppsClient) StopSlot(resourceGroupName string, name string, slot st
 
 	req, err := client.StopSlotPreparer(resourceGroupName, name, slot)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "StopSlot", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "StopSlot", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.StopSlotSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "StopSlot", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "StopSlot", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.StopSlotResponder(resp)
@@ -13901,13 +14425,15 @@ func (client AppsClient) StopWebSiteNetworkTrace(resourceGroupName string, name 
 
 	req, err := client.StopWebSiteNetworkTracePreparer(resourceGroupName, name)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "StopWebSiteNetworkTrace", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "StopWebSiteNetworkTrace", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.StopWebSiteNetworkTraceSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "StopWebSiteNetworkTrace", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "StopWebSiteNetworkTrace", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.StopWebSiteNetworkTraceResponder(resp)
@@ -13975,13 +14501,15 @@ func (client AppsClient) StopWebSiteNetworkTraceSlot(resourceGroupName string, n
 
 	req, err := client.StopWebSiteNetworkTraceSlotPreparer(resourceGroupName, name, slot)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "StopWebSiteNetworkTraceSlot", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "StopWebSiteNetworkTraceSlot", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.StopWebSiteNetworkTraceSlotSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "StopWebSiteNetworkTraceSlot", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "StopWebSiteNetworkTraceSlot", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.StopWebSiteNetworkTraceSlotResponder(resp)
@@ -14042,7 +14570,9 @@ func (client AppsClient) StopWebSiteNetworkTraceSlotResponder(resp *http.Respons
 // belongs. name is name of the app. slotSwapEntity is jSON object that
 // contains the target slot name. See example. slot is name of the source slot.
 // If a slot is not specified, the production slot is used as the source slot.
-func (client AppsClient) SwapSlotSlot(resourceGroupName string, name string, slotSwapEntity CsmSlotEntity, slot string, cancel <-chan struct{}) (result autorest.Response, err error) {
+func (client AppsClient) SwapSlotSlot(resourceGroupName string, name string, slotSwapEntity CsmSlotEntity, slot string, cancel <-chan struct{}) (<-chan autorest.Response, <-chan error) {
+	resultChan := make(chan autorest.Response, 1)
+	errChan := make(chan error, 1)
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
@@ -14051,26 +14581,40 @@ func (client AppsClient) SwapSlotSlot(resourceGroupName string, name string, slo
 		{TargetValue: slotSwapEntity,
 			Constraints: []validation.Constraint{{Target: "slotSwapEntity.TargetSlot", Name: validation.Null, Rule: true, Chain: nil},
 				{Target: "slotSwapEntity.PreserveVnet", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "web.AppsClient", "SwapSlotSlot")
+		errChan <- validation.NewErrorWithValidationError(err, "web.AppsClient", "SwapSlotSlot")
+		close(errChan)
+		close(resultChan)
+		return resultChan, errChan
 	}
 
-	req, err := client.SwapSlotSlotPreparer(resourceGroupName, name, slotSwapEntity, slot, cancel)
-	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "SwapSlotSlot", nil, "Failure preparing request")
-	}
+	go func() {
+		var err error
+		var result autorest.Response
+		defer func() {
+			resultChan <- result
+			errChan <- err
+			close(resultChan)
+			close(errChan)
+		}()
+		req, err := client.SwapSlotSlotPreparer(resourceGroupName, name, slotSwapEntity, slot, cancel)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "web.AppsClient", "SwapSlotSlot", nil, "Failure preparing request")
+			return
+		}
 
-	resp, err := client.SwapSlotSlotSender(req)
-	if err != nil {
-		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "SwapSlotSlot", resp, "Failure sending request")
-	}
+		resp, err := client.SwapSlotSlotSender(req)
+		if err != nil {
+			result.Response = resp
+			err = autorest.NewErrorWithError(err, "web.AppsClient", "SwapSlotSlot", resp, "Failure sending request")
+			return
+		}
 
-	result, err = client.SwapSlotSlotResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "web.AppsClient", "SwapSlotSlot", resp, "Failure responding to request")
-	}
-
-	return
+		result, err = client.SwapSlotSlotResponder(resp)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "web.AppsClient", "SwapSlotSlot", resp, "Failure responding to request")
+		}
+	}()
+	return resultChan, errChan
 }
 
 // SwapSlotSlotPreparer prepares the SwapSlotSlot request.
@@ -14125,7 +14669,9 @@ func (client AppsClient) SwapSlotSlotResponder(resp *http.Response) (result auto
 // resourceGroupName is name of the resource group to which the resource
 // belongs. name is name of the app. slotSwapEntity is jSON object that
 // contains the target slot name. See example.
-func (client AppsClient) SwapSlotWithProduction(resourceGroupName string, name string, slotSwapEntity CsmSlotEntity, cancel <-chan struct{}) (result autorest.Response, err error) {
+func (client AppsClient) SwapSlotWithProduction(resourceGroupName string, name string, slotSwapEntity CsmSlotEntity, cancel <-chan struct{}) (<-chan autorest.Response, <-chan error) {
+	resultChan := make(chan autorest.Response, 1)
+	errChan := make(chan error, 1)
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
@@ -14134,26 +14680,40 @@ func (client AppsClient) SwapSlotWithProduction(resourceGroupName string, name s
 		{TargetValue: slotSwapEntity,
 			Constraints: []validation.Constraint{{Target: "slotSwapEntity.TargetSlot", Name: validation.Null, Rule: true, Chain: nil},
 				{Target: "slotSwapEntity.PreserveVnet", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "web.AppsClient", "SwapSlotWithProduction")
+		errChan <- validation.NewErrorWithValidationError(err, "web.AppsClient", "SwapSlotWithProduction")
+		close(errChan)
+		close(resultChan)
+		return resultChan, errChan
 	}
 
-	req, err := client.SwapSlotWithProductionPreparer(resourceGroupName, name, slotSwapEntity, cancel)
-	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "SwapSlotWithProduction", nil, "Failure preparing request")
-	}
+	go func() {
+		var err error
+		var result autorest.Response
+		defer func() {
+			resultChan <- result
+			errChan <- err
+			close(resultChan)
+			close(errChan)
+		}()
+		req, err := client.SwapSlotWithProductionPreparer(resourceGroupName, name, slotSwapEntity, cancel)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "web.AppsClient", "SwapSlotWithProduction", nil, "Failure preparing request")
+			return
+		}
 
-	resp, err := client.SwapSlotWithProductionSender(req)
-	if err != nil {
-		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "SwapSlotWithProduction", resp, "Failure sending request")
-	}
+		resp, err := client.SwapSlotWithProductionSender(req)
+		if err != nil {
+			result.Response = resp
+			err = autorest.NewErrorWithError(err, "web.AppsClient", "SwapSlotWithProduction", resp, "Failure sending request")
+			return
+		}
 
-	result, err = client.SwapSlotWithProductionResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "web.AppsClient", "SwapSlotWithProduction", resp, "Failure responding to request")
-	}
-
-	return
+		result, err = client.SwapSlotWithProductionResponder(resp)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "web.AppsClient", "SwapSlotWithProduction", resp, "Failure responding to request")
+		}
+	}()
+	return resultChan, errChan
 }
 
 // SwapSlotWithProductionPreparer prepares the SwapSlotWithProduction request.
@@ -14214,13 +14774,15 @@ func (client AppsClient) SyncRepository(resourceGroupName string, name string) (
 
 	req, err := client.SyncRepositoryPreparer(resourceGroupName, name)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "SyncRepository", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "SyncRepository", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.SyncRepositorySender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "SyncRepository", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "SyncRepository", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.SyncRepositoryResponder(resp)
@@ -14286,13 +14848,15 @@ func (client AppsClient) SyncRepositorySlot(resourceGroupName string, name strin
 
 	req, err := client.SyncRepositorySlotPreparer(resourceGroupName, name, slot)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "SyncRepositorySlot", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "SyncRepositorySlot", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.SyncRepositorySlotSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "SyncRepositorySlot", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "SyncRepositorySlot", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.SyncRepositorySlotResponder(resp)
@@ -14359,13 +14923,15 @@ func (client AppsClient) UpdateApplicationSettings(resourceGroupName string, nam
 
 	req, err := client.UpdateApplicationSettingsPreparer(resourceGroupName, name, appSettings)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "UpdateApplicationSettings", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "UpdateApplicationSettings", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.UpdateApplicationSettingsSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "UpdateApplicationSettings", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "UpdateApplicationSettings", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.UpdateApplicationSettingsResponder(resp)
@@ -14435,13 +15001,15 @@ func (client AppsClient) UpdateApplicationSettingsSlot(resourceGroupName string,
 
 	req, err := client.UpdateApplicationSettingsSlotPreparer(resourceGroupName, name, appSettings, slot)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "UpdateApplicationSettingsSlot", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "UpdateApplicationSettingsSlot", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.UpdateApplicationSettingsSlotSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "UpdateApplicationSettingsSlot", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "UpdateApplicationSettingsSlot", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.UpdateApplicationSettingsSlotResponder(resp)
@@ -14512,13 +15080,15 @@ func (client AppsClient) UpdateAuthSettings(resourceGroupName string, name strin
 
 	req, err := client.UpdateAuthSettingsPreparer(resourceGroupName, name, siteAuthSettings)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "UpdateAuthSettings", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "UpdateAuthSettings", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.UpdateAuthSettingsSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "UpdateAuthSettings", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "UpdateAuthSettings", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.UpdateAuthSettingsResponder(resp)
@@ -14589,13 +15159,15 @@ func (client AppsClient) UpdateAuthSettingsSlot(resourceGroupName string, name s
 
 	req, err := client.UpdateAuthSettingsSlotPreparer(resourceGroupName, name, siteAuthSettings, slot)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "UpdateAuthSettingsSlot", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "UpdateAuthSettingsSlot", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.UpdateAuthSettingsSlotSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "UpdateAuthSettingsSlot", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "UpdateAuthSettingsSlot", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.UpdateAuthSettingsSlotResponder(resp)
@@ -14672,13 +15244,15 @@ func (client AppsClient) UpdateBackupConfiguration(resourceGroupName string, nam
 
 	req, err := client.UpdateBackupConfigurationPreparer(resourceGroupName, name, request)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "UpdateBackupConfiguration", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "UpdateBackupConfiguration", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.UpdateBackupConfigurationSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "UpdateBackupConfiguration", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "UpdateBackupConfiguration", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.UpdateBackupConfigurationResponder(resp)
@@ -14756,13 +15330,15 @@ func (client AppsClient) UpdateBackupConfigurationSlot(resourceGroupName string,
 
 	req, err := client.UpdateBackupConfigurationSlotPreparer(resourceGroupName, name, request, slot)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "UpdateBackupConfigurationSlot", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "UpdateBackupConfigurationSlot", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.UpdateBackupConfigurationSlotSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "UpdateBackupConfigurationSlot", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "UpdateBackupConfigurationSlot", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.UpdateBackupConfigurationSlotResponder(resp)
@@ -14832,13 +15408,15 @@ func (client AppsClient) UpdateConfiguration(resourceGroupName string, name stri
 
 	req, err := client.UpdateConfigurationPreparer(resourceGroupName, name, siteConfig)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "UpdateConfiguration", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "UpdateConfiguration", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.UpdateConfigurationSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "UpdateConfiguration", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "UpdateConfiguration", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.UpdateConfigurationResponder(resp)
@@ -14909,13 +15487,15 @@ func (client AppsClient) UpdateConfigurationSlot(resourceGroupName string, name 
 
 	req, err := client.UpdateConfigurationSlotPreparer(resourceGroupName, name, siteConfig, slot)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "UpdateConfigurationSlot", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "UpdateConfigurationSlot", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.UpdateConfigurationSlotSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "UpdateConfigurationSlot", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "UpdateConfigurationSlot", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.UpdateConfigurationSlotResponder(resp)
@@ -14985,13 +15565,15 @@ func (client AppsClient) UpdateConnectionStrings(resourceGroupName string, name 
 
 	req, err := client.UpdateConnectionStringsPreparer(resourceGroupName, name, connectionStrings)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "UpdateConnectionStrings", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "UpdateConnectionStrings", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.UpdateConnectionStringsSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "UpdateConnectionStrings", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "UpdateConnectionStrings", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.UpdateConnectionStringsResponder(resp)
@@ -15062,13 +15644,15 @@ func (client AppsClient) UpdateConnectionStringsSlot(resourceGroupName string, n
 
 	req, err := client.UpdateConnectionStringsSlotPreparer(resourceGroupName, name, connectionStrings, slot)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "UpdateConnectionStringsSlot", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "UpdateConnectionStringsSlot", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.UpdateConnectionStringsSlotSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "UpdateConnectionStringsSlot", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "UpdateConnectionStringsSlot", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.UpdateConnectionStringsSlotResponder(resp)
@@ -15154,13 +15738,15 @@ func (client AppsClient) UpdateDiagnosticLogsConfig(resourceGroupName string, na
 
 	req, err := client.UpdateDiagnosticLogsConfigPreparer(resourceGroupName, name, siteLogsConfig)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "UpdateDiagnosticLogsConfig", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "UpdateDiagnosticLogsConfig", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.UpdateDiagnosticLogsConfigSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "UpdateDiagnosticLogsConfig", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "UpdateDiagnosticLogsConfig", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.UpdateDiagnosticLogsConfigResponder(resp)
@@ -15246,13 +15832,15 @@ func (client AppsClient) UpdateDiagnosticLogsConfigSlot(resourceGroupName string
 
 	req, err := client.UpdateDiagnosticLogsConfigSlotPreparer(resourceGroupName, name, siteLogsConfig, slot)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "UpdateDiagnosticLogsConfigSlot", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "UpdateDiagnosticLogsConfigSlot", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.UpdateDiagnosticLogsConfigSlotSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "UpdateDiagnosticLogsConfigSlot", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "UpdateDiagnosticLogsConfigSlot", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.UpdateDiagnosticLogsConfigSlotResponder(resp)
@@ -15324,13 +15912,15 @@ func (client AppsClient) UpdateDomainOwnershipIdentifier(resourceGroupName strin
 
 	req, err := client.UpdateDomainOwnershipIdentifierPreparer(resourceGroupName, name, domainOwnershipIdentifierName, domainOwnershipIdentifier)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "UpdateDomainOwnershipIdentifier", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "UpdateDomainOwnershipIdentifier", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.UpdateDomainOwnershipIdentifierSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "UpdateDomainOwnershipIdentifier", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "UpdateDomainOwnershipIdentifier", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.UpdateDomainOwnershipIdentifierResponder(resp)
@@ -15404,13 +15994,15 @@ func (client AppsClient) UpdateDomainOwnershipIdentifierSlot(resourceGroupName s
 
 	req, err := client.UpdateDomainOwnershipIdentifierSlotPreparer(resourceGroupName, name, domainOwnershipIdentifierName, domainOwnershipIdentifier, slot)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "UpdateDomainOwnershipIdentifierSlot", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "UpdateDomainOwnershipIdentifierSlot", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.UpdateDomainOwnershipIdentifierSlotSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "UpdateDomainOwnershipIdentifierSlot", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "UpdateDomainOwnershipIdentifierSlot", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.UpdateDomainOwnershipIdentifierSlotResponder(resp)
@@ -15483,13 +16075,15 @@ func (client AppsClient) UpdateHybridConnection(resourceGroupName string, name s
 
 	req, err := client.UpdateHybridConnectionPreparer(resourceGroupName, name, namespaceName, relayName, connectionEnvelope)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "UpdateHybridConnection", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "UpdateHybridConnection", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.UpdateHybridConnectionSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "UpdateHybridConnection", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "UpdateHybridConnection", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.UpdateHybridConnectionResponder(resp)
@@ -15563,13 +16157,15 @@ func (client AppsClient) UpdateHybridConnectionSlot(resourceGroupName string, na
 
 	req, err := client.UpdateHybridConnectionSlotPreparer(resourceGroupName, name, namespaceName, relayName, connectionEnvelope, slot)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "UpdateHybridConnectionSlot", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "UpdateHybridConnectionSlot", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.UpdateHybridConnectionSlotSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "UpdateHybridConnectionSlot", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "UpdateHybridConnectionSlot", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.UpdateHybridConnectionSlotResponder(resp)
@@ -15641,13 +16237,15 @@ func (client AppsClient) UpdateMetadata(resourceGroupName string, name string, m
 
 	req, err := client.UpdateMetadataPreparer(resourceGroupName, name, metadata)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "UpdateMetadata", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "UpdateMetadata", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.UpdateMetadataSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "UpdateMetadata", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "UpdateMetadata", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.UpdateMetadataResponder(resp)
@@ -15717,13 +16315,15 @@ func (client AppsClient) UpdateMetadataSlot(resourceGroupName string, name strin
 
 	req, err := client.UpdateMetadataSlotPreparer(resourceGroupName, name, metadata, slot)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "UpdateMetadataSlot", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "UpdateMetadataSlot", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.UpdateMetadataSlotSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "UpdateMetadataSlot", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "UpdateMetadataSlot", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.UpdateMetadataSlotResponder(resp)
@@ -15795,13 +16395,15 @@ func (client AppsClient) UpdateRelayServiceConnection(resourceGroupName string, 
 
 	req, err := client.UpdateRelayServiceConnectionPreparer(resourceGroupName, name, entityName, connectionEnvelope)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "UpdateRelayServiceConnection", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "UpdateRelayServiceConnection", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.UpdateRelayServiceConnectionSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "UpdateRelayServiceConnection", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "UpdateRelayServiceConnection", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.UpdateRelayServiceConnectionResponder(resp)
@@ -15875,13 +16477,15 @@ func (client AppsClient) UpdateRelayServiceConnectionSlot(resourceGroupName stri
 
 	req, err := client.UpdateRelayServiceConnectionSlotPreparer(resourceGroupName, name, entityName, connectionEnvelope, slot)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "UpdateRelayServiceConnectionSlot", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "UpdateRelayServiceConnectionSlot", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.UpdateRelayServiceConnectionSlotSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "UpdateRelayServiceConnectionSlot", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "UpdateRelayServiceConnectionSlot", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.UpdateRelayServiceConnectionSlotResponder(resp)
@@ -15954,13 +16558,15 @@ func (client AppsClient) UpdateSitePushSettings(resourceGroupName string, name s
 
 	req, err := client.UpdateSitePushSettingsPreparer(resourceGroupName, name, pushSettings)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "UpdateSitePushSettings", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "UpdateSitePushSettings", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.UpdateSitePushSettingsSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "UpdateSitePushSettings", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "UpdateSitePushSettings", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.UpdateSitePushSettingsResponder(resp)
@@ -16033,13 +16639,15 @@ func (client AppsClient) UpdateSitePushSettingsSlot(resourceGroupName string, na
 
 	req, err := client.UpdateSitePushSettingsSlotPreparer(resourceGroupName, name, pushSettings, slot)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "UpdateSitePushSettingsSlot", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "UpdateSitePushSettingsSlot", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.UpdateSitePushSettingsSlotSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "UpdateSitePushSettingsSlot", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "UpdateSitePushSettingsSlot", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.UpdateSitePushSettingsSlotResponder(resp)
@@ -16110,13 +16718,15 @@ func (client AppsClient) UpdateSlotConfigurationNames(resourceGroupName string, 
 
 	req, err := client.UpdateSlotConfigurationNamesPreparer(resourceGroupName, name, slotConfigNames)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "UpdateSlotConfigurationNames", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "UpdateSlotConfigurationNames", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.UpdateSlotConfigurationNamesSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "UpdateSlotConfigurationNames", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "UpdateSlotConfigurationNames", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.UpdateSlotConfigurationNamesResponder(resp)
@@ -16187,13 +16797,15 @@ func (client AppsClient) UpdateVnetConnection(resourceGroupName string, name str
 
 	req, err := client.UpdateVnetConnectionPreparer(resourceGroupName, name, vnetName, connectionEnvelope)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "UpdateVnetConnection", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "UpdateVnetConnection", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.UpdateVnetConnectionSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "UpdateVnetConnection", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "UpdateVnetConnection", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.UpdateVnetConnectionResponder(resp)
@@ -16265,13 +16877,15 @@ func (client AppsClient) UpdateVnetConnectionGateway(resourceGroupName string, n
 
 	req, err := client.UpdateVnetConnectionGatewayPreparer(resourceGroupName, name, vnetName, gatewayName, connectionEnvelope)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "UpdateVnetConnectionGateway", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "UpdateVnetConnectionGateway", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.UpdateVnetConnectionGatewaySender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "UpdateVnetConnectionGateway", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "UpdateVnetConnectionGateway", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.UpdateVnetConnectionGatewayResponder(resp)
@@ -16346,13 +16960,15 @@ func (client AppsClient) UpdateVnetConnectionGatewaySlot(resourceGroupName strin
 
 	req, err := client.UpdateVnetConnectionGatewaySlotPreparer(resourceGroupName, name, vnetName, gatewayName, connectionEnvelope, slot)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "UpdateVnetConnectionGatewaySlot", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "UpdateVnetConnectionGatewaySlot", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.UpdateVnetConnectionGatewaySlotSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "UpdateVnetConnectionGatewaySlot", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "UpdateVnetConnectionGatewaySlot", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.UpdateVnetConnectionGatewaySlotResponder(resp)
@@ -16427,13 +17043,15 @@ func (client AppsClient) UpdateVnetConnectionSlot(resourceGroupName string, name
 
 	req, err := client.UpdateVnetConnectionSlotPreparer(resourceGroupName, name, vnetName, connectionEnvelope, slot)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "UpdateVnetConnectionSlot", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "UpdateVnetConnectionSlot", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.UpdateVnetConnectionSlotSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "UpdateVnetConnectionSlot", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "UpdateVnetConnectionSlot", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.UpdateVnetConnectionSlotResponder(resp)

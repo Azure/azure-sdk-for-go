@@ -63,13 +63,15 @@ func (client TrustedIDProvidersClient) CreateOrUpdate(resourceGroupName string, 
 
 	req, err := client.CreateOrUpdatePreparer(resourceGroupName, accountName, trustedIDProviderName, parameters)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "account.TrustedIDProvidersClient", "CreateOrUpdate", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "account.TrustedIDProvidersClient", "CreateOrUpdate", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.CreateOrUpdateSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "account.TrustedIDProvidersClient", "CreateOrUpdate", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "account.TrustedIDProvidersClient", "CreateOrUpdate", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.CreateOrUpdateResponder(resp)
@@ -134,13 +136,15 @@ func (client TrustedIDProvidersClient) CreateOrUpdateResponder(resp *http.Respon
 func (client TrustedIDProvidersClient) Delete(resourceGroupName string, accountName string, trustedIDProviderName string) (result autorest.Response, err error) {
 	req, err := client.DeletePreparer(resourceGroupName, accountName, trustedIDProviderName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "account.TrustedIDProvidersClient", "Delete", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "account.TrustedIDProvidersClient", "Delete", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.DeleteSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "account.TrustedIDProvidersClient", "Delete", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "account.TrustedIDProvidersClient", "Delete", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.DeleteResponder(resp)
@@ -201,13 +205,15 @@ func (client TrustedIDProvidersClient) DeleteResponder(resp *http.Response) (res
 func (client TrustedIDProvidersClient) Get(resourceGroupName string, accountName string, trustedIDProviderName string) (result TrustedIDProvider, err error) {
 	req, err := client.GetPreparer(resourceGroupName, accountName, trustedIDProviderName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "account.TrustedIDProvidersClient", "Get", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "account.TrustedIDProvidersClient", "Get", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "account.TrustedIDProvidersClient", "Get", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "account.TrustedIDProvidersClient", "Get", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetResponder(resp)
@@ -268,13 +274,15 @@ func (client TrustedIDProvidersClient) GetResponder(resp *http.Response) (result
 func (client TrustedIDProvidersClient) ListByAccount(resourceGroupName string, accountName string) (result DataLakeStoreTrustedIDProviderListResult, err error) {
 	req, err := client.ListByAccountPreparer(resourceGroupName, accountName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "account.TrustedIDProvidersClient", "ListByAccount", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "account.TrustedIDProvidersClient", "ListByAccount", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListByAccountSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "account.TrustedIDProvidersClient", "ListByAccount", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "account.TrustedIDProvidersClient", "ListByAccount", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListByAccountResponder(resp)
@@ -360,13 +368,15 @@ func (client TrustedIDProvidersClient) ListByAccountNextResults(lastResults Data
 func (client TrustedIDProvidersClient) Update(resourceGroupName string, accountName string, trustedIDProviderName string, parameters *UpdateTrustedIDProviderParameters) (result TrustedIDProvider, err error) {
 	req, err := client.UpdatePreparer(resourceGroupName, accountName, trustedIDProviderName, parameters)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "account.TrustedIDProvidersClient", "Update", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "account.TrustedIDProvidersClient", "Update", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.UpdateSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "account.TrustedIDProvidersClient", "Update", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "account.TrustedIDProvidersClient", "Update", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.UpdateResponder(resp)

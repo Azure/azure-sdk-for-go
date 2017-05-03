@@ -57,13 +57,15 @@ func (client CertificatesClient) CreateOrUpdate(resourceGroupName string, name s
 
 	req, err := client.CreateOrUpdatePreparer(resourceGroupName, name, certificateEnvelope)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.CertificatesClient", "CreateOrUpdate", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.CertificatesClient", "CreateOrUpdate", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.CreateOrUpdateSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.CertificatesClient", "CreateOrUpdate", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.CertificatesClient", "CreateOrUpdate", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.CreateOrUpdateResponder(resp)
@@ -132,13 +134,15 @@ func (client CertificatesClient) CreateOrUpdateSigningRequest(resourceGroupName 
 
 	req, err := client.CreateOrUpdateSigningRequestPreparer(resourceGroupName, name, csrEnvelope)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.CertificatesClient", "CreateOrUpdateSigningRequest", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.CertificatesClient", "CreateOrUpdateSigningRequest", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.CreateOrUpdateSigningRequestSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.CertificatesClient", "CreateOrUpdateSigningRequest", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.CertificatesClient", "CreateOrUpdateSigningRequest", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.CreateOrUpdateSigningRequestResponder(resp)
@@ -206,13 +210,15 @@ func (client CertificatesClient) Delete(resourceGroupName string, name string) (
 
 	req, err := client.DeletePreparer(resourceGroupName, name)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.CertificatesClient", "Delete", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.CertificatesClient", "Delete", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.DeleteSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "web.CertificatesClient", "Delete", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.CertificatesClient", "Delete", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.DeleteResponder(resp)
@@ -277,13 +283,15 @@ func (client CertificatesClient) DeleteSigningRequest(resourceGroupName string, 
 
 	req, err := client.DeleteSigningRequestPreparer(resourceGroupName, name)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.CertificatesClient", "DeleteSigningRequest", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.CertificatesClient", "DeleteSigningRequest", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.DeleteSigningRequestSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "web.CertificatesClient", "DeleteSigningRequest", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.CertificatesClient", "DeleteSigningRequest", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.DeleteSigningRequestResponder(resp)
@@ -348,13 +356,15 @@ func (client CertificatesClient) Get(resourceGroupName string, name string) (res
 
 	req, err := client.GetPreparer(resourceGroupName, name)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.CertificatesClient", "Get", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.CertificatesClient", "Get", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.CertificatesClient", "Get", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.CertificatesClient", "Get", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetResponder(resp)
@@ -420,13 +430,15 @@ func (client CertificatesClient) GetSigningRequest(resourceGroupName string, nam
 
 	req, err := client.GetSigningRequestPreparer(resourceGroupName, name)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.CertificatesClient", "GetSigningRequest", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.CertificatesClient", "GetSigningRequest", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetSigningRequestSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.CertificatesClient", "GetSigningRequest", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.CertificatesClient", "GetSigningRequest", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetSigningRequestResponder(resp)
@@ -481,13 +493,15 @@ func (client CertificatesClient) GetSigningRequestResponder(resp *http.Response)
 func (client CertificatesClient) List() (result CertificateCollection, err error) {
 	req, err := client.ListPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.CertificatesClient", "List", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.CertificatesClient", "List", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.CertificatesClient", "List", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.CertificatesClient", "List", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListResponder(resp)
@@ -575,13 +589,15 @@ func (client CertificatesClient) ListByResourceGroup(resourceGroupName string) (
 
 	req, err := client.ListByResourceGroupPreparer(resourceGroupName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.CertificatesClient", "ListByResourceGroup", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.CertificatesClient", "ListByResourceGroup", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListByResourceGroupSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.CertificatesClient", "ListByResourceGroup", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.CertificatesClient", "ListByResourceGroup", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListByResourceGroupResponder(resp)
@@ -671,13 +687,15 @@ func (client CertificatesClient) ListSigningRequestByResourceGroup(resourceGroup
 
 	req, err := client.ListSigningRequestByResourceGroupPreparer(resourceGroupName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.CertificatesClient", "ListSigningRequestByResourceGroup", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.CertificatesClient", "ListSigningRequestByResourceGroup", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListSigningRequestByResourceGroupSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.CertificatesClient", "ListSigningRequestByResourceGroup", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.CertificatesClient", "ListSigningRequestByResourceGroup", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListSigningRequestByResourceGroupResponder(resp)
@@ -767,13 +785,15 @@ func (client CertificatesClient) Update(resourceGroupName string, name string, c
 
 	req, err := client.UpdatePreparer(resourceGroupName, name, certificateEnvelope)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.CertificatesClient", "Update", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.CertificatesClient", "Update", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.UpdateSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.CertificatesClient", "Update", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.CertificatesClient", "Update", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.UpdateResponder(resp)
@@ -842,13 +862,15 @@ func (client CertificatesClient) UpdateSigningRequest(resourceGroupName string, 
 
 	req, err := client.UpdateSigningRequestPreparer(resourceGroupName, name, csrEnvelope)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.CertificatesClient", "UpdateSigningRequest", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.CertificatesClient", "UpdateSigningRequest", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.UpdateSigningRequestSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.CertificatesClient", "UpdateSigningRequest", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.CertificatesClient", "UpdateSigningRequest", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.UpdateSigningRequestResponder(resp)

@@ -57,13 +57,15 @@ func (client UsersClient) Create(parameters UserCreateParameters) (result User, 
 
 	req, err := client.CreatePreparer(parameters)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "graphrbac.UsersClient", "Create", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "graphrbac.UsersClient", "Create", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.CreateSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "graphrbac.UsersClient", "Create", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "graphrbac.UsersClient", "Create", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.CreateResponder(resp)
@@ -80,8 +82,9 @@ func (client UsersClient) CreatePreparer(parameters UserCreateParameters) (*http
 		"tenantID": autorest.Encode("path", client.TenantID),
 	}
 
+	const APIVersion = "1.6"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -119,13 +122,15 @@ func (client UsersClient) CreateResponder(resp *http.Response) (result User, err
 func (client UsersClient) Delete(upnOrObjectID string) (result autorest.Response, err error) {
 	req, err := client.DeletePreparer(upnOrObjectID)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "graphrbac.UsersClient", "Delete", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "graphrbac.UsersClient", "Delete", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.DeleteSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "graphrbac.UsersClient", "Delete", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "graphrbac.UsersClient", "Delete", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.DeleteResponder(resp)
@@ -143,8 +148,9 @@ func (client UsersClient) DeletePreparer(upnOrObjectID string) (*http.Request, e
 		"upnOrObjectId": upnOrObjectID,
 	}
 
+	const APIVersion = "1.6"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -180,13 +186,15 @@ func (client UsersClient) DeleteResponder(resp *http.Response) (result autorest.
 func (client UsersClient) Get(upnOrObjectID string) (result User, err error) {
 	req, err := client.GetPreparer(upnOrObjectID)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "graphrbac.UsersClient", "Get", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "graphrbac.UsersClient", "Get", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "graphrbac.UsersClient", "Get", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "graphrbac.UsersClient", "Get", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetResponder(resp)
@@ -204,8 +212,9 @@ func (client UsersClient) GetPreparer(upnOrObjectID string) (*http.Request, erro
 		"upnOrObjectId": upnOrObjectID,
 	}
 
+	const APIVersion = "1.6"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -249,13 +258,15 @@ func (client UsersClient) GetMemberGroups(objectID string, parameters UserGetMem
 
 	req, err := client.GetMemberGroupsPreparer(objectID, parameters)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "graphrbac.UsersClient", "GetMemberGroups", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "graphrbac.UsersClient", "GetMemberGroups", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetMemberGroupsSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "graphrbac.UsersClient", "GetMemberGroups", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "graphrbac.UsersClient", "GetMemberGroups", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetMemberGroupsResponder(resp)
@@ -273,8 +284,9 @@ func (client UsersClient) GetMemberGroupsPreparer(objectID string, parameters Us
 		"tenantID": autorest.Encode("path", client.TenantID),
 	}
 
+	const APIVersion = "1.6"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -312,13 +324,15 @@ func (client UsersClient) GetMemberGroupsResponder(resp *http.Response) (result 
 func (client UsersClient) List(filter string) (result UserListResult, err error) {
 	req, err := client.ListPreparer(filter)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "graphrbac.UsersClient", "List", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "graphrbac.UsersClient", "List", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "graphrbac.UsersClient", "List", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "graphrbac.UsersClient", "List", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListResponder(resp)
@@ -335,8 +349,9 @@ func (client UsersClient) ListPreparer(filter string) (*http.Request, error) {
 		"tenantID": autorest.Encode("path", client.TenantID),
 	}
 
+	const APIVersion = "1.6"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 	if len(filter) > 0 {
 		queryParameters["$filter"] = autorest.Encode("query", filter)
@@ -375,13 +390,15 @@ func (client UsersClient) ListResponder(resp *http.Response) (result UserListRes
 func (client UsersClient) ListNext(nextLink string) (result UserListResult, err error) {
 	req, err := client.ListNextPreparer(nextLink)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "graphrbac.UsersClient", "ListNext", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "graphrbac.UsersClient", "ListNext", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListNextSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "graphrbac.UsersClient", "ListNext", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "graphrbac.UsersClient", "ListNext", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListNextResponder(resp)
@@ -399,8 +416,9 @@ func (client UsersClient) ListNextPreparer(nextLink string) (*http.Request, erro
 		"tenantID": autorest.Encode("path", client.TenantID),
 	}
 
+	const APIVersion = "1.6"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -437,13 +455,15 @@ func (client UsersClient) ListNextResponder(resp *http.Response) (result UserLis
 func (client UsersClient) Update(upnOrObjectID string, parameters UserUpdateParameters) (result autorest.Response, err error) {
 	req, err := client.UpdatePreparer(upnOrObjectID, parameters)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "graphrbac.UsersClient", "Update", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "graphrbac.UsersClient", "Update", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.UpdateSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "graphrbac.UsersClient", "Update", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "graphrbac.UsersClient", "Update", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.UpdateResponder(resp)
@@ -461,8 +481,9 @@ func (client UsersClient) UpdatePreparer(upnOrObjectID string, parameters UserUp
 		"upnOrObjectId": upnOrObjectID,
 	}
 
+	const APIVersion = "1.6"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(

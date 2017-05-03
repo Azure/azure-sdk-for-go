@@ -60,13 +60,15 @@ func (client ApplicationClient) Create(resourceGroupName string, accountName str
 
 	req, err := client.CreatePreparer(resourceGroupName, accountName, applicationID, parameters)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "batch.ApplicationClient", "Create", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "batch.ApplicationClient", "Create", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.CreateSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "batch.ApplicationClient", "Create", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "batch.ApplicationClient", "Create", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.CreateResponder(resp)
@@ -141,13 +143,15 @@ func (client ApplicationClient) Delete(resourceGroupName string, accountName str
 
 	req, err := client.DeletePreparer(resourceGroupName, accountName, applicationID)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "batch.ApplicationClient", "Delete", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "batch.ApplicationClient", "Delete", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.DeleteSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "batch.ApplicationClient", "Delete", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "batch.ApplicationClient", "Delete", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.DeleteResponder(resp)
@@ -216,13 +220,15 @@ func (client ApplicationClient) Get(resourceGroupName string, accountName string
 
 	req, err := client.GetPreparer(resourceGroupName, accountName, applicationID)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "batch.ApplicationClient", "Get", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "batch.ApplicationClient", "Get", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "batch.ApplicationClient", "Get", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "batch.ApplicationClient", "Get", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetResponder(resp)
@@ -292,13 +298,15 @@ func (client ApplicationClient) List(resourceGroupName string, accountName strin
 
 	req, err := client.ListPreparer(resourceGroupName, accountName, maxresults)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "batch.ApplicationClient", "List", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "batch.ApplicationClient", "List", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "batch.ApplicationClient", "List", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "batch.ApplicationClient", "List", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListResponder(resp)
@@ -394,13 +402,15 @@ func (client ApplicationClient) Update(resourceGroupName string, accountName str
 
 	req, err := client.UpdatePreparer(resourceGroupName, accountName, applicationID, parameters)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "batch.ApplicationClient", "Update", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "batch.ApplicationClient", "Update", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.UpdateSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "batch.ApplicationClient", "Update", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "batch.ApplicationClient", "Update", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.UpdateResponder(resp)

@@ -57,7 +57,9 @@ func NewGroupClientWithBaseURI(baseURI string, subscriptionID string) GroupClien
 // located. webServiceName is the name of the web service.
 // createOrUpdatePayload is the payload that is used to create or update the
 // web service.
-func (client GroupClient) CreateOrUpdate(resourceGroupName string, webServiceName string, createOrUpdatePayload WebService, cancel <-chan struct{}) (result autorest.Response, err error) {
+func (client GroupClient) CreateOrUpdate(resourceGroupName string, webServiceName string, createOrUpdatePayload WebService, cancel <-chan struct{}) (<-chan WebService, <-chan error) {
+	resultChan := make(chan WebService, 1)
+	errChan := make(chan error, 1)
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: createOrUpdatePayload,
 			Constraints: []validation.Constraint{{Target: "createOrUpdatePayload.Properties", Name: validation.Null, Rule: true,
@@ -80,26 +82,40 @@ func (client GroupClient) CreateOrUpdate(resourceGroupName string, webServiceNam
 							{Target: "createOrUpdatePayload.Properties.Output.Properties", Name: validation.Null, Rule: true, Chain: nil},
 						}},
 				}}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "webservices.GroupClient", "CreateOrUpdate")
+		errChan <- validation.NewErrorWithValidationError(err, "webservices.GroupClient", "CreateOrUpdate")
+		close(errChan)
+		close(resultChan)
+		return resultChan, errChan
 	}
 
-	req, err := client.CreateOrUpdatePreparer(resourceGroupName, webServiceName, createOrUpdatePayload, cancel)
-	if err != nil {
-		return result, autorest.NewErrorWithError(err, "webservices.GroupClient", "CreateOrUpdate", nil, "Failure preparing request")
-	}
+	go func() {
+		var err error
+		var result WebService
+		defer func() {
+			resultChan <- result
+			errChan <- err
+			close(resultChan)
+			close(errChan)
+		}()
+		req, err := client.CreateOrUpdatePreparer(resourceGroupName, webServiceName, createOrUpdatePayload, cancel)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "webservices.GroupClient", "CreateOrUpdate", nil, "Failure preparing request")
+			return
+		}
 
-	resp, err := client.CreateOrUpdateSender(req)
-	if err != nil {
-		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "webservices.GroupClient", "CreateOrUpdate", resp, "Failure sending request")
-	}
+		resp, err := client.CreateOrUpdateSender(req)
+		if err != nil {
+			result.Response = autorest.Response{Response: resp}
+			err = autorest.NewErrorWithError(err, "webservices.GroupClient", "CreateOrUpdate", resp, "Failure sending request")
+			return
+		}
 
-	result, err = client.CreateOrUpdateResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "webservices.GroupClient", "CreateOrUpdate", resp, "Failure responding to request")
-	}
-
-	return
+		result, err = client.CreateOrUpdateResponder(resp)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "webservices.GroupClient", "CreateOrUpdate", resp, "Failure responding to request")
+		}
+	}()
+	return resultChan, errChan
 }
 
 // CreateOrUpdatePreparer prepares the CreateOrUpdate request.
@@ -135,13 +151,14 @@ func (client GroupClient) CreateOrUpdateSender(req *http.Request) (*http.Respons
 
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
 // closes the http.Response Body.
-func (client GroupClient) CreateOrUpdateResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client GroupClient) CreateOrUpdateResponder(resp *http.Response) (result WebService, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = resp
+	result.Response = autorest.Response{Response: resp}
 	return
 }
 
@@ -155,13 +172,15 @@ func (client GroupClient) CreateOrUpdateResponder(resp *http.Response) (result a
 func (client GroupClient) Get(resourceGroupName string, webServiceName string) (result WebService, err error) {
 	req, err := client.GetPreparer(resourceGroupName, webServiceName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "webservices.GroupClient", "Get", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "webservices.GroupClient", "Get", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "webservices.GroupClient", "Get", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "webservices.GroupClient", "Get", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetResponder(resp)
@@ -218,13 +237,15 @@ func (client GroupClient) GetResponder(resp *http.Response) (result WebService, 
 func (client GroupClient) List(skiptoken string) (result PaginatedWebServicesList, err error) {
 	req, err := client.ListPreparer(skiptoken)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "webservices.GroupClient", "List", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "webservices.GroupClient", "List", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "webservices.GroupClient", "List", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "webservices.GroupClient", "List", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListResponder(resp)
@@ -307,13 +328,15 @@ func (client GroupClient) ListNextResults(lastResults PaginatedWebServicesList) 
 func (client GroupClient) ListByResourceGroup(resourceGroupName string, skiptoken string) (result PaginatedWebServicesList, err error) {
 	req, err := client.ListByResourceGroupPreparer(resourceGroupName, skiptoken)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "webservices.GroupClient", "ListByResourceGroup", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "webservices.GroupClient", "ListByResourceGroup", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListByResourceGroupSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "webservices.GroupClient", "ListByResourceGroup", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "webservices.GroupClient", "ListByResourceGroup", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListByResourceGroupResponder(resp)
@@ -397,13 +420,15 @@ func (client GroupClient) ListByResourceGroupNextResults(lastResults PaginatedWe
 func (client GroupClient) ListKeys(resourceGroupName string, webServiceName string) (result Keys, err error) {
 	req, err := client.ListKeysPreparer(resourceGroupName, webServiceName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "webservices.GroupClient", "ListKeys", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "webservices.GroupClient", "ListKeys", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListKeysSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "webservices.GroupClient", "ListKeys", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "webservices.GroupClient", "ListKeys", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListKeysResponder(resp)
@@ -463,24 +488,37 @@ func (client GroupClient) ListKeysResponder(resp *http.Response) (result Keys, e
 // resourceGroupName is name of the resource group in which the web service is
 // located. webServiceName is the name of the web service. patchPayload is the
 // payload to use to patch the web service.
-func (client GroupClient) Patch(resourceGroupName string, webServiceName string, patchPayload WebService, cancel <-chan struct{}) (result autorest.Response, err error) {
-	req, err := client.PatchPreparer(resourceGroupName, webServiceName, patchPayload, cancel)
-	if err != nil {
-		return result, autorest.NewErrorWithError(err, "webservices.GroupClient", "Patch", nil, "Failure preparing request")
-	}
+func (client GroupClient) Patch(resourceGroupName string, webServiceName string, patchPayload WebService, cancel <-chan struct{}) (<-chan WebService, <-chan error) {
+	resultChan := make(chan WebService, 1)
+	errChan := make(chan error, 1)
+	go func() {
+		var err error
+		var result WebService
+		defer func() {
+			resultChan <- result
+			errChan <- err
+			close(resultChan)
+			close(errChan)
+		}()
+		req, err := client.PatchPreparer(resourceGroupName, webServiceName, patchPayload, cancel)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "webservices.GroupClient", "Patch", nil, "Failure preparing request")
+			return
+		}
 
-	resp, err := client.PatchSender(req)
-	if err != nil {
-		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "webservices.GroupClient", "Patch", resp, "Failure sending request")
-	}
+		resp, err := client.PatchSender(req)
+		if err != nil {
+			result.Response = autorest.Response{Response: resp}
+			err = autorest.NewErrorWithError(err, "webservices.GroupClient", "Patch", resp, "Failure sending request")
+			return
+		}
 
-	result, err = client.PatchResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "webservices.GroupClient", "Patch", resp, "Failure responding to request")
-	}
-
-	return
+		result, err = client.PatchResponder(resp)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "webservices.GroupClient", "Patch", resp, "Failure responding to request")
+		}
+	}()
+	return resultChan, errChan
 }
 
 // PatchPreparer prepares the Patch request.
@@ -516,13 +554,14 @@ func (client GroupClient) PatchSender(req *http.Request) (*http.Response, error)
 
 // PatchResponder handles the response to the Patch request. The method always
 // closes the http.Response Body.
-func (client GroupClient) PatchResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client GroupClient) PatchResponder(resp *http.Response) (result WebService, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = resp
+	result.Response = autorest.Response{Response: resp}
 	return
 }
 
@@ -533,24 +572,37 @@ func (client GroupClient) PatchResponder(resp *http.Response) (result autorest.R
 //
 // resourceGroupName is name of the resource group in which the web service is
 // located. webServiceName is the name of the web service.
-func (client GroupClient) Remove(resourceGroupName string, webServiceName string, cancel <-chan struct{}) (result autorest.Response, err error) {
-	req, err := client.RemovePreparer(resourceGroupName, webServiceName, cancel)
-	if err != nil {
-		return result, autorest.NewErrorWithError(err, "webservices.GroupClient", "Remove", nil, "Failure preparing request")
-	}
+func (client GroupClient) Remove(resourceGroupName string, webServiceName string, cancel <-chan struct{}) (<-chan autorest.Response, <-chan error) {
+	resultChan := make(chan autorest.Response, 1)
+	errChan := make(chan error, 1)
+	go func() {
+		var err error
+		var result autorest.Response
+		defer func() {
+			resultChan <- result
+			errChan <- err
+			close(resultChan)
+			close(errChan)
+		}()
+		req, err := client.RemovePreparer(resourceGroupName, webServiceName, cancel)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "webservices.GroupClient", "Remove", nil, "Failure preparing request")
+			return
+		}
 
-	resp, err := client.RemoveSender(req)
-	if err != nil {
-		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "webservices.GroupClient", "Remove", resp, "Failure sending request")
-	}
+		resp, err := client.RemoveSender(req)
+		if err != nil {
+			result.Response = resp
+			err = autorest.NewErrorWithError(err, "webservices.GroupClient", "Remove", resp, "Failure sending request")
+			return
+		}
 
-	result, err = client.RemoveResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "webservices.GroupClient", "Remove", resp, "Failure responding to request")
-	}
-
-	return
+		result, err = client.RemoveResponder(resp)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "webservices.GroupClient", "Remove", resp, "Failure responding to request")
+		}
+	}()
+	return resultChan, errChan
 }
 
 // RemovePreparer prepares the Remove request.

@@ -56,13 +56,15 @@ func (client AndroidClient) AddAppForMAMPolicy(hostName string, policyName strin
 
 	req, err := client.AddAppForMAMPolicyPreparer(hostName, policyName, appName, parameters)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "intune.AndroidClient", "AddAppForMAMPolicy", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "intune.AndroidClient", "AddAppForMAMPolicy", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.AddAppForMAMPolicySender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "intune.AndroidClient", "AddAppForMAMPolicy", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "intune.AndroidClient", "AddAppForMAMPolicy", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.AddAppForMAMPolicyResponder(resp)
@@ -81,8 +83,9 @@ func (client AndroidClient) AddAppForMAMPolicyPreparer(hostName string, policyNa
 		"policyName": autorest.Encode("path", policyName),
 	}
 
+	const APIVersion = "2015-01-14-preview"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -128,13 +131,15 @@ func (client AndroidClient) AddGroupForMAMPolicy(hostName string, policyName str
 
 	req, err := client.AddGroupForMAMPolicyPreparer(hostName, policyName, groupID, parameters)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "intune.AndroidClient", "AddGroupForMAMPolicy", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "intune.AndroidClient", "AddGroupForMAMPolicy", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.AddGroupForMAMPolicySender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "intune.AndroidClient", "AddGroupForMAMPolicy", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "intune.AndroidClient", "AddGroupForMAMPolicy", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.AddGroupForMAMPolicyResponder(resp)
@@ -153,8 +158,9 @@ func (client AndroidClient) AddGroupForMAMPolicyPreparer(hostName string, policy
 		"policyName": autorest.Encode("path", policyName),
 	}
 
+	const APIVersion = "2015-01-14-preview"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -193,13 +199,15 @@ func (client AndroidClient) AddGroupForMAMPolicyResponder(resp *http.Response) (
 func (client AndroidClient) CreateOrUpdateMAMPolicy(hostName string, policyName string, parameters AndroidMAMPolicy) (result AndroidMAMPolicy, err error) {
 	req, err := client.CreateOrUpdateMAMPolicyPreparer(hostName, policyName, parameters)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "intune.AndroidClient", "CreateOrUpdateMAMPolicy", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "intune.AndroidClient", "CreateOrUpdateMAMPolicy", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.CreateOrUpdateMAMPolicySender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "intune.AndroidClient", "CreateOrUpdateMAMPolicy", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "intune.AndroidClient", "CreateOrUpdateMAMPolicy", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.CreateOrUpdateMAMPolicyResponder(resp)
@@ -217,8 +225,9 @@ func (client AndroidClient) CreateOrUpdateMAMPolicyPreparer(hostName string, pol
 		"policyName": autorest.Encode("path", policyName),
 	}
 
+	const APIVersion = "2015-01-14-preview"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -257,13 +266,15 @@ func (client AndroidClient) CreateOrUpdateMAMPolicyResponder(resp *http.Response
 func (client AndroidClient) DeleteAppForMAMPolicy(hostName string, policyName string, appName string) (result autorest.Response, err error) {
 	req, err := client.DeleteAppForMAMPolicyPreparer(hostName, policyName, appName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "intune.AndroidClient", "DeleteAppForMAMPolicy", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "intune.AndroidClient", "DeleteAppForMAMPolicy", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.DeleteAppForMAMPolicySender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "intune.AndroidClient", "DeleteAppForMAMPolicy", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "intune.AndroidClient", "DeleteAppForMAMPolicy", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.DeleteAppForMAMPolicyResponder(resp)
@@ -282,8 +293,9 @@ func (client AndroidClient) DeleteAppForMAMPolicyPreparer(hostName string, polic
 		"policyName": autorest.Encode("path", policyName),
 	}
 
+	const APIVersion = "2015-01-14-preview"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -319,13 +331,15 @@ func (client AndroidClient) DeleteAppForMAMPolicyResponder(resp *http.Response) 
 func (client AndroidClient) DeleteGroupForMAMPolicy(hostName string, policyName string, groupID string) (result autorest.Response, err error) {
 	req, err := client.DeleteGroupForMAMPolicyPreparer(hostName, policyName, groupID)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "intune.AndroidClient", "DeleteGroupForMAMPolicy", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "intune.AndroidClient", "DeleteGroupForMAMPolicy", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.DeleteGroupForMAMPolicySender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "intune.AndroidClient", "DeleteGroupForMAMPolicy", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "intune.AndroidClient", "DeleteGroupForMAMPolicy", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.DeleteGroupForMAMPolicyResponder(resp)
@@ -344,8 +358,9 @@ func (client AndroidClient) DeleteGroupForMAMPolicyPreparer(hostName string, pol
 		"policyName": autorest.Encode("path", policyName),
 	}
 
+	const APIVersion = "2015-01-14-preview"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -381,13 +396,15 @@ func (client AndroidClient) DeleteGroupForMAMPolicyResponder(resp *http.Response
 func (client AndroidClient) DeleteMAMPolicy(hostName string, policyName string) (result autorest.Response, err error) {
 	req, err := client.DeleteMAMPolicyPreparer(hostName, policyName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "intune.AndroidClient", "DeleteMAMPolicy", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "intune.AndroidClient", "DeleteMAMPolicy", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.DeleteMAMPolicySender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "intune.AndroidClient", "DeleteMAMPolicy", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "intune.AndroidClient", "DeleteMAMPolicy", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.DeleteMAMPolicyResponder(resp)
@@ -405,8 +422,9 @@ func (client AndroidClient) DeleteMAMPolicyPreparer(hostName string, policyName 
 		"policyName": autorest.Encode("path", policyName),
 	}
 
+	const APIVersion = "2015-01-14-preview"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -443,13 +461,15 @@ func (client AndroidClient) DeleteMAMPolicyResponder(resp *http.Response) (resul
 func (client AndroidClient) GetAppForMAMPolicy(hostName string, policyName string, filter string, top *int32, selectParameter string) (result ApplicationCollection, err error) {
 	req, err := client.GetAppForMAMPolicyPreparer(hostName, policyName, filter, top, selectParameter)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "intune.AndroidClient", "GetAppForMAMPolicy", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "intune.AndroidClient", "GetAppForMAMPolicy", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetAppForMAMPolicySender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "intune.AndroidClient", "GetAppForMAMPolicy", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "intune.AndroidClient", "GetAppForMAMPolicy", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetAppForMAMPolicyResponder(resp)
@@ -467,8 +487,9 @@ func (client AndroidClient) GetAppForMAMPolicyPreparer(hostName string, policyNa
 		"policyName": autorest.Encode("path", policyName),
 	}
 
+	const APIVersion = "2015-01-14-preview"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 	if len(filter) > 0 {
 		queryParameters["$filter"] = autorest.Encode("query", filter)
@@ -538,13 +559,15 @@ func (client AndroidClient) GetAppForMAMPolicyNextResults(lastResults Applicatio
 func (client AndroidClient) GetGroupsForMAMPolicy(hostName string, policyName string) (result GroupsCollection, err error) {
 	req, err := client.GetGroupsForMAMPolicyPreparer(hostName, policyName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "intune.AndroidClient", "GetGroupsForMAMPolicy", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "intune.AndroidClient", "GetGroupsForMAMPolicy", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetGroupsForMAMPolicySender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "intune.AndroidClient", "GetGroupsForMAMPolicy", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "intune.AndroidClient", "GetGroupsForMAMPolicy", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetGroupsForMAMPolicyResponder(resp)
@@ -562,8 +585,9 @@ func (client AndroidClient) GetGroupsForMAMPolicyPreparer(hostName string, polic
 		"policyName": autorest.Encode("path", policyName),
 	}
 
+	const APIVersion = "2015-01-14-preview"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -624,13 +648,15 @@ func (client AndroidClient) GetGroupsForMAMPolicyNextResults(lastResults GroupsC
 func (client AndroidClient) GetMAMPolicies(hostName string, filter string, top *int32, selectParameter string) (result AndroidMAMPolicyCollection, err error) {
 	req, err := client.GetMAMPoliciesPreparer(hostName, filter, top, selectParameter)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "intune.AndroidClient", "GetMAMPolicies", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "intune.AndroidClient", "GetMAMPolicies", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetMAMPoliciesSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "intune.AndroidClient", "GetMAMPolicies", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "intune.AndroidClient", "GetMAMPolicies", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetMAMPoliciesResponder(resp)
@@ -647,8 +673,9 @@ func (client AndroidClient) GetMAMPoliciesPreparer(hostName string, filter strin
 		"hostName": autorest.Encode("path", hostName),
 	}
 
+	const APIVersion = "2015-01-14-preview"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 	if len(filter) > 0 {
 		queryParameters["$filter"] = autorest.Encode("query", filter)
@@ -718,13 +745,15 @@ func (client AndroidClient) GetMAMPoliciesNextResults(lastResults AndroidMAMPoli
 func (client AndroidClient) GetMAMPolicyByName(hostName string, policyName string, selectParameter string) (result AndroidMAMPolicy, err error) {
 	req, err := client.GetMAMPolicyByNamePreparer(hostName, policyName, selectParameter)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "intune.AndroidClient", "GetMAMPolicyByName", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "intune.AndroidClient", "GetMAMPolicyByName", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetMAMPolicyByNameSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "intune.AndroidClient", "GetMAMPolicyByName", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "intune.AndroidClient", "GetMAMPolicyByName", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetMAMPolicyByNameResponder(resp)
@@ -742,8 +771,9 @@ func (client AndroidClient) GetMAMPolicyByNamePreparer(hostName string, policyNa
 		"policyName": autorest.Encode("path", policyName),
 	}
 
+	const APIVersion = "2015-01-14-preview"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 	if len(selectParameter) > 0 {
 		queryParameters["$select"] = autorest.Encode("query", selectParameter)
@@ -784,13 +814,15 @@ func (client AndroidClient) GetMAMPolicyByNameResponder(resp *http.Response) (re
 func (client AndroidClient) PatchMAMPolicy(hostName string, policyName string, parameters AndroidMAMPolicy) (result AndroidMAMPolicy, err error) {
 	req, err := client.PatchMAMPolicyPreparer(hostName, policyName, parameters)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "intune.AndroidClient", "PatchMAMPolicy", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "intune.AndroidClient", "PatchMAMPolicy", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.PatchMAMPolicySender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "intune.AndroidClient", "PatchMAMPolicy", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "intune.AndroidClient", "PatchMAMPolicy", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.PatchMAMPolicyResponder(resp)
@@ -808,8 +840,9 @@ func (client AndroidClient) PatchMAMPolicyPreparer(hostName string, policyName s
 		"policyName": autorest.Encode("path", policyName),
 	}
 
+	const APIVersion = "2015-01-14-preview"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(

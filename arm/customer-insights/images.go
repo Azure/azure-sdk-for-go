@@ -50,13 +50,15 @@ func NewImagesClientWithBaseURI(baseURI string, subscriptionID string) ImagesCli
 func (client ImagesClient) GetUploadURLForData(resourceGroupName string, hubName string, parameters GetImageUploadURLInput) (result ImageDefinition, err error) {
 	req, err := client.GetUploadURLForDataPreparer(resourceGroupName, hubName, parameters)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "customerinsights.ImagesClient", "GetUploadURLForData", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "customerinsights.ImagesClient", "GetUploadURLForData", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetUploadURLForDataSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "customerinsights.ImagesClient", "GetUploadURLForData", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "customerinsights.ImagesClient", "GetUploadURLForData", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetUploadURLForDataResponder(resp)
@@ -75,8 +77,9 @@ func (client ImagesClient) GetUploadURLForDataPreparer(resourceGroupName string,
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
+	const APIVersion = "2017-01-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -117,13 +120,15 @@ func (client ImagesClient) GetUploadURLForDataResponder(resp *http.Response) (re
 func (client ImagesClient) GetUploadURLForEntityType(resourceGroupName string, hubName string, parameters GetImageUploadURLInput) (result ImageDefinition, err error) {
 	req, err := client.GetUploadURLForEntityTypePreparer(resourceGroupName, hubName, parameters)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "customerinsights.ImagesClient", "GetUploadURLForEntityType", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "customerinsights.ImagesClient", "GetUploadURLForEntityType", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetUploadURLForEntityTypeSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "customerinsights.ImagesClient", "GetUploadURLForEntityType", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "customerinsights.ImagesClient", "GetUploadURLForEntityType", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetUploadURLForEntityTypeResponder(resp)
@@ -142,8 +147,9 @@ func (client ImagesClient) GetUploadURLForEntityTypePreparer(resourceGroupName s
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
+	const APIVersion = "2017-01-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(

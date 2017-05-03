@@ -46,13 +46,15 @@ func NewAppsClientWithBaseURI(baseURI string, subscriptionID string) AppsClient 
 func (client AppsClient) List(resourceGroupName string, appCollection string) (result AppListResult, err error) {
 	req, err := client.ListPreparer(resourceGroupName, appCollection)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "mobileengagement.AppsClient", "List", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "mobileengagement.AppsClient", "List", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "mobileengagement.AppsClient", "List", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "mobileengagement.AppsClient", "List", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListResponder(resp)

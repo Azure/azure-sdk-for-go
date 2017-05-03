@@ -80,13 +80,15 @@ func (client SubscriptionsClient) CreateOrUpdate(resourceGroupName string, servi
 
 	req, err := client.CreateOrUpdatePreparer(resourceGroupName, serviceName, sid, parameters)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "apimanagement.SubscriptionsClient", "CreateOrUpdate", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "apimanagement.SubscriptionsClient", "CreateOrUpdate", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.CreateOrUpdateSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "apimanagement.SubscriptionsClient", "CreateOrUpdate", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "apimanagement.SubscriptionsClient", "CreateOrUpdate", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.CreateOrUpdateResponder(resp)
@@ -157,13 +159,15 @@ func (client SubscriptionsClient) Delete(resourceGroupName string, serviceName s
 
 	req, err := client.DeletePreparer(resourceGroupName, serviceName, sid, ifMatch)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "apimanagement.SubscriptionsClient", "Delete", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "apimanagement.SubscriptionsClient", "Delete", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.DeleteSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "apimanagement.SubscriptionsClient", "Delete", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "apimanagement.SubscriptionsClient", "Delete", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.DeleteResponder(resp)
@@ -230,13 +234,15 @@ func (client SubscriptionsClient) Get(resourceGroupName string, serviceName stri
 
 	req, err := client.GetPreparer(resourceGroupName, serviceName, sid)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "apimanagement.SubscriptionsClient", "Get", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "apimanagement.SubscriptionsClient", "Get", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "apimanagement.SubscriptionsClient", "Get", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "apimanagement.SubscriptionsClient", "Get", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetResponder(resp)
@@ -324,13 +330,15 @@ func (client SubscriptionsClient) ListByService(resourceGroupName string, servic
 
 	req, err := client.ListByServicePreparer(resourceGroupName, serviceName, filter, top, skip)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "apimanagement.SubscriptionsClient", "ListByService", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "apimanagement.SubscriptionsClient", "ListByService", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListByServiceSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "apimanagement.SubscriptionsClient", "ListByService", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "apimanagement.SubscriptionsClient", "ListByService", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListByServiceResponder(resp)
@@ -430,13 +438,15 @@ func (client SubscriptionsClient) RegeneratePrimaryKey(resourceGroupName string,
 
 	req, err := client.RegeneratePrimaryKeyPreparer(resourceGroupName, serviceName, sid)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "apimanagement.SubscriptionsClient", "RegeneratePrimaryKey", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "apimanagement.SubscriptionsClient", "RegeneratePrimaryKey", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.RegeneratePrimaryKeySender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "apimanagement.SubscriptionsClient", "RegeneratePrimaryKey", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "apimanagement.SubscriptionsClient", "RegeneratePrimaryKey", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.RegeneratePrimaryKeyResponder(resp)
@@ -503,13 +513,15 @@ func (client SubscriptionsClient) RegenerateSecondaryKey(resourceGroupName strin
 
 	req, err := client.RegenerateSecondaryKeyPreparer(resourceGroupName, serviceName, sid)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "apimanagement.SubscriptionsClient", "RegenerateSecondaryKey", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "apimanagement.SubscriptionsClient", "RegenerateSecondaryKey", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.RegenerateSecondaryKeySender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "apimanagement.SubscriptionsClient", "RegenerateSecondaryKey", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "apimanagement.SubscriptionsClient", "RegenerateSecondaryKey", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.RegenerateSecondaryKeyResponder(resp)
@@ -578,13 +590,15 @@ func (client SubscriptionsClient) Update(resourceGroupName string, serviceName s
 
 	req, err := client.UpdatePreparer(resourceGroupName, serviceName, sid, parameters, ifMatch)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "apimanagement.SubscriptionsClient", "Update", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "apimanagement.SubscriptionsClient", "Update", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.UpdateSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "apimanagement.SubscriptionsClient", "Update", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "apimanagement.SubscriptionsClient", "Update", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.UpdateResponder(resp)

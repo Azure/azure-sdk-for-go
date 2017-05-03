@@ -48,13 +48,15 @@ func NewWorkflowTriggersClientWithBaseURI(baseURI string, subscriptionID string)
 func (client WorkflowTriggersClient) Get(resourceGroupName string, workflowName string, triggerName string) (result WorkflowTrigger, err error) {
 	req, err := client.GetPreparer(resourceGroupName, workflowName, triggerName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "logic.WorkflowTriggersClient", "Get", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "logic.WorkflowTriggersClient", "Get", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "logic.WorkflowTriggersClient", "Get", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "logic.WorkflowTriggersClient", "Get", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetResponder(resp)
@@ -114,13 +116,15 @@ func (client WorkflowTriggersClient) GetResponder(resp *http.Response) (result W
 func (client WorkflowTriggersClient) List(resourceGroupName string, workflowName string, top *int32, filter string) (result WorkflowTriggerListResult, err error) {
 	req, err := client.ListPreparer(resourceGroupName, workflowName, top, filter)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "logic.WorkflowTriggersClient", "List", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "logic.WorkflowTriggersClient", "List", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "logic.WorkflowTriggersClient", "List", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "logic.WorkflowTriggersClient", "List", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListResponder(resp)
@@ -208,13 +212,15 @@ func (client WorkflowTriggersClient) ListNextResults(lastResults WorkflowTrigger
 func (client WorkflowTriggersClient) ListCallbackURL(resourceGroupName string, workflowName string, triggerName string) (result WorkflowTriggerCallbackURL, err error) {
 	req, err := client.ListCallbackURLPreparer(resourceGroupName, workflowName, triggerName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "logic.WorkflowTriggersClient", "ListCallbackURL", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "logic.WorkflowTriggersClient", "ListCallbackURL", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListCallbackURLSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "logic.WorkflowTriggersClient", "ListCallbackURL", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "logic.WorkflowTriggersClient", "ListCallbackURL", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListCallbackURLResponder(resp)
@@ -273,13 +279,15 @@ func (client WorkflowTriggersClient) ListCallbackURLResponder(resp *http.Respons
 func (client WorkflowTriggersClient) Run(resourceGroupName string, workflowName string, triggerName string) (result SetObject, err error) {
 	req, err := client.RunPreparer(resourceGroupName, workflowName, triggerName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "logic.WorkflowTriggersClient", "Run", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "logic.WorkflowTriggersClient", "Run", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.RunSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "logic.WorkflowTriggersClient", "Run", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "logic.WorkflowTriggersClient", "Run", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.RunResponder(resp)

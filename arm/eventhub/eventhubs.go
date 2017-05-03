@@ -64,13 +64,15 @@ func (client EventHubsClient) CreateOrUpdate(resourceGroupName string, namespace
 
 	req, err := client.CreateOrUpdatePreparer(resourceGroupName, namespaceName, eventHubName, parameters)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "eventhub.EventHubsClient", "CreateOrUpdate", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "eventhub.EventHubsClient", "CreateOrUpdate", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.CreateOrUpdateSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "eventhub.EventHubsClient", "CreateOrUpdate", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "eventhub.EventHubsClient", "CreateOrUpdate", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.CreateOrUpdateResponder(resp)
@@ -153,13 +155,15 @@ func (client EventHubsClient) CreateOrUpdateAuthorizationRule(resourceGroupName 
 
 	req, err := client.CreateOrUpdateAuthorizationRulePreparer(resourceGroupName, namespaceName, eventHubName, authorizationRuleName, parameters)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "eventhub.EventHubsClient", "CreateOrUpdateAuthorizationRule", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "eventhub.EventHubsClient", "CreateOrUpdateAuthorizationRule", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.CreateOrUpdateAuthorizationRuleSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "eventhub.EventHubsClient", "CreateOrUpdateAuthorizationRule", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "eventhub.EventHubsClient", "CreateOrUpdateAuthorizationRule", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.CreateOrUpdateAuthorizationRuleResponder(resp)
@@ -235,13 +239,15 @@ func (client EventHubsClient) Delete(resourceGroupName string, namespaceName str
 
 	req, err := client.DeletePreparer(resourceGroupName, namespaceName, eventHubName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "eventhub.EventHubsClient", "Delete", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "eventhub.EventHubsClient", "Delete", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.DeleteSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "eventhub.EventHubsClient", "Delete", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "eventhub.EventHubsClient", "Delete", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.DeleteResponder(resp)
@@ -316,13 +322,15 @@ func (client EventHubsClient) DeleteAuthorizationRule(resourceGroupName string, 
 
 	req, err := client.DeleteAuthorizationRulePreparer(resourceGroupName, namespaceName, eventHubName, authorizationRuleName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "eventhub.EventHubsClient", "DeleteAuthorizationRule", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "eventhub.EventHubsClient", "DeleteAuthorizationRule", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.DeleteAuthorizationRuleSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "eventhub.EventHubsClient", "DeleteAuthorizationRule", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "eventhub.EventHubsClient", "DeleteAuthorizationRule", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.DeleteAuthorizationRuleResponder(resp)
@@ -395,13 +403,15 @@ func (client EventHubsClient) Get(resourceGroupName string, namespaceName string
 
 	req, err := client.GetPreparer(resourceGroupName, namespaceName, eventHubName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "eventhub.EventHubsClient", "Get", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "eventhub.EventHubsClient", "Get", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "eventhub.EventHubsClient", "Get", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "eventhub.EventHubsClient", "Get", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetResponder(resp)
@@ -478,13 +488,15 @@ func (client EventHubsClient) GetAuthorizationRule(resourceGroupName string, nam
 
 	req, err := client.GetAuthorizationRulePreparer(resourceGroupName, namespaceName, eventHubName, authorizationRuleName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "eventhub.EventHubsClient", "GetAuthorizationRule", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "eventhub.EventHubsClient", "GetAuthorizationRule", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetAuthorizationRuleSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "eventhub.EventHubsClient", "GetAuthorizationRule", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "eventhub.EventHubsClient", "GetAuthorizationRule", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetAuthorizationRuleResponder(resp)
@@ -558,13 +570,15 @@ func (client EventHubsClient) ListAuthorizationRules(resourceGroupName string, n
 
 	req, err := client.ListAuthorizationRulesPreparer(resourceGroupName, namespaceName, eventHubName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "eventhub.EventHubsClient", "ListAuthorizationRules", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "eventhub.EventHubsClient", "ListAuthorizationRules", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListAuthorizationRulesSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "eventhub.EventHubsClient", "ListAuthorizationRules", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "eventhub.EventHubsClient", "ListAuthorizationRules", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListAuthorizationRulesResponder(resp)
@@ -657,13 +671,15 @@ func (client EventHubsClient) ListByNamespace(resourceGroupName string, namespac
 
 	req, err := client.ListByNamespacePreparer(resourceGroupName, namespaceName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "eventhub.EventHubsClient", "ListByNamespace", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "eventhub.EventHubsClient", "ListByNamespace", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListByNamespaceSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "eventhub.EventHubsClient", "ListByNamespace", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "eventhub.EventHubsClient", "ListByNamespace", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListByNamespaceResponder(resp)
@@ -762,13 +778,15 @@ func (client EventHubsClient) ListKeys(resourceGroupName string, namespaceName s
 
 	req, err := client.ListKeysPreparer(resourceGroupName, namespaceName, eventHubName, authorizationRuleName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "eventhub.EventHubsClient", "ListKeys", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "eventhub.EventHubsClient", "ListKeys", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListKeysSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "eventhub.EventHubsClient", "ListKeys", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "eventhub.EventHubsClient", "ListKeys", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListKeysResponder(resp)
@@ -847,13 +865,15 @@ func (client EventHubsClient) RegenerateKeys(resourceGroupName string, namespace
 
 	req, err := client.RegenerateKeysPreparer(resourceGroupName, namespaceName, eventHubName, authorizationRuleName, parameters)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "eventhub.EventHubsClient", "RegenerateKeys", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "eventhub.EventHubsClient", "RegenerateKeys", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.RegenerateKeysSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "eventhub.EventHubsClient", "RegenerateKeys", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "eventhub.EventHubsClient", "RegenerateKeys", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.RegenerateKeysResponder(resp)

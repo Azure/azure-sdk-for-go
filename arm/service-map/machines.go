@@ -67,13 +67,15 @@ func (client MachinesClient) Get(resourceGroupName string, workspaceName string,
 
 	req, err := client.GetPreparer(resourceGroupName, workspaceName, machineName, timestamp)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "servicemap.MachinesClient", "Get", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "servicemap.MachinesClient", "Get", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "servicemap.MachinesClient", "Get", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "servicemap.MachinesClient", "Get", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetResponder(resp)
@@ -93,8 +95,9 @@ func (client MachinesClient) GetPreparer(resourceGroupName string, workspaceName
 		"workspaceName":     autorest.Encode("path", workspaceName),
 	}
 
+	const APIVersion = "2015-11-01-preview"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 	if timestamp != nil {
 		queryParameters["timestamp"] = autorest.Encode("query", *timestamp)
@@ -155,13 +158,15 @@ func (client MachinesClient) GetLiveness(resourceGroupName string, workspaceName
 
 	req, err := client.GetLivenessPreparer(resourceGroupName, workspaceName, machineName, startTime, endTime)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "servicemap.MachinesClient", "GetLiveness", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "servicemap.MachinesClient", "GetLiveness", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetLivenessSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "servicemap.MachinesClient", "GetLiveness", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "servicemap.MachinesClient", "GetLiveness", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetLivenessResponder(resp)
@@ -181,8 +186,9 @@ func (client MachinesClient) GetLivenessPreparer(resourceGroupName string, works
 		"workspaceName":     autorest.Encode("path", workspaceName),
 	}
 
+	const APIVersion = "2015-11-01-preview"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 	if startTime != nil {
 		queryParameters["startTime"] = autorest.Encode("query", *startTime)
@@ -261,13 +267,15 @@ func (client MachinesClient) ListByWorkspace(resourceGroupName string, workspace
 
 	req, err := client.ListByWorkspacePreparer(resourceGroupName, workspaceName, live, startTime, endTime, timestamp, top)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "servicemap.MachinesClient", "ListByWorkspace", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "servicemap.MachinesClient", "ListByWorkspace", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListByWorkspaceSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "servicemap.MachinesClient", "ListByWorkspace", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "servicemap.MachinesClient", "ListByWorkspace", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListByWorkspaceResponder(resp)
@@ -286,8 +294,9 @@ func (client MachinesClient) ListByWorkspacePreparer(resourceGroupName string, w
 		"workspaceName":     autorest.Encode("path", workspaceName),
 	}
 
+	const APIVersion = "2015-11-01-preview"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 	if live != nil {
 		queryParameters["live"] = autorest.Encode("query", *live)
@@ -384,13 +393,15 @@ func (client MachinesClient) ListConnections(resourceGroupName string, workspace
 
 	req, err := client.ListConnectionsPreparer(resourceGroupName, workspaceName, machineName, startTime, endTime)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "servicemap.MachinesClient", "ListConnections", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "servicemap.MachinesClient", "ListConnections", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListConnectionsSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "servicemap.MachinesClient", "ListConnections", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "servicemap.MachinesClient", "ListConnections", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListConnectionsResponder(resp)
@@ -410,8 +421,9 @@ func (client MachinesClient) ListConnectionsPreparer(resourceGroupName string, w
 		"workspaceName":     autorest.Encode("path", workspaceName),
 	}
 
+	const APIVersion = "2015-11-01-preview"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 	if startTime != nil {
 		queryParameters["startTime"] = autorest.Encode("query", *startTime)
@@ -495,13 +507,15 @@ func (client MachinesClient) ListMachineGroupMembership(resourceGroupName string
 
 	req, err := client.ListMachineGroupMembershipPreparer(resourceGroupName, workspaceName, machineName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "servicemap.MachinesClient", "ListMachineGroupMembership", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "servicemap.MachinesClient", "ListMachineGroupMembership", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListMachineGroupMembershipSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "servicemap.MachinesClient", "ListMachineGroupMembership", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "servicemap.MachinesClient", "ListMachineGroupMembership", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListMachineGroupMembershipResponder(resp)
@@ -521,8 +535,9 @@ func (client MachinesClient) ListMachineGroupMembershipPreparer(resourceGroupNam
 		"workspaceName":     autorest.Encode("path", workspaceName),
 	}
 
+	const APIVersion = "2015-11-01-preview"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -604,13 +619,15 @@ func (client MachinesClient) ListPorts(resourceGroupName string, workspaceName s
 
 	req, err := client.ListPortsPreparer(resourceGroupName, workspaceName, machineName, startTime, endTime)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "servicemap.MachinesClient", "ListPorts", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "servicemap.MachinesClient", "ListPorts", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListPortsSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "servicemap.MachinesClient", "ListPorts", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "servicemap.MachinesClient", "ListPorts", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListPortsResponder(resp)
@@ -630,8 +647,9 @@ func (client MachinesClient) ListPortsPreparer(resourceGroupName string, workspa
 		"workspaceName":     autorest.Encode("path", workspaceName),
 	}
 
+	const APIVersion = "2015-11-01-preview"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 	if startTime != nil {
 		queryParameters["startTime"] = autorest.Encode("query", *startTime)
@@ -731,13 +749,15 @@ func (client MachinesClient) ListProcesses(resourceGroupName string, workspaceNa
 
 	req, err := client.ListProcessesPreparer(resourceGroupName, workspaceName, machineName, live, startTime, endTime, timestamp)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "servicemap.MachinesClient", "ListProcesses", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "servicemap.MachinesClient", "ListProcesses", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListProcessesSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "servicemap.MachinesClient", "ListProcesses", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "servicemap.MachinesClient", "ListProcesses", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListProcessesResponder(resp)
@@ -757,8 +777,9 @@ func (client MachinesClient) ListProcessesPreparer(resourceGroupName string, wor
 		"workspaceName":     autorest.Encode("path", workspaceName),
 	}
 
+	const APIVersion = "2015-11-01-preview"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 	if live != nil {
 		queryParameters["live"] = autorest.Encode("query", *live)

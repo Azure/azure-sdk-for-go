@@ -55,13 +55,15 @@ func NewQueryKeysClientWithBaseURI(baseURI string, subscriptionID string) QueryK
 func (client QueryKeysClient) Create(resourceGroupName string, searchServiceName string, name string, clientRequestID *uuid.UUID) (result QueryKey, err error) {
 	req, err := client.CreatePreparer(resourceGroupName, searchServiceName, name, clientRequestID)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "search.QueryKeysClient", "Create", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "search.QueryKeysClient", "Create", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.CreateSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "search.QueryKeysClient", "Create", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "search.QueryKeysClient", "Create", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.CreateResponder(resp)
@@ -131,13 +133,15 @@ func (client QueryKeysClient) CreateResponder(resp *http.Response) (result Query
 func (client QueryKeysClient) Delete(resourceGroupName string, searchServiceName string, key string, clientRequestID *uuid.UUID) (result autorest.Response, err error) {
 	req, err := client.DeletePreparer(resourceGroupName, searchServiceName, key, clientRequestID)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "search.QueryKeysClient", "Delete", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "search.QueryKeysClient", "Delete", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.DeleteSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "search.QueryKeysClient", "Delete", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "search.QueryKeysClient", "Delete", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.DeleteResponder(resp)
@@ -204,13 +208,15 @@ func (client QueryKeysClient) DeleteResponder(resp *http.Response) (result autor
 func (client QueryKeysClient) ListBySearchService(resourceGroupName string, searchServiceName string, clientRequestID *uuid.UUID) (result ListQueryKeysResult, err error) {
 	req, err := client.ListBySearchServicePreparer(resourceGroupName, searchServiceName, clientRequestID)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "search.QueryKeysClient", "ListBySearchService", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "search.QueryKeysClient", "ListBySearchService", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListBySearchServiceSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "search.QueryKeysClient", "ListBySearchService", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "search.QueryKeysClient", "ListBySearchService", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListBySearchServiceResponder(resp)

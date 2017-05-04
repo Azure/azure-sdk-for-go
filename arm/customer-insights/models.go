@@ -34,6 +34,8 @@ const (
 	Day CalculationWindowTypes = "Day"
 	// Hour specifies the hour state for calculation window types.
 	Hour CalculationWindowTypes = "Hour"
+	// Lifetime specifies the lifetime state for calculation window types.
+	Lifetime CalculationWindowTypes = "Lifetime"
 	// Month specifies the month state for calculation window types.
 	Month CalculationWindowTypes = "Month"
 	// Week specifies the week state for calculation window types.
@@ -118,22 +120,46 @@ const (
 	AzureBlob ConnectorTypes = "AzureBlob"
 	// CRM specifies the crm state for connector types.
 	CRM ConnectorTypes = "CRM"
+	// ExchangeOnline specifies the exchange online state for connector types.
+	ExchangeOnline ConnectorTypes = "ExchangeOnline"
+	// None specifies the none state for connector types.
+	None ConnectorTypes = "None"
+	// Outbound specifies the outbound state for connector types.
+	Outbound ConnectorTypes = "Outbound"
 	// Salesforce specifies the salesforce state for connector types.
 	Salesforce ConnectorTypes = "Salesforce"
+)
+
+// DataSourceType enumerates the values for data source type.
+type DataSourceType string
+
+const (
+	// DataSourceTypeConnectorMapping specifies the data source type connector
+	// mapping state for data source type.
+	DataSourceTypeConnectorMapping DataSourceType = "ConnectorMapping"
+	// DataSourceTypeLinkInteraction specifies the data source type link
+	// interaction state for data source type.
+	DataSourceTypeLinkInteraction DataSourceType = "LinkInteraction"
+	// DataSourceTypeSystemDefault specifies the data source type system
+	// default state for data source type.
+	DataSourceTypeSystemDefault DataSourceType = "SystemDefault"
 )
 
 // EntityTypes enumerates the values for entity types.
 type EntityTypes string
 
 const (
-	// Interaction specifies the interaction state for entity types.
-	Interaction EntityTypes = "Interaction"
-	// None specifies the none state for entity types.
-	None EntityTypes = "None"
-	// Profile specifies the profile state for entity types.
-	Profile EntityTypes = "Profile"
-	// Relationship specifies the relationship state for entity types.
-	Relationship EntityTypes = "Relationship"
+	// EntityTypesInteraction specifies the entity types interaction state for
+	// entity types.
+	EntityTypesInteraction EntityTypes = "Interaction"
+	// EntityTypesNone specifies the entity types none state for entity types.
+	EntityTypesNone EntityTypes = "None"
+	// EntityTypesProfile specifies the entity types profile state for entity
+	// types.
+	EntityTypesProfile EntityTypes = "Profile"
+	// EntityTypesRelationship specifies the entity types relationship state
+	// for entity types.
+	EntityTypesRelationship EntityTypes = "Relationship"
 )
 
 // ErrorManagementTypes enumerates the values for error management types.
@@ -171,6 +197,16 @@ const (
 	FrequencyTypesWeek FrequencyTypes = "Week"
 )
 
+// InstanceOperationType enumerates the values for instance operation type.
+type InstanceOperationType string
+
+const (
+	// Delete specifies the delete state for instance operation type.
+	Delete InstanceOperationType = "Delete"
+	// Upsert specifies the upsert state for instance operation type.
+	Upsert InstanceOperationType = "Upsert"
+)
+
 // KpiFunctions enumerates the values for kpi functions.
 type KpiFunctions string
 
@@ -180,6 +216,9 @@ const (
 	// KpiFunctionsCount specifies the kpi functions count state for kpi
 	// functions.
 	KpiFunctionsCount KpiFunctions = "Count"
+	// KpiFunctionsCountDistinct specifies the kpi functions count distinct
+	// state for kpi functions.
+	KpiFunctionsCountDistinct KpiFunctions = "CountDistinct"
 	// KpiFunctionsLast specifies the kpi functions last state for kpi
 	// functions.
 	KpiFunctionsLast KpiFunctions = "Last"
@@ -220,9 +259,18 @@ const (
 type ProvisioningStates string
 
 const (
+	// ProvisioningStatesDeleting specifies the provisioning states deleting
+	// state for provisioning states.
+	ProvisioningStatesDeleting ProvisioningStates = "Deleting"
+	// ProvisioningStatesExpiring specifies the provisioning states expiring
+	// state for provisioning states.
+	ProvisioningStatesExpiring ProvisioningStates = "Expiring"
 	// ProvisioningStatesFailed specifies the provisioning states failed state
 	// for provisioning states.
 	ProvisioningStatesFailed ProvisioningStates = "Failed"
+	// ProvisioningStatesHumanIntervention specifies the provisioning states
+	// human intervention state for provisioning states.
+	ProvisioningStatesHumanIntervention ProvisioningStates = "HumanIntervention"
 	// ProvisioningStatesProvisioning specifies the provisioning states
 	// provisioning state for provisioning states.
 	ProvisioningStatesProvisioning ProvisioningStates = "Provisioning"
@@ -312,6 +360,7 @@ type Connector struct {
 	LastModified        *date.Time                          `json:"lastModified,omitempty"`
 	State               ConnectorStates                     `json:"state,omitempty"`
 	TenantID            *string                             `json:"tenantId,omitempty"`
+	IsInternal          *bool                               `json:"isInternal,omitempty"`
 }
 
 // ConnectorListResult is the response of list connector operation.
@@ -454,6 +503,39 @@ type CrmConnectorProperties struct {
 	AccessToken      *string                 `json:"accessToken,omitempty"`
 }
 
+// DataSource is data Source is a way for us to know the source of instances. A
+// single type can have data coming in from multiple places. In activities we
+// use this to determine precedence rules.
+type DataSource struct {
+	DataSourceType     DataSourceType `json:"dataSourceType,omitempty"`
+	ID                 *string        `json:"id,omitempty"`
+	LinkID             *string        `json:"linkId,omitempty"`
+	ConnectorMappingID *string        `json:"connectorMappingId,omitempty"`
+}
+
+// EnrichingKpi is the enriching KPI definition.
+type EnrichingKpi struct {
+	EntityType                  EntityTypes                       `json:"entityType,omitempty"`
+	EntityTypeName              *string                           `json:"entityTypeName,omitempty"`
+	TenantID                    *string                           `json:"tenantId,omitempty"`
+	KpiName                     *string                           `json:"kpiName,omitempty"`
+	DisplayName                 *map[string]*string               `json:"displayName,omitempty"`
+	Description                 *map[string]*string               `json:"description,omitempty"`
+	CalculationWindow           CalculationWindowTypes            `json:"calculationWindow,omitempty"`
+	CalculationWindowFieldName  *string                           `json:"calculationWindowFieldName,omitempty"`
+	Function                    KpiFunctions                      `json:"function,omitempty"`
+	Expression                  *string                           `json:"expression,omitempty"`
+	Unit                        *string                           `json:"unit,omitempty"`
+	Filter                      *string                           `json:"filter,omitempty"`
+	GroupBy                     *[]string                         `json:"groupBy,omitempty"`
+	GroupByMetadata             *[]KpiGroupByMetadata             `json:"groupByMetadata,omitempty"`
+	ParticipantProfilesMetadata *[]KpiParticipantProfilesMetadata `json:"participantProfilesMetadata,omitempty"`
+	ProvisioningState           ProvisioningStates                `json:"provisioningState,omitempty"`
+	ThresHolds                  *KpiThresholds                    `json:"thresHolds,omitempty"`
+	Aliases                     *[]KpiAlias                       `json:"aliases,omitempty"`
+	Extracts                    *[]KpiExtract                     `json:"extracts,omitempty"`
+}
+
 // EntityTypeDefinition is describes an entity.
 type EntityTypeDefinition struct {
 	Attributes          *map[string][]string           `json:"attributes,omitempty"`
@@ -468,7 +550,7 @@ type EntityTypeDefinition struct {
 	Fields              *[]PropertyDefinition          `json:"fields,omitempty"`
 	InstancesCount      *int32                         `json:"instancesCount,omitempty"`
 	LastChangedUtc      *date.Time                     `json:"lastChangedUtc,omitempty"`
-	ProvisioningState   *string                        `json:"provisioningState,omitempty"`
+	ProvisioningState   ProvisioningStates             `json:"provisioningState,omitempty"`
 	SchemaItemTypeLink  *string                        `json:"schemaItemTypeLink,omitempty"`
 	TenantID            *string                        `json:"tenantId,omitempty"`
 	TimestampFieldName  *string                        `json:"timestampFieldName,omitempty"`
@@ -578,7 +660,7 @@ type InteractionTypeDefinition struct {
 	Fields                                *[]PropertyDefinition          `json:"fields,omitempty"`
 	InstancesCount                        *int32                         `json:"instancesCount,omitempty"`
 	LastChangedUtc                        *date.Time                     `json:"lastChangedUtc,omitempty"`
-	ProvisioningState                     *string                        `json:"provisioningState,omitempty"`
+	ProvisioningState                     ProvisioningStates             `json:"provisioningState,omitempty"`
 	SchemaItemTypeLink                    *string                        `json:"schemaItemTypeLink,omitempty"`
 	TenantID                              *string                        `json:"tenantId,omitempty"`
 	TimestampFieldName                    *string                        `json:"timestampFieldName,omitempty"`
@@ -586,6 +668,9 @@ type InteractionTypeDefinition struct {
 	IDPropertyNames                       *[]string                      `json:"idPropertyNames,omitempty"`
 	ParticipantProfiles                   *[]Participant                 `json:"participantProfiles,omitempty"`
 	PrimaryParticipantProfilePropertyName *string                        `json:"primaryParticipantProfilePropertyName,omitempty"`
+	DataSources                           *[]DataSource                  `json:"dataSources,omitempty"`
+	DefaultDataSourceID                   *string                        `json:"defaultDataSourceId,omitempty"`
+	IsActivity                            *bool                          `json:"isActivity,omitempty"`
 }
 
 // KpiAlias is the KPI alias.
@@ -603,6 +688,7 @@ type KpiDefinition struct {
 	DisplayName                 *map[string]*string               `json:"displayName,omitempty"`
 	Description                 *map[string]*string               `json:"description,omitempty"`
 	CalculationWindow           CalculationWindowTypes            `json:"calculationWindow,omitempty"`
+	CalculationWindowFieldName  *string                           `json:"calculationWindowFieldName,omitempty"`
 	Function                    KpiFunctions                      `json:"function,omitempty"`
 	Expression                  *string                           `json:"expression,omitempty"`
 	Unit                        *string                           `json:"unit,omitempty"`
@@ -610,7 +696,7 @@ type KpiDefinition struct {
 	GroupBy                     *[]string                         `json:"groupBy,omitempty"`
 	GroupByMetadata             *[]KpiGroupByMetadata             `json:"groupByMetadata,omitempty"`
 	ParticipantProfilesMetadata *[]KpiParticipantProfilesMetadata `json:"participantProfilesMetadata,omitempty"`
-	ProvisioningState           *string                           `json:"provisioningState,omitempty"`
+	ProvisioningState           ProvisioningStates                `json:"provisioningState,omitempty"`
 	ThresHolds                  *KpiThresholds                    `json:"thresHolds,omitempty"`
 	Aliases                     *[]KpiAlias                       `json:"aliases,omitempty"`
 	Extracts                    *[]KpiExtract                     `json:"extracts,omitempty"`
@@ -679,8 +765,9 @@ type LinkDefinition struct {
 	Description                   *map[string]*string             `json:"description,omitempty"`
 	Mappings                      *[]TypePropertiesMapping        `json:"mappings,omitempty"`
 	ParticipantPropertyReferences *[]ParticipantPropertyReference `json:"participantPropertyReferences,omitempty"`
-	ProvisioningState             *string                         `json:"provisioningState,omitempty"`
+	ProvisioningState             ProvisioningStates              `json:"provisioningState,omitempty"`
 	ReferenceOnly                 *bool                           `json:"referenceOnly,omitempty"`
+	OperationType                 InstanceOperationType           `json:"operationType,omitempty"`
 }
 
 // LinkListResult is the response of list link operation.
@@ -709,6 +796,12 @@ type LinkResourceFormat struct {
 	Name              *string `json:"name,omitempty"`
 	Type              *string `json:"type,omitempty"`
 	*LinkDefinition   `json:"properties,omitempty"`
+}
+
+// ListKpiDefinition is
+type ListKpiDefinition struct {
+	autorest.Response `json:"-"`
+	Value             *[]KpiDefinition `json:"value,omitempty"`
 }
 
 // MetadataDefinitionBase is the Metadata definition base.
@@ -787,7 +880,7 @@ type ProfileTypeDefinition struct {
 	Fields              *[]PropertyDefinition          `json:"fields,omitempty"`
 	InstancesCount      *int32                         `json:"instancesCount,omitempty"`
 	LastChangedUtc      *date.Time                     `json:"lastChangedUtc,omitempty"`
-	ProvisioningState   *string                        `json:"provisioningState,omitempty"`
+	ProvisioningState   ProvisioningStates             `json:"provisioningState,omitempty"`
 	SchemaItemTypeLink  *string                        `json:"schemaItemTypeLink,omitempty"`
 	TenantID            *string                        `json:"tenantId,omitempty"`
 	TimestampFieldName  *string                        `json:"timestampFieldName,omitempty"`
@@ -810,6 +903,8 @@ type PropertyDefinition struct {
 	IsRequired          *bool                           `json:"isRequired,omitempty"`
 	PropertyID          *string                         `json:"propertyId,omitempty"`
 	SchemaItemPropLink  *string                         `json:"schemaItemPropLink,omitempty"`
+	MaxLength           *int32                          `json:"maxLength,omitempty"`
+	IsAvailableInGraph  *bool                           `json:"isAvailableInGraph,omitempty"`
 }
 
 // ProxyResource is common properties of proxy resource.
@@ -828,7 +923,7 @@ type RelationshipDefinition struct {
 	Fields             *[]PropertyDefinition      `json:"fields,omitempty"`
 	LookupMappings     *[]RelationshipTypeMapping `json:"lookupMappings,omitempty"`
 	ProfileType        *string                    `json:"profileType,omitempty"`
-	ProvisioningState  *string                    `json:"provisioningState,omitempty"`
+	ProvisioningState  ProvisioningStates         `json:"provisioningState,omitempty"`
 	RelationshipName   *string                    `json:"relationshipName,omitempty"`
 	RelatedProfileType *string                    `json:"relatedProfileType,omitempty"`
 	RelationshipGUIDID *string                    `json:"relationshipGuidId,omitempty"`
@@ -843,7 +938,7 @@ type RelationshipLinkDefinition struct {
 	LinkName                         *string                         `json:"linkName,omitempty"`
 	Mappings                         *[]RelationshipLinkFieldMapping `json:"mappings,omitempty"`
 	ProfilePropertyReferences        *[]ParticipantPropertyReference `json:"profilePropertyReferences,omitempty"`
-	ProvisioningState                *string                         `json:"provisioningState,omitempty"`
+	ProvisioningState                ProvisioningStates              `json:"provisioningState,omitempty"`
 	RelatedProfilePropertyReferences *[]ParticipantPropertyReference `json:"relatedProfilePropertyReferences,omitempty"`
 	RelationshipName                 *string                         `json:"relationshipName,omitempty"`
 	RelationshipGUIDID               *string                         `json:"relationshipGuidId,omitempty"`
@@ -914,6 +1009,16 @@ type RelationshipResourceFormat struct {
 	*RelationshipDefinition `json:"properties,omitempty"`
 }
 
+// RelationshipsLookup is the definition of suggested relationship for the
+// type.
+type RelationshipsLookup struct {
+	ProfileName                      *string                         `json:"profileName,omitempty"`
+	ProfilePropertyReferences        *[]ParticipantPropertyReference `json:"profilePropertyReferences,omitempty"`
+	RelatedProfileName               *string                         `json:"relatedProfileName,omitempty"`
+	RelatedProfilePropertyReferences *[]ParticipantPropertyReference `json:"relatedProfilePropertyReferences,omitempty"`
+	ExistingRelationshipName         *string                         `json:"existingRelationshipName,omitempty"`
+}
+
 // RelationshipTypeFieldMapping is map a field of profile to its corresponding
 // StrongId in Related Profile.
 type RelationshipTypeFieldMapping struct {
@@ -950,24 +1055,26 @@ type Role struct {
 
 // RoleAssignment is the Role Assignment definition.
 type RoleAssignment struct {
-	TenantID          *string                 `json:"tenantId,omitempty"`
-	AssignmentName    *string                 `json:"assignmentName,omitempty"`
-	DisplayName       *map[string]*string     `json:"displayName,omitempty"`
-	Description       *map[string]*string     `json:"description,omitempty"`
-	ProvisioningState ProvisioningStates      `json:"provisioningState,omitempty"`
-	Role              RoleTypes               `json:"role,omitempty"`
-	Principals        *[]AssignmentPrincipal  `json:"principals,omitempty"`
-	Profiles          *ResourceSetDescription `json:"profiles,omitempty"`
-	Interactions      *ResourceSetDescription `json:"interactions,omitempty"`
-	Links             *ResourceSetDescription `json:"links,omitempty"`
-	Kpis              *ResourceSetDescription `json:"kpis,omitempty"`
-	SasPolicies       *ResourceSetDescription `json:"sasPolicies,omitempty"`
-	Connectors        *ResourceSetDescription `json:"connectors,omitempty"`
-	Views             *ResourceSetDescription `json:"views,omitempty"`
-	RelationshipLinks *ResourceSetDescription `json:"relationshipLinks,omitempty"`
-	Relationships     *ResourceSetDescription `json:"relationships,omitempty"`
-	WidgetTypes       *ResourceSetDescription `json:"widgetTypes,omitempty"`
-	RoleAssignments   *ResourceSetDescription `json:"roleAssignments,omitempty"`
+	TenantID           *string                 `json:"tenantId,omitempty"`
+	AssignmentName     *string                 `json:"assignmentName,omitempty"`
+	DisplayName        *map[string]*string     `json:"displayName,omitempty"`
+	Description        *map[string]*string     `json:"description,omitempty"`
+	ProvisioningState  ProvisioningStates      `json:"provisioningState,omitempty"`
+	Role               RoleTypes               `json:"role,omitempty"`
+	Principals         *[]AssignmentPrincipal  `json:"principals,omitempty"`
+	Profiles           *ResourceSetDescription `json:"profiles,omitempty"`
+	Interactions       *ResourceSetDescription `json:"interactions,omitempty"`
+	Links              *ResourceSetDescription `json:"links,omitempty"`
+	Kpis               *ResourceSetDescription `json:"kpis,omitempty"`
+	SasPolicies        *ResourceSetDescription `json:"sasPolicies,omitempty"`
+	Connectors         *ResourceSetDescription `json:"connectors,omitempty"`
+	Views              *ResourceSetDescription `json:"views,omitempty"`
+	RelationshipLinks  *ResourceSetDescription `json:"relationshipLinks,omitempty"`
+	Relationships      *ResourceSetDescription `json:"relationships,omitempty"`
+	WidgetTypes        *ResourceSetDescription `json:"widgetTypes,omitempty"`
+	RoleAssignments    *ResourceSetDescription `json:"roleAssignments,omitempty"`
+	ConflationPolicies *ResourceSetDescription `json:"conflationPolicies,omitempty"`
+	Segments           *ResourceSetDescription `json:"segments,omitempty"`
 }
 
 // RoleAssignmentListResult is the response of list role assignment operation.
@@ -1051,6 +1158,14 @@ type StrongID struct {
 	StrongIDName     *string             `json:"strongIdName,omitempty"`
 	DisplayName      *map[string]*string `json:"displayName,omitempty"`
 	Description      *map[string]*string `json:"description,omitempty"`
+}
+
+// SuggestRelationshipLinksResponse is the response of suggest relationship
+// links operation.
+type SuggestRelationshipLinksResponse struct {
+	autorest.Response      `json:"-"`
+	InteractionName        *string                `json:"interactionName,omitempty"`
+	SuggestedRelationships *[]RelationshipsLookup `json:"suggestedRelationships,omitempty"`
 }
 
 // TypePropertiesMapping is metadata for a Link's property mapping.

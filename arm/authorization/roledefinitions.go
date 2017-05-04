@@ -53,13 +53,15 @@ func NewRoleDefinitionsClientWithBaseURI(baseURI string, subscriptionID string) 
 func (client RoleDefinitionsClient) CreateOrUpdate(scope string, roleDefinitionID string, roleDefinition RoleDefinition) (result RoleDefinition, err error) {
 	req, err := client.CreateOrUpdatePreparer(scope, roleDefinitionID, roleDefinition)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "authorization.RoleDefinitionsClient", "CreateOrUpdate", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "authorization.RoleDefinitionsClient", "CreateOrUpdate", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.CreateOrUpdateSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "authorization.RoleDefinitionsClient", "CreateOrUpdate", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "authorization.RoleDefinitionsClient", "CreateOrUpdate", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.CreateOrUpdateResponder(resp)
@@ -118,13 +120,15 @@ func (client RoleDefinitionsClient) CreateOrUpdateResponder(resp *http.Response)
 func (client RoleDefinitionsClient) Delete(scope string, roleDefinitionID string) (result RoleDefinition, err error) {
 	req, err := client.DeletePreparer(scope, roleDefinitionID)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "authorization.RoleDefinitionsClient", "Delete", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "authorization.RoleDefinitionsClient", "Delete", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.DeleteSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "authorization.RoleDefinitionsClient", "Delete", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "authorization.RoleDefinitionsClient", "Delete", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.DeleteResponder(resp)
@@ -181,13 +185,15 @@ func (client RoleDefinitionsClient) DeleteResponder(resp *http.Response) (result
 func (client RoleDefinitionsClient) Get(scope string, roleDefinitionID string) (result RoleDefinition, err error) {
 	req, err := client.GetPreparer(scope, roleDefinitionID)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "authorization.RoleDefinitionsClient", "Get", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "authorization.RoleDefinitionsClient", "Get", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "authorization.RoleDefinitionsClient", "Get", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "authorization.RoleDefinitionsClient", "Get", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetResponder(resp)
@@ -243,13 +249,15 @@ func (client RoleDefinitionsClient) GetResponder(resp *http.Response) (result Ro
 func (client RoleDefinitionsClient) GetByID(roleDefinitionID string) (result RoleDefinition, err error) {
 	req, err := client.GetByIDPreparer(roleDefinitionID)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "authorization.RoleDefinitionsClient", "GetByID", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "authorization.RoleDefinitionsClient", "GetByID", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetByIDSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "authorization.RoleDefinitionsClient", "GetByID", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "authorization.RoleDefinitionsClient", "GetByID", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetByIDResponder(resp)
@@ -306,13 +314,15 @@ func (client RoleDefinitionsClient) GetByIDResponder(resp *http.Response) (resul
 func (client RoleDefinitionsClient) List(scope string, filter string) (result RoleDefinitionListResult, err error) {
 	req, err := client.ListPreparer(scope, filter)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "authorization.RoleDefinitionsClient", "List", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "authorization.RoleDefinitionsClient", "List", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "authorization.RoleDefinitionsClient", "List", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "authorization.RoleDefinitionsClient", "List", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListResponder(resp)

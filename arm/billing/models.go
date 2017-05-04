@@ -57,13 +57,14 @@ type Invoice struct {
 
 // InvoiceProperties is the properties of the invoice.
 type InvoiceProperties struct {
+	DownloadURL            *DownloadURL `json:"downloadUrl,omitempty"`
 	InvoicePeriodStartDate *date.Date   `json:"invoicePeriodStartDate,omitempty"`
 	InvoicePeriodEndDate   *date.Date   `json:"invoicePeriodEndDate,omitempty"`
-	DownloadURL            *DownloadURL `json:"downloadUrl,omitempty"`
+	BillingPeriodIds       *[]string    `json:"billingPeriodIds,omitempty"`
 }
 
-// InvoicesListResult is result of the request to list invoices. It contains a
-// list of available invoices in reverse chronological order.
+// InvoicesListResult is result of listing invoices. It contains a list of
+// available invoices in reverse chronological order.
 type InvoicesListResult struct {
 	autorest.Response `json:"-"`
 	Value             *[]Invoice `json:"value,omitempty"`
@@ -82,7 +83,7 @@ func (client InvoicesListResult) InvoicesListResultPreparer() (*http.Request, er
 		autorest.WithBaseURL(to.String(client.NextLink)))
 }
 
-// Operation is a Billing REST API operation
+// Operation is a Billing REST API operation.
 type Operation struct {
 	Name    *string           `json:"name,omitempty"`
 	Display *OperationDisplay `json:"display,omitempty"`
@@ -95,8 +96,8 @@ type OperationDisplay struct {
 	Operation *string `json:"operation,omitempty"`
 }
 
-// OperationListResult is result of the request to list billing operations. It
-// contains a list of operations and a URL link to get the next set of results.
+// OperationListResult is result listing billing operations. It contains a list
+// of operations and a URL link to get the next set of results.
 type OperationListResult struct {
 	autorest.Response `json:"-"`
 	Value             *[]Operation `json:"value,omitempty"`
@@ -106,6 +107,42 @@ type OperationListResult struct {
 // OperationListResultPreparer prepares a request to retrieve the next set of results. It returns
 // nil if no more results exist.
 func (client OperationListResult) OperationListResultPreparer() (*http.Request, error) {
+	if client.NextLink == nil || len(to.String(client.NextLink)) <= 0 {
+		return nil, nil
+	}
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(client.NextLink)))
+}
+
+// Period is a billing period resource.
+type Period struct {
+	autorest.Response `json:"-"`
+	ID                *string `json:"id,omitempty"`
+	Name              *string `json:"name,omitempty"`
+	Type              *string `json:"type,omitempty"`
+	*PeriodProperties `json:"properties,omitempty"`
+}
+
+// PeriodProperties is the properties of the billing period.
+type PeriodProperties struct {
+	BillingPeriodStartDate *date.Date `json:"billingPeriodStartDate,omitempty"`
+	BillingPeriodEndDate   *date.Date `json:"billingPeriodEndDate,omitempty"`
+	InvoiceIds             *[]string  `json:"invoiceIds,omitempty"`
+}
+
+// PeriodsListResult is result of listing billing periods. It contains a list
+// of available billing periods in reverse chronological order.
+type PeriodsListResult struct {
+	autorest.Response `json:"-"`
+	Value             *[]Period `json:"value,omitempty"`
+	NextLink          *string   `json:"nextLink,omitempty"`
+}
+
+// PeriodsListResultPreparer prepares a request to retrieve the next set of results. It returns
+// nil if no more results exist.
+func (client PeriodsListResult) PeriodsListResultPreparer() (*http.Request, error) {
 	if client.NextLink == nil || len(to.String(client.NextLink)) <= 0 {
 		return nil, nil
 	}

@@ -180,15 +180,35 @@ type AssetItem struct {
 	Name         *string                 `json:"name,omitempty"`
 	ID           *string                 `json:"id,omitempty"`
 	Type         AssetType               `json:"type,omitempty"`
-	LocationInfo *AssetLocation          `json:"locationInfo,omitempty"`
+	LocationInfo *BlobLocation           `json:"locationInfo,omitempty"`
 	InputPorts   *map[string]*InputPort  `json:"inputPorts,omitempty"`
 	OutputPorts  *map[string]*OutputPort `json:"outputPorts,omitempty"`
 	Metadata     *map[string]*string     `json:"metadata,omitempty"`
 	Parameters   *[]ModuleAssetParameter `json:"parameters,omitempty"`
 }
 
-// AssetLocation is describes the access location for a web service asset.
-type AssetLocation struct {
+// AsyncOperationErrorInfo is the error detail information for async operation
+type AsyncOperationErrorInfo struct {
+	Code    *string                    `json:"code,omitempty"`
+	Target  *string                    `json:"target,omitempty"`
+	Message *string                    `json:"message,omitempty"`
+	Details *[]AsyncOperationErrorInfo `json:"details,omitempty"`
+}
+
+// AsyncOperationStatus is azure async operation status.
+type AsyncOperationStatus struct {
+	autorest.Response `json:"-"`
+	ID                *string                  `json:"id,omitempty"`
+	Name              *string                  `json:"name,omitempty"`
+	ProvisioningState ProvisioningState        `json:"provisioningState,omitempty"`
+	StartTime         *date.Time               `json:"startTime,omitempty"`
+	EndTime           *date.Time               `json:"endTime,omitempty"`
+	PercentComplete   *float64                 `json:"percentComplete,omitempty"`
+	ErrorInfo         *AsyncOperationErrorInfo `json:"errorInfo,omitempty"`
+}
+
+// BlobLocation is describes the access location for a blob.
+type BlobLocation struct {
 	URI         *string `json:"uri,omitempty"`
 	Credentials *string `json:"credentials,omitempty"`
 }
@@ -235,10 +255,10 @@ type GraphEdge struct {
 // be an input, output or asset node, so only one of the corresponding id
 // properties is populated at any given time.
 type GraphNode struct {
-	AssetID    *string             `json:"assetId,omitempty"`
-	InputID    *string             `json:"inputId,omitempty"`
-	OutputID   *string             `json:"outputId,omitempty"`
-	Parameters *map[string]*string `json:"parameters,omitempty"`
+	AssetID    *string                `json:"assetId,omitempty"`
+	InputID    *string                `json:"inputId,omitempty"`
+	OutputID   *string                `json:"outputId,omitempty"`
+	Parameters *map[string]*Parameter `json:"parameters,omitempty"`
 }
 
 // GraphPackage is defines the graph of modules making up the machine learning
@@ -318,6 +338,12 @@ func (client PaginatedWebServicesList) PaginatedWebServicesListPreparer() (*http
 		autorest.WithBaseURL(to.String(client.NextLink)))
 }
 
+// Parameter is web Service Parameter object for node and global parameter
+type Parameter struct {
+	Value                 *map[string]interface{} `json:"value,omitempty"`
+	CertificateThumbprint *string                 `json:"certificateThumbprint,omitempty"`
+}
+
 // Properties is the set of properties specific to the Azure ML web service
 // resource.
 type Properties struct {
@@ -339,7 +365,9 @@ type Properties struct {
 	Output                   *ServiceInputOutputSpecification `json:"output,omitempty"`
 	ExampleRequest           *ExampleRequest                  `json:"exampleRequest,omitempty"`
 	Assets                   *map[string]*AssetItem           `json:"assets,omitempty"`
-	Parameters               *map[string]*string              `json:"parameters,omitempty"`
+	Parameters               *map[string]*Parameter           `json:"parameters,omitempty"`
+	PayloadsInBlobStorage    *bool                            `json:"payloadsInBlobStorage,omitempty"`
+	PayloadsLocation         *BlobLocation                    `json:"payloadsLocation,omitempty"`
 }
 
 // PropertiesForGraph is properties specific to a Graph based web service.
@@ -362,7 +390,9 @@ type PropertiesForGraph struct {
 	Output                   *ServiceInputOutputSpecification `json:"output,omitempty"`
 	ExampleRequest           *ExampleRequest                  `json:"exampleRequest,omitempty"`
 	Assets                   *map[string]*AssetItem           `json:"assets,omitempty"`
-	Parameters               *map[string]*string              `json:"parameters,omitempty"`
+	Parameters               *map[string]*Parameter           `json:"parameters,omitempty"`
+	PayloadsInBlobStorage    *bool                            `json:"payloadsInBlobStorage,omitempty"`
+	PayloadsLocation         *BlobLocation                    `json:"payloadsLocation,omitempty"`
 	Package                  *GraphPackage                    `json:"package,omitempty"`
 }
 
@@ -372,7 +402,7 @@ type RealtimeConfiguration struct {
 	MaxConcurrentCalls *int32 `json:"maxConcurrentCalls,omitempty"`
 }
 
-// Resource is
+// Resource is azure resource.
 type Resource struct {
 	ID       *string             `json:"id,omitempty"`
 	Name     *string             `json:"name,omitempty"`

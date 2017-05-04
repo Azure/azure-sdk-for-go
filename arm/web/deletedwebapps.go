@@ -46,13 +46,15 @@ func NewDeletedWebAppsClientWithBaseURI(baseURI string, subscriptionID string) D
 func (client DeletedWebAppsClient) List() (result DeletedWebAppCollection, err error) {
 	req, err := client.ListPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.DeletedWebAppsClient", "List", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.DeletedWebAppsClient", "List", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.DeletedWebAppsClient", "List", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.DeletedWebAppsClient", "List", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListResponder(resp)
@@ -140,13 +142,15 @@ func (client DeletedWebAppsClient) ListByResourceGroup(resourceGroupName string)
 
 	req, err := client.ListByResourceGroupPreparer(resourceGroupName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.DeletedWebAppsClient", "ListByResourceGroup", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.DeletedWebAppsClient", "ListByResourceGroup", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListByResourceGroupSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.DeletedWebAppsClient", "ListByResourceGroup", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.DeletedWebAppsClient", "ListByResourceGroup", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListByResourceGroupResponder(resp)

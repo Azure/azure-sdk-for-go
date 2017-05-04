@@ -1,5 +1,5 @@
 // Package webservices implements the Azure ARM Webservices service API version
-// 2016-05-01-preview.
+// 2017-01-01.
 //
 // These APIs allow end users to operate on Azure Machine Learning Web Services
 // resources. They support the following operations:<ul><li>Create or update a

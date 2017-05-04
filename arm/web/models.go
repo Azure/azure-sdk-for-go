@@ -309,6 +309,8 @@ const (
 	// NotificationHub specifies the notification hub state for connection
 	// string type.
 	NotificationHub ConnectionStringType = "NotificationHub"
+	// PostgreSQL specifies the postgre sql state for connection string type.
+	PostgreSQL ConnectionStringType = "PostgreSQL"
 	// RedisCache specifies the redis cache state for connection string type.
 	RedisCache ConnectionStringType = "RedisCache"
 	// ServiceBus specifies the service bus state for connection string type.
@@ -340,9 +342,23 @@ const (
 	// DatabaseTypeMySQL specifies the database type my sql state for database
 	// type.
 	DatabaseTypeMySQL DatabaseType = "MySql"
+	// DatabaseTypePostgreSQL specifies the database type postgre sql state for
+	// database type.
+	DatabaseTypePostgreSQL DatabaseType = "PostgreSql"
 	// DatabaseTypeSQLAzure specifies the database type sql azure state for
 	// database type.
 	DatabaseTypeSQLAzure DatabaseType = "SqlAzure"
+)
+
+// DNSType enumerates the values for dns type.
+type DNSType string
+
+const (
+	// AzureDNS specifies the azure dns state for dns type.
+	AzureDNS DNSType = "AzureDns"
+	// DefaultDomainRegistrarDNS specifies the default domain registrar dns
+	// state for dns type.
+	DefaultDomainRegistrarDNS DNSType = "DefaultDomainRegistrarDns"
 )
 
 // DNSVerificationTestResult enumerates the values for dns verification test
@@ -761,6 +777,8 @@ const (
 	SkuNameDynamic SkuName = "Dynamic"
 	// SkuNameFree specifies the sku name free state for sku name.
 	SkuNameFree SkuName = "Free"
+	// SkuNameIsolated specifies the sku name isolated state for sku name.
+	SkuNameIsolated SkuName = "Isolated"
 	// SkuNamePremium specifies the sku name premium state for sku name.
 	SkuNamePremium SkuName = "Premium"
 	// SkuNameShared specifies the sku name shared state for sku name.
@@ -979,6 +997,7 @@ type AppServiceCertificateOrderProperties struct {
 	ExpirationTime                           *date.Time                         `json:"expirationTime,omitempty"`
 	IsPrivateKeyExternal                     *bool                              `json:"isPrivateKeyExternal,omitempty"`
 	AppServiceCertificateNotRenewableReasons *[]string                          `json:"appServiceCertificateNotRenewableReasons,omitempty"`
+	NextAutoRenewalTimeStamp                 *date.Time                         `json:"nextAutoRenewalTimeStamp,omitempty"`
 }
 
 // AppServiceCertificateOrderCollection is collection of certitificate orders.
@@ -1043,7 +1062,6 @@ type AppServiceEnvironment struct {
 	NetworkAccessControlList   *[]NetworkAccessControlEntry `json:"networkAccessControlList,omitempty"`
 	EnvironmentIsHealthy       *bool                        `json:"environmentIsHealthy,omitempty"`
 	EnvironmentStatus          *string                      `json:"environmentStatus,omitempty"`
-	Kind                       *string                      `json:"kind,omitempty"`
 	ResourceGroup              *string                      `json:"resourceGroup,omitempty"`
 	FrontEndScaleFactor        *int32                       `json:"frontEndScaleFactor,omitempty"`
 	DefaultFrontEndScaleFactor *int32                       `json:"defaultFrontEndScaleFactor,omitempty"`
@@ -1309,6 +1327,8 @@ type CertificateProperties struct {
 	KeyVaultID                *string                    `json:"keyVaultId,omitempty"`
 	KeyVaultSecretName        *string                    `json:"keyVaultSecretName,omitempty"`
 	KeyVaultSecretStatus      KeyVaultSecretStatus       `json:"keyVaultSecretStatus,omitempty"`
+	GeoRegion                 *string                    `json:"geoRegion,omitempty"`
+	Name                      *string                    `json:"name,omitempty"`
 	ServerFarmID              *string                    `json:"serverFarmId,omitempty"`
 }
 
@@ -1391,6 +1411,7 @@ type CloningInfo struct {
 	ConfigureLoadBalancing    *bool               `json:"configureLoadBalancing,omitempty"`
 	TrafficManagerProfileID   *string             `json:"trafficManagerProfileId,omitempty"`
 	TrafficManagerProfileName *string             `json:"trafficManagerProfileName,omitempty"`
+	IgnoreQuotas              *bool               `json:"ignoreQuotas,omitempty"`
 }
 
 // ConnectionStringDictionary is string dictionary resource.
@@ -1483,48 +1504,6 @@ type CsmUsageQuotaCollection struct {
 // CsmUsageQuotaCollectionPreparer prepares a request to retrieve the next set of results. It returns
 // nil if no more results exist.
 func (client CsmUsageQuotaCollection) CsmUsageQuotaCollectionPreparer() (*http.Request, error) {
-	if client.NextLink == nil || len(to.String(client.NextLink)) <= 0 {
-		return nil, nil
-	}
-	return autorest.Prepare(&http.Request{},
-		autorest.AsJSON(),
-		autorest.AsGet(),
-		autorest.WithBaseURL(to.String(client.NextLink)))
-}
-
-// Csr is certificate signing request.
-type Csr struct {
-	autorest.Response `json:"-"`
-	ID                *string             `json:"id,omitempty"`
-	Name              *string             `json:"name,omitempty"`
-	Kind              *string             `json:"kind,omitempty"`
-	Location          *string             `json:"location,omitempty"`
-	Type              *string             `json:"type,omitempty"`
-	Tags              *map[string]*string `json:"tags,omitempty"`
-	*CsrProperties    `json:"properties,omitempty"`
-}
-
-// CsrProperties is csr resource specific properties
-type CsrProperties struct {
-	Name               *string `json:"name,omitempty"`
-	DistinguishedName  *string `json:"distinguishedName,omitempty"`
-	CsrString          *string `json:"csrString,omitempty"`
-	PfxBlob            *string `json:"pfxBlob,omitempty"`
-	Password           *string `json:"password,omitempty"`
-	PublicKeyHash      *string `json:"publicKeyHash,omitempty"`
-	HostingEnvironment *string `json:"hostingEnvironment,omitempty"`
-}
-
-// CsrCollection is collection of CSRs.
-type CsrCollection struct {
-	autorest.Response `json:"-"`
-	Value             *[]Csr  `json:"value,omitempty"`
-	NextLink          *string `json:"nextLink,omitempty"`
-}
-
-// CsrCollectionPreparer prepares a request to retrieve the next set of results. It returns
-// nil if no more results exist.
-func (client CsrCollection) CsrCollectionPreparer() (*http.Request, error) {
 	if client.NextLink == nil || len(to.String(client.NextLink)) <= 0 {
 		return nil, nil
 	}
@@ -1656,9 +1635,9 @@ type DeploymentProperties struct {
 	Message     *string    `json:"message,omitempty"`
 	Author      *string    `json:"author,omitempty"`
 	Deployer    *string    `json:"deployer,omitempty"`
-	AuthorEmail *string    `json:"author_email,omitempty"`
-	StartTime   *date.Time `json:"start_time,omitempty"`
-	EndTime     *date.Time `json:"end_time,omitempty"`
+	AuthorEmail *string    `json:"authorEmail,omitempty"`
+	StartTime   *date.Time `json:"startTime,omitempty"`
+	EndTime     *date.Time `json:"endTime,omitempty"`
 	Active      *bool      `json:"active,omitempty"`
 	Details     *string    `json:"details,omitempty"`
 }
@@ -1712,6 +1691,10 @@ type DomainProperties struct {
 	ManagedHostNames            *[]HostName            `json:"managedHostNames,omitempty"`
 	Consent                     *DomainPurchaseConsent `json:"consent,omitempty"`
 	DomainNotRenewableReasons   *[]string              `json:"domainNotRenewableReasons,omitempty"`
+	DNSType                     DNSType                `json:"dnsType,omitempty"`
+	DNSZoneID                   *string                `json:"dnsZoneId,omitempty"`
+	TargetDNSType               DNSType                `json:"targetDnsType,omitempty"`
+	AuthCode                    *string                `json:"authCode,omitempty"`
 }
 
 // DomainAvailablilityCheckResult is domain availablility check result.
@@ -2461,6 +2444,10 @@ type Recommendation struct {
 	NotificationExpirationTime *date.Time        `json:"notificationExpirationTime,omitempty"`
 	NotifiedTime               *date.Time        `json:"notifiedTime,omitempty"`
 	Score                      *float64          `json:"score,omitempty"`
+	IsDynamic                  *bool             `json:"isDynamic,omitempty"`
+	ExtensionName              *string           `json:"extensionName,omitempty"`
+	BladeName                  *string           `json:"bladeName,omitempty"`
+	ForwardLink                *string           `json:"forwardLink,omitempty"`
 }
 
 // RecommendationRule is represents a recommendation rule that the
@@ -2476,6 +2463,10 @@ type RecommendationRule struct {
 	Level             NotificationLevel `json:"level,omitempty"`
 	Channels          Channels          `json:"channels,omitempty"`
 	Tags              *[]string         `json:"tags,omitempty"`
+	IsDynamic         *bool             `json:"isDynamic,omitempty"`
+	ExtensionName     *string           `json:"extensionName,omitempty"`
+	BladeName         *string           `json:"bladeName,omitempty"`
+	ForwardLink       *string           `json:"forwardLink,omitempty"`
 }
 
 // RecoverResponse is response for an app recovery request.
@@ -2593,6 +2584,26 @@ func (client ResourceCollection) ResourceCollectionPreparer() (*http.Request, er
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(to.String(client.NextLink)))
+}
+
+// ResourceHealthMetadata is used for getting ResourceHealthCheck settings.
+type ResourceHealthMetadata struct {
+	autorest.Response                 `json:"-"`
+	ID                                *string             `json:"id,omitempty"`
+	Name                              *string             `json:"name,omitempty"`
+	Kind                              *string             `json:"kind,omitempty"`
+	Location                          *string             `json:"location,omitempty"`
+	Type                              *string             `json:"type,omitempty"`
+	Tags                              *map[string]*string `json:"tags,omitempty"`
+	*ResourceHealthMetadataProperties `json:"properties,omitempty"`
+}
+
+// ResourceHealthMetadataProperties is resourceHealthMetadata resource specific
+// properties
+type ResourceHealthMetadataProperties struct {
+	ID                 *string `json:"id,omitempty"`
+	Category           *string `json:"category,omitempty"`
+	SignalAvailability *bool   `json:"signalAvailability,omitempty"`
 }
 
 // ResourceMetric is object representing a metric for any resource .
@@ -2757,6 +2768,12 @@ type RestoreResponseProperties struct {
 	OperationID *string `json:"operationId,omitempty"`
 }
 
+// SetObject is
+type SetObject struct {
+	autorest.Response `json:"-"`
+	Value             *map[string]interface{} `json:"value,omitempty"`
+}
+
 // Site is a web app, a mobile app backend, or an API app.
 type Site struct {
 	autorest.Response `json:"-"`
@@ -2917,6 +2934,25 @@ type SiteConfigResource struct {
 	Type              *string             `json:"type,omitempty"`
 	Tags              *map[string]*string `json:"tags,omitempty"`
 	*SiteConfig       `json:"properties,omitempty"`
+}
+
+// SiteConfigResourceCollection is collection of site configurations.
+type SiteConfigResourceCollection struct {
+	autorest.Response `json:"-"`
+	Value             *[]SiteConfigResource `json:"value,omitempty"`
+	NextLink          *string               `json:"nextLink,omitempty"`
+}
+
+// SiteConfigResourceCollectionPreparer prepares a request to retrieve the next set of results. It returns
+// nil if no more results exist.
+func (client SiteConfigResourceCollection) SiteConfigResourceCollectionPreparer() (*http.Request, error) {
+	if client.NextLink == nil || len(to.String(client.NextLink)) <= 0 {
+		return nil, nil
+	}
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(client.NextLink)))
 }
 
 // SiteConfigurationSnapshotInfo is a snapshot of a web app configuration.
@@ -3397,6 +3433,7 @@ type TopLevelDomainProperties struct {
 // level domain legal agreements.
 type TopLevelDomainAgreementOption struct {
 	IncludePrivacy *bool `json:"includePrivacy,omitempty"`
+	ForTransfer    *bool `json:"forTransfer,omitempty"`
 }
 
 // TopLevelDomainCollection is collection of Top-level domains.

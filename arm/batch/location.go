@@ -47,13 +47,15 @@ func NewLocationClientWithBaseURI(baseURI string, subscriptionID string) Locatio
 func (client LocationClient) GetQuotas(locationName string) (result LocationQuota, err error) {
 	req, err := client.GetQuotasPreparer(locationName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "batch.LocationClient", "GetQuotas", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "batch.LocationClient", "GetQuotas", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetQuotasSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "batch.LocationClient", "GetQuotas", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "batch.LocationClient", "GetQuotas", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetQuotasResponder(resp)

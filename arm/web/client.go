@@ -66,13 +66,15 @@ func (client ManagementClient) CheckNameAvailability(request ResourceNameAvailab
 
 	req, err := client.CheckNameAvailabilityPreparer(request)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.ManagementClient", "CheckNameAvailability", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.ManagementClient", "CheckNameAvailability", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.CheckNameAvailabilitySender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.ManagementClient", "CheckNameAvailability", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.ManagementClient", "CheckNameAvailability", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.CheckNameAvailabilityResponder(resp)
@@ -127,13 +129,15 @@ func (client ManagementClient) CheckNameAvailabilityResponder(resp *http.Respons
 func (client ManagementClient) GetPublishingUser() (result User, err error) {
 	req, err := client.GetPublishingUserPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.ManagementClient", "GetPublishingUser", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.ManagementClient", "GetPublishingUser", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetPublishingUserSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.ManagementClient", "GetPublishingUser", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.ManagementClient", "GetPublishingUser", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetPublishingUserResponder(resp)
@@ -186,13 +190,15 @@ func (client ManagementClient) GetPublishingUserResponder(resp *http.Response) (
 func (client ManagementClient) ListGeoRegions(sku SkuName, linuxWorkersEnabled *bool) (result GeoRegionCollection, err error) {
 	req, err := client.ListGeoRegionsPreparer(sku, linuxWorkersEnabled)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.ManagementClient", "ListGeoRegions", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.ManagementClient", "ListGeoRegions", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListGeoRegionsSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.ManagementClient", "ListGeoRegions", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.ManagementClient", "ListGeoRegions", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListGeoRegionsResponder(resp)
@@ -275,13 +281,15 @@ func (client ManagementClient) ListGeoRegionsNextResults(lastResults GeoRegionCo
 func (client ManagementClient) ListPremierAddOnOffers() (result PremierAddOnOfferCollection, err error) {
 	req, err := client.ListPremierAddOnOffersPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.ManagementClient", "ListPremierAddOnOffers", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.ManagementClient", "ListPremierAddOnOffers", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListPremierAddOnOffersSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.ManagementClient", "ListPremierAddOnOffers", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.ManagementClient", "ListPremierAddOnOffers", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListPremierAddOnOffersResponder(resp)
@@ -358,13 +366,15 @@ func (client ManagementClient) ListPremierAddOnOffersNextResults(lastResults Pre
 func (client ManagementClient) ListSkus() (result SkuInfos, err error) {
 	req, err := client.ListSkusPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.ManagementClient", "ListSkus", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.ManagementClient", "ListSkus", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListSkusSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.ManagementClient", "ListSkus", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.ManagementClient", "ListSkus", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListSkusResponder(resp)
@@ -417,13 +427,15 @@ func (client ManagementClient) ListSkusResponder(resp *http.Response) (result Sk
 func (client ManagementClient) ListSourceControls() (result SourceControlCollection, err error) {
 	req, err := client.ListSourceControlsPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.ManagementClient", "ListSourceControls", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.ManagementClient", "ListSourceControls", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListSourceControlsSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.ManagementClient", "ListSourceControls", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.ManagementClient", "ListSourceControls", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListSourceControlsResponder(resp)
@@ -514,13 +526,15 @@ func (client ManagementClient) Move(resourceGroupName string, moveResourceEnvelo
 
 	req, err := client.MovePreparer(resourceGroupName, moveResourceEnvelope)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.ManagementClient", "Move", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.ManagementClient", "Move", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.MoveSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "web.ManagementClient", "Move", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.ManagementClient", "Move", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.MoveResponder(resp)
@@ -577,13 +591,15 @@ func (client ManagementClient) MoveResponder(resp *http.Response) (result autore
 func (client ManagementClient) UpdatePublishingUser(userDetails User) (result User, err error) {
 	req, err := client.UpdatePublishingUserPreparer(userDetails)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.ManagementClient", "UpdatePublishingUser", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.ManagementClient", "UpdatePublishingUser", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.UpdatePublishingUserSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.ManagementClient", "UpdatePublishingUser", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.ManagementClient", "UpdatePublishingUser", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.UpdatePublishingUserResponder(resp)
@@ -637,13 +653,15 @@ func (client ManagementClient) UpdatePublishingUserResponder(resp *http.Response
 func (client ManagementClient) UpdateSourceControl(sourceControlType string, requestMessage SourceControl) (result SourceControl, err error) {
 	req, err := client.UpdateSourceControlPreparer(sourceControlType, requestMessage)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.ManagementClient", "UpdateSourceControl", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.ManagementClient", "UpdateSourceControl", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.UpdateSourceControlSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.ManagementClient", "UpdateSourceControl", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.ManagementClient", "UpdateSourceControl", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.UpdateSourceControlResponder(resp)
@@ -716,13 +734,15 @@ func (client ManagementClient) Validate(resourceGroupName string, validateReques
 
 	req, err := client.ValidatePreparer(resourceGroupName, validateRequest)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.ManagementClient", "Validate", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.ManagementClient", "Validate", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ValidateSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.ManagementClient", "Validate", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.ManagementClient", "Validate", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ValidateResponder(resp)
@@ -796,13 +816,15 @@ func (client ManagementClient) ValidateMove(resourceGroupName string, moveResour
 
 	req, err := client.ValidateMovePreparer(resourceGroupName, moveResourceEnvelope)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.ManagementClient", "ValidateMove", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.ManagementClient", "ValidateMove", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ValidateMoveSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "web.ManagementClient", "ValidateMove", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.ManagementClient", "ValidateMove", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ValidateMoveResponder(resp)

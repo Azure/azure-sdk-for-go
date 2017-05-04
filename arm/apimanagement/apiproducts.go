@@ -25,9 +25,7 @@ import (
 	"net/http"
 )
 
-// APIProductsClient is the use these REST APIs for performing operations on
-// entities like API, Product, and Subscription associated with your Azure API
-// Management deployment.
+// APIProductsClient is the composite Swagger for ApiManagement Client
 type APIProductsClient struct {
 	ManagementClient
 }
@@ -43,64 +41,66 @@ func NewAPIProductsClientWithBaseURI(baseURI string, subscriptionID string) APIP
 	return APIProductsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// ListByAPI lists all API associated products.
+// ListByApis lists all API associated products.
 //
 // resourceGroupName is the name of the resource group. serviceName is the name
-// of the API Management service. apiID is aPI identifier. Must be unique in
+// of the API Management service. aPIID is aPI identifier. Must be unique in
 // the current API Management service instance. filter is | Field | Supported
 // operators    | Supported functions                         |
 // |-------|------------------------|---------------------------------------------|
 // | name  | ge, le, eq, ne, gt, lt | substringof, contains, startswith,
 // endswith | top is number of records to return. skip is number of records to
 // skip.
-func (client APIProductsClient) ListByAPI(resourceGroupName string, serviceName string, apiID string, filter string, top *int32, skip *int32) (result ProductCollection, err error) {
+func (client APIProductsClient) ListByApis(resourceGroupName string, serviceName string, aPIID string, filter string, top *int32, skip *int32) (result ProductCollection, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,
 			Constraints: []validation.Constraint{{Target: "serviceName", Name: validation.MaxLength, Rule: 50, Chain: nil},
 				{Target: "serviceName", Name: validation.MinLength, Rule: 1, Chain: nil},
 				{Target: "serviceName", Name: validation.Pattern, Rule: `^[a-zA-Z](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?$`, Chain: nil}}},
-		{TargetValue: apiID,
-			Constraints: []validation.Constraint{{Target: "apiID", Name: validation.MaxLength, Rule: 256, Chain: nil},
-				{Target: "apiID", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "apiID", Name: validation.Pattern, Rule: `^[^*#&+:<>?]+$`, Chain: nil}}},
+		{TargetValue: aPIID,
+			Constraints: []validation.Constraint{{Target: "aPIID", Name: validation.MaxLength, Rule: 256, Chain: nil},
+				{Target: "aPIID", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "aPIID", Name: validation.Pattern, Rule: `^[^*#&+:<>?]+$`, Chain: nil}}},
 		{TargetValue: top,
 			Constraints: []validation.Constraint{{Target: "top", Name: validation.Null, Rule: false,
 				Chain: []validation.Constraint{{Target: "top", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil}}}}},
 		{TargetValue: skip,
 			Constraints: []validation.Constraint{{Target: "skip", Name: validation.Null, Rule: false,
 				Chain: []validation.Constraint{{Target: "skip", Name: validation.InclusiveMinimum, Rule: 0, Chain: nil}}}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "apimanagement.APIProductsClient", "ListByAPI")
+		return result, validation.NewErrorWithValidationError(err, "apimanagement.APIProductsClient", "ListByApis")
 	}
 
-	req, err := client.ListByAPIPreparer(resourceGroupName, serviceName, apiID, filter, top, skip)
+	req, err := client.ListByApisPreparer(resourceGroupName, serviceName, aPIID, filter, top, skip)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "apimanagement.APIProductsClient", "ListByAPI", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "apimanagement.APIProductsClient", "ListByApis", nil, "Failure preparing request")
+		return
 	}
 
-	resp, err := client.ListByAPISender(req)
+	resp, err := client.ListByApisSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "apimanagement.APIProductsClient", "ListByAPI", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "apimanagement.APIProductsClient", "ListByApis", resp, "Failure sending request")
+		return
 	}
 
-	result, err = client.ListByAPIResponder(resp)
+	result, err = client.ListByApisResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "apimanagement.APIProductsClient", "ListByAPI", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "apimanagement.APIProductsClient", "ListByApis", resp, "Failure responding to request")
 	}
 
 	return
 }
 
-// ListByAPIPreparer prepares the ListByAPI request.
-func (client APIProductsClient) ListByAPIPreparer(resourceGroupName string, serviceName string, apiID string, filter string, top *int32, skip *int32) (*http.Request, error) {
+// ListByApisPreparer prepares the ListByApis request.
+func (client APIProductsClient) ListByApisPreparer(resourceGroupName string, serviceName string, aPIID string, filter string, top *int32, skip *int32) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"apiId":             autorest.Encode("path", apiID),
+		"apiId":             autorest.Encode("path", aPIID),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"serviceName":       autorest.Encode("path", serviceName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2016-07-07"
+	const APIVersion = "2016-10-10"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -122,15 +122,15 @@ func (client APIProductsClient) ListByAPIPreparer(resourceGroupName string, serv
 	return preparer.Prepare(&http.Request{})
 }
 
-// ListByAPISender sends the ListByAPI request. The method will close the
+// ListByApisSender sends the ListByApis request. The method will close the
 // http.Response Body if it receives an error.
-func (client APIProductsClient) ListByAPISender(req *http.Request) (*http.Response, error) {
+func (client APIProductsClient) ListByApisSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req)
 }
 
-// ListByAPIResponder handles the response to the ListByAPI request. The method always
+// ListByApisResponder handles the response to the ListByApis request. The method always
 // closes the http.Response Body.
-func (client APIProductsClient) ListByAPIResponder(resp *http.Response) (result ProductCollection, err error) {
+func (client APIProductsClient) ListByApisResponder(resp *http.Response) (result ProductCollection, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -141,25 +141,25 @@ func (client APIProductsClient) ListByAPIResponder(resp *http.Response) (result 
 	return
 }
 
-// ListByAPINextResults retrieves the next set of results, if any.
-func (client APIProductsClient) ListByAPINextResults(lastResults ProductCollection) (result ProductCollection, err error) {
+// ListByApisNextResults retrieves the next set of results, if any.
+func (client APIProductsClient) ListByApisNextResults(lastResults ProductCollection) (result ProductCollection, err error) {
 	req, err := lastResults.ProductCollectionPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "apimanagement.APIProductsClient", "ListByAPI", nil, "Failure preparing next results request")
+		return result, autorest.NewErrorWithError(err, "apimanagement.APIProductsClient", "ListByApis", nil, "Failure preparing next results request")
 	}
 	if req == nil {
 		return
 	}
 
-	resp, err := client.ListByAPISender(req)
+	resp, err := client.ListByApisSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "apimanagement.APIProductsClient", "ListByAPI", resp, "Failure sending next results request")
+		return result, autorest.NewErrorWithError(err, "apimanagement.APIProductsClient", "ListByApis", resp, "Failure sending next results request")
 	}
 
-	result, err = client.ListByAPIResponder(resp)
+	result, err = client.ListByApisResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "apimanagement.APIProductsClient", "ListByAPI", resp, "Failure responding to next results request")
+		err = autorest.NewErrorWithError(err, "apimanagement.APIProductsClient", "ListByApis", resp, "Failure responding to next results request")
 	}
 
 	return

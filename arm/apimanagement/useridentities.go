@@ -25,9 +25,7 @@ import (
 	"net/http"
 )
 
-// UserIdentitiesClient is the use these REST APIs for performing operations on
-// entities like API, Product, and Subscription associated with your Azure API
-// Management deployment.
+// UserIdentitiesClient is the composite Swagger for ApiManagement Client
 type UserIdentitiesClient struct {
 	ManagementClient
 }
@@ -44,53 +42,55 @@ func NewUserIdentitiesClientWithBaseURI(baseURI string, subscriptionID string) U
 	return UserIdentitiesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// ListByUser lists all user identities.
+// ListByUsers lists all user identities.
 //
 // resourceGroupName is the name of the resource group. serviceName is the name
-// of the API Management service. uid is user identifier. Must be unique in the
+// of the API Management service. UID is user identifier. Must be unique in the
 // current API Management service instance.
-func (client UserIdentitiesClient) ListByUser(resourceGroupName string, serviceName string, uid string) (result ListUserIdentityContract, err error) {
+func (client UserIdentitiesClient) ListByUsers(resourceGroupName string, serviceName string, UID string) (result UserIdentityCollection, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,
 			Constraints: []validation.Constraint{{Target: "serviceName", Name: validation.MaxLength, Rule: 50, Chain: nil},
 				{Target: "serviceName", Name: validation.MinLength, Rule: 1, Chain: nil},
 				{Target: "serviceName", Name: validation.Pattern, Rule: `^[a-zA-Z](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?$`, Chain: nil}}},
-		{TargetValue: uid,
-			Constraints: []validation.Constraint{{Target: "uid", Name: validation.MaxLength, Rule: 256, Chain: nil},
-				{Target: "uid", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "uid", Name: validation.Pattern, Rule: `^[^*#&+:<>?]+$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "apimanagement.UserIdentitiesClient", "ListByUser")
+		{TargetValue: UID,
+			Constraints: []validation.Constraint{{Target: "UID", Name: validation.MaxLength, Rule: 256, Chain: nil},
+				{Target: "UID", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "UID", Name: validation.Pattern, Rule: `^[^*#&+:<>?]+$`, Chain: nil}}}}); err != nil {
+		return result, validation.NewErrorWithValidationError(err, "apimanagement.UserIdentitiesClient", "ListByUsers")
 	}
 
-	req, err := client.ListByUserPreparer(resourceGroupName, serviceName, uid)
+	req, err := client.ListByUsersPreparer(resourceGroupName, serviceName, UID)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "apimanagement.UserIdentitiesClient", "ListByUser", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "apimanagement.UserIdentitiesClient", "ListByUsers", nil, "Failure preparing request")
+		return
 	}
 
-	resp, err := client.ListByUserSender(req)
+	resp, err := client.ListByUsersSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "apimanagement.UserIdentitiesClient", "ListByUser", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "apimanagement.UserIdentitiesClient", "ListByUsers", resp, "Failure sending request")
+		return
 	}
 
-	result, err = client.ListByUserResponder(resp)
+	result, err = client.ListByUsersResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "apimanagement.UserIdentitiesClient", "ListByUser", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "apimanagement.UserIdentitiesClient", "ListByUsers", resp, "Failure responding to request")
 	}
 
 	return
 }
 
-// ListByUserPreparer prepares the ListByUser request.
-func (client UserIdentitiesClient) ListByUserPreparer(resourceGroupName string, serviceName string, uid string) (*http.Request, error) {
+// ListByUsersPreparer prepares the ListByUsers request.
+func (client UserIdentitiesClient) ListByUsersPreparer(resourceGroupName string, serviceName string, UID string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"serviceName":       autorest.Encode("path", serviceName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
-		"uid":               autorest.Encode("path", uid),
+		"uid":               autorest.Encode("path", UID),
 	}
 
-	const APIVersion = "2016-07-07"
+	const APIVersion = "2016-10-10"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -103,20 +103,20 @@ func (client UserIdentitiesClient) ListByUserPreparer(resourceGroupName string, 
 	return preparer.Prepare(&http.Request{})
 }
 
-// ListByUserSender sends the ListByUser request. The method will close the
+// ListByUsersSender sends the ListByUsers request. The method will close the
 // http.Response Body if it receives an error.
-func (client UserIdentitiesClient) ListByUserSender(req *http.Request) (*http.Response, error) {
+func (client UserIdentitiesClient) ListByUsersSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req)
 }
 
-// ListByUserResponder handles the response to the ListByUser request. The method always
+// ListByUsersResponder handles the response to the ListByUsers request. The method always
 // closes the http.Response Body.
-func (client UserIdentitiesClient) ListByUserResponder(resp *http.Response) (result ListUserIdentityContract, err error) {
+func (client UserIdentitiesClient) ListByUsersResponder(resp *http.Response) (result UserIdentityCollection, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result.Value),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
 	return

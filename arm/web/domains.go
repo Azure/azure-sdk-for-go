@@ -46,13 +46,15 @@ func NewDomainsClientWithBaseURI(baseURI string, subscriptionID string) DomainsC
 func (client DomainsClient) CheckAvailability(identifier NameIdentifier) (result DomainAvailablilityCheckResult, err error) {
 	req, err := client.CheckAvailabilityPreparer(identifier)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.DomainsClient", "CheckAvailability", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.DomainsClient", "CheckAvailability", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.CheckAvailabilitySender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.DomainsClient", "CheckAvailability", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.DomainsClient", "CheckAvailability", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.CheckAvailabilityResponder(resp)
@@ -111,7 +113,9 @@ func (client DomainsClient) CheckAvailabilityResponder(resp *http.Response) (res
 // resourceGroupName is name of the resource group to which the resource
 // belongs. domainName is name of the domain. domain is domain registration
 // information.
-func (client DomainsClient) CreateOrUpdate(resourceGroupName string, domainName string, domain Domain, cancel <-chan struct{}) (result autorest.Response, err error) {
+func (client DomainsClient) CreateOrUpdate(resourceGroupName string, domainName string, domain Domain, cancel <-chan struct{}) (<-chan Domain, <-chan error) {
+	resultChan := make(chan Domain, 1)
+	errChan := make(chan error, 1)
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
@@ -174,26 +178,40 @@ func (client DomainsClient) CreateOrUpdate(resourceGroupName string, domainName 
 							{Target: "domain.DomainProperties.ContactTech.Phone", Name: validation.Null, Rule: true, Chain: nil},
 						}},
 				}}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "web.DomainsClient", "CreateOrUpdate")
+		errChan <- validation.NewErrorWithValidationError(err, "web.DomainsClient", "CreateOrUpdate")
+		close(errChan)
+		close(resultChan)
+		return resultChan, errChan
 	}
 
-	req, err := client.CreateOrUpdatePreparer(resourceGroupName, domainName, domain, cancel)
-	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.DomainsClient", "CreateOrUpdate", nil, "Failure preparing request")
-	}
+	go func() {
+		var err error
+		var result Domain
+		defer func() {
+			resultChan <- result
+			errChan <- err
+			close(resultChan)
+			close(errChan)
+		}()
+		req, err := client.CreateOrUpdatePreparer(resourceGroupName, domainName, domain, cancel)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "web.DomainsClient", "CreateOrUpdate", nil, "Failure preparing request")
+			return
+		}
 
-	resp, err := client.CreateOrUpdateSender(req)
-	if err != nil {
-		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "web.DomainsClient", "CreateOrUpdate", resp, "Failure sending request")
-	}
+		resp, err := client.CreateOrUpdateSender(req)
+		if err != nil {
+			result.Response = autorest.Response{Response: resp}
+			err = autorest.NewErrorWithError(err, "web.DomainsClient", "CreateOrUpdate", resp, "Failure sending request")
+			return
+		}
 
-	result, err = client.CreateOrUpdateResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "web.DomainsClient", "CreateOrUpdate", resp, "Failure responding to request")
-	}
-
-	return
+		result, err = client.CreateOrUpdateResponder(resp)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "web.DomainsClient", "CreateOrUpdate", resp, "Failure responding to request")
+		}
+	}()
+	return resultChan, errChan
 }
 
 // CreateOrUpdatePreparer prepares the CreateOrUpdate request.
@@ -229,13 +247,14 @@ func (client DomainsClient) CreateOrUpdateSender(req *http.Request) (*http.Respo
 
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
 // closes the http.Response Body.
-func (client DomainsClient) CreateOrUpdateResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client DomainsClient) CreateOrUpdateResponder(resp *http.Response) (result Domain, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusAccepted, http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = resp
+	result.Response = autorest.Response{Response: resp}
 	return
 }
 
@@ -257,13 +276,15 @@ func (client DomainsClient) CreateOrUpdateOwnershipIdentifier(resourceGroupName 
 
 	req, err := client.CreateOrUpdateOwnershipIdentifierPreparer(resourceGroupName, domainName, name, domainOwnershipIdentifier)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.DomainsClient", "CreateOrUpdateOwnershipIdentifier", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.DomainsClient", "CreateOrUpdateOwnershipIdentifier", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.CreateOrUpdateOwnershipIdentifierSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.DomainsClient", "CreateOrUpdateOwnershipIdentifier", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.DomainsClient", "CreateOrUpdateOwnershipIdentifier", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.CreateOrUpdateOwnershipIdentifierResponder(resp)
@@ -334,13 +355,15 @@ func (client DomainsClient) Delete(resourceGroupName string, domainName string, 
 
 	req, err := client.DeletePreparer(resourceGroupName, domainName, forceHardDeleteDomain)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.DomainsClient", "Delete", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.DomainsClient", "Delete", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.DeleteSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "web.DomainsClient", "Delete", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.DomainsClient", "Delete", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.DeleteResponder(resp)
@@ -408,13 +431,15 @@ func (client DomainsClient) DeleteOwnershipIdentifier(resourceGroupName string, 
 
 	req, err := client.DeleteOwnershipIdentifierPreparer(resourceGroupName, domainName, name)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.DomainsClient", "DeleteOwnershipIdentifier", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.DomainsClient", "DeleteOwnershipIdentifier", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.DeleteOwnershipIdentifierSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "web.DomainsClient", "DeleteOwnershipIdentifier", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.DomainsClient", "DeleteOwnershipIdentifier", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.DeleteOwnershipIdentifierResponder(resp)
@@ -480,13 +505,15 @@ func (client DomainsClient) Get(resourceGroupName string, domainName string) (re
 
 	req, err := client.GetPreparer(resourceGroupName, domainName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.DomainsClient", "Get", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.DomainsClient", "Get", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.DomainsClient", "Get", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.DomainsClient", "Get", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetResponder(resp)
@@ -542,13 +569,15 @@ func (client DomainsClient) GetResponder(resp *http.Response) (result Domain, er
 func (client DomainsClient) GetControlCenterSsoRequest() (result DomainControlCenterSsoRequest, err error) {
 	req, err := client.GetControlCenterSsoRequestPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.DomainsClient", "GetControlCenterSsoRequest", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.DomainsClient", "GetControlCenterSsoRequest", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetControlCenterSsoRequestSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.DomainsClient", "GetControlCenterSsoRequest", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.DomainsClient", "GetControlCenterSsoRequest", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetControlCenterSsoRequestResponder(resp)
@@ -612,13 +641,15 @@ func (client DomainsClient) GetOwnershipIdentifier(resourceGroupName string, dom
 
 	req, err := client.GetOwnershipIdentifierPreparer(resourceGroupName, domainName, name)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.DomainsClient", "GetOwnershipIdentifier", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.DomainsClient", "GetOwnershipIdentifier", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetOwnershipIdentifierSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.DomainsClient", "GetOwnershipIdentifier", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.DomainsClient", "GetOwnershipIdentifier", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetOwnershipIdentifierResponder(resp)
@@ -674,13 +705,15 @@ func (client DomainsClient) GetOwnershipIdentifierResponder(resp *http.Response)
 func (client DomainsClient) List() (result DomainCollection, err error) {
 	req, err := client.ListPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.DomainsClient", "List", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.DomainsClient", "List", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.DomainsClient", "List", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.DomainsClient", "List", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListResponder(resp)
@@ -768,13 +801,15 @@ func (client DomainsClient) ListByResourceGroup(resourceGroupName string) (resul
 
 	req, err := client.ListByResourceGroupPreparer(resourceGroupName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.DomainsClient", "ListByResourceGroup", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.DomainsClient", "ListByResourceGroup", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListByResourceGroupSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.DomainsClient", "ListByResourceGroup", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.DomainsClient", "ListByResourceGroup", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListByResourceGroupResponder(resp)
@@ -863,13 +898,15 @@ func (client DomainsClient) ListOwnershipIdentifiers(resourceGroupName string, d
 
 	req, err := client.ListOwnershipIdentifiersPreparer(resourceGroupName, domainName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.DomainsClient", "ListOwnershipIdentifiers", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.DomainsClient", "ListOwnershipIdentifiers", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListOwnershipIdentifiersSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.DomainsClient", "ListOwnershipIdentifiers", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.DomainsClient", "ListOwnershipIdentifiers", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListOwnershipIdentifiersResponder(resp)
@@ -950,13 +987,15 @@ func (client DomainsClient) ListOwnershipIdentifiersNextResults(lastResults Doma
 func (client DomainsClient) ListRecommendations(parameters DomainRecommendationSearchParameters) (result NameIdentifierCollection, err error) {
 	req, err := client.ListRecommendationsPreparer(parameters)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.DomainsClient", "ListRecommendations", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.DomainsClient", "ListRecommendations", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListRecommendationsSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.DomainsClient", "ListRecommendations", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.DomainsClient", "ListRecommendations", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListRecommendationsResponder(resp)
@@ -1049,13 +1088,15 @@ func (client DomainsClient) UpdateOwnershipIdentifier(resourceGroupName string, 
 
 	req, err := client.UpdateOwnershipIdentifierPreparer(resourceGroupName, domainName, name, domainOwnershipIdentifier)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.DomainsClient", "UpdateOwnershipIdentifier", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.DomainsClient", "UpdateOwnershipIdentifier", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.UpdateOwnershipIdentifierSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.DomainsClient", "UpdateOwnershipIdentifier", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.DomainsClient", "UpdateOwnershipIdentifier", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.UpdateOwnershipIdentifierResponder(resp)

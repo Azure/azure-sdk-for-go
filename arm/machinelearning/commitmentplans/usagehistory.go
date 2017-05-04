@@ -53,13 +53,15 @@ func NewUsageHistoryClientWithBaseURI(baseURI string, subscriptionID string) Usa
 func (client UsageHistoryClient) List(resourceGroupName string, commitmentPlanName string, skipToken string) (result PlanUsageHistoryListResult, err error) {
 	req, err := client.ListPreparer(resourceGroupName, commitmentPlanName, skipToken)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "commitmentplans.UsageHistoryClient", "List", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "commitmentplans.UsageHistoryClient", "List", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "commitmentplans.UsageHistoryClient", "List", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "commitmentplans.UsageHistoryClient", "List", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListResponder(resp)
@@ -78,8 +80,9 @@ func (client UsageHistoryClient) ListPreparer(resourceGroupName string, commitme
 		"subscriptionId":     autorest.Encode("path", client.SubscriptionID),
 	}
 
+	const APIVersion = "2016-05-01-preview"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 	if len(skipToken) > 0 {
 		queryParameters["$skipToken"] = autorest.Encode("query", skipToken)

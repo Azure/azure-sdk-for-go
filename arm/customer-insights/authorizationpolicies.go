@@ -68,13 +68,15 @@ func (client AuthorizationPoliciesClient) CreateOrUpdate(resourceGroupName strin
 
 	req, err := client.CreateOrUpdatePreparer(resourceGroupName, hubName, authorizationPolicyName, parameters)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "customerinsights.AuthorizationPoliciesClient", "CreateOrUpdate", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "customerinsights.AuthorizationPoliciesClient", "CreateOrUpdate", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.CreateOrUpdateSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "customerinsights.AuthorizationPoliciesClient", "CreateOrUpdate", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "customerinsights.AuthorizationPoliciesClient", "CreateOrUpdate", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.CreateOrUpdateResponder(resp)
@@ -94,8 +96,9 @@ func (client AuthorizationPoliciesClient) CreateOrUpdatePreparer(resourceGroupNa
 		"subscriptionId":          autorest.Encode("path", client.SubscriptionID),
 	}
 
+	const APIVersion = "2017-01-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -134,13 +137,15 @@ func (client AuthorizationPoliciesClient) CreateOrUpdateResponder(resp *http.Res
 func (client AuthorizationPoliciesClient) Get(resourceGroupName string, hubName string, authorizationPolicyName string) (result AuthorizationPolicyResourceFormat, err error) {
 	req, err := client.GetPreparer(resourceGroupName, hubName, authorizationPolicyName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "customerinsights.AuthorizationPoliciesClient", "Get", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "customerinsights.AuthorizationPoliciesClient", "Get", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "customerinsights.AuthorizationPoliciesClient", "Get", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "customerinsights.AuthorizationPoliciesClient", "Get", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetResponder(resp)
@@ -160,8 +165,9 @@ func (client AuthorizationPoliciesClient) GetPreparer(resourceGroupName string, 
 		"subscriptionId":          autorest.Encode("path", client.SubscriptionID),
 	}
 
+	const APIVersion = "2017-01-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -198,13 +204,15 @@ func (client AuthorizationPoliciesClient) GetResponder(resp *http.Response) (res
 func (client AuthorizationPoliciesClient) ListByHub(resourceGroupName string, hubName string) (result AuthorizationPolicyListResult, err error) {
 	req, err := client.ListByHubPreparer(resourceGroupName, hubName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "customerinsights.AuthorizationPoliciesClient", "ListByHub", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "customerinsights.AuthorizationPoliciesClient", "ListByHub", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListByHubSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "customerinsights.AuthorizationPoliciesClient", "ListByHub", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "customerinsights.AuthorizationPoliciesClient", "ListByHub", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListByHubResponder(resp)
@@ -223,8 +231,9 @@ func (client AuthorizationPoliciesClient) ListByHubPreparer(resourceGroupName st
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
+	const APIVersion = "2017-01-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -286,13 +295,15 @@ func (client AuthorizationPoliciesClient) ListByHubNextResults(lastResults Autho
 func (client AuthorizationPoliciesClient) RegeneratePrimaryKey(resourceGroupName string, hubName string, authorizationPolicyName string) (result AuthorizationPolicy, err error) {
 	req, err := client.RegeneratePrimaryKeyPreparer(resourceGroupName, hubName, authorizationPolicyName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "customerinsights.AuthorizationPoliciesClient", "RegeneratePrimaryKey", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "customerinsights.AuthorizationPoliciesClient", "RegeneratePrimaryKey", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.RegeneratePrimaryKeySender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "customerinsights.AuthorizationPoliciesClient", "RegeneratePrimaryKey", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "customerinsights.AuthorizationPoliciesClient", "RegeneratePrimaryKey", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.RegeneratePrimaryKeyResponder(resp)
@@ -312,8 +323,9 @@ func (client AuthorizationPoliciesClient) RegeneratePrimaryKeyPreparer(resourceG
 		"subscriptionId":          autorest.Encode("path", client.SubscriptionID),
 	}
 
+	const APIVersion = "2017-01-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -351,13 +363,15 @@ func (client AuthorizationPoliciesClient) RegeneratePrimaryKeyResponder(resp *ht
 func (client AuthorizationPoliciesClient) RegenerateSecondaryKey(resourceGroupName string, hubName string, authorizationPolicyName string) (result AuthorizationPolicy, err error) {
 	req, err := client.RegenerateSecondaryKeyPreparer(resourceGroupName, hubName, authorizationPolicyName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "customerinsights.AuthorizationPoliciesClient", "RegenerateSecondaryKey", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "customerinsights.AuthorizationPoliciesClient", "RegenerateSecondaryKey", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.RegenerateSecondaryKeySender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "customerinsights.AuthorizationPoliciesClient", "RegenerateSecondaryKey", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "customerinsights.AuthorizationPoliciesClient", "RegenerateSecondaryKey", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.RegenerateSecondaryKeyResponder(resp)
@@ -377,8 +391,9 @@ func (client AuthorizationPoliciesClient) RegenerateSecondaryKeyPreparer(resourc
 		"subscriptionId":          autorest.Encode("path", client.SubscriptionID),
 	}
 
+	const APIVersion = "2017-01-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(

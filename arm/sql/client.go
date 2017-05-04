@@ -1,8 +1,8 @@
-// Package sql implements the Azure ARM Sql service API version 2014-04-01.
+// Package sql implements the Azure ARM Sql service API version .
 //
-// Provides create, read, update and delete functionality for Azure SQL
-// Database resources including servers, databases, elastic pools,
-// recommendations, operations, and usage metrics.
+// The Azure SQL Database management API provides a RESTful set of web services
+// that interact with Azure SQL Database services to manage your databases. The
+// API enables you to create, retrieve, update, and delete databases.
 package sql
 
 // Copyright (c) Microsoft and contributors.  All rights reserved.
@@ -25,8 +25,6 @@ package sql
 
 import (
 	"github.com/Azure/go-autorest/autorest"
-	"github.com/Azure/go-autorest/autorest/azure"
-	"net/http"
 )
 
 const (
@@ -53,59 +51,4 @@ func NewWithBaseURI(baseURI string, subscriptionID string) ManagementClient {
 		BaseURI:        baseURI,
 		SubscriptionID: subscriptionID,
 	}
-}
-
-// ListOperations lists all of the available SQL Rest API operations.
-func (client ManagementClient) ListOperations() (result OperationListResult, err error) {
-	req, err := client.ListOperationsPreparer()
-	if err != nil {
-		return result, autorest.NewErrorWithError(err, "sql.ManagementClient", "ListOperations", nil, "Failure preparing request")
-	}
-
-	resp, err := client.ListOperationsSender(req)
-	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "sql.ManagementClient", "ListOperations", resp, "Failure sending request")
-	}
-
-	result, err = client.ListOperationsResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.ManagementClient", "ListOperations", resp, "Failure responding to request")
-	}
-
-	return
-}
-
-// ListOperationsPreparer prepares the ListOperations request.
-func (client ManagementClient) ListOperationsPreparer() (*http.Request, error) {
-	const APIVersion = "2014-04-01"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsGet(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPath("/providers/Microsoft.Sql/operations"),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare(&http.Request{})
-}
-
-// ListOperationsSender sends the ListOperations request. The method will close the
-// http.Response Body if it receives an error.
-func (client ManagementClient) ListOperationsSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
-}
-
-// ListOperationsResponder handles the response to the ListOperations request. The method always
-// closes the http.Response Body.
-func (client ManagementClient) ListOperationsResponder(resp *http.Response) (result OperationListResult, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
 }

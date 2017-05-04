@@ -1,8 +1,7 @@
 // Package apimanagement implements the Azure ARM Apimanagement service API
-// version 2016-07-07.
+// version .
 //
-// Use these REST APIs for performing operations on entities like API, Product,
-// and Subscription associated with your Azure API Management deployment.
+// Composite Swagger for ApiManagement Client
 package apimanagement
 
 // Copyright (c) Microsoft and contributors.  All rights reserved.

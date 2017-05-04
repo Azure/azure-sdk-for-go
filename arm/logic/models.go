@@ -367,6 +367,30 @@ const (
 	SegmentTerminatorSuffixNotSpecified SegmentTerminatorSuffix = "NotSpecified"
 )
 
+// SigningAlgorithm enumerates the values for signing algorithm.
+type SigningAlgorithm string
+
+const (
+	// SigningAlgorithmDefault specifies the signing algorithm default state
+	// for signing algorithm.
+	SigningAlgorithmDefault SigningAlgorithm = "Default"
+	// SigningAlgorithmNotSpecified specifies the signing algorithm not
+	// specified state for signing algorithm.
+	SigningAlgorithmNotSpecified SigningAlgorithm = "NotSpecified"
+	// SigningAlgorithmSHA1 specifies the signing algorithm sha1 state for
+	// signing algorithm.
+	SigningAlgorithmSHA1 SigningAlgorithm = "SHA1"
+	// SigningAlgorithmSHA2256 specifies the signing algorithm sha2256 state
+	// for signing algorithm.
+	SigningAlgorithmSHA2256 SigningAlgorithm = "SHA2256"
+	// SigningAlgorithmSHA2384 specifies the signing algorithm sha2384 state
+	// for signing algorithm.
+	SigningAlgorithmSHA2384 SigningAlgorithm = "SHA2384"
+	// SigningAlgorithmSHA2512 specifies the signing algorithm sha2512 state
+	// for signing algorithm.
+	SigningAlgorithmSHA2512 SigningAlgorithm = "SHA2512"
+)
+
 // SkuName enumerates the values for sku name.
 type SkuName string
 
@@ -770,6 +794,7 @@ type AS2SecuritySettings struct {
 	EnableNrrForOutboundEncodedMessages *bool   `json:"enableNrrForOutboundEncodedMessages,omitempty"`
 	EnableNrrForOutboundDecodedMessages *bool   `json:"enableNrrForOutboundDecodedMessages,omitempty"`
 	EnableNrrForInboundMdn              *bool   `json:"enableNrrForInboundMdn,omitempty"`
+	Sha2AlgorithmFormat                 *string `json:"sha2AlgorithmFormat,omitempty"`
 }
 
 // AS2ValidationSettings is the AS2 agreement validation settings.
@@ -783,6 +808,7 @@ type AS2ValidationSettings struct {
 	CheckCertificateRevocationListOnSend    *bool               `json:"checkCertificateRevocationListOnSend,omitempty"`
 	CheckCertificateRevocationListOnReceive *bool               `json:"checkCertificateRevocationListOnReceive,omitempty"`
 	EncryptionAlgorithm                     EncryptionAlgorithm `json:"encryptionAlgorithm,omitempty"`
+	SigningAlgorithm                        SigningAlgorithm    `json:"signingAlgorithm,omitempty"`
 }
 
 // B2BPartnerContent is the B2B partner content.
@@ -1434,6 +1460,11 @@ type RecurrenceScheduleOccurrence struct {
 	Occurrence *int32    `json:"occurrence,omitempty"`
 }
 
+// RegenerateActionParameter is the access key regenerate action content.
+type RegenerateActionParameter struct {
+	KeyType KeyType `json:"keyType,omitempty"`
+}
+
 // Resource is the base resource type.
 type Resource struct {
 	ID       *string             `json:"id,omitempty"`
@@ -1448,6 +1479,16 @@ type ResourceReference struct {
 	ID   *string `json:"id,omitempty"`
 	Name *string `json:"name,omitempty"`
 	Type *string `json:"type,omitempty"`
+}
+
+// RetryHistory is the retry history.
+type RetryHistory struct {
+	StartTime        *date.Time     `json:"startTime,omitempty"`
+	EndTime          *date.Time     `json:"endTime,omitempty"`
+	Code             *string        `json:"code,omitempty"`
+	ClientRequestID  *string        `json:"clientRequestId,omitempty"`
+	ServiceRequestID *string        `json:"serviceRequestId,omitempty"`
+	Error            *ErrorResponse `json:"error,omitempty"`
 }
 
 // SetObject is
@@ -1587,6 +1628,7 @@ type WorkflowRunActionProperties struct {
 	InputsLink        *ContentLink            `json:"inputsLink,omitempty"`
 	OutputsLink       *ContentLink            `json:"outputsLink,omitempty"`
 	TrackedProperties *map[string]interface{} `json:"trackedProperties,omitempty"`
+	RetryHistory      *[]RetryHistory         `json:"retryHistory,omitempty"`
 }
 
 // WorkflowRunFilter is the workflow run filter.
@@ -1656,8 +1698,13 @@ type WorkflowTrigger struct {
 
 // WorkflowTriggerCallbackURL is the workflow trigger callback URL.
 type WorkflowTriggerCallbackURL struct {
-	autorest.Response `json:"-"`
-	Value             *string `json:"value,omitempty"`
+	autorest.Response      `json:"-"`
+	Value                  *string                                `json:"value,omitempty"`
+	Method                 *string                                `json:"method,omitempty"`
+	BasePath               *string                                `json:"basePath,omitempty"`
+	RelativePath           *string                                `json:"relativePath,omitempty"`
+	RelativePathParameters *[]string                              `json:"relativePathParameters,omitempty"`
+	Queries                *WorkflowTriggerListCallbackURLQueries `json:"queries,omitempty"`
 }
 
 // WorkflowTriggerFilter is the workflow trigger filter.
@@ -1711,6 +1758,15 @@ type WorkflowTriggerHistoryProperties struct {
 	OutputsLink *ContentLink            `json:"outputsLink,omitempty"`
 	Fired       *bool                   `json:"fired,omitempty"`
 	Run         *ResourceReference      `json:"run,omitempty"`
+}
+
+// WorkflowTriggerListCallbackURLQueries is gets the workflow trigger callback
+// URL query parameters.
+type WorkflowTriggerListCallbackURLQueries struct {
+	APIVersion *string `json:"api-version,omitempty"`
+	Sp         *string `json:"sp,omitempty"`
+	Sv         *string `json:"sv,omitempty"`
+	Sig        *string `json:"sig,omitempty"`
 }
 
 // WorkflowTriggerListResult is the list of workflow triggers.

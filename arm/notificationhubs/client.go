@@ -1,5 +1,5 @@
 // Package notificationhubs implements the Azure ARM Notificationhubs service
-// API version 2016-03-01.
+// API version 2017-04-01.
 //
 // Azure NotificationHub client
 package notificationhubs

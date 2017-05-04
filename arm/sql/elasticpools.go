@@ -24,9 +24,10 @@ import (
 	"net/http"
 )
 
-// ElasticPoolsClient is the provides create, read, update and delete
-// functionality for Azure SQL Database resources including servers, databases,
-// elastic pools, recommendations, operations, and usage metrics.
+// ElasticPoolsClient is the the Azure SQL Database management API provides a
+// RESTful set of web services that interact with Azure SQL Database services
+// to manage your databases. The API enables you to create, retrieve, update,
+// and delete databases.
 type ElasticPoolsClient struct {
 	ManagementClient
 }
@@ -52,24 +53,37 @@ func NewElasticPoolsClientWithBaseURI(baseURI string, subscriptionID string) Ela
 // the portal. serverName is the name of the server. elasticPoolName is the
 // name of the elastic pool to be operated on (updated or created). parameters
 // is the required parameters for creating or updating an elastic pool.
-func (client ElasticPoolsClient) CreateOrUpdate(resourceGroupName string, serverName string, elasticPoolName string, parameters ElasticPool, cancel <-chan struct{}) (result autorest.Response, err error) {
-	req, err := client.CreateOrUpdatePreparer(resourceGroupName, serverName, elasticPoolName, parameters, cancel)
-	if err != nil {
-		return result, autorest.NewErrorWithError(err, "sql.ElasticPoolsClient", "CreateOrUpdate", nil, "Failure preparing request")
-	}
+func (client ElasticPoolsClient) CreateOrUpdate(resourceGroupName string, serverName string, elasticPoolName string, parameters ElasticPool, cancel <-chan struct{}) (<-chan ElasticPool, <-chan error) {
+	resultChan := make(chan ElasticPool, 1)
+	errChan := make(chan error, 1)
+	go func() {
+		var err error
+		var result ElasticPool
+		defer func() {
+			resultChan <- result
+			errChan <- err
+			close(resultChan)
+			close(errChan)
+		}()
+		req, err := client.CreateOrUpdatePreparer(resourceGroupName, serverName, elasticPoolName, parameters, cancel)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "sql.ElasticPoolsClient", "CreateOrUpdate", nil, "Failure preparing request")
+			return
+		}
 
-	resp, err := client.CreateOrUpdateSender(req)
-	if err != nil {
-		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "sql.ElasticPoolsClient", "CreateOrUpdate", resp, "Failure sending request")
-	}
+		resp, err := client.CreateOrUpdateSender(req)
+		if err != nil {
+			result.Response = autorest.Response{Response: resp}
+			err = autorest.NewErrorWithError(err, "sql.ElasticPoolsClient", "CreateOrUpdate", resp, "Failure sending request")
+			return
+		}
 
-	result, err = client.CreateOrUpdateResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.ElasticPoolsClient", "CreateOrUpdate", resp, "Failure responding to request")
-	}
-
-	return
+		result, err = client.CreateOrUpdateResponder(resp)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "sql.ElasticPoolsClient", "CreateOrUpdate", resp, "Failure responding to request")
+		}
+	}()
+	return resultChan, errChan
 }
 
 // CreateOrUpdatePreparer prepares the CreateOrUpdate request.
@@ -106,13 +120,14 @@ func (client ElasticPoolsClient) CreateOrUpdateSender(req *http.Request) (*http.
 
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
 // closes the http.Response Body.
-func (client ElasticPoolsClient) CreateOrUpdateResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client ElasticPoolsClient) CreateOrUpdateResponder(resp *http.Response) (result ElasticPool, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated, http.StatusAccepted),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = resp
+	result.Response = autorest.Response{Response: resp}
 	return
 }
 
@@ -125,13 +140,15 @@ func (client ElasticPoolsClient) CreateOrUpdateResponder(resp *http.Response) (r
 func (client ElasticPoolsClient) Delete(resourceGroupName string, serverName string, elasticPoolName string) (result autorest.Response, err error) {
 	req, err := client.DeletePreparer(resourceGroupName, serverName, elasticPoolName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "sql.ElasticPoolsClient", "Delete", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "sql.ElasticPoolsClient", "Delete", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.DeleteSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "sql.ElasticPoolsClient", "Delete", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "sql.ElasticPoolsClient", "Delete", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.DeleteResponder(resp)
@@ -191,13 +208,15 @@ func (client ElasticPoolsClient) DeleteResponder(resp *http.Response) (result au
 func (client ElasticPoolsClient) Get(resourceGroupName string, serverName string, elasticPoolName string) (result ElasticPool, err error) {
 	req, err := client.GetPreparer(resourceGroupName, serverName, elasticPoolName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "sql.ElasticPoolsClient", "Get", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "sql.ElasticPoolsClient", "Get", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "sql.ElasticPoolsClient", "Get", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "sql.ElasticPoolsClient", "Get", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetResponder(resp)
@@ -259,13 +278,15 @@ func (client ElasticPoolsClient) GetResponder(resp *http.Response) (result Elast
 func (client ElasticPoolsClient) GetDatabase(resourceGroupName string, serverName string, elasticPoolName string, databaseName string) (result Database, err error) {
 	req, err := client.GetDatabasePreparer(resourceGroupName, serverName, elasticPoolName, databaseName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "sql.ElasticPoolsClient", "GetDatabase", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "sql.ElasticPoolsClient", "GetDatabase", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetDatabaseSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "sql.ElasticPoolsClient", "GetDatabase", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "sql.ElasticPoolsClient", "GetDatabase", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetDatabaseResponder(resp)
@@ -327,13 +348,15 @@ func (client ElasticPoolsClient) GetDatabaseResponder(resp *http.Response) (resu
 func (client ElasticPoolsClient) ListActivity(resourceGroupName string, serverName string, elasticPoolName string) (result ElasticPoolActivityListResult, err error) {
 	req, err := client.ListActivityPreparer(resourceGroupName, serverName, elasticPoolName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "sql.ElasticPoolsClient", "ListActivity", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "sql.ElasticPoolsClient", "ListActivity", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListActivitySender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "sql.ElasticPoolsClient", "ListActivity", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "sql.ElasticPoolsClient", "ListActivity", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListActivityResponder(resp)
@@ -393,13 +416,15 @@ func (client ElasticPoolsClient) ListActivityResponder(resp *http.Response) (res
 func (client ElasticPoolsClient) ListByServer(resourceGroupName string, serverName string) (result ElasticPoolListResult, err error) {
 	req, err := client.ListByServerPreparer(resourceGroupName, serverName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "sql.ElasticPoolsClient", "ListByServer", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "sql.ElasticPoolsClient", "ListByServer", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListByServerSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "sql.ElasticPoolsClient", "ListByServer", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "sql.ElasticPoolsClient", "ListByServer", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListByServerResponder(resp)
@@ -460,13 +485,15 @@ func (client ElasticPoolsClient) ListByServerResponder(resp *http.Response) (res
 func (client ElasticPoolsClient) ListDatabaseActivity(resourceGroupName string, serverName string, elasticPoolName string) (result ElasticPoolDatabaseActivityListResult, err error) {
 	req, err := client.ListDatabaseActivityPreparer(resourceGroupName, serverName, elasticPoolName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "sql.ElasticPoolsClient", "ListDatabaseActivity", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "sql.ElasticPoolsClient", "ListDatabaseActivity", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListDatabaseActivitySender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "sql.ElasticPoolsClient", "ListDatabaseActivity", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "sql.ElasticPoolsClient", "ListDatabaseActivity", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListDatabaseActivityResponder(resp)
@@ -527,13 +554,15 @@ func (client ElasticPoolsClient) ListDatabaseActivityResponder(resp *http.Respon
 func (client ElasticPoolsClient) ListDatabases(resourceGroupName string, serverName string, elasticPoolName string) (result DatabaseListResult, err error) {
 	req, err := client.ListDatabasesPreparer(resourceGroupName, serverName, elasticPoolName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "sql.ElasticPoolsClient", "ListDatabases", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "sql.ElasticPoolsClient", "ListDatabases", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListDatabasesSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "sql.ElasticPoolsClient", "ListDatabases", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "sql.ElasticPoolsClient", "ListDatabases", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListDatabasesResponder(resp)

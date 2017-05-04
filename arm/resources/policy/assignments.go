@@ -52,13 +52,15 @@ func NewAssignmentsClientWithBaseURI(baseURI string, subscriptionID string) Assi
 func (client AssignmentsClient) Create(scope string, policyAssignmentName string, parameters Assignment) (result Assignment, err error) {
 	req, err := client.CreatePreparer(scope, policyAssignmentName, parameters)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "policy.AssignmentsClient", "Create", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "policy.AssignmentsClient", "Create", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.CreateSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "policy.AssignmentsClient", "Create", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "policy.AssignmentsClient", "Create", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.CreateResponder(resp)
@@ -126,13 +128,15 @@ func (client AssignmentsClient) CreateResponder(resp *http.Response) (result Ass
 func (client AssignmentsClient) CreateByID(policyAssignmentID string, parameters Assignment) (result Assignment, err error) {
 	req, err := client.CreateByIDPreparer(policyAssignmentID, parameters)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "policy.AssignmentsClient", "CreateByID", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "policy.AssignmentsClient", "CreateByID", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.CreateByIDSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "policy.AssignmentsClient", "CreateByID", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "policy.AssignmentsClient", "CreateByID", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.CreateByIDResponder(resp)
@@ -190,13 +194,15 @@ func (client AssignmentsClient) CreateByIDResponder(resp *http.Response) (result
 func (client AssignmentsClient) Delete(scope string, policyAssignmentName string) (result Assignment, err error) {
 	req, err := client.DeletePreparer(scope, policyAssignmentName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "policy.AssignmentsClient", "Delete", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "policy.AssignmentsClient", "Delete", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.DeleteSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "policy.AssignmentsClient", "Delete", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "policy.AssignmentsClient", "Delete", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.DeleteResponder(resp)
@@ -259,13 +265,15 @@ func (client AssignmentsClient) DeleteResponder(resp *http.Response) (result Ass
 func (client AssignmentsClient) DeleteByID(policyAssignmentID string) (result Assignment, err error) {
 	req, err := client.DeleteByIDPreparer(policyAssignmentID)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "policy.AssignmentsClient", "DeleteByID", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "policy.AssignmentsClient", "DeleteByID", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.DeleteByIDSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "policy.AssignmentsClient", "DeleteByID", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "policy.AssignmentsClient", "DeleteByID", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.DeleteByIDResponder(resp)
@@ -321,13 +329,15 @@ func (client AssignmentsClient) DeleteByIDResponder(resp *http.Response) (result
 func (client AssignmentsClient) Get(scope string, policyAssignmentName string) (result Assignment, err error) {
 	req, err := client.GetPreparer(scope, policyAssignmentName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "policy.AssignmentsClient", "Get", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "policy.AssignmentsClient", "Get", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "policy.AssignmentsClient", "Get", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "policy.AssignmentsClient", "Get", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetResponder(resp)
@@ -389,13 +399,15 @@ func (client AssignmentsClient) GetResponder(resp *http.Response) (result Assign
 func (client AssignmentsClient) GetByID(policyAssignmentID string) (result Assignment, err error) {
 	req, err := client.GetByIDPreparer(policyAssignmentID)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "policy.AssignmentsClient", "GetByID", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "policy.AssignmentsClient", "GetByID", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetByIDSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "policy.AssignmentsClient", "GetByID", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "policy.AssignmentsClient", "GetByID", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetByIDResponder(resp)
@@ -450,13 +462,15 @@ func (client AssignmentsClient) GetByIDResponder(resp *http.Response) (result As
 func (client AssignmentsClient) List(filter string) (result AssignmentListResult, err error) {
 	req, err := client.ListPreparer(filter)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "policy.AssignmentsClient", "List", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "policy.AssignmentsClient", "List", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "policy.AssignmentsClient", "List", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "policy.AssignmentsClient", "List", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListResponder(resp)
@@ -550,13 +564,15 @@ func (client AssignmentsClient) ListForResource(resourceGroupName string, resour
 
 	req, err := client.ListForResourcePreparer(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, filter)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "policy.AssignmentsClient", "ListForResource", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "policy.AssignmentsClient", "ListForResource", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListForResourceSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "policy.AssignmentsClient", "ListForResource", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "policy.AssignmentsClient", "ListForResource", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListForResourceResponder(resp)
@@ -652,13 +668,15 @@ func (client AssignmentsClient) ListForResourceGroup(resourceGroupName string, f
 
 	req, err := client.ListForResourceGroupPreparer(resourceGroupName, filter)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "policy.AssignmentsClient", "ListForResourceGroup", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "policy.AssignmentsClient", "ListForResourceGroup", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListForResourceGroupSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "policy.AssignmentsClient", "ListForResourceGroup", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "policy.AssignmentsClient", "ListForResourceGroup", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListForResourceGroupResponder(resp)

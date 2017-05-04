@@ -50,13 +50,15 @@ func NewWorkspaceCollectionsClientWithBaseURI(baseURI string, subscriptionID str
 func (client WorkspaceCollectionsClient) CheckNameAvailability(location string, body CheckNameRequest) (result CheckNameResponse, err error) {
 	req, err := client.CheckNameAvailabilityPreparer(location, body)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "powerbiembedded.WorkspaceCollectionsClient", "CheckNameAvailability", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "powerbiembedded.WorkspaceCollectionsClient", "CheckNameAvailability", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.CheckNameAvailabilitySender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "powerbiembedded.WorkspaceCollectionsClient", "CheckNameAvailability", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "powerbiembedded.WorkspaceCollectionsClient", "CheckNameAvailability", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.CheckNameAvailabilityResponder(resp)
@@ -128,13 +130,15 @@ func (client WorkspaceCollectionsClient) Create(resourceGroupName string, worksp
 
 	req, err := client.CreatePreparer(resourceGroupName, workspaceCollectionName, body)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "powerbiembedded.WorkspaceCollectionsClient", "Create", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "powerbiembedded.WorkspaceCollectionsClient", "Create", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.CreateSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "powerbiembedded.WorkspaceCollectionsClient", "Create", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "powerbiembedded.WorkspaceCollectionsClient", "Create", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.CreateResponder(resp)
@@ -194,24 +198,37 @@ func (client WorkspaceCollectionsClient) CreateResponder(resp *http.Response) (r
 //
 // resourceGroupName is azure resource group workspaceCollectionName is power
 // BI Embedded Workspace Collection name
-func (client WorkspaceCollectionsClient) Delete(resourceGroupName string, workspaceCollectionName string, cancel <-chan struct{}) (result autorest.Response, err error) {
-	req, err := client.DeletePreparer(resourceGroupName, workspaceCollectionName, cancel)
-	if err != nil {
-		return result, autorest.NewErrorWithError(err, "powerbiembedded.WorkspaceCollectionsClient", "Delete", nil, "Failure preparing request")
-	}
+func (client WorkspaceCollectionsClient) Delete(resourceGroupName string, workspaceCollectionName string, cancel <-chan struct{}) (<-chan autorest.Response, <-chan error) {
+	resultChan := make(chan autorest.Response, 1)
+	errChan := make(chan error, 1)
+	go func() {
+		var err error
+		var result autorest.Response
+		defer func() {
+			resultChan <- result
+			errChan <- err
+			close(resultChan)
+			close(errChan)
+		}()
+		req, err := client.DeletePreparer(resourceGroupName, workspaceCollectionName, cancel)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "powerbiembedded.WorkspaceCollectionsClient", "Delete", nil, "Failure preparing request")
+			return
+		}
 
-	resp, err := client.DeleteSender(req)
-	if err != nil {
-		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "powerbiembedded.WorkspaceCollectionsClient", "Delete", resp, "Failure sending request")
-	}
+		resp, err := client.DeleteSender(req)
+		if err != nil {
+			result.Response = resp
+			err = autorest.NewErrorWithError(err, "powerbiembedded.WorkspaceCollectionsClient", "Delete", resp, "Failure sending request")
+			return
+		}
 
-	result, err = client.DeleteResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "powerbiembedded.WorkspaceCollectionsClient", "Delete", resp, "Failure responding to request")
-	}
-
-	return
+		result, err = client.DeleteResponder(resp)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "powerbiembedded.WorkspaceCollectionsClient", "Delete", resp, "Failure responding to request")
+		}
+	}()
+	return resultChan, errChan
 }
 
 // DeletePreparer prepares the Delete request.
@@ -263,13 +280,15 @@ func (client WorkspaceCollectionsClient) DeleteResponder(resp *http.Response) (r
 func (client WorkspaceCollectionsClient) GetAccessKeys(resourceGroupName string, workspaceCollectionName string) (result WorkspaceCollectionAccessKeys, err error) {
 	req, err := client.GetAccessKeysPreparer(resourceGroupName, workspaceCollectionName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "powerbiembedded.WorkspaceCollectionsClient", "GetAccessKeys", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "powerbiembedded.WorkspaceCollectionsClient", "GetAccessKeys", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetAccessKeysSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "powerbiembedded.WorkspaceCollectionsClient", "GetAccessKeys", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "powerbiembedded.WorkspaceCollectionsClient", "GetAccessKeys", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetAccessKeysResponder(resp)
@@ -327,13 +346,15 @@ func (client WorkspaceCollectionsClient) GetAccessKeysResponder(resp *http.Respo
 func (client WorkspaceCollectionsClient) GetByName(resourceGroupName string, workspaceCollectionName string) (result WorkspaceCollection, err error) {
 	req, err := client.GetByNamePreparer(resourceGroupName, workspaceCollectionName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "powerbiembedded.WorkspaceCollectionsClient", "GetByName", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "powerbiembedded.WorkspaceCollectionsClient", "GetByName", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetByNameSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "powerbiembedded.WorkspaceCollectionsClient", "GetByName", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "powerbiembedded.WorkspaceCollectionsClient", "GetByName", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetByNameResponder(resp)
@@ -391,13 +412,15 @@ func (client WorkspaceCollectionsClient) GetByNameResponder(resp *http.Response)
 func (client WorkspaceCollectionsClient) ListByResourceGroup(resourceGroupName string) (result WorkspaceCollectionList, err error) {
 	req, err := client.ListByResourceGroupPreparer(resourceGroupName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "powerbiembedded.WorkspaceCollectionsClient", "ListByResourceGroup", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "powerbiembedded.WorkspaceCollectionsClient", "ListByResourceGroup", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListByResourceGroupSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "powerbiembedded.WorkspaceCollectionsClient", "ListByResourceGroup", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "powerbiembedded.WorkspaceCollectionsClient", "ListByResourceGroup", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListByResourceGroupResponder(resp)
@@ -452,13 +475,15 @@ func (client WorkspaceCollectionsClient) ListByResourceGroupResponder(resp *http
 func (client WorkspaceCollectionsClient) ListBySubscription() (result WorkspaceCollectionList, err error) {
 	req, err := client.ListBySubscriptionPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "powerbiembedded.WorkspaceCollectionsClient", "ListBySubscription", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "powerbiembedded.WorkspaceCollectionsClient", "ListBySubscription", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListBySubscriptionSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "powerbiembedded.WorkspaceCollectionsClient", "ListBySubscription", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "powerbiembedded.WorkspaceCollectionsClient", "ListBySubscription", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListBySubscriptionResponder(resp)
@@ -515,13 +540,15 @@ func (client WorkspaceCollectionsClient) ListBySubscriptionResponder(resp *http.
 func (client WorkspaceCollectionsClient) Migrate(resourceGroupName string, body MigrateWorkspaceCollectionRequest) (result autorest.Response, err error) {
 	req, err := client.MigratePreparer(resourceGroupName, body)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "powerbiembedded.WorkspaceCollectionsClient", "Migrate", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "powerbiembedded.WorkspaceCollectionsClient", "Migrate", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.MigrateSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "powerbiembedded.WorkspaceCollectionsClient", "Migrate", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "powerbiembedded.WorkspaceCollectionsClient", "Migrate", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.MigrateResponder(resp)
@@ -580,13 +607,15 @@ func (client WorkspaceCollectionsClient) MigrateResponder(resp *http.Response) (
 func (client WorkspaceCollectionsClient) RegenerateKey(resourceGroupName string, workspaceCollectionName string, body WorkspaceCollectionAccessKey) (result WorkspaceCollectionAccessKeys, err error) {
 	req, err := client.RegenerateKeyPreparer(resourceGroupName, workspaceCollectionName, body)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "powerbiembedded.WorkspaceCollectionsClient", "RegenerateKey", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "powerbiembedded.WorkspaceCollectionsClient", "RegenerateKey", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.RegenerateKeySender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "powerbiembedded.WorkspaceCollectionsClient", "RegenerateKey", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "powerbiembedded.WorkspaceCollectionsClient", "RegenerateKey", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.RegenerateKeyResponder(resp)
@@ -648,13 +677,15 @@ func (client WorkspaceCollectionsClient) RegenerateKeyResponder(resp *http.Respo
 func (client WorkspaceCollectionsClient) Update(resourceGroupName string, workspaceCollectionName string, body UpdateWorkspaceCollectionRequest) (result WorkspaceCollection, err error) {
 	req, err := client.UpdatePreparer(resourceGroupName, workspaceCollectionName, body)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "powerbiembedded.WorkspaceCollectionsClient", "Update", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "powerbiembedded.WorkspaceCollectionsClient", "Update", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.UpdateSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "powerbiembedded.WorkspaceCollectionsClient", "Update", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "powerbiembedded.WorkspaceCollectionsClient", "Update", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.UpdateResponder(resp)

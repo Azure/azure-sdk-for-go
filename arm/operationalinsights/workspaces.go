@@ -49,7 +49,9 @@ func NewWorkspacesClientWithBaseURI(baseURI string, subscriptionID string) Works
 // resourceGroupName is the resource group name of the workspace. workspaceName
 // is the name of the workspace. parameters is the parameters required to
 // create or update a workspace.
-func (client WorkspacesClient) CreateOrUpdate(resourceGroupName string, workspaceName string, parameters Workspace, cancel <-chan struct{}) (result autorest.Response, err error) {
+func (client WorkspacesClient) CreateOrUpdate(resourceGroupName string, workspaceName string, parameters Workspace, cancel <-chan struct{}) (<-chan Workspace, <-chan error) {
+	resultChan := make(chan Workspace, 1)
+	errChan := make(chan error, 1)
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: workspaceName,
 			Constraints: []validation.Constraint{{Target: "workspaceName", Name: validation.MaxLength, Rule: 63, Chain: nil},
@@ -62,26 +64,40 @@ func (client WorkspacesClient) CreateOrUpdate(resourceGroupName string, workspac
 						{Target: "parameters.WorkspaceProperties.RetentionInDays", Name: validation.InclusiveMinimum, Rule: -1, Chain: nil},
 					}},
 				}}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "operationalinsights.WorkspacesClient", "CreateOrUpdate")
+		errChan <- validation.NewErrorWithValidationError(err, "operationalinsights.WorkspacesClient", "CreateOrUpdate")
+		close(errChan)
+		close(resultChan)
+		return resultChan, errChan
 	}
 
-	req, err := client.CreateOrUpdatePreparer(resourceGroupName, workspaceName, parameters, cancel)
-	if err != nil {
-		return result, autorest.NewErrorWithError(err, "operationalinsights.WorkspacesClient", "CreateOrUpdate", nil, "Failure preparing request")
-	}
+	go func() {
+		var err error
+		var result Workspace
+		defer func() {
+			resultChan <- result
+			errChan <- err
+			close(resultChan)
+			close(errChan)
+		}()
+		req, err := client.CreateOrUpdatePreparer(resourceGroupName, workspaceName, parameters, cancel)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "operationalinsights.WorkspacesClient", "CreateOrUpdate", nil, "Failure preparing request")
+			return
+		}
 
-	resp, err := client.CreateOrUpdateSender(req)
-	if err != nil {
-		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "operationalinsights.WorkspacesClient", "CreateOrUpdate", resp, "Failure sending request")
-	}
+		resp, err := client.CreateOrUpdateSender(req)
+		if err != nil {
+			result.Response = autorest.Response{Response: resp}
+			err = autorest.NewErrorWithError(err, "operationalinsights.WorkspacesClient", "CreateOrUpdate", resp, "Failure sending request")
+			return
+		}
 
-	result, err = client.CreateOrUpdateResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "operationalinsights.WorkspacesClient", "CreateOrUpdate", resp, "Failure responding to request")
-	}
-
-	return
+		result, err = client.CreateOrUpdateResponder(resp)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "operationalinsights.WorkspacesClient", "CreateOrUpdate", resp, "Failure responding to request")
+		}
+	}()
+	return resultChan, errChan
 }
 
 // CreateOrUpdatePreparer prepares the CreateOrUpdate request.
@@ -92,8 +108,9 @@ func (client WorkspacesClient) CreateOrUpdatePreparer(resourceGroupName string, 
 		"workspaceName":     autorest.Encode("path", workspaceName),
 	}
 
+	const APIVersion = "2015-11-01-preview"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -116,13 +133,14 @@ func (client WorkspacesClient) CreateOrUpdateSender(req *http.Request) (*http.Re
 
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
 // closes the http.Response Body.
-func (client WorkspacesClient) CreateOrUpdateResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client WorkspacesClient) CreateOrUpdateResponder(resp *http.Response) (result Workspace, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = resp
+	result.Response = autorest.Response{Response: resp}
 	return
 }
 
@@ -133,13 +151,15 @@ func (client WorkspacesClient) CreateOrUpdateResponder(resp *http.Response) (res
 func (client WorkspacesClient) Delete(resourceGroupName string, workspaceName string) (result autorest.Response, err error) {
 	req, err := client.DeletePreparer(resourceGroupName, workspaceName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "operationalinsights.WorkspacesClient", "Delete", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "operationalinsights.WorkspacesClient", "Delete", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.DeleteSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "operationalinsights.WorkspacesClient", "Delete", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "operationalinsights.WorkspacesClient", "Delete", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.DeleteResponder(resp)
@@ -158,8 +178,9 @@ func (client WorkspacesClient) DeletePreparer(resourceGroupName string, workspac
 		"workspaceName":     autorest.Encode("path", workspaceName),
 	}
 
+	const APIVersion = "2015-11-01-preview"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -204,13 +225,15 @@ func (client WorkspacesClient) DisableIntelligencePack(resourceGroupName string,
 
 	req, err := client.DisableIntelligencePackPreparer(resourceGroupName, workspaceName, intelligencePackName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "operationalinsights.WorkspacesClient", "DisableIntelligencePack", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "operationalinsights.WorkspacesClient", "DisableIntelligencePack", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.DisableIntelligencePackSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "operationalinsights.WorkspacesClient", "DisableIntelligencePack", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "operationalinsights.WorkspacesClient", "DisableIntelligencePack", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.DisableIntelligencePackResponder(resp)
@@ -230,8 +253,9 @@ func (client WorkspacesClient) DisableIntelligencePackPreparer(resourceGroupName
 		"workspaceName":        autorest.Encode("path", workspaceName),
 	}
 
+	const APIVersion = "2015-11-01-preview"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -276,13 +300,15 @@ func (client WorkspacesClient) EnableIntelligencePack(resourceGroupName string, 
 
 	req, err := client.EnableIntelligencePackPreparer(resourceGroupName, workspaceName, intelligencePackName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "operationalinsights.WorkspacesClient", "EnableIntelligencePack", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "operationalinsights.WorkspacesClient", "EnableIntelligencePack", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.EnableIntelligencePackSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "operationalinsights.WorkspacesClient", "EnableIntelligencePack", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "operationalinsights.WorkspacesClient", "EnableIntelligencePack", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.EnableIntelligencePackResponder(resp)
@@ -302,8 +328,9 @@ func (client WorkspacesClient) EnableIntelligencePackPreparer(resourceGroupName 
 		"workspaceName":        autorest.Encode("path", workspaceName),
 	}
 
+	const APIVersion = "2015-11-01-preview"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -339,13 +366,15 @@ func (client WorkspacesClient) EnableIntelligencePackResponder(resp *http.Respon
 func (client WorkspacesClient) Get(resourceGroupName string, workspaceName string) (result Workspace, err error) {
 	req, err := client.GetPreparer(resourceGroupName, workspaceName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "operationalinsights.WorkspacesClient", "Get", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "operationalinsights.WorkspacesClient", "Get", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "operationalinsights.WorkspacesClient", "Get", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "operationalinsights.WorkspacesClient", "Get", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetResponder(resp)
@@ -364,8 +393,9 @@ func (client WorkspacesClient) GetPreparer(resourceGroupName string, workspaceNa
 		"workspaceName":     autorest.Encode("path", workspaceName),
 	}
 
+	const APIVersion = "2015-11-01-preview"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -410,13 +440,15 @@ func (client WorkspacesClient) GetSharedKeys(resourceGroupName string, workspace
 
 	req, err := client.GetSharedKeysPreparer(resourceGroupName, workspaceName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "operationalinsights.WorkspacesClient", "GetSharedKeys", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "operationalinsights.WorkspacesClient", "GetSharedKeys", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetSharedKeysSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "operationalinsights.WorkspacesClient", "GetSharedKeys", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "operationalinsights.WorkspacesClient", "GetSharedKeys", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetSharedKeysResponder(resp)
@@ -435,8 +467,9 @@ func (client WorkspacesClient) GetSharedKeysPreparer(resourceGroupName string, w
 		"workspaceName":     autorest.Encode("path", workspaceName),
 	}
 
+	const APIVersion = "2015-11-01-preview"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -470,13 +503,15 @@ func (client WorkspacesClient) GetSharedKeysResponder(resp *http.Response) (resu
 func (client WorkspacesClient) List() (result WorkspaceListResult, err error) {
 	req, err := client.ListPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "operationalinsights.WorkspacesClient", "List", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "operationalinsights.WorkspacesClient", "List", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "operationalinsights.WorkspacesClient", "List", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "operationalinsights.WorkspacesClient", "List", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListResponder(resp)
@@ -493,8 +528,9 @@ func (client WorkspacesClient) ListPreparer() (*http.Request, error) {
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
 
+	const APIVersion = "2015-11-01-preview"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -539,13 +575,15 @@ func (client WorkspacesClient) ListByResourceGroup(resourceGroupName string) (re
 
 	req, err := client.ListByResourceGroupPreparer(resourceGroupName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "operationalinsights.WorkspacesClient", "ListByResourceGroup", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "operationalinsights.WorkspacesClient", "ListByResourceGroup", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListByResourceGroupSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "operationalinsights.WorkspacesClient", "ListByResourceGroup", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "operationalinsights.WorkspacesClient", "ListByResourceGroup", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListByResourceGroupResponder(resp)
@@ -563,8 +601,9 @@ func (client WorkspacesClient) ListByResourceGroupPreparer(resourceGroupName str
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
+	const APIVersion = "2015-11-01-preview"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -610,13 +649,15 @@ func (client WorkspacesClient) ListIntelligencePacks(resourceGroupName string, w
 
 	req, err := client.ListIntelligencePacksPreparer(resourceGroupName, workspaceName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "operationalinsights.WorkspacesClient", "ListIntelligencePacks", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "operationalinsights.WorkspacesClient", "ListIntelligencePacks", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListIntelligencePacksSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "operationalinsights.WorkspacesClient", "ListIntelligencePacks", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "operationalinsights.WorkspacesClient", "ListIntelligencePacks", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListIntelligencePacksResponder(resp)
@@ -635,8 +676,9 @@ func (client WorkspacesClient) ListIntelligencePacksPreparer(resourceGroupName s
 		"workspaceName":     autorest.Encode("path", workspaceName),
 	}
 
+	const APIVersion = "2015-11-01-preview"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -682,13 +724,15 @@ func (client WorkspacesClient) ListManagementGroups(resourceGroupName string, wo
 
 	req, err := client.ListManagementGroupsPreparer(resourceGroupName, workspaceName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "operationalinsights.WorkspacesClient", "ListManagementGroups", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "operationalinsights.WorkspacesClient", "ListManagementGroups", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListManagementGroupsSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "operationalinsights.WorkspacesClient", "ListManagementGroups", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "operationalinsights.WorkspacesClient", "ListManagementGroups", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListManagementGroupsResponder(resp)
@@ -707,8 +751,9 @@ func (client WorkspacesClient) ListManagementGroupsPreparer(resourceGroupName st
 		"workspaceName":     autorest.Encode("path", workspaceName),
 	}
 
+	const APIVersion = "2015-11-01-preview"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -753,13 +798,15 @@ func (client WorkspacesClient) ListUsages(resourceGroupName string, workspaceNam
 
 	req, err := client.ListUsagesPreparer(resourceGroupName, workspaceName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "operationalinsights.WorkspacesClient", "ListUsages", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "operationalinsights.WorkspacesClient", "ListUsages", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListUsagesSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "operationalinsights.WorkspacesClient", "ListUsages", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "operationalinsights.WorkspacesClient", "ListUsages", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListUsagesResponder(resp)
@@ -778,8 +825,9 @@ func (client WorkspacesClient) ListUsagesPreparer(resourceGroupName string, work
 		"workspaceName":     autorest.Encode("path", workspaceName),
 	}
 
+	const APIVersion = "2015-11-01-preview"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(

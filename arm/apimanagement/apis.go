@@ -25,9 +25,7 @@ import (
 	"net/http"
 )
 
-// ApisClient is the use these REST APIs for performing operations on entities
-// like API, Product, and Subscription associated with your Azure API
-// Management deployment.
+// ApisClient is the composite Swagger for ApiManagement Client
 type ApisClient struct {
 	ManagementClient
 }
@@ -46,21 +44,21 @@ func NewApisClientWithBaseURI(baseURI string, subscriptionID string) ApisClient 
 // Management service instance.
 //
 // resourceGroupName is the name of the resource group. serviceName is the name
-// of the API Management service. apiID is aPI identifier. Must be unique in
+// of the API Management service. aPIID is aPI identifier. Must be unique in
 // the current API Management service instance. parameters is create or update
 // parameters. ifMatch is eTag of the Api Entity. For Create Api Etag should
 // not be specified. For Update Etag should match the existing Entity or it can
 // be * for unconditional update.
-func (client ApisClient) CreateOrUpdate(resourceGroupName string, serviceName string, apiID string, parameters APIContract, ifMatch string) (result autorest.Response, err error) {
+func (client ApisClient) CreateOrUpdate(resourceGroupName string, serviceName string, aPIID string, parameters APIContract, ifMatch string) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,
 			Constraints: []validation.Constraint{{Target: "serviceName", Name: validation.MaxLength, Rule: 50, Chain: nil},
 				{Target: "serviceName", Name: validation.MinLength, Rule: 1, Chain: nil},
 				{Target: "serviceName", Name: validation.Pattern, Rule: `^[a-zA-Z](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?$`, Chain: nil}}},
-		{TargetValue: apiID,
-			Constraints: []validation.Constraint{{Target: "apiID", Name: validation.MaxLength, Rule: 256, Chain: nil},
-				{Target: "apiID", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "apiID", Name: validation.Pattern, Rule: `^[^*#&+:<>?]+$`, Chain: nil}}},
+		{TargetValue: aPIID,
+			Constraints: []validation.Constraint{{Target: "aPIID", Name: validation.MaxLength, Rule: 256, Chain: nil},
+				{Target: "aPIID", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "aPIID", Name: validation.Pattern, Rule: `^[^*#&+:<>?]+$`, Chain: nil}}},
 		{TargetValue: parameters,
 			Constraints: []validation.Constraint{{Target: "parameters.Name", Name: validation.Null, Rule: true,
 				Chain: []validation.Constraint{{Target: "parameters.Name", Name: validation.MaxLength, Rule: 300, Chain: nil},
@@ -78,15 +76,17 @@ func (client ApisClient) CreateOrUpdate(resourceGroupName string, serviceName st
 		return result, validation.NewErrorWithValidationError(err, "apimanagement.ApisClient", "CreateOrUpdate")
 	}
 
-	req, err := client.CreateOrUpdatePreparer(resourceGroupName, serviceName, apiID, parameters, ifMatch)
+	req, err := client.CreateOrUpdatePreparer(resourceGroupName, serviceName, aPIID, parameters, ifMatch)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "apimanagement.ApisClient", "CreateOrUpdate", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "apimanagement.ApisClient", "CreateOrUpdate", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.CreateOrUpdateSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "apimanagement.ApisClient", "CreateOrUpdate", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "apimanagement.ApisClient", "CreateOrUpdate", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.CreateOrUpdateResponder(resp)
@@ -98,15 +98,15 @@ func (client ApisClient) CreateOrUpdate(resourceGroupName string, serviceName st
 }
 
 // CreateOrUpdatePreparer prepares the CreateOrUpdate request.
-func (client ApisClient) CreateOrUpdatePreparer(resourceGroupName string, serviceName string, apiID string, parameters APIContract, ifMatch string) (*http.Request, error) {
+func (client ApisClient) CreateOrUpdatePreparer(resourceGroupName string, serviceName string, aPIID string, parameters APIContract, ifMatch string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"apiId":             autorest.Encode("path", apiID),
+		"apiId":             autorest.Encode("path", aPIID),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"serviceName":       autorest.Encode("path", serviceName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2016-07-07"
+	const APIVersion = "2016-10-10"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -146,32 +146,34 @@ func (client ApisClient) CreateOrUpdateResponder(resp *http.Response) (result au
 // Delete deletes the specified API of the API Management service instance.
 //
 // resourceGroupName is the name of the resource group. serviceName is the name
-// of the API Management service. apiID is aPI identifier. Must be unique in
+// of the API Management service. aPIID is aPI identifier. Must be unique in
 // the current API Management service instance. ifMatch is eTag of the API
 // Entity. ETag should match the current entity state from the header response
 // of the GET request or it should be * for unconditional update.
-func (client ApisClient) Delete(resourceGroupName string, serviceName string, apiID string, ifMatch string) (result autorest.Response, err error) {
+func (client ApisClient) Delete(resourceGroupName string, serviceName string, aPIID string, ifMatch string) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,
 			Constraints: []validation.Constraint{{Target: "serviceName", Name: validation.MaxLength, Rule: 50, Chain: nil},
 				{Target: "serviceName", Name: validation.MinLength, Rule: 1, Chain: nil},
 				{Target: "serviceName", Name: validation.Pattern, Rule: `^[a-zA-Z](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?$`, Chain: nil}}},
-		{TargetValue: apiID,
-			Constraints: []validation.Constraint{{Target: "apiID", Name: validation.MaxLength, Rule: 256, Chain: nil},
-				{Target: "apiID", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "apiID", Name: validation.Pattern, Rule: `^[^*#&+:<>?]+$`, Chain: nil}}}}); err != nil {
+		{TargetValue: aPIID,
+			Constraints: []validation.Constraint{{Target: "aPIID", Name: validation.MaxLength, Rule: 256, Chain: nil},
+				{Target: "aPIID", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "aPIID", Name: validation.Pattern, Rule: `^[^*#&+:<>?]+$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewErrorWithValidationError(err, "apimanagement.ApisClient", "Delete")
 	}
 
-	req, err := client.DeletePreparer(resourceGroupName, serviceName, apiID, ifMatch)
+	req, err := client.DeletePreparer(resourceGroupName, serviceName, aPIID, ifMatch)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "apimanagement.ApisClient", "Delete", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "apimanagement.ApisClient", "Delete", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.DeleteSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "apimanagement.ApisClient", "Delete", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "apimanagement.ApisClient", "Delete", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.DeleteResponder(resp)
@@ -183,15 +185,15 @@ func (client ApisClient) Delete(resourceGroupName string, serviceName string, ap
 }
 
 // DeletePreparer prepares the Delete request.
-func (client ApisClient) DeletePreparer(resourceGroupName string, serviceName string, apiID string, ifMatch string) (*http.Request, error) {
+func (client ApisClient) DeletePreparer(resourceGroupName string, serviceName string, aPIID string, ifMatch string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"apiId":             autorest.Encode("path", apiID),
+		"apiId":             autorest.Encode("path", aPIID),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"serviceName":       autorest.Encode("path", serviceName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2016-07-07"
+	const APIVersion = "2016-10-10"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -223,111 +225,35 @@ func (client ApisClient) DeleteResponder(resp *http.Response) (result autorest.R
 	return
 }
 
-// Export gets the details of the API specified by its identifier.
-//
-// resourceGroupName is the name of the resource group. serviceName is the name
-// of the API Management service. apiID is aPI identifier. Must be unique in
-// the current API Management service instance.
-func (client ApisClient) Export(resourceGroupName string, serviceName string, apiID string) (result APIExportResult, err error) {
-	if err := validation.Validate([]validation.Validation{
-		{TargetValue: serviceName,
-			Constraints: []validation.Constraint{{Target: "serviceName", Name: validation.MaxLength, Rule: 50, Chain: nil},
-				{Target: "serviceName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "serviceName", Name: validation.Pattern, Rule: `^[a-zA-Z](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?$`, Chain: nil}}},
-		{TargetValue: apiID,
-			Constraints: []validation.Constraint{{Target: "apiID", Name: validation.MaxLength, Rule: 256, Chain: nil},
-				{Target: "apiID", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "apiID", Name: validation.Pattern, Rule: `^[^*#&+:<>?]+$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "apimanagement.ApisClient", "Export")
-	}
-
-	req, err := client.ExportPreparer(resourceGroupName, serviceName, apiID)
-	if err != nil {
-		return result, autorest.NewErrorWithError(err, "apimanagement.ApisClient", "Export", nil, "Failure preparing request")
-	}
-
-	resp, err := client.ExportSender(req)
-	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "apimanagement.ApisClient", "Export", resp, "Failure sending request")
-	}
-
-	result, err = client.ExportResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "apimanagement.ApisClient", "Export", resp, "Failure responding to request")
-	}
-
-	return
-}
-
-// ExportPreparer prepares the Export request.
-func (client ApisClient) ExportPreparer(resourceGroupName string, serviceName string, apiID string) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"apiId":             autorest.Encode("path", apiID),
-		"resourceGroupName": autorest.Encode("path", resourceGroupName),
-		"serviceName":       autorest.Encode("path", serviceName),
-		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
-	}
-
-	const APIVersion = "2016-07-07"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsGet(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/apis/{apiId}", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare(&http.Request{})
-}
-
-// ExportSender sends the Export request. The method will close the
-// http.Response Body if it receives an error.
-func (client ApisClient) ExportSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
-}
-
-// ExportResponder handles the response to the Export request. The method always
-// closes the http.Response Body.
-func (client ApisClient) ExportResponder(resp *http.Response) (result APIExportResult, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
-}
-
 // Get gets the details of the API specified by its identifier.
 //
 // resourceGroupName is the name of the resource group. serviceName is the name
-// of the API Management service. apiID is aPI identifier. Must be unique in
+// of the API Management service. aPIID is aPI identifier. Must be unique in
 // the current API Management service instance.
-func (client ApisClient) Get(resourceGroupName string, serviceName string, apiID string) (result APIContract, err error) {
+func (client ApisClient) Get(resourceGroupName string, serviceName string, aPIID string) (result APIContract, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,
 			Constraints: []validation.Constraint{{Target: "serviceName", Name: validation.MaxLength, Rule: 50, Chain: nil},
 				{Target: "serviceName", Name: validation.MinLength, Rule: 1, Chain: nil},
 				{Target: "serviceName", Name: validation.Pattern, Rule: `^[a-zA-Z](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?$`, Chain: nil}}},
-		{TargetValue: apiID,
-			Constraints: []validation.Constraint{{Target: "apiID", Name: validation.MaxLength, Rule: 256, Chain: nil},
-				{Target: "apiID", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "apiID", Name: validation.Pattern, Rule: `^[^*#&+:<>?]+$`, Chain: nil}}}}); err != nil {
+		{TargetValue: aPIID,
+			Constraints: []validation.Constraint{{Target: "aPIID", Name: validation.MaxLength, Rule: 256, Chain: nil},
+				{Target: "aPIID", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "aPIID", Name: validation.Pattern, Rule: `^[^*#&+:<>?]+$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewErrorWithValidationError(err, "apimanagement.ApisClient", "Get")
 	}
 
-	req, err := client.GetPreparer(resourceGroupName, serviceName, apiID)
+	req, err := client.GetPreparer(resourceGroupName, serviceName, aPIID)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "apimanagement.ApisClient", "Get", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "apimanagement.ApisClient", "Get", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "apimanagement.ApisClient", "Get", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "apimanagement.ApisClient", "Get", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetResponder(resp)
@@ -339,15 +265,15 @@ func (client ApisClient) Get(resourceGroupName string, serviceName string, apiID
 }
 
 // GetPreparer prepares the Get request.
-func (client ApisClient) GetPreparer(resourceGroupName string, serviceName string, apiID string) (*http.Request, error) {
+func (client ApisClient) GetPreparer(resourceGroupName string, serviceName string, aPIID string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"apiId":             autorest.Encode("path", apiID),
+		"apiId":             autorest.Encode("path", aPIID),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"serviceName":       autorest.Encode("path", serviceName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2016-07-07"
+	const APIVersion = "2016-10-10"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -408,13 +334,15 @@ func (client ApisClient) ListByService(resourceGroupName string, serviceName str
 
 	req, err := client.ListByServicePreparer(resourceGroupName, serviceName, filter, top, skip)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "apimanagement.ApisClient", "ListByService", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "apimanagement.ApisClient", "ListByService", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListByServiceSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "apimanagement.ApisClient", "ListByService", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "apimanagement.ApisClient", "ListByService", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListByServiceResponder(resp)
@@ -433,7 +361,7 @@ func (client ApisClient) ListByServicePreparer(resourceGroupName string, service
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2016-07-07"
+	const APIVersion = "2016-10-10"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -501,33 +429,35 @@ func (client ApisClient) ListByServiceNextResults(lastResults APICollection) (re
 // Update updates the specified API of the API Management service instance.
 //
 // resourceGroupName is the name of the resource group. serviceName is the name
-// of the API Management service. apiID is aPI identifier. Must be unique in
-// the current API Management service instance. parameters is patch parameters.
-// ifMatch is eTag of the API entity. ETag should match the current entity
-// state in the header response of the GET request or it should be * for
-// unconditional update.
-func (client ApisClient) Update(resourceGroupName string, serviceName string, apiID string, parameters PatchParameters, ifMatch string) (result autorest.Response, err error) {
+// of the API Management service. aPIID is aPI identifier. Must be unique in
+// the current API Management service instance. parameters is aPI Update
+// Contract parameters. ifMatch is eTag of the API entity. ETag should match
+// the current entity state in the header response of the GET request or it
+// should be * for unconditional update.
+func (client ApisClient) Update(resourceGroupName string, serviceName string, aPIID string, parameters APIUpdateContract, ifMatch string) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,
 			Constraints: []validation.Constraint{{Target: "serviceName", Name: validation.MaxLength, Rule: 50, Chain: nil},
 				{Target: "serviceName", Name: validation.MinLength, Rule: 1, Chain: nil},
 				{Target: "serviceName", Name: validation.Pattern, Rule: `^[a-zA-Z](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?$`, Chain: nil}}},
-		{TargetValue: apiID,
-			Constraints: []validation.Constraint{{Target: "apiID", Name: validation.MaxLength, Rule: 256, Chain: nil},
-				{Target: "apiID", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "apiID", Name: validation.Pattern, Rule: `^[^*#&+:<>?]+$`, Chain: nil}}}}); err != nil {
+		{TargetValue: aPIID,
+			Constraints: []validation.Constraint{{Target: "aPIID", Name: validation.MaxLength, Rule: 256, Chain: nil},
+				{Target: "aPIID", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "aPIID", Name: validation.Pattern, Rule: `^[^*#&+:<>?]+$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewErrorWithValidationError(err, "apimanagement.ApisClient", "Update")
 	}
 
-	req, err := client.UpdatePreparer(resourceGroupName, serviceName, apiID, parameters, ifMatch)
+	req, err := client.UpdatePreparer(resourceGroupName, serviceName, aPIID, parameters, ifMatch)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "apimanagement.ApisClient", "Update", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "apimanagement.ApisClient", "Update", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.UpdateSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "apimanagement.ApisClient", "Update", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "apimanagement.ApisClient", "Update", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.UpdateResponder(resp)
@@ -539,15 +469,15 @@ func (client ApisClient) Update(resourceGroupName string, serviceName string, ap
 }
 
 // UpdatePreparer prepares the Update request.
-func (client ApisClient) UpdatePreparer(resourceGroupName string, serviceName string, apiID string, parameters PatchParameters, ifMatch string) (*http.Request, error) {
+func (client ApisClient) UpdatePreparer(resourceGroupName string, serviceName string, aPIID string, parameters APIUpdateContract, ifMatch string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"apiId":             autorest.Encode("path", apiID),
+		"apiId":             autorest.Encode("path", aPIID),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"serviceName":       autorest.Encode("path", serviceName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2016-07-07"
+	const APIVersion = "2016-10-10"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}

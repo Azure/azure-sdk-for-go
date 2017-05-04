@@ -50,7 +50,9 @@ func NewPowerShellClientWithBaseURI(baseURI string, subscriptionID string) Power
 // resource group within the user subscriptionId. nodeName is the node name
 // (256 characters maximum). session is the sessionId from the user. pssession
 // is the PowerShell sessionId from the user.
-func (client PowerShellClient) CancelCommand(resourceGroupName string, nodeName string, session string, pssession string, cancel <-chan struct{}) (result autorest.Response, err error) {
+func (client PowerShellClient) CancelCommand(resourceGroupName string, nodeName string, session string, pssession string, cancel <-chan struct{}) (<-chan PowerShellCommandResults, <-chan error) {
+	resultChan := make(chan PowerShellCommandResults, 1)
+	errChan := make(chan error, 1)
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MinLength, Rule: 3, Chain: nil},
@@ -59,26 +61,40 @@ func (client PowerShellClient) CancelCommand(resourceGroupName string, nodeName 
 			Constraints: []validation.Constraint{{Target: "nodeName", Name: validation.MaxLength, Rule: 256, Chain: nil},
 				{Target: "nodeName", Name: validation.MinLength, Rule: 1, Chain: nil},
 				{Target: "nodeName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9][a-zA-Z0-9_.-]*$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "servermanagement.PowerShellClient", "CancelCommand")
+		errChan <- validation.NewErrorWithValidationError(err, "servermanagement.PowerShellClient", "CancelCommand")
+		close(errChan)
+		close(resultChan)
+		return resultChan, errChan
 	}
 
-	req, err := client.CancelCommandPreparer(resourceGroupName, nodeName, session, pssession, cancel)
-	if err != nil {
-		return result, autorest.NewErrorWithError(err, "servermanagement.PowerShellClient", "CancelCommand", nil, "Failure preparing request")
-	}
+	go func() {
+		var err error
+		var result PowerShellCommandResults
+		defer func() {
+			resultChan <- result
+			errChan <- err
+			close(resultChan)
+			close(errChan)
+		}()
+		req, err := client.CancelCommandPreparer(resourceGroupName, nodeName, session, pssession, cancel)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "servermanagement.PowerShellClient", "CancelCommand", nil, "Failure preparing request")
+			return
+		}
 
-	resp, err := client.CancelCommandSender(req)
-	if err != nil {
-		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "servermanagement.PowerShellClient", "CancelCommand", resp, "Failure sending request")
-	}
+		resp, err := client.CancelCommandSender(req)
+		if err != nil {
+			result.Response = autorest.Response{Response: resp}
+			err = autorest.NewErrorWithError(err, "servermanagement.PowerShellClient", "CancelCommand", resp, "Failure sending request")
+			return
+		}
 
-	result, err = client.CancelCommandResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "servermanagement.PowerShellClient", "CancelCommand", resp, "Failure responding to request")
-	}
-
-	return
+		result, err = client.CancelCommandResponder(resp)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "servermanagement.PowerShellClient", "CancelCommand", resp, "Failure responding to request")
+		}
+	}()
+	return resultChan, errChan
 }
 
 // CancelCommandPreparer prepares the CancelCommand request.
@@ -114,13 +130,14 @@ func (client PowerShellClient) CancelCommandSender(req *http.Request) (*http.Res
 
 // CancelCommandResponder handles the response to the CancelCommand request. The method always
 // closes the http.Response Body.
-func (client PowerShellClient) CancelCommandResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client PowerShellClient) CancelCommandResponder(resp *http.Response) (result PowerShellCommandResults, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = resp
+	result.Response = autorest.Response{Response: resp}
 	return
 }
 
@@ -133,7 +150,9 @@ func (client PowerShellClient) CancelCommandResponder(resp *http.Response) (resu
 // resource group within the user subscriptionId. nodeName is the node name
 // (256 characters maximum). session is the sessionId from the user. pssession
 // is the PowerShell sessionId from the user.
-func (client PowerShellClient) CreateSession(resourceGroupName string, nodeName string, session string, pssession string, cancel <-chan struct{}) (result autorest.Response, err error) {
+func (client PowerShellClient) CreateSession(resourceGroupName string, nodeName string, session string, pssession string, cancel <-chan struct{}) (<-chan PowerShellSessionResource, <-chan error) {
+	resultChan := make(chan PowerShellSessionResource, 1)
+	errChan := make(chan error, 1)
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MinLength, Rule: 3, Chain: nil},
@@ -142,26 +161,40 @@ func (client PowerShellClient) CreateSession(resourceGroupName string, nodeName 
 			Constraints: []validation.Constraint{{Target: "nodeName", Name: validation.MaxLength, Rule: 256, Chain: nil},
 				{Target: "nodeName", Name: validation.MinLength, Rule: 1, Chain: nil},
 				{Target: "nodeName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9][a-zA-Z0-9_.-]*$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "servermanagement.PowerShellClient", "CreateSession")
+		errChan <- validation.NewErrorWithValidationError(err, "servermanagement.PowerShellClient", "CreateSession")
+		close(errChan)
+		close(resultChan)
+		return resultChan, errChan
 	}
 
-	req, err := client.CreateSessionPreparer(resourceGroupName, nodeName, session, pssession, cancel)
-	if err != nil {
-		return result, autorest.NewErrorWithError(err, "servermanagement.PowerShellClient", "CreateSession", nil, "Failure preparing request")
-	}
+	go func() {
+		var err error
+		var result PowerShellSessionResource
+		defer func() {
+			resultChan <- result
+			errChan <- err
+			close(resultChan)
+			close(errChan)
+		}()
+		req, err := client.CreateSessionPreparer(resourceGroupName, nodeName, session, pssession, cancel)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "servermanagement.PowerShellClient", "CreateSession", nil, "Failure preparing request")
+			return
+		}
 
-	resp, err := client.CreateSessionSender(req)
-	if err != nil {
-		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "servermanagement.PowerShellClient", "CreateSession", resp, "Failure sending request")
-	}
+		resp, err := client.CreateSessionSender(req)
+		if err != nil {
+			result.Response = autorest.Response{Response: resp}
+			err = autorest.NewErrorWithError(err, "servermanagement.PowerShellClient", "CreateSession", resp, "Failure sending request")
+			return
+		}
 
-	result, err = client.CreateSessionResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "servermanagement.PowerShellClient", "CreateSession", resp, "Failure responding to request")
-	}
-
-	return
+		result, err = client.CreateSessionResponder(resp)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "servermanagement.PowerShellClient", "CreateSession", resp, "Failure responding to request")
+		}
+	}()
+	return resultChan, errChan
 }
 
 // CreateSessionPreparer prepares the CreateSession request.
@@ -197,13 +230,14 @@ func (client PowerShellClient) CreateSessionSender(req *http.Request) (*http.Res
 
 // CreateSessionResponder handles the response to the CreateSession request. The method always
 // closes the http.Response Body.
-func (client PowerShellClient) CreateSessionResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client PowerShellClient) CreateSessionResponder(resp *http.Response) (result PowerShellSessionResource, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = resp
+	result.Response = autorest.Response{Response: resp}
 	return
 }
 
@@ -228,13 +262,15 @@ func (client PowerShellClient) GetCommandStatus(resourceGroupName string, nodeNa
 
 	req, err := client.GetCommandStatusPreparer(resourceGroupName, nodeName, session, pssession, expand)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "servermanagement.PowerShellClient", "GetCommandStatus", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "servermanagement.PowerShellClient", "GetCommandStatus", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetCommandStatusSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "servermanagement.PowerShellClient", "GetCommandStatus", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "servermanagement.PowerShellClient", "GetCommandStatus", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetCommandStatusResponder(resp)
@@ -300,7 +336,9 @@ func (client PowerShellClient) GetCommandStatusResponder(resp *http.Response) (r
 // (256 characters maximum). session is the sessionId from the user. pssession
 // is the PowerShell sessionId from the user. powerShellCommandParameters is
 // parameters supplied to the Invoke PowerShell Command operation.
-func (client PowerShellClient) InvokeCommand(resourceGroupName string, nodeName string, session string, pssession string, powerShellCommandParameters PowerShellCommandParameters, cancel <-chan struct{}) (result autorest.Response, err error) {
+func (client PowerShellClient) InvokeCommand(resourceGroupName string, nodeName string, session string, pssession string, powerShellCommandParameters PowerShellCommandParameters, cancel <-chan struct{}) (<-chan PowerShellCommandResults, <-chan error) {
+	resultChan := make(chan PowerShellCommandResults, 1)
+	errChan := make(chan error, 1)
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MinLength, Rule: 3, Chain: nil},
@@ -309,26 +347,40 @@ func (client PowerShellClient) InvokeCommand(resourceGroupName string, nodeName 
 			Constraints: []validation.Constraint{{Target: "nodeName", Name: validation.MaxLength, Rule: 256, Chain: nil},
 				{Target: "nodeName", Name: validation.MinLength, Rule: 1, Chain: nil},
 				{Target: "nodeName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9][a-zA-Z0-9_.-]*$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "servermanagement.PowerShellClient", "InvokeCommand")
+		errChan <- validation.NewErrorWithValidationError(err, "servermanagement.PowerShellClient", "InvokeCommand")
+		close(errChan)
+		close(resultChan)
+		return resultChan, errChan
 	}
 
-	req, err := client.InvokeCommandPreparer(resourceGroupName, nodeName, session, pssession, powerShellCommandParameters, cancel)
-	if err != nil {
-		return result, autorest.NewErrorWithError(err, "servermanagement.PowerShellClient", "InvokeCommand", nil, "Failure preparing request")
-	}
+	go func() {
+		var err error
+		var result PowerShellCommandResults
+		defer func() {
+			resultChan <- result
+			errChan <- err
+			close(resultChan)
+			close(errChan)
+		}()
+		req, err := client.InvokeCommandPreparer(resourceGroupName, nodeName, session, pssession, powerShellCommandParameters, cancel)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "servermanagement.PowerShellClient", "InvokeCommand", nil, "Failure preparing request")
+			return
+		}
 
-	resp, err := client.InvokeCommandSender(req)
-	if err != nil {
-		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "servermanagement.PowerShellClient", "InvokeCommand", resp, "Failure sending request")
-	}
+		resp, err := client.InvokeCommandSender(req)
+		if err != nil {
+			result.Response = autorest.Response{Response: resp}
+			err = autorest.NewErrorWithError(err, "servermanagement.PowerShellClient", "InvokeCommand", resp, "Failure sending request")
+			return
+		}
 
-	result, err = client.InvokeCommandResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "servermanagement.PowerShellClient", "InvokeCommand", resp, "Failure responding to request")
-	}
-
-	return
+		result, err = client.InvokeCommandResponder(resp)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "servermanagement.PowerShellClient", "InvokeCommand", resp, "Failure responding to request")
+		}
+	}()
+	return resultChan, errChan
 }
 
 // InvokeCommandPreparer prepares the InvokeCommand request.
@@ -366,13 +418,14 @@ func (client PowerShellClient) InvokeCommandSender(req *http.Request) (*http.Res
 
 // InvokeCommandResponder handles the response to the InvokeCommand request. The method always
 // closes the http.Response Body.
-func (client PowerShellClient) InvokeCommandResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client PowerShellClient) InvokeCommandResponder(resp *http.Response) (result PowerShellCommandResults, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = resp
+	result.Response = autorest.Response{Response: resp}
 	return
 }
 
@@ -395,13 +448,15 @@ func (client PowerShellClient) ListSession(resourceGroupName string, nodeName st
 
 	req, err := client.ListSessionPreparer(resourceGroupName, nodeName, session)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "servermanagement.PowerShellClient", "ListSession", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "servermanagement.PowerShellClient", "ListSession", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListSessionSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "servermanagement.PowerShellClient", "ListSession", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "servermanagement.PowerShellClient", "ListSession", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListSessionResponder(resp)
@@ -474,13 +529,15 @@ func (client PowerShellClient) TabCompletion(resourceGroupName string, nodeName 
 
 	req, err := client.TabCompletionPreparer(resourceGroupName, nodeName, session, pssession, powerShellTabCompletionParamters)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "servermanagement.PowerShellClient", "TabCompletion", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "servermanagement.PowerShellClient", "TabCompletion", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.TabCompletionSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "servermanagement.PowerShellClient", "TabCompletion", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "servermanagement.PowerShellClient", "TabCompletion", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.TabCompletionResponder(resp)
@@ -544,7 +601,9 @@ func (client PowerShellClient) TabCompletionResponder(resp *http.Response) (resu
 // resource group within the user subscriptionId. nodeName is the node name
 // (256 characters maximum). session is the sessionId from the user. pssession
 // is the PowerShell sessionId from the user.
-func (client PowerShellClient) UpdateCommand(resourceGroupName string, nodeName string, session string, pssession string, cancel <-chan struct{}) (result autorest.Response, err error) {
+func (client PowerShellClient) UpdateCommand(resourceGroupName string, nodeName string, session string, pssession string, cancel <-chan struct{}) (<-chan PowerShellCommandResults, <-chan error) {
+	resultChan := make(chan PowerShellCommandResults, 1)
+	errChan := make(chan error, 1)
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MinLength, Rule: 3, Chain: nil},
@@ -553,26 +612,40 @@ func (client PowerShellClient) UpdateCommand(resourceGroupName string, nodeName 
 			Constraints: []validation.Constraint{{Target: "nodeName", Name: validation.MaxLength, Rule: 256, Chain: nil},
 				{Target: "nodeName", Name: validation.MinLength, Rule: 1, Chain: nil},
 				{Target: "nodeName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9][a-zA-Z0-9_.-]*$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "servermanagement.PowerShellClient", "UpdateCommand")
+		errChan <- validation.NewErrorWithValidationError(err, "servermanagement.PowerShellClient", "UpdateCommand")
+		close(errChan)
+		close(resultChan)
+		return resultChan, errChan
 	}
 
-	req, err := client.UpdateCommandPreparer(resourceGroupName, nodeName, session, pssession, cancel)
-	if err != nil {
-		return result, autorest.NewErrorWithError(err, "servermanagement.PowerShellClient", "UpdateCommand", nil, "Failure preparing request")
-	}
+	go func() {
+		var err error
+		var result PowerShellCommandResults
+		defer func() {
+			resultChan <- result
+			errChan <- err
+			close(resultChan)
+			close(errChan)
+		}()
+		req, err := client.UpdateCommandPreparer(resourceGroupName, nodeName, session, pssession, cancel)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "servermanagement.PowerShellClient", "UpdateCommand", nil, "Failure preparing request")
+			return
+		}
 
-	resp, err := client.UpdateCommandSender(req)
-	if err != nil {
-		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "servermanagement.PowerShellClient", "UpdateCommand", resp, "Failure sending request")
-	}
+		resp, err := client.UpdateCommandSender(req)
+		if err != nil {
+			result.Response = autorest.Response{Response: resp}
+			err = autorest.NewErrorWithError(err, "servermanagement.PowerShellClient", "UpdateCommand", resp, "Failure sending request")
+			return
+		}
 
-	result, err = client.UpdateCommandResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "servermanagement.PowerShellClient", "UpdateCommand", resp, "Failure responding to request")
-	}
-
-	return
+		result, err = client.UpdateCommandResponder(resp)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "servermanagement.PowerShellClient", "UpdateCommand", resp, "Failure responding to request")
+		}
+	}()
+	return resultChan, errChan
 }
 
 // UpdateCommandPreparer prepares the UpdateCommand request.
@@ -608,12 +681,13 @@ func (client PowerShellClient) UpdateCommandSender(req *http.Request) (*http.Res
 
 // UpdateCommandResponder handles the response to the UpdateCommand request. The method always
 // closes the http.Response Body.
-func (client PowerShellClient) UpdateCommandResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client PowerShellClient) UpdateCommandResponder(resp *http.Response) (result PowerShellCommandResults, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = resp
+	result.Response = autorest.Response{Response: resp}
 	return
 }

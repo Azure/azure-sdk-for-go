@@ -25,9 +25,8 @@ import (
 	"net/http"
 )
 
-// TenantConfigurationSyncStateClient is the use these REST APIs for performing
-// operations on entities like API, Product, and Subscription associated with
-// your Azure API Management deployment.
+// TenantConfigurationSyncStateClient is the composite Swagger for
+// ApiManagement Client
 type TenantConfigurationSyncStateClient struct {
 	ManagementClient
 }
@@ -60,13 +59,15 @@ func (client TenantConfigurationSyncStateClient) Get(resourceGroupName string, s
 
 	req, err := client.GetPreparer(resourceGroupName, serviceName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "apimanagement.TenantConfigurationSyncStateClient", "Get", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "apimanagement.TenantConfigurationSyncStateClient", "Get", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "apimanagement.TenantConfigurationSyncStateClient", "Get", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "apimanagement.TenantConfigurationSyncStateClient", "Get", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetResponder(resp)
@@ -85,7 +86,7 @@ func (client TenantConfigurationSyncStateClient) GetPreparer(resourceGroupName s
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2016-07-07"
+	const APIVersion = "2016-10-10"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}

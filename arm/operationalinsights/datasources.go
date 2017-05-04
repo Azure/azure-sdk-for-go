@@ -61,13 +61,15 @@ func (client DataSourcesClient) CreateOrUpdate(resourceGroupName string, workspa
 
 	req, err := client.CreateOrUpdatePreparer(resourceGroupName, workspaceName, dataSourceName, parameters)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "operationalinsights.DataSourcesClient", "CreateOrUpdate", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "operationalinsights.DataSourcesClient", "CreateOrUpdate", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.CreateOrUpdateSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "operationalinsights.DataSourcesClient", "CreateOrUpdate", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "operationalinsights.DataSourcesClient", "CreateOrUpdate", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.CreateOrUpdateResponder(resp)
@@ -87,8 +89,9 @@ func (client DataSourcesClient) CreateOrUpdatePreparer(resourceGroupName string,
 		"workspaceName":     autorest.Encode("path", workspaceName),
 	}
 
+	const APIVersion = "2015-11-01-preview"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -136,13 +139,15 @@ func (client DataSourcesClient) Delete(resourceGroupName string, workspaceName s
 
 	req, err := client.DeletePreparer(resourceGroupName, workspaceName, dataSourceName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "operationalinsights.DataSourcesClient", "Delete", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "operationalinsights.DataSourcesClient", "Delete", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.DeleteSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "operationalinsights.DataSourcesClient", "Delete", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "operationalinsights.DataSourcesClient", "Delete", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.DeleteResponder(resp)
@@ -162,8 +167,9 @@ func (client DataSourcesClient) DeletePreparer(resourceGroupName string, workspa
 		"workspaceName":     autorest.Encode("path", workspaceName),
 	}
 
+	const APIVersion = "2015-11-01-preview"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -208,13 +214,15 @@ func (client DataSourcesClient) Get(resourceGroupName string, workspaceName stri
 
 	req, err := client.GetPreparer(resourceGroupName, workspaceName, dataSourceName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "operationalinsights.DataSourcesClient", "Get", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "operationalinsights.DataSourcesClient", "Get", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "operationalinsights.DataSourcesClient", "Get", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "operationalinsights.DataSourcesClient", "Get", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetResponder(resp)
@@ -234,8 +242,9 @@ func (client DataSourcesClient) GetPreparer(resourceGroupName string, workspaceN
 		"workspaceName":     autorest.Encode("path", workspaceName),
 	}
 
+	const APIVersion = "2015-11-01-preview"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -283,13 +292,15 @@ func (client DataSourcesClient) ListByWorkspace(resourceGroupName string, worksp
 
 	req, err := client.ListByWorkspacePreparer(resourceGroupName, workspaceName, filter, skiptoken)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "operationalinsights.DataSourcesClient", "ListByWorkspace", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "operationalinsights.DataSourcesClient", "ListByWorkspace", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListByWorkspaceSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "operationalinsights.DataSourcesClient", "ListByWorkspace", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "operationalinsights.DataSourcesClient", "ListByWorkspace", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListByWorkspaceResponder(resp)
@@ -308,9 +319,10 @@ func (client DataSourcesClient) ListByWorkspacePreparer(resourceGroupName string
 		"workspaceName":     autorest.Encode("path", workspaceName),
 	}
 
+	const APIVersion = "2015-11-01-preview"
 	queryParameters := map[string]interface{}{
 		"$filter":     autorest.Encode("query", filter),
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 	if len(skiptoken) > 0 {
 		queryParameters["$skiptoken"] = autorest.Encode("query", skiptoken)

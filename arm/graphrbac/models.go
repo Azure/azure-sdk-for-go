@@ -111,6 +111,14 @@ type ErrorMessage struct {
 	Message *string `json:"value,omitempty"`
 }
 
+// GetObjectsParameters is request parameters for the GetObjectsByObjectIds
+// API.
+type GetObjectsParameters struct {
+	ObjectIds                        *[]string `json:"objectIds,omitempty"`
+	Types                            *[]string `json:"types,omitempty"`
+	IncludeDirectoryObjectReferences *bool     `json:"includeDirectoryObjectReferences,omitempty"`
+}
+
 // GetObjectsResult is the response to an Active Directory object inquiry API
 // request.
 type GetObjectsResult struct {

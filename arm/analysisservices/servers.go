@@ -53,7 +53,9 @@ func NewServersClientWithBaseURI(baseURI string, subscriptionID string) ServersC
 // server. It must be a minimum of 3 characters, and a maximum of 63.
 // serverParameters is contains the information used to provision the Analysis
 // Services server.
-func (client ServersClient) Create(resourceGroupName string, serverName string, serverParameters Server, cancel <-chan struct{}) (result autorest.Response, err error) {
+func (client ServersClient) Create(resourceGroupName string, serverName string, serverParameters Server, cancel <-chan struct{}) (<-chan Server, <-chan error) {
+	resultChan := make(chan Server, 1)
+	errChan := make(chan error, 1)
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
@@ -63,26 +65,40 @@ func (client ServersClient) Create(resourceGroupName string, serverName string, 
 			Constraints: []validation.Constraint{{Target: "serverName", Name: validation.MaxLength, Rule: 63, Chain: nil},
 				{Target: "serverName", Name: validation.MinLength, Rule: 3, Chain: nil},
 				{Target: "serverName", Name: validation.Pattern, Rule: `^[a-z][a-z0-9]*$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "analysisservices.ServersClient", "Create")
+		errChan <- validation.NewErrorWithValidationError(err, "analysisservices.ServersClient", "Create")
+		close(errChan)
+		close(resultChan)
+		return resultChan, errChan
 	}
 
-	req, err := client.CreatePreparer(resourceGroupName, serverName, serverParameters, cancel)
-	if err != nil {
-		return result, autorest.NewErrorWithError(err, "analysisservices.ServersClient", "Create", nil, "Failure preparing request")
-	}
+	go func() {
+		var err error
+		var result Server
+		defer func() {
+			resultChan <- result
+			errChan <- err
+			close(resultChan)
+			close(errChan)
+		}()
+		req, err := client.CreatePreparer(resourceGroupName, serverName, serverParameters, cancel)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "analysisservices.ServersClient", "Create", nil, "Failure preparing request")
+			return
+		}
 
-	resp, err := client.CreateSender(req)
-	if err != nil {
-		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "analysisservices.ServersClient", "Create", resp, "Failure sending request")
-	}
+		resp, err := client.CreateSender(req)
+		if err != nil {
+			result.Response = autorest.Response{Response: resp}
+			err = autorest.NewErrorWithError(err, "analysisservices.ServersClient", "Create", resp, "Failure sending request")
+			return
+		}
 
-	result, err = client.CreateResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "analysisservices.ServersClient", "Create", resp, "Failure responding to request")
-	}
-
-	return
+		result, err = client.CreateResponder(resp)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "analysisservices.ServersClient", "Create", resp, "Failure responding to request")
+		}
+	}()
+	return resultChan, errChan
 }
 
 // CreatePreparer prepares the Create request.
@@ -118,13 +134,14 @@ func (client ServersClient) CreateSender(req *http.Request) (*http.Response, err
 
 // CreateResponder handles the response to the Create request. The method always
 // closes the http.Response Body.
-func (client ServersClient) CreateResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client ServersClient) CreateResponder(resp *http.Response) (result Server, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = resp
+	result.Response = autorest.Response{Response: resp}
 	return
 }
 
@@ -137,7 +154,9 @@ func (client ServersClient) CreateResponder(resp *http.Response) (result autores
 // Analysis Services server is part. This name must be at least 1 character in
 // length, and no more than 90. serverName is the name of the Analysis Services
 // server. It must be at least 3 characters in length, and no more than 63.
-func (client ServersClient) Delete(resourceGroupName string, serverName string, cancel <-chan struct{}) (result autorest.Response, err error) {
+func (client ServersClient) Delete(resourceGroupName string, serverName string, cancel <-chan struct{}) (<-chan autorest.Response, <-chan error) {
+	resultChan := make(chan autorest.Response, 1)
+	errChan := make(chan error, 1)
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
@@ -147,26 +166,40 @@ func (client ServersClient) Delete(resourceGroupName string, serverName string, 
 			Constraints: []validation.Constraint{{Target: "serverName", Name: validation.MaxLength, Rule: 63, Chain: nil},
 				{Target: "serverName", Name: validation.MinLength, Rule: 3, Chain: nil},
 				{Target: "serverName", Name: validation.Pattern, Rule: `^[a-z][a-z0-9]*$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "analysisservices.ServersClient", "Delete")
+		errChan <- validation.NewErrorWithValidationError(err, "analysisservices.ServersClient", "Delete")
+		close(errChan)
+		close(resultChan)
+		return resultChan, errChan
 	}
 
-	req, err := client.DeletePreparer(resourceGroupName, serverName, cancel)
-	if err != nil {
-		return result, autorest.NewErrorWithError(err, "analysisservices.ServersClient", "Delete", nil, "Failure preparing request")
-	}
+	go func() {
+		var err error
+		var result autorest.Response
+		defer func() {
+			resultChan <- result
+			errChan <- err
+			close(resultChan)
+			close(errChan)
+		}()
+		req, err := client.DeletePreparer(resourceGroupName, serverName, cancel)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "analysisservices.ServersClient", "Delete", nil, "Failure preparing request")
+			return
+		}
 
-	resp, err := client.DeleteSender(req)
-	if err != nil {
-		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "analysisservices.ServersClient", "Delete", resp, "Failure sending request")
-	}
+		resp, err := client.DeleteSender(req)
+		if err != nil {
+			result.Response = resp
+			err = autorest.NewErrorWithError(err, "analysisservices.ServersClient", "Delete", resp, "Failure sending request")
+			return
+		}
 
-	result, err = client.DeleteResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "analysisservices.ServersClient", "Delete", resp, "Failure responding to request")
-	}
-
-	return
+		result, err = client.DeleteResponder(resp)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "analysisservices.ServersClient", "Delete", resp, "Failure responding to request")
+		}
+	}()
+	return resultChan, errChan
 }
 
 // DeletePreparer prepares the Delete request.
@@ -231,13 +264,15 @@ func (client ServersClient) GetDetails(resourceGroupName string, serverName stri
 
 	req, err := client.GetDetailsPreparer(resourceGroupName, serverName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "analysisservices.ServersClient", "GetDetails", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "analysisservices.ServersClient", "GetDetails", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetDetailsSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "analysisservices.ServersClient", "GetDetails", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "analysisservices.ServersClient", "GetDetails", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetDetailsResponder(resp)
@@ -292,13 +327,15 @@ func (client ServersClient) GetDetailsResponder(resp *http.Response) (result Ser
 func (client ServersClient) List() (result Servers, err error) {
 	req, err := client.ListPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "analysisservices.ServersClient", "List", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "analysisservices.ServersClient", "List", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "analysisservices.ServersClient", "List", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "analysisservices.ServersClient", "List", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListResponder(resp)
@@ -364,13 +401,15 @@ func (client ServersClient) ListByResourceGroup(resourceGroupName string) (resul
 
 	req, err := client.ListByResourceGroupPreparer(resourceGroupName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "analysisservices.ServersClient", "ListByResourceGroup", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "analysisservices.ServersClient", "ListByResourceGroup", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListByResourceGroupSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "analysisservices.ServersClient", "ListByResourceGroup", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "analysisservices.ServersClient", "ListByResourceGroup", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListByResourceGroupResponder(resp)
@@ -429,7 +468,9 @@ func (client ServersClient) ListByResourceGroupResponder(resp *http.Response) (r
 // Analysis Services server is part. This name must be at least 1 character in
 // length, and no more than 90. serverName is the name of the Analysis Services
 // server. It must be at least 3 characters in length, and no more than 63.
-func (client ServersClient) Resume(resourceGroupName string, serverName string, cancel <-chan struct{}) (result autorest.Response, err error) {
+func (client ServersClient) Resume(resourceGroupName string, serverName string, cancel <-chan struct{}) (<-chan autorest.Response, <-chan error) {
+	resultChan := make(chan autorest.Response, 1)
+	errChan := make(chan error, 1)
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
@@ -439,26 +480,40 @@ func (client ServersClient) Resume(resourceGroupName string, serverName string, 
 			Constraints: []validation.Constraint{{Target: "serverName", Name: validation.MaxLength, Rule: 63, Chain: nil},
 				{Target: "serverName", Name: validation.MinLength, Rule: 3, Chain: nil},
 				{Target: "serverName", Name: validation.Pattern, Rule: `^[a-z][a-z0-9]*$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "analysisservices.ServersClient", "Resume")
+		errChan <- validation.NewErrorWithValidationError(err, "analysisservices.ServersClient", "Resume")
+		close(errChan)
+		close(resultChan)
+		return resultChan, errChan
 	}
 
-	req, err := client.ResumePreparer(resourceGroupName, serverName, cancel)
-	if err != nil {
-		return result, autorest.NewErrorWithError(err, "analysisservices.ServersClient", "Resume", nil, "Failure preparing request")
-	}
+	go func() {
+		var err error
+		var result autorest.Response
+		defer func() {
+			resultChan <- result
+			errChan <- err
+			close(resultChan)
+			close(errChan)
+		}()
+		req, err := client.ResumePreparer(resourceGroupName, serverName, cancel)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "analysisservices.ServersClient", "Resume", nil, "Failure preparing request")
+			return
+		}
 
-	resp, err := client.ResumeSender(req)
-	if err != nil {
-		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "analysisservices.ServersClient", "Resume", resp, "Failure sending request")
-	}
+		resp, err := client.ResumeSender(req)
+		if err != nil {
+			result.Response = resp
+			err = autorest.NewErrorWithError(err, "analysisservices.ServersClient", "Resume", resp, "Failure sending request")
+			return
+		}
 
-	result, err = client.ResumeResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "analysisservices.ServersClient", "Resume", resp, "Failure responding to request")
-	}
-
-	return
+		result, err = client.ResumeResponder(resp)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "analysisservices.ServersClient", "Resume", resp, "Failure responding to request")
+		}
+	}()
+	return resultChan, errChan
 }
 
 // ResumePreparer prepares the Resume request.
@@ -511,7 +566,9 @@ func (client ServersClient) ResumeResponder(resp *http.Response) (result autores
 // Analysis Services server is part. This name must be at least 1 character in
 // length, and no more than 90. serverName is the name of the Analysis Services
 // server. It must be at least 3 characters in length, and no more than 63.
-func (client ServersClient) Suspend(resourceGroupName string, serverName string, cancel <-chan struct{}) (result autorest.Response, err error) {
+func (client ServersClient) Suspend(resourceGroupName string, serverName string, cancel <-chan struct{}) (<-chan autorest.Response, <-chan error) {
+	resultChan := make(chan autorest.Response, 1)
+	errChan := make(chan error, 1)
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
@@ -521,26 +578,40 @@ func (client ServersClient) Suspend(resourceGroupName string, serverName string,
 			Constraints: []validation.Constraint{{Target: "serverName", Name: validation.MaxLength, Rule: 63, Chain: nil},
 				{Target: "serverName", Name: validation.MinLength, Rule: 3, Chain: nil},
 				{Target: "serverName", Name: validation.Pattern, Rule: `^[a-z][a-z0-9]*$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "analysisservices.ServersClient", "Suspend")
+		errChan <- validation.NewErrorWithValidationError(err, "analysisservices.ServersClient", "Suspend")
+		close(errChan)
+		close(resultChan)
+		return resultChan, errChan
 	}
 
-	req, err := client.SuspendPreparer(resourceGroupName, serverName, cancel)
-	if err != nil {
-		return result, autorest.NewErrorWithError(err, "analysisservices.ServersClient", "Suspend", nil, "Failure preparing request")
-	}
+	go func() {
+		var err error
+		var result autorest.Response
+		defer func() {
+			resultChan <- result
+			errChan <- err
+			close(resultChan)
+			close(errChan)
+		}()
+		req, err := client.SuspendPreparer(resourceGroupName, serverName, cancel)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "analysisservices.ServersClient", "Suspend", nil, "Failure preparing request")
+			return
+		}
 
-	resp, err := client.SuspendSender(req)
-	if err != nil {
-		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "analysisservices.ServersClient", "Suspend", resp, "Failure sending request")
-	}
+		resp, err := client.SuspendSender(req)
+		if err != nil {
+			result.Response = resp
+			err = autorest.NewErrorWithError(err, "analysisservices.ServersClient", "Suspend", resp, "Failure sending request")
+			return
+		}
 
-	result, err = client.SuspendResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "analysisservices.ServersClient", "Suspend", resp, "Failure responding to request")
-	}
-
-	return
+		result, err = client.SuspendResponder(resp)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "analysisservices.ServersClient", "Suspend", resp, "Failure responding to request")
+		}
+	}()
+	return resultChan, errChan
 }
 
 // SuspendPreparer prepares the Suspend request.
@@ -607,13 +678,15 @@ func (client ServersClient) Update(resourceGroupName string, serverName string, 
 
 	req, err := client.UpdatePreparer(resourceGroupName, serverName, serverUpdateParameters)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "analysisservices.ServersClient", "Update", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "analysisservices.ServersClient", "Update", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.UpdateSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "analysisservices.ServersClient", "Update", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "analysisservices.ServersClient", "Update", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.UpdateResponder(resp)

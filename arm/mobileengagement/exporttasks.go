@@ -56,13 +56,15 @@ func (client ExportTasksClient) CreateActivitiesTask(resourceGroupName string, a
 
 	req, err := client.CreateActivitiesTaskPreparer(resourceGroupName, appCollection, appName, parameters)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "mobileengagement.ExportTasksClient", "CreateActivitiesTask", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "mobileengagement.ExportTasksClient", "CreateActivitiesTask", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.CreateActivitiesTaskSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "mobileengagement.ExportTasksClient", "CreateActivitiesTask", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "mobileengagement.ExportTasksClient", "CreateActivitiesTask", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.CreateActivitiesTaskResponder(resp)
@@ -131,13 +133,15 @@ func (client ExportTasksClient) CreateCrashesTask(resourceGroupName string, appC
 
 	req, err := client.CreateCrashesTaskPreparer(resourceGroupName, appCollection, appName, parameters)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "mobileengagement.ExportTasksClient", "CreateCrashesTask", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "mobileengagement.ExportTasksClient", "CreateCrashesTask", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.CreateCrashesTaskSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "mobileengagement.ExportTasksClient", "CreateCrashesTask", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "mobileengagement.ExportTasksClient", "CreateCrashesTask", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.CreateCrashesTaskResponder(resp)
@@ -206,13 +210,15 @@ func (client ExportTasksClient) CreateErrorsTask(resourceGroupName string, appCo
 
 	req, err := client.CreateErrorsTaskPreparer(resourceGroupName, appCollection, appName, parameters)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "mobileengagement.ExportTasksClient", "CreateErrorsTask", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "mobileengagement.ExportTasksClient", "CreateErrorsTask", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.CreateErrorsTaskSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "mobileengagement.ExportTasksClient", "CreateErrorsTask", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "mobileengagement.ExportTasksClient", "CreateErrorsTask", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.CreateErrorsTaskResponder(resp)
@@ -281,13 +287,15 @@ func (client ExportTasksClient) CreateEventsTask(resourceGroupName string, appCo
 
 	req, err := client.CreateEventsTaskPreparer(resourceGroupName, appCollection, appName, parameters)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "mobileengagement.ExportTasksClient", "CreateEventsTask", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "mobileengagement.ExportTasksClient", "CreateEventsTask", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.CreateEventsTaskSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "mobileengagement.ExportTasksClient", "CreateEventsTask", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "mobileengagement.ExportTasksClient", "CreateEventsTask", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.CreateEventsTaskResponder(resp)
@@ -357,13 +365,15 @@ func (client ExportTasksClient) CreateFeedbackTaskByCampaign(resourceGroupName s
 
 	req, err := client.CreateFeedbackTaskByCampaignPreparer(resourceGroupName, appCollection, appName, parameters)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "mobileengagement.ExportTasksClient", "CreateFeedbackTaskByCampaign", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "mobileengagement.ExportTasksClient", "CreateFeedbackTaskByCampaign", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.CreateFeedbackTaskByCampaignSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "mobileengagement.ExportTasksClient", "CreateFeedbackTaskByCampaign", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "mobileengagement.ExportTasksClient", "CreateFeedbackTaskByCampaign", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.CreateFeedbackTaskByCampaignResponder(resp)
@@ -433,13 +443,15 @@ func (client ExportTasksClient) CreateFeedbackTaskByDateRange(resourceGroupName 
 
 	req, err := client.CreateFeedbackTaskByDateRangePreparer(resourceGroupName, appCollection, appName, parameters)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "mobileengagement.ExportTasksClient", "CreateFeedbackTaskByDateRange", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "mobileengagement.ExportTasksClient", "CreateFeedbackTaskByDateRange", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.CreateFeedbackTaskByDateRangeSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "mobileengagement.ExportTasksClient", "CreateFeedbackTaskByDateRange", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "mobileengagement.ExportTasksClient", "CreateFeedbackTaskByDateRange", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.CreateFeedbackTaskByDateRangeResponder(resp)
@@ -508,13 +520,15 @@ func (client ExportTasksClient) CreateJobsTask(resourceGroupName string, appColl
 
 	req, err := client.CreateJobsTaskPreparer(resourceGroupName, appCollection, appName, parameters)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "mobileengagement.ExportTasksClient", "CreateJobsTask", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "mobileengagement.ExportTasksClient", "CreateJobsTask", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.CreateJobsTaskSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "mobileengagement.ExportTasksClient", "CreateJobsTask", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "mobileengagement.ExportTasksClient", "CreateJobsTask", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.CreateJobsTaskResponder(resp)
@@ -583,13 +597,15 @@ func (client ExportTasksClient) CreateSessionsTask(resourceGroupName string, app
 
 	req, err := client.CreateSessionsTaskPreparer(resourceGroupName, appCollection, appName, parameters)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "mobileengagement.ExportTasksClient", "CreateSessionsTask", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "mobileengagement.ExportTasksClient", "CreateSessionsTask", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.CreateSessionsTaskSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "mobileengagement.ExportTasksClient", "CreateSessionsTask", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "mobileengagement.ExportTasksClient", "CreateSessionsTask", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.CreateSessionsTaskResponder(resp)
@@ -656,13 +672,15 @@ func (client ExportTasksClient) CreateTagsTask(resourceGroupName string, appColl
 
 	req, err := client.CreateTagsTaskPreparer(resourceGroupName, appCollection, appName, parameters)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "mobileengagement.ExportTasksClient", "CreateTagsTask", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "mobileengagement.ExportTasksClient", "CreateTagsTask", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.CreateTagsTaskSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "mobileengagement.ExportTasksClient", "CreateTagsTask", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "mobileengagement.ExportTasksClient", "CreateTagsTask", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.CreateTagsTaskResponder(resp)
@@ -729,13 +747,15 @@ func (client ExportTasksClient) CreateTokensTask(resourceGroupName string, appCo
 
 	req, err := client.CreateTokensTaskPreparer(resourceGroupName, appCollection, appName, parameters)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "mobileengagement.ExportTasksClient", "CreateTokensTask", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "mobileengagement.ExportTasksClient", "CreateTokensTask", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.CreateTokensTaskSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "mobileengagement.ExportTasksClient", "CreateTokensTask", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "mobileengagement.ExportTasksClient", "CreateTokensTask", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.CreateTokensTaskResponder(resp)
@@ -792,18 +812,20 @@ func (client ExportTasksClient) CreateTokensTaskResponder(resp *http.Response) (
 // Get retrieves information about a previously created export task.
 //
 // resourceGroupName is the name of the resource group. appCollection is
-// application collection. appName is application resource name. id is export
+// application collection. appName is application resource name. ID is export
 // task identifier.
-func (client ExportTasksClient) Get(resourceGroupName string, appCollection string, appName string, id string) (result ExportTaskResult, err error) {
-	req, err := client.GetPreparer(resourceGroupName, appCollection, appName, id)
+func (client ExportTasksClient) Get(resourceGroupName string, appCollection string, appName string, ID string) (result ExportTaskResult, err error) {
+	req, err := client.GetPreparer(resourceGroupName, appCollection, appName, ID)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "mobileengagement.ExportTasksClient", "Get", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "mobileengagement.ExportTasksClient", "Get", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "mobileengagement.ExportTasksClient", "Get", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "mobileengagement.ExportTasksClient", "Get", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetResponder(resp)
@@ -815,11 +837,11 @@ func (client ExportTasksClient) Get(resourceGroupName string, appCollection stri
 }
 
 // GetPreparer prepares the Get request.
-func (client ExportTasksClient) GetPreparer(resourceGroupName string, appCollection string, appName string, id string) (*http.Request, error) {
+func (client ExportTasksClient) GetPreparer(resourceGroupName string, appCollection string, appName string, ID string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"appCollection":     autorest.Encode("path", appCollection),
 		"appName":           autorest.Encode("path", appName),
-		"id":                autorest.Encode("path", id),
+		"id":                autorest.Encode("path", ID),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
@@ -891,13 +913,15 @@ func (client ExportTasksClient) List(resourceGroupName string, appCollection str
 
 	req, err := client.ListPreparer(resourceGroupName, appCollection, appName, skip, top, orderby)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "mobileengagement.ExportTasksClient", "List", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "mobileengagement.ExportTasksClient", "List", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "mobileengagement.ExportTasksClient", "List", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "mobileengagement.ExportTasksClient", "List", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListResponder(resp)

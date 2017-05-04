@@ -56,8 +56,14 @@ const (
 type SkuName string
 
 const (
+	// B1 specifies the b1 state for sku name.
+	B1 SkuName = "B1"
+	// B2 specifies the b2 state for sku name.
+	B2 SkuName = "B2"
 	// D1 specifies the d1 state for sku name.
 	D1 SkuName = "D1"
+	// S0 specifies the s0 state for sku name.
+	S0 SkuName = "S0"
 	// S1 specifies the s1 state for sku name.
 	S1 SkuName = "S1"
 	// S2 specifies the s2 state for sku name.
@@ -70,6 +76,8 @@ const (
 type SkuTier string
 
 const (
+	// Basic specifies the basic state for sku tier.
+	Basic SkuTier = "Basic"
 	// Development specifies the development state for sku tier.
 	Development SkuTier = "Development"
 	// Standard specifies the standard state for sku tier.

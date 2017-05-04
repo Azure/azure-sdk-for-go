@@ -54,7 +54,9 @@ func NewRoleAssignmentsClientWithBaseURI(baseURI string, subscriptionID string) 
 // resourceGroupName is the name of the resource group. hubName is the name of
 // the hub. assignmentName is the assignment name parameters is parameters
 // supplied to the CreateOrUpdate RoleAssignment operation.
-func (client RoleAssignmentsClient) CreateOrUpdate(resourceGroupName string, hubName string, assignmentName string, parameters RoleAssignmentResourceFormat, cancel <-chan struct{}) (result autorest.Response, err error) {
+func (client RoleAssignmentsClient) CreateOrUpdate(resourceGroupName string, hubName string, assignmentName string, parameters RoleAssignmentResourceFormat, cancel <-chan struct{}) (<-chan RoleAssignmentResourceFormat, <-chan error) {
+	resultChan := make(chan RoleAssignmentResourceFormat, 1)
+	errChan := make(chan error, 1)
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: assignmentName,
 			Constraints: []validation.Constraint{{Target: "assignmentName", Name: validation.MaxLength, Rule: 128, Chain: nil},
@@ -63,26 +65,40 @@ func (client RoleAssignmentsClient) CreateOrUpdate(resourceGroupName string, hub
 		{TargetValue: parameters,
 			Constraints: []validation.Constraint{{Target: "parameters.RoleAssignment", Name: validation.Null, Rule: false,
 				Chain: []validation.Constraint{{Target: "parameters.RoleAssignment.Principals", Name: validation.Null, Rule: true, Chain: nil}}}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "customerinsights.RoleAssignmentsClient", "CreateOrUpdate")
+		errChan <- validation.NewErrorWithValidationError(err, "customerinsights.RoleAssignmentsClient", "CreateOrUpdate")
+		close(errChan)
+		close(resultChan)
+		return resultChan, errChan
 	}
 
-	req, err := client.CreateOrUpdatePreparer(resourceGroupName, hubName, assignmentName, parameters, cancel)
-	if err != nil {
-		return result, autorest.NewErrorWithError(err, "customerinsights.RoleAssignmentsClient", "CreateOrUpdate", nil, "Failure preparing request")
-	}
+	go func() {
+		var err error
+		var result RoleAssignmentResourceFormat
+		defer func() {
+			resultChan <- result
+			errChan <- err
+			close(resultChan)
+			close(errChan)
+		}()
+		req, err := client.CreateOrUpdatePreparer(resourceGroupName, hubName, assignmentName, parameters, cancel)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "customerinsights.RoleAssignmentsClient", "CreateOrUpdate", nil, "Failure preparing request")
+			return
+		}
 
-	resp, err := client.CreateOrUpdateSender(req)
-	if err != nil {
-		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "customerinsights.RoleAssignmentsClient", "CreateOrUpdate", resp, "Failure sending request")
-	}
+		resp, err := client.CreateOrUpdateSender(req)
+		if err != nil {
+			result.Response = autorest.Response{Response: resp}
+			err = autorest.NewErrorWithError(err, "customerinsights.RoleAssignmentsClient", "CreateOrUpdate", resp, "Failure sending request")
+			return
+		}
 
-	result, err = client.CreateOrUpdateResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "customerinsights.RoleAssignmentsClient", "CreateOrUpdate", resp, "Failure responding to request")
-	}
-
-	return
+		result, err = client.CreateOrUpdateResponder(resp)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "customerinsights.RoleAssignmentsClient", "CreateOrUpdate", resp, "Failure responding to request")
+		}
+	}()
+	return resultChan, errChan
 }
 
 // CreateOrUpdatePreparer prepares the CreateOrUpdate request.
@@ -94,8 +110,9 @@ func (client RoleAssignmentsClient) CreateOrUpdatePreparer(resourceGroupName str
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
+	const APIVersion = "2017-01-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -118,13 +135,14 @@ func (client RoleAssignmentsClient) CreateOrUpdateSender(req *http.Request) (*ht
 
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
 // closes the http.Response Body.
-func (client RoleAssignmentsClient) CreateOrUpdateResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client RoleAssignmentsClient) CreateOrUpdateResponder(resp *http.Response) (result RoleAssignmentResourceFormat, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = resp
+	result.Response = autorest.Response{Response: resp}
 	return
 }
 
@@ -135,13 +153,15 @@ func (client RoleAssignmentsClient) CreateOrUpdateResponder(resp *http.Response)
 func (client RoleAssignmentsClient) Delete(resourceGroupName string, hubName string, assignmentName string) (result autorest.Response, err error) {
 	req, err := client.DeletePreparer(resourceGroupName, hubName, assignmentName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "customerinsights.RoleAssignmentsClient", "Delete", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "customerinsights.RoleAssignmentsClient", "Delete", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.DeleteSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "customerinsights.RoleAssignmentsClient", "Delete", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "customerinsights.RoleAssignmentsClient", "Delete", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.DeleteResponder(resp)
@@ -161,8 +181,9 @@ func (client RoleAssignmentsClient) DeletePreparer(resourceGroupName string, hub
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
+	const APIVersion = "2017-01-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -198,13 +219,15 @@ func (client RoleAssignmentsClient) DeleteResponder(resp *http.Response) (result
 func (client RoleAssignmentsClient) Get(resourceGroupName string, hubName string, assignmentName string) (result RoleAssignmentResourceFormat, err error) {
 	req, err := client.GetPreparer(resourceGroupName, hubName, assignmentName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "customerinsights.RoleAssignmentsClient", "Get", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "customerinsights.RoleAssignmentsClient", "Get", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "customerinsights.RoleAssignmentsClient", "Get", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "customerinsights.RoleAssignmentsClient", "Get", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetResponder(resp)
@@ -224,8 +247,9 @@ func (client RoleAssignmentsClient) GetPreparer(resourceGroupName string, hubNam
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
+	const APIVersion = "2017-01-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -262,13 +286,15 @@ func (client RoleAssignmentsClient) GetResponder(resp *http.Response) (result Ro
 func (client RoleAssignmentsClient) ListByHub(resourceGroupName string, hubName string) (result RoleAssignmentListResult, err error) {
 	req, err := client.ListByHubPreparer(resourceGroupName, hubName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "customerinsights.RoleAssignmentsClient", "ListByHub", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "customerinsights.RoleAssignmentsClient", "ListByHub", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListByHubSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "customerinsights.RoleAssignmentsClient", "ListByHub", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "customerinsights.RoleAssignmentsClient", "ListByHub", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListByHubResponder(resp)
@@ -287,8 +313,9 @@ func (client RoleAssignmentsClient) ListByHubPreparer(resourceGroupName string, 
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
+	const APIVersion = "2017-01-01"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(

@@ -24,9 +24,10 @@ import (
 	"net/http"
 )
 
-// ServersClient is the provides create, read, update and delete functionality
-// for Azure SQL Database resources including servers, databases, elastic
-// pools, recommendations, operations, and usage metrics.
+// ServersClient is the the Azure SQL Database management API provides a
+// RESTful set of web services that interact with Azure SQL Database services
+// to manage your databases. The API enables you to create, retrieve, update,
+// and delete databases.
 type ServersClient struct {
 	ManagementClient
 }
@@ -50,13 +51,15 @@ func NewServersClientWithBaseURI(baseURI string, subscriptionID string) ServersC
 func (client ServersClient) CreateOrUpdate(resourceGroupName string, serverName string, parameters Server) (result Server, err error) {
 	req, err := client.CreateOrUpdatePreparer(resourceGroupName, serverName, parameters)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "sql.ServersClient", "CreateOrUpdate", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "sql.ServersClient", "CreateOrUpdate", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.CreateOrUpdateSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "sql.ServersClient", "CreateOrUpdate", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "sql.ServersClient", "CreateOrUpdate", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.CreateOrUpdateResponder(resp)
@@ -117,13 +120,15 @@ func (client ServersClient) CreateOrUpdateResponder(resp *http.Response) (result
 func (client ServersClient) Delete(resourceGroupName string, serverName string) (result autorest.Response, err error) {
 	req, err := client.DeletePreparer(resourceGroupName, serverName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "sql.ServersClient", "Delete", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "sql.ServersClient", "Delete", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.DeleteSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "sql.ServersClient", "Delete", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "sql.ServersClient", "Delete", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.DeleteResponder(resp)
@@ -181,13 +186,15 @@ func (client ServersClient) DeleteResponder(resp *http.Response) (result autores
 func (client ServersClient) Get(resourceGroupName string, serverName string) (result Server, err error) {
 	req, err := client.GetPreparer(resourceGroupName, serverName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "sql.ServersClient", "Get", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "sql.ServersClient", "Get", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "sql.ServersClient", "Get", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "sql.ServersClient", "Get", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetResponder(resp)
@@ -247,13 +254,15 @@ func (client ServersClient) GetResponder(resp *http.Response) (result Server, er
 func (client ServersClient) GetServiceObjective(resourceGroupName string, serverName string, serviceObjectiveName string) (result ServiceObjective, err error) {
 	req, err := client.GetServiceObjectivePreparer(resourceGroupName, serverName, serviceObjectiveName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "sql.ServersClient", "GetServiceObjective", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "sql.ServersClient", "GetServiceObjective", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetServiceObjectiveSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "sql.ServersClient", "GetServiceObjective", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "sql.ServersClient", "GetServiceObjective", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetServiceObjectiveResponder(resp)
@@ -309,13 +318,15 @@ func (client ServersClient) GetServiceObjectiveResponder(resp *http.Response) (r
 func (client ServersClient) List() (result ServerListResult, err error) {
 	req, err := client.ListPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "sql.ServersClient", "List", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "sql.ServersClient", "List", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "sql.ServersClient", "List", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "sql.ServersClient", "List", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListResponder(resp)
@@ -372,13 +383,15 @@ func (client ServersClient) ListResponder(resp *http.Response) (result ServerLis
 func (client ServersClient) ListByResourceGroup(resourceGroupName string) (result ServerListResult, err error) {
 	req, err := client.ListByResourceGroupPreparer(resourceGroupName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "sql.ServersClient", "ListByResourceGroup", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "sql.ServersClient", "ListByResourceGroup", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListByResourceGroupSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "sql.ServersClient", "ListByResourceGroup", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "sql.ServersClient", "ListByResourceGroup", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListByResourceGroupResponder(resp)
@@ -436,13 +449,15 @@ func (client ServersClient) ListByResourceGroupResponder(resp *http.Response) (r
 func (client ServersClient) ListServiceObjectives(resourceGroupName string, serverName string) (result ServiceObjectiveListResult, err error) {
 	req, err := client.ListServiceObjectivesPreparer(resourceGroupName, serverName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "sql.ServersClient", "ListServiceObjectives", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "sql.ServersClient", "ListServiceObjectives", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListServiceObjectivesSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "sql.ServersClient", "ListServiceObjectives", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "sql.ServersClient", "ListServiceObjectives", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListServiceObjectivesResponder(resp)
@@ -501,13 +516,15 @@ func (client ServersClient) ListServiceObjectivesResponder(resp *http.Response) 
 func (client ServersClient) ListUsages(resourceGroupName string, serverName string) (result ServerMetricListResult, err error) {
 	req, err := client.ListUsagesPreparer(resourceGroupName, serverName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "sql.ServersClient", "ListUsages", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "sql.ServersClient", "ListUsages", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListUsagesSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "sql.ServersClient", "ListUsages", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "sql.ServersClient", "ListUsages", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListUsagesResponder(resp)

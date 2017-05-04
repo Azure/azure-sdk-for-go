@@ -22,6 +22,7 @@ import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/date"
 	"github.com/Azure/go-autorest/autorest/to"
+	"io"
 	"net/http"
 )
 
@@ -61,6 +62,18 @@ const (
 	Succeeded AsyncOperationState = "Succeeded"
 )
 
+// BackendProtocol enumerates the values for backend protocol.
+type BackendProtocol string
+
+const (
+	// BackendProtocolHTTP specifies the backend protocol http state for
+	// backend protocol.
+	BackendProtocolHTTP BackendProtocol = "http"
+	// BackendProtocolSoap specifies the backend protocol soap state for
+	// backend protocol.
+	BackendProtocolSoap BackendProtocol = "soap"
+)
+
 // BearerTokenSendingMethodsContract enumerates the values for bearer token
 // sending methods contract.
 type BearerTokenSendingMethodsContract string
@@ -84,6 +97,19 @@ const (
 	Basic ClientAuthenticationMethodContract = "Basic"
 	// Body specifies the body state for client authentication method contract.
 	Body ClientAuthenticationMethodContract = "Body"
+)
+
+// ConnectivityStatusType enumerates the values for connectivity status type.
+type ConnectivityStatusType string
+
+const (
+	// Failure specifies the failure state for connectivity status type.
+	Failure ConnectivityStatusType = "failure"
+	// Initializing specifies the initializing state for connectivity status
+	// type.
+	Initializing ConnectivityStatusType = "initializing"
+	// Success specifies the success state for connectivity status type.
+	Success ConnectivityStatusType = "success"
 )
 
 // GrantTypesContract enumerates the values for grant types contract.
@@ -115,6 +141,20 @@ const (
 	System GroupTypeContract = "System"
 )
 
+// HostnameType enumerates the values for hostname type.
+type HostnameType string
+
+const (
+	// Management specifies the management state for hostname type.
+	Management HostnameType = "Management"
+	// Portal specifies the portal state for hostname type.
+	Portal HostnameType = "Portal"
+	// Proxy specifies the proxy state for hostname type.
+	Proxy HostnameType = "Proxy"
+	// Scm specifies the scm state for hostname type.
+	Scm HostnameType = "Scm"
+)
+
 // HTTPStatusCode enumerates the values for http status code.
 type HTTPStatusCode string
 
@@ -140,6 +180,8 @@ type IdentityProviderNameType string
 const (
 	// Aad specifies the aad state for identity provider name type.
 	Aad IdentityProviderNameType = "aad"
+	// AadB2C specifies the aad b2c state for identity provider name type.
+	AadB2C IdentityProviderNameType = "aadB2C"
 	// Facebook specifies the facebook state for identity provider name type.
 	Facebook IdentityProviderNameType = "facebook"
 	// Google specifies the google state for identity provider name type.
@@ -172,35 +214,38 @@ const (
 	TRACE MethodContract = "TRACE"
 )
 
-// OperationStatus enumerates the values for operation status.
-type OperationStatus string
+// NameAvailabilityReason enumerates the values for name availability reason.
+type NameAvailabilityReason string
 
 const (
-	// OperationStatusFailed specifies the operation status failed state for
-	// operation status.
-	OperationStatusFailed OperationStatus = "Failed"
-	// OperationStatusInProgress specifies the operation status in progress
-	// state for operation status.
-	OperationStatusInProgress OperationStatus = "InProgress"
-	// OperationStatusSucceeded specifies the operation status succeeded state
-	// for operation status.
-	OperationStatusSucceeded OperationStatus = "Succeeded"
+	// AlreadyExists specifies the already exists state for name availability
+	// reason.
+	AlreadyExists NameAvailabilityReason = "AlreadyExists"
+	// Invalid specifies the invalid state for name availability reason.
+	Invalid NameAvailabilityReason = "Invalid"
+	// Valid specifies the valid state for name availability reason.
+	Valid NameAvailabilityReason = "Valid"
 )
 
 // PolicyScopeContract enumerates the values for policy scope contract.
 type PolicyScopeContract string
 
 const (
-	// All specifies the all state for policy scope contract.
-	All PolicyScopeContract = "All"
-	// API specifies the api state for policy scope contract.
-	API PolicyScopeContract = "Api"
-	// Operation specifies the operation state for policy scope contract.
-	Operation PolicyScopeContract = "Operation"
-	// Product specifies the product state for policy scope contract.
-	Product PolicyScopeContract = "Product"
-	// Tenant specifies the tenant state for policy scope contract.
-	Tenant PolicyScopeContract = "Tenant"
+	// PolicyScopeContractAll specifies the policy scope contract all state for
+	// policy scope contract.
+	PolicyScopeContractAll PolicyScopeContract = "All"
+	// PolicyScopeContractAPI specifies the policy scope contract api state for
+	// policy scope contract.
+	PolicyScopeContractAPI PolicyScopeContract = "Api"
+	// PolicyScopeContractOperation specifies the policy scope contract
+	// operation state for policy scope contract.
+	PolicyScopeContractOperation PolicyScopeContract = "Operation"
+	// PolicyScopeContractProduct specifies the policy scope contract product
+	// state for policy scope contract.
+	PolicyScopeContractProduct PolicyScopeContract = "Product"
+	// PolicyScopeContractTenant specifies the policy scope contract tenant
+	// state for policy scope contract.
+	PolicyScopeContractTenant PolicyScopeContract = "Tenant"
 )
 
 // ProductStateContract enumerates the values for product state contract.
@@ -235,6 +280,18 @@ const (
 	ByUser ReportsAggregation = "byUser"
 )
 
+// SkuType enumerates the values for sku type.
+type SkuType string
+
+const (
+	// Developer specifies the developer state for sku type.
+	Developer SkuType = "Developer"
+	// Premium specifies the premium state for sku type.
+	Premium SkuType = "Premium"
+	// Standard specifies the standard state for sku type.
+	Standard SkuType = "Standard"
+)
+
 // SubscriptionStateContract enumerates the values for subscription state
 // contract.
 type SubscriptionStateContract string
@@ -266,6 +323,21 @@ const (
 	UserStateContractBlocked UserStateContract = "Blocked"
 )
 
+// VirtualNetworkType enumerates the values for virtual network type.
+type VirtualNetworkType string
+
+const (
+	// VirtualNetworkTypeExternal specifies the virtual network type external
+	// state for virtual network type.
+	VirtualNetworkTypeExternal VirtualNetworkType = "External"
+	// VirtualNetworkTypeInternal specifies the virtual network type internal
+	// state for virtual network type.
+	VirtualNetworkTypeInternal VirtualNetworkType = "Internal"
+	// VirtualNetworkTypeNone specifies the virtual network type none state for
+	// virtual network type.
+	VirtualNetworkTypeNone VirtualNetworkType = "None"
+)
+
 // AccessInformationContract is tenant access information contract of the API
 // Management service.
 type AccessInformationContract struct {
@@ -280,6 +352,16 @@ type AccessInformationContract struct {
 // parameters of the API Management service.
 type AccessInformationUpdateParameters struct {
 	Enabled *bool `json:"enabled,omitempty"`
+}
+
+// AdditionalRegion is description of an additional API Management resource
+// location.
+type AdditionalRegion struct {
+	Location         *string                      `json:"location,omitempty"`
+	SkuType          SkuType                      `json:"skuType,omitempty"`
+	SkuUnitCount     *int32                       `json:"skuUnitCount,omitempty"`
+	StaticIPs        *[]string                    `json:"staticIPs,omitempty"`
+	Vpnconfiguration *VirtualNetworkConfiguration `json:"vpnconfiguration,omitempty"`
 }
 
 // APICollection is paged Api list representation.
@@ -305,12 +387,20 @@ func (client APICollection) APICollectionPreparer() (*http.Request, error) {
 // APIContract is aPI details.
 type APIContract struct {
 	autorest.Response             `json:"-"`
+	Description                   *string                                `json:"description,omitempty"`
+	AuthenticationSettings        *AuthenticationSettingsContract        `json:"authenticationSettings,omitempty"`
+	SubscriptionKeyParameterNames *SubscriptionKeyParameterNamesContract `json:"subscriptionKeyParameterNames,omitempty"`
+	Type                          APITypeContract                        `json:"type,omitempty"`
 	ID                            *string                                `json:"id,omitempty"`
 	Name                          *string                                `json:"name,omitempty"`
-	Description                   *string                                `json:"description,omitempty"`
 	ServiceURL                    *string                                `json:"serviceUrl,omitempty"`
 	Path                          *string                                `json:"path,omitempty"`
 	Protocols                     *[]APIProtocolContract                 `json:"protocols,omitempty"`
+}
+
+// APIEntityBaseContract is aPI base contract details.
+type APIEntityBaseContract struct {
+	Description                   *string                                `json:"description,omitempty"`
 	AuthenticationSettings        *AuthenticationSettingsContract        `json:"authenticationSettings,omitempty"`
 	SubscriptionKeyParameterNames *SubscriptionKeyParameterNamesContract `json:"subscriptionKeyParameterNames,omitempty"`
 	Type                          APITypeContract                        `json:"type,omitempty"`
@@ -322,6 +412,19 @@ type APIExportResult struct {
 	Content           *[]byte        `json:"content,omitempty"`
 	StatusCode        HTTPStatusCode `json:"statusCode,omitempty"`
 	RequestID         *string        `json:"requestId,omitempty"`
+}
+
+// APIUpdateContract is aPI Update Contract details.
+type APIUpdateContract struct {
+	Description                   *string                                `json:"description,omitempty"`
+	AuthenticationSettings        *AuthenticationSettingsContract        `json:"authenticationSettings,omitempty"`
+	SubscriptionKeyParameterNames *SubscriptionKeyParameterNamesContract `json:"subscriptionKeyParameterNames,omitempty"`
+	Type                          APITypeContract                        `json:"type,omitempty"`
+	ID                            *string                                `json:"id,omitempty"`
+	Name                          *string                                `json:"name,omitempty"`
+	ServiceURL                    *string                                `json:"serviceUrl,omitempty"`
+	Path                          *string                                `json:"path,omitempty"`
+	Protocols                     *[]APIProtocolContract                 `json:"protocols,omitempty"`
 }
 
 // AuthenticationSettingsContract is aPI Authentication Settings.
@@ -350,6 +453,26 @@ func (client AuthorizationServerCollection) AuthorizationServerCollectionPrepare
 		autorest.WithBaseURL(to.String(client.NextLink)))
 }
 
+// BackendAuthorizationHeaderCredentials is authorization header information.
+type BackendAuthorizationHeaderCredentials struct {
+	Scheme    *string `json:"scheme,omitempty"`
+	Parameter *string `json:"parameter,omitempty"`
+}
+
+// BackendBaseParameters is backend entity base Parameter set.
+type BackendBaseParameters struct {
+	Certificate        *[]string            `json:"certificate,omitempty"`
+	Query              *map[string][]string `json:"query,omitempty"`
+	Header             *map[string][]string `json:"header,omitempty"`
+	URL                *string              `json:"url,omitempty"`
+	Username           *string              `json:"username,omitempty"`
+	Password           *string              `json:"password,omitempty"`
+	Title              *string              `json:"title,omitempty"`
+	Description        *string              `json:"description,omitempty"`
+	ResourceID         *string              `json:"resourceId,omitempty"`
+	*BackendProperties `json:"properties,omitempty"`
+}
+
 // BackendCollection is paged Backend list representation.
 type BackendCollection struct {
 	autorest.Response `json:"-"`
@@ -372,25 +495,77 @@ func (client BackendCollection) BackendCollectionPreparer() (*http.Request, erro
 
 // BackendContract is parameters supplied to the Create Backend operation.
 type BackendContract struct {
-	Host                           *string `json:"host,omitempty"`
-	SkipCertificateChainValidation *bool   `json:"skipCertificateChainValidation,omitempty"`
+	Certificate        *[]string            `json:"certificate,omitempty"`
+	Query              *map[string][]string `json:"query,omitempty"`
+	Header             *map[string][]string `json:"header,omitempty"`
+	URL                *string              `json:"url,omitempty"`
+	Username           *string              `json:"username,omitempty"`
+	Password           *string              `json:"password,omitempty"`
+	Title              *string              `json:"title,omitempty"`
+	Description        *string              `json:"description,omitempty"`
+	ResourceID         *string              `json:"resourceId,omitempty"`
+	*BackendProperties `json:"properties,omitempty"`
+	ID                 *string         `json:"id,omitempty"`
+	Protocol           BackendProtocol `json:"protocol,omitempty"`
+}
+
+// BackendCredentialsContract is details of the Credentials used to connect to
+// Backend.
+type BackendCredentialsContract struct {
+	Scheme      *string              `json:"scheme,omitempty"`
+	Parameter   *string              `json:"parameter,omitempty"`
+	Certificate *[]string            `json:"certificate,omitempty"`
+	Query       *map[string][]string `json:"query,omitempty"`
+	Header      *map[string][]string `json:"header,omitempty"`
+}
+
+// BackendProperties is properties specific to a Backend.
+type BackendProperties struct {
+	SkipCertificateChainValidation *bool `json:"skipCertificateChainValidation,omitempty"`
+	SkipCertificateNameValidation  *bool `json:"skipCertificateNameValidation,omitempty"`
+}
+
+// BackendProxyContract is details of the Backend WebProxy Server to use in the
+// Request to Backend.
+type BackendProxyContract struct {
+	URL      *string `json:"url,omitempty"`
+	Username *string `json:"username,omitempty"`
+	Password *string `json:"password,omitempty"`
 }
 
 // BackendResponse is the Backend entity in API Management represents a backend
 // service that is configured to skip certification chain validation when using
 // a self-signed certificate to test mutual certificate authentication.
 type BackendResponse struct {
-	autorest.Response              `json:"-"`
-	Host                           *string `json:"host,omitempty"`
-	SkipCertificateChainValidation *bool   `json:"skipCertificateChainValidation,omitempty"`
-	ID                             *string `json:"id,omitempty"`
+	autorest.Response  `json:"-"`
+	Certificate        *[]string            `json:"certificate,omitempty"`
+	Query              *map[string][]string `json:"query,omitempty"`
+	Header             *map[string][]string `json:"header,omitempty"`
+	URL                *string              `json:"url,omitempty"`
+	Username           *string              `json:"username,omitempty"`
+	Password           *string              `json:"password,omitempty"`
+	Title              *string              `json:"title,omitempty"`
+	Description        *string              `json:"description,omitempty"`
+	ResourceID         *string              `json:"resourceId,omitempty"`
+	*BackendProperties `json:"properties,omitempty"`
+	ID                 *string         `json:"id,omitempty"`
+	Protocol           BackendProtocol `json:"protocol,omitempty"`
 }
 
 // BackendUpdateParameters is parameters supplied to the Update Backend
 // operation.
 type BackendUpdateParameters struct {
-	Host                           *string `json:"host,omitempty"`
-	SkipCertificateChainValidation *bool   `json:"skipCertificateChainValidation,omitempty"`
+	Certificate        *[]string            `json:"certificate,omitempty"`
+	Query              *map[string][]string `json:"query,omitempty"`
+	Header             *map[string][]string `json:"header,omitempty"`
+	URL                *string              `json:"url,omitempty"`
+	Username           *string              `json:"username,omitempty"`
+	Password           *string              `json:"password,omitempty"`
+	Title              *string              `json:"title,omitempty"`
+	Description        *string              `json:"description,omitempty"`
+	ResourceID         *string              `json:"resourceId,omitempty"`
+	*BackendProperties `json:"properties,omitempty"`
+	Protocol           BackendProtocol `json:"protocol,omitempty"`
 }
 
 // CertificateCollection is paged Certificates list representation.
@@ -429,6 +604,23 @@ type CertificateCreateOrUpdateParameters struct {
 	Password *string `json:"password,omitempty"`
 }
 
+// CertificateInformation is sSL certificate information.
+type CertificateInformation struct {
+	autorest.Response `json:"-"`
+	Expiry            *date.Time `json:"expiry,omitempty"`
+	Thumbprint        *string    `json:"thumbprint,omitempty"`
+	Subject           *string    `json:"subject,omitempty"`
+}
+
+// ConnectivityStatusContract is details about connectivity to a resource.
+type ConnectivityStatusContract struct {
+	Name             *string                `json:"name,omitempty"`
+	Status           ConnectivityStatusType `json:"status,omitempty"`
+	Error            *string                `json:"error,omitempty"`
+	LastUpdated      *date.Time             `json:"lastUpdated,omitempty"`
+	LastStatusChange *date.Time             `json:"lastStatusChange,omitempty"`
+}
+
 // DeployConfigurationParameters is parameters supplied to the Deploy
 // Configuration operation.
 type DeployConfigurationParameters struct {
@@ -449,6 +641,12 @@ type ErrorFieldContract struct {
 	Code    *string `json:"code,omitempty"`
 	Message *string `json:"message,omitempty"`
 	Target  *string `json:"target,omitempty"`
+}
+
+// ErrorResponse is error Response.
+type ErrorResponse struct {
+	Code    *string `json:"code,omitempty"`
+	Message *string `json:"message,omitempty"`
 }
 
 // GenerateSsoURLResult is generate SSO Url operations response details.
@@ -504,6 +702,13 @@ type GroupUpdateParameters struct {
 	ExternalID  *string           `json:"externalId,omitempty"`
 }
 
+// HostnameConfiguration is custom hostname configuration.
+type HostnameConfiguration struct {
+	Type        HostnameType            `json:"type,omitempty"`
+	Hostname    *string                 `json:"hostname,omitempty"`
+	Certificate *CertificateInformation `json:"certificate,omitempty"`
+}
+
 // IdentityProviderContract is the external Identity Providers like Facebook,
 // Google, Microsoft, Twitter or Azure Active Directory which can be used to
 // enable access to the API Management service developer portal for all users.
@@ -528,18 +733,6 @@ type IdentityProviderUpdateParameters struct {
 	ClientID       *string   `json:"clientId,omitempty"`
 	ClientSecret   *string   `json:"clientSecret,omitempty"`
 	AllowedTenants *[]string `json:"allowedTenants,omitempty"`
-}
-
-// ListPolicySnippetContract is
-type ListPolicySnippetContract struct {
-	autorest.Response `json:"-"`
-	Value             *[]PolicySnippetContract `json:"value,omitempty"`
-}
-
-// ListUserIdentityContract is
-type ListUserIdentityContract struct {
-	autorest.Response `json:"-"`
-	Value             *[]UserIdentityContract `json:"value,omitempty"`
 }
 
 // LoggerCollection is paged Logger list representation.
@@ -590,6 +783,13 @@ type LoggerUpdateParameters struct {
 	Description *string             `json:"description,omitempty"`
 	Credentials *map[string]*string `json:"credentials,omitempty"`
 	IsBuffered  *bool               `json:"isBuffered,omitempty"`
+}
+
+// NetworkStatusContract is network Status details.
+type NetworkStatusContract struct {
+	autorest.Response  `json:"-"`
+	DNSServers         *[]string                     `json:"dnsServers,omitempty"`
+	ConnectivityStatus *[]ConnectivityStatusContract `json:"connectivityStatus,omitempty"`
 }
 
 // OAuth2AuthenticationSettingsContract is aPI OAuth2 Authentication settings
@@ -695,6 +895,20 @@ type OpenidConnectProviderUpdateContract struct {
 	ClientSecret     *string `json:"clientSecret,omitempty"`
 }
 
+// Operation is rEST API operation
+type Operation struct {
+	Name    *string           `json:"name,omitempty"`
+	Display *OperationDisplay `json:"display,omitempty"`
+}
+
+// OperationDisplay is the object that describes the operation.
+type OperationDisplay struct {
+	Provider    *string `json:"provider,omitempty"`
+	Operation   *string `json:"operation,omitempty"`
+	Resource    *string `json:"resource,omitempty"`
+	Description *string `json:"description,omitempty"`
+}
+
 // OperationCollection is paged Operation list representation.
 type OperationCollection struct {
 	autorest.Response `json:"-"`
@@ -718,14 +932,43 @@ func (client OperationCollection) OperationCollectionPreparer() (*http.Request, 
 // OperationContract is api Operation details.
 type OperationContract struct {
 	autorest.Response  `json:"-"`
-	ID                 *string              `json:"id,omitempty"`
-	Name               *string              `json:"name,omitempty"`
-	Method             *string              `json:"method,omitempty"`
-	URLTemplate        *string              `json:"urlTemplate,omitempty"`
 	TemplateParameters *[]ParameterContract `json:"templateParameters,omitempty"`
 	Description        *string              `json:"description,omitempty"`
 	Request            *RequestContract     `json:"request,omitempty"`
 	Responses          *[]ResultContract    `json:"responses,omitempty"`
+	ID                 *string              `json:"id,omitempty"`
+	Name               *string              `json:"name,omitempty"`
+	Method             *string              `json:"method,omitempty"`
+	URLTemplate        *string              `json:"urlTemplate,omitempty"`
+}
+
+// OperationEntityBaseContract is api Operation Entity Base Contract details.
+type OperationEntityBaseContract struct {
+	TemplateParameters *[]ParameterContract `json:"templateParameters,omitempty"`
+	Description        *string              `json:"description,omitempty"`
+	Request            *RequestContract     `json:"request,omitempty"`
+	Responses          *[]ResultContract    `json:"responses,omitempty"`
+}
+
+// OperationListResult is result of the request to list REST API operations. It
+// contains a list of operations and a URL nextLink to get the next set of
+// results.
+type OperationListResult struct {
+	autorest.Response `json:"-"`
+	Value             *[]Operation `json:"value,omitempty"`
+	NextLink          *string      `json:"nextLink,omitempty"`
+}
+
+// OperationListResultPreparer prepares a request to retrieve the next set of results. It returns
+// nil if no more results exist.
+func (client OperationListResult) OperationListResultPreparer() (*http.Request, error) {
+	if client.NextLink == nil || len(to.String(client.NextLink)) <= 0 {
+		return nil, nil
+	}
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(client.NextLink)))
 }
 
 // OperationResultContract is operation Result.
@@ -739,6 +982,18 @@ type OperationResultContract struct {
 	Error             *ErrorBodyContract  `json:"error,omitempty"`
 }
 
+// OperationUpdateContract is api Operation Update Contract details.
+type OperationUpdateContract struct {
+	TemplateParameters *[]ParameterContract `json:"templateParameters,omitempty"`
+	Description        *string              `json:"description,omitempty"`
+	Request            *RequestContract     `json:"request,omitempty"`
+	Responses          *[]ResultContract    `json:"responses,omitempty"`
+	ID                 *string              `json:"id,omitempty"`
+	Name               *string              `json:"name,omitempty"`
+	Method             *string              `json:"method,omitempty"`
+	URLTemplate        *string              `json:"urlTemplate,omitempty"`
+}
+
 // ParameterContract is operation parameters details.
 type ParameterContract struct {
 	Name         *string   `json:"name,omitempty"`
@@ -749,17 +1004,19 @@ type ParameterContract struct {
 	Values       *[]string `json:"values,omitempty"`
 }
 
-// PatchParameters is parameters supplied to the Patch operations.
-type PatchParameters struct {
-	RawJSON *map[string]interface{} `json:"RawJson,omitempty"`
-}
-
 // PolicySnippetContract is policy snippet.
 type PolicySnippetContract struct {
 	Name    *string             `json:"name,omitempty"`
 	Content *string             `json:"content,omitempty"`
 	ToolTip *string             `json:"toolTip,omitempty"`
 	Scope   PolicyScopeContract `json:"scope,omitempty"`
+}
+
+// PolicySnippetsCollection is the response of the list policy snippets
+// operation.
+type PolicySnippetsCollection struct {
+	autorest.Response `json:"-"`
+	Value             *[]PolicySnippetContract `json:"value,omitempty"`
 }
 
 // ProductCollection is paged Products list representation.
@@ -880,6 +1137,12 @@ type QuotaCounterValueContract struct {
 	KbTransferred *float64 `json:"kbTransferred,omitempty"`
 }
 
+// ReadCloser is
+type ReadCloser struct {
+	autorest.Response `json:"-"`
+	Value             *io.ReadCloser `json:"value,omitempty"`
+}
+
 // RegionContract is region profile.
 type RegionContract struct {
 	Name           *string `json:"name,omitempty"`
@@ -956,6 +1219,15 @@ type RequestContract struct {
 	Representations *[]RepresentationContract `json:"representations,omitempty"`
 }
 
+// Resource is the Resource definition.
+type Resource struct {
+	ID       *string             `json:"id,omitempty"`
+	Name     *string             `json:"name,omitempty"`
+	Type     *string             `json:"type,omitempty"`
+	Location *string             `json:"location,omitempty"`
+	Tags     *map[string]*string `json:"tags,omitempty"`
+}
+
 // ResultContract is operation response details.
 type ResultContract struct {
 	StatusCode      *int32                    `json:"statusCode,omitempty"`
@@ -970,7 +1242,132 @@ type SaveConfigurationParameter struct {
 	Force  *bool   `json:"force,omitempty"`
 }
 
-// SubscriptionCollection is paged Subsctions list representation.
+// ServiceBackupRestoreParameters is parameters supplied to the Backup/Restore
+// of an API Management service operation.
+type ServiceBackupRestoreParameters struct {
+	StorageAccount *string `json:"storageAccount,omitempty"`
+	AccessKey      *string `json:"accessKey,omitempty"`
+	ContainerName  *string `json:"containerName,omitempty"`
+	BackupName     *string `json:"backupName,omitempty"`
+}
+
+// ServiceCheckNameAvailabilityParameters is parameters supplied to the
+// CheckNameAvailability operation.
+type ServiceCheckNameAvailabilityParameters struct {
+	Name *string `json:"name,omitempty"`
+}
+
+// ServiceGetSsoTokenResult is the response of the GetSsoToken operation.
+type ServiceGetSsoTokenResult struct {
+	autorest.Response `json:"-"`
+	RedirectURI       *string `json:"redirect_uri,omitempty"`
+}
+
+// ServiceListResult is the response of the List API Management services
+// operation.
+type ServiceListResult struct {
+	autorest.Response `json:"-"`
+	Value             *[]ServiceResource `json:"value,omitempty"`
+	NextLink          *string            `json:"nextLink,omitempty"`
+}
+
+// ServiceListResultPreparer prepares a request to retrieve the next set of results. It returns
+// nil if no more results exist.
+func (client ServiceListResult) ServiceListResultPreparer() (*http.Request, error) {
+	if client.NextLink == nil || len(to.String(client.NextLink)) <= 0 {
+		return nil, nil
+	}
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(client.NextLink)))
+}
+
+// ServiceManageDeploymentsParameters is parameters supplied to the
+// ManageDeployments operation.
+type ServiceManageDeploymentsParameters struct {
+	Location            *string                      `json:"location,omitempty"`
+	SkuType             SkuType                      `json:"skuType,omitempty"`
+	SkuUnitCount        *int32                       `json:"skuUnitCount,omitempty"`
+	AdditionalLocations *[]AdditionalRegion          `json:"additionalLocations,omitempty"`
+	VpnConfiguration    *VirtualNetworkConfiguration `json:"vpnConfiguration,omitempty"`
+	VpnType             VirtualNetworkType           `json:"vpnType,omitempty"`
+}
+
+// ServiceNameAvailabilityResult is response of the CheckNameAvailability
+// operation.
+type ServiceNameAvailabilityResult struct {
+	autorest.Response `json:"-"`
+	NameAvailable     *bool                  `json:"nameAvailable,omitempty"`
+	Message           *string                `json:"message,omitempty"`
+	Reason            NameAvailabilityReason `json:"reason,omitempty"`
+}
+
+// ServiceProperties is properties of an API Management service resource
+// description.
+type ServiceProperties struct {
+	PublisherEmail          *string                      `json:"publisherEmail,omitempty"`
+	PublisherName           *string                      `json:"publisherName,omitempty"`
+	ProvisioningState       *string                      `json:"provisioningState,omitempty"`
+	TargetProvisioningState *string                      `json:"targetProvisioningState,omitempty"`
+	CreatedAtUtc            *date.Time                   `json:"createdAtUtc,omitempty"`
+	RuntimeURL              *string                      `json:"runtimeUrl,omitempty"`
+	PortalURL               *string                      `json:"portalUrl,omitempty"`
+	ManagementAPIURL        *string                      `json:"managementApiUrl,omitempty"`
+	ScmURL                  *string                      `json:"scmUrl,omitempty"`
+	AddresserEmail          *string                      `json:"addresserEmail,omitempty"`
+	HostnameConfigurations  *[]HostnameConfiguration     `json:"hostnameConfigurations,omitempty"`
+	StaticIPs               *[]string                    `json:"staticIPs,omitempty"`
+	Vpnconfiguration        *VirtualNetworkConfiguration `json:"vpnconfiguration,omitempty"`
+	AdditionalLocations     *[]AdditionalRegion          `json:"additionalLocations,omitempty"`
+	CustomProperties        *map[string]*string          `json:"customProperties,omitempty"`
+	VpnType                 VirtualNetworkType           `json:"vpnType,omitempty"`
+}
+
+// ServiceResource is a single API Management service resource in List or Get
+// response.
+type ServiceResource struct {
+	autorest.Response  `json:"-"`
+	ID                 *string             `json:"id,omitempty"`
+	Name               *string             `json:"name,omitempty"`
+	Type               *string             `json:"type,omitempty"`
+	Location           *string             `json:"location,omitempty"`
+	Tags               *map[string]*string `json:"tags,omitempty"`
+	*ServiceProperties `json:"properties,omitempty"`
+	Sku                *ServiceSkuProperties `json:"sku,omitempty"`
+	Etag               *string               `json:"etag,omitempty"`
+}
+
+// ServiceSkuProperties is aPI Management service resource SKU properties.
+type ServiceSkuProperties struct {
+	Name     SkuType `json:"name,omitempty"`
+	Capacity *int32  `json:"capacity,omitempty"`
+}
+
+// ServiceUpdateHostnameParameters is parameters supplied to the UpdateHostname
+// operation.
+type ServiceUpdateHostnameParameters struct {
+	Update *[]HostnameConfiguration `json:"update,omitempty"`
+	Delete *[]HostnameType          `json:"delete,omitempty"`
+}
+
+// ServiceUpdateParameters is parameters supplied to the Update API Management
+// service operation.
+type ServiceUpdateParameters struct {
+	*ServiceProperties `json:"properties,omitempty"`
+	Sku                *ServiceSkuProperties `json:"sku,omitempty"`
+	Tags               *map[string]*string   `json:"tags,omitempty"`
+}
+
+// ServiceUploadCertificateParameters is parameters supplied to the Upload SSL
+// certificate for an API Management service operation.
+type ServiceUploadCertificateParameters struct {
+	Type                HostnameType `json:"type,omitempty"`
+	Certificate         *string      `json:"certificate,omitempty"`
+	CertificatePassword *string      `json:"certificate_password,omitempty"`
+}
+
+// SubscriptionCollection is paged Subscriptions list representation.
 type SubscriptionCollection struct {
 	autorest.Response `json:"-"`
 	Value             *[]SubscriptionContract `json:"value,omitempty"`
@@ -1052,16 +1449,6 @@ type TenantConfigurationSyncStateContract struct {
 	ConfigurationChangeDate *date.Time `json:"configurationChangeDate,omitempty"`
 }
 
-// TenantLongRunningOperationResult is a standard service response for long
-// running tenant operations.
-type TenantLongRunningOperationResult struct {
-	OperationStatusLink *string         `json:"operationStatusLink,omitempty"`
-	RetryAfter          *int32          `json:"retryAfter,omitempty"`
-	Status              OperationStatus `json:"status,omitempty"`
-	StatusCode          HTTPStatusCode  `json:"statusCode,omitempty"`
-	RequestID           *string         `json:"requestId,omitempty"`
-}
-
 // TokenBodyParameterContract is oAuth acquire token request body parameter
 // (www-url-form-encoded).
 type TokenBodyParameterContract struct {
@@ -1112,6 +1499,12 @@ type UserCreateParameters struct {
 	Note      *string           `json:"note,omitempty"`
 }
 
+// UserIdentityCollection is list of Users Identity list representation.
+type UserIdentityCollection struct {
+	autorest.Response `json:"-"`
+	Value             *[]UserIdentityContract `json:"value,omitempty"`
+}
+
 // UserIdentityContract is user identity details.
 type UserIdentityContract struct {
 	Provider *string `json:"provider,omitempty"`
@@ -1126,4 +1519,13 @@ type UserUpdateParameters struct {
 	LastName  *string           `json:"lastName,omitempty"`
 	State     UserStateContract `json:"state,omitempty"`
 	Note      *string           `json:"note,omitempty"`
+}
+
+// VirtualNetworkConfiguration is configuration of a virtual network to which
+// API Management service is deployed.
+type VirtualNetworkConfiguration struct {
+	Vnetid           *string `json:"vnetid,omitempty"`
+	Subnetname       *string `json:"subnetname,omitempty"`
+	SubnetResourceID *string `json:"subnetResourceId,omitempty"`
+	Location         *string `json:"location,omitempty"`
 }

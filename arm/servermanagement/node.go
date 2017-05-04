@@ -49,7 +49,9 @@ func NewNodeClientWithBaseURI(baseURI string, subscriptionID string) NodeClient 
 // resource group within the user subscriptionId. nodeName is the node name
 // (256 characters maximum). gatewayParameters is parameters supplied to the
 // CreateOrUpdate operation.
-func (client NodeClient) Create(resourceGroupName string, nodeName string, gatewayParameters NodeParameters, cancel <-chan struct{}) (result autorest.Response, err error) {
+func (client NodeClient) Create(resourceGroupName string, nodeName string, gatewayParameters NodeParameters, cancel <-chan struct{}) (<-chan NodeResource, <-chan error) {
+	resultChan := make(chan NodeResource, 1)
+	errChan := make(chan error, 1)
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MinLength, Rule: 3, Chain: nil},
@@ -58,26 +60,40 @@ func (client NodeClient) Create(resourceGroupName string, nodeName string, gatew
 			Constraints: []validation.Constraint{{Target: "nodeName", Name: validation.MaxLength, Rule: 256, Chain: nil},
 				{Target: "nodeName", Name: validation.MinLength, Rule: 1, Chain: nil},
 				{Target: "nodeName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9][a-zA-Z0-9_.-]*$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "servermanagement.NodeClient", "Create")
+		errChan <- validation.NewErrorWithValidationError(err, "servermanagement.NodeClient", "Create")
+		close(errChan)
+		close(resultChan)
+		return resultChan, errChan
 	}
 
-	req, err := client.CreatePreparer(resourceGroupName, nodeName, gatewayParameters, cancel)
-	if err != nil {
-		return result, autorest.NewErrorWithError(err, "servermanagement.NodeClient", "Create", nil, "Failure preparing request")
-	}
+	go func() {
+		var err error
+		var result NodeResource
+		defer func() {
+			resultChan <- result
+			errChan <- err
+			close(resultChan)
+			close(errChan)
+		}()
+		req, err := client.CreatePreparer(resourceGroupName, nodeName, gatewayParameters, cancel)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "servermanagement.NodeClient", "Create", nil, "Failure preparing request")
+			return
+		}
 
-	resp, err := client.CreateSender(req)
-	if err != nil {
-		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "servermanagement.NodeClient", "Create", resp, "Failure sending request")
-	}
+		resp, err := client.CreateSender(req)
+		if err != nil {
+			result.Response = autorest.Response{Response: resp}
+			err = autorest.NewErrorWithError(err, "servermanagement.NodeClient", "Create", resp, "Failure sending request")
+			return
+		}
 
-	result, err = client.CreateResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "servermanagement.NodeClient", "Create", resp, "Failure responding to request")
-	}
-
-	return
+		result, err = client.CreateResponder(resp)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "servermanagement.NodeClient", "Create", resp, "Failure responding to request")
+		}
+	}()
+	return resultChan, errChan
 }
 
 // CreatePreparer prepares the Create request.
@@ -113,13 +129,14 @@ func (client NodeClient) CreateSender(req *http.Request) (*http.Response, error)
 
 // CreateResponder handles the response to the Create request. The method always
 // closes the http.Response Body.
-func (client NodeClient) CreateResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client NodeClient) CreateResponder(resp *http.Response) (result NodeResource, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated, http.StatusAccepted),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = resp
+	result.Response = autorest.Response{Response: resp}
 	return
 }
 
@@ -142,13 +159,15 @@ func (client NodeClient) Delete(resourceGroupName string, nodeName string) (resu
 
 	req, err := client.DeletePreparer(resourceGroupName, nodeName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "servermanagement.NodeClient", "Delete", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "servermanagement.NodeClient", "Delete", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.DeleteSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "servermanagement.NodeClient", "Delete", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "servermanagement.NodeClient", "Delete", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.DeleteResponder(resp)
@@ -217,13 +236,15 @@ func (client NodeClient) Get(resourceGroupName string, nodeName string) (result 
 
 	req, err := client.GetPreparer(resourceGroupName, nodeName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "servermanagement.NodeClient", "Get", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "servermanagement.NodeClient", "Get", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "servermanagement.NodeClient", "Get", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "servermanagement.NodeClient", "Get", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetResponder(resp)
@@ -278,13 +299,15 @@ func (client NodeClient) GetResponder(resp *http.Response) (result NodeResource,
 func (client NodeClient) List() (result NodeResources, err error) {
 	req, err := client.ListPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "servermanagement.NodeClient", "List", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "servermanagement.NodeClient", "List", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "servermanagement.NodeClient", "List", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "servermanagement.NodeClient", "List", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListResponder(resp)
@@ -371,13 +394,15 @@ func (client NodeClient) ListForResourceGroup(resourceGroupName string) (result 
 
 	req, err := client.ListForResourceGroupPreparer(resourceGroupName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "servermanagement.NodeClient", "ListForResourceGroup", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "servermanagement.NodeClient", "ListForResourceGroup", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListForResourceGroupSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "servermanagement.NodeClient", "ListForResourceGroup", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "servermanagement.NodeClient", "ListForResourceGroup", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListForResourceGroupResponder(resp)
@@ -459,7 +484,9 @@ func (client NodeClient) ListForResourceGroupNextResults(lastResults NodeResourc
 // resource group within the user subscriptionId. nodeName is the node name
 // (256 characters maximum). nodeParameters is parameters supplied to the
 // CreateOrUpdate operation.
-func (client NodeClient) Update(resourceGroupName string, nodeName string, nodeParameters NodeParameters, cancel <-chan struct{}) (result autorest.Response, err error) {
+func (client NodeClient) Update(resourceGroupName string, nodeName string, nodeParameters NodeParameters, cancel <-chan struct{}) (<-chan NodeResource, <-chan error) {
+	resultChan := make(chan NodeResource, 1)
+	errChan := make(chan error, 1)
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MinLength, Rule: 3, Chain: nil},
@@ -468,26 +495,40 @@ func (client NodeClient) Update(resourceGroupName string, nodeName string, nodeP
 			Constraints: []validation.Constraint{{Target: "nodeName", Name: validation.MaxLength, Rule: 256, Chain: nil},
 				{Target: "nodeName", Name: validation.MinLength, Rule: 1, Chain: nil},
 				{Target: "nodeName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9][a-zA-Z0-9_.-]*$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "servermanagement.NodeClient", "Update")
+		errChan <- validation.NewErrorWithValidationError(err, "servermanagement.NodeClient", "Update")
+		close(errChan)
+		close(resultChan)
+		return resultChan, errChan
 	}
 
-	req, err := client.UpdatePreparer(resourceGroupName, nodeName, nodeParameters, cancel)
-	if err != nil {
-		return result, autorest.NewErrorWithError(err, "servermanagement.NodeClient", "Update", nil, "Failure preparing request")
-	}
+	go func() {
+		var err error
+		var result NodeResource
+		defer func() {
+			resultChan <- result
+			errChan <- err
+			close(resultChan)
+			close(errChan)
+		}()
+		req, err := client.UpdatePreparer(resourceGroupName, nodeName, nodeParameters, cancel)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "servermanagement.NodeClient", "Update", nil, "Failure preparing request")
+			return
+		}
 
-	resp, err := client.UpdateSender(req)
-	if err != nil {
-		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "servermanagement.NodeClient", "Update", resp, "Failure sending request")
-	}
+		resp, err := client.UpdateSender(req)
+		if err != nil {
+			result.Response = autorest.Response{Response: resp}
+			err = autorest.NewErrorWithError(err, "servermanagement.NodeClient", "Update", resp, "Failure sending request")
+			return
+		}
 
-	result, err = client.UpdateResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "servermanagement.NodeClient", "Update", resp, "Failure responding to request")
-	}
-
-	return
+		result, err = client.UpdateResponder(resp)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "servermanagement.NodeClient", "Update", resp, "Failure responding to request")
+		}
+	}()
+	return resultChan, errChan
 }
 
 // UpdatePreparer prepares the Update request.
@@ -523,12 +564,13 @@ func (client NodeClient) UpdateSender(req *http.Request) (*http.Response, error)
 
 // UpdateResponder handles the response to the Update request. The method always
 // closes the http.Response Body.
-func (client NodeClient) UpdateResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client NodeClient) UpdateResponder(resp *http.Response) (result NodeResource, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = resp
+	result.Response = autorest.Response{Response: resp}
 	return
 }

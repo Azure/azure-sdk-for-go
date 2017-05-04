@@ -25,9 +25,7 @@ import (
 	"net/http"
 )
 
-// ProductSubscriptionsClient is the use these REST APIs for performing
-// operations on entities like API, Product, and Subscription associated with
-// your Azure API Management deployment.
+// ProductSubscriptionsClient is the composite Swagger for ApiManagement Client
 type ProductSubscriptionsClient struct {
 	ManagementClient
 }
@@ -44,7 +42,7 @@ func NewProductSubscriptionsClientWithBaseURI(baseURI string, subscriptionID str
 	return ProductSubscriptionsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// ListByProduct lists the collection of subscriptions to the specified
+// ListByProducts lists the collection of subscriptions to the specified
 // product.
 //
 // resourceGroupName is the name of the resource group. serviceName is the name
@@ -64,7 +62,7 @@ func NewProductSubscriptionsClientWithBaseURI(baseURI string, subscriptionID str
 // endswith |
 // | state        | eq                     |
 // | top is number of records to return. skip is number of records to skip.
-func (client ProductSubscriptionsClient) ListByProduct(resourceGroupName string, serviceName string, productID string, filter string, top *int32, skip *int32) (result SubscriptionCollection, err error) {
+func (client ProductSubscriptionsClient) ListByProducts(resourceGroupName string, serviceName string, productID string, filter string, top *int32, skip *int32) (result SubscriptionCollection, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,
 			Constraints: []validation.Constraint{{Target: "serviceName", Name: validation.MaxLength, Rule: 50, Chain: nil},
@@ -80,30 +78,32 @@ func (client ProductSubscriptionsClient) ListByProduct(resourceGroupName string,
 		{TargetValue: skip,
 			Constraints: []validation.Constraint{{Target: "skip", Name: validation.Null, Rule: false,
 				Chain: []validation.Constraint{{Target: "skip", Name: validation.InclusiveMinimum, Rule: 0, Chain: nil}}}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "apimanagement.ProductSubscriptionsClient", "ListByProduct")
+		return result, validation.NewErrorWithValidationError(err, "apimanagement.ProductSubscriptionsClient", "ListByProducts")
 	}
 
-	req, err := client.ListByProductPreparer(resourceGroupName, serviceName, productID, filter, top, skip)
+	req, err := client.ListByProductsPreparer(resourceGroupName, serviceName, productID, filter, top, skip)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "apimanagement.ProductSubscriptionsClient", "ListByProduct", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "apimanagement.ProductSubscriptionsClient", "ListByProducts", nil, "Failure preparing request")
+		return
 	}
 
-	resp, err := client.ListByProductSender(req)
+	resp, err := client.ListByProductsSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "apimanagement.ProductSubscriptionsClient", "ListByProduct", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "apimanagement.ProductSubscriptionsClient", "ListByProducts", resp, "Failure sending request")
+		return
 	}
 
-	result, err = client.ListByProductResponder(resp)
+	result, err = client.ListByProductsResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "apimanagement.ProductSubscriptionsClient", "ListByProduct", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "apimanagement.ProductSubscriptionsClient", "ListByProducts", resp, "Failure responding to request")
 	}
 
 	return
 }
 
-// ListByProductPreparer prepares the ListByProduct request.
-func (client ProductSubscriptionsClient) ListByProductPreparer(resourceGroupName string, serviceName string, productID string, filter string, top *int32, skip *int32) (*http.Request, error) {
+// ListByProductsPreparer prepares the ListByProducts request.
+func (client ProductSubscriptionsClient) ListByProductsPreparer(resourceGroupName string, serviceName string, productID string, filter string, top *int32, skip *int32) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"productId":         autorest.Encode("path", productID),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
@@ -111,7 +111,7 @@ func (client ProductSubscriptionsClient) ListByProductPreparer(resourceGroupName
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2016-07-07"
+	const APIVersion = "2016-10-10"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -133,15 +133,15 @@ func (client ProductSubscriptionsClient) ListByProductPreparer(resourceGroupName
 	return preparer.Prepare(&http.Request{})
 }
 
-// ListByProductSender sends the ListByProduct request. The method will close the
+// ListByProductsSender sends the ListByProducts request. The method will close the
 // http.Response Body if it receives an error.
-func (client ProductSubscriptionsClient) ListByProductSender(req *http.Request) (*http.Response, error) {
+func (client ProductSubscriptionsClient) ListByProductsSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req)
 }
 
-// ListByProductResponder handles the response to the ListByProduct request. The method always
+// ListByProductsResponder handles the response to the ListByProducts request. The method always
 // closes the http.Response Body.
-func (client ProductSubscriptionsClient) ListByProductResponder(resp *http.Response) (result SubscriptionCollection, err error) {
+func (client ProductSubscriptionsClient) ListByProductsResponder(resp *http.Response) (result SubscriptionCollection, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -152,25 +152,25 @@ func (client ProductSubscriptionsClient) ListByProductResponder(resp *http.Respo
 	return
 }
 
-// ListByProductNextResults retrieves the next set of results, if any.
-func (client ProductSubscriptionsClient) ListByProductNextResults(lastResults SubscriptionCollection) (result SubscriptionCollection, err error) {
+// ListByProductsNextResults retrieves the next set of results, if any.
+func (client ProductSubscriptionsClient) ListByProductsNextResults(lastResults SubscriptionCollection) (result SubscriptionCollection, err error) {
 	req, err := lastResults.SubscriptionCollectionPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "apimanagement.ProductSubscriptionsClient", "ListByProduct", nil, "Failure preparing next results request")
+		return result, autorest.NewErrorWithError(err, "apimanagement.ProductSubscriptionsClient", "ListByProducts", nil, "Failure preparing next results request")
 	}
 	if req == nil {
 		return
 	}
 
-	resp, err := client.ListByProductSender(req)
+	resp, err := client.ListByProductsSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "apimanagement.ProductSubscriptionsClient", "ListByProduct", resp, "Failure sending next results request")
+		return result, autorest.NewErrorWithError(err, "apimanagement.ProductSubscriptionsClient", "ListByProducts", resp, "Failure sending next results request")
 	}
 
-	result, err = client.ListByProductResponder(resp)
+	result, err = client.ListByProductsResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "apimanagement.ProductSubscriptionsClient", "ListByProduct", resp, "Failure responding to next results request")
+		err = autorest.NewErrorWithError(err, "apimanagement.ProductSubscriptionsClient", "ListByProducts", resp, "Failure responding to next results request")
 	}
 
 	return

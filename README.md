@@ -27,9 +27,6 @@ The tags in this repository are based on, but do not conform to [SemVer.org's re
 For now, the "-beta" tag is an indicator that we are still in preview and still are planning on releasing some breaking
 changes.
 
-In repositories that are children of this one, [storage for example](https://github.com/Azure/azure-storage-go), we
-have adopted SemVer.org's recommendations.
-
 ## Azure Versions
 Azure services _mostly_ do not use SemVer based versions. Rather, they use profiles identified by dates. One will often
 see this casually referred to as an "APIVersion". At the moment, our SDK only supports the most recent profiles. In
@@ -44,10 +41,13 @@ APIVersions supported by Azure.
 - Azure REST APIs used by packages in this repository are documented at [Microsoft Docs, Azure REST](https://docs.microsoft.com/en-us/rest/api/).
 - Azure Services are discussed in detail at [Microsoft Docs, Azure Services](https://docs.microsoft.com/en-us/azure/#pivot=services).
 
+# Code samples
+
+- [Getting Started with Azure Blob Service in Go](https://github.com/Azure-Samples/storage-blob-go-getting-started)
+
 # License
 
 This project is published under [Apache 2.0 License](LICENSE).
-
 
 # Contribute
 

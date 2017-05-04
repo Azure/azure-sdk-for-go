@@ -25,9 +25,7 @@ import (
 	"net/http"
 )
 
-// TenantAccessClient is the use these REST APIs for performing operations on
-// entities like API, Product, and Subscription associated with your Azure API
-// Management deployment.
+// TenantAccessClient is the composite Swagger for ApiManagement Client
 type TenantAccessClient struct {
 	ManagementClient
 }
@@ -58,13 +56,15 @@ func (client TenantAccessClient) Get(resourceGroupName string, serviceName strin
 
 	req, err := client.GetPreparer(resourceGroupName, serviceName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "apimanagement.TenantAccessClient", "Get", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "apimanagement.TenantAccessClient", "Get", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "apimanagement.TenantAccessClient", "Get", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "apimanagement.TenantAccessClient", "Get", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetResponder(resp)
@@ -83,7 +83,7 @@ func (client TenantAccessClient) GetPreparer(resourceGroupName string, serviceNa
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2016-07-07"
+	const APIVersion = "2016-10-10"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -130,13 +130,15 @@ func (client TenantAccessClient) RegeneratePrimaryKey(resourceGroupName string, 
 
 	req, err := client.RegeneratePrimaryKeyPreparer(resourceGroupName, serviceName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "apimanagement.TenantAccessClient", "RegeneratePrimaryKey", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "apimanagement.TenantAccessClient", "RegeneratePrimaryKey", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.RegeneratePrimaryKeySender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "apimanagement.TenantAccessClient", "RegeneratePrimaryKey", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "apimanagement.TenantAccessClient", "RegeneratePrimaryKey", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.RegeneratePrimaryKeyResponder(resp)
@@ -155,7 +157,7 @@ func (client TenantAccessClient) RegeneratePrimaryKeyPreparer(resourceGroupName 
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2016-07-07"
+	const APIVersion = "2016-10-10"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -201,13 +203,15 @@ func (client TenantAccessClient) RegenerateSecondaryKey(resourceGroupName string
 
 	req, err := client.RegenerateSecondaryKeyPreparer(resourceGroupName, serviceName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "apimanagement.TenantAccessClient", "RegenerateSecondaryKey", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "apimanagement.TenantAccessClient", "RegenerateSecondaryKey", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.RegenerateSecondaryKeySender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "apimanagement.TenantAccessClient", "RegenerateSecondaryKey", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "apimanagement.TenantAccessClient", "RegenerateSecondaryKey", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.RegenerateSecondaryKeyResponder(resp)
@@ -226,7 +230,7 @@ func (client TenantAccessClient) RegenerateSecondaryKeyPreparer(resourceGroupNam
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2016-07-07"
+	const APIVersion = "2016-10-10"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -274,13 +278,15 @@ func (client TenantAccessClient) Update(resourceGroupName string, serviceName st
 
 	req, err := client.UpdatePreparer(resourceGroupName, serviceName, parameters, ifMatch)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "apimanagement.TenantAccessClient", "Update", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "apimanagement.TenantAccessClient", "Update", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.UpdateSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "apimanagement.TenantAccessClient", "Update", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "apimanagement.TenantAccessClient", "Update", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.UpdateResponder(resp)
@@ -299,7 +305,7 @@ func (client TenantAccessClient) UpdatePreparer(resourceGroupName string, servic
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2016-07-07"
+	const APIVersion = "2016-10-10"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}

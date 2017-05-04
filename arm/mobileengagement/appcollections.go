@@ -47,13 +47,15 @@ func NewAppCollectionsClientWithBaseURI(baseURI string, subscriptionID string) A
 func (client AppCollectionsClient) CheckNameAvailability(parameters AppCollectionNameAvailability) (result AppCollectionNameAvailability, err error) {
 	req, err := client.CheckNameAvailabilityPreparer(parameters)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "mobileengagement.AppCollectionsClient", "CheckNameAvailability", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "mobileengagement.AppCollectionsClient", "CheckNameAvailability", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.CheckNameAvailabilitySender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "mobileengagement.AppCollectionsClient", "CheckNameAvailability", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "mobileengagement.AppCollectionsClient", "CheckNameAvailability", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.CheckNameAvailabilityResponder(resp)
@@ -108,13 +110,15 @@ func (client AppCollectionsClient) CheckNameAvailabilityResponder(resp *http.Res
 func (client AppCollectionsClient) List() (result AppCollectionListResult, err error) {
 	req, err := client.ListPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "mobileengagement.AppCollectionsClient", "List", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "mobileengagement.AppCollectionsClient", "List", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "mobileengagement.AppCollectionsClient", "List", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "mobileengagement.AppCollectionsClient", "List", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListResponder(resp)

@@ -49,13 +49,15 @@ func NewWorkflowRunActionsClientWithBaseURI(baseURI string, subscriptionID strin
 func (client WorkflowRunActionsClient) Get(resourceGroupName string, workflowName string, runName string, actionName string) (result WorkflowRunAction, err error) {
 	req, err := client.GetPreparer(resourceGroupName, workflowName, runName, actionName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "logic.WorkflowRunActionsClient", "Get", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "logic.WorkflowRunActionsClient", "Get", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "logic.WorkflowRunActionsClient", "Get", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "logic.WorkflowRunActionsClient", "Get", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetResponder(resp)
@@ -116,13 +118,15 @@ func (client WorkflowRunActionsClient) GetResponder(resp *http.Response) (result
 func (client WorkflowRunActionsClient) List(resourceGroupName string, workflowName string, runName string, top *int32, filter string) (result WorkflowRunActionListResult, err error) {
 	req, err := client.ListPreparer(resourceGroupName, workflowName, runName, top, filter)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "logic.WorkflowRunActionsClient", "List", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "logic.WorkflowRunActionsClient", "List", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "logic.WorkflowRunActionsClient", "List", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "logic.WorkflowRunActionsClient", "List", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListResponder(resp)

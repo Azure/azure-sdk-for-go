@@ -60,13 +60,15 @@ func (client MapsClient) Generate(resourceGroupName string, workspaceName string
 
 	req, err := client.GeneratePreparer(resourceGroupName, workspaceName, request)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "servicemap.MapsClient", "Generate", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "servicemap.MapsClient", "Generate", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GenerateSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "servicemap.MapsClient", "Generate", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "servicemap.MapsClient", "Generate", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GenerateResponder(resp)
@@ -85,8 +87,9 @@ func (client MapsClient) GeneratePreparer(resourceGroupName string, workspaceNam
 		"workspaceName":     autorest.Encode("path", workspaceName),
 	}
 
+	const APIVersion = "2015-11-01-preview"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(

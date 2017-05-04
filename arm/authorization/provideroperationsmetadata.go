@@ -53,13 +53,15 @@ func NewProviderOperationsMetadataClientWithBaseURI(baseURI string, subscription
 func (client ProviderOperationsMetadataClient) Get(resourceProviderNamespace string, expand string) (result ProviderOperationsMetadata, err error) {
 	req, err := client.GetPreparer(resourceProviderNamespace, expand)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "authorization.ProviderOperationsMetadataClient", "Get", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "authorization.ProviderOperationsMetadataClient", "Get", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "authorization.ProviderOperationsMetadataClient", "Get", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "authorization.ProviderOperationsMetadataClient", "Get", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetResponder(resp)
@@ -117,13 +119,15 @@ func (client ProviderOperationsMetadataClient) GetResponder(resp *http.Response)
 func (client ProviderOperationsMetadataClient) List(expand string) (result ProviderOperationsMetadataListResult, err error) {
 	req, err := client.ListPreparer(expand)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "authorization.ProviderOperationsMetadataClient", "List", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "authorization.ProviderOperationsMetadataClient", "List", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "authorization.ProviderOperationsMetadataClient", "List", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "authorization.ProviderOperationsMetadataClient", "List", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListResponder(resp)

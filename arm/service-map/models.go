@@ -113,6 +113,22 @@ const (
 	OperatingSystemFamilyWindows OperatingSystemFamily = "windows"
 )
 
+// ProcessRole enumerates the values for process role.
+type ProcessRole string
+
+const (
+	// AppServer specifies the app server state for process role.
+	AppServer ProcessRole = "appServer"
+	// DatabaseServer specifies the database server state for process role.
+	DatabaseServer ProcessRole = "databaseServer"
+	// LdapServer specifies the ldap server state for process role.
+	LdapServer ProcessRole = "ldapServer"
+	// SmbServer specifies the smb server state for process role.
+	SmbServer ProcessRole = "smbServer"
+	// WebServer specifies the web server state for process role.
+	WebServer ProcessRole = "webServer"
+)
+
 // VirtualizationState enumerates the values for virtualization state.
 type VirtualizationState string
 
@@ -616,6 +632,7 @@ type ProcessProperties struct {
 	ExecutableName  *string            `json:"executableName,omitempty"`
 	DisplayName     *string            `json:"displayName,omitempty"`
 	StartTime       *date.Time         `json:"startTime,omitempty"`
+	Role            ProcessRole        `json:"role,omitempty"`
 	Details         *ProcessDetails    `json:"details,omitempty"`
 	User            *ProcessUser       `json:"user,omitempty"`
 	ClientOf        *ResourceReference `json:"clientOf,omitempty"`

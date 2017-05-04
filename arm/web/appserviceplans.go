@@ -50,32 +50,48 @@ func NewAppServicePlansClientWithBaseURI(baseURI string, subscriptionID string) 
 // resourceGroupName is name of the resource group to which the resource
 // belongs. name is name of the App Service plan. appServicePlan is details of
 // the App Service plan.
-func (client AppServicePlansClient) CreateOrUpdate(resourceGroupName string, name string, appServicePlan AppServicePlan, cancel <-chan struct{}) (result autorest.Response, err error) {
+func (client AppServicePlansClient) CreateOrUpdate(resourceGroupName string, name string, appServicePlan AppServicePlan, cancel <-chan struct{}) (<-chan AppServicePlan, <-chan error) {
+	resultChan := make(chan AppServicePlan, 1)
+	errChan := make(chan error, 1)
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+[^\.]$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "web.AppServicePlansClient", "CreateOrUpdate")
+		errChan <- validation.NewErrorWithValidationError(err, "web.AppServicePlansClient", "CreateOrUpdate")
+		close(errChan)
+		close(resultChan)
+		return resultChan, errChan
 	}
 
-	req, err := client.CreateOrUpdatePreparer(resourceGroupName, name, appServicePlan, cancel)
-	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppServicePlansClient", "CreateOrUpdate", nil, "Failure preparing request")
-	}
+	go func() {
+		var err error
+		var result AppServicePlan
+		defer func() {
+			resultChan <- result
+			errChan <- err
+			close(resultChan)
+			close(errChan)
+		}()
+		req, err := client.CreateOrUpdatePreparer(resourceGroupName, name, appServicePlan, cancel)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "web.AppServicePlansClient", "CreateOrUpdate", nil, "Failure preparing request")
+			return
+		}
 
-	resp, err := client.CreateOrUpdateSender(req)
-	if err != nil {
-		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "web.AppServicePlansClient", "CreateOrUpdate", resp, "Failure sending request")
-	}
+		resp, err := client.CreateOrUpdateSender(req)
+		if err != nil {
+			result.Response = autorest.Response{Response: resp}
+			err = autorest.NewErrorWithError(err, "web.AppServicePlansClient", "CreateOrUpdate", resp, "Failure sending request")
+			return
+		}
 
-	result, err = client.CreateOrUpdateResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "web.AppServicePlansClient", "CreateOrUpdate", resp, "Failure responding to request")
-	}
-
-	return
+		result, err = client.CreateOrUpdateResponder(resp)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "web.AppServicePlansClient", "CreateOrUpdate", resp, "Failure responding to request")
+		}
+	}()
+	return resultChan, errChan
 }
 
 // CreateOrUpdatePreparer prepares the CreateOrUpdate request.
@@ -111,13 +127,14 @@ func (client AppServicePlansClient) CreateOrUpdateSender(req *http.Request) (*ht
 
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
 // closes the http.Response Body.
-func (client AppServicePlansClient) CreateOrUpdateResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client AppServicePlansClient) CreateOrUpdateResponder(resp *http.Response) (result AppServicePlan, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = resp
+	result.Response = autorest.Response{Response: resp}
 	return
 }
 
@@ -139,13 +156,15 @@ func (client AppServicePlansClient) CreateOrUpdateVnetRoute(resourceGroupName st
 
 	req, err := client.CreateOrUpdateVnetRoutePreparer(resourceGroupName, name, vnetName, routeName, route)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppServicePlansClient", "CreateOrUpdateVnetRoute", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppServicePlansClient", "CreateOrUpdateVnetRoute", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.CreateOrUpdateVnetRouteSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppServicePlansClient", "CreateOrUpdateVnetRoute", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppServicePlansClient", "CreateOrUpdateVnetRoute", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.CreateOrUpdateVnetRouteResponder(resp)
@@ -215,13 +234,15 @@ func (client AppServicePlansClient) Delete(resourceGroupName string, name string
 
 	req, err := client.DeletePreparer(resourceGroupName, name)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppServicePlansClient", "Delete", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppServicePlansClient", "Delete", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.DeleteSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "web.AppServicePlansClient", "Delete", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppServicePlansClient", "Delete", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.DeleteResponder(resp)
@@ -288,13 +309,15 @@ func (client AppServicePlansClient) DeleteHybridConnection(resourceGroupName str
 
 	req, err := client.DeleteHybridConnectionPreparer(resourceGroupName, name, namespaceName, relayName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppServicePlansClient", "DeleteHybridConnection", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppServicePlansClient", "DeleteHybridConnection", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.DeleteHybridConnectionSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "web.AppServicePlansClient", "DeleteHybridConnection", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppServicePlansClient", "DeleteHybridConnection", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.DeleteHybridConnectionResponder(resp)
@@ -362,13 +385,15 @@ func (client AppServicePlansClient) DeleteVnetRoute(resourceGroupName string, na
 
 	req, err := client.DeleteVnetRoutePreparer(resourceGroupName, name, vnetName, routeName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppServicePlansClient", "DeleteVnetRoute", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppServicePlansClient", "DeleteVnetRoute", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.DeleteVnetRouteSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "web.AppServicePlansClient", "DeleteVnetRoute", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppServicePlansClient", "DeleteVnetRoute", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.DeleteVnetRouteResponder(resp)
@@ -435,13 +460,15 @@ func (client AppServicePlansClient) Get(resourceGroupName string, name string) (
 
 	req, err := client.GetPreparer(resourceGroupName, name)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppServicePlansClient", "Get", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppServicePlansClient", "Get", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppServicePlansClient", "Get", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppServicePlansClient", "Get", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetResponder(resp)
@@ -509,13 +536,15 @@ func (client AppServicePlansClient) GetHybridConnection(resourceGroupName string
 
 	req, err := client.GetHybridConnectionPreparer(resourceGroupName, name, namespaceName, relayName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppServicePlansClient", "GetHybridConnection", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppServicePlansClient", "GetHybridConnection", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetHybridConnectionSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppServicePlansClient", "GetHybridConnection", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppServicePlansClient", "GetHybridConnection", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetHybridConnectionResponder(resp)
@@ -584,13 +613,15 @@ func (client AppServicePlansClient) GetHybridConnectionPlanLimit(resourceGroupNa
 
 	req, err := client.GetHybridConnectionPlanLimitPreparer(resourceGroupName, name)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppServicePlansClient", "GetHybridConnectionPlanLimit", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppServicePlansClient", "GetHybridConnectionPlanLimit", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetHybridConnectionPlanLimitSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppServicePlansClient", "GetHybridConnectionPlanLimit", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppServicePlansClient", "GetHybridConnectionPlanLimit", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetHybridConnectionPlanLimitResponder(resp)
@@ -657,13 +688,15 @@ func (client AppServicePlansClient) GetRouteForVnet(resourceGroupName string, na
 
 	req, err := client.GetRouteForVnetPreparer(resourceGroupName, name, vnetName, routeName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppServicePlansClient", "GetRouteForVnet", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppServicePlansClient", "GetRouteForVnet", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetRouteForVnetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppServicePlansClient", "GetRouteForVnet", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppServicePlansClient", "GetRouteForVnet", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetRouteForVnetResponder(resp)
@@ -733,13 +766,15 @@ func (client AppServicePlansClient) GetVnetFromServerFarm(resourceGroupName stri
 
 	req, err := client.GetVnetFromServerFarmPreparer(resourceGroupName, name, vnetName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppServicePlansClient", "GetVnetFromServerFarm", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppServicePlansClient", "GetVnetFromServerFarm", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetVnetFromServerFarmSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppServicePlansClient", "GetVnetFromServerFarm", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppServicePlansClient", "GetVnetFromServerFarm", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetVnetFromServerFarmResponder(resp)
@@ -808,13 +843,15 @@ func (client AppServicePlansClient) GetVnetGateway(resourceGroupName string, nam
 
 	req, err := client.GetVnetGatewayPreparer(resourceGroupName, name, vnetName, gatewayName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppServicePlansClient", "GetVnetGateway", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppServicePlansClient", "GetVnetGateway", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetVnetGatewaySender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppServicePlansClient", "GetVnetGateway", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppServicePlansClient", "GetVnetGateway", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetVnetGatewayResponder(resp)
@@ -876,13 +913,15 @@ func (client AppServicePlansClient) GetVnetGatewayResponder(resp *http.Response)
 func (client AppServicePlansClient) List(detailed *bool) (result AppServicePlanCollection, err error) {
 	req, err := client.ListPreparer(detailed)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppServicePlansClient", "List", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppServicePlansClient", "List", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppServicePlansClient", "List", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppServicePlansClient", "List", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListResponder(resp)
@@ -973,13 +1012,15 @@ func (client AppServicePlansClient) ListByResourceGroup(resourceGroupName string
 
 	req, err := client.ListByResourceGroupPreparer(resourceGroupName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppServicePlansClient", "ListByResourceGroup", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppServicePlansClient", "ListByResourceGroup", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListByResourceGroupSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppServicePlansClient", "ListByResourceGroup", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppServicePlansClient", "ListByResourceGroup", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListByResourceGroupResponder(resp)
@@ -1068,13 +1109,15 @@ func (client AppServicePlansClient) ListCapabilities(resourceGroupName string, n
 
 	req, err := client.ListCapabilitiesPreparer(resourceGroupName, name)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppServicePlansClient", "ListCapabilities", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppServicePlansClient", "ListCapabilities", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListCapabilitiesSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppServicePlansClient", "ListCapabilities", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppServicePlansClient", "ListCapabilities", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListCapabilitiesResponder(resp)
@@ -1142,13 +1185,15 @@ func (client AppServicePlansClient) ListHybridConnectionKeys(resourceGroupName s
 
 	req, err := client.ListHybridConnectionKeysPreparer(resourceGroupName, name, namespaceName, relayName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppServicePlansClient", "ListHybridConnectionKeys", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppServicePlansClient", "ListHybridConnectionKeys", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListHybridConnectionKeysSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppServicePlansClient", "ListHybridConnectionKeys", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppServicePlansClient", "ListHybridConnectionKeys", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListHybridConnectionKeysResponder(resp)
@@ -1217,13 +1262,15 @@ func (client AppServicePlansClient) ListHybridConnections(resourceGroupName stri
 
 	req, err := client.ListHybridConnectionsPreparer(resourceGroupName, name)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppServicePlansClient", "ListHybridConnections", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppServicePlansClient", "ListHybridConnections", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListHybridConnectionsSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppServicePlansClient", "ListHybridConnections", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppServicePlansClient", "ListHybridConnections", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListHybridConnectionsResponder(resp)
@@ -1314,13 +1361,15 @@ func (client AppServicePlansClient) ListMetricDefintions(resourceGroupName strin
 
 	req, err := client.ListMetricDefintionsPreparer(resourceGroupName, name)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppServicePlansClient", "ListMetricDefintions", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppServicePlansClient", "ListMetricDefintions", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListMetricDefintionsSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppServicePlansClient", "ListMetricDefintions", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppServicePlansClient", "ListMetricDefintions", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListMetricDefintionsResponder(resp)
@@ -1416,13 +1465,15 @@ func (client AppServicePlansClient) ListMetrics(resourceGroupName string, name s
 
 	req, err := client.ListMetricsPreparer(resourceGroupName, name, details, filter)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppServicePlansClient", "ListMetrics", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppServicePlansClient", "ListMetrics", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListMetricsSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppServicePlansClient", "ListMetrics", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppServicePlansClient", "ListMetrics", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListMetricsResponder(resp)
@@ -1520,13 +1571,15 @@ func (client AppServicePlansClient) ListRoutesForVnet(resourceGroupName string, 
 
 	req, err := client.ListRoutesForVnetPreparer(resourceGroupName, name, vnetName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppServicePlansClient", "ListRoutesForVnet", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppServicePlansClient", "ListRoutesForVnet", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListRoutesForVnetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppServicePlansClient", "ListRoutesForVnet", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppServicePlansClient", "ListRoutesForVnet", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListRoutesForVnetResponder(resp)
@@ -1593,13 +1646,15 @@ func (client AppServicePlansClient) ListVnets(resourceGroupName string, name str
 
 	req, err := client.ListVnetsPreparer(resourceGroupName, name)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppServicePlansClient", "ListVnets", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppServicePlansClient", "ListVnets", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListVnetsSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppServicePlansClient", "ListVnets", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppServicePlansClient", "ListVnets", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListVnetsResponder(resp)
@@ -1671,13 +1726,15 @@ func (client AppServicePlansClient) ListWebApps(resourceGroupName string, name s
 
 	req, err := client.ListWebAppsPreparer(resourceGroupName, name, skipToken, filter, top)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppServicePlansClient", "ListWebApps", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppServicePlansClient", "ListWebApps", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListWebAppsSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppServicePlansClient", "ListWebApps", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppServicePlansClient", "ListWebApps", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListWebAppsResponder(resp)
@@ -1779,13 +1836,15 @@ func (client AppServicePlansClient) ListWebAppsByHybridConnection(resourceGroupN
 
 	req, err := client.ListWebAppsByHybridConnectionPreparer(resourceGroupName, name, namespaceName, relayName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppServicePlansClient", "ListWebAppsByHybridConnection", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppServicePlansClient", "ListWebAppsByHybridConnection", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListWebAppsByHybridConnectionSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppServicePlansClient", "ListWebAppsByHybridConnection", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppServicePlansClient", "ListWebAppsByHybridConnection", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListWebAppsByHybridConnectionResponder(resp)
@@ -1878,13 +1937,15 @@ func (client AppServicePlansClient) RebootWorker(resourceGroupName string, name 
 
 	req, err := client.RebootWorkerPreparer(resourceGroupName, name, workerName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppServicePlansClient", "RebootWorker", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppServicePlansClient", "RebootWorker", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.RebootWorkerSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "web.AppServicePlansClient", "RebootWorker", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppServicePlansClient", "RebootWorker", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.RebootWorkerResponder(resp)
@@ -1953,13 +2014,15 @@ func (client AppServicePlansClient) RestartWebApps(resourceGroupName string, nam
 
 	req, err := client.RestartWebAppsPreparer(resourceGroupName, name, softRestart)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppServicePlansClient", "RestartWebApps", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppServicePlansClient", "RestartWebApps", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.RestartWebAppsSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "web.AppServicePlansClient", "RestartWebApps", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppServicePlansClient", "RestartWebApps", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.RestartWebAppsResponder(resp)
@@ -2029,13 +2092,15 @@ func (client AppServicePlansClient) UpdateVnetGateway(resourceGroupName string, 
 
 	req, err := client.UpdateVnetGatewayPreparer(resourceGroupName, name, vnetName, gatewayName, connectionEnvelope)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppServicePlansClient", "UpdateVnetGateway", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppServicePlansClient", "UpdateVnetGateway", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.UpdateVnetGatewaySender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppServicePlansClient", "UpdateVnetGateway", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppServicePlansClient", "UpdateVnetGateway", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.UpdateVnetGatewayResponder(resp)
@@ -2108,13 +2173,15 @@ func (client AppServicePlansClient) UpdateVnetRoute(resourceGroupName string, na
 
 	req, err := client.UpdateVnetRoutePreparer(resourceGroupName, name, vnetName, routeName, route)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppServicePlansClient", "UpdateVnetRoute", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.AppServicePlansClient", "UpdateVnetRoute", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.UpdateVnetRouteSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppServicePlansClient", "UpdateVnetRoute", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppServicePlansClient", "UpdateVnetRoute", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.UpdateVnetRouteResponder(resp)

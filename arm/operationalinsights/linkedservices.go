@@ -63,13 +63,15 @@ func (client LinkedServicesClient) CreateOrUpdate(resourceGroupName string, work
 
 	req, err := client.CreateOrUpdatePreparer(resourceGroupName, workspaceName, linkedServiceName, parameters)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "operationalinsights.LinkedServicesClient", "CreateOrUpdate", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "operationalinsights.LinkedServicesClient", "CreateOrUpdate", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.CreateOrUpdateSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "operationalinsights.LinkedServicesClient", "CreateOrUpdate", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "operationalinsights.LinkedServicesClient", "CreateOrUpdate", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.CreateOrUpdateResponder(resp)
@@ -89,8 +91,9 @@ func (client LinkedServicesClient) CreateOrUpdatePreparer(resourceGroupName stri
 		"workspaceName":     autorest.Encode("path", workspaceName),
 	}
 
+	const APIVersion = "2015-11-01-preview"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -139,13 +142,15 @@ func (client LinkedServicesClient) Delete(resourceGroupName string, workspaceNam
 
 	req, err := client.DeletePreparer(resourceGroupName, workspaceName, linkedServiceName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "operationalinsights.LinkedServicesClient", "Delete", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "operationalinsights.LinkedServicesClient", "Delete", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.DeleteSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "operationalinsights.LinkedServicesClient", "Delete", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "operationalinsights.LinkedServicesClient", "Delete", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.DeleteResponder(resp)
@@ -165,8 +170,9 @@ func (client LinkedServicesClient) DeletePreparer(resourceGroupName string, work
 		"workspaceName":     autorest.Encode("path", workspaceName),
 	}
 
+	const APIVersion = "2015-11-01-preview"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -212,13 +218,15 @@ func (client LinkedServicesClient) Get(resourceGroupName string, workspaceName s
 
 	req, err := client.GetPreparer(resourceGroupName, workspaceName, linkedServiceName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "operationalinsights.LinkedServicesClient", "Get", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "operationalinsights.LinkedServicesClient", "Get", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "operationalinsights.LinkedServicesClient", "Get", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "operationalinsights.LinkedServicesClient", "Get", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetResponder(resp)
@@ -238,8 +246,9 @@ func (client LinkedServicesClient) GetPreparer(resourceGroupName string, workspa
 		"workspaceName":     autorest.Encode("path", workspaceName),
 	}
 
+	const APIVersion = "2015-11-01-preview"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -285,13 +294,15 @@ func (client LinkedServicesClient) ListByWorkspace(resourceGroupName string, wor
 
 	req, err := client.ListByWorkspacePreparer(resourceGroupName, workspaceName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "operationalinsights.LinkedServicesClient", "ListByWorkspace", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "operationalinsights.LinkedServicesClient", "ListByWorkspace", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListByWorkspaceSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "operationalinsights.LinkedServicesClient", "ListByWorkspace", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "operationalinsights.LinkedServicesClient", "ListByWorkspace", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListByWorkspaceResponder(resp)
@@ -310,8 +321,9 @@ func (client LinkedServicesClient) ListByWorkspacePreparer(resourceGroupName str
 		"workspaceName":     autorest.Encode("path", workspaceName),
 	}
 
+	const APIVersion = "2015-11-01-preview"
 	queryParameters := map[string]interface{}{
-		"api-version": client.APIVersion,
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(

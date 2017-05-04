@@ -48,13 +48,15 @@ func NewVaultsClientWithBaseURI(baseURI string, subscriptionID string) VaultsCli
 func (client VaultsClient) CreateOrUpdate(resourceGroupName string, vaultName string, vault Vault) (result Vault, err error) {
 	req, err := client.CreateOrUpdatePreparer(resourceGroupName, vaultName, vault)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "recoveryservices.VaultsClient", "CreateOrUpdate", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "recoveryservices.VaultsClient", "CreateOrUpdate", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.CreateOrUpdateSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "recoveryservices.VaultsClient", "CreateOrUpdate", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "recoveryservices.VaultsClient", "CreateOrUpdate", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.CreateOrUpdateResponder(resp)
@@ -115,13 +117,15 @@ func (client VaultsClient) CreateOrUpdateResponder(resp *http.Response) (result 
 func (client VaultsClient) Delete(resourceGroupName string, vaultName string) (result autorest.Response, err error) {
 	req, err := client.DeletePreparer(resourceGroupName, vaultName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "recoveryservices.VaultsClient", "Delete", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "recoveryservices.VaultsClient", "Delete", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.DeleteSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "recoveryservices.VaultsClient", "Delete", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "recoveryservices.VaultsClient", "Delete", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.DeleteResponder(resp)
@@ -179,13 +183,15 @@ func (client VaultsClient) DeleteResponder(resp *http.Response) (result autorest
 func (client VaultsClient) Get(resourceGroupName string, vaultName string) (result Vault, err error) {
 	req, err := client.GetPreparer(resourceGroupName, vaultName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "recoveryservices.VaultsClient", "Get", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "recoveryservices.VaultsClient", "Get", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "recoveryservices.VaultsClient", "Get", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "recoveryservices.VaultsClient", "Get", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetResponder(resp)
@@ -236,20 +242,22 @@ func (client VaultsClient) GetResponder(resp *http.Response) (result Vault, err 
 	return
 }
 
-// ListByResourceGroup sends the list by resource group request.
+// ListByResourceGroup retrieve a list of Vaults.
 //
 // resourceGroupName is the name of the resource group where the recovery
 // services vault is present.
 func (client VaultsClient) ListByResourceGroup(resourceGroupName string) (result VaultList, err error) {
 	req, err := client.ListByResourceGroupPreparer(resourceGroupName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "recoveryservices.VaultsClient", "ListByResourceGroup", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "recoveryservices.VaultsClient", "ListByResourceGroup", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListByResourceGroupSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "recoveryservices.VaultsClient", "ListByResourceGroup", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "recoveryservices.VaultsClient", "ListByResourceGroup", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListByResourceGroupResponder(resp)
@@ -299,26 +307,133 @@ func (client VaultsClient) ListByResourceGroupResponder(resp *http.Response) (re
 	return
 }
 
-// ListByResourceGroupNextResults retrieves the next set of results, if any.
-func (client VaultsClient) ListByResourceGroupNextResults(lastResults VaultList) (result VaultList, err error) {
-	req, err := lastResults.VaultListPreparer()
+// ListBySubscriptionID fetches all the resources of the specified type in the
+// subscription.
+func (client VaultsClient) ListBySubscriptionID() (result VaultList, err error) {
+	req, err := client.ListBySubscriptionIDPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "recoveryservices.VaultsClient", "ListByResourceGroup", nil, "Failure preparing next results request")
-	}
-	if req == nil {
+		err = autorest.NewErrorWithError(err, "recoveryservices.VaultsClient", "ListBySubscriptionID", nil, "Failure preparing request")
 		return
 	}
 
-	resp, err := client.ListByResourceGroupSender(req)
+	resp, err := client.ListBySubscriptionIDSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "recoveryservices.VaultsClient", "ListByResourceGroup", resp, "Failure sending next results request")
+		err = autorest.NewErrorWithError(err, "recoveryservices.VaultsClient", "ListBySubscriptionID", resp, "Failure sending request")
+		return
 	}
 
-	result, err = client.ListByResourceGroupResponder(resp)
+	result, err = client.ListBySubscriptionIDResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "recoveryservices.VaultsClient", "ListByResourceGroup", resp, "Failure responding to next results request")
+		err = autorest.NewErrorWithError(err, "recoveryservices.VaultsClient", "ListBySubscriptionID", resp, "Failure responding to request")
 	}
 
+	return
+}
+
+// ListBySubscriptionIDPreparer prepares the ListBySubscriptionID request.
+func (client VaultsClient) ListBySubscriptionIDPreparer() (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2016-06-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/providers/Microsoft.RecoveryServices/vaults", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare(&http.Request{})
+}
+
+// ListBySubscriptionIDSender sends the ListBySubscriptionID request. The method will close the
+// http.Response Body if it receives an error.
+func (client VaultsClient) ListBySubscriptionIDSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req)
+}
+
+// ListBySubscriptionIDResponder handles the response to the ListBySubscriptionID request. The method always
+// closes the http.Response Body.
+func (client VaultsClient) ListBySubscriptionIDResponder(resp *http.Response) (result VaultList, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// Update updates the vault.
+//
+// resourceGroupName is the name of the resource group where the recovery
+// services vault is present. vaultName is the name of the recovery services
+// vault. vault is recovery Services Vault to be created.
+func (client VaultsClient) Update(resourceGroupName string, vaultName string, vault Vault) (result Vault, err error) {
+	req, err := client.UpdatePreparer(resourceGroupName, vaultName, vault)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "recoveryservices.VaultsClient", "Update", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.UpdateSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "recoveryservices.VaultsClient", "Update", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.UpdateResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "recoveryservices.VaultsClient", "Update", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// UpdatePreparer prepares the Update request.
+func (client VaultsClient) UpdatePreparer(resourceGroupName string, vaultName string, vault Vault) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+		"vaultName":         autorest.Encode("path", vaultName),
+	}
+
+	const APIVersion = "2016-06-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsJSON(),
+		autorest.AsPatch(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}", pathParameters),
+		autorest.WithJSON(vault),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare(&http.Request{})
+}
+
+// UpdateSender sends the Update request. The method will close the
+// http.Response Body if it receives an error.
+func (client VaultsClient) UpdateSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req)
+}
+
+// UpdateResponder handles the response to the Update request. The method always
+// closes the http.Response Body.
+func (client VaultsClient) UpdateResponder(resp *http.Response) (result Vault, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
 	return
 }

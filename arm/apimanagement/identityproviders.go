@@ -25,9 +25,7 @@ import (
 	"net/http"
 )
 
-// IdentityProvidersClient is the use these REST APIs for performing operations
-// on entities like API, Product, and Subscription associated with your Azure
-// API Management deployment.
+// IdentityProvidersClient is the composite Swagger for ApiManagement Client
 type IdentityProvidersClient struct {
 	ManagementClient
 }
@@ -67,13 +65,15 @@ func (client IdentityProvidersClient) CreateOrUpdate(resourceGroupName string, s
 
 	req, err := client.CreateOrUpdatePreparer(resourceGroupName, serviceName, identityProviderName, parameters)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "apimanagement.IdentityProvidersClient", "CreateOrUpdate", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "apimanagement.IdentityProvidersClient", "CreateOrUpdate", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.CreateOrUpdateSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "apimanagement.IdentityProvidersClient", "CreateOrUpdate", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "apimanagement.IdentityProvidersClient", "CreateOrUpdate", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.CreateOrUpdateResponder(resp)
@@ -93,7 +93,7 @@ func (client IdentityProvidersClient) CreateOrUpdatePreparer(resourceGroupName s
 		"subscriptionId":       autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2016-07-07"
+	const APIVersion = "2016-10-10"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -144,13 +144,15 @@ func (client IdentityProvidersClient) Delete(resourceGroupName string, serviceNa
 
 	req, err := client.DeletePreparer(resourceGroupName, serviceName, identityProviderName, ifMatch)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "apimanagement.IdentityProvidersClient", "Delete", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "apimanagement.IdentityProvidersClient", "Delete", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.DeleteSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "apimanagement.IdentityProvidersClient", "Delete", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "apimanagement.IdentityProvidersClient", "Delete", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.DeleteResponder(resp)
@@ -170,7 +172,7 @@ func (client IdentityProvidersClient) DeletePreparer(resourceGroupName string, s
 		"subscriptionId":       autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2016-07-07"
+	const APIVersion = "2016-10-10"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -219,13 +221,15 @@ func (client IdentityProvidersClient) Get(resourceGroupName string, serviceName 
 
 	req, err := client.GetPreparer(resourceGroupName, serviceName, identityProviderName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "apimanagement.IdentityProvidersClient", "Get", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "apimanagement.IdentityProvidersClient", "Get", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "apimanagement.IdentityProvidersClient", "Get", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "apimanagement.IdentityProvidersClient", "Get", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetResponder(resp)
@@ -245,7 +249,7 @@ func (client IdentityProvidersClient) GetPreparer(resourceGroupName string, serv
 		"subscriptionId":       autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2016-07-07"
+	const APIVersion = "2016-10-10"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -293,13 +297,15 @@ func (client IdentityProvidersClient) ListByService(resourceGroupName string, se
 
 	req, err := client.ListByServicePreparer(resourceGroupName, serviceName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "apimanagement.IdentityProvidersClient", "ListByService", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "apimanagement.IdentityProvidersClient", "ListByService", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.ListByServiceSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "apimanagement.IdentityProvidersClient", "ListByService", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "apimanagement.IdentityProvidersClient", "ListByService", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.ListByServiceResponder(resp)
@@ -318,7 +324,7 @@ func (client IdentityProvidersClient) ListByServicePreparer(resourceGroupName st
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2016-07-07"
+	const APIVersion = "2016-10-10"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -369,13 +375,15 @@ func (client IdentityProvidersClient) Update(resourceGroupName string, serviceNa
 
 	req, err := client.UpdatePreparer(resourceGroupName, serviceName, identityProviderName, parameters, ifMatch)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "apimanagement.IdentityProvidersClient", "Update", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "apimanagement.IdentityProvidersClient", "Update", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.UpdateSender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "apimanagement.IdentityProvidersClient", "Update", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "apimanagement.IdentityProvidersClient", "Update", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.UpdateResponder(resp)
@@ -395,7 +403,7 @@ func (client IdentityProvidersClient) UpdatePreparer(resourceGroupName string, s
 		"subscriptionId":       autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2016-07-07"
+	const APIVersion = "2016-10-10"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}

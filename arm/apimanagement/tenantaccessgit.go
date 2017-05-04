@@ -25,9 +25,7 @@ import (
 	"net/http"
 )
 
-// TenantAccessGitClient is the use these REST APIs for performing operations
-// on entities like API, Product, and Subscription associated with your Azure
-// API Management deployment.
+// TenantAccessGitClient is the composite Swagger for ApiManagement Client
 type TenantAccessGitClient struct {
 	ManagementClient
 }
@@ -59,13 +57,15 @@ func (client TenantAccessGitClient) Get(resourceGroupName string, serviceName st
 
 	req, err := client.GetPreparer(resourceGroupName, serviceName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "apimanagement.TenantAccessGitClient", "Get", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "apimanagement.TenantAccessGitClient", "Get", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "apimanagement.TenantAccessGitClient", "Get", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "apimanagement.TenantAccessGitClient", "Get", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.GetResponder(resp)
@@ -84,7 +84,7 @@ func (client TenantAccessGitClient) GetPreparer(resourceGroupName string, servic
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2016-07-07"
+	const APIVersion = "2016-10-10"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -131,13 +131,15 @@ func (client TenantAccessGitClient) RegeneratePrimaryKey(resourceGroupName strin
 
 	req, err := client.RegeneratePrimaryKeyPreparer(resourceGroupName, serviceName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "apimanagement.TenantAccessGitClient", "RegeneratePrimaryKey", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "apimanagement.TenantAccessGitClient", "RegeneratePrimaryKey", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.RegeneratePrimaryKeySender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "apimanagement.TenantAccessGitClient", "RegeneratePrimaryKey", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "apimanagement.TenantAccessGitClient", "RegeneratePrimaryKey", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.RegeneratePrimaryKeyResponder(resp)
@@ -156,7 +158,7 @@ func (client TenantAccessGitClient) RegeneratePrimaryKeyPreparer(resourceGroupNa
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2016-07-07"
+	const APIVersion = "2016-10-10"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -202,13 +204,15 @@ func (client TenantAccessGitClient) RegenerateSecondaryKey(resourceGroupName str
 
 	req, err := client.RegenerateSecondaryKeyPreparer(resourceGroupName, serviceName)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "apimanagement.TenantAccessGitClient", "RegenerateSecondaryKey", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "apimanagement.TenantAccessGitClient", "RegenerateSecondaryKey", nil, "Failure preparing request")
+		return
 	}
 
 	resp, err := client.RegenerateSecondaryKeySender(req)
 	if err != nil {
 		result.Response = resp
-		return result, autorest.NewErrorWithError(err, "apimanagement.TenantAccessGitClient", "RegenerateSecondaryKey", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "apimanagement.TenantAccessGitClient", "RegenerateSecondaryKey", resp, "Failure sending request")
+		return
 	}
 
 	result, err = client.RegenerateSecondaryKeyResponder(resp)
@@ -227,7 +231,7 @@ func (client TenantAccessGitClient) RegenerateSecondaryKeyPreparer(resourceGroup
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2016-07-07"
+	const APIVersion = "2016-10-10"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}

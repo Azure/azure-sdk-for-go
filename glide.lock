@@ -1,28 +1,15 @@
-hash: 5a5e74f8be7a721d3ea9c2e36d994d2754f15087f89ba8342c4ec9ed4cbedf7b
-updated: 2017-04-26T14:49:24.0346028-07:00
+hash: fc11c273a4bfae9a077f2238a4693fa3af3d815dfc1b1e9ec75d9eb8e6428993
+updated: 2017-05-04T15:24:51.52099-07:00
 imports:
-- name: github.com/Azure/azure-sdk-for-go
-  version: 8dd1f3ff407c300cff0a4bfedd969111ca5a7903
-  subpackages:
-  - arm/examples/helpers
-  - arm/storage
-  - management
-  - management/virtualmachinedisk
-  - management/location
-  - management/virtualmachine
-  - management/testutils
-  - management/hostedservice
-  - management/osimage
-  - management/storageservice
-  - management/virtualmachineimage
 - name: github.com/Azure/go-autorest
-  version: a2fdd780c9a50455cecd249b00bdc3eb73a78e31
+  version: 58f6f26e200fa5dfb40c9cd1c83f3e2c860d779d
   subpackages:
   - autorest
   - autorest/azure
   - autorest/date
   - autorest/to
   - autorest/validation
+  - autorest/adal
 - name: github.com/dgrijalva/jwt-go
   version: 2268707a8f0843315e2004ee4f1d021dc08baedf
 - name: github.com/howeyc/gopass
@@ -48,13 +35,13 @@ imports:
 - name: github.com/shopspring/decimal
   version: 3526cd0bdb7f64e1178943b7dee81a0cc3d86a69
 - name: golang.org/x/crypto
-  version: c7af5bf2638a1164f2eb5467c39c6cffbd13a02e
+  version: 5a033cc77e57eca05bdb50522851d29e03569cbe
   subpackages:
   - pkcs12
   - pkcs12/internal/rc2
   - ssh/terminal
 - name: golang.org/x/sys
-  version: 9f30dcbe5be197894515a338a9bda9253567ea8f
+  version: 9ccfe848b9db8435a24c424abbc07a921adf1df5
   subpackages:
   - unix
 - name: gopkg.in/check.v1

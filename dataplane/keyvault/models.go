@@ -20,6 +20,7 @@ package keyvault
 
 import (
 	"github.com/Azure/go-autorest/autorest"
+	"github.com/Azure/go-autorest/autorest/date"
 	"github.com/Azure/go-autorest/autorest/to"
 	"net/http"
 )
@@ -135,11 +136,11 @@ type AdministratorDetails struct {
 
 // Attributes is the object attributes managed by the KeyVault service.
 type Attributes struct {
-	Enabled   *bool   `json:"enabled,omitempty"`
-	NotBefore *string `json:"nbf,omitempty"`
-	Expires   *string `json:"exp,omitempty"`
-	Created   *string `json:"created,omitempty"`
-	Updated   *string `json:"updated,omitempty"`
+	Enabled   *bool          `json:"enabled,omitempty"`
+	NotBefore *date.UnixTime `json:"nbf,omitempty"`
+	Expires   *date.UnixTime `json:"exp,omitempty"`
+	Created   *date.UnixTime `json:"created,omitempty"`
+	Updated   *date.UnixTime `json:"updated,omitempty"`
 }
 
 // BackupKeyResult is the backup key result, containing the backup blob.
@@ -150,11 +151,11 @@ type BackupKeyResult struct {
 
 // CertificateAttributes is the certificate management attributes.
 type CertificateAttributes struct {
-	Enabled   *bool   `json:"enabled,omitempty"`
-	NotBefore *string `json:"nbf,omitempty"`
-	Expires   *string `json:"exp,omitempty"`
-	Created   *string `json:"created,omitempty"`
-	Updated   *string `json:"updated,omitempty"`
+	Enabled   *bool          `json:"enabled,omitempty"`
+	NotBefore *date.UnixTime `json:"nbf,omitempty"`
+	Expires   *date.UnixTime `json:"exp,omitempty"`
+	Created   *date.UnixTime `json:"created,omitempty"`
+	Updated   *date.UnixTime `json:"updated,omitempty"`
 }
 
 // CertificateBundle is a certificate bundle consists of a certificate (X509)
@@ -334,9 +335,9 @@ type ErrorType struct {
 // IssuerAttributes is the attributes of an issuer managed by the Key Vault
 // service.
 type IssuerAttributes struct {
-	Enabled *bool   `json:"enabled,omitempty"`
-	Created *string `json:"created,omitempty"`
-	Updated *string `json:"updated,omitempty"`
+	Enabled *bool          `json:"enabled,omitempty"`
+	Created *date.UnixTime `json:"created,omitempty"`
+	Updated *date.UnixTime `json:"updated,omitempty"`
 }
 
 // IssuerBundle is the issuer for Key Vault certificate.
@@ -382,11 +383,11 @@ type JSONWebKey struct {
 
 // KeyAttributes is the attributes of a key managed by the key vault service.
 type KeyAttributes struct {
-	Enabled   *bool   `json:"enabled,omitempty"`
-	NotBefore *string `json:"nbf,omitempty"`
-	Expires   *string `json:"exp,omitempty"`
-	Created   *string `json:"created,omitempty"`
-	Updated   *string `json:"updated,omitempty"`
+	Enabled   *bool          `json:"enabled,omitempty"`
+	NotBefore *date.UnixTime `json:"nbf,omitempty"`
+	Expires   *date.UnixTime `json:"exp,omitempty"`
+	Created   *date.UnixTime `json:"created,omitempty"`
+	Updated   *date.UnixTime `json:"updated,omitempty"`
 }
 
 // KeyBundle is a KeyBundle consisting of a WebKey plus its attributes.
@@ -516,11 +517,11 @@ type PendingCertificateSigningRequestResult struct {
 
 // SecretAttributes is the secret management attributes.
 type SecretAttributes struct {
-	Enabled   *bool   `json:"enabled,omitempty"`
-	NotBefore *string `json:"nbf,omitempty"`
-	Expires   *string `json:"exp,omitempty"`
-	Created   *string `json:"created,omitempty"`
-	Updated   *string `json:"updated,omitempty"`
+	Enabled   *bool          `json:"enabled,omitempty"`
+	NotBefore *date.UnixTime `json:"nbf,omitempty"`
+	Expires   *date.UnixTime `json:"exp,omitempty"`
+	Created   *date.UnixTime `json:"created,omitempty"`
+	Updated   *date.UnixTime `json:"updated,omitempty"`
 }
 
 // SecretBundle is a secret consisting of a value, id and its attributes.

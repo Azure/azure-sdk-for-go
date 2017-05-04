@@ -15,6 +15,7 @@ import (
 	"mime/multipart"
 	"net/http"
 	"net/url"
+	"regexp"
 	"runtime"
 	"strconv"
 	"strings"
@@ -53,6 +54,10 @@ const (
 	userAgentHeader = "User-Agent"
 
 	userDefinedMetadataHeaderPrefix = "x-ms-meta-"
+)
+
+var (
+	validStorageAccount = regexp.MustCompile("^[0-9a-z]{3,24}$")
 )
 
 // Sender sends a request
@@ -209,8 +214,8 @@ func NewEmulatorClient() (Client, error) {
 // storage endpoint than Azure Public Cloud.
 func NewClient(accountName, accountKey, blobServiceBaseURL, apiVersion string, useHTTPS bool) (Client, error) {
 	var c Client
-	if accountName == "" {
-		return c, fmt.Errorf("azure: account name required")
+	if !IsValidStorageAccount(accountName) {
+		return c, fmt.Errorf("azure: account name is not valid: it must be between 3 and 24 characters, and only may contain numbers and lowercase letters: %v", accountName)
 	} else if accountKey == "" {
 		return c, fmt.Errorf("azure: account key required")
 	} else if blobServiceBaseURL == "" {
@@ -246,6 +251,12 @@ func NewClient(accountName, accountKey, blobServiceBaseURL, apiVersion string, u
 	return c, nil
 }
 
+// IsValidStorageAccount checks if the storage account name is valid.
+// See https://docs.microsoft.com/en-us/azure/storage/storage-create-storage-account
+func IsValidStorageAccount(account string) bool {
+	return validStorageAccount.MatchString(account)
+}
+
 func (c Client) getDefaultUserAgent() string {
 	return fmt.Sprintf("Go/%s (%s-%s) azure-storage-go/%s api-version/%s",
 		runtime.Version(),
@@ -276,7 +287,7 @@ func (c *Client) protectUserAgent(extraheaders map[string]string) map[string]str
 	return extraheaders
 }
 
-func (c Client) getBaseURL(service string) string {
+func (c Client) getBaseURL(service string) *url.URL {
 	scheme := "http"
 	if c.useHTTPS {
 		scheme = "https"
@@ -295,18 +306,14 @@ func (c Client) getBaseURL(service string) string {
 		host = fmt.Sprintf("%s.%s.%s", c.accountName, service, c.baseURL)
 	}
 
-	u := &url.URL{
+	return &url.URL{
 		Scheme: scheme,
-		Host:   host}
-	return u.String()
+		Host:   host,
+	}
 }
 
 func (c Client) getEndpoint(service, path string, params url.Values) string {
-	u, err := url.Parse(c.getBaseURL(service))
-	if err != nil {
-		// really should not be happening
-		panic(err)
-	}
+	u := c.getBaseURL(service)
 
 	// API doesn't accept path segments not starting with '/'
 	if !strings.HasPrefix(path, "/") {

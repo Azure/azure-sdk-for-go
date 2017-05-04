@@ -234,7 +234,7 @@ func (s *StorageClientSuite) TestGetBaseURL_Basic_Https(c *chk.C) {
 	c.Assert(err, chk.IsNil)
 	c.Assert(cli.apiVersion, chk.Equals, DefaultAPIVersion)
 	c.Assert(err, chk.IsNil)
-	c.Assert(cli.getBaseURL("table"), chk.Equals, "https://golangrocksonazure.table.core.windows.net")
+	c.Assert(cli.getBaseURL("table").String(), chk.Equals, "https://golangrocksonazure.table.core.windows.net")
 }
 
 func (s *StorageClientSuite) TestGetBaseURL_Custom_NoHttps(c *chk.C) {
@@ -242,7 +242,7 @@ func (s *StorageClientSuite) TestGetBaseURL_Custom_NoHttps(c *chk.C) {
 	cli, err := NewClient(dummyStorageAccount, dummyMiniStorageKey, "core.chinacloudapi.cn", apiVersion, false)
 	c.Assert(err, chk.IsNil)
 	c.Assert(cli.apiVersion, chk.Equals, apiVersion)
-	c.Assert(cli.getBaseURL("table"), chk.Equals, "http://golangrocksonazure.table.core.chinacloudapi.cn")
+	c.Assert(cli.getBaseURL("table").String(), chk.Equals, "http://golangrocksonazure.table.core.chinacloudapi.cn")
 }
 
 func (s *StorageClientSuite) TestGetBaseURL_StorageEmulator(c *chk.C) {

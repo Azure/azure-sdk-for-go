@@ -85,7 +85,7 @@ It has also been refactored:
 
 ### Generated code notes
 - [Azure REST API specs](https://github.com/Azure/azure-rest-api-specs) commit: 519980465d9c195622d466dc4601b1999a448ed5
-- [AutoRest](https://github.com/Azure/autorest) commit: 66f47280ba6c58c3842a268e48ee72aefdddee2c
+- [AutoRest](https://github.com/Azure/autorest) commit: ced950d64e39735b84d41876a56b54b27c227dc7
 
 ## `v9.0.0-beta`
 ### ARM

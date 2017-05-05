@@ -528,7 +528,7 @@ func setVars(c *do.Context) {
 
 	sdkVersion = c.Args.MustString("s", "sdk", "version")
 	autorestDir = c.Args.MayString("", "a", "ar", "autorest")
-	swaggersDir = c.Args.MayString("C:", "w", "sw", "swagger")
+	swaggersDir = c.Args.MayString("C:/", "w", "sw", "swagger")
 	testGen = c.Args.MayBool(false, "t", "testgen")
 }
 

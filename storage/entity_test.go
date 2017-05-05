@@ -407,7 +407,7 @@ func (s *StorageEntitySuite) TestExecuteQueryNextResults(c *chk.C) {
 	c.Assert(err, chk.IsNil)
 	defer table.Delete(30, nil)
 
-	var entityList []Entity
+	var entityList []*Entity
 
 	for i := 0; i < 5; i++ {
 		entity := table.GetEntityReference("pkey", fmt.Sprintf("r%d", i))
@@ -535,7 +535,7 @@ func (s *StorageEntitySuite) Test_entityUnmarshalJSON(c *chk.C) {
 
 }
 
-func compareEntities(got, expected Entity, c *chk.C) {
+func compareEntities(got, expected *Entity, c *chk.C) {
 	c.Assert(got.PartitionKey, chk.Equals, expected.PartitionKey)
 	c.Assert(got.RowKey, chk.Equals, expected.RowKey)
 	c.Assert(got.TimeStamp, chk.Equals, expected.TimeStamp)

@@ -34,7 +34,7 @@ func (s *ContainerSuite) TestListContainersPagination(c *chk.C) {
 	sort.Strings(cntNames)
 
 	// Create test containers
-	created := []Container{}
+	created := []*Container{}
 	for i := 0; i < n; i++ {
 		cnt := cli.GetContainerReference(cntNames[i])
 		c.Assert(cnt.Create(nil), chk.IsNil)
@@ -195,7 +195,7 @@ func (s *ContainerSuite) TestListBlobsPagination(c *chk.C) {
 }
 
 // listBlobsAsFiles is a helper function to list blobs as "folders" and "files".
-func listBlobsAsFiles(cli BlobStorageClient, cnt Container, parentDir string) (folders []string, files []string, err error) {
+func listBlobsAsFiles(cli BlobStorageClient, cnt *Container, parentDir string) (folders []string, files []string, err error) {
 	var blobParams ListBlobsParameters
 	var blobListResponse BlobListResponse
 

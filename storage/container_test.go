@@ -180,8 +180,9 @@ func (s *ContainerSuite) TestListBlobsPagination(c *chk.C) {
 			Marker:     marker})
 		c.Assert(err, chk.IsNil)
 
-		for _, v := range resp.Blobs {
-			seen = append(seen, v.Name)
+		for _, b := range resp.Blobs {
+			seen = append(seen, b.Name)
+			c.Assert(b.Container, chk.Equals, cnt)
 		}
 
 		marker = resp.NextMarker

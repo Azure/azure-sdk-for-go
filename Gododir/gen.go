@@ -44,6 +44,10 @@ const (
 	json extension = "json"
 )
 
+const (
+	testsSubDir = "tests"
+)
+
 type mapping struct {
 	Plane       string
 	InputPrefix string
@@ -55,6 +59,7 @@ var (
 	sdkVersion      string
 	autorestDir     string
 	swaggersDir     string
+	testGen         bool
 	deps            do.S
 	services        = []*service{}
 	servicesMapping = []mapping{
@@ -471,13 +476,13 @@ func initAndAddService(service *service, inputPrefix, plane string) {
 	}
 	packages := append(service.Packages, service.Name)
 	service.TaskName = fmt.Sprintf("%s>%s", plane, strings.Join(packages, ">"))
-	service.Fullname = filepath.Join(plane, strings.Join(packages, "/"))
+	service.Fullname = filepath.Join(plane, strings.Join(packages, string(os.PathSeparator)))
 	if service.Modeler == compSwagger {
-		service.Input = filepath.Join(inputPrefix+strings.Join(packages, "/"), service.Swagger)
+		service.Input = filepath.Join(inputPrefix+strings.Join(packages, string(os.PathSeparator)), service.Swagger)
 	} else {
 		input := []string{}
 		if service.Input == "" {
-			input = append(input, inputPrefix+strings.Join(packages, "/"))
+			input = append(input, inputPrefix+strings.Join(packages, string(os.PathSeparator)))
 		} else {
 			input = append(input, inputPrefix+service.Input)
 		}
@@ -522,8 +527,9 @@ func setVars(c *do.Context) {
 	}
 
 	sdkVersion = c.Args.MustString("s", "sdk", "version")
-	autorestDir = c.Args.MayString("C:/", "a", "ar", "autorest")
+	autorestDir = c.Args.MayString("", "a", "ar", "autorest")
 	swaggersDir = c.Args.MayString("C:/", "w", "sw", "swagger")
+	testGen = c.Args.MayBool(false, "t", "testgen")
 }
 
 func generateTasks(p *do.Project) {
@@ -531,18 +537,42 @@ func generateTasks(p *do.Project) {
 }
 
 func generate(service *service) {
+	codegen := "Go"
+	if testGen {
+		codegen = "Go.TestGen"
+		service.Fullname = strings.Join([]string{service.Fullname, testsSubDir}, string(os.PathSeparator))
+		service.Output = filepath.Join(service.Output, testsSubDir)
+	}
+
 	fmt.Printf("Generating %s...\n\n", service.Fullname)
+
 	delete(service)
 
-	autorest := exec.Command("autorest",
+	execCommand := "autorest"
+	commandArgs := []string{
 		"-Input", filepath.Join(swaggersDir, "azure-rest-api-specs", service.Input+"."+string(service.Extension)),
-		"-CodeGenerator", "Go",
+		"-CodeGenerator", codegen,
 		"-Header", "MICROSOFT_APACHE",
 		"-Namespace", service.Name,
 		"-OutputDirectory", service.Output,
 		"-Modeler", string(service.Modeler),
-		"-pv", sdkVersion)
-	autorest.Dir = filepath.Join(autorestDir, "autorest")
+		"-pv", sdkVersion,
+	}
+
+	// default to the current directory
+	workingDir := ""
+
+	if autorestDir != "" {
+		// if an AutoRest directory was specified then assume
+		// the caller wants to use a locally-built version.
+		execCommand = "gulp"
+		commandArgs = append([]string{"autorest"}, commandArgs...)
+		workingDir = filepath.Join(autorestDir, "autorest")
+	}
+
+	autorest := exec.Command(execCommand, commandArgs...)
+	autorest.Dir = workingDir
+
 	if err := runner(autorest); err != nil {
 		panic(fmt.Errorf("Autorest error: %s", err))
 	}

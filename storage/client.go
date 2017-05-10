@@ -424,7 +424,7 @@ func (c Client) exec(verb, url string, headers map[string]string, body io.Reader
 	}
 
 	statusCode := resp.StatusCode
-	if statusCode >= 400 && statusCode <= 505 {
+	if statusCode >= 400 && statusCode <= 505 && statusCode != 404 {
 		var respBody []byte
 		respBody, err = readAndCloseBody(resp.Body)
 		if err != nil {

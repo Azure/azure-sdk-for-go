@@ -325,21 +325,38 @@ func (s *StorageClientSuite) Test_getStandardHeaders(c *chk.C) {
 }
 
 func (s *StorageClientSuite) TestReturnsStorageServiceError(c *chk.C) {
-	// attempt to delete a nonexisting container
-	cli := getBlobClient(c)
-	rec := cli.client.appendRecorder(c)
+	// attempt to delete nonexisting resources
+	cli := getBasicClient(c)
+	rec := cli.appendRecorder(c)
 	defer rec.Stop()
 
-	cnt := cli.GetContainerReference(containerName(c))
-	_, err := cnt.delete(nil)
+	// XML response
+	blobCli := cli.GetBlobService()
+	cnt := blobCli.GetContainerReference(containerName(c))
+	err := cnt.Delete(nil)
 	c.Assert(err, chk.NotNil)
 
 	v, ok := err.(AzureStorageServiceError)
 	c.Check(ok, chk.Equals, true)
 	c.Assert(v.StatusCode, chk.Equals, 404)
 	c.Assert(v.Code, chk.Equals, "ContainerNotFound")
-	c.Assert(v.Code, chk.Not(chk.Equals), "")
 	c.Assert(v.RequestID, chk.Not(chk.Equals), "")
+	c.Assert(v.Date, chk.Not(chk.Equals), "")
+	c.Assert(v.APIVersion, chk.Not(chk.Equals), "")
+
+	// JSON response
+	tableCli := cli.GetTableService()
+	table := tableCli.GetTableReference(tableName(c))
+	err = table.Delete(30, nil)
+	c.Assert(err, chk.NotNil)
+
+	v, ok = err.(AzureStorageServiceError)
+	c.Check(ok, chk.Equals, true)
+	c.Assert(v.StatusCode, chk.Equals, 404)
+	c.Assert(v.Code, chk.Equals, "ResourceNotFound")
+	c.Assert(v.RequestID, chk.Not(chk.Equals), "")
+	c.Assert(v.Date, chk.Not(chk.Equals), "")
+	c.Assert(v.APIVersion, chk.Not(chk.Equals), "")
 }
 
 func (s *StorageClientSuite) TestReturnsStorageServiceError_withoutResponseBody(c *chk.C) {

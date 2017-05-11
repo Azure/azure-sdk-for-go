@@ -3,6 +3,7 @@ package storage
 import (
 	"encoding/json"
 	"fmt"
+	"strings"
 	"time"
 
 	"github.com/satori/uuid"
@@ -150,7 +151,7 @@ func (s *StorageEntitySuite) TestUpdate(c *chk.C) {
 	entity.OdataEtag = validEtag
 	err = entity.Update(false, nil)
 	c.Assert(err, chk.NotNil)
-	c.Assert(err, chk.ErrorMatches, "Etag didn't match: .*")
+	c.Assert(strings.Contains(err.Error(), "Etag didn't match"), chk.Equals, true)
 
 	// Force update
 	props = map[string]interface{}{
@@ -197,7 +198,7 @@ func (s *StorageEntitySuite) TestMerge(c *chk.C) {
 	entity.OdataEtag = validEtag
 	err = entity.Merge(false, nil)
 	c.Assert(err, chk.NotNil)
-	c.Assert(err, chk.ErrorMatches, "Etag didn't match: .*")
+	c.Assert(strings.Contains(err.Error(), "Etag didn't match"), chk.Equals, true)
 
 	// Force merge
 	entity.Properties = map[string]interface{}{

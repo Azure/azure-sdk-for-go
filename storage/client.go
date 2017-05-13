@@ -34,7 +34,9 @@ const (
 	// basic client is created.
 	DefaultAPIVersion = "2016-05-31"
 
-	defaultUseHTTPS = true
+	defaultUseHTTPS      = true
+	defaultRetryAttempts = 5
+	defaultRetryDuration = time.Second * 5
 
 	// StorageEmulatorAccountName is the fixed storage account used by Azure Storage Emulator
 	StorageEmulatorAccountName = "devstoreaccount1"
@@ -57,7 +59,14 @@ const (
 )
 
 var (
-	validStorageAccount = regexp.MustCompile("^[0-9a-z]{3,24}$")
+	validStorageAccount     = regexp.MustCompile("^[0-9a-z]{3,24}$")
+	defaultValidStatusCodes = []int{
+		http.StatusRequestTimeout,      // 408
+		http.StatusInternalServerError, // 500
+		http.StatusBadGateway,          // 502
+		http.StatusServiceUnavailable,  // 503
+		http.StatusGatewayTimeout,      // 504
+	}
 )
 
 // Sender sends a request
@@ -119,6 +128,7 @@ type Client struct {
 	baseURL          string
 	apiVersion       string
 	userAgent        string
+	sasClient        bool
 }
 
 type storageResponse struct {
@@ -212,13 +222,13 @@ func NewEmulatorClient() (Client, error) {
 // NewClient constructs a Client. This should be used if the caller wants
 // to specify whether to use HTTPS, a specific REST API version or a custom
 // storage endpoint than Azure Public Cloud.
-func NewClient(accountName, accountKey, blobServiceBaseURL, apiVersion string, useHTTPS bool) (Client, error) {
+func NewClient(accountName, accountKey, serviceBaseURL, apiVersion string, useHTTPS bool) (Client, error) {
 	var c Client
 	if !IsValidStorageAccount(accountName) {
 		return c, fmt.Errorf("azure: account name is not valid: it must be between 3 and 24 characters, and only may contain numbers and lowercase letters: %v", accountName)
 	} else if accountKey == "" {
 		return c, fmt.Errorf("azure: account key required")
-	} else if blobServiceBaseURL == "" {
+	} else if serviceBaseURL == "" {
 		return c, fmt.Errorf("azure: base storage service url required")
 	}
 
@@ -232,19 +242,14 @@ func NewClient(accountName, accountKey, blobServiceBaseURL, apiVersion string, u
 		accountName:      accountName,
 		accountKey:       key,
 		useHTTPS:         useHTTPS,
-		baseURL:          blobServiceBaseURL,
+		baseURL:          serviceBaseURL,
 		apiVersion:       apiVersion,
+		sasClient:        false,
 		UseSharedKeyLite: false,
 		Sender: &DefaultSender{
-			RetryAttempts: 5,
-			ValidStatusCodes: []int{
-				http.StatusRequestTimeout,      // 408
-				http.StatusInternalServerError, // 500
-				http.StatusBadGateway,          // 502
-				http.StatusServiceUnavailable,  // 503
-				http.StatusGatewayTimeout,      // 504
-			},
-			RetryDuration: time.Second * 5,
+			RetryAttempts:    defaultRetryAttempts,
+			ValidStatusCodes: defaultValidStatusCodes,
+			RetryDuration:    defaultRetryDuration,
 		},
 	}
 	c.userAgent = c.getDefaultUserAgent()
@@ -255,6 +260,26 @@ func NewClient(accountName, accountKey, blobServiceBaseURL, apiVersion string, u
 // See https://docs.microsoft.com/en-us/azure/storage/storage-create-storage-account
 func IsValidStorageAccount(account string) bool {
 	return validStorageAccount.MatchString(account)
+}
+
+func NewBasicSASClient() Client {
+	return NewSASClient(DefaultAPIVersion, defaultUseHTTPS)
+}
+
+func NewSASClient(apiVersion string, useHTTPS bool) Client {
+	c := Client{
+		HTTPClient: http.DefaultClient,
+		useHTTPS:   useHTTPS,
+		apiVersion: apiVersion,
+		sasClient:  true,
+		Sender: &DefaultSender{
+			RetryAttempts:    defaultRetryAttempts,
+			ValidStatusCodes: defaultValidStatusCodes,
+			RetryDuration:    defaultRetryDuration,
+		},
+	}
+	c.userAgent = c.getDefaultUserAgent()
+	return c
 }
 
 func (c Client) getDefaultUserAgent() string {

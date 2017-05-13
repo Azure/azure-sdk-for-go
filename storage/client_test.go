@@ -79,14 +79,24 @@ func compareMethods(r *http.Request, i cassette.Request) bool {
 }
 
 func compareURLs(r *http.Request, i cassette.Request) bool {
-	newURL := modifyURL(r.URL)
-	return newURL.String() == i.URL
+	requestURL := modifyURL(r.URL)
+
+	cassetteURL, err := url.Parse(i.URL)
+	if err != nil {
+		return false
+	}
+
+	err = removeSAS(cassetteURL)
+	if err != nil {
+		return false
+	}
+	return requestURL.String() == cassetteURL.String()
 }
 
-func modifyURL(url *url.URL) *url.URL {
+func modifyURL(uri *url.URL) *url.URL {
 	// The URL host looks like this...
 	// accountname.service.storageEndpointSuffix
-	parts := strings.Split(url.Host, ".")
+	parts := strings.Split(uri.Host, ".")
 	// parts[0] corresponds to the storage account name, so it can be (almost) any string
 	// parts[1] corresponds to the service name (table, blob, etc.).
 	if !(parts[1] == blobServiceName ||
@@ -105,9 +115,27 @@ func modifyURL(url *url.URL) *url.URL {
 	}
 
 	host := dummyStorageAccount + "." + parts[1] + "." + azure.PublicCloud.StorageEndpointSuffix
-	newURL := url
+	newURL := uri
 	newURL.Host = host
+
+	err := removeSAS(newURL)
+	if err != nil {
+		return nil
+	}
 	return newURL
+}
+
+func removeSAS(uri *url.URL) error {
+	// Remove signature from a SAS URI
+	v := uri.Query()
+	v.Del("sig")
+
+	q, err := url.QueryUnescape(v.Encode())
+	if err != nil {
+		return err
+	}
+	uri.RawQuery = q
+	return nil
 }
 
 func compareHeaders(r *http.Request, i cassette.Request) bool {

@@ -135,8 +135,7 @@ func (b *Blob) Exists() (bool, error) {
 }
 
 // GetURL gets the canonical URL to the blob with the specified name in the
-// specified container. If name is not specified, the canonical URL for the entire
-// container is obtained.
+// specified container.
 // This method does not create a publicly accessible URL if the blob or container
 // is private and this method does not check if the blob exists.
 func (b *Blob) GetURL() string {

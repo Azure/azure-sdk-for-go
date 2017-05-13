@@ -15,61 +15,52 @@ import (
 //
 // See https://msdn.microsoft.com/en-us/library/azure/ee395415.aspx
 func (b *Blob) GetSASURIWithSignedIPAndProtocol(expiry time.Time, permissions string, signedIPRange string, HTTPSOnly bool) (string, error) {
-	var (
-		signedPermissions = permissions
-		blobURL           = b.GetURL()
-	)
-	canonicalizedResource, err := b.Container.bsc.client.buildCanonicalizedResource(blobURL, b.Container.bsc.auth)
+	uri := b.GetURL()
+	signedResource := "b"
+	canonicalizedResource, err := b.Container.bsc.client.buildCanonicalizedResource(uri, b.Container.bsc.auth)
 	if err != nil {
 		return "", err
 	}
+	return b.Container.bsc.client.commonSASURI(expiry, uri, permissions, signedIPRange, canonicalizedResource, signedResource, HTTPSOnly)
+}
 
-	// "The canonicalizedresouce portion of the string is a canonical path to the signed resource.
-	// It must include the service name (blob, table, queue or file) for version 2015-02-21 or
-	// later, the storage account name, and the resource name, and must be URL-decoded.
-	// -- https://msdn.microsoft.com/en-us/library/azure/dn140255.aspx
-
-	// We need to replace + with %2b first to avoid being treated as a space (which is correct for query strings, but not the path component).
-	canonicalizedResource = strings.Replace(canonicalizedResource, "+", "%2b", -1)
-	canonicalizedResource, err = url.QueryUnescape(canonicalizedResource)
-	if err != nil {
-		return "", err
-	}
+func (c *Client) commonSASURI(expiry time.Time, uri, permissions, signedIPRange, canonicalizedResource, signedResource string, HTTPSOnly bool) (string, error) {
 
 	signedExpiry := expiry.UTC().Format(time.RFC3339)
 
-	//If blob name is missing, resource is a container
-	signedResource := "c"
-	if len(b.Name) > 0 {
-		signedResource = "b"
+	// We need to replace + with %2b first to avoid being treated as a space (which is correct for query strings, but not the path component).
+	canonicalizedResource = strings.Replace(canonicalizedResource, "+", "%2b", -1)
+	canonicalizedResource, err := url.QueryUnescape(canonicalizedResource)
+	if err != nil {
+		return "", err
 	}
 
 	protocols := "https,http"
 	if HTTPSOnly {
 		protocols = "https"
 	}
-	stringToSign, err := blobSASStringToSign(b.Container.bsc.client.apiVersion, canonicalizedResource, signedExpiry, signedPermissions, signedIPRange, protocols)
+	stringToSign, err := blobSASStringToSign(c.apiVersion, canonicalizedResource, signedExpiry, permissions, signedIPRange, protocols)
 	if err != nil {
 		return "", err
 	}
 
-	sig := b.Container.bsc.client.computeHmac256(stringToSign)
+	sig := c.computeHmac256(stringToSign)
 	sasParams := url.Values{
-		"sv":  {b.Container.bsc.client.apiVersion},
+		"sv":  {c.apiVersion},
 		"se":  {signedExpiry},
 		"sr":  {signedResource},
-		"sp":  {signedPermissions},
+		"sp":  {permissions},
 		"sig": {sig},
 	}
 
-	if b.Container.bsc.client.apiVersion >= "2015-04-05" {
+	if c.apiVersion >= "2015-04-05" {
 		sasParams.Add("spr", protocols)
 		if signedIPRange != "" {
 			sasParams.Add("sip", signedIPRange)
 		}
 	}
 
-	sasURL, err := url.Parse(blobURL)
+	sasURL, err := url.Parse(uri)
 	if err != nil {
 		return "", err
 	}

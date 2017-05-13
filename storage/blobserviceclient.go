@@ -1,9 +1,11 @@
 package storage
 
 import (
+	"fmt"
 	"net/http"
 	"net/url"
 	"strconv"
+	"strings"
 )
 
 // BlobStorageClient contains operations for Microsoft Azure Blob Storage
@@ -43,6 +45,22 @@ func (b *BlobStorageClient) GetContainerReference(name string) *Container {
 		bsc:  b,
 		Name: name,
 	}
+}
+
+func (b *BlobStorageClient) GetContainerReferenceFromSASURI(sasuri string) (*Container, error) {
+	uri, err := url.Parse(sasuri)
+	if err != nil {
+		return nil, err
+	}
+	path := strings.Split(uri.Path, "/")
+	if len(path) <= 1 {
+		return nil, fmt.Errorf("could not find a container in URI: %s", sasuri)
+	}
+	return &Container{
+		bsc:    b,
+		Name:   path[1],
+		sasuri: sasuri,
+	}, nil
 }
 
 // ListContainers returns the list of containers in a storage account along with

@@ -82,11 +82,34 @@ func (s *ContainerSuite) TestContainerExists(c *chk.C) {
 	c.Assert(err, chk.IsNil)
 	c.Assert(ok, chk.Equals, false)
 
-	// COntainer exists
+	// Container exists
 	cnt2 := cli.GetContainerReference(containerName(c, "2"))
-	c.Assert(cnt2.Create(nil), chk.IsNil)
+	err = cnt2.Create(nil)
 	defer cnt2.Delete(nil)
+	c.Assert(err, chk.IsNil)
 	ok, err = cnt2.Exists()
+	c.Assert(err, chk.IsNil)
+	c.Assert(ok, chk.Equals, true)
+
+	// SASURI test
+	// SASURI test fails, I wonder if SASURI is good enough to do HEAD operations?
+	sasCli := NewBasicSASClient()
+	sasCli.HTTPClient = cli.client.HTTPClient
+	blobSASCli := sasCli.GetBlobService()
+
+	sasuri1, err := cnt1.GetSASURI(fixedTime, "racwdl")
+	c.Assert(err, chk.IsNil)
+	cntSAS1, err := blobSASCli.GetContainerReferenceFromSASURI(sasuri1)
+	c.Assert(err, chk.IsNil)
+	ok, err = cntSAS1.Exists()
+	c.Assert(err, chk.IsNil)
+	c.Assert(ok, chk.Equals, false)
+
+	sasuri2, err := cnt2.GetSASURI(fixedTime, "racwdl")
+	c.Assert(err, chk.IsNil)
+	cntSAS2, err := blobSASCli.GetContainerReferenceFromSASURI(sasuri2)
+	c.Assert(err, chk.IsNil)
+	ok, err = cntSAS2.Exists()
 	c.Assert(err, chk.IsNil)
 	c.Assert(ok, chk.Equals, true)
 }
@@ -157,8 +180,9 @@ func (s *ContainerSuite) TestListBlobsPagination(c *chk.C) {
 	defer rec.Stop()
 	cnt := cli.GetContainerReference(containerName(c))
 
-	c.Assert(cnt.Create(nil), chk.IsNil)
+	err := cnt.Create(nil)
 	defer cnt.Delete(nil)
+	c.Assert(err, chk.IsNil)
 
 	blobs := []string{}
 	const n = 5
@@ -171,6 +195,21 @@ func (s *ContainerSuite) TestListBlobsPagination(c *chk.C) {
 	}
 	sort.Strings(blobs)
 
+	listBlobsPagination(c, cnt, pageSize, blobs)
+
+	// SASURI test
+	sasuri, err := cnt.GetSASURI(fixedTime, "racwdl")
+	c.Assert(err, chk.IsNil)
+	sasCli := NewBasicSASClient()
+	sasCli.HTTPClient = cli.client.HTTPClient
+	blobSASCli := sasCli.GetBlobService()
+	cntSAS, err := blobSASCli.GetContainerReferenceFromSASURI(sasuri)
+	c.Assert(err, chk.IsNil)
+
+	listBlobsPagination(c, cntSAS, pageSize, blobs)
+}
+
+func listBlobsPagination(c *chk.C, cnt *Container, pageSize uint, blobs []string) {
 	// Paginate
 	seen := []string{}
 	marker := ""

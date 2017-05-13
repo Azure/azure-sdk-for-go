@@ -50,7 +50,6 @@ func (s *BlobSASURISuite) TestGetBlobSASURIContainer(c *chk.C) {
 	c.Assert(err, chk.IsNil)
 	cli := api.GetBlobService()
 	cnt := cli.GetContainerReference("container")
-	b := cnt.GetBlobReference("")
 	expiry := time.Time{}
 
 	expectedParts := url.URL{
@@ -65,7 +64,7 @@ func (s *BlobSASURISuite) TestGetBlobSASURIContainer(c *chk.C) {
 			"se":  {"0001-01-01T00:00:00Z"},
 		}.Encode()}
 
-	u, err := b.GetSASURI(expiry, "r")
+	u, err := cnt.GetSASURI(expiry, "r")
 	c.Assert(err, chk.IsNil)
 	sasParts, err := url.Parse(u)
 	c.Assert(err, chk.IsNil)

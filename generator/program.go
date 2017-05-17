@@ -166,7 +166,7 @@ func main() {
 		return
 	}
 
-	packages := generateAll(swaggersToProcess, repoLoc, path.Join(repoLoc, "arm"))
+	packages := generateAll(swaggersToProcess, repoLoc, outputLocation)
 
 	for generated := range packages {
 		statusLog.Print("Generated Package: ", generated)
@@ -215,11 +215,11 @@ func getDefaultOutputLocation() string {
 	if goPath != "" {
 		sdkLocation := path.Join(goPath, "src", "github.com", "Azure", "azure-sdk-for-go")
 		if isGitDir(sdkLocation) {
-			return filepath.Clean(path.Join(sdkLocation, "arm"))
+			return filepath.Clean(sdkLocation)
 		}
 	}
 
-	if tempDir, err := ioutil.TempDir("", "azure-sdk-for-go-arm"); err == nil {
+	if tempDir, err := ioutil.TempDir("", "azure-sdk-for-go"); err == nil {
 		return filepath.Clean(tempDir)
 	}
 	return "./"
@@ -309,8 +309,6 @@ func generate(swag Swagger, outputRootPath string) (outputDir string, err error)
 	}
 	outputDir = path.Clean(filepath.Join(outputRootPath, namespace))
 
-	debugLog.Print("Namespace: ", namespace)
-
 	autorest := exec.Command(
 		"autorest",
 		"-Input", swag.Path,
@@ -323,6 +321,7 @@ func generate(swag Swagger, outputRootPath string) (outputDir string, err error)
 		"-SkipValidation")
 	autorest.Stdout = os.Stdout
 	autorest.Stderr = os.Stderr
+
 	err = autorest.Run()
 	return
 }
@@ -349,20 +348,22 @@ func generateAll(swaggers <-chan Swagger, repoPath, outputRootPath string) <-cha
 
 // getNamespace takes a swagger
 var getNamespace = func() func(Swagger) (string, error) {
-	baseNamespace := []string{"github.com", "Azure", "azure-sdk-for-go"}
-	namespacePattern := regexp.MustCompile(`(?P<plane>\w+)-(?P<package>.*)[/\\](?P<version>\d{4}-\d{2}-\d{2}[\w\d\-\.]*)[/\\]swagger[/\\](?P<filename>.+)\.json`)
+	namespacePattern := regexp.MustCompile(`(?:(?P<plane>\w+)-)?(?P<package>[\w\d\.\-]+)[/\\](?P<version>\d{4}-\d{2}-\d{2}[\w\d\-\.]*)[/\\]swagger[/\\](?P<filename>.+)\.json`)
 
 	return func(swag Swagger) (string, error) {
 		results := namespacePattern.FindAllStringSubmatch(swag.Path, -1)
 		if len(results) == 0 {
 			return "", fmt.Errorf("%s is not in a recognized namespace format", swag.Path)
 		}
-		debugLog.Print("Namespace found for package: ", swag.Path)
+
 		plane := results[0][1]
+		if plane == "" {
+			plane = "services"
+		}
 		pkg := results[0][2]
 		version := results[0][3]
 		filename := results[0][4]
-		namespace := append(baseNamespace, plane, pkg, version, filename)
+		namespace := []string{plane, pkg, version, filename}
 
 		return strings.Replace(strings.Join(namespace, "/"), `\`, "/", -1), nil
 	}

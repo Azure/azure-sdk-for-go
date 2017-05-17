@@ -13,6 +13,8 @@ import (
 	"path/filepath"
 	"regexp"
 	"strings"
+
+	"github.com/marstr/swagger"
 )
 
 const (
@@ -37,24 +39,40 @@ var (
 	anyMissing                  bool
 	noClone                     bool
 	verbose                     bool
+	wait                        bool
 	targetFile                  string
+	debugLog                    *log.Logger
 )
+
+type Swagger struct {
+	swagger.Swagger
+	Path string
+}
 
 func init() {
 	flag.StringVar(&azureRestAPIBranch, "branch", defaultAzureRESTAPIBranch, "The branch, tag, or SHA1 identifier in the Azure Rest API Specs repository to use during API generation.")
 	flag.StringVar(&remoteAzureRestAPISpecsPath, "repo", defaultRemoteAzureRestAPISpecsPath, "The path to the location of the Azure REST API Specs repository that should be used for generation.")
-	flag.StringVar(&outputLocation, "output", getDefaultOutputLocation(), "a directory in which all output should be placed.")
+	flag.StringVar(&outputLocation, "output", getDefaultOutputLocation(), "a directory in which all generated code should be placed.")
 	flag.StringVar(&targetFile, "target", "", "If a target file is provided, generator will only run on this file instead of all swaggers it encounters in the repository.")
 	flag.BoolVar(&dryRun, "preview", false, "Use this flag to print a list of packages that would be generated instead of actually generating the new sdk.")
 	flag.BoolVar(&help, "help", false, "Provide this flag to print usage information instead of running the program.")
 	flag.BoolVar(&noClone, "noClone", false, "Use this flag to prevent cloning a new copy of Azure REST API Specs. The existing enlistment should be used instead.")
 	flag.BoolVar(&verbose, "verbose", false, "Print status messages as processing is done.")
+	flag.BoolVar(&wait, "wait", false, "Use this program to halt execution before the cleanup phase is entered.")
+	useDebug := flag.Bool("debug", false, "Include this flag to print debug messages as the program executes.")
 
 	flag.Parse()
 
 	if help {
 		return
 	}
+
+	debugWriter := ioutil.Discard
+	if *useDebug {
+		fmt.Fprintln(os.Stdout, "Turning on debug logger.")
+		debugWriter = os.Stderr
+	}
+	debugLog = log.New(debugWriter, "[DEBUG]", log.Ltime)
 
 	optionalTools := []string{"gofmt", "golint"}
 	requiredTools := []string{"autorest", "git"}
@@ -114,6 +132,11 @@ func main() {
 		if temp, err := cloneAPISpecs(remoteAzureRestAPISpecsPath, localAzureRestAPISpecsPath); err == nil {
 			repoLoc = temp
 			defer func() {
+				if wait {
+					fmt.Print("Press ENTER to continue...")
+					fmt.Scanln()
+				}
+
 				if err := os.RemoveAll(repoLoc); err != nil {
 					errLog.Print(err)
 				}
@@ -141,6 +164,12 @@ func main() {
 			fmt.Printf("%s -> %s\n", manifest.Path, namespace)
 		}
 		return
+	}
+
+	packages := generateAll(swaggersToProcess, repoLoc, path.Join(repoLoc, "arm"))
+
+	for generated := range packages {
+		statusLog.Print("Generated Package: ", generated)
 	}
 }
 
@@ -272,25 +301,30 @@ func getSwaggers(dir string, statusLog *log.Logger, errLog *log.Logger) <-chan S
 	return retval
 }
 
-func generate(swag Swagger, outputRootPath string) error {
-
-	namespace, err := getNamespace(swag)
+func generate(swag Swagger, outputRootPath string) (outputDir string, err error) {
+	var namespace string
+	namespace, err = getNamespace(swag)
 	if err != nil {
-		return err
+		return
 	}
-	finalOutputDir := path.Clean(filepath.Join(outputRootPath, namespace))
+	outputDir = path.Clean(filepath.Join(outputRootPath, namespace))
+
+	debugLog.Print("Namespace: ", namespace)
 
 	autorest := exec.Command(
 		"autorest",
 		"-Input", swag.Path,
 		"-CodeGenerator", "Go",
 		"-Header", "MICROSOFT_APACHE",
-		"-Namespace", namespace,
-		"-OutputDirectory", finalOutputDir,
+		"-Namespace", namespace[strings.LastIndex(namespace, "/")+1:],
+		"-OutputDirectory", outputDir,
 		"-Modeler", "Swagger",
 		"-pv",
 		"-SkipValidation")
-	return autorest.Run()
+	autorest.Stdout = os.Stdout
+	autorest.Stderr = os.Stderr
+	err = autorest.Run()
+	return
 }
 
 // generateAll takes a channel of swaggers, generates them, and returns a channel of
@@ -299,10 +333,15 @@ func generateAll(swaggers <-chan Swagger, repoPath, outputRootPath string) <-cha
 	retval := make(chan string)
 
 	go func() {
-		defer close(retval)
 		for swagger := range swaggers {
-			generate(swagger, outputRootPath)
+			debugLog.Print("Processing swagger: ", swagger.Path)
+			if outputDir, err := generate(swagger, outputRootPath); err == nil {
+				retval <- outputDir
+			} else {
+				debugLog.Printf("Encountered Error while processing '%s': %v", swagger.Path, err)
+			}
 		}
+		close(retval)
 	}()
 
 	return retval
@@ -311,17 +350,19 @@ func generateAll(swaggers <-chan Swagger, repoPath, outputRootPath string) <-cha
 // getNamespace takes a swagger
 var getNamespace = func() func(Swagger) (string, error) {
 	baseNamespace := []string{"github.com", "Azure", "azure-sdk-for-go"}
-	namespacePattern := regexp.MustCompile(`(?P<plane>\w+)-(?P<package>.*)[/\\](?P<version>\d{4}-\d{2}-\d{2}[\w\d\-\.]*)[/\\]swagger[/\\].*\.json`)
+	namespacePattern := regexp.MustCompile(`(?P<plane>\w+)-(?P<package>.*)[/\\](?P<version>\d{4}-\d{2}-\d{2}[\w\d\-\.]*)[/\\]swagger[/\\](?P<filename>.+)\.json`)
 
 	return func(swag Swagger) (string, error) {
 		results := namespacePattern.FindAllStringSubmatch(swag.Path, -1)
 		if len(results) == 0 {
 			return "", fmt.Errorf("%s is not in a recognized namespace format", swag.Path)
 		}
+		debugLog.Print("Namespace found for package: ", swag.Path)
 		plane := results[0][1]
 		pkg := results[0][2]
 		version := results[0][3]
-		namespace := append(baseNamespace, plane, pkg, version)
+		filename := results[0][4]
+		namespace := append(baseNamespace, plane, pkg, version, filename)
 
 		return strings.Replace(strings.Join(namespace, "/"), `\`, "/", -1), nil
 	}

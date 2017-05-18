@@ -17,7 +17,6 @@ import (
 	"net/url"
 	"regexp"
 	"runtime"
-	"strconv"
 	"strings"
 	"time"
 
@@ -405,16 +404,6 @@ func (c Client) exec(verb, url string, headers map[string]string, body io.Reader
 		return nil, errors.New("azure/storage: error creating request: " + err.Error())
 	}
 
-	if clstr, ok := headers["Content-Length"]; ok {
-		// content length header is being signed, but completely ignored by golang.
-		// instead we have to use the ContentLength property on the request struct
-		// (see https://golang.org/src/net/http/request.go?s=18140:18370#L536 and
-		// https://golang.org/src/net/http/transfer.go?s=1739:2467#L49)
-		req.ContentLength, err = strconv.ParseInt(clstr, 10, 64)
-		if err != nil {
-			return nil, err
-		}
-	}
 	for k, v := range headers {
 		req.Header.Add(k, v)
 	}

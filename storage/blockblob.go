@@ -69,7 +69,7 @@ type BlockResponse struct {
 //
 // See https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/Put-Blob
 func (b *Blob) CreateBlockBlob(options *PutBlobOptions) error {
-	return b.CreateBlockBlobFromReader(nil, options)
+	return b.CreateBlockBlobFromReader(nil, options, 0)
 }
 
 // CreateBlockBlobFromReader initializes a block blob using data from
@@ -81,11 +81,11 @@ func (b *Blob) CreateBlockBlob(options *PutBlobOptions) error {
 // PutBlock, and PutBlockList.
 //
 // See https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/Put-Blob
-func (b *Blob) CreateBlockBlobFromReader(blob io.Reader, options *PutBlobOptions) error {
+func (b *Blob) CreateBlockBlobFromReader(blob io.Reader, options *PutBlobOptions, contentSize int) error {
 	params := url.Values{}
 	headers := b.Container.bsc.client.getStandardHeaders()
 	headers["x-ms-blob-type"] = string(BlobTypeBlock)
-	headers["Content-Length"] = fmt.Sprintf("%d", b.Properties.ContentLength)
+	headers["Content-Length"] = fmt.Sprintf("%d", contentSize)
 	headers = mergeHeaders(headers, headersFromStruct(b.Properties))
 	headers = b.Container.bsc.client.addMetadataToHeaders(headers, b.Metadata)
 

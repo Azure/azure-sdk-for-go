@@ -44,6 +44,10 @@ func TestGetNamespace(t *testing.T) {
 			filepath.Join("plane-split-name", "subname", "v1.8", "swagger", "example.json"),
 			"plane/split-name/subname/v1.8/example",
 		},
+		{
+			filepath.Join("plane-name", "subname", "2015-12-29", "swagger", "Example.json"),
+			"plane/name/subname/2015-12-29/example",
+		},
 	}
 
 	for _, tc := range testCases {

@@ -276,7 +276,8 @@ func getSwaggers(dir string, statusLog *log.Logger, errLog *log.Logger) <-chan S
 				if err := json.Unmarshal(contents, &manifest); err != nil {
 					return
 				}
-				manifest.Path = path
+				manifest.Path = strings.TrimPrefix(path, dir)
+				manifest.Path = strings.TrimPrefix(manifest.Path, "/")
 
 				title := manifest.Info.Title
 
@@ -372,6 +373,8 @@ var getNamespace = func() func(Swagger) (string, error) {
 			subPkg := results[0][3]
 			version := results[0][4]
 			filename := results[0][5]
+			filename = strings.ToLower(filename[:1]) + filename[1:]
+
 			namespace := []string{plane, pkg}
 			if subPkg != "" {
 				namespace = append(namespace, subPkg)

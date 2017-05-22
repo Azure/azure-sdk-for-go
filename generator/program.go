@@ -346,25 +346,41 @@ func generateAll(swaggers <-chan Swagger, repoPath, outputRootPath string) <-cha
 	return retval
 }
 
-// getNamespace takes a swagger
+// getNamespace takes a swagger and finds the appropriate namespace to be fed into Autorest.
 var getNamespace = func() func(Swagger) (string, error) {
-	namespacePattern := regexp.MustCompile(`(?:(?P<plane>\w+)-)?(?P<package>[\w\d\.\-]+)[/\\](?P<version>\d{4}-\d{2}-\d{2}[\w\d\-\.]*)[/\\]swagger[/\\](?P<filename>.+)\.json`)
+	//Defining the Regexp strategies statically like this helps improve perf by ensuring they only get compiled once.
+	standardPattern := regexp.MustCompile(`(?:(?P<plane>\w+)-)?(?P<package>[\w\d\.\-]+)(?:[/\\](?P<subpackage>(?:[\w\d]+[/\\]?)+))?[/\\](?P<version>\d{4}-\d{2}-\d{2}[\w\d\-\.]*)[/\\]swagger[/\\](?P<filename>.+)\.json`)
+	semverPattern := regexp.MustCompile(`(?:(?P<plane>\w+)-)?(?P<package>[\w\d\.\-]+)(?:[/\\](?P<subpackage>(?:[\w\d]+[/\\]?)+))?[/\\](?P<version>v?\d+(?:\.\d+){0,2}(?:-[\w\d\-\.]+)?)[/\\]swagger[/\\](?P<filename>.+)\.json`)
 
-	return func(swag Swagger) (string, error) {
-		results := namespacePattern.FindAllStringSubmatch(swag.Path, -1)
-		if len(results) == 0 {
-			return "", fmt.Errorf("%s is not in a recognized namespace format", swag.Path)
+	return func(swag Swagger) (result string, err error) {
+		strategies := []*regexp.Regexp{
+			standardPattern,
+			semverPattern,
 		}
 
-		plane := results[0][1]
-		if plane == "" {
-			plane = "services"
-		}
-		pkg := results[0][2]
-		version := results[0][3]
-		filename := results[0][4]
-		namespace := []string{plane, pkg, version, filename}
+		for _, currentStrategy := range strategies {
+			results := currentStrategy.FindAllStringSubmatch(swag.Path, -1)
+			if len(results) == 0 {
+				continue
+			}
 
-		return strings.Replace(strings.Join(namespace, "/"), `\`, "/", -1), nil
+			plane := results[0][1]
+			if plane == "" {
+				plane = "services"
+			}
+			pkg := results[0][2]
+			subPkg := results[0][3]
+			version := results[0][4]
+			filename := results[0][5]
+			namespace := []string{plane, pkg}
+			if subPkg != "" {
+				namespace = append(namespace, subPkg)
+			}
+			namespace = append(namespace, version, filename)
+			result = strings.Replace(strings.Join(namespace, "/"), `\`, "/", -1)
+			return
+		}
+		err = fmt.Errorf("%s is not in a recognized namespace format", swag.Path)
+		return
 	}
 }()

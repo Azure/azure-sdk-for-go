@@ -8,23 +8,41 @@ import (
 )
 
 func TestGetNamespace(t *testing.T) {
-	basePath := filepath.Join("dir1", "dir2")
-
 	testCases := []struct {
 		given    string
 		expected string
 	}{
 		{
-			filepath.Join(basePath, "plane-package", "2016-02-17", "swagger", "example.json"),
+			filepath.Join("plane-package", "2016-02-17", "swagger", "example.json"),
 			"plane/package/2016-02-17/example",
 		},
 		{
-			filepath.Join(basePath, "plane-split-name", "dir3", "dir4", "2016-02-09-preview", "swagger", "example.json"),
-			"plane/split-name/dir3/dir4/2016-02-09-preview/example",
+			filepath.Join("plane-split-name", "dir3", "2016-02-09-preview", "swagger", "example.json"),
+			"plane/split-name/dir3/2016-02-09-preview/example",
 		},
 		{
-			filepath.Join(basePath, "myService/2015-06-01/swagger/example.json"),
+			filepath.Join("plane-split-name", "dir3", "dir4", "2016-02-17", "swagger", "example.json"),
+			"plane/split-name/dir3/dir4/2016-02-17/example",
+		},
+		{
+			filepath.Join("plane-split-name", "dir3", "2016-02-09-preview", "swagger", "example.json"),
+			"plane/split-name/dir3/2016-02-09-preview/example",
+		},
+		{
+			filepath.Join("myService/2015-06-01/swagger/example.json"),
 			"services/myService/2015-06-01/example",
+		},
+		{
+			filepath.Join("plane-split-name", "v1.8", "swagger", "example.json"),
+			"plane/split-name/v1.8/example",
+		},
+		{
+			filepath.Join("plane-split-name", "1.8", "swagger", "example.json"),
+			"plane/split-name/1.8/example",
+		},
+		{
+			filepath.Join("plane-split-name", "subname", "v1.8", "swagger", "example.json"),
+			"plane/split-name/subname/v1.8/example",
 		},
 	}
 

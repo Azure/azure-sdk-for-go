@@ -279,8 +279,12 @@ func (client RecordSetsClient) GetResponder(resp *http.Response) (result RecordS
 // resourceGroupName is the name of the resource group. zoneName is the name of
 // the DNS zone (without a terminating dot). top is the maximum number of
 // record sets to return. If not specified, returns up to 100 record sets.
-func (client RecordSetsClient) ListByDNSZone(resourceGroupName string, zoneName string, top *int32) (result RecordSetListResult, err error) {
-    req, err := client.ListByDNSZonePreparer(resourceGroupName, zoneName, top)
+// recordsetnamesuffix is the suffix label of the record set name that has to
+// be used to filter the record set enumerations. If this parameter is
+// specified, Enumeration will return only records that end with
+// .<recordSetNameSuffix>
+func (client RecordSetsClient) ListByDNSZone(resourceGroupName string, zoneName string, top *int32, recordsetnamesuffix string) (result RecordSetListResult, err error) {
+    req, err := client.ListByDNSZonePreparer(resourceGroupName, zoneName, top, recordsetnamesuffix)
     if err != nil {
         err = autorest.NewErrorWithError(err, "dns.RecordSetsClient", "ListByDNSZone", nil , "Failure preparing request")
         return
@@ -302,7 +306,7 @@ func (client RecordSetsClient) ListByDNSZone(resourceGroupName string, zoneName 
 }
 
 // ListByDNSZonePreparer prepares the ListByDNSZone request.
-func (client RecordSetsClient) ListByDNSZonePreparer(resourceGroupName string, zoneName string, top *int32) (*http.Request, error) {
+func (client RecordSetsClient) ListByDNSZonePreparer(resourceGroupName string, zoneName string, top *int32, recordsetnamesuffix string) (*http.Request, error) {
     pathParameters := map[string]interface{} {
     "resourceGroupName": autorest.Encode("path",resourceGroupName),
     "subscriptionId": autorest.Encode("path",client.SubscriptionID),
@@ -315,6 +319,9 @@ func (client RecordSetsClient) ListByDNSZonePreparer(resourceGroupName string, z
     }
     if top != nil {
         queryParameters["$top"] = autorest.Encode("query",*top)
+    }
+    if len(recordsetnamesuffix) > 0 {
+        queryParameters["$recordsetnamesuffix"] = autorest.Encode("query",recordsetnamesuffix)
     }
 
     preparer := autorest.CreatePreparer(
@@ -373,9 +380,12 @@ func (client RecordSetsClient) ListByDNSZoneNextResults(lastResults RecordSetLis
 // resourceGroupName is the name of the resource group. zoneName is the name of
 // the DNS zone (without a terminating dot). recordType is the type of record
 // sets to enumerate. top is the maximum number of record sets to return. If
-// not specified, returns up to 100 record sets.
-func (client RecordSetsClient) ListByType(resourceGroupName string, zoneName string, recordType RecordType, top *int32) (result RecordSetListResult, err error) {
-    req, err := client.ListByTypePreparer(resourceGroupName, zoneName, recordType, top)
+// not specified, returns up to 100 record sets. recordsetnamesuffix is the
+// suffix label of the record set name that has to be used to filter the record
+// set enumerations. If this parameter is specified, Enumeration will return
+// only records that end with .<recordSetNameSuffix>
+func (client RecordSetsClient) ListByType(resourceGroupName string, zoneName string, recordType RecordType, top *int32, recordsetnamesuffix string) (result RecordSetListResult, err error) {
+    req, err := client.ListByTypePreparer(resourceGroupName, zoneName, recordType, top, recordsetnamesuffix)
     if err != nil {
         err = autorest.NewErrorWithError(err, "dns.RecordSetsClient", "ListByType", nil , "Failure preparing request")
         return
@@ -397,7 +407,7 @@ func (client RecordSetsClient) ListByType(resourceGroupName string, zoneName str
 }
 
 // ListByTypePreparer prepares the ListByType request.
-func (client RecordSetsClient) ListByTypePreparer(resourceGroupName string, zoneName string, recordType RecordType, top *int32) (*http.Request, error) {
+func (client RecordSetsClient) ListByTypePreparer(resourceGroupName string, zoneName string, recordType RecordType, top *int32, recordsetnamesuffix string) (*http.Request, error) {
     pathParameters := map[string]interface{} {
     "recordType": autorest.Encode("path",recordType),
     "resourceGroupName": autorest.Encode("path",resourceGroupName),
@@ -411,6 +421,9 @@ func (client RecordSetsClient) ListByTypePreparer(resourceGroupName string, zone
     }
     if top != nil {
         queryParameters["$top"] = autorest.Encode("query",*top)
+    }
+    if len(recordsetnamesuffix) > 0 {
+        queryParameters["$recordsetnamesuffix"] = autorest.Encode("query",recordsetnamesuffix)
     }
 
     preparer := autorest.CreatePreparer(

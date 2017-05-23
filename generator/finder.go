@@ -62,7 +62,7 @@ func (f *SwaggerFinder) Enumerate() collection.Enumerator {
 					return
 				}
 				manifest.Path = strings.TrimPrefix(path, f.Root)
-				manifest.Path = strings.TrimPrefix(manifest.Path, "/")
+				manifest.Path = strings.TrimLeft(manifest.Path, `/\`)
 
 				title := manifest.Info.Title
 

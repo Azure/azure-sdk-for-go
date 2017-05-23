@@ -170,29 +170,54 @@ func main() {
 		return
 	}
 
+	var logFolder string
+	useLogs := true
+
+	logFolder, err = ioutil.TempDir("", "autorestLogs")
+	if err != nil {
+		useLogs = false
+	}
+	fmt.Println("Logs will be stored in: ", logFolder)
+
 	found, generated, formatted, vetted := 0, 0, 0, 0
 
 	processor := finder.Enumerate().Select(func(x interface{}) interface{} {
 		found++
 		return x
 	}).ParallelSelect(func(x interface{}) interface{} {
-		name, err := generate(x.(Swagger), outputLocation)
+		cast := x.(Swagger)
+		var err error
+		var logWriter io.Writer
+		var outputFile *os.File
+		if useLogs {
+			outputFile, err = os.OpenFile(path.Join(logFolder, cast.Info.Title+"_"+cast.Info.Version+".txt"), os.O_WRONLY|os.O_CREATE, 0777)
+			logWriter = outputFile
+			if err == nil {
+				defer outputFile.Close()
+			} else {
+				fmt.Fprintln(os.Stderr, "Cannot log results of: ", cast.Info.Title, cast.Info.Version, "because: ", err)
+			}
+		} else {
+			logWriter = ioutil.Discard
+		}
+		var name string
+		name, err = generate(cast, outputLocation, repoLoc, logWriter)
 		if err != nil {
 			return err
 		}
 		generated++
 		return name
-	}).Where(func(x interface{}) (success bool) {
+	}).Where(func(x interface{}) bool {
 		switch x.(type) {
 		case string:
 			if verbose {
 				fmt.Fprintln(os.Stdout, "Generated: ", x)
 			}
-			success = true
+			return true
 		case error:
 			fmt.Fprintln(os.Stderr, "Error: ", x)
 		}
-		return
+		return false
 	}).Where(func(x interface{}) bool {
 		err := format(x.(string))
 		return err == nil
@@ -260,7 +285,11 @@ func isGitDir(dir string) bool {
 	return retval
 }
 
-func generate(swag Swagger, outputRootPath string) (outputDir string, err error) {
+func generate(swag Swagger, outputRootPath, specsRootPath string, output io.Writer) (outputDir string, err error) {
+	if output == nil {
+		output = ioutil.Discard
+	}
+
 	var namespace string
 	namespace, err = getNamespace(swag)
 	if err != nil {
@@ -278,9 +307,11 @@ func generate(swag Swagger, outputRootPath string) (outputDir string, err error)
 		"-Modeler", "Swagger",
 		"-pv",
 		"-SkipValidation")
-	autorest.Stdout = os.Stdout
-	autorest.Stderr = os.Stderr
-	autorest.Dir = localAzureRestAPISpecsPath
+	autorest.Stdout = output
+	autorest.Stderr = output
+	autorest.Dir = specsRootPath
+
+	debugLog.Print("Autorest running in directory: ", autorest.Dir)
 
 	err = autorest.Run()
 	return
